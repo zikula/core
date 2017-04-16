@@ -17,7 +17,6 @@ use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 class FilterTestSubscriber implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents()
     {
         return [

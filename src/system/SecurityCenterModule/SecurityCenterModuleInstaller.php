@@ -15,7 +15,6 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
-use Zikula\SecurityCenterModule\Api\HtmlFilterApi;
 
 /**
  * Installation routines for the security center module.
