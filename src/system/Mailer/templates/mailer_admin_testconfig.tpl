@@ -54,6 +54,8 @@
             </div>
         </fieldset>
 
+        {notifydisplayhooks eventname='mailer.ui_hooks.htmlmail.form_edit' id=null}
+
         <div class="z-buttons z-formbuttons">
             {formbutton class='z-bt-ok' commandName='save' __text='Test settings now'}
             {formbutton class='z-bt-cancel' commandName='cancel' __text='Cancel'}

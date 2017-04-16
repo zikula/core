@@ -41,6 +41,9 @@ class Mailer_Installer extends Zikula_AbstractInstaller
         $this->setVar('smtppassword', '');
         $this->setVar('smtpsecuremethod', 'ssl');
 
+        // register ui_hook for HTML e-mail test
+        HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+
         // Initialisation successful
         return true;
     }
@@ -61,6 +64,9 @@ class Mailer_Installer extends Zikula_AbstractInstaller
             case '1.3.1':
                 $this->setVar('smtpsecuremethod', 'ssl');
             case '1.3.2':
+                // register ui_hook for HTML e-mail test
+                HookUtil::registerSubscriberBundles($this->version->getHookSubscriberBundles());
+            case '1.3.3':
                 // future upgrade routines
         }
 
@@ -78,6 +84,9 @@ class Mailer_Installer extends Zikula_AbstractInstaller
     {
         // Delete any module variables
         $this->delVars();
+
+        // Remove hooks
+        HookUtil::unregisterSubscriberBundles($this->version->getHookSubscriberBundles());
 
         // Deletion successful
         return true;
