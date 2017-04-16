@@ -70,7 +70,7 @@ class HtmlFilterApi implements HtmlFilterApiInterface
         if (!isset($outputFilter)) {
             $outputFilter = $this->variableApi->getSystemVar('outputfilter', 0);
         }
-        if (!$event) {
+        if (!isset($event)) {
             $event = new GenericEvent();
         }
 
