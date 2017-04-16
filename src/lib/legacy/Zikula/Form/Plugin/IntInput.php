@@ -129,4 +129,36 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
 
         return (int)$text;
     }
+
+
+    /**
+     * Render event handler.
+     *
+     * @param Zikula_Form_View $view Reference to Zikula_Form_View object.
+     *
+     * @return string The rendered output
+     */
+    public function render(Zikula_Form_View $view)
+    {
+        $idHtml = $this->getIdHtml();
+        $nameHtml = " name=\"{$this->inputName}\"";
+        $titleHtml = ($this->toolTip != null ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
+        $readOnlyHtml = ($this->readOnly ? ' readonly="readonly" tabindex="-1"' : '');
+        $sizeHtml = ($this->size > 0 ? " size=\"{$this->size}\"" : '');
+        $maxLengthHtml = ($this->maxLength > 0 ? " maxlength=\"{$this->maxLength}\"" : '');
+        $text = DataUtil::formatForDisplay($this->text);
+        $class = $this->getStyleClass();
+
+        $attributes = $this->renderAttributes($view);
+
+        $minValueHtml = (isset($this->minValue) ? " min=\"{$this->minValue}\"" : '');
+        $maxValueHtml = (isset($this->maxValue) ? " max=\"{$this->maxValue}\"" : '');
+
+        $result = "<input type=\"number\" {$minValueHtml}{$maxValueHtml}{$idHtml}{$nameHtml}{$titleHtml}{$sizeHtml}{$maxLengthHtml}{$readOnlyHtml} class=\"{$class}\" value=\"{$text}\"{$attributes} />";
+        if ($this->mandatory && $this->mandatorysym) {
+            $result .= '<span class="z-form-mandatory-flag">*</span>';
+        }
+
+        return $result;
+    }
 }
