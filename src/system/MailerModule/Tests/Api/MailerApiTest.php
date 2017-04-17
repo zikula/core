@@ -151,7 +151,6 @@ class MailerApiTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertEquals('bar.txt', $children[0]->getHeaders()->get('Content-Disposition')->getParameter('filename'));
         $this->assertEquals('foo.txt', $children[1]->getHeaders()->get('Content-Disposition')->getParameter('filename'));
-
     }
 
     private function getMessage($from = 'admin@example.com', $to = 'foo@bar.com')
