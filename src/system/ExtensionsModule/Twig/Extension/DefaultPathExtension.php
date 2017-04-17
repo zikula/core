@@ -47,9 +47,6 @@ class DefaultPathExtension extends \Twig_Extension
         }
         if (isset($capability['route'])) {
             return $this->router->generate($capability['route']);
-        } elseif (isset($capability['url'])) {
-            // BC - remove at Core-2.0
-            return $capability['url'];
         }
 
         return '';

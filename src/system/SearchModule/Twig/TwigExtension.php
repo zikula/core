@@ -63,7 +63,6 @@ class TwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zikulasearchmodule_highlightGoogleKeywords', [$this, 'highlightGoogleKeywords']), // @deprecated
             new \Twig_SimpleFilter('zikulasearchmodule_highlightWords', [$this, 'highlightWords'], ['is_safe' => ['html']]),
             new \Twig_SimpleFilter('zikulasearchmodule_generateUrl', [$this, 'generateUrl']),
         ];

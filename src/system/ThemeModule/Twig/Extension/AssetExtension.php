@@ -53,6 +53,7 @@ class AssetExtension extends \Twig_Extension
      * @param AssetBag $scripts
      * @param AssetBag $headers
      * @param AssetBag $footers
+     * @param Engine $engine
      */
     public function __construct(
         AssetBag $styleSheets,
@@ -106,14 +107,6 @@ class AssetExtension extends \Twig_Extension
         $value = (string) $value;
         $type = (string) $type;
         $weight = (int) $weight;
-
-        // @todo remove this code block at Core-2.0 because all themes are twig based
-        $themeBundle = $this->engine->getTheme();
-        if (isset($themeBundle) && !$themeBundle->isTwigBased()) {
-            \PageUtil::addVar($type, $value);
-
-            return;
-        }
 
         if ('stylesheet' == $type) {
             $this->styleSheets->add([$value => $weight]);

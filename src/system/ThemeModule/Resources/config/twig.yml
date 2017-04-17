@@ -21,7 +21,5 @@ services:
         arguments:
           - '@translator.default'
           - '@zikula_core.common.theme.pagevars'
-          - '@logger'
-          - '@zikula_theme_module.twig.extension.asset_extension'
         tags:
             - { name: twig.extension }

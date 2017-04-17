@@ -153,6 +153,5 @@ PageType
 
  - `required` - (boolean) is the field required (default `true`).
  - `multiple` - (boolean) allow multiple selections (default `false`).
- - `includeGrandChildren` - @deprecated - use 'direct'.
  - `direct` - (boolean) use only direct children or include all descendant generations (default `true`).
  - `attr` - (array) attributes array for each select box (default `[]`).

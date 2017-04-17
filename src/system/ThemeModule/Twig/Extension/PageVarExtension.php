@@ -11,7 +11,6 @@
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
-use Psr\Log\LoggerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
@@ -28,34 +27,16 @@ class PageVarExtension extends \Twig_Extension
     private $pageVars;
 
     /**
-     * @var LoggerInterface
-     * @deprecated - remove at Core-2.0
-     */
-    private $logger;
-
-    /**
-     * @var AssetExtension
-     * @deprecated - remove at Core-2.0
-     */
-    private $assetExtension;
-
-    /**
      * PageVarExtension constructor.
      * @param TranslatorInterface $translator
      * @param ParameterBag $pageVars
-     * @param LoggerInterface $logger
-     * @param AssetExtension $assetExtension
      */
     public function __construct(
         TranslatorInterface $translator,
-        ParameterBag $pageVars,
-        LoggerInterface $logger,
-        AssetExtension $assetExtension
+        ParameterBag $pageVars
     ) {
         $this->translator = $translator;
         $this->pageVars = $pageVars;
-        $this->logger = $logger;
-        $this->assetExtension = $assetExtension;
     }
 
     /**
@@ -66,26 +47,9 @@ class PageVarExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('pageAddVar', [$this, 'pageAddVar']), // @deprecated
             new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
             new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
         ];
-    }
-
-    /**
-     * @deprecated at Core 1.4.1, remove at Core-2.0
-     * @see use pageSetVar() or pageAddAsset()
-     * @param string $name
-     * @param string $value
-     */
-    public function pageAddVar($name, $value)
-    {
-        $this->logger->log(\Monolog\Logger::DEBUG, '\Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddVar is deprecated use pageAddAsset() or pageSetVar().');
-        if (in_array($name, ['stylesheet', 'javascript', 'header', 'footer'])) {
-            $this->assetExtension->pageAddAsset($name, $value);
-        } else {
-            $this->pageSetVar($name, $value);
-        }
     }
 
     /**
