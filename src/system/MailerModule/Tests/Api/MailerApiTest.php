@@ -72,36 +72,94 @@ class MailerApiTest extends \PHPUnit_Framework_TestCase
 
     public function testSendMessage()
     {
-        $message = new \Swift_Message(
-            'test subject',
-            'message body 45678'
-        );
-        $message->setFrom('admin@example.com')
-            ->setTo('foo@bar.com');
+        $message = $this->getMessage();
+        $message->setSubject('test subject')
+            ->setBody('message body 45678');
         $this->assertTrue($this->api->sendMessage($message));
         $this->assertEquals(1, $this->mailSpool->count());
-        /** @var \Swift_Message $firstMessage */
-        $firstMessage = $this->mailSpool->getMessages()[0];
-        $this->assertArrayHasKey('admin@example.com', $firstMessage->getFrom());
-        $this->assertArrayHasKey('foo@bar.com', $firstMessage->getTo());
-        $this->assertEquals('test subject', $firstMessage->getSubject());
-        $this->assertEquals('message body 45678', $firstMessage->getBody());
+        $spooledMessage = $this->mailSpool->getMessages()[0];
+        $this->assertArrayHasKey('admin@example.com', $spooledMessage->getFrom());
+        $this->assertArrayHasKey('foo@bar.com', $spooledMessage->getTo());
+        $this->assertEquals('test subject', $spooledMessage->getSubject());
+        $this->assertEquals('message body 45678', $spooledMessage->getBody());
     }
 
     public function testSendMultiple()
     {
-        $message = new \Swift_Message();
-        $message->setFrom('admin@example.com')
-            ->setTo('foo@bar.com');
+        $message = $this->getMessage();
         for ($i = 1; $i <= 10; $i++) {
             $message->setSubject('message #' . $i)
                 ->setBody('body of message #' . $i);
             $this->assertTrue($this->api->sendMessage($message));
         }
         $this->assertEquals(10, $this->mailSpool->count());
-        /** @var \Swift_Message $message */
-        $message = $this->mailSpool->getMessages()[4];
-        $this->assertEquals('message #5', $message->getSubject());
-        $this->assertEquals('body of message #5', $message->getBody());
+        $spooledMessage = $this->mailSpool->getMessages()[4];
+        $this->assertEquals('message #5', $spooledMessage->getSubject());
+        $this->assertEquals('body of message #5', $spooledMessage->getBody());
+    }
+
+    public function testSendMessageSetSubjectAndBody()
+    {
+        $message = $this->getMessage();
+        $this->assertTrue($this->api->sendMessage($message, 'subject 789', 'body 789'));
+        $spooledMessage = $this->mailSpool->getMessages()[0];
+        $this->assertEquals('subject 789', $spooledMessage->getSubject());
+        $this->assertEquals('body 789', $spooledMessage->getBody());
+    }
+
+    public function testSendHtml()
+    {
+        $message = $this->getMessage();
+        $this->assertTrue($this->api->sendMessage($message, 'subject 123', '<strong>body 123</strong>', '', true));
+        $spooledMessage = $this->mailSpool->getMessages()[0];
+        $this->assertEquals('<strong>body 123</strong>', $spooledMessage->getBody());
+        $this->assertEquals('text/html', $spooledMessage->getContentType());
+    }
+
+    public function testSendMultipart()
+    {
+        $message = $this->getMessage();
+        $this->assertTrue($this->api->sendMessage($message, 'subject 234', '<strong>body 234</strong>', 'body 234'));
+        $spooledMessage = $this->mailSpool->getMessages()[0];
+        $this->assertEquals('<strong>body 234</strong>', $spooledMessage->getBody());
+        $this->assertEquals('multipart/alternative', $spooledMessage->getContentType());
+    }
+
+    public function testSendWithCustomHeaders()
+    {
+        $message = $this->getMessage();
+        $message->getHeaders()->addTextHeader('X-ZIKULA-CUSTOM1', '345');
+        $this->assertTrue($this->api->sendMessage($message, 'subject 345', 'body 345', '', false, ['X-ZIKULA-CUSTOM2' => '345']));
+        $spooledMessage = $this->mailSpool->getMessages()[0];
+        $this->assertEquals('X-ZIKULA-CUSTOM1: 345', trim($spooledMessage->getHeaders()->get('X-ZIKULA-CUSTOM1')->toString()));
+        $this->assertEquals('X-ZIKULA-CUSTOM2: 345', trim($spooledMessage->getHeaders()->get('X-ZIKULA-CUSTOM2')->toString()));
+    }
+
+    public function testSendWithAttachment()
+    {
+        $message = $this->getMessage();
+        $initialChildCount = count($message->getChildren());
+        $message->attach(\Swift_Attachment::fromPath(__DIR__ . '/Fixtures/bar.txt'));
+        $filePath = __DIR__ . '/Fixtures/foo.txt';
+        $this->assertTrue($this->api->sendMessage($message, 'subject 456', 'body 456', '', false, [], [$filePath]));
+        $spooledMessage = $this->mailSpool->getMessages()[0];
+        $children = $spooledMessage->getChildren();
+        $this->assertEquals($initialChildCount + 2, count($children));
+        foreach ($children as $k => $child) {
+            $this->assertEquals('text/plain', $child->getContentType());
+            $this->assertInstanceOf('Swift_Mime_Headers_ParameterizedHeader', $child->getHeaders()->get('Content-Disposition'));
+        }
+        $this->assertEquals('bar.txt', $children[0]->getHeaders()->get('Content-Disposition')->getParameter('filename'));
+        $this->assertEquals('foo.txt', $children[1]->getHeaders()->get('Content-Disposition')->getParameter('filename'));
+
+    }
+
+    private function getMessage($from = 'admin@example.com', $to = 'foo@bar.com')
+    {
+        $message = new \Swift_Message();
+        $message->setFrom($from)
+            ->setTo($to);
+
+        return $message;
     }
 }
