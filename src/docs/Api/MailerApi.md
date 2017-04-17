@@ -36,6 +36,8 @@ The class makes the following methods available:
      */
     public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = []);
 
+The class is fully tested.
+
 The fastest way to use this Api:
 
     $message = Swift_Message::newInstance('my subject', 'the body text');

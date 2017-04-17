@@ -16,3 +16,5 @@ The class makes the following methods available:
      * @return string|array
      */
     public function filter($value);
+
+The class is fully tested.

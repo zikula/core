@@ -166,3 +166,5 @@ From classes extending \Zikula\Core\Controller\AbstractController several conven
     {
         return $this->variableApi->delAll($this->extensionName);
     }
+
+The class is fully tested.

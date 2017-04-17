@@ -37,3 +37,5 @@ The class makes the following methods available:
      * @return string
      */
     public function getBrowserLocale($default = 'en');
+
+The class is fully tested.
