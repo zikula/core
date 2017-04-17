@@ -30,3 +30,5 @@ The class makes the following methods available:
      * @param string|null $q
      */
     public function log($q = null);
+
+The class is fully tested.

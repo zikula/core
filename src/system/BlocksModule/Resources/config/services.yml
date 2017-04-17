@@ -1,7 +1,10 @@
 services:
     zikula_blocks_module.container.link_container:
         class: Zikula\BlocksModule\Container\LinkContainer
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission"]
+        arguments:
+          - "@translator.default"
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
         tags:
             - { name: zikula.link_container }
 
@@ -21,7 +24,12 @@ services:
 
     zikula_blocks_module.api.block:
         class: Zikula\BlocksModule\Api\BlockApi
-        arguments: ["@zikula_blocks_module.block_position_repository", "@zikula_blocks_module.api.block_factory", "@zikula_extensions_module.extension_repository", "@zikula_blocks_module.internal.block_collector", "@kernel"]
+        arguments:
+          - "@zikula_blocks_module.block_position_repository"
+          - "@zikula_blocks_module.api.block_factory"
+          - "@zikula_extensions_module.extension_repository"
+          - "@zikula_blocks_module.internal.block_collector"
+          - "@kernel"
 
     zikula_blocks_module.api.block_filter:
         class: Zikula\BlocksModule\Api\BlockFilterApi
@@ -49,12 +57,22 @@ services:
     twig.extension.zikula_blocks_module:
         class: Zikula\BlocksModule\Twig\Extension\BlocksExtension
         public: false
-        arguments: ["@zikula_blocks_module.api.block", "@zikula_blocks_module.api.block_filter", "@zikula_core.common.theme_engine", "@kernel", "@twig.loader"]
+        arguments:
+          - "@zikula_blocks_module.api.block"
+          - "@zikula_blocks_module.api.block_filter"
+          - "@zikula_core.common.theme_engine"
+          - "@kernel"
+          - "@twig.loader"
         tags:
             - { name: twig.extension }
 
     zikula_blocks_module.listener.collapseable_block_listener:
         class: Zikula\BlocksModule\Listener\CollapseableBlockListener
-        arguments: ["@zikula_core.common.theme.assets_js", "@zikula_extensions_module.api.variable", "@zikula_core.common.theme.asset_helper", "%installed%", "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"]
+        arguments:
+          - "@zikula_core.common.theme.assets_js"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_core.common.theme.asset_helper"
+          - "%installed%"
+          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
         tags:
             - { name: kernel.event_subscriber }
