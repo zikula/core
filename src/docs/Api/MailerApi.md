@@ -23,7 +23,7 @@ The class makes the following methods available:
      *                            indicates whether body contains HTML or not; if altbody is
      *                            specified, then this value is ignored, the body is assumed
      *                            to be HTML, and the altbody is assumed to be plain text
-     * @param array         $headers custom headers to add
+     * @param array         $headers custom headers to add - an array ['header' => 'content', 'header' => 'content']
      * @param array         $attachments array of either absolute filenames to attach
      *                                   to the mail or array of arrays in format
      *                                   [$path, $filename, $encoding, $type]
@@ -36,11 +36,15 @@ The class makes the following methods available:
      */
     public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = []);
 
-It is assumed that basic parameters for sender and recipient(s) have already been set.
+The fastest way to use this Api:
 
-One example for using this service can be found in the `Zikula\MailerModule\Controller\ConfigController#testAction(Request $request)` method:
+    $message = Swift_Message::newInstance('my subject', 'the body text');
+    $message->setFrom('admin@example.com');
+    $message->setTo('foo@bar.com');
+    $this->get('zikula_mailer_module.api.mailer')->sendMessage($message);
 
-```
+Another example for using this service can be found in the `Zikula\MailerModule\Controller\ConfigController#testAction(Request $request)` method:
+
     // create new message instance
     /** @var Swift_Message */
     $message = Swift_Message::newInstance();
@@ -50,4 +54,3 @@ One example for using this service can be found in the `Zikula\MailerModule\Cont
 
     $mailer = $this->get('zikula_mailer_module.api.mailer');
     $result = $mailer->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
-```

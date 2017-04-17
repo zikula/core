@@ -29,7 +29,7 @@ interface MailerApiInterface
      *                            indicates whether body contains HTML or not; if altbody is
      *                            specified, then this value is ignored, the body is assumed
      *                            to be HTML, and the altbody is assumed to be plain text
-     * @param array         $headers custom headers to add
+     * @param array         $headers custom headers to add - an array ['header' => 'content', 'header' => 'content']
      * @param array         $attachments array of either absolute filenames to attach
      *                                   to the mail or array of arrays in format
      *                                   [$path, $filename, $encoding, $type]
