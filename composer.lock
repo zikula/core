@@ -4437,6 +4437,59 @@
             "time": "2014-06-07 22:21:47"
         },
         {
+            "name": "zikula/generator-bundle",
+            "version": "dev-master",
+            "target-dir": "Zikula/Bundle/GeneratorBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/GeneratorBundle.git",
+                "reference": "85244357920b92ff23368f4d7be98e7036e1eabb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/85244357920b92ff23368f4d7be98e7036e1eabb",
+                "reference": "85244357920b92ff23368f4d7be98e7036e1eabb",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "3.2.*",
+                "symfony/finder": "3.2.*",
+                "symfony/framework-bundle": "3.2.*"
+            },
+            "require-dev": {
+                "doctrine/orm": "2.5.*",
+                "symfony/doctrine-bridge": "3.2.*",
+                "twig/twig": "~1.28"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zikula\\Bundle\\GeneratorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula Community",
+                    "homepage": "http://zikula.org/"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "This module generates code for you",
+            "time": "2017-04-18 00:38:40"
+        },
+        {
             "name": "zikula/jquery-bundle",
             "version": "dev-master",
             "source": {
@@ -5818,59 +5871,6 @@
                 "validate"
             ],
             "time": "2016-11-23T20:04:58+00:00"
-        },
-        {
-            "name": "zikula/generator-bundle",
-            "version": "dev-master",
-            "target-dir": "Zikula/Bundle/GeneratorBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/GeneratorBundle.git",
-                "reference": "e39f6176e6b0eaf011f495236cdda3e2a3009289"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/e39f6176e6b0eaf011f495236cdda3e2a3009289",
-                "reference": "e39f6176e6b0eaf011f495236cdda3e2a3009289",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/console": "3.2.*",
-                "symfony/finder": "3.2.*",
-                "symfony/framework-bundle": "3.2.*"
-            },
-            "require-dev": {
-                "doctrine/orm": "2.5.*",
-                "symfony/doctrine-bridge": "3.2.*",
-                "twig/twig": "~1.28"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Zikula\\Bundle\\GeneratorBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula Community",
-                    "homepage": "http://zikula.org/"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                }
-            ],
-            "description": "This module generates code for you",
-            "time": "2016-12-28 08:22:40"
         }
     ],
     "aliases": [],
@@ -5883,14 +5883,14 @@
         "jms/translation-bundle": 20,
         "zikula/filesystem": 20,
         "oyejorge/less.php": 20,
+        "zikula/generator-bundle": 20,
         "zikula/wizard": 20,
         "phpids/phpids": 20,
         "zikula/jquery-bundle": 20,
         "zikula/jquery-ui-bundle": 20,
         "zikula/bootstrap-bundle": 20,
         "zikula/fontawesome-bundle": 20,
-        "bootstrap-plus/bootstrap-jqueryui": 20,
-        "zikula/generator-bundle": 20
+        "bootstrap-plus/bootstrap-jqueryui": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
