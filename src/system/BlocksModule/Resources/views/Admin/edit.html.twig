@@ -31,7 +31,7 @@
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
         </fieldset>
-        {% if form.properties is defined or renderedPropertiesForm is not empty %}
+        {% if form.properties is defined %}
         <fieldset>
             <legend>{{ __('Properties') }}</legend>
             {{ include(propertiesFormTemplate, {form: form.properties|default()}, with_context = false, ignore_missing = true) }}
