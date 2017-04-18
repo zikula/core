@@ -3945,16 +3945,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.33.0",
+            "version": "v1.33.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a"
+                "reference": "a87f959f4b691da66aada267a2dfdb260d0bb58a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a87f959f4b691da66aada267a2dfdb260d0bb58a",
+                "reference": "a87f959f4b691da66aada267a2dfdb260d0bb58a",
                 "shasum": ""
             },
             "require": {
@@ -4003,7 +4003,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-03-22T15:40:09+00:00"
+            "time": "2017-04-18T21:43:11+00:00"
         },
         {
             "name": "twitter/typeahead.js",
@@ -4443,12 +4443,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/GeneratorBundle.git",
-                "reference": "85244357920b92ff23368f4d7be98e7036e1eabb"
+                "reference": "66d47d01258b8a92107222398d3ea9787b55a494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/85244357920b92ff23368f4d7be98e7036e1eabb",
-                "reference": "85244357920b92ff23368f4d7be98e7036e1eabb",
+                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/66d47d01258b8a92107222398d3ea9787b55a494",
+                "reference": "66d47d01258b8a92107222398d3ea9787b55a494",
                 "shasum": ""
             },
             "require": {
@@ -4487,7 +4487,7 @@
                 }
             ],
             "description": "This module generates code for you",
-            "time": "2017-04-18 00:38:40"
+            "time": "2017-04-18 22:40:54"
         },
         {
             "name": "zikula/jquery-bundle",
