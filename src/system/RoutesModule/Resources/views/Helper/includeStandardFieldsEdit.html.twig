@@ -1,12 +1,8 @@
 {# purpose of this template: reusable editing of standard fields #}
 {% if (obj.createdBy|default and obj.createdBy.getUid() > 0) or (obj.updatedBy|default and obj.updatedBy.getUid() > 0) %}
-    {% if panel|default(false) == true %}
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseStandardFields">{{ __('Creation and update') }}</a></h3>
-            </div>
-            <div id="collapseStandardFields" class="panel-collapse collapse in">
-                <div class="panel-body">
+    {% if tabs|default(false) == true %}
+        <div role="tabpanel" class="tab-pane fade" id="tabStandardFields" aria-labelledby="standardFieldsTab">
+            <h3>{{ __('Creation and update') }}</h3>
     {% else %}
         <fieldset class="standardfields">
     {% endif %}
@@ -21,9 +17,7 @@
             <li>{{ __f('Updated on %date', {'%date': obj.updatedDate|localizeddate('medium', 'short')}) }}</li>
         {% endif %}
         </ul>
-    {% if panel|default(false) == true %}
-                </div>
-            </div>
+    {% if tabs|default(false) == true %}
         </div>
     {% else %}
         </fieldset>
