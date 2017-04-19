@@ -1,25 +1,29 @@
 Features of Zikula
 ==================
 
- - Symfony foundation provides stability, continuity and extensibility
+ - Symfony 3.x foundation provides stability, continuity and extensibility
    - Doctrine
    - Twig
  - Modular development system
- - Twig-based theming system
+ - Twig-based theme engine for site-wide theming.
  - Twitter bootstrap integration
  - Font-Awesome integration
  - jQuery integration
- - Multi-language support
+ - Multi-language & translation support
  - Users and Groups management
    - OAuth integration
    - Extensible/customizable User authorization API
- - Dynamic user rights management by group
+ - Dynamic user rights/permissions management by group
+ - Centralized site administration interface
+ - Centralized category assignments by entity
+ - Several distict APIs for feature utilization
  - Dynamic content block creation
  - Menu system based on KnpMenu
  - Centralized search functionality
  - Profile module (user profile information)
  - Legal module (TOS, Age Check, etc)
  - Imagine image manipulation library integration
+ - CLI based module skeleton generator
  - MultiSites capability (one core-base, multiple custom DB)
 
 
