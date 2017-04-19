@@ -13,12 +13,10 @@
 namespace Zikula\RoutesModule\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Form\Type\Base\AbstractRouteType;
-use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
  * Route editing form type implementation class.
@@ -51,7 +49,7 @@ class RouteType extends AbstractRouteType
         $moduleChoices = [];
         $moduleChoiceAttributes = [];
         /** @var ExtensionEntity[] $modules */
-        $modules = $this->extensionRepository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
+        $modules = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
         foreach ($modules as $module) {
             $moduleChoices[$module->getDisplayName()] = $module->getName();
             $moduleChoiceAttributes[$module->getDisplayName()] = ['title' => $module->getDisplayName()];

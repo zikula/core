@@ -133,13 +133,12 @@ class MailerApi implements MailerApiInterface
 
         // add any custom headers
         if (count($headers)) {
-            $headers = $this->message->getHeaders();
-            foreach ($headers as $header) {
-                if (is_array($header)) {
-                    $headers->addTextHeader($header[0], $header[1]);
-                } else {
-                    $headers->addTextHeader($header);
+            foreach ($headers as $header => $value) {
+                if (is_numeric($header)) {
+                    $header = $value;
+                    $value = null;
                 }
+                $this->message->getHeaders()->addTextHeader($header, $value);
             }
         }
 

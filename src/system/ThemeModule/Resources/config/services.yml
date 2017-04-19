@@ -1,15 +1,13 @@
 services:
     zikula_theme_module.container.link_container:
         class: Zikula\ThemeModule\Container\LinkContainer
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable"]
+        arguments:
+          - "@translator.default"
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.variable"
         tags:
             - { name: zikula.link_container }
-
-    zikula_theme_module.twig.extension.theme_extension:
-        class: Zikula\ThemeModule\Twig\Extension\ThemeExtension
-        arguments: ["@zikula_core.common.theme.asset_helper"]
-        tags:
-            - { name: twig.extension }
 
     zikula_theme_module.theme_entity.repository:
         class: Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository
@@ -21,4 +19,10 @@ services:
     zikula_theme_module.helper.bundle_sync_helper:
         class: Zikula\ThemeModule\Helper\BundleSyncHelper
         lazy: true
-        arguments: ["@kernel", "@zikula_theme_module.theme_entity.repository", "@zikula_core.internal.bootstrap_helper", "@translator.default", "@zikula_extensions_module.composer_validation_helper", "@session"]
+        arguments:
+          - "@kernel"
+          - "@zikula_theme_module.theme_entity.repository"
+          - "@zikula_core.internal.bootstrap_helper"
+          - "@translator.default"
+          - "@zikula_extensions_module.composer_validation_helper"
+          - "@session"

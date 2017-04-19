@@ -24,6 +24,8 @@ The class makes the following methods available:
 
 `$categoryAssignments` must be an array of \Zikula\CategoriesModule\Entity\AbstractCategoryAssignment
 
+The class is fully tested.
+
 use:
 
     $hasAccess = $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());

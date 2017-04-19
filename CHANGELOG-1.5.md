@@ -55,6 +55,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added 'utcdatetime' doctrine column type for storage of utc datetimes (#3383).
     - Added 'Either' authentication type - allows users to enter either uname or email (#2951).
     - Added method to manually convert all users to new ZAuth authentication table (#3278).
+    - Improved LocaleApi to localize displayed language names.
 
  - Vendor updates:
     - composer/semver installed at 1.4.2
@@ -78,7 +79,8 @@ CHANGELOG - ZIKULA 1.5.x
     - symfony updated from 2.8.17 to 2.8.19
     - symfony/security-acl update from 2.8.0 to 3.0.0
     - symfony/workflow installed at 3.2.7
-    - twig updated from 1.31.0 to 1.33.0
+    - twig updated from 1.31.0 to 1.33.1
+    - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4

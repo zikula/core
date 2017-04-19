@@ -25,7 +25,11 @@ abstract class AbstractModule extends AbstractBundle
 
     public function addStylesheet($name = 'style.css')
     {
-        $moduleStylesheet =  $this->getContainer()->get('zikula_core.common.theme.asset_helper')->resolve('@' . $this->getName() . ":css/$name");
+        try {
+            $moduleStylesheet = $this->getContainer()->get('zikula_core.common.theme.asset_helper')->resolve('@' . $this->getName() . ":css/$name");
+        } catch (\InvalidArgumentException $e) {
+            $moduleStylesheet = '';
+        }
         if (!empty($moduleStylesheet)) {
             $this->container->get('zikula_core.common.theme.assets_css')->add([$moduleStylesheet => AssetBag::WEIGHT_DEFAULT]);
         }

@@ -72,7 +72,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      * @param string $key
      * @param string $default ''
      *
-     * @return string
+     * @return mixed
      */
     public function get($key, $default = '')
     {

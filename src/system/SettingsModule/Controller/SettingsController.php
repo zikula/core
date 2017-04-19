@@ -43,7 +43,7 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
+        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale());
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
@@ -106,7 +106,7 @@ class SettingsController extends AbstractController
             ],
             [
                 'translator' => $this->get('translator.default'),
-                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
+                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale()),
             ]
         );
         $form->handleRequest($request);

@@ -89,8 +89,9 @@ class CurrentUserApi implements CurrentUserApiInterface
     {
         if ($this->isLoggedIn()) {
             $method = "get" . ucwords($key);
-
-            return $this->user->$method();
+            if (method_exists($this->user, $method)) {
+                return $this->user->$method();
+            }
         }
 
         return null;

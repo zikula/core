@@ -41,7 +41,7 @@ class LocaleApi implements LocaleApiInterface
     /**
      * {@inheritdoc}
      */
-    public function getSupportedLocales()
+    public function getSupportedLocales($enableLegacy = true)
     {
         if (empty($this->supportedLocales)) {
             $this->supportedLocales[] = 'en';
@@ -61,7 +61,9 @@ class LocaleApi implements LocaleApiInterface
                     }
                 }
             }
-            $this->addLegacyLocales(); // @deprecated remove at Core-2.0
+            if ($enableLegacy) {
+                $this->addLegacyLocales(); // @deprecated remove at Core-2.0
+            }
         }
 
         return $this->supportedLocales;
@@ -70,12 +72,12 @@ class LocaleApi implements LocaleApiInterface
     /**
      * {@inheritdoc}
      */
-    public function getSupportedLocaleNames()
+    public function getSupportedLocaleNames($region = null, $displayLocale = null, $enableLegacy = true)
     {
-        $locales = $this->getSupportedLocales();
+        $locales = $this->getSupportedLocales($enableLegacy);
         $namedLocales = [];
         foreach ($locales as $locale) {
-            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale)] = $locale;
+            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale, $region, $displayLocale)] = $locale;
         }
 
         return $namedLocales;
@@ -86,6 +88,7 @@ class LocaleApi implements LocaleApiInterface
      */
     public function getBrowserLocale($default = 'en')
     {
+        // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
         if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || php_sapi_name() == "cli") {
             return $default;
         }

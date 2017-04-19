@@ -34,3 +34,5 @@ The class makes the following methods available:
     public function get($key);
 
 The `get` method can be used to acquire any property of the UserEntity.
+
+The class is fully tested.
