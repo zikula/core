@@ -276,17 +276,17 @@ abstract class AbstractEditHandler
     
         // initialise redirect goal
         $this->returnTo = $this->request->query->get('returnTo', null);
-        if (null === $this->returnTo) {
-            // default to referer
-            if ($this->request->getSession()->has('zikularoutesmoduleReferer')) {
-                $this->returnTo = $this->request->getSession()->get('zikularoutesmoduleReferer');
-            } elseif ($this->request->headers->has('zikularoutesmoduleReferer')) {
-                $this->returnTo = $this->request->headers->get('zikularoutesmoduleReferer');
-                $this->request->getSession()->set('zikularoutesmoduleReferer', $this->returnTo);
-            } elseif ($this->request->server->has('HTTP_REFERER')) {
-                $this->returnTo = $this->request->server->get('HTTP_REFERER');
-                $this->request->getSession()->set('zikularoutesmoduleReferer', $this->returnTo);
+        // default to referer
+        $refererSessionVar = 'zikularoutesmodule' . $this->objectTypeCapital . 'Referer';
+        if (null === $this->returnTo && $this->request->headers->has('referer')) {
+            $currentReferer = $this->request->headers->get('referer');
+            if ($currentReferer != $this->request->getUri()) {
+                $this->returnTo = $currentReferer;
+                $this->request->getSession()->set($refererSessionVar, $this->returnTo);
             }
+        }
+        if (null === $this->returnTo && $this->request->getSession()->has($refererSessionVar)) {
+            $this->returnTo = $this->request->getSession()->get($refererSessionVar);
         }
         // store current uri for repeated creations
         $this->repeatReturnUrl = $this->request->getSchemeAndHttpHost() . $this->request->getBasePath() . $this->request->getPathInfo();

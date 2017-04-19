@@ -456,16 +456,16 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Adds where clauses excluding desired identifiers from selection.
      *
-     * @param QueryBuilder $qb        Query builder to be enhanced
-     * @param integer      $excludeId The id to be excluded from selection
+     * @param QueryBuilder $qb           Query builder to be enhanced
+     * @param array        $excludesions Array of ids to be excluded from selection
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    protected function addExclusion(QueryBuilder $qb, $excludeId)
+    protected function addExclusion(QueryBuilder $qb, array $exclusions = [])
     {
-        if ($excludeId > 0) {
-            $qb->andWhere('tbl.id != :excludeId')
-               ->setParameter('excludeId', $excludeId);
+        if (count($exclusions) > 0) {
+            $qb->andWhere('tbl.id NOT IN (:excludedIdentifiers)')
+               ->setParameter('excludedIdentifiers', $exclusions);
         }
     
         return $qb;
@@ -691,8 +691,11 @@ abstract class AbstractRouteRepository extends SortableRepository
         $filters[] = 'tbl.group LIKE :searchGroup';
         $parameters['searchGroup'] = '%' . $fragment . '%';
     
-        $qb->andWhere('(' . implode(' OR ', $filters) . ')')
-           ->setParameters($parameters);
+        $qb->andWhere('(' . implode(' OR ', $filters) . ')');
+    
+        foreach ($parameters as $parameterName => $parameterValue) {
+            $qb->setParameter($parameterName, $parameterValue);
+        }
     
         return $qb;
     }
@@ -777,9 +780,9 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Checks for unique values.
      *
-     * @param string $fieldName  The name of the property to be checked
-     * @param string $fieldValue The value of the property to be checked
-     * @param int    $excludeId  Id of routes to exclude (optional)
+     * @param string  $fieldName  The name of the property to be checked
+     * @param string  $fieldValue The value of the property to be checked
+     * @param integer $excludeId  Id of routes to exclude (optional)
      *
      * @return boolean result of this check, true if the given route does not already exist
      */
@@ -789,7 +792,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb->andWhere('tbl.' . $fieldName . ' = :' . $fieldName)
            ->setParameter($fieldName, $fieldValue);
     
-        $qb = $this->addExclusion($qb, $excludeId);
+        $qb = $this->addExclusion($qb, [$excludeId]);
     
         $query = $qb->getQuery();
     
