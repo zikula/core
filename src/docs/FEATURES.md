@@ -30,6 +30,7 @@ Features of Zikula
 ###ModuleStudio (MOST)
 
  - Model-Driven Software Development tool
+    - http://modulestudio.de/en
     - rapid prototyping
     - easy customization
     - quick updating
