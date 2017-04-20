@@ -245,7 +245,7 @@ function smarty_function_modulelinks($params, Zikula_View $view)
                     $icon = '<span class="fa fa-'.$menuitem['icon'].'"></span> ';
                 }
                 if (isset($menuitem['links'])) {
-                    $html .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;">' . $icon . $menuitem['text'] . '&nbsp;<b class="caret"></b></a>';
+                    $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'">' . $icon . $menuitem['text'] . '</a>&nbsp;<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="text-decoration: none;"><b class="caret"></b></a>';
                 } else {
                     $html .= '<a href="'.DataUtil::formatForDisplay($menuitem['url']).'"'.$attr.'>'.$icon.$menuitem['text'].'</a>';
                 }
