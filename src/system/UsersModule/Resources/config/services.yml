@@ -20,16 +20,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    zikula_users_module.user_repository:
-        class: Zikula\UsersModule\Entity\Repository\UserRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["ZikulaUsersModule:UserEntity"]
-
-    zikula_users_module.user_session_repository:
-        class: Zikula\UsersModule\Entity\Repository\UserSessionRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["ZikulaUsersModule:UserSessionEntity"]
-
     zikula_users_module.current_user:
         class: Zikula\UsersModule\Api\CurrentUserApi
         arguments: ["@session", "@zikula_users_module.user_repository"]
