@@ -23,6 +23,17 @@ namespace Zikula\UsersModule
          * The name of the module.
          */
         const MODNAME = 'ZikulaUsersModule';
+
+        /**
+         * The UID of the 'anonymous' user
+         */
+        const USER_ID_ANONYMOUS = 1;
+
+        /**
+         * The UID of the default/generated admin user
+         */
+        const USER_ID_ADMIN = 2;
+
         /**
          * The namespace of the module to use for session variables.
          */
