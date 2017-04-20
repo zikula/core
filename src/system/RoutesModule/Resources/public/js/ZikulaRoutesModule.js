@@ -6,7 +6,7 @@ function zikulaRoutesCapitaliseFirstLetter(string)
 }
 
 /**
- * Initialise the quick navigation panel in list views.
+ * Initialise the quick navigation form in list views.
  */
 function zikulaRoutesInitQuickNavigation()
 {

@@ -69,7 +69,7 @@ class GroupEntity extends EntityAccess
     private $nbumax;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Zikula\UsersModule\Entity\UserEntity", mappedBy="groups")
+     * @ORM\ManyToMany(targetEntity="Zikula\UsersModule\Entity\UserEntity", mappedBy="groups", indexBy="uid")
      * @ORM\JoinTable(
      *      joinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")}
