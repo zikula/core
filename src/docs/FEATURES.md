@@ -27,7 +27,7 @@ Features of Zikula
  - MultiSites capability (one core-base, multiple custom DB)
 
 
-###ModuleStudio (MOST)
+### ModuleStudio (MOST)
 
  - Model-Driven Software Development tool
     - http://modulestudio.de/en
@@ -35,7 +35,7 @@ Features of Zikula
     - easy customization
     - quick updating
 
-###Community Driven Modules
+### Community Driven Modules
 
  - See http://zikula.org/library
  - OAuth
@@ -46,7 +46,7 @@ Features of Zikula
  - Formicula (Contact form generator)
  - Piwik
 
-#####Legacy Modules not yet converted but intended to be done
+##### Legacy Modules not yet converted but intended to be done
 
  - News (blog)
  - PostCalendar
