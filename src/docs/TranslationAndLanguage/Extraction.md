@@ -7,7 +7,7 @@ Extract all the core translations
 
 Use native symfony translation extraction (via the jms_translation_bundle).
 
-    php app/console translation:extract en --bundle=AcmeDemoModule --output-format=pot
+    php app/console translation:extract en --bundle=AcmeDemoModule --output-format=po
 
 The files will automatically be extracted to the `/Resources/translations` directory.
 
