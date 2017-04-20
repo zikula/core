@@ -41,5 +41,4 @@ class UserAttributeRepository extends EntityRepository implements UserAttributeR
 
         return $qb->getQuery()->execute();
     }
-
 }
