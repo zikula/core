@@ -5,10 +5,13 @@ Features of Zikula
    - Doctrine
    - Twig
  - Modular development system
- - Twig-based theme engine for site-wide theming.
- - Twitter bootstrap integration
- - Font-Awesome integration
- - jQuery integration
+ - Twig-based theme engine for site-wide theming
+ - Modules and themes can be installed/uninstalled during runtime
+ - Integration of de-facto frontend technologies
+   - Twitter bootstrap
+   - Font-Awesome
+   - jQuery
+ - Hook system for connecting module features with each other
  - Multi-language & translation support
  - Users and Groups management
    - OAuth integration
@@ -16,7 +19,7 @@ Features of Zikula
  - Dynamic user rights/permissions management by group
  - Centralized site administration interface
  - Centralized category assignments by entity
- - Several distict APIs for feature utilization
+ - Several distinct APIs for feature utilization
  - Dynamic content block creation
  - Menu system based on KnpMenu
  - Centralized search functionality
