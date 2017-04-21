@@ -12,12 +12,12 @@
 
 namespace Zikula\RoutesModule\Entity\Factory;
 
-use Zikula\RoutesModule\Entity\Factory\Base\AbstractRoutesFactory;
+use Zikula\RoutesModule\Entity\Factory\Base\AbstractEntityInitialiser;
 
 /**
- * Factory class used to create entities and receive entity repositories.
+ * Entity initialiser class used to dynamically apply default values to newly created entities.
  */
-class RoutesFactory extends AbstractRoutesFactory
+class EntityInitialiser extends AbstractEntityInitialiser
 {
-    // feel free to customise the factory
+    // feel free to customise the initialiser
 }
