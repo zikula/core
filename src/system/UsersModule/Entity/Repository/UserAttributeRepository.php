@@ -29,6 +29,7 @@ class UserAttributeRepository extends EntityRepository implements UserAttributeR
         array $forbiddenUsers = [Constant::USER_ID_ADMIN, Constant::USER_ID_ANONYMOUS]
     ) {
         $qb = $this->createQueryBuilder('a')
+            ->update()
             ->set('a.value', '\'\'')
             ->where('a.name IN (:attributeNames)')
             ->setParameter('attributeNames', $attributeNames);
@@ -38,6 +39,7 @@ class UserAttributeRepository extends EntityRepository implements UserAttributeR
         }
         $qb->andWhere('a.user NOT IN (:forbidden_users)')
             ->setParameter('forbidden_users', $forbiddenUsers);
+        $d = $qb->getDQL();
 
         return $qb->getQuery()->execute();
     }

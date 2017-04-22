@@ -13,7 +13,9 @@ namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
@@ -41,7 +43,7 @@ class RegistrationController extends AbstractController
      * @Route("/register", options={"zkNoBundlePrefix"=1})
      * @Method({"GET", "POST"})
      * @param Request $request
-     * @return array
+     * @return Response|RedirectResponse
      * @throws InvalidAuthenticationMethodRegistrationFormException
      * @throws \Exception
      */

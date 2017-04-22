@@ -530,6 +530,15 @@ class UserEntity extends EntityAccess
     }
 
     /**
+     * @param $name
+     * @return bool
+     */
+    public function hasAttribute($name)
+    {
+        return $this->attributes->containsKey($name);
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getGroups()
