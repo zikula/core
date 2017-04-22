@@ -24,7 +24,6 @@ Functions
  * hasPermission(component, instance, level)
  * modAvailable(modname, force = false)
  * pageAddAsset(type, value, weight = 100)
- * pageAddVar(name, value)
  * pageGetVar(name, default = null)
  * pageSetVar(name, value)
  * pager(params)
