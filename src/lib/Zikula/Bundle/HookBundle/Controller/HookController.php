@@ -299,8 +299,6 @@ class HookController extends Controller
      */
     public function toggleSubscribeAreaStatusAction(Request $request)
     {
-        $this->checkAjaxToken();
-
         // get subscriberarea from POST
         $subscriberArea = $request->request->get('subscriberarea', '');
         if (empty($subscriberArea)) {
@@ -381,8 +379,6 @@ class HookController extends Controller
      */
     public function changeProviderAreaOrderAction(Request $request)
     {
-        $this->checkAjaxToken();
-
         // get subscriberarea from POST
         $subscriberarea = $request->request->get('subscriberarea', '');
         if (empty($subscriberarea)) {
@@ -414,29 +410,5 @@ class HookController extends Controller
         $ol_id = $request->request->get('ol_id', '');
 
         return new AjaxResponse(['result' => true, 'ol_id' => $ol_id]);
-    }
-
-    /**
-     * @todo move this to AbstractController
-     * Check the CSRF token.
-     * Checks will fall back to $token check if automatic checking fails
-     *
-     * @param string $token Token, default null
-     * @throws AccessDeniedException If the CSFR token fails
-     * @throws \Exception if request is not an XmlHttpRequest
-     * @return void
-     */
-    public function checkAjaxToken($token = null)
-    {
-        $currentRequest = $this->get('request_stack')->getCurrentRequest();
-        if (!$currentRequest->isXmlHttpRequest()) {
-            throw new \Exception();
-        }
-        // @todo how to SET the $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] ?
-        $headerToken = ($currentRequest->server->has('HTTP_X_ZIKULA_AJAX_TOKEN')) ? $currentRequest->server->get('HTTP_X_ZIKULA_AJAX_TOKEN') : null;
-        if ($headerToken == $currentRequest->getSession()->getId()) {
-            return;
-        }
-        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
 }
