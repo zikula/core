@@ -92,7 +92,9 @@ abstract class AbstractEntityInitialiser
      */
     public function setListEntriesHelper($listEntriesHelper)
     {
-        $this->listEntriesHelper = $listEntriesHelper;
+        if ($this->listEntriesHelper != $listEntriesHelper) {
+            $this->listEntriesHelper = $listEntriesHelper;
+        }
     }
     
 }

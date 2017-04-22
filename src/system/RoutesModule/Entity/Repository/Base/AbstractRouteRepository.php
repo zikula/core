@@ -97,7 +97,9 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function setDefaultSortingField($defaultSortingField)
     {
-        $this->defaultSortingField = $defaultSortingField;
+        if ($this->defaultSortingField != $defaultSortingField) {
+            $this->defaultSortingField = $defaultSortingField;
+        }
     }
     
     /**
@@ -119,7 +121,9 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function setRequest($request)
     {
-        $this->request = $request;
+        if ($this->request != $request) {
+            $this->request = $request;
+        }
     }
     
 
