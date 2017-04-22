@@ -51,7 +51,7 @@ abstract class AbstractEntityInitialiser
                 $items[] = $listEntry['value'];
             }
         }
-        $entity->setRouteType('###', $items);
+        $entity->setRouteType(implode('###', $items));
 
         $listEntries = $this->listEntriesHelper->getSchemesEntriesForRoute();
         foreach ($listEntries as $listEntry) {
