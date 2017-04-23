@@ -15,11 +15,10 @@ namespace Zikula\RoutesModule\Entity\Factory\Base;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
+use Zikula\RoutesModule\Entity\Factory\EntityInitialiser;
 
 /**
  * Factory class used to create entities and receive entity repositories.
- *
- * This is the base factory class.
  */
 abstract class AbstractRoutesFactory
 {
@@ -29,13 +28,20 @@ abstract class AbstractRoutesFactory
     protected $objectManager;
 
     /**
+     * @var EntityInitialiser The entity initialiser for dynamical application of default values
+     */
+    protected $entityInitialiser;
+
+    /**
      * RoutesFactory constructor.
      *
-     * @param ObjectManager $objectManager The object manager to be used for determining the repositories
+     * @param ObjectManager     $objectManager     The object manager to be used for determining the repositories
+     * @param EntityInitialiser $entityInitialiser The entity initialiser for dynamical application of default values
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, EntityInitialiser $entityInitialiser)
     {
         $this->objectManager = $objectManager;
+        $this->entityInitialiser = $entityInitialiser;
     }
 
     /**
@@ -61,7 +67,11 @@ abstract class AbstractRoutesFactory
     {
         $entityClass = 'Zikula\\RoutesModule\\Entity\\RouteEntity';
 
-        return new $entityClass();
+        $entity = new $entityClass();
+
+        $this->entityInitialiser->initRoute($entity);
+
+        return $entity;
     }
 
     /**
@@ -120,7 +130,34 @@ abstract class AbstractRoutesFactory
      */
     public function setObjectManager($objectManager)
     {
-        $this->objectManager = $objectManager;
+        if ($this->objectManager != $objectManager) {
+            $this->objectManager = $objectManager;
+        }
+    }
+    
+
+    /**
+     * Returns the entity initialiser.
+     *
+     * @return EntityInitialiser
+     */
+    public function getEntityInitialiser()
+    {
+        return $this->entityInitialiser;
+    }
+    
+    /**
+     * Sets the entity initialiser.
+     *
+     * @param EntityInitialiser $entityInitialiser
+     *
+     * @return void
+     */
+    public function setEntityInitialiser($entityInitialiser)
+    {
+        if ($this->entityInitialiser != $entityInitialiser) {
+            $this->entityInitialiser = $entityInitialiser;
+        }
     }
     
 }

@@ -73,7 +73,9 @@ trait StandardFieldsTrait
      */
     public function setCreatedBy($createdBy)
     {
-        $this->createdBy = $createdBy;
+        if ($this->createdBy != $createdBy) {
+            $this->createdBy = $createdBy;
+        }
     }
     
     /**
@@ -95,7 +97,9 @@ trait StandardFieldsTrait
      */
     public function setCreatedDate($createdDate)
     {
-        $this->createdDate = $createdDate;
+        if ($this->createdDate != $createdDate) {
+            $this->createdDate = $createdDate;
+        }
     }
     
     /**
@@ -117,7 +121,9 @@ trait StandardFieldsTrait
      */
     public function setUpdatedBy($updatedBy)
     {
-        $this->updatedBy = $updatedBy;
+        if ($this->updatedBy != $updatedBy) {
+            $this->updatedBy = $updatedBy;
+        }
     }
     
     /**
@@ -139,7 +145,9 @@ trait StandardFieldsTrait
      */
     public function setUpdatedDate($updatedDate)
     {
-        $this->updatedDate = $updatedDate;
+        if ($this->updatedDate != $updatedDate) {
+            $this->updatedDate = $updatedDate;
+        }
     }
     
 }

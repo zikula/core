@@ -1,29 +1,20 @@
-.mm-menu.mm-hiddenpanel-customwidth {
+.mm-menu.mm-offcanvas.mm-hiddenpanel-customwidth {
   width: 80%;
   min-width: 325px;
   max-width: 325px; }
 
-html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
-  -webkit-transform: translate(80%, 0);
-  -moz-transform: translate(80%, 0);
-  -ms-transform: translate(80%, 0);
-  -o-transform: translate(80%, 0);
-  transform: translate(80%, 0); }
+html.mm-opening .mm-menu.mm-hiddenpanel-customwidth ~ .mm-slideout {
+  transform: translate(80%, 0);
+  transform: translate3d(80%, 0, 0); }
 
 @media all and (max-width: 406.25px) {
-  html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
-    -webkit-transform: translate(325px, 0);
-    -moz-transform: translate(325px, 0);
-    -ms-transform: translate(325px, 0);
-    -o-transform: translate(325px, 0);
-    transform: translate(325px, 0); } }
+  html.mm-opening .mm-menu.mm-hiddenpanel-customwidth ~ .mm-slideout {
+    transform: translate(325px, 0);
+    transform: translate3d(325px, 0, 0); } }
 @media all and (min-width: 406.25px) {
-  html.mm-opening.mm-hiddenpanel-customwidth .mm-slideout {
-    -webkit-transform: translate(325px, 0);
-    -moz-transform: translate(325px, 0);
-    -ms-transform: translate(325px, 0);
-    -o-transform: translate(325px, 0);
-    transform: translate(325px, 0); } }
+  html.mm-opening .mm-menu.mm-hiddenpanel-customwidth ~ .mm-slideout {
+    transform: translate(325px, 0);
+    transform: translate3d(325px, 0, 0); } }
 #zikula-admin-hiddenpanel-menu:not(.mm-menu) {
   display: none; }
 
