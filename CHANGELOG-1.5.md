@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed inability to store sessions in files (#2001).
     - Re-enabled CSRF token protection in forms in installer (#2186).
     - CategoryPermissionApi now works but implementation has changed since Core-1.3. Read the docs.
+    - Fix minor display issue with admin panel menu (#3447).
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).
