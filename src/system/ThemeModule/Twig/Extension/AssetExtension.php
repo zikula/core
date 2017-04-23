@@ -25,7 +25,8 @@ class AssetExtension extends \Twig_Extension
      * AssetExtension constructor.
      * @param PageAssetApi $pageAssetApi
      */
-    public function __construct(PageAssetApi $pageAssetApi) {
+    public function __construct(PageAssetApi $pageAssetApi)
+    {
         $this->pageAssetApi = $pageAssetApi;
     }
 
