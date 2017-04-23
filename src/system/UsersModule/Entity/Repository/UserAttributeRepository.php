@@ -39,7 +39,6 @@ class UserAttributeRepository extends EntityRepository implements UserAttributeR
         }
         $qb->andWhere('a.user NOT IN (:forbidden_users)')
             ->setParameter('forbidden_users', $forbiddenUsers);
-        $d = $qb->getDQL();
 
         return $qb->getQuery()->execute();
     }
