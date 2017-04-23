@@ -57,6 +57,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added 'Either' authentication type - allows users to enter either uname or email (#2951).
     - Added method to manually convert all users to new ZAuth authentication table (#3278).
     - Improved LocaleApi to localize displayed language names.
+    - Add PageAssetApi to ease addition of page assets from controllers and non-templates.
 
  - Vendor updates:
     - composer/semver installed at 1.4.2

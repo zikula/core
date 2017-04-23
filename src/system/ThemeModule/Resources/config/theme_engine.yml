@@ -18,6 +18,14 @@ services:
     zikula_core.common.theme.assets_footer:
         class: Zikula\ThemeModule\Engine\AssetBag
 
+    zikula_theme_module.api.page_asset:
+        class: Zikula\ThemeModule\Api\PageAssetApi
+        arguments:
+          - '@zikula_core.common.theme.assets_css'
+          - '@zikula_core.common.theme.assets_js'
+          - '@zikula_core.common.theme.assets_header'
+          - '@zikula_core.common.theme.assets_footer'
+
     zikula_core.common.theme.pagevars:
         class: Zikula\ThemeModule\Engine\ParameterBag
 

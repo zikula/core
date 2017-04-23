@@ -8,11 +8,7 @@ services:
     zikula_theme_module.twig.extension.asset_extension:
         class: Zikula\ThemeModule\Twig\Extension\AssetExtension
         arguments:
-          - '@zikula_core.common.theme.assets_css'
-          - '@zikula_core.common.theme.assets_js'
-          - '@zikula_core.common.theme.assets_header'
-          - '@zikula_core.common.theme.assets_footer'
-          - '@zikula_core.common.theme_engine'
+          - "@zikula_theme_module.api.page_asset"
         tags:
             - { name: twig.extension }
 
