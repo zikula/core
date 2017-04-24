@@ -41,8 +41,8 @@ services:
         tags:
             - { name: form.type }
     
-    zikula_routes_module.form.type.appsettings:
-        class: Zikula\RoutesModule\Form\AppSettingsType
+    zikula_routes_module.form.type.config:
+        class: Zikula\RoutesModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
             - "@zikula_extensions_module.api.variable"
