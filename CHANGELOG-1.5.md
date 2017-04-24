@@ -65,7 +65,8 @@ CHANGELOG - ZIKULA 1.5.x
     - doctrine/common updated from 2.5.3 to 2.6.2
     - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.7
     - fduch/workflow-bundle installed at 2.0.2
-    - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.27
+    - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.28
+    - jms/translation-bundle updated from 1.3.1 to 1.3.2
     - jquery.mmenu updated from 5.7.8 to 6.0.2
     - liip/imagine-bundle updated from 1.7.2 to 1.7.4
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
@@ -77,11 +78,11 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.25
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
-    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.6
+    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.7
     - symfony updated from 2.8.17 to 2.8.19
     - symfony/security-acl update from 2.8.0 to 3.0.0
     - symfony/workflow installed at 3.2.7
-    - twig updated from 1.31.0 to 1.33.1
+    - twig updated from 1.31.0 to 1.33.2
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
