@@ -132,10 +132,6 @@ abstract class AbstractRouteController extends AbstractController
         $controllerHelper = $this->get('zikula_routes_module.controller_helper');
         $viewHelper = $this->get('zikula_routes_module.view_helper');
         
-        // parameter for used sort order
-        $sortdir = strtolower($sortdir);
-        $request->query->set('sort', $sort);
-        $request->query->set('sortdir', $sortdir);
         $request->query->set('pos', $pos);
         
         $sortableColumns = new SortableColumns($this->get('router'), 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
@@ -162,6 +158,7 @@ abstract class AbstractRouteController extends AbstractController
             new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
+        $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
         
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters);
         

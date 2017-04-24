@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\UserEvents;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 
@@ -122,11 +123,11 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     
         
         $repo = $this->entityFactory->getRepository('route');
-        // set creator to admin (2) for all routes created by this user
-        $repo->updateCreator($userId, 2, $this->translator, $this->logger, $this->currentUserApi);
+        // set creator to admin (UsersConstant::USER_ID_ADMIN) for all routes created by this user
+        $repo->updateCreator($userId, UsersConstant::USER_ID_ADMIN, $this->translator, $this->logger, $this->currentUserApi);
         
-        // set last editor to admin (2) for all routes updated by this user
-        $repo->updateLastEditor($userId, 2, $this->translator, $this->logger, $this->currentUserApi);
+        // set last editor to admin (UsersConstant::USER_ID_ADMIN) for all routes updated by this user
+        $repo->updateLastEditor($userId, UsersConstant::USER_ID_ADMIN, $this->translator, $this->logger, $this->currentUserApi);
         
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entities' => 'routes'];
         $this->logger->notice('{app}: User {user} has been deleted, so we deleted/updated corresponding {entities}, too.', $logArgs);
