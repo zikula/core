@@ -20,7 +20,7 @@ use Zikula\Bundle\CoreInstallerBundle\Util\ZikulaRequirements;
 function requirementCheck($parameters)
 {
     // on install or upgrade, check if system requirements are met.
-    if (($parameters['installed'] == false)
+    if ((false === $parameters['installed'])
         || (!empty($parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM])
             && version_compare($parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM], ZikulaKernel::VERSION, '<'))) {
         $versionChecker = new ZikulaRequirements();

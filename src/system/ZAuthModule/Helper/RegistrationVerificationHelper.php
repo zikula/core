@@ -12,10 +12,10 @@
 namespace Zikula\ZAuthModule\Helper;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\ZAuthModule\Api\PasswordApi;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -23,7 +23,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class RegistrationVerificationHelper
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -38,7 +38,7 @@ class RegistrationVerificationHelper
     private $mailHelper;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -48,26 +48,26 @@ class RegistrationVerificationHelper
     private $userRepository;
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $passwordApi;
 
     /**
      * RegistrationVerificationHelper constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param UserVerificationRepositoryInterface $userVerificationRepository
      * @param MailHelper $mailHelper
-     * @param CurrentUserApi $currentUserApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param UserRepositoryInterface $userRepository
-     * @param PasswordApi $passwordApi
+     * @param PasswordApiInterface $passwordApi
      */
     public function __construct(
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
         MailHelper $mailHelper,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
-        PasswordApi $passwordApi
+        PasswordApiInterface $passwordApi
     ) {
         $this->permissionApi = $permissionApi;
         $this->userVerificationRepository = $userVerificationRepository;

@@ -17,13 +17,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ValidEmailValidator extends ConstraintValidator
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -38,11 +38,11 @@ class ValidEmailValidator extends ConstraintValidator
     private $validator;
 
     /**
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
+    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;

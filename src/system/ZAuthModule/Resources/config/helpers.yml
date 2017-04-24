@@ -49,3 +49,13 @@ services:
             - "@twig"
             - "@zikula_extensions_module.api.variable"
             - "@zikula_mailer_module.api.mailer"
+
+    zikula_zauth_module.helper.migration_helper:
+        class: Zikula\ZAuthModule\Helper\MigrationHelper
+        deprecated: The "%service_id%" service is deprecated and will be removed in 2.0.
+        lazy: true
+        arguments:
+          - "@zikula_users_module.user_repository"
+          - "@doctrine.orm.default_entity_manager"
+          - "@validator"
+          - "@logger"

@@ -9,7 +9,7 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="vendor/autoload.php"
+         bootstrap="../../lib/bootstrap.php"
 >
     <testsuites>
         <testsuite name="Zikula Mailer Module Test Suite">

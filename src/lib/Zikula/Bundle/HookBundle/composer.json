@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=5.5.9",
         "symfony/framework-bundle": "~2.0"
     },
     "autoload": {

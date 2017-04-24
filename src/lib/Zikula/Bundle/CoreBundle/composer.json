@@ -12,11 +12,14 @@
         }
     ],
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=5.5.9",
         "composer/installers": "1.*",
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
+        "zikula/pagelock-module": "1.2.*",
+        "zikula/andreas08-theme": "2.*",
+        "zikula/seabreeze-theme": "4.*",
 
         "symfony/symfony": "2.8.*",
         "symfony/monolog-bundle": "~2.4",
@@ -37,7 +40,6 @@
 
         "michelf/php-markdown": "1.7.*",
         "twig/extensions": "1.4.*",
-        "vierbergenlars/php-semver": "~3.0",
         "zikula/filesystem": "dev-master",
 
         "ramsey/array_column": "1.1.*",
@@ -59,6 +61,18 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/Profile"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula-modules/PageLock"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula/ZikulaAndreas08Theme"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula/ZikulaSeaBreezeTheme"
         }
     ],
     "autoload": {

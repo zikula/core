@@ -15,14 +15,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\GroupEvents;
-use Zikula\MailerModule\Api\MailerApi;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 
 class GroupEventListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -32,7 +32,7 @@ class GroupEventListener implements EventSubscriberInterface
     protected $translator;
 
     /**
-     * @var MailerApi
+     * @var MailerApiInterface
      */
     protected $mailer;
 
@@ -50,12 +50,12 @@ class GroupEventListener implements EventSubscriberInterface
     }
 
     /**
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi
      * @param TranslatorInterface $translator
-     * @param MailerApi $mailerApi
+     * @param MailerApiInterface $mailerApi
      * @param RouterInterface $router
      */
-    public function __construct(VariableApi $variableApi, TranslatorInterface $translator, MailerApi $mailerApi, RouterInterface $router)
+    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, MailerApiInterface $mailerApi, RouterInterface $router)
     {
         $this->variableApi = $variableApi;
         $this->translator = $translator;

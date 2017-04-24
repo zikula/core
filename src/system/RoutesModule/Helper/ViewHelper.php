@@ -14,7 +14,7 @@ namespace Zikula\RoutesModule\Helper;
 
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -75,7 +75,7 @@ class ViewHelper extends AbstractViewHelper
         } elseif ($type == 'route' && $func == 'edit') {
             $urlNames = [];
             /** @var ExtensionEntity[] $modules */
-            $modules = $this->extensionRepository->findBy(['state' => ExtensionApi::STATE_ACTIVE]);
+            $modules = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
             foreach ($modules as $module) {
                 $urlNames[$module->getName()] = $module->getUrl();
             }

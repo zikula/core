@@ -16,7 +16,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\ThemeModule\ThemeEvents;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
-use Zikula\Core\Event\GenericEvent;
 
 /**
  * Event handler base class for theme-related events.

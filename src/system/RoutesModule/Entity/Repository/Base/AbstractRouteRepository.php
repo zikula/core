@@ -25,7 +25,7 @@ use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
@@ -97,7 +97,9 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function setDefaultSortingField($defaultSortingField)
     {
-        $this->defaultSortingField = $defaultSortingField;
+        if ($this->defaultSortingField != $defaultSortingField) {
+            $this->defaultSortingField = $defaultSortingField;
+        }
     }
     
     /**
@@ -119,7 +121,9 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function setRequest($request)
     {
-        $this->request = $request;
+        if ($this->request != $request) {
+            $this->request = $request;
+        }
     }
     
 
@@ -130,9 +134,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getTitleFieldName()
     {
-        $fieldName = 'replacedRouteName';
-    
-        return $fieldName;
+        return 'replacedRouteName';
     }
     
     /**
@@ -142,9 +144,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getDescriptionFieldName()
     {
-        $fieldName = 'bundle';
-    
-        return $fieldName;
+        return 'bundle';
     }
     
     /**
@@ -154,9 +154,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getPreviewFieldName()
     {
-        $fieldName = '';
-    
-        return $fieldName;
+        return '';
     }
     
     /**
@@ -263,13 +261,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $newUserId      The new userid of the creator as replacement
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateCreator($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function updateCreator($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)
@@ -296,13 +294,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $newUserId      The new userid of the last editor as replacement
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function updateLastEditor($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function updateLastEditor($userId, $newUserId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)
@@ -328,13 +326,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $userId         The userid of the creator to be removed
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByCreator($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function deleteByCreator($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)) {
@@ -359,13 +357,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer             $userId         The userid of the last editor to be removed
      * @param TranslatorInterface $translator     Translator service instance
      * @param LoggerInterface     $logger         Logger service instance
-     * @param CurrentUserApi      $currentUserApi CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
      *
      * @return void
      *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByLastEditor($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApi $currentUserApi)
+    public function deleteByLastEditor($userId, TranslatorInterface $translator, LoggerInterface $logger, CurrentUserApiInterface $currentUserApi)
     {
         // check id parameter
         if ($userId == 0 || !is_numeric($userId)) {
@@ -462,16 +460,16 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Adds where clauses excluding desired identifiers from selection.
      *
-     * @param QueryBuilder $qb        Query builder to be enhanced
-     * @param integer      $excludeId The id to be excluded from selection
+     * @param QueryBuilder $qb           Query builder to be enhanced
+     * @param array        $excludesions Array of ids to be excluded from selection
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    protected function addExclusion(QueryBuilder $qb, $excludeId)
+    protected function addExclusion(QueryBuilder $qb, array $exclusions = [])
     {
-        if ($excludeId > 0) {
-            $qb->andWhere('tbl.id != :excludeId')
-               ->setParameter('excludeId', $excludeId);
+        if (count($exclusions) > 0) {
+            $qb->andWhere('tbl.id NOT IN (:excludedIdentifiers)')
+               ->setParameter('excludedIdentifiers', $exclusions);
         }
     
         return $qb;
@@ -527,8 +525,6 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function getSelectWherePaginatedQuery(QueryBuilder $qb, $currentPage = 1, $resultsPerPage = 25)
     {
-        $qb = $this->addCommonViewFilters($qb);
-    
         $query = $this->getQueryFromBuilder($qb);
         $offset = ($currentPage-1) * $resultsPerPage;
     
@@ -552,10 +548,8 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
-        $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
-    
-        $page = $currentPage;
-        $query = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
+        $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
+        $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
     }
@@ -643,7 +637,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      */
     public function selectSearch($fragment = '', $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
-        $qb = $this->genericBaseQuery('', $orderBy, $useJoins);
+        $qb = $this->getListQueryBuilder('', $orderBy, $useJoins);
         if (count($exclude) > 0) {
             $qb = $this->addExclusion($qb, $exclude);
         }
@@ -701,8 +695,11 @@ abstract class AbstractRouteRepository extends SortableRepository
         $filters[] = 'tbl.group LIKE :searchGroup';
         $parameters['searchGroup'] = '%' . $fragment . '%';
     
-        $qb->andWhere('(' . implode(' OR ', $filters) . ')')
-           ->setParameters($parameters);
+        $qb->andWhere('(' . implode(' OR ', $filters) . ')');
+    
+        foreach ($parameters as $parameterName => $parameterValue) {
+            $qb->setParameter($parameterName, $parameterValue);
+        }
     
         return $qb;
     }
@@ -739,14 +736,12 @@ abstract class AbstractRouteRepository extends SortableRepository
      * Returns query builder instance for a count query.
      *
      * @param string  $where    The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param boolean $useJoins Whether to include joining related objects (optional) (default=false)
      *
      * @return QueryBuilder Created query builder instance
      */
-    protected function getCountQuery($where = '', $useJoins = true)
+    protected function getCountQuery($where = '', $useJoins = false)
     {
-        $useJoins = false; // joins usage needs to be fixed; please remove the first line and test
-    
         $selection = 'COUNT(tbl.id) AS numRoutes';
         if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
@@ -769,12 +764,12 @@ abstract class AbstractRouteRepository extends SortableRepository
      * Selects entity count with a given where clause.
      *
      * @param string  $where      The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=true)
+     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=false)
      * @param array   $parameters List of determined filter options
      *
      * @return integer amount of affected records
      */
-    public function selectCount($where = '', $useJoins = true, $parameters = [])
+    public function selectCount($where = '', $useJoins = false, $parameters = [])
     {
         $qb = $this->getCountQuery($where, $useJoins);
     
@@ -789,9 +784,9 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Checks for unique values.
      *
-     * @param string $fieldName  The name of the property to be checked
-     * @param string $fieldValue The value of the property to be checked
-     * @param int    $excludeId  Id of routes to exclude (optional)
+     * @param string  $fieldName  The name of the property to be checked
+     * @param string  $fieldValue The value of the property to be checked
+     * @param integer $excludeId  Id of routes to exclude (optional)
      *
      * @return boolean result of this check, true if the given route does not already exist
      */
@@ -801,7 +796,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb->andWhere('tbl.' . $fieldName . ' = :' . $fieldName)
            ->setParameter($fieldName, $fieldValue);
     
-        $qb = $this->addExclusion($qb, $excludeId);
+        $qb = $this->addExclusion($qb, [$excludeId]);
     
         $query = $qb->getQuery();
     
@@ -902,7 +897,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
             // you could add explicit filters at this point, something like
             // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
-            // read more at https://github.com/zikula/core/tree/1.4/src/docs/Core-2.0/FilterUtil
+            // read more at https://github.com/zikula/core/tree/1.5/src/docs/FilterUtil
     
             // now enrich the query builder
             $filterUtil->enrichQuery();

@@ -505,6 +505,65 @@
             "time": "2016-09-16T05:47:55+00:00"
         },
         {
+            "name": "composer/ca-bundle",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/ca-bundle.git",
+                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "reference": "b17e6153cb7f33c7e44eb59578dc12eee5dc8e12",
+                "shasum": ""
+            },
+            "require": {
+                "ext-openssl": "*",
+                "ext-pcre": "*",
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5",
+                "psr/log": "^1.0",
+                "symfony/process": "^2.5 || ^3.0"
+            },
+            "suggest": {
+                "symfony/process": "This is necessary to reliably check whether openssl_x509_parse is vulnerable on older php versions, but can be ignored on PHP 5.5.6+"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\CaBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                }
+            ],
+            "description": "Lets you find a path to the system CA bundle, and includes a fallback to the Mozilla CA bundle.",
+            "keywords": [
+                "cabundle",
+                "cacert",
+                "certificate",
+                "ssl",
+                "tls"
+            ],
+            "time": "2017-03-06T11:59:08+00:00"
+        },
+        {
             "name": "composer/installers",
             "version": "v1.2.0",
             "source": {
@@ -610,6 +669,68 @@
                 "zikula"
             ],
             "time": "2016-08-13T20:53:52+00:00"
+        },
+        {
+            "name": "composer/semver",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/composer/semver.git",
+                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/composer/semver/zipball/c7cb9a2095a074d131b65a8a0cd294479d785573",
+                "reference": "c7cb9a2095a074d131b65a8a0cd294479d785573",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.2 || ^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.5 || ^5.0.5",
+                "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Semver\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Adermann",
+                    "email": "naderman@naderman.de",
+                    "homepage": "http://www.naderman.de"
+                },
+                {
+                    "name": "Jordi Boggiano",
+                    "email": "j.boggiano@seld.be",
+                    "homepage": "http://seld.be"
+                },
+                {
+                    "name": "Rob Bast",
+                    "email": "rob.bast@gmail.com",
+                    "homepage": "http://robbast.nl"
+                }
+            ],
+            "description": "Semver library that offers utilities, version constraint parsing and validation.",
+            "keywords": [
+                "semantic",
+                "semver",
+                "validation",
+                "versioning"
+            ],
+            "time": "2016-08-30T16:08:34+00:00"
         },
         {
             "name": "dimsemenov/magnific-popup",
@@ -1539,12 +1660,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "6d50e5282afdfdfc3e0ff6d192aff56c5629b3d4"
+                "reference": "65d5cdee50ebd9a11b3d1bb907f27144b734cea9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/6d50e5282afdfdfc3e0ff6d192aff56c5629b3d4",
-                "reference": "6d50e5282afdfdfc3e0ff6d192aff56c5629b3d4",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/65d5cdee50ebd9a11b3d1bb907f27144b734cea9",
+                "reference": "65d5cdee50ebd9a11b3d1bb907f27144b734cea9",
                 "shasum": ""
             },
             "require": {
@@ -1578,7 +1699,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-03-13 06:30:53"
+            "time": "2017-03-22 00:50:26"
         },
         {
             "name": "fduch/workflow-bundle",
@@ -1700,20 +1821,20 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.27",
+            "version": "v2.4.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "fe152e1239f2f46287d369e43cc9fa817cc3cd36"
+                "reference": "58038d5d217b6ba2c75de90cb2f6d424d86fab56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/fe152e1239f2f46287d369e43cc9fa817cc3cd36",
-                "reference": "fe152e1239f2f46287d369e43cc9fa817cc3cd36",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/58038d5d217b6ba2c75de90cb2f6d424d86fab56",
+                "reference": "58038d5d217b6ba2c75de90cb2f6d424d86fab56",
                 "shasum": ""
             },
             "require": {
-                "behat/transliterator": "~1.0",
+                "behat/transliterator": "1.1",
                 "doctrine/common": "~2.4",
                 "php": ">=5.3.2"
             },
@@ -1774,7 +1895,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-03-22T09:48:22+00:00"
+            "time": "2017-04-23T08:59:41+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -2123,27 +2244,25 @@
         },
         {
             "name": "jms/translation-bundle",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSTranslationBundle.git",
-                "reference": "e79fe1cd77e7749223c870bdae0bd400c21a102d"
+                "reference": "08b8db92aa376b8e50ce4e779e849916abffd805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/e79fe1cd77e7749223c870bdae0bd400c21a102d",
-                "reference": "e79fe1cd77e7749223c870bdae0bd400c21a102d",
+                "url": "https://api.github.com/repos/schmittjoh/JMSTranslationBundle/zipball/08b8db92aa376b8e50ce4e779e849916abffd805",
+                "reference": "08b8db92aa376b8e50ce4e779e849916abffd805",
                 "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^1.4 || ^2.0",
+                "nikic/php-parser": "^1.4 || ^2.0 || ^3.0",
                 "php": "^5.3.3 || ^7.0",
                 "symfony/console": "^2.3 || ^3.0",
-                "symfony/framework-bundle": "^2.3 || ^3.0"
-            },
-            "conflict": {
-                "twig/twig": "<1.12"
+                "symfony/framework-bundle": "^2.3 || ^3.0",
+                "twig/twig": "^1.27 || ^2.0"
             },
             "require-dev": {
                 "jms/di-extra-bundle": "^1.1",
@@ -2153,8 +2272,7 @@
                 "psr/log": "^1.0",
                 "sensio/framework-extra-bundle": "^2.3 || ^3.0",
                 "symfony/expression-language": "^2.6 || ^3.0",
-                "symfony/symfony": "^2.3 || ^3.0",
-                "twig/twig": "^1.12"
+                "symfony/symfony": "^2.3 || ^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2189,7 +2307,7 @@
                 "ui",
                 "webinterface"
             ],
-            "time": "2016-08-13T23:17:44+00:00"
+            "time": "2017-04-20T19:44:02+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
@@ -2559,33 +2677,33 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v1.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "2d2337827202eade7330a211b4665919f2887575"
+                "reference": "56433b5bf9e58e7f37228955e56a290cdc53eb69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/2d2337827202eade7330a211b4665919f2887575",
-                "reference": "2d2337827202eade7330a211b4665919f2887575",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/56433b5bf9e58e7f37228955e56a290cdc53eb69",
+                "reference": "56433b5bf9e58e7f37228955e56a290cdc53eb69",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4",
-                "symfony/console": "~2.5",
-                "symfony/form": "~2.5"
+                "php": ">=5.5",
+                "symfony/console": "~2.8|~3.0",
+                "symfony/form": "~2.8|~3.0"
             },
             "require-dev": {
                 "beberlei/assert": "~2.1",
                 "behat/behat": "~3.0",
-                "fabpot/php-cs-fixer": "^1.10",
-                "symfony/console": "~2.5",
-                "symfony/finder": "~2.5",
-                "symfony/form": "~2.5",
-                "symfony/framework-bundle": "~2.5",
-                "symfony/validator": "~2.5",
-                "symfony/yaml": "~2.5"
+                "friendsofphp/php-cs-fixer": "^1.10",
+                "phpunit/phpunit": "^4.8",
+                "symfony/finder": "~2.8|~3.0",
+                "symfony/framework-bundle": "~2.8|~3.0",
+                "symfony/security": "~2.8|~3.0",
+                "symfony/validator": "~2.8|~3.0",
+                "symfony/yaml": "~2.8|~3.0"
             },
             "type": "library",
             "autoload": {
@@ -2611,7 +2729,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2015-11-27T19:49:00+00:00"
+            "time": "2017-02-09T16:06:51+00:00"
         },
         {
             "name": "matthiasnoback/symfony-service-definition-validator",
@@ -2840,12 +2958,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "03ade807714f3764893c151d95a65e5523fe9015"
+                "reference": "42925c5a01a07d67ca7e82dfc8fb31814d557bc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/03ade807714f3764893c151d95a65e5523fe9015",
-                "reference": "03ade807714f3764893c151d95a65e5523fe9015",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/42925c5a01a07d67ca7e82dfc8fb31814d557bc9",
+                "reference": "42925c5a01a07d67ca7e82dfc8fb31814d557bc9",
                 "shasum": ""
             },
             "require": {
@@ -2882,10 +3000,6 @@
                 {
                     "name": "Josh Schmidt",
                     "homepage": "https://github.com/oyejorge"
-                },
-                {
-                    "name": "Michaël Marinetti",
-                    "homepage": "https://github.com/Asenar"
                 }
             ],
             "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
@@ -2898,7 +3012,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2017-02-23 18:01:04"
+            "time": "2017-03-28 22:19:25"
         },
         {
             "name": "paragonie/random_compat",
@@ -3128,16 +3242,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.18",
+            "version": "v5.0.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "17846680901003d26d823c2e3ac9228702837916"
+                "reference": "654c4fa3d11448c8005400a244987896243a990a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/17846680901003d26d823c2e3ac9228702837916",
-                "reference": "17846680901003d26d823c2e3ac9228702837916",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/654c4fa3d11448c8005400a244987896243a990a",
+                "reference": "654c4fa3d11448c8005400a244987896243a990a",
                 "shasum": ""
             },
             "require": {
@@ -3176,7 +3290,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-01-10T14:58:45+00:00"
+            "time": "2017-04-23T22:28:23+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3304,19 +3418,20 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.2",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f"
+                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/56bded66985e22f6eac2cf86735fd21c625bff2f",
-                "reference": "56bded66985e22f6eac2cf86735fd21c625bff2f",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
+                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
                 "shasum": ""
             },
             "require": {
+                "composer/ca-bundle": "^1.0",
                 "symfony/console": "~2.7|~3.0"
             },
             "bin": [
@@ -3344,7 +3459,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-03-09T17:33:20+00:00"
+            "time": "2017-03-31T14:50:32+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -3409,16 +3524,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.6",
+            "version": "v5.4.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
+                "reference": "56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
-                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4",
+                "reference": "56db4ed32a6d5c9824c3ecc1d2e538f663f47eb4",
                 "shasum": ""
             },
             "require": {
@@ -3459,7 +3574,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2017-02-13T07:52:53+00:00"
+            "time": "2017-04-20T17:32:18+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -4094,16 +4209,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.18",
+            "version": "v2.8.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "8c28bf706b3bf4250d18535ee46a8a5d7a5825e1"
+                "reference": "da35163ddb6e876bfb6054f84e02947a6e0274e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/8c28bf706b3bf4250d18535ee46a8a5d7a5825e1",
-                "reference": "8c28bf706b3bf4250d18535ee46a8a5d7a5825e1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/da35163ddb6e876bfb6054f84e02947a6e0274e3",
+                "reference": "da35163ddb6e876bfb6054f84e02947a6e0274e3",
                 "shasum": ""
             },
             "require": {
@@ -4227,20 +4342,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-03-06T03:54:50+00:00"
+            "time": "2017-04-05T04:05:19+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "fdd94c79ce378c9d5dffc8464ff50c1e4a0cfd62"
+                "reference": "2623f9da7f13d2663f94882396eb72e1f83d3f30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/fdd94c79ce378c9d5dffc8464ff50c1e4a0cfd62",
-                "reference": "fdd94c79ce378c9d5dffc8464ff50c1e4a0cfd62",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/2623f9da7f13d2663f94882396eb72e1f83d3f30",
+                "reference": "2623f9da7f13d2663f94882396eb72e1f83d3f30",
                 "shasum": ""
             },
             "require": {
@@ -4288,7 +4403,7 @@
                 "transition",
                 "workflow"
             ],
-            "time": "2017-03-08T14:32:26+00:00"
+            "time": "2017-04-05T08:00:23+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4344,16 +4459,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.33.0",
+            "version": "v1.33.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a"
+                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
-                "reference": "05cf49921b13f6f01d3cfdf9018cfa7a8086fd5a",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dd6ca96227917e1e85b41c7c3cc6507b411e0927",
+                "reference": "dd6ca96227917e1e85b41c7c3cc6507b411e0927",
                 "shasum": ""
             },
             "require": {
@@ -4402,7 +4517,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-03-22T15:40:09+00:00"
+            "time": "2017-04-20T17:39:48+00:00"
         },
         {
             "name": "twitter/typeahead.js",
@@ -4442,16 +4557,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.3",
+            "version": "3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "9770c6711f0a155ec494f635aaf0add9b3cfb45c"
+                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/9770c6711f0a155ec494f635aaf0add9b3cfb45c",
-                "reference": "9770c6711f0a155ec494f635aaf0add9b3cfb45c",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
+                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
                 "shasum": ""
             },
             "require": {
@@ -4495,59 +4610,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2016-10-31T09:49:21+00:00"
-        },
-        {
-            "name": "vierbergenlars/php-semver",
-            "version": "3.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vierbergenlars/php-semver.git",
-                "reference": "516bb3061577e60e9420cbecc479362d3ad8c7f1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vierbergenlars/php-semver/zipball/516bb3061577e60e9420cbecc479362d3ad8c7f1",
-                "reference": "516bb3061577e60e9420cbecc479362d3ad8c7f1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "simpletest/simpletest": "1.1.*"
-            },
-            "bin": [
-                "bin/semver",
-                "bin/update-versions"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "vierbergenlars\\SemVer\\": "src/",
-                    "vierbergenlars\\LibJs\\": "src/"
-                },
-                "classmap": [
-                    "src/vierbergenlars/SemVer/internal.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Lars Vierbergen",
-                    "email": "vierbergenlars@gmail.com"
-                }
-            ],
-            "description": "The Semantic Versioner for PHP",
-            "keywords": [
-                "semantic",
-                "semver",
-                "versioning"
-            ],
-            "time": "2015-05-02T19:28:54+00:00"
+            "time": "2017-04-06T14:23:09+00:00"
         },
         {
             "name": "wikimedia/composer-merge-plugin",
@@ -4700,6 +4763,56 @@
             ],
             "description": "JSONP callback validator.",
             "time": "2014-01-20T22:35:06+00:00"
+        },
+        {
+            "name": "zikula/andreas08-theme",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
+                "reference": "60b9452ea1c49896e4ac988e51190d54fe19ec6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/60b9452ea1c49896e4ac988e51190d54fe19ec6a",
+                "reference": "60b9452ea1c49896e4ac988e51190d54fe19ec6a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1"
+            },
+            "type": "zikula-theme",
+            "extra": {
+                "zikula": {
+                    "core-compatibility": ">=1.4.1",
+                    "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme",
+                    "displayname": "Andreas08",
+                    "capabilities": {
+                        "user": true,
+                        "admin": true
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\Andreas08Theme\\": ""
+                }
+            },
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula",
+                    "homepage": "http://zikula.org/"
+                }
+            ],
+            "description": "Based on the theme Andreas08 by Andreas Viklund",
+            "support": {
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
+                "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
+            },
+            "time": "2017-04-05T15:20:06+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -4973,12 +5086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "51d2e120df5c2a5ecc0ea60109ddd09571c1559a"
+                "reference": "aab45781f9f80bc27842872ab1a04f78025259cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/51d2e120df5c2a5ecc0ea60109ddd09571c1559a",
-                "reference": "51d2e120df5c2a5ecc0ea60109ddd09571c1559a",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/aab45781f9f80bc27842872ab1a04f78025259cd",
+                "reference": "aab45781f9f80bc27842872ab1a04f78025259cd",
                 "shasum": ""
             },
             "require": {
@@ -5033,7 +5146,57 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-03-09 11:00:19"
+            "time": "2017-04-23 18:45:23"
+        },
+        {
+            "name": "zikula/pagelock-module",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula-modules/PageLock.git",
+                "reference": "975e30da3a9297c445d01e1723aa178e2a103594"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/975e30da3a9297c445d01e1723aa178e2a103594",
+                "reference": "975e30da3a9297c445d01e1723aa178e2a103594",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.4.0"
+            },
+            "type": "zikula-module",
+            "extra": {
+                "zikula": {
+                    "class": "Zikula\\PageLockModule\\ZikulaPageLockModule",
+                    "core-compatibility": ">=1.4.1",
+                    "displayname": "Page lock",
+                    "url": "pagelock",
+                    "securityschema": {
+                        "ZikulaPageLockModule::": "::"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\PageLockModule\\": ""
+                }
+            },
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula",
+                    "homepage": "http://zikula.org/"
+                }
+            ],
+            "description": "Page locking support",
+            "support": {
+                "source": "https://github.com/zikula-modules/PageLock/tree/1.2.0",
+                "issues": "https://github.com/zikula-modules/PageLock/issues"
+            },
+            "time": "2017-04-01T13:46:17+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -5108,6 +5271,56 @@
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
             "time": "2017-03-24 20:12:19"
+        },
+        {
+            "name": "zikula/seabreeze-theme",
+            "version": "4.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
+                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/2dc2e9558f9ace415566815c292d1645cf86b092",
+                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1"
+            },
+            "type": "zikula-theme",
+            "extra": {
+                "zikula": {
+                    "core-compatibility": ">=1.4.1",
+                    "class": "Zikula\\SeaBreezeTheme\\ZikulaSeaBreezeTheme",
+                    "displayname": "SeaBreeze",
+                    "capabilities": {
+                        "user": true,
+                        "admin": true
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\SeaBreezeTheme\\": ""
+                }
+            },
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula",
+                    "homepage": "http://zikula.org/"
+                }
+            ],
+            "description": "The SeaBreeze theme is a browser-oriented theme.",
+            "support": {
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.1",
+                "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
+            },
+            "time": "2017-04-06T11:44:56+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -6238,7 +6451,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4.1"
+        "php": ">=5.5.9"
     },
     "platform-dev": [],
     "platform-overrides": {

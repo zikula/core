@@ -1,0 +1,23 @@
+services:
+    zikula_theme_module.twig.extension.theme_extension:
+        class: Zikula\ThemeModule\Twig\Extension\ThemeExtension
+        arguments: ["@zikula_core.common.theme.asset_helper"]
+        tags:
+            - { name: twig.extension }
+
+    zikula_theme_module.twig.extension.asset_extension:
+        class: Zikula\ThemeModule\Twig\Extension\AssetExtension
+        arguments:
+          - "@zikula_theme_module.api.page_asset"
+        tags:
+            - { name: twig.extension }
+
+    zikula_theme_module.twig.extension.page_var_extension:
+        class: Zikula\ThemeModule\Twig\Extension\PageVarExtension
+        arguments:
+          - '@translator.default'
+          - '@zikula_core.common.theme.pagevars'
+          - '@logger'
+          - '@zikula_theme_module.twig.extension.asset_extension'
+        tags:
+            - { name: twig.extension }

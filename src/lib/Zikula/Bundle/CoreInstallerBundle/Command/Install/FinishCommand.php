@@ -40,7 +40,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         $io = new SymfonyStyle($input, $output);
         $this->bootstrap(false);
 
-        if ($this->getContainer()->getParameter('installed') == true) {
+        if (true === $this->getContainer()->getParameter('installed')) {
             $io->error($this->translator->__('Zikula already appears to be installed.'));
 
             return;

@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: imagine.yml }
+    - { resource: workflow.yml }
 
 framework:
     #esi:             ~
@@ -25,8 +26,9 @@ framework:
     trusted_proxies: ~
     session:
         name: "%zikula.session.name%"
-        handler_id: zikula_core.bridge.http_foundation.doctrine_session_handler
-        storage_id: zikula_core.bridge.http_foundation.zikula_session_storage
+        handler_id: "%zikula.session.handler_id%"
+        storage_id: "%zikula.session.storage_id%"
+        save_path: "%zikula.session.save_path%"
         cookie_httponly: false # must be false for ajax tokens to work but increases chance of XSS attack
     fragments:       ~
 
@@ -44,6 +46,9 @@ twig:
 doctrine:
     dbal:
         default_connection: default
+        types:
+            utcdatetime:
+                class:     "Zikula\\Core\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
         connections:
             default:
                 driver:   "%database_driver%"
@@ -166,8 +171,9 @@ bazinga_js_translation:
     active_locales: "%jms_i18n_routing.locales%"
 
 parameters:
+    # all paths below are resolved as assets (in /web)
     # zikula core stylesheet and javascript component locations
-    zikula.stylesheet.bootstrap-font-awesome.path: web/bootstrap-font-awesome.css
-    zikula.javascript.bootstrap.min.path: web/bootstrap/js/bootstrap.min.js
+    zikula.stylesheet.bootstrap-font-awesome.path: "/bootstrap-font-awesome.css"
+    zikula.javascript.bootstrap.min.path: "/bootstrap/js/bootstrap.min.js"
     # this is needed if an external bootstrap path is used
-    zikula.stylesheet.fontawesome.min.path: web/font-awesome/css/font-awesome.min.css
+    zikula.stylesheet.fontawesome.min.path: "/font-awesome/css/font-awesome.min.css"

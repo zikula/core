@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
+ * @deprecated to be removed at Core-2.0
  * Base class of one-to-one association between any entity and metadata.
  *
  * @ORM\MappedSuperclass

@@ -24,7 +24,7 @@ use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\ExtensionInstallerInterface;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Helper\Legacy\ExtensionHelper as LegacyExtensionHelper;
@@ -45,11 +45,6 @@ class ExtensionHelper
     private $translator;
 
     /**
-     * @var ExtensionApi
-     */
-    private $extensionApi;
-
-    /**
      * ExtensionHelper constructor.
      *
      * @param ContainerInterface $container
@@ -59,7 +54,6 @@ class ExtensionHelper
         $this->container = $container;
         $this->translator = $container->get('translator.default');
         $this->translator->setLocale('ZikulaExtensionsModule');
-        $this->extensionApi = $container->get('zikula_extensions_module.api.extension');
     }
 
     /**
@@ -70,7 +64,7 @@ class ExtensionHelper
      */
     public function install(ExtensionEntity $extension)
     {
-        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED) {
+        if ($extension->getState() == Constant::STATE_NOTALLOWED) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to install %s.', ['%s' => $extension->getName()]));
         } elseif ($extension->getState() > 10) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
@@ -86,7 +80,7 @@ class ExtensionHelper
         if (!$result) {
             return false;
         }
-        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
+        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_ACTIVE);
 
         // clear the cache before calling events
         /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
@@ -108,7 +102,7 @@ class ExtensionHelper
     public function upgrade(ExtensionEntity $extension)
     {
         switch ($extension->getState()) {
-            case ExtensionApi::STATE_NOTALLOWED:
+            case Constant::STATE_NOTALLOWED:
                 throw new \RuntimeException($this->translator->__f('Error! Not allowed to upgrade %s.', ['%s' => $extension->getDisplayname()]));
                 break;
             default:
@@ -152,7 +146,7 @@ class ExtensionHelper
         $extension->setVersion($newVersion);
         $this->container->get('doctrine')->getManager()->flush();
 
-        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
+        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_ACTIVE);
 
         $this->container->get('zikula.cache_clearer')->clear('symfony');
 
@@ -173,11 +167,11 @@ class ExtensionHelper
      */
     public function uninstall(ExtensionEntity $extension)
     {
-        if ($extension->getState() == ExtensionApi::STATE_NOTALLOWED
+        if ($extension->getState() == Constant::STATE_NOTALLOWED
             || (ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
-        if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
+        if ($extension->getState() == Constant::STATE_UNINITIALISED) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
         }
 
@@ -250,12 +244,12 @@ class ExtensionHelper
     public function enableExtension(ExtensionEntity $extension)
     {
         switch ($extension->getState()) {
-            case ExtensionApi::STATE_UNINITIALISED:
+            case Constant::STATE_UNINITIALISED:
                 return $this->install($extension);
-            case ExtensionApi::STATE_UPGRADED:
+            case Constant::STATE_UPGRADED:
                 return $this->upgrade($extension);
-            case ExtensionApi::STATE_INACTIVE:
-                return $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), ExtensionApi::STATE_ACTIVE);
+            case Constant::STATE_INACTIVE:
+                return $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_ACTIVE);
             default:
                 return false;
         }
@@ -273,8 +267,7 @@ class ExtensionHelper
     {
         $osDir = $extension->getDirectory();
         $scanner = new Scanner();
-        // @deprecated note: The ZikulaPageLockModule will be moved to /modules. When it is, this condition must be removed below. refs #3283
-        $directory = ZikulaKernel::isCoreModule($extension->getName()) || 'ZikulaPageLockModule' == $extension->getName() ? 'system' : 'modules';
+        $directory = ZikulaKernel::isCoreModule($extension->getName()) ? 'system' : 'modules';
         $scanner->scan(["$directory/$osDir"], 1);
         $modules = $scanner->getModulesMetaData(true);
         /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */

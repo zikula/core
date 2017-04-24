@@ -47,7 +47,7 @@ class RegistryController extends AbstractController
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        if (null == $registryEntity) {
+        if (null === $registryEntity) {
             $registryEntity = new CategoryRegistryEntity();
         }
 

@@ -1,0 +1,30 @@
+services:
+    twig.extension.zikula_extensions_module:
+        class: Zikula\ExtensionsModule\Twig\Extension\ExtensionsExtension
+        public: false
+        arguments: ["@translator.default"]
+        tags:
+            - { name: twig.extension }
+
+    twig.extension.zikula_extensions_module.user_interface:
+        class: Zikula\ExtensionsModule\Twig\Extension\UserInterfaceExtension
+        public: true
+        arguments: ["@fragment.handler"]
+        tags:
+            - { name: twig.extension }
+
+    zikula_extensions_module.twig.extension.mod_var_extension:
+        class: Zikula\ExtensionsModule\Twig\Extension\ModVarExtension
+        arguments:
+          - '@translator.default'
+          - '@zikula_extensions_module.api.variable'
+        tags:
+            - { name: twig.extension }
+
+    zikula_extensions_module.twig.extension.default_path_extension:
+        class: Zikula\ExtensionsModule\Twig\Extension\DefaultPathExtension
+        arguments:
+          - '@zikula_extensions_module.api.capability'
+          - '@router.default'
+        tags:
+            - { name: twig.extension }

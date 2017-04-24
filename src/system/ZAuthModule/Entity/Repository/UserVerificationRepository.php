@@ -116,7 +116,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
             return false;
         }
 
-        return null != $userVerification->getCreated_Dt();
+        return null !== $userVerification->getCreated_Dt();
     }
 
     /**

@@ -14,6 +14,12 @@ services:
 
     zikula_zauth_module.container.link_container:
         class: Zikula\ZAuthModule\Container\LinkContainer
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission", "@zikula_extensions_module.api.variable", "@zikula_users_module.current_user", "@zikula_zauth_module.authentication_mapping_repository"]
+        arguments:
+          - "@translator.default"
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.variable"
+          - "@zikula_users_module.current_user"
+          - "@zikula_zauth_module.authentication_mapping_repository"
         tags:
             - { name: zikula.link_container }

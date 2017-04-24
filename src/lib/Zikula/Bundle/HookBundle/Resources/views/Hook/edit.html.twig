@@ -25,7 +25,7 @@
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="subscriberTab">
             <br />
-            <div id="hookSubscriber" class="z-form clearfix">
+            <div id="hookSubscriber" class="clearfix">
                 {{ include('ZikulaHookBundle:Hook:subscriber.html.twig') }}
             </div>
         </div>
@@ -38,7 +38,7 @@
     </div>
 {% else %}
     {% if isSubscriber %}
-        <div id="hookSubscriber" class="z-form clearfix">
+        <div id="hookSubscriber" class="clearfix">
             {{ include('ZikulaHookBundle:Hook:subscriber.html.twig') }}
         </div>
     {% endif %}

@@ -12,9 +12,10 @@
 namespace Zikula\UsersModule\Api;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
-class CurrentUserApi
+class CurrentUserApi implements CurrentUserApiInterface
 {
     /**
      * @var SessionInterface
@@ -49,8 +50,7 @@ class CurrentUserApi
     }
 
     /**
-     * Check if current user is logged in.
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isLoggedIn()
     {
@@ -83,18 +83,15 @@ class CurrentUserApi
     }
 
     /**
-     * Gets key
-     *
-     * @param string $key
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function get($key)
     {
         if ($this->isLoggedIn()) {
             $method = "get" . ucwords($key);
-
-            return $this->user->$method();
+            if (method_exists($this->user, $method)) {
+                return $this->user->$method();
+            }
         }
 
         return null;

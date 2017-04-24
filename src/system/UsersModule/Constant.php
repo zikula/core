@@ -23,6 +23,17 @@ namespace Zikula\UsersModule
          * The name of the module.
          */
         const MODNAME = 'ZikulaUsersModule';
+
+        /**
+         * The UID of the 'anonymous' user
+         */
+        const USER_ID_ANONYMOUS = 1;
+
+        /**
+         * The UID of the default/generated admin user
+         */
+        const USER_ID_ADMIN = 2;
+
         /**
          * The namespace of the module to use for session variables.
          */
@@ -104,31 +115,6 @@ namespace Zikula\UsersModule
          * Module variable key for the guest account (anonymous account) display name.
          */
         const MODVAR_ANONYMOUS_DISPLAY_NAME = 'anonymous';
-        /**
-         * Module variable key for the avatar image path.
-         */
-        const MODVAR_AVATAR_IMAGE_PATH = 'avatarpath';
-        /**
-         * Default value for the avatar image path.
-         */
-        const DEFAULT_AVATAR_IMAGE_PATH = 'images/avatar';
-        /**
-         * Module variable key for the flag indicating whether gravatars are allowed or not.
-         */
-        const MODVAR_GRAVATARS_ENABLED = 'allowgravatars';
-        /**
-         * Default value for the flag indicating whether gravatars are allowed or not.
-         */
-        const DEFAULT_GRAVATARS_ENABLED = true;
-        /**
-         * Module variable key for the file name containing the generic gravatar image.
-         */
-        const MODVAR_GRAVATAR_IMAGE = 'gravatarimage';
-        /**
-         * Default value for the file name containing the generic gravatar image.
-         */
-        const DEFAULT_GRAVATAR_IMAGE = 'gravatar.jpg';
-
         /**
          * Module variable key for the number of items (e.g., user account records) to display per list "page."
          */

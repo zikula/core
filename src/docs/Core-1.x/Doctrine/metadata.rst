@@ -2,6 +2,8 @@
  Metadata Doctrine extension
 ================================
 
+IMPORTANT NOTE: THIS FEATURE IS DEPRECATED AND REMOVED IN FUTURE VERSIONS OF ZIKULA.
+
 Getting started
 ===============
 
@@ -74,14 +76,14 @@ to add metadata support to. In this guide we create a *UserMetadta* class.
     }
 
 The abstract class forces you to implement the **getEntity** & **setEntity** methods.
-These methods forece you to create an new class attribute. 
-This attribute becomes a ManyToOne assocation to the original (*User*) entity. 
+These methods forece you to create an new class attribute.
+This attribute becomes a ManyToOne assocation to the original (*User*) entity.
 The column name "entityId" in @JoinColumn and @UniqueConstraint must match.
 
 We need to add a inverse side of the assocation to the original (*User*) entity::
-  
+
     /**
-     * @ORM\OneToOne(targetEntity="YourModule_Entity_UserMetadata", 
+     * @ORM\OneToOne(targetEntity="YourModule_Entity_UserMetadata",
      *               mappedBy="entity", cascade={"all"},
      *               orphanRemoval=true)
      * @var YourModule_Entity_UserMetadata
@@ -91,7 +93,7 @@ We need to add a inverse side of the assocation to the original (*User*) entity:
     // getter and setter
 
 The inversedBy attribute of the @ManyToOne annotation must match with this new class attribute name.
-The mappedBy attribute of the @OneToMany annotation must match with the the class attribute in 
+The mappedBy attribute of the @OneToMany annotation must match with the the class attribute in
 the *EntityAttribute* subclass.
 
 
@@ -114,7 +116,7 @@ Set/change metadata
 
     $entityManager->persist($user);
 
-  
+
 Access metadata
 
     $user = // ...
@@ -129,5 +131,5 @@ In Doctrine2 based metadata every entity gets its own table.
 
 Example
 =======
-The ExampleDoctrine module located in /src/docs/examples/modules/ExampleDoctrine/ 
+The ExampleDoctrine module located in /src/docs/examples/modules/ExampleDoctrine/
 uses this doctrine extension in one of his entities.

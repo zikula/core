@@ -134,8 +134,7 @@ abstract class AbstractEditHandler extends EditHandler
         $routePrefix = 'zikularoutesmodule_' . $this->objectTypeLower . '_' . $routeArea;
     
         // redirect to the list of routes
-        $viewArgs = [];
-        $url = $this->router->generate($routePrefix . 'view', $viewArgs);
+        $url = $this->router->generate($routePrefix . 'view');
     
         return $url;
     }
@@ -255,8 +254,8 @@ abstract class AbstractEditHandler extends EditHandler
             return $this->repeatReturnUrl;
         }
     
-        if ($this->request->getSession()->has('zikularoutesmoduleReferer')) {
-            $this->request->getSession()->del('zikularoutesmoduleReferer');
+        if ($this->request->getSession()->has('zikularoutesmodule' . $this->objectTypeCapital . 'Referer')) {
+            $this->request->getSession()->del('zikularoutesmodule' . $this->objectTypeCapital . 'Referer');
         }
     
         // normal usage, compute return url from given redirect code

@@ -13,11 +13,19 @@ namespace Zikula\SettingsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Main settings form type.
@@ -25,11 +33,16 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class MainSettingsType extends AbstractType
 {
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
+        $this->translator = $options['translator'];
 
         $spaceReplaceCallbackTransformer = new CallbackTransformer(
             function ($originalDescription) {
@@ -40,18 +53,18 @@ class MainSettingsType extends AbstractType
             }
         );
         $pageTitleLocalizationTransformer = new CallbackTransformer(
-            function ($originalPageTitle) use ($translator) {
+            function ($originalPageTitle) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
-                $originalPageTitle = str_replace('%pagetitle%', $translator->__('%pagetitle%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%sitename%', $translator->__('%sitename%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%modulename%', $translator->__('%modulename%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%pagetitle%', $this->translator->__('%pagetitle%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%sitename%', $this->translator->__('%sitename%'), $originalPageTitle);
+                $originalPageTitle = str_replace('%modulename%', $this->translator->__('%modulename%'), $originalPageTitle);
 
                 return $originalPageTitle;
             },
-            function ($submittedPageTitle) use ($translator) {
-                $submittedPageTitle = str_replace($translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
+            function ($submittedPageTitle) {
+                $submittedPageTitle = str_replace($this->translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($this->translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
+                $submittedPageTitle = str_replace($this->translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
 
                 return $submittedPageTitle;
             }
@@ -59,102 +72,100 @@ class MainSettingsType extends AbstractType
 
         $builder
             ->add(
-                $builder->create('pagetitle', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('Page title structure'),
+                $builder->create('pagetitle', TextType::class, [
+                    'label' => $this->translator->__('Page title structure'),
                     'required' => false,
-                    'help' => $translator->__('Possible tags: %pagetitle%, %sitename%, %modulename%')
+                    'help' => $this->translator->__('Possible tags: %pagetitle%, %sitename%, %modulename%')
                 ])
                 ->addModelTransformer($pageTitleLocalizationTransformer)
             )
-            ->add('adminmail', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
-                'label' => $translator->__('Admin\'s e-mail address'),
+            ->add('adminmail', EmailType::class, [
+                'label' => $this->translator->__('Admin\'s e-mail address'),
                 'constraints' => new Email()
             ])
-            ->add('siteoff', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Disable site'),
+            ->add('siteoff', ChoiceType::class, [
+                'label' => $this->translator->__('Disable site'),
                 'expanded' => true,
                 'choices' => [
-                    $translator->__('Yes') => 1,
-                    $translator->__('No') => 0,
+                    $this->translator->__('Yes') => 1,
+                    $this->translator->__('No') => 0,
                 ],
                 'choices_as_values' => true
             ])
-            ->add('siteoffreason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => $translator->__('Reason for disabling site'),
+            ->add('siteoffreason', TextareaType::class, [
+                'label' => $this->translator->__('Reason for disabling site'),
                 'required' => false
             ])
-            ->add('startController', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Start Controller'),
+            ->add('startController', TextType::class, [
+                'label' => $this->translator->__('Start Controller'),
                 'required' => false
             ])
-            ->add('startpage', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Start module'),
+            ->add('startpage', ChoiceType::class, [
+                'label' => $this->translator->__('Start module'),
                 'choices' => $options['modules'],
                 'choices_as_values' => true,
-                'placeholder' => $translator->__('No start module (static frontpage)'),
+                'placeholder' => $this->translator->__('No start module (static frontpage)'),
                 'required' => false,
-                'help' => $translator->__("('index.php' points to this)")
+                'help' => $this->translator->__("('index.php' points to this)")
             ])
-            ->add('starttype', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Start function type (required if module is set)'),
+            ->add('starttype', TextType::class, [
+                'label' => $this->translator->__('Start function type (required if module is set)'),
                 'required' => false
             ])
-            ->add('startfunc', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Start function (required if module is set)'),
+            ->add('startfunc', TextType::class, [
+                'label' => $this->translator->__('Start function (required if module is set)'),
                 'required' => false
             ])
-            ->add('startargs', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Start function arguments'),
+            ->add('startargs', TextType::class, [
+                'label' => $this->translator->__('Start function arguments'),
                 'required' => false,
-                'help' => $translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
+                'help' => $this->translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
             ])
-            ->add('entrypoint', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Site entry point (front controller)'),
+            ->add('entrypoint', TextType::class, [
+                'label' => $this->translator->__('Site entry point (front controller)'),
                 'constraints' => new Callback([
-                    'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
+                    'callback' => function ($data, ExecutionContextInterface $context) {
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
                         if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
-                            $context->addViolation($options['translator']->__('Error! You entered an invalid entry point.'));
+                            $context->addViolation($this->translator->__('Error! You entered an invalid entry point.'));
                         }
                         if (!file_exists($data)) {
-                            $context->addViolation($options['translator']->__('Error! The file was not found in the Zikula root directory.'));
+                            $context->addViolation($this->translator->__('Error! The file was not found in the Zikula root directory.'));
                         }
                     }
                 ])
             ])
-            ->add('shorturlsstripentrypoint', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $translator->__('Strip entry point (front controller) from URLs'),
+            ->add('shorturlsstripentrypoint', CheckboxType::class, [
+                'label' => $this->translator->__('Strip entry point (front controller) from URLs'),
                 'required' => false
             ])
-            ->add('useCompression', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $translator->__('Activate compression'),
+            ->add('useCompression', CheckboxType::class, [
+                'label' => $this->translator->__('Activate compression'),
                 'required' => false
             ])
-            ->add('profilemodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Module used for managing user profiles'),
+            ->add('profilemodule', ChoiceType::class, [
+                'label' => $this->translator->__('Module used for managing user profiles'),
                 'choices' => $options['profileModules'],
-                'choices_as_values' => true,
-                'placeholder' => $translator->__('No profile module'),
+                'placeholder' => $this->translator->__('No profile module'),
                 'required' => false
             ])
-            ->add('messagemodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Module used for private messaging'),
+            ->add('messagemodule', ChoiceType::class, [
+                'label' => $this->translator->__('Module used for private messaging'),
                 'choices' => $options['messageModules'],
-                'choices_as_values' => true,
-                'placeholder' => $translator->__('No message module'),
+                'placeholder' => $this->translator->__('No message module'),
                 'required' => false
             ])
-            ->add('ajaxtimeout', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $translator->__('Time-out for Ajax connections')
+            ->add('ajaxtimeout', IntegerType::class, [
+                'label' => $this->translator->__('Time-out for Ajax connections')
             ])
             ->add(
-                $builder->create('permasearch', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('List to search for'),
+                $builder->create('permasearch', TextType::class, [
+                    'label' => $this->translator->__('List to search for'),
                     'constraints' => new Callback([
-                        'callback' => function ($data, ExecutionContextInterface $context) use ($options) {
+                        'callback' => function ($data, ExecutionContextInterface $context) {
                             if (mb_ereg(',$', $data)) {
-                                $context->addViolation($options['translator']->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
+                                $context->addViolation($this->translator->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }
                         }
                     ])
@@ -162,31 +173,32 @@ class MainSettingsType extends AbstractType
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
             ->add(
-                $builder->create('permareplace', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('List to replace with')
+                $builder->create('permareplace', TextType::class, [
+                    'label' => $this->translator->__('List to replace with')
                 ])
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
-            ->add('shorturls', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $translator->__('Enable directory-based short URLs'),
+            ->add('shorturls', CheckboxType::class, [
+                'label' => $this->translator->__('Enable directory-based short URLs'),
                 'required' => false
             ])
-            ->add('shorturlsseparator', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                'label' => $translator->__('Separator for permalink titles')
+            ->add('shorturlsseparator', TextType::class, [
+                'label' => $this->translator->__('Separator for permalink titles')
             ])
-            ->add('shorturlsdefaultmodule', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'label' => $translator->__('Do not display module name in short URLs for'),
-                'choices' => $options['modules']
+            ->add('shorturlsdefaultmodule', ChoiceType::class, [
+                'label' => $this->translator->__('Do not display module name in short URLs for'),
+                'choices' => $options['modules'],
+                'choices_as_values' => true,
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $translator->__('Save'),
+            ->add('save', SubmitType::class, [
+                'label' => $this->translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $translator->__('Cancel'),
+            ->add('cancel', SubmitType::class, [
+                'label' => $this->translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -195,20 +207,20 @@ class MainSettingsType extends AbstractType
         ;
         foreach ($options['languages'] as $language => $languageCode) {
             $builder
-                ->add('sitename_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('Site name')
+                ->add('sitename_' . $languageCode, TextType::class, [
+                    'label' => $this->translator->__('Site name')
                 ])
-                ->add('slogan_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('Description line')
+                ->add('slogan_' . $languageCode, TextType::class, [
+                    'label' => $this->translator->__('Description line')
                 ])
-                ->add('defaultpagetitle_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('Default page title')
+                ->add('defaultpagetitle_' . $languageCode, TextType::class, [
+                    'label' => $this->translator->__('Default page title')
                 ])
-                ->add('defaultmetadescription_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-                    'label' => $translator->__('Default meta description')
+                ->add('defaultmetadescription_' . $languageCode, TextType::class, [
+                    'label' => $this->translator->__('Default meta description')
                 ])
-                ->add('metakeywords_' . $languageCode, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                    'label' => $translator->__('Default meta keywords')
+                ->add('metakeywords_' . $languageCode, TextareaType::class, [
+                    'label' => $this->translator->__('Default meta keywords')
                 ])
             ;
         }
@@ -261,7 +273,7 @@ class MainSettingsType extends AbstractType
         }
 
         if ($permareplaceCount !== $permasearchCount) {
-            $context->addViolation(__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
+            $context->addViolation($this->translator->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
         }
     }
 
@@ -275,7 +287,7 @@ class MainSettingsType extends AbstractType
     {
         if (!empty($data['startpage'])) {
             if (empty($data['starttype']) || empty($data['startfunc'])) {
-                $context->addViolation(__('Error! When setting a startpage, starttype and startfunc are required fields.'));
+                $context->addViolation($this->translator->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
             }
         }
     }

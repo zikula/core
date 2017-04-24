@@ -24,7 +24,7 @@ services:
     zikula.form_extension.form_detection_listener:
         class: Zikula\Bundle\FormExtensionBundle\Listener\FormDetectionListener
         arguments:
-            - "@request_stack"
+            - "@zikula_core.common.theme.asset_helper"
             - "@zikula_core.common.theme.assets_js"
             - "@zikula_core.common.theme.pagevars"
         tags:
@@ -33,7 +33,7 @@ services:
     zikula_form_extension_bundle.form_extension:
         class: Zikula\Bundle\FormExtensionBundle\Twig\Extension\FormExtension
         arguments:
-            - "@request_stack"
+            - "@zikula_core.common.theme.asset_helper"
             - "@zikula_core.common.theme.assets_js"
             - "@zikula_core.common.theme.pagevars"
         tags:

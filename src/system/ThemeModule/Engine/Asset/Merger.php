@@ -82,15 +82,20 @@ class Merger implements MergerInterface
 
     public function merge(array $assets, $type = 'js')
     {
+        $preCachedFiles = [];
         $cachedFiles = [];
         $outputFiles = [];
         // skip remote files from combining
-        foreach ($assets as $asset) {
+        foreach ($assets as $weight => $asset) {
             $path = realpath($this->rootDir . $asset);
             if (is_file($path)) {
                 $cachedFiles[] = $path;
             } else {
-                $outputFiles[] = $asset;
+                if ($weight < 0) {
+                    $preCachedFiles[] = $asset;
+                } else {
+                    $outputFiles[] = $asset;
+                }
             }
         }
         $cacheName = in_array($type, ['js', 'css']) ? "{$type}Cache" : null;
@@ -114,6 +119,7 @@ class Merger implements MergerInterface
         }
         $route = $this->router->generate('zikulathememodule_combinedasset_asset', ['type' => $type, 'key' => $key]);
         array_unshift($outputFiles, $route);
+        array_merge($preCachedFiles, $outputFiles);
 
         return $outputFiles;
     }

@@ -1,5 +1,0 @@
-services:
-    zikula_seabreeze_theme.twig.seabreezetheme_extension:
-        class: Zikula\SeaBreezeTheme\Twig\SeaBreezeThemeExtension
-        tags:
-            - { name: twig.extension }

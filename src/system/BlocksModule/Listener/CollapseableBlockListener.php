@@ -14,22 +14,41 @@ namespace Zikula\BlocksModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
-use Zikula\ExtensionsModule\Api\VariableApi;
 
 /**
  * Class CollapseableBlockListener
  */
 class CollapseableBlockListener implements EventSubscriberInterface
 {
+    /**
+     * @var AssetBag
+     */
     private $jsAssetBag;
+
+    /**
+     * @var VariableApiInterface
+     */
     private $variableApi;
+
+    /**
+     * @var Asset
+     */
     private $assetHelper;
+
+    /**
+     * @var bool
+     */
     private $installed;
+
+    /**
+     * @var bool
+     */
     private $isUpgrading;
 
-    public function __construct(AssetBag $jsAssetBag, VariableApi $variableApi, Asset $assetHelper, $installed, $isUpgrading = false)
+    public function __construct(AssetBag $jsAssetBag, VariableApiInterface $variableApi, Asset $assetHelper, $installed, $isUpgrading = false)
     {
         $this->jsAssetBag = $jsAssetBag;
         $this->variableApi = $variableApi;

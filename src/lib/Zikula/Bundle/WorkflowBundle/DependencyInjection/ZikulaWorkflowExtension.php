@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Workflow;
 
 /**
  * Class ZikulaWorkflowExtension
@@ -48,7 +47,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         $rootDirectory = $container->getParameter('kernel.root_dir');
 
         // Modules can define their own workflows in: modules/Acme/MyBundle/Resources/workflows/
-        $this->workflowDirectories[] = $rootDirectory . '/../system/*/*/Resources/workflows';
+        $this->workflowDirectories[] = $rootDirectory . '/../system/*/Resources/workflows';
         $this->workflowDirectories[] = $rootDirectory . '/../modules/*/*/Resources/workflows';
 
         // also it is possible to define custom workflows (or override existing ones) in: app/Resources/workflows/
@@ -67,11 +66,29 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      */
     private function loadWorkflowDefinitions(ContainerBuilder $container)
     {
+        // get all bundles
+        $bundleNames = [];
+        $bundles = $container->getParameter('kernel.bundles');
+        foreach ($bundles as $bundleName => $bundle) {
+            $bundleNames[] = $bundleName;
+        }
+
         try {
             $finder = new Finder();
             $finder->files()->name('*.yml')->in($this->workflowDirectories);
             foreach ($finder as $file) {
-                $loader = new YamlFileLoader($container, new FileLocator($file->getPath()));
+                $filePath = $file->getPath();
+                if (false !== strpos($filePath, 'modules/')) {
+                    // fallback for uninstalled modules
+                    $directoryParts = explode('/', str_replace('/Resources/workflows', '', $filePath));
+                    // @todo this does not work if the module is installed in a custom folder
+                    $moduleName = array_pop($directoryParts);
+                    $moduleName = array_pop($directoryParts) . $moduleName;
+                    if (!in_array($moduleName, $bundleNames)) {
+                        continue;
+                    }
+                }
+                $loader = new YamlFileLoader($container, new FileLocator($filePath));
                 $loader->load($file->getFilename());
             }
 

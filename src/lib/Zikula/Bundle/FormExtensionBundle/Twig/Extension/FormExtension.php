@@ -11,16 +11,16 @@
 
 namespace Zikula\Bundle\FormExtensionBundle\Twig\Extension;
 
-use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class FormExtension extends \Twig_Extension
 {
     /**
-     * @var RequestStack
+     * @var Asset
      */
-    private $requestStack;
+    private $assetHelper;
 
     /**
      * @var AssetBag
@@ -35,13 +35,13 @@ class FormExtension extends \Twig_Extension
     /**
      * FormExtension constructor.
      *
-     * @param RequestStack $requestStack
-     * @param AssetBag     $jsAssetBag
+     * @param Asset $assetHelper
+     * @param AssetBag $jsAssetBag
      * @param ParameterBag $pageVars
      */
-    public function __construct(RequestStack $requestStack, AssetBag $jsAssetBag, ParameterBag $pageVars)
+    public function __construct(Asset $assetHelper, AssetBag $jsAssetBag, ParameterBag $pageVars)
     {
-        $this->requestStack = $requestStack;
+        $this->assetHelper = $assetHelper;
         $this->jsAssetBag = $jsAssetBag;
         $this->pageVars = $pageVars;
     }
@@ -65,9 +65,8 @@ class FormExtension extends \Twig_Extension
      */
     public function polyfill(array $features = ['forms', 'forms-ext'])
     {
-        $basePath = $this->requestStack->getCurrentRequest()->getBasePath();
-        $this->jsAssetBag->add([$basePath . '/web/webshim/js-webshim/minified/polyfiller.js' => AssetBag::WEIGHT_JQUERY + 1]);
-        $this->jsAssetBag->add([$basePath . '/javascript/polyfiller.init.js' => AssetBag::WEIGHT_JQUERY + 2]);
+        $this->jsAssetBag->add([$this->assetHelper->resolve('/webshim/js-webshim/minified/polyfiller.js') => AssetBag::WEIGHT_JQUERY + 1]);
+        $this->jsAssetBag->add([$this->assetHelper->resolve('/bundles/core/js/polyfiller.init.js') => AssetBag::WEIGHT_JQUERY + 2]);
 
         $existingFeatures = $this->pageVars->get('polyfill_features', []);
         $features = array_unique(array_merge($existingFeatures, $features));

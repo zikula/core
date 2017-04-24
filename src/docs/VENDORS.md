@@ -1,6 +1,9 @@
 This file contains a list of vendor libraries distributed with Zikula
 ---------------------------------------------------------------------
 
+NOTICE: This document is out of date and will not be updated. Most or all of these vendors are
+not included in future versions of Zikula Core.
+
 JAVASCRIPT LIBRARIES
 --------------------
 

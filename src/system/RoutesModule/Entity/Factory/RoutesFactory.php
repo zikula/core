@@ -16,8 +16,6 @@ use Zikula\RoutesModule\Entity\Factory\Base\AbstractRoutesFactory;
 
 /**
  * Factory class used to create entities and receive entity repositories.
- *
- * This is the concrete factory class.
  */
 class RoutesFactory extends AbstractRoutesFactory
 {

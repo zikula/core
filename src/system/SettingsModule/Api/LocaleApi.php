@@ -14,8 +14,9 @@ namespace Zikula\SettingsModule\Api;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
-class LocaleApi
+class LocaleApi implements LocaleApiInterface
 {
     /**
      * Locales with translations present
@@ -38,11 +39,9 @@ class LocaleApi
     }
 
     /**
-     * Get array of supported locales
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getSupportedLocales()
+    public function getSupportedLocales($enableLegacy = true)
     {
         if (empty($this->supportedLocales)) {
             $this->supportedLocales[] = 'en';
@@ -62,39 +61,34 @@ class LocaleApi
                     }
                 }
             }
-            $this->addLegacyLocales(); // @deprecated remove at Core-2.0
+            if ($enableLegacy) {
+                $this->addLegacyLocales(); // @deprecated remove at Core-2.0
+            }
         }
 
         return $this->supportedLocales;
     }
 
     /**
-     * Get array of supported locales with their translated name
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getSupportedLocaleNames()
+    public function getSupportedLocaleNames($region = null, $displayLocale = null, $enableLegacy = true)
     {
-        $locales = $this->getSupportedLocales();
+        $locales = $this->getSupportedLocales($enableLegacy);
         $namedLocales = [];
         foreach ($locales as $locale) {
-            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale)] = $locale;
+            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale, $region, $displayLocale)] = $locale;
         }
 
         return $namedLocales;
     }
 
     /**
-     * Detect languages preferred by browser and make best match to available provided languages.
-     *
-     * Adapted from StackOverflow response by Noel Whitemore
-     * @see http://stackoverflow.com/a/26169603/2600812
-     *
-     * @param string $default
-     * @return string
+     * {@inheritdoc}
      */
     public function getBrowserLocale($default = 'en')
     {
+        // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
         if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || php_sapi_name() == "cli") {
             return $default;
         }

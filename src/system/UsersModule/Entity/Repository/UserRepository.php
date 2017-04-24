@@ -186,4 +186,36 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         return $qb->getQuery()->iterate();
     }
+
+    /**
+     * @deprecated
+     * Get the highest uid that is not migrated to ZAuth
+     * @return integer
+     */
+    public function getMaxUnMigratedUid()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('MAX(u.uid)')
+            ->where("u.pass != ''")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @deprecated
+     * Get users that haven't been migrated to ZAuth
+     * @param $uid
+     * @param $limit
+     * @return UserEntity[]
+     */
+    public function getUnMigratedUsers($uid, $limit)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.uid > :uid')
+            ->setParameter('uid', $uid)
+            ->andWhere("u.pass != ''")
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

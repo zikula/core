@@ -16,7 +16,7 @@
         "psr-4": { "Zikula\\RoutesModule\\": "" }
     },
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=5.5.9",
         "jms/i18n-routing-bundle": "2.0.0",
         "friendsofsymfony/jsrouting-bundle": "1.6.*"
     },

@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
@@ -43,7 +42,8 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      * Listener for the `module.install` event.
      *
      * Called after a module has been successfully installed.
-     * Receives `$modinfo` as args.
+     * The event allows accessing the module bundle and the extension
+     * information array using `$event->getModule()` and `$event->getModInfo()`.
      *
      * @param ModuleStateEvent $event The event instance
      */
@@ -55,7 +55,8 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      * Listener for the `module.postinstall` event.
      *
      * Called after a module has been installed (on reload of the extensions view).
-     * Receives `$modinfo` as args.
+     * The event allows accessing the module bundle and the extension
+     * information array using `$event->getModule()` and `$event->getModInfo()`.
      *
      * @param ModuleStateEvent $event The event instance
      */
@@ -67,7 +68,8 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      * Listener for the `module.upgrade` event.
      *
      * Called after a module has been successfully upgraded.
-     * Receives `$modinfo` as args.
+     * The event allows accessing the module bundle and the extension
+     * information array using `$event->getModule()` and `$event->getModInfo()`.
      *
      * @param ModuleStateEvent $event The event instance
      */
@@ -79,7 +81,8 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      * Listener for the `module.enable` event.
      *
      * Called after a module has been successfully enabled.
-     * Receives `$modinfo` as args.
+     * The event allows accessing the module bundle and the extension
+     * information array using `$event->getModule()` and `$event->getModInfo()`.
      *
      * @param ModuleStateEvent $event The event instance
      */
@@ -91,7 +94,8 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      * Listener for the `module.disable` event.
      *
      * Called after a module has been successfully disabled.
-     * Receives `$modinfo` as args.
+     * The event allows accessing the module bundle and the extension
+     * information array using `$event->getModule()` and `$event->getModInfo()`.
      *
      * @param ModuleStateEvent $event The event instance
      */
@@ -103,7 +107,8 @@ abstract class AbstractInstallerListener implements EventSubscriberInterface
      * Listener for the `module.remove` event.
      *
      * Called after a module has been successfully removed.
-     * Receives `$modinfo` as args.
+     * The event allows accessing the module bundle and the extension
+     * information array using `$event->getModule()` and `$event->getModInfo()`.
      *
      * @param ModuleStateEvent $event The event instance
      */

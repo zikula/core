@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\CategoriesModule\\": "" }
     },
     "require": {
-        "php": ">5.4.0"
+        "php": ">=5.5.9"
     },
     "extra": {
         "zikula": {
@@ -27,7 +27,7 @@
             },
             "securityschema": {
                 "ZikulaCategoriesModule::": "::",
-                "ZikulaCategoriesModule::Category": "Category ID:Category Path:Category IPath"
+                "ZikulaCategoriesModule:PropertyId:CategoryId": "$propId::$catId"
             }
         }
     }

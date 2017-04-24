@@ -12,7 +12,7 @@
 namespace Zikula\SearchModule\Api;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchResultRepositoryInterface;
@@ -22,7 +22,7 @@ use Zikula\SearchModule\Entity\SearchStatEntity;
 class SearchApi implements SearchApiInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     protected $variableApi;
 
@@ -48,14 +48,14 @@ class SearchApi implements SearchApiInterface
 
     /**
      * SearchApi constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param SearchResultRepositoryInterface $searchResultRepository
      * @param SearchStatRepositoryInterface $searchStatRepository
      * @param SessionInterface $session
      * @param SearchableModuleCollector $searchableModuleCollector
      */
     public function __construct(
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         SearchResultRepositoryInterface $searchResultRepository,
         SearchStatRepositoryInterface $searchStatRepository,
         SessionInterface $session,
@@ -85,7 +85,7 @@ class SearchApi implements SearchApiInterface
             $words = ($searchType == 'EXACT') ? [trim($q)] : preg_split('/ /', $q, -1, PREG_SPLIT_NO_EMPTY);
             $searchableModules = $this->searchableModuleCollector->getAll();
             foreach ($searchableModules as $moduleName => $searchableInstance) {
-                if (isset($moduleData['active']) && !$moduleData['active']) {
+                if ((isset($moduleData['active']) && !$moduleData['active']) || ($this->variableApi->get('ZikulaSearchModule', 'disable_' . $moduleName, false))) {
                     continue;
                 }
                 $moduleFormData = isset($moduleData[$moduleName]) ? $moduleData[$moduleName] : null;

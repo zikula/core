@@ -13,7 +13,7 @@ namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -21,7 +21,7 @@ use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 class SearchHelper implements SearchableInterface
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
@@ -37,12 +37,12 @@ class SearchHelper implements SearchableInterface
 
     /**
      * SearchHelper constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param SessionInterface $session
      * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         SessionInterface $session,
         UserRepositoryInterface $userRepository
     ) {

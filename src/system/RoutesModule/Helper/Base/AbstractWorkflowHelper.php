@@ -17,7 +17,7 @@ use Symfony\Component\Workflow\Registry;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
@@ -47,7 +47,7 @@ abstract class AbstractWorkflowHelper
     protected $permissionApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -68,7 +68,7 @@ abstract class AbstractWorkflowHelper
      * @param Registry            $registry          Workflow registry service instance
      * @param LoggerInterface     $logger            Logger service instance
      * @param PermissionApiInterface       $permissionApi     PermissionApi service instance
-     * @param CurrentUserApi      $currentUserApi    CurrentUserApi service instance
+     * @param CurrentUserApiInterface $currentUserApi    CurrentUserApi service instance
      * @param RoutesFactory $entityFactory RoutesFactory service instance
      * @param ListEntriesHelper   $listEntriesHelper ListEntriesHelper service instance
      *
@@ -76,10 +76,10 @@ abstract class AbstractWorkflowHelper
      */
     public function __construct(
         TranslatorInterface $translator,
-        /*Registry */$registry,
+        Registry $registry,
         LoggerInterface $logger,
         PermissionApiInterface $permissionApi,
-        CurrentUserApi $currentUserApi,
+        CurrentUserApiInterface $currentUserApi,
         RoutesFactory $entityFactory,
         ListEntriesHelper $listEntriesHelper
     ) {
@@ -319,8 +319,7 @@ abstract class AbstractWorkflowHelper
     
         $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];
-        $useJoins = false;
     
-        return $repository->selectCount($where, $useJoins, $parameters);
+        return $repository->selectCount($where, false, $parameters);
     }
 }

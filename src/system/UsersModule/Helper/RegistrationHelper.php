@@ -15,9 +15,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -29,12 +29,12 @@ class RegistrationHelper
     use TranslatorTrait;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
@@ -55,16 +55,16 @@ class RegistrationHelper
 
     /**
      * RegistrationHelper constructor.
-     * @param VariableApi $variableApi
-     * @param CurrentUserApi $currentUserApi
+     * @param VariableApiInterface $variableApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param UserRepositoryInterface $userRepository
      * @param GroupRepositoryInterface $groupRepository
      * @param EventDispatcherInterface $eventDispatcher
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        VariableApi $variableApi,
-        CurrentUserApi $currentUserApi,
+        VariableApiInterface $variableApi,
+        CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         GroupRepositoryInterface $groupRepository,
         EventDispatcherInterface $eventDispatcher,
@@ -90,10 +90,9 @@ class RegistrationHelper
      */
     public function registerNewUser(UserEntity $userEntity)
     {
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
         $adminApprovalRequired = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
-        if (null == $userEntity->getUid()) {
-            $userEntity->setUser_Regdate($nowUTC);
+        if (null === $userEntity->getUid()) {
+            $userEntity->setUser_Regdate(new \DateTime());
         }
         $userCreateEvent = new GenericEvent($userEntity);
         $this->eventDispatcher->dispatch(RegistrationEvents::FULL_USER_CREATE_VETO, $userCreateEvent);
@@ -132,7 +131,7 @@ class RegistrationHelper
         }
         if (!$adminApprovalRequired) {
             $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
-            $this->userRepository->setApproved($userEntity, $nowUTC, $approvedBy); // flushes EM
+            $this->userRepository->setApproved($userEntity, new \DateTime(), $approvedBy); // flushes EM
         }
         $this->eventDispatcher->dispatch($eventName, new GenericEvent($userEntity));
     }
@@ -146,8 +145,7 @@ class RegistrationHelper
     public function approve(UserEntity $user)
     {
         $user->setApproved_By($this->currentUserApi->get('uid'));
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $user->setApproved_Date($nowUTC);
+        $user->setApproved_Date(new \DateTime());
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);

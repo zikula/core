@@ -11,11 +11,10 @@
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Composer\Semver\Semver;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use vierbergenlars\SemVer\expression;
-use vierbergenlars\SemVer\version;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
@@ -24,7 +23,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Exception\FatalErrorException;
-use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
@@ -308,14 +307,14 @@ class BundleSyncHelper
 
             // If extension was previously determined to be incompatible with the core. return to original state
             if (isset($extensionsFromDB[$name]) && $extensionsFromDB[$name]['state'] > 10) {
-                $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] - ExtensionApi::INCOMPATIBLE_CORE_SHIFT;
+                $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] - Constant::INCOMPATIBLE_CORE_SHIFT;
                 $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], $extensionsFromDB[$name]['state']);
             }
 
             // update the DB information for this extension to reflect user settings (e.g. url)
             if (isset($extensionsFromDB[$name]['id'])) {
                 $extensionFromFile['id'] = $extensionsFromDB[$name]['id'];
-                if ($extensionsFromDB[$name]['state'] != ExtensionApi::STATE_UNINITIALISED && $extensionsFromDB[$name]['state'] != ExtensionApi::STATE_INVALID) {
+                if ($extensionsFromDB[$name]['state'] != Constant::STATE_UNINITIALISED && $extensionsFromDB[$name]['state'] != Constant::STATE_INVALID) {
                     unset($extensionFromFile['version']);
                 }
                 if (!$forceDefaults) {
@@ -337,11 +336,10 @@ class BundleSyncHelper
             $coreCompatibility = isset($extensionFromFile['corecompatibility'])
                 ? $extensionFromFile['corecompatibility']
                 : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
-            $isCompatible = $this->isCoreCompatible($coreCompatibility);
             if (isset($extensionsFromDB[$name])) {
-                if (!$isCompatible) {
+                if (!Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                     // extension is incompatible with current core
-                    $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] + ExtensionApi::INCOMPATIBLE_CORE_SHIFT;
+                    $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] + Constant::INCOMPATIBLE_CORE_SHIFT;
                     $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], $extensionsFromDB[$name]['state']);
                 }
                 if (isset($extensionsFromDB[$name]['state'])) {
@@ -369,20 +367,20 @@ class BundleSyncHelper
                 throw new \RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
             }
             $lostModuleState = $lostModule->getState();
-            if (($lostModuleState == ExtensionApi::STATE_INVALID)
-                || ($lostModuleState == ExtensionApi::STATE_INVALID + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
+            if (($lostModuleState == Constant::STATE_INVALID)
+                || ($lostModuleState == Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was invalid and subsequently removed from file system,
                 // or extension was incompatible with core and subsequently removed, delete it
                 $this->extensionRepository->removeAndFlush($lostModule);
-            } elseif (($lostModuleState == ExtensionApi::STATE_UNINITIALISED)
-                || ($lostModuleState == ExtensionApi::STATE_UNINITIALISED + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
+            } elseif (($lostModuleState == Constant::STATE_UNINITIALISED)
+                || ($lostModuleState == Constant::STATE_UNINITIALISED + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was uninitialised and subsequently removed from file system, delete it
                 $this->extensionRepository->removeAndFlush($lostModule);
             } else {
                 // Set state of module to 'missing'
                 // This state cannot be reached in with an ACTIVE bundle. - ACTIVE bundles are part of the pre-compiled Kernel.
                 // extensions that are inactive can be marked as missing.
-                $this->extensionStateHelper->updateState($lostModule->getId(), ExtensionApi::STATE_MISSING);
+                $this->extensionStateHelper->updateState($lostModule->getId(), Constant::STATE_MISSING);
             }
 
             unset($extensionsFromDB[$name]);
@@ -404,18 +402,18 @@ class BundleSyncHelper
 
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
             if (empty($extensionsFromDB[$name])) {
-                $extensionFromFile['state'] = ExtensionApi::STATE_UNINITIALISED;
+                $extensionFromFile['state'] = Constant::STATE_UNINITIALISED;
                 if (!$extensionFromFile['version']) {
                     // set state to invalid if we can't determine a version
-                    $extensionFromFile['state'] = ExtensionApi::STATE_INVALID;
+                    $extensionFromFile['state'] = Constant::STATE_INVALID;
                 } else {
                     $coreCompatibility = isset($extensionFromFile['corecompatibility'])
                         ? $extensionFromFile['corecompatibility']
                         : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
                     // shift state if module is incompatible with core version
-                    $extensionFromFile['state'] = $this->isCoreCompatible($coreCompatibility)
+                    $extensionFromFile['state'] = Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)
                         ? $extensionFromFile['state']
-                        : $extensionFromFile['state'] + ExtensionApi::INCOMPATIBLE_CORE_SHIFT;
+                        : $extensionFromFile['state'] + Constant::INCOMPATIBLE_CORE_SHIFT;
                 }
 
                 // unset vars that don't matter
@@ -436,27 +434,26 @@ class BundleSyncHelper
                 }
             } else {
                 // extension is in the db already
-                if (($extensionsFromDB[$name]['state'] == ExtensionApi::STATE_MISSING)
-                    || ($extensionsFromDB[$name]['state'] == ExtensionApi::STATE_MISSING + ExtensionApi::INCOMPATIBLE_CORE_SHIFT)) {
+                if (($extensionsFromDB[$name]['state'] == Constant::STATE_MISSING)
+                    || ($extensionsFromDB[$name]['state'] == Constant::STATE_MISSING + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                     // extension was lost, now it is here again
-                    $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], ExtensionApi::STATE_INACTIVE);
-                } elseif ((($extensionsFromDB[$name]['state'] == ExtensionApi::STATE_INVALID)
-                        || ($extensionsFromDB[$name]['state'] == ExtensionApi::STATE_INVALID + ExtensionApi::INCOMPATIBLE_CORE_SHIFT))
+                    $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_INACTIVE);
+                } elseif ((($extensionsFromDB[$name]['state'] == Constant::STATE_INVALID)
+                        || ($extensionsFromDB[$name]['state'] == Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT))
                     && $extensionFromFile['version']) {
                     $coreCompatibility = isset($extensionFromFile['corecompatibility'])
                         ? $extensionFromFile['corecompatibility']
                         : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
-                    $isCompatible = $this->isCoreCompatible($coreCompatibility);
-                    if ($isCompatible) {
+                    if (Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                         // extension was invalid, now it is valid
-                        $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], ExtensionApi::STATE_UNINITIALISED);
+                        $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_UNINITIALISED);
                     }
                 }
 
                 if ($extensionsFromDB[$name]['version'] != $extensionFromFile['version']) {
-                    if ($extensionsFromDB[$name]['state'] != ExtensionApi::STATE_UNINITIALISED &&
-                        $extensionsFromDB[$name]['state'] != ExtensionApi::STATE_INVALID) {
-                        $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], ExtensionApi::STATE_UPGRADED);
+                    if ($extensionsFromDB[$name]['state'] != Constant::STATE_UNINITIALISED &&
+                        $extensionsFromDB[$name]['state'] != Constant::STATE_INVALID) {
+                        $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_UPGRADED);
                         $upgradedExtensions[$name] = $extensionFromFile['version'];
                     }
                 }
@@ -464,20 +461,6 @@ class BundleSyncHelper
         }
 
         return $upgradedExtensions;
-    }
-
-    /**
-     * Determine if $min and $max values are compatible with Current Core version
-     *
-     * @param string $compatibilityString Semver
-     * @return bool
-     */
-    private function isCoreCompatible($compatibilityString)
-    {
-        $coreVersion = new version(ZikulaKernel::VERSION);
-        $requiredVersionExpression = new expression($compatibilityString);
-
-        return $requiredVersionExpression->satisfiedBy($coreVersion);
     }
 
     /**

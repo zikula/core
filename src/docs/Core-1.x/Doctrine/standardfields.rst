@@ -2,6 +2,8 @@
  Metadata Doctrine extension
 ================================
 
+IMPORTANT NOTE: THIS FEATURE IS DEPRECATED AND REMOVED IN FUTURE VERSIONS OF ZIKULA.
+
 Getting started
 ===============
 
@@ -11,7 +13,7 @@ Entity
 Use @StandardFields and @Timestampable annotations to automatically update user ids and timestamps::
 
     use Doctrine\ORM\Mapping as ORM;
-    use Gedmo\Mapping\Annotation as Gedmo; 
+    use Gedmo\Mapping\Annotation as Gedmo;
     use Zikula\Core\Doctrine\StandardFields\Mapping\Annotation as ZK;
 
     /**

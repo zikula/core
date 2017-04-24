@@ -19,7 +19,11 @@ class ExtensionDependencyRepository extends EntityRepository
     public function reloadExtensionDependencies($extensionsFromFile)
     {
         // truncate the table
-        $this->_em->createQuery('DELETE FROM ' . $this->_entityName)->execute();
+        $connection = $this->_em->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;');
+        $connection->executeUpdate($platform->getTruncateTableSQL('module_deps'));
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 1;');
 
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
             $extension = $this->_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $name]);

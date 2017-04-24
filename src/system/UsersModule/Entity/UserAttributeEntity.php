@@ -17,7 +17,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * UserAttribute entity class.
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\UsersModule\Entity\Repository\UserAttributeRepository")
  * @ORM\Table(name="users_attributes")
  *
  * User attributes table.

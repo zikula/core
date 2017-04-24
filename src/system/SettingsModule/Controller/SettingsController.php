@@ -11,7 +11,6 @@
 
 namespace Zikula\SettingsModule\Controller;
 
-use DateUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,7 +43,7 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
+        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale());
 
         $capabilityApi = $this->get('zikula_extensions_module.api.capability');
         $userModules = $capabilityApi->getExtensionsCapableOf(CapabilityApiInterface::USER);
@@ -102,13 +101,12 @@ class SettingsController extends AbstractController
                 'languageurl' => $this->getSystemVar('languageurl'),
                 'language_detect' => (bool)$this->getSystemVar('language_detect'),
                 'language_i18n' => $this->getSystemVar('language_i18n'),
-                'timezone_offset' => $this->getSystemVar('timezone_offset'),
+                'timezone' => $this->getSystemVar('timezone'),
                 'idnnames' => (bool)$this->getSystemVar('idnnames'),
             ],
             [
                 'translator' => $this->get('translator.default'),
-                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(),
-                'timezones' => DateUtil::getTimezones()
+                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale()),
             ]
         );
         $form->handleRequest($request);
@@ -116,7 +114,7 @@ class SettingsController extends AbstractController
         if ($form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
-                if (false == $data['multilingual']) {
+                if (false === $data['multilingual']) {
                     $data['language_detect'] = false;
                     $this->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'language');
                 }

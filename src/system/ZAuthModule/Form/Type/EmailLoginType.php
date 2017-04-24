@@ -14,6 +14,7 @@ namespace Zikula\ZAuthModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
 
 class EmailLoginType extends AbstractType
@@ -72,9 +73,8 @@ class EmailLoginType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // @todo can be removed?
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => new IdentityTranslator()
         ]);
     }
 }

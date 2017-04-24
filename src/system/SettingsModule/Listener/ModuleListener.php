@@ -14,13 +14,15 @@ namespace Zikula\SettingsModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class ModuleListener implements EventSubscriberInterface
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -36,11 +38,11 @@ class ModuleListener implements EventSubscriberInterface
 
     /**
      * ModuleListener constructor.
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param SessionInterface $session
      * @param TranslatorInterface $translator
      */
-    public function __construct(VariableApi $variableApi, SessionInterface $session, TranslatorInterface $translator)
+    public function __construct(VariableApiInterface $variableApi, SessionInterface $session, TranslatorInterface $translator)
     {
         $this->variableApi = $variableApi;
         $this->session = $session;
@@ -50,14 +52,12 @@ class ModuleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            // @todo convert to CoreEvent::MODULE_DISABLE at Core-2.0
-            'installer.module.deactivated' => ['moduleDeactivated']
+            CoreEvents::MODULE_DISABLE => ['moduleDeactivated']
         ];
     }
 
     /**
-     * Handle module deactivated event "installer.module.deactivated".
-     * Receives $modinfo as $args
+     * Handle module deactivated event CoreEvents::MODULE_DISABLE.
      *
      * @param ModuleStateEvent $event
      *

@@ -135,9 +135,6 @@ class EntityAccess implements \ArrayAccess
 
         // see #1863
         return '';
-
-        $class = get_class($this);
-        throw new \RuntimeException("Entity \"$class\" does not have a getter for property \"$name\". Please either add $getMethod() or $isMethod().");
     }
 
     private function getSetterForProperty($name)

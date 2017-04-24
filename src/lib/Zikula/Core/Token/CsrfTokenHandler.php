@@ -14,7 +14,7 @@ namespace Zikula\Core\Token;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class CsrfTokenHandler
 {
@@ -34,7 +34,7 @@ class CsrfTokenHandler
     private $requestStack;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -48,10 +48,10 @@ class CsrfTokenHandler
      * @param Generator $generator
      * @param Validator $validator
      * @param RequestStack $requestStack
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      * @param SessionInterface $session
      */
-    public function __construct(Generator $generator, Validator $validator, RequestStack $requestStack, VariableApi $variableApi, SessionInterface $session)
+    public function __construct(Generator $generator, Validator $validator, RequestStack $requestStack, VariableApiInterface $variableApi, SessionInterface $session)
     {
         $this->generator = $generator;
         $this->validator = $validator;

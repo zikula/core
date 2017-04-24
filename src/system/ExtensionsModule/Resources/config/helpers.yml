@@ -1,0 +1,40 @@
+services:
+    zikula_extensions_module.bundle_sync_helper:
+        class: Zikula\ExtensionsModule\Helper\BundleSyncHelper
+        lazy: true
+        arguments:
+          - "@kernel"
+          - "@zikula_extensions_module.extension_repository"
+          - "@zikula_extensions_module.extension_var_repository"
+          - "@zikula_extensions_module.extension_dependency_repository"
+          - "@translator.default"
+          - "@event_dispatcher"
+          - "@zikula_extensions_module.extension_state_helper"
+          - "@zikula_core.internal.bootstrap_helper"
+          - "@zikula_extensions_module.composer_validation_helper"
+          - "@session"
+
+    zikula_extensions_module.extension_state_helper:
+        class: Zikula\ExtensionsModule\Helper\ExtensionStateHelper
+        lazy: true
+        arguments:
+          - "@event_dispatcher"
+          - "@zikula.cache_clearer"
+          - "@zikula_extensions_module.extension_repository"
+          - "@translator.default"
+          - "@zikula_extensions_module.api.extension"
+
+    zikula_extensions_module.extension_helper:
+        class: Zikula\ExtensionsModule\Helper\ExtensionHelper
+        arguments: ["@service_container"]
+
+    zikula_extensions_module.extension_dependency_helper:
+        class: Zikula\ExtensionsModule\Helper\ExtensionDependencyHelper
+        arguments:
+          - "@zikula_extensions_module.extension_dependency_repository"
+          - "@zikula_extensions_module.extension_repository"
+          - "@kernel"
+
+    zikula_extensions_module.composer_validation_helper:
+        class: Zikula\ExtensionsModule\Helper\ComposerValidationHelper
+        arguments: ["@kernel", "@translator.default"]

@@ -26,5 +26,8 @@ class ZikulaExtensionsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(realpath(__DIR__.'/../Resources/config')));
 
         $loader->load('services.yml');
+        $loader->load('helpers.yml');
+        $loader->load('doctrine.yml');
+        $loader->load('twig.yml');
     }
 }

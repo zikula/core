@@ -16,13 +16,13 @@
     <div id="zikulausersmodule-login-event-display">
         {% set eventDatas = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
         {% for eventData in eventDatas %}
-            {{ eventData }}
+            {{ eventData|raw }}
         {% endfor %}
     </div>
     <div id="zikulausersmodule-login-hooks">
         {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}
         {% for hook in hooks %}
-            {{ hook }}
+            {{ hook|raw }}
         {% endfor %}
     </div>
 

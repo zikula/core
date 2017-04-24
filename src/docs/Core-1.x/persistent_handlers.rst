@@ -1,5 +1,8 @@
 PERSISTENT EVENTHANDLERS
 ------------------------
+
+IMPORTANT NOTE: THIS FEATURE IS DEPRECATED AND REMOVED IN FUTURE VERSIONS OF ZIKULA.
+
 Zikula normally only loads modules which need to be accessed, so modules would
 not generally register their event listeners  However, there are times when a module
 or module's plugin needs to listen for an event that occured somewhere else in the

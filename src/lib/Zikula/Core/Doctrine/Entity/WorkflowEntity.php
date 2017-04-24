@@ -17,6 +17,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 /**
  * Workflow
  *
+ * @deprecated to be removed at Core-2.0
  * @ORM\Table(name="workflows")
  * @ORM\Entity
  */

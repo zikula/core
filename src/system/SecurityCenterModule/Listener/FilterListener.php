@@ -17,14 +17,14 @@ use IDS\Monitor as IdsMonitor;
 use IDS\Report as IdsReport;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use System;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\MailerModule\Api\MailerApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 
@@ -46,7 +46,7 @@ class FilterListener implements EventSubscriberInterface
     private $isUpgrading;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -56,7 +56,7 @@ class FilterListener implements EventSubscriberInterface
     private $em;
 
     /**
-     * @var MailerApi
+     * @var MailerApiInterface
      */
     private $mailer;
 
@@ -75,18 +75,18 @@ class FilterListener implements EventSubscriberInterface
      *
      * @param bool $isInstalled Installed flag
      * @param $isUpgrading
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param EntityManagerInterface $em Doctrine entity manager
-     * @param MailerApi $mailer MailerApi service instance
+     * @param MailerApiInterface $mailer MailerApi service instance
      * @param TranslatorInterface $translator
      * @param $cacheDir
      */
     public function __construct(
         $isInstalled,
         $isUpgrading,
-        VariableApi $variableApi,
+        VariableApiInterface $variableApi,
         EntityManagerInterface $em,
-        MailerApi $mailer,
+        MailerApiInterface $mailer,
         TranslatorInterface $translator,
         $cacheDir
     ) {
@@ -185,7 +185,7 @@ class FilterListener implements EventSubscriberInterface
             if (!$result->isEmpty()) {
                 // process the IdsReport object
                 $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
-                $this->processIdsResult($init, $result, $session);
+                $this->processIdsResult($init, $result, $session, $event->getRequest());
             } else {
                 // no attack detected
             }
@@ -272,8 +272,9 @@ class FilterListener implements EventSubscriberInterface
      * @param IdsInit $init PHPIDS init object reference
      * @param IdsReport $result The result object from PHPIDS
      * @param SessionInterface $session
+     * @param Request $request
      */
-    private function processIdsResult(IdsInit $init, IdsReport $result, SessionInterface $session)
+    private function processIdsResult(IdsInit $init, IdsReport $result, SessionInterface $session, Request $request)
     {
         // $result contains any suspicious fields enriched with additional info
 
@@ -318,11 +319,11 @@ class FilterListener implements EventSubscriberInterface
             // db logging
 
             // determine IP address of current user
-            $_REMOTE_ADDR = System::serverGetVar('REMOTE_ADDR');
-            $_HTTP_X_FORWARDED_FOR = System::serverGetVar('HTTP_X_FORWARDED_FOR');
+            $_REMOTE_ADDR = $request->server->get('REMOTE_ADDR');
+            $_HTTP_X_FORWARDED_FOR = $request->server->get('HTTP_X_FORWARDED_FOR');
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
-            $currentPage = System::getCurrentUri();
+            $currentPage = $request->getRequestUri();
             $currentUid = !empty($session) ? $session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;
             $currentUser = $this->em->getReference('ZikulaUsersModule:UserEntity', $currentUid);
 

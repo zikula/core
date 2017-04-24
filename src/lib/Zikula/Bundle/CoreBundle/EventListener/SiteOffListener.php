@@ -19,42 +19,72 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class SiteOffListener implements EventSubscriberInterface
 {
+    /**
+     * @var VariableApiInterface
+     */
     private $variableApi;
 
+    /**
+     * @var PermissionApiInterface
+     */
     private $permissionApi;
 
+    /**
+     * @var CurrentUserApiInterface
+     */
     private $currentUserApi;
 
+    /**
+     * @var \Twig_Environment
+     */
     private $twig;
 
+    /**
+     * @var FormFactory
+     */
     private $formFactory;
 
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
+    /**
+     * @var boolean
+     */
     private $installed;
 
     /**
-     * OutputCompressionListener constructor.
-     * @param VariableApi $variableApi
-     * @param PermissionApi $permissionApi
-     * @param CurrentUserApi $currentUserApi
+     * @var string
+     */
+    private $currentInstalledVersion;
+
+    /**
+     * SiteOffListener constructor.
+     * @param VariableApiInterface $variableApi
+     * @param PermissionApiInterface $permissionApi
+     * @param CurrentUserApiInterface $currentUserApi
      * @param \Twig_Environment $twig
      * @param FormFactory $formFactory
+     * @param RouterInterface $router
+     * @param $installed
+     * @param $currentInstalledVersion
      */
     public function __construct(
-        VariableApi $variableApi,
-        PermissionApi $permissionApi,
-        CurrentUserApi $currentUserApi,
+        VariableApiInterface $variableApi,
+        PermissionApiInterface $permissionApi,
+        CurrentUserApiInterface $currentUserApi,
         \Twig_Environment $twig,
         FormFactory $formFactory,
         RouterInterface $router,
-        $installed
+        $installed,
+        $currentInstalledVersion
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -63,6 +93,7 @@ class SiteOffListener implements EventSubscriberInterface
         $this->formFactory = $formFactory;
         $this->router = $router;
         $this->installed = $installed;
+        $this->currentInstalledVersion = $currentInstalledVersion;
     }
 
     public function onKernelRequestSiteOff(GetResponseEvent $event)
@@ -72,6 +103,7 @@ class SiteOffListener implements EventSubscriberInterface
         }
         $response = $event->getResponse();
         $request = $event->getRequest();
+        $this->router->getContext()->setBaseUrl($request->getBaseUrl());
         if ($request->isMethod('POST') && $request->request->has('zikulazauthmodule_authentication_uname')) {
             return;
         }
@@ -87,7 +119,9 @@ class SiteOffListener implements EventSubscriberInterface
         // Get variables
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-        $currentInstalledVersion = $this->variableApi->getSystemVar('Version_Num');
+        $currentInstalledVersion = !empty($this->currentInstalledVersion)
+            ? $this->currentInstalledVersion
+            : $this->variableApi->getSystemVar('Version_Num');
         $versionsEqual = (ZikulaKernel::VERSION == $currentInstalledVersion);
 
         // Check for site closed

@@ -14,21 +14,21 @@ namespace Zikula\BlocksModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\BlocksModule\Api\BlockFilterApi;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class BlockType extends AbstractType
 {
     /**
-     * @var BlockApi
+     * @var BlockApiInterface
      */
     private $blockApi;
 
     /**
-     * @var BlockFilterApi
+     * @var BlockFilterApiInterface
      */
     private $blockFilterApi;
 
@@ -38,19 +38,23 @@ class BlockType extends AbstractType
     private $translator;
 
     /**
-     * @var LocaleApi
+     * @var LocaleApiInterface
      */
     private $localeApi;
 
     /**
      * BlockType constructor.
-     * @param BlockApi $blockApi
-     * @param BlockFilterApi $blockFilterApi
+     * @param BlockApiInterface $blockApi
+     * @param BlockFilterApiInterface $blockFilterApi
      * @param TranslatorInterface $translator
-     * @param LocaleApi $localeApi
+     * @param LocaleApiInterface $localeApi
      */
-    public function __construct(BlockApi $blockApi, BlockFilterApi $blockFilterApi, TranslatorInterface $translator, LocaleApi $localeApi)
-    {
+    public function __construct(
+        BlockApiInterface $blockApi,
+        BlockFilterApiInterface $blockFilterApi,
+        TranslatorInterface $translator,
+        LocaleApiInterface $localeApi
+    ) {
         $this->blockApi = $blockApi;
         $this->blockFilterApi = $blockFilterApi;
         $this->translator = $translator;
@@ -73,7 +77,7 @@ class BlockType extends AbstractType
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-                'choices' => $this->localeApi->getSupportedLocaleNames(),
+                'choices' => $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'choices_as_values' => true,
                 'required' => false,
                 'placeholder' => $this->translator->__('All')
@@ -122,7 +126,8 @@ class BlockType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\BlocksModule\Entity\BlockEntity'
+            'data_class' => 'Zikula\BlocksModule\Entity\BlockEntity',
+            'locale' => 'en'
         ]);
     }
 }

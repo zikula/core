@@ -13,9 +13,9 @@ namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
@@ -25,17 +25,17 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class RegistrationListener implements EventSubscriberInterface
 {
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUserApi;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -66,16 +66,16 @@ class RegistrationListener implements EventSubscriberInterface
 
     /**
      * RegistrationListener constructor.
-     * @param CurrentUserApi $currentUserApi
-     * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApiInterface $variableApi
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
      * @param RegistrationVerificationHelper $registrationVerificationHelper
      */
     public function __construct(
-        CurrentUserApi $currentUserApi,
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        CurrentUserApiInterface $currentUserApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
         AuthenticationMappingRepositoryInterface $mappingRepository,
         RegistrationVerificationHelper $registrationVerificationHelper
     ) {

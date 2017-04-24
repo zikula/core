@@ -18,6 +18,7 @@ use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ExtensionApi;
+use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ExtensionsModule\ExtensionEvents;
@@ -88,17 +89,17 @@ class ExtensionStateHelper
 
         // Check valid state transition
         switch ($state) {
-            case ExtensionApi::STATE_INACTIVE:
+            case Constant::STATE_INACTIVE:
                 $eventName = CoreEvents::MODULE_DISABLE;
                 break;
-            case ExtensionApi::STATE_ACTIVE:
-                if ($extension->getState() === ExtensionApi::STATE_INACTIVE) {
+            case Constant::STATE_ACTIVE:
+                if ($extension->getState() === Constant::STATE_INACTIVE) {
                     // ACTIVE is used for freshly installed modules, so only register the transition if previously inactive.
                     $eventName = CoreEvents::MODULE_ENABLE;
                 }
                 break;
-            case ExtensionApi::STATE_UPGRADED:
-                if ($extension->getState() == ExtensionApi::STATE_UNINITIALISED) {
+            case Constant::STATE_UPGRADED:
+                if ($extension->getState() == Constant::STATE_UNINITIALISED) {
                     throw new \RuntimeException($this->translator->__('Error! Invalid module state transition.'));
                 }
                 break;
@@ -113,7 +114,7 @@ class ExtensionStateHelper
 
         if (isset($eventName)) {
             $moduleBundle = $this->extensionApi->getModuleInstanceOrNull($extension->getName());
-            $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $extension->toArray() : null);
+            $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
             $this->dispatcher->dispatch($eventName, $event);
         }
 

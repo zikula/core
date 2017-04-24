@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Class MainController
@@ -25,7 +25,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 class MainController
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -43,9 +43,9 @@ class MainController
     /**
      * MainController constructor.
      * @param ZikulaHttpKernelInterface $kernelInterface
-     * @param VariableApi $variableApi
+     * @param VariableApiInterface $variableApi
      */
-    public function __construct(ZikulaHttpKernelInterface $kernelInterface, VariableApi $variableApi, LegacyController $legacyController)
+    public function __construct(ZikulaHttpKernelInterface $kernelInterface, VariableApiInterface $variableApi, LegacyController $legacyController)
     {
         $this->kernel = $kernelInterface;
         $this->variableApi = $variableApi;

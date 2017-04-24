@@ -61,6 +61,10 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
             return;
         }
 
+        if ($constraint->propertyName == 'workflowState' && in_array($value, ['initial', 'deleted'])) {
+            return;
+    	}
+
         $listEntries = $this->listEntriesHelper->getEntries($constraint->entityName, $constraint->propertyName);
         $allowedValues = [];
         foreach ($listEntries as $entry) {
@@ -69,11 +73,11 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
 
         if (!$constraint->multiple) {
             // single-valued list
-            if (!in_array($value, $allowedValues, true)) {
+            if (!in_array($value, $allowedValues)) {
                 $this->context->buildViolation(
                     $this->__f('The value "%value%" is not allowed for the "%property%" property.', [
                         '%value%' => $value,
-                        '%property%' => $contraint->propertyName
+                        '%property%' => $constraint->propertyName
                     ])
                 )->addViolation();
             }
@@ -87,11 +91,11 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
             if ($singleValue == '') {
                 continue;
             }
-            if (!in_array($singleValue, $allowedValues, true)) {
+            if (!in_array($singleValue, $allowedValues)) {
                 $this->context->buildViolation(
                     $this->__f('The value "%value%" is not allowed for the "%property%" property.', [
                         '%value%' => $singleValue,
-                        '%property%' => $contraint->propertyName
+                        '%property%' => $constraint->propertyName
                     ])
                 )->addViolation();
             }

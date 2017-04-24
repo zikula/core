@@ -37,7 +37,8 @@ class ThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']])
+            new \Twig_SimpleFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
         ];
     }
 
@@ -81,5 +82,10 @@ class ThemeExtension extends \Twig_Extension
         }
 
         return $imagePath;
+    }
+
+    public function getAssetPath($path)
+    {
+        return $this->assetHelper->resolve($path);
     }
 }

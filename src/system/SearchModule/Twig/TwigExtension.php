@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\ModUrl;
 use Zikula\Core\RouteUrl;
 use Zikula\Core\UrlInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Twig extension class.
@@ -24,7 +24,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 class TwigExtension extends \Twig_Extension
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -36,10 +36,10 @@ class TwigExtension extends \Twig_Extension
     /**
      * TwigExtension constructor.
      *
-     * @param VariableApi $variableApi VariableApi service instance
+     * @param VariableApiInterface $variableApi VariableApi service instance
      * @param RouterInterface $router
      */
-    public function __construct(VariableApi $variableApi, RouterInterface $router)
+    public function __construct(VariableApiInterface $variableApi, RouterInterface $router)
     {
         $this->variableApi = $variableApi;
         $this->router = $router;

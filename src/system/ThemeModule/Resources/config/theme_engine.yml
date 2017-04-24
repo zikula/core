@@ -1,7 +1,13 @@
 services:
     zikula_core.common.theme_engine:
         class: Zikula\ThemeModule\Engine\Engine
-        arguments: ["@request_stack", "@annotation_reader", "@kernel", "@zikula_core.internal.theme_filter", "@zikula_blocks_module.api.block", "@zikula_extensions_module.api.variable"]
+        arguments:
+          - "@request_stack"
+          - "@annotation_reader"
+          - "@kernel"
+          - "@zikula_core.internal.theme_filter"
+          - "@zikula_blocks_module.api.block"
+          - "@zikula_extensions_module.api.variable"
 
     zikula_core.common.theme.assets_js:
         class: Zikula\ThemeModule\Engine\AssetBag
@@ -12,27 +18,55 @@ services:
     zikula_core.common.theme.assets_footer:
         class: Zikula\ThemeModule\Engine\AssetBag
 
+    zikula_theme_module.api.page_asset:
+        class: Zikula\ThemeModule\Api\PageAssetApi
+        arguments:
+          - '@zikula_core.common.theme.assets_css'
+          - '@zikula_core.common.theme.assets_js'
+          - '@zikula_core.common.theme.assets_header'
+          - '@zikula_core.common.theme.assets_footer'
+
     zikula_core.common.theme.pagevars:
         class: Zikula\ThemeModule\Engine\ParameterBag
 
     zikula_core.internal.theme_filter:
         class: Zikula\ThemeModule\Engine\AssetFilter
-        arguments: ["@zikula_core.common.theme.assets_header", "@zikula_core.common.theme.assets_footer", "@zikula_core.internal.theme.js_resolver", "@zikula_core.internal.theme.css_resolver", "%script_position%"]
+        arguments:
+          - "@zikula_core.common.theme.assets_header"
+          - "@zikula_core.common.theme.assets_footer"
+          - "@zikula_core.internal.theme.js_resolver"
+          - "@zikula_core.internal.theme.css_resolver"
+          - "%script_position%"
 
     zikula_core.common.theme.themevars:
         class: Zikula\ThemeModule\Engine\ParameterBag
 
     zikula_core.internal.theme.merger:
         class: Zikula\ThemeModule\Engine\Asset\Merger
-        arguments: ["@router", "@doctrine_cache.providers.zikula_js_asset_cache", "@doctrine_cache.providers.zikula_css_asset_cache", "%kernel.root_dir%", "%zikula_asset_manager.lifetime%", "%zikula_asset_manager.minify%", "%zikula_asset_manager.compress%"]
+        arguments:
+          - "@router"
+          - "@doctrine_cache.providers.zikula_js_asset_cache"
+          - "@doctrine_cache.providers.zikula_css_asset_cache"
+          - "%kernel.root_dir%"
+          - "%zikula_asset_manager.lifetime%"
+          - "%zikula_asset_manager.minify%"
+          - "%zikula_asset_manager.compress%"
 
     zikula_core.internal.theme.js_resolver:
         class: Zikula\ThemeModule\Engine\Asset\JsResolver
-        arguments: ["@zikula_core.common.theme.assets_js", "@zikula_core.internal.theme.merger", "%env%", "%zikula_asset_manager.combine%"]
+        arguments:
+          - "@zikula_core.common.theme.assets_js"
+          - "@zikula_core.internal.theme.merger"
+          - "%env%"
+          - "%zikula_asset_manager.combine%"
 
     zikula_core.internal.theme.css_resolver:
         class: Zikula\ThemeModule\Engine\Asset\CssResolver
-        arguments: ["@zikula_core.common.theme.assets_css", "@zikula_core.internal.theme.merger", "%env%", "%zikula_asset_manager.combine%"]
+        arguments:
+          - "@zikula_core.common.theme.assets_css"
+          - "@zikula_core.internal.theme.merger"
+          - "%env%"
+          - "%zikula_asset_manager.combine%"
 
     zikula_core.common.theme.asset_helper:
         class: Zikula\ThemeModule\Engine\Asset
@@ -42,6 +76,9 @@ services:
         class: Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine
         decorates: templating.engine.twig
         public: false
-        arguments: ["@twig", "@templating.name_parser", "@templating.locator"]
+        arguments:
+          - "@twig"
+          - "@templating.name_parser"
+          - "@templating.locator"
         calls:
             - [setEventDispatcher, ["@event_dispatcher"]]

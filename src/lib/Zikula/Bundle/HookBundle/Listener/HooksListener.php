@@ -15,8 +15,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
  * Class HooksListener
@@ -24,7 +25,7 @@ use Zikula\PermissionsModule\Api\PermissionApi;
 class HooksListener implements EventSubscriberInterface
 {
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionsApi;
 
@@ -45,13 +46,13 @@ class HooksListener implements EventSubscriberInterface
 
     /**
      * ExtensionServicesListener constructor.
-     * @param PermissionApi $permissionApi
+     * @param PermissionApiInterface $permissionApi
      * @param CapabilityApiInterface $capabilityApi
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        PermissionApi $permissionApi,
+        PermissionApiInterface $permissionApi,
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         TranslatorInterface $translator
@@ -87,6 +88,10 @@ class HooksListener implements EventSubscriberInterface
             return;
         }
 
+        // return if not collection admin links
+        if (LinkContainerInterface::TYPE_ADMIN != $event->getArgument('type')) {
+            return;
+        }
         if (!$this->permissionsApi->hasPermission($event['modname'] . '::Hooks', '::', ACCESS_ADMIN)) {
             return;
         }

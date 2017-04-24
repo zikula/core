@@ -14,11 +14,12 @@ namespace Zikula\UsersModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\PermissionsModule\Api\PermissionApi;
-use Zikula\SettingsModule\Api\LocaleApi;
-use Zikula\UsersModule\Api\CurrentUserApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Helper\RegistrationHelper;
 
 class LinkContainer implements LinkContainerInterface
@@ -34,12 +35,12 @@ class LinkContainer implements LinkContainerInterface
     private $router;
 
     /**
-     * @var PermissionApi
+     * @var PermissionApiInterface
      */
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -49,34 +50,42 @@ class LinkContainer implements LinkContainerInterface
     private $registrationHelper;
 
     /**
-     * @var CurrentUserApi
+     * @var CurrentUserApiInterface
      */
     private $currentUser;
 
     /**
-     * @var LocaleApi
+     * @var LocaleApiInterface
      */
     private $localeApi;
+
+    /**
+     * @deprecated
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
 
     /**
      * constructor.
      *
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
-     * @param PermissionApi $permissionApi
-     * @param VariableApi $variableApi
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApiInterface $variableApi
      * @param RegistrationHelper $registrationHelper
-     * @param CurrentUserApi $currentUserApi
-     * @param LocaleApi $localeApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param LocaleApiInterface $localeApi
+     * @param UserRepositoryInterface $userRepository
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApi $permissionApi,
-        VariableApi $variableApi,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
         RegistrationHelper $registrationHelper,
-        CurrentUserApi $currentUserApi,
-        LocaleApi $localeApi
+        CurrentUserApiInterface $currentUserApi,
+        LocaleApiInterface $localeApi,
+        UserRepositoryInterface $userRepository // @deprecated
     ) {
         $this->translator = $translator;
         $this->router = $router;
@@ -85,6 +94,7 @@ class LinkContainer implements LinkContainerInterface
         $this->registrationHelper = $registrationHelper;
         $this->currentUser = $currentUserApi;
         $this->localeApi = $localeApi;
+        $this->userRepository = $userRepository; // @deprecated
     }
 
     /**
@@ -153,6 +163,17 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('Find/Mail/Delete users'),
                 'icon' => 'search'
             ];
+        }
+        // @deprecated remove this link at Core-2.0
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            $unMigratedUserCount = $this->userRepository->count(['pass' => ['operator' => '!=', 'operand' => '']]);
+            if ($unMigratedUserCount > 0) {
+                $links[] = [
+                    'url' => $this->router->generate('zikulausersmodule_migration_migrate'),
+                    'text' => $this->translator->__('Migrate to ZAuth'),
+                    'icon' => 'cog'
+                ];
+            }
         }
 
         return $links;

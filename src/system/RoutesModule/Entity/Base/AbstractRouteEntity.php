@@ -236,7 +236,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function set_objectType($_objectType)
     {
-        $this->_objectType = $_objectType;
+        if ($this->_objectType != $_objectType) {
+            $this->_objectType = $_objectType;
+        }
     }
     
     
@@ -259,7 +261,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setId($id)
     {
-        $this->id = intval($id);
+        if (intval($this->id) !== intval($id)) {
+            $this->id = intval($id);
+        }
     }
     
     /**
@@ -281,7 +285,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setWorkflowState($workflowState)
     {
-        $this->workflowState = isset($workflowState) ? $workflowState : '';
+        if ($this->workflowState !== $workflowState) {
+            $this->workflowState = isset($workflowState) ? $workflowState : '';
+        }
     }
     
     /**
@@ -303,7 +309,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setRouteType($routeType)
     {
-        $this->routeType = isset($routeType) ? $routeType : '';
+        if ($this->routeType !== $routeType) {
+            $this->routeType = isset($routeType) ? $routeType : '';
+        }
     }
     
     /**
@@ -325,7 +333,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setReplacedRouteName($replacedRouteName)
     {
-        $this->replacedRouteName = $replacedRouteName;
+        if ($this->replacedRouteName !== $replacedRouteName) {
+            $this->replacedRouteName = $replacedRouteName;
+        }
     }
     
     /**
@@ -347,7 +357,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setBundle($bundle)
     {
-        $this->bundle = isset($bundle) ? $bundle : '';
+        if ($this->bundle !== $bundle) {
+            $this->bundle = isset($bundle) ? $bundle : '';
+        }
     }
     
     /**
@@ -369,7 +381,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setController($controller)
     {
-        $this->controller = isset($controller) ? $controller : '';
+        if ($this->controller !== $controller) {
+            $this->controller = isset($controller) ? $controller : '';
+        }
     }
     
     /**
@@ -391,7 +405,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setAction($action)
     {
-        $this->action = isset($action) ? $action : '';
+        if ($this->action !== $action) {
+            $this->action = isset($action) ? $action : '';
+        }
     }
     
     /**
@@ -413,7 +429,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setPath($path)
     {
-        $this->path = isset($path) ? $path : '';
+        if ($this->path !== $path) {
+            $this->path = isset($path) ? $path : '';
+        }
     }
     
     /**
@@ -435,7 +453,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setHost($host)
     {
-        $this->host = $host;
+        if ($this->host !== $host) {
+            $this->host = $host;
+        }
     }
     
     /**
@@ -457,7 +477,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setSchemes($schemes)
     {
-        $this->schemes = isset($schemes) ? $schemes : '';
+        if ($this->schemes !== $schemes) {
+            $this->schemes = isset($schemes) ? $schemes : '';
+        }
     }
     
     /**
@@ -479,7 +501,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setMethods($methods)
     {
-        $this->methods = isset($methods) ? $methods : '';
+        if ($this->methods !== $methods) {
+            $this->methods = isset($methods) ? $methods : '';
+        }
     }
     
     /**
@@ -501,8 +525,8 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setPrependBundlePrefix($prependBundlePrefix)
     {
-        if ($prependBundlePrefix !== $this->prependBundlePrefix) {
-            $this->prependBundlePrefix = (bool)$prependBundlePrefix;
+        if (boolval($this->prependBundlePrefix) !== boolval($prependBundlePrefix)) {
+            $this->prependBundlePrefix = boolval($prependBundlePrefix);
         }
     }
     
@@ -525,8 +549,8 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setTranslatable($translatable)
     {
-        if ($translatable !== $this->translatable) {
-            $this->translatable = (bool)$translatable;
+        if (boolval($this->translatable) !== boolval($translatable)) {
+            $this->translatable = boolval($translatable);
         }
     }
     
@@ -549,7 +573,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setTranslationPrefix($translationPrefix)
     {
-        $this->translationPrefix = $translationPrefix;
+        if ($this->translationPrefix !== $translationPrefix) {
+            $this->translationPrefix = $translationPrefix;
+        }
     }
     
     /**
@@ -571,7 +597,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setDefaults($defaults)
     {
-        $this->defaults = isset($defaults) ? $defaults : '';
+        if ($this->defaults !== $defaults) {
+            $this->defaults = isset($defaults) ? $defaults : '';
+        }
     }
     
     /**
@@ -593,7 +621,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setRequirements($requirements)
     {
-        $this->requirements = isset($requirements) ? $requirements : '';
+        if ($this->requirements !== $requirements) {
+            $this->requirements = isset($requirements) ? $requirements : '';
+        }
     }
     
     /**
@@ -615,7 +645,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setCondition($condition)
     {
-        $this->condition = $condition;
+        if ($this->condition !== $condition) {
+            $this->condition = $condition;
+        }
     }
     
     /**
@@ -637,7 +669,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        if ($this->description !== $description) {
+            $this->description = $description;
+        }
     }
     
     /**
@@ -659,7 +693,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setSort($sort)
     {
-        $this->sort = intval($sort);
+        if (intval($this->sort) !== intval($sort)) {
+            $this->sort = intval($sort);
+        }
     }
     
     /**
@@ -681,7 +717,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function setGroup($group)
     {
-        $this->group = isset($group) ? $group : '';
+        if ($this->group !== $group) {
+            $this->group = isset($group) ? $group : '';
+        }
     }
     
     

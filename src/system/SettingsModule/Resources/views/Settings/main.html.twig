@@ -19,13 +19,13 @@
             <div class="zikula-bootstrap-tab-container">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for language, languageCode in languages %}
-                    <li role="presentation"{% if languageCode == pagevars.lang %} class="active"{% endif %}><a href="#main-{{ languageCode|lower }}" aria-controls="main-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
+                    <li role="presentation"{% if languageCode == app.request.locale %} class="active"{% endif %}><a href="#main-{{ languageCode|lower }}" aria-controls="main-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
                     {# Tab panes #}
                     {% for language, languageCode in languages %}
-                    <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="main-{{ languageCode|lower }}">
+                    <div role="tabpanel" class="tab-pane fade{% if languageCode == app.request.locale %} in active{% endif %}" id="main-{{ languageCode|lower }}">
                         {{ form_row(form['sitename_' ~ languageCode]) }}
                         {{ form_row(form['slogan_' ~ languageCode]) }}
                     </div>
@@ -46,13 +46,13 @@
             <div class="zikula-bootstrap-tab-container">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for language, languageCode in languages %}
-                    <li role="presentation"{% if languageCode == pagevars.lang %} class="active"{% endif %}><a href="#meta-{{ languageCode|lower }}" aria-controls="meta-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
+                    <li role="presentation"{% if languageCode == app.request.locale %} class="active"{% endif %}><a href="#meta-{{ languageCode|lower }}" aria-controls="meta-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
                     {# Tab panes #}
                     {% for language, languageCode in languages %}
-                    <div role="tabpanel" class="tab-pane fade{% if languageCode == pagevars.lang %} in active{% endif %}" id="meta-{{ languageCode|lower }}">
+                    <div role="tabpanel" class="tab-pane fade{% if languageCode == app.request.locale %} in active{% endif %}" id="meta-{{ languageCode|lower }}">
                         {{ form_row(form['defaultpagetitle_' ~ languageCode]) }}
                         {{ form_row(form['defaultmetadescription_' ~ languageCode]) }}
                         {{ form_row(form['metakeywords_' ~ languageCode]) }}

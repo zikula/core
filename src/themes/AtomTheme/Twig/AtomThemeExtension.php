@@ -13,12 +13,12 @@ namespace Zikula\AtomTheme\Twig;
 
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class AtomThemeExtension extends \Twig_Extension
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 
@@ -27,7 +27,7 @@ class AtomThemeExtension extends \Twig_Extension
      */
     private $requestStack;
 
-    public function __construct(VariableApi $variableApi, RequestStack $requestStack)
+    public function __construct(VariableApiInterface $variableApi, RequestStack $requestStack)
     {
         $this->variableApi = $variableApi;
         $this->requestStack = $requestStack;

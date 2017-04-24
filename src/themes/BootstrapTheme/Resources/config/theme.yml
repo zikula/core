@@ -24,5 +24,5 @@ master:
       right: "Block:block.html.twig"
       center: "Block:block.html.twig"
       topnav: "Block:topnavblock.html.twig"
-bootstrapPath: themes/BootstrapTheme/Resources/public/css/cerulean.min.css
+bootstrapPath: "@ZikulaBootstrapTheme:css/cerulean.min.css"
 #blockWrapping: false

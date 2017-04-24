@@ -14,11 +14,11 @@ namespace Zikula\RoutesModule\Entity\Factory\Base;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use InvalidArgumentException;
+use Zikula\RoutesModule\Entity\Factory\EntityInitialiser;
 
 /**
  * Factory class used to create entities and receive entity repositories.
- *
- * This is the base factory class.
  */
 abstract class AbstractRoutesFactory
 {
@@ -28,13 +28,20 @@ abstract class AbstractRoutesFactory
     protected $objectManager;
 
     /**
+     * @var EntityInitialiser The entity initialiser for dynamical application of default values
+     */
+    protected $entityInitialiser;
+
+    /**
      * RoutesFactory constructor.
      *
-     * @param ObjectManager $objectManager The object manager to be used for determining the repositories
+     * @param ObjectManager     $objectManager     The object manager to be used for determining the repositories
+     * @param EntityInitialiser $entityInitialiser The entity initialiser for dynamical application of default values
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ObjectManager $objectManager, EntityInitialiser $entityInitialiser)
     {
         $this->objectManager = $objectManager;
+        $this->entityInitialiser = $entityInitialiser;
     }
 
     /**
@@ -60,7 +67,48 @@ abstract class AbstractRoutesFactory
     {
         $entityClass = 'Zikula\\RoutesModule\\Entity\\RouteEntity';
 
-        return new $entityClass();
+        $entity = new $entityClass();
+
+        $this->entityInitialiser->initRoute($entity);
+
+        return $entity;
+    }
+
+    /**
+     * Gets the list of identifier fields for a given object type.
+     *
+     * @param string $objectType The object type to be treated
+     *
+     * @return array List of identifier field names
+     */
+    public function getIdFields($objectType = '')
+    {
+        if (empty($objectType)) {
+            throw new InvalidArgumentException('Invalid object type received.');
+        }
+        $entityClass = 'ZikulaRoutesModule:' . ucfirst($objectType) . 'Entity';
+    
+        $meta = $this->getObjectManager()->getClassMetadata($entityClass);
+    
+        if ($this->hasCompositeKeys($objectType)) {
+            $idFields = $meta->getIdentifierFieldNames();
+        } else {
+            $idFields = [$meta->getSingleIdentifierFieldName()];
+        }
+    
+        return $idFields;
+    }
+
+    /**
+     * Checks whether a certain entity type uses composite keys or not.
+     *
+     * @param string $objectType The object type to retrieve
+     *
+     * @return Boolean Whether composite keys are used or not
+     */
+    public function hasCompositeKeys($objectType)
+    {
+        return false;
     }
 
     /**
@@ -119,7 +167,34 @@ abstract class AbstractRoutesFactory
      */
     public function setObjectManager($objectManager)
     {
-        $this->objectManager = $objectManager;
+        if ($this->objectManager != $objectManager) {
+            $this->objectManager = $objectManager;
+        }
+    }
+    
+
+    /**
+     * Returns the entity initialiser.
+     *
+     * @return EntityInitialiser
+     */
+    public function getEntityInitialiser()
+    {
+        return $this->entityInitialiser;
+    }
+    
+    /**
+     * Sets the entity initialiser.
+     *
+     * @param EntityInitialiser $entityInitialiser
+     *
+     * @return void
+     */
+    public function setEntityInitialiser($entityInitialiser)
+    {
+        if ($this->entityInitialiser != $entityInitialiser) {
+            $this->entityInitialiser = $entityInitialiser;
+        }
     }
     
 }

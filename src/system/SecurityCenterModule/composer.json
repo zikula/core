@@ -1,6 +1,6 @@
 {
     "name": "zikula/securitycenter-module",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "description": "Security administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\SecurityCenterModule\\": "" }
     },
     "require": {
-        "php": ">5.4.0",
+        "php": ">=5.5.9",
         "phpids/phpids": "dev-master"
     },
     "extra": {
