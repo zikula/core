@@ -102,7 +102,7 @@ class SearchApiTest extends \PHPUnit_Framework_TestCase
     private function getApi()
     {
         $variableApi = $this->getMockBuilder(VariableApiInterface::class)->getMock();
-        $variableApi->method('get')->with($this->any())->willReturn(25);
+        $variableApi->method('get')->willReturnArgument(2);
         $searchResultRepo = new MockSearchResultRepository();
         $searchableModuleCollector = new SearchableModuleCollector();
         $searchableModuleCollector->add('ZikulaFooModule', new SearchableFoo());
