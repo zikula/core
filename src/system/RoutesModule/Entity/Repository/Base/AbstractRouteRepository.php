@@ -897,7 +897,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
             // you could add explicit filters at this point, something like
             // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
-            // read more at https://github.com/zikula/core/tree/1.4/src/docs/Core-2.0/FilterUtil
+            // read more at https://github.com/zikula/core/tree/1.5/src/docs/FilterUtil
     
             // now enrich the query builder
             $filterUtil->enrichQuery();

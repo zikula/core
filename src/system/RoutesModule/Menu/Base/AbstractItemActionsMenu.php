@@ -17,6 +17,7 @@ use Knp\Menu\MenuItem;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
@@ -62,7 +63,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
         $menu->setChildrenAttribute('class', 'list-inline');
 
-        $currentUserId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : 1;
+        $currentUserId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof RouteEntity) {
             $component = 'ZikulaRoutesModule:Route:';
             $instance = $entity['id'] . '::';
