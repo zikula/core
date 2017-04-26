@@ -15,6 +15,9 @@ use Zikula\Component\FilterUtil;
 
 /**
  * Simple field name replacement.
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 class ReplaceNamePlugin extends FilterUtil\AbstractPlugin implements FilterUtil\ReplaceInterface
 {

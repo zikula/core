@@ -16,6 +16,9 @@ use Zikula\Component\FilterUtil\Plugin\ComparePlugin;
 
 /**
  * Plugin manager class.
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 class PluginManager
 {

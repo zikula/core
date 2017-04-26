@@ -130,12 +130,14 @@ class MainSettingsType extends AbstractType
             ->add('profilemodule', ChoiceType::class, [
                 'label' => $this->translator->__('Module used for managing user profiles'),
                 'choices' => $options['profileModules'],
+                'choices_as_values' => true,
                 'placeholder' => $this->translator->__('No profile module'),
                 'required' => false
             ])
             ->add('messagemodule', ChoiceType::class, [
                 'label' => $this->translator->__('Module used for private messaging'),
                 'choices' => $options['messageModules'],
+                'choices_as_values' => true,
                 'placeholder' => $this->translator->__('No message module'),
                 'required' => false
             ])
