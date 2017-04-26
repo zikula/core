@@ -16,6 +16,9 @@ use Zikula\Component\FilterUtil;
 
 /**
  * Provide a set of default filter operations.
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 class ComparePlugin extends FilterUtil\AbstractBuildPlugin
 {

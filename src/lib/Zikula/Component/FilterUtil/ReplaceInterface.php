@@ -13,6 +13,9 @@ namespace Zikula\Component\FilterUtil;
 
 /**
  * FilterUtil replace interface
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 interface ReplaceInterface
 {
