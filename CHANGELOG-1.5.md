@@ -30,6 +30,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Old Workflow feature with all related classes is deprecated.
     - Deprecate \Zikula\ExtensionsModule\Api\ExtensionApi and all constants within. 
         Use \Zikula\ExtensionsModule\Constant for constant values.
+    - FilterUtil is deprecated. Use Doctrine's QueryBuilder directly instead (#3569).
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
