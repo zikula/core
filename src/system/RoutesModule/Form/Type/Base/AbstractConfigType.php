@@ -18,7 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Configuration form type base class.
@@ -28,28 +27,22 @@ abstract class AbstractConfigType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var VariableApiInterface
-     */
-    protected $variableApi;
-
-    /**
      * @var array
      */
-    protected $modVars;
+    protected $moduleVars;
 
     /**
      * ConfigType constructor.
      *
-     * @param TranslatorInterface  $translator  Translator service instance
-     * @param VariableApiInterface $variableApi VariableApi service instance
+     * @param TranslatorInterface $translator  Translator service instance
+     * @param object              $moduleVars  Existing module vars
      */
     public function __construct(
         TranslatorInterface $translator,
-        VariableApiInterface $variableApi
+        $moduleVars
     ) {
         $this->setTranslator($translator);
-        $this->variableApi = $variableApi;
-        $this->modVars = $this->variableApi->getAll('ZikulaRoutesModule');
+        $this->moduleVars = $moduleVars;
     }
 
     /**
@@ -105,7 +98,7 @@ abstract class AbstractConfigType extends AbstractType
                 ],
                 'help' => $this->__('The amount of routes shown per page'),
                 'required' => false,
-                'data' => isset($this->modVars['routeEntriesPerPage']) ? $this->modVars['routeEntriesPerPage'] : '',
+                'data' => isset($this->moduleVars['routeEntriesPerPage']) ? $this->moduleVars['routeEntriesPerPage'] : '',
                 'empty_data' => intval('10'),
                 'attr' => [
                     'maxlength' => 255,

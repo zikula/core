@@ -18,7 +18,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -52,7 +52,7 @@ abstract class AbstractWorkflowHelper
     private $currentUserApi;
 
     /**
-     * @var RoutesFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
@@ -69,7 +69,7 @@ abstract class AbstractWorkflowHelper
      * @param LoggerInterface     $logger            Logger service instance
      * @param PermissionApiInterface       $permissionApi     PermissionApi service instance
      * @param CurrentUserApiInterface $currentUserApi    CurrentUserApi service instance
-     * @param RoutesFactory $entityFactory RoutesFactory service instance
+     * @param EntityFactory       $entityFactory     EntityFactory service instance
      * @param ListEntriesHelper   $listEntriesHelper ListEntriesHelper service instance
      *
      * @return void
@@ -80,7 +80,7 @@ abstract class AbstractWorkflowHelper
         LoggerInterface $logger,
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
-        RoutesFactory $entityFactory,
+        EntityFactory $entityFactory,
         ListEntriesHelper $listEntriesHelper
     ) {
         $this->translator = $translator;
@@ -290,36 +290,4 @@ abstract class AbstractWorkflowHelper
         return (false !== $result);
     }
     
-    /**
-     * Collects amount of moderation items foreach object type.
-     *
-     * @return array List of collected amounts
-     */
-    public function collectAmountOfModerationItems()
-    {
-        $amounts = [];
-    
-        // nothing required here as no entities use enhanced workflows including approval actions
-    
-        return $amounts;
-    }
-    
-    /**
-     * Retrieves the amount of moderation items for a given object type
-     * and a certain workflow state.
-     *
-     * @param string $objectType Name of treated object type
-     * @param string $state The given state value
-     *
-     * @return integer The affected amount of objects
-     */
-    public function getAmountOfModerationItems($objectType, $state)
-    {
-        $repository = $this->entityFactory->getRepository($objectType);
-    
-        $where = 'tbl.workflowState:eq:' . $state;
-        $parameters = ['workflowState' => $state];
-    
-        return $repository->selectCount($where, false, $parameters);
-    }
 }
