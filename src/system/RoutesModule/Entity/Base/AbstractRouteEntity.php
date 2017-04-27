@@ -724,22 +724,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     
     
-    /**
-     * Returns the formatted title conforming to the display pattern
-     * specified for this entity.
-     *
-     * @return string The display title
-     */
-    public function getTitleFromDisplayPattern()
-    {
-        $formattedTitle = ''
-                . $this->getPath()
-                . ' ('
-                . $this->getSort()
-                . ')';
-    
-        return $formattedTitle;
-    }
     
     /**
      * Return entity data in JSON format.
@@ -811,7 +795,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __toString()
     {
-        return 'Route ' . $this->createCompositeIdentifier() . ': ' . $this->getTitleFromDisplayPattern();
+        return 'Route ' . $this->createCompositeIdentifier() . ': ' . $this->getReplacedRouteName();
     }
     
     /**

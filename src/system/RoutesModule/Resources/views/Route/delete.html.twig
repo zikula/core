@@ -4,7 +4,7 @@
 {% block admin_page_icon 'trash-o' %}
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-delete">
-        <p class="alert alert-warning">{{ __f('Do you really want to delete this route: "%name%" ?', {'%name%': route.getTitleFromDisplayPattern()}) }}</p>
+        <p class="alert alert-warning">{{ __f('Do you really want to delete this route: "%name%" ?', { '%name%': route|zikularoutesmodule_formattedTitle }) }}</p>
 
         {% form_theme deleteForm with [
             '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',

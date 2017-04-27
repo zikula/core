@@ -45,6 +45,6 @@ services:
         class: Zikula\RoutesModule\Form\Type\ConfigType
         arguments:
             - "@translator.default"
-            - "@zikula_extensions_module.api.variable"
+            - "@=service('zikula_extensions_module.api.variable').getAll('ZikulaRoutesModule')"
         tags:
             - { name: form.type }

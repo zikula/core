@@ -28,7 +28,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 use Zikula\RoutesModule\Helper\ModelHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
@@ -165,7 +165,7 @@ abstract class AbstractEditHandler
     protected $currentUserApi;
 
     /**
-     * @var RoutesFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
@@ -216,7 +216,7 @@ abstract class AbstractEditHandler
      * @param LoggerInterface           $logger           Logger service instance
      * @param PermissionApiInterface             $permissionApi    PermissionApi service instance
      * @param CurrentUserApiInterface   $currentUserApi   CurrentUserApi service instance
-     * @param RoutesFactory $entityFactory RoutesFactory service instance
+     * @param EntityFactory             $entityFactory    EntityFactory service instance
      * @param ControllerHelper          $controllerHelper ControllerHelper service instance
      * @param ModelHelper               $modelHelper      ModelHelper service instance
      * @param WorkflowHelper            $workflowHelper   WorkflowHelper service instance
@@ -230,7 +230,7 @@ abstract class AbstractEditHandler
         LoggerInterface $logger,
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
-        RoutesFactory $entityFactory,
+        EntityFactory $entityFactory,
         ControllerHelper $controllerHelper,
         ModelHelper $modelHelper,
         WorkflowHelper $workflowHelper

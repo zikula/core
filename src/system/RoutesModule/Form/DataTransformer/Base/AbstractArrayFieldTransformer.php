@@ -13,7 +13,6 @@
 namespace Zikula\RoutesModule\Form\DataTransformer\Base;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Array field transformer base class.

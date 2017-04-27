@@ -36,17 +36,6 @@ class RouteEntity extends BaseEntity
     const POSITION_FIXED_BOTTOM = 7;
 
     /**
-     * @inheritDoc
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        // Always add route to the end of the list.
-        $this->sort = -1;
-    }
-
-    /**
      * Returns the route's path prepended with the bundle prefix.
      *
      * @return string
