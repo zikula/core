@@ -44,6 +44,7 @@ class TwigExtension extends AbstractTwigExtension
     {
         return [
             new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from base class
+            new \Twig_SimpleFilter('zikularoutesmodule_formattedTitle', [$this, 'getFormattedEntityTitle']), // from base class
             new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString']),
             new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'])
         ];
