@@ -1,5 +1,12 @@
 services:
     # Helper classes
+    zikula_routes_module.collection_filter_helper:
+        class: Zikula\RoutesModule\Helper\CollectionFilterHelper
+        arguments:
+            - "@request_stack"
+            - "@zikula_users_module.current_user"
+            - "@=service('zikula_extensions_module.api.variable').get('ZikulaRoutesModule', 'showOnlyOwnEntries', false)"
+
     zikula_routes_module.controller_helper:
         class: Zikula\RoutesModule\Helper\ControllerHelper
         arguments:
@@ -7,7 +14,14 @@ services:
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"
             - "@zikula_routes_module.entity_factory"
+            - "@zikula_routes_module.collection_filter_helper"
             - "@zikula_routes_module.model_helper"
+
+    zikula_routes_module.entity_display_helper:
+        class: Zikula\RoutesModule\Helper\EntityDisplayHelper
+        arguments:
+            - "@translator.default"
+            - "@zikula_routes_module.listentries_helper"
 
     zikula_routes_module.listentries_helper:
         class: Zikula\RoutesModule\Helper\ListEntriesHelper

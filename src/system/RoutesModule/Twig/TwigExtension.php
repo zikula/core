@@ -54,7 +54,8 @@ class TwigExtension extends AbstractTwigExtension
      *
      * @param ContainerInterface $container
      */
-    public function setContainer(ContainerInterface $container) {
+    public function setContainer(ContainerInterface $container)
+    {
         $this->container = $container;
     }
 
