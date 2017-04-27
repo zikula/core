@@ -12,7 +12,7 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 
 /**
  * Helper base class for model layer methods.
@@ -20,16 +20,16 @@ use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 abstract class AbstractModelHelper
 {
     /**
-     * @var RoutesFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
     /**
      * ModelHelper constructor.
      *
-     * @param RoutesFactory $entityFactory RoutesFactory service instance
+     * @param EntityFactory $entityFactory EntityFactory service instance
      */
-    public function __construct(RoutesFactory $entityFactory)
+    public function __construct(EntityFactory $entityFactory)
     {
         $this->entityFactory = $entityFactory;
     }
@@ -49,8 +49,6 @@ abstract class AbstractModelHelper
      * @param string $objectType Name of treated entity type
      *
      * @return boolean Whether a new instance can be created or not
-     *
-     * @throws Exception If an invalid object type is used
      */
     public function canBeCreated($objectType)
     {
@@ -71,8 +69,6 @@ abstract class AbstractModelHelper
      * @param string $objectType Name of treated entity type
      *
      * @return boolean Whether at least one instance exists or not
-     *
-     * @throws Exception If an invalid object type is used
      */
     protected function hasExistingInstances($objectType)
     {
@@ -82,5 +78,40 @@ abstract class AbstractModelHelper
         }
     
         return $repository->selectCount() > 0;
+    }
+
+    /**
+     * Returns a desired sorting criteria for passing it to a repository method.
+     *
+     * @param string $objectType Name of treated entity type
+     * @param string $sorting    The type of sorting (newest, random, default)
+     *
+     * @return string The order by clause
+     */
+    public function resolveSortParameter($objectType = '', $sorting = 'default')
+    {
+        if ($sorting == 'random') {
+            return 'RAND()';
+        }
+    
+        $sortParam = '';
+        if ($sorting == 'newest') {
+            $idFields = $this->entityFactory->getIdFields($objectType);
+            if (count($idFields) == 1) {
+                $sortParam = $idFields[0] . ' DESC';
+            } else {
+                foreach ($idFields as $idField) {
+                    if (!empty($sortParam)) {
+                        $sortParam .= ', ';
+                    }
+                    $sortParam .= $idField . ' DESC';
+                }
+            }
+        } elseif ($sorting == 'default') {
+            $repository = $this->entityFactory->getRepository($objectType);
+            $sortParam = $repository->getDefaultSortingField() . ' ASC';
+        }
+    
+        return $sortParam;
     }
 }

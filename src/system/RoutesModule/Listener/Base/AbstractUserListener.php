@@ -19,7 +19,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\UserEvents;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 
 /**
  * Event handler base class for user-related events.
@@ -32,7 +32,7 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     protected $translator;
     
     /**
-     * @var RoutesFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
     
@@ -49,16 +49,16 @@ abstract class AbstractUserListener implements EventSubscriberInterface
     /**
      * UserListener constructor.
      *
-     * @param TranslatorInterface $translator     Translator service instance
-     * @param RoutesFactory $entityFactory RoutesFactory service instance
+     * @param TranslatorInterface $translator    Translator service instance
+     * @param EntityFactory       $entityFactory EntityFactory service instance
      * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param LoggerInterface     $logger         Logger service instance
+     * @param LoggerInterface     $logger        Logger service instance
      *
      * @return void
      */
     public function __construct(
         TranslatorInterface $translator,
-        RoutesFactory $entityFactory,
+        EntityFactory $entityFactory,
         CurrentUserApiInterface $currentUserApi,
         LoggerInterface $logger
     ) {

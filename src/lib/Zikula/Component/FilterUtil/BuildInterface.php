@@ -15,6 +15,9 @@ use Doctrine\ORM\Query\Expr\Base as BaseExpr;
 
 /**
  * FilterUtil build interface
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 interface BuildInterface
 {

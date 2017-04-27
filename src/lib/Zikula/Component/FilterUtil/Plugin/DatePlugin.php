@@ -16,6 +16,9 @@ use Zikula\Component\FilterUtil;
 
 /**
  * FilterUtil date handler plugin
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\ReplaceInterface
 {

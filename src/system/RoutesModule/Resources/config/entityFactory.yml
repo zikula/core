@@ -1,10 +1,12 @@
 services:
     # Entity factory
     zikula_routes_module.entity_factory:
-        class: Zikula\RoutesModule\Entity\Factory\RoutesFactory
+        class: Zikula\RoutesModule\Entity\Factory\EntityFactory
         arguments:
             - "@doctrine.orm.default_entity_manager"
             - "@zikula_routes_module.entity_initialiser"
+            - "@zikula_routes_module.collection_filter_helper"
+    
     # Entity initialiser
     zikula_routes_module.entity_initialiser:
         class: Zikula\RoutesModule\Entity\Factory\EntityInitialiser

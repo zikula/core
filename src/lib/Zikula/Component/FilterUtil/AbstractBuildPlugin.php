@@ -13,6 +13,9 @@ namespace Zikula\Component\FilterUtil;
 
 /**
  * Base class of all FilterUtil plugins.
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterface
 {

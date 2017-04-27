@@ -17,6 +17,9 @@ use Doctrine\ORM\QueryBuilder;
 
 /**
  * This is the configuration class for all FilterUtil classes.
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 class Config
 {

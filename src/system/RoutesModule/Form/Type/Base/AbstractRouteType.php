@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Form\Type\Field\ArrayType;
 use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Form\Type\Field\UserType;
@@ -39,7 +39,7 @@ abstract class AbstractRouteType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var RoutesFactory
+     * @var EntityFactory
      */
     protected $entityFactory;
 
@@ -52,12 +52,12 @@ abstract class AbstractRouteType extends AbstractType
      * RouteType constructor.
      *
      * @param TranslatorInterface $translator    Translator service instance
-     * @param RoutesFactory        $entityFactory Entity factory service instance
+     * @param EntityFactory       $entityFactory EntityFactory service instance
      * @param ListEntriesHelper   $listHelper    ListEntriesHelper service instance
      */
     public function __construct(
         TranslatorInterface $translator,
-        RoutesFactory $entityFactory,
+        EntityFactory $entityFactory,
         ListEntriesHelper $listHelper
     ) {
         $this->setTranslator($translator);

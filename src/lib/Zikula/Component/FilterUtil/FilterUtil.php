@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Adds a Pagesetter like filter.
+ *
+ * @deprecated as of 1.5.0
+ * @see \Doctrine\ORM\QueryBuilder
  */
 class FilterUtil
 {
