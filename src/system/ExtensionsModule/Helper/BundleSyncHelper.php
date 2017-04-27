@@ -144,6 +144,9 @@ class BundleSyncHelper
 
         $scanner = new Scanner();
         $scanner->scan($directories, 5);
+        foreach ($scanner->getInvalid() as $invalidName) {
+            $this->session->getFlashBag()->add('danger', $this->translator->__f('WARNING: %name has an invalid composer.json file which could not be decoded.', ['%name' => $invalidName]));
+        }
         $newModules = $scanner->getModulesMetaData();
 
         // scan for all bundle-type bundles (psr-0 & psr-4) in either /system or /bundles
