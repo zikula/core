@@ -32,16 +32,6 @@ use Zikula\RoutesModule\Event\FilterRouteEvent;
 abstract class AbstractEntityLifecycleListener implements EventSubscriber
 {
     /**
-     * @var EventDispatcher
-     */
-    protected $eventDispatcher;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
