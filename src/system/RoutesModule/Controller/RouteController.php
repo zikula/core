@@ -67,7 +67,7 @@ class RouteController extends AbstractRouteController
      * @inheritDoc
      *
      * @Route("/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -92,7 +92,7 @@ class RouteController extends AbstractRouteController
      * @inheritDoc
      *
      * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|kml"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -115,7 +115,7 @@ class RouteController extends AbstractRouteController
      * @inheritDoc
      *
      * @Route("/admin/route/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
+     *        requirements = {"id" = "\d+", "_format" = "html"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -138,7 +138,7 @@ class RouteController extends AbstractRouteController
      * @inheritDoc
      *
      * @Route("/route/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html|kml|ics"},
+     *        requirements = {"id" = "\d+", "_format" = "html"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )

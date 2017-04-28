@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/claviska/jquery-minicolors.git",
-                "reference": "02e68e56963efdc14b31bd6a8362c61d8de5ad5a"
+                "reference": "a1eb8807c3dba209b26cc36ad3ab1ac57f8fc39f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/02e68e56963efdc14b31bd6a8362c61d8de5ad5a",
-                "reference": "02e68e56963efdc14b31bd6a8362c61d8de5ad5a",
+                "url": "https://api.github.com/repos/claviska/jquery-minicolors/zipball/a1eb8807c3dba209b26cc36ad3ab1ac57f8fc39f",
+                "reference": "a1eb8807c3dba209b26cc36ad3ab1ac57f8fc39f",
                 "shasum": ""
             },
             "type": "component",
@@ -40,7 +40,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2017-02-22 19:07:34"
+            "time": "2017-04-21 15:55:49"
         },
         {
             "name": "afarkas/html5shiv",
@@ -565,16 +565,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804"
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/d78064c68299743e0161004f2de3a0204e33b804",
-                "reference": "d78064c68299743e0161004f2de3a0204e33b804",
+                "url": "https://api.github.com/repos/composer/installers/zipball/79ad876c7498c0bbfe7eed065b8651c93bfd6045",
+                "reference": "79ad876c7498c0bbfe7eed065b8651c93bfd6045",
                 "shasum": ""
             },
             "require": {
@@ -616,12 +616,16 @@
             "keywords": [
                 "Craft",
                 "Dolibarr",
+                "Eliasis",
                 "Hurad",
                 "ImageCMS",
+                "Kanboard",
                 "MODX Evo",
                 "Mautic",
+                "Maya",
                 "OXID",
                 "Plentymarkets",
+                "Porto",
                 "RadPHP",
                 "SMF",
                 "Thelia",
@@ -644,9 +648,11 @@
                 "fuelphp",
                 "grav",
                 "installer",
+                "itop",
                 "joomla",
                 "kohana",
                 "laravel",
+                "lavalite",
                 "lithium",
                 "magento",
                 "mako",
@@ -661,6 +667,7 @@
                 "roundcube",
                 "shopware",
                 "silverstripe",
+                "sydes",
                 "symfony",
                 "typo3",
                 "wordpress",
@@ -668,7 +675,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-08-13T20:53:52+00:00"
+            "time": "2017-04-24T06:37:16+00:00"
         },
         {
             "name": "composer/semver",
@@ -4618,12 +4625,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-                "reference": "ca453f9f13d8b05f86f20ea10be992a782e6f78c"
+                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/ca453f9f13d8b05f86f20ea10be992a782e6f78c",
-                "reference": "ca453f9f13d8b05f86f20ea10be992a782e6f78c",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
+                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
                 "shasum": ""
             },
             "require": {
@@ -4659,7 +4666,7 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2017-03-13 16:52:55"
+            "time": "2017-04-25 02:31:25"
         },
         {
             "name": "willdurand/js-translation-bundle",
@@ -4809,7 +4816,7 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.0",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
             "time": "2017-04-05T15:20:06+00:00"

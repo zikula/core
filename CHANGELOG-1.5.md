@@ -61,6 +61,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Add PageAssetApi to ease addition of page assets from controllers and non-templates.
 
  - Vendor updates:
+    - composer/installers updated from 1.2.0 to 1.3.0
     - composer/semver installed at 1.4.2
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
