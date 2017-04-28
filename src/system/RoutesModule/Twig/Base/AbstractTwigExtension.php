@@ -18,6 +18,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
+use Zikula\RoutesModule\Helper\EntityDisplayHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
 
 /**
@@ -38,6 +39,11 @@ abstract class AbstractTwigExtension extends Twig_Extension
     protected $userRepository;
     
     /**
+     * @var EntityDisplayHelper
+     */
+    protected $entityDisplayHelper;
+    
+    /**
      * @var WorkflowHelper
      */
     protected $workflowHelper;
@@ -53,6 +59,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
      * @param TranslatorInterface $translator     Translator service instance
      * @param VariableApiInterface $variableApi    VariableApi service instance
      * @param UserRepositoryInterface $userRepository UserRepository service instance
+     * @param EntityDisplayHelper $entityDisplayHelper EntityDisplayHelper service instance
      * @param WorkflowHelper      $workflowHelper WorkflowHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
      */
@@ -60,12 +67,14 @@ abstract class AbstractTwigExtension extends Twig_Extension
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         UserRepositoryInterface $userRepository,
+        EntityDisplayHelper $entityDisplayHelper,
         WorkflowHelper $workflowHelper,
         ListEntriesHelper $listHelper)
     {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
         $this->userRepository = $userRepository;
+        $this->entityDisplayHelper = $entityDisplayHelper;
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
     }
@@ -103,6 +112,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']),
+            new \Twig_SimpleFilter('zikularoutesmodule_formattedTitle', [$this, 'getFormattedEntityTitle']),
             new \Twig_SimpleFilter('zikularoutesmodule_objectState', [$this, 'getObjectState'], ['is_safe' => ['html']])
         ];
     }
@@ -198,7 +208,21 @@ abstract class AbstractTwigExtension extends Twig_Extension
     }
     
     /**
-     * Display the avatar of a user.
+     * The zikularoutesmodule_formattedTitle filter outputs a formatted title for a given entity.
+     * Example:
+     *     {{ myPost|zikularoutesmodule_formattedTitle }}
+     *
+     * @param object $entity The given entity instance
+     *
+     * @return string The formatted title
+     */
+    public function getFormattedEntityTitle($entity)
+    {
+        return $this->entityDisplayHelper->getFormattedTitle($entity);
+    }
+    
+    /**
+     * Displays the avatar of a given user.
      *
      * @param int|string $uid    The user's id or name
      * @param int        $width  Image width (optional)

@@ -59,8 +59,13 @@ function zikulaRoutesSimpleAlert(beforeElem, title, content, alertId, cssClass)
 function zikulaRoutesInitMassToggle()
 {
     if (jQuery('.zikularoutes-mass-toggle').length > 0) {
-        jQuery('.zikularoutes-mass-toggle').click(function (event) {
-            jQuery('.zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+        jQuery('.zikularoutes-mass-toggle').unbind('click').click(function (event) {
+            if (jQuery('.table.fixed-columns').length > 0) {
+                jQuery('.zikularoutes-toggle-checkbox').prop('checked', false);
+                jQuery('.table.fixed-columns .zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+            } else {
+                jQuery('.zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
+            }
         });
     }
 }
@@ -94,6 +99,7 @@ function zikulaRoutesInitFixedColumns()
             });
         }
     });
+    zikulaRoutesInitMassToggle();
 }
 
 /**

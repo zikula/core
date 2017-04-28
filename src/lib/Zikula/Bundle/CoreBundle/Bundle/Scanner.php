@@ -18,6 +18,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class Scanner
 {
     private $jsons = [];
+    private $invalid = [];
 
     /**
      * Scans and loads composer.json files.
@@ -45,6 +46,8 @@ class Scanner
             $json = $this->decode($file->getRealPath());
             if (false !== $json) {
                 $this->jsons[$json['name']] = $json;
+            } else {
+                $this->invalid[] = $file->getRelativePath();
             }
         }
     }
@@ -136,5 +139,10 @@ class Scanner
         }
 
         return $array;
+    }
+
+    public function getInvalid()
+    {
+        return $this->invalid;
     }
 }

@@ -13,11 +13,23 @@
 namespace Zikula\RoutesModule\Entity\Factory;
 
 use Zikula\RoutesModule\Entity\Factory\Base\AbstractEntityInitialiser;
+use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
  * Entity initialiser class used to dynamically apply default values to newly created entities.
  */
 class EntityInitialiser extends AbstractEntityInitialiser
 {
-    // feel free to customise the initialiser
+    /**
+     * @inheritDoc
+     */
+    public function initRoute(RouteEntity $entity)
+    {
+        $entity = parent::initRoute($entity);
+
+        // Always add route to the end of the list.
+        $entity->setSort(-1);
+
+        return $entity;
+    }
 }

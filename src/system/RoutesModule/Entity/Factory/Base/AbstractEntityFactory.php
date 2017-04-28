@@ -16,11 +16,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use InvalidArgumentException;
 use Zikula\RoutesModule\Entity\Factory\EntityInitialiser;
+use Zikula\RoutesModule\Helper\CollectionFilterHelper;
 
 /**
  * Factory class used to create entities and receive entity repositories.
  */
-abstract class AbstractRoutesFactory
+abstract class AbstractEntityFactory
 {
     /**
      * @var ObjectManager The object manager to be used for determining the repository
@@ -33,15 +34,25 @@ abstract class AbstractRoutesFactory
     protected $entityInitialiser;
 
     /**
-     * RoutesFactory constructor.
-     *
-     * @param ObjectManager     $objectManager     The object manager to be used for determining the repositories
-     * @param EntityInitialiser $entityInitialiser The entity initialiser for dynamical application of default values
+     * @var CollectionFilterHelper
      */
-    public function __construct(ObjectManager $objectManager, EntityInitialiser $entityInitialiser)
+    protected $collectionFilterHelper;
+
+    /**
+     * EntityFactory constructor.
+     *
+     * @param ObjectManager          $objectManager          The object manager to be used for determining the repositories
+     * @param EntityInitialiser      $entityInitialiser      The entity initialiser for dynamical application of default values
+     * @param CollectionFilterHelper $collectionFilterHelper CollectionFilterHelper service instance
+     */
+    public function __construct(
+        ObjectManager $objectManager,
+        EntityInitialiser $entityInitialiser,
+        CollectionFilterHelper $collectionFilterHelper)
     {
         $this->objectManager = $objectManager;
         $this->entityInitialiser = $entityInitialiser;
+        $this->collectionFilterHelper = $collectionFilterHelper;
     }
 
     /**
@@ -55,7 +66,10 @@ abstract class AbstractRoutesFactory
     {
         $entityClass = 'Zikula\\RoutesModule\\Entity\\' . ucfirst($objectType) . 'Entity';
 
-        return $this->objectManager->getRepository($entityClass);
+        $repository = $this->objectManager->getRepository($entityClass);
+        $repository->setCollectionFilterHelper($this->collectionFilterHelper);
+
+        return $repository;
     }
 
     /**

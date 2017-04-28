@@ -3,7 +3,8 @@ services:
     zikula_routes_module.entity_lifecycle_listener:
         class: Zikula\RoutesModule\Listener\EntityLifecycleListener
         arguments:
-            - "@service_container"
+            - "@event_dispatcher"
+            - "@logger"
         tags:
             - { name: doctrine.event_subscriber }
     

@@ -10,24 +10,29 @@ services:
 
     zikula_core.internal.token.storage:
         class: Zikula\Core\Token\Storage\SessionStorage
-        arguments: ["@session"]
+        arguments:
+            - "@session"
 
     zikula_core.internal.token.generator:
         class: Zikula\Core\Token\Generator
-        arguments: ["@zikula_core.internal.token.storage", "_dummy", "%zikula_core.internal.token.max_life%"]
+        arguments:
+            - "@zikula_core.internal.token.storage"
+            - "_dummy"
+            - "%zikula_core.internal.token.max_life%"
 
     zikula_core.internal.token.validator:
         class: Zikula\Core\Token\Validator
-        arguments: ["@zikula_core.internal.token.generator"]
+        arguments:
+            - "@zikula_core.internal.token.generator"
 
     zikula_core.common.csrf_token_handler:
         class: Zikula\Core\Token\CsrfTokenHandler
         arguments:
-          - "@zikula_core.internal.token.generator"
-          - "@zikula_core.internal.token.validator"
-          - "@request_stack"
-          - "@zikula_extensions_module.api.variable"
-          - "@session"
+            - "@zikula_core.internal.token.generator"
+            - "@zikula_core.internal.token.validator"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
+            - "@session"
 
     zikula_core.internal.doctrine_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\DoctrineListener
@@ -39,59 +44,77 @@ services:
 
     zikula_core.internal.clickjack_protection_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener
-        arguments: ["%security.x_frame_options%"]
+        arguments:
+            - "%security.x_frame_options%"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.site_off_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\SiteOffListener
         arguments:
-          - "@zikula_extensions_module.api.variable"
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_users_module.current_user"
-          - "@twig"
-          - "@form.factory"
-          - "@router"
-          - "%installed%"
-          - "@=container.hasParameter('core_installed_version') ? parameter('core_installed_version') : ''"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_users_module.current_user"
+            - "@twig"
+            - "@form.factory"
+            - "@router"
+            - "%installed%"
+            - "@=container.hasParameter('core_installed_version') ? parameter('core_installed_version') : ''"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.session_expire_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\SessionExpireListener
-        arguments: ["%installed%"]
+        arguments:
+            - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.exception_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\ExceptionListener
         arguments:
-          - "@router"
-          - "@event_dispatcher"
-          - "@zikula.cache_clearer"
-          - "@zikula_users_module.current_user"
-          - "%installed%"
+            - "@router"
+            - "@event_dispatcher"
+            - "@zikula.cache_clearer"
+            - "@zikula_users_module.current_user"
+            - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }
 
     zikula_core.internal.output_compression_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\OutputCompressionListener
-        arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.internal.strip_front_controller_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener
-        arguments: ["@zikula_extensions_module.api.variable", "%installed%"]
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_core.common.doctrine.schema_tool:
         class: Zikula\Core\Doctrine\Helper\SchemaHelper
         lazy: true
-        arguments: ["@doctrine.orm.default_entity_manager"]
+        arguments:
+            - "@doctrine.orm.default_entity_manager"
 
     zikula_core.internal.bootstrap_helper:
         class: Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper
-        arguments: ["@doctrine.dbal.default_connection", "@zikula.cache_clearer"]
+        arguments:
+            - "@doctrine.dbal.default_connection"
+            - "@zikula.cache_clearer"
+
+    stof_doctrine_extensions.listener.logger:
+        class: Zikula\Bundle\CoreBundle\EventListener\LoggerListener
+        arguments:
+            - "@stof_doctrine_extensions.listener.loggable"
+            - "@translator.default"
+            - "@zikula_users_module.current_user"
+        tags:
+            - { name: kernel.event_subscriber }

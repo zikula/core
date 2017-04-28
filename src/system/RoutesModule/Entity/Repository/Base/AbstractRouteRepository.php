@@ -20,13 +20,10 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Zikula\Component\FilterUtil\FilterUtil;
-use Zikula\Component\FilterUtil\Config as FilterConfig;
-use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
+use Zikula\RoutesModule\Helper\CollectionFilterHelper;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
@@ -35,17 +32,15 @@ use Zikula\RoutesModule\Entity\RouteEntity;
  */
 abstract class AbstractRouteRepository extends SortableRepository
 {
-    
     /**
      * @var string The default sorting field/expression
      */
     protected $defaultSortingField = 'sort';
 
     /**
-     * @var Request The request object given by the calling controller
+     * @var CollectionFilterHelper
      */
-    protected $request;
-    
+    protected $collectionFilterHelper = null;
 
     /**
      * Retrieves an array with all fields which can be used for sorting instances.
@@ -103,145 +98,35 @@ abstract class AbstractRouteRepository extends SortableRepository
     }
     
     /**
-     * Returns the request.
+     * Returns the collection filter helper.
      *
-     * @return Request
+     * @return CollectionFilterHelper
      */
-    public function getRequest()
+    public function getCollectionFilterHelper()
     {
-        return $this->request;
+        return $this->collectionFilterHelper;
     }
     
     /**
-     * Sets the request.
+     * Sets the collection filter helper.
      *
-     * @param Request $request
+     * @param CollectionFilterHelper $collectionFilterHelper
      *
      * @return void
      */
-    public function setRequest($request)
+    public function setCollectionFilterHelper($collectionFilterHelper)
     {
-        if ($this->request != $request) {
-            $this->request = $request;
+        if ($this->collectionFilterHelper != $collectionFilterHelper) {
+            $this->collectionFilterHelper = $collectionFilterHelper;
         }
     }
     
-
-    /**
-     * Returns name of the field used as title / name for entities of this repository.
-     *
-     * @return string Name of field to be used as title
-     */
-    public function getTitleFieldName()
-    {
-        return 'replacedRouteName';
-    }
-    
-    /**
-     * Returns name of the field used for describing entities of this repository.
-     *
-     * @return string Name of field to be used as description
-     */
-    public function getDescriptionFieldName()
-    {
-        return 'bundle';
-    }
-    
-    /**
-     * Returns name of first upload field which is capable for handling images.
-     *
-     * @return string Name of field to be used for preview images
-     */
-    public function getPreviewFieldName()
-    {
-        return '';
-    }
-    
-    /**
-     * Returns name of the date(time) field to be used for representing the start
-     * of this object. Used for providing meta data to the tag module.
-     *
-     * @return string Name of field to be used as date
-     */
-    public function getStartDateFieldName()
-    {
-        $fieldName = 'createdDate';
-    
-        return $fieldName;
-    }
-
-    /**
-     * Returns an array of additional template variables which are specific to the object type treated by this repository.
-     *
-     * @param ImageHelper $imageHelper ImageHelper service instance
-     * @param string      $context     Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
-     * @param array       $args        Additional arguments
-     *
-     * @return array List of template variables to be assigned
-     */
-    public function getAdditionalTemplateParameters($context = '', $args = [])
-    {
-        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
-            $context = 'controllerAction';
-        }
-    
-        $templateParameters = [];
-    
-        if ($context == 'controllerAction') {
-            if (!isset($args['action'])) {
-                $args['action'] = $this->getRequest()->query->getAlpha('func', 'index');
-            }
-            if (in_array($args['action'], ['index', 'view'])) {
-                $templateParameters = $this->getViewQuickNavParameters($context, $args);
-            }
-        }
-    
-        // in the concrete child class you could do something like
-        // $parameters = parent::getAdditionalTemplateParameters($context, $args);
-        // $parameters['myvar'] = 'myvalue';
-        // return $parameters;
-    
-        return $templateParameters;
-    }
-    /**
-     * Returns an array of additional template variables for view quick navigation forms.
-     *
-     * @param string $context Usage context (allowed values: controllerAction, api, actionHandler, block, contentType)
-     * @param array  $args    Additional arguments
-     *
-     * @return array List of template variables to be assigned
-     */
-    protected function getViewQuickNavParameters($context = '', $args = [])
-    {
-        if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
-            $context = 'controllerAction';
-        }
-    
-        $parameters = [];
-        $parameters['workflowState'] = $this->getRequest()->query->get('workflowState', '');
-        $parameters['routeType'] = $this->getRequest()->query->get('routeType', '');
-        $parameters['schemes'] = $this->getRequest()->query->get('schemes', '');
-        $parameters['methods'] = $this->getRequest()->query->get('methods', '');
-        $parameters['q'] = $this->getRequest()->query->get('q', '');
-        
-        $parameters['prependBundlePrefix'] = $this->getRequest()->query->get('prependBundlePrefix', '');
-        $parameters['translatable'] = $this->getRequest()->query->get('translatable', '');
-    
-        // in the concrete child class you could do something like
-        // $parameters = parent::getViewQuickNavParameters($context, $args);
-        // $parameters['myvar'] = 'myvalue';
-        // return $parameters;
-    
-        return $parameters;
-    }
 
     /**
      * Helper method for truncating the table.
      * Used during installation when inserting default data.
      *
      * @param LoggerInterface $logger Logger service instance
-     *
-     * @return void
      */
     public function truncateTable(LoggerInterface $logger)
     {
@@ -344,7 +229,6 @@ abstract class AbstractRouteRepository extends SortableRepository
            ->where('tbl.createdBy = :creator')
            ->setParameter('creator', $userId);
         $query = $qb->getQuery();
-    
         $query->execute();
     
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entities' => 'routes', 'userid' => $userId];
@@ -375,7 +259,6 @@ abstract class AbstractRouteRepository extends SortableRepository
            ->where('tbl.updatedBy = :editor')
            ->setParameter('editor', $userId);
         $query = $qb->getQuery();
-    
         $query->execute();
     
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entities' => 'routes', 'userid' => $userId];
@@ -389,6 +272,8 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param QueryBuilder $qb     Query builder to be enhanced
      *
      * @return QueryBuilder Enriched query builder instance
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
     protected function addIdListFilter($idList, QueryBuilder $qb)
     {
@@ -423,9 +308,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return array|routeEntity retrieved data array or routeEntity instance
-     *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received
+     * @return array|routeEntity Retrieved data array or routeEntity instance
      */
     public function selectById($id = 0, $useJoins = true, $slimMode = false)
     {
@@ -441,9 +324,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return ArrayCollection collection containing retrieved routeEntity instances
-     *
-     * @throws InvalidArgumentException Thrown if invalid parameters are received
+     * @return ArrayCollection Collection containing retrieved routeEntity instances
      */
     public function selectByIdList($idList = [0], $useJoins = true, $slimMode = false)
     {
@@ -483,13 +364,13 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return QueryBuilder query builder for the given arguments
+     * @return QueryBuilder Query builder for the given arguments
      */
     public function getListQueryBuilder($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
     {
         $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
-        if (!$useJoins || !$slimMode) {
-            $qb = $this->addCommonViewFilters($qb);
+        if ((!$useJoins || !$slimMode) && null !== $this->collectionFilterHelper) {
+            $qb = $this->collectionFilterHelper->addCommonViewFilters('route', $qb);
         }
     
         return $qb;
@@ -503,7 +384,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return ArrayCollection collection containing retrieved routeEntity instances
+     * @return ArrayCollection Collection containing retrieved routeEntity instances
      */
     public function selectWhere($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
     {
@@ -511,7 +392,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $query = $this->getQueryFromBuilder($qb);
     
-        return $this->retrieveCollectionResult($query, $orderBy, false);
+        return $this->retrieveCollectionResult($query, false);
     }
 
     /**
@@ -544,83 +425,14 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins       Whether to include joining related objects (optional) (default=true)
      * @param boolean $slimMode       If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return array with retrieved collection and amount of total records affected by this query
+     * @return array Retrieved collection and amount of total records affected by this query
      */
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
         $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
         $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
-        return $this->retrieveCollectionResult($query, $orderBy, true);
-    }
-    
-    /**
-     * Adds quick navigation related filter options as where clauses.
-     *
-     * @param QueryBuilder $qb Query builder to be enhanced
-     *
-     * @return QueryBuilder Enriched query builder instance
-     */
-    public function addCommonViewFilters(QueryBuilder $qb)
-    {
-        if (null === $this->getRequest()) {
-            // if no request is set we return (#433)
-            return $qb;
-        }
-    
-        $routeName = $this->getRequest()->get('_route');
-        if (false !== strpos($routeName, 'edit')) {
-            return $qb;
-        }
-    
-        $parameters = $this->getViewQuickNavParameters('', []);
-        foreach ($parameters as $k => $v) {
-            if (in_array($k, ['q', 'searchterm'])) {
-                // quick search
-                if (!empty($v)) {
-                    $qb = $this->addSearchFilter($qb, $v);
-                }
-            } elseif (in_array($k, ['prependBundlePrefix', 'translatable'])) {
-                // boolean filter
-                if ($v == 'no') {
-                    $qb->andWhere('tbl.' . $k . ' = 0');
-                } elseif ($v == 'yes' || $v == '1') {
-                    $qb->andWhere('tbl.' . $k . ' = 1');
-                }
-            } else if (!is_array($v)) {
-                // field filter
-                if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
-                    if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
-                        $qb->andWhere('tbl.' . $k . ' != :' . $k)
-                           ->setParameter($k, substr($v, 1, strlen($v)-1));
-                    } elseif (substr($v, 0, 1) == '%') {
-                        $qb->andWhere('tbl.' . $k . ' LIKE :' . $k)
-                           ->setParameter($k, '%' . $v . '%');
-                    } else {
-                        $qb->andWhere('tbl.' . $k . ' = :' . $k)
-                           ->setParameter($k, $v);
-                   }
-                }
-            }
-        }
-    
-        $qb = $this->applyDefaultFilters($qb, $parameters);
-    
-        return $qb;
-    }
-    
-    /**
-     * Adds default filters as where clauses.
-     *
-     * @param QueryBuilder $qb         Query builder to be enhanced
-     * @param array        $parameters List of determined filter options
-     *
-     * @return QueryBuilder Enriched query builder instance
-     */
-    protected function applyDefaultFilters(QueryBuilder $qb, $parameters = [])
-    {
-    
-        return $qb;
+        return $this->retrieveCollectionResult($query, true);
     }
 
     /**
@@ -633,7 +445,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param integer $resultsPerPage Amount of items to select
      * @param boolean $useJoins       Whether to include joining related objects (optional) (default=true)
      *
-     * @return array with retrieved collection and amount of total records affected by this query
+     * @return array Retrieved collection and amount of total records affected by this query
      */
     public function selectSearch($fragment = '', $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
@@ -642,78 +454,24 @@ abstract class AbstractRouteRepository extends SortableRepository
             $qb = $this->addExclusion($qb, $exclude);
         }
     
-        $qb = $this->addSearchFilter($qb, $fragment);
+        if (null !== $this->collectionFilterHelper) {
+            $qb = $this->collectionFilterHelper->addSearchFilter($qb, $fragment);
+        }
     
         $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
-        return $this->retrieveCollectionResult($query, $orderBy, true);
-    }
-    
-    /**
-     * Adds where clause for search query.
-     *
-     * @param QueryBuilder $qb       Query builder to be enhanced
-     * @param string       $fragment The fragment to search for
-     *
-     * @return QueryBuilder Enriched query builder instance
-     */
-    protected function addSearchFilter(QueryBuilder $qb, $fragment = '')
-    {
-        if ($fragment == '') {
-            return $qb;
-        }
-    
-        $filters = [];
-        $parameters = [];
-    
-        $filters[] = 'tbl.routeType = :searchRouteType';
-        $parameters['searchRouteType'] = $fragment;
-        $filters[] = 'tbl.replacedRouteName LIKE :searchReplacedRouteName';
-        $parameters['searchReplacedRouteName'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.bundle LIKE :searchBundle';
-        $parameters['searchBundle'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.controller LIKE :searchController';
-        $parameters['searchController'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.action LIKE :searchAction';
-        $parameters['searchAction'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.path LIKE :searchPath';
-        $parameters['searchPath'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.host LIKE :searchHost';
-        $parameters['searchHost'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.schemes = :searchSchemes';
-        $parameters['searchSchemes'] = $fragment;
-        $filters[] = 'tbl.methods = :searchMethods';
-        $parameters['searchMethods'] = $fragment;
-        $filters[] = 'tbl.translationPrefix LIKE :searchTranslationPrefix';
-        $parameters['searchTranslationPrefix'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.condition LIKE :searchCondition';
-        $parameters['searchCondition'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.description LIKE :searchDescription';
-        $parameters['searchDescription'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.sort = :searchSort';
-        $parameters['searchSort'] = $fragment;
-        $filters[] = 'tbl.group LIKE :searchGroup';
-        $parameters['searchGroup'] = '%' . $fragment . '%';
-    
-        $qb->andWhere('(' . implode(' OR ', $filters) . ')');
-    
-        foreach ($parameters as $parameterName => $parameterValue) {
-            $qb->setParameter($parameterName, $parameterValue);
-        }
-    
-        return $qb;
+        return $this->retrieveCollectionResult($query, true);
     }
 
     /**
      * Performs a given database selection and post-processed the results.
      *
      * @param Query   $query       The Query instance to be executed
-     * @param string  $orderBy     The order-by clause to use when retrieving the collection (optional) (default='')
      * @param boolean $isPaginated Whether the given query uses a paginator or not (optional) (default=false)
      *
-     * @return array with retrieved collection and (for paginated queries) the amount of total records affected
+     * @return array Retrieved collection and (for paginated queries) the amount of total records affected
      */
-    public function retrieveCollectionResult(Query $query, $orderBy = '', $isPaginated = false)
+    public function retrieveCollectionResult(Query $query, $isPaginated = false)
     {
         $count = 0;
         if (!$isPaginated) {
@@ -740,7 +498,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      *
      * @return QueryBuilder Created query builder instance
      */
-    protected function getCountQuery($where = '', $useJoins = false)
+    public function getCountQuery($where = '', $useJoins = false)
     {
         $selection = 'COUNT(tbl.id) AS numRoutes';
         if (true === $useJoins) {
@@ -751,15 +509,17 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb->select($selection)
            ->from('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
     
+        if (!empty($where)) {
+            $qb->andWhere($where);
+        }
+    
         if (true === $useJoins) {
             $this->addJoinsToFrom($qb);
         }
     
-        $this->genericBaseQueryAddWhere($qb, $where);
-    
         return $qb;
     }
-    
+
     /**
      * Selects entity count with a given where clause.
      *
@@ -767,13 +527,15 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins   Whether to include joining related objects (optional) (default=false)
      * @param array   $parameters List of determined filter options
      *
-     * @return integer amount of affected records
+     * @return integer Amount of affected records
      */
     public function selectCount($where = '', $useJoins = false, $parameters = [])
     {
         $qb = $this->getCountQuery($where, $useJoins);
     
-        $qb = $this->applyDefaultFilters($qb, $parameters);
+        if (null !== $this->collectionFilterHelper) {
+            $qb = $this->collectionFilterHelper->applyDefaultFilters('route', $qb, $parameters);
+        }
     
         $query = $qb->getQuery();
     
@@ -788,7 +550,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param string  $fieldValue The value of the property to be checked
      * @param integer $excludeId  Id of routes to exclude (optional)
      *
-     * @return boolean result of this check, true if the given route does not already exist
+     * @return boolean Result of this check, true if the given route does not already exist
      */
     public function detectUniqueState($fieldName, $fieldValue, $excludeId = 0)
     {
@@ -813,7 +575,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
      * @param boolean $slimMode If activated only some basic fields are selected without using any joins (optional) (default=false)
      *
-     * @return QueryBuilder query builder instance to be further processed
+     * @return QueryBuilder Query builder instance to be further processed
      */
     public function genericBaseQuery($where = '', $orderBy = '', $useJoins = true, $slimMode = false)
     {
@@ -846,76 +608,11 @@ abstract class AbstractRouteRepository extends SortableRepository
             $this->addJoinsToFrom($qb);
         }
     
-        $this->genericBaseQueryAddWhere($qb, $where);
+        if (!empty($where)) {
+            $qb->andWhere($where);
+        }
+    
         $this->genericBaseQueryAddOrderBy($qb, $orderBy);
-    
-        return $qb;
-    }
-
-    /**
-     * Adds WHERE clause to given query builder.
-     *
-     * @param QueryBuilder $qb    Given query builder instance
-     * @param string       $where The where clause to use when retrieving the collection (optional) (default='')
-     *
-     * @return QueryBuilder query builder instance to be further processed
-     */
-    protected function genericBaseQueryAddWhere(QueryBuilder $qb, $where = '')
-    {
-        if (!empty($where) || null !== $this->getRequest()) {
-            // Use FilterUtil to support generic filtering.
-    
-            // Create filter configuration.
-            $filterConfig = new FilterConfig($qb);
-    
-            // Define plugins to be used during filtering.
-            $filterPluginManager = new FilterPluginManager(
-                $filterConfig,
-    
-                // Array of plugins to load.
-                // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
-                // Multiple objects of the same plugin with different configurations are possible.
-                [
-                ],
-    
-                // Allowed operators per field.
-                // Array in the form "field name => operator array".
-                // If a field is not set in this array all operators are allowed.
-                []
-            );
-    
-            // Name of filter variable(s) (filterX).
-            $filterKey = 'filter';
-    
-            // initialise FilterUtil and assign both query builder and configuration
-            $filterUtil = new FilterUtil($filterPluginManager, $this->getRequest(), $filterKey);
-    
-            // set our given filter
-            if (!empty($where)) {
-                $filterUtil->setFilter($where);
-            }
-    
-            // you could add explicit filters at this point, something like
-            // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
-            // read more at https://github.com/zikula/core/tree/1.5/src/docs/FilterUtil
-    
-            // now enrich the query builder
-            $filterUtil->enrichQuery();
-        }
-    
-        if (null === $this->getRequest()) {
-            // if no request is set we return (#783)
-            return $qb;
-        }
-    
-        
-        $showOnlyOwnEntries = $this->getRequest()->query->getInt('own', 0);
-        if ($showOnlyOwnEntries == 1) {
-            
-            $userId = $this->getRequest()->getSession()->get('uid');
-            $qb->andWhere('tbl.createdBy = :creator')
-               ->setParameter('creator', $userId);
-        }
     
         return $qb;
     }
@@ -926,7 +623,7 @@ abstract class AbstractRouteRepository extends SortableRepository
      * @param QueryBuilder $qb      Given query builder instance
      * @param string       $orderBy The order-by clause to use when retrieving the collection (optional) (default='')
      *
-     * @return QueryBuilder query builder instance to be further processed
+     * @return QueryBuilder Query builder instance to be further processed
      */
     protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
     {
@@ -934,38 +631,43 @@ abstract class AbstractRouteRepository extends SortableRepository
             // random selection
             $qb->addSelect('MOD(tbl.id, ' . mt_rand(2, 15) . ') AS HIDDEN randomIdentifiers')
                ->add('orderBy', 'randomIdentifiers');
-            $orderBy = '';
-        } elseif (empty($orderBy)) {
+    
+            return $qb;
+        }
+    
+        if (empty($orderBy)) {
             $orderBy = $this->defaultSortingField;
         }
     
-        // add order by clause
-        if (!empty($orderBy)) {
-            if (false === strpos($orderBy, '.')) {
-                $orderBy = 'tbl.' . $orderBy;
-            }
-            if (false !== strpos($orderBy, 'tbl.createdBy')) {
-                $qb->addSelect('tblCreator')
-                   ->leftJoin('tbl.createdBy', 'tblCreator');
-                $orderBy = str_replace('tbl.createdBy', 'tblCreator.uname', $orderBy);
-            }
-            if (false !== strpos($orderBy, 'tbl.updatedBy')) {
-                $qb->addSelect('tblUpdater')
-                   ->leftJoin('tbl.updatedBy', 'tblUpdater');
-                $orderBy = str_replace('tbl.updatedBy', 'tblUpdater.uname', $orderBy);
-            }
-            $qb->add('orderBy', $orderBy);
+        if (empty($orderBy)) {
+            return $qb;
         }
+    
+        // add order by clause
+        if (false === strpos($orderBy, '.')) {
+            $orderBy = 'tbl.' . $orderBy;
+        }
+        if (false !== strpos($orderBy, 'tbl.createdBy')) {
+            $qb->addSelect('tblCreator')
+               ->leftJoin('tbl.createdBy', 'tblCreator');
+            $orderBy = str_replace('tbl.createdBy', 'tblCreator.uname', $orderBy);
+        }
+        if (false !== strpos($orderBy, 'tbl.updatedBy')) {
+            $qb->addSelect('tblUpdater')
+               ->leftJoin('tbl.updatedBy', 'tblUpdater');
+            $orderBy = str_replace('tbl.updatedBy', 'tblUpdater.uname', $orderBy);
+        }
+        $qb->add('orderBy', $orderBy);
     
         return $qb;
     }
 
     /**
-     * Retrieves Doctrine query from query builder, applying FilterUtil and other common actions.
+     * Retrieves Doctrine query from query builder.
      *
      * @param QueryBuilder $qb Query builder instance
      *
-     * @return Query query instance to be further processed
+     * @return Query Query instance to be further processed
      */
     public function getQueryFromBuilder(QueryBuilder $qb)
     {

@@ -35,6 +35,7 @@ application "Routes" {
             .travis.yml,
             CHANGELOG.md,
             Container/LinkContainer.php,
+            Entity/Factory/EntityInitialiser.php,
             Entity/Repository/RouteRepository.php,
             Entity/RouteEntity.php,
             Form/Handler/Route/EditHandler.php,
