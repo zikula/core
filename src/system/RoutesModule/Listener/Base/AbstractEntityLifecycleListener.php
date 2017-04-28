@@ -18,7 +18,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\RoutesModule\RoutesEvents;
 use Zikula\RoutesModule\Event\FilterRouteEvent;
@@ -29,7 +29,7 @@ use Zikula\RoutesModule\Event\FilterRouteEvent;
 abstract class AbstractEntityLifecycleListener implements EventSubscriber
 {
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -41,11 +41,11 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
     /**
      * EntityLifecycleListener constructor.
      *
-     * @param EventDispatcher $eventDispatcher EventDispatcher service instance
-     * @param LoggerInterface $logger          Logger service instance
+     * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
+     * @param LoggerInterface          $logger          Logger service instance
      */
     public function __construct(
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         LoggerInterface $logger)
     {
         $this->eventDispatcher = $eventDispatcher;
