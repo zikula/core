@@ -238,16 +238,6 @@ abstract class AbstractRouteController extends AbstractController
         // fetch and return the appropriate template
         $response = $this->get('zikula_routes_module.view_helper')->processTemplate($objectType, 'display', $templateParameters);
         
-        if ('ics' == $request->getRequestFormat()) {
-            $fileName = $objectType . '_' .
-                (property_exists($route, 'slug')
-                    ? $route['slug']
-                    : $this->get('zikula_routes_module.entity_display_helper')->getFormattedTitle($route)
-                ) . '.ics'
-            ;
-            $response->headers->set('Content-Disposition', 'attachment; filename=' . $fileName);
-        }
-
         return $response;
     }
     /**

@@ -164,16 +164,6 @@ abstract class AbstractViewHelper
             $response = new Response($output);
         }
     
-        // check if we need to set any custom headers
-        switch ($templateExtension) {
-            case 'ics.twig':
-                $response->headers->set('Content-Type', 'text/calendar; charset=utf-8');
-                break;
-            case 'kml.twig':
-                $response->headers->set('Content-Type', 'application/vnd.google-earth.kml+xml');
-                break;
-        }
-    
         return $response;
     }
 
@@ -215,15 +205,15 @@ abstract class AbstractViewHelper
         $hasAdminAccess = $this->permissionApi->hasPermission('ZikulaRoutesModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
-                $extensions = ['kml'];
+                $extensions = [];
             } else {
                 $extensions = [];
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = ['kml', 'ics'];
+                $extensions = [];
             } else {
-                $extensions = ['ics'];
+                $extensions = [];
             }
         }
     
