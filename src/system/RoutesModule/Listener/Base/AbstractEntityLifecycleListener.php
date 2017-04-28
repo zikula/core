@@ -31,6 +31,8 @@ use Zikula\RoutesModule\Event\FilterRouteEvent;
  */
 abstract class AbstractEntityLifecycleListener implements EventSubscriber
 {
+    use ContainerAwareTrait;
+
     /**
      * @var EventDispatcherInterface
      */
