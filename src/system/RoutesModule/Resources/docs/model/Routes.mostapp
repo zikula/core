@@ -29,6 +29,8 @@ application "Routes" {
         generateCsvTemplates false
         generateXmlTemplates false
         generateJsonTemplates false
+        generateKmlTemplates false
+        generateIcsTemplates false
         generatePoweredByBacklinksIntoFooterTemplates false
         writeModelToDocs true
         skipFiles "
