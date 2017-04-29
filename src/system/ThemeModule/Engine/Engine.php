@@ -315,7 +315,7 @@ class Engine
      * @return mixed
      * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid
      */
-    private function setActiveTheme($newThemeName = null)
+    public function setActiveTheme($newThemeName = null)
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme');
         try {

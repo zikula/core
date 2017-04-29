@@ -54,7 +54,7 @@
                     <a href="{{ path('zikulathememodule_theme_setasdefault', {"themeName":theme.name}) }}"><span class="fa fa-check tooltips" title="{{ __f('Set %theme% as site theme', {'%theme%': theme.displayname}) }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 %}
-                    <a href="{{ path('home', {"theme":theme.name}) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_preview', {"themeName":theme.name}) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 and theme.vars %}
                     <a href="{{ path('zikulathememodule_var_var', {"themeName":theme.name}) }}"><span class="fa fa-pencil tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
