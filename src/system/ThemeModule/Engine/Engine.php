@@ -365,11 +365,11 @@ class Engine
      * @return mixed
      * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid
      */
-    private function setActiveTheme($newThemeName = null)
+    public function setActiveTheme($newThemeName = null)
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme');
         $request = $this->requestStack->getMasterRequest();
-        if (isset($request)) {
+        if (empty($newThemeName) && isset($request)) {
             // This allows for setting the theme via the old method in \UserUtil::getTheme and check permissions
             // This method is @deprecated and will be removed in Core-2.0
             $themeByRequest = $request->attributes->get('_theme');

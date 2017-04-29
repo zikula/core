@@ -16,9 +16,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
@@ -43,7 +45,7 @@ class ThemeController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
@@ -64,6 +66,18 @@ class ThemeController extends AbstractController
             'themes' => $themes,
             'currenttheme' => $this->get('zikula_extensions_module.api.variable')->getSystemVar('Default_Theme')
         ];
+    }
+
+    /**
+     * @Route("/preview/{themeName}")
+     * @param $themeName
+     * @return Response
+     */
+    public function previewAction($themeName)
+    {
+        $this->get('zikula_core.common.theme_engine')->setActiveTheme($themeName);
+
+        return $this->forward('zikula_core.controller.main_controller:homeAction');
     }
 
     /**
@@ -89,7 +103,7 @@ class ThemeController extends AbstractController
      * @param Request $request
      * @param string $themeName
      *
-     * @return Response symfony response object if confirmation isn't provided
+     * @return array|RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
@@ -163,7 +177,7 @@ class ThemeController extends AbstractController
      * @param Request $request
      * @param string $themeName
      *
-     * @return Response symfony response object if confirmation isn't provided
+     * @return array|RedirectResponse
      *
      * @throws NotFoundHttpException Thrown if themename isn't provided or doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have delete permissions over the module
@@ -250,7 +264,7 @@ class ThemeController extends AbstractController
      *
      * @param string $themeName name of the theme
      *
-     * @return Response symfony response object
+     * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
