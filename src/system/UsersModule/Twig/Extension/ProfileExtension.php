@@ -74,13 +74,13 @@ class ProfileExtension extends \Twig_Extension
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
-    public function profileLinkByUserId($userId, $class = '', $image = '', $maxLength = 0)
+    public function profileLinkByUserId($userId, $class = '', $image = '', $maxLength = 0, $title = '')
     {
         if (empty($userId) || (int)$userId < 1) {
             return $userId;
         }
 
-        return $this->determineProfileLink((int)$userId, null, $class, $image, $maxLength);
+        return $this->determineProfileLink((int)$userId, null, $class, $image, $maxLength, $title);
     }
 
     /**
@@ -101,13 +101,13 @@ class ProfileExtension extends \Twig_Extension
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
-    public function profileLinkByUserName($userName, $class = '', $image = '', $maxLength = 0)
+    public function profileLinkByUserName($userName, $class = '', $image = '', $maxLength = 0, $title = '')
     {
         if (empty($userName)) {
             return $userName;
         }
 
-        return $this->determineProfileLink(null, $userName, $class, $image, $maxLength);
+        return $this->determineProfileLink(null, $userName, $class, $image, $maxLength, $title);
     }
 
     /**
@@ -120,7 +120,7 @@ class ProfileExtension extends \Twig_Extension
      * @param integer $maxLength If set then user names are truncated to x chars
      * @return string The output
      */
-    private function determineProfileLink($userId = null, $userName = null, $class = '', $imagePath = '', $maxLength = 0)
+    private function determineProfileLink($userId = null, $userName = null, $class = '', $imagePath = '', $maxLength = 0, $title = '')
     {
         if (!isset($userId) && !isset($userName)) {
             throw new \InvalidArgumentException();
@@ -152,6 +152,10 @@ class ProfileExtension extends \Twig_Extension
             return $userDisplayName;
         }
 
-        return '<a' . $class . ' title="' . ($this->translator->__('Profile')) . ': ' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';
+        if (empty($title)) {
+            $title = $this->translator->__('Profile');
+        }
+        
+        return '<a' . $class . ' title="' . ($title) . ': ' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';
     }
 }
