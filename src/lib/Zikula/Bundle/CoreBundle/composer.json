@@ -17,6 +17,7 @@
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
+        "zikula/oauth-module": "1.*",
         "zikula/pagelock-module": "1.2.*",
         "zikula/andreas08-theme": "2.*",
         "zikula/seabreeze-theme": "4.*",
@@ -61,6 +62,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/PageLock"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/zikula/OAuth"
         },
         {
             "type": "vcs",
