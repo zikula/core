@@ -155,7 +155,7 @@ class ProfileExtension extends \Twig_Extension
         if (empty($title)) {
             $title = $this->translator->__('Profile');
         }
-        
+
         return '<a' . $class . ' title="' . ($title) . ': ' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';
     }
 }
