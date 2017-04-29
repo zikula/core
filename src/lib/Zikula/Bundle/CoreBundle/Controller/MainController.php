@@ -76,7 +76,7 @@ class MainController
         parse_str($args, $attributes);
         $attributes['_controller'] = $controller;
         $subRequest = $request->duplicate(null, null, $attributes);
-        list($moduleName, , ) = explode(':', $controller);
+        list($moduleName, $controllerName, $methodName) = explode(':', $controller);
         $request->attributes->set('_zkModule', $moduleName);
 
         return $this->kernel
