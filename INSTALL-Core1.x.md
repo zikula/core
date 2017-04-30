@@ -133,6 +133,11 @@ $ php app/console zikula:install:finish
 ```
 Open your browser and login!
 
+#### Post Installation
+
+ - The default session configuration is to use files on the server. You should strongly consider using the Database.
+   This can be changed in the SecurityCenterModule under 'Session Settings'.
+
 
 <a name="final"></a>
 
