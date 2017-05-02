@@ -214,7 +214,7 @@ abstract class AbstractRouteController extends AbstractController
             throw new AccessDeniedException();
         }
         // create identifier for permission check
-        $instanceId = $route->createCompositeIdentifier();
+        $instanceId = $route->getKey();
         if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
         }
@@ -346,7 +346,7 @@ abstract class AbstractRouteController extends AbstractController
             throw new AccessDeniedException();
         }
         $logger = $this->get('logger');
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $route->createCompositeIdentifier()];
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $route->getKey()];
         
         // determine available workflow actions
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
