@@ -67,7 +67,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
         $currentUserId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof RouteEntity) {
             $component = 'ZikulaRoutesModule:Route:';
-            $instance = $entity['id'] . '::';
+            $instance = $entity->getKey() . '::';
             $routePrefix = 'zikularoutesmodule_route_';
             $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
@@ -94,7 +94,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu[$this->__('Edit')]->setLinkAttribute('title', $this->__('Edit this route'));
                 $menu->addChild($this->__('Reuse'), [
                     'route' => $routePrefix . $routeArea . 'edit',
-                    'routeParameters' => ['astemplate' => $entity['id']]
+                    'routeParameters' => ['astemplate' => $entity->getId()]
                 ])->setAttribute('icon', 'fa fa-files-o');
                 $menu[$this->__('Reuse')]->setLinkAttribute('title', $this->__('Reuse for new route'));
             }

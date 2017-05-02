@@ -36,7 +36,7 @@ abstract class AbstractCollectionFilterHelper
     protected $currentUserApi;
 
     /**
-     * @var bool
+     * @var bool Fallback value to determine whether only own entries should be selected or not
      */
     protected $showOnlyOwnEntries = false;
 
@@ -198,8 +198,13 @@ abstract class AbstractCollectionFilterHelper
      */
     protected function applyDefaultFiltersForRoute(QueryBuilder $qb, $parameters = [])
     {
-        $showOnlyOwnEntries = (bool)$this->request->query->getInt('own', $this->showOnlyOwnEntries);
+        $routeName = $this->request->get('_route');
+        $isAdminArea = false !== strpos($routeName, 'zikularoutesmodule_route_admin');
+        if ($isAdminArea) {
+            return $qb;
+        }
     
+        $showOnlyOwnEntries = (bool)$this->request->query->getInt('own', $this->showOnlyOwnEntries);
     
         if ($showOnlyOwnEntries) {
             $qb = $this->addCreatorFilter($qb);
