@@ -321,7 +321,7 @@ class AdminInterfaceController extends AbstractController
                 $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
             } catch (\Exception $e) {
                 // use default icon
-                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('/bundles/core/images/admin.png');
+                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('bundles/core/images/admin.png');
             }
 
             $module = [

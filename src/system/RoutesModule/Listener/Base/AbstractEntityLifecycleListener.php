@@ -29,7 +29,7 @@ use Zikula\RoutesModule\Event\FilterRouteEvent;
 /**
  * Event subscriber base class for entity lifecycle events.
  */
-abstract class AbstractEntityLifecycleListener implements EventSubscriber
+abstract class AbstractEntityLifecycleListener implements EventSubscriber, ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -117,11 +117,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
         }
         
         $objectType = $entity->get_objectType();
-        $objectId = $entity->createCompositeIdentifier();
-        
         
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $objectType, 'id' => $objectId];
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $objectType, 'id' => $entity->getKey()];
         $this->logger->debug('{app}: User {user} removed the {entity} with id {id}.', $logArgs);
         
         // create the filter event and dispatch it
@@ -168,9 +166,8 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
             return;
         }
         
-        $objectId = $entity->createCompositeIdentifier();
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $objectId];
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $entity->getKey()];
         $this->logger->debug('{app}: User {user} created the {entity} with id {id}.', $logArgs);
         
         // create the filter event and dispatch it
@@ -214,9 +211,8 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber
             return;
         }
         
-        $objectId = $entity->createCompositeIdentifier();
         $currentUserApi = $this->container->get('zikula_users_module.current_user');
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $objectId];
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $entity->getKey()];
         $this->logger->debug('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
         
         // create the filter event and dispatch it

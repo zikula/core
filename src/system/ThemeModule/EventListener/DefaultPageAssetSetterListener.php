@@ -114,8 +114,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->jsAssetBag->add(
             [
                 $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
-                $this->assetHelper->resolve('/bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
-                $this->assetHelper->resolve('/html5shiv/dist/html5shiv.js') => AssetBag::WEIGHT_HTML5SHIV,
+                $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
+                $this->assetHelper->resolve('html5shiv/dist/html5shiv.js') => AssetBag::WEIGHT_HTML5SHIV,
             ]
         );
         $this->addFosJsRouting();
@@ -125,7 +125,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->addBootstrapCss();
         $this->cssAssetBag->add(
             [
-                $this->assetHelper->resolve('/bundles/core/css/core.css') => 1,
+                $this->assetHelper->resolve('bundles/core/css/core.css') => 1,
             ]
         );
     }
@@ -142,21 +142,21 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addJquery()
     {
         $jquery = $this->params['env'] != 'dev' ? 'jquery.min.js' : 'jquery.js';
-        $this->jsAssetBag->add([$this->assetHelper->resolve("/jquery/$jquery") => AssetBag::WEIGHT_JQUERY]);
-        $this->jsAssetBag->add([$this->assetHelper->resolve('/bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1]);
+        $this->jsAssetBag->add([$this->assetHelper->resolve("jquery/$jquery") => AssetBag::WEIGHT_JQUERY]);
+        $this->jsAssetBag->add([$this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1]);
     }
 
     private function addFosJsRouting()
     {
         if ($this->params['env'] != 'dev' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             $this->jsAssetBag->add([
-                $this->assetHelper->resolve('/bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
-                $this->assetHelper->resolve('/js/fos_js_routes.js') => AssetBag::WEIGHT_ROUTES_JS
+                $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
+                $this->assetHelper->resolve('js/fos_js_routes.js') => AssetBag::WEIGHT_ROUTES_JS
             ]);
         } else {
             $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
             $this->jsAssetBag->add([
-                $this->assetHelper->resolve('/bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
+                $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
                 $routeScript => AssetBag::WEIGHT_ROUTES_JS
             ]);
         }
@@ -168,8 +168,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         // @todo add bundle translations? need domain name e.g. zikulapagesmodule
         $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript'], RouterInterface::ABSOLUTE_URL);
         $this->jsAssetBag->add([
-            $this->assetHelper->resolve('/bundles/bazingajstranslation/js/translator.min.js') => AssetBag::WEIGHT_JS_TRANSLATOR,
-            $this->assetHelper->resolve('/bundles/core/js/Zikula.Translator.js') => AssetBag::WEIGHT_ZIKULA_JS_TRANSLATOR,
+            $this->assetHelper->resolve('bundles/bazingajstranslation/js/translator.min.js') => AssetBag::WEIGHT_JS_TRANSLATOR,
+            $this->assetHelper->resolve('bundles/core/js/Zikula.Translator.js') => AssetBag::WEIGHT_ZIKULA_JS_TRANSLATOR,
             $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
         ]);
     }

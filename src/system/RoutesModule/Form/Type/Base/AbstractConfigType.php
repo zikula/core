@@ -98,7 +98,7 @@ abstract class AbstractConfigType extends AbstractType
                 ],
                 'help' => $this->__('The amount of routes shown per page'),
                 'required' => false,
-                'data' => isset($this->moduleVars['routeEntriesPerPage']) ? $this->moduleVars['routeEntriesPerPage'] : '',
+                'data' => isset($this->moduleVars['routeEntriesPerPage']) ? intval($this->moduleVars['routeEntriesPerPage']) : intval(10),
                 'empty_data' => intval('10'),
                 'attr' => [
                     'maxlength' => 255,

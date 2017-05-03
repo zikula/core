@@ -89,13 +89,13 @@ abstract class AbstractEntityFactory
     }
 
     /**
-     * Gets the list of identifier fields for a given object type.
+     * Returns the identifier field's name for a given object type.
      *
      * @param string $objectType The object type to be treated
      *
-     * @return array List of identifier field names
+     * @return string Primary identifier field name
      */
-    public function getIdFields($objectType = '')
+    public function getIdField($objectType = '')
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException('Invalid object type received.');
@@ -104,25 +104,7 @@ abstract class AbstractEntityFactory
     
         $meta = $this->getObjectManager()->getClassMetadata($entityClass);
     
-        if ($this->hasCompositeKeys($objectType)) {
-            $idFields = $meta->getIdentifierFieldNames();
-        } else {
-            $idFields = [$meta->getSingleIdentifierFieldName()];
-        }
-    
-        return $idFields;
-    }
-
-    /**
-     * Checks whether a certain entity type uses composite keys or not.
-     *
-     * @param string $objectType The object type to retrieve
-     *
-     * @return Boolean Whether composite keys are used or not
-     */
-    public function hasCompositeKeys($objectType)
-    {
-        return false;
+        return $meta->getSingleIdentifierFieldName();
     }
 
     /**
