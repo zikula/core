@@ -84,8 +84,8 @@ class FormDetectionListener implements EventSubscriberInterface
         // a form has been detected, add default polyfills
         $features = ['forms', 'forms-ext'];
 
-        $this->jsAssetBag->add([$this->assetHelper->resolve('/webshim/js-webshim/minified/polyfiller.js') => AssetBag::WEIGHT_JQUERY + 1]);
-        $this->jsAssetBag->add([$this->assetHelper->resolve('/bundles/core/js/polyfiller.init.js') => AssetBag::WEIGHT_JQUERY + 2]);
+        $this->jsAssetBag->add([$this->assetHelper->resolve('webshim/js-webshim/minified/polyfiller.js') => AssetBag::WEIGHT_JQUERY + 1]);
+        $this->jsAssetBag->add([$this->assetHelper->resolve('bundles/core/js/polyfiller.init.js') => AssetBag::WEIGHT_JQUERY + 2]);
 
         $existingFeatures = $this->pageVars->get('polyfill_features', []);
         $features = array_unique(array_merge($existingFeatures, $features));

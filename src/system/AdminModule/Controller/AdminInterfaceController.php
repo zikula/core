@@ -334,7 +334,7 @@ class AdminInterfaceController extends AbstractController
                 $adminIconPath = $baseUrl . ModUtil::getModuleImagePath($adminModule['name']);
                 if (empty($adminIconPath)) {
                     // use default icon - keep this (without empty test) in Core-2.0
-                    $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('/bundles/core/images/admin.png');
+                    $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('bundles/core/images/admin.png');
                 }
             }
 
