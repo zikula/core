@@ -742,15 +742,9 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function createUrlArgs()
     {
-        $args = [
+        return [
             'id' => $this->getId()
         ];
-    
-        if (property_exists($this, 'slug')) {
-            $args['slug'] = $this->getSlug();
-        }
-    
-        return $args;
     }
     
     /**
@@ -815,8 +809,11 @@ abstract class AbstractRouteEntity extends EntityAccess
     
         // otherwise proceed
     
-        // unset identifiers
+        // unset identifier
         $this->setId(0);
+    
+        // reset workflow
+        $this->setWorkflowState('initial');
     
         $this->setCreatedBy(null);
         $this->setCreatedDate(null);
