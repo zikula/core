@@ -125,6 +125,9 @@ abstract class AbstractCollectionFilterHelper
     protected function getViewQuickNavParametersForRoute($context = '', $args = [])
     {
         $parameters = [];
+        if (!is_object($this->request)) {
+            return $parameters;
+        }
     
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
         $parameters['routeType'] = $this->request->query->get('routeType', '');
@@ -157,7 +160,7 @@ abstract class AbstractCollectionFilterHelper
                 // quick search
                 if (!empty($v)) {
                     $repository = $this->entityFactory->getRepository('route');
-                    $qb = $repository->addSearchFilter($qb, $v);
+                    $qb = $repository->addSearchFilter('route', $qb, $v);
                 }
             } elseif (in_array($k, ['prependBundlePrefix', 'translatable'])) {
                 // boolean filter

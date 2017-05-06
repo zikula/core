@@ -1,0 +1,11 @@
+services:
+    zikula_routes_module.authentication_method.routes_authentication
+    class: Zikula\RoutesModule\AuthenticationMethod\RoutesAuthenticationMethod
+    arguments:
+        - "@translator.default"
+        - "@session"
+        - "@zikula_routes_module.entity_factory"
+        - "@zikula_extensions_module.api.variable"
+        - "@zikula_zauth_module.api.password"
+    tags:
+        - { name: zikula.authentication_method, alias: 'routes_authentication' }
