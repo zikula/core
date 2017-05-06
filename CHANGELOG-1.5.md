@@ -81,9 +81,9 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.7
-    - symfony updated from 2.8.17 to 2.8.19
+    - symfony updated from 2.8.17 to 2.8.20
     - symfony/security-acl update from 2.8.0 to 3.0.0
-    - symfony/workflow installed at 3.2.7
+    - symfony/workflow installed at 3.2.8
     - twig updated from 1.31.0 to 1.33.2
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed

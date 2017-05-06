@@ -168,7 +168,7 @@ abstract class AbstractRouteController extends AbstractController
     }
     /**
      * This action provides a item detail view in the admin area.
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -186,7 +186,7 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This action provides a item detail view.
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -214,7 +214,7 @@ abstract class AbstractRouteController extends AbstractController
             throw new AccessDeniedException();
         }
         // create identifier for permission check
-        $instanceId = $route->createCompositeIdentifier();
+        $instanceId = $route->getKey();
         if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', $instanceId . '::', $permLevel)) {
             throw new AccessDeniedException();
         }
@@ -298,7 +298,7 @@ abstract class AbstractRouteController extends AbstractController
     }
     /**
      * This action provides a handling of simple delete requests in the admin area.
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -317,7 +317,7 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This action provides a handling of simple delete requests.
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"id" = "id", "repository_method" = "selectById"})
+     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
      * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
@@ -346,7 +346,7 @@ abstract class AbstractRouteController extends AbstractController
             throw new AccessDeniedException();
         }
         $logger = $this->get('logger');
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $route->createCompositeIdentifier()];
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'entity' => 'route', 'id' => $route->getKey()];
         
         // determine available workflow actions
         $workflowHelper = $this->get('zikula_routes_module.workflow_helper');

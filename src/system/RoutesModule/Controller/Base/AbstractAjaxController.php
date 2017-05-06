@@ -58,6 +58,7 @@ abstract class AbstractAjaxController extends AbstractController
             }
         }
         
+        // return response
         return new JsonResponse($resultItems);
     }
 }

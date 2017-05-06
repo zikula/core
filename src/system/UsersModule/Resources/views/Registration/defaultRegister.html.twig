@@ -29,7 +29,8 @@
     </fieldset>
     {% endif %}
 
-    {% if modvars.reg_question is not empty %}
+    {% set regQuestion = getModVar('ZikulaUsersModule', 'reg_question', '') %}
+    {% if regQuestion is not empty %}
     <fieldset>
         <legend>{{ __('Answer the security question') }}</legend>
         {{ form_row(form.antispamanswer) }}

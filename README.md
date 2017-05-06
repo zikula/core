@@ -40,6 +40,7 @@ Please note:
    [the Symfony site](http://symfony.com/doc/current/cookbook/configuration/web_server_configuration.html)
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini` to 128 MB for the
    installation process.
+ - Zikula 1.x does **not** support PHP 7.
 
 
 <a name="beforeinstalling"></a>

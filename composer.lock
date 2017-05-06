@@ -4216,16 +4216,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.19",
+            "version": "v2.8.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "da35163ddb6e876bfb6054f84e02947a6e0274e3"
+                "reference": "bbe1eae0c213e45da9fb0c6abb43aff415a3dcdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/da35163ddb6e876bfb6054f84e02947a6e0274e3",
-                "reference": "da35163ddb6e876bfb6054f84e02947a6e0274e3",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/bbe1eae0c213e45da9fb0c6abb43aff415a3dcdd",
+                "reference": "bbe1eae0c213e45da9fb0c6abb43aff415a3dcdd",
                 "shasum": ""
             },
             "require": {
@@ -4349,20 +4349,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-04-05T04:05:19+00:00"
+            "time": "2017-05-01T16:14:31+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.2.7",
+            "version": "v3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "2623f9da7f13d2663f94882396eb72e1f83d3f30"
+                "reference": "edafada306398dcb6018b2936ad3f597e80562d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/2623f9da7f13d2663f94882396eb72e1f83d3f30",
-                "reference": "2623f9da7f13d2663f94882396eb72e1f83d3f30",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/edafada306398dcb6018b2936ad3f597e80562d6",
+                "reference": "edafada306398dcb6018b2936ad3f597e80562d6",
                 "shasum": ""
             },
             "require": {
@@ -4410,7 +4410,7 @@
                 "transition",
                 "workflow"
             ],
-            "time": "2017-04-05T08:00:23+00:00"
+            "time": "2017-04-12T14:14:23+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4816,7 +4816,7 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.0",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
             "time": "2017-04-05T15:20:06+00:00"

@@ -77,18 +77,18 @@ abstract class AbstractEditHandler
     protected $entityRef = null;
 
     /**
-     * List of identifier names.
+     * Name of primary identifier field.
      *
-     * @var array
+     * @var string
      */
-    protected $idFields = [];
+    protected $idField = null;
 
     /**
-     * List of identifiers of treated entity.
+     * Identifier of treated entity.
      *
-     * @var array
+     * @var integer
      */
-    protected $idValues = [];
+    protected $idValue = 0;
 
     /**
      * Code defining the redirect goal after command handling.
@@ -110,13 +110,6 @@ abstract class AbstractEditHandler
      * @var string
      */
     protected $repeatReturnUrl = null;
-
-    /**
-     * Whether an existing item is used as template for a new one.
-     *
-     * @var boolean
-     */
-    protected $hasTemplateId = false;
 
     /**
      * Whether the PageLock extension is used for this entity type or not.
@@ -293,17 +286,25 @@ abstract class AbstractEditHandler
     
         $this->permissionComponent = 'ZikulaRoutesModule:' . $this->objectTypeCapital . ':';
     
-        $this->idFields = $this->entityFactory->getIdFields($this->objectType);
+        $this->idField = $this->entityFactory->getIdField($this->objectType);
     
         // retrieve identifier of the object we wish to edit
-        $this->idValues = $this->controllerHelper->retrieveIdentifier($this->request, [], $this->objectType);
-        $hasIdentifier = $this->controllerHelper->isValidIdentifier($this->idValues);
+        $routeParams = $this->request->get('_route_params', []);
+        if (array_key_exists($this->idField, $routeParams)) {
+            $this->idValue = (int) !empty($routeParams[$this->idField]) ? $routeParams[$this->idField] : 0;
+        }
+        if (0 === $this->idValue) {
+            $this->idValue = $this->request->query->getInt($this->idField, 0);
+        }
+        if (0 === $this->idValue && $this->idField != 'id') {
+            $this->idValue = $this->request->query->getInt('id', 0);
+        }
     
         $entity = null;
-        $this->templateParameters['mode'] = $hasIdentifier ? 'edit' : 'create';
+        $this->templateParameters['mode'] = $this->idValue > 0 ? 'edit' : 'create';
     
         if ($this->templateParameters['mode'] == 'edit') {
-            if (!$this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_EDIT)) {
+            if (!$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_EDIT)) {
                 throw new AccessDeniedException();
             }
     
@@ -311,7 +312,7 @@ abstract class AbstractEditHandler
             if (null !== $entity) {
                 if (true === $this->hasPageLockSupport && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
                     // try to guarantee that only one person at a time can be editing this entity
-                    $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
+                    $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->getKey();
                     $this->lockingApi->addLock($lockName, $this->getRedirectUrl(null));
                 }
             }
@@ -349,7 +350,7 @@ abstract class AbstractEditHandler
         $actions = $this->workflowHelper->getActionsForObject($entity);
         if (false === $actions || !is_array($actions)) {
             $this->request->getSession()->getFlashBag()->add('error', $this->__('Error! Could not determine workflow actions.'));
-            $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType, 'id' => $entity->createCompositeIdentifier()];
+            $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType, 'id' => $entity->getKey()];
             $this->logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
             throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
         }
@@ -401,27 +402,6 @@ abstract class AbstractEditHandler
         return $this->templateParameters;
     }
     
-    /**
-     * Create concatenated identifier string (for composite keys).
-     *
-     * @return String concatenated identifiers
-     */
-    protected function createCompositeIdentifier()
-    {
-        $itemId = '';
-        if ($this->templateParameters['mode'] == 'create') {
-            return $itemId;
-        }
-    
-        foreach ($this->idFields as $idField) {
-            if (!empty($itemId)) {
-                $itemId .= '_';
-            }
-            $itemId .= $this->idValues[$idField];
-        }
-    
-        return $itemId;
-    }
     
     /**
      * Initialise existing entity for editing.
@@ -430,7 +410,7 @@ abstract class AbstractEditHandler
      */
     protected function initEntityForEditing()
     {
-        return $this->entityFactory->getRepository($this->objectType)->selectById($this->idValues);
+        return $this->entityFactory->getRepository($this->objectType)->selectById($this->idValue);
     }
     
     /**
@@ -440,28 +420,16 @@ abstract class AbstractEditHandler
      */
     protected function initEntityForCreation()
     {
-        $this->hasTemplateId = false;
         $templateId = $this->request->query->get('astemplate', '');
         $entity = null;
     
         if (!empty($templateId)) {
-            $templateIdValueParts = explode('_', $templateId);
-            $this->hasTemplateId = count($templateIdValueParts) == count($this->idFields);
-    
-            if (true === $this->hasTemplateId) {
-                $templateIdValues = [];
-                $i = 0;
-                foreach ($this->idFields as $idField) {
-                    $templateIdValues[$idField] = $templateIdValueParts[$i];
-                    $i++;
-                }
-                // reuse existing entity
-                $entityT = $this->entityFactory->getRepository($this->objectType)->selectById($templateIdValues);
-                if (null === $entityT) {
-                    return null;
-                }
-                $entity = clone $entityT;
+            // reuse existing entity
+            $entityT = $this->entityFactory->getRepository($this->objectType)->selectById($templateId);
+            if (null === $entityT) {
+                return null;
             }
+            $entity = clone $entityT;
         }
     
         if (null === $entity) {
@@ -524,7 +492,7 @@ abstract class AbstractEditHandler
         }
     
         if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
-            $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->createCompositeIdentifier();
+            $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->getKey();
             $this->lockingApi->releaseLock($lockName);
         }
     
@@ -586,7 +554,7 @@ abstract class AbstractEditHandler
     
         $flashType = true === $success ? 'status' : 'error';
         $this->request->getSession()->getFlashBag()->add($flashType, $message);
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->createCompositeIdentifier()];
+        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType, 'id' => $this->entityRef->getKey()];
         if (true === $success) {
             $this->logger->notice('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
         } else {

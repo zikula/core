@@ -268,7 +268,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Adds an array of id filters to given query instance.
      *
-     * @param mixed        $idList The array of ids to use to retrieve the object
+     * @param array        $idList The array of ids to use to retrieve the object
      * @param QueryBuilder $qb     Query builder to be enhanced
      *
      * @return QueryBuilder Enriched query builder instance
@@ -285,15 +285,7 @@ abstract class AbstractRouteRepository extends SortableRepository
                 throw new InvalidArgumentException('Invalid identifier received.');
             }
     
-            if (is_array($id)) {
-                $andX = $qb->expr()->andX();
-                foreach ($id as $fieldName => $fieldValue) {
-                    $andX->add($qb->expr()->eq('tbl.' . $fieldName, $fieldValue));
-                }
-                $orX->add($andX);
-            } else {
-                $orX->add($qb->expr()->eq('tbl.id', $id));
-            }
+            $orX->add($qb->expr()->eq('tbl.id', $id));
         }
     
         $qb->andWhere($orX);
@@ -455,7 +447,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         }
     
         if (null !== $this->collectionFilterHelper) {
-            $qb = $this->collectionFilterHelper->addSearchFilter($qb, $fragment);
+            $qb = $this->collectionFilterHelper->addSearchFilter('route', $qb, $fragment);
         }
     
         $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
@@ -558,7 +550,9 @@ abstract class AbstractRouteRepository extends SortableRepository
         $qb->andWhere('tbl.' . $fieldName . ' = :' . $fieldName)
            ->setParameter($fieldName, $fieldValue);
     
-        $qb = $this->addExclusion($qb, [$excludeId]);
+        if ($excludeId > 0) {
+            $qb = $this->addExclusion($qb, [$excludeId]);
+        }
     
         $query = $qb->getQuery();
     

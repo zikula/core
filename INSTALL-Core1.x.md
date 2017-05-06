@@ -52,6 +52,7 @@ Please note:
    process and if there are problems, you will be notified. If you discover errors, check with your hosting
    provider on how to rectify these issues. Typically, they will require changing the `php.ini` file or
    possibly reconfiguring the php installation by your provider.
+ - Zikula 1.x does **not** support PHP 7.
 
 
 <a name="upload"></a>
@@ -131,6 +132,11 @@ Follow the prompts and complete that step. When you are finished, you are direct
 $ php app/console zikula:install:finish
 ```
 Open your browser and login!
+
+#### Post Installation
+
+ - The default session configuration is to use files on the server. You should strongly consider using the Database.
+   This can be changed in the SecurityCenterModule under 'Session Settings'.
 
 
 <a name="final"></a>

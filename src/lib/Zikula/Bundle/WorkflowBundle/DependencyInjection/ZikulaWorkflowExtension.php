@@ -67,11 +67,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
     private function loadWorkflowDefinitions(ContainerBuilder $container)
     {
         // get all bundles
-        $bundleNames = [];
-        $bundles = $container->getParameter('kernel.bundles');
-        foreach ($bundles as $bundleName => $bundle) {
-            $bundleNames[] = $bundleName;
-        }
+        $bundleNames = array_keys($container->getParameter('kernel.bundles'));
 
         try {
             $finder = new Finder();
@@ -79,12 +75,23 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
             foreach ($finder as $file) {
                 $filePath = $file->getPath();
                 if (false !== strpos($filePath, 'modules/')) {
-                    // fallback for uninstalled modules
-                    $directoryParts = explode('/', str_replace('/Resources/workflows', '', $filePath));
-                    // @todo this does not work if the module is installed in a custom folder
-                    $moduleName = array_pop($directoryParts);
-                    $moduleName = array_pop($directoryParts) . $moduleName;
+                    // check if the module is installed and active
+                    $composerFile = str_replace('/Resources/workflows', '', $filePath) . '/composer.json';
+                    if (!file_exists($composerFile)) {
+                        // no composer file, skip the module
+                        continue;
+                    }
+                    $composerData = json_decode(file_get_contents($composerFile));
+                    if (!isset($composerData->extra) || !isset($composerData->extra->zikula) || !isset($composerData->extra->zikula->{'class'})) {
+                        // no zikula extra information, skip the module
+                        continue;
+                    }
+
+                    $moduleClass = $composerData->extra->zikula->{'class'};
+                    $moduleClassParts = explode('\\', $moduleClass);
+                    $moduleName = array_pop($moduleClassParts);
                     if (!in_array($moduleName, $bundleNames)) {
+                        // module is not active, skip it
                         continue;
                     }
                 }

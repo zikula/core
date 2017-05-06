@@ -36,7 +36,7 @@ abstract class AbstractCollectionFilterHelper
     protected $currentUserApi;
 
     /**
-     * @var bool
+     * @var bool Fallback value to determine whether only own entries should be selected or not
      */
     protected $showOnlyOwnEntries = false;
 
@@ -125,6 +125,9 @@ abstract class AbstractCollectionFilterHelper
     protected function getViewQuickNavParametersForRoute($context = '', $args = [])
     {
         $parameters = [];
+        if (!is_object($this->request)) {
+            return $parameters;
+        }
     
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
         $parameters['routeType'] = $this->request->query->get('routeType', '');
@@ -157,7 +160,7 @@ abstract class AbstractCollectionFilterHelper
                 // quick search
                 if (!empty($v)) {
                     $repository = $this->entityFactory->getRepository('route');
-                    $qb = $repository->addSearchFilter($qb, $v);
+                    $qb = $repository->addSearchFilter('route', $qb, $v);
                 }
             } elseif (in_array($k, ['prependBundlePrefix', 'translatable'])) {
                 // boolean filter
@@ -198,8 +201,13 @@ abstract class AbstractCollectionFilterHelper
      */
     protected function applyDefaultFiltersForRoute(QueryBuilder $qb, $parameters = [])
     {
-        $showOnlyOwnEntries = (bool)$this->request->query->getInt('own', $this->showOnlyOwnEntries);
+        $routeName = $this->request->get('_route');
+        $isAdminArea = false !== strpos($routeName, 'zikularoutesmodule_route_admin');
+        if ($isAdminArea) {
+            return $qb;
+        }
     
+        $showOnlyOwnEntries = (bool)$this->request->query->getInt('own', $this->showOnlyOwnEntries);
     
         if ($showOnlyOwnEntries) {
             $qb = $this->addCreatorFilter($qb);

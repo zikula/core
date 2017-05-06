@@ -73,6 +73,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
             return;
         }
     
+        $objectType = $entity->get_objectType();
         $permissionLevel = ACCESS_READ;
         $transitionName = $event->getTransition()->getName();
         if (substr($transitionName, 0, 6) == 'update') {
@@ -105,11 +106,11 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
                 break;
         }
     
-    
-        $instanceId = $entity->createCompositeIdentifier();
-        if (!$this->permissionApi->hasPermission('ZikulaRoutesModule:' . ucfirst($entity->get_objectType()) . ':', $instanceId . '::', $permissionLevel)) {
+        if (!$this->permissionApi->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', $entity->getKey() . '::', $permissionLevel)) {
             // no permission for this transition, so disallow it
             $event->setBlocked(true);
+    
+            return;
         }
     }
     

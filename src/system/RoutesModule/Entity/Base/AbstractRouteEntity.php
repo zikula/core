@@ -742,27 +742,19 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function createUrlArgs()
     {
-        $args = [];
-    
-        $args['id'] = $this['id'];
-    
-        if (property_exists($this, 'slug')) {
-            $args['slug'] = $this['slug'];
-        }
-    
-        return $args;
+        return [
+            'id' => $this->getId()
+        ];
     }
     
     /**
-     * Create concatenated identifier string (for composite keys).
+     * Returns the primary key.
      *
-     * @return String concatenated identifiers
+     * @return integer The identifier
      */
-    public function createCompositeIdentifier()
+    public function getKey()
     {
-        $itemId = $this['id'];
-    
-        return $itemId;
+        return $this->getId();
     }
     
     /**
@@ -795,7 +787,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __toString()
     {
-        return 'Route ' . $this->createCompositeIdentifier() . ': ' . $this->getReplacedRouteName();
+        return 'Route ' . $this->getKey() . ': ' . $this->getReplacedRouteName();
     }
     
     /**
@@ -811,14 +803,17 @@ abstract class AbstractRouteEntity extends EntityAccess
     public function __clone()
     {
         // if the entity has no identity do nothing, do NOT throw an exception
-        if (!($this->id)) {
+        if (!$this->id) {
             return;
         }
     
         // otherwise proceed
     
-        // unset identifiers
+        // unset identifier
         $this->setId(0);
+    
+        // reset workflow
+        $this->setWorkflowState('initial');
     
         $this->setCreatedBy(null);
         $this->setCreatedDate(null);

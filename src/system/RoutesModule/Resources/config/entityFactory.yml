@@ -11,4 +11,4 @@ services:
     zikula_routes_module.entity_initialiser:
         class: Zikula\RoutesModule\Entity\Factory\EntityInitialiser
         arguments:
-            - "@zikula_routes_module.listentries_helper"
+        - "@zikula_routes_module.listentries_helper"
