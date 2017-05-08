@@ -32,6 +32,7 @@ CHANGELOG - ZIKULA 1.5.x
         Use \Zikula\ExtensionsModule\Constant for constant values.
     - FilterUtil is deprecated. Use Doctrine's QueryBuilder directly instead (#3569).
     - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
+    - `PermissionApi::UNREGISTERED_USER` is deprecated. Use `UsersModule\Constant::USER_ID_ANONYMOUS`
     - \Zikula\Common\ClassProperties class has been deprecated.
 
  - Fixes:
@@ -45,6 +46,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Re-enabled CSRF token protection in forms in installer (#2186).
     - CategoryPermissionApi now works but implementation has changed since Core-1.3. Read the docs.
     - Fix minor display issue with admin panel menu (#3449).
+    - Fix handling of 'anonymous' user in PermissionApi (#2800). 
 
  - Features:
     - Added Permission-based controls for MenuModule menu items (#3314).

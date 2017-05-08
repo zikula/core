@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\UsersModule\Constant;
 
 /**
  * Class BlameListener overrides Stof\DoctrineExtensionsBundle\EventListener\BlameListener
@@ -63,9 +63,9 @@ class BlameListener implements EventSubscriberInterface
     {
         try {
             if (!$this->installed) {
-                $uid = 2;
+                $uid = Constant::USER_ID_ADMIN;
             } else {
-                $uid = $this->session->isStarted() ? $this->session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;
+                $uid = $this->session->isStarted() ? $this->session->get('uid', Constant::USER_ID_ANONYMOUS) : Constant::USER_ID_ANONYMOUS;
             }
             $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);
             $this->blameableListener->setUserValue($user);

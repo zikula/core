@@ -25,6 +25,7 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\GroupsModule\Constant;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
@@ -446,10 +447,9 @@ class UserAdministrationController extends AbstractController
             $userBeingModified->getGroups()->add($originalGroups[$defaultGroup]);
         }
         // current user not allowed to remove self from admin group if currently a member
-        $adminGroup = $variableApi->get('ZikulaGroupsModule', 'primaryadmingroup', 2);
-        if (isset($originalGroups[$adminGroup]) && !$userBeingModified->getGroups()->containsKey($adminGroup)) {
+        if (isset($originalGroups[Constant::GROUP_ID_ADMIN]) && !$userBeingModified->getGroups()->containsKey(Constant::GROUP_ID_ADMIN)) {
             $this->addFlash('info', $this->__('You are not allowed to remove yourself from the primary administrator group.'));
-            $userBeingModified->getGroups()->add($originalGroups[$adminGroup]);
+            $userBeingModified->getGroups()->add($originalGroups[Constant::GROUP_ID_ADMIN]);
         }
     }
 }

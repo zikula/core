@@ -1,7 +1,10 @@
 services:
     zikula_permissions_module.container.link_container:
         class: Zikula\PermissionsModule\Container\LinkContainer
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission"]
+        arguments:
+          - "@translator.default"
+          - "@router"
+          - "@zikula_permissions_module.api.permission"
         tags:
             - { name: zikula.link_container }
 
@@ -12,7 +15,11 @@ services:
 
     zikula_permissions_module.api.permission:
         class: Zikula\PermissionsModule\Api\PermissionApi
-        arguments: ["@zikula_permissions_module.permission_repository", "@zikula_users_module.user_repository", "@session", "@translator.default"]
+        arguments:
+          - "@zikula_permissions_module.permission_repository"
+          - "@zikula_users_module.user_repository"
+          - "@zikula_users_module.current_user"
+          - "@translator.default"
 
     zikula_permissions_module.helper.schema_helper:
         class: Zikula\PermissionsModule\Helper\SchemaHelper

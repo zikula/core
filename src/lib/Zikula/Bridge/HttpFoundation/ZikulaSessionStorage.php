@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Constant;
 
 /**
  * Class DoctrineSessionStorage
@@ -90,12 +91,12 @@ class ZikulaSessionStorage extends NativeSessionStorage
             $cookieExpired = $cookieLastUsed < $inactiveTime;
             $cookieAgedOut = $cookieLastUsed < $daysOldTime;
             $rememberMe = $this->getBag('attributes')->get('rememberme');
-            $uid = $this->getBag('attributes')->get('uid', 0); // @todo default to anonymous uid?
+            $uid = $this->getBag('attributes')->get('uid', Constant::USER_ID_ANONYMOUS);
             switch ($this->securityLevel) {
                 case self::SECURITY_LEVEL_LOW:
                     break;
                 case self::SECURITY_LEVEL_MEDIUM:
-                    if ((!$rememberMe && $cookieExpired) || ($cookieAgedOut) || ($uid == 0 && $cookieExpired)) {
+                    if ((!$rememberMe && $cookieExpired) || ($cookieAgedOut) || ($uid == Constant::USER_ID_ANONYMOUS && $cookieExpired)) {
                         parent::regenerate(true, 2 * 365 * 24 * 60 * 60); // two years
                     }
                     break;

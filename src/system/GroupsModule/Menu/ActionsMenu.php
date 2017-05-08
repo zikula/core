@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 
@@ -34,7 +35,6 @@ class ActionsMenu implements ContainerAwareInterface
         $this->setTranslator($this->container->get('translator.default'));
         $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
         $defaultGroup = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'defaultgroup');
-        $primaryAdminGroup = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'primaryadmingroup', 2);
         /** @var GroupEntity $group */
         $group = $options['group'];
         $gid = $group->getGid();
@@ -46,7 +46,7 @@ class ActionsMenu implements ContainerAwareInterface
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil');
         if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
-            && $gid != $defaultGroup && $gid != $primaryAdminGroup) {
+            && $gid != $defaultGroup && $gid != Constant::GROUP_ID_ADMIN) {
             $menu->addChild($this->__f('Delete ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
