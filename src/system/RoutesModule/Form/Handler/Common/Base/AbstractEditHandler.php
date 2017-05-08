@@ -88,7 +88,7 @@ abstract class AbstractEditHandler
      *
      * @var integer
      */
-    protected $idValue = '';
+    protected $idValue = 0;
 
     /**
      * Code defining the redirect goal after command handling.
@@ -291,15 +291,17 @@ abstract class AbstractEditHandler
         // retrieve identifier of the object we wish to edit
         $routeParams = $this->request->get('_route_params', []);
         if (array_key_exists($this->idField, $routeParams)) {
-            $this->idValue = (int) !empty($routeParams[$this->idField]) ? $routeParams[$this->idField] : $defaultValue;
-        } elseif ($this->request->query->has($this->idField)) {
-            $this->idValue = $this->request->query->getInt($this->idField, $defaultValue);
-        } else {
-            $this->idValue = $defaultValue;
+            $this->idValue = (int) !empty($routeParams[$this->idField]) ? $routeParams[$this->idField] : 0;
+        }
+        if (0 === $this->idValue) {
+            $this->idValue = $this->request->query->getInt($this->idField, 0);
+        }
+        if (0 === $this->idValue && $this->idField != 'id') {
+            $this->idValue = $this->request->query->getInt('id', 0);
         }
     
         $entity = null;
-        $this->templateParameters['mode'] = $this->idValue != '' ? 'edit' : 'create';
+        $this->templateParameters['mode'] = $this->idValue > 0 ? 'edit' : 'create';
     
         if ($this->templateParameters['mode'] == 'edit') {
             if (!$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_EDIT)) {
