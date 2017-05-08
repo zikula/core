@@ -131,7 +131,7 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
-        if (1 === $user->getUid()) {
+        if (UsersConstant::USER_ID_ANONYMOUS === $user->getUid()) {
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
 

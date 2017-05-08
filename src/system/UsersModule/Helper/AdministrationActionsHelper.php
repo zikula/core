@@ -78,7 +78,7 @@ class AdministrationActionsHelper
         }
         $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT);
         $hasDeletePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_DELETE);
-        if ($user->getUid() > 1 && $hasEditPermissionToUser) {
+        if ($user->getUid() > UsersConstant::USER_ID_ANONYMOUS && $hasEditPermissionToUser) {
             $actions['modify'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_modify', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Edit %sub%', ["%sub%" => $user->getUname()]),
@@ -86,7 +86,7 @@ class AdministrationActionsHelper
             ];
         }
         $isCurrentUser = $this->currentUser->get('uid') == $user->getUid();
-        if ($user->getUid() > 2 && !$isCurrentUser && $hasDeletePermissionToUser) {
+        if ($user->getUid() > UsersConstant::USER_ID_ADMIN && !$isCurrentUser && $hasDeletePermissionToUser) {
             $actions['delete'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]),
