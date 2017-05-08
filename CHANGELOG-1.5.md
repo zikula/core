@@ -32,6 +32,7 @@ CHANGELOG - ZIKULA 1.5.x
         Use \Zikula\ExtensionsModule\Constant for constant values.
     - FilterUtil is deprecated. Use Doctrine's QueryBuilder directly instead (#3569).
     - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
+    - \Zikula\Common\ClassProperties class has been deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
