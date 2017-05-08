@@ -25,8 +25,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
-use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
+use Zikula\UsersModule\Constant;
 
 /**
  * Event handler for the security center module
@@ -324,7 +324,7 @@ class FilterListener implements EventSubscriberInterface
             $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
 
             $currentPage = $request->getRequestUri();
-            $currentUid = !empty($session) ? $session->get('uid', PermissionApi::UNREGISTERED_USER) : PermissionApi::UNREGISTERED_USER;
+            $currentUid = !empty($session) ? $session->get('uid', Constant::USER_ID_ANONYMOUS) : Constant::USER_ID_ANONYMOUS;
             $currentUser = $this->em->getReference('ZikulaUsersModule:UserEntity', $currentUid);
 
             $intrusionItems = [];

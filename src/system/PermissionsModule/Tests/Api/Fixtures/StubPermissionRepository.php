@@ -11,6 +11,7 @@
 
 namespace Zikula\PermissionsModule\Tests\Api\Fixtures;
 
+use Zikula\GroupsModule\Constant;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
@@ -26,7 +27,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
     {
         $datas = [
             [
-                'gid' => 2, // 'Administrators' group
+                'gid' => Constant::GROUP_ID_ADMIN, // 2
                 'sequence' => 1,
                 'realm' => 0,
                 'component' => '.*',
@@ -44,7 +45,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'bond' => 0,
             ],
             [
-                'gid' => 1, // 'Users' group
+                'gid' => Constant::GROUP_ID_USERS, // 1
                 'sequence' => 3,
                 'realm' => 0,
                 'component' => '.*',

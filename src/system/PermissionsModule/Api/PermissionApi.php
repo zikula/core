@@ -11,10 +11,11 @@
 
 namespace Zikula\PermissionsModule\Api;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -31,16 +32,20 @@ class PermissionApi implements PermissionApiInterface
      * 'all users', includes unregistered users
      */
     const ALL_USERS = -1;
+
     /**
      * unregistered user
+     * @deprecated use Constant::USER_ID_ANONYMOUS
      */
-    const UNREGISTERED_USER = 0;
+    const UNREGISTERED_USER = Constant::USER_ID_ANONYMOUS;
+
     /**
      * 'all groups', includes unregistered users
      */
     const ALL_GROUPS = -1;
+
     /**
-     * unregistered users.
+     * pseudo group of unregistered users.
      */
     const UNREGISTERED_USER_GROUP = 0;
 
@@ -55,9 +60,9 @@ class PermissionApi implements PermissionApiInterface
     private $userRepository;
 
     /**
-     * @var SessionInterface
+     * @var CurrentUserApiInterface
      */
-    private $session;
+    private $currentUserApi;
 
     /**
      * @var \Zikula\Common\Translator\Translator
@@ -73,15 +78,19 @@ class PermissionApi implements PermissionApiInterface
     /**
      * PermissionApi constructor.
      * @param PermissionRepositoryInterface $permRepository Permission repository
-     * @param UserRepositoryInterface       $userRepository User repository
-     * @param SessionInterface              $session        Session service instance
-     * @param TranslatorInterface           $translator     Translator service instance
+     * @param UserRepositoryInterface $userRepository User repository
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param TranslatorInterface $translator Translator service instance
      */
-    public function __construct(PermissionRepositoryInterface $permRepository, UserRepositoryInterface $userRepository, SessionInterface $session, TranslatorInterface $translator)
-    {
+    public function __construct(
+        PermissionRepositoryInterface $permRepository,
+        UserRepositoryInterface $userRepository,
+        CurrentUserApiInterface $currentUserApi,
+        TranslatorInterface $translator
+    ) {
         $this->permRepository = $permRepository;
         $this->userRepository = $userRepository;
-        $this->session = $session;
+        $this->currentUserApi = $currentUserApi;
         $this->translator = $translator;
     }
 
@@ -97,8 +106,7 @@ class PermissionApi implements PermissionApiInterface
             throw new \InvalidArgumentException('User argument must be an integer.');
         }
         if (!isset($user)) {
-            $this->session->start();
-            $user = $this->session->get('uid', self::UNREGISTERED_USER);
+            $user = $this->currentUserApi->get('uid');
         }
         if (!isset($this->groupPermsByUser[$user]) || $this->groupPermsByUser[$user] === false) {
             $this->setGroupPermsForUser($user);
@@ -116,7 +124,7 @@ class PermissionApi implements PermissionApiInterface
      */
     private function setGroupPermsForUser($user)
     {
-        $user = !$user ? self::UNREGISTERED_USER : (int)$user; // convert possible boolean to integer, ensure non-bool is also integer
+        $user = !$user ? Constant::USER_ID_ANONYMOUS : (int)$user; // convert possible boolean to integer, ensure non-bool is also integer
         $uids = [self::ALL_USERS, $user]; // by default include 'all users'
 
         // Get all groups that user is in
@@ -130,7 +138,7 @@ class PermissionApi implements PermissionApiInterface
         }
 
         $defaultGids = [self::ALL_GROUPS];
-        if ($user == self::UNREGISTERED_USER) {
+        if ($user == Constant::USER_ID_ANONYMOUS) {
             $defaultGids[] = self::UNREGISTERED_USER_GROUP; // Unregistered GID
         }
         $allGroups = array_merge_recursive($defaultGids, $foundGids);
