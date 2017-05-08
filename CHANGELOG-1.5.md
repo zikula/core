@@ -33,6 +33,7 @@ CHANGELOG - ZIKULA 1.5.x
     - FilterUtil is deprecated. Use Doctrine's QueryBuilder directly instead (#3569).
     - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
     - `PermissionApi::UNREGISTERED_USER` is deprecated. Use `UsersModule\Constant::USER_ID_ANONYMOUS`
+    - \Zikula\Common\ClassProperties class has been deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.

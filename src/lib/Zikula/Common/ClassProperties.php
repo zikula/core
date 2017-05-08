@@ -28,6 +28,8 @@ namespace Zikula\Common;
  *
  * $foo = new Foo('data' => 'Hello world);
  * </samp>
+ *
+ * @deprecated remove in Core-2.0
  */
 class ClassProperties
 {
