@@ -158,7 +158,6 @@ abstract class AbstractRouteController extends AbstractController
             new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
-        $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
         
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters);
         
