@@ -169,6 +169,8 @@ abstract class AbstractControllerHelper
             $routeParams['sort'] = $sort;
             $request->attributes->set('_route_params', $routeParams);
         }
+        $sortdir = $request->query->get('sortdir', 'ASC');
+        $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
     
         $templateParameters['all'] = 'csv' == $request->getRequestFormat() ? 1 : $request->query->getInt('all', 0);
         $templateParameters['own'] = $request->query->getInt('own', $this->variableApi->get('ZikulaRoutesModule', 'showOnlyOwnEntries', 0));

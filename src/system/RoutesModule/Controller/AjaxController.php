@@ -40,6 +40,23 @@ class AjaxController extends AbstractAjaxController
     {
         return parent::getCommonUsersListAction($request);
     }
+    
+    /**
+     * Updates the sort positions for a given list of entities.
+     *
+     * @Route("/updateSortPositions", options={"expose"=true})
+     * @Method("POST")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return JsonResponse
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function updateSortPositionsAction(Request $request)
+    {
+        return parent::updateSortPositionsAction($request);
+    }
 
     // feel free to add your own ajax controller methods here
 }

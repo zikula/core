@@ -50,8 +50,8 @@ abstract class AbstractCollectionFilterHelper
     public function __construct(
         RequestStack $requestStack,
         CurrentUserApiInterface $currentUserApi,
-        $showOnlyOwnEntries)
-    {
+        $showOnlyOwnEntries
+    ) {
         $this->request = $requestStack->getCurrentRequest();
         $this->currentUserApi = $currentUserApi;
         $this->showOnlyOwnEntries = $showOnlyOwnEntries;
