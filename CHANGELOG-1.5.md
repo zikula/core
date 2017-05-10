@@ -64,6 +64,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added method to manually convert all users to new ZAuth authentication table (#3278).
     - Improved LocaleApi to localize displayed language names.
     - Add PageAssetApi to ease addition of page assets from controllers and non-templates.
+    - Added OAuthModule
 
  - Vendor updates:
     - composer/installers updated from 1.2.0 to 1.3.0
@@ -97,4 +98,5 @@ CHANGELOG - ZIKULA 1.5.x
     - wikimedia/composer-merge-plugin installed at dev-master 
     - zikula/andreas08-theme installed at 2.0.0
     - zikula/pagelock-module installed at 1.2.0
+    - zikula/oauth-module installed at 1.0.0
     - zikula/seabreeze-theme installed at 4.0.1

@@ -5375,7 +5375,7 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.0",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
             "time": "2017-04-05T15:20:06+00:00"
@@ -5713,6 +5713,67 @@
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
             "time": "2017-04-23 18:45:23"
+        },
+        {
+            "name": "zikula/oauth-module",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/OAuth.git",
+                "reference": "78eb4a2e7d5e6faad9200deb8332d8f461fa9a68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/78eb4a2e7d5e6faad9200deb8332d8f461fa9a68",
+                "reference": "78eb4a2e7d5e6faad9200deb8332d8f461fa9a68",
+                "shasum": ""
+            },
+            "require": {
+                "league/oauth2-facebook": "~1.4.1",
+                "league/oauth2-github": "~0.2.1",
+                "league/oauth2-google": "~1.0.1",
+                "league/oauth2-instagram": "~0.2.2",
+                "league/oauth2-linkedin": "~0.4.0",
+                "php": ">5.4.1"
+            },
+            "type": "zikula-module",
+            "extra": {
+                "zikula": {
+                    "core-compatibility": ">=1.4.3",
+                    "class": "Zikula\\OAuthModule\\ZikulaOAuthModule",
+                    "displayname": "OAuthModule",
+                    "capabilities": {
+                        "admin": {
+                            "route": "zikulaoauthmodule_config_settings"
+                        }
+                    },
+                    "url": "oauth",
+                    "oldnames": [],
+                    "securityschema": {
+                        "ZikulaOAuthModule::": "::"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\OAuthModule\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zikula Team",
+                    "homepage": "http://zikula.org/"
+                }
+            ],
+            "description": "Integrates league/oauth2-client and various providers.",
+            "support": {
+                "source": "https://github.com/zikula/OAuth/tree/1.0.1",
+                "issues": "https://github.com/zikula/OAuth/issues"
+            },
+            "time": "2017-05-10T21:19:54+00:00"
         },
         {
             "name": "zikula/pagelock-module",
