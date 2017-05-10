@@ -40,18 +40,26 @@ class LoggerListener extends BaseListener
     private $currentUserApi;
 
     /**
+     * @var boolean
+     */
+    private $installed;
+
+    /**
      * @param LoggableListener        $loggableListener
      * @param TranslatorInterface     $translator
      * @param CurrentUserApiInterface $currentUserApi
+     * @param boolean                 $installed
      */
     public function __construct(
         LoggableListener $loggableListener,
         TranslatorInterface $translator,
-        CurrentUserApiInterface $currentUserApi)
+        CurrentUserApiInterface $currentUserApi,
+        $installed)
     {
         $this->loggableListener = $loggableListener;
         $this->translator = $translator;
         $this->currentUserApi = $currentUserApi;
+        $this->installed = $installed;
     }
 
     /**
@@ -61,6 +69,10 @@ class LoggerListener extends BaseListener
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
+        if (!$this->installed) {
+            return;
+        }
+
         if (HttpKernelInterface::MASTER_REQUEST !== $event->getRequestType()) {
             return;
         }

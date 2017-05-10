@@ -133,5 +133,6 @@ services:
             - "@stof_doctrine_extensions.listener.loggable"
             - "@translator.default"
             - "@zikula_users_module.current_user"
+            - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
