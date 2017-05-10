@@ -301,7 +301,7 @@ abstract class AbstractEditHandler
         }
     
         $entity = null;
-        $this->templateParameters['mode'] = $this->idValue > 0 ? 'edit' : 'create';
+        $this->templateParameters['mode'] = !empty($this->idValue) ? 'edit' : 'create';
     
         if ($this->templateParameters['mode'] == 'edit') {
             if (!$this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_EDIT)) {
@@ -420,7 +420,7 @@ abstract class AbstractEditHandler
      */
     protected function initEntityForCreation()
     {
-        $templateId = $this->request->query->get('astemplate', '');
+        $templateId = $this->request->query->getInt('astemplate', '');
         $entity = null;
     
         if (!empty($templateId)) {
