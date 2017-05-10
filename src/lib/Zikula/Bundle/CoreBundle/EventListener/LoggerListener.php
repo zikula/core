@@ -54,8 +54,8 @@ class LoggerListener extends BaseListener
         LoggableListener $loggableListener,
         TranslatorInterface $translator,
         CurrentUserApiInterface $currentUserApi,
-        $installed)
-    {
+        $installed
+    ) {
         $this->loggableListener = $loggableListener;
         $this->translator = $translator;
         $this->currentUserApi = $currentUserApi;
