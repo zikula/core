@@ -18,7 +18,15 @@ for authentication credentials: username, email and password, for users that are
 are not required to be created within Zikula! (For more on this see the AuthenticationMethodInterface documentation). 
 ZAuth therefore maintains the password and provides admin and user interfaces for the management of the credentials.
 
-It should be noted that many of the settings and admin-interface controls have been relocated from Users to ZAuth. 
+It should be noted that many of the settings and admin-interface controls have been relocated from Users to ZAuth.
+
+User Types
+----------
+
+Zikula will consider all users to be within two categories: "logged in" and "not logged in" users. Logged in users can
+be granted additional rights and roles with the Permissions Module. All users utilize sessions. It is not possible to 
+visit any zikula page without beginning a session. Users that are not logged in are all considered UserId = 1. Other
+users are assigned a UID as they are created.
 
 Authentication
 --------------

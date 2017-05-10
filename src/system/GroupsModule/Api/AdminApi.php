@@ -17,6 +17,7 @@ use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use UserUtil;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Entity\GroupEntity;
 
@@ -129,8 +130,7 @@ class AdminApi
             throw new \RuntimeException($translator->__('Sorry! You cannot delete the default users group.'));
         }
 
-        $primaryadmingroupid = $variableApi->get('ZikulaGroupsModule', 'primaryadmingroup', 0);
-        if ($group['gid'] == $primaryadmingroupid) {
+        if ($group['gid'] == Constant::GROUP_ID_ADMIN) {
             throw new \RuntimeException($translator->__('Sorry! You cannot delete the primary administrators group.'));
         }
 

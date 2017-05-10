@@ -12,7 +12,10 @@
 namespace Zikula\GroupsModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Installation and upgrade routines for the groups module.
@@ -44,7 +47,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
 
         // Set the primary admin group gid as a module var so it is accessible by other modules,
         // but it should not be editable at this time. For now it is read-only.
-        $this->setVar('primaryadmingroup', 2);
+        // this var is @deprecated. the constant should be used instead
+        $this->setVar('primaryadmingroup', GroupsConstant::GROUP_ID_ADMIN);
 
         // create the default data for the modules module
         $this->defaultdata();
@@ -70,6 +74,13 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $this->setVar('hideclosed', (bool) $this->getVar('hideclosed'));
                 $this->setVar('hidePrivate', false);
             case '2.4.1':
+                /** @var UserEntity $anonymousUser */
+                $anonymousUser = $this->container->get('zikula_users_module.user_repository')->find(UsersConstant::USER_ID_ANONYMOUS);
+                $usersGroup = $this->container->get('zikula_groups_module.group_repository')->find(GroupsConstant::GROUP_ID_USERS);
+                $anonymousUser->getGroups()->removeElement($usersGroup);
+                $this->entityManager->flush($anonymousUser);
+                $this->addFlash('info', $this->__('NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.'));
+            case '2.4.2':
             // future upgrade routines
         }
 
@@ -96,24 +107,25 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
     public function defaultdata()
     {
         $records = [
-            ['name' => $this->__('Users'),
+            [
+                'gid' => GroupsConstant::GROUP_ID_USERS,
+                'name' => $this->__('Users'),
                 'description' => $this->__('By default, all users are made members of this group.'),
                 'prefix' => $this->__('usr'),
-                // Anonymous user (1), member of Users group (This is required. Handling of 'unregistered' state for
-                // permissions is handled separately.)
-                // Admin user (2), member of Users group (Not strictly necessary, but for completeness.)
-                'users' => [1, 2]
+                'users' => [UsersConstant::USER_ID_ADMIN]
             ],
-            ['name' => $this->__('Administrators'),
+            [
+                'gid' => GroupsConstant::GROUP_ID_ADMIN,
+                'name' => $this->__('Administrators'),
                 'description' => $this->__('Group of administrators of this site.'),
                 'prefix' => $this->__('adm'),
-                // Admin user (2), member of Administrators group
-                'users' => [2]
+                'users' => [UsersConstant::USER_ID_ADMIN]
             ]
         ];
 
         foreach ($records as $record) {
             $group = new GroupEntity();
+            $group->setGid($record['gid']);
             $group->setName($record['name']);
             $group->setDescription($record['description']);
             $group->setPrefix($record['prefix']);

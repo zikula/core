@@ -14,9 +14,9 @@ namespace Zikula\UsersModule\Tests\Api;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\UserAttributeEntity;
-use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Tests\Api\Fixtures\MockUserRepository;
 
 class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,12 +26,7 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
     private $session;
 
     /**
-     * @var UserEntity
-     */
-    private $user;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @var MockUserRepository
      */
     private $userRepo;
 
@@ -40,24 +35,7 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->user = new UserEntity();
-        $this->user->setUname('FooName');
-        $this->user->setEmail('foo@foo.com');
-        $this->user->setActivated(1);
-        $this->user->setAttribute('legs', 2);
-
-        $this->userRepo = $this
-            ->getMockBuilder(UserRepositoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->userRepo
-            ->method('find')
-            ->with($this->logicalNot($this->isNull()))
-            ->will($this->returnCallback(function ($uid) {
-                $this->user->setUid($uid);
-
-                return $this->user;
-            }));
+        $this->userRepo = new MockUserRepository();
         $this->session = $this
             ->getMockBuilder(SessionInterface::class)
             ->disableOriginalConstructor()
@@ -76,16 +54,16 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FooName', $api->uname());
         $this->assertEquals('foo@foo.com', $api->get('email'));
         $this->assertEquals('foo@foo.com', $api->email());
-        $this->assertEquals(1, $api->get('activated'));
+        $this->assertEquals(Constant::ACTIVATED_ACTIVE, $api->get('activated'));
         $attributes = new ArrayCollection();
-        $this->user->setUid(42);
-        $attributes->set('legs', new UserAttributeEntity($this->user, 'legs', 2));
+        $user = $this->userRepo->find(42);
+        $attributes->set('legs', new UserAttributeEntity($user, 'legs', 2));
         $this->assertEquals($attributes, $api->get('attributes'));
         $this->assertNull($api->get('foo'));
         $this->assertNull($api->foo());
     }
 
-    public function testIsNotLoggedIn()
+    public function testIsNotLoggedInNull()
     {
         $api = $this->getApi();
         $this->assertFalse($api->isLoggedIn());
@@ -93,6 +71,16 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($api->uid());
         $this->assertNull($api->get('uname'));
         $this->assertNull($api->uname());
+    }
+
+    public function testIsNotLoggedIn()
+    {
+        $api = $this->getApi(Constant::USER_ID_ANONYMOUS);
+        $this->assertFalse($api->isLoggedIn());
+        $this->assertEquals(Constant::USER_ID_ANONYMOUS, $api->get('uid'));
+        $this->assertEquals(Constant::USER_ID_ANONYMOUS, $api->uid());
+        $this->assertEquals('guest', $api->get('uname'));
+        $this->assertEquals('guest', $api->uname());
     }
 
     private function getApi($uid = null)

@@ -24,15 +24,8 @@
         "bootstrap-plus/bootstrap-media-lightbox": "3.*",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
         "dimsemenov/magnific-popup": "1.*",
-        "twitter/typeahead.js": "1.*",
         "vakata/jstree": "3.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/corejavascript/typeahead.js"
-        }
-    ],
     "extra": {
         "zikula": {
             "url": "theme",

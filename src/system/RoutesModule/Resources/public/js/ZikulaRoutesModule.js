@@ -82,7 +82,7 @@ function zikulaRoutesInitFixedColumns()
         originalTable = jQuery(this);
         fixedTableWidth = 0;
         if (originalTable.find('.fixed-column').length > 0) {
-            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns');
+            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns').removeAttr('id');
             originalTable.find('.dropdown').addClass('hidden');
             fixedColumnsTable.find('.dropdown').removeClass('hidden');
             fixedColumnsTable.css('left', originalTable.parent().position().left);
@@ -137,6 +137,49 @@ function zikulaRoutesInitItemActions(context)
     containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
 }
 
+/**
+ * Initialises reordering view entries using drag n drop.
+ */
+function zikulaRoutesInitSortable()
+{
+    if (jQuery('#sortableTable').length < 1) {
+        return;
+    }
+
+    jQuery('#sortableTable > tbody').sortable({
+        cursor: 'move',
+        handle: '.sort-handle',
+        items: '.sort-item',
+        placeholder: 'ui-state-highlight',
+        tolerance: 'pointer',
+        sort: function(event, ui) {
+            ui.item.addClass('active-item-shadow');
+        },
+        stop: function(event, ui) {
+            ui.item.removeClass('active-item-shadow');
+            zikulaRoutesInitFixedColumns();
+        },
+        update: function(event, ui) {
+            jQuery.ajax({
+                method: 'POST',
+                url: Routing.generate('zikularoutesmodule_ajax_updatesortpositions'),
+                data: {
+                    ot: jQuery('#sortableTable').data('object-type'),
+                    identifiers: jQuery(this).sortable('toArray', { attribute: 'data-item-id' }),
+                    min: jQuery('#sortableTable').data('min'),
+                    max: jQuery('#sortableTable').data('max')
+                }/*,
+                success: function(data) {
+                    if (data.message) {
+                        zikulaRoutesSimpleAlert(jQuery('#sortableTable'), Translator.__('Success'), data.message, 'sortingDoneAlert', 'success');
+                    }
+            	}*/
+            });
+        }
+    });
+    jQuery('#sortableTable').disableSelection();
+}
+
 jQuery(document).ready(function() {
     var isViewPage;
     var isDisplayPage;
@@ -151,6 +194,7 @@ jQuery(document).ready(function() {
         zikulaRoutesInitFixedColumns();
         window.setTimeout(zikulaRoutesInitFixedColumns, 1000);
         zikulaRoutesInitItemActions('view');
+        zikulaRoutesInitSortable();
     } else if (isDisplayPage) {
         zikulaRoutesInitItemActions('display');
     }

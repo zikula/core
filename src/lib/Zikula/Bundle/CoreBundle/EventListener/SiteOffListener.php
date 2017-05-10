@@ -73,8 +73,8 @@ class SiteOffListener implements EventSubscriberInterface
      * @param \Twig_Environment $twig
      * @param FormFactory $formFactory
      * @param RouterInterface $router
-     * @param $installed
-     * @param $currentInstalledVersion
+     * @param boolean $installed
+     * @param string $currentInstalledVersion
      */
     public function __construct(
         VariableApiInterface $variableApi,

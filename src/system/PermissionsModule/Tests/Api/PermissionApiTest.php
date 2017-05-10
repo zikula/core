@@ -11,20 +11,27 @@
 
 namespace Zikula\PermissionsModule\Tests\Api;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant;
 
 class PermissionApiTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * for testing purposes only.
+     */
+    const RANDOM_USER_ID = 99;
+
     private $permRepo;
 
     private $user;
 
     private $userRepo;
 
-    private $session;
+    private $currentUserApi;
 
     /**
      * @var IdentityTranslator
@@ -48,12 +55,13 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
         $this->userRepo
             ->method('findByUids')
             ->with($this->anything())
-            ->will($this->returnCallback(function (array $uids) /*use ($user)*/ {
-                $groups = [PermissionApi::UNREGISTERED_USER_GROUP => []];
-                if (in_array(1, $uids)) { // guest
-                    $groups = [1 => []]; // gid => $group
-                } elseif (in_array(2, $uids)) { // admin
-                    $groups = [1 => [], 2 => []]; // gid => $group
+            ->will($this->returnCallback(function (array $uids) {
+                $groups = [];
+                // getGroups returns [gid => $group, gid => $group, ...]
+                if (in_array(self::RANDOM_USER_ID, $uids)) {
+                    $groups = [GroupsConstant::GROUP_ID_USERS => []];
+                } elseif (in_array(Constant::USER_ID_ADMIN, $uids)) {
+                    $groups = [GroupsConstant::GROUP_ID_USERS => [], GroupsConstant::GROUP_ID_ADMIN => []];
                 }
                 $this->user
                     ->method('getGroups')
@@ -61,8 +69,8 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
 
                 return [$this->user]; // must return an array of users.
             }));
-        $this->session = $this
-            ->getMockBuilder(SessionInterface::class)
+        $this->currentUserApi = $this
+            ->getMockBuilder(CurrentUserApiInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->translator = new IdentityTranslator();
@@ -86,60 +94,60 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       PermissionApi::setGroupPermsForUser
+     * @covers PermissionApi::setGroupPermsForUser
      * @dataProvider permProvider
      */
     public function testSetGroupPermsForUser($uid, $perms)
     {
-        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $this->invokeMethod($api, 'setGroupPermsForUser', [$uid]);
         $this->assertEquals($perms, $api->getGroupPerms($uid));
     }
 
     /**
-     * @covers       PermissionApi::getSecurityLevel
+     * @covers PermissionApi::getSecurityLevel
      * @dataProvider secLevelProvider
      */
     public function testGetSecurityLevel($uid, $component, $instance, $expectedLevel)
     {
-        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $this->invokeMethod($api, 'setGroupPermsForUser', [$uid]);
         $perms = $api->getGroupPerms($uid);
         $this->assertEquals($expectedLevel, $this->invokeMethod($api, 'getSecurityLevel', [$perms, $component, $instance]));
     }
 
     /**
-     * @covers       PermissionApi::hasPermission
+     * @covers PermissionApi::hasPermission
      * @dataProvider uidProvider
      */
     public function testHasPermission($component, $instance, $level, $uid, $result)
     {
-        $this->session
+        $this->currentUserApi
             ->method('get')
             ->with($this->equalTo('uid'))
             ->will($this->returnCallback(function () use ($uid) {
-                return isset($uid) ? $uid : false; // when no uid is available, Zikula_Session::get() returns `false`
+                return isset($uid) ? $uid : Constant::USER_ID_ANONYMOUS;
             }));
-        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $this->assertEquals($result, $api->hasPermission($component, $instance, $level, $uid));
     }
 
     /**
-     * @covers       PermissionApi::accessLevelNames
+     * @covers PermissionApi::accessLevelNames
      * @dataProvider accessLevelNamesProvider
      */
     public function testAccessLevelNames($expectedText, $level)
     {
-        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $this->assertEquals($expectedText, $api->accessLevelNames($level));
     }
 
     /**
-     * @covers      PermissionApi::accessLevelNames()
+     * @covers PermissionApi::accessLevelNames()
      */
     public function testAccessLevelArray()
     {
-        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $accessNames = [
             ACCESS_INVALID => $this->translator->__('Invalid'),
             ACCESS_NONE => $this->translator->__('No access'),
@@ -156,19 +164,19 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers      PermissionApi::accessLevelNames()
+     * @covers PermissionApi::accessLevelNames()
      * @expectedException \InvalidArgumentException
      */
     public function testAccessLevelException()
     {
-        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->session, $this->translator);
+        $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $api->accessLevelNames('foo');
     }
 
     public function permProvider()
     {
         return [
-            [2/* SITE ADMIN */, [
+            [Constant::USER_ID_ADMIN, [
                 ['component' => '.*',
                     'instance' => '.*',
                     'level' => ACCESS_ADMIN],
@@ -179,29 +187,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
                     'instance' => '.*',
                     'level' => ACCESS_COMMENT],
             ]],
-            [PermissionApi::UNREGISTERED_USER, [
-                ['component' => 'ExtendedMenublock:.*:.*',
-                    'instance' => '1:1:.*',
-                    'level' => ACCESS_NONE],
-                ['component' => 'ExtendedMenublock:.*:.*',
-                    'instance' => '1:(1|2|3):.*',
-                    'level' => ACCESS_NONE],
-                ['component' => '.*',
-                    'instance' => '.*',
-                    'level' => ACCESS_READ],
-            ]],
-            [99/* Random UID */, [
-                ['component' => 'ExtendedMenublock:.*:.*',
-                    'instance' => '1:1:.*',
-                    'level' => ACCESS_NONE],
-                ['component' => 'ExtendedMenublock:.*:.*',
-                    'instance' => '1:(1|2|3):.*',
-                    'level' => ACCESS_NONE],
-                ['component' => '.*',
-                    'instance' => '.*',
-                    'level' => ACCESS_READ],
-            ]],
-            [1/* GUEST */, [
+            [self::RANDOM_USER_ID, [
                 ['component' => 'ExtendedMenublock:.*:.*',
                     'instance' => '1:1:.*',
                     'level' => ACCESS_NONE],
@@ -209,172 +195,144 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
                     'instance' => '.*',
                     'level' => ACCESS_COMMENT],
             ]],
+            [Constant::USER_ID_ANONYMOUS, [
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:1:.*',
+                    'level' => ACCESS_NONE],
+                ['component' => 'ExtendedMenublock:.*:.*',
+                    'instance' => '1:(1|2|3):.*',
+                    'level' => ACCESS_NONE],
+                ['component' => '.*',
+                    'instance' => '.*',
+                    'level' => ACCESS_READ],
+            ]],
         ];
     }
 
     public function secLevelProvider()
     {
         return [
-            [2, '.*', '.*', ACCESS_ADMIN],
-            [1, '.*', '.*', ACCESS_COMMENT],
-            [PermissionApi::UNREGISTERED_USER, '.*', '.*', ACCESS_READ],
+            [Constant::USER_ID_ADMIN, '.*', '.*', ACCESS_ADMIN],
+            [Constant::USER_ID_ANONYMOUS, '.*', '.*', ACCESS_READ],
 
-            [2, 'ExtendedMenublock::', '1:1:', ACCESS_ADMIN],
-            [1, 'ExtendedMenublock::', '1:1:', ACCESS_NONE],
-            [PermissionApi::UNREGISTERED_USER, 'ExtendedMenublock::', '1:1:', ACCESS_NONE],
+            [Constant::USER_ID_ADMIN, 'ExtendedMenublock::', '1:1:', ACCESS_ADMIN],
+            [Constant::USER_ID_ANONYMOUS, 'ExtendedMenublock::', '1:1:', ACCESS_NONE],
 
-            [2, 'ExtendedMenublock::', '1:2:', ACCESS_ADMIN],
-            [1, 'ExtendedMenublock::', '1:2:', ACCESS_COMMENT],
-            [PermissionApi::UNREGISTERED_USER, 'ExtendedMenublock::', '1:2:', ACCESS_NONE],
+            [Constant::USER_ID_ADMIN, 'ExtendedMenublock::', '1:2:', ACCESS_ADMIN],
+            [Constant::USER_ID_ANONYMOUS, 'ExtendedMenublock::', '1:2:', ACCESS_NONE],
         ];
     }
 
     public function uidProvider()
     {
         return [
-            ['.*', '.*', ACCESS_OVERVIEW, 2, true],
-            ['.*', '.*', ACCESS_READ, 2, true],
-            ['.*', '.*', ACCESS_COMMENT, 2, true],
-            ['.*', '.*', ACCESS_MODERATE, 2, true],
-            ['.*', '.*', ACCESS_EDIT, 2, true],
-            ['.*', '.*', ACCESS_ADD, 2, true],
-            ['.*', '.*', ACCESS_DELETE, 2, true],
-            ['.*', '.*', ACCESS_ADMIN, 2, true],
+            ['.*', '.*', ACCESS_OVERVIEW, Constant::USER_ID_ADMIN, true], // #0
+            ['.*', '.*', ACCESS_READ, Constant::USER_ID_ADMIN, true],
+            ['.*', '.*', ACCESS_COMMENT, Constant::USER_ID_ADMIN, true],
+            ['.*', '.*', ACCESS_MODERATE, Constant::USER_ID_ADMIN, true],
+            ['.*', '.*', ACCESS_EDIT, Constant::USER_ID_ADMIN, true],
+            ['.*', '.*', ACCESS_ADD, Constant::USER_ID_ADMIN, true],
+            ['.*', '.*', ACCESS_DELETE, Constant::USER_ID_ADMIN, true],
+            ['.*', '.*', ACCESS_ADMIN, Constant::USER_ID_ADMIN, true],
 
-            ['.*', '.*', ACCESS_OVERVIEW, 1, true],
-            ['.*', '.*', ACCESS_READ, 1, true],
-            ['.*', '.*', ACCESS_COMMENT, 1, true],
-            ['.*', '.*', ACCESS_MODERATE, 1, false],
-            ['.*', '.*', ACCESS_EDIT, 1, false],
-            ['.*', '.*', ACCESS_ADD, 1, false],
-            ['.*', '.*', ACCESS_DELETE, 1, false],
-            ['.*', '.*', ACCESS_ADMIN, 1, false],
+            ['.*', '.*', ACCESS_OVERVIEW, Constant::USER_ID_ANONYMOUS, true], // #8
+            ['.*', '.*', ACCESS_READ, Constant::USER_ID_ANONYMOUS, true],
+            ['.*', '.*', ACCESS_COMMENT, Constant::USER_ID_ANONYMOUS, false],
+            ['.*', '.*', ACCESS_MODERATE, Constant::USER_ID_ANONYMOUS, false],
+            ['.*', '.*', ACCESS_EDIT, Constant::USER_ID_ANONYMOUS, false],
+            ['.*', '.*', ACCESS_ADD, Constant::USER_ID_ANONYMOUS, false],
+            ['.*', '.*', ACCESS_DELETE, Constant::USER_ID_ANONYMOUS, false],
+            ['.*', '.*', ACCESS_ADMIN, Constant::USER_ID_ANONYMOUS, false],
 
-            ['.*', '.*', ACCESS_OVERVIEW, null, true],
-            ['.*', '.*', ACCESS_READ, null, true],
-            ['.*', '.*', ACCESS_COMMENT, null, false],
-            ['.*', '.*', ACCESS_MODERATE, null, false],
-            ['.*', '.*', ACCESS_EDIT, null, false],
-            ['.*', '.*', ACCESS_ADD, null, false],
-            ['.*', '.*', ACCESS_DELETE, null, false],
-            ['.*', '.*', ACCESS_ADMIN, null, false],
+            ['.*', '.*', ACCESS_OVERVIEW, self::RANDOM_USER_ID, true], // #16
+            ['.*', '.*', ACCESS_READ, self::RANDOM_USER_ID, true],
+            ['.*', '.*', ACCESS_COMMENT, self::RANDOM_USER_ID, true],
+            ['.*', '.*', ACCESS_MODERATE, self::RANDOM_USER_ID, false],
+            ['.*', '.*', ACCESS_EDIT, self::RANDOM_USER_ID, false],
+            ['.*', '.*', ACCESS_ADD, self::RANDOM_USER_ID, false],
+            ['.*', '.*', ACCESS_DELETE, self::RANDOM_USER_ID, false],
+            ['.*', '.*', ACCESS_ADMIN, self::RANDOM_USER_ID, false],
 
-            ['.*', '.*', ACCESS_OVERVIEW, 99, true],
-            ['.*', '.*', ACCESS_READ, 99, true],
-            ['.*', '.*', ACCESS_COMMENT, 99, false],
-            ['.*', '.*', ACCESS_MODERATE, 99, false],
-            ['.*', '.*', ACCESS_EDIT, 99, false],
-            ['.*', '.*', ACCESS_ADD, 99, false],
-            ['.*', '.*', ACCESS_DELETE, 99, false],
-            ['.*', '.*', ACCESS_ADMIN, 99, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, Constant::USER_ID_ADMIN, true], // #24
+            ['ExtendedMenublock::', '1:1:', ACCESS_READ, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, Constant::USER_ID_ADMIN, true],
 
-            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_READ, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, 2, true],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, 2, true],
+            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, Constant::USER_ID_ANONYMOUS, false], // #32
+            ['ExtendedMenublock::', '1:1:', ACCESS_READ, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, Constant::USER_ID_ANONYMOUS, false],
 
-            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_READ, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, 1, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, 1, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, self::RANDOM_USER_ID, false], // #40
+            ['ExtendedMenublock::', '1:1:', ACCESS_READ, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, self::RANDOM_USER_ID, false],
 
-            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_READ, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, null, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, null, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, Constant::USER_ID_ADMIN, true], // #48
+            ['ExtendedMenublock::', '1:2:', ACCESS_READ, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, Constant::USER_ID_ADMIN, true],
 
-            ['ExtendedMenublock::', '1:1:', ACCESS_OVERVIEW, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_READ, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_COMMENT, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_MODERATE, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_EDIT, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADD, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_DELETE, 99, false],
-            ['ExtendedMenublock::', '1:1:', ACCESS_ADMIN, 99, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, Constant::USER_ID_ANONYMOUS, false], // #56
+            ['ExtendedMenublock::', '1:2:', ACCESS_READ, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, Constant::USER_ID_ANONYMOUS, false],
 
-            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_READ, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, 2, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, 2, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, self::RANDOM_USER_ID, true], // #64
+            ['ExtendedMenublock::', '1:2:', ACCESS_READ, self::RANDOM_USER_ID, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, self::RANDOM_USER_ID, true],
+            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, self::RANDOM_USER_ID, false],
 
-            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, 1, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_READ, 1, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, 1, true],
-            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, 1, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, 1, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, 1, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, 1, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, 1, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, Constant::USER_ID_ADMIN, true], // #72
+            ['ExtendedMenublock::', '1:3:', ACCESS_READ, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, Constant::USER_ID_ADMIN, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, Constant::USER_ID_ADMIN, true],
 
-            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_READ, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, null, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, null, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, Constant::USER_ID_ANONYMOUS, false], // #80
+            ['ExtendedMenublock::', '1:3:', ACCESS_READ, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, Constant::USER_ID_ANONYMOUS, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, Constant::USER_ID_ANONYMOUS, false],
 
-            ['ExtendedMenublock::', '1:2:', ACCESS_OVERVIEW, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_READ, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_COMMENT, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_MODERATE, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_EDIT, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADD, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_DELETE, 99, false],
-            ['ExtendedMenublock::', '1:2:', ACCESS_ADMIN, 99, false],
-
-            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_READ, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, 2, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, 2, true],
-
-            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, 1, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_READ, 1, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, 1, true],
-            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, 1, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, 1, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, 1, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, 1, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, 1, false],
-
-            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_READ, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, null, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, null, false],
-
-            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_READ, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, 99, false],
-            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, 99, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_OVERVIEW, self::RANDOM_USER_ID, true], // #88
+            ['ExtendedMenublock::', '1:3:', ACCESS_READ, self::RANDOM_USER_ID, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_COMMENT, self::RANDOM_USER_ID, true],
+            ['ExtendedMenublock::', '1:3:', ACCESS_MODERATE, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_EDIT, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADD, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_DELETE, self::RANDOM_USER_ID, false],
+            ['ExtendedMenublock::', '1:3:', ACCESS_ADMIN, self::RANDOM_USER_ID, false],
         ];
     }
 

@@ -39,8 +39,8 @@ abstract class AbstractEntityDisplayHelper
      */
     public function __construct(
         TranslatorInterface $translator,
-        ListEntriesHelper $listEntriesHelper)
-    {
+        ListEntriesHelper $listEntriesHelper
+    ) {
         $this->translator = $translator;
         $this->listEntriesHelper = $listEntriesHelper;
     }

@@ -236,9 +236,6 @@ abstract class AbstractViewHelper
         // make local images absolute
         $output = str_replace('img src="/', 'img src="' . $this->request->server->get('DOCUMENT_ROOT') . '/', $output);
     
-        // see http://codeigniter.com/forums/viewthread/69388/P15/#561214
-        //$output = utf8_decode($output);
-    
         // then the surrounding
         $output = $this->twig->render('@ZikulaRoutesModule/includePdfHeader.html.twig') . $output . '</body></html>';
     
@@ -257,11 +254,11 @@ abstract class AbstractViewHelper
         */
     
         // instantiate pdf object
-        $pdf = new \DOMPDF();
+        $pdf = new \Dompdf\Dompdf();
         // define page properties
-        $pdf->set_paper('A4');
+        $pdf->setPaper('A4', 'portrait');
         // load html input data
-        $pdf->load_html($output);
+        $pdf->loadHtml($output);
         // create the actual pdf file
         $pdf->render();
         // stream output to browser
