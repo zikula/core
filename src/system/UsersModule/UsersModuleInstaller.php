@@ -221,7 +221,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'approved_by'   => UsersConstant::USER_ID_ADMIN,
             'user_regdate'  => $then,
             'lastlogin'     => $then,
-            'theme'         => '',
         ];
         $user = new UserEntity();
         $user->merge($record);
@@ -237,7 +236,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'approved_by'   => UsersConstant::USER_ID_ADMIN,
             'user_regdate'  => $now,
             'lastlogin'     => $then,
-            'theme'         => '',
         ];
         $user = new UserEntity();
         $user->merge($record);
