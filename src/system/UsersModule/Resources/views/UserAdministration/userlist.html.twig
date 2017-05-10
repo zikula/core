@@ -28,6 +28,9 @@
             {% endswitch %}
         </td>
         <td headers="hActions" class="actions">
+            {% if user.uid == constant('Zikula\\UsersModule\\Constant::USER_ID_ANONYMOUS') %}
+                <a href="{{ path('zikulagroupsmodule_group_adminlist') }}"><span class="badge badge-info tooltips" title="{{ __('This user cannot be edited. Group memberships can be edited in the groups module. Click here.') }}">{{ __('Edit?') }}</span></a>
+            {% endif %}
             {% for action in actionsHelper.user(user) %}
                 <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
             {% endfor %}

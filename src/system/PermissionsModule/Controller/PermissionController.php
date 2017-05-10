@@ -19,12 +19,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Form\Type\FilterListType;
 use Zikula\PermissionsModule\Form\Type\PermissionCheckType;
 use Zikula\PermissionsModule\Form\Type\PermissionType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Constant;
 
 class PermissionController extends AbstractController
 {
@@ -215,9 +215,9 @@ class PermissionController extends AbstractController
         $result = $this->__('Permission check result:') . ' ';
         if (!empty($data['user'])) {
             $user = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $data['user']]);
-            $uid = isset($user) ? $user->getUid() : false;
+            $uid = isset($user) ? $user->getUid() : Constant::USER_ID_ANONYMOUS;
         } else {
-            $uid = PermissionApi::UNREGISTERED_USER;
+            $uid = Constant::USER_ID_ANONYMOUS;
         }
 
         if ($uid === false) {

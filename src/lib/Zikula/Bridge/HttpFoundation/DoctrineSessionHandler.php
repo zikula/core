@@ -13,6 +13,7 @@ namespace Zikula\Bridge\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 
@@ -110,7 +111,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
         $sessionEntity->setSessid($sessionId);
         $sessionEntity->setIpaddr($this->storage->getBag('attributes')->get('obj/ipaddr', $ipDefault));
         $sessionEntity->setLastused(date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed()));
-        $sessionEntity->setUid($this->storage->getBag('attributes')->get('uid', 0)); // @todo anonymous user ID
+        $sessionEntity->setUid($this->storage->getBag('attributes')->get('uid', Constant::USER_ID_ANONYMOUS));
         $sessionEntity->setRemember($this->storage->getBag('attributes')->get('rememberme', 0));
         $sessionEntity->setVars($vars);
         $this->userSessionRepository->persistAndFlush($sessionEntity);

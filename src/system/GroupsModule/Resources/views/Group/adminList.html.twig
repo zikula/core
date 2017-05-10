@@ -56,7 +56,7 @@
                 {{ group.name }}
                 {% if group.gid == defaultGroup %}
                 *
-                {% elseif group.gid == primaryAdminGroup %}
+                {% elseif group.gid == constant('Zikula\\GroupsModule\\Constant::GROUP_ID_ADMIN') %}
                 **
                 {% endif %}
             </td>

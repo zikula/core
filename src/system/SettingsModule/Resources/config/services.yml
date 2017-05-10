@@ -1,28 +1,39 @@
 services:
     zikula_settings_module.container.link_container:
         class: Zikula\SettingsModule\Container\LinkContainer
-        arguments: ["@translator.default", "@router", "@zikula_permissions_module.api.permission"]
+        arguments:
+            - "@translator.default"
+            - "@router"
+            - "@zikula_permissions_module.api.permission"
         tags:
             - { name: zikula.link_container }
 
     zikula_settings_module.module_listener:
         class: Zikula\SettingsModule\Listener\ModuleListener
-        arguments: ["@zikula_extensions_module.api.variable", "@session", "@translator.default"]
+        arguments:
+            - "@zikula_extensions_module.api.variable"
+            - "@session"
+            - "@translator.default"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_settings_module.locale_api:
         class: Zikula\SettingsModule\Api\LocaleApi
-        arguments: ["@kernel"]
+        arguments:
+            - "@kernel"
 
     zikula_settings_module.listener.localized_variable_listener:
         class: Zikula\SettingsModule\Listener\LocalizedVariableListener
-        arguments: ["@zikula_extensions_module.api.variable"]
+        arguments:
+            - "@zikula_extensions_module.api.variable"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_settings_module.locale_listener:
         class: Zikula\SettingsModule\Listener\LocaleListener
-        arguments: ['%locale%', "@zikula_users_module.current_user"]
+        arguments:
+            - '%locale%'
+            - "@zikula_users_module.current_user"
+            - "%installed%"
         tags:
             - { name: kernel.event_subscriber }

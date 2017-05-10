@@ -14,6 +14,7 @@ namespace Zikula\UsersModule;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -207,36 +208,38 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
      */
     private function defaultdata()
     {
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
-        $nowUTCStr = $nowUTC->format(UsersConstant::DATETIME_FORMAT);
+        $now = new \DateTime();
+        $then = new \DateTime('1970-01-01 00:00:00');
 
         // Anonymous
         $record = [
-            'uid'           => 1,
+            'uid'           => UsersConstant::USER_ID_ANONYMOUS,
             'uname'         => 'guest',
             'email'         => '',
             'activated'     => UsersConstant::ACTIVATED_ACTIVE,
-            'approved_date' => '1970-01-01 00:00:00',
-            'approved_by'   => 0,
-            'user_regdate'  => '1970-01-01 00:00:00',
-            'lastlogin'     => '1970-01-01 00:00:00',
+            'approved_date' => $then,
+            'approved_by'   => UsersConstant::USER_ID_ADMIN,
+            'user_regdate'  => $then,
+            'lastlogin'     => $then,
+            'theme'         => '',
         ];
-        $user = new \Zikula\UsersModule\Entity\UserEntity();
+        $user = new UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
 
         // Admin
         $record = [
-            'uid'           => 2,
+            'uid'           => UsersConstant::USER_ID_ADMIN,
             'uname'         => 'admin',
             'email'         => '',
             'activated'     => UsersConstant::ACTIVATED_ACTIVE,
-            'approved_date' => $nowUTCStr,
-            'approved_by'   => 2,
-            'user_regdate'  => $nowUTCStr,
-            'lastlogin'     => '1970-01-01 00:00:00',
+            'approved_date' => $now,
+            'approved_by'   => UsersConstant::USER_ID_ADMIN,
+            'user_regdate'  => $now,
+            'lastlogin'     => $then,
+            'theme'         => '',
         ];
-        $user = new \Zikula\UsersModule\Entity\UserEntity();
+        $user = new UserEntity();
         $user->merge($record);
         $this->entityManager->persist($user);
 

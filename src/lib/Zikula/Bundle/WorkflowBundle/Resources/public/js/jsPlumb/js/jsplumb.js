@@ -3003,9 +3003,6 @@
     var connectorTypes = [], rendererTypes;
 
     var _ju = root.jsPlumbUtil,
-        _getOffset = function (el, _instance, relativeToRoot) {
-            return _instance.getOffset(el, relativeToRoot);
-        },
 
         /**
          * creates a timestamp, using milliseconds since 1970, but as a string.
@@ -3215,12 +3212,7 @@
                 return r;
             };
 
-            var boundListeners = [],
-                bindAListener = function (obj, type, fn) {
-                    boundListeners.push([obj, type, fn]);
-                    obj.bind(type, fn);
-                },
-                domListeners = [];
+            var domListeners = [];
 
             // sets the component associated with listener events. for instance, an overlay delegates
             // its events back to a connector. but if the connector is swapped on the underlying connection,
@@ -3441,7 +3433,7 @@
 
     var jsPlumbInstance = root.jsPlumbInstance = function (_defaults) {
 
-        this.version = "2.3.6";
+        this.version = "2.4.2";
 
         if (_defaults) jsPlumb.extend(this.Defaults, _defaults);
 
@@ -3870,13 +3862,11 @@
                             if (newEndpoint.isFull()) return false;
                             _p[type + "Endpoint"] = newEndpoint;
                             if (!_p.scope && tep.def.scope) _p.scope = tep.def.scope; // provide scope if not already provided and endpoint def has one.
-                            newEndpoint._doNotDeleteOnDetach = false; // reset.
-                            newEndpoint._deleteOnDetach = true;
+                            newEndpoint.setDeleteOnEmpty(true);
                             if (tep.uniqueEndpoint) {
                                 if (!tep.endpoint) {
                                     tep.endpoint = newEndpoint;
-                                    newEndpoint._deleteOnDetach = false;
-                                    newEndpoint._doNotDeleteOnDetach = true;
+                                    newEndpoint.setDeleteOnEmpty(false);
                                 }
                                 else
                                     newEndpoint.finalEndpoint = tep.endpoint;
@@ -4168,9 +4158,7 @@
 
                 var id = _getId(p.source), e = _newEndpoint(p, id);
 
-                // SP new. here we have introduced a class-wide element manager, which is responsible
-                // for getting object dimensions and width/height, and for updating these values only
-                // when necessary (after a drag, or on a forced refresh call).
+                // ensure element is managed.
                 var myOffset = _manage(id, p.source).info.o;
                 _ju.addToList(endpointsByElement, id, e);
 
@@ -4182,7 +4170,6 @@
                 }
 
                 results.push(e);
-                e._doNotDeleteOnDetach = true; // mark this as being added via addEndpoint.
             }
 
             return results.length == 1 ? results[0] : results;
@@ -4287,7 +4274,7 @@
                 connection: c
             };
 
-            if (el.constructor == jsPlumb.Endpoint) { // TODO here match the current endpoint class; users can change it {
+            if (el.constructor == jsPlumb.Endpoint) {
                 ep = el;
                 ep.addConnection(c);
                 el = ep.element;
@@ -4302,16 +4289,14 @@
                     for (var t in sep) {
                         if (!sep[t].enabled) return;
                         ep = sep[t].endpoint != null && sep[t].endpoint._jsPlumb ? sep[t].endpoint : this.addEndpoint(el, sep[t].def);
-                        if (sep[t].uniqueEndpoint) sep[t].endpoint = ep;
-                        ep._doNotDeleteOnDetach = false;
-                        ep._deleteOnDetach = true;
+                        if (sep[t].uniqueEndpoint) {
+                            sep[t].endpoint = ep;
+                        }
                         ep.addConnection(c);
                     }
                 }
                 else {
                     ep = c.makeEndpoint(idx === 0, el, sid);
-                    ep._doNotDeleteOnDetach = false;
-                    ep._deleteOnDetach = true;
                 }
             }
 
@@ -4324,8 +4309,9 @@
 
                 fireMoveEvent(evtParams);
 
-                if (!doNotRepaint)
+                if (!doNotRepaint) {
                     c.repaint();
+                }
             }
 
             evtParams.element = el;
@@ -4361,14 +4347,18 @@
                 }
             }
             endpointsByElement = {};
-            // SP new
             managedElements = {};
             endpointsByUUID = {};
             offsets = {};
             offsetTimestamps = {};
             _currentInstance.anchorManager.reset();
-            _currentInstance.getDragManager().reset();
-            if (!_is) _currentInstance.setSuspendDrawing(false);
+            var dm = _currentInstance.getDragManager();
+            if (dm) {
+                dm.reset();
+            }
+            if (!_is) {
+                _currentInstance.setSuspendDrawing(false);
+            }
             return _currentInstance;
         };
 
@@ -4398,8 +4388,9 @@
         };
 
         this.unregisterEndpoint = function (endpoint) {
-            //if (endpoint._jsPlumb == null) return;
-            if (endpoint._jsPlumb.uuid) endpointsByUUID[endpoint._jsPlumb.uuid] = null;
+            if (endpoint._jsPlumb.uuid) {
+                endpointsByUUID[endpoint._jsPlumb.uuid] = null;
+            }
             _currentInstance.anchorManager.deleteEndpoint(endpoint);
             // TODO at least replace this with a removeWithFunction call.
             for (var e in endpointsByElement) {
@@ -4417,86 +4408,85 @@
             }
         };
 
-        this.detach = function () {
+        var IS_DETACH_ALLOWED = "isDetachAllowed";
+        var BEFORE_DETACH = "beforeDetach";
+        var CHECK_CONDITION = "checkCondition";
 
-            if (arguments.length === 0) return;
-            var connType = _currentInstance.Defaults.ConnectionType || _currentInstance.getDefaultConnectionType(),
-                firstArgIsConnection = arguments[0].constructor == connType,
-                params = arguments.length == 2 ? firstArgIsConnection ? (arguments[1] || {}) : arguments[0] : arguments[0],
-                fireEvent = (params.fireEvent !== false),
-                forceDetach = params.forceDetach,
-                conn = firstArgIsConnection ? arguments[0] : params.connection,
-                deleteAttachedObjects = firstArgIsConnection ? null : params.deleteAttachedObjects;
+        /**
+         * Deletes a Connection.
+         * @method deleteConnection
+         * @param connection Connection to delete
+         * @param {Object} [params] Optional delete parameters
+         * @param {Boolean} [params.doNotFireEvent=false] If true, a connection detached event will not be fired. Otherwise one will.
+         * @param {Boolean} [params.force=false] If true, the connection will be deleted even if a beforeDetach interceptor tries to stop the deletion.
+         * @returns {Boolean} True if the connection was deleted, false otherwise.
+         */
+        this.deleteConnection = function(connection, params) {
 
-            if (conn) {
-                if (forceDetach || _ju.functionChain(true, false, [
-                    [ conn.endpoints[0], "isDetachAllowed", [ conn ] ],
-                    [ conn.endpoints[1], "isDetachAllowed", [ conn ] ],
-                    [ conn, "isDetachAllowed", [ conn ] ],
-                    [ _currentInstance, "checkCondition", [ "beforeDetach", conn ] ]
+            if (connection != null) {
+                params = params || {};
+
+                if (params.force || _ju.functionChain(true, false, [
+                    [ connection.endpoints[0], IS_DETACH_ALLOWED, [ connection ] ],
+                    [ connection.endpoints[1], IS_DETACH_ALLOWED, [ connection ] ],
+                    [ connection, IS_DETACH_ALLOWED, [ connection ] ],
+                    [ _currentInstance, CHECK_CONDITION, [ BEFORE_DETACH, connection ] ]
                 ])) {
 
-                    conn.endpoints[0].detach({
-                        connection:conn,
-                        ignoreTarget:false,
-                        forceDetach:true,
-                        fireEvent:fireEvent,
-                        deleteAttachedObjects:deleteAttachedObjects
+                    connection.setHover(false);
+                    fireDetachEvent(connection, !connection.pending && params.fireEvent !== false, params.originalEvent);
+
+                    connection.endpoints[0].detachFromConnection(connection);
+                    connection.endpoints[1].detachFromConnection(connection);
+                    _ju.removeWithFunction(connections, function (_c) {
+                        return connection.id == _c.id;
                     });
+
+                    connection.cleanup();
+                    connection.destroy();
+                    return true;
                 }
             }
-            else {
-                var _p = jsPlumb.extend({}, params); // a backwards compatibility hack: source should be thought of as 'params' in this case.
-                // test for endpoint uuids to detach
-                if (_p.uuids) {
-                    _getEndpoint(_p.uuids[0]).detachFrom(_getEndpoint(_p.uuids[1]), fireEvent);
-                } else if (_p.sourceEndpoint && _p.targetEndpoint) {
-                    _p.sourceEndpoint.detachFrom(_p.targetEndpoint);
-                } else {
-                    var sourceId = _getId(_currentInstance.getElement(_p.source)),
-                        targetId = _getId(_currentInstance.getElement(_p.target));
-                    _operation(sourceId, function (jpc) {
-                        if ((jpc.sourceId == sourceId && jpc.targetId == targetId) || (jpc.targetId == sourceId && jpc.sourceId == targetId)) {
-                            if (_currentInstance.checkCondition("beforeDetach", jpc)) {
-                                jpc.endpoints[0].detach({
-                                    connection:jpc,
-                                    ignoreTarget:false,
-                                    forceDetach:true,
-                                    fireEvent:fireEvent
-                                });
-                            }
-                        }
-                    });
-                }
-            }
+            return false;
         };
 
-        this.detachAllConnections = function (el, params) {
+        /**
+         * Remove all Connections from all elements, but leaves Endpoints in place ((unless a connection is set to auto delete its Endpoints).
+         * @method deleteEveryConnection
+         * @param {Object} [params] optional params object for the call
+         * @param {Boolean} [params.fireEvent=true] Whether or not to fire detach events
+         * @param {Boolean} [params.forceDetach=false] If true, this call will ignore any `beforeDetach` interceptors.
+         * @returns {Number} The number of connections that were deleted.
+         */
+        this.deleteEveryConnection = function (params) {
+            params = params || {};
+            var count = connections.length, deletedCount = 0;
+            _currentInstance.batch(function () {
+                for (var i = 0; i < count; i++) {
+                    deletedCount += _currentInstance.deleteConnection(connections[0], params) ? 1 : 0;
+                }
+            });
+            return deletedCount;
+        };
+
+        /**
+         * Removes all an element's Connections.
+         * @method deleteConnectionsForElement
+         * @param {Object} el Either the id of the element, or a selector for the element.
+         * @param {Object} [params] Optional parameters.
+         * @param {Boolean} [params.fireEvent=true] Whether or not to fire the detach event.
+         * @param {Boolean} [params.forceDetach=false] If true, this call will ignore any `beforeDetach` interceptors.
+         * @return {jsPlumbInstance} The current jsPlumb instance.
+         */
+        this.deleteConnectionsForElement = function (el, params) {
             params = params || {};
             el = _currentInstance.getElement(el);
-            var id = _getId(el),
-                endpoints = endpointsByElement[id];
+            var id = _getId(el), endpoints = endpointsByElement[id];
             if (endpoints && endpoints.length) {
                 for (var i = 0, j = endpoints.length; i < j; i++) {
-                    endpoints[i].detachAll(params.fireEvent !== false, params.forceDetach);
+                    endpoints[i].deleteEveryConnection(params);
                 }
             }
-            return _currentInstance;
-        };
-
-        this.detachEveryConnection = function (params) {
-            params = params || {};
-            _currentInstance.batch(function () {
-                for (var id in endpointsByElement) {
-                    var endpoints = endpointsByElement[id];
-                    if (endpoints && endpoints.length) {
-                        for (var i = 0, j = endpoints.length; i < j; i++) {
-                            endpoints[i].detachAll(params.fireEvent !== false, params.forceDetach);
-                        }
-                    }
-                }
-                connections.length = 0;
-            });
             return _currentInstance;
         };
 
@@ -4508,7 +4498,6 @@
                     endpointCount: 0,
                     connectionCount: 0
                 },
-                fireEvent = params.fireEvent !== false,
                 deleteAttachedObjects = params.deleteAttachedObjects !== false;
 
             var unravelConnection = function (connection) {
@@ -4518,8 +4507,8 @@
                     result.connectionCount++;
                     if (deleteAttachedObjects) {
                         for (var j = 0; j < connection.endpoints.length; j++) {
-                            if (connection.endpoints[j]._deleteOnDetach)
-                                unravelEndpoint(connection.endpoints[j]);
+//                            if (connection.endpoints[j]._deleteOnDetach)
+//                                unravelEndpoint(connection.endpoints[j]);
                         }
                     }
                 }
@@ -4725,9 +4714,9 @@
                 setDetachable: setter(list, "setDetachable", _makeConnectionSelectHandler),
                 setReattach: setter(list, "setReattach", _makeConnectionSelectHandler),
                 setConnector: setter(list, "setConnector", _makeConnectionSelectHandler),
-                detach: function () {
+                delete: function () {
                     for (var i = 0, ii = list.length; i < ii; i++)
-                        _currentInstance.detach(list[i]);
+                        _currentInstance.deleteConnection(list[i]);
                 },
                 // getters
                 isDetachable: getter(list, "isDetachable"),
@@ -4741,13 +4730,13 @@
                 setEnabled: setter(list, "setEnabled", _makeEndpointSelectHandler),
                 setAnchor: setter(list, "setAnchor", _makeEndpointSelectHandler),
                 isEnabled: getter(list, "isEnabled"),
-                detachAll: function () {
+                deleteEveryConnection: function () {
                     for (var i = 0, ii = list.length; i < ii; i++)
-                        list[i].detachAll();
+                        list[i].deleteEveryConnection();
                 },
-                "remove": function () {
+                "delete": function () {
                     for (var i = 0, ii = list.length; i < ii; i++)
-                        _currentInstance.deleteObject({endpoint: list[i]});
+                        _currentInstance.deleteEndpoint(list[i]);
                 }
             });
         };
@@ -4807,9 +4796,14 @@
         };
         // get an endpoint by uuid.
         this.getEndpoint = _getEndpoint;
-        // get endpoints for some element.
+        /**
+         * Gets the list of Endpoints for a given element.
+         * @method getEndpoints
+         * @param {String|Element|Selector} el The element to get endpoints for.
+         * @return {Endpoint[]} An array of Endpoints for the specified element.
+         */
         this.getEndpoints = function (el) {
-            return endpointsByElement[_info(el).id];
+            return endpointsByElement[_info(el).id] || [];
         };
         // gets the default endpoint type. used when subclassing. see wiki.
         this.getDefaultEndpointType = function () {
@@ -5082,7 +5076,6 @@
             return negate ? !ok : ok;
         };
 
-        // SP target source refactor
         var _makeElementDropHandler = function (elInfo, p, dropOptions, isSource, isTarget) {
             var proxyComponent = new jsPlumbUIComponent(p);
             var _drop = p._jsPlumb.EndpointDropHandler({
@@ -5137,10 +5130,11 @@
                         newEndpoint._mtNew = true;
                     }
 
-                    if (p.uniqueEndpoint) elInfo.def.endpoint = newEndpoint;  // may of course just store what it just pulled out. that's ok.
-                    // TODO test options to makeTarget to see if we should do this?
-                    newEndpoint._doNotDeleteOnDetach = false; // reset.
-                    newEndpoint._deleteOnDetach = true;
+                    if (p.uniqueEndpoint) {
+                        elInfo.def.endpoint = newEndpoint;
+                    }
+
+                    newEndpoint.setDeleteOnEmpty(true);
 
                     // if connection is detachable, init the new endpoint to be draggable, to support that happening.
                     if (jpc.isDetachable())
@@ -5393,8 +5387,7 @@
 
                         ep = this.addEndpoint(elid, tempEndpointParams);
                         endpointAddedButNoDragYet = true;
-                        ep._doNotDeleteOnDetach = false; // reset.
-                        ep._deleteOnDetach = true;
+                        ep.setDeleteOnEmpty(true);
 
                         // if unique endpoint and it's already been created, push it onto the endpoint we create. at the end
                         // of a successful connection we'll switch to that endpoint.
@@ -5402,8 +5395,7 @@
                         if (def.uniqueEndpoint) {
                             if (!def.endpoint) {
                                 def.endpoint = ep;
-                                ep._deleteOnDetach = false;
-                                ep._doNotDeleteOnDetach = true;
+                                ep.setDeleteOnEmpty(false);
                             }
                             else
                                 ep.finalEndpoint = def.endpoint;
@@ -5670,7 +5662,10 @@
             return _elEach(el, function(_el) {
                 var elId = isIdAlready ? _el : _currentInstance.getId(_el);
                 _currentInstance.updateOffset({ elId: elId, recalc: true, timestamp:timestamp });
-                _currentInstance.getDragManager().updateOffsets(elId);
+                var dm = _currentInstance.getDragManager();
+                if (dm) {
+                    dm.updateOffsets(elId);
+                }
                 _currentInstance.repaint(_el);
             });
         };
@@ -5722,8 +5717,12 @@
 
         var _doRemove = function(info, affectedElements) {
             _currentInstance.removeAllEndpoints(info.id, true, affectedElements);
+            var dm = _currentInstance.getDragManager();
             var _one = function(_info) {
-                _currentInstance.getDragManager().elementRemoved(_info.id);
+
+                if (dm) {
+                    dm.elementRemoved(_info.id);
+                }
                 _currentInstance.anchorManager.clearFor(_info.id);
                 _currentInstance.anchorManager.removeFloatingConnection(_info.id);
 
@@ -5879,7 +5878,10 @@
             delete this.targetEndpointDefinitions[id];
 
             this.anchorManager.changeId(id, newId);
-            this.getDragManager().changeId(id, newId);
+            var dm = this.getDragManager();
+            if (dm) {
+                dm.changeId(id, newId);
+            }
             managedElements[newId] = managedElements[id];
             delete managedElements[id];
 
@@ -6008,11 +6010,14 @@
             var _dom = this.getElement(el),
                 _id = this.getId(_dom),
                 _pdom = this.getElement(newParent),
-                _pid = this.getId(_pdom);
+                _pid = this.getId(_pdom),
+                dm = this.getDragManager();
 
             _dom.parentNode.removeChild(_dom);
             _pdom.appendChild(_dom);
-            this.getDragManager().setParent(_dom, _id, _pdom, _pid);
+            if (dm) {
+                dm.setParent(_dom, _id, _pdom, _pid);
+            }
         },
         extend: function (o1, o2, names) {
             var i;
@@ -7038,6 +7043,9 @@
         this._jsPlumb.currentAnchorClass = "";
         this._jsPlumb.events = {};
 
+        var deleteOnEmpty = params.deleteOnEmpty === true;
+        this.setDeleteOnEmpty = function(d) { deleteOnEmpty = d; };
+
         var _updateAnchorClass = function () {
             // stash old, get new
             var oldAnchorClass = _jsPlumb.endpointAnchorClassPrefix + "-" + this._jsPlumb.currentAnchorClass;
@@ -7196,69 +7204,77 @@
                 this[(this.isFull() ? "add" : "remove") + "Class"](_jsPlumb.endpointFullClass);
             }
 
-            if ((this._forceDeleteOnDetach || (!doNotCleanup && this._deleteOnDetach)) && this.connections.length === 0) {
+            //if ((this._forceDeleteOnDetach || (!doNotCleanup && this._deleteOnDetach)) && this.connections.length === 0) {
+            if (!doNotCleanup && deleteOnEmpty && this.connections.length === 0) {
                 _jsPlumb.deleteObject({
                     endpoint: this,
                     fireEvent: false,
-                    //deleteAttachedObjects: false
                     deleteAttachedObjects: doNotCleanup !== true
                 });
             }
         };
 
+        this.deleteEveryConnection = function(params) {
+            var c = this.connections.length;
+            for (var i = 0; i < c; i++) {
+                _jsPlumb.deleteConnection(this.connections[0], params);
+            }
+        };
+
         //this.detach = function (connection, ignoreTarget, forceDetach, fireEvent, originalEvent, endpointBeingDeleted, connectionIndex) {
 
-        this.detach = function (params) {
-            var connectionIndex = params.connectionIndex,
-                connection = params.connection,
-                ignoreTarget = params.ignoreTarget,
-                fireEvent = params.fireEvent,
-                originalEvent = params.originalEvent,
-                endpointBeingDeleted = params.endpointBeingDeleted,
-                forceDetach = params.forceDetach;
+//        this.detach = function (params) {
+//            var connectionIndex = params.connectionIndex,
+//                connection = params.connection,
+//                ignoreTarget = params.ignoreTarget,
+//                fireEvent = params.fireEvent,
+//                originalEvent = params.originalEvent,
+//                endpointBeingDeleted = params.endpointBeingDeleted,
+//                forceDetach = params.forceDetach;
+//
+//            var idx = connectionIndex == null ? this.connections.indexOf(connection) : connectionIndex,
+//                actuallyDetached = false;
+//            fireEvent = (fireEvent !== false);
+//
+//            if (idx >= 0) {
+//
+//                if (forceDetach || connection._forceDetach || (connection.isDetachable() && connection.isDetachAllowed(connection) && this.isDetachAllowed(connection) && _jsPlumb.checkCondition("beforeDetach", connection, endpointBeingDeleted) )) {
+//
+//                    _jsPlumb.deleteObject({
+//                        connection: connection,
+//                        fireEvent: (!ignoreTarget && fireEvent),
+//                        originalEvent: originalEvent,
+//                        deleteAttachedObjects:params.deleteAttachedObjects
+//                        //deleteAttachedObjects:null
+//                    });
+//                    actuallyDetached = true;
+//                }
+//            }
+//            return actuallyDetached;
+//        };
 
-            var idx = connectionIndex == null ? this.connections.indexOf(connection) : connectionIndex,
-                actuallyDetached = false;
-            fireEvent = (fireEvent !== false);
+//        this.detachAll = function (fireEvent, forceDetach) {
+//            var unaffectedConns = [];
+//            while (this.connections.length > 0) {
+//                // TODO this could pass the index in to the detach method to save some time (index will always be zero in this while loop)
+//                var actuallyDetached = _jsPlumb.detach({
+//                    connection:this.connections[0],
+//                    ignoreTarget:false,
+//                    forceDetach:forceDetach === true,
+//                    fireEvent:fireEvent !== false,
+//                    originalEvent:null,
+//                    endpointBeingDeleted:this,
+//                    connectionIndex:0
+//                });
+//                if (!actuallyDetached) {
+//                    unaffectedConns.push(this.connections[0]);
+//                    this.connections.splice(0, 1);
+//                }
+//            }
+//            this.connections = unaffectedConns;
+//            return this;
+//        };
 
-            if (idx >= 0) {
-
-                if (forceDetach || connection._forceDetach || (connection.isDetachable() && connection.isDetachAllowed(connection) && this.isDetachAllowed(connection) && _jsPlumb.checkCondition("beforeDetach", connection, endpointBeingDeleted) )) {
-
-                    _jsPlumb.deleteObject({
-                        connection: connection,
-                        fireEvent: (!ignoreTarget && fireEvent),
-                        originalEvent: originalEvent,
-                        deleteAttachedObjects:params.deleteAttachedObjects
-                        //deleteAttachedObjects:null
-                    });
-                    actuallyDetached = true;
-                }
-            }
-            return actuallyDetached;
-        };
-
-        this.detachAll = function (fireEvent, forceDetach) {
-            var unaffectedConns = [];
-            while (this.connections.length > 0) {
-                // TODO this could pass the index in to the detach method to save some time (index will always be zero in this while loop)
-                var actuallyDetached = this.detach({
-                    connection:this.connections[0],
-                    ignoreTarget:false,
-                    forceDetach:forceDetach === true,
-                    fireEvent:fireEvent !== false,
-                    originalEvent:null,
-                    endpointBeingDeleted:this,
-                    connectionIndex:0
-                });
-                if (!actuallyDetached) {
-                    unaffectedConns.push(this.connections[0]);
-                    this.connections.splice(0, 1);
-                }
-            }
-            this.connections = unaffectedConns;
-            return this;
-        };
         this.detachFrom = function (targetEndpoint, fireEvent, originalEvent) {
             var c = [];
             for (var i = 0; i < this.connections.length; i++) {
@@ -7266,14 +7282,16 @@
                     c.push(this.connections[i]);
                 }
             }
-            for (var j = 0; j < c.length; j++) {
-                this.detach({
-                    connection:c[j],
-                    ignoreTarget:false,
-                    forceDetach:true,
-                    fireEvent:fireEvent,
-                    originalEvent:originalEvent
-                });
+            var count = c.length;
+            for (var j = 0; j < count; j++) {
+//                this.detach({
+//                    connection:c[j],
+//                    ignoreTarget:false,
+//                    forceDetach:true,
+//                    fireEvent:fireEvent,
+//                    originalEvent:originalEvent
+//                });
+                _jsPlumb.deleteConnection(c[0]);
             }
             return this;
         };
@@ -7644,7 +7662,8 @@
                                 jpc.endpoints[idx] = jpc.suspendedEndpoint;
                                 // IF the connection should be reattached, or the other endpoint refuses detach, then
                                 // reset the connection to its original state
-                                if (jpc.isReattach() || jpc._forceReattach || jpc._forceDetach || !jpc.endpoints[idx === 0 ? 1 : 0].detach({connection:jpc, ignoreTarget:false, forceDetach:false, fireEvent:true, originalEvent:originalEvent, endpointBeingDeleted:true})) {
+                                //if (jpc.isReattach() || jpc._forceReattach || jpc._forceDetach || !jpc.endpoints[idx === 0 ? 1 : 0].detach({connection:jpc, ignoreTarget:false, forceDetach:false, fireEvent:true, originalEvent:originalEvent, endpointBeingDeleted:true})) {
+                                if (jpc.isReattach() || jpc._forceReattach || jpc._forceDetach || !_jsPlumb.deleteConnection(jpc)) {
 
                                     jpc.setHover(false);
                                     jpc._forceDetach = null;
@@ -8295,16 +8314,16 @@
         // if scope not set, set it to be the scope for the source endpoint.
         if (!this.scope) this.scope = this.endpoints[0].scope;
 
-        // if explicitly told to (or not to) delete endpoints on detach, override endpoint's preferences
-        if (params.deleteEndpointsOnDetach != null) {
-            this.endpoints[0]._deleteOnDetach = params.deleteEndpointsOnDetach;
-            this.endpoints[1]._deleteOnDetach = params.deleteEndpointsOnDetach;
+        // if explicitly told to (or not to) delete endpoints when empty, override endpoint's preferences
+        if (params.deleteEndpointsOnEmpty != null) {
+            this.endpoints[0].setDeleteOnEmpty(params.deleteEndpointsOnEmpty);
+            this.endpoints[1].setDeleteOnEmpty(params.deleteEndpointsOnEmpty);
         }
-        else {
-            // otherwise, unless the endpoints say otherwise, mark them for deletion.
-            if (!this.endpoints[0]._doNotDeleteOnDetach) this.endpoints[0]._deleteOnDetach = true;
-            if (!this.endpoints[1]._doNotDeleteOnDetach) this.endpoints[1]._deleteOnDetach = true;
-        }
+//        else {
+//            // otherwise, unless the endpoints say otherwise, mark them for deletion.
+//            if (!this.endpoints[0]._doNotDeleteOnDetach) this.endpoints[0]._deleteOnDetach = true;
+//            if (!this.endpoints[1]._doNotDeleteOnDetach) this.endpoints[1]._deleteOnDetach = true;
+//        }
 
 // -------------------------- DEFAULT TYPE ---------------------------------------------
 
@@ -8370,6 +8389,12 @@
         this.setReattach = function (reattach) {
             this._jsPlumb.reattach = reattach === true;
         };
+
+//        this["delete"] = function() {
+//            this.endpoints[0].detachFromConnection(this);
+//            this.endpoints[1].detachFromConnection(this);
+//            params.deleteConnection(this);
+//        };
 
 // END INITIALISATION CODE
 
@@ -8702,6 +8727,9 @@
                     reattach: params.reattach || _jsPlumb.Defaults.ReattachConnections,
                     detachable: params.detachable || _jsPlumb.Defaults.ConnectionsDetachable
                 });
+                if (existing == null) {
+                    e.setDeleteOnEmpty(true);
+                }
                 conn.endpoints[index] = e;
 
                 if (params.drawEndpoints === false) e.setVisible(false, true, true);
@@ -11470,6 +11498,14 @@
     var EVT_GROUP_REMOVED = "group:remove";
     var EVT_EXPAND = "group:expand";
     var EVT_COLLAPSE = "group:collapse";
+    var EVT_GROUP_DRAG_STOP = "groupDragStop";
+    var EVT_CONNECTION_MOVED = "connectionMoved";
+    var EVT_INTERNAL_CONNECTION_DETACHED = "internal.connectionDetached";
+
+    var CMD_REMOVE_ALL = "removeAll";
+    var CMD_ORPHAN_ALL = "orphanAll";
+    var CMD_SHOW = "show";
+    var CMD_HIDE = "hide";
 
     var GroupManager = function(_jsPlumb) {
         var _managedGroups = {}, _connectionSourceMap = {}, _connectionTargetMap = {}, self = this;
@@ -11510,11 +11546,11 @@
             }
         }
 
-        _jsPlumb.bind("internal.connectionDetached", function(p) {
+        _jsPlumb.bind(EVT_INTERNAL_CONNECTION_DETACHED, function(p) {
             _cleanupDetachedConnection(p.connection);
         });
 
-        _jsPlumb.bind("connectionMoved", function(p) {
+        _jsPlumb.bind(EVT_CONNECTION_MOVED, function(p) {
             var connMap = p.index === 0 ? _connectionSourceMap : _connectionTargetMap;
             var group = connMap[p.connection.id];
             if (group) {
@@ -11621,7 +11657,7 @@
         this.removeGroup = function(group, deleteMembers, manipulateDOM, doNotFireEvent) {
             group = this.getGroup(group);
             this.expandGroup(group, true); // this reinstates any original connections and removes all proxies, but does not fire an event.
-            group[deleteMembers ? "removeAll" : "orphanAll"](manipulateDOM, doNotFireEvent);
+            group[deleteMembers ? CMD_REMOVE_ALL : CMD_ORPHAN_ALL](manipulateDOM, doNotFireEvent);
             _jsPlumb.remove(group.getEl());
             delete _managedGroups[group.id];
             delete _jsPlumb._groups[group.id];
@@ -11637,7 +11673,7 @@
         function _setVisible(group, state) {
             var m = group.getMembers();
             for (var i = 0; i < m.length; i++) {
-                _jsPlumb[state ? "show" : "hide"](m[i], true);
+                _jsPlumb[state ? CMD_SHOW : CMD_HIDE](m[i], true);
             }
         }
 
@@ -11662,8 +11698,9 @@
                         isProxyEndpoint:true
                     }
                 });
-                proxyEp._forceDeleteOnDetach = true;
             }
+            proxyEp.setDeleteOnEmpty(true);
+
             // for this index, stash proxy info: the new EP, the original EP.
             c.proxies[index] = { ep:proxyEp, originalEp: c.endpoints[index] };
 
@@ -11744,9 +11781,8 @@
                 c.targetId = originalElementId;
             }
 
-            // detach the proxy EP from the connection.
-            c.proxies[index].ep.detachFromConnection(c, null, true);
-
+            // detach the proxy EP from the connection (which will cause it to be removed as we no longer need it)
+            c.proxies[index].ep.detachFromConnection(c, null);
 
             c.proxies[index].originalEp.addConnection(c);
 
@@ -11880,7 +11916,7 @@
         if (params.draggable !== false) {
             var opts = {
                 stop:function(params) {
-                    _jsPlumb.fire("groupDragStop", jsPlumb.extend(params, {group:self}));
+                    _jsPlumb.fire(EVT_GROUP_DRAG_STOP, jsPlumb.extend(params, {group:self}));
                 },
                 scope:GROUP_DRAG_SCOPE
             };
@@ -12111,6 +12147,9 @@
         }
         var group = new Group(j, params);
         j._groups[group.id] = group;
+        if (params.collapsed) {
+            this.collapseGroup(group);
+        }
         return group;
     };
 

@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Api;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class CurrentUserApi implements CurrentUserApiInterface
@@ -55,11 +56,10 @@ class CurrentUserApi implements CurrentUserApiInterface
     public function isLoggedIn()
     {
         if (!isset($this->user)) {
-            $this->session->start();
-            if ($uid = $this->session->get('uid')) {
-                $this->user = $this->repository->find($uid);
-                $this->loggedIn = true;
-            }
+            $this->setUser();
+        }
+        if (isset($this->user) && $this->user->getUid() > Constant::USER_ID_ANONYMOUS) {
+            $this->loggedIn = true;
         }
 
         return $this->loggedIn;
@@ -87,13 +87,25 @@ class CurrentUserApi implements CurrentUserApiInterface
      */
     public function get($key)
     {
-        if ($this->isLoggedIn()) {
-            $method = "get" . ucwords($key);
-            if (method_exists($this->user, $method)) {
-                return $this->user->$method();
-            }
+        if (!isset($this->user)) {
+            $this->setUser();
+        }
+        $method = "get" . ucwords($key);
+        if (method_exists($this->user, $method)) {
+            return $this->user->$method();
         }
 
         return null;
+    }
+
+    /**
+     * Get the uid from the session and create a user from the repository.
+     * Default to Constant::USER_ID_ANONYMOUS
+     */
+    private function setUser()
+    {
+        $this->session->start();
+        $uid = $this->session->get('uid', Constant::USER_ID_ANONYMOUS);
+        $this->user = $this->repository->find($uid);
     }
 }

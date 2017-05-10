@@ -21,6 +21,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\GroupsModule\Constant as GroupsConstant;
+use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Form\Type\CreateGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
@@ -98,8 +100,7 @@ class GroupController extends AbstractController
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
             'applications' => $this->get('zikula_groups_module.group_application_repository')->findAll(),
-            'defaultGroup' => $this->getVar('defaultgroup'),
-            'primaryAdminGroup' => $this->getVar('primaryadmingroup', 2),
+            'defaultGroup' => $this->getVar('defaultgroup', GroupsConstant::GROUP_ID_USERS),
             'pager' => [
                 'amountOfItems' => count($groups),
                 'itemsPerPage' => $itemsPerPage
@@ -214,8 +215,7 @@ class GroupController extends AbstractController
         }
 
         // get the primary admin group - we do not allow its deletion
-        $primaryAdminGroup = $this->getVar('primaryadmingroup', 2);
-        if ($groupEntity->getGid() == $primaryAdminGroup) {
+        if ($groupEntity->getGid() == Constant::GROUP_ID_ADMIN) {
             $this->addFlash('error', $this->__('Error! You cannot delete the primary administration group.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');

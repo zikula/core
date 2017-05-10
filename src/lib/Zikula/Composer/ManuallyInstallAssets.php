@@ -32,12 +32,6 @@ class ManuallyInstallAssets extends ScriptHandler
         '/dimsemenov/magnific-popup/dist/jquery.magnific-popup.js' => '/magnific-popup/jquery.magnific-popup.js',
         '/dimsemenov/magnific-popup/dist/jquery.magnific-popup.min.js' => '/magnific-popup/jquery.magnific-popup.min.js',
         '/dimsemenov/magnific-popup/dist/magnific-popup.css' => '/magnific-popup/magnific-popup.css',
-        '/twitter/typeahead.js/dist/bloodhound.js' => '/typeahead/bloodhound.js',
-        '/twitter/typeahead.js/dist/bloodhound.min.js' => '/typeahead/bloodhound.min.js',
-        '/twitter/typeahead.js/dist/typeahead.bundle.js' => '/typeahead/typeahead.bundle.js',
-        '/twitter/typeahead.js/dist/typeahead.bundle.min.js' => '/typeahead/typeahead.bundle.min.js',
-        '/twitter/typeahead.js/dist/typeahead.jquery.js' => '/typeahead/typeahead.jquery.js',
-        '/twitter/typeahead.js/dist/typeahead.jquery.min.js' => '/typeahead/typeahead.jquery.min.js',
     ];
 
     public static function install(Event $event)
