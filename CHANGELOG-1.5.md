@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Many methods from CategoryUtil are no longer functional.
     - vierbergenlars/php-semver vendor removed, use composer/semver.
     - Global avatar management is moved to the Profile module.
+    - typeahead.js removed, use jQuery UI.
 
  - Deprecated:
     - Search block templates have been modified. This will break existing overrides for
@@ -74,7 +75,7 @@ CHANGELOG - ZIKULA 1.5.x
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.28
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
     - jquery.mmenu updated from 5.7.8 to 6.0.2
-    - liip/imagine-bundle updated from 1.7.2 to 1.7.4
+    - liip/imagine-bundle updated from 1.7.2 to 1.8.0
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
     - monolog/monolog updated from 1.22.0 to 1.22.1
     - paragonie/random_compat updated from 2.0.9 to 2.0.10
@@ -84,7 +85,7 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.25
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
-    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.7
+    - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
     - symfony updated from 2.8.17 to 2.8.20
     - symfony/security-acl update from 2.8.0 to 3.0.0
     - symfony/workflow installed at 3.2.8
