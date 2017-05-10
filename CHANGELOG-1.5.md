@@ -98,5 +98,5 @@ CHANGELOG - ZIKULA 1.5.x
     - wikimedia/composer-merge-plugin installed at dev-master 
     - zikula/andreas08-theme installed at 2.0.0
     - zikula/pagelock-module installed at 1.2.0
-    - zikula/oauth-module installed at 1.0.0
+    - zikula/oauth-module installed at 1.0.1
     - zikula/seabreeze-theme installed at 4.0.1
