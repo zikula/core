@@ -103,8 +103,8 @@ class MigrationHelper
     public function createMappingFromUserCriteria(array $criteria, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
     {
         $userEntity = $this->userRepository->findOneBy($criteria);
-        $mapping = $this->createMappingFromUser($userEntity, $method);
-        if ($mapping) {
+        $mapping = isset($userEntity) ? $this->createMappingFromUser($userEntity, $method) : null;
+        if (isset($mapping)) {
             $this->entityManager->persist($mapping);
             // remove data from UserEntity
             $userEntity->setPass('');
