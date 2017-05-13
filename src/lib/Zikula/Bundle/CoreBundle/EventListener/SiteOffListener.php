@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -46,11 +45,6 @@ class SiteOffListener implements EventSubscriberInterface
     private $twig;
 
     /**
-     * @var FormFactory
-     */
-    private $formFactory;
-
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -71,7 +65,6 @@ class SiteOffListener implements EventSubscriberInterface
      * @param PermissionApiInterface $permissionApi
      * @param CurrentUserApiInterface $currentUserApi
      * @param \Twig_Environment $twig
-     * @param FormFactory $formFactory
      * @param RouterInterface $router
      * @param boolean $installed
      * @param string $currentInstalledVersion
@@ -81,7 +74,6 @@ class SiteOffListener implements EventSubscriberInterface
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
         \Twig_Environment $twig,
-        FormFactory $formFactory,
         RouterInterface $router,
         $installed,
         $currentInstalledVersion
@@ -90,7 +82,6 @@ class SiteOffListener implements EventSubscriberInterface
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
         $this->twig = $twig;
-        $this->formFactory = $formFactory;
         $this->router = $router;
         $this->installed = $installed;
         $this->currentInstalledVersion = $currentInstalledVersion;
@@ -104,7 +95,9 @@ class SiteOffListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $request = $event->getRequest();
         $this->router->getContext()->setBaseUrl($request->getBaseUrl());
-        if ($request->isMethod('POST') && $request->request->has('zikulazauthmodule_authentication_uname')) {
+        $routeInfo = $this->router->match($request->getPathInfo());
+        if ($routeInfo['_route'] == 'zikulausersmodule_access_login'
+        || $routeInfo['_route'] == 'zikulathememodule_combinedasset_asset') {
             return;
         }
         if ($response instanceof PlainResponse
@@ -116,7 +109,6 @@ class SiteOffListener implements EventSubscriberInterface
             return;
         }
 
-        // Get variables
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
         $currentInstalledVersion = !empty($this->currentInstalledVersion)
@@ -130,16 +122,11 @@ class SiteOffListener implements EventSubscriberInterface
             if ($hasOnlyOverviewAccess && $request->hasSession() && $this->currentUserApi->isLoggedIn()) {
                 $request->getSession()->invalidate(); // logout
             }
-
-            $form = $this->formFactory->create('Zikula\ZAuthModule\Form\Type\UnameLoginType', [], [
-                'action' => $this->router->generate('zikulausersmodule_access_login', ['authenticationMethod' => 'native_uname'])
-            ]);
             $response = new PlainResponse();
             $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
             $response->setStatusCode(503);
             $content = $this->twig->render('CoreBundle:System:siteoff.html.twig', [
                 'versionsEqual' => $versionsEqual,
-                'form' => $form->createView()
             ]);
             $response->setContent($content);
             $event->setResponse($response);
@@ -152,7 +139,7 @@ class SiteOffListener implements EventSubscriberInterface
         return [
             KernelEvents::REQUEST => [
                 ['onKernelRequestSiteOff', 110] // priority set high to catch request before other subscribers
-            ]
+            ],
         ];
     }
 }

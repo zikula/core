@@ -59,11 +59,6 @@ class DefaultLoginType extends AbstractType
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->translator->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
-            ])
         ;
     }
 }

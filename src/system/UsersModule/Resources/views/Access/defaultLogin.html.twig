@@ -24,7 +24,7 @@
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
             {{ form_widget(form.submit) }}
-            {{ form_widget(form.cancel) }}
+            <a class="btn btn-default" role="button" href="{{ path('home') }}">{{ __('Cancel') }}</a>
         </div>
     </div>
 {{ form_end(form) }}

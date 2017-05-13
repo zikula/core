@@ -155,7 +155,7 @@ class MenuController extends AbstractController
      * @Theme("admin")
      * @param Request $request
      * @param MenuItemEntity|null $menuItemEntity
-     * @return array
+     * @return array|RedirectResponse
      */
     public function deleteAction(Request $request, MenuItemEntity $menuItemEntity)
     {
