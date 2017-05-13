@@ -41,6 +41,7 @@ class AccessEvents
      * feedback to the user attempting to log in that might be appropriate.
      *
      * If vetoing the login, the 'returnUrl' argument should be set to redirect the user to an appropriate action.
+     * Also, a 'flash' argument may be set to provide information to the user for the veto.
      *
      * Note: the user __will not__ be logged in at the point where the event handler is
      * executing. Any attempt to check a user's permissions, his logged-in status, or any

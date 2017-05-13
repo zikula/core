@@ -23,6 +23,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
@@ -79,7 +80,7 @@ class AccessController extends AbstractController
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-            $uid = ($request->getMethod() == 'POST') ? 1 : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
+            $uid = ($request->getMethod() == 'POST') ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
             $hasListeners = $this->get('event_dispatcher')->hasListeners(AccessEvents::LOGIN_FORM);
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
@@ -115,6 +116,10 @@ class AccessController extends AbstractController
                         $this->get('zikula_users_module.helper.access_helper')->login($user, $rememberMe);
                         $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $returnUrlFromSession);
                     } else {
+                        $request->getSession()->remove('authenticationMethod');
+                        if ($event->hasArgument('flash')) {
+                            $this->addFlash('danger', $event->getArgument('flash'));
+                        }
                         $returnUrl = $event->getArgument('returnUrl');
                     }
 
