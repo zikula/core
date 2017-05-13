@@ -84,7 +84,7 @@ class AccessController extends AbstractController
             $listenersHaveContent = $hasListeners ? !empty($this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_FORM, new GenericEvent())->getData()) : false;
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($listenersHaveContent || count($hookBindings) > 0) {
-                $form = $this->createForm('Zikula\UsersModule\Form\Type\DefaultLoginType', ['uid' => $uid]);
+                $form = $this->createForm(DefaultLoginType::class, ['uid' => $uid]);
                 $form->handleRequest($request);
                 if ($form->isValid() && $form->isSubmitted()) {
                     $uid = $form->get('uid')->getData();

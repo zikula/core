@@ -3606,16 +3606,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.19",
+            "version": "v5.0.20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "654c4fa3d11448c8005400a244987896243a990a"
+                "reference": "4b019d4c0bd64438c42e4b6b0726085b409be8d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/654c4fa3d11448c8005400a244987896243a990a",
-                "reference": "654c4fa3d11448c8005400a244987896243a990a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/4b019d4c0bd64438c42e4b6b0726085b409be8d9",
+                "reference": "4b019d4c0bd64438c42e4b6b0726085b409be8d9",
                 "shasum": ""
             },
             "require": {
@@ -3654,7 +3654,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-04-23T22:28:23+00:00"
+            "time": "2017-05-11T16:21:03+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3662,12 +3662,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "257f38cfa0464d7e94f939d34c206711bc9cbdbc"
+                "reference": "025855e0b6829c82bfcb0897c6ffd5f40135028b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/257f38cfa0464d7e94f939d34c206711bc9cbdbc",
-                "reference": "257f38cfa0464d7e94f939d34c206711bc9cbdbc",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/025855e0b6829c82bfcb0897c6ffd5f40135028b",
+                "reference": "025855e0b6829c82bfcb0897c6ffd5f40135028b",
                 "shasum": ""
             },
             "require": {
@@ -3723,7 +3723,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-03-02 20:12:17"
+            "time": "2017-05-11 17:04:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -4854,7 +4854,7 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.0",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
             "time": "2017-04-05T15:20:06+00:00"
@@ -5141,12 +5141,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "aab45781f9f80bc27842872ab1a04f78025259cd"
+                "reference": "1bfa2a5f8d2af73277ed26467820867585d4f406"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/aab45781f9f80bc27842872ab1a04f78025259cd",
-                "reference": "aab45781f9f80bc27842872ab1a04f78025259cd",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1bfa2a5f8d2af73277ed26467820867585d4f406",
+                "reference": "1bfa2a5f8d2af73277ed26467820867585d4f406",
                 "shasum": ""
             },
             "require": {
@@ -5201,20 +5201,20 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-04-23 18:45:23"
+            "time": "2017-05-13 13:49:40"
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "10c802988dc30bf4ee52fd534daa73bed3a45fec"
+                "reference": "78eb4a2e7d5e6faad9200deb8332d8f461fa9a68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/10c802988dc30bf4ee52fd534daa73bed3a45fec",
-                "reference": "10c802988dc30bf4ee52fd534daa73bed3a45fec",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/78eb4a2e7d5e6faad9200deb8332d8f461fa9a68",
+                "reference": "78eb4a2e7d5e6faad9200deb8332d8f461fa9a68",
                 "shasum": ""
             },
             "require": {
@@ -5259,10 +5259,10 @@
             ],
             "description": "Integrates league/oauth2-client and various providers.",
             "support": {
-                "source": "https://github.com/zikula/OAuth/tree/1.0.0",
+                "source": "https://github.com/zikula/OAuth/tree/1.0.1",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2017-04-29T17:14:25+00:00"
+            "time": "2017-05-10T21:19:54+00:00"
         },
         {
             "name": "zikula/pagelock-module",
