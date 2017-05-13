@@ -83,7 +83,8 @@ CHANGELOG - ZIKULA 1.5.x
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
     - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
-    - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.25
+    - sensio/distribution-bundle updated from 5.0.18 to 5.0.20
+    - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.26
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
