@@ -82,8 +82,9 @@ class AccessController extends AbstractController
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             $uid = ($request->getMethod() == 'POST') ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
             $hasListeners = $this->get('event_dispatcher')->hasListeners(AccessEvents::LOGIN_FORM);
+            $listenersHaveContent = $hasListeners ? !empty($this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_FORM, new GenericEvent())->getData()) : false;
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
-            if ($hasListeners || count($hookBindings) > 0) {
+            if ($listenersHaveContent || count($hookBindings) > 0) {
                 $form = $this->createForm('Zikula\UsersModule\Form\Type\DefaultLoginType', ['uid' => $uid]);
                 $form->handleRequest($request);
                 if ($form->isValid() && $form->isSubmitted()) {

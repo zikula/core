@@ -56,11 +56,6 @@ class DefaultLoginType extends AbstractType
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
-                'label' => $this->translator->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
-            ])
         ;
     }
 }
