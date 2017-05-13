@@ -116,7 +116,6 @@ class AccessController extends AbstractController
                         $this->get('zikula_users_module.helper.access_helper')->login($user, $rememberMe);
                         $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $returnUrlFromSession);
                     } else {
-                        $request->getSession()->remove('authenticationMethod');
                         if ($event->hasArgument('flash')) {
                             $this->addFlash('danger', $event->getArgument('flash'));
                         }

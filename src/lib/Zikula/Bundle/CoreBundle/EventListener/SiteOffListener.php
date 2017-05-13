@@ -17,12 +17,9 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class SiteOffListener implements EventSubscriberInterface
@@ -48,11 +45,6 @@ class SiteOffListener implements EventSubscriberInterface
     private $twig;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -73,7 +65,6 @@ class SiteOffListener implements EventSubscriberInterface
      * @param PermissionApiInterface $permissionApi
      * @param CurrentUserApiInterface $currentUserApi
      * @param \Twig_Environment $twig
-     * @param TranslatorInterface $translator
      * @param RouterInterface $router
      * @param boolean $installed
      * @param string $currentInstalledVersion
@@ -83,7 +74,6 @@ class SiteOffListener implements EventSubscriberInterface
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
         \Twig_Environment $twig,
-        TranslatorInterface $translator,
         RouterInterface $router,
         $installed,
         $currentInstalledVersion
@@ -92,7 +82,6 @@ class SiteOffListener implements EventSubscriberInterface
         $this->permissionApi = $permissionApi;
         $this->currentUserApi = $currentUserApi;
         $this->twig = $twig;
-        $this->translator = $translator;
         $this->router = $router;
         $this->installed = $installed;
         $this->currentInstalledVersion = $currentInstalledVersion;
@@ -145,33 +134,12 @@ class SiteOffListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * Veto a login by a non-admin when the site is disabled.
-     * @param GenericEvent $event
-     */
-    public function vetoNonAdminsOnSiteOff(GenericEvent $event)
-    {
-        $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
-        if (!$siteOff) {
-            return;
-        }
-        $user = $event->getSubject();
-        if (!$this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user->getUid())) {
-            $event->stopPropagation();
-            $event->setArgument('flash', $this->translator->__('Admin credentials required when site is disabled.'));
-            $event->setArgument('returnUrl', $this->router->generate('home'));
-        }
-    }
-
     public static function getSubscribedEvents()
     {
         return [
             KernelEvents::REQUEST => [
                 ['onKernelRequestSiteOff', 110] // priority set high to catch request before other subscribers
             ],
-            AccessEvents::LOGIN_VETO => [
-                ['vetoNonAdminsOnSiteOff']
-            ]
         ];
     }
 }
