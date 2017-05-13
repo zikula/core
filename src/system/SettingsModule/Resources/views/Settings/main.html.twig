@@ -34,10 +34,13 @@
             </div>
             {{ form_row(form.pagetitle) }}
             {{ form_row(form.adminmail) }}
-            {{ form_row(form.siteoff) }}
-            <div id="settings_siteoff_container">
-                <div data-switch="zikulasettingsmodule_mainsettings[siteoff]" data-switch-value="1">
-                    {{ form_row(form.siteoffreason) }}
+            <div class="alert alert-danger">
+                <h4 class="col-sm-offset-3 col-sm-9"><i class="fa fa-exclamation-triangle"></i> {{ __('CAUTION') }}</h4>
+                {{ form_row(form.siteoff) }}
+                <div id="settings_siteoff_container">
+                    <div data-switch="zikulasettingsmodule_mainsettings[siteoff]" data-switch-value="1">
+                        {{ form_row(form.siteoffreason) }}
+                    </div>
                 </div>
             </div>
         </fieldset>

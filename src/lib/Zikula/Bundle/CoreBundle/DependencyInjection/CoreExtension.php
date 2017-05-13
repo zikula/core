@@ -33,6 +33,7 @@ class CoreExtension extends Extension
         $loader->load('symfony_overrides.yml');
         $loader->load('session.yml');
         $loader->load('services.yml');
+        $loader->load('listeners.yml');
         $loader->load('core.yml');
         $loader->load('twig.yml');
         $loader->load('translation.yml');
