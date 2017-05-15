@@ -50,6 +50,12 @@ class UserAttributeEntity extends EntityAccess
     private $value;
 
     /**
+     * non-persisted property
+     * @var string
+     */
+    private $extra;
+
+    /**
      * constructor
      *
      * @param int    $user  user id
@@ -132,5 +138,21 @@ class UserAttributeEntity extends EntityAccess
     {
         $this->setName($name);
         $this->setValue($value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtra()
+    {
+        return $this->extra;
+    }
+
+    /**
+     * @param string $extra
+     */
+    public function setExtra($extra)
+    {
+        $this->extra = $extra;
     }
 }
