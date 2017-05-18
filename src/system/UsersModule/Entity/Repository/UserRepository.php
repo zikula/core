@@ -153,8 +153,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     {
         $qb = $this->createQueryBuilder('u')
             ->select('count(u.uid)');
-        $where = $this->whereFromFilter($qb, $filter, $exprType);
-        $qb->andWhere($where);
+        if (!empty($filter)) {
+            $where = $this->whereFromFilter($qb, $filter, $exprType);
+            $qb->andWhere($where);
+        }
         $query = $qb->getQuery();
 
         return $query->getSingleScalarResult();
