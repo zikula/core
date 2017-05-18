@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 
@@ -24,7 +25,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
             ->select('DISTINCT s.uid')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
-            ->andWhere('s.uid != 0')
+            ->andWhere('s.uid != :guestUser')
+            ->setParameter('guestUser', Constant::USER_ID_ANONYMOUS)
             ->getQuery();
         $users = $query->getArrayResult();
         $result = [];
@@ -41,7 +43,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
             ->select('COUNT(s.uid)')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
-            ->andWhere('s.uid != 0')
+            ->andWhere('s.uid != :guestUser')
+            ->setParameter('guestUser', Constant::USER_ID_ANONYMOUS)
             ->getQuery();
 
         return (int)$query->getSingleScalarResult();
@@ -53,7 +56,8 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
             ->select('COUNT(s.uid)')
             ->where('s.lastused > :activetime')
             ->setParameter('activetime', $dateTime)
-            ->andWhere('s.uid = 0')
+            ->andWhere('s.uid = :guestUser')
+            ->setParameter('guestUser', Constant::USER_ID_ANONYMOUS)
             ->getQuery();
 
         return (int)$query->getSingleScalarResult();
@@ -98,7 +102,7 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
                     )->setParameter(1, $inactive)
                     ->orWhere($qb->expr()->lt('s.lastused', '?2'))->setParameter(2, $daysOld)
                     ->orWhere($qb->expr()->andX(
-                        $qb->expr()->eq('s.uid', 0), // @todo anonymous user id
+                        $qb->expr()->eq('s.uid', Constant::USER_ID_ANONYMOUS),
                         $qb->expr()->lt('s.lastused', '?3')
                     ))->setParameter(3, $inactive);
                 break;
