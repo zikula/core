@@ -19,3 +19,4 @@ Filters
  * safeHtml
  * urldecode
  * yesNo
+ * onlineSince(minutes)

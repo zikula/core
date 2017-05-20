@@ -18,3 +18,11 @@ services:
           - "@translator.default"
         tags:
           - { name: twig.extension }
+
+    twig.extension.zikula.users_module.online:
+        class: Zikula\UsersModule\Twig\Extension\OnlineExtension
+        arguments:
+          - '@zikula_users_module.user_session_repository'
+          - "@=service('zikula_extensions_module.api.variable').getSystemVar('sessionstoretofile', 1)"
+        tags:
+            - { name: twig.extension }

@@ -65,6 +65,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Improved LocaleApi to localize displayed language names.
     - Add PageAssetApi to ease addition of page assets from controllers and non-templates.
     - Added OAuthModule
+    - Added `onlineSince(minutes)` twig filter.
 
  - Vendor updates:
     - composer/installers updated from 1.2.0 to 1.3.0
