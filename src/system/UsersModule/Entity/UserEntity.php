@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -480,7 +481,7 @@ class UserEntity extends EntityAccess
     /**
      * get the attributes of the user
      *
-     * @return ArrayCollection UserAttributeEntity[] of the user's attributes
+     * @return PersistentCollection|ArrayCollection UserAttributeEntity[] of the user's attributes
      */
     public function getAttributes()
     {
