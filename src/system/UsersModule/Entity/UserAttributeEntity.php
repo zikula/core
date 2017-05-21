@@ -155,4 +155,9 @@ class UserAttributeEntity extends EntityAccess
     {
         $this->extra = $extra;
     }
+
+    public function __toString()
+    {
+        return $this->getValue();
+    }
 }
