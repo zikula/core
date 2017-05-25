@@ -34,7 +34,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
     }
 
     // add required scripts and stylesheets to page
-    PageUtil::addVar('javascript', 'web/jquery-mmenu/js/jquery.mmenu.all.min.js');
+    PageUtil::addVar('javascript', 'web/jquery-mmenu/js/jquery.mmenu.all.js');
     PageUtil::addVar('stylesheet', 'web/jquery-mmenu/css/jquery.mmenu.all.css');
     // add override for panel width created from .scss file
     PageUtil::addVar('stylesheet', '@ZikulaAdminModule/Resources/public/css/mmenu-hiddenpanel-customwidth.css');

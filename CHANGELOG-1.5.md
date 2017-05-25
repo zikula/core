@@ -72,11 +72,11 @@ CHANGELOG - ZIKULA 1.5.x
     - composer/semver installed at 1.4.2
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
-    - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.7
+    - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.8
     - fduch/workflow-bundle installed at 2.0.2
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.28
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
-    - jquery.mmenu updated from 5.7.8 to 6.0.2
+    - jquery.mmenu updated from 5.7.8 to 6.1.0
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
     - monolog/monolog updated from 1.22.0 to 1.22.1
@@ -84,19 +84,21 @@ CHANGELOG - ZIKULA 1.5.x
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
     - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
+    - sebastian/diff updated from 1.4.1 to 1.4.3
     - sensio/distribution-bundle updated from 5.0.18 to 5.0.20
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.26
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
     - symfony updated from 2.8.17 to 2.8.20
-    - symfony/security-acl update from 2.8.0 to 3.0.0
+    - symfony/security-acl updated from 2.8.0 to 3.0.0
+    - symfony/swiftmailer-bundle updated from 2.4.2 to 2.4.3
     - symfony/workflow installed at 3.2.8
     - twig updated from 1.31.0 to 1.33.2
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
-    - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.4
+    - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at dev-master 
     - zikula/andreas08-theme installed at 2.0.0
     - zikula/pagelock-module installed at 1.2.0
