@@ -5,6 +5,12 @@
  */
 function zikulaRoutesInitUserField(fieldName, getterName)
 {
+    jQuery('#' + fieldName + 'ResetVal').click( function (event) {
+        event.preventDefault();
+        jQuery('#' + fieldName).val('');
+        jQuery('#' + fieldName + 'Selector').val('');
+    }).removeClass('hidden');
+
     if (jQuery('#' + fieldName + 'LiveSearch').length < 1) {
         return;
     }
