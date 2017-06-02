@@ -410,12 +410,18 @@ class CategoryEntity extends EntityAccess
      * get the category display name
      * @param $lang
      *
-     * @return array the category display name
+     * @return array|string the category display name(s)
      */
     public function getDisplay_name($lang = null)
     {
         if (!empty($lang)) {
-            return $this->display_name[$lang];
+            if (isset($this->display_desc[$lang])) {
+                return $this->display_name[$lang];
+            } elseif (isset($this->display_name['en'])) {
+                return $this->display_name['en'];
+            } else {
+                return $this->name;
+            }
         }
 
         return $this->display_name;
