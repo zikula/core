@@ -4,6 +4,7 @@
     <!-- invokation
         phing -f $WORKSPACE/source/build.xml clean prepare phpcs phpcb phpcpd phpunit pdepend phpmd docblox jsdoc build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
         # note phpcb must follow phpcs
+        phing -f $WORKSPACE/source/build.xml clean build build_delete -Dworkspace=$WORKSPACE -Djob_name=$JOB_NAME -Dbuild_number=$BUILD_NUMBER -Dbuild_tag=$BUILD_TAG -Dbuild_id=$BUILD_ID -Dsvn_revision=$SVN_REVISION
     -->
 
     <!--
@@ -22,12 +23,10 @@
     <property name="archivedir" value="${builddir}/archive"/>
     <property name="packagepath" value="${exportdir}/${job_name}"/>
     <property name="checksumpath" value="${archivedir}/${package}-checksums"/>
-    <property name="patchdir" value="${builddir}/patch"/>
     <property name="tmpdir" value="${builddir}/tmp"/>
     <property name="ignorepaths" value="lib/vendor/*,javascript/*,system/*,themes/*,install/*,lib/legacy,plugins/*"/>
 
     <!-- need a second property since phpdoc doesn't respect wildcard patterns -->
-    <property name="docbloxignorepaths" value="lib/vendor/,javascript/,system/"/>
     <property name="ignorefiletypes" value="*.css,*.js"/>
 
     <target name="clean">
@@ -129,7 +128,6 @@
 
         <echo msg="Files copied and compressed in build directory OK!"/>
 
-        <!-- ATTN phingcall target="build_patch" / -->
         <phingcall target="build_checksums"/>
     </target>
 
@@ -151,99 +149,4 @@
         <delete file="${checksumpath}.tmp"/>
     </target>
 
-    <target name="build_patch">
-        <echo msg="Making patches...."/>
-        <!-- TODO this needs an overhaul as it is still using SVN -->
-        <!-- get diffs for releases and save in ${tmpdir}/CHANGES file -->
-        <!-- ATTN urls require manual edit -->
-        <exec escape="false"
-              command="svn diff https://code.zikula.org/svn/core/tags/Zikula-1.3.0  https://code.zikula.org/svn/core/branches/zikula-1.3/src@${svn_revision} --summarize | sort|uniq > ${tmpdir}/CHANGES"/>
-
-        <!-- Remove lines that start with space (which means only a property change), or contain paths to deleted files -->
-        <exec escape="false" command="cat ${tmpdir}/CHANGES | sed -e '/^[ D]/d' >${tmpdir}/AM"/>
-
-        <!-- List deleted files -->
-        <exec escape="false" command="cat ${tmpdir}/CHANGES |  grep -e '^D' >${tmpdir}/DELETED.tmp"/>
-
-        <!-- this needs to be the regex escaped of the OLD branch -->
-        <!-- ATTN url requires manual edit -->
-        <property name="patchregex" value="https://code.zikula.org/svn/core/tags/Zikula-1.3.0/"/>
-
-        <!-- A or M, ignoring svn-property changes (2nd char), strip the svn-path from the remaining lines, store in ${tmpdir}/FILES -->
-        <exec escape="false" command="cat ${tmpdir}/AM | sed -e 's!^[AM]. *${patchregex}!!g'  > ${tmpdir}/FILES"/>
-        <exec escape="false" command="cat ${tmpdir}/DELETED.tmp | sed -e 's!${patchregex}!!g'  > ${tmpdir}/DELETED"/>
-
-        <!-- assemble patch -->
-        <exec escape="false"
-              command="cd ${packagepath};for FILE in `cat ${tmpdir}/FILES`;do cp --parents $FILE ${patchdir};done"/>
-
-        <!-- install folder is always required -->
-        <exec escape="false"
-              command="svn export --force https://code.zikula.org/svn/core/branches/zikula-1.3/src/install@${svn_revision} ${patchdir}/install"/>
-
-        <!-- zip's don't play nicely in Phing - using direct command -->
-        <exec escape="false" command="cd ${patchdir}; zip -D -r ${archivedir}/${package}.patch.zip ."/>
-    </target>
-
-    <!-- Docblox documentor -->
-    <target name="docblox">
-        <echo msg="DocBlox..."/>
-        <exec command="docblox project:run --directory ${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/viewplugins,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/util,${sourcedir}/src/lib/Zikula --target ${builddir}/docs"
-              escape="false"/>
-    </target>
-
-    <!-- PHPDocumentor -->
-    <target name="phpdoc">
-        <echo msg="PHPDocumentor..."/>
-        <exec command="phpdoc --directory ${sourcedir}/src/lib/dbobject,${sourcedir}/src/lib/i18n,${sourcedir}/src/lib/viewplugins,${sourcedir}/src/lib/StreamReader,${sourcedir}/src/lib/util,${sourcedir}/src/lib/Zikula --target ${builddir}/docs"
-              escape="false"/>
-    </target>
-
-    <!-- PHP copy/paste analysis -->
-    <target name="phpcpd">
-        <echo msg="PHP Copy/Paste..."/>
-        <exec command="phpcpd --log-pmd ${builddir}/logs/phpcpd.xml --suffixes php --exclude ${ignorepaths} ${sourcedir}/src"
-              escape="false"/>
-    </target>
-
-    <!-- PHP MD analysis -->
-    <target name="phpmd">
-        <echo msg="PHP_MD..."/>
-        <exec command="phpmd ${sourcedir}/src xml codesize --reportfile ${builddir}/logs/pmd.xml --ignore ${ignorepaths}"
-              escape="false"/>
-    </target>
-
-    <!-- PHP dependency checker -->
-    <target name="pdepend">
-        <!-- PHP dependency checker -->
-        <echo msg="PHP_Depend..."/>
-        <exec command="pdepend --jdepend-xml=${builddir}/logs/jdepend.xml --jdepend-chart=${builddir}/logs/jdepend.png --phpunit-xml=${builddir}/logs/pdepend_phpunit.xml --overview-pyramid=${builddir}/logs/pdepend_pyramid.png  --summary-xml=${builddir}/logs/pdepend_summary.xml --ignore=${ignorepaths} --optimization=best --suffix=php ${sourcedir}/src"
-              escape="false"/>
-    </target>
-
-    <!-- PHP CodeSniffer -->
-    <target name="phpcs">
-        <echo msg="PHP_CodeSniffer..."/>
-        <exec command="phpcs --extensions=php --report=checkstyle --standard=Zikula --ignore=${ignorepaths} ${sourcedir}/src > ${builddir}/logs/phpcs.xml"
-              escape="false"/>
-    </target>
-
-    <!-- Unit Tests & coverage analysis -->
-    <target name="phpunit">
-        <echo msg="PHPUnit..."/>
-        <exec command="phpunit --log-junit ${builddir}/logs/phpunit.xml --coverage-clover ${builddir}/coverage/clover.xml --coverage-html ${builddir}/coverage/ ${sourcedir}/tests"/>
-    </target>
-
-    <!-- JSDoc -->
-    <target name="jsdoc">
-        <echo msg="JSDoc..."/>
-        <exec command="cd /opt/jsdoc-toolkit; /opt/jsdoc-toolkit/jsrun.sh -t=/opt/jsdoc-toolkit/templates/jsdoc --directory=${builddir}/jsdoc ${sourcedir}/src/javascript/helpers"/>
-        <!-- exec command="cd ${builddir}/jsdoc;/opt/jsdoc-toolkit ${sourcedir}/src/javascript/helpers"/ -->
-    </target>
-
-    <!-- Code Browser -->
-    <target name="phpcb">
-        <echo msg="PHP_CodeBrowser on XML for voilations..."/>
-        <exec command="phpcb --log ${builddir}/logs --output ${builddir}/phpcb"/>
-    </target>
 </project>
