@@ -12,7 +12,7 @@
     syntaxCheck="true"
 >
     <testsuites>
-        <testsuite name="ZikulaRoutesModule Module Test Suite">
+        <testsuite name="ZikulaRoutesModule Test Suite">
             <directory>./Tests</directory>
             <exclude>./Tests/Entity/*/Repository</exclude>
             <exclude>./vendor</exclude>

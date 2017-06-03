@@ -161,12 +161,22 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
     }
 
     /**
-     * Shortcut method to fetch services from the the container.
+     * Shortcut method to fetch services from the container.
      * @param $serviceName
      * @return object
      */
     protected function get($serviceName)
     {
         return $this->container->get($serviceName);
+    }
+
+    /**
+     * Shortcut method to fetch parameters from the container.
+     * @param $name
+     * @return mixed
+     */
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 }

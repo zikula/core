@@ -29,9 +29,9 @@ class Application extends BaseApplication
      */
     public function __construct(ZikulaHttpKernelInterface $kernel)
     {
-        parent::__construct($kernel);
-
         $this->kernel = $kernel;
+
+        parent::__construct($kernel);
 
         $this->setName('Zikula');
         $this->setVersion(ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));

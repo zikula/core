@@ -23,7 +23,6 @@ framework:
             zikula_default:
                 base_path: ''
     default_locale:  "%locale%"
-    trusted_proxies: ~
     session:
         name: "%zikula.session.name%"
         handler_id: "%zikula.session.handler_id%"
