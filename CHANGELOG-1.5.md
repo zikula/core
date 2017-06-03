@@ -68,13 +68,14 @@ CHANGELOG - ZIKULA 1.5.x
     - Added `onlineSince(minutes)` twig filter.
 
  - Vendor updates:
+    - behat/transliterator updated from 1.1.0 to 1.2.0
     - composer/installers updated from 1.2.0 to 1.3.0
     - composer/semver installed at 1.4.2
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
     - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.8
     - fduch/workflow-bundle installed at 2.0.2
-    - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.28
+    - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.29
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
     - jquery.mmenu updated from 5.7.8 to 6.1.0
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
@@ -90,10 +91,10 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
-    - symfony updated from 2.8.17 to 2.8.20
+    - symfony/symfony updated from 2.8.17 to 2.8.21
     - symfony/security-acl updated from 2.8.0 to 3.0.0
     - symfony/swiftmailer-bundle updated from 2.4.2 to 2.4.3
-    - symfony/workflow installed at 3.2.8
+    - symfony/workflow installed at 3.2.8 and updated to 3.3.0
     - twig updated from 1.31.0 to 1.33.2
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
