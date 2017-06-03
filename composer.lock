@@ -5831,22 +5831,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "6be3692e3a3435a7506dea33bfef4232298ab4ff"
+                "reference": "b2ab8c06c8dbd5586aff39b132377c5829406b86"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/6be3692e3a3435a7506dea33bfef4232298ab4ff",
-                "reference": "6be3692e3a3435a7506dea33bfef4232298ab4ff",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b2ab8c06c8dbd5586aff39b132377c5829406b86",
+                "reference": "b2ab8c06c8dbd5586aff39b132377c5829406b86",
                 "shasum": ""
             },
             "require": {
-                "php": ">5.4.0"
+                "php": ">=5.5.9"
             },
             "type": "zikula-module",
             "extra": {
                 "zikula": {
                     "class": "Zikula\\ProfileModule\\ZikulaProfileModule",
-                    "core-compatibility": ">=1.4.3",
+                    "core-compatibility": ">=1.5.0",
                     "displayname": "Profile",
                     "url": "profile",
                     "oldnames": [
@@ -5858,15 +5858,12 @@
                         },
                         "user": {
                             "route": "zikulaprofilemodule_profile_display"
-                        },
-                        "profile": {
-                            "version": "1.0"
                         }
                     },
                     "securityschema": {
                         "ZikulaProfileModule::": "::",
                         "ZikulaProfileModule::view": "::",
-                        "ZikulaProfileModule::item": "DynamicUserData PropertyName::DynamicUserData PropertyID",
+                        "ZikulaProfileModule::item": "PropertyId::",
                         "ZikulaProfileModule:Members": "::",
                         "ZikulaProfileModule:Members:recent": "::",
                         "ZikulaProfileModule:Members:online": "::",
@@ -5874,7 +5871,7 @@
                         "ZikulaProfileModule:LastSeenblock:": "Block title::",
                         "ZikulaProfileModule:LastXUsersblock:": "Block title::",
                         "ZikulaProfileModule:MembersOnlineblock:": "Block title::",
-                        "Userblock:": "Block title::"
+                        "Userblock::": "Block title::"
                     }
                 }
             },
@@ -5897,7 +5894,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-05-15 00:49:51"
+            "time": "2017-06-03 13:29:40"
         },
         {
             "name": "zikula/seabreeze-theme",
