@@ -5209,7 +5209,7 @@
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
@@ -5266,20 +5266,20 @@
                 "source": "https://github.com/zikula/OAuth/tree/1.0.1",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2017-05-10T21:19:54+00:00"
+            "time": "2017-05-10 21:19:54"
         },
         {
             "name": "zikula/pagelock-module",
-            "version": "1.2.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "975e30da3a9297c445d01e1723aa178e2a103594"
+                "reference": "9cbf1b046804c898a6bb57f333f27ae8aa015d05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/975e30da3a9297c445d01e1723aa178e2a103594",
-                "reference": "975e30da3a9297c445d01e1723aa178e2a103594",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/9cbf1b046804c898a6bb57f333f27ae8aa015d05",
+                "reference": "9cbf1b046804c898a6bb57f333f27ae8aa015d05",
                 "shasum": ""
             },
             "require": {
@@ -5313,10 +5313,10 @@
             ],
             "description": "Page locking support",
             "support": {
-                "source": "https://github.com/zikula-modules/PageLock/tree/1.2.0",
+                "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2017-04-01T13:46:17+00:00"
+            "time": "2017-06-04 12:45:14"
         },
         {
             "name": "zikula/profile-module",
@@ -6500,6 +6500,8 @@
         "wikimedia/composer-merge-plugin": 20,
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
+        "zikula/oauth-module": 20,
+        "zikula/pagelock-module": 20,
         "sensio/framework-extra-bundle": 20,
         "zikula/filesystem": 20,
         "oyejorge/less.php": 20,

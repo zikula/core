@@ -17,8 +17,8 @@
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
-        "zikula/oauth-module": "1.*",
-        "zikula/pagelock-module": "1.2.*",
+        "zikula/oauth-module": "dev-master",
+        "zikula/pagelock-module": "dev-master",
         "zikula/andreas08-theme": "2.*",
         "zikula/seabreeze-theme": "4.*",
 
