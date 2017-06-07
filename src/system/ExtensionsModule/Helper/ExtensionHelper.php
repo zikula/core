@@ -108,7 +108,6 @@ class ExtensionHelper
 
         $bundle = $this->container->get('kernel')->getModule($extension->getName());
 
-
         // @TODO: Need to check status of Dependencies here to be sure they are met for upgraded extension.
 
         $installer = $this->getExtensionInstallerInstance($bundle);
