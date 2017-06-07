@@ -14,6 +14,7 @@ namespace Zikula\ExtensionsModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Extension installation form type.
@@ -62,7 +63,7 @@ class ExtensionInstallType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => new IdentityTranslator()
         ]);
     }
 }
