@@ -14,6 +14,7 @@ namespace Zikula\ExtensionsModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Extension modification form type.
@@ -71,7 +72,7 @@ class ExtensionModifyType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Zikula\ExtensionsModule\Entity\ExtensionEntity',
-            'translator' => null
+            'translator' => new IdentityTranslator()
         ]);
     }
 }
