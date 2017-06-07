@@ -306,6 +306,7 @@ class ModuleController extends AbstractController
         if (!$this->get('kernel')->isBundle($extension->getName())) {
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
             $this->get('zikula.cache_clearer')->clear('symfony');
+
             return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $extension->getId()]);
         }
         $unsatisfiedDependencies = $this->get('zikula_extensions_module.extension_dependency_helper')->getUnsatisfiedExtensionDependencies($extension);
