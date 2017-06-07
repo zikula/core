@@ -15,7 +15,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -69,7 +68,7 @@ class ExtensionHelper
             throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
         }
 
-        $bundle = $this->forceLoadExtension($extension);
+        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);
         $result = $installer->install();
@@ -107,12 +106,8 @@ class ExtensionHelper
                 }
         }
 
-        if ($extension->getType() == self::TYPE_SYSTEM) {
-            // system modules are always loaded
-            $bundle = $this->container->get('kernel')->getModule($extension->getName());
-        } else {
-            $bundle = $this->forceLoadExtension($extension);
-        }
+        $bundle = $this->container->get('kernel')->getModule($extension->getName());
+
 
         // @TODO: Need to check status of Dependencies here to be sure they are met for upgraded extension.
 
@@ -170,7 +165,7 @@ class ExtensionHelper
             return false;
         }
 
-        $bundle = $this->forceLoadExtension($extension);
+        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         // remove hooks
         $this->container->get('zikula_hook_bundle.api.hook')->uninstallProviderHooks($bundle->getMetaData());
@@ -238,40 +233,6 @@ class ExtensionHelper
             default:
                 return false;
         }
-    }
-
-    /**
-     * Get an instance of a bundle class that is not currently loaded into the kernel.
-     * Extensions that are deactivated or uninstalled are NOT loaded into the kernel.
-     * Note: All System modules are always loaded into the kernel.
-     *
-     * @param ExtensionEntity $extension
-     * @return null|AbstractBundle
-     */
-    private function forceLoadExtension(ExtensionEntity $extension)
-    {
-        $osDir = $extension->getDirectory();
-        $scanner = new Scanner();
-        $directory = ZikulaKernel::isCoreModule($extension->getName()) ? 'system' : 'modules';
-        $scanner->scan(["$directory/$osDir"], 1);
-        $modules = $scanner->getModulesMetaData(true);
-        /** @var $moduleMetaData \Zikula\Bundle\CoreBundle\Bundle\MetaData */
-        $moduleMetaData = !empty($modules[$extension->getName()]) ? $modules[$extension->getName()] : null;
-        if (null !== $moduleMetaData) {
-            // moduleMetaData only exists for bundle-type modules
-            $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
-            $boot->addAutoloaders($this->container->get('kernel'), $moduleMetaData->getAutoload());
-            $moduleClass = $moduleMetaData->getClass();
-            $bundle = new $moduleClass();
-            $bootstrap = $bundle->getPath() . "/bootstrap.php";
-            if (file_exists($bootstrap)) {
-                include_once $bootstrap;
-            }
-
-            return $bundle;
-        }
-
-        return null;
     }
 
     /**

@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -274,6 +275,15 @@ class ModuleController extends AbstractController
      */
     public function installAction(Request $request, ExtensionEntity $extension)
     {
+        if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
+        }
+        if (!$this->get('kernel')->isBundle($extension->getName())) {
+            $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
+            $this->get('zikula.cache_clearer')->clear('symfony');
+
+            return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $extension->getId()]);
+        }
         $unsatisfiedDependencies = $this->get('zikula_extensions_module.extension_dependency_helper')->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [
             'dependencies' => $this->formatDependencyCheckboxArray($unsatisfiedDependencies)
@@ -309,10 +319,12 @@ class ModuleController extends AbstractController
 
                     return $this->redirectToRoute('zikulaextensionsmodule_module_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
                 } else {
+                    $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_UNINITIALISED);
                     $this->addFlash('error', $this->__f('Initialization of %s failed!', ['%s' => $extension->getName()]));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
+                $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_UNINITIALISED);
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
@@ -414,32 +426,20 @@ class ModuleController extends AbstractController
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
         if ($extension->getState() == Constant::STATE_MISSING) {
             throw new \RuntimeException($this->__("Error! The requested extension cannot be uninstalled because its files are missing!"));
+        }
+        if (!$this->get('kernel')->isBundle($extension->getName())) {
+            $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
+            $this->get('zikula.cache_clearer')->clear('symfony');
         }
         $requiredDependents = $this->get('zikula_extensions_module.extension_dependency_helper')->getDependentExtensions($extension);
         $blocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['module' => $extension]);
 
-        $form = $this->createFormBuilder()
-            ->add('uninstall', SubmitType::class, [
-                'label' => $this->__('Delete'),
-                'icon' => 'fa-trash-o',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm(DeletionType::class);
 
         if ($form->handleRequest($request)->isValid()) {
-            if ($form->get('uninstall')->isClicked()) {
+            if ($form->get('delete')->isClicked()) {
                 // remove dependent extensions
                 if (!$this->get('zikula_extensions_module.extension_helper')->uninstallArray($requiredDependents)) {
                     $this->addFlash('error', $this->__('Error: Could not uninstall dependent extensions.'));
