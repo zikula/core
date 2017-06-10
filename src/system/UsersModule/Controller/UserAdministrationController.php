@@ -30,6 +30,8 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\UserFormAwareEvent;
+use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
@@ -134,16 +136,19 @@ class UserAdministrationController extends AbstractController
         if (UsersConstant::USER_ID_ANONYMOUS === $user->getUid()) {
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
+        $dispatcher = $this->get('event_dispatcher');
 
         $form = $this->createForm('Zikula\UsersModule\Form\Type\AdminModifyUserType',
             $user, ['translator' => $this->get('translator.default')]
         );
         $originalUserName = $user->getUname();
         $originalGroups = $user->getGroups()->toArray();
+        $formEvent = new UserFormAwareEvent($form);
+        $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_VALIDATE, $event);
+        $dispatcher->dispatch(UserEvents::MODIFY_VALIDATE, $event);
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
         $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
@@ -161,9 +166,10 @@ class UserAdministrationController extends AbstractController
                 ];
                 $eventData = ['old_value' => $originalUserName];
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
-
-                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($user));
+                $dispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+                $formDataEvent = new UserFormDataEvent($user, $form);
+                $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $dispatcher->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($user)); // @deprecated
                 $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
@@ -177,6 +183,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'additional_templates' => isset($formEvent) ? $formEvent->getTemplates() : []
         ];
     }
 

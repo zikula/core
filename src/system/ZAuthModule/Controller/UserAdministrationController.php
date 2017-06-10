@@ -29,6 +29,8 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\UserFormAwareEvent;
+use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -128,15 +130,18 @@ class UserAdministrationController extends AbstractController
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
+        $dispatcher = $this->get('event_dispatcher');
 
         $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminCreatedUserType',
             $mapping, ['translator' => $this->get('translator.default')]
         );
+        $formEvent = new UserFormAwareEvent($form);
+        $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::NEW_VALIDATE, $event);
+        $dispatcher->dispatch(UserEvents::NEW_VALIDATE, $event); // @deprecated
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
         $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
@@ -165,15 +170,17 @@ class UserAdministrationController extends AbstractController
                 if (!$authMethod->register($mapping->toArray())) {
                     $this->addFlash('error', $this->__('The create process failed for an unknown reason.'));
                     $this->get('zikula_users_module.user_repository')->removeAndFlush($user);
-                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
+                    $dispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
+                $formDataEvent = new UserFormDataEvent($user, $form);
+                $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
                 $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-                $this->get('event_dispatcher')->dispatch(UserEvents::NEW_PROCESS, $event);
+                $dispatcher->dispatch(UserEvents::NEW_PROCESS, $event); // @deprecated
                 $hook = new ProcessHook($user->getUid());
                 $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
-                $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
+                $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
 
                 if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
                     $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -192,6 +199,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'additional_templates' => isset($formEvent) ? $formEvent->getTemplates() : []
         ];
     }
 
@@ -211,15 +219,18 @@ class UserAdministrationController extends AbstractController
         if (1 === $mapping->getUid()) {
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
+        $dispatcher = $this->get('event_dispatcher');
 
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminModifyUserType',
             $mapping, ['translator' => $this->get('translator.default')]
         );
         $originalMapping = clone $mapping;
+        $formEvent = new UserFormAwareEvent($form);
+        $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
         $form->handleRequest($request);
 
         $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-        $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_VALIDATE, $event);
+        $dispatcher->dispatch(UserEvents::MODIFY_VALIDATE, $event); // @deprecated
         $validators = $event->getData();
         $hook = new ValidationHook($validators);
         $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
@@ -245,9 +256,11 @@ class UserAdministrationController extends AbstractController
                 ];
                 $eventData = ['old_value' => $originalMapping->getUname()];
                 $updateEvent = new GenericEvent($userEntity, $eventArgs, $eventData);
-                $this->get('event_dispatcher')->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+                $dispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
-                $this->get('event_dispatcher')->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($userEntity));
+                $formDataEvent = new UserFormDataEvent($userEntity, $form);
+                $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $dispatcher->dispatch(UserEvents::MODIFY_PROCESS, new GenericEvent($userEntity)); // @deprecated
                 $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
@@ -261,6 +274,7 @@ class UserAdministrationController extends AbstractController
 
         return [
             'form' => $form->createView(),
+            'additional_templates' => isset($formEvent) ? $formEvent->getTemplates() : []
         ];
     }
 
