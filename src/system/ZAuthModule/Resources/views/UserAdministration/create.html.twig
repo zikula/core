@@ -35,9 +35,13 @@
             {{ form_row(form.adminnotification) }}
             {{ form_row(form.usermustverify) }}
         </fieldset>
+        {# @deprecated this event method is deprecated. See use of additional_templates below #}
         {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::NEW_FORM')) %}
         {% for data in eventData %}
             {{ data|raw }}
+        {% endfor %}
+        {% for additional_template in additional_templates %}
+            {{ include(additional_template, ignore_missing = true) }}
         {% endfor %}
         {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
 

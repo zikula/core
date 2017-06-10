@@ -35,6 +35,8 @@ CHANGELOG - ZIKULA 1.5.x
     - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
     - `PermissionApi::UNREGISTERED_USER` is deprecated. Use `UsersModule\Constant::USER_ID_ANONYMOUS`
     - \Zikula\Common\ClassProperties class has been deprecated.
+    - "Hook-like" events in both UserEvents and RegistrationEvents classes are deprecated
+        - These are replaced with other events. Please see the docs.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
@@ -66,6 +68,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Add PageAssetApi to ease addition of page assets from controllers and non-templates.
     - Added OAuthModule
     - Added `onlineSince(minutes)` twig filter.
+    - Add much easier method of adding form children to user registration/creation/edit forms.
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0
