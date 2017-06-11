@@ -31,7 +31,6 @@ use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
-use Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
