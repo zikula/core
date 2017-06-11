@@ -148,27 +148,4 @@ class RegistrationEvents
      * Occurs when an administrator approves a registration. The UserEntity is the subject.
      */
     const FORCE_REGISTRATION_APPROVAL = 'force.registration.approval';
-
-    /**
-     * A hook-like event process triggered when the registration form is displayed, which allows other modules to intercept
-     * and display their own elements for submission on the registration form.
-     * To add elements to the registration form, render output and add this as an array element on the event's
-     * data array.
-     * There is no subject and no arguments for the event.
-     */
-    const NEW_FORM = 'module.users.ui.form_edit.new_registration';
-    const NEW_VALIDATE = 'module.users.ui.validate_edit.new_registration';
-    const NEW_PROCESS = 'module.users.ui.process_edit.new_registration';
-
-    /**
-     * A hook-like event process triggered when the administrator's modify registration form is displayed, which allows other
-     * modules to intercept and display their own elements for submission on the new user form.
-     * To add elements to the modify registration form, render output and add this as an array element on the event's
-     * data array.
-     * The subject contains the current state of the registration object, possibly edited from its original state.
-     * The `'id'` argument contains the uid of the registration record.
-     */
-    const MODIFY_FORM = 'module.users.ui.form_edit.modify_registration';
-    const MODIFY_VALIDATE = 'module.users.ui.validate_edit.modify_registration';
-    const MODIFY_PROCESS = 'module.users.ui.process_edit.modify_registration';
 }

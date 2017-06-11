@@ -13,9 +13,8 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::NEW_FORM')) %}
-    {% for eventDisplay in eventData %}
-        {{ eventDisplay|raw }}
+    {% for additional_template in additional_templates %}
+        {{ include(additional_template, ignore_missing = true) }}
     {% endfor %}
 
     {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_FORM')) %}
