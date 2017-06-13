@@ -41,7 +41,7 @@
             {{ data|raw }}
         {% endfor %}
         {% for additional_template in additional_templates %}
-            {{ include(additional_template, ignore_missing = true) }}
+            {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
         {% endfor %}
         {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
 

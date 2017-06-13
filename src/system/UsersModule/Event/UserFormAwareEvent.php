@@ -46,7 +46,7 @@ class UserFormAwareEvent extends Event
      * @param FormInterface|string|int $child
      * @param string|null $type
      * @param array $options
-     * @return self - copy fluent interface of form class
+     * @return self
      */
     public function formAdd($child, $type = null, array $options = [])
     {
@@ -57,12 +57,13 @@ class UserFormAwareEvent extends Event
 
     /**
      * @param string $template
-     * @return self - copy fluent interface of form class
+     * @param array $templateVars
+     * @return self
      */
-    public function addTemplate($template)
+    public function addTemplate($template, $templateVars = [])
     {
         if (!in_array($template, $this->templates)) {
-            $this->templates[] = $template;
+            $this->templates[] = [$template, $templateVars];
         }
 
         return $this;
