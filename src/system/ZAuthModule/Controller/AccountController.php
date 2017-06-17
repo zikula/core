@@ -20,7 +20,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
