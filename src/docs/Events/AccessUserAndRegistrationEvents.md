@@ -40,3 +40,16 @@ These are all replaced by:
   - \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
 
 See their descriptions in the \Zikula\UsersModule\UserEvents class.
+
+Also deprecated:
+
+  - \Zikula\UsersModule\AccessEvents::LOGIN_FORM
+  - \Zikula\UsersModule\AccessEvents::LOGIN_VALIDATE
+  - \Zikula\UsersModule\AccessEvents::LOGIN_PROCESS
+
+replaced by:
+
+  - \Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM
+  - \Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM_HANDLE
+
+See their descriptions in the \Zikula\UsersModule\AccessEvents class.

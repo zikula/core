@@ -35,7 +35,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
     - `PermissionApi::UNREGISTERED_USER` is deprecated. Use `UsersModule\Constant::USER_ID_ANONYMOUS`
     - \Zikula\Common\ClassProperties class has been deprecated.
-    - "Hook-like" events in both UserEvents and RegistrationEvents classes are deprecated
+    - "Hook-like" events in both UserEvents, RegistrationEvents and AccessEvents classes are deprecated
         - These are replaced with other events. Please see the docs.
 
  - Fixes:

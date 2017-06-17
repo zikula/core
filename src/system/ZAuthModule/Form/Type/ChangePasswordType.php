@@ -12,6 +12,7 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -27,6 +28,7 @@ class ChangePasswordType extends AbstractType
     {
         $builder
             ->add('uid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('login', HiddenType::class)
             ->add('authenticationMethod', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('oldpass', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
                 'required' => false,
