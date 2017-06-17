@@ -2,10 +2,7 @@
 'ZikulaZAuthModule:Authentication:input_group_layout.html.twig',
 'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-{# @deprecated every login form must implement this event and hook call #}
-{% set eventDatas = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
-{% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}
-{% if eventDatas is not empty or hooks is not empty or additional_templates is not empty %}
+{% if linkOnly %}
     <a href="{{ path('zikulausersmodule_access_login') }}" class="btn btn-default navbar-btn">{{ __('Login') }}</a>
 {% else %}
     {{ form_start(form, { 'attr': {'class': 'navbar-form navbar-right'} }) }}
