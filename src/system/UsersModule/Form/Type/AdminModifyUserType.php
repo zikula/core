@@ -14,6 +14,7 @@ namespace Zikula\UsersModule\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\UsersModule\Constant;
 
 class AdminModifyUserType extends AbstractType
 {
@@ -25,8 +26,9 @@ class AdminModifyUserType extends AbstractType
         $builder
             ->add('activated', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'choices' => [
-                    $options['translator']->__('Active') => 1,
-                    $options['translator']->__('Inactive') => 0
+                    $options['translator']->__('Active') => Constant::ACTIVATED_ACTIVE,
+                    $options['translator']->__('Inactive') => Constant::ACTIVATED_INACTIVE,
+                    $options['translator']->__('Pending') => Constant::ACTIVATED_PENDING_REG
                 ],
                 'choices_as_values' => true,
                 'label' => $options['translator']->__('User status')
