@@ -12,13 +12,9 @@
     {{ form_row(form.pass) }}
     {{ form_row(form.rememberme) }}
 
-    {# every login form must implement this event and hook call #}
-    <div id="zikulausersmodule-login-event-display">
-        {% set eventDatas = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
-        {% for eventData in eventDatas %}
-            {{ eventData }}
-        {% endfor %}
-    </div>
+    {% for additional_template in additional_templates %}
+        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
+    {% endfor %}
     <div id="zikulausersmodule-login-hooks">
         {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}
         {% for hook in hooks %}

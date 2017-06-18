@@ -45,11 +45,6 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('hideclosed', false);
         $this->setVar('hidePrivate', false);
 
-        // Set the primary admin group gid as a module var so it is accessible by other modules,
-        // but it should not be editable at this time. For now it is read-only.
-        // this var is @deprecated. the constant should be used instead
-        $this->setVar('primaryadmingroup', GroupsConstant::GROUP_ID_ADMIN);
-
         // create the default data for the modules module
         $this->defaultdata();
 

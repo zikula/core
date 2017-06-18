@@ -34,12 +34,6 @@ class PermissionApi implements PermissionApiInterface
     const ALL_USERS = -1;
 
     /**
-     * unregistered user
-     * @deprecated use Constant::USER_ID_ANONYMOUS
-     */
-    const UNREGISTERED_USER = Constant::USER_ID_ANONYMOUS;
-
-    /**
      * 'all groups', includes unregistered users
      */
     const ALL_GROUPS = -1;

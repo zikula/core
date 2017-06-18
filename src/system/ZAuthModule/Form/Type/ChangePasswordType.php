@@ -31,6 +31,7 @@ class ChangePasswordType extends AbstractType
     {
         $builder
             ->add('uid', HiddenType::class)
+            ->add('login', HiddenType::class)
             ->add('authenticationMethod', HiddenType::class)
             ->add('oldpass', PasswordType::class, [
                 'required' => false,

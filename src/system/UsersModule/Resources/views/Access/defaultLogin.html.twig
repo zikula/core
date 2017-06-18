@@ -8,9 +8,8 @@
 {{ form_errors(form) }}
 
     {{ form_row(form.rememberme) }}
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
-    {% for eventDisplay in eventData %}
-        {{ eventDisplay|raw }}
+    {% for additional_template in additional_templates %}
+        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
     {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}

@@ -20,7 +20,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Exception\FatalErrorException;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
@@ -322,11 +321,7 @@ class AccountController extends AbstractController
      * @Route("/change-password")
      * @Template
      * @param Request $request
-     * @return array
-     * @throws FatalErrorException|\InvalidArgumentException Thrown if there are no arguments provided or
-     *                                    if the user is logged in but the user is coming from the login process or
-     *                                    if the authentication information is invalid
-     * @throws AccessDeniedException Thrown if the user isn't logged in and isn't coming from the login process
+     * @return array|RedirectResponse
      */
     public function changePasswordAction(Request $request)
     {
@@ -337,25 +332,16 @@ class AccountController extends AbstractController
         $request->getSession()->remove(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY);
         $currentUser = $this->get('zikula_users_module.current_user');
 
-        // In order to change one's password, the user either must be logged in already, or specifically
-        // must be coming from the login process. This is an exclusive-or. It is an error if neither is set,
-        // and likewise if both are set. One or the other, please!
-        if (!isset($uid) && !$currentUser->isLoggedIn()) {
-            throw new AccessDeniedException();
-        } elseif (isset($uid) && $currentUser->isLoggedIn()) {
-            throw new FatalErrorException();
-        }
-
         if (isset($uid)) {
             $login = true;
         } else {
             $login = false;
             $uid = $currentUser->get('uid');
         }
-        $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $uid]);
 
         $form = $this->createForm(ChangePasswordType::class, [
                 'uid' => $uid,
+                'login' => $login,
                 'authenticationMethod' => $authenticationMethod
             ], [
                 'translator' => $this->get('translator.default')
@@ -364,12 +350,13 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $data['uid']]);
             $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
             $userEntity = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
             $userEntity->delAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
             $this->addFlash('success', $this->__('Password successfully changed.'));
-            if ($login) {
+            if ($data['login']) {
                 $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
             }
 
@@ -379,8 +366,6 @@ class AccountController extends AbstractController
         return [
             'login' => $login,
             'form' => $form->createView(),
-            'user' => $mapping,
-            'modvars' => $this->getVars()
         ];
     }
 }

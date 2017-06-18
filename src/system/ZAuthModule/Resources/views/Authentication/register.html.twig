@@ -35,13 +35,8 @@
         {% if form.children.email is defined %}{{ form_row(form.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
-    {# @deprecated this event method is deprecated. See use of additional_templates below #}
-    {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::NEW_FORM')) %}
-    {% for eventDisplay in eventData %}
-        {{ eventDisplay|raw }}
-    {% endfor %}
     {% for additional_template in additional_templates %}
-        {{ include(additional_template, ignore_missing = true) }}
+        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
     {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_FORM')) %}

@@ -104,13 +104,21 @@ class AccessEvents
     const LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
 
     /**
-     * A hook-like UI event that is triggered when the login screen is displayed. This allows another module to
-     * intercept the display of the full-page version of the login form to add its own form elements for submission.
-     * To add elements to the form, render the output and add this as an array element to the event's
-     * data array.
-     * This event does not have any subject, arguments, or data.
+     * Event called on user login.
+     * @see \Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM_HANDLE
+     * Event is \Zikula\UsersModule\Event\UserFormAwareEvent
+     * Contains instance of the Form in order to add elements for inclusion in the user edit form.
+     * Has a `templates` property that can be added to via `$event->addTemplate('@FooBundle/Area/foo.html.twig')`
+     *   templates will be included/rendered within the user form output
      */
-    const LOGIN_FORM = 'module.users.ui.form_edit.login_screen';
-    const LOGIN_VALIDATE = 'module.users.ui.validate_edit.login_screen';
-    const LOGIN_PROCESS = 'module.users.ui.process_edit.login_screen';
+    const AUTHENTICATION_FORM = 'module.users.authentication.form';
+
+    /**
+     * Event called on user login handle form submission.
+     * @see \Zikula\UsersModule\AccessEvents::AUTHENTICATION_FORM
+     * Event is \Zikula\UsersModule\Event\UserFormDataEvent
+     * Contains instance of \Zikula\UsersModule\Entity\UserEntity
+     * Has a `formData` property to access data from form after it has handled the Request.
+     */
+    const AUTHENTICATION_FORM_HANDLE = 'module.users.authentication.form.handle';
 }

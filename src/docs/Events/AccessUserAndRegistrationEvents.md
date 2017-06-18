@@ -15,28 +15,3 @@ Because there are so many, they are not documented here. Please see the respecti
 
 In addition, Hooks are used extensively within the UsersModule. There are also 'hook-like' events that are used
 within the UsersModule.
-
-Deprecation Notice
-------------------
-
-The following events are deprecated as of Core-1.5.0 and will be removed in Core-2.0:
-
-  - \Zikula\UsersModule\RegistrationEvents::NEW_FORM
-  - \Zikula\UsersModule\RegistrationEvents::NEW_VALIDATE
-  - \Zikula\UsersModule\RegistrationEvents::NEW_PROCESS
-  - \Zikula\UsersModule\RegistrationEvents::MODIFY_FORM
-  - \Zikula\UsersModule\RegistrationEvents::MODIFY_VALIDATE
-  - \Zikula\UsersModule\RegistrationEvents::MODIFY_PROCESS
-  - \Zikula\UsersModule\UserEvents::NEW_FORM
-  - \Zikula\UsersModule\UserEvents::NEW_VALIDATE
-  - \Zikula\UsersModule\UserEvents::NEW_PROCESS
-  - \Zikula\UsersModule\UserEvents::MODIFY_FORM
-  - \Zikula\UsersModule\UserEvents::MODIFY_VALIDATE
-  - \Zikula\UsersModule\UserEvents::MODIFY_PROCESS
-
-These are all replaced by:
-
-  - \Zikula\UsersModule\UserEvents::EDIT_FORM
-  - \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
-
-See their descriptions in the \Zikula\UsersModule\UserEvents class.
