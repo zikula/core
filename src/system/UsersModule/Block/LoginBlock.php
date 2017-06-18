@@ -12,7 +12,6 @@
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
