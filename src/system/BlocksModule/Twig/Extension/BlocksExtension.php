@@ -110,7 +110,7 @@ class BlocksExtension extends \Twig_Extension
      * Display one block.
      *
      * @param BlockEntity $block
-     * @param string $positionName @deprecated argument. remove at Core-2.0
+     * @param string $positionName
      * @return string
      */
     public function showBlock(BlockEntity $block, $positionName = '')
