@@ -5145,22 +5145,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "1bfa2a5f8d2af73277ed26467820867585d4f406"
+                "reference": "09a19095e07a3964f0d7f1e3d5557be5c07c608e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1bfa2a5f8d2af73277ed26467820867585d4f406",
-                "reference": "1bfa2a5f8d2af73277ed26467820867585d4f406",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/09a19095e07a3964f0d7f1e3d5557be5c07c608e",
+                "reference": "09a19095e07a3964f0d7f1e3d5557be5c07c608e",
                 "shasum": ""
             },
             "require": {
-                "php": ">5.4.0"
+                "php": ">=5.5.9"
             },
             "type": "zikula-module",
             "extra": {
                 "zikula": {
                     "class": "Zikula\\LegalModule\\ZikulaLegalModule",
-                    "core-compatibility": ">=1.4.3",
+                    "core-compatibility": ">=1.5.0",
                     "displayname": "Legal",
                     "url": "legal",
                     "oldnames": [
@@ -5205,7 +5205,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-05-13 13:49:40"
+            "time": "2017-06-18 12:39:01"
         },
         {
             "name": "zikula/oauth-module",
@@ -5324,12 +5324,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "b2ab8c06c8dbd5586aff39b132377c5829406b86"
+                "reference": "f806758b24ba48970c5537a6232011bd86d11d1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b2ab8c06c8dbd5586aff39b132377c5829406b86",
-                "reference": "b2ab8c06c8dbd5586aff39b132377c5829406b86",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/f806758b24ba48970c5537a6232011bd86d11d1d",
+                "reference": "f806758b24ba48970c5537a6232011bd86d11d1d",
                 "shasum": ""
             },
             "require": {
@@ -5387,7 +5387,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-06-03 13:29:40"
+            "time": "2017-06-11 11:24:12"
         },
         {
             "name": "zikula/seabreeze-theme",
