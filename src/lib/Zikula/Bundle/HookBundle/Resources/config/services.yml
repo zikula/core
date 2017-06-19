@@ -36,11 +36,11 @@ services:
             - "@session"
             - "@translator.default"
 
-    hook_dispatcher.servicefactory:
-        class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory
-        arguments:
-            - "@service_container"
-            - "event_dispatcher"
+#    hook_dispatcher.servicefactory:
+#        class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory
+#        arguments:
+#            - "@service_container"
+#            - "event_dispatcher"
         # note: the second args is intentionally a string.
 
     hook_dispatcher:
@@ -48,7 +48,7 @@ services:
         arguments:
             - "@hook_dispatcher.storage"
             - "@event_dispatcher"
-            - "@hook_dispatcher.servicefactory"
+#            - "@hook_dispatcher.servicefactory"
 
     zikula.hookmanager:
         alias: hook_dispatcher

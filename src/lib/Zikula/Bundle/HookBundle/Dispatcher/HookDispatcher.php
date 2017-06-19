@@ -46,7 +46,7 @@ class HookDispatcher implements HookDispatcherInterface
      *
      * @var ServiceFactory
      */
-    private $factory;
+//    private $factory;
 
     /**
      * Constructor.
@@ -55,11 +55,11 @@ class HookDispatcher implements HookDispatcherInterface
      * @param EventDispatcherInterface $dispatcher
      * @param ServiceFactory           $factory
      */
-    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher, ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher/*, ServiceFactory $factory*/)
     {
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
-        $this->factory = $factory;
+//        $this->factory = $factory;
     }
 
     /**
@@ -82,11 +82,11 @@ class HookDispatcher implements HookDispatcherInterface
      */
     public function dispatch($name, Hook $hook)
     {
-        if (!$this->loaded) {
-            // lazy load handlers for the first time
-            $this->loadRuntimeHandlers();
-            $this->loaded = true;
-        }
+//        if (!$this->loaded) {
+//            // lazy load handlers for the first time
+//            $this->loadRuntimeHandlers();
+//            $this->loaded = true;
+//        }
 
         $this->decorateHook($name, $hook);
         if (!$hook->getAreaId()) {
@@ -295,27 +295,27 @@ class HookDispatcher implements HookDispatcherInterface
      */
     public function loadRuntimeHandlers()
     {
-        $handlers = $this->storage->getRuntimeHandlers();
-        foreach ($handlers as $handler) {
-            $callable = [$handler['classname'], $handler['method']];
-            if (is_callable($callable)) {
-                // some classes may not always be callable, for example, when upgrading.
-                if ($handler['serviceid']) {
-                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
-                    //                $this->dispatcher->addListenerService($handler['eventname'], $callable);
-                    $o = $this->dispatcher->getContainer()->get($callable[0]);
-                    $this->dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
-                } else {
-                    try {
-                        $this->dispatcher->addListener($handler['eventname'], $callable);
-                    } catch (\InvalidArgumentException $e) {
-                        throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
-                    }
-                }
-            }
-        }
-
-        return $this;
+//        $handlers = $this->storage->getRuntimeHandlers();
+//        foreach ($handlers as $handler) {
+//            $callable = [$handler['classname'], $handler['method']];
+//            if (is_callable($callable)) {
+//                // some classes may not always be callable, for example, when upgrading.
+//                if ($handler['serviceid']) {
+//                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+//                    //                $this->dispatcher->addListenerService($handler['eventname'], $callable);
+//                    $o = $this->dispatcher->getContainer()->get($callable[0]);
+//                    $this->dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
+//                } else {
+//                    try {
+//                        $this->dispatcher->addListener($handler['eventname'], $callable);
+//                    } catch (\InvalidArgumentException $e) {
+//                        throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+//                    }
+//                }
+//            }
+//        }
+//
+//        return $this;
     }
 
     /**
@@ -340,8 +340,9 @@ class HookDispatcher implements HookDispatcherInterface
      */
     private function reload()
     {
-        $this->flushHandlers();
-        $this->loadRuntimeHandlers();
+        // recompile the container
+//        $this->flushHandlers();
+//        $this->loadRuntimeHandlers();
     }
 
     /**
