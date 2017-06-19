@@ -60,9 +60,6 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      * Loads workflow files from given directories.
      *
      * @param ContainerBuilder $container
-     *
-     * @todo replace Finder usage by glob pattern in master branch
-     * @see http://symfony.com/blog/new-in-symfony-3-3-import-config-files-with-glob-patterns
      */
     private function loadWorkflowDefinitions(ContainerBuilder $container)
     {
