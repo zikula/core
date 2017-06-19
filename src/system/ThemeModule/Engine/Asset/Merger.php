@@ -56,7 +56,7 @@ class Merger implements MergerInterface
      * @param RouterInterface $router
      * @param CacheProvider $jsCache
      * @param CacheProvider $cssCache
-     * @param string $kernelRootDir
+     * @param string $kernelProjectDir
      * @param string $lifetime
      * @param bool $minify
      * @param bool $compress
@@ -65,7 +65,7 @@ class Merger implements MergerInterface
         RouterInterface $router,
         CacheProvider $jsCache,
         CacheProvider $cssCache,
-        $kernelRootDir,
+        $kernelProjectDir,
         $lifetime = "1 day",
         $minify = false,
         $compress = false
@@ -73,8 +73,8 @@ class Merger implements MergerInterface
         $this->router = $router;
         $this->jsCache = $jsCache;
         $this->cssCache = $cssCache;
-        $rootDir = realpath($kernelRootDir . '/../');
-        $this->rootDir = str_replace($router->getContext()->getBaseUrl(), '', $rootDir);
+        $projectDir = realpath($kernelProjectDir . '/');
+        $this->rootDir = str_replace($router->getContext()->getBaseUrl(), '', $projectDir);
         $this->lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime())->getTimestamp());
         $this->minify = $minify;
         $this->compress = $compress;

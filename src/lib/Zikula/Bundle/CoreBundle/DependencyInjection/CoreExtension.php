@@ -76,7 +76,9 @@ class CoreExtension extends Extension
             $dirs[] = dirname($r->getFileName()) . '/../Resources/translations';
         }
 
-        $overridePath = $container->getParameter('kernel.root_dir') . '/Resources/%s/translations';
+        $appResourcesPath = $container->getParameter('kernel.root_dir') . '/Resources/';
+
+        $overridePath = $appResourcesPath . '%s/translations';
         foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
             $reflection = new \ReflectionClass($class);
             if (is_dir($dir = dirname($reflection->getFileName()) . '/Resources/translations')) {
@@ -92,11 +94,11 @@ class CoreExtension extends Extension
             }
         }
 
-        if (is_dir($dir = $container->getParameter('kernel.root_dir') . '/Resources/translations')) {
+        if (is_dir($dir = $appResourcesPath . 'translations')) {
             $dirs[] = $dir;
         }
 
-        if (is_dir($dir = $container->getParameter('kernel.root_dir') . '/Resources/locale')) {
+        if (is_dir($dir = $appResourcesPath . 'locale')) {
             $dirs[] = $dir;
         }
 

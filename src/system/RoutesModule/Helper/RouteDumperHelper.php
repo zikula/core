@@ -64,7 +64,7 @@ class RouteDumperHelper
         $errors = '';
 
         // force deletion of existing file
-        $targetPath = sprintf('%s/../web/js/fos_js_routes.js', $this->container->getParameter('kernel.root_dir'));
+        $targetPath = sprintf('%s/web/js/fos_js_routes.js', $this->container->getParameter('kernel.project_dir'));
         if (file_exists($targetPath)) {
             try {
                 unlink($targetPath);

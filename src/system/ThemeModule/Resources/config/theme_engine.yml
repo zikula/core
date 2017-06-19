@@ -47,7 +47,7 @@ services:
           - "@router"
           - "@doctrine_cache.providers.zikula_js_asset_cache"
           - "@doctrine_cache.providers.zikula_css_asset_cache"
-          - "%kernel.root_dir%"
+          - "%kernel.project_dir%"
           - "%zikula_asset_manager.lifetime%"
           - "%zikula_asset_manager.minify%"
           - "%zikula_asset_manager.compress%"

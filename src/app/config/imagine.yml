@@ -2,12 +2,12 @@ liip_imagine:
     resolvers:
         default:
             web_path:
-                web_root: "%kernel.root_dir%/../"
+                web_root: "%kernel.project_dir%/"
                 cache_prefix: "web/imagine/cache"
     loaders:
         zikula_root:
             filesystem:
-                data_root: "%kernel.root_dir%/../"
+                data_root: "%kernel.project_dir%/"
     filter_sets:
         cache: ~
         my_thumb: # sample
