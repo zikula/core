@@ -14,7 +14,7 @@ namespace Zikula\Common\Translator;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Translation\Translator as BaseTranslator;
 use Symfony\Component\Translation\MessageSelector;
-use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Translator
@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 class Translator extends BaseTranslator implements WarmableInterface, TranslatorInterface
 {
     /**
-     * @var ServiceLocator
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -57,28 +57,21 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * * debug: Whether to enable debugging or not (false by default)
      * * resource_files: List of translation resources available grouped by locale.
      *
-     * @param ServiceLocator $container A ContainerInterface instance
+     * @param ContainerInterface $container A ContainerInterface instance
      * @param MessageSelector $selector The message selector for pluralization
      * @param string $defaultLocale The default locale
      * @param array $loaderIds An array of loader Ids
      * @param array $options An array of options
      * @throws \InvalidArgumentException
      */
-    public function __construct(ServiceLocator $container, MessageSelector $selector = null, $defaultLocale, $loaderIds = [], array $options = [])
+    public function __construct(ContainerInterface $container, MessageSelector $selector = null, $defaultLocale, $loaderIds = [], array $options = [])
     {
         $this->container = $container;
         $this->loaderIds = $loaderIds;
         // check option names
-        /**
-         * @todo review
-         * has been disabled as part of update to Symfony 3.3 because of
-         * The Translator does not support the following options: 'translation.loader.php', 'translation.loader.yml', 'translation.loader.xliff',
-         * 'translation.loader.po', 'translation.loader.mo', 'translation.loader.qt', 'translation.loader.csv', 'translation.loader.res',
-         * 'translation.loader.dat', 'translation.loader.ini', 'translation.loader.json', 'zikula_core.internal.translation_loader.pot'.
-         */
-        /*if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
+        if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
             throw new \InvalidArgumentException(sprintf('The Translator does not support the following options: \'%s\'.', implode('\', \'', $diff)));
-        }*/
+        }
 
         $this->domain = 'zikula';
         $this->options = array_merge($this->options, $options);
