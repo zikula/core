@@ -120,26 +120,6 @@ abstract class AbstractControllerHelper
     }
 
     /**
-     * Create nice permalinks.
-     *
-     * @param string $name The given object title
-     *
-     * @return string processed permalink
-     * @deprecated made obsolete by Doctrine extensions
-     */
-    public function formatPermalink($name)
-    {
-        $name = str_replace(
-            ['ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '.', '?', '"', '/', ':', 'é', 'è', 'â'],
-            ['ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'],
-            $name
-        );
-        $name = preg_replace("#(\s*\/\s*|\s*\+\s*|\s+)#", '-', strtolower($name));
-    
-        return $name;
-    }
-
-    /**
      * Processes the parameters for a view action.
      * This includes handling pagination, quick navigation forms and other aspects.
      *
