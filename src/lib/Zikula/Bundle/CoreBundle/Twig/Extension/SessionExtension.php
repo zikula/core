@@ -87,7 +87,7 @@ class SessionExtension extends \Twig_Extension
         }
 
         if (empty($total_messages)) {
-            return "";
+            return '';
         }
 
         return $result;

@@ -20,4 +20,4 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Vendor updates:
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.0.2
-    - symfony updated from 2.8.x to 3.x (#3027, #2099, #2639).
+    - symfony updated from 2.8.x to 3.3.x (#3027, #2099, #2639).

@@ -4,20 +4,25 @@ services:
         arguments:
           - "@service_container"
           - "@translator.selector"
+          - "%kernel.default_locale%"
           - {}
           - { cache_dir: "%kernel.cache_dir%/translations", debug: "%kernel.debug%" }
 
     zikula_core.internal.translation_extractor.file.php_extractor:
         class: Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor
         public: false
-        arguments: ["@jms_translation.doc_parser", "@kernel"]
+        arguments:
+            - "@jms_translation.doc_parser"
+            - "@kernel"
         tags:
             - { name: jms_translation.file_visitor }
 
     zikula_core.internal.translation_extractor.file.twig_extractor:
         class: Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor
         public: false
-        arguments: ["@twig", "@kernel"]
+        arguments:
+            - "@twig"
+            - "@kernel"
         tags:
             - { name: jms_translation.file_visitor }
 

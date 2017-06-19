@@ -11,7 +11,7 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -30,17 +30,17 @@ class ServiceFactory
     /**
      * ServiceManager.
      *
-     * @var ContainerBuilder
+     * @var ContainerInterface
      */
     private $container;
 
     /**
      * Constructor.
      *
-     * @param ContainerBuilder $container ContainerBuilder
-     * @param string           $serviceId ID of service to inject, (usually the event dispatcher)
+     * @param ContainerInterface $container ContainerBuilder
+     * @param string             $serviceId ID of service to inject, (usually the event dispatcher)
      */
-    public function __construct(ContainerBuilder $container, $serviceId)
+    public function __construct(ContainerInterface $container, $serviceId)
     {
         $this->container = $container;
         if (!$container->has($serviceId)) {
