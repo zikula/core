@@ -171,20 +171,4 @@ interface HookDispatcherInterface
      * @param string $providerArea
      */
     public function unbindSubscriber($subscriberArea, $providerArea);
-
-    /**
-     * Load runtime hook listeners.
-     *
-     * @return HookDispatcher
-     */
-    public function loadRuntimeHandlers();
-
-    /**
-     * Flush handlers.
-     *
-     * Clears all handlers.
-     *
-     * @return void
-     */
-    public function flushHandlers();
 }

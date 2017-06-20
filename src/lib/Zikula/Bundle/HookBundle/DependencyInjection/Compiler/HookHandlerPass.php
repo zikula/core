@@ -34,16 +34,12 @@ class HookHandlerPass implements CompilerPassInterface
         foreach ($handlers as $handler) {
             $callable = [$handler['classname'], $handler['method']];
             if (is_callable($callable)) {
-                // some classes may not always be callable, for example, when upgrading.
                 if ($handler['serviceid']) {
                     $callable = $this->buildService($container, $handler['serviceid'], $handler['classname'], $handler['method']);
-                    // $dispatcher->addListenerService($handler['eventname'], $callable);
-//                    $o = $dispatcher->getContainer()->get($callable[0]);
-//                    $dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
                     $dispatcherDefinition->addMethodCall('addListenerService', [$handler['eventname'], $callable, 0]);
                 } else {
                     try {
-//                        $dispatcher->addListener($handler['eventname'], $callable);
+                        $dispatcherDefinition->addMethodCall('addListener', [$handler['eventname'], $callable, 0]);
                     } catch (\InvalidArgumentException $e) {
                         throw new \RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
                     }
