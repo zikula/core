@@ -22,10 +22,14 @@ class HookHandlerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $doctrine = $container->get('doctrine');
-        $dispatcher = $container->get('event_dispatcher');
-        if (!$doctrine || !$dispatcher) {
+//        $dispatcher = $container->get('event_dispatcher');
+        if (!$doctrine) { //} || !$dispatcher) {
             return;
         }
+//        if (!$container->hasDefinition('event_dispatcher')) {
+//            return;
+//        }
+        $dispatcherDefinition = $container->getDefinition('event_dispatcher');
 
         $handlers = $doctrine->getManager()->createQueryBuilder()->select('t')
                 ->from(HookRuntimeEntity::class, 't')
@@ -38,11 +42,12 @@ class HookHandlerPass implements CompilerPassInterface
                 if ($handler['serviceid']) {
                     $callable = $this->buildService($container, $handler['serviceid'], $handler['classname'], $handler['method']);
                     // $dispatcher->addListenerService($handler['eventname'], $callable);
-                    $o = $dispatcher->getContainer()->get($callable[0]);
-                    $dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
+//                    $o = $dispatcher->getContainer()->get($callable[0]);
+//                    $dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
+                    $dispatcherDefinition->addMethodCall('addListenerService', [$handler['eventname'], $callable, 0]);
                 } else {
                     try {
-                        $dispatcher->addListener($handler['eventname'], $callable);
+//                        $dispatcher->addListener($handler['eventname'], $callable);
                     } catch (\InvalidArgumentException $e) {
                         throw new \RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
                     }
