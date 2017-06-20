@@ -12,7 +12,7 @@ ul.minitabs {
     height: 20px;
     margin: 0 !important;
     padding: 0 !important;
-    background: url(../images/tab_bottom.gif) repeat-x bottom;
+    background: url('../web/modules/zikulaadmin/images/tab_bottom.gif') repeat-x bottom;
 }
 
 ul#minitabs li,

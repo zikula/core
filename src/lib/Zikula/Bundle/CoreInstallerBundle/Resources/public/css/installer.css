@@ -47,7 +47,7 @@ img {
 }
 
 h1 {
-    background: url("../images/logo_with_title.png") no-repeat scroll 50% 50% transparent;
+    background: url('../images/logo_with_title.png') no-repeat scroll 50% 50% transparent;
     font-size: 24px;
     line-height: 100px;
     height: 100px;

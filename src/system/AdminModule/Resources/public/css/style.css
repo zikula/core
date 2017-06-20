@@ -98,10 +98,10 @@
 
 /* styles for the warning message shown if any of the install directory, install.php or zrc.php are found */
 #z-maincontent div#z-adminwarning {
-    background: url("../../../../../../../images/icons/extrasmall/error.png") #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
-    background: url("../../../../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
-    background: url("../../../../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
-    background: url("../../../../../../../images/icons/extrasmall/error.png") 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
+    background: url('../images/error.png') #FFCBCA 99% 0.35em no-repeat; /*non-CSS3 browsers*/
+    background: url('../images/error.png') 99% 0.35em no-repeat, -moz-linear-gradient(top, #F7DCDC, #FFCBCA) repeat scroll 0 0 transparent; /*gecko*/
+    background: url('../images/error.png') 99% 0.35em no-repeat, -webkit-gradient(linear, left top, left bottom, from(#F7DCDC), to(#FFCBCA)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url('../images/error.png') 99% 0.35em no-repeat, linear-gradient(#F7DCDC, #FFCBCA); /*CSS3*/
     border: 2px solid #990000;
 }
 

@@ -47,6 +47,7 @@ application "Routes" {
             Listener/InstallerListener.php,
             README.md,
             Resources/config/routing.yml,
+            Resources/public/css/style.css,
             RoutesModuleInstaller.php,
             Twig/TwigExtension.php
         "

@@ -85,7 +85,7 @@ CHANGELOG - ZIKULA 1.5.x
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
     - matthiasnoback/symfony-service-definition-validator updated from 1.2.6 to 1.2.6.1 (zikula fork)
-    - monolog/monolog updated from 1.22.0 to 1.22.1
+    - monolog/monolog updated from 1.22.0 to 1.23.0
     - paragonie/random_compat updated from 2.0.9 to 2.0.10
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
@@ -107,7 +107,7 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at dev-master 
-    - zikula/andreas08-theme installed at 2.0.0
+    - zikula/andreas08-theme installed at 2.0.1
     - zikula/legal-module updated (dev-master)
     - zikula/pagelock-module installed at 1.2.0
     - zikula/profile-module updated (dev-master)

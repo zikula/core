@@ -30,13 +30,13 @@ ul.menutree_horizontal li span {
 
 ul.menutree_horizontal li.parent > a,
 ul.menutree_horizontal li.parent > span {
-    background: url("../../../../../../../../images/global/arrow_down_grey.png") no-repeat scroll 95% 50% transparent;
+    background: url('../../images/arrow_down_grey.png') no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 ul.menutree_horizontal li.parent > a:hover,
 ul.menutree_horizontal li.parent > span:hover {
-    background: url("../../../../../../../../images/global/arrow_down_black.png") no-repeat scroll 95% 50% transparent;
+    background: url('../../images/arrow_down_black.png') no-repeat scroll 95% 50% transparent;
 }
 
 ul.menutree_horizontal li ul {
@@ -59,13 +59,13 @@ ul.menutree_horizontal li li span {
 
 ul.menutree_horizontal li li.parent > a,
 ul.menutree_horizontal li li.parent > span {
-    background: url("../../../../../../../../images/global/arrow_right_grey.png") no-repeat scroll 95% 50% transparent;
+    background: url('../../images/arrow_right_grey.png') no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 ul.menutree_horizontal li li.parent > a:hover,
 ul.menutree_horizontal li li.parent > span:hover {
-    background: url("../../../../../../../../images/global/arrow_right_black.png") no-repeat scroll 95% 50% transparent;
+    background: url('../../images/arrow_right_black.png') no-repeat scroll 95% 50% transparent;
 }
 
 ul.menutree_horizontal li ul ul {
