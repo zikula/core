@@ -3060,16 +3060,16 @@
         },
         {
             "name": "matthiasnoback/symfony-service-definition-validator",
-            "version": "1.2.6.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zikula/symfony-service-definition-validator.git",
-                "reference": "63ea5ce7883c1dba23e74ada7906dbd2bb51ce13"
+                "url": "https://github.com/matthiasnoback/symfony-service-definition-validator.git",
+                "reference": "b79f25ae389a024d329a53159737742351c080e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/symfony-service-definition-validator/zipball/63ea5ce7883c1dba23e74ada7906dbd2bb51ce13",
-                "reference": "63ea5ce7883c1dba23e74ada7906dbd2bb51ce13",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-service-definition-validator/zipball/b79f25ae389a024d329a53159737742351c080e8",
+                "reference": "b79f25ae389a024d329a53159737742351c080e8",
                 "shasum": ""
             },
             "require": {
@@ -3086,11 +3086,7 @@
                     "Matthias\\SymfonyServiceDefinitionValidator\\": ""
                 }
             },
-            "autoload-dev": {
-                "files": [
-                    "Tests/Fixtures/FactoryCallback.php"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3104,13 +3100,10 @@
             "description": "Library for validating service definitions created with the Symfony Dependency Injection Component",
             "homepage": "http://github.com/matthiasnoback/symfony-service-definition-validator",
             "keywords": [
-                "dependency injection",
-                "symfony2"
+                "Symfony2",
+                "dependency injection"
             ],
-            "support": {
-                "source": "https://github.com/zikula/symfony-service-definition-validator/tree/1.2.6.1"
-            },
-            "time": "2017-06-18T20:04:57+00:00"
+            "time": "2017-06-20 08:37:20"
         },
         {
             "name": "michelf/php-markdown",
@@ -5034,16 +5027,16 @@
         },
         {
             "name": "zikula/andreas08-theme",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "60b9452ea1c49896e4ac988e51190d54fe19ec6a"
+                "reference": "2106af28c77d73b6ea9844fed22866fb6311ca0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/60b9452ea1c49896e4ac988e51190d54fe19ec6a",
-                "reference": "60b9452ea1c49896e4ac988e51190d54fe19ec6a",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/2106af28c77d73b6ea9844fed22866fb6311ca0a",
+                "reference": "2106af28c77d73b6ea9844fed22866fb6311ca0a",
                 "shasum": ""
             },
             "require": {
@@ -5077,10 +5070,10 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.1",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2017-04-05T15:20:06+00:00"
+            "time": "2017-06-20T13:45:46+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -6722,6 +6715,7 @@
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
         "sensio/framework-extra-bundle": 20,
+        "matthiasnoback/symfony-service-definition-validator": 20,
         "zikula/filesystem": 20,
         "oyejorge/less.php": 20,
         "zikula/generator-bundle": 20,

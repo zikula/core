@@ -321,6 +321,7 @@ class HookController extends Controller
         } else {
             $this->get('hook_dispatcher')->unbindSubscriber($subscriberArea, $providerArea);
         }
+        $this->get('zikula.cache_clearer')->clear('symfony.config');
 
         // ajax response
         $response = [

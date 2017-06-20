@@ -11,7 +11,9 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
@@ -35,31 +37,24 @@ class HookDispatcher implements HookDispatcherInterface
     private $dispatcher;
 
     /**
-     * Runtime hooks handlers loaded flag.
-     *
-     * @var boolean
+     * @var CacheClearer
      */
-    private $loaded;
-
-    /**
-     * Service Factory.
-     *
-     * @var ServiceFactory
-     */
-    private $factory;
+    private $cacheClearer;
 
     /**
      * Constructor.
      *
      * @param StorageInterface         $storage
      * @param EventDispatcherInterface $dispatcher
-     * @param ServiceFactory           $factory
      */
-    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher, ServiceFactory $factory)
-    {
+    public function __construct(
+        StorageInterface $storage,
+        EventDispatcherInterface $dispatcher,
+        CacheClearer $cacheClearer
+    ) {
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
-        $this->factory = $factory;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -78,16 +73,10 @@ class HookDispatcher implements HookDispatcherInterface
      * @param string $name Hook event name
      * @param Hook   $hook Hook instance
      *
-     * @return Hook
+     * @return Event
      */
     public function dispatch($name, Hook $hook)
     {
-        if (!$this->loaded) {
-            // lazy load handlers for the first time
-            $this->loadRuntimeHandlers();
-            $this->loaded = true;
-        }
-
         $this->decorateHook($name, $hook);
         if (!$hook->getAreaId()) {
             return $hook;
@@ -289,36 +278,6 @@ class HookDispatcher implements HookDispatcherInterface
     }
 
     /**
-     * Load runtime hook listeners.
-     *
-     * @return HookDispatcher
-     */
-    public function loadRuntimeHandlers()
-    {
-        $handlers = $this->storage->getRuntimeHandlers();
-        foreach ($handlers as $handler) {
-            $callable = [$handler['classname'], $handler['method']];
-            if (is_callable($callable)) {
-                // some classes may not always be callable, for example, when upgrading.
-                if ($handler['serviceid']) {
-                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
-                    //                $this->dispatcher->addListenerService($handler['eventname'], $callable);
-                    $o = $this->dispatcher->getContainer()->get($callable[0]);
-                    $this->dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
-                } else {
-                    try {
-                        $this->dispatcher->addListener($handler['eventname'], $callable);
-                    } catch (\InvalidArgumentException $e) {
-                        throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
-                    }
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Decorate hook with required metadata.
      *
      * @param $name
@@ -335,26 +294,9 @@ class HookDispatcher implements HookDispatcherInterface
         }
     }
 
-    /**
-     * Flush and reload handers.
-     */
     private function reload()
     {
-        $this->flushHandlers();
-        $this->loadRuntimeHandlers();
-    }
-
-    /**
-     * Flush handlers.
-     *
-     * Clears all handlers.
-     *
-     * @return void
-     */
-    public function flushHandlers()
-    {
-        foreach ($this->dispatcher->getListeners() as $eventName => $listener) {
-            $this->dispatcher->removeListener($eventName, $listener);
-        }
+        // recompile the container
+        $this->cacheClearer->clear('symfony.config');
     }
 }

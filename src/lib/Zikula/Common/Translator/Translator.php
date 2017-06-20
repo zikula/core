@@ -11,10 +11,10 @@
 
 namespace Zikula\Common\Translator;
 
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Translation\Translator as BaseTranslator;
 use Symfony\Component\Translation\MessageSelector;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Translator
@@ -22,9 +22,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Translator extends BaseTranslator implements WarmableInterface, TranslatorInterface
 {
     /**
-     * @var ContainerInterface
+     * @var ServiceLocator
      */
-    protected $container;
+    protected $serviceLocator;
 
     /**
      * @var string
@@ -57,16 +57,16 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * * debug: Whether to enable debugging or not (false by default)
      * * resource_files: List of translation resources available grouped by locale.
      *
-     * @param ContainerInterface $container A ContainerInterface instance
-     * @param MessageSelector $selector The message selector for pluralization
-     * @param string $defaultLocale The default locale
-     * @param array $loaderIds An array of loader Ids
-     * @param array $options An array of options
+     * @param ServiceLocator $serviceLocator
+     * @param MessageSelector $selector
+     * @param string $defaultLocale
+     * @param array $loaderIds
+     * @param array $options
      * @throws \InvalidArgumentException
      */
-    public function __construct(ContainerInterface $container, MessageSelector $selector = null, $defaultLocale, $loaderIds = [], array $options = [])
+    public function __construct(ServiceLocator $serviceLocator, MessageSelector $selector = null, $defaultLocale, $loaderIds = [], array $options = [])
     {
-        $this->container = $container;
+        $this->serviceLocator = $serviceLocator;
         $this->loaderIds = $loaderIds;
         // check option names
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
@@ -116,7 +116,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
         $this->loadResources();
         foreach ($this->loaderIds as $id => $aliases) {
             foreach ($aliases as $alias) {
-                $this->addLoader($alias, $this->container->get($id));
+                $this->addLoader($alias, $this->serviceLocator->get($id));
             }
         }
     }
