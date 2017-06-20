@@ -14,6 +14,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -28,6 +29,9 @@ class DoctrineStorage implements StorageInterface
     const PROVIDER = 'p';
     const SUBSCRIBER = 's';
 
+    /**
+     * @var HookRuntimeEntity[]
+     */
     private $runtimeHandlers = [];
 
     /**
@@ -439,13 +443,20 @@ class DoctrineStorage implements StorageInterface
 
     public function getRuntimeMetaByEventName($eventName)
     {
-        foreach ($this->runtimeHandlers as $handler) {
-            if ($handler['eventname'] == $eventName) {
-                return [
-                    'areaid' => $handler['sareaid'],
-                    'owner' => $handler['sowner']
-                ];
-            }
+        if (!isset($this->runtimeHandlers[$eventName])) {
+            $this->runtimeHandlers[$eventName] = $this->em->createQueryBuilder()
+                ->select('t')
+                ->from(HookRuntimeEntity::class, 't')
+                ->where('t.eventname = :name')
+                ->setParameter('name', $eventName)
+                ->getQuery()
+                ->getOneOrNullResult();
+        }
+        if ($this->runtimeHandlers[$eventName]) {
+            return [
+                'areaid' => $this->runtimeHandlers[$eventName]->getSareaid(),
+                'owner' => $this->runtimeHandlers[$eventName]->getSowner()
+            ];
         }
 
         return false;
