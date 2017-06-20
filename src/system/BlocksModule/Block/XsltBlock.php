@@ -57,4 +57,11 @@ class XsltBlock extends AbstractBlockHandler
     {
         return '@ZikulaBlocksModule/Block/xslt_modify.html.twig';
     }
+
+    public function getFormOptions()
+    {
+        return [
+            'translator' => $this->getTranslator()
+        ];
+    }
 }

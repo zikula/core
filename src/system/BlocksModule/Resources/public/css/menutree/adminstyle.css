@@ -23,7 +23,7 @@ div#menuTreeContainer ul.tree a {
 a.activelang {
     text-decoration: underline;
     padding-left: 20px;
-    background-image: url(../../../../../../images/icons/extrasmall/button_ok.png);
+    background-image: url('../../images/button_ok.png');
     background-position: left center;
     background-repeat: no-repeat;
 }

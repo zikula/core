@@ -86,7 +86,7 @@ class LostPasswordType extends AbstractType
             'includeReset' => false,
             'constraints' => new Callback(['callback' => function ($data, ExecutionContextInterface $context) use ($resolver) {
                 if (!isset($data['pass']) && empty($data['uname']) && empty($data['email'])) {
-                    $context->buildViolation(__('Error! You must enter either your username or email address.'))
+                    $context->buildViolation('Error! You must enter either your username or email address.')
                         ->addViolation();
                 }
             }]),

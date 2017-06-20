@@ -141,7 +141,7 @@ abstract class AbstractController extends Controller
      */
     public function createNotFoundException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Page not found') : $message;
+        $message = null === $message ? $this->__('Page not found') : $message;
 
         return new NotFoundHttpException($message, $previous);
     }
@@ -159,7 +159,7 @@ abstract class AbstractController extends Controller
      */
     public function createAccessDeniedException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Access denied') : $message;
+        $message = null === $message ? $this->__('Access denied') : $message;
 
         return new AccessDeniedException($message, $previous);
     }

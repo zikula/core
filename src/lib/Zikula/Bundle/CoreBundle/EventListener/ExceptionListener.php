@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
@@ -26,6 +27,11 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
  */
 class ExceptionListener implements EventSubscriberInterface
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     /**
      * @var RouterInterface
      */
@@ -60,12 +66,14 @@ class ExceptionListener implements EventSubscriberInterface
      * @param bool $installed
      */
     public function __construct(
+        TranslatorInterface $translator,
         RouterInterface $router,
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
         CurrentUserApiInterface $currentUserApi,
         $installed
     ) {
+        $this->translator = $translator;
         $this->router = $router;
         $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
@@ -112,14 +120,14 @@ class ExceptionListener implements EventSubscriberInterface
     private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
     {
         if (!$userLoggedIn) {
-            $message = ($message == 'Access Denied') ? __('You do not have permission. You must login first.') : $message;
+            $message = ($message == 'Access Denied') ? $this->translator->__('You do not have permission. You must login first.') : $message;
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
             $params = ['returnUrl' => urlencode($event->getRequest()->getRequestUri())];
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_access_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
-            $message = ($message == 'Access Denied') ? __('You do not have permission for that action.') : $message;
+            $message = ($message == 'Access Denied') ? $this->translator->__('You do not have permission for that action.') : $message;
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
             // redirect to previous page
