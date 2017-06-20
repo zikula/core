@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Class XsltBlockType
@@ -25,16 +26,17 @@ class XsltBlockType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $translator = $options['translator'];
         $builder
             ->add('docurl', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
                 'constraints' => [
                     new Url()
                 ],
                 'required' => false,
-                'label' => __('Document URL')
+                'label' => $translator->__('Document URL')
             ])
             ->add('doccontents', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => __('Document contents'),
+                'label' => $translator->__('Document contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -45,10 +47,10 @@ class XsltBlockType extends AbstractType
                     new Url()
                 ],
                 'required' => false,
-                'label' => __('Style sheet URL')
+                'label' => $translator->__('Style sheet URL')
             ])
             ->add('stylecontents', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-                'label' => __('Style sheet contents'),
+                'label' => $translator->__('Style sheet contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -62,6 +64,7 @@ class XsltBlockType extends AbstractType
         // add a constraint to the entire form
         $resolver->setDefaults([
             'constraints' => new Callback(['callback' => [$this, 'validateOrFields']]),
+            'translator' => new IdentityTranslator()
         ]);
     }
 
@@ -79,16 +82,16 @@ class XsltBlockType extends AbstractType
     public function validateOrFields($data, ExecutionContextInterface $context)
     {
         if (empty($data['docurl']) && empty($data['doccontents'])) {
-            $context->addViolation(__('Either the Document URL or the Document contents must contain a value.'));
+            $context->addViolation('Either the Document URL or the Document contents must contain a value.');
         }
         if (!empty($data['docurl']) && !empty($data['doccontents'])) {
-            $context->addViolation(__('Either the Document URL of the Document contents can contain a value, not both.'));
+            $context->addViolation('Either the Document URL of the Document contents can contain a value, not both.');
         }
         if (empty($data['styleurl']) && empty($data['stylecontents'])) {
-            $context->addViolation(__('Either the Style sheet URL or the Style sheet contents must contain a value.'));
+            $context->addViolation('Either the Style sheet URL or the Style sheet contents must contain a value.');
         }
         if (!empty($data['styleurl']) && !empty($data['stylecontents'])) {
-            $context->addViolation(__('Either the Style sheet URL or the Style sheet contents can contain a value, not both.'));
+            $context->addViolation('Either the Style sheet URL or the Style sheet contents can contain a value, not both.');
         }
     }
 }

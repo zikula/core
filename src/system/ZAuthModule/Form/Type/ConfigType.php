@@ -158,7 +158,7 @@ class ConfigType extends AbstractType
                 new Callback([
                     'callback' => function ($data, ExecutionContextInterface $context) {
                         if (!empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]) && empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER])) {
-                            $context->buildViolation(__('If a spam protection question is provided, then a spam protection answer must also be provided.'))
+                            $context->buildViolation('If a spam protection question is provided, then a spam protection answer must also be provided.')
                                 ->atPath(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER)
                                 ->addViolation();
                         }

@@ -42,6 +42,7 @@ services:
     zikula_core.internal.exception_listener:
         class: Zikula\Bundle\CoreBundle\EventListener\ExceptionListener
         arguments:
+            - "@translator.default"
             - "@router"
             - "@event_dispatcher"
             - "@zikula.cache_clearer"

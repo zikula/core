@@ -137,7 +137,7 @@ class IntrusionRepository extends EntityRepository
     public function getDistinctFieldValues($fieldName)
     {
         if (!in_array($fieldName, ['uid', 'name', 'tag', 'value', 'page', 'ip', 'impact'])) {
-            throw new InvalidArgumentException(__('Invalid field name received for distinct values selection!'));
+            throw new InvalidArgumentException('Invalid field name received for distinct values selection!');
         }
 
         $qb = $this->createQueryBuilder('tbl');
