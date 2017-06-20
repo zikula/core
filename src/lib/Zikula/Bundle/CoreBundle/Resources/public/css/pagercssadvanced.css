@@ -147,13 +147,13 @@ div.z-pager span.select:hover::before {
 }
 
 div.z-pager span.select::after {
-    content: url(../images/pager_menu.png);
+    content: url('../images/pager_menu.png');
     cursor: default;
     background-color: transparent;
 }
 
 div.z-pager span.select:hover::after {
-    content: url(../images/pager_menu_hover.png);
+    content: url('../images/pager_menu_hover.png');
 }
 
 div.z-pager span.select span.option {

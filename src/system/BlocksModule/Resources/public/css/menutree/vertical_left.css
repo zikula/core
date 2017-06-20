@@ -30,13 +30,13 @@ ul.menutree_vertical_left li span {
 
 ul.menutree_vertical_left li.parent > a,
 ul.menutree_vertical_left li.parent > span {
-    background: url("../../../../../../../../images/global/arrow_right_grey.png") no-repeat scroll 95% 50% transparent;
+    background: url('../../images/arrow_right_grey.png') no-repeat scroll 95% 50% transparent;
     padding-right: 18px;
 }
 
 ul.menutree_vertical_left li.parent > a:hover,
 u.menutree_vertical_left li.parent > span:hover {
-    background: url("../../../../../../../../images/global/arrow_right_black.png") no-repeat scroll 95% 50% transparent;
+    background: url('../../images/arrow_right_black.png') no-repeat scroll 95% 50% transparent;
 }
 
 ul.menutree_vertical_left ul,

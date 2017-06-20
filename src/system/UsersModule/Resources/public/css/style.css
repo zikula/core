@@ -49,31 +49,22 @@ div.z-accountlink  img {
     float: left;
 }
 
-.user-icon-adduser {
-    background: transparent url("../../../../../../../images/icons/extrasmall/add_user.png") no-repeat scroll center left;
-    padding: 2px 0 2px 20px;
-}
-.user-icon-lostusername {
-    background: transparent url("../../../../../../../images/icons/extrasmall/lostusername.png") no-repeat scroll center left;
-    padding: 2px 0 2px 20px;
-}
-
 #users_loginblock_loginform {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 .users_loginblock_box {
-    margin:1em 0 0;
-    padding:0 1em 1em 0;
+    margin: 1em 0 0;
+    padding: 0 1em 1em 0;
 }
 
 .users_loginblock_box h5 {
-    font-size:1em;
-    font-weight:bold;
+    font-size: 1em;
+    font-weight: 700;
     margin: 1em 0 0 0;
-    padding:0 0 0.5em;
-    text-decoration:underline;
+    padding: 0 0 0.5em;
+    text-decoration: underline;
 }
 
 #users_loginblock_loginform ul#user-block-login-tools {

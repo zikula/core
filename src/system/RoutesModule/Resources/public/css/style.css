@@ -55,7 +55,7 @@ div.routes-edit .tab-pane legend {
 }
 
 .ui-autocomplete-loading {
-    background: white url("../../../../../../images/ajax/indicator_arrows.gif") right center no-repeat;
+    background: white url('../images/indicator_arrows.gif') right center no-repeat;
 }
 
 .ui-autocomplete .suggestion {
@@ -71,10 +71,10 @@ div.routes-edit .tab-pane legend {
 }
 
 div.zikularoutesmodule-autocomplete .ui-autocomplete .suggestion {
-    background-image: url("../../../../../../images/icons/extrasmall/tab_right.png");
+    background-image: url('../images/tab_right.png');
 }
 div.zikularoutesmodule-autocomplete-user .ui-autocomplete .suggestion {
-    background-image: url("../../../../../../images/icons/extrasmall/user.png");
+    background-image: url('../images/user.png');
 }
 .ui-autocomplete .suggestion img {
     max-width: 20px;
