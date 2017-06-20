@@ -21,15 +21,11 @@ class HookHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $doctrine = $container->get('doctrine');
-//        $dispatcher = $container->get('event_dispatcher');
-        if (!$doctrine) { //} || !$dispatcher) {
+        if (!$container->hasDefinition('doctrine')) {
             return;
         }
-//        if (!$container->hasDefinition('event_dispatcher')) {
-//            return;
-//        }
-        $dispatcherDefinition = $container->getDefinition('event_dispatcher');
+        $doctrine = $container->get('doctrine');
+        $dispatcherDefinition = $container->findDefinition('event_dispatcher');
 
         $handlers = $doctrine->getManager()->createQueryBuilder()->select('t')
                 ->from(HookRuntimeEntity::class, 't')

@@ -25,6 +25,6 @@ class ZikulaHookBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new HookHandlerPass(), PassConfig::TYPE_AFTER_REMOVING, -99); // execute later later later
+        $container->addCompilerPass(new HookHandlerPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
 }
