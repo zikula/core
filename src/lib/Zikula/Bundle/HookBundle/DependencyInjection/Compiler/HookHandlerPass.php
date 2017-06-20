@@ -21,7 +21,7 @@ class HookHandlerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('doctrine')) {
+        if (!$container->hasDefinition('doctrine') || true !== $container->getParameter('installed')) {
             return;
         }
         $doctrine = $container->get('doctrine');
