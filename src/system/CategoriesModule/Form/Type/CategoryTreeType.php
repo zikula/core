@@ -18,6 +18,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Category tree form type class.
@@ -65,7 +66,7 @@ class CategoryTreeType extends AbstractType
             'translator'
         ]);
         $resolver->setDefaults([
-            'translator' => new \Zikula\Common\Translator\IdentityTranslator(),
+            'translator' => new IdentityTranslator(),
             'locale' => 'en',
             'choices_as_values' => true,
             'recurse' => true,

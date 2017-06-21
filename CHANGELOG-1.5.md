@@ -69,6 +69,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added OAuthModule
     - Added `onlineSince(minutes)` twig filter.
     - Add much easier method of adding form children to user registration/creation/edit forms.
+    - Added a form type for user name live search using auto completion (#710, #3610).
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0

@@ -1,7 +1,10 @@
 services:
     zikula_users_module.user_listener:
         class: Zikula\UsersModule\Listener\UserEventListener
-        arguments: ["@session", "@request_stack", "@router"]
+        arguments:
+          - "@session"
+          - "@request_stack"
+          - "@router"
         tags:
             - { name: kernel.event_subscriber }
 
@@ -16,13 +19,17 @@ services:
 
     zikula_users_module.registration_events_listener:
         class: Zikula\UsersModule\Listener\RegistrationEventsListener
-        arguments: ["@session", "@zikula_users_module.helper.mail_helper"]
+        arguments:
+          - "@session"
+          - "@zikula_users_module.helper.mail_helper"
         tags:
             - { name: kernel.event_subscriber }
 
     zikula_users_module.current_user:
         class: Zikula\UsersModule\Api\CurrentUserApi
-        arguments: ["@session", "@zikula_users_module.user_repository"]
+        arguments:
+          - "@session"
+          - "@zikula_users_module.user_repository"
 
     zikula_users_module.container.link_container:
         class: Zikula\UsersModule\Container\LinkContainer
@@ -47,4 +54,12 @@ services:
 
     zikula_users_module.internal.message_module_collector:
         class: Zikula\UsersModule\Collector\MessageModuleCollector
-        arguments: ["@zikula_extensions_module.api.variable"]
+        arguments:
+          - "@zikula_extensions_module.api.variable"
+
+    zikula_users_module.form.type.user_live_search:
+        class: Zikula\UsersModule\Form\Type\UserLiveSearchType
+        arguments:
+          - "@zikula_users_module.user_repository"
+        tags:
+            - { name: form.type }

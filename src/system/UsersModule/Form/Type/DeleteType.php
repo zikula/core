@@ -11,7 +11,9 @@
 
 namespace Zikula\UsersModule\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,7 +25,7 @@ class DeleteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('users', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+            ->add('users', EntityType::class, [
                 'choice_attr' => function () {
                     return ['class' => 'user-checkboxes'];
                 },
@@ -33,7 +35,7 @@ class DeleteType extends AbstractType
                 'multiple' => true,
                 'choice_label' => 'uname'
             ])
-            ->add('delete', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('delete', SubmitType::class, [
                 'label' => $options['translator']->__('Delete selected users'),
                 'icon' => 'fa-trash-o',
                 'attr' => [

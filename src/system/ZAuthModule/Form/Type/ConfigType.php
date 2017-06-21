@@ -12,6 +12,11 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,7 +36,7 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, IntegerType::class, [
                 'label' => $options['translator']->__('Minimum length for user passwords'),
                 'required' => false,
                 'help' => $options['translator']->__('This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'),
@@ -40,7 +45,7 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 3]) // @todo
                 ]
             ])
-            ->add(ZAuthConstant::MODVAR_HASH_METHOD, 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add(ZAuthConstant::MODVAR_HASH_METHOD, ChoiceType::class, [
                 'label' => $options['translator']->__('Password hashing method'),
                 'help' => $options['translator']->__('The default hashing method is \'SHA256\'.'), //@todo
                 'choices' => [
@@ -50,11 +55,11 @@ class ConfigType extends AbstractType
                 ],
                 'choices_as_values' => true
             ])
-            ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [
                 'label' => $options['translator']->__('Show password strength meter'),
                 'required' => false,
             ])
-            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, IntegerType::class, [
                 'label' => $options['translator']->__('E-mail address verifications expire in'),
                 'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
                 'input_group' => ['right' => $options['translator']->__('days')],
@@ -66,7 +71,7 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 0])
                 ]
             ])
-            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, IntegerType::class, [
                 'label' => $options['translator']->__('Password reset requests expire in'),
                 'help' => $options['translator']->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
                 'input_group' => ['right' => $options['translator']->__('days')],
@@ -78,7 +83,7 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 0])
                 ]
             ])
-            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, IntegerType::class, [
                 'label' => $options['translator']->__('Registrations pending verification expire in'),
                 'help' => $options['translator']->__('Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'),
                 'input_group' => ['right' => $options['translator']->__('days')],
@@ -91,12 +96,12 @@ class ConfigType extends AbstractType
                     new GreaterThanOrEqual(['value' => 0])
                 ]
             ])
-            ->add(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, CheckboxType::class, [
                 'label' => $options['translator']->__('New users must verify their email address on registration.'),
                 'help' => $options['translator']->__('Users created by an admin are automatically considered verified.'),
                 'required' => false,
             ])
-            ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, TextType::class, [
                 'label' => $options['translator']->__('Spam protection question'),
                 'required' => false,
                 'help' => $options['translator']->__('You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.'),
@@ -104,7 +109,7 @@ class ConfigType extends AbstractType
                     new Type('string')
                 ]
             ])
-            ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, TextType::class, [
                 'label' => $options['translator']->__('Spam protection answer'),
                 'required' => false,
                 'help' => $options['translator']->__('Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.'),
@@ -115,12 +120,12 @@ class ConfigType extends AbstractType
             /**
              * Buttons
              */
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $options['translator']->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']

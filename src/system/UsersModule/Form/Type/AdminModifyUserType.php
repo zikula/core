@@ -11,7 +11,10 @@
 
 namespace Zikula\UsersModule\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\UsersModule\Constant;
@@ -24,7 +27,7 @@ class AdminModifyUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('activated', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('activated', ChoiceType::class, [
                 'choices' => [
                     $options['translator']->__('Active') => Constant::ACTIVATED_ACTIVE,
                     $options['translator']->__('Inactive') => Constant::ACTIVATED_INACTIVE,
@@ -33,18 +36,18 @@ class AdminModifyUserType extends AbstractType
                 'choices_as_values' => true,
                 'label' => $options['translator']->__('User status')
             ])
-            ->add('groups', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+            ->add('groups', EntityType::class, [
                 'class' => 'ZikulaGroupsModule:GroupEntity',
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $options['translator']->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']

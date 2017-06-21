@@ -11,6 +11,9 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -26,7 +29,7 @@ class DbCredsType extends AbstractType
     {
         $this->setTranslator($options['translator']);
         $builder
-            ->add('database_driver', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('database_driver', ChoiceType::class, [
                 'label' => $this->__('Database type'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
@@ -35,7 +38,7 @@ class DbCredsType extends AbstractType
                 'choices_as_values' => true,
                 'data' => 'mysql'
             ])
-            ->add('dbtabletype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('dbtabletype', ChoiceType::class, [
                 'label' => $this->__('Storage Engine'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
@@ -47,7 +50,7 @@ class DbCredsType extends AbstractType
                 'choices_as_values' => true,
                 'data' => 'innodb'
             ])
-            ->add('database_host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('database_host', TextType::class, [
                 'label' => $this->__('Database Host'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
@@ -57,7 +60,7 @@ class DbCredsType extends AbstractType
                     new NotBlank()
                 ]
             ])
-            ->add('database_user', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('database_user', TextType::class, [
                 'label' => $this->__('Database Username'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
@@ -66,14 +69,14 @@ class DbCredsType extends AbstractType
                     new NotBlank()
                 ]
             ])
-            ->add('database_password', 'Symfony\Component\Form\Extension\Core\Type\PasswordType', [
+            ->add('database_password', PasswordType::class, [
                 'label' => $this->__('Database Password'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
                 ],
                 'required' => false
             ])
-            ->add('database_name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('database_name', TextType::class, [
                 'label' => $this->__('Database Name'),
                 'label_attr' => [
                     'class' => 'col-sm-3'

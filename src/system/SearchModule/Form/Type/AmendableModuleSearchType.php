@@ -12,6 +12,7 @@
 namespace Zikula\SearchModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
@@ -32,7 +33,7 @@ class AmendableModuleSearchType extends AbstractType
     {
         if ($options['permissionApi']->hasPermission($builder->getName() . '::', '::', ACCESS_READ)) {
             $builder
-                ->add('active', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                ->add('active', CheckboxType::class, [
                     'label' => $options['translator']->__('Active'),
                     'label_attr' => ['class' => 'checkbox-inline'],
                     'required' => false,

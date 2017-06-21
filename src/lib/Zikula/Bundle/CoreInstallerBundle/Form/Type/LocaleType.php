@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
@@ -22,7 +23,7 @@ class LocaleType extends AbstractType
     {
         $this->setTranslator($options['translator']);
         $builder
-            ->add('locale', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('locale', ChoiceType::class, [
                 'label' => $this->__('Select your default language'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
