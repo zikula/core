@@ -12,6 +12,9 @@
 namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,25 +31,25 @@ class MembershipApplicationType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('group', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+            ->add('group', HiddenType::class, [
                 'property_path' => 'group.gid'
             ])
-            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+            ->add('user', HiddenType::class, [
                 'property_path' => 'user.uid'
             ])
-            ->add('status', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('application', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('status', HiddenType::class)
+            ->add('application', TextareaType::class, [
                 'label' => $translator->__('Comment to attach to your application'),
                 'required' => false
             ])
-            ->add('apply', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('apply', SubmitType::class, [
                 'label' => $translator->__('Apply'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

@@ -11,7 +11,11 @@
 
 namespace Zikula\UsersModule\Form\Type;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,17 +27,17 @@ class SearchUserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('uname', TextType::class, [
                 'label' => $options['translator']->__('User name'),
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('email', TextType::class, [
                 'label' => $options['translator']->__('Email address'),
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
-            ->add('groups', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', [
+            ->add('groups', EntityType::class, [
                 'class' => 'ZikulaGroupsModule:GroupEntity',
                 'choice_label' => 'name',
                 'multiple' => true,
@@ -41,14 +45,14 @@ class SearchUserType extends AbstractType
                 'label' => $options['translator']->__('Group membership'),
                 'required' => false
             ])
-            ->add('registered_after', 'Symfony\Component\Form\Extension\Core\Type\DateType', [
+            ->add('registered_after', DateType::class, [
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => [
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day'
                 ]
             ])
-            ->add('registered_before', 'Symfony\Component\Form\Extension\Core\Type\DateType', [
+            ->add('registered_before', DateType::class, [
                 'label' => $options['translator']->__('Registration date before'),
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
@@ -56,12 +60,12 @@ class SearchUserType extends AbstractType
                     'year' => 'Year', 'month' => 'Month', 'day' => 'Day'
                 ]
             ])
-            ->add('search', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('search', SubmitType::class, [
                 'label' => $options['translator']->__('Search'),
                 'icon' => 'fa-search',
                 'attr' => ['class' => 'btn btn-success'],
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger'],

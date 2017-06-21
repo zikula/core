@@ -12,6 +12,7 @@
 namespace Zikula\MenuModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -66,6 +67,6 @@ class HiddenMenuItemType extends AbstractType
      */
     public function getParent()
     {
-        return 'Symfony\Component\Form\Extension\Core\Type\HiddenType';
+        return HiddenType::class;
     }
 }

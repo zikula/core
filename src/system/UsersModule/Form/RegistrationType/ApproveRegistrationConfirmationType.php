@@ -12,6 +12,8 @@
 namespace Zikula\UsersModule\Form\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,14 +25,14 @@ class ApproveRegistrationConfirmationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('force', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('confirm', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('user', HiddenType::class)
+            ->add('force', HiddenType::class)
+            ->add('confirm', SubmitType::class, [
                 'label' => $options['buttonLabel'],
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']

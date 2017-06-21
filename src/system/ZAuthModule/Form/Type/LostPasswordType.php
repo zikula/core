@@ -12,6 +12,11 @@
 namespace Zikula\ZAuthModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -28,12 +33,12 @@ class LostPasswordType extends AbstractType
     {
         if (!$options['includeReset']) {
             $builder
-                ->add('uname', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+                ->add('uname', TextType::class, [
                     'required' => false,
                     'label' => $options['translator']->__('User name'),
                     'input_group' => ['left' => '<i class="fa fa-user"></i>'],
                 ])
-                ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+                ->add('email', EmailType::class, [
                     'required' => false,
                     'label' => $options['translator']->__('Email Address'),
                     'input_group' => ['left' => '<i class="fa fa-at"></i>'],
@@ -41,8 +46,8 @@ class LostPasswordType extends AbstractType
             ;
         } else {
             $builder
-                ->add('pass', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType', [
-                    'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
+                ->add('pass', RepeatedType::class, [
+                    'type' => PasswordType::class,
                     'first_options' => [
                         'label' => $options['translator']->__('Create new password'),
                         'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
@@ -60,7 +65,7 @@ class LostPasswordType extends AbstractType
             ;
         }
         $builder
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $options['translator']->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']

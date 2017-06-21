@@ -12,6 +12,12 @@
 namespace Zikula\UsersModule\Form\ConfigType;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -31,7 +37,7 @@ class ConfigType extends AbstractType
             /**
              * General Settings
              */
-            ->add(UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add(UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME, TextType::class, [
                 'label' => $options['translator']->__('Name displayed for anonymous user'),
                 'required' => false,
                 'help' => $options['translator']->__('Anonymous users are visitors to your site who have not logged in.'),
@@ -40,7 +46,7 @@ class ConfigType extends AbstractType
                     new Type('string')
                 ]
             ])
-            ->add(UsersConstant::MODVAR_ITEMS_PER_PAGE, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(UsersConstant::MODVAR_ITEMS_PER_PAGE, IntegerType::class, [
                 'label' => $options['translator']->__('Number of users displayed per page'),
                 'help' => $options['translator']->__('When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.'),
                 'constraints' => [
@@ -51,25 +57,25 @@ class ConfigType extends AbstractType
             /**
              * Account Page Settings
              */
-            ->add(UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, CheckboxType::class, [
                 'label' => $options['translator']->__('Display graphics on user\'s account page'),
                 'required' => false,
             ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add(UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH, TextType::class, [
                 'label' => $options['translator']->__('Path to account page images'),
                 'constraints' => [
                     new NotBlank(),
                     new Type('string')
                 ]
             ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE, IntegerType::class, [
                 'label' => $options['translator']->__('Number of links per page'),
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 1])
                 ]
             ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW, 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW, IntegerType::class, [
                 'label' => $options['translator']->__('Number of links per page'),
                 'constraints' => [
                     new NotBlank(),
@@ -79,18 +85,18 @@ class ConfigType extends AbstractType
             /**
              * Registration Settings
              */
-            ->add(UsersConstant::MODVAR_REGISTRATION_ENABLED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_ENABLED, CheckboxType::class, [
                 'label' => $options['translator']->__('Allow new user account registrations'),
                 'required' => false,
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, TextareaType::class, [
                 'label' => $options['translator']->__('Statement displayed if registration disabled'),
                 'required' => false,
                 'constraints' => [
                     new Type('string')
                 ]
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, 'Symfony\Component\Form\Extension\Core\Type\EmailType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, EmailType::class, [
                 'label' => $options['translator']->__('E-mail address to notify of registrations'),
                 'required' => false,
                 'help' => $options['translator']->__('A notification is sent to this e-mail address for each registration. Leave blank for no notifications.'),
@@ -99,16 +105,16 @@ class ConfigType extends AbstractType
                     new Type('string')
                 ]
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, CheckboxType::class, [
                 'label' => $options['translator']->__('User registration is moderated'),
                 'required' => false,
                 'attr' => ['class' => 'registration-moderation-input']
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, CheckboxType::class, [
                 'label' => $options['translator']->__('Newly registered users are logged in automatically'),
                 'required' => false,
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, TextType::class, [
                 'label' => $options['translator']->__('Reserved user names'),
                 'required' => false,
                 'help' => [
@@ -123,7 +129,7 @@ class ConfigType extends AbstractType
                     ])
                 ]
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS, TextareaType::class, [
                 'label' => $options['translator']->__('Banned user agents'),
                 'required' => false,
                 'help' => $options['translator']->__('Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.'),
@@ -135,7 +141,7 @@ class ConfigType extends AbstractType
                     ])
                 ]
             ])
-            ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, TextareaType::class, [
                 'label' => $options['translator']->__('Banned e-mail address domains'),
                 'required' => false,
                 'help' => [
@@ -153,17 +159,17 @@ class ConfigType extends AbstractType
             /**
              * User Login Settings
              */
-            ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, CheckboxType::class, [
                 'label' => $options['translator']->__('Failed login displays inactive status'),
                 'required' => false,
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the user account is inactive. If not, a generic error message is displayed.'),
             ])
-            ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, CheckboxType::class, [
                 'label' => $options['translator']->__('Failed login displays verification status'),
                 'required' => false,
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the registration is pending verification. If not, a generic error message is displayed.'),
             ])
-            ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, CheckboxType::class, [
                 'label' => $options['translator']->__('Failed login displays approval status'),
                 'required' => false,
                 'help' => $options['translator']->__('If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.'),
@@ -171,12 +177,12 @@ class ConfigType extends AbstractType
             /**
              * Buttons
              */
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $options['translator']->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $options['translator']->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
