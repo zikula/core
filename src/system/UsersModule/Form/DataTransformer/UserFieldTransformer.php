@@ -20,7 +20,7 @@ use Zikula\UsersModule\Entity\UserEntity;
  *
  * This data transformer treats user fields.
  */
-class AbstractUserFieldTransformer implements DataTransformerInterface
+class UserFieldTransformer implements DataTransformerInterface
 {
     /**
      * @var UserRepositoryInterface

@@ -23,7 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\BlocksModule\Form\Type\BlockFilterType;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;

@@ -42,7 +42,7 @@ class UserLiveSearchType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -51,7 +51,7 @@ class UserLiveSearchType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -67,7 +67,7 @@ class UserLiveSearchType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -84,7 +84,7 @@ class UserLiveSearchType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -92,7 +92,7 @@ class UserLiveSearchType extends AbstractType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

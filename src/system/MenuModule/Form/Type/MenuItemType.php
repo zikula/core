@@ -23,8 +23,6 @@ use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;
 use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
-use Zikula\MenuModule\Form\Type\HiddenMenuItemType;
-use Zikula\MenuModule\Form\Type\KeyValuePairType;
 
 class MenuItemType extends AbstractType
 {

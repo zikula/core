@@ -32,7 +32,7 @@ class LiveSearchController extends AbstractController
      * @param Request $request Current request instance
      *
      * @return JsonResponse
-     */ 
+     */
     public function getUsersAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaUsersModule::LiveSearch', '::', ACCESS_EDIT)) {
