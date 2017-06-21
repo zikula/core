@@ -23,46 +23,6 @@ abstract class AbstractAjaxController extends AbstractController
 {
     
     /**
-     * Retrieves a general purpose list of users.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return JsonResponse
-     */ 
-    public function getCommonUsersListAction(Request $request)
-    {
-        if (!$this->hasPermission('ZikulaRoutesModule::Ajax', '::', ACCESS_EDIT)) {
-            return true;
-        }
-        
-        $fragment = $request->query->get('fragment', '');
-        $userRepository = $this->get('zikula_users_module.user_repository');
-        $limit = 50;
-        $filter = [
-            'uname' => ['operator' => 'like', 'operand' => '%' . $fragment . '%']
-        ];
-        $results = $userRepository->query($filter, ['uname' => 'asc'], $limit);
-        
-        // load avatar plugin
-        include_once 'lib/legacy/viewplugins/function.useravatar.php';
-        $view = \Zikula_View::getInstance('ZikulaRoutesModule', false);
-        
-        $resultItems = [];
-        if (count($results) > 0) {
-            foreach ($results as $result) {
-                $resultItems[] = [
-                    'uid' => $result->getUid(),
-                    'uname' => $result->getUname(),
-                    'avatar' => smarty_function_useravatar(['uid' => $result->getUid(), 'rating' => 'g'], $view)
-                ];
-            }
-        }
-        
-        // return response
-        return new JsonResponse($resultItems);
-    }
-    
-    /**
      * Updates the sort positions for a given list of entities.
      *
      * @param Request $request Current request instance
