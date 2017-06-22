@@ -27,21 +27,6 @@ class AjaxController extends AbstractAjaxController
 {
     
     /**
-     * Retrieves a general purpose list of users.
-     *
-     * @Route("/getCommonUsersList", options={"expose"=true})
-     * @Method("GET")
-     *
-     * @param Request $request Current request instance
-     *
-     * @return JsonResponse
-     */ 
-    public function getCommonUsersListAction(Request $request)
-    {
-        return parent::getCommonUsersListAction($request);
-    }
-    
-    /**
      * Updates the sort positions for a given list of entities.
      *
      * @Route("/updateSortPositions", options={"expose"=true})

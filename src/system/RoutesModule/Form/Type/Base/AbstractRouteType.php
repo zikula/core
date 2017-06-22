@@ -28,7 +28,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Form\Type\Field\ArrayType;
 use Zikula\RoutesModule\Form\Type\Field\MultiListType;
-use Zikula\RoutesModule\Form\Type\Field\UserType;
+use Zikula\UsersModule\Form\Type\UserLiveSearchType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
 /**
@@ -336,7 +336,7 @@ abstract class AbstractRouteType extends AbstractType
             return;
         }
     
-        $builder->add('moderationSpecificCreator', UserType::class, [
+        $builder->add('moderationSpecificCreator', UserLiveSearchType::class, [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',
             'attr' => [

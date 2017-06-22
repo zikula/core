@@ -1,24 +1,2 @@
 {# purpose of this template: apply some general form extensions #}
 {% extends 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
-
-{% block zikularoutesmodule_field_user_widget %}
-    <div id="{{ id }}LiveSearch" class="zikularoutesmodule-autocomplete-user hidden">
-        <i class="fa fa-search" title="{{ __('Search user') }}"></i>
-        <noscript><p>{{ __('This function requires JavaScript activated!') }}</p></noscript>
-        <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
-        <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{{ __('Enter a part of the user name to search') }}" class="user-selector" />
-    </div>
-    <span id="{{ id }}Avatar" class="help-block avatar">
-        {% if value and not inline_usage %}
-            {{ zikularoutesmodule_userAvatar(uid=value, rating='g') }}
-        {% endif %}
-    </span>
-    {% if not required %}
-        <span class="help-block"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{{ __('Reset to empty value') }}</a></span>
-    {% endif %}
-    {% if value and not inline_usage %}
-        {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_ADMIN') %}
-            <span class="help-block"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{{ __('Switch to users administration') }}">{{ __('Manage user') }}</a></span>
-        {% endif %}
-    {% endif %}
-{% endblock %}

@@ -43,57 +43,6 @@ div.routes-edit .tab-pane legend {
     display: none;
 }
 
-/* edit pages */
-.ui-autocomplete {
-    max-height: 150px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-* html .ui-autocomplete {
-    height: 150px;
-}
-
-.ui-autocomplete-loading {
-    background: white url('../images/indicator_arrows.gif') right center no-repeat;
-}
-
-.ui-autocomplete .suggestion {
-    margin: 0;
-    padding: 0.2em 0 0.2em 20px;
-    list-style-type: none;
-    line-height: 1.4em;
-    cursor: pointer;
-    display: block;
-    background-position: 2px 2px;
-    background-repeat: no-repeat;
-    background-color: #fff;
-}
-
-div.zikularoutesmodule-autocomplete .ui-autocomplete .suggestion {
-    background-image: url('../images/tab_right.png');
-}
-div.zikularoutesmodule-autocomplete-user .ui-autocomplete .suggestion {
-    background-image: url('../images/user.png');
-}
-.ui-autocomplete .suggestion img {
-    max-width: 20px;
-    max-height: 20px;
-}
-
-.ui-autocomplete .suggestion .ui-state-active {
-    background-color: #ffb;
-}
-
-.ui-autocomplete .suggestion .media-body {
-    font-size: 10px;
-    color: #888;
-}
-.ui-autocomplete .suggestion .media-body .media-heading {
-    font-size: 12px;
-    line-height: 1.2em;
-}
-
 /** fix dropdown visibility inside responsive tables */
 div.zikularoutesmodule-view .table-responsive {
     min-height: 300px;

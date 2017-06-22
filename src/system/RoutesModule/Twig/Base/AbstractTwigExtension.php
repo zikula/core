@@ -16,6 +16,7 @@ use Twig_Extension;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 use Zikula\RoutesModule\Helper\EntityDisplayHelper;
@@ -237,6 +238,10 @@ abstract class AbstractTwigExtension extends Twig_Extension
         if (!is_numeric($uid)) {
             $limit = 1;
             $filter = [
+                'activated' => ['operator' => 'notIn', 'operand' => [
+                    UsersConstant::ACTIVATED_PENDING_REG,
+                    UsersConstant::ACTIVATED_PENDING_DELETE
+                ]],
                 'uname' => ['operator' => '=', 'operand' => $uid]
             ];
             $results = $this->userRepository->query($filter, [], $limit);
@@ -260,9 +265,10 @@ abstract class AbstractTwigExtension extends Twig_Extension
             $params['rating'] = $rating;
         }
     
+        // load avatar plugin
         include_once 'lib/legacy/viewplugins/function.useravatar.php';
     
-        $view = \Zikula_View::getInstance('ZikulaRoutesModule');
+        $view = \Zikula_View::getInstance('ZikulaRoutesModule', false);
         $result = smarty_function_useravatar($params, $view);
     
         return $result;
