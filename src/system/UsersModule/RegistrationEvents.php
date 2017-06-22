@@ -155,9 +155,16 @@ class RegistrationEvents
      * To add elements to the registration form, render output and add this as an array element on the event's
      * data array.
      * There is no subject and no arguments for the event.
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const NEW_FORM = 'module.users.ui.form_edit.new_registration';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
+     */
     const NEW_VALIDATE = 'module.users.ui.validate_edit.new_registration';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
+     */
     const NEW_PROCESS = 'module.users.ui.process_edit.new_registration';
 
     /**
@@ -167,8 +174,15 @@ class RegistrationEvents
      * data array.
      * The subject contains the current state of the registration object, possibly edited from its original state.
      * The `'id'` argument contains the uid of the registration record.
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const MODIFY_FORM = 'module.users.ui.form_edit.modify_registration';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
+     */
     const MODIFY_VALIDATE = 'module.users.ui.validate_edit.modify_registration';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
+     */
     const MODIFY_PROCESS = 'module.users.ui.process_edit.modify_registration';
 }

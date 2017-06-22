@@ -12,6 +12,9 @@
 namespace Zikula\UsersModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
@@ -46,12 +49,12 @@ class DefaultLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('uid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('rememberme', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('uid', HiddenType::class)
+            ->add('rememberme', CheckboxType::class, [
                 'required' => false,
                 'label' => $this->translator->__('Remember me'),
             ])
-            ->add('submit', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('submit', SubmitType::class, [
                 'label' => $this->translator->__('Login'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']

@@ -12,6 +12,8 @@
 
 namespace Zikula\RoutesModule\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -55,7 +57,7 @@ class RouteType extends AbstractRouteType
             $moduleChoiceAttributes[$module->getDisplayName()] = ['title' => $module->getDisplayName()];
         }
 
-        $builder->add('bundle', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $builder->add('bundle', ChoiceType::class, [
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
             'attr' => [
@@ -70,7 +72,7 @@ class RouteType extends AbstractRouteType
             'expanded' => false
         ]);
 
-        $builder->add('controller', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('controller', TextType::class, [
             'label' => $this->__('Controller') . ':',
             'empty_data' => '',
             'attr' => [
@@ -82,7 +84,7 @@ class RouteType extends AbstractRouteType
             'help' => $this->__('Insert the name of the controller, which was called "type" in earlier versions of Zikula.')
         ]);
 
-        $builder->add('action', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('action', TextType::class, [
             'label' => $this->__('Action') . ':',
             'empty_data' => '',
             'attr' => [
@@ -94,7 +96,7 @@ class RouteType extends AbstractRouteType
             'help' => $this->__('Insert the name of the action, which was called "func" in earlier versions of Zikula.')
         ]);
 
-        $builder->add('path', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('path', TextType::class, [
             'label' => $this->__('Path') . ':',
             'empty_data' => '',
             'attr' => [
@@ -107,7 +109,7 @@ class RouteType extends AbstractRouteType
             'input_group' => ['left' => '<span class="input-group-addon" id="pathPrefix"></span>']
         ]);
 
-        $builder->add('host', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('host', TextType::class, [
             'label' => $this->__('Host') . ':',
             'empty_data' => '',
             'attr' => [
@@ -119,7 +121,7 @@ class RouteType extends AbstractRouteType
             'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/components/routing/hostname_pattern.html'])
         ]);
 
-        $builder->add('condition', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('condition', TextType::class, [
             'label' => $this->__('Condition') . ':',
             'empty_data' => '',
             'attr' => [
@@ -131,7 +133,7 @@ class RouteType extends AbstractRouteType
             'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions'])
         ]);
 
-        $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+        $builder->add('description', TextType::class, [
             'label' => $this->__('Description') . ':',
             'empty_data' => '',
             'attr' => [

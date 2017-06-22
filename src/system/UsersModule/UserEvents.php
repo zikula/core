@@ -48,14 +48,40 @@ class UserEvents
     const DISPLAY_VIEW = 'module.users.ui.display_view';
 
     /**
+     * Event called on user registration or admin user creation.
+     * @see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
+     * Event is \Zikula\UsersModule\Event\UserFormAwareEvent
+     * Contains instance of the Form in order to add elements for inclusion in the user edit form.
+     * Has a `templates` property that can be added to via `$event->addTemplate('@FooBundle/Area/foo.html.twig')`
+     *   templates will be included/rendered within the user form output
+     */
+    const EDIT_FORM = 'module.users.edit.form';
+
+    /**
+     * Event called on user registration of admin user creation to handle form submission.
+     * @see \Zikula\UsersModule\UserEvents::EDIT_FORM
+     * Event is \Zikula\UsersModule\Event\UserFormDataEvent
+     * Contains instance of \Zikula\UsersModule\Entity\UserEntity
+     * Has a `formData` property to access data from form after it has handled the Request.
+     */
+    const EDIT_FORM_HANDLE = 'module.users.edit.form.handle';
+
+    /**
      * A hook-like event process triggered when the administrator's new user form is displayed, which allows other
      * modules to intercept and display their own elements for submission on the new user form.
      * To add elements to the new user form, render output and add this as an array element on the event's
      * data array.
      * There is no subject and no arguments for the event.
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const NEW_FORM = 'module.users.ui.form_edit.new_user';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
+     */
     const NEW_VALIDATE = 'module.users.ui.validate_edit.new_user';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
+     */
     const NEW_PROCESS = 'module.users.ui.process_edit.new_user';
 
     /**
@@ -65,9 +91,16 @@ class UserEvents
      * data array.
      * The subject contains the current state of the user object, possibly edited from its original state.
      * The `'id'` argument contains the uid of the user account.
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const MODIFY_FORM = 'module.users.ui.form_edit.modify_user';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
+     */
     const MODIFY_VALIDATE = 'module.users.ui.validate_edit.modify_user';
+    /**
+     * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
+     */
     const MODIFY_PROCESS = 'module.users.ui.process_edit.modify_user';
 
     /**

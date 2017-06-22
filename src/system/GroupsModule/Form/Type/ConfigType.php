@@ -12,6 +12,10 @@
 namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,7 +32,7 @@ class ConfigType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('itemsperpage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('itemsperpage', IntegerType::class, [
                 'label' => $translator->__('Items per page'),
                 'scale' => 0,
                 'attr' => [
@@ -36,31 +40,31 @@ class ConfigType extends AbstractType
                     'min' => 1
                 ]
             ])
-            ->add('defaultgroup', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('defaultgroup', ChoiceType::class, [
                 'label' => $translator->__('Initial user group'),
                 'choices' => $options['groups'],
                 'choices_as_values' => true,
             ])
-            ->add('hideclosed', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('hideclosed', CheckboxType::class, [
                 'label' => $translator->__('Hide closed groups'),
                 'required' => false
             ])
-            ->add('hidePrivate', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('hidePrivate', CheckboxType::class, [
                 'label' => $translator->__('Hide private groups'),
                 'required' => false
             ])
-            ->add('mailwarning', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('mailwarning', CheckboxType::class, [
                 'label' => $translator->__('Receive e-mail alert when there are new applicants'),
                 'required' => false
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

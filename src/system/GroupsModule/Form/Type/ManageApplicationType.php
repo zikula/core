@@ -12,6 +12,10 @@
 namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,16 +34,16 @@ class ManageApplicationType extends AbstractType
             ? $translator->__('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
             : $translator->__('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.');
         $builder
-            ->add('theAction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('application', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', [
+            ->add('theAction', HiddenType::class)
+            ->add('application', HiddenType::class, [
                 'property_path' => '[application].app_id'
             ])
-            ->add('reason', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('reason', TextareaType::class, [
                 'label' => $translator->__('Email content'),
                 'data' => $reason,
                 'required' => false
             ])
-            ->add('sendtag', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('sendtag', ChoiceType::class, [
                 'label' => $translator->__('Notification type'),
                 'data' => 1,
                 'choices' => [
@@ -48,14 +52,14 @@ class ManageApplicationType extends AbstractType
                 ],
                 'choices_as_values' => true,
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $options['data']['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
                 'icon' => $options['data']['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [

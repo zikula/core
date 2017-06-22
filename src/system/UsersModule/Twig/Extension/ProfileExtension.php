@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Twig\Extension;
 
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Collector\ProfileModuleCollector;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class ProfileExtension extends \Twig_Extension
@@ -48,12 +49,72 @@ class ProfileExtension extends \Twig_Extension
         $this->translator = $translator;
     }
 
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('userAvatar', [$this, 'getUserAvatar'], ['is_safe' => ['html']])
+        ];
+    }
+
     public function getFilters()
     {
         return [
             new \Twig_SimpleFilter('profileLinkByUserId', [$this, 'profileLinkByUserId'], ['is_safe' => ['html']]),
             new \Twig_SimpleFilter('profileLinkByUserName', [$this, 'profileLinkByUserName'], ['is_safe' => ['html']])
         ];
+    }
+
+    /**
+     * Displays the avatar of a given user.
+     *
+     * @param int|string $uid    The user's id or name
+     * @param int        $width  Image width (optional)
+     * @param int        $height Image height (optional)
+     * @param int        $size   Gravatar size (optional)
+     * @param string     $rating Gravatar self-rating [g|pg|r|x] see: http://en.gravatar.com/site/implement/images/ (optional)
+     *
+     * @return string
+     */
+    public function getUserAvatar($uid = 0, $width = 0, $height = 0, $size = 0, $rating = '')
+    {
+        if (!is_numeric($uid)) {
+            $limit = 1;
+            $filter = [
+                'activated' => ['operator' => 'notIn', 'operand' => [
+                    UsersConstant::ACTIVATED_PENDING_REG,
+                    UsersConstant::ACTIVATED_PENDING_DELETE
+                ]],
+                'uname' => ['operator' => '=', 'operand' => $uid]
+            ];
+            $results = $this->userRepository->query($filter, [], $limit);
+            if (!count($results)) {
+                return '';
+            }
+
+            $uid = $results->getIterator()->getArrayCopy()[0]->getUname();
+        }
+        $params = ['uid' => $uid];
+        if ($width > 0) {
+            $params['width'] = $width;
+        }
+        if ($height > 0) {
+            $params['height'] = $height;
+        }
+        if ($size > 0) {
+            $params['size'] = $size;
+        }
+        if ($rating != '') {
+            $params['rating'] = $rating;
+        }
+
+        // load avatar plugin
+        // @todo fix this as part of https://github.com/zikula-modules/Profile/issues/80
+        include_once 'lib/legacy/viewplugins/function.useravatar.php';
+
+        $view = \Zikula_View::getInstance('ZikulaUsersModule', false);
+        $result = smarty_function_useravatar($params, $view);
+
+        return $result;
     }
 
     /**

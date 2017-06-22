@@ -6,7 +6,7 @@ img.contextMenu {
 div.contextMenu {
     background-color: #FFF;
     border: 1px solid #777;
-    background-image: url(contextMenuBackground.gif);
+    background-image: url('contextMenuBackground.gif');
     background-repeat: repeat-y;
     background-position: left;
 }

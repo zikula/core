@@ -128,7 +128,7 @@ class Bootstrap
                 return $state['state'] == ThemeEntityRepository::STATE_ACTIVE;
                 break;
             default:
-                if (($state['state'] == Constant::STATE_ACTIVE) || ($state['state'] == Constant::STATE_UPGRADED)) {
+                if (($state['state'] == Constant::STATE_ACTIVE) || ($state['state'] == Constant::STATE_UPGRADED) || ($state['state'] == Constant::STATE_TRANSITIONAL)) {
                     return true;
                 }
 

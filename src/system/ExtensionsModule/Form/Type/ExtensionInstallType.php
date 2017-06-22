@@ -12,8 +12,11 @@
 namespace Zikula\ExtensionsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\IdentityTranslator;
 
 /**
  * Extension installation form type.
@@ -28,17 +31,17 @@ class ExtensionInstallType extends AbstractType
         $translator = $options['translator'];
 
         $builder
-            ->add('dependencies', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
-                'entry_type' => 'Symfony\Component\Form\Extension\Core\Type\CheckboxType',
+            ->add('dependencies', CollectionType::class, [
+                'entry_type' => CheckboxType::class,
             ])
-            ->add('install', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('install', SubmitType::class, [
                 'label' => $translator->__('Install'),
                 'icon' => 'fa-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -62,7 +65,7 @@ class ExtensionInstallType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null
+            'translator' => new IdentityTranslator()
         ]);
     }
 }

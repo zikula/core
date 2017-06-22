@@ -13,9 +13,13 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
+    {# @deprecated this event method is deprecated. See use of additional_templates below #}
     {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\RegistrationEvents::NEW_FORM')) %}
     {% for eventDisplay in eventData %}
         {{ eventDisplay|raw }}
+    {% endfor %}
+    {% for additional_template in additional_templates %}
+        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
     {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_FORM')) %}

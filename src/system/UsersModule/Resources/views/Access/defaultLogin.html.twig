@@ -8,9 +8,13 @@
 {{ form_errors(form) }}
 
     {{ form_row(form.rememberme) }}
+    {# @deprecated this event method is deprecated. See use of additional_templates below #}
     {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\AccessEvents::LOGIN_FORM')) %}
     {% for eventDisplay in eventData %}
         {{ eventDisplay|raw }}
+    {% endfor %}
+    {% for additional_template in additional_templates %}
+        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
     {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::LOGIN_FORM')) %}

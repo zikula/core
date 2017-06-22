@@ -12,9 +12,16 @@
 namespace Zikula\GroupsModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
 
@@ -35,8 +42,8 @@ class EditGroupType extends AbstractType
         $stateChoices = array_flip($groupsCommon->stateLabels());
 
         $builder
-            ->add('gid', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
+            ->add('gid', HiddenType::class)
+            ->add('name', TextType::class, [
                 'label' => $translator->__('Name'),
                 'attr' => [
                     'maxlength' => 30
@@ -45,21 +52,21 @@ class EditGroupType extends AbstractType
                     new NotBlank()
                 ]
             ])
-            ->add('gtype', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('gtype', ChoiceType::class, [
                 'label' => $translator->__('Type'),
                 'choices' => $typeChoices,
                 'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('state', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('state', ChoiceType::class, [
                 'label' => $translator->__('State'),
                 'choices' => $stateChoices,
                 'choices_as_values' => true,
                 'expanded' => false,
                 'multiple' => false
             ])
-            ->add('nbumax', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('nbumax', IntegerType::class, [
                 'label' => $translator->__('Maximum membership'),
                 'attr' => [
                     'maxlength' => 10,
@@ -67,17 +74,17 @@ class EditGroupType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
+            ->add('description', TextareaType::class, [
                 'label' => $translator->__('Description'),
             ])
-            ->add('save', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('save', SubmitType::class, [
                 'label' => $translator->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('cancel', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('cancel', SubmitType::class, [
                 'label' => $translator->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
@@ -101,7 +108,7 @@ class EditGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\GroupsModule\Entity\GroupEntity',
+            'data_class' => GroupEntity::class,
             'translator' => null,
             'constraints' => [
                 new ValidGroupName()

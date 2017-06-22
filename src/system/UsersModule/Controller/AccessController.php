@@ -26,6 +26,8 @@ use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMeth
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\UserFormAwareEvent;
+use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 
 class AccessController extends AbstractController
@@ -61,14 +63,17 @@ class AccessController extends AbstractController
         }
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
+        $dispatcher = $this->get('event_dispatcher');
 
-        $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_STARTED, new GenericEvent());
+        $dispatcher->dispatch(AccessEvents::LOGIN_STARTED, new GenericEvent());
 
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
             $form = $this->createForm($authenticationMethod->getLoginFormClassName());
             if (!$form->has('rememberme')) {
                 throw new InvalidAuthenticationMethodLoginFormException();
             }
+            $loginFormEvent = new UserFormAwareEvent($form);
+            $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM, $loginFormEvent);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
@@ -76,24 +81,31 @@ class AccessController extends AbstractController
                 $uid = $authenticationMethod->authenticate($data);
             } else {
                 return $this->render($authenticationMethod->getLoginTemplateName(), [
-                    'form' => $form->createView()
+                    'form' => $form->createView(),
+                    'additional_templates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             $uid = ($request->getMethod() == 'POST') ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
-            $hasListeners = $this->get('event_dispatcher')->hasListeners(AccessEvents::LOGIN_FORM);
-            $listenersHaveContent = $hasListeners ? !empty($this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_FORM, new GenericEvent())->getData()) : false;
+            /** AccessEvents::LOGIN_FORM is @deprecated */
+            $hasListeners = $dispatcher->hasListeners(AccessEvents::LOGIN_FORM) || $dispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM);
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
-            if ($listenersHaveContent || count($hookBindings) > 0) {
+            if ($hasListeners || count($hookBindings) > 0) {
                 $form = $this->createForm('Zikula\UsersModule\Form\Type\DefaultLoginType', ['uid' => $uid]);
-                $form->handleRequest($request);
-                if ($form->isValid() && $form->isSubmitted()) {
-                    $uid = $form->get('uid')->getData();
-                    $rememberMe = $form->get('rememberme')->getData();
-                } else {
-                    return $this->render('@ZikulaUsersModule/Access/defaultLogin.html.twig', [
-                        'form' => $form->createView(),
-                    ]);
+                $loginFormEvent = new UserFormAwareEvent($form);
+                $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM, $loginFormEvent);
+                $listenersHaveContent = $hasListeners ? !empty($dispatcher->dispatch(AccessEvents::LOGIN_FORM, new GenericEvent())->getData()) : false; // @deprecated
+                if ($listenersHaveContent || $form->count() > 3) { // count > 3 means that the AUTHENTICATION_FORM event added some form children
+                    $form->handleRequest($request);
+                    if ($form->isValid() && $form->isSubmitted()) {
+                        $uid = $form->get('uid')->getData();
+                        $rememberMe = $form->get('rememberme')->getData();
+                    } else {
+                        return $this->render('@ZikulaUsersModule/Access/defaultLogin.html.twig', [
+                            'form' => $form->createView(),
+                            'additional_templates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
+                        ]);
+                    }
                 }
             }
         } else {
@@ -103,15 +115,17 @@ class AccessController extends AbstractController
         if (isset($uid)) {
             $user = $this->get('zikula_users_module.user_repository')->find($uid);
             if (isset($user)) {
-                $validators = $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VALIDATE, new GenericEvent($user, [], new ValidationProviders()))->getData();
+                $validators = $dispatcher->dispatch(AccessEvents::LOGIN_VALIDATE, new GenericEvent($user, [], new ValidationProviders()))->getData();
                 $hook = new ValidationHook($validators);
                 $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_VALIDATE, $hook);
                 $validators = $hook->getValidators();
                 if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
-                    $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
+                    $dispatcher->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
+                    $formDataEvent = new UserFormDataEvent($user, $form);
+                    $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM_HANDLE, $formDataEvent);
                     $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_PROCESS, new ProcessHook($user));
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
-                    $this->get('event_dispatcher')->dispatch(AccessEvents::LOGIN_VETO, $event);
+                    $dispatcher->dispatch(AccessEvents::LOGIN_VETO, $event);
                     if (!$event->isPropagationStopped()) {
                         $returnUrlFromSession = urldecode($request->getSession()->get('returnUrl', $returnUrl));
                         $this->get('zikula_users_module.helper.access_helper')->login($user, $rememberMe);

@@ -76,7 +76,7 @@ class CategoryRegistryType extends AbstractType
 
         $formModifier = function (FormInterface $form, $modName = null) use ($options) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
-            $form->add('entityname', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            $form->add('entityname', ChoiceType::class, [
                 'label' => $options['translator']->__('Entity'),
                 'choices' => $entities,
                 'choices_as_values' => true

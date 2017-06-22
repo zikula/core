@@ -205,6 +205,10 @@ class FixAutoloaderCommand extends Command
     }
 }
 
+/**
+ * UNUSED COMMAND
+ * Class BuildPackageCommand
+ */
 class BuildPackageCommand extends Command
 {
     protected function configure()

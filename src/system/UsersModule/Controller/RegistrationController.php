@@ -28,8 +28,11 @@ use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMeth
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Event\UserFormAwareEvent;
+use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
 use Zikula\UsersModule\RegistrationEvents;
+use Zikula\UsersModule\UserEvents;
 
 /**
  * Class RegistrationController
@@ -92,6 +95,8 @@ class RegistrationController extends AbstractController
                 ];
             }
         }
+        $dispatcher = $this->get('event_dispatcher');
+        $hookDispatcher = $this->get('hook_dispatcher');
 
         $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationFormClassName()
@@ -100,25 +105,28 @@ class RegistrationController extends AbstractController
         if (!$form->has('uname') || !$form->has('email')) {
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }
-        $hasListeners = $this->get('event_dispatcher')->hasListeners(RegistrationEvents::NEW_FORM);
-        $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.registration');
+        /** RegistrationEvents::NEW_FORM is @deprecated */
+        $hasListeners = $dispatcher->hasListeners(RegistrationEvents::NEW_FORM) || $dispatcher->hasListeners(UserEvents::EDIT_FORM);
+        $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.registration');
         if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && count($hookBindings) == 0) {
             // skip form display and process immediately.
             $userData['_token'] = $this->get('security.csrf.token_manager')->getToken($form->getName())->getValue();
             $userData['submit'] = true;
             $form->submit($userData);
         } else {
+            $formEvent = new UserFormAwareEvent($form);
+            $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
             $form->handleRequest($request);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('submit')->isClicked()) {
                 $event = new GenericEvent($form->getData(), [], new ValidationProviders());
-                $validators = $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_VALIDATE, $event)->getData();
+                $validators = $dispatcher->dispatch(RegistrationEvents::NEW_VALIDATE, $event)->getData(); // @deprecated
 
                 // Validate the hook
                 $hook = new ValidationHook($validators);
-                $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
+                $hookDispatcher->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
                 $validators = $hook->getValidators();
 
                 if (!$validators->hasErrors()) {
@@ -145,12 +153,14 @@ class RegistrationController extends AbstractController
                         // revert registration
                         $this->addFlash('error', $this->__('The registration process failed.'));
                         $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
-                        $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
+                        $dispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 
                         return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
                     }
-                    $this->get('event_dispatcher')->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity));
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
+                    $formDataEvent = new UserFormDataEvent($userEntity, $form);
+                    $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                    $dispatcher->dispatch(RegistrationEvents::NEW_PROCESS, new GenericEvent($userEntity)); // @deprecated
+                    $hookDispatcher->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
                     $canLogIn = $userEntity->getActivated() == UsersConstant::ACTIVATED_ACTIVE;
@@ -158,7 +168,7 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
+                    $event = $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
                     $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
                     if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
@@ -178,7 +188,7 @@ class RegistrationController extends AbstractController
         }
 
         // Notify that we are beginning a registration session.
-        $this->get('event_dispatcher')->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
+        $dispatcher->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
 
         $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationTemplateName()
@@ -186,6 +196,7 @@ class RegistrationController extends AbstractController
 
         return $this->render($templateName, [
             'form' => $form->createView(),
+            'additional_templates' => isset($formEvent) ? $formEvent->getTemplates() : []
         ]);
     }
 

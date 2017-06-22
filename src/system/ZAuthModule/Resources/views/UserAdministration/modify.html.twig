@@ -30,9 +30,13 @@
                 <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
             </div>
         </fieldset>
+        {# @deprecated this event method is deprecated. See use of additional_templates below #}
         {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::MODIFY_FORM'), null, form.vars.value, {'id': form.vars.value.uid}) %}
         {% for data in eventData %}
             {{ data|raw }}
+        {% endfor %}
+        {% for additional_template in additional_templates %}
+            {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
         {% endfor %}
         {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
 

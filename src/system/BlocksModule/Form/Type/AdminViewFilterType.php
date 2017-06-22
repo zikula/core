@@ -12,6 +12,9 @@
 namespace Zikula\BlocksModule\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Api\BlockApi;
@@ -25,9 +28,9 @@ class AdminViewFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sort-field', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('sort-direction', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
-            ->add('position', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('sort-field', HiddenType::class)
+            ->add('sort-direction', HiddenType::class)
+            ->add('position', ChoiceType::class, [
                 'choices' => $options['positionChoices'],
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
@@ -35,7 +38,7 @@ class AdminViewFilterType extends AbstractType
                     'class' => 'input-sm'
                 ]
             ])
-            ->add('module', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('module', ChoiceType::class, [
                 'choices' => $options['moduleChoices'],
                 'required' => false,
                 'placeholder' => $options['translator']->__('All'),
@@ -43,7 +46,7 @@ class AdminViewFilterType extends AbstractType
                     'class' => 'input-sm'
                 ]
             ])
-            ->add('language', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('language', ChoiceType::class, [
                 'choices' => $options['localeChoices'],
                 'choices_as_values' => true,
                 'required' => false,
@@ -52,7 +55,7 @@ class AdminViewFilterType extends AbstractType
                     'class' => 'input-sm'
                 ]
             ])
-            ->add('active', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('active', ChoiceType::class, [
                 'choices' => [
                     $options['translator']->__('Active') => BlockApi::BLOCK_ACTIVE,
                     $options['translator']->__('Inactive') => BlockApi::BLOCK_INACTIVE,
@@ -64,7 +67,7 @@ class AdminViewFilterType extends AbstractType
                     'class' => 'input-sm'
                 ]
             ])
-            ->add('filterButton', 'Symfony\Component\Form\Extension\Core\Type\SubmitType', [
+            ->add('filterButton', SubmitType::class, [
                 'label' => $options['translator']->__('Filter'),
                 'icon' => 'fa-filter fa-lg',
                 'attr' => [

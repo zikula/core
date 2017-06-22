@@ -35,6 +35,8 @@ CHANGELOG - ZIKULA 1.5.x
     - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
     - `PermissionApi::UNREGISTERED_USER` is deprecated. Use `UsersModule\Constant::USER_ID_ANONYMOUS`
     - \Zikula\Common\ClassProperties class has been deprecated.
+    - "Hook-like" events in both UserEvents, RegistrationEvents and AccessEvents classes are deprecated
+        - These are replaced with other events. Please see the docs.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
@@ -66,20 +68,25 @@ CHANGELOG - ZIKULA 1.5.x
     - Add PageAssetApi to ease addition of page assets from controllers and non-templates.
     - Added OAuthModule
     - Added `onlineSince(minutes)` twig filter.
+    - Add much easier method of adding form children to user registration/creation/edit forms.
+    - Added a form type for user name live search using auto completion (#710, #3610).
 
  - Vendor updates:
+    - behat/transliterator updated from 1.1.0 to 1.2.0
     - composer/installers updated from 1.2.0 to 1.3.0
     - composer/semver installed at 1.4.2
     - doctrine/cache updated from 1.5.4 to 1.6.1
     - doctrine/common updated from 2.5.3 to 2.6.2
     - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.8
+    - ezyang/htmlpurifier updated (dev-master)
     - fduch/workflow-bundle installed at 2.0.2
-    - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.28
+    - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.29
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
     - jquery.mmenu updated from 5.7.8 to 6.1.0
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
-    - monolog/monolog updated from 1.22.0 to 1.22.1
+    - matthiasnoback/symfony-service-definition-validator updated from 1.2.6 to 1.2.6.1 (zikula fork)
+    - monolog/monolog updated from 1.22.0 to 1.23.0
     - paragonie/random_compat updated from 2.0.9 to 2.0.10
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
@@ -90,17 +97,20 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/generator-bundle updated from 3.1.2 to 3.1.4
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
-    - symfony updated from 2.8.17 to 2.8.20
+    - symfony/polyfill-* updated from 1.3.0 to 1.4.0
+    - symfony/symfony updated from 2.8.17 to 2.8.21
     - symfony/security-acl updated from 2.8.0 to 3.0.0
     - symfony/swiftmailer-bundle updated from 2.4.2 to 2.4.3
-    - symfony/workflow installed at 3.2.8
-    - twig updated from 1.31.0 to 1.33.2
+    - symfony/workflow installed at 3.2.8 and updated to 3.3.2
+    - twig/twig updated from 1.31.0 to 1.34.3
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at dev-master 
-    - zikula/andreas08-theme installed at 2.0.0
+    - zikula/andreas08-theme installed at 2.0.1
+    - zikula/legal-module updated (dev-master)
     - zikula/pagelock-module installed at 1.2.0
+    - zikula/profile-module updated (dev-master)
     - zikula/oauth-module installed at 1.0.1
     - zikula/seabreeze-theme installed at 4.0.1
