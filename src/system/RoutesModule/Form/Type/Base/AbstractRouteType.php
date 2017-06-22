@@ -336,7 +336,7 @@ abstract class AbstractRouteType extends AbstractType
             return;
         }
     
-        $builder->add('moderationSpecificCreator', UserType::class, [
+        $builder->add('moderationSpecificCreator', UserLiveSearchType::class, [
             'mapped' => false,
             'label' => $this->__('Creator') . ':',
             'attr' => [
