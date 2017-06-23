@@ -13,6 +13,9 @@ namespace Zikula\Bundle\HookBundle\Tests\Api;
 
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\HookBundle\Api\HookApi;
+use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
+use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class HookApiTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,19 +26,13 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $translator = $this
-            ->getMockBuilder('\Zikula\Common\Translator\Translator')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $translator
-            ->method('__')
-            ->willReturnArgument(0);
+        $translator = new IdentityTranslator();
         $hookDispatcher = $this
             ->getMockBuilder('\Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher')
             ->disableOriginalConstructor()
             ->getMock();
         $eventDispatcher = $this
-            ->getMockBuilder('\Zikula_EventManager') // @TODO change to Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+            ->getMockBuilder('\Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher')
             ->disableOriginalConstructor()
             ->getMock();
         $this->api = new HookApi($translator, $hookDispatcher, $eventDispatcher);
@@ -53,10 +50,10 @@ class HookApiTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Zikula\Bundle\HookBundle\Bundle\SubscriberBundle', $subscriberBundle);
         $this->assertEquals('Translatable title', $subscriberBundle->getTitle());
-        $this->assertEquals('ui_hooks', $subscriberBundle->getCategory());
+        $this->assertEquals(UiHooksCategory::NAME, $subscriberBundle->getCategory());
         $this->assertEquals('foo.area', $subscriberBundle->getArea());
 
-        $subscriberHookContainerInstance = $this->api->getHookContainerInstance($meta, HookApi::SUBSCRIBER_TYPE);
+        $subscriberHookContainerInstance = $this->api->getHookContainerInstance($meta, CapabilityApiInterface::HOOK_SUBSCRIBER);
         $this->assertEquals($hookContainerInstance, $subscriberHookContainerInstance);
 
         $this->assertEmpty($hookContainerInstance->getHookProviderBundles());
