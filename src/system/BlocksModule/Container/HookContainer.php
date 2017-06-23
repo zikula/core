@@ -13,13 +13,14 @@ namespace Zikula\BlocksModule\Container;
 
 use Zikula\Bundle\HookBundle\AbstractHookContainer;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 
 class HookContainer extends AbstractHookContainer
 {
     protected function setupHookBundles()
     {
-        $bundle = new SubscriberBundle('ZikulaBlocksModule', 'subscriber.blocks.ui_hooks.htmlblock.content', 'ui_hooks', $this->__('HTML Block content hook'));
-        $bundle->addEvent('form_edit', 'blocks.ui_hooks.htmlblock.content.form_edit');
+        $bundle = new SubscriberBundle('ZikulaBlocksModule', 'subscriber.blocks.ui_hooks.htmlblock.content', UiHooksCategory::NAME, $this->__('HTML Block content hook'));
+        $bundle->addEvent(UiHooksCategory::TYPE_FORM_EDIT, 'blocks.ui_hooks.htmlblock.content.form_edit');
         $this->registerHookSubscriberBundle($bundle);
     }
 }
