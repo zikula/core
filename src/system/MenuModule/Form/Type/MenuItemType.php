@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;
 use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
@@ -63,7 +64,7 @@ class MenuItemType extends AbstractType
         ;
         if ($options['includeRoot']) {
             $builder->add('root', EntityType::class, [
-                'class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
+                'class' => MenuItemEntity::class,
                 'choice_label' => 'title',
             ]);
         } else {
@@ -71,7 +72,7 @@ class MenuItemType extends AbstractType
         }
         if ($options['includeParent']) {
             $builder->add('parent', EntityType::class, [
-                'class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
+                'class' => MenuItemEntity::class,
                 'choice_label' => 'title',
                 'placeholder' => $options['translator']->__('No parent'),
                 'empty_data' => null,
@@ -99,7 +100,7 @@ class MenuItemType extends AbstractType
             'translator' => null,
             'includeRoot' => false,
             'includeParent' => false,
-            'data_class' => 'Zikula\MenuModule\Entity\MenuItemEntity',
+            'data_class' => MenuItemEntity::class,
         ]);
     }
 

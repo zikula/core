@@ -48,7 +48,7 @@ class ConfigType extends AbstractType
                 'label' => $translator->__('Hide closed groups'),
                 'required' => false
             ])
-            ->add('hidePrivate', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('hidePrivate', CheckboxType::class, [
                 'label' => $translator->__('Hide private groups'),
                 'required' => false
             ])

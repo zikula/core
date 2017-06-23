@@ -13,6 +13,7 @@ namespace Zikula\MailerModule\Container;
 
 use Zikula\Bundle\HookBundle\AbstractHookContainer;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 
 /**
  * Class for hook container methods.
@@ -27,8 +28,8 @@ class HookContainer extends AbstractHookContainer
     protected function setupHookBundles()
     {
         // This enables Scribite 5 connection to HTML e-mail test
-        $bundle = new SubscriberBundle('ZikulaMailerModule', 'subscriber.mailer.ui_hooks.htmlmail', 'ui_hooks', $this->__('HTML mail hook'));
-        $bundle->addEvent('form_edit', 'mailer.ui_hooks.htmlmail.form_edit');
+        $bundle = new SubscriberBundle('ZikulaMailerModule', 'subscriber.mailer.ui_hooks.htmlmail', UiHooksCategory::NAME, $this->__('HTML mail hook'));
+        $bundle->addEvent(UiHooksCategory::TYPE_FORM_EDIT, 'mailer.ui_hooks.htmlmail.form_edit');
         $this->registerHookSubscriberBundle($bundle);
     }
 }

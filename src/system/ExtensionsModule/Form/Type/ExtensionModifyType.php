@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
  * Extension modification form type.
@@ -74,7 +75,7 @@ class ExtensionModifyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\ExtensionsModule\Entity\ExtensionEntity',
+            'data_class' => ExtensionEntity::class,
             'translator' => new IdentityTranslator()
         ]);
     }

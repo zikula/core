@@ -12,10 +12,3 @@ services:
             - "@zikula_routes_module.listentries_helper"
         tags:
             - { name: form.type }
-    
-    zikula_routes_module.form.type.field.user:
-        class: Zikula\RoutesModule\Form\Type\Field\UserType
-        arguments:
-            - "@zikula_users_module.user_repository"
-        tags:
-            - { name: form.type }

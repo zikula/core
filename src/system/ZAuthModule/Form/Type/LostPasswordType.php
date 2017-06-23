@@ -31,39 +31,44 @@ class LostPasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if (!$options['includeReset']) {
+            $builder
+                ->add('uname', TextType::class, [
+                    'required' => false,
+                    'label' => $options['translator']->__('User name'),
+                    'input_group' => ['left' => '<i class="fa fa-user"></i>'],
+                ])
+                ->add('email', EmailType::class, [
+                    'required' => false,
+                    'label' => $options['translator']->__('Email Address'),
+                    'input_group' => ['left' => '<i class="fa fa-at"></i>'],
+                ])
+            ;
+        } else {
+            $builder
+                ->add('pass', RepeatedType::class, [
+                    'type' => PasswordType::class,
+                    'first_options' => [
+                        'label' => $options['translator']->__('Create new password'),
+                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                    ],
+                    'second_options' => [
+                        'label' => $options['translator']->__('Repeat new password'),
+                        'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                    ],
+                    'invalid_message' => $options['translator']->__('The passwords must match!'),
+                    'constraints' => [
+                        new NotNull(),
+                        new ValidPassword()
+                    ]
+                ])
+            ;
+        }
         $builder
-            ->add('uname', TextType::class, [
-                'required' => false,
-                'label' => $options['translator']->__('User name'),
-                'input_group' => ['left' => '<i class="fa fa-user"></i>'],
-            ])
-            ->add('email', EmailType::class, [
-                'required' => false,
-                'label' => $options['translator']->__('Email Address'),
-                'input_group' => ['left' => '<i class="fa fa-at"></i>'],
-            ])
             ->add('submit', SubmitType::class, [
                 'label' => $options['translator']->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
-            ])
-        ;
-        $builder
-            ->add('pass', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => [
-                    'label' => $options['translator']->__('Create new password'),
-                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
-                ],
-                'second_options' => [
-                    'label' => $options['translator']->__('Repeat new password'),
-                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
-                ],
-                'invalid_message' => $options['translator']->__('The passwords must match!'),
-                'constraints' => [
-                    new NotNull(),
-                    new ValidPassword()
-                ]
             ])
         ;
     }

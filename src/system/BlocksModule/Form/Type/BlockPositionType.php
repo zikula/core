@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 
 class BlockPositionType extends AbstractType
 {
@@ -63,7 +64,7 @@ class BlockPositionType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
-            'data_class' => 'Zikula\BlocksModule\Entity\BlockPositionEntity'
+            'data_class' => BlockPositionEntity::class
         ]);
     }
 }

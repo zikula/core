@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class PermissionType extends AbstractType
 {
@@ -61,7 +62,7 @@ class PermissionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Zikula\PermissionsModule\Entity\PermissionEntity',
+            'data_class' => PermissionEntity::class,
             'translator' => null,
             'groups' => [],
             'permissionLevels' => []

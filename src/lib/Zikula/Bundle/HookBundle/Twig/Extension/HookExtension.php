@@ -43,7 +43,7 @@ class HookExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('notifyFilters', [$this, 'notifyFilters'])
+            new \Twig_SimpleFilter('notifyFilters', [$this, 'notifyFilters'], ['is_safe' => ['html']])
         ];
     }
 
