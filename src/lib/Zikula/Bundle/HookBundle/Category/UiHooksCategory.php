@@ -50,7 +50,6 @@ class UiHooksCategory implements CategoryInterface
      */
     const TYPES_PROCESS_DELETE = 'process_delete';
 
-
     public function getName()
     {
         return self::NAME;
@@ -58,14 +57,14 @@ class UiHooksCategory implements CategoryInterface
 
     public function getTypes()
     {
-       return [
-           self::TYPE_DISPLAY_VIEW,
-           self::TYPE_FORM_EDIT,
-           self::TYPE_VALIDATE_EDIT,
-           self::TYPES_PROCESS_EDIT,
-           self::TYPES_FORM_DELETE,
-           self::TYPE_VALIDATE_DELETE,
-           self::TYPES_PROCESS_DELETE,
-       ];
+        return [
+            self::TYPE_DISPLAY_VIEW,
+            self::TYPE_FORM_EDIT,
+            self::TYPE_VALIDATE_EDIT,
+            self::TYPES_PROCESS_EDIT,
+            self::TYPES_FORM_DELETE,
+            self::TYPE_VALIDATE_DELETE,
+            self::TYPES_PROCESS_DELETE,
+        ];
     }
 }

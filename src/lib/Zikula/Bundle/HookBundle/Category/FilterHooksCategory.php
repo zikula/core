@@ -27,8 +27,8 @@ class FilterHooksCategory implements CategoryInterface
 
     public function getTypes()
     {
-       return [
-           self::TYPE_FILTER,
-       ];
+        return [
+            self::TYPE_FILTER,
+        ];
     }
 }
