@@ -28,7 +28,7 @@ class UiHooksCategory implements CategoryInterface
     /**
      * dispatches \Zikula\Bundle\HookBundle\Hook\DisplayHook
      */
-    const TYPES_FORM_DELETE = 'form_delete';
+    const TYPE_FORM_DELETE = 'form_delete';
 
     /**
      * dispatches \Zikula\Bundle\HookBundle\Hook\ValidationHook
@@ -43,12 +43,12 @@ class UiHooksCategory implements CategoryInterface
     /**
      * dispatches \Zikula\Bundle\HookBundle\Hook\ProcessHook
      */
-    const TYPES_PROCESS_EDIT = 'process_edit';
+    const TYPE_PROCESS_EDIT = 'process_edit';
 
     /**
      * dispatches \Zikula\Bundle\HookBundle\Hook\ProcessHook
      */
-    const TYPES_PROCESS_DELETE = 'process_delete';
+    const TYPE_PROCESS_DELETE = 'process_delete';
 
     public function getName()
     {
@@ -61,10 +61,10 @@ class UiHooksCategory implements CategoryInterface
             self::TYPE_DISPLAY_VIEW,
             self::TYPE_FORM_EDIT,
             self::TYPE_VALIDATE_EDIT,
-            self::TYPES_PROCESS_EDIT,
-            self::TYPES_FORM_DELETE,
+            self::TYPE_PROCESS_EDIT,
+            self::TYPE_FORM_DELETE,
             self::TYPE_VALIDATE_DELETE,
-            self::TYPES_PROCESS_DELETE,
+            self::TYPE_PROCESS_DELETE,
         ];
     }
 }
