@@ -120,7 +120,7 @@ abstract class AbstractHookContainer
     public function getHookSubscriberBundle($area)
     {
         if (!array_key_exists($area, $this->subscriberBundles)) {
-            throw new \InvalidArgumentException(__f('Hook subscriber area %s does not exist', $area));
+            throw new \InvalidArgumentException(sprintf('Hook subscriber area %s does not exist', $area));
         }
 
         return $this->subscriberBundles[$area];
@@ -138,7 +138,7 @@ abstract class AbstractHookContainer
     public function getHookProviderBundle($area)
     {
         if (!array_key_exists($area, $this->providerBundles)) {
-            throw new \InvalidArgumentException(__f('Hook provider area %s does not exist', $area));
+            throw new \InvalidArgumentException(sprintf('Hook provider area %s does not exist', $area));
         }
 
         return $this->providerBundles[$area];
