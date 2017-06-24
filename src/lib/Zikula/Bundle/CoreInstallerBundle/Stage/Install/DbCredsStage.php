@@ -96,7 +96,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException(__f('Cannot write parameters to %s file.', 'custom_parameters.yml'));
+            throw new AbortStageException(sprintf('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
         // clear the cache
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
