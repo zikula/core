@@ -241,7 +241,7 @@ abstract class AbstractViewHelper
     
         // create name of the pdf output file
         $siteName = $this->variableApi->getSystemVar('sitename');
-        $pageTitle = iconv('ISO-8859-1', 'ASCII//TRANSLIT', $this->themePageVars->get('title', ''));
+        $pageTitle = iconv('ISO-8859-1', 'ASCII//TRANSLIT', $this->pageVars->get('title', ''));
         $fileTitle = iconv('ISO-8859-1', 'ASCII//TRANSLIT', $siteName)
                    . '-'
                    . ($pageTitle != '' ? $pageTitle . '-' : '')
