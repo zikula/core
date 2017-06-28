@@ -66,6 +66,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
             || $format != 'html'
             || false === strpos($response->headers->get('Content-Type'), 'text/html')
             || $route[0] === '_' // the profiler and other symfony routes begin with '_' @todo this is still too permissive
+            || $response->getStatusCode() == 500 // Internal Server Error
         ) {
             return;
         }
