@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * HookProvider
+ * @deprecated
  *
  * @ORM\Table(name="hook_provider")
  * @ORM\Entity
@@ -47,7 +48,7 @@ class HookProviderEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="pareaid", type="integer", nullable=false)
+     * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
      */
     private $pareaid;
 

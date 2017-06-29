@@ -12,6 +12,14 @@ services:
         tags:
         - { name: kernel.event_subscriber }
 
+    zikula_hook_bundle.listener.hook_listener_builder_listener:
+        class: Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener
+        arguments:
+          - '@service_container'
+          - '%installed%'
+        tags:
+            - { name: kernel.event_subscriber }
+
     zikula_hook_bundle.listener.hooks_listener:
         class: Zikula\Bundle\HookBundle\Listener\HooksListener
         arguments:
@@ -35,13 +43,14 @@ services:
             - "@doctrine.orm.default_entity_manager"
             - "@session"
             - "@translator.default"
+            - "@zikula_bundle_hook.collector.hook_collector"
 
     hook_dispatcher:
         class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
         arguments:
             - "@hook_dispatcher.storage"
+            - "@zikula_bundle_hook.collector.hook_collector"
             - "@event_dispatcher"
-            - "@zikula.cache_clearer"
 
     zikula.hookmanager:
         alias: hook_dispatcher
@@ -53,3 +62,6 @@ services:
             - "@translator.default"
             - "@hook_dispatcher"
             - "@event_dispatcher"
+
+    zikula_bundle_hook.collector.hook_collector:
+        class: Zikula\Bundle\HookBundle\Collector\HookCollector

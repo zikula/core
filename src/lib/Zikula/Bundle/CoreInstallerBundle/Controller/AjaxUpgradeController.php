@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
@@ -78,6 +79,8 @@ class AjaxUpgradeController extends AbstractController
                 $params = $this->decodeParameters($this->yamlManager->getParameters());
 
                 return $this->loginAdmin($params);
+            case "upgrade_event":
+                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $this->currentVersion]);
             case "upgrademodules":
                 $result = $this->upgradeModules();
                 if (count($result) === 0) {

@@ -61,14 +61,14 @@ class HookBindingEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="sareaid", type="integer", nullable=false)
+     * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
      */
     private $sareaid;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="pareaid", type="integer", nullable=false)
+     * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
      */
     private $pareaid;
 

@@ -21,7 +21,6 @@ use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -297,16 +296,5 @@ class AjaxInstallController extends AbstractController
         $_em->persist($placement);
 
         $_em->flush();
-    }
-
-    private function fireEvent($eventName)
-    {
-        $event = new GenericEvent();
-        $this->container->get('event_dispatcher')->dispatch($eventName, $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
-
-        return true;
     }
 }

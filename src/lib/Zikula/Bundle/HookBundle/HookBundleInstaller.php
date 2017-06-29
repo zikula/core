@@ -11,6 +11,11 @@
 
 namespace Zikula\Bundle\HookBundle;
 
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity;
 use Zikula\Core\Doctrine\Helper\SchemaHelper;
 use Zikula\Core\InstallerInterface;
 
@@ -24,6 +29,14 @@ class HookBundleInstaller implements InstallerInterface
      */
     private $schemaTool;
 
+    private static $entities = [
+        HookAreaEntity::class, // @deprecated
+        HookBindingEntity::class,
+        HookProviderEntity::class, // @deprecated
+        HookRuntimeEntity::class,
+        HookSubscriberEntity::class, // @deprecated
+    ];
+
     /**
      * HookBundleInstaller constructor.
      * @param $schemaTool
@@ -35,16 +48,8 @@ class HookBundleInstaller implements InstallerInterface
 
     public function install()
     {
-        $entities = [
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity',
-            'Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity',
-        ];
-
         try {
-            $this->schemaTool->create($entities);
+            $this->schemaTool->create(self::$entities);
         } catch (\Exception $e) {
             return false;
         }
@@ -57,8 +62,26 @@ class HookBundleInstaller implements InstallerInterface
         return false;
     }
 
-    public function upgrade($previousVersion)
+    public function upgrade($currentCoreVersion)
     {
+        // special note, the $currentCoreVersion var will contain the version of the CORE (not this bundle)
+
+        if (version_compare($currentCoreVersion, '1.5.0', '<')) {
+            $this->schemaTool->update(self::$entities);
+            // @todo update numeric id to areaname string
+            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity::$sareaid
+            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity::$pareaid
+            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity::$sareaid
+            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity::$pareaid
+            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity::$sareaid
+            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity::$pareaid
+            // @todo
+            // check to make sure that when subscriber and providers are registered, that the sareaid or pareaid are set to the areaname
+            // @todo should we remove subsowner and subpowner properties entirely?
+        }
+        // @todo at Core-2.0 remove deprecated entities
+
+        // Update successful
         return true;
     }
 }

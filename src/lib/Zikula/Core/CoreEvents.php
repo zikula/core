@@ -24,6 +24,12 @@ final class CoreEvents
      */
     const CORE_INSTALL_PRE_MODULE = 'core.install.pre.module';
 
+    /**
+     * Occurs during Core upgrade before the modules are upgraded.
+     * Stop propagation of the event to cause the core upgrader to fail.
+     */
+    const CORE_UPGRADE_PRE_MODULE = 'core.upgrade.pre.module';
+
     /** Occurs when a module has been installed. */
     const MODULE_INSTALL = 'module.install';
 

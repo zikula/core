@@ -13,9 +13,9 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
+use Zikula\Bundle\HookBundle\Collector\HookCollector;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
@@ -32,29 +32,30 @@ class HookDispatcher implements HookDispatcherInterface
     private $storage;
 
     /**
+     * @var HookCollector
+     */
+    private $hookCollector;
+
+    /**
      * @var EventDispatcherInterface
      */
     private $dispatcher;
 
     /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
      * Constructor.
      *
-     * @param StorageInterface         $storage
+     * @param StorageInterface $storage
+     * @param HookCollector $hookCollector
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
         StorageInterface $storage,
-        EventDispatcherInterface $dispatcher,
-        CacheClearer $cacheClearer
+        HookCollector $hookCollector,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->storage = $storage;
+        $this->hookCollector = $hookCollector;
         $this->dispatcher = $dispatcher;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -87,6 +88,7 @@ class HookDispatcher implements HookDispatcherInterface
 
     /**
      * Register a subscriber bundle with persistence.
+     * @deprecated no longer required with non-persisted hooks
      *
      * @param SubscriberBundle $bundle
      */
@@ -95,24 +97,22 @@ class HookDispatcher implements HookDispatcherInterface
         foreach ($bundle->getEvents() as $areaType => $eventName) {
             $this->storage->registerSubscriber($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $areaType, $bundle->getCategory(), $eventName);
         }
-
-        $this->reload();
     }
 
     /**
      * Unregister a subscriber bundle from persistence.
+     * @deprecated no longer required with non-persisted hooks
      *
      * @param SubscriberBundle $bundle
      */
     public function unregisterSubscriberBundle(SubscriberBundle $bundle)
     {
         $this->storage->unregisterSubscriberByArea($bundle->getArea());
-
-        $this->reload();
     }
 
     /**
      * Register provider bundle with persistence.
+     * @deprecated no longer required with non-persisted hooks
      *
      * @param ProviderBundle $bundle
      */
@@ -121,20 +121,17 @@ class HookDispatcher implements HookDispatcherInterface
         foreach ($bundle->getHooks() as $hook) {
             $this->storage->registerProvider($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $hook['hooktype'], $bundle->getCategory(), $hook['classname'], $hook['method'], $hook['serviceid']);
         }
-
-        $this->reload();
     }
 
     /**
      * Unregister a provider bundle with persistence.
+     * @deprecated no longer required with non-persisted hooks
      *
      * @param ProviderBundle $bundle
      */
     public function unregisterProviderBundle(ProviderBundle $bundle)
     {
         $this->storage->unregisterProviderByArea($bundle->getArea());
-
-        $this->reload();
     }
 
     /**
@@ -143,16 +140,18 @@ class HookDispatcher implements HookDispatcherInterface
      * Area names are unique so you can specify subscriber or provider area.
      *
      * @param string $areaName Areaname
+     * @param string $type subscriber|provider
      *
      * @return array
      */
-    public function getBindingsFor($areaName)
+    public function getBindingsFor($areaName, $type = 'subscriber')
     {
-        return $this->storage->getBindingsFor($areaName);
+        return $this->storage->getBindingsFor($areaName, $type);
     }
 
     /**
      * Get subscriber areas for an owner.
+     * @deprecated directly access hookCollector->->getSubscriberAreasByOwner($owner)
      *
      * @param string $owner
      *
@@ -160,11 +159,15 @@ class HookDispatcher implements HookDispatcherInterface
      */
     public function getSubscriberAreasByOwner($owner)
     {
-        return $this->storage->getSubscriberAreasByOwner($owner);
+        $persistedAreas = $this->storage->getSubscriberAreasByOwner($owner);
+        $nonPersistedAreas = $this->hookCollector->getSubscriberAreasByOwner($owner);
+
+        return array_merge($persistedAreas, $nonPersistedAreas);
     }
 
     /**
      * Get provider areas for an owner.
+     * @deprecated directly access hookCollector->->getProviderAreasByOwner($owner)
      *
      * @param string $owner
      *
@@ -172,11 +175,15 @@ class HookDispatcher implements HookDispatcherInterface
      */
     public function getProviderAreasByOwner($owner)
     {
-        return $this->storage->getProviderAreasByOwner($owner);
+        $persistedAreas = $this->storage->getProviderAreasByOwner($owner);
+        $nonPersistedAreas = $this->hookCollector->getProviderAreasByOwner($owner);
+
+        return array_merge($persistedAreas, $nonPersistedAreas);
     }
 
     /**
-     * Get owber by area.
+     * Get owner by area.
+     * @deprecated directly access hookCollector->get*($areaName)->getOwner()
      *
      * @param string $areaName
      *
@@ -184,19 +191,13 @@ class HookDispatcher implements HookDispatcherInterface
      */
     public function getOwnerByArea($areaName)
     {
-        return $this->storage->getOwnerByArea($areaName);
-    }
-
-    /**
-     * Get area id.
-     *
-     * @param string $areaName
-     *
-     * @return integer
-     */
-    public function getAreaId($areaName)
-    {
-        return $this->storage->getAreaId($areaName);
+        if ($this->hookCollector->hasProvider($areaName)) {
+            return $this->hookCollector->getProvider($areaName)->getOwner();
+        } else if ($this->hookCollector->hasSubscriber($areaName)) {
+            return $this->hookCollector->getSubscriber($areaName)->getOwner();
+        } else {
+            return $this->storage->getOwnerByArea($areaName); // @deprecated
+        }
     }
 
     /**
@@ -211,7 +212,6 @@ class HookDispatcher implements HookDispatcherInterface
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {
         $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
-        $this->reload();
     }
 
     /**
@@ -292,11 +292,5 @@ class HookDispatcher implements HookDispatcherInterface
                 $hook->setCaller($owningSide['owner']);
             }
         }
-    }
-
-    private function reload()
-    {
-        // recompile the container
-        $this->cacheClearer->clear('symfony.config');
     }
 }

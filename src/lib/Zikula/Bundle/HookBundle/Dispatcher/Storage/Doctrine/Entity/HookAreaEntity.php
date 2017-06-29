@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * HookArea
+ * @deprecated
  *
  * @ORM\Table(name="hook_area", indexes={@ORM\Index(name="areaidx", columns={"areaname"})})
  * @ORM\Entity

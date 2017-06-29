@@ -39,79 +39,16 @@ interface HookDispatcherInterface
     public function dispatch($name, Hook $hook);
 
     /**
-     * Register a subscriber bundle with persistence.
-     *
-     * @param SubscriberBundle $bundle
-     */
-    public function registerSubscriberBundle(SubscriberBundle $bundle);
-
-    /**
-     * Unregister a subscriber bundle from persistence.
-     *
-     * @param SubscriberBundle $bundle
-     */
-    public function unregisterSubscriberBundle(SubscriberBundle $bundle);
-
-    /**
-     * Register provider bundle with persistence.
-     *
-     * @param ProviderBundle $bundle
-     */
-    public function registerProviderBundle(ProviderBundle $bundle);
-
-    /**
-     * Unregister a provider bundle with persistence.
-     *
-     * @param ProviderBundle $bundle
-     */
-    public function unregisterProviderBundle(ProviderBundle $bundle);
-
-    /**
      * Return all bindings for a given area.
      *
      * Area names are unique so you can specify subscriber or provider area.
      *
      * @param string $areaName Areaname
+     * @param string $type subscriber|provider
      *
      * @return array
      */
-    public function getBindingsFor($areaName);
-
-    /**
-     * Get subscriber areas for an owner.
-     *
-     * @param string $owner
-     *
-     * @return array
-     */
-    public function getSubscriberAreasByOwner($owner);
-
-    /**
-     * Get provider areas for an owner.
-     *
-     * @param string $owner
-     *
-     * @return array
-     */
-    public function getProviderAreasByOwner($owner);
-
-    /**
-     * Get owber by area.
-     *
-     * @param string $areaName
-     *
-     * @return string
-     */
-    public function getOwnerByArea($areaName);
-
-    /**
-     * Get area id.
-     *
-     * @param string $areaName
-     *
-     * @return integer
-     */
-    public function getAreaId($areaName);
+    public function getBindingsFor($areaName, $type = 'subscriber');
 
     /**
      * Set the bind order of hooks.

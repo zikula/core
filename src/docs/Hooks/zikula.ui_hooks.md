@@ -6,13 +6,46 @@ The following is a list of valid hook types.
 
     see \Zikula\Bundle\HookBundle\Category\UiHooksCategory
 
-    display_view    - Display hook for view/display templates.
+    const NAME = 'ui_hooks';
 
-    form_edit       - Display hook for create/edit forms.
-    form_delete     - Display hook for delete dialogues.
+    /**
+     * Display hook for view/display templates
+     * dispatches \Zikula\Bundle\HookBundle\Hook\DisplayHook
+     */
+    const TYPE_DISPLAY_VIEW = 'display_view';
 
-    validate_edit   - Used to validate input from a create/edit form.
-    validate_delete - Used to validate input from a delete form.
+    /**
+     * Display hook for create/edit forms
+     * dispatches \Zikula\Bundle\HookBundle\Hook\DisplayHook
+     */
+    const TYPE_FORM_EDIT = 'form_edit';
 
-    process_edit    - Perform the final update actions for a create/edit form.
-    process_delete  - Perform the final delete actions for a delete form.
+    /**
+     * Display hook for delete dialogues
+     * dispatches \Zikula\Bundle\HookBundle\Hook\DisplayHook
+     */
+    const TYPE_FORM_DELETE = 'form_delete';
+
+    /**
+     * Used to validate input from a create/edit form
+     * dispatches \Zikula\Bundle\HookBundle\Hook\ValidationHook
+     */
+    const TYPE_VALIDATE_EDIT = 'validate_edit';
+
+    /**
+     * Used to validate input from a delete form
+     * dispatches \Zikula\Bundle\HookBundle\Hook\ValidationHook
+     */
+    const TYPE_VALIDATE_DELETE = 'validate_delete';
+
+    /**
+     * Perform the final update actions for a create/edit form
+     * dispatches \Zikula\Bundle\HookBundle\Hook\ProcessHook
+     */
+    const TYPE_PROCESS_EDIT = 'process_edit';
+
+    /**
+     * Perform the final delete actions for a delete form
+     * dispatches \Zikula\Bundle\HookBundle\Hook\ProcessHook
+     */
+    const TYPE_PROCESS_DELETE = 'process_delete';
