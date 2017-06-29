@@ -81,6 +81,7 @@ CHANGELOG - ZIKULA 1.5.x
     - ezyang/htmlpurifier updated (dev-master)
     - fduch/workflow-bundle installed at 2.0.2
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.29
+    - guzzlehttp/guzzle  updated from 6.2.3 to 6.3.0
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
     - jquery.mmenu updated from 5.7.8 to 6.1.0
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
@@ -91,6 +92,7 @@ CHANGELOG - ZIKULA 1.5.x
     - phpdocumentor/reflection-common installed at 1.0
     - phpdocumentor/type-resolver installed at 0.2.1
     - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
+    - phpunit/phpunit updated from 4.8.35 to 4.8.36
     - sebastian/diff updated from 1.4.1 to 1.4.3
     - sensio/distribution-bundle updated from 5.0.18 to 5.0.20
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.26
