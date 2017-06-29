@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\HookBundle\Bundle;
 
 /**
+ * @deprecated remove at Core-2.0
  * Provider Bundle for Hook Providers
  */
 class ProviderBundle

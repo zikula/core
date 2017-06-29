@@ -196,7 +196,7 @@ class HookApi
     {
         foreach ($bundles as $bundle) {
             $this->hookDispatcher->unregisterSubscriberBundle($bundle);
-            $event = new GenericEvent($bundle, ['areaid' => $this->hookDispatcher->getAreaId($bundle->getArea())]);
+            $event = new GenericEvent($bundle, ['areaid' => $bundle->getArea()]);
             $this->eventDispatcher->dispatch('installer.subscriberbundle.uninstalled', $event);
         }
     }
