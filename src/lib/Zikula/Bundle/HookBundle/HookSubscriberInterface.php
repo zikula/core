@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\HookBundle;
 
-
 interface HookSubscriberInterface extends HookInterface
 {
     /**

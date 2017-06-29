@@ -158,7 +158,6 @@ class DoctrineStorage implements StorageInterface
                  ->getQuery()->setParameter(1, $bindingAreaNames)
                  ->execute();
 
-
         $this->generateRuntimeHandlers();
     }
 
@@ -351,7 +350,7 @@ class DoctrineStorage implements StorageInterface
             if ($providerAreaObject instanceof HookProviderInterface) {
                 // @todo at Core-2.0 refactor and assume instance of HookProviderInterface
                 $types = $providerAreaObject->getProviderTypes();
-                if (isset($types[$hookType])){
+                if (isset($types[$hookType])) {
                     $method = $types[$hookType];
                     $className = get_class($providerAreaObject);
                     $serviceId = $providerAreaObject->getServiceId();

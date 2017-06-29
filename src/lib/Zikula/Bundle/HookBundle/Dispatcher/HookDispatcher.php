@@ -193,7 +193,7 @@ class HookDispatcher implements HookDispatcherInterface
     {
         if ($this->hookCollector->hasProvider($areaName)) {
             return $this->hookCollector->getProvider($areaName)->getOwner();
-        } else if ($this->hookCollector->hasSubscriber($areaName)) {
+        } elseif ($this->hookCollector->hasSubscriber($areaName)) {
             return $this->hookCollector->getSubscriber($areaName)->getOwner();
         } else {
             return $this->storage->getOwnerByArea($areaName); // @deprecated

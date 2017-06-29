@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\HookBundle;
 
-
 interface HookProviderInterface extends HookInterface
 {
     /**
@@ -41,5 +40,5 @@ interface HookProviderInterface extends HookInterface
      * Gets the container service id for this class
      * @return string
      */
-    public function  getServiceId();
+    public function getServiceId();
 }

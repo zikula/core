@@ -29,7 +29,8 @@ class HookListenerBuilderListener implements EventSubscriberInterface
      */
     private $installed;
 
-    public function __construct(ContainerInterface $container, $installed) {
+    public function __construct(ContainerInterface $container, $installed)
+    {
         $this->container = $container;
         $this->installed = $installed;
     }
@@ -63,14 +64,13 @@ class HookListenerBuilderListener implements EventSubscriberInterface
             if (is_callable($callable)) {
                 if (!empty($handler['serviceid'])) {
                     if (!$this->container->has($handler['serviceid']) && $this->container->get('kernel')->isBundle($handler['powner'])) { // @deprecated - in Core-2.0 all services must be pre-registered with the container via DI
-                        $this->container->set($handler['serviceid'], new $handler['classname']);
+                        $this->container->set($handler['serviceid'], new $handler['classname']());
                     }
                     $this->container->get('event_dispatcher')->addListenerService($handler['eventname'], [$handler['serviceid'], $handler['method']]);
                 } else {
                     throw new \InvalidArgumentException('Hook definitions must include a valid service ID.'); // add 'that is already registered with the container' at Core-2.0
                 }
             }
-
         }
     }
 }
