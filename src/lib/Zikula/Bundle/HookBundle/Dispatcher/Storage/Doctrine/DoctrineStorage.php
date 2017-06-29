@@ -88,7 +88,7 @@ class DoctrineStorage implements StorageInterface
      */
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName)
     {
-        $areaId = $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
+        $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
 
         // Now we have an areaId we can register a subscriber, but first test if the subscriber is already registered.
         $existingSubscriber = $this->getSubscriberByEventName($eventName);
@@ -106,7 +106,7 @@ class DoctrineStorage implements StorageInterface
         $subscriber->setCategory($category);
         $subscriber->setEventname($eventName);
         $subscriber->setHooktype($areaType);
-        $subscriber->setSareaid($areaId);
+        $subscriber->setSareaid($areaName);
         $subscriber->setSubowner($subOwner);
         $this->em->persist($subscriber);
         $this->em->flush();
@@ -154,7 +154,7 @@ class DoctrineStorage implements StorageInterface
         // remove bindings
         $this->em->createQueryBuilder()
                  ->delete(Entity\HookBindingEntity::class, 't')
-                 ->where('t.sareaid = ?1')
+                 ->where('t.sareaid IN (?1)')
                  ->getQuery()->setParameter(1, $bindingAreaNames)
                  ->execute();
 
@@ -166,12 +166,12 @@ class DoctrineStorage implements StorageInterface
      */
     public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId = null)
     {
-        $pareaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
+        $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
 
-        $existingProvider = $this->getProviderByAreaAndType($pareaId, $hookType);
+        $existingProvider = $this->getProviderByAreaAndType($areaName, $hookType);
         if (!empty($existingProvider)) {
             $this->session->getFlashBag()->add('warning', $this->__f('The hook provider for area "%parea" of type "%type" could not be registered for "%own" because it already exists.', [
-                '%parea' => $pareaId,
+                '%parea' => $areaName,
                 '%type' => $hookType,
                 '%own' => $owner
             ]));
@@ -182,7 +182,7 @@ class DoctrineStorage implements StorageInterface
         $provider = new Entity\HookProviderEntity();
         $provider->setOwner($owner);
         $provider->setSubowner($subOwner);
-        $provider->setPareaid($pareaId);
+        $provider->setPareaid($areaName);
         $provider->setHooktype($hookType);
         $provider->setCategory($category);
         $provider->setClassname($className);
@@ -237,7 +237,7 @@ class DoctrineStorage implements StorageInterface
         // remove bindings
         $this->em->createQueryBuilder()
                  ->delete(Entity\HookBindingEntity::class, 't')
-                 ->where('t.pareaid = ?1')
+                 ->where('t.pareaid IN (?1)')
                  ->getQuery()->setParameter(1, $bindingAreaNames)
                  ->execute();
 

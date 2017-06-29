@@ -75,8 +75,6 @@ class HookBundleInstaller implements InstallerInterface
             // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity::$pareaid
             // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity::$sareaid
             // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity::$pareaid
-            // @todo
-            // check to make sure that when subscriber and providers are registered, that the sareaid or pareaid are set to the areaname
             // @todo should we remove subsowner and subpowner properties entirely?
         }
         // @todo at Core-2.0 remove deprecated entities
