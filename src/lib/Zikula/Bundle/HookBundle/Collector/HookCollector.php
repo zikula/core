@@ -59,7 +59,8 @@ class HookCollector
             throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
         }
         // @deprecated
-        foreach ($service->getProviderTypes() as $type) {
+        $providerTypes = $service->getProviderTypes();
+        foreach (array_keys($providerTypes) as $type) {
             $existingInStorage = $this->getProviderByAreaAndType($areaName, $type);
             if (!empty($existingInStorage)) {
                 throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
