@@ -16,8 +16,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface HookBindingRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function deleteByAreaNames(array $areaNames, $type = 'sareaid');
-
     public function deleteByBothAreas($subscriberArea, $providerArea);
 
     public function selectByAreaName($areaName, $type = 'sareaid');
@@ -27,4 +25,6 @@ interface HookBindingRepositoryInterface extends ObjectRepository, Selectable
     public function findOneOrNullByAreas($subscriberArea, $providerArea);
 
     public function findByOwners($subscriberOwner, $providerOwner);
+
+    public function deleteAllByOwner($owner);
 }

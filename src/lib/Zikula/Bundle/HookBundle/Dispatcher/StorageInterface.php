@@ -16,10 +16,6 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
  */
 interface StorageInterface
 {
-    public function unregisterSubscriberByArea($areaName);
-
-    public function unregisterProviderByArea($areaName);
-
     public function bindSubscriber($subscriberArea, $providerArea);
 
     public function unbindSubscriber($subscriberArea, $providerArea);

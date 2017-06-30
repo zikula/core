@@ -33,4 +33,14 @@ class HookRuntimeRepository extends EntityRepository implements HookRuntimeRepos
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function deleteAllByOwner($owner)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->delete(HookRuntimeEntity::class, 't')
+            ->where('t.sowner = ?1 OR t.powner = ?2')
+            ->setParameters([1 => $owner, 2 => $owner])
+            ->getQuery()
+            ->execute();
+    }
 }

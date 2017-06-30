@@ -16,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Core\Response\Ajax\AjaxResponse;
@@ -415,7 +414,6 @@ class HookController extends Controller
     }
 
     /**
-     * @todo move this to AbstractController
      * Check the CSRF token.
      * Checks will fall back to $token check if automatic checking fails
      *
@@ -424,7 +422,7 @@ class HookController extends Controller
      * @throws \Exception if request is not an XmlHttpRequest
      * @return void
      */
-    public function checkAjaxToken($token = null)
+    private function checkAjaxToken($token = null)
     {
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
         if (!$currentRequest->isXmlHttpRequest()) {

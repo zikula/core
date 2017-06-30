@@ -19,4 +19,6 @@ interface HookRuntimeRepositoryInterface extends ObjectRepository, Selectable
     public function truncate();
 
     public function getOneOrNullByEventName($eventName);
+
+    public function deleteAllByOwner($owner);
 }

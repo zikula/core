@@ -49,6 +49,7 @@ class DoctrineStorage implements StorageInterface
     private $runtimeHandlers = [];
 
     /**
+     * @todo at Core-2.0 change to ObjectManager
      * @var EntityManagerInterface
      */
     private $em;
@@ -75,7 +76,7 @@ class DoctrineStorage implements StorageInterface
     private $hookCollector;
 
     public function __construct(
-        EntityManagerInterface $em,
+        EntityManagerInterface $em, // @todo at Core-2.0 inject 'doctrine' service and getManager() instead
         HookBindingRepositoryInterface $hookBindingRepository,
         HookRuntimeRepositoryInterface $hookRuntimeRepository,
         SessionInterface $session, // @deprecated do not inject at Core-2.0
@@ -141,34 +142,23 @@ class DoctrineStorage implements StorageInterface
     }
 
     /**
-     * @todo perhaps we move the `remove bindings` part to an uninstall listener - then whole method could be deleted...
+     * @deprecated
      * @param $areaName
      */
     public function unregisterSubscriberByArea($areaName)
     {
-        $areaId = $this->getAreaId($areaName); // @todo remove
-        $bindingAreaNames = [$areaName]; // @todo remove and set parameter below to $areaName
-
-        if ($areaId) {
-            // @deprecated
-
-            // delete subscriber entry
-            $this->em->createQueryBuilder()
-                ->delete(Entity\HookSubscriberEntity::class, 't')
-                ->where('t.sareaid = ?1')
-                ->getQuery()->setParameter(1, $areaName)
-                ->execute();
-            // clean areas
-            $this->em->createQueryBuilder()
-                ->delete(Entity\HookAreaEntity::class, 't')
-                ->where('t.areaname = ?1')
-                ->getQuery()->setParameter(1, $areaName)
-                ->execute();
-            $bindingAreaNames[] = $areaId;
-        }
-
-        // remove bindings
-        $this->hookBindingRepository->deleteByAreaNames($bindingAreaNames, 'sareaid');
+        // delete subscriber entry
+        $this->em->createQueryBuilder()
+            ->delete(Entity\HookSubscriberEntity::class, 't')
+            ->where('t.sareaid = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
+        // clean areas
+        $this->em->createQueryBuilder()
+            ->delete(Entity\HookAreaEntity::class, 't')
+            ->where('t.areaname = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
 
         $this->generateRuntimeHandlers();
     }
@@ -220,34 +210,23 @@ class DoctrineStorage implements StorageInterface
     }
 
     /**
-     * @todo perhaps we move the `remove bindings` part to an uninstall listener - then whole method could be deleted...
+     * @deprecated
      * @param $areaName
      */
     public function unregisterProviderByArea($areaName)
     {
-        $areaId = $this->getAreaId($areaName); // @todo remove
-        $bindingAreaNames = [$areaName]; // @todo remove and set parameter below to $areaName
-
-        if ($areaId) {
-            // @deprecated
-
-            // delete provider entry
-            $this->em->createQueryBuilder()
-                ->delete(Entity\HookProviderEntity::class, 't')
-                ->where('t.pareaid = ?1')
-                ->getQuery()->setParameter(1, $areaName)
-                ->execute();
-            // clean area
-            $this->em->createQueryBuilder()
-                ->delete(Entity\HookAreaEntity::class, 't')
-                ->where('t.areaname = ?1')
-                ->getQuery()->setParameter(1, $areaName)
-                ->execute();
-            $bindingAreaNames[] = $areaId;
-        }
-
-        // remove bindings
-        $this->hookBindingRepository->deleteByAreaNames($bindingAreaNames, 'pareaid');
+        // delete provider entry
+        $this->em->createQueryBuilder()
+            ->delete(Entity\HookProviderEntity::class, 't')
+            ->where('t.pareaid = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
+        // clean area
+        $this->em->createQueryBuilder()
+            ->delete(Entity\HookAreaEntity::class, 't')
+            ->where('t.areaname = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
 
         $this->generateRuntimeHandlers();
     }

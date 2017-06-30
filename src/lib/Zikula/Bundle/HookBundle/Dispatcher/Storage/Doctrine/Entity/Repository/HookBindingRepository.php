@@ -18,17 +18,6 @@ use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterf
 
 class HookBindingRepository extends EntityRepository implements HookBindingRepositoryInterface
 {
-    public function deleteByAreaNames(array $areaNames, $type = 'sareaid')
-    {
-        $type = in_array($type, ['sareaid', 'pareaid']) ? $type : 'sareaid';
-        $qb = $this->_em->createQueryBuilder();
-        $qb->delete(HookBindingEntity::class, 't')
-            ->where("t.$type IN (?1)")
-            ->setParameter(1, $areaNames)
-            ->getQuery()
-            ->execute();
-    }
-
     public function deleteByBothAreas($subscriberArea, $providerArea)
     {
         $qb = $this->_em->createQueryBuilder();
@@ -81,5 +70,15 @@ class HookBindingRepository extends EntityRepository implements HookBindingRepos
             ->setParameters([1 => $subscriberOwner, 2 => $providerOwner])
             ->getQuery()
             ->getArrayResult();
+    }
+
+    public function deleteAllByOwner($owner)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->delete(HookBindingEntity::class, 't')
+            ->where('t.sowner = ?1 OR t.powner = ?2')
+            ->setParameters([1 => $owner, 2 => $owner])
+            ->getQuery()
+            ->execute();
     }
 }
