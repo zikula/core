@@ -11,7 +11,9 @@
 
 namespace Zikula\Bundle\HookBundle\Collector;
 
-use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 
@@ -31,18 +33,18 @@ class HookCollector
 
     /**
      * @deprecated
-     * @var StorageInterface
+     * @var EntityManagerInterface
      */
-    private $hookStorage;
+    private $em;
 
     /**
      * HookCollector constructor.
      * @deprecated
-     * @param StorageInterface $hookStorage
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(StorageInterface $hookStorage)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->hookStorage = $hookStorage;
+        $this->em = $entityManager;
     }
 
     /**
@@ -58,13 +60,28 @@ class HookCollector
         }
         // @deprecated
         foreach ($service->getProviderTypes() as $type) {
-            $existingInStorage = $this->hookStorage->getProviderByAreaAndType($areaName, $type);
+            $existingInStorage = $this->getProviderByAreaAndType($areaName, $type);
             if (!empty($existingInStorage)) {
                 throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
             }
         }
         $this->providerHooks[$areaName] = $service;
         $this->providerHooks[$areaName]->setServiceId($serviceId);
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getProviderByAreaAndType($areaId, $type)
+    {
+        return $this->em->createQueryBuilder()->select('t')
+            ->from(HookProviderEntity::class, 't')
+            ->where('t.pareaid = ?1')
+            ->andWhere('t.hooktype = ?2')
+            ->getQuery()
+            ->setParameter(1, $areaId)
+            ->setParameter(2, $type)
+            ->getArrayResult();
     }
 
     /**
@@ -124,12 +141,24 @@ class HookCollector
         }
         // @deprecated
         foreach ($service->getEvents() as $eventName) {
-            $existingSubscriber = $this->hookStorage->getSubscriberByEventName($eventName);
+            $existingSubscriber = $this->getSubscriberByEventName($eventName);
             if (!empty($existingSubscriber)) {
                 throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
             }
         }
         $this->subscriberHooks[$areaName] = $service;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getSubscriberByEventName($eventName)
+    {
+        return $this->em->createQueryBuilder()->select('t')
+            ->from(HookSubscriberEntity::class, 't')
+            ->where('t.eventname = ?1')
+            ->getQuery()->setParameter(1, $eventName)
+            ->getArrayResult();
     }
 
     /**
