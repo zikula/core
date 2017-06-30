@@ -37,6 +37,8 @@ CHANGELOG - ZIKULA 1.5.x
     - \Zikula\Common\ClassProperties class has been deprecated.
     - "Hook-like" events in both UserEvents, RegistrationEvents and AccessEvents classes are deprecated
         - These are replaced with other events. Please see the docs.
+    - Persisted Hooks are deprecated in favor on tagged, service-defined classes. See docs for more infomation.
+        - The concept of hook 'subowners' is fully deprecated and will not be part of Core-2.0
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
@@ -70,6 +72,9 @@ CHANGELOG - ZIKULA 1.5.x
     - Added `onlineSince(minutes)` twig filter.
     - Add much easier method of adding form children to user registration/creation/edit forms.
     - Added a form type for user name live search using auto completion (#710, #3610).
+    - Added Core upgrade event (#2785).
+    - New FormAwareHook category added.
+    - New Non-persisted hooks added (#2784, #2262, #236).
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0
