@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\HookBundle;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity;
@@ -29,6 +30,11 @@ class HookBundleInstaller implements InstallerInterface
      */
     private $schemaTool;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
     private static $entities = [
         HookAreaEntity::class, // @deprecated
         HookBindingEntity::class,
@@ -39,11 +45,15 @@ class HookBundleInstaller implements InstallerInterface
 
     /**
      * HookBundleInstaller constructor.
-     * @param $schemaTool
+     * @param SchemaHelper $schemaTool
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(SchemaHelper $schemaTool)
-    {
+    public function __construct(
+        SchemaHelper $schemaTool,
+        EntityManagerInterface $entityManager
+    ) {
         $this->schemaTool = $schemaTool;
+        $this->em = $entityManager;
     }
 
     public function install()
@@ -68,14 +78,47 @@ class HookBundleInstaller implements InstallerInterface
 
         if (version_compare($currentCoreVersion, '1.5.0', '<')) {
             $this->schemaTool->update(self::$entities);
-            // @todo update numeric id to areaname string
-            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity::$sareaid
-            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity::$pareaid
-            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity::$sareaid
-            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity::$pareaid
-            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity::$sareaid
-            // \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity::$pareaid
-            // @todo should we remove subsowner and subpowner properties entirely?
+            /** @var HookAreaEntity[] $areas */
+            $areas = $this->em->getRepository(HookAreaEntity::class)->findAll();
+            $qb = $this->em->createQueryBuilder();
+            foreach ($areas as $area) {
+                $qb->update(HookRuntimeEntity::class, 'r')
+                    ->set('r.sareaid', $area->getAreaname())
+                    ->where('r.sareaid = :aid')
+                    ->setParameter('aid', $area->getId())
+                    ->getQuery()
+                    ->execute();
+                $qb->update(HookRuntimeEntity::class, 'r')
+                    ->set('r.pareaid', $area->getAreaname())
+                    ->where('r.pareaid = :aid')
+                    ->setParameter('aid', $area->getId())
+                    ->getQuery()
+                    ->execute();
+                $qb->update(HookBindingEntity::class, 'b')
+                    ->set('b.sareaid', $area->getAreaname())
+                    ->where('b.sareaid = :aid')
+                    ->setParameter('aid', $area->getId())
+                    ->getQuery()
+                    ->execute();
+                $qb->update(HookBindingEntity::class, 'b')
+                    ->set('b.pareaid', $area->getAreaname())
+                    ->where('b.pareaid = :aid')
+                    ->setParameter('aid', $area->getId())
+                    ->getQuery()
+                    ->execute();
+                $qb->update(HookSubscriberEntity::class, 's')
+                    ->set('s.sareaid', $area->getAreaname())
+                    ->where('s.sareaid = :aid')
+                    ->setParameter('aid', $area->getId())
+                    ->getQuery()
+                    ->execute();
+                $qb->update(HookProviderEntity::class, 'p')
+                    ->set('p.pareaid', $area->getAreaname())
+                    ->where('p.pareaid = :aid')
+                    ->setParameter('aid', $area->getId())
+                    ->getQuery()
+                    ->execute();
+            }
         }
         // @todo at Core-2.0 remove deprecated entities
 

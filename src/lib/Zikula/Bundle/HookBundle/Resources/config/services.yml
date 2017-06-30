@@ -3,6 +3,7 @@ services:
         class: Zikula\Bundle\HookBundle\HookBundleInstaller
         arguments:
             - "@zikula_core.common.doctrine.schema_tool"
+            - "@doctrine.orm.default_entity_manager"
 
     twig.extension.zikula_hook:
         class: Zikula\Bundle\HookBundle\Twig\Extension\HookExtension
