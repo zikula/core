@@ -58,7 +58,7 @@ class HookController extends Controller
         // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
         $moduleVersionObj = ExtensionsUtil::getVersionMeta($moduleName);
         if ($moduleVersionObj instanceof MetaData) {
-            // Core-2.0 Spec module
+            // Core-1.5 Spec module
             $moduleVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($moduleVersionObj);
         }
 
@@ -73,6 +73,9 @@ class HookController extends Controller
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
+        $nonPersistedProviders = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviders();
+        $nonPersistedSubscribers = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscribers();
+
         // get areas of module and bundle titles also
         if ($isProvider) {
             $providerAreas = $this->get('hook_dispatcher')->getProviderAreasByOwner($moduleName);
@@ -80,7 +83,13 @@ class HookController extends Controller
 
             $providerAreasToTitles = [];
             foreach ($providerAreas as $providerArea) {
-                $providerAreasToTitles[$providerArea] = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookProviderBundle($providerArea)->getTitle());
+                if (isset($nonPersistedProviders[$providerArea])) {
+                    $providerAreasToTitles[$providerArea] = $nonPersistedProviders[$providerArea]->getTitle();
+                } else {
+                    // @deprecated
+                    $providerAreasToTitles[$providerArea] = $this->get('translator.default')->__(/** @Ignore */
+                        $moduleVersionObj->getHookProviderBundle($providerArea)->getTitle());
+                }
             }
             $templateParameters['providerAreasToTitles'] = $providerAreasToTitles;
         }
@@ -92,18 +101,22 @@ class HookController extends Controller
             $templateParameters['subscriberAreas'] = $subscriberAreas;
 
             $subscriberAreasToTitles = [];
-            foreach ($subscriberAreas as $subscriberArea) {
-                $subscriberAreasToTitles[$subscriberArea] = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle());
-            }
-            $templateParameters['subscriberAreasToTitles'] = $subscriberAreasToTitles;
-
             $subscriberAreasToCategories = [];
             $subscriberAreasAndCategories = [];
             foreach ($subscriberAreas as $subscriberArea) {
-                $category = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
+                if (isset($nonPersistedSubscribers[$subscriberArea])) {
+                    $subscriberAreasToTitles[$subscriberArea] = $nonPersistedSubscribers[$subscriberArea]->getTitle();
+                    $category = $nonPersistedSubscribers[$subscriberArea]->getCategory();
+                } else {
+                    // @deprecated
+                    $subscriberAreasToTitles[$subscriberArea] = $this->get('translator.default')->__(/** @Ignore */
+                        $moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getTitle());
+                    $category = $this->get('translator.default')->__(/** @Ignore */$moduleVersionObj->getHookSubscriberBundle($subscriberArea)->getCategory());
+                }
                 $subscriberAreasToCategories[$subscriberArea] = $category;
                 $subscriberAreasAndCategories[$category][] = $subscriberArea;
             }
+            $templateParameters['subscriberAreasToTitles'] = $subscriberAreasToTitles;
             $templateParameters['subscriberAreasToCategories'] = $subscriberAreasToCategories;
             $templateParameters['subscriberAreasAndCategories'] = $subscriberAreasAndCategories;
         }
@@ -132,7 +145,7 @@ class HookController extends Controller
                 // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
                 $hooksubscriberVersionObj = ExtensionsUtil::getVersionMeta($hooksubscribers[$i]['name']);
                 if ($hooksubscriberVersionObj instanceof MetaData) {
-                    // Core-2.0 Spec module
+                    // Core-1.5 Spec module
                     $hooksubscriberVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($hooksubscriberVersionObj);
                 }
 
@@ -144,8 +157,16 @@ class HookController extends Controller
                 $hooksubscriberAreasToTitles = []; // and get the titles
                 $hooksubscriberAreasToCategories = []; // and get the categories
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
-                    $hooksubscriberAreasToTitles[$hooksubscriberArea] = $this->get('translator.default')->__(/** @Ignore */$hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
-                    $category = $this->get('translator.default')->__(/** @Ignore */$hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getCategory());
+                    if (isset($nonPersistedSubscribers[$hooksubscriberArea])) {
+                        $hooksubscriberAreasToTitles[$hooksubscriberArea] = $nonPersistedSubscribers[$hooksubscriberArea]->getTitle();
+                        $category = $nonPersistedSubscribers[$hooksubscriberArea]->getCategory();
+                    } else {
+                        // @deprecated
+                        $hooksubscriberAreasToTitles[$hooksubscriberArea] = $this->get('translator.default')->__(/** @Ignore */
+                            $hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
+                        $category = $this->get('translator.default')->__(/** @Ignore */
+                            $hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getCategory());
+                    }
                     $hooksubscriberAreasToCategories[$hooksubscriberArea] = $category;
                 }
                 $hooksubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
@@ -160,7 +181,6 @@ class HookController extends Controller
         // get providers that are already attached to the subscriber
         // and providers that can attach to the subscriber
         if ($isSubscriber && !empty($subscriberAreas)) {
-            $nonPersistedProviders = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviders();
             // get current sorting
             $currentSortingTitles = [];
             $currentSorting = [];
@@ -190,7 +210,7 @@ class HookController extends Controller
                     // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
                     $sbaProviderModuleVersionObj = ExtensionsUtil::getVersionMeta($sbaProviderModule);
                     if ($sbaProviderModuleVersionObj instanceof MetaData) {
-                        // Core-2.0 Spec module
+                        // Core-1.5 Spec module
                         $sbaProviderModuleVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($sbaProviderModuleVersionObj);
                     }
 
@@ -232,7 +252,7 @@ class HookController extends Controller
                 // @todo @deprecated in Core-2.0 use `$bundle->getMetaData()` and assume instance of MetaData
                 $hookproviderVersionObj = ExtensionsUtil::getVersionMeta($hookproviders[$i]['name']);
                 if ($hookproviderVersionObj instanceof MetaData) {
-                    // Core-2.0 Spec module
+                    // Core-1.5 Spec module
                     $hookproviderVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($hookproviderVersionObj);
                 }
 
@@ -248,16 +268,14 @@ class HookController extends Controller
                     if (isset($nonPersistedProviders[$hookproviderArea])) {
                         $hookproviderAreasToTitles[$hookproviderArea] = $nonPersistedProviders[$hookproviderArea]->getTitle();
                         $category = $nonPersistedProviders[$hookproviderArea]->getCategory();
-                        $hookproviderAreasToCategories[$hookproviderArea] = $category;
-                        $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
                     } else {
                         // @deprecated
                         $providerBundle = $hookproviderVersionObj->getHookProviderBundle($hookproviderArea);
                         $hookproviderAreasToTitles[$hookproviderArea] = $this->get('translator.default')->__(/** @Ignore */$providerBundle->getTitle());
                         $category = $this->get('translator.default')->__(/** @Ignore */$providerBundle->getCategory());
-                        $hookproviderAreasToCategories[$hookproviderArea] = $category;
-                        $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
                     }
+                    $hookproviderAreasToCategories[$hookproviderArea] = $category;
+                    $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
                 }
                 $hookproviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
                 $hookproviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
