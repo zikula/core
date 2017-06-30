@@ -12,14 +12,15 @@
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * HookRuntime
  *
  * @ORM\Table(name="hook_runtime")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookRuntimeRepository")
  */
-class HookRuntimeEntity
+class HookRuntimeEntity extends EntityAccess
 {
     /**
      * @var integer

@@ -161,7 +161,7 @@ class HookController extends Controller
         // get providers that are already attached to the subscriber
         // and providers that can attach to the subscriber
         if ($isSubscriber && !empty($subscriberAreas)) {
-            $nonPersistedProviders = $this->get('zikula_bundle_hook.collector.hook_collector')->getProviders();
+            $nonPersistedProviders = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviders();
             // get current sorting
             $currentSortingTitles = [];
             $currentSorting = [];

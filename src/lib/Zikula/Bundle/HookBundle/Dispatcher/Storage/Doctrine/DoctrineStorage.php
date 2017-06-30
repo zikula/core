@@ -11,11 +11,13 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollector;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
@@ -47,9 +49,19 @@ class DoctrineStorage implements StorageInterface
     private $runtimeHandlers = [];
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
+
+    /**
+     * @var HookBindingRepositoryInterface
+     */
+    private $hookBindingRepository;
+
+    /**
+     * @var HookRuntimeRepositoryInterface
+     */
+    private $hookRuntimeRepository;
 
     /**
      * @deprecated
@@ -63,12 +75,16 @@ class DoctrineStorage implements StorageInterface
     private $hookCollector;
 
     public function __construct(
-        EntityManager $em, // @todo change so as to inject 'doctrine' service directly
+        EntityManagerInterface $em,
+        HookBindingRepositoryInterface $hookBindingRepository,
+        HookRuntimeRepositoryInterface $hookRuntimeRepository,
         SessionInterface $session, // @deprecated do not inject at Core-2.0
         TranslatorInterface $translator, // @deprecated do not inject at Core-2.0
         HookCollector $hookCollector
     ) {
         $this->em = $em;
+        $this->hookBindingRepository = $hookBindingRepository;
+        $this->hookRuntimeRepository = $hookRuntimeRepository;
         $this->session = $session; // @deprecated do not inject at Core-2.0
         $this->setTranslator($translator); // @deprecated do not inject at Core-2.0
         $this->hookCollector = $hookCollector;
@@ -152,11 +168,7 @@ class DoctrineStorage implements StorageInterface
         }
 
         // remove bindings
-        $this->em->createQueryBuilder()
-                 ->delete(Entity\HookBindingEntity::class, 't')
-                 ->where('t.sareaid IN (?1)')
-                 ->getQuery()->setParameter(1, $bindingAreaNames)
-                 ->execute();
+        $this->hookBindingRepository->deleteByAreaNames($bindingAreaNames, 'sareaid');
 
         $this->generateRuntimeHandlers();
     }
@@ -235,11 +247,7 @@ class DoctrineStorage implements StorageInterface
         }
 
         // remove bindings
-        $this->em->createQueryBuilder()
-                 ->delete(Entity\HookBindingEntity::class, 't')
-                 ->where('t.pareaid IN (?1)')
-                 ->getQuery()->setParameter(1, $bindingAreaNames)
-                 ->execute();
+        $this->hookBindingRepository->deleteByAreaNames($bindingAreaNames, 'pareaid');
 
         $this->generateRuntimeHandlers();
     }
@@ -311,10 +319,7 @@ class DoctrineStorage implements StorageInterface
     private function generateRuntimeHandlers()
     {
         // truncate runtime
-        $this->em->createQueryBuilder()
-             ->delete(Entity\HookRuntimeEntity::class)
-             ->getQuery()
-             ->execute();
+        $this->hookRuntimeRepository->truncate();
 
         foreach ($this->getBindings() as $binding) {
             $this->addRuntimeHandlers($binding['sareaid'], $binding['pareaid']);
@@ -392,11 +397,7 @@ class DoctrineStorage implements StorageInterface
 
     public function getRuntimeHandlers()
     {
-        $this->runtimeHandlers =
-            $this->em->createQueryBuilder()->select('t')
-                 ->from(Entity\HookRuntimeEntity::class, 't')
-                 ->getQuery()
-                 ->getArrayResult();
+        $this->runtimeHandlers = $this->hookRuntimeRepository->findAll();
 
         return $this->runtimeHandlers;
     }
@@ -421,13 +422,7 @@ class DoctrineStorage implements StorageInterface
 
     public function unbindSubscriber($subscriberArea, $providerArea)
     {
-        $this->em->createQueryBuilder()
-            ->delete(Entity\HookBindingEntity::class, 't')
-            ->where('t.pareaid = ?1 AND t.sareaid = ?2')
-            ->setParameters([1 => $providerArea, 2 => $subscriberArea])
-            ->getQuery()
-            ->execute();
-
+        $this->hookBindingRepository->deleteByBothAreas($subscriberArea, $providerArea);
         $this->generateRuntimeHandlers();
     }
 
@@ -453,15 +448,7 @@ class DoctrineStorage implements StorageInterface
 
     private function getBindings()
     {
-        $order = new OrderBy();
-        $order->add('t.sareaid', 'ASC');
-        $order->add('t.sortorder', 'ASC');
-
-        return $this->em->createQueryBuilder()->select('t')
-                 ->from(Entity\HookBindingEntity::class, 't')
-                 ->orderBy($order)
-                 ->getQuery()
-                 ->getArrayResult();
+        return $this->hookBindingRepository->findBy([], ['sareaid' => 'ASC', 'sortorder' => 'ASC']);
     }
 
     /**
@@ -482,18 +469,13 @@ class DoctrineStorage implements StorageInterface
         $order->add('t.sortorder', 'ASC');
         $order->add('t.sareaid', 'ASC');
         $fieldMap = ['subscriber' => 'sareaid', 'provider' => 'pareaid'];
-        $results = $this->em->createQueryBuilder()->select('t')
-                         ->from(Entity\HookBindingEntity::class, 't')
-                         ->where("t.$fieldMap[$type] = ?1")
-                         ->orderBy($order)
-                         ->getQuery()->setParameter(1, $areaName)
-                         ->getArrayResult();
+        $results = $this->hookBindingRepository->selectByAreaName($areaName, $fieldMap[$type]);
 
         $areas = [];
         foreach ($results as $result) {
             $area = $this->getByAreaName($result['pareaid'], 'provider');
             $areas[] = [
-                'areaname' => $result['pareaid'], //$area->getAreaname(),
+                'areaname' => $result['pareaid'],
                 'category' => $area->getCategory()
             ];
         }
@@ -502,21 +484,15 @@ class DoctrineStorage implements StorageInterface
     }
 
     /**
+     * sort bindings in order of appearance from $providerAreaIds
      * @param string $subscriberAreaName
      * @param array $providerAreaNames
      */
     public function setBindOrder($subscriberAreaName, array $providerAreaNames)
     {
-        // sort bindings in order of appearance from $providerAreaIds
         $counter = 1;
         foreach ($providerAreaNames as $providerAreaName) {
-            $this->em->createQueryBuilder()
-                ->update(Entity\HookBindingEntity::class, 't')
-                ->set('t.sortorder', $counter)
-                ->where('t.sareaid = ?1 AND t.pareaid = ?2')
-                ->setParameters([1 => $subscriberAreaName, 2 => $providerAreaName])
-                ->getQuery()
-                ->execute();
+            $this->hookBindingRepository->setSortOrder($counter, $subscriberAreaName, $providerAreaName);
             $counter++;
         }
 
@@ -526,13 +502,7 @@ class DoctrineStorage implements StorageInterface
     public function getRuntimeMetaByEventName($eventName)
     {
         if (!isset($this->runtimeHandlers[$eventName])) {
-            $this->runtimeHandlers[$eventName] = $this->em->createQueryBuilder()
-                ->select('t')
-                ->from(Entity\HookRuntimeEntity::class, 't')
-                ->where('t.eventname = :name')
-                ->setParameter('name', $eventName)
-                ->getQuery()
-                ->getOneOrNullResult();
+            $this->runtimeHandlers[$eventName] = $this->hookRuntimeRepository->getOneOrNullByEventName($eventName);
         }
         if ($this->runtimeHandlers[$eventName]) {
             return [
@@ -546,12 +516,7 @@ class DoctrineStorage implements StorageInterface
 
     public function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        return $this->em->createQueryBuilder()->select('t')
-            ->from(Entity\HookBindingEntity::class, 't')
-            ->where('t.sareaid = ?1 AND t.pareaid = ?2')
-            ->setParameters([1 => $subscriberArea, 2 => $providerArea])
-            ->getQuery()
-            ->getOneOrNullResult();
+        return $this->hookBindingRepository->findOneOrNullByAreas($subscriberArea, $providerArea);
     }
 
     /**
@@ -619,12 +584,7 @@ class DoctrineStorage implements StorageInterface
 
     public function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
-        return $this->em->createQueryBuilder()->select('t')
-            ->from(Entity\HookBindingEntity::class, 't')
-            ->where('t.sowner = ?1 AND t.powner = ?2')
-            ->setParameters([1 => $subscriberOwner, 2 => $providerOwner])
-            ->getQuery()
-            ->getArrayResult();
+        return $this->hookBindingRepository->findByOwners($subscriberOwner, $providerOwner);
     }
 
     /**

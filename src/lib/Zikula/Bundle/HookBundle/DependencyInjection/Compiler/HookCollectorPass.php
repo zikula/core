@@ -19,11 +19,11 @@ class HookCollectorPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('zikula_bundle_hook.collector.hook_collector')) {
+        if (!$container->hasDefinition('zikula_hook_bundle.collector.hook_collector')) {
             return;
         }
 
-        $definition = $container->getDefinition('zikula_bundle_hook.collector.hook_collector');
+        $definition = $container->getDefinition('zikula_hook_bundle.collector.hook_collector');
 
         foreach ($container->findTaggedServiceIds('zikula.hook_provider') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
