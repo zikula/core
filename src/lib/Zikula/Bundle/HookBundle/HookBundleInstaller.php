@@ -80,8 +80,8 @@ class HookBundleInstaller implements InstallerInterface
             $this->schemaTool->update(self::$entities);
             /** @var HookAreaEntity[] $areas */
             $areas = $this->em->getRepository(HookAreaEntity::class)->findAll();
-            $qb = $this->em->createQueryBuilder();
             foreach ($areas as $area) {
+                $qb = $this->em->createQueryBuilder();
                 $qb->update(HookRuntimeEntity::class, 'r')
                     ->set('r.sareaid', ':an')
                     ->where('r.sareaid = :aid')
@@ -89,6 +89,7 @@ class HookBundleInstaller implements InstallerInterface
                     ->setParameter('aid', $area->getId())
                     ->getQuery()
                     ->execute();
+                $qb = $this->em->createQueryBuilder();
                 $qb->update(HookRuntimeEntity::class, 'r')
                     ->set('r.pareaid', ':an')
                     ->where('r.pareaid = :aid')
@@ -96,6 +97,7 @@ class HookBundleInstaller implements InstallerInterface
                     ->setParameter('aid', $area->getId())
                     ->getQuery()
                     ->execute();
+                $qb = $this->em->createQueryBuilder();
                 $qb->update(HookBindingEntity::class, 'b')
                     ->set('b.sareaid', ':an')
                     ->where('b.sareaid = :aid')
@@ -103,6 +105,7 @@ class HookBundleInstaller implements InstallerInterface
                     ->setParameter('aid', $area->getId())
                     ->getQuery()
                     ->execute();
+                $qb = $this->em->createQueryBuilder();
                 $qb->update(HookBindingEntity::class, 'b')
                     ->set('b.pareaid', ':an')
                     ->where('b.pareaid = :aid')
@@ -110,6 +113,7 @@ class HookBundleInstaller implements InstallerInterface
                     ->setParameter('aid', $area->getId())
                     ->getQuery()
                     ->execute();
+                $qb = $this->em->createQueryBuilder();
                 $qb->update(HookSubscriberEntity::class, 's')
                     ->set('s.sareaid', ':an')
                     ->where('s.sareaid = :aid')
@@ -117,6 +121,7 @@ class HookBundleInstaller implements InstallerInterface
                     ->setParameter('aid', $area->getId())
                     ->getQuery()
                     ->execute();
+                $qb = $this->em->createQueryBuilder();
                 $qb->update(HookProviderEntity::class, 'p')
                     ->set('p.pareaid', ':an')
                     ->where('p.pareaid = :aid')
