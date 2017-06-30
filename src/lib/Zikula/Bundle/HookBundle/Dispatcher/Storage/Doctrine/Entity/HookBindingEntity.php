@@ -40,6 +40,7 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * @var string
+     * @deprecated
      *
      * @ORM\Column(name="subsowner", type="string", length=40, nullable=true)
      */
@@ -54,6 +55,7 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * @var string
+     * @deprecated
      *
      * @ORM\Column(name="subpowner", type="string", length=40, nullable=true)
      */
@@ -122,6 +124,7 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * Set subsowner
+     * @deprecated
      *
      * @param string $subsowner
      * @return HookBindingEntity
@@ -135,6 +138,7 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * Get subsowner
+     * @deprecated
      *
      * @return string
      */
@@ -168,6 +172,7 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * Set subpowner
+     * @deprecated
      *
      * @param string $subpowner
      * @return HookBindingEntity
@@ -181,6 +186,7 @@ class HookBindingEntity extends EntityAccess
 
     /**
      * Get subpowner
+     * @deprecated
      *
      * @return string
      */
