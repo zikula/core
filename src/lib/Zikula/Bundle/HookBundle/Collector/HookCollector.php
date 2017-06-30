@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\HookBundle\Collector;
 
+use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 
@@ -29,6 +30,22 @@ class HookCollector
     protected $subscriberHooks = [];
 
     /**
+     * @deprecated
+     * @var StorageInterface
+     */
+    private $hookStorage;
+
+    /**
+     * HookCollector constructor.
+     * @deprecated
+     * @param StorageInterface $hookStorage
+     */
+    public function __construct(StorageInterface $hookStorage)
+    {
+        $this->hookStorage = $hookStorage;
+    }
+
+    /**
      * Add a service to the collection.
      * @param string $areaName
      * @param $serviceId
@@ -39,7 +56,13 @@ class HookCollector
         if (isset($this->providerHooks[$areaName])) {
             throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
         }
-        // @todo check storage for duplicate?
+        // @deprecated
+        foreach ($service->getProviderTypes() as $type) {
+            $existingInStorage = $this->hookStorage->getProviderByAreaAndType($areaName, $type);
+            if (!empty($existingInStorage)) {
+                throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
+            }
+        }
         $this->providerHooks[$areaName] = $service;
         $this->providerHooks[$areaName]->setServiceId($serviceId);
     }
@@ -99,7 +122,13 @@ class HookCollector
         if (isset($this->subscriberHooks[$areaName])) {
             throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
         }
-        // @todo check storage for duplicate?
+        // @deprecated
+        foreach ($service->getEvents() as $eventName) {
+            $existingSubscriber = $this->hookStorage->getSubscriberByEventName($eventName);
+            if (!empty($existingSubscriber)) {
+                throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
+            }
+        }
         $this->subscriberHooks[$areaName] = $service;
     }
 

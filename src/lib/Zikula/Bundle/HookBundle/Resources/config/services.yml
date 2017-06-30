@@ -42,6 +42,7 @@ services:
 
     zikula_hook_bundle.collector.hook_collector:
         class: Zikula\Bundle\HookBundle\Collector\HookCollector
+        arguments: ["@hook_dispatcher.storage"]
 
     zikula_hook_bundle.hook_binding_repository:
         class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookBindingRepository
