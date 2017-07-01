@@ -16,12 +16,6 @@ class FormAwareCategory implements CategoryInterface
     const NAME = 'form_aware_hook';
 
     /**
-     * Display hook for display templates
-     * dispatches \Zikula\Bundle\HookBundle\Hook\DisplayHook
-     */
-    const TYPE_DISPLAY = 'display';
-
-    /**
      * Display hook for create/edit forms
      * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook
      */
@@ -53,7 +47,6 @@ class FormAwareCategory implements CategoryInterface
     public function getTypes()
     {
         return [
-            self::TYPE_DISPLAY,
             self::TYPE_EDIT,
             self::TYPE_DELETE,
             self::TYPE_PROCESS_EDIT,

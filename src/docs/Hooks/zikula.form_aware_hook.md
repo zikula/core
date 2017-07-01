@@ -9,12 +9,6 @@ The following is a list of valid hook types.
     const NAME = 'form_aware_hook';
 
     /**
-     * Display hook for display templates
-     * dispatches \Zikula\Bundle\HookBundle\Hook\DisplayHook
-     */
-    const TYPE_DISPLAY = 'display';
-
-    /**
      * Display hook for create/edit forms
      * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook
      */
