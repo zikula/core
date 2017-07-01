@@ -53,6 +53,7 @@ class DisplayHook extends Hook
             $incomingContent = $response->__toString();
             $response = new DisplayHookResponse($response->getArea(), $existingContent . "<br>" . $incomingContent);
         }
+
         return $this->responses[$response->getArea()] = $response;
     }
 
