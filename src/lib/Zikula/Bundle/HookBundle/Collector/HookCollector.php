@@ -16,20 +16,33 @@ use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEnti
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class HookCollector
 {
     /**
      * @var HookProviderInterface[]
-     * e.g. [<areaName> => <ServiceObject>]
+     * e.g. [<areaName> => <serviceObject>]
      */
-    protected $providerHooks = [];
+    private $providerHooks = [];
+
+    /**
+     * @var array
+     * e.g. [<moduleName> => [<areaName> => <serviceObject>, <areaName> => <serviceObject>, ...]]
+     */
+    private $providersByOwner = [];
 
     /**
      * @var HookSubscriberInterface[]
-     * e.g. [<areaName> => <ServiceObject>]
+     * e.g. [<areaName> => <serviceObject>]
      */
-    protected $subscriberHooks = [];
+    private $subscriberHooks = [];
+
+    /**
+     * @var array
+     * e.g. [<moduleName> => [<areaName> => <serviceObject>, <areaName> => <serviceObject>, ...]]
+     */
+    private $subscribersByOwner = [];
 
     /**
      * @deprecated
@@ -66,8 +79,9 @@ class HookCollector
                 throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
             }
         }
+        $service->setServiceId($serviceId);
         $this->providerHooks[$areaName] = $service;
-        $this->providerHooks[$areaName]->setServiceId($serviceId);
+        $this->providersByOwner[$service->getOwner()][$areaName] = $service;
     }
 
     /**
@@ -86,7 +100,7 @@ class HookCollector
     }
 
     /**
-     * Get a HookInterface from the collection by areaName.
+     * Get a HookProviderInterface from the collection by areaName.
      * @param $areaName
      * @return HookProviderInterface|null
      */
@@ -127,7 +141,7 @@ class HookCollector
      */
     public function getProviderAreasByOwner($owner)
     {
-        return $this->getAreasByOwner($this->providerHooks, $owner);
+        return isset($this->providersByOwner[$owner]) ? array_keys($this->providersByOwner[$owner]) : [];
     }
 
     /**
@@ -148,6 +162,7 @@ class HookCollector
             }
         }
         $this->subscriberHooks[$areaName] = $service;
+        $this->subscribersByOwner[$service->getOwner()][$areaName] = $service;
     }
 
     /**
@@ -163,7 +178,7 @@ class HookCollector
     }
 
     /**
-     * Get a HookInterface from the collection by areaName.
+     * Get a HookSubscriberInterface from the collection by areaName.
      * @param $areaName
      * @return HookSubscriberInterface|null
      */
@@ -204,23 +219,41 @@ class HookCollector
      */
     public function getSubscriberAreasByOwner($owner)
     {
-        return $this->getAreasByOwner($this->subscriberHooks, $owner);
+        return isset($this->subscribersByOwner[$owner]) ? array_keys($this->subscribersByOwner[$owner]) : [];
     }
 
     /**
-     * @param array $hooks
-     * @param $owner
-     * @return array of areas for one owner
+     * Is moduleName capable of hook type?
+     * @param $moduleName
+     * @param string $type
+     * @return bool
      */
-    private function getAreasByOwner(array $hooks, $owner)
+    public function isCapable($moduleName, $type = CapabilityApiInterface::HOOK_SUBSCRIBER)
     {
-        $result = [];
-        foreach ($hooks as $area => $hook) {
-            if ($hook->getOwner() == $owner) {
-                $result[] = $area;
-            }
+        if (in_array($type, [CapabilityApiInterface::HOOK_SUBSCRIBER, CapabilityApiInterface::HOOK_PROVIDER])) {
+            $variable = substr($type, 5) . 'sByOwner';
+        } else {
+            $variable = 'subscribersByOwner';
         }
+        $array = $this->$variable;
 
-        return $result;
+        return isset($array[$moduleName]);
+    }
+
+    /**
+     * Return all owners capable of hook type
+     * @param string $type
+     * @return array
+     */
+    public function getOwnersCapableOf($type = CapabilityApiInterface::HOOK_SUBSCRIBER)
+    {
+        if (in_array($type, [CapabilityApiInterface::HOOK_SUBSCRIBER, CapabilityApiInterface::HOOK_PROVIDER])) {
+            $variable = substr($type, 5) . 'sByOwner';
+        } else {
+            $variable = 'subscribersByOwner';
+        }
+        $array = $this->$variable;
+
+        return array_keys($array);
     }
 }

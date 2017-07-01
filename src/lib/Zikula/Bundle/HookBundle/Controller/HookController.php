@@ -63,13 +63,13 @@ class HookController extends Controller
         }
 
         // find out the capabilities of the module
-        $isProvider = ($this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, CapabilityApiInterface::HOOK_PROVIDER)) ? true : false;
+        $isProvider = $this->isCapable($moduleName, CapabilityApiInterface::HOOK_PROVIDER);
         $templateParameters['isProvider'] = $isProvider;
 
-        $isSubscriber = ($this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBER)) ? true : false;
+        $isSubscriber = $this->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBER);
         $templateParameters['isSubscriber'] = $isSubscriber;
 
-        $isSubscriberSelfCapable = ($this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)) ? true : false;
+        $isSubscriberSelfCapable = $this->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN);
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
@@ -124,7 +124,7 @@ class HookController extends Controller
         // get available subscribers that can attach to provider
         if ($isProvider && !empty($providerAreas)) {
             /** @var ExtensionEntity[] $hooksubscribers */
-            $hooksubscribers = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::HOOK_SUBSCRIBER);
+            $hooksubscribers = $this->getExtensionsCapableOf(CapabilityApiInterface::HOOK_SUBSCRIBER);
             $amountOfHookSubscribers = count($hooksubscribers);
             $amountOfAvailableSubscriberAreas = 0;
             for ($i = 0; $i < $amountOfHookSubscribers; $i++) {
@@ -230,7 +230,7 @@ class HookController extends Controller
 
             // get available providers
             /** @var ExtensionEntity[] $hookproviders */
-            $hookproviders = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApiInterface::HOOK_PROVIDER);
+            $hookproviders = $this->getExtensionsCapableOf(CapabilityApiInterface::HOOK_PROVIDER);
             $amountOfHookProviders = count($hookproviders);
             $amountOfAvailableProviderAreas = 0;
             for ($i = 0; $i < $amountOfHookProviders; $i++) {
@@ -370,7 +370,7 @@ class HookController extends Controller
             'subscriberarea_id' => md5($subscriberArea),
             'providerarea' => $providerArea,
             'providerarea_id' => md5($providerArea),
-            'isSubscriberSelfCapable' => ($this->get('zikula_extensions_module.api.capability')->isCapable($subscriber, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN) ? true : false)
+            'isSubscriberSelfCapable' => $this->isCapable($subscriber, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)
         ];
 
         return new AjaxResponse($response);
@@ -452,5 +452,25 @@ class HookController extends Controller
             return;
         }
         $this->get('zikula_core.common.csrf_token_handler')->validate($token);
+    }
+
+    private function isCapable($moduleName, $type)
+    {
+        $nonPersisted = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, $type);
+        $persisted =  $this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, $type) ? true : false;
+
+        return $nonPersisted || $persisted;
+    }
+
+    private function getExtensionsCapableOf($type)
+    {
+        $nonPersistedOwners = $this->get('zikula_hook_bundle.collector.hook_collector')->getOwnersCapableOf($type);
+        $nonPersisted = [];
+        foreach ($nonPersistedOwners as $nonPersistedOwner) {
+            $nonPersisted[] = $this->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $nonPersistedOwner]);
+        }
+        $persisted = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf($type);
+
+        return array_merge($nonPersisted, $persisted);
     }
 }
