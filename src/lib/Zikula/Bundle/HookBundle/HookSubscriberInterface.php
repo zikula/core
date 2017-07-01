@@ -16,8 +16,6 @@ namespace Zikula\Bundle\HookBundle;
  *
  * Create a service that implements this interface and tag it with `zikula.hook_subscriber`
  * The tag must also include an `areaName` argument.
- *
- * @package Zikula\Bundle\HookBundle
  */
 interface HookSubscriberInterface extends HookInterface
 {
