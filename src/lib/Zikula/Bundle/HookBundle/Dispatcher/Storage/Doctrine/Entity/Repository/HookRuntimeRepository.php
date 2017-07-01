@@ -27,11 +27,13 @@ class HookRuntimeRepository extends EntityRepository implements HookRuntimeRepos
 
     public function getOneOrNullByEventName($eventName)
     {
-        return $this->createQueryBuilder('t')
+        $result = $this->createQueryBuilder('t')
             ->where('t.eventname = :name')
             ->setParameter('name', $eventName)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
+
+        return count($result) > 0 ? array_shift($result) : $result;
     }
 
     public function deleteAllByOwner($owner)

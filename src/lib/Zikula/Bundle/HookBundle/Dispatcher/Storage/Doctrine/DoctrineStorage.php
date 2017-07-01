@@ -330,14 +330,25 @@ class DoctrineStorage implements StorageInterface
         }
 
         foreach ($subscribers as $hookType => $eventName) {
-            unset($method);
             if ($providerAreaObject instanceof HookProviderInterface) {
                 // @todo at Core-2.0 refactor and assume instance of HookProviderInterface
                 $types = $providerAreaObject->getProviderTypes();
                 if (isset($types[$hookType])) {
-                    $method = $types[$hookType];
-                    $className = get_class($providerAreaObject);
-                    $serviceId = $providerAreaObject->getServiceId();
+                    $methods = is_array($types[$hookType]) ? $types[$hookType] : [$types[$hookType]];
+                    foreach ($methods as $method) {
+                        // @todo at Core-2.0 refactor to move `createRuntimeEntity()` logic here
+                        $hookRuntimeEntity = $this->createRuntimeEntity(
+                            $subscriberAreaObject->getOwner(),
+                            $providerAreaObject->getOwner(),
+                            $subscriberArea,
+                            $providerArea,
+                            $eventName,
+                            get_class($providerAreaObject),
+                            $method,
+                            $providerAreaObject->getServiceId()
+                        );
+                        $this->em->persist($hookRuntimeEntity);
+                    }
                 }
             } else {
                 // @deprecated
@@ -349,24 +360,18 @@ class DoctrineStorage implements StorageInterface
                     ->getArrayResult();
                 if ($provider) {
                     $provider = $provider[0];
-                    $method = $provider['method'];
-                    $className = $provider['classname'];
-                    $serviceId = $provider['serviceid'];
+                    $hookRuntimeEntity = $this->createRuntimeEntity(
+                        $subscriberAreaObject->getOwner(),
+                        $providerAreaObject->getOwner(),
+                        $subscriberArea,
+                        $providerArea,
+                        $eventName,
+                        $provider['classname'],
+                        $provider['method'],
+                        $provider['serviceid']
+                    );
+                    $this->em->persist($hookRuntimeEntity);
                 }
-            }
-
-            if (isset($method)) {
-                $binding = new Entity\HookRuntimeEntity();
-                $binding->setSowner($subscriberAreaObject->getOwner());
-                $binding->setPowner($providerAreaObject->getOwner());
-                $binding->setSareaid($subscriberArea);
-                $binding->setPareaid($providerArea);
-                $binding->setEventname($eventName);
-                $binding->setClassname($className);
-                $binding->setMethod($method);
-                $binding->setServiceid($serviceId);
-                $binding->setPriority(10);
-                $this->em->persist($binding);
             }
         }
         $this->em->flush();
@@ -374,6 +379,37 @@ class DoctrineStorage implements StorageInterface
         return true;
     }
 
+    /**
+     * @param $sOwner
+     * @param $pOwner
+     * @param $subscriberArea
+     * @param $providerArea
+     * @param $eventName
+     * @param $className
+     * @param $method
+     * @param $serviceId
+     * @return Entity\HookRuntimeEntity
+     */
+    private function createRuntimeEntity($sOwner, $pOwner, $subscriberArea, $providerArea, $eventName, $className, $method, $serviceId)
+    {
+        $hookRuntimeEntity = new Entity\HookRuntimeEntity();
+        $hookRuntimeEntity->setSowner($sOwner);
+        $hookRuntimeEntity->setPowner($pOwner);
+        $hookRuntimeEntity->setSareaid($subscriberArea);
+        $hookRuntimeEntity->setPareaid($providerArea);
+        $hookRuntimeEntity->setEventname($eventName);
+        $hookRuntimeEntity->setClassname($className);
+        $hookRuntimeEntity->setMethod($method);
+        $hookRuntimeEntity->setServiceid($serviceId);
+        $hookRuntimeEntity->setPriority(10);
+
+        return $hookRuntimeEntity;
+    }
+
+    /**
+     * @deprecated
+     * @return array|Entity\HookRuntimeEntity[]
+     */
     public function getRuntimeHandlers()
     {
         $this->runtimeHandlers = $this->hookRuntimeRepository->findAll();
@@ -533,7 +569,6 @@ class DoctrineStorage implements StorageInterface
                 $providerTypes = $this->hookCollector->getProvider($providerArea)->getProviderTypes();
                 $providerCategory = $this->hookCollector->getProvider($providerArea)->getCategory();
                 foreach (array_keys($providerTypes) as $providerType) {
-                    // @todo $providerType could be an array?
                     if ($subscriberCategory == $providerCategory && $subscriberType == $providerType) {
                         return true;
                     }

@@ -19,12 +19,12 @@ interface HookProviderInterface extends HookInterface
      * The array keys are hook types and the value can be:
      *
      *  * The method name to call
-     *  * An array of arrays composed of the method names to call
+     *  * An array composed of the method names to call
      *
      * For instance:
      *
      *  * array('hookType' => 'methodName')
-     *  * array('hookType' => array(array('methodName1'), array('methodName2')))
+     *  * array('hookType' => array('methodName1','methodName2'))
      *
      * @return array The hook types to listen to
      */

@@ -47,6 +47,12 @@ class DisplayHook extends Hook
      */
     public function setResponse(DisplayHookResponse $response)
     {
+        if (isset($this->responses[$response->getArea()])) {
+            // if there are multiple reponses for the same area, append them together
+            $existingContent = $this->responses[$response->getArea()]->__toString();
+            $incomingContent = $response->__toString();
+            $response = new DisplayHookResponse($response->getArea(), $existingContent . "<br>" . $incomingContent);
+        }
         return $this->responses[$response->getArea()] = $response;
     }
 

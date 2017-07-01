@@ -54,11 +54,7 @@ class HookListenerBuilderListener implements EventSubscriberInterface
             return;
         }
 
-        $doctrineManager = $this->container->get('doctrine')->getManager();
-        $handlers = $doctrineManager->createQueryBuilder()->select('hre')
-            ->from(HookRuntimeEntity::class, 'hre')
-            ->getQuery()
-            ->getArrayResult();
+        $handlers = $this->container->get('zikula_hook_bundle.hook_runtime_repository')->findAll();
         foreach ($handlers as $handler) {
             $callable = [$handler['classname'], $handler['method']];
             if (is_callable($callable)) {

@@ -24,8 +24,6 @@ interface StorageInterface
 
     public function getRuntimeMetaByEventName($eventName);
 
-    public function getRuntimeHandlers();
-
     public function setBindOrder($subscriberAreaName, array $providerAreas);
 
     public function getBindingBetweenAreas($subscriberArea, $providerArea);
