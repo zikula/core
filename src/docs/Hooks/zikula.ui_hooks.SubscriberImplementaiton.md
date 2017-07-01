@@ -77,7 +77,7 @@ Accordingly, we can notify the system of the hook events.
 
 When displaying an edit form, we simply trigger a `form_edit` hook with with
 
-     {notifydisplayhooks eventname='<module>.ui_hooks.<area>.form_edit' id=$id}
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id }}
 
 When we come to validate an edit form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` event with
@@ -102,7 +102,7 @@ redirects to display methods, in which case you will have to do validation again
 
 `form_edit` hooks are displayed in the template with
 
-    {notifydisplayhooks eventname='<module>.ui_hooks.<area>.form_edit' id=$id}
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id }}
 
 
 ### Deleting an item
@@ -119,4 +119,4 @@ triggering a hookable event with
 
 `form_delete` hooks are displayed in the template with
 
-    {notifydisplayhooks eventname='<module>.ui_hook.<area>.form_delete' id=$id}
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_delete', id }}

@@ -26,19 +26,20 @@ CHANGELOG - ZIKULA 1.5.x
     - Gedmo Doctrine extensions should be used by the stof listeners. The old listener names are deprecated.
     - Modernizr javascript library is deprecated and will not be included in Core-2.0.
     - Deprecate full path for bootstrap overrides and use zasset-style notation (#3357).
-        - e.g. @AcmeFooModule:css/mybootstrap.css
-    - Zikula\Core\Doctrine\Entity\AbstractEntityMetadata is deprecated.
+        - e.g. `'@AcmeFooModule:css/mybootstrap.css'`
+    - `Zikula\Core\Doctrine\Entity\AbstractEntityMetadata` is deprecated.
     - Old Workflow feature with all related classes is deprecated.
-    - Deprecate \Zikula\ExtensionsModule\Api\ExtensionApi and all constants within. 
-        Use \Zikula\ExtensionsModule\Constant for constant values.
-    - FilterUtil is deprecated. Use Doctrine's QueryBuilder directly instead (#3569).
-    - Asset paths which are not using the bundle notation (starting with @) must not use a leading slash.
+    - Deprecate `\Zikula\ExtensionsModule\Api\ExtensionApi` and all constants within. 
+        Use `\Zikula\ExtensionsModule\Constant` for constant values.
+    - `FilterUtil` is deprecated. Use Doctrine's QueryBuilder directly instead (#3569).
+    - Asset paths which are not using the bundle notation (starting with `@`) must not use a leading slash.
     - `PermissionApi::UNREGISTERED_USER` is deprecated. Use `UsersModule\Constant::USER_ID_ANONYMOUS`
-    - \Zikula\Common\ClassProperties class has been deprecated.
+    - `\Zikula\Common\ClassProperties` class has been deprecated.
     - "Hook-like" events in both UserEvents, RegistrationEvents and AccessEvents classes are deprecated
         - These are replaced with other events. Please see the docs.
     - Persisted Hooks are deprecated in favor on tagged, service-defined classes. See docs for more infomation.
         - The concept of hook 'subowners' is fully deprecated and will not be part of Core-2.0
+    - `\Zikula\Bundle\HookBundle\Api\HookApi` is deprecated.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.

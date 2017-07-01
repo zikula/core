@@ -18,6 +18,10 @@ use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\Core\Event\GenericEvent;
 
+/**
+ * @deprecated
+ * Class HookApi
+ */
 class HookApi
 {
     /**
