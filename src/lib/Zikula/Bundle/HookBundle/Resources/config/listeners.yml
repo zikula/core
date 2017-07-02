@@ -19,6 +19,7 @@ services:
         arguments:
           - "@zikula_permissions_module.api.permission"
           - "@zikula_extensions_module.api.capability"
+          - "@zikula_hook_bundle.collector.hook_collector"
           - "@router"
           - "@translator.default"
         tags:
