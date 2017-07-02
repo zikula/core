@@ -18,8 +18,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -63,13 +63,13 @@ class HookController extends Controller
         }
 
         // find out the capabilities of the module
-        $isProvider = $this->isCapable($moduleName, CapabilityApiInterface::HOOK_PROVIDER);
+        $isProvider = $this->isCapable($moduleName, HookCollectorInterface::HOOK_PROVIDER);
         $templateParameters['isProvider'] = $isProvider;
 
-        $isSubscriber = $this->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBER);
+        $isSubscriber = $this->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBER);
         $templateParameters['isSubscriber'] = $isSubscriber;
 
-        $isSubscriberSelfCapable = $this->isCapable($moduleName, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN);
+        $isSubscriberSelfCapable = $this->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBE_OWN);
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
@@ -124,7 +124,7 @@ class HookController extends Controller
         // get available subscribers that can attach to provider
         if ($isProvider && !empty($providerAreas)) {
             /** @var ExtensionEntity[] $hooksubscribers */
-            $hooksubscribers = $this->getExtensionsCapableOf(CapabilityApiInterface::HOOK_SUBSCRIBER);
+            $hooksubscribers = $this->getExtensionsCapableOf(HookCollectorInterface::HOOK_SUBSCRIBER);
             $amountOfHookSubscribers = count($hooksubscribers);
             $amountOfAvailableSubscriberAreas = 0;
             for ($i = 0; $i < $amountOfHookSubscribers; $i++) {
@@ -230,7 +230,7 @@ class HookController extends Controller
 
             // get available providers
             /** @var ExtensionEntity[] $hookproviders */
-            $hookproviders = $this->getExtensionsCapableOf(CapabilityApiInterface::HOOK_PROVIDER);
+            $hookproviders = $this->getExtensionsCapableOf(HookCollectorInterface::HOOK_PROVIDER);
             $amountOfHookProviders = count($hookproviders);
             $amountOfAvailableProviderAreas = 0;
             for ($i = 0; $i < $amountOfHookProviders; $i++) {
@@ -370,7 +370,7 @@ class HookController extends Controller
             'subscriberarea_id' => md5($subscriberArea),
             'providerarea' => $providerArea,
             'providerarea_id' => md5($providerArea),
-            'isSubscriberSelfCapable' => $this->isCapable($subscriber, CapabilityApiInterface::HOOK_SUBSCRIBE_OWN)
+            'isSubscriberSelfCapable' => $this->isCapable($subscriber, HookCollectorInterface::HOOK_SUBSCRIBE_OWN)
         ];
 
         return new AjaxResponse($response);

@@ -15,10 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
+use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
-class HookCollector
+class HookCollector implements HookCollectorInterface
 {
     /**
      * @var HookProviderInterface[]
@@ -61,10 +61,7 @@ class HookCollector
     }
 
     /**
-     * Add a service to the collection.
-     * @param string $areaName
-     * @param $serviceId
-     * @param HookProviderInterface $service
+     * {@inheritdoc}
      */
     public function addProvider($areaName, $serviceId, HookProviderInterface $service)
     {
@@ -100,9 +97,7 @@ class HookCollector
     }
 
     /**
-     * Get a HookProviderInterface from the collection by areaName.
-     * @param $areaName
-     * @return HookProviderInterface|null
+     * {@inheritdoc}
      */
     public function getProvider($areaName)
     {
@@ -110,8 +105,7 @@ class HookCollector
     }
 
     /**
-     * @param $areaName
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasProvider($areaName)
     {
@@ -119,8 +113,7 @@ class HookCollector
     }
 
     /**
-     * Get all the providers in the collection.
-     * @return HookProviderInterface[]
+     * {@inheritdoc}
      */
     public function getProviders()
     {
@@ -128,7 +121,7 @@ class HookCollector
     }
 
     /**
-     * @return array of all hook provider areas
+     * {@inheritdoc}
      */
     public function getProviderAreas()
     {
@@ -136,8 +129,7 @@ class HookCollector
     }
 
     /**
-     * @param $owner
-     * @return array of provider areas for one owner
+     * {@inheritdoc}
      */
     public function getProviderAreasByOwner($owner)
     {
@@ -145,9 +137,7 @@ class HookCollector
     }
 
     /**
-     * Add a service to the collection.
-     * @param string $areaName
-     * @param HookSubscriberInterface $service
+     * {@inheritdoc}
      */
     public function addSubscriber($areaName, HookSubscriberInterface $service)
     {
@@ -178,9 +168,7 @@ class HookCollector
     }
 
     /**
-     * Get a HookSubscriberInterface from the collection by areaName.
-     * @param $areaName
-     * @return HookSubscriberInterface|null
+     * {@inheritdoc}
      */
     public function getSubscriber($areaName)
     {
@@ -188,8 +176,7 @@ class HookCollector
     }
 
     /**
-     * @param $areaName
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasSubscriber($areaName)
     {
@@ -197,8 +184,7 @@ class HookCollector
     }
 
     /**
-     * Get all the subscribers in the collection.
-     * @return HookSubscriberInterface[]
+     * {@inheritdoc}
      */
     public function getSubscribers()
     {
@@ -206,7 +192,7 @@ class HookCollector
     }
 
     /**
-     * @return array of all hook subscriber areas
+     * {@inheritdoc}
      */
     public function getSubscriberAreas()
     {
@@ -214,8 +200,7 @@ class HookCollector
     }
 
     /**
-     * @param $owner
-     * @return array of subscriber areas for one owner
+     * {@inheritdoc}
      */
     public function getSubscriberAreasByOwner($owner)
     {
@@ -223,14 +208,14 @@ class HookCollector
     }
 
     /**
-     * Is moduleName capable of hook type?
-     * @param $moduleName
-     * @param string $type
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isCapable($moduleName, $type = CapabilityApiInterface::HOOK_SUBSCRIBER)
+    public function isCapable($moduleName, $type = self::HOOK_SUBSCRIBER)
     {
-        if (in_array($type, [CapabilityApiInterface::HOOK_SUBSCRIBER, CapabilityApiInterface::HOOK_PROVIDER])) {
+        if (in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER, self::HOOK_SUBSCRIBE_OWN])) {
+            if (self::HOOK_SUBSCRIBE_OWN == $type) {
+                return $this->containsSelfAllowedProvider($moduleName);
+            }
             $variable = substr($type, 5) . 'sByOwner';
         } else {
             $variable = 'subscribersByOwner';
@@ -241,13 +226,11 @@ class HookCollector
     }
 
     /**
-     * Return all owners capable of hook type
-     * @param string $type
-     * @return array
+     * {@inheritdoc}
      */
-    public function getOwnersCapableOf($type = CapabilityApiInterface::HOOK_SUBSCRIBER)
+    public function getOwnersCapableOf($type = self::HOOK_SUBSCRIBER)
     {
-        if (in_array($type, [CapabilityApiInterface::HOOK_SUBSCRIBER, CapabilityApiInterface::HOOK_PROVIDER])) {
+        if (in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER])) {
             $variable = substr($type, 5) . 'sByOwner';
         } else {
             $variable = 'subscribersByOwner';
@@ -255,5 +238,21 @@ class HookCollector
         $array = $this->$variable;
 
         return array_keys($array);
+    }
+
+    /**
+     * Does $moduleName contain at least one SelfAllowedProvider?
+     * @param $moduleName
+     * @return bool
+     */
+    private function containsSelfAllowedProvider($moduleName)
+    {
+        foreach ($this->providersByOwner[$moduleName] as $provider) {
+            if ($provider instanceof HookSelfAllowedProviderInterface) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -62,7 +62,7 @@ var cloneDraggedItem = true;
         initHookAccordion('hookProviderAreas');
         initHookAccordion('hookSubscriberAreas');
 
-        $('#hookSubscriberAreas h4').addClass('attachedarea-header')
+        $('#hookSubscriberAreas h4').addClass('attachedarea-header');
         $('#hookSubscriberAreas div').addClass('attachedarea-content');
 
         $('.sareas_category div').each(function(index) {

@@ -12,7 +12,7 @@
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Bundle\HookBundle\Collector\HookCollector;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -37,7 +37,7 @@ class HooksListener implements EventSubscriberInterface
     private $capabilityApi;
 
     /**
-     * @var HookCollector
+     * @var HookCollectorInterface
      */
     private $hookCollector;
 
@@ -55,14 +55,14 @@ class HooksListener implements EventSubscriberInterface
      * ExtensionServicesListener constructor.
      * @param PermissionApiInterface $permissionApi
      * @param CapabilityApiInterface $capabilityApi
-     * @param HookCollector $hookCollector
+     * @param HookCollectorInterface $hookCollector
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      */
     public function __construct(
         PermissionApiInterface $permissionApi,
         CapabilityApiInterface $capabilityApi,
-        HookCollector $hookCollector,
+        HookCollectorInterface $hookCollector,
         RouterInterface $router,
         TranslatorInterface $translator
     ) {

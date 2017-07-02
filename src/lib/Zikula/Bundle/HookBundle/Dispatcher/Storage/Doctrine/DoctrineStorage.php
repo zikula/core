@@ -14,7 +14,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\Bundle\HookBundle\Collector\HookCollector;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
@@ -71,7 +71,7 @@ class DoctrineStorage implements StorageInterface
     private $session;
 
     /**
-     * @var HookCollector
+     * @var HookCollectorInterface
      */
     private $hookCollector;
 
@@ -81,7 +81,7 @@ class DoctrineStorage implements StorageInterface
         HookRuntimeRepositoryInterface $hookRuntimeRepository,
         SessionInterface $session, // @deprecated do not inject at Core-2.0
         TranslatorInterface $translator, // @deprecated do not inject at Core-2.0
-        HookCollector $hookCollector
+        HookCollectorInterface $hookCollector
     ) {
         $this->em = $em;
         $this->hookBindingRepository = $hookBindingRepository;

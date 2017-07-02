@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
-use Zikula\Bundle\HookBundle\Collector\HookCollector;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
@@ -32,7 +32,7 @@ class HookDispatcher implements HookDispatcherInterface
     private $storage;
 
     /**
-     * @var HookCollector
+     * @var HookCollectorInterface
      */
     private $hookCollector;
 
@@ -45,12 +45,12 @@ class HookDispatcher implements HookDispatcherInterface
      * Constructor.
      *
      * @param StorageInterface $storage
-     * @param HookCollector $hookCollector
+     * @param HookCollectorInterface $hookCollector
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
         StorageInterface $storage,
-        HookCollector $hookCollector,
+        HookCollectorInterface $hookCollector,
         EventDispatcherInterface $dispatcher
     ) {
         $this->storage = $storage;
