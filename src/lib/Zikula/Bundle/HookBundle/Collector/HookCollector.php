@@ -46,16 +46,15 @@ class HookCollector implements HookCollectorInterface
 
     /**
      * @deprecated
-     * @var EntityManagerInterface
+     * @var EntityManagerInterface|null
      */
     private $em;
 
     /**
      * HookCollector constructor.
-     * @deprecated
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager = null)
     {
         $this->em = $entityManager;
     }
@@ -84,16 +83,16 @@ class HookCollector implements HookCollectorInterface
     /**
      * @deprecated
      */
-    public function getProviderByAreaAndType($areaId, $type)
+    private function getProviderByAreaAndType($areaId, $type)
     {
-        return $this->em->createQueryBuilder()->select('t')
+        return isset($this->em) ? $this->em->createQueryBuilder()->select('t')
             ->from(HookProviderEntity::class, 't')
             ->where('t.pareaid = ?1')
             ->andWhere('t.hooktype = ?2')
             ->getQuery()
             ->setParameter(1, $areaId)
             ->setParameter(2, $type)
-            ->getArrayResult();
+            ->getArrayResult() : [];
     }
 
     /**
@@ -158,13 +157,13 @@ class HookCollector implements HookCollectorInterface
     /**
      * @deprecated
      */
-    public function getSubscriberByEventName($eventName)
+    private function getSubscriberByEventName($eventName)
     {
-        return $this->em->createQueryBuilder()->select('t')
+        return isset($this->em) ? $this->em->createQueryBuilder()->select('t')
             ->from(HookSubscriberEntity::class, 't')
             ->where('t.eventname = ?1')
             ->getQuery()->setParameter(1, $eventName)
-            ->getArrayResult();
+            ->getArrayResult() : [];
     }
 
     /**
@@ -212,14 +211,13 @@ class HookCollector implements HookCollectorInterface
      */
     public function isCapable($moduleName, $type = self::HOOK_SUBSCRIBER)
     {
-        if (in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER, self::HOOK_SUBSCRIBE_OWN])) {
-            if (self::HOOK_SUBSCRIBE_OWN == $type) {
-                return $this->containsSelfAllowedProvider($moduleName);
-            }
-            $variable = substr($type, 5) . 'sByOwner';
-        } else {
-            $variable = 'subscribersByOwner';
+        if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER, self::HOOK_SUBSCRIBE_OWN])) {
+            throw new \InvalidArgumentException('Only hook_provider, hook_subscriber and subscriber_own are valid values.');
         }
+        if (self::HOOK_SUBSCRIBE_OWN == $type) {
+            return $this->containsSelfAllowedProvider($moduleName);
+        }
+        $variable = substr($type, 5) . 'sByOwner';
         $array = $this->$variable;
 
         return isset($array[$moduleName]);
@@ -230,11 +228,10 @@ class HookCollector implements HookCollectorInterface
      */
     public function getOwnersCapableOf($type = self::HOOK_SUBSCRIBER)
     {
-        if (in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER])) {
-            $variable = substr($type, 5) . 'sByOwner';
-        } else {
-            $variable = 'subscribersByOwner';
+        if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER])) {
+            throw new \InvalidArgumentException('Only hook_provider and hook_subscriber are valid values.');
         }
+        $variable = substr($type, 5) . 'sByOwner';
         $array = $this->$variable;
 
         return array_keys($array);

@@ -36,6 +36,7 @@ interface HookCollectorInterface
      * @param string $areaName
      * @param $serviceId
      * @param HookProviderInterface $service
+     * @throws \InvalidArgumentException if duplicate areaName
      */
     public function addProvider($areaName, $serviceId, HookProviderInterface $service);
 
@@ -74,6 +75,7 @@ interface HookCollectorInterface
      * Add a HookSubscriberInterface to the collection.
      * @param string $areaName
      * @param HookSubscriberInterface $service
+     * @throws \InvalidArgumentException if duplicate areaName
      */
     public function addSubscriber($areaName, HookSubscriberInterface $service);
 
@@ -113,6 +115,7 @@ interface HookCollectorInterface
      * @param $moduleName
      * @param string $type
      * @return bool
+     * @throws \InvalidArgumentException if $type is not a hook type
      */
     public function isCapable($moduleName, $type = self::HOOK_SUBSCRIBER);
 
@@ -120,6 +123,7 @@ interface HookCollectorInterface
      * Return all owners capable of hook type
      * @param string $type
      * @return array
+     * @throws \InvalidArgumentException if $type is not a hook subscriber or provider
      */
     public function getOwnersCapableOf($type = self::HOOK_SUBSCRIBER);
 }

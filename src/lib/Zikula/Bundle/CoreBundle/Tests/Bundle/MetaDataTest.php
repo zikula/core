@@ -34,7 +34,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getName
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getName
      */
     public function testGetName()
     {
@@ -42,7 +42,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getShortName
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getShortName
      */
     public function testShortName()
     {
@@ -50,7 +50,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getPsr0
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getPsr0
      */
     public function testGetPsr0()
     {
@@ -58,7 +58,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getBasePath
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getBasePath
      */
     public function testGetBasePath()
     {
@@ -66,7 +66,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getRootPath
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getRootPath
      */
     public function testGetRootPath()
     {
@@ -74,7 +74,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getClass
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getClass
      */
     public function testGetClass()
     {
@@ -82,7 +82,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Zikula\Bundle\CoreBundle\Bundle\MetaData::getNamespace
+     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getNamespace
      */
     public function testGetNamespace()
     {
