@@ -11,16 +11,11 @@
 
 namespace Zikula\Bundle\HookBundle\Tests\Api;
 
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Bundle\HookBundle\Api\HookApi;
-use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Bundle\HookBundle\Collector\HookCollector;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
-use Zikula\Common\Translator\IdentityTranslator;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class HookCollectorTest extends \PHPUnit_Framework_TestCase
 {
