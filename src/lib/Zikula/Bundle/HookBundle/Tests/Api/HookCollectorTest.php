@@ -62,7 +62,7 @@ class HookCollectorTest extends \PHPUnit_Framework_TestCase
         $collector = new HookCollector();
         $mockSubscriber = $this->getMockBuilder(HookSubscriberInterface::class)
             ->getMock();
-        $mockSubscriber->method('getSubscriberTypes')->willReturn([]);
+        $mockSubscriber->method('getEvents')->willReturn([]);
         $collector->addSubscriber('foo.areaName', $mockSubscriber);
         $this->assertTrue($collector->hasSubscriber('foo.areaName'));
     }
@@ -72,7 +72,7 @@ class HookCollectorTest extends \PHPUnit_Framework_TestCase
         $collector = new HookCollector();
         $mockSubscriber1 = $this->getMockBuilder(HookSubscriberInterface::class)
             ->getMock();
-        $mockSubscriber1->method('getSubscriberTypes')->willReturn([]);
+        $mockSubscriber1->method('getEvents')->willReturn([]);
         $mockSubscriber2 = clone $mockSubscriber1;
         $collector->addSubscriber('foo1.areaName', $mockSubscriber1);
 
@@ -85,7 +85,7 @@ class HookCollectorTest extends \PHPUnit_Framework_TestCase
         $collector = new HookCollector();
         $mockSubscriber = $this->getMockBuilder(HookSubscriberInterface::class)
             ->getMock();
-        $mockSubscriber->method('getSubscriberTypes')->willReturn([]);
+        $mockSubscriber->method('getEvents')->willReturn([]);
         $collector->addSubscriber('foo.areaName', $mockSubscriber);
         $subsriber = $collector->getSubscriber('foo.areaName');
         $this->assertInstanceOf(HookSubscriberInterface::class, $subsriber);
@@ -117,7 +117,7 @@ class HookCollectorTest extends \PHPUnit_Framework_TestCase
         $collector = new HookCollector();
         $mockSubscriber1 = $this->getMockBuilder(HookSubscriberInterface::class)
             ->getMock();
-        $mockSubscriber1->method('getSubscriberTypes')->willReturn([]);
+        $mockSubscriber1->method('getEvents')->willReturn([]);
         $mockSubscriber2 = clone $mockSubscriber1;
         $mockSubscriber3 = clone $mockSubscriber1;
         $mockSubscriber1->method('getOwner')->willReturn('foo');
@@ -138,7 +138,7 @@ class HookCollectorTest extends \PHPUnit_Framework_TestCase
         $collector = new HookCollector();
         $mockSubscriber1 = $this->getMockBuilder(HookSubscriberInterface::class)
             ->getMock();
-        $mockSubscriber1->method('getSubscriberTypes')->willReturn([]);
+        $mockSubscriber1->method('getEvents')->willReturn([]);
         $mockSubscriber1->method('getOwner')->willReturn('foo');
         $collector->addSubscriber('foo.subscriber.areaName', $mockSubscriber1);
         $mockProvider1 = $this->getMockBuilder(HookProviderInterface::class)
@@ -166,7 +166,7 @@ class HookCollectorTest extends \PHPUnit_Framework_TestCase
         $collector = new HookCollector();
         $mockSubscriber1 = $this->getMockBuilder(HookSubscriberInterface::class)
             ->getMock();
-        $mockSubscriber1->method('getSubscriberTypes')->willReturn([]);
+        $mockSubscriber1->method('getEvents')->willReturn([]);
         $mockSubscriber1->method('getOwner')->willReturn('foo');
         $collector->addSubscriber('foo.subscriber.areaName', $mockSubscriber1);
         $mockProvider1 = $this->getMockBuilder(HookProviderInterface::class)
