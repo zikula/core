@@ -244,9 +244,11 @@ class HookCollector implements HookCollectorInterface
      */
     private function containsSelfAllowedProvider($moduleName)
     {
-        foreach ($this->providersByOwner[$moduleName] as $provider) {
-            if ($provider instanceof HookSelfAllowedProviderInterface) {
-                return true;
+        if (isset($this->providersByOwner[$moduleName])) {
+            foreach ($this->providersByOwner[$moduleName] as $provider) {
+                if ($provider instanceof HookSelfAllowedProviderInterface) {
+                    return true;
+                }
             }
         }
 
