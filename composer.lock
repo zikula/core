@@ -4826,16 +4826,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.22",
+            "version": "v2.8.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "2404550f13f71470206227c98c2d53f0f4cbbb3e"
+                "reference": "bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/2404550f13f71470206227c98c2d53f0f4cbbb3e",
-                "reference": "2404550f13f71470206227c98c2d53f0f4cbbb3e",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca",
+                "reference": "bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca",
                 "shasum": ""
             },
             "require": {
@@ -4959,20 +4959,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-06-07T20:12:45+00:00"
+            "time": "2017-07-04T05:31:17+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.3.2",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "a1d4ed0077d7b2e434e55d7e73f9f046911d3a61"
+                "reference": "2d90ea4a3689278441793d52a0a4a18e101dd912"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/a1d4ed0077d7b2e434e55d7e73f9f046911d3a61",
-                "reference": "a1d4ed0077d7b2e434e55d7e73f9f046911d3a61",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/2d90ea4a3689278441793d52a0a4a18e101dd912",
+                "reference": "2d90ea4a3689278441793d52a0a4a18e101dd912",
                 "shasum": ""
             },
             "require": {
@@ -5020,10 +5020,12 @@
             "keywords": [
                 "petrinet",
                 "place",
+                "state",
+                "statemachine",
                 "transition",
                 "workflow"
             ],
-            "time": "2017-05-11T16:47:52+00:00"
+            "time": "2017-07-03T08:12:02+00:00"
         },
         {
             "name": "twig/extensions",
