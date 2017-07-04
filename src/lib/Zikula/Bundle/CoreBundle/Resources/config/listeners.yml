@@ -47,7 +47,6 @@ services:
             - "@event_dispatcher"
             - "@zikula.cache_clearer"
             - "@zikula_users_module.current_user"
-            - "@zikula_permissions_module.api.permission"
             - "%installed%"
         tags:
             - { name: kernel.event_subscriber }
