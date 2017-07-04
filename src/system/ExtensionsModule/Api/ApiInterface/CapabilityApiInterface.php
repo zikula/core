@@ -21,6 +21,7 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 interface CapabilityApiInterface
 {
     /**
+     * @deprecated
      * Extension is capable of subscriber to hooks.
      * composer.json definition requires "class" e.g.
      *     "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer"}
@@ -28,6 +29,7 @@ interface CapabilityApiInterface
     const HOOK_SUBSCRIBER = 'hook_subscriber';
 
     /**
+     * @deprecated
      * Extension provides hooks to which other extensions may subscribe.
      * composer.json definition requires "class" e.g.
      *     "hook_provider": {"class": "Acme\\FooModule\\Container\\HookContainer"}
@@ -35,6 +37,7 @@ interface CapabilityApiInterface
     const HOOK_PROVIDER = 'hook_provider';
 
     /**
+     * @deprecated
      * Extension is capable of subscribing to its own hooks.
      * composer.json definition requires boolean as additional key in 'hook_subscriber' key e.g.
      *     "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer", "subscribe_own": true}
@@ -42,6 +45,7 @@ interface CapabilityApiInterface
     const HOOK_SUBSCRIBE_OWN = 'subscribe_own';
 
     /**
+     * @deprecated
      * Extension implements Searchable methods
      * composer.json definition requires "class" e.g.
      *     "searchable": {"class": "Acme\\FooModule\\Helper\\SearchHelper"}

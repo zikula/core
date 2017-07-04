@@ -35,12 +35,12 @@ var cloneDraggedItem = true;
 
     initHookAccordion = function(containerId)
     {
-        $('#' + containerId + ' h4').addClass('z-panel-header z-pointer')
+        $('#' + containerId + ' h4').addClass('z-panel-header z-pointer');
         $('#' + containerId).accordion({
             header: 'h4',
             activate: function(event, ui) {
-                $('#' + containerId + ' h4').removeClass('z-panel-active');
-                $(this).addClass('z-panel-active');
+                ui.oldHeader.find('i').removeClass('fa-rotate-90');
+                ui.newHeader.find('i').addClass('fa-rotate-90');
             }
         });
     };
@@ -62,7 +62,7 @@ var cloneDraggedItem = true;
         initHookAccordion('hookProviderAreas');
         initHookAccordion('hookSubscriberAreas');
 
-        $('#hookSubscriberAreas h4').addClass('attachedarea-header')
+        $('#hookSubscriberAreas h4').addClass('attachedarea-header');
         $('#hookSubscriberAreas div').addClass('attachedarea-content');
 
         $('.sareas_category div').each(function(index) {

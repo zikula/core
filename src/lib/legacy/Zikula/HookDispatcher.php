@@ -15,7 +15,6 @@ use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 
 /**
@@ -37,33 +36,17 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     private $dispatcher;
 
     /**
-     * Runtime hooks handlers loaded flag.
-     *
-     * @var boolean
-     */
-    private $loaded;
-
-    /**
-     * Service Factory.
-     *
-     * @var ServiceFactory
-     */
-    private $factory;
-
-    /**
      * Constructor.
      *
      * @param StorageInterface         $storage
      * @param EventDispatcherInterface $dispatcher
-     * @param ServiceFactory           $factory
      */
-    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher, ServiceFactory $factory)
+    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher)
     {
         @trigger_error('Old hook class is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
 
         $this->storage = $storage;
         $this->dispatcher = $dispatcher;
-        $this->factory = $factory;
     }
 
     /**
@@ -82,15 +65,10 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
      * @param string $name Hook event name
      * @param Hook   $hook Hook instance
      *
-     * @return Hook
+     * @return \Symfony\Component\EventDispatcher\Event
      */
     public function dispatch($name, Hook $hook)
     {
-        if (!$this->loaded) {
-            // lazy load handlers for the first time
-            $this->loadRuntimeHandlers();
-            $this->loaded = true;
-        }
         $hook = $this->revertToBChook($name, $hook);
         $hook->setName($name);
 
@@ -112,8 +90,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
         foreach ($bundle->getEvents() as $areaType => $eventName) {
             $this->storage->registerSubscriber($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $areaType, $bundle->getCategory(), $eventName);
         }
-
-        $this->reload();
     }
 
     /**
@@ -124,8 +100,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     public function unregisterSubscriberBundle(SubscriberBundle $bundle)
     {
         $this->storage->unregisterSubscriberByArea($bundle->getArea());
-
-        $this->reload();
     }
 
     /**
@@ -138,8 +112,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
         foreach ($bundle->getHooks() as $hook) {
             $this->storage->registerProvider($bundle->getOwner(), $bundle->getSubOwner(), $bundle->getArea(), $hook['hooktype'], $bundle->getCategory(), $hook['classname'], $hook['method'], $hook['serviceid']);
         }
-
-        $this->reload();
     }
 
     /**
@@ -150,8 +122,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     public function unregisterProviderBundle(ProviderBundle $bundle)
     {
         $this->storage->unregisterProviderByArea($bundle->getArea());
-
-        $this->reload();
     }
 
     /**
@@ -160,12 +130,13 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
      * Area names are unique so you can specify subscriber or provider area.
      *
      * @param string $areaName Areaname
+     * @param string $type subscriber|provider
      *
      * @return array
      */
-    public function getBindingsFor($areaName)
+    public function getBindingsFor($areaName, $type = 'subscriber')
     {
-        return $this->storage->getBindingsFor($areaName);
+        return $this->storage->getBindingsFor($areaName, $type);
     }
 
     /**
@@ -228,7 +199,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     public function setBindOrder($subscriberAreaName, array $providerAreas)
     {
         $this->storage->setBindOrder($subscriberAreaName, $providerAreas);
-        $this->reload();
     }
 
     /**
@@ -295,36 +265,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     }
 
     /**
-     * Load runtime hook listeners.
-     *
-     * @return Zikula_HookDispatcher
-     */
-    public function loadRuntimeHandlers()
-    {
-        $handlers = $this->storage->getRuntimeHandlers();
-        foreach ($handlers as $handler) {
-            $callable = [$handler['classname'], $handler['method']];
-            if (is_callable($callable)) {
-                // some classes may not always be callable, for example, when upgrading.
-                if ($handler['serviceid']) {
-                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
-                    // $this->dispatcher->addListenerService($handler['eventname'], $callable);
-                    $o = $this->dispatcher->getContainer()->get($callable[0]);
-                    $this->dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
-                } else {
-                    try {
-                        $this->dispatcher->addListener($handler['eventname'], $callable);
-                    } catch (\InvalidArgumentException $e) {
-                        throw new \Zikula\Bundle\HookBundle\Dispatcher\Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
-                    }
-                }
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * Decorate hook with required metadata.
      *
      * @param Hook $hook
@@ -337,29 +277,6 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
             if (!$hook->getCaller()) {
                 $hook->setCaller($owningSide['owner']);
             }
-        }
-    }
-
-    /**
-     * Flush and reload handers.
-     */
-    private function reload()
-    {
-        $this->flushHandlers();
-        $this->loadRuntimeHandlers();
-    }
-
-    /**
-     * Flush handlers.
-     *
-     * Clears all handlers.
-     *
-     * @return void
-     */
-    public function flushHandlers()
-    {
-        foreach ($this->dispatcher->getListeners() as $eventName => $listener) {
-            $this->dispatcher->removeListener($eventName, $listener);
         }
     }
 

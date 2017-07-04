@@ -11,10 +11,16 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
+use Zikula\Bundle\HookBundle\HookProviderInterface;
+use Zikula\Bundle\HookBundle\HookSubscriberInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
@@ -23,38 +29,83 @@ use Zikula\Common\Translator\TranslatorTrait;
  */
 class DoctrineStorage implements StorageInterface
 {
+    /**
+     * @deprecated
+     */
     use TranslatorTrait;
 
+    /**
+     * @deprecated
+     */
     const PROVIDER = 'p';
+    /**
+     * @deprecated
+     */
     const SUBSCRIBER = 's';
 
+    /**
+     * @var Entity\HookRuntimeEntity[]
+     */
     private $runtimeHandlers = [];
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @todo at Core-2.0 change to ObjectManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
+     * @var HookBindingRepositoryInterface
+     */
+    private $hookBindingRepository;
+
+    /**
+     * @var HookRuntimeRepositoryInterface
+     */
+    private $hookRuntimeRepository;
+
+    /**
+     * @deprecated
      * @var SessionInterface
      */
     private $session;
 
-    public function __construct(EntityManager $em, SessionInterface $session, TranslatorInterface $translator)
-    {
+    /**
+     * @var HookCollectorInterface
+     */
+    private $hookCollector;
+
+    public function __construct(
+        EntityManagerInterface $em, // @todo at Core-2.0 inject 'doctrine' service and getManager() instead
+        HookBindingRepositoryInterface $hookBindingRepository,
+        HookRuntimeRepositoryInterface $hookRuntimeRepository,
+        SessionInterface $session, // @deprecated do not inject at Core-2.0
+        TranslatorInterface $translator, // @deprecated do not inject at Core-2.0
+        HookCollectorInterface $hookCollector
+    ) {
         $this->em = $em;
-        $this->session = $session;
-        $this->setTranslator($translator);
+        $this->hookBindingRepository = $hookBindingRepository;
+        $this->hookRuntimeRepository = $hookRuntimeRepository;
+        $this->session = $session; // @deprecated do not inject at Core-2.0
+        $this->setTranslator($translator); // @deprecated do not inject at Core-2.0
+        $this->hookCollector = $hookCollector;
     }
 
+    /**
+     * @deprecated
+     * @param $translator
+     */
     public function setTranslator($translator)
     {
         $this->translator = $translator;
     }
 
+    /**
+     * @deprecated
+     */
     public function registerSubscriber($owner, $subOwner, $areaName, $areaType, $category, $eventName)
     {
-        $areaId = $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
+        $this->registerArea($areaName, self::SUBSCRIBER, $owner, $subOwner, $category);
 
         // Now we have an areaId we can register a subscriber, but first test if the subscriber is already registered.
         $existingSubscriber = $this->getSubscriberByEventName($eventName);
@@ -72,61 +123,57 @@ class DoctrineStorage implements StorageInterface
         $subscriber->setCategory($category);
         $subscriber->setEventname($eventName);
         $subscriber->setHooktype($areaType);
-        $subscriber->setSareaid($areaId);
+        $subscriber->setSareaid($areaName);
         $subscriber->setSubowner($subOwner);
         $this->em->persist($subscriber);
         $this->em->flush();
     }
 
+    /**
+     * @deprecated
+     */
     public function getSubscriberByEventName($eventName)
     {
         return $this->em->createQueryBuilder()->select('t')
-                 ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
+                 ->from(Entity\HookSubscriberEntity::class, 't')
                  ->where('t.eventname = ?1')
                  ->getQuery()->setParameter(1, $eventName)
                  ->getArrayResult();
     }
 
+    /**
+     * @deprecated
+     * @param $areaName
+     */
     public function unregisterSubscriberByArea($areaName)
     {
-        $areaId = $this->getAreaId($areaName);
-
-        if (!$areaId) {
-            return;
-        }
-
         // delete subscriber entry
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
-                 ->where('t.sareaid = ?1')
-                 ->getQuery()->setParameter(1, $areaId)
-                 ->execute();
-
-        // remove bindings
-        $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                 ->where('t.sareaid = ?1')
-                 ->getQuery()->setParameter(1, $areaId)
-                 ->execute();
-
+            ->delete(Entity\HookSubscriberEntity::class, 't')
+            ->where('t.sareaid = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
         // clean areas
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
-                 ->where('t.id = ?1')
-                 ->getQuery()->setParameter(1, $areaId)
-                 ->execute();
+            ->delete(Entity\HookAreaEntity::class, 't')
+            ->where('t.areaname = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
 
         $this->generateRuntimeHandlers();
     }
 
+    /**
+     * @deprecated
+     */
     public function registerProvider($owner, $subOwner, $areaName, $hookType, $category, $className, $method, $serviceId = null)
     {
-        $pareaId = $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
+        $this->registerArea($areaName, self::PROVIDER, $owner, $subOwner, $category);
 
-        $existingProvider = $this->getProviderByAreaAndType($pareaId, $hookType);
+        $existingProvider = $this->getProviderByAreaAndType($areaName, $hookType);
         if (!empty($existingProvider)) {
             $this->session->getFlashBag()->add('warning', $this->__f('The hook provider for area "%parea" of type "%type" could not be registered for "%own" because it already exists.', [
-                '%parea' => $pareaId,
+                '%parea' => $areaName,
                 '%type' => $hookType,
                 '%own' => $owner
             ]));
@@ -137,7 +184,7 @@ class DoctrineStorage implements StorageInterface
         $provider = new Entity\HookProviderEntity();
         $provider->setOwner($owner);
         $provider->setSubowner($subOwner);
-        $provider->setPareaid($pareaId);
+        $provider->setPareaid($areaName);
         $provider->setHooktype($hookType);
         $provider->setCategory($category);
         $provider->setClassname($className);
@@ -147,10 +194,13 @@ class DoctrineStorage implements StorageInterface
         $this->em->flush();
     }
 
+    /**
+     * @deprecated
+     */
     public function getProviderByAreaAndType($areaId, $type)
     {
         return $this->em->createQueryBuilder()->select('t')
-            ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
+            ->from(Entity\HookProviderEntity::class, 't')
             ->where('t.pareaid = ?1')
             ->andWhere('t.hooktype = ?2')
             ->getQuery()
@@ -159,57 +209,59 @@ class DoctrineStorage implements StorageInterface
             ->getArrayResult();
     }
 
+    /**
+     * @deprecated
+     * @param $areaName
+     */
     public function unregisterProviderByArea($areaName)
     {
-        $areaId = $this->getAreaId($areaName);
-
-        if (!$areaId) {
-            return;
-        }
-
         // delete provider entry
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
-                 ->where('t.pareaid = ?1')
-                 ->getQuery()->setParameter(1, $areaId)
-                 ->execute();
-
-        // remove bindings
-        $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                 ->where('t.pareaid = ?1')
-                 ->getQuery()->setParameter(1, $areaId)
-                 ->execute();
-
+            ->delete(Entity\HookProviderEntity::class, 't')
+            ->where('t.pareaid = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
         // clean area
         $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
-                 ->where('t.id = ?1')
-                 ->getQuery()->setParameter(1, $areaId)
-                 ->execute();
+            ->delete(Entity\HookAreaEntity::class, 't')
+            ->where('t.areaname = ?1')
+            ->getQuery()->setParameter(1, $areaName)
+            ->execute();
 
         $this->generateRuntimeHandlers();
     }
 
+    /**
+     * @deprecated
+     */
     public function getSubscribersByOwner($owner)
     {
         return $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
+                    ->from(Entity\HookSubscriberEntity::class, 't')
                     ->where('t.owner = ?1')
                     ->getQuery()->setParameter(1, $owner)
                     ->getArrayResult();
     }
 
+    /**
+     * @deprecated
+     */
     public function getSubscriberAreasByOwner($owner)
     {
         return $this->getAreasByOwner($owner, self::SUBSCRIBER);
     }
 
+    /**
+     * @deprecated
+     */
     public function getProviderAreasByOwner($owner)
     {
         return $this->getAreasByOwner($owner, self::PROVIDER);
     }
 
+    /**
+     * @deprecated
+     */
     private function getAreasByOwner($owner, $type)
     {
         $dql = "SELECT t.areaname
@@ -229,10 +281,13 @@ class DoctrineStorage implements StorageInterface
         return $resultArray;
     }
 
+    /**
+     * @deprecated
+     */
     public function getOwnerByArea($areaName)
     {
         $hookarea = $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity', 't')
+                    ->from(Entity\HookAreaEntity::class, 't')
                     ->where('t.areaname = ?1')
                     ->getQuery()->setParameter(1, $areaName)
                     ->getSingleResult();
@@ -243,55 +298,80 @@ class DoctrineStorage implements StorageInterface
     private function generateRuntimeHandlers()
     {
         // truncate runtime
-        $this->em->createQueryBuilder()
-             ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity')
-             ->getQuery()
-             ->execute();
+        $this->hookRuntimeRepository->truncate();
 
         foreach ($this->getBindings() as $binding) {
             $this->addRuntimeHandlers($binding['sareaid'], $binding['pareaid']);
         }
     }
 
-    private function addRuntimeHandlers($subscriberAreaId, $providerAreaId)
+    private function addRuntimeHandlers($subscriberArea, $providerArea)
     {
-        $sa = $this->em->find('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-                              $subscriberAreaId);
-        $pa = $this->em->find('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-                              $providerAreaId);
+        $subscriberAreaObject = $this->getByAreaName($subscriberArea);
+        $providerAreaObject = $this->getByAreaName($providerArea, 'provider');
 
-        $subscribers = $this->em->createQueryBuilder()->select('t')
-                            ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity', 't')
-                            ->where('t.sareaid = ?1')
-                            ->getQuery()->setParameter(1, $subscriberAreaId)
-                            ->getArrayResult();
+        if ($subscriberAreaObject instanceof HookSubscriberInterface) {
+            $subscribers = $subscriberAreaObject->getEvents(); // @todo at Core-2.0 assume instance of HookSubscriberInterface
+        } else {
+            // @deprecated
+            $subscribers = $this->em->createQueryBuilder()->select('t.hooktype', 't.eventname')
+                ->from(Entity\HookSubscriberEntity::class, 't')
+                ->where('t.sareaid = ?1')
+                ->indexBy('t', 't.hooktype')
+                ->getQuery()->setParameter(1, $subscriberArea)
+                ->getResult();
+            foreach ($subscribers as $k => $subscriber) {
+                $subscribers[$k] = $subscriber['eventname'];
+            }
+        }
 
         if (!$subscribers) {
             return false;
         }
 
-        foreach ($subscribers as $subscriber) {
-            $provider = $this->em->createQueryBuilder()->select('t')
-                             ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
-                             ->where('t.pareaid = ?1 AND t.hooktype = ?2')
-                             ->getQuery()->setParameters([1 => $providerAreaId, 2 => $subscriber['hooktype']])
-                             ->getArrayResult();
-
-            if ($provider) {
-                $provider = $provider[0];
-                $binding = new Entity\HookRuntimeEntity();
-                $binding->setSowner($sa->getOwner());
-                $binding->setSubsowner($sa->getSubowner());
-                $binding->setPowner($pa->getOwner());
-                $binding->setSubpowner($pa->getSubowner());
-                $binding->setSareaid($subscriberAreaId);
-                $binding->setPareaid($providerAreaId);
-                $binding->setEventname($subscriber['eventname']);
-                $binding->setClassname($provider['classname']);
-                $binding->setMethod($provider['method']);
-                $binding->setServiceid($provider['serviceid']);
-                $binding->setPriority(10);
-                $this->em->persist($binding);
+        foreach ($subscribers as $hookType => $eventName) {
+            if ($providerAreaObject instanceof HookProviderInterface) {
+                // @todo at Core-2.0 refactor and assume instance of HookProviderInterface
+                $types = $providerAreaObject->getProviderTypes();
+                if (isset($types[$hookType])) {
+                    $methods = is_array($types[$hookType]) ? $types[$hookType] : [$types[$hookType]];
+                    foreach ($methods as $method) {
+                        // @todo at Core-2.0 refactor to move `createRuntimeEntity()` logic here
+                        $hookRuntimeEntity = $this->createRuntimeEntity(
+                            $subscriberAreaObject->getOwner(),
+                            $providerAreaObject->getOwner(),
+                            $subscriberArea,
+                            $providerArea,
+                            $eventName,
+                            get_class($providerAreaObject),
+                            $method,
+                            $providerAreaObject->getServiceId()
+                        );
+                        $this->em->persist($hookRuntimeEntity);
+                    }
+                }
+            } else {
+                // @deprecated
+                $provider = $this->em->createQueryBuilder()->select('t')
+                    ->from(Entity\HookProviderEntity::class, 't')
+                    ->where('t.pareaid = ?1 AND t.hooktype = ?2')
+                    ->setParameters([1 => $providerArea, 2 => $hookType])
+                    ->getQuery()
+                    ->getArrayResult();
+                if ($provider) {
+                    $provider = $provider[0];
+                    $hookRuntimeEntity = $this->createRuntimeEntity(
+                        $subscriberAreaObject->getOwner(),
+                        $providerAreaObject->getOwner(),
+                        $subscriberArea,
+                        $providerArea,
+                        $eventName,
+                        $provider['classname'],
+                        $provider['method'],
+                        $provider['serviceid']
+                    );
+                    $this->em->persist($hookRuntimeEntity);
+                }
             }
         }
         $this->em->flush();
@@ -299,35 +379,54 @@ class DoctrineStorage implements StorageInterface
         return true;
     }
 
+    /**
+     * @param $sOwner
+     * @param $pOwner
+     * @param $subscriberArea
+     * @param $providerArea
+     * @param $eventName
+     * @param $className
+     * @param $method
+     * @param $serviceId
+     * @return Entity\HookRuntimeEntity
+     */
+    private function createRuntimeEntity($sOwner, $pOwner, $subscriberArea, $providerArea, $eventName, $className, $method, $serviceId)
+    {
+        $hookRuntimeEntity = new Entity\HookRuntimeEntity();
+        $hookRuntimeEntity->setSowner($sOwner);
+        $hookRuntimeEntity->setPowner($pOwner);
+        $hookRuntimeEntity->setSareaid($subscriberArea);
+        $hookRuntimeEntity->setPareaid($providerArea);
+        $hookRuntimeEntity->setEventname($eventName);
+        $hookRuntimeEntity->setClassname($className);
+        $hookRuntimeEntity->setMethod($method);
+        $hookRuntimeEntity->setServiceid($serviceId);
+        $hookRuntimeEntity->setPriority(10);
+
+        return $hookRuntimeEntity;
+    }
+
+    /**
+     * @deprecated
+     * @return array|Entity\HookRuntimeEntity[]
+     */
     public function getRuntimeHandlers()
     {
-        $this->runtimeHandlers =
-            $this->em->createQueryBuilder()->select('t')
-                 ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity', 't')
-                 ->getQuery()
-                 ->getArrayResult();
+        $this->runtimeHandlers = $this->hookRuntimeRepository->findAll();
 
         return $this->runtimeHandlers;
     }
 
     public function bindSubscriber($subscriberArea, $providerArea)
     {
-        $sa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneBy(['areaname' => $subscriberArea]);
-        $pa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneBy(['areaname' => $providerArea]);
-
-        if ($sa->getCategory() != $pa->getCategory()) {
-            throw new \LogicException('Cannot bind areas from different categories.');
-        }
+        $sa = $this->getByAreaName($subscriberArea, 'subscriber');
+        $pa = $this->getByAreaName($providerArea, 'provider');
 
         $binding = new Entity\HookBindingEntity();
         $binding->setSowner($sa->getOwner());
-        $binding->setSubsowner($sa->getSubowner());
         $binding->setPowner($pa->getOwner());
-        $binding->setSubpowner($pa->getSubowner());
-        $binding->setSareaid($sa->getId());
-        $binding->setPareaid($pa->getId());
+        $binding->setSareaid($subscriberArea);
+        $binding->setPareaid($providerArea);
         $binding->setCategory($sa->getCategory());
         $binding->setSortorder(999);
         $this->em->persist($binding);
@@ -338,68 +437,60 @@ class DoctrineStorage implements StorageInterface
 
     public function unbindSubscriber($subscriberArea, $providerArea)
     {
-        $sa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneBy(['areaname' => $subscriberArea]);
-        $pa = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                   ->findOneBy(['areaname' => $providerArea]);
-
-        $subscriberAreaId = $sa->getId();
-        $providerAreaId = $pa->getId();
-
-        $this->em->createQueryBuilder()
-                 ->delete('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                 ->where('t.pareaid = ?1 AND t.sareaid = ?2')
-                 ->getQuery()->setParameters([1 => $providerAreaId, 2 => $subscriberAreaId])
-                 ->execute();
-
+        $this->hookBindingRepository->deleteByBothAreas($subscriberArea, $providerArea);
         $this->generateRuntimeHandlers();
+    }
+
+    /**
+     * @deprecated - this method should be eliminated and simply use the first part, assuming nonPersisted hook...
+     * @param $areaName
+     * @param string $type
+     * @return null|object|Entity\HookAreaEntity
+     */
+    private function getByAreaName($areaName, $type = 'subscriber')
+    {
+        $getter = 'get' . ucfirst($type);
+        $hasser = 'has' . ucfirst($type);
+        if ($this->hookCollector->$hasser($areaName)) {
+            $area = $this->hookCollector->$getter($areaName);
+        } else {
+            $area = $this->em->getRepository(Entity\HookAreaEntity::class)
+                ->findOneBy(['areaname' => $areaName]);
+        }
+
+        return $area;
     }
 
     private function getBindings()
     {
-        $order = new \Doctrine\ORM\Query\Expr\OrderBy();
-        $order->add('t.sareaid', 'ASC');
-        $order->add('t.sortorder', 'ASC');
-
-        return $this->em->createQueryBuilder()->select('t')
-                 ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                 ->orderBy($order)
-                 ->getQuery()
-                 ->getArrayResult();
+        return $this->hookBindingRepository->findBy([], ['sareaid' => 'ASC', 'sortorder' => 'ASC']);
     }
 
-    public function getBindingsFor($areaName)
+    /**
+     * @param $areaName
+     * @param string $type
+     * @return array
+     */
+    public function getBindingsFor($areaName, $type = 'subscriber')
     {
-        $area = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                     ->findOneBy(['areaname' => $areaName]);
+        $type = in_array($type, ['subscriber', 'provider']) ? $type : 'subscriber'; // validate field
+        $area = $this->getByAreaName($areaName);
 
-        if (!$area) {
+        if (!isset($area)) {
             return [];
         }
 
-        if ($area->getAreatype() == self::PROVIDER) {
-            $areaIdField = 'pareaid';
-        } else { // $area->getAreatype() == self::SUBSCRIBER
-            $areaIdField = 'sareaid';
-        }
-
-        $order = new \Doctrine\ORM\Query\Expr\OrderBy();
+        $order = new OrderBy();
         $order->add('t.sortorder', 'ASC');
         $order->add('t.sareaid', 'ASC');
-        $results = $this->em->createQueryBuilder()->select('t')
-                         ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                         ->where("t.$areaIdField = ?1")
-                         ->orderBy($order)
-                         ->getQuery()->setParameter(1, $area->getId())
-                         ->getArrayResult();
+        $fieldMap = ['subscriber' => 'sareaid', 'provider' => 'pareaid'];
+        $results = $this->hookBindingRepository->selectByAreaName($areaName, $fieldMap[$type]);
 
-        // this could be an area where related entities would help CAH - 23 Oct 2013
         $areas = [];
         foreach ($results as $result) {
-            $area = $this->em->find('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity',
-                                    $result['pareaid']);
+            $area = $this->getByAreaName($result['pareaid'], 'provider');
             $areas[] = [
-                'areaname' => $area->getAreaname(),
+                'areaname' => $result['pareaid'],
                 'category' => $area->getCategory()
             ];
         }
@@ -407,30 +498,16 @@ class DoctrineStorage implements StorageInterface
         return $areas;
     }
 
+    /**
+     * sort bindings in order of appearance from $providerAreaIds
+     * @param string $subscriberAreaName
+     * @param array $providerAreaNames
+     */
     public function setBindOrder($subscriberAreaName, array $providerAreaNames)
     {
-        $sareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneBy(['areaname' => $subscriberAreaName])
-                        ->getId();
-
-        // convert provider areanames to ids
-        $providerAreaIds = [];
-        foreach ($providerAreaNames as $name) {
-            $providerAreaIds[] =
-                $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                     ->findOneBy(['areaname' => $name])
-                     ->getId();
-        }
-
-        // sort bindings in order of appearance from $providerAreaIds
         $counter = 1;
-        foreach ($providerAreaIds as $id) {
-            $this->em->createQueryBuilder()
-                 ->update('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                 ->set('t.sortorder', $counter)
-                 ->where('t.sareaid = ?1 AND t.pareaid = ?2')
-                 ->getQuery()->setParameters([1 => $sareaId, 2 => $id])
-                ->execute();
+        foreach ($providerAreaNames as $providerAreaName) {
+            $this->hookBindingRepository->setSortOrder($counter, $subscriberAreaName, $providerAreaName);
             $counter++;
         }
 
@@ -439,13 +516,14 @@ class DoctrineStorage implements StorageInterface
 
     public function getRuntimeMetaByEventName($eventName)
     {
-        foreach ($this->runtimeHandlers as $handler) {
-            if ($handler['eventname'] == $eventName) {
-                return [
-                    'areaid' => $handler['sareaid'],
-                    'owner' => $handler['sowner']
-                ];
-            }
+        if (!isset($this->runtimeHandlers[$eventName])) {
+            $this->runtimeHandlers[$eventName] = $this->hookRuntimeRepository->getOneOrNullByEventName($eventName);
+        }
+        if ($this->runtimeHandlers[$eventName]) {
+            return [
+                'areaid' => $this->runtimeHandlers[$eventName]->getSareaid(),
+                'owner' => $this->runtimeHandlers[$eventName]->getSowner()
+            ];
         }
 
         return false;
@@ -453,72 +531,79 @@ class DoctrineStorage implements StorageInterface
 
     public function getBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        $sareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneBy(['areaname' => $subscriberArea])
-                        ->getId();
-
-        $pareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneBy(['areaname' => $providerArea])
-                        ->getId();
-
-        return $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                    ->where('t.sareaid = ?1 AND t.pareaid = ?2')
-                    ->getQuery()->setParameters([1 => $sareaId, 2 => $pareaId])
-                    ->getOneOrNullResult();
+        return $this->hookBindingRepository->findOneOrNullByAreas($subscriberArea, $providerArea);
     }
 
+    /**
+     * binding between hook areas should be allowed if:
+     *   1. *Category* is the same for both
+     *   2. the provider and subscriber have implemented at least one of same *hookType*
+     * @param $subscriberArea
+     * @param $providerArea
+     * @return bool
+     */
     public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
-        $sareaId = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                        ->findOneBy(['areaname' => $subscriberArea])
-                        ->getId();
-
-        $subscribers =
-            $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity')
-                 ->findBy(['sareaid' => $sareaId]);
-
-        if (!$subscribers) {
-            return false;
-        }
-
-        $allow = false;
-        /** @var $subscriber \Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity */
-        foreach ($subscribers as $subscriber) {
-            $pareaId =
-                $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
-                     ->findOneBy(['areaname' => $providerArea])
-                     ->getId();
-
-            $hookprovider =
-                $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity', 't')
-                    ->where('t.pareaid = ?1 AND t.hooktype = ?2 AND t.category = ?3')
-                    ->getQuery()->setParameters([
-                        1 => $pareaId,
-                        2 => $subscriber->getHooktype(),
-                        3 => $subscriber->getCategory()
-                    ])
-                     ->getArrayResult();
-
-            if ($hookprovider) {
-                $allow = true;
-                break;
+        if ($this->hookCollector->hasSubscriber($subscriberArea)) {
+            $subscriberTypes = $this->hookCollector->getSubscriber($subscriberArea)->getEvents(); // array('hookType' => 'eventName')
+            $subscriberTypes = array_keys($subscriberTypes);
+            $subscriberCategory = $this->hookCollector->getSubscriber($subscriberArea)->getCategory();
+        } else {
+            // @deprecated
+            $subscriberEntities =
+                $this->em->getRepository(Entity\HookSubscriberEntity::class)
+                    ->findBy(['sareaid' => $subscriberArea]);
+            $subscriberTypes = [];
+            foreach ($subscriberEntities as $hookSubscriberEntity) {
+                $subscriberTypes[] = $hookSubscriberEntity->getHooktype();
+                $subscriberCategory = $hookSubscriberEntity->getCategory(); // will all be same
             }
         }
 
-        return $allow;
+        if (!$subscriberTypes) {
+            return false;
+        }
+
+        foreach ($subscriberTypes as $subscriberType) {
+            if ($this->hookCollector->hasProvider($providerArea)) {
+                $providerTypes = $this->hookCollector->getProvider($providerArea)->getProviderTypes();
+                $providerCategory = $this->hookCollector->getProvider($providerArea)->getCategory();
+                foreach (array_keys($providerTypes) as $providerType) {
+                    if ($subscriberCategory == $providerCategory && $subscriberType == $providerType) {
+                        return true;
+                    }
+                }
+            } else {
+                // @deprecated
+                $hookProvider =
+                    $this->em->createQueryBuilder()->select('t')
+                        ->from(Entity\HookProviderEntity::class, 't')
+                        ->where('t.pareaid = ?1 AND t.hooktype = ?2 AND t.category = ?3')
+                        ->setParameters([
+                            1 => $providerArea,
+                            2 => $subscriberType,
+                            3 => $subscriberCategory
+                        ])
+                        ->getQuery()
+                        ->getArrayResult();
+
+                if ($hookProvider) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
     {
-        return $this->em->createQueryBuilder()->select('t')
-                    ->from('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity', 't')
-                    ->where('t.sowner = ?1 AND t.powner = ?2')
-                    ->getQuery()->setParameters([1 => $subscriberOwner, 2 => $providerOwner])
-                    ->getArrayResult();
+        return $this->hookBindingRepository->findByOwners($subscriberOwner, $providerOwner);
     }
 
+    /**
+     * @deprecated
+     */
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
         if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {
@@ -544,9 +629,13 @@ class DoctrineStorage implements StorageInterface
         return $areaId;
     }
 
-    public function getAreaId($areaName)
+    /**
+     * @deprecated
+     */
+    private function getAreaId($areaName)
     {
-        $hookArea = $this->em->getRepository('Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity')
+        // return $areaName?
+        $hookArea = $this->em->getRepository(Entity\HookAreaEntity::class)
                    ->findOneBy(['areaname' => $areaName]);
 
         if (!$hookArea) {

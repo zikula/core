@@ -12,14 +12,15 @@
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * HookRuntime
  *
  * @ORM\Table(name="hook_runtime")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookRuntimeRepository")
  */
-class HookRuntimeEntity
+class HookRuntimeEntity extends EntityAccess
 {
     /**
      * @var integer
@@ -39,6 +40,7 @@ class HookRuntimeEntity
 
     /**
      * @var string
+     * @deprecated
      *
      * @ORM\Column(name="subsowner", type="string", length=40, nullable=true)
      */
@@ -53,6 +55,7 @@ class HookRuntimeEntity
 
     /**
      * @var string
+     * @deprecated
      *
      * @ORM\Column(name="subpowner", type="string", length=40, nullable=true)
      */
@@ -61,14 +64,14 @@ class HookRuntimeEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="sareaid", type="integer", nullable=false)
+     * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
      */
     private $sareaid;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="pareaid", type="integer", nullable=false)
+     * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
      */
     private $pareaid;
 
@@ -142,6 +145,7 @@ class HookRuntimeEntity
 
     /**
      * Set subsowner
+     * @deprecated
      *
      * @param string $subsowner
      * @return HookRuntimeEntity
@@ -155,6 +159,7 @@ class HookRuntimeEntity
 
     /**
      * Get subsowner
+     * @deprecated
      *
      * @return string
      */
@@ -188,6 +193,7 @@ class HookRuntimeEntity
 
     /**
      * Set subpowner
+     * @deprecated
      *
      * @param string $subpowner
      * @return HookRuntimeEntity
@@ -201,6 +207,7 @@ class HookRuntimeEntity
 
     /**
      * Get subpowner
+     * @deprecated
      *
      * @return string
      */

@@ -31,11 +31,10 @@
 #hookProviderAreas .parea_wrapper,
 #hookSubscriber .sareas_category .sarea_wrapper {
     border: 1px solid #CCCCCC;
-    margin-top: -1px;
 }
 
 #hookSubscriber .sarea_wrapper h4 {
-    background: #ddd url('../images/arrow_right_black.png') no-repeat scroll 3px 0.65em;
+    background-color: #ddd;
     color: inherit;
     font-size: 1.1em;
     margin: 2px;
@@ -43,26 +42,23 @@
 }
 
 #hookSubscriber .sarea_wrapper h4:hover {
-    background: #ccc url('../images/arrow_right_grey.png') no-repeat scroll 3px 0.65em;
+    background-color: #ccc;
+    color: #666666;
 }
 
 #hookSubscriber .sarea_wrapper h4.active {
-    background: #ddd url('../images/arrow_down_black.png') no-repeat scroll 3px 0.65em;
+    background-color: #ddd;
     border-bottom: 1px solid #ccc;
 }
 
 #hookSubscriber .sarea_wrapper h4.active:hover {
-    background: #ccc url('../images/arrow_down_grey.png') no-repeat scroll 3px 0.65em;
+    background-color: #ccc;
 }
 
-#hookSubscriber .sarea_wrapper ol.z-itemlist li {
+#hookSubscriber .sarea_wrapper ol li {
     background-color: #fff;
     line-height: 1em;
-    padding: 0.3em;
-}
-
-#hookSubscriber .sarea_wrapper ol.z-itemlist li.sarea_empty {
-    padding: 0.3em 0.3em 0.3em 30px !important;
+    padding: 0.8em;
 }
 
 #hookSubscriber .sarea_wrapper ol li:hover {
@@ -91,7 +87,7 @@
 
 /* provider areas */
 #hookProviderAreas h4 {
-    background: #ddd url('../images/arrow_right_black.png') no-repeat scroll 3px 0.65em;
+    background-color: #ddd;
     color: inherit;
     border: none;
     font-size: 1.1em;
@@ -100,15 +96,8 @@
 }
 
 #hookProviderAreas h4:hover {
-    background: #ccc url('../images/arrow_right_grey.png') no-repeat scroll 3px 0.65em;
-}
-
-#hookProviderAreas h4.z-panel-active {
-    background: #ddd url('../images/arrow_down_black.png') no-repeat scroll 3px 0.65em;
-}
-
-#hookProviderAreas h4.z-panel-active:hover {
-    background: #ccc url('../images/arrow_down_grey.png') no-repeat scroll 3px 0.65em;
+    background-color: #ccc;
+    color: #666666;
 }
 
 #hookProviderAreas .panel-content {
@@ -116,10 +105,9 @@
     padding: 0.3em 0.7em 0.1em;
 }
 
-#hookSubscriber .pareas_category ol.z-itemlist li {
+#hookSubscriber .pareas_category ol li {
     border: 1px solid #DDDDDD;
     line-height: 1.4em;
-    margin-top: -1px !important;
 }
 
 /* PROVISION */

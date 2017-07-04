@@ -18,6 +18,10 @@ use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\Core\Event\GenericEvent;
 
+/**
+ * @deprecated
+ * Class HookApi
+ */
 class HookApi
 {
     /**
@@ -25,21 +29,21 @@ class HookApi
      * @deprecated
      * @see CapabilityApiInterface::HOOK_PROVIDER
      */
-    const PROVIDER_TYPE = 'hook_provider';
+    const PROVIDER_TYPE = CapabilityApiInterface::HOOK_PROVIDER;
 
     /**
      * Subscriber capability key.
      * @deprecated
      * @see CapabilityApiInterface::HOOK_SUBSCRIBER
      */
-    const SUBSCRIBER_TYPE = 'hook_subscriber';
+    const SUBSCRIBER_TYPE = CapabilityApiInterface::HOOK_SUBSCRIBER;
 
     /**
      * Allow to provide to self.
      * @deprecated
-     * @see CapabilityApiInterface::HOOK_SUBSCRIBER_OWN
+     * @see CapabilityApiInterface::HOOK_SUBSCRIBE_OWN
      */
-    const SELF_TYPE = 'subscribe_own';
+    const SELF_TYPE = CapabilityApiInterface::HOOK_SUBSCRIBE_OWN;
 
     /**
      * @var \Zikula\Common\Translator\Translator
@@ -196,7 +200,7 @@ class HookApi
     {
         foreach ($bundles as $bundle) {
             $this->hookDispatcher->unregisterSubscriberBundle($bundle);
-            $event = new GenericEvent($bundle, ['areaid' => $this->hookDispatcher->getAreaId($bundle->getArea())]);
+            $event = new GenericEvent($bundle, ['areaid' => $bundle->getArea()]);
             $this->eventDispatcher->dispatch('installer.subscriberbundle.uninstalled', $event);
         }
     }
