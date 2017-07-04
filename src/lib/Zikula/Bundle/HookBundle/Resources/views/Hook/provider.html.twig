@@ -11,7 +11,7 @@
             <div>
                 <ol>
                 {% for providerArea in providerAreas %}
-                    <li><strong>{{ providerAreasToTitles[providerArea] }}</strong> <span class="sub">({{ providerArea }})</span></li>
+                    <li><strong>{{ providerAreasToTitles[providerArea] }}</strong> <span class="small">({{ providerArea }})</span></li>
                 {% endfor %}
                 </ol>
             </div>
@@ -25,9 +25,9 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th id="hId" scope="col" class="z-w05">{{ __('ID') }}</th>
-                        <th id="hName" scope="col" class="z-w15">{{ __('Display name') }}</th>
-                        <th id="hConnections" scope="col" class="z-w80">{{ __('Connections') }}</th>
+                        <th id="hId" scope="col" class="col-md-1">{{ __('ID') }}</th>
+                        <th id="hName" scope="col" class="col-md-2">{{ __('Display name') }}</th>
+                        <th id="hConnections" scope="col" class="col-md-9">{{ __('Connections') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,33 +49,26 @@
                                 {% endfor %}
 
                                 {% if total_bindings > 0 %}
-                                    {% if not loop.first %}
-                                        {# TODO - do this with styles perhaps ? #}
-                                        <div style="height:5px; margin-top: 5px; border-top:1px dotted #dedede;"></div>
-                                    {% endif %}
-
-                                    <div class="clearfix">
-                                        <div class="pull-left z-w45">
-                                            {{ subscriber.areasToTitles[sarea] }} <span class="sub">({{ sarea }})</span>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            {{ subscriber.areasToTitles[sarea] }} <span class="small">({{ sarea }})</span>
                                         </div>
-
-                                        <div class="pull-left z-w10 text-center">
+                                        <div class="col-md-1 text-right">
                                             <span class="fa fa-paperclip"></span>
                                         </div>
-
-                                        <div class="pull-left z-w45">
+                                        <div class="col-md-6">
                                             {% for parea in providerAreas %}
                                                 {% set parea_md5 = parea|php('md5') %}
                                                 {% set allow_binding = hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
                                                 {% if allow_binding %}
                                                     {% set binding = hookDispatcher.getBindingBetweenAreas(sarea, parea) %}
-                                                    <input type="checkbox" id="chk_{{ sarea_md5 }}_{{ parea_md5 }}" name="chk[{{ sarea_md5 }}][{{ parea_md5 }}]" onclick="subscriberAreaToggle('{{ sarea }}', '{{ parea }}', true);" {% if binding %}checked="checked"{% endif %} /> {{ providerAreasToTitles[parea] }} <span class="sub">({{ parea }})</span><br />
+                                                    <input type="checkbox" id="chk_{{ sarea_md5 }}_{{ parea_md5 }}" name="chk[{{ sarea_md5 }}][{{ parea_md5 }}]" onclick="subscriberAreaToggle('{{ sarea }}', '{{ parea }}', true);" {% if binding %}checked="checked"{% endif %} /> {{ providerAreasToTitles[parea] }} <span class="small">({{ parea }})</span><br />
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
                                     </div>
                                 {% else %}
-                                    {% if not connection_exists %}<span class="sub">{{ __f('%1$s module can\'t connect to %2$s module. No connections are supported', {'%1$s': currentmodule, '%2$s': subscriber.name}) }}</span>{% endif %}
+                                    {% if not connection_exists %}<span class="small">{{ __f('%1$s module can\'t connect to %2$s module. No connections are supported', {'%1$s': currentmodule, '%2$s': subscriber.name}) }}</span>{% endif %}
                                 {% endif %}
                             {% endfor %}
                         </td>
