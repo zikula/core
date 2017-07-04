@@ -50,11 +50,6 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $schemaTool;
 
     /**
-     * @var \Zikula\Bundle\HookBundle\Api\HookApi
-     */
-    protected $hookApi;
-
-    /**
      * initialise the extension
      *
      * @return bool true on success, false otherwise
@@ -99,7 +94,6 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         $this->schemaTool = $container->get('zikula_core.common.doctrine.schema_tool');
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $container->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
-        $this->hookApi = $container->get('zikula_hook_bundle.api.hook');
         if ($this->bundle) {
             $container->get('translator')->setDomain($this->bundle->getTranslationDomain());
         }

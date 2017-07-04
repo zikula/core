@@ -51,9 +51,6 @@ class HookController extends Controller
             throw new AccessDeniedException();
         }
 
-        $metaData = $this->get('kernel')->getModule($moduleName)->getMetaData();
-        $moduleVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($metaData);
-
         // find out the capabilities of the module
         $isProvider = $this->isCapable($moduleName, HookCollectorInterface::HOOK_PROVIDER);
         $templateParameters['isProvider'] = $isProvider;
@@ -124,9 +121,6 @@ class HookController extends Controller
                     continue;
                 }
 
-                $metaData = $this->get('kernel')->getModule($hooksubscribers[$i]['name'])->getMetaData();
-                $hooksubscriberVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($metaData);
-
                 // get the areas of the subscriber
                 $hooksubscriberAreas = $this->get('hook_dispatcher')->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
                 $hooksubscribers[$i]['areas'] = $hooksubscriberAreas;
@@ -178,9 +172,6 @@ class HookController extends Controller
                     // get hook provider from it's area
                     $sbaProviderModule = $this->get('hook_dispatcher')->getOwnerByArea($areaname);
 
-                    $metaData = $this->get('kernel')->getModule($sbaProviderModule)->getMetaData();
-                    $sbaProviderModuleVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($metaData);
-
                     // get the bundle title
                     if (isset($nonPersistedProviders[$areaname])) {
                         $currentSortingTitles[$areaname] = $nonPersistedProviders[$areaname]->getTitle();
@@ -210,9 +201,6 @@ class HookController extends Controller
                     unset($hookproviders[$i]);
                     continue;
                 }
-
-                $metaData = $this->get('kernel')->getModule($hookproviders[$i]['name'])->getMetaData();
-                $hookproviderVersionObj = $this->get('zikula_hook_bundle.api.hook')->getHookContainerInstance($metaData);
 
                 // get the areas of the provider
                 $hookproviderAreas = $this->get('hook_dispatcher')->getProviderAreasByOwner($hookproviders[$i]['name']);

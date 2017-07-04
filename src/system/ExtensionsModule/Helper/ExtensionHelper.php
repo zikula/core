@@ -166,10 +166,6 @@ class ExtensionHelper
 
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
-        // remove hooks
-        $this->container->get('zikula_hook_bundle.api.hook')->uninstallProviderHooks($bundle->getMetaData());
-        $this->container->get('zikula_hook_bundle.api.hook')->uninstallSubscriberHooks($bundle->getMetaData());
-
         $installer = $this->getExtensionInstallerInstance($bundle);
         $result = $installer->uninstall();
         if (!$result) {
