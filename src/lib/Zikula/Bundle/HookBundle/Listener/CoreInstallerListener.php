@@ -36,12 +36,21 @@ class CoreInstallerListener implements EventSubscriberInterface
     {
         return [
             CoreEvents::CORE_INSTALL_PRE_MODULE => 'installHookBundle',
+            CoreEvents::CORE_UPGRADE_PRE_MODULE => 'upgradeHookBundle'
         ];
     }
 
     public function installHookBundle(GenericEvent $event)
     {
         if (!$this->hookBundleInstaller->install()) {
+            $event->stopPropagation();
+        }
+    }
+
+    public function upgradeHookBundle(GenericEvent $event)
+    {
+        $currentVersion = $event->getArgument('currentVersion');
+        if (!$this->hookBundleInstaller->upgrade($currentVersion)) {
             $event->stopPropagation();
         }
     }

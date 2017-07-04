@@ -1,0 +1,34 @@
+services:
+    zikula_hook_bundle.listener.core_installer_listener:
+        class: Zikula\Bundle\HookBundle\Listener\CoreInstallerListener
+        arguments:
+            - "@zikula_hook_bundle.installer"
+        tags:
+        - { name: kernel.event_subscriber }
+
+    zikula_hook_bundle.listener.hook_listener_builder_listener:
+        class: Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener
+        arguments:
+          - '@service_container'
+          - '%installed%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    zikula_hook_bundle.listener.hooks_listener:
+        class: Zikula\Bundle\HookBundle\Listener\HooksListener
+        arguments:
+          - "@zikula_permissions_module.api.permission"
+          - "@zikula_extensions_module.api.capability"
+          - "@zikula_hook_bundle.collector.hook_collector"
+          - "@router"
+          - "@translator.default"
+        tags:
+          - { name: kernel.event_subscriber }
+
+    zikula_hook_bundle.listener.module_uninstall_listener:
+        class: Zikula\Bundle\HookBundle\Listener\ModuleUninstallListener
+        arguments:
+            - '@zikula_hook_bundle.hook_binding_repository'
+            - '@zikula_hook_bundle.hook_runtime_repository'
+        tags:
+            - { name: kernel.event_subscriber }

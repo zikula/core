@@ -21,35 +21,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 interface CapabilityApiInterface
 {
     /**
-     * Extension is capable of subscriber to hooks.
-     * composer.json definition requires "class" e.g.
-     *     "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer"}
-     */
-    const HOOK_SUBSCRIBER = 'hook_subscriber';
-
-    /**
-     * Extension provides hooks to which other extensions may subscribe.
-     * composer.json definition requires "class" e.g.
-     *     "hook_provider": {"class": "Acme\\FooModule\\Container\\HookContainer"}
-     */
-    const HOOK_PROVIDER = 'hook_provider';
-
-    /**
-     * Extension is capable of subscribing to its own hooks.
-     * composer.json definition requires boolean as additional key in 'hook_subscriber' key e.g.
-     *     "hook_subscriber": {"class": "Acme\\FooModule\\Container\\HookContainer", "subscribe_own": true}
-     */
-    const HOOK_SUBSCRIBE_OWN = 'subscribe_own';
-
-    /**
-     * Extension implements Searchable methods
-     * composer.json definition requires "class" e.g.
-     *     "searchable": {"class": "Acme\\FooModule\\Helper\\SearchHelper"}
-     * The helper class must extend \Zikula\SearchModule\AbstractSearchable
-     */
-    const SEARCHABLE = 'searchable';
-
-    /**
      * Extension implements Categorizable methods
      * composer.json definition requires an array of categorizable Entities e.g.
      *     "categorizable": {"entities": ["Acme\\FooModule\\Entity\\FooEntity", "Acme\\FooModule\\Entity\\BarEntity"]}

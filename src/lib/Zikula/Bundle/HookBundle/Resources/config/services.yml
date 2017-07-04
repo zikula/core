@@ -1,26 +1,9 @@
 services:
-
     zikula_hook_bundle.installer:
         class: Zikula\Bundle\HookBundle\HookBundleInstaller
         arguments:
             - "@zikula_core.common.doctrine.schema_tool"
-
-    zikula_hook_bundle.listener.core_installer_listener:
-        class: Zikula\Bundle\HookBundle\Listener\CoreInstallerListener
-        arguments:
-            - "@zikula_hook_bundle.installer"
-        tags:
-        - { name: kernel.event_subscriber }
-
-    zikula_hook_bundle.listener.hooks_listener:
-        class: Zikula\Bundle\HookBundle\Listener\HooksListener
-        arguments:
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_extensions_module.api.capability"
-          - "@router"
-          - "@translator.default"
-        tags:
-          - { name: kernel.event_subscriber }
+            - "@doctrine.orm.default_entity_manager"
 
     twig.extension.zikula_hook:
         class: Zikula\Bundle\HookBundle\Twig\Extension\HookExtension
@@ -32,16 +15,17 @@ services:
     hook_dispatcher.storage:
         class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\DoctrineStorage
         arguments:
-            - "@doctrine.orm.default_entity_manager"
-            - "@session"
-            - "@translator.default"
+            - "@doctrine"
+            - "@zikula_hook_bundle.hook_binding_repository"
+            - "@zikula_hook_bundle.hook_runtime_repository"
+            - "@zikula_hook_bundle.collector.hook_collector"
 
     hook_dispatcher:
         class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
         arguments:
             - "@hook_dispatcher.storage"
+            - "@zikula_hook_bundle.collector.hook_collector"
             - "@event_dispatcher"
-            - "@zikula.cache_clearer"
 
     zikula.hookmanager:
         alias: hook_dispatcher
@@ -53,3 +37,16 @@ services:
             - "@translator.default"
             - "@hook_dispatcher"
             - "@event_dispatcher"
+
+    zikula_hook_bundle.collector.hook_collector:
+        class: Zikula\Bundle\HookBundle\Collector\HookCollector
+
+    zikula_hook_bundle.hook_binding_repository:
+        class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookBindingRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ['Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity']
+
+    zikula_hook_bundle.hook_runtime_repository:
+        class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookRuntimeRepository
+        factory: ["@doctrine.orm.default_entity_manager", getRepository]
+        arguments: ['Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity']

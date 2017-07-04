@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,9 +31,9 @@ class HooksListener implements EventSubscriberInterface
     private $permissionsApi;
 
     /**
-     * @var CapabilityApiInterface
+     * @var HookCollectorInterface
      */
-    private $capabilityApi;
+    private $hookCollector;
 
     /**
      * @var RouterInterface
@@ -48,17 +49,20 @@ class HooksListener implements EventSubscriberInterface
      * ExtensionServicesListener constructor.
      * @param PermissionApiInterface $permissionApi
      * @param CapabilityApiInterface $capabilityApi
+     * @param HookCollectorInterface $hookCollector
      * @param RouterInterface $router
      * @param TranslatorInterface $translator
      */
     public function __construct(
         PermissionApiInterface $permissionApi,
         CapabilityApiInterface $capabilityApi,
+        HookCollectorInterface $hookCollector,
         RouterInterface $router,
         TranslatorInterface $translator
     ) {
         $this->permissionsApi = $permissionApi;
         $this->capabilityApi = $capabilityApi;
+        $this->hookCollector = $hookCollector;
         $this->router = $router;
         $this->translator = $translator;
     }
@@ -90,8 +94,9 @@ class HooksListener implements EventSubscriberInterface
             return;
         }
         // return if module is not subscriber or provider capable
-        if (!$this->capabilityApi->isCapable($event['modname'], CapabilityApiInterface::HOOK_SUBSCRIBER)
-            && !$this->capabilityApi->isCapable($event['modname'], CapabilityApiInterface::HOOK_PROVIDER)) {
+        if (!$this->hookCollector->isCapable($event['modname'], HookCollectorInterface::HOOK_SUBSCRIBER)
+            && !$this->hookCollector->isCapable($event['modname'], HookCollectorInterface::HOOK_PROVIDER)
+        ) {
             return;
         }
         $event->data[] = [

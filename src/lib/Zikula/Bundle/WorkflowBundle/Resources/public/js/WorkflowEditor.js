@@ -137,7 +137,7 @@ function initDiagramEventListeners() {
     plumbInstance.bind('connectionDetached', function (info, originalEvent) {
         regenerateOutput();
     });
-    plumbInstance.bind('click', jsPlumb.detach);
+    plumbInstance.bind('click', jsPlumb.deleteConnection);
     plumbInstance.bind('beforeDrop', function (info) {
         var sourceNode, targetNode, existingOutgoingConnections;
 

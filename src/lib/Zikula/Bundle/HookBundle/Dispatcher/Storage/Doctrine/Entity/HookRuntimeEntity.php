@@ -12,14 +12,15 @@
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * HookRuntime
  *
  * @ORM\Table(name="hook_runtime")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookRuntimeRepository")
  */
-class HookRuntimeEntity
+class HookRuntimeEntity extends EntityAccess
 {
     /**
      * @var integer
@@ -40,35 +41,21 @@ class HookRuntimeEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="subsowner", type="string", length=40, nullable=true)
-     */
-    private $subsowner;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="powner", type="string", length=40, nullable=false)
      */
     private $powner;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="subpowner", type="string", length=40, nullable=true)
-     */
-    private $subpowner;
-
-    /**
      * @var integer
      *
-     * @ORM\Column(name="sareaid", type="integer", nullable=false)
+     * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
      */
     private $sareaid;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="pareaid", type="integer", nullable=false)
+     * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
      */
     private $pareaid;
 
@@ -141,29 +128,6 @@ class HookRuntimeEntity
     }
 
     /**
-     * Set subsowner
-     *
-     * @param string $subsowner
-     * @return HookRuntimeEntity
-     */
-    public function setSubsowner($subsowner)
-    {
-        $this->subsowner = $subsowner;
-
-        return $this;
-    }
-
-    /**
-     * Get subsowner
-     *
-     * @return string
-     */
-    public function getSubsowner()
-    {
-        return $this->subsowner;
-    }
-
-    /**
      * Set powner
      *
      * @param string $powner
@@ -184,29 +148,6 @@ class HookRuntimeEntity
     public function getPowner()
     {
         return $this->powner;
-    }
-
-    /**
-     * Set subpowner
-     *
-     * @param string $subpowner
-     * @return HookRuntimeEntity
-     */
-    public function setSubpowner($subpowner)
-    {
-        $this->subpowner = $subpowner;
-
-        return $this;
-    }
-
-    /**
-     * Get subpowner
-     *
-     * @return string
-     */
-    public function getSubpowner()
-    {
-        return $this->subpowner;
     }
 
     /**

@@ -77,9 +77,7 @@ class UserLiveSearchType extends AbstractType
             ->setDefaults([
                 'inline_usage' => false
             ])
-            ->setAllowedTypes([
-                'inline_usage' => 'bool'
-            ])
+            ->setAllowedTypes('inline_usage', 'bool')
         ;
     }
 

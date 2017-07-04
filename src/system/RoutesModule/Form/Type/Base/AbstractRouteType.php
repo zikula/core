@@ -446,14 +446,10 @@ abstract class AbstractRouteType extends AbstractType
                 'has_moderate_permission' => false,
             ])
             ->setRequired(['mode', 'actions'])
-            ->setAllowedTypes([
-                'mode' => 'string',
-                'actions' => 'array',
-                'has_moderate_permission' => 'bool',
-            ])
-            ->setAllowedValues([
-                'mode' => ['create', 'edit']
-            ])
+            ->setAllowedTypes('mode', 'string')
+            ->setAllowedTypes('actions', 'array')
+            ->setAllowedTypes('has_moderate_permission', 'bool')
+            ->setAllowedValues('mode', ['create', 'edit'])
         ;
     }
 }
