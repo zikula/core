@@ -61,7 +61,6 @@ class DoctrineStorage implements StorageInterface
         $this->hookCollector = $hookCollector;
     }
 
-
     private function generateRuntimeHandlers()
     {
         // truncate runtime

@@ -17,10 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\ExtensionsModule\Util as ExtensionsUtil;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 

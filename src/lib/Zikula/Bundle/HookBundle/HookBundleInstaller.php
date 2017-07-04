@@ -12,11 +12,8 @@
 namespace Zikula\Bundle\HookBundle;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookAreaEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity;
 use Zikula\Core\Doctrine\Helper\SchemaHelper;
 use Zikula\Core\InstallerInterface;
 
