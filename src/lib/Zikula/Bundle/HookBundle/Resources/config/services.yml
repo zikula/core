@@ -30,14 +30,6 @@ services:
     zikula.hookmanager:
         alias: hook_dispatcher
 
-    zikula_hook_bundle.api.hook:
-        class: Zikula\Bundle\HookBundle\Api\HookApi
-        lazy: true
-        arguments:
-            - "@translator.default"
-            - "@hook_dispatcher"
-            - "@event_dispatcher"
-
     zikula_hook_bundle.collector.hook_collector:
         class: Zikula\Bundle\HookBundle\Collector\HookCollector
 
