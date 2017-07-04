@@ -110,7 +110,7 @@ CHANGELOG - ZIKULA 1.5.x
     - symfony/security-acl updated from 2.8.0 to 3.0.0
     - symfony/swiftmailer-bundle updated from 2.4.2 to 2.4.3
     - symfony/workflow installed at 3.2.8 and updated to 3.3.3
-    - twig/twig updated from 1.31.0 to 1.34.3
+    - twig/twig updated from 1.31.0 to 1.34.4
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
