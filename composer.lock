@@ -4826,16 +4826,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.23",
+            "version": "v2.8.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca"
+                "reference": "2404550f13f71470206227c98c2d53f0f4cbbb3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca",
-                "reference": "bca31e4e3b6cfd8cef39ec04a253966cecf8f2ca",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/2404550f13f71470206227c98c2d53f0f4cbbb3e",
+                "reference": "2404550f13f71470206227c98c2d53f0f4cbbb3e",
                 "shasum": ""
             },
             "require": {
@@ -4959,7 +4959,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-07-04T05:31:17+00:00"
+            "time": "2017-06-07T20:12:45+00:00"
         },
         {
             "name": "symfony/workflow",
@@ -5853,12 +5853,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "423094518144af88ada48921e8d2fd5d6aa62732"
+                "reference": "683475e62d2a1f04010c8f2048b3e5734ac787be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/423094518144af88ada48921e8d2fd5d6aa62732",
-                "reference": "423094518144af88ada48921e8d2fd5d6aa62732",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/683475e62d2a1f04010c8f2048b3e5734ac787be",
+                "reference": "683475e62d2a1f04010c8f2048b3e5734ac787be",
                 "shasum": ""
             },
             "require": {
@@ -5916,7 +5916,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-06-22 15:20:54"
+            "time": "2017-07-04 15:38:16"
         },
         {
             "name": "zikula/seabreeze-theme",
