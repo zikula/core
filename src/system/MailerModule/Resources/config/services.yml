@@ -18,3 +18,10 @@ services:
           - "@zikula.dynamic_config_dumper"
           - "@zikula_extensions_module.api.variable"
           - "@mailer"
+
+    zikula_mailer_module.hook_subscriber.ui_hooks_subscriber:
+        class: Zikula\MailerModule\HookSubscriber\UiHooksSubscriber
+        arguments:
+          - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'mailer.ui_hooks.htmlmail.form_edit' }

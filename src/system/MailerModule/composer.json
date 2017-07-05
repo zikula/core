@@ -1,6 +1,6 @@
 {
     "name": "zikula/mailer-module",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "description": "Mailer support",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -24,8 +24,7 @@
             "displayname": "Mailer Module",
             "url": "mailer",
             "capabilities": {
-                "admin": {"route": "zikulamailermodule_config_config"},
-                "hook_subscriber": {"class": "Zikula\\MailerModule\\Container\\HookContainer"}
+                "admin": {"route": "zikulamailermodule_config_config"}
             },
             "securityschema": {
                 "ZikulaMailerModule::": "::"

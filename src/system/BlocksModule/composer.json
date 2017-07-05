@@ -27,7 +27,7 @@
             "url": "blocks",
             "oldnames": [],
             "capabilities": {
-                "admin": {"route": "zikulablocksmodule_admin_view"},
+                "admin": {"route": "zikulablocksmodule_admin_view"}
             },
             "securityschema": {
                 "ZikulaBlocksModule::": "Block key:Block title:Block ID",
