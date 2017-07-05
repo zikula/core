@@ -1,6 +1,6 @@
 {
     "name": "zikula/users-module",
-    "version": "3.0.3",
+    "version": "3.0.4",
     "description": "User account administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -25,8 +25,7 @@
             "oldnames": [],
             "capabilities": {
                 "admin": {"route": "zikulausersmodule_useradministration_list"},
-                "user": {"route": "zikulausersmodule_account_menu"},
-                "hook_subscriber": {"class": "Zikula\\UsersModule\\Container\\HookContainer"}
+                "user": {"route": "zikulausersmodule_account_menu"}
             },
             "securityschema": {
                 "ZikulaUsersModule::": "Uname::User ID",

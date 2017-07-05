@@ -1,0 +1,21 @@
+services:
+  zikula_users_module.hook_subscriber.user_management_ui_hooks_subscriber:
+      class: Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber
+      arguments:
+        - "@translator.default"
+      tags:
+          - { name: zikula.hook_subscriber, areaName: "subscriber.users.ui_hooks.user" }
+
+  zikula_users_module.hook_subscriber.registration_ui_hooks_subscriber:
+      class: Zikula\UsersModule\HookSubscriber\RegistrationUiHooksSubscriber
+      arguments:
+        - "@translator.default"
+      tags:
+          - { name: zikula.hook_subscriber, areaName: "subscriber.users.ui_hooks.registration" }
+
+  zikula_users_module.hook_subscriber.login_ui_hooks_subscriber:
+      class: Zikula\UsersModule\HookSubscriber\LoginUiHooksSubscriber
+      arguments:
+        - "@translator.default"
+      tags:
+          - { name: zikula.hook_subscriber, areaName: "subscriber.users.ui_hooks.login_screen" }
