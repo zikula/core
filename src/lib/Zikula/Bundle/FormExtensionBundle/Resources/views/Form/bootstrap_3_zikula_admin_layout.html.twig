@@ -118,7 +118,7 @@ col-sm-9
     </div>
     <span id="{{ id }}Avatar" class="help-block avatar">
         {% if value and not inline_usage %}
-            {{ userAvatar(uid=value, rating='g') }}
+            {{ userAvatar(value, { rating: 'g' }) }}
         {% endif %}
     </span>
     {% if not required %}

@@ -47,8 +47,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // Set a default value for a module variable
         $this->setVar('collapseable', false);
 
-        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
-
         // Initialisation successful
         return true;
     }
@@ -171,7 +169,9 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
-                // future upgrade routines
+                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+            case '3.9.8':
+            // future upgrade routines
         }
 
         // Update successful

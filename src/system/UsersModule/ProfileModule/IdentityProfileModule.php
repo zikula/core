@@ -56,4 +56,12 @@ class IdentityProfileModule implements ProfileModuleInterface
     {
         return '#';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvatar($uid = null, array $parameters = [])
+    {
+        return '';
+    }
 }

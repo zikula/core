@@ -4826,16 +4826,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.22",
+            "version": "v2.8.24",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "2404550f13f71470206227c98c2d53f0f4cbbb3e"
+                "reference": "0ab3693b1154b1b166e98981ab3755636a5ae0e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/2404550f13f71470206227c98c2d53f0f4cbbb3e",
-                "reference": "2404550f13f71470206227c98c2d53f0f4cbbb3e",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/0ab3693b1154b1b166e98981ab3755636a5ae0e3",
+                "reference": "0ab3693b1154b1b166e98981ab3755636a5ae0e3",
                 "shasum": ""
             },
             "require": {
@@ -4959,7 +4959,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-06-07T20:12:45+00:00"
+            "time": "2017-07-05T08:53:15+00:00"
         },
         {
             "name": "symfony/workflow",

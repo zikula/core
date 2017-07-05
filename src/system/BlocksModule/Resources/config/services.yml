@@ -77,3 +77,10 @@ services:
           - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
         tags:
             - { name: kernel.event_subscriber }
+
+    zikula_blocks_module.hook_subscriber.ui_hook_subscriber:
+        class: Zikula\BlocksModule\HookSubscriber\UiHooksSubscriber
+        arguments:
+          - "@translator.default"
+        tags:
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.blocks.ui_hooks.htmlblock.content' }

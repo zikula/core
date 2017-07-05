@@ -76,6 +76,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added Core upgrade event (#2785).
     - New FormAwareHook category added.
     - New Non-persisted hooks added (#2784, #2262, #236).
+    - Added avatar display method to ProfileModuleInterface.
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0
@@ -106,7 +107,7 @@ CHANGELOG - ZIKULA 1.5.x
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
     - symfony/polyfill-* updated from 1.3.0 to 1.4.0
-    - symfony/symfony updated from 2.8.17 to 2.8.23
+    - symfony/symfony updated from 2.8.17 to 2.8.24
     - symfony/security-acl updated from 2.8.0 to 3.0.0
     - symfony/swiftmailer-bundle updated from 2.4.2 to 2.4.3
     - symfony/workflow installed at 3.2.8 and updated to 3.3.4
