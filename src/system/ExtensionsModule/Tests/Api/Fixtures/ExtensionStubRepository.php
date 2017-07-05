@@ -37,24 +37,17 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
                 'capabilities' => [
                     CapabilityApiInterface::ADMIN => ['route' => 'bar_admin_route'],
                     CapabilityApiInterface::USER => ['route' => 'bar_user_route'],
-                    CapabilityApiInterface::SEARCHABLE => ['class' => 'Acme\\BarExtension\\Search']
                 ]
             ],
             [
                 'name' => 'BazExtension',
                 'capabilities' => [
                     CapabilityApiInterface::ADMIN => ['route' => 'baz_admin_route'],
-                    CapabilityApiInterface::HOOK_PROVIDER => ['class' => 'Acme\\BazExtension\\Hook'],
-                    CapabilityApiInterface::SEARCHABLE => ['class' => 'Acme\\BazExtension\\Search']
                 ]
             ],
             [
                 'name' => 'FazExtension',
                 'capabilities' => [
-                    CapabilityApiInterface::HOOK_SUBSCRIBER => [
-                        'class' => 'Acme\\FazExtension\\Hook',
-                        CapabilityApiInterface::HOOK_SUBSCRIBE_OWN => true
-                    ],
                     CapabilityApiInterface::CATEGORIZABLE => ['entities' => ['Acme\\BazExtension\\Entity\\FazEntity']]
                 ]
             ],
