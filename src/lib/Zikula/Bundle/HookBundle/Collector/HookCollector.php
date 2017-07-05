@@ -11,9 +11,6 @@
 
 namespace Zikula\Bundle\HookBundle\Collector;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookProviderEntity;
-use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookSubscriberEntity;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
@@ -45,30 +42,6 @@ class HookCollector implements HookCollectorInterface
     private $subscribersByOwner = [];
 
     /**
-     * @deprecated
-     * @var EntityManagerInterface|null
-     */
-    private $em;
-
-    /**
-     * @var bool
-     */
-    private $installed;
-
-    /**
-     * HookCollector constructor.
-     * @param EntityManagerInterface $entityManager
-     * @param bool $installed
-     */
-    public function __construct(
-        EntityManagerInterface $entityManager = null,
-        $installed
-    ) {
-        $this->em = $entityManager;
-        $this->installed = $installed;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function addProvider($areaName, $serviceId, HookProviderInterface $service)
@@ -76,35 +49,9 @@ class HookCollector implements HookCollectorInterface
         if (isset($this->providerHooks[$areaName])) {
             throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
         }
-        // @deprecated
-        if ($this->installed) {
-            $providerTypes = $service->getProviderTypes();
-            foreach (array_keys($providerTypes) as $type) {
-                $existingInStorage = $this->getProviderByAreaAndType($areaName, $type);
-                if (!empty($existingInStorage) && $existingInStorage[0]['owner'] != $service->getOwner()) {
-                    // assumes an owner would not mistakenly register same area names in order to allow module upgrade
-                    throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
-                }
-            }
-        }
         $service->setServiceId($serviceId);
         $this->providerHooks[$areaName] = $service;
         $this->providersByOwner[$service->getOwner()][$areaName] = $service;
-    }
-
-    /**
-     * @deprecated
-     */
-    private function getProviderByAreaAndType($areaId, $type)
-    {
-        return isset($this->em) ? $this->em->createQueryBuilder()->select('t')
-            ->from(HookProviderEntity::class, 't')
-            ->where('t.pareaid = ?1')
-            ->andWhere('t.hooktype = ?2')
-            ->getQuery()
-            ->setParameter(1, $areaId)
-            ->setParameter(2, $type)
-            ->getArrayResult() : [];
     }
 
     /**
@@ -155,30 +102,8 @@ class HookCollector implements HookCollectorInterface
         if (isset($this->subscriberHooks[$areaName])) {
             throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
         }
-        // @deprecated
-        if ($this->installed) {
-            foreach ($service->getEvents() as $eventName) {
-                $existingSubscriber = $this->getSubscriberByEventName($eventName);
-                if (!empty($existingSubscriber) && $existingSubscriber[0]['owner'] != $service->getOwner()) {
-                    // assumes an owner would not mistakenly register same area names in order to allow module upgrade
-                    throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
-                }
-            }
-        }
         $this->subscriberHooks[$areaName] = $service;
         $this->subscribersByOwner[$service->getOwner()][$areaName] = $service;
-    }
-
-    /**
-     * @deprecated
-     */
-    private function getSubscriberByEventName($eventName)
-    {
-        return isset($this->em) ? $this->em->createQueryBuilder()->select('t')
-            ->from(HookSubscriberEntity::class, 't')
-            ->where('t.eventname = ?1')
-            ->getQuery()->setParameter(1, $eventName)
-            ->getArrayResult() : [];
     }
 
     /**
