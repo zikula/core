@@ -4963,7 +4963,7 @@
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.3.3",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
@@ -5853,12 +5853,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "683475e62d2a1f04010c8f2048b3e5734ac787be"
+                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/683475e62d2a1f04010c8f2048b3e5734ac787be",
-                "reference": "683475e62d2a1f04010c8f2048b3e5734ac787be",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
+                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
                 "shasum": ""
             },
             "require": {
@@ -5876,7 +5876,7 @@
                     ],
                     "capabilities": {
                         "admin": {
-                            "route": "zikulaprofilemodule_config_config"
+                            "route": "zikulaprofilemodule_property_list"
                         },
                         "user": {
                             "route": "zikulaprofilemodule_profile_display"
@@ -5916,7 +5916,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-04 15:38:16"
+            "time": "2017-07-05 13:32:16"
         },
         {
             "name": "zikula/seabreeze-theme",
