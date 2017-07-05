@@ -28,7 +28,6 @@ use Zikula\Core\Response\PlainResponse;
 use Zikula\GroupsModule\Constant;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Form\RegistrationType\ApproveRegistrationConfirmationType;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
@@ -38,6 +37,7 @@ use Zikula\UsersModule\Form\Type\MailType;
 use Zikula\UsersModule\Form\Type\SearchUserType;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
+use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
@@ -154,7 +154,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
-        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -172,7 +172,7 @@ class UserAdministrationController extends AbstractController
                 $dispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
-                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($user->getUid()));
+                $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
             }
@@ -319,7 +319,7 @@ class UserAdministrationController extends AbstractController
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
                 $validators = $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_VALIDATE, $event)->getData();
                 $hook = new ValidationHook($validators);
-                $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_VALIDATE, $hook);
+                $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook);
                 $validators = $hook->getValidators();
                 if ($validators->hasErrors()) {
                     $valid = false;
@@ -332,7 +332,7 @@ class UserAdministrationController extends AbstractController
                     $eventName = $deletedUser->getActivated() == UsersConstant::ACTIVATED_ACTIVE ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
                     $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
+                    $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                     $this->get('zikula_users_module.user_repository')->removeAndFlush($deletedUser);
                 }
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]));

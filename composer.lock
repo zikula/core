@@ -4552,16 +4552,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.3.2",
+            "version": "v3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "82bd7c039214b34bb5d12c04f996f05f6581c49f"
+                "reference": "82f7cba3c272bcd266f2d27ad6f07832c2eb3a1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/82bd7c039214b34bb5d12c04f996f05f6581c49f",
-                "reference": "82bd7c039214b34bb5d12c04f996f05f6581c49f",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/82f7cba3c272bcd266f2d27ad6f07832c2eb3a1c",
+                "reference": "82f7cba3c272bcd266f2d27ad6f07832c2eb3a1c",
                 "shasum": ""
             },
             "require": {
@@ -4670,7 +4670,6 @@
                     "Symfony\\Bridge\\Doctrine\\": "src/Symfony/Bridge/Doctrine/",
                     "Symfony\\Bridge\\Monolog\\": "src/Symfony/Bridge/Monolog/",
                     "Symfony\\Bridge\\ProxyManager\\": "src/Symfony/Bridge/ProxyManager/",
-                    "Symfony\\Bridge\\Swiftmailer\\": "src/Symfony/Bridge/Swiftmailer/",
                     "Symfony\\Bridge\\Twig\\": "src/Symfony/Bridge/Twig/",
                     "Symfony\\Bundle\\": "src/Symfony/Bundle/",
                     "Symfony\\Component\\": "src/Symfony/Component/"
@@ -4701,7 +4700,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-06-06T04:00:14+00:00"
+            "time": "2017-07-05T13:28:34+00:00"
         },
         {
             "name": "twig/extensions",
@@ -5539,12 +5538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "683475e62d2a1f04010c8f2048b3e5734ac787be"
+                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/683475e62d2a1f04010c8f2048b3e5734ac787be",
-                "reference": "683475e62d2a1f04010c8f2048b3e5734ac787be",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
+                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
                 "shasum": ""
             },
             "require": {
@@ -5562,7 +5561,7 @@
                     ],
                     "capabilities": {
                         "admin": {
-                            "route": "zikulaprofilemodule_config_config"
+                            "route": "zikulaprofilemodule_property_list"
                         },
                         "user": {
                             "route": "zikulaprofilemodule_profile_display"
@@ -5602,7 +5601,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-04 15:38:16"
+            "time": "2017-07-05 13:32:16"
         },
         {
             "name": "zikula/seabreeze-theme",

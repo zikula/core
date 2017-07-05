@@ -47,7 +47,7 @@
         {% for additional_template in additional_templates %}
             {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
         {% endfor %}
-        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::EDIT_FORM')) }}
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}
 
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">

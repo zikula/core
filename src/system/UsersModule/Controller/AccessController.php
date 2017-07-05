@@ -21,12 +21,12 @@ use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
+use Zikula\UsersModule\HookSubscriber\LoginUiHooksSubscriber;
 
 class AccessController extends AbstractController
 {
@@ -112,12 +112,12 @@ class AccessController extends AbstractController
             $user = $this->get('zikula_users_module.user_repository')->find($uid);
             if (isset($user)) {
                 $hook = new ValidationHook();
-                $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_VALIDATE, $hook);
+                $this->get('hook_dispatcher')->dispatch(LoginUiHooksSubscriber::LOGIN_VALIDATE, $hook);
                 $validators = $hook->getValidators();
                 if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
                     $formDataEvent = new UserFormDataEvent($user, $form);
                     $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM_HANDLE, $formDataEvent);
-                    $this->get('hook_dispatcher')->dispatch(HookContainer::LOGIN_PROCESS, new ProcessHook($user));
+                    $this->get('hook_dispatcher')->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
                     $dispatcher->dispatch(AccessEvents::LOGIN_VETO, $event);
                     if (!$event->isPropagationStopped()) {

@@ -49,10 +49,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         $this->setVars($this->getDefaultModvars());
         $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
 
-        // Register hook bundles
-        $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
-        $this->hookApi->installProviderHooks($this->bundle->getMetaData());
-
         // Initialisation successful
         return true;
     }
@@ -144,6 +140,9 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $this->delVar('password_reminder_enabled');
                 $this->delVar('password_reminder_mandatory');
             case '3.0.3':
+                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+                $this->hookApi->uninstallProviderHooks($this->bundle->getMetaData());
+            case '3.0.4':
                 // current version
         }
 

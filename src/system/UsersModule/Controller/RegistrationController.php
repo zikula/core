@@ -26,11 +26,11 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
+use Zikula\UsersModule\HookSubscriber\RegistrationUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 
@@ -122,7 +122,7 @@ class RegistrationController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 // Validate the hook
                 $hook = new ValidationHook(new ValidationProviders());
-                $hookDispatcher->dispatch(HookContainer::REGISTRATION_VALIDATE, $hook);
+                $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_VALIDATE, $hook);
                 $validators = $hook->getValidators();
 
                 if (!$validators->hasErrors()) {
@@ -155,7 +155,7 @@ class RegistrationController extends AbstractController
                     }
                     $formDataEvent = new UserFormDataEvent($userEntity, $form);
                     $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
-                    $hookDispatcher->dispatch(HookContainer::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
+                    $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
                     $canLogIn = $userEntity->getActivated() == UsersConstant::ACTIVATED_ACTIVE;

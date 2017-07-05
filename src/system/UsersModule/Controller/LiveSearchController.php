@@ -16,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\UsersModule\Constant as UsersConstant;
 
 /**
  * @Route("/livesearch")
@@ -41,20 +40,9 @@ class LiveSearchController extends AbstractController
 
         $fragment = $request->query->get('fragment', '');
         $userRepository = $this->get('zikula_users_module.user_repository');
-        $limit = 50;
-        $filter = [
-            'activated' => ['operator' => 'notIn', 'operand' => [
-                UsersConstant::ACTIVATED_PENDING_REG,
-                UsersConstant::ACTIVATED_PENDING_DELETE
-            ]],
-            'uname' => ['operator' => 'like', 'operand' => '%' . $fragment . '%']
-        ];
-        $results = $userRepository->query($filter, ['uname' => 'asc'], $limit);
+        $results = $userRepository->searchActiveUser(['operator' => 'like', 'operand' => '%' . $fragment . '%'], 50);
 
-        // load avatar plugin
-        // @todo fix this as part of https://github.com/zikula-modules/Profile/issues/80
-        include_once 'lib/legacy/viewplugins/function.useravatar.php';
-        $view = \Zikula_View::getInstance('ZikulaUsersModule', false);
+        $profileModule = $this->get('zikula_users_module.internal.profile_module_collector')->getSelected();
 
         $resultItems = [];
         if (count($results) > 0) {
@@ -62,7 +50,7 @@ class LiveSearchController extends AbstractController
                 $resultItems[] = [
                     'uid' => $result->getUid(),
                     'uname' => $result->getUname(),
-                    'avatar' => smarty_function_useravatar(['uid' => $result->getUid(), 'rating' => 'g'], $view)
+                    'avatar' => $profileModule->getAvatar(['uid' => $result->getUid(), ['rating' => 'g']])
                 ];
             }
         }
