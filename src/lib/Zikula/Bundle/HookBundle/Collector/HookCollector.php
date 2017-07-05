@@ -71,7 +71,8 @@ class HookCollector implements HookCollectorInterface
         $providerTypes = $service->getProviderTypes();
         foreach (array_keys($providerTypes) as $type) {
             $existingInStorage = $this->getProviderByAreaAndType($areaName, $type);
-            if (!empty($existingInStorage)) {
+            if (!empty($existingInStorage) && $existingInStorage[0]['owner'] != $service->getOwner()) {
+                // assumes an owner would not mistakenly register same area names in order to allow module upgrade
                 throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
             }
         }
@@ -146,7 +147,8 @@ class HookCollector implements HookCollectorInterface
         // @deprecated
         foreach ($service->getEvents() as $eventName) {
             $existingSubscriber = $this->getSubscriberByEventName($eventName);
-            if (!empty($existingSubscriber)) {
+            if (!empty($existingSubscriber) && $existingSubscriber[0]['owner'] != $service->getOwner()) {
+                // assumes an owner would not mistakenly register same area names in order to allow module upgrade
                 throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
             }
         }
