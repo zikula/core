@@ -32,9 +32,7 @@ class TwigExtension extends AbstractTwigExtension
      */
     public function getFunctions()
     {
-        return [
-            new \Twig_SimpleFunction('zikularoutesmodule_userAvatar', [$this, 'getUserAvatar'], ['is_safe' => ['html']]) // from base class
-        ];
+        return [];
     }
 
     /**
