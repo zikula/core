@@ -27,7 +27,6 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
