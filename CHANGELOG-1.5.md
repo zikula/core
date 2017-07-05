@@ -76,6 +76,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added Core upgrade event (#2785).
     - New FormAwareHook category added.
     - New Non-persisted hooks added (#2784, #2262, #236).
+    - Added avatar display method to ProfileModuleInterface.
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0

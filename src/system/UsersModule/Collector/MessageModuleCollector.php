@@ -87,8 +87,8 @@ class MessageModuleCollector
     {
         if (!empty($this->currentMessageModuleName) && isset($this->messageModules[$this->currentMessageModuleName])) {
             return $this->messageModules[$this->currentMessageModuleName];
-        } else {
-            return new IdentityMessageModule();
         }
+
+        return new IdentityMessageModule();
     }
 }

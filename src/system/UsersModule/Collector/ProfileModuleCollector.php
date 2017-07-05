@@ -106,8 +106,8 @@ class ProfileModuleCollector
     {
         if (!empty($this->currentProfileModuleName) && isset($this->profileModules[$this->currentProfileModuleName])) {
             return $this->profileModules[$this->currentProfileModuleName];
-        } else {
-            return new IdentityProfileModule($this->userRepository, $this->currentUserApi);
         }
+
+        return new IdentityProfileModule($this->userRepository, $this->currentUserApi);
     }
 }
