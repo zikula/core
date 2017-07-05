@@ -43,7 +43,7 @@ services:
     zikula_hook_bundle.collector.hook_collector:
         class: Zikula\Bundle\HookBundle\Collector\HookCollector
         arguments:
-          - "@doctrine.orm.default_entity_manager"]
+          - "@doctrine.orm.default_entity_manager"
           - "%installed%"
 
     zikula_hook_bundle.hook_binding_repository:
