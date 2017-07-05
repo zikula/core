@@ -51,12 +51,21 @@ class HookCollector implements HookCollectorInterface
     private $em;
 
     /**
+     * @var bool
+     */
+    private $installed;
+
+    /**
      * HookCollector constructor.
      * @param EntityManagerInterface $entityManager
+     * @param bool $installed
      */
-    public function __construct(EntityManagerInterface $entityManager = null)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager = null,
+        $installed
+    ) {
         $this->em = $entityManager;
+        $this->installed = $installed;
     }
 
     /**
@@ -68,12 +77,14 @@ class HookCollector implements HookCollectorInterface
             throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
         }
         // @deprecated
-        $providerTypes = $service->getProviderTypes();
-        foreach (array_keys($providerTypes) as $type) {
-            $existingInStorage = $this->getProviderByAreaAndType($areaName, $type);
-            if (!empty($existingInStorage) && $existingInStorage[0]['owner'] != $service->getOwner()) {
-                // assumes an owner would not mistakenly register same area names in order to allow module upgrade
-                throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
+        if ($this->installed) {
+            $providerTypes = $service->getProviderTypes();
+            foreach (array_keys($providerTypes) as $type) {
+                $existingInStorage = $this->getProviderByAreaAndType($areaName, $type);
+                if (!empty($existingInStorage) && $existingInStorage[0]['owner'] != $service->getOwner()) {
+                    // assumes an owner would not mistakenly register same area names in order to allow module upgrade
+                    throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
+                }
             }
         }
         $service->setServiceId($serviceId);
@@ -145,11 +156,13 @@ class HookCollector implements HookCollectorInterface
             throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
         }
         // @deprecated
-        foreach ($service->getEvents() as $eventName) {
-            $existingSubscriber = $this->getSubscriberByEventName($eventName);
-            if (!empty($existingSubscriber) && $existingSubscriber[0]['owner'] != $service->getOwner()) {
-                // assumes an owner would not mistakenly register same area names in order to allow module upgrade
-                throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
+        if ($this->installed) {
+            foreach ($service->getEvents() as $eventName) {
+                $existingSubscriber = $this->getSubscriberByEventName($eventName);
+                if (!empty($existingSubscriber) && $existingSubscriber[0]['owner'] != $service->getOwner()) {
+                    // assumes an owner would not mistakenly register same area names in order to allow module upgrade
+                    throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
+                }
             }
         }
         $this->subscriberHooks[$areaName] = $service;
