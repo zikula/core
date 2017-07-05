@@ -1,6 +1,6 @@
 {
     "name": "zikula/blocks-module",
-    "version": "3.9.7",
+    "version": "3.9.8",
     "description": "Blocks administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -28,7 +28,6 @@
             "oldnames": [],
             "capabilities": {
                 "admin": {"route": "zikulablocksmodule_admin_view"},
-                "hook_subscriber": {"class": "Zikula\\BlocksModule\\Container\\HookContainer"}
             },
             "securityschema": {
                 "ZikulaBlocksModule::": "Block key:Block title:Block ID",
