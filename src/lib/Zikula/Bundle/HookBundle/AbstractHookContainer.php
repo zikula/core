@@ -15,6 +15,10 @@ use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
 use Zikula\Common\Translator\TranslatorTrait;
 
+/**
+ * @deprecated remove at Core-2.0
+ * Class AbstractHookContainer
+ */
 abstract class AbstractHookContainer
 {
     use TranslatorTrait;
