@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\HookBundle\Tests\Api;
+namespace Zikula\Bundle\HookBundle\Tests\Collector;
 
 use Zikula\Bundle\HookBundle\Collector\HookCollector;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
