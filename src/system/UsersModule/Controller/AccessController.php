@@ -24,7 +24,6 @@ use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Constant;
-use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
