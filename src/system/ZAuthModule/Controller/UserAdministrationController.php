@@ -31,6 +31,7 @@ use Zikula\UsersModule\Container\HookContainer;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
+use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -145,7 +146,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
-        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -178,7 +179,7 @@ class UserAdministrationController extends AbstractController
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
                 $hook = new ProcessHook($user->getUid());
-                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, $hook);
+                $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
 
                 if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
@@ -229,7 +230,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
-        $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_VALIDATE, $hook);
+        $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
         if ($form->isValid() && !$validators->hasErrors()) {
@@ -256,7 +257,7 @@ class UserAdministrationController extends AbstractController
 
                 $formDataEvent = new UserFormDataEvent($userEntity, $form);
                 $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
-                $this->get('hook_dispatcher')->dispatch(HookContainer::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
+                $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
             }
