@@ -83,4 +83,4 @@ services:
         arguments:
           - "@translator.default"
         tags:
-            - { name: zikula.hook_subscriber }
+            - { name: zikula.hook_subscriber, areaName: 'subscriber.blocks.ui_hooks.htmlblock.content' }
