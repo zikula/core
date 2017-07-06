@@ -7,7 +7,7 @@
     {{ pageSetVar('title', __('Themes list')) }}
 </h3>
 
-<p class="alert alert-info">{{ __f('Themes control the visual presentation of a site. Zikula ships with a small selection of themes, but many legacy themes are available from the %sub%.', {"%sub%": '<strong><a href="https://github.com/zikula/themes">' ~ __('Zikula Themes Repository') ~ '</a></strong>'})|raw }}</p>
+<p class="alert alert-info">{{ __('Themes control the visual presentation of a site.') }}</p>
 
 <table class="table table-bordered table-striped">
     <colgroup>
@@ -30,7 +30,6 @@
         {% for theme in themes %}
         <tr {% if theme.name|lower == currenttheme|lower %}class="success"{% endif %}>
             <td headers="hName" style="white-space: nowrap">
-                <img src="{{ zasset('@ZikulaThemeModule:images/twig-logo.jpg') }}" title="{{ __('Theme is twig based') }}" class="tooltips" />
                 {% set img = '<img src="' ~ getPreviewImagePath(theme.name) ~ '">' %}
                 <a href="{{ path('home', {"theme":theme.name}) }}" title="{{ theme.displayname }}{% if theme.name|lower == currenttheme|lower %} ({{ __('Default theme') }}){% endif %}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{{ img }}' target="_blank">
                    {{ theme.displayname }}
