@@ -12,7 +12,6 @@
 namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractModule extends AbstractBundle
 {
@@ -21,18 +20,6 @@ abstract class AbstractModule extends AbstractBundle
     public function getNameType()
     {
         return 'Module';
-    }
-
-    public function addStylesheet($name = 'style.css')
-    {
-        try {
-            $moduleStylesheet = $this->getContainer()->get('zikula_core.common.theme.asset_helper')->resolve('@' . $this->getName() . ":css/$name");
-        } catch (\InvalidArgumentException $e) {
-            $moduleStylesheet = '';
-        }
-        if (!empty($moduleStylesheet)) {
-            $this->container->get('zikula_core.common.theme.assets_css')->add([$moduleStylesheet => AssetBag::WEIGHT_DEFAULT]);
-        }
     }
 
 //    /**

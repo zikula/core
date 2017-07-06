@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractBundle extends Bundle
 {
@@ -203,6 +204,22 @@ abstract class AbstractBundle extends Bundle
     public function getContainer()
     {
         return $this->container;
+    }
+
+    /**
+     * Add the bundle's stylesheet to the page assets
+     * @param string $name
+     */
+    public function addStylesheet($name = 'style.css')
+    {
+        try {
+            $styleSheet = $this->getContainer()->get('zikula_core.common.theme.asset_helper')->resolve('@' . $this->getName() . ":css/$name");
+        } catch (\InvalidArgumentException $e) {
+            $styleSheet = '';
+        }
+        if (!empty($styleSheet)) {
+            $this->container->get('zikula_core.common.theme.assets_css')->add([$styleSheet => AssetBag::WEIGHT_DEFAULT]);
+        }
     }
 
     /**
