@@ -160,7 +160,6 @@ class BundleSyncHelper
             /** @var $bundle \Zikula\Core\AbstractModule */
             $bundle = new $bundleClass();
             $bundleMetaData->setTranslator($this->translator);
-            $bundleMetaData->setDirectoryFromBundle($bundle);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
             $bundleVersionArray['capabilities'] = serialize($bundleVersionArray['capabilities']);
             $bundleVersionArray['securityschema'] = serialize($bundleVersionArray['securityschema']);
