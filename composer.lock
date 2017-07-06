@@ -5029,25 +5029,25 @@
         },
         {
             "name": "zikula/andreas08-theme",
-            "version": "2.0.1",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "2106af28c77d73b6ea9844fed22866fb6311ca0a"
+                "reference": "1e2a149a79d0d26663a72d13744db054fe5b5184"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/2106af28c77d73b6ea9844fed22866fb6311ca0a",
-                "reference": "2106af28c77d73b6ea9844fed22866fb6311ca0a",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/1e2a149a79d0d26663a72d13744db054fe5b5184",
+                "reference": "1e2a149a79d0d26663a72d13744db054fe5b5184",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.1"
+                "php": ">=5.5.9"
             },
             "type": "zikula-theme",
             "extra": {
                 "zikula": {
-                    "core-compatibility": ">=1.4.1",
+                    "core-compatibility": ">=2.0.0",
                     "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme",
                     "displayname": "Andreas08",
                     "capabilities": {
@@ -5072,10 +5072,10 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/2.0.1",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.0.0",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2017-06-20T13:45:46+00:00"
+            "time": "2017-07-06T17:11:42+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -5538,12 +5538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1"
+                "reference": "074465c6689a31bf7480c7892d1706477f28ce12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
-                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/074465c6689a31bf7480c7892d1706477f28ce12",
+                "reference": "074465c6689a31bf7480c7892d1706477f28ce12",
                 "shasum": ""
             },
             "require": {
@@ -5601,7 +5601,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-05 13:32:16"
+            "time": "2017-07-05 23:49:40"
         },
         {
             "name": "zikula/seabreeze-theme",
