@@ -19,7 +19,7 @@
         "zikula/profile-module": "dev-master",
         "zikula/oauth-module": "dev-master",
         "zikula/pagelock-module": "dev-master",
-        "zikula/andreas08-theme": "2.*",
+        "zikula/andreas08-theme": "3.*",
         "zikula/seabreeze-theme": "4.*",
 
         "symfony/symfony": "3.*",
