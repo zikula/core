@@ -169,14 +169,14 @@ class BundleSyncHelper
         foreach ($bundleThemes as $name => $themeinfo) {
             if (isset($dbthemes[$name])) {
                 if (($themeinfo['type'] != $dbthemes[$name]['type'])
-                    ||  ($themeinfo['description'] != $dbthemes[$name]['description'])
+                    || ($themeinfo['description'] != $dbthemes[$name]['description'])
                     || ($themeinfo['version'] != $dbthemes[$name]['version'])
                     || ($themeinfo['admin'] != $dbthemes[$name]['admin'])
                     || ($themeinfo['user'] != $dbthemes[$name]['user'])
                     || ($themeinfo['system'] != $dbthemes[$name]['system'])
                     || ($themeinfo['contact'] != $dbthemes[$name]['contact'])
-                    || ($themeinfo['xhtml'] != $dbthemes[$name]['xhtml']))
-                {
+                    || ($themeinfo['xhtml'] != $dbthemes[$name]['xhtml'])
+                ) {
                     $themeinfo['id'] = $dbthemes[$name]['id'];
                     // update item
                     /** @var $item ThemeEntity */
