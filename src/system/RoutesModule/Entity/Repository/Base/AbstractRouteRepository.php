@@ -33,6 +33,11 @@ use Zikula\RoutesModule\Helper\CollectionFilterHelper;
 abstract class AbstractRouteRepository extends SortableRepository
 {
     /**
+     * @var string The main entity class
+     */
+    protected $mainEntityClass = 'Zikula\RoutesModule\Entity\RouteEntity';
+
+    /**
      * @var string The default sorting field/expression
      */
     protected $defaultSortingField = 'sort';
@@ -131,7 +136,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     public function truncateTable(LoggerInterface $logger)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
+        $qb->delete($this->mainEntityClass, 'tbl');
         $query = $qb->getQuery();
     
         $query->execute();
@@ -161,7 +166,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->update('Zikula\RoutesModule\Entity\RouteEntity', 'tbl')
+        $qb->update($this->mainEntityClass, 'tbl')
            ->set('tbl.createdBy', $newUserId)
            ->where('tbl.createdBy = :creator')
            ->setParameter('creator', $userId);
@@ -194,7 +199,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->update('Zikula\RoutesModule\Entity\RouteEntity', 'tbl')
+        $qb->update($this->mainEntityClass, 'tbl')
            ->set('tbl.updatedBy', $newUserId)
            ->where('tbl.updatedBy = :editor')
            ->setParameter('editor', $userId);
@@ -225,7 +230,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('Zikula\RoutesModule\Entity\RouteEntity', 'tbl')
+        $qb->delete($this->mainEntityClass, 'tbl')
            ->where('tbl.createdBy = :creator')
            ->setParameter('creator', $userId);
         $query = $qb->getQuery();
@@ -255,7 +260,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete('Zikula\RoutesModule\Entity\RouteEntity', 'tbl')
+        $qb->delete($this->mainEntityClass, 'tbl')
            ->where('tbl.updatedBy = :editor')
            ->setParameter('editor', $userId);
         $query = $qb->getQuery();
@@ -499,7 +504,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($selection)
-           ->from('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
+           ->from($this->mainEntityClass, 'tbl');
     
         if (!empty($where)) {
             $qb->andWhere($where);
@@ -580,13 +585,8 @@ abstract class AbstractRouteRepository extends SortableRepository
             // but for the slim version we select only the basic fields, and no joins
     
             $selection = 'tbl.id';
-            
-            
             $selection .= ', tbl.path';
-            
-            
             $selection .= ', tbl.sort';
-            
             $useJoins = false;
         }
     
@@ -596,7 +596,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($selection)
-           ->from('Zikula\RoutesModule\Entity\RouteEntity', 'tbl');
+           ->from($this->mainEntityClass, 'tbl');
     
         if (true === $useJoins) {
             $this->addJoinsToFrom($qb);

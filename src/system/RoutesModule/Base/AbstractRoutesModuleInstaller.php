@@ -45,9 +45,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         // set up all our vars with initial values
         $this->setVar('routeEntriesPerPage', '10');
     
-        // create the default data
-        $this->createDefaultData();
-    
         // initialisation successful
         return true;
     }
@@ -127,20 +124,5 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         $classNames[] = 'Zikula\RoutesModule\Entity\RouteEntity';
     
         return $classNames;
-    }
-    
-    /**
-     * Create the default data for ZikulaRoutesModule.
-     *
-     * @return void
-     */
-    protected function createDefaultData()
-    {
-        $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
-        $logger = $this->container->get('logger');
-        $request = $this->container->get('request_stack')->getCurrentRequest();
-        
-        $entityClass = 'Zikula\RoutesModule\Entity\RouteEntity';
-        $entityManager->getRepository($entityClass)->truncateTable($logger);
     }
 }
