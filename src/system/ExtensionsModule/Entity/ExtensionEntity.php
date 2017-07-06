@@ -68,6 +68,7 @@ class ExtensionEntity extends EntityAccess
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @deprecated
      * @var string
      */
     private $directory;
@@ -178,11 +179,19 @@ class ExtensionEntity extends EntityAccess
         $this->description = $description;
     }
 
+    /**
+     * @deprecated
+     * @return string
+     */
     public function getDirectory()
     {
         return $this->directory;
     }
 
+    /**
+     * @deprecated
+     * @param $directory
+     */
     public function setDirectory($directory)
     {
         $this->directory = $directory;

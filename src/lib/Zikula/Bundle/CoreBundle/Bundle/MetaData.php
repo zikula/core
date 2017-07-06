@@ -64,6 +64,9 @@ class MetaData implements \ArrayAccess
 
     private $extensionType;
 
+    /**
+     * @deprecated
+     */
     private $directory;
 
     private $coreCompatibility;
@@ -87,7 +90,7 @@ class MetaData implements \ArrayAccess
         $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
         $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : self::TYPE_MODULE;
-        $this->directory = $json['name'];
+        $this->directory = $json['name']; // @deprecated
         $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; // @todo >=1.4.1
     }
 
@@ -271,6 +274,10 @@ class MetaData implements \ArrayAccess
         }
     }
 
+    /**
+     * @deprecated
+     * @param \Zikula\Core\AbstractBundle $bundle
+     */
     public function setDirectoryFromBundle(\Zikula\Core\AbstractBundle $bundle)
     {
         $parts = explode('/', $bundle->getRelativePath());
@@ -278,6 +285,10 @@ class MetaData implements \ArrayAccess
         $this->directory = implode('/', $parts);
     }
 
+    /**
+     * @deprecated
+     * @return mixed
+     */
     public function getDirectory()
     {
         return $this->directory;
@@ -295,7 +306,7 @@ class MetaData implements \ArrayAccess
         return [
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
-            'directory' => $this->getDirectory(),
+            'directory' => $this->getDirectory(), // @deprecated
             'displayname' => $this->getDisplayName(),
             'description' => $this->getDescription(),
             'version' => $this->getVersion(),
@@ -318,7 +329,7 @@ class MetaData implements \ArrayAccess
         return [
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
-            'directory' => $this->getDirectory(),
+            'directory' => $this->getDirectory(), // @deprecated
             'displayname' => $this->getDisplayName(),
             'oldnames' => $this->getOldNames(),
             'description' => $this->getDescription(),
