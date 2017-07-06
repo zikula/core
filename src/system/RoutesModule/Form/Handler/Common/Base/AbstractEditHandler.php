@@ -364,6 +364,12 @@ abstract class AbstractEditHandler
             return false;
         }
     
+        if ($entity->supportsHookSubscribers()) {
+            // Call form aware display hooks
+            $formHook = $this->hookHelper->callFormDisplayHooks($form, $entity, FormAwareCategory::TYPE_EDIT);
+            $this->templateParameters['formHookTemplates'] = $formHook->getTemplates();
+        }
+    
         // handle form request and check validity constraints of edited entity
         if ($this->form->handleRequest($this->request) && $this->form->isSubmitted()) {
             if ($this->form->isValid()) {

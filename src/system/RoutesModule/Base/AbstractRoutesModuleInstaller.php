@@ -48,7 +48,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         // create the default data
         $this->createDefaultData();
     
-    
         // initialisation successful
         return true;
     }
