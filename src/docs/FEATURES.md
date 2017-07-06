@@ -12,6 +12,7 @@ Features of Zikula
    - Font-Awesome
    - jQuery
  - Hook system for connecting module features with each other
+   - Hooks are a dynamic event dispatcher, allowing the administrator to choose which listeners respond to events.
  - Multi-language & translation support
  - Users and Groups management
    - OAuth integration
