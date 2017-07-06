@@ -230,7 +230,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      */
     public function searchActiveUser(array $unameFilter = [], $limit = 50)
     {
-        if (empty($fragment)) {
+        if (!count($unameFilter)) {
             return [];
         }
 

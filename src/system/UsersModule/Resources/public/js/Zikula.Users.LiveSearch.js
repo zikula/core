@@ -24,10 +24,9 @@ function initUserLiveSearch(fieldName)
             });
         },
         response: function(event, ui) {
+            jQuery('#' + fieldName + 'LiveSearch .empty-message').remove();
             if (ui.content.length === 0) {
                 jQuery('#' + fieldName + 'LiveSearch').append('<div class="empty-message">' + Translator.__('No results found!') + '</div>');
-            } else {
-                jQuery('#' + fieldName + 'LiveSearch .empty-message').remove();
             }
         },
         focus: function(event, ui) {
