@@ -98,7 +98,6 @@ class ThemeEntityRepository extends EntityRepository
             } catch (\Exception $e) {
                 $themeBundle = null;
             }
-            $themesArray[$theme['name']]['isTwigBased'] = isset($themeBundle) ? $themeBundle->isTwigBased() : false;
             $themesArray[$theme['name']]['vars'] = isset($themeBundle) ? $themeBundle->getThemeVars() : false;
         }
 
