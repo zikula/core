@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -28,6 +29,13 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class HookController extends Controller
 {
+    use TranslatorTrait;
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/{moduleName}", options={"zkNoBundlePrefix" = 1})
      * @Method("GET")
@@ -52,13 +60,13 @@ class HookController extends Controller
         }
 
         // find out the capabilities of the module
-        $isProvider = $this->isCapable($moduleName, HookCollectorInterface::HOOK_PROVIDER);
+        $isProvider = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, HookCollectorInterface::HOOK_PROVIDER);
         $templateParameters['isProvider'] = $isProvider;
 
-        $isSubscriber = $this->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBER);
+        $isSubscriber = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBER);
         $templateParameters['isSubscriber'] = $isSubscriber;
 
-        $isSubscriberSelfCapable = $this->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBE_OWN);
+        $isSubscriberSelfCapable = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBE_OWN);
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
@@ -67,7 +75,7 @@ class HookController extends Controller
 
         // get areas of module and bundle titles also
         if ($isProvider) {
-            $providerAreas = $this->get('hook_dispatcher')->getProviderAreasByOwner($moduleName);
+            $providerAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviderAreasByOwner($moduleName);
             $templateParameters['providerAreas'] = $providerAreas;
 
             $providerAreasToTitles = [];
@@ -82,7 +90,7 @@ class HookController extends Controller
         $templateParameters['hooksubscribers'] = [];
 
         if ($isSubscriber) {
-            $subscriberAreas = $this->get('hook_dispatcher')->getSubscriberAreasByOwner($moduleName);
+            $subscriberAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriberAreasByOwner($moduleName);
             $templateParameters['subscriberAreas'] = $subscriberAreas;
 
             $subscriberAreasToTitles = [];
@@ -122,7 +130,7 @@ class HookController extends Controller
                 }
 
                 // get the areas of the subscriber
-                $hooksubscriberAreas = $this->get('hook_dispatcher')->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
+                $hooksubscriberAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
                 $hooksubscribers[$i]['areas'] = $hooksubscriberAreas;
                 $amountOfAvailableSubscriberAreas += count($hooksubscriberAreas);
 
@@ -169,9 +177,6 @@ class HookController extends Controller
                     array_push($currentSorting[$category][$subscriberAreas[$i]], $areaname);
                     $amountOfAttachedProviderAreas++;
 
-                    // get hook provider from it's area
-                    $sbaProviderModule = $this->get('hook_dispatcher')->getOwnerByArea($areaname);
-
                     // get the bundle title
                     if (isset($nonPersistedProviders[$areaname])) {
                         $currentSortingTitles[$areaname] = $nonPersistedProviders[$areaname]->getTitle();
@@ -203,7 +208,7 @@ class HookController extends Controller
                 }
 
                 // get the areas of the provider
-                $hookproviderAreas = $this->get('hook_dispatcher')->getProviderAreasByOwner($hookproviders[$i]['name']);
+                $hookproviderAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviderAreasByOwner($hookproviders[$i]['name']);
                 $hookproviders[$i]['areas'] = $hookproviderAreas;
                 $amountOfAvailableProviderAreas += count($hookproviderAreas);
 
@@ -255,41 +260,42 @@ class HookController extends Controller
      */
     public function toggleSubscribeAreaStatusAction(Request $request)
     {
+        $this->setTranslator($this->get('translator.default'));
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
         $subscriberArea = $request->request->get('subscriberarea', '');
         if (empty($subscriberArea)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__('No subscriber area passed.'));
+            throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = $this->get('hook_dispatcher')->getOwnerByArea($subscriberArea);
+        $subscriber = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriber($subscriberArea);
         if (empty($subscriber)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber]));
+            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('kernel')->isBundle($subscriber)) {
-            throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
+        if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
+            throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // get providerarea from POST
         $providerArea = $request->request->get('providerarea', '');
         if (empty($providerArea)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__('No provider area passed.'));
+            throw new \InvalidArgumentException($this->__('No provider area passed.'));
         }
 
         // get provider module based on area and do some checks
-        $provider = $this->get('hook_dispatcher')->getOwnerByArea($providerArea);
+        $provider = $this->get('zikula_hook_bundle.collector.hook_collector')->getProvider($providerArea);
         if (empty($provider)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid provider.', ['%s' => $provider]));
+            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
         }
-        if (!$this->get('kernel')->isBundle($provider)) {
-            throw new \RuntimeException($this->get('translator.default')->__f('Provider module "%s" is not available.', $provider));
+        if (!$this->get('kernel')->isBundle($provider->getOwner())) {
+            throw new \RuntimeException($this->__f('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
         }
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($provider.'::', '::', ACCESS_ADMIN)) {
+        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($provider->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -300,7 +306,6 @@ class HookController extends Controller
         } else {
             $this->get('hook_dispatcher')->unbindSubscriber($subscriberArea, $providerArea);
         }
-        $this->get('zikula.cache_clearer')->clear('symfony.config');
 
         // ajax response
         $response = [
@@ -310,7 +315,7 @@ class HookController extends Controller
             'subscriberarea_id' => md5($subscriberArea),
             'providerarea' => $providerArea,
             'providerarea_id' => md5($providerArea),
-            'isSubscriberSelfCapable' => $this->isCapable($subscriber, HookCollectorInterface::HOOK_SUBSCRIBE_OWN)
+            'isSubscriberSelfCapable' => $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($subscriber->getOwner(), HookCollectorInterface::HOOK_SUBSCRIBE_OWN)
         ];
 
         return new AjaxResponse($response);
@@ -336,30 +341,31 @@ class HookController extends Controller
      */
     public function changeProviderAreaOrderAction(Request $request)
     {
+        $this->setTranslator($this->get('translator.default'));
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
         $subscriberarea = $request->request->get('subscriberarea', '');
         if (empty($subscriberarea)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__('No subscriber area passed.'));
+            throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = $this->get('hook_dispatcher')->getOwnerByArea($subscriberarea);
+        $subscriber = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriber($subscriberarea);
         if (empty($subscriber)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber]));
+            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('kernel')->isBundle($subscriber)) {
-            throw new \RuntimeException($this->get('translator.default')->__f('Subscriber module "%s" is not available.', $subscriber));
+        if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
+            throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber.'::', '::', ACCESS_ADMIN)) {
+        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // get providers' areas from POST
         $providerarea = $request->request->get('providerarea', '');
         if (!(is_array($providerarea) && count($providerarea) > 0)) {
-            throw new \InvalidArgumentException($this->get('translator.default')->__('Providers\' areas order is not an array.'));
+            throw new \InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
         }
 
         // set sorting
@@ -393,23 +399,14 @@ class HookController extends Controller
         $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
 
-    private function isCapable($moduleName, $type)
-    {
-        $nonPersisted = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, $type);
-        $persisted =  $this->get('zikula_extensions_module.api.capability')->isCapable($moduleName, $type) ? true : false;
-
-        return $nonPersisted || $persisted;
-    }
-
     private function getExtensionsCapableOf($type)
     {
-        $nonPersistedOwners = $this->get('zikula_hook_bundle.collector.hook_collector')->getOwnersCapableOf($type);
-        $nonPersisted = [];
-        foreach ($nonPersistedOwners as $nonPersistedOwner) {
-            $nonPersisted[] = $this->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $nonPersistedOwner]);
+        $owners = $this->get('zikula_hook_bundle.collector.hook_collector')->getOwnersCapableOf($type);
+        $extensions = [];
+        foreach ($owners as $owner) {
+            $extensions[] = $this->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $owner]);
         }
-        $persisted = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf($type);
 
-        return array_merge($nonPersisted, $persisted);
+        return $extensions;
     }
 }
