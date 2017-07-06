@@ -128,23 +128,6 @@ abstract class AbstractRouteRepository extends SortableRepository
     
 
     /**
-     * Helper method for truncating the table.
-     * Used during installation when inserting default data.
-     *
-     * @param LoggerInterface $logger Logger service instance
-     */
-    public function truncateTable(LoggerInterface $logger)
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->delete($this->mainEntityClass, 'tbl');
-        $query = $qb->getQuery();
-    
-        $query->execute();
-    
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'entity' => 'route'];
-        $logger->debug('{app}: Truncated the {entity} entity table.', $logArgs);
-    }
-    /**
      * Updates the creator of all objects created by a certain user.
      *
      * @param integer             $userId         The userid of the creator to be replaced
