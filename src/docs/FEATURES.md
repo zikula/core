@@ -24,6 +24,7 @@ Features of Zikula
  - Dynamic content block creation
  - Menu system based on KnpMenu
  - Centralized search functionality
+ - OAuth module (allows login via Facebook, Github, Google or LinkedIn Credentials)
  - Profile module (user profile information)
  - Legal module (TOS, Age Check, etc)
  - Imagine image manipulation library integration
@@ -42,7 +43,6 @@ Features of Zikula
 ### Community Driven Modules
 
  - See http://zikula.org/library
- - OAuth
  - Pages
  - Scribite (WYSIWYG JS Editor integration)
  - Dizkus (forum)
