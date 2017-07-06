@@ -758,16 +758,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
-     * Determines whether this entity supports hook subscribers or not.
-     *
-     * @return boolean
-     */
-    public function supportsHookSubscribers()
-    {
-        return false;
-    }
-    
-    /**
      * Returns an array of all related objects that need to be persisted after clone.
      * 
      * @param array $objects The objects are added to this array. Default: []

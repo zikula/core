@@ -150,7 +150,6 @@ abstract class AbstractControllerHelper
             $request->attributes->set('_route_params', $routeParams);
         }
         $sortdir = $request->query->get('sortdir', 'ASC');
-        $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
     
         $templateParameters['all'] = 'csv' == $request->getRequestFormat() ? 1 : $request->query->getInt('all', 0);
         $templateParameters['own'] = $request->query->getInt('own', $this->variableApi->get('ZikulaRoutesModule', 'showOnlyOwnEntries', 0));
@@ -177,12 +176,17 @@ abstract class AbstractControllerHelper
                 }
                 if (in_array($fieldName, ['all', 'own', 'num'])) {
                     $templateParameters[$fieldName] = $fieldValue;
+                } elseif ($fieldName == 'sort' && !empty($fieldValue)) {
+                    $sort = $fieldValue;
+                } elseif ($fieldName == 'sortdir' && !empty($fieldValue)) {
+                    $sortdir = $fieldValue;
                 } else {
                     // set filter as query argument, fetched inside repository
                     $request->query->set($fieldName, $fieldValue);
                 }
             }
         }
+        $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
     
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
