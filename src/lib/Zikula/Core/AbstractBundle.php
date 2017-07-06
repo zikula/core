@@ -123,10 +123,7 @@ abstract class AbstractBundle extends Bundle
     /**
      * @return string
      *
-     * @todo remove (drak)
-     * @deprecated This is just a workaround
-     *
-     * @internal This is just required until the transition is over fully to Symfony
+     * @deprecated remove at Core-2.0
      */
     public function getRelativePath()
     {

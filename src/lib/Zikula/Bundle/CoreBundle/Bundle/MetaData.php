@@ -271,6 +271,10 @@ class MetaData implements \ArrayAccess
         }
     }
 
+    /**
+     * @deprecated
+     * @param \Zikula\Core\AbstractBundle $bundle
+     */
     public function setDirectoryFromBundle(\Zikula\Core\AbstractBundle $bundle)
     {
         $parts = explode('/', $bundle->getRelativePath());

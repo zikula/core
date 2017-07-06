@@ -131,6 +131,7 @@ class BundleSyncHelper
                 $themeVersionArray = $themeMetaData->getThemeFilteredVersionInfoArray();
             }
 
+            // @deprecated this block -> remove setting of directory in Core-2.0
             $directory = explode('/', $bundle->getRelativePath());
             array_shift($directory);
             $themeVersionArray['directory'] = implode('/', $directory);

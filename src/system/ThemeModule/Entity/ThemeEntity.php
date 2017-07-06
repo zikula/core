@@ -62,7 +62,7 @@ class ThemeEntity extends EntityAccess
 
     /**
      * theme file system directory
-     *
+     * @deprecated
      * @ORM\Column(type="string", length=64)
      */
     private $directory;
@@ -237,7 +237,7 @@ class ThemeEntity extends EntityAccess
 
     /**
      * get the directory of the theme
-     *
+     * @deprecated
      * @return string the theme's directory
      */
     public function getDirectory()
@@ -247,7 +247,7 @@ class ThemeEntity extends EntityAccess
 
     /**
      * set the directory for the theme
-     *
+     * @deprecated
      * @param string $directory the theme's directory
      */
     public function setDirectory($directory)
