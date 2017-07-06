@@ -1,6 +1,6 @@
 {
     "name": "zikula/extensions-module",
-    "version": "3.7.14",
+    "version": "3.7.15",
     "description": "Extensions administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",

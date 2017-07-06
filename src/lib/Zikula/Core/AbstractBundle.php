@@ -110,22 +110,6 @@ abstract class AbstractBundle extends Bundle
 
     /**
      * @return string
-     *
-     * @todo remove (drak)
-     * @deprecated This is just a workaround
-     *
-     * @internal This is just required until the transition is over fully to Symfony
-     */
-    public function getRelativePath()
-    {
-        $path = str_replace('\\', '/', $this->getPath());
-        preg_match('#/(modules|system|themes)/#', $path, $matches);
-
-        return substr($path, strpos($path, $matches[1]), strlen($path));
-    }
-
-    /**
-     * @return string
      */
     public function getBasePath()
     {
@@ -208,7 +192,6 @@ abstract class AbstractBundle extends Bundle
         if (!empty($this->container)) {
             $metaData->setTranslator($this->container->get('translator'));
         }
-        $metaData->setDirectoryFromBundle($this);
         if (!empty($this->container) && $this->container->getParameter('installed')) {
             // overwrite composer.json settings with dynamic values from extension repository
             $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($this->getName());

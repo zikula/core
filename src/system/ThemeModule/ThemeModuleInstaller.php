@@ -13,6 +13,7 @@ namespace Zikula\ThemeModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
+use Zikula\ThemeModule\Entity\ThemeEntity;
 
 /**
  * Installation and upgrade routines for the theme module.
@@ -28,7 +29,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
     {
         // create the table
         try {
-            $this->schemaTool->create(['Zikula\ThemeModule\Entity\ThemeEntity']);
+            $this->schemaTool->create([ThemeEntity::class]);
         } catch (\Exception $e) {
             return false;
         }
@@ -83,6 +84,9 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
         switch ($oldversion) {
             case '3.4.2':
                 $this->delVar('enable_mobile_theme');
+            case '3.4.3':
+                $this->schemaTool->update([ThemeEntity::class]);
+            case '3.4.4':
                 // future upgrade
         }
 

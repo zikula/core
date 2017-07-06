@@ -14,7 +14,9 @@ namespace Zikula\ExtensionsModule;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 
 /**
  * Installation and upgrade routines for the extensions module.
@@ -29,9 +31,9 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
     public function install()
     {
         $entities = [
-            'Zikula\ExtensionsModule\Entity\ExtensionEntity',
-            'Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity',
-            'Zikula\ExtensionsModule\Entity\ExtensionVarEntity',
+            ExtensionEntity::class,
+            ExtensionDependencyEntity::class,
+            ExtensionVarEntity::class,
         ];
 
         try {
@@ -75,12 +77,14 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
                     $stmt = $connection->executeQuery($sql);
                 }
             case '3.7.11':
-                $this->schemaTool->update(['Zikula\ExtensionsModule\Entity\ExtensionEntity']);
+                $this->schemaTool->update([ExtensionEntity::class]);
             case '3.7.12':
                 $this->setVar('itemsperpage', 40);
             case '3.7.13':
-                $this->schemaTool->update(['Zikula\ExtensionsModule\Entity\ExtensionEntity']);
+                $this->schemaTool->update([ExtensionEntity::class]);
             case '3.7.14':
+                $this->schemaTool->update([ExtensionEntity::class]);
+            case '3.7.15':
                 // future upgrade routines
         }
 

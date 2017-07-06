@@ -110,12 +110,7 @@ class BundleSyncHelper
             /** @var $bundle \Zikula\ThemeModule\AbstractTheme */
             $bundle = new $bundleClass();
             $themeMetaData->setTranslator($this->translator);
-            $themeMetaData->setDirectoryFromBundle($bundle);
             $themeVersionArray = $themeMetaData->getThemeFilteredVersionInfoArray();
-
-            $directory = explode('/', $bundle->getRelativePath());
-            array_shift($directory);
-            $themeVersionArray['directory'] = implode('/', $directory);
 
             // set defaults for all themes
             $themeVersionArray['type'] = 3;

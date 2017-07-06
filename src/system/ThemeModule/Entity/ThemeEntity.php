@@ -61,13 +61,6 @@ class ThemeEntity extends EntityAccess
     private $description;
 
     /**
-     * theme file system directory
-     *
-     * @ORM\Column(type="string", length=64)
-     */
-    private $directory;
-
-    /**
      * theme version
      *
      * @ORM\Column(type="string", length=10)
@@ -233,26 +226,6 @@ class ThemeEntity extends EntityAccess
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-
-    /**
-     * get the directory of the theme
-     *
-     * @return string the theme's directory
-     */
-    public function getDirectory()
-    {
-        return $this->directory;
-    }
-
-    /**
-     * set the directory for the theme
-     *
-     * @param string $directory the theme's directory
-     */
-    public function setDirectory($directory)
-    {
-        $this->directory = $directory;
     }
 
     /**

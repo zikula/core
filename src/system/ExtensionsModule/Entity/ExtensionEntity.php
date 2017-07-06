@@ -67,12 +67,6 @@ class ExtensionEntity extends EntityAccess
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @var string
-     */
-    private $directory;
-
-    /**
      * @ORM\Column(type="string", length=10)
      * @var string
      */
@@ -176,16 +170,6 @@ class ExtensionEntity extends EntityAccess
     public function setDescription($description)
     {
         $this->description = $description;
-    }
-
-    public function getDirectory()
-    {
-        return $this->directory;
-    }
-
-    public function setDirectory($directory)
-    {
-        $this->directory = $directory;
     }
 
     public function getVersion()

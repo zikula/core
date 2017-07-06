@@ -64,8 +64,6 @@ class MetaData implements \ArrayAccess
 
     private $extensionType;
 
-    private $directory;
-
     private $coreCompatibility;
 
     public function __construct($json)
@@ -87,7 +85,6 @@ class MetaData implements \ArrayAccess
         $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
         $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : self::TYPE_MODULE;
-        $this->directory = $json['name'];
         $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; // @todo >=1.4.1
     }
 
@@ -271,18 +268,6 @@ class MetaData implements \ArrayAccess
         }
     }
 
-    public function setDirectoryFromBundle(\Zikula\Core\AbstractBundle $bundle)
-    {
-        $parts = explode('/', $bundle->getRelativePath());
-        array_shift($parts);
-        $this->directory = implode('/', $parts);
-    }
-
-    public function getDirectory()
-    {
-        return $this->directory;
-    }
-
     /**
      * Theme MetaData as array
      *
@@ -295,7 +280,6 @@ class MetaData implements \ArrayAccess
         return [
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
-            'directory' => $this->getDirectory(),
             'displayname' => $this->getDisplayName(),
             'description' => $this->getDescription(),
             'version' => $this->getVersion(),
@@ -318,7 +302,6 @@ class MetaData implements \ArrayAccess
         return [
             'name' => $this->getShortName(),
             'type' => $this->getExtensionType(),
-            'directory' => $this->getDirectory(),
             'displayname' => $this->getDisplayName(),
             'oldnames' => $this->getOldNames(),
             'description' => $this->getDescription(),
