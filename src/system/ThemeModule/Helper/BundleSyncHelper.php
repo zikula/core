@@ -168,17 +168,16 @@ class BundleSyncHelper
         // see if any themes have changed
         foreach ($bundleThemes as $name => $themeinfo) {
             if (isset($dbthemes[$name])) {
-                if (($themeinfo['directory'] != $dbthemes[$name]['directory']) ||
-                    ($themeinfo['type'] != $dbthemes[$name]['type']) ||
-                    ($themeinfo['description'] != $dbthemes[$name]['description']) ||
-                        ($themeinfo['version'] != $dbthemes[$name]['version']) ||
-                        ($themeinfo['admin'] != $dbthemes[$name]['admin']) ||
-                        ($themeinfo['user'] != $dbthemes[$name]['user']) ||
-                        ($themeinfo['system'] != $dbthemes[$name]['system']) ||
-                        ($themeinfo['contact'] != $dbthemes[$name]['contact']) ||
-                        ($themeinfo['xhtml'] != $dbthemes[$name]['xhtml'])) {
+                if (($themeinfo['type'] != $dbthemes[$name]['type'])
+                    ||  ($themeinfo['description'] != $dbthemes[$name]['description'])
+                    || ($themeinfo['version'] != $dbthemes[$name]['version'])
+                    || ($themeinfo['admin'] != $dbthemes[$name]['admin'])
+                    || ($themeinfo['user'] != $dbthemes[$name]['user'])
+                    || ($themeinfo['system'] != $dbthemes[$name]['system'])
+                    || ($themeinfo['contact'] != $dbthemes[$name]['contact'])
+                    || ($themeinfo['xhtml'] != $dbthemes[$name]['xhtml']))
+                {
                     $themeinfo['id'] = $dbthemes[$name]['id'];
-
                     // update item
                     /** @var $item ThemeEntity */
                     $item = $this->themeEntityRepository->find($themeinfo['id']);
