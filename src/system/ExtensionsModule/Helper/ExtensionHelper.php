@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -69,10 +70,10 @@ class ExtensionHelper
             throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
         }
 
-        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
-        if (null === $bundle) {
+        if (!$this->container->get('kernel')->isBundle($extension->getName())) {
             return LegacyExtensionHelper::install($extension);
         }
+        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         $installer = $this->getExtensionInstallerInstance($bundle);
         $result = $installer->install();
@@ -110,10 +111,10 @@ class ExtensionHelper
                 }
         }
 
-        $bundle = $this->container->get('kernel')->getModule($extension->getName());
-        if (null === $bundle) {
+        if (!$this->container->get('kernel')->isBundle($extension->getName())) {
             return LegacyExtensionHelper::upgrade($extension);
         }
+        $bundle = $this->container->get('kernel')->getModule($extension->getName());
 
         // @TODO: Need to check status of Dependencies here to be sure they are met for upgraded extension.
 
@@ -176,10 +177,10 @@ class ExtensionHelper
             return false;
         }
 
-        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
-        if (null === $bundle) {
+        if (!$this->container->get('kernel')->isBundle($extension->getName())) {
             return LegacyExtensionHelper::uninstall($extension);
         }
+        $bundle = $this->container->get('kernel')->getBundle($extension->getName());
 
         // remove hooks
         $this->container->get('zikula_hook_bundle.api.hook')->uninstallProviderHooks($bundle->getMetaData());
@@ -288,5 +289,22 @@ class ExtensionHelper
         }
 
         return $installer;
+    }
+
+    /**
+     * module MetaData only exists for bundle-type modules
+     * @deprecated remove at Core-2.0
+     *
+     * @param ExtensionEntity $extension
+     * @return bool
+     */
+    public function isLegacyModuleType(ExtensionEntity $extension)
+    {
+        $osDir = $extension->getDirectory();
+        $scanner = new Scanner();
+        $scanner->scan(["modules/$osDir"], 1);
+        $modules = $scanner->getModulesMetaData(true);
+
+        return empty($modules[$extension->getName()]);
     }
 }

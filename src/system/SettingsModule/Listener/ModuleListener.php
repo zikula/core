@@ -65,7 +65,8 @@ class ModuleListener implements EventSubscriberInterface
      */
     public function moduleDeactivated(ModuleStateEvent $event)
     {
-        $moduleName = $event->getModule()->getName();
+        $module = $event->getModule();
+        $moduleName = isset($module) ? $event->getModule()->getName() : $event->getModInfo()['name'];
         $startModule = $this->variableApi->getSystemVar('startpage');
 
         if ($moduleName == $startModule) {

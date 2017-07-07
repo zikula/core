@@ -303,7 +303,8 @@ class ModuleController extends AbstractController
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        if (!$this->get('kernel')->isBundle($extension->getName())) {
+        $extensionHelper = $this->get('zikula_extensions_module.extension_helper');
+        if (!$this->get('kernel')->isBundle($extension->getName()) && !$extensionHelper->isLegacyModuleType($extension)) { // @deprecated method call
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
             $this->get('zikula.cache_clearer')->clear('symfony');
 
@@ -326,7 +327,7 @@ class ModuleController extends AbstractController
                     }
                     $dependencyExtensionEntity = $this->get('zikula_extensions_module.extension_repository')->get($unsatisfiedDependencies[$dependencyId]->getModname());
                     if (isset($dependencyExtensionEntity)) {
-                        if (!$this->get('zikula_extensions_module.extension_helper')->install($dependencyExtensionEntity)) {
+                        if (!$extensionHelper->install($dependencyExtensionEntity)) {
                             $this->addFlash('error', $this->__f('Failed to install dependency %s!', ['%s' => $dependencyExtensionEntity->getName()]));
 
                             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
@@ -337,7 +338,7 @@ class ModuleController extends AbstractController
                         $this->addFlash('warning', $this->__f('Warning: could not install selected dependency %s', ['%s' => $unsatisfiedDependencies[$dependencyId]->getModname()]));
                     }
                 }
-                if ($this->get('zikula_extensions_module.extension_helper')->install($extension)) {
+                if ($extensionHelper->install($extension)) {
                     $this->addFlash('status', $this->__f('Done! Installed %s.', ['%s' => $extension->getName()]));
                     $extensionsInstalled[] = $extension->getId();
                     $this->get('zikula.cache_clearer')->clear('symfony');
