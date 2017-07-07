@@ -18,6 +18,11 @@ function initUserLiveSearch(fieldName)
 
     jQuery('#' + fieldName + 'Selector').autocomplete({
         minLength: 1,
+        open: function(event, ui) {
+            jQuery(this).autocomplete('widget').css({
+                width: (jQuery(this).outerWidth() + 'px')
+            });
+        },
         source: function (request, response) {
             jQuery.getJSON(Routing.generate('zikulausersmodule_livesearch_getusers', { fragment: request.term }), function(data) {
                 response(data);
