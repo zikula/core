@@ -36,6 +36,7 @@ class AssetBag implements \IteratorAggregate, \Countable
     const WEIGHT_ZIKULA_JS_TRANSLATOR = 27;
     const WEIGHT_JS_TRANSLATIONS = 28;
     const WEIGHT_DEFAULT = 100;
+    const WEIGHT_THEME_STYLESHEET = 120;
 
     /**
      * array format:
