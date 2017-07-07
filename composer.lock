@@ -5029,16 +5029,16 @@
         },
         {
             "name": "zikula/andreas08-theme",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "1e2a149a79d0d26663a72d13744db054fe5b5184"
+                "reference": "407bd8ba2d51c7a8404cda75c9632173c4b28807"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/1e2a149a79d0d26663a72d13744db054fe5b5184",
-                "reference": "1e2a149a79d0d26663a72d13744db054fe5b5184",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/407bd8ba2d51c7a8404cda75c9632173c4b28807",
+                "reference": "407bd8ba2d51c7a8404cda75c9632173c4b28807",
                 "shasum": ""
             },
             "require": {
@@ -5072,10 +5072,10 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.0.0",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.0.1",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2017-07-06T17:11:42+00:00"
+            "time": "2017-07-07T20:05:50+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -5605,16 +5605,16 @@
         },
         {
             "name": "zikula/seabreeze-theme",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092"
+                "reference": "9fdbc4560521f7b1d6d45571edf1a263156b70f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/2dc2e9558f9ace415566815c292d1645cf86b092",
-                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/9fdbc4560521f7b1d6d45571edf1a263156b70f7",
+                "reference": "9fdbc4560521f7b1d6d45571edf1a263156b70f7",
                 "shasum": ""
             },
             "require": {
@@ -5648,10 +5648,10 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.1",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.2",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2017-04-06T11:44:56+00:00"
+            "time": "2017-07-07T20:08:08+00:00"
         },
         {
             "name": "zikula/wizard",

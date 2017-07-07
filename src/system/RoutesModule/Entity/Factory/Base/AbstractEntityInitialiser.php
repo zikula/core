@@ -44,7 +44,7 @@ abstract class AbstractEntityInitialiser
      */
     public function initRoute(RouteEntity $entity)
     {
-        $listEntries = $this->listEntriesHelper->getRouteTypeEntriesForRoute();
+        $listEntries = $this->listEntriesHelper->getEntries('route', 'routeType');
         $items = [];
         foreach ($listEntries as $listEntry) {
             if (true === $listEntry['default']) {
@@ -53,7 +53,7 @@ abstract class AbstractEntityInitialiser
         }
         $entity->setRouteType(implode('###', $items));
 
-        $listEntries = $this->listEntriesHelper->getSchemesEntriesForRoute();
+        $listEntries = $this->listEntriesHelper->getEntries('route', 'schemes');
         foreach ($listEntries as $listEntry) {
             if (true === $listEntry['default']) {
                 $entity->setSchemes($listEntry['value']);
@@ -61,7 +61,7 @@ abstract class AbstractEntityInitialiser
             }
         }
 
-        $listEntries = $this->listEntriesHelper->getMethodsEntriesForRoute();
+        $listEntries = $this->listEntriesHelper->getEntries('route', 'methods');
         foreach ($listEntries as $listEntry) {
             if (true === $listEntry['default']) {
                 $entity->setMethods($listEntry['value']);

@@ -18,16 +18,20 @@ function initUserLiveSearch(fieldName)
 
     jQuery('#' + fieldName + 'Selector').autocomplete({
         minLength: 1,
+        open: function(event, ui) {
+            jQuery(this).autocomplete('widget').css({
+                width: (jQuery(this).outerWidth() + 'px')
+            });
+        },
         source: function (request, response) {
             jQuery.getJSON(Routing.generate('zikulausersmodule_livesearch_getusers', { fragment: request.term }), function(data) {
                 response(data);
             });
         },
         response: function(event, ui) {
+            jQuery('#' + fieldName + 'LiveSearch .empty-message').remove();
             if (ui.content.length === 0) {
                 jQuery('#' + fieldName + 'LiveSearch').append('<div class="empty-message">' + Translator.__('No results found!') + '</div>');
-            } else {
-                jQuery('#' + fieldName + 'LiveSearch .empty-message').remove();
             }
         },
         focus: function(event, ui) {

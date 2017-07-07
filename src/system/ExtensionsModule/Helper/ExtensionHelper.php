@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -267,5 +268,22 @@ class ExtensionHelper
         }
 
         return $installer;
+    }
+
+    /**
+     * module MetaData only exists for bundle-type modules
+     * @deprecated remove at Core-2.0
+     *
+     * @param ExtensionEntity $extension
+     * @return bool
+     */
+    public function isLegacyModuleType(ExtensionEntity $extension)
+    {
+        $osDir = $extension->getDirectory();
+        $scanner = new Scanner();
+        $scanner->scan(["modules/$osDir"], 1);
+        $modules = $scanner->getModulesMetaData(true);
+
+        return empty($modules[$extension->getName()]);
     }
 }

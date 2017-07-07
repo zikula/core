@@ -125,6 +125,7 @@ class Engine
     public function wrapResponseInTheme(Response $response)
     {
         $activeTheme = $this->getTheme();
+        $activeTheme->addStylesheet();
         $moduleName = $this->requestStack->getMasterRequest()->attributes->get('_zkModule');
         $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
         $filteredResponse = $this->filter($themedResponse);
