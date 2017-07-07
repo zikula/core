@@ -118,9 +118,9 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at dev-master 
-    - zikula/andreas08-theme installed at 2.0.1
+    - zikula/andreas08-theme installed at 2.0.1 and upgraded to 2.0.2
     - zikula/legal-module updated (dev-master)
     - zikula/pagelock-module installed at 1.2.0
     - zikula/profile-module updated (dev-master)
     - zikula/oauth-module installed at 1.0.1
-    - zikula/seabreeze-theme installed at 4.0.1
+    - zikula/seabreeze-theme installed at 4.0.1 and upgraded to 4.0.2
