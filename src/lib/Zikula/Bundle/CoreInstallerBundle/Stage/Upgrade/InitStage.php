@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
