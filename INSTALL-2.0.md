@@ -17,7 +17,7 @@ Install by uploading package
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
 uploading many small files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
-correct permissions (for example: `tar -xpzvf Zikula_Core-1.4.0.build123.tar.gz`) change the filename to match the
+correct permissions (for example: `tar -xpzvf Zikula_Core-2.0.0.build123.tar.gz`) change the filename to match the
 current download.**  Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
 
 Another option can be to download the tar.gz directly from the ci server: e.g. 
@@ -33,10 +33,9 @@ If you installed from a `.zip` archive or uploaded the files via FTP, the permis
 prior to installing so that your webserver's user has write access:
 - `app/config`
 - `app/config/dynamic`
-- `app/cache`
-- `app/logs`
-- `config`
-- `userdata`
+- `bin/cache`
+- `bin/logs`
+- `web`
 
 You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maintain
 the permission settings as they were set correctly by the development team, if you unpacked it using the `-p` flag).
@@ -44,8 +43,8 @@ the permission settings as they were set correctly by the development team, if y
 
 <a name="composer"></a>
 
-Installing using Composer (for dev)
------------------------------------
+Installing using Composer (for developers)
+------------------------------------------
 
 Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
 If cloning via github, composer must be run prior to installation. Run:
@@ -75,7 +74,7 @@ accessible from `localhost:8081`.
 Finish Installation
 -------------------
 
-*Note 1:* One common issue when installing is that the app/cache and app/logs directories must be writable both by the 
+*Note 1:* One common issue when installing is that the bin/cache and bin/logs directories must be writable both by the 
 web server and the command line user. See Symfony's [Setting up or Fixing File Permissions](http://symfony.com/doc/current/setup/file_permissions.html) 
 to see potential solutions to this problem when installing from the CLI.
 
@@ -109,4 +108,3 @@ Follow the prompts and complete that step. When you are finished, you are direct
 $ php app/console zikula:install:finish
 ```
 Open your browser and login!
-

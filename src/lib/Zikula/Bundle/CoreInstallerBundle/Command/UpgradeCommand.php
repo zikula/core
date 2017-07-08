@@ -63,7 +63,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $currentVersion = $this->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
+        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
             $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
             return false;

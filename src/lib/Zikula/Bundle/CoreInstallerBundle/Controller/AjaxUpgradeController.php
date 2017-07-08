@@ -48,8 +48,7 @@ class AjaxUpgradeController extends AbstractController
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
-        $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        $this->currentVersion = (version_compare($currentVersion, '1.4.0', '<')) ? '1.4.0' : $currentVersion;
+        $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function ajaxAction(Request $request)
@@ -88,16 +87,6 @@ class AjaxUpgradeController extends AbstractController
                 }
 
                 return $result;
-            case "installroutes":
-                if (version_compare(ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($this->currentVersion, '1.4.0', '>=')) {
-                    // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
-                    return true;
-                }
-                $this->installModule('ZikulaRoutesModule');
-                $this->reSyncAndActivateModules();
-                $this->setModuleCategory('ZikulaRoutesModule', $this->translator->__('System'));
-
-                return true;
             case "regenthemes":
                 return $this->regenerateThemes();
             case "versionupgrade":
@@ -168,31 +157,6 @@ class AjaxUpgradeController extends AbstractController
          * through each case until the end.
          */
         switch ($this->currentVersion) {
-            case '1.4.0':
-                // perform the following SQL
-                //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F88304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
-                //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F8C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
-                //ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B4338304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
-                //ALTER TABLE categories_registry ADD CONSTRAINT FK_1B56B433C072C1DD FOREIGN KEY (lu_uid) REFERENCES users (uid);
-                //ALTER TABLE sc_intrusion ADD CONSTRAINT FK_8595CE46539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
-                //DROP INDEX gid_uid ON group_membership;
-                //ALTER TABLE group_membership DROP PRIMARY KEY;
-                //ALTER TABLE group_membership ADD CONSTRAINT FK_5132B337539B0606 FOREIGN KEY (uid) REFERENCES users (uid);
-                //ALTER TABLE group_membership ADD CONSTRAINT FK_5132B3374C397118 FOREIGN KEY (gid) REFERENCES groups (gid);
-                //CREATE INDEX IDX_5132B337539B0606 ON group_membership (uid);
-                //CREATE INDEX IDX_5132B3374C397118 ON group_membership (gid);
-                //ALTER TABLE group_membership ADD PRIMARY KEY (uid, gid);
-            case '1.4.1':
-                $request = $this->container->get('request_stack')->getCurrentRequest();
-                if (isset($request) && $request->hasSession()) {
-                    $request->getSession()->remove('interactive_init');
-                    $request->getSession()->remove('interactive_remove');
-                    $request->getSession()->remove('interactive_upgrade');
-                }
-            case '1.4.2':
-                $this->installModule('ZikulaZAuthModule');
-                $this->reSyncAndActivateModules();
-                $this->setModuleCategory('ZikulaZAuthModule', $this->translator->__('Users'));
             case '1.4.3':
                 $this->installModule('ZikulaMenuModule');
                 $this->reSyncAndActivateModules();
@@ -211,6 +175,31 @@ class AjaxUpgradeController extends AbstractController
                 // nothing needed
             case '1.4.7':
                 // nothing needed
+            case '1.5.0':
+                // nothing needed
+            case '1.9.99':
+                // upgrades required for 2.0.0
+                foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows'] as $table) {
+                    $sql = "DROP TABLE $table;";
+                    $connection = $this->container->get('doctrine')->getConnection();
+                    $stmt = $connection->prepare($sql);
+                    $stmt->execute();
+                    $stmt->closeCursor();
+                }
+                $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+                $variableApi->del(VariableApi::CONFIG, 'metakeywords');
+                if ($this->container->getParameter('datadir') == 'userdata') {
+                    $this->yamlManager->setParameter('datadir', 'web/uploads');
+                    $fs = $this->container->get('filesystem');
+                    $src = realpath(__DIR__ . '/../../../../../');
+                    try {
+                        if ($fs->exists($src . '/userdata')) {
+                            $fs->mirror($src . '/userdata', $src . '/web/uploads');
+                        }
+                    } catch (\Exception $e) {
+                        $this->container->get('session')->getFlashBag()->add('info', $this->translator->__('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
+                    }
+                }
         }
 
         // always do this
@@ -270,8 +259,6 @@ class AjaxUpgradeController extends AbstractController
 
         // set the 'start' page information to empty to avoid missing module errors.
         $variableApi->set(VariableApi::CONFIG, 'startpage', '');
-        $variableApi->set(VariableApi::CONFIG, 'starttype', '');
-        $variableApi->set(VariableApi::CONFIG, 'startfunc', '');
         $variableApi->set(VariableApi::CONFIG, 'startargs', '');
 
         return true;
@@ -286,7 +273,7 @@ class AjaxUpgradeController extends AbstractController
         // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
         $this->container->get('cache_clearer')->clear('dev');
         $this->container->get('cache_clearer')->clear('prod');
-        if (in_array($this->container->getParameter('env'), ['dev', 'prod'])) {
+        if (!in_array($this->container->getParameter('env'), ['dev', 'prod'])) {
             // this is just in case anyone ever creates a mode that isn't dev|prod
             $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
         }

@@ -24,7 +24,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
  */
 class UpgraderController extends AbstractController
 {
-    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.3.6';
+    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.4.3';
 
     /**
      * @param Request $request
