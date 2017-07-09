@@ -93,11 +93,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $userRepo = $this->getContainer()->get('zikula_users_module.user_repository');
-        $count = $userRepo->count(['pass' => ['operator' => '!=', 'operand' => '']]);
+        $migrationHelper = $this->getContainer()->get('zikula_core_installer.helper.migration_helper');
+        $count = $migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
             $io->text($this->translator->__('Beginning user migration...'));
-            $migrationHelper = $this->getContainer()->get('zikula_core_installer.helper.migration_helper');
             $userMigrationMaxuid = $migrationHelper->getMaxUnMigratedUid();
             $progressBar = new ProgressBar($output, ceil($count / MigrationHelper::BATCH_LIMIT));
             $progressBar->start();

@@ -41,13 +41,12 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary()
     {
-        $userRepo = $this->container->get('zikula_users_module.user_repository');
-        $this->count = $userRepo->count(['pass' => ['operator' => '!=', 'operand' => '']]);
+        $migrationHelper = $this->container->get('zikula_core_installer.helper.migration_helper');
+        $this->count = $migrationHelper->countUnMigratedUsers();
         if ($this->count > 0) {
             $this->container->get('session')->set('user_migration_count', $this->count);
             $this->container->get('session')->set('user_migration_complete', 0);
             $this->container->get('session')->set('user_migration_lastuid', 0);
-            $migrationHelper = $this->container->get('zikula_core_installer.helper.migration_helper');
             $this->container->get('session')->set('user_migration_maxuid', $migrationHelper->getMaxUnMigratedUid());
 
             return true;

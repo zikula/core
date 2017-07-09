@@ -122,6 +122,16 @@ class MigrationHelper
         return $this->conn->prepare($sql)->fetchColumn();
     }
 
+    public function countUnMigratedUsers()
+    {
+        $sql = $this->conn->createQueryBuilder()
+            ->select('COUNT(u.uid) as count')
+            ->from('users', 'u')
+            ->where("u.pass != ''");
+
+        return $this->conn->prepare($sql)->fetchColumn();
+    }
+
     public function migrateUsers($lastUid)
     {
         $users = $this->getUnMigratedUsers($lastUid, self::BATCH_LIMIT);
