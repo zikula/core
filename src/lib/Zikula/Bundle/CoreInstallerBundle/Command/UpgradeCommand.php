@@ -97,7 +97,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $count = $migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
             $io->text($this->translator->__('Beginning user migration...'));
-            $userMigrationMaxuid = $migrationHelper->getMaxUnMigratedUid();
+            $userMigrationMaxuid = (int) $migrationHelper->getMaxUnMigratedUid();
             $progressBar = new ProgressBar($output, ceil($count / MigrationHelper::BATCH_LIMIT));
             $progressBar->start();
             $lastUid = 0;

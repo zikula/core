@@ -12,12 +12,12 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserAttributeEntity;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -29,7 +29,7 @@ class MigrationHelper
     const BATCH_LIMIT = 25;
 
     /**
-     * @var object
+     * @var Connection
      */
     private $conn;
 
@@ -73,6 +73,17 @@ class MigrationHelper
      */
     public function createMappingFromUser($user, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
     {
+        $query = $this->conn->createQueryBuilder()
+            ->select('*')
+            ->from('zauth_authentication_mapping', 'z')
+            ->where('z.uid = ?')
+            ->setParameter(0, $user['uid'])
+            ->setMaxResults(1);
+        $mapping = $query->execute()->fetchAll();
+        if (count($mapping) > 0) {
+            return null;
+        }
+
         $mapping = new AuthenticationMappingEntity();
         $mapping->setUid($user['uid']);
         $mapping->setUname($user['uname']);
@@ -99,37 +110,41 @@ class MigrationHelper
      */
     private function getUnMigratedUsers($uid, $limit)
     {
-        $sql = $this->conn->createQueryBuilder()
-            ->select()
+        $qb = $this->conn->createQueryBuilder();
+        $query = $qb
+            ->select('*')
             ->from('users', 'u')
-            ->where('u.uid > ?')
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->gt('u.uid', '?'),
+                    $qb->expr()->neq('u.pass', "''")
+                )
+            )
             ->setParameter(0, $uid)
-            ->andWhere("u.pass != ''")
             ->orderBy('u.uid', 'ASC')
-            ->setMaxResults($limit)
-            ->getSQL();
+            ->setMaxResults($limit);
 
-        return $this->conn->prepare($sql)->fetchAll();
+        return $query->execute()->fetchAll();
     }
 
     public function getMaxUnMigratedUid()
     {
-        $sql = $this->conn->createQueryBuilder()
+        $query = $this->conn->createQueryBuilder()
             ->select('MAX(u.uid) as max')
             ->from('users', 'u')
             ->where("u.pass != ''");
 
-        return $this->conn->prepare($sql)->fetchColumn();
+        return $query->execute()->fetchColumn();
     }
 
     public function countUnMigratedUsers()
     {
-        $sql = $this->conn->createQueryBuilder()
+        $query = $this->conn->createQueryBuilder()
             ->select('COUNT(u.uid) as count')
             ->from('users', 'u')
             ->where("u.pass != ''");
 
-        return $this->conn->prepare($sql)->fetchColumn();
+        return $query->execute()->fetchColumn();
     }
 
     public function migrateUsers($lastUid)
@@ -140,11 +155,15 @@ class MigrationHelper
             $mapping = $this->createMappingFromUser($user);
             if ($mapping) {
                 $this->manager->persist($mapping);
-                $attribute = new UserAttributeEntity($user['uid'], UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
-                $this->manager->persist($attribute);
+                $this->conn->insert('users_attributes', [
+                    'user_id' => $user['uid'],
+                    'name' => UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY,
+                    'value' => $mapping->getMethod()
+                ]);
+                $this->conn->update('users', ['pass' => ''], ['uid' => $user['uid']]);
                 $complete++;
             }
-            $lastUid = $user->getUid();
+            $lastUid = $user['uid'];
         }
         $this->manager->flush();
 
