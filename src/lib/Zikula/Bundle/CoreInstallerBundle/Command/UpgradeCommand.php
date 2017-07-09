@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,9 +19,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
@@ -77,11 +78,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $this->bootstrap(false);
 
-        $io->text($this->translator->__('Initializing upgrade...'));
-        $initStage = new InitStage($this->getContainer());
-        $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
-        $io->success($this->translator->__('Initialization complete'));
-
         $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
         $warnings = $controllerHelper->initPhp();
@@ -95,6 +91,26 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             $this->printRequirementsWarnings($output, $checks);
 
             return;
+        }
+
+        $userRepo = $this->getContainer()->get('zikula_users_module.user_repository');
+        $count = $userRepo->count(['pass' => ['operator' => '!=', 'operand' => '']]);
+        if ($count > 0) {
+            $io->text($this->translator->__('Beginning user migration...'));
+            $migrationHelper = $this->getContainer()->get('zikula_core_installer.helper.migration_helper');
+            $userMigrationMaxuid = $migrationHelper->getMaxUnMigratedUid();
+            $progressBar = new ProgressBar($output, ceil($count/MigrationHelper::BATCH_LIMIT));
+            $progressBar->start();
+            $lastUid = 0;
+            do {
+                $result = $migrationHelper->migrateUsers($lastUid);
+                $lastUid = $result['lastUid'];
+                $progressBar->advance();
+            } while ($lastUid < $userMigrationMaxuid);
+            $progressBar->finish();
+            $io->success($this->translator->__('User migration complete!'));
+        } else {
+            $io->text($this->translator->__('There was no need to migrate any users.'));
         }
 
         // get the settings from user input

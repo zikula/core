@@ -19,6 +19,12 @@
         <option key="i18n">false</option>
     </route>
 
+    <route id="zauth_migration" path="/zauth_migration">
+        <default key="_controller">zikula_core_installer.controller.migration:migrateAction</default>
+        <option key="expose">true</option>
+        <option key="i18n">false</option>
+    </route>
+
     <route id="upgrade" path="/upgrade/{stage}">
         <default key="_controller">zikula_core_installer.controller.upgrader:upgradeAction</default>
         <default key="stage">null</default>
