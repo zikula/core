@@ -11,13 +11,13 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Entity\UserAttributeEntity;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -29,14 +29,14 @@ class MigrationHelper
     const BATCH_LIMIT = 25;
 
     /**
-     * @var UserRepositoryInterface
+     * @var object
      */
-    private $userRepository;
+    private $conn;
 
     /**
-     * @var EntityManagerInterface
+     * @var ObjectManager
      */
-    private $entityManager;
+    private $manager;
 
     /**
      * @var ValidatorInterface
@@ -50,42 +50,40 @@ class MigrationHelper
 
     /**
      * MigrationHelper constructor.
-     * @param UserRepositoryInterface $userRepository
-     * @param EntityManagerInterface $entityManager
+     * @param RegistryInterface $registry
      * @param ValidatorInterface $validator
      * @param LoggerInterface $logger
      */
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        EntityManagerInterface $entityManager,
+        RegistryInterface $registry,
         ValidatorInterface $validator,
         LoggerInterface $logger
     ) {
-        $this->userRepository = $userRepository;
-        $this->entityManager = $entityManager;
+        $this->conn = $registry->getConnection();
+        $this->manager = $registry->getManager();
         $this->validator = $validator;
         $this->logger = $logger;
     }
 
     /**
-     * @param UserEntity $userEntity
+     * @param array $user
      * @param string $method
      * @return AuthenticationMappingEntity|null
      * @throws \Exception
      */
-    public function createMappingFromUser(UserEntity $userEntity, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
+    public function createMappingFromUser($user, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
     {
         $mapping = new AuthenticationMappingEntity();
-        $mapping->setUid($userEntity->getUid());
-        $mapping->setUname($userEntity->getUname());
-        $mapping->setEmail($userEntity->getEmail());
+        $mapping->setUid($user['uid']);
+        $mapping->setUname($user['uname']);
+        $mapping->setEmail($user['email']);
         $mapping->setVerifiedEmail(true);
-        $mapping->setPass($userEntity->getPass()); // previously salted and hashed
+        $mapping->setPass($user['pass']); // previously salted and hashed
         $mapping->setMethod($method);
         $errors = $this->validator->validate($mapping);
         if ($errors->count() > 0) {
             foreach ($errors as $error) {
-                $this->logger->addError('Unable to migrate user (' . $userEntity->getUname() . '/' . $userEntity->getEmail() . ') because: ' . $error->getMessage());
+                $this->logger->addError('Unable to migrate user (' . $user['uname'] . '/' . $user['email'] . ') because: ' . $error->getMessage());
             }
 
             return null;
@@ -95,68 +93,50 @@ class MigrationHelper
     }
 
     /**
-     * @param array $criteria
-     * @param string $method
-     * @return AuthenticationMappingEntity
-     */
-    public function createMappingFromUserCriteria(array $criteria, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
-    {
-        $userEntity = $this->userRepository->findOneBy($criteria);
-        $mapping = isset($userEntity) ? $this->createMappingFromUser($userEntity, $method) : null;
-        if (isset($mapping)) {
-            $this->entityManager->persist($mapping);
-            // remove data from UserEntity
-            $userEntity->setPass('');
-            $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
-            $this->entityManager->flush();
-        }
-
-        return $mapping;
-    }
-
-    /**
      * @param $uid
      * @param $limit
-     * @return UserEntity[]
+     * @return array
      */
-    public function getUnMigratedUsers($uid, $limit)
+    private function getUnMigratedUsers($uid, $limit)
     {
-        return $this->entityManager->createQueryBuilder()
-            ->select(UserEntity::class, 'u')
-            ->where('u.uid > :uid')
-            ->setParameter('uid', $uid)
+        $sql = $this->conn->createQueryBuilder()
+            ->select()
+            ->from('users', 'u')
+            ->where('u.uid > ?')
+            ->setParameter(0, $uid)
             ->andWhere("u.pass != ''")
             ->orderBy('u.uid', 'ASC')
             ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
+            ->getSQL();
+
+        return $this->conn->prepare($sql)->fetchAll();
     }
 
     public function getMaxUnMigratedUid()
     {
-        return $this->entityManager->createQueryBuilder()
-            ->select('MAX(u.uid)')
-            ->from(UserEntity::class, 'u')
-            ->where("u.pass != ''")
-            ->getQuery()
-            ->getSingleScalarResult();
+        $sql = $this->conn->createQueryBuilder()
+            ->select('MAX(u.uid) as max')
+            ->from('users', 'u')
+            ->where("u.pass != ''");
+
+        return $this->conn->prepare($sql)->fetchColumn();
     }
 
     public function migrateUsers($lastUid)
     {
-        $userEntities = $this->getUnMigratedUsers($lastUid, self::BATCH_LIMIT);
+        $users = $this->getUnMigratedUsers($lastUid, self::BATCH_LIMIT);
         $complete = 0;
-        foreach ($userEntities as $userEntity) {
-            $mapping = $this->createMappingFromUser($userEntity);
+        foreach ($users as $user) {
+            $mapping = $this->createMappingFromUser($user);
             if ($mapping) {
-                $this->entityManager->persist($mapping);
-                $userEntity->setPass('');
-                $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
+                $this->manager->persist($mapping);
+                $attribute = new UserAttributeEntity($user['uid'], UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
+                $this->manager->persist($attribute);
                 $complete++;
             }
-            $lastUid = $userEntity->getUid();
+            $lastUid = $user->getUid();
         }
-        $this->entityManager->flush();
+        $this->manager->flush();
 
         return ['lastUid' => $lastUid, 'complete' => $complete];
     }

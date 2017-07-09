@@ -22,8 +22,12 @@ class MigrationController extends AbstractController
      */
     public function migrateAction(Request $request)
     {
-        $migrationHelper = $this->container->get('zikula_core_installer.helper.migration_helper');
-        $result = $migrationHelper->migrateUsers($request->getSession()->get('user_migration_lastuid'));
+        if (!$request->getSession()->has('user_migration_lastuid')) {
+            throw new \InvalidArgumentException('user_migration_lastuid is not set in the Session!');
+        }
+        $result = $this->container
+            ->get('zikula_core_installer.helper.migration_helper')
+            ->migrateUsers($request->getSession()->get('user_migration_lastuid'));
         $request->getSession()->set('user_migration_complete', $request->getSession()->get('user_migration_complete') + $result['complete']);
         $request->getSession()->set('user_migration_lastuid', $result['lastUid']);
         if ($request->getSession()->get('user_migration_lastuid') == $request->getSession()->get('user_migration_maxuid')) {
