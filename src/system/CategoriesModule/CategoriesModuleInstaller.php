@@ -75,13 +75,9 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     public function upgrade($oldversion)
     {
         $connection = $this->entityManager->getConnection();
-        try {
-            $this->schemaTool->update([
-                'Zikula\CategoriesModule\Entity\CategoryEntity',
-                'Zikula\CategoriesModule\Entity\CategoriesMapobj',
-            ]);
-        } catch (\Exception $e) {
-        }
+        $this->schemaTool->update([
+            CategoryEntity::class
+        ]);
 
         switch ($oldversion) {
             case '1.1':
