@@ -38,6 +38,8 @@ The following process should be followed for all upgrades even small point relea
 
   - Backup all your files and database.
   - Make a note of your 'startpage' settings as they must be cleared in the upgrade process.
+  - All blocks using MenuTree, ExtMenu or Menu will be DELETED during the upgrade as these are no longer available in Core-2.0.
+    You should consider deleting and replacing these with a MenuModule block before upgrading.
   - Before uploading the new files, delete **all files** in your web root (typically `public_html` or `httpdocs`).
   - Upload the new package and unpack the archive.
     - **Please read** the [INSTALL docs](INSTALL-2.0.md#upload) for detailed information on proper uploading.

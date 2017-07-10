@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
@@ -152,6 +153,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function versionUpgrade()
     {
+        $doctrine = $this->container->get('doctrine');
         /**
          * NOTE: There are *intentionally* no `break` statements within each case here so that the process continues
          * through each case until the end.
@@ -165,7 +167,7 @@ class AjaxUpgradeController extends AbstractController
                 // nothing
             case '1.4.5':
                 // Menu module was introduced in 1.4.4 but not installed on upgrade
-                $schemaManager = $this->container->get('doctrine')->getConnection()->getSchemaManager();
+                $schemaManager = $doctrine->getConnection()->getSchemaManager();
                 if (!$schemaManager->tablesExist(['menu_items'])) {
                     $this->installModule('ZikulaMenuModule');
                     $this->reSyncAndActivateModules();
@@ -181,7 +183,7 @@ class AjaxUpgradeController extends AbstractController
                 // upgrades required for 2.0.0
                 foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows'] as $table) {
                     $sql = "DROP TABLE $table;";
-                    $connection = $this->container->get('doctrine')->getConnection();
+                    $connection = $doctrine->getConnection();
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
                     $stmt->closeCursor();
@@ -200,6 +202,12 @@ class AjaxUpgradeController extends AbstractController
                         $this->container->get('session')->getFlashBag()->add('info', $this->translator->__('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
                     }
                 }
+                // remove legacy blocks
+                $blocksToRemove = $doctrine->getRepository(BlockEntity::class)->findBy(['bkey' => ['Extmenu', 'Menutree', 'Menu']]);
+                foreach ($blocksToRemove as $block) {
+                    $doctrine->getManager()->remove($block);
+                }
+                $doctrine->getManager()->flush();
         }
 
         // always do this
@@ -251,6 +259,7 @@ class AjaxUpgradeController extends AbstractController
             // do nothing on fail
         }
 
+        unset($params['upgrading']);
         $this->yamlManager->setParameters($params);
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
@@ -277,9 +286,6 @@ class AjaxUpgradeController extends AbstractController
             // this is just in case anyone ever creates a mode that isn't dev|prod
             $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
         }
-
-        // finally remove upgrading flag in parameters
-        $this->yamlManager->delParameter('upgrading');
 
         return true;
     }
