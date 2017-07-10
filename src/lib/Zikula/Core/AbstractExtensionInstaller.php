@@ -50,6 +50,11 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $schemaTool;
 
     /**
+     * @var MockHookApi
+     */
+    protected $hookApi;
+
+    /**
      * initialise the extension
      *
      * @return bool true on success, false otherwise
@@ -81,6 +86,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
             // both here and in `setContainer` so either method can be called first.
             $this->container->get('translator')->setDomain($this->bundle->getTranslationDomain());
         }
+        $this->hookApi = new MockHookApi();
     }
 
     /**
@@ -116,5 +122,13 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         }
 
         $this->container->get('session')->getFlashBag()->add($type, $message);
+    }
+}
+
+class MockHookApi
+{
+    public function __call($name, $arguments)
+    {
+        // intentionally do nothing
     }
 }
