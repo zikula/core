@@ -97,7 +97,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                 $configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.1':
                 // install subscriber hooks
-                $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
+//                $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
             case '1.4.2':
                 $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $config = $configDumper->getConfiguration('swiftmailer');
@@ -108,7 +108,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
             case '1.4.3':
                 // nothing
             case '1.5.0':
-                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+//                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
             case '1.5.1':
                 // future upgrade routines
         }
@@ -130,7 +130,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
         $this->delVars();
 
         // uninstall subscriber hooks
-        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
+//        $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
 
         // Deletion successful
         return true;
