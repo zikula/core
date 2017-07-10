@@ -11,11 +11,10 @@
 
 namespace Zikula\BlocksModule\Twig\Extension;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\BlocksModule\BlockHandlerInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\Engine;
 
 class BlocksExtension extends \Twig_Extension
@@ -36,7 +35,7 @@ class BlocksExtension extends \Twig_Extension
     private $themeEngine;
 
     /**
-     * @var KernelInterface
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -50,14 +49,14 @@ class BlocksExtension extends \Twig_Extension
      * @param BlockApiInterface $blockApi
      * @param BlockFilterApiInterface $blockFilterApi
      * @param Engine $themeEngine
-     * @param KernelInterface $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param \Twig_Loader_Filesystem $loader
      */
     public function __construct(
         BlockApiInterface $blockApi,
         BlockFilterApiInterface $blockFilterApi,
         Engine $themeEngine,
-        KernelInterface $kernel,
+        ZikulaHttpKernelInterface $kernel,
         \Twig_Loader_Filesystem $loader
     ) {
         $this->blockApi = $blockApi;
@@ -121,7 +120,7 @@ class BlocksExtension extends \Twig_Extension
         }
         // Check if providing module not available, if block is inactive, if block filter prevents display.
         $moduleInstance = $this->kernel->getModule($block->getModule()->getName());
-        if ((!$block->getActive()) || (!$this->blockFilter->isDisplayable($block))) {
+        if (!isset($moduleInstance) || !$block->getActive() || !$this->blockFilter->isDisplayable($block)) {
             return '';
         }
 
@@ -140,24 +139,22 @@ class BlocksExtension extends \Twig_Extension
             }
         }
 
-        $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
-        $legacy = false;
-        $content = '';
-        if ($blockInstance instanceof BlockHandlerInterface) {
-            $blockProperties = $block->getProperties();
-            $blockProperties['bid'] = $block->getBid();
-            $blockProperties['title'] = $block->getTitle();
-            $blockProperties['position'] = $positionName;
-            $content = $blockInstance->display($blockProperties);
+        try {
+            $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
+        } catch (\RuntimeException $e) {
+            return '';
         }
-        if (!$legacy) {
-            if (isset($moduleInstance)) {
-                // add module stylesheet to page
-                $moduleInstance->addStylesheet();
-            }
+        $blockProperties = $block->getProperties();
+        $blockProperties['bid'] = $block->getBid();
+        $blockProperties['title'] = $block->getTitle();
+        $blockProperties['position'] = $positionName;
+        $content = $blockInstance->display($blockProperties);
+        if (isset($moduleInstance)) {
+            // add module stylesheet to page
+            $moduleInstance->addStylesheet();
         }
 
-        return !empty($content) ? $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName, $legacy) : $content;
+        return $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName);
     }
 
     /**
