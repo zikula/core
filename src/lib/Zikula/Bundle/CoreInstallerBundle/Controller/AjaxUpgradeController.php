@@ -54,7 +54,7 @@ class AjaxUpgradeController extends AbstractController
     public function ajaxAction(Request $request)
     {
         $stage = $request->request->get('stage');
-        $this->container->setParameter('upgrading', true);
+        $this->yamlManager->setParameter('upgrading', true);
         $status = $this->executeStage($stage);
         $response = ['status' => (bool) $status];
         if (is_array($status)) {
@@ -66,7 +66,7 @@ class AjaxUpgradeController extends AbstractController
 
     public function commandLineAction($stage)
     {
-        $this->container->setParameter('upgrading', true);
+        $this->yamlManager->setParameter('upgrading', true);
 
         return $this->executeStage($stage);
     }
