@@ -55,11 +55,6 @@ class SiteOffListener implements EventSubscriberInterface
     private $installed;
 
     /**
-     * @var string
-     */
-    private $currentInstalledVersion;
-
-    /**
      * SiteOffListener constructor.
      * @param VariableApiInterface $variableApi
      * @param PermissionApiInterface $permissionApi
@@ -67,7 +62,6 @@ class SiteOffListener implements EventSubscriberInterface
      * @param \Twig_Environment $twig
      * @param RouterInterface $router
      * @param boolean $installed
-     * @param string $currentInstalledVersion
      */
     public function __construct(
         VariableApiInterface $variableApi,
@@ -75,8 +69,7 @@ class SiteOffListener implements EventSubscriberInterface
         CurrentUserApiInterface $currentUserApi,
         \Twig_Environment $twig,
         RouterInterface $router,
-        $installed,
-        $currentInstalledVersion
+        $installed
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -84,7 +77,6 @@ class SiteOffListener implements EventSubscriberInterface
         $this->twig = $twig;
         $this->router = $router;
         $this->installed = $installed;
-        $this->currentInstalledVersion = $currentInstalledVersion;
     }
 
     public function onKernelRequestSiteOff(GetResponseEvent $event)
@@ -111,13 +103,9 @@ class SiteOffListener implements EventSubscriberInterface
 
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
-        $currentInstalledVersion = !empty($this->currentInstalledVersion)
-            ? $this->currentInstalledVersion
-            : $this->variableApi->getSystemVar('Version_Num');
-        $versionsEqual = (ZikulaKernel::VERSION == $currentInstalledVersion);
 
         // Check for site closed
-        if (($siteOff || !$versionsEqual) && !$hasAdminPerms) {
+        if ($siteOff && !$hasAdminPerms) {
             $hasOnlyOverviewAccess = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
             if ($hasOnlyOverviewAccess && $request->hasSession() && $this->currentUserApi->isLoggedIn()) {
                 $request->getSession()->invalidate(); // logout
@@ -125,9 +113,7 @@ class SiteOffListener implements EventSubscriberInterface
             $response = new PlainResponse();
             $response->headers->add(['HTTP/1.1 503 Service Unavailable']);
             $response->setStatusCode(503);
-            $content = $this->twig->render('CoreBundle:System:siteoff.html.twig', [
-                'versionsEqual' => $versionsEqual,
-            ]);
+            $content = $this->twig->render('CoreBundle:System:siteoff.html.twig');
             $response->setContent($content);
             $event->setResponse($response);
             $event->stopPropagation();
