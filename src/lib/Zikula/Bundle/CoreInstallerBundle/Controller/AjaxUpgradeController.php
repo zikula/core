@@ -203,7 +203,7 @@ class AjaxUpgradeController extends AbstractController
                     }
                 }
                 // remove legacy blocks
-                $blocksToRemove = $doctrine->getRepository(BlockEntity::class)->findBy(['bkey' => ['Extmenu', 'Menutree', 'Menu']]);
+                $blocksToRemove = $doctrine->getRepository(BlockEntity::class)->findBy(['blocktype' => ['Extmenu', 'Menutree', 'Menu']]);
                 foreach ($blocksToRemove as $block) {
                     $doctrine->getManager()->remove($block);
                 }
