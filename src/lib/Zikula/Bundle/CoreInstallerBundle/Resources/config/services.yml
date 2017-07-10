@@ -24,6 +24,10 @@ services:
         class: Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController
         arguments: ["@service_container"]
 
+    zikula_core_installer.controller.migration:
+        class: Zikula\Bundle\CoreInstallerBundle\Controller\MigrationController
+        arguments: ["@service_container"]
+
     zikula_core_installer.controller.ajaxinstall:
         class: Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController
         arguments: ["@service_container"]
