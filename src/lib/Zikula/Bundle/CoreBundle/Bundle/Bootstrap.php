@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
 use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractBundle;
@@ -25,7 +26,7 @@ class Bootstrap
      */
     private $extensionStateMap = [];
 
-    public function getConnection($kernel)
+    public function getConnection(ZikulaKernel $kernel)
     {
         // get bundles from persistence
         $connectionParams = $kernel->getConnectionConfig();
@@ -54,7 +55,7 @@ class Bootstrap
         $res = $conn->executeQuery('SELECT bundlename, bundleclass, autoload, bundlestate, bundletype FROM bundles');
         foreach ($res->fetchAll(\PDO::FETCH_NUM) as $row) {
             list($name, $class, $autoload, $state, $type) = $row;
-            $extensionIsActive = $this->extensionIsActive($kernel, $conn, $class, $type);
+            $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
             if ($extensionIsActive) {
                 try {
                     $autoload = unserialize($autoload);
@@ -84,13 +85,13 @@ class Bootstrap
     /**
      * determine if the extension is active
      *
-     * @param \Doctrine\DBAL\Connection $conn
+     * @param Connection $conn
      * @param string $class
      * @param string $type
      *
      * @return bool
      */
-    private function extensionIsActive(ZikulaKernel $kernel, $conn, $class, $type)
+    private function extensionIsActive(Connection $conn, $class, $type)
     {
         $extensionNameArray = explode('\\', $class);
         $extensionName = array_pop($extensionNameArray);
