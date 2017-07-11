@@ -4,10 +4,10 @@ services:
         arguments: ["@zikula_extensions_module.api.variable"]
 
     zikula_users_module.form.default_registration_type:
-        class: Zikula\UsersModule\Form\RegistrationType\DefaultRegistrationType
+        class: Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType
         arguments: ["@translator.default"]
         tags:
-            - { name: form.type, alias: "Zikula\\UsersModule\\Form\\RegistrationType\\DefaultRegistrationType" }
+            - { name: form.type, alias: "Zikula\\UsersModule\\Form\\Type\\RegistrationType\\DefaultRegistrationType" }
 
     zikula_users_module.form.default_login_type:
         class: Zikula\UsersModule\Form\Type\DefaultLoginType

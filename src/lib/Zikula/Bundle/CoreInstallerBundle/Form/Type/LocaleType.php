@@ -14,7 +14,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
 use Zikula\Common\Translator\IdentityTranslator;
 
 class LocaleType extends AbstractType

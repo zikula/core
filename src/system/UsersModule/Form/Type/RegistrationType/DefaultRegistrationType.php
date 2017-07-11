@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Form\RegistrationType;
+namespace Zikula\UsersModule\Form\Type\RegistrationType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
