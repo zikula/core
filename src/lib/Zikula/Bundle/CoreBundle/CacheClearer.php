@@ -31,7 +31,7 @@ class CacheClearer
      * @param ExposedRoutesExtractorInterface $fosJsRoutesExtractor
      * @param array $routingLocales
      */
-    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass, $fosJsRoutesExtractor, $routingLocales)
+    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass, ExposedRoutesExtractorInterface $fosJsRoutesExtractor, $routingLocales)
     {
         $this->cacheDir = $cacheDir;
         $this->cachePrefix = $cachePrefix;
