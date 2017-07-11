@@ -3,6 +3,7 @@
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -107,17 +108,13 @@ class PurgeVendorsCommand extends Command
         $this
             ->setName('build:purge_vendors')
             ->setDescription('Purges tests from vendors')
-            ->addOption('vendor-dir', null, InputOption::VALUE_REQUIRED, 'Vendors dir, e.g. src/vendor');
+            ->addUsage('my/package/path/vendor')
+            ->addArgument('vendor-dir', InputArgument::REQUIRED, 'Vendors dir, e.g. src/vendor');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dir = $input->getOption('vendor-dir');
-        if (!$dir) {
-            $output->writeln("<error>--vendor-dir= is required</error>");
-            exit(1);
-        }
-
+        $dir = $input->getArgument('vendor-dir');
         $progress = new ProgressBar($output, 4);
         $progress->start();
 
@@ -162,17 +159,13 @@ class FixAutoloaderCommand extends Command
         $this
             ->setName('build:fix_autoloader')
             ->setDescription('Fixes autoloader paths')
-            ->addOption('vendor-dir', null, InputOption::VALUE_REQUIRED, 'Vendors dir, e.g. src/vendor');
+            ->addUsage('my/package/path/vendor')
+            ->addArgument('vendor-dir', InputArgument::REQUIRED, 'Vendors dir, e.g. src/vendor');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dir = $input->getOption('vendor-dir');
-        if (!$dir) {
-            $output->writeln("<error>--vendor-dir= is required</error>");
-            exit(1);
-        }
-
+        $dir = $input->getArgument('vendor-dir');
         $progress = new ProgressBar($output, 3);
         $progress->start();
 
@@ -213,28 +206,17 @@ class BuildPackageCommand extends Command
         $this
             ->setName('build:package')
             ->setDescription('Packages Zikula')
-            ->addOption('name', null, InputOption::VALUE_REQUIRED, 'Build name')
-            ->addOption('source-dir', null, InputOption::VALUE_REQUIRED, 'Build dir')
-            ->addOption('build-dir', null, InputOption::VALUE_REQUIRED, 'Source dir');
+            ->addUsage('my-buildname path/to/my/build/dir path/to/my/source/dir')
+            ->addArgument('name', InputArgument::REQUIRED, 'Build name')
+            ->addArgument('source-dir', InputArgument::REQUIRED, 'Build dir')
+            ->addArgument('build-dir', InputArgument::REQUIRED, 'Source dir');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $name = $input->getOption('name');
-        if (!$name) {
-            $output->writeln("<error>--name= is required</error>");
-            exit(1);
-        }
-        $sourceDir = $input->getOption('source-dir');
-        if (!$sourceDir) {
-            $output->writeln("<error>--source-dir= is required</error>");
-            exit(1);
-        }
-        $buildDir = $input->getOption('build-dir');
-        if (!$buildDir) {
-            $output->writeln("<error>--build-dir= is required</error>");
-            exit(1);
-        }
+        $name = $input->getArgument('name');
+        $sourceDir = $input->getArgument('source-dir');
+        $buildDir = $input->getArgument('build-dir');
 
         $progress = new ProgressBar($output, 17);
         $progress->start();

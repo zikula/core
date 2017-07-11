@@ -77,8 +77,8 @@
         <move file="${workspace}/source/composer.json" tofile="${packagepath}/docs/en/dev/composer.json" overwrite="true"/>
         <move file="${workspace}/source/composer.lock" tofile="${packagepath}/docs/en/dev/composer.lock" overwrite="true"/>
 
-        <exec command="${workspace}/source/build.php build:purge_vendors --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
-        <exec command="${workspace}/source/build.php build:fix_autoloader --vendor-dir ${packagepath}/vendor" checkreturn="true" passthru="true"/>
+        <exec command="${workspace}/source/build.php build:purge_vendors ${packagepath}/vendor" checkreturn="true" passthru="true"/>
+        <exec command="${workspace}/source/build.php build:fix_autoloader ${packagepath}/vendor" checkreturn="true" passthru="true"/>
 
         <!-- install assets -->
         <!--<exec command="php ${packagepath}/bin/console assets:install ${packagepath}/web" checkreturn="true" passthru="true"/>-->
