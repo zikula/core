@@ -58,10 +58,10 @@ class AtomThemeExtension extends \Twig_Extension
 
     public function atomFeedLastUpdated()
     {
-        if (!$this->variableApi->has('ZikulaAtomTheme','atom_feed_lastupdated')) {
-            $this->variableApi->set('ZikulaAtomTheme','atom_feed_lastupdated', time());
+        if (!$this->variableApi->has('ZikulaAtomTheme', 'atom_feed_lastupdated')) {
+            $this->variableApi->set('ZikulaAtomTheme', 'atom_feed_lastupdated', time());
         }
-        $time = $this->variableApi->get('ZikulaAtomTheme','atom_feed_lastupdated');
+        $time = $this->variableApi->get('ZikulaAtomTheme', 'atom_feed_lastupdated');
 
         return strftime('%Y-%m-%dT%H:%M:%SZ', $time);
     }
