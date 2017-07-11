@@ -148,7 +148,7 @@ abstract class AbstractWorkflowHelper
      *
      * @return array List of available workflow actions
      */
-    public function getActionsForObject($entity)
+    public function getActionsForObject(EntityAccess $entity)
     {
         $workflow = $this->workflowRegistry->get($entity);
         $wfActions = $workflow->getEnabledTransitions($entity);
@@ -239,7 +239,7 @@ abstract class AbstractWorkflowHelper
      *
      * @return bool False on error or true if everything worked well
      */
-    public function executeAction($entity, $actionId = '', $recursive = false)
+    public function executeAction(EntityAccess $entity, $actionId = '', $recursive = false)
     {
         $workflow = $this->workflowRegistry->get($entity);
         if (!$workflow->can($entity, $actionId)) {
