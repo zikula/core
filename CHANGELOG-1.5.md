@@ -40,6 +40,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Persisted Hooks are deprecated in favor on tagged, service-defined classes. See docs for more infomation.
         - The concept of hook 'subowners' is fully deprecated and will not be part of Core-2.0
     - `\Zikula\Bundle\HookBundle\Api\HookApi` is deprecated.
+    - \Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCoreListenersPass is deprecated
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
