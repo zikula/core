@@ -160,7 +160,7 @@ class Bootstrap
         }
         if (isset($autoload['files'])) {
             foreach ($autoload['files'] as $path) {
-                include $path;
+                \Composer\Autoload\includeFile($path);
             }
         }
     }
