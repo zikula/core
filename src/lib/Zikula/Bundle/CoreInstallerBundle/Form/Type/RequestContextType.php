@@ -16,7 +16,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
 use Zikula\Common\Translator\IdentityTranslator;
 
 class RequestContextType extends AbstractType

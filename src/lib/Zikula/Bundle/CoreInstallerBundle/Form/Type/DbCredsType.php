@@ -19,7 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
-use Zikula\Bundle\CoreInstallerBundle\Form\AbstractType;
 use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\ValidPdoConnection;
 use Zikula\Common\Translator\IdentityTranslator;
 

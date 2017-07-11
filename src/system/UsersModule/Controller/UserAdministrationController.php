@@ -29,7 +29,7 @@ use Zikula\GroupsModule\Constant;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Form\RegistrationType\ApproveRegistrationConfirmationType;
+use Zikula\UsersModule\Form\Type\RegistrationType\ApproveRegistrationConfirmationType;
 use Zikula\UsersModule\Form\Type\AdminModifyUserType;
 use Zikula\UsersModule\Form\Type\DeleteConfirmationType;
 use Zikula\UsersModule\Form\Type\DeleteType;
