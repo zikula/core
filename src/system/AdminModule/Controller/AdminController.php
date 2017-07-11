@@ -551,7 +551,7 @@ class AdminController extends AbstractController
      *
      * @return int < 0 if module a should be ordered before module b > 0 otherwise
      */
-    public static function _sortAdminModsByOrder($a, $b)
+    private static function _sortAdminModsByOrder($a, $b)
     {
         if ((int)$a['order'] == (int)$b['order']) {
             return strcmp($a['moduleName'], $b['moduleName']);
