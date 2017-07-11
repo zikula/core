@@ -30,10 +30,7 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
     public function __construct(ContainerInterface $container)
     {
         $this->setTranslator($container->get('translator.default'));
-        $this->oldVersion = $container->hasParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM)
-            ? $container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM)
-            : '1.3.x'
-        ;
+        $this->oldVersion = $container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
     public function setTranslator($translator)
@@ -81,41 +78,34 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
                 AjaxInstallerStage::FAIL => $this->__('There was an error upgrading the modules')
             ],
             4 => [
-                AjaxInstallerStage::NAME => 'installroutes',
-                AjaxInstallerStage::PRE => $this->__('Install Zikula Routes Module'),
-                AjaxInstallerStage::DURING => $this->__('Installing Zikula Routes Module'),
-                AjaxInstallerStage::SUCCESS => $this->__('Zikula Routes Module installed'),
-                AjaxInstallerStage::FAIL => $this->__('There was an error installing Zikula Routes Module')
-            ],
-            5 => [
                 AjaxInstallerStage::NAME => 'regenthemes',
                 AjaxInstallerStage::PRE => $this->__('Regenerate themes'),
                 AjaxInstallerStage::DURING => $this->__('Regenerating themes'),
                 AjaxInstallerStage::SUCCESS => $this->__('Themes regenerated'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error regenerating the themes')
             ],
-            6 => [
+            5 => [
                 AjaxInstallerStage::NAME => 'versionupgrade',
                 AjaxInstallerStage::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->oldVersion, '%newVersion%' => ZikulaKernel::VERSION]),
                 AjaxInstallerStage::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxInstallerStage::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
                 AjaxInstallerStage::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION])
             ],
-            7 => [
+            6 => [
                 AjaxInstallerStage::NAME => 'finalizeparameters',
                 AjaxInstallerStage::PRE => $this->__('Finalize parameters'),
                 AjaxInstallerStage::DURING => $this->__('Finalizing parameters'),
                 AjaxInstallerStage::SUCCESS => $this->__('Parameters finalized'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error finalizing the parameters')
             ],
-            8 => [
+            7 => [
                 AjaxInstallerStage::NAME => 'clearcaches',
                 AjaxInstallerStage::PRE => $this->__('Clear caches'),
                 AjaxInstallerStage::DURING => $this->__('Clearing caches'),
                 AjaxInstallerStage::SUCCESS => $this->__('Caches cleared'),
                 AjaxInstallerStage::FAIL => $this->__('There was an error clearing caches')
             ],
-            9 => [
+            8 => [
                 AjaxInstallerStage::NAME => 'finish',
                 AjaxInstallerStage::PRE => $this->__('Finish'),
                 AjaxInstallerStage::DURING => $this->__('Finish'),

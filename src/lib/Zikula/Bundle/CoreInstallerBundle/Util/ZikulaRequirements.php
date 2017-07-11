@@ -68,5 +68,13 @@ class ZikulaRequirements
             $parameters['datadir'] . '/ directory must be writable',
             'Change the permissions of "<strong>' . $parameters['datadir']. '</strong>" directory so that the web server can write into it.'
         );
+        $customParametersPath = $src . '/app/config/custom_parameters.yml';
+        if (file_exists($customParametersPath)) {
+            $symfonyRequirements->addRequirement(
+                is_writable($customParametersPath),
+                'app/config/custom_parameters.yml file must be writable',
+                'Change the permissions of "<strong>app/config/custom_parameters.yml</strong>" so that the web server can write into it.'
+            );
+        }
     }
 }

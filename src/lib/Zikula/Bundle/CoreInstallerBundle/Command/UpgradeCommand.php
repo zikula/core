@@ -11,6 +11,7 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,9 +19,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\InitStage;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
@@ -63,7 +64,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $currentVersion = $this->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<=')) {
+        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
             $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
             return false;
@@ -76,11 +77,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $env]));
 
         $this->bootstrap(false);
-
-        $io->text($this->translator->__('Initializing upgrade...'));
-        $initStage = new InitStage($this->getContainer());
-        $initStage->isNecessary(); // runs init and upgradeUsersModule methods and intentionally returns false
-        $io->success($this->translator->__('Initialization complete'));
 
         $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
 
@@ -95,6 +91,25 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             $this->printRequirementsWarnings($output, $checks);
 
             return;
+        }
+
+        $migrationHelper = $this->getContainer()->get('zikula_core_installer.helper.migration_helper');
+        $count = $migrationHelper->countUnMigratedUsers();
+        if ($count > 0) {
+            $io->text($this->translator->__('Beginning user migration...'));
+            $userMigrationMaxuid = (int) $migrationHelper->getMaxUnMigratedUid();
+            $progressBar = new ProgressBar($output, ceil($count / MigrationHelper::BATCH_LIMIT));
+            $progressBar->start();
+            $lastUid = 0;
+            do {
+                $result = $migrationHelper->migrateUsers($lastUid);
+                $lastUid = $result['lastUid'];
+                $progressBar->advance();
+            } while ($lastUid < $userMigrationMaxuid);
+            $progressBar->finish();
+            $io->success($this->translator->__('User migration complete!'));
+        } else {
+            $io->text($this->translator->__('There was no need to migrate any users.'));
         }
 
         // get the settings from user input
@@ -120,6 +135,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         // write the parameters to custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
+        unset($params['upgrading']);
         $yamlManager->setParameters($params);
 
         // upgrade!

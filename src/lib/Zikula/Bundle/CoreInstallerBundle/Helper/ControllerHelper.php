@@ -122,24 +122,9 @@ class ControllerHelper
         $x = explode('.', str_replace('-', '.', phpversion()));
         $phpVersion = "$x[0].$x[1].$x[2]";
         $results['phpsatisfied'] = version_compare($phpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
-
         $results['pdo'] = extension_loaded('pdo');
         $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
         $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
-        $rootDir = $container->get('kernel')->getRootDir();
-        if ($container->hasParameter('upgrading') && $container->getParameter('upgrading') === true) {
-            $files = [
-                'custom_parameters' => '/config/custom_parameters.yml'
-            ];
-            foreach ($files as $key => $file) {
-                $path = realpath($rootDir . $file);
-                if ($path === false) {
-                    $results[$key] = false;
-                } else {
-                    $results[$key] = is_writable($path);
-                }
-            }
-        }
         $requirementsMet = true;
         foreach ($results as $check) {
             if (!$check) {

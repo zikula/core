@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\Wizard;
 use Zikula\Component\Wizard\WizardCompleteInterface;
@@ -24,7 +25,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
  */
 class UpgraderController extends AbstractController
 {
-    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.3.6';
+    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.4.3';
 
     /**
      * @param Request $request
@@ -48,7 +49,8 @@ class UpgraderController extends AbstractController
             $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
 
-        $this->container->setParameter('upgrading', true);
+        $yamlDumper = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->container->getParameter('locale'));
 
         // begin the wizard

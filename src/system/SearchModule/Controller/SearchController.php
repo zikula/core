@@ -169,7 +169,6 @@ class SearchController extends AbstractController
         $templateParameters = [
             'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
             'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),
-            'metaKeywords' => $variableApi->getSystemVar('metakeywords', $variableApi->getSystemVar('metakeywords_en')),
             'adminMail' => $variableApi->getSystemVar('adminmail'),
             'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
         ];

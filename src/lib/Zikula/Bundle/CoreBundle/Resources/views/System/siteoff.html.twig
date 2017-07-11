@@ -10,13 +10,7 @@
     <div class="container">
         <div class="jumbotron text-center" style="margin-top: 3em;">
             <h1>{{ __('The site is currently off-line.') }}</h1>
-            <h2>
-                {% if versionsEqual %}
-                    {{ getModVar('ZConfig', 'siteoffreason') }}
-                {% else %}
-                    {{ __('This site needs to be upgraded, please contact the system administrator.') }}
-                {% endif %}
-            </h2>
+            <h2>{{ getModVar('ZConfig', 'siteoffreason') }}</h2>
             {{ showflashes() }}
             <p><a class="btn btn-lg btn-primary" href="{{ path('zikulausersmodule_access_login') }}"><i class="fa fa-key"></i> {{ __('Administrator log-in') }}</a></p>
             <p>

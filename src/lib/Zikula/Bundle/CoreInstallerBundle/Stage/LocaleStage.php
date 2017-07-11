@@ -105,12 +105,6 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         } catch (IOException $e) {
             throw new AbortStageException($this->container->get('translator.default')->__f('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
         }
-        // setup multilingual
-        $this->container->setParameter('language_i18n', $data['locale']);
-        $this->container->setParameter('locale', $data['locale']);
-        $this->container->setParameter('multilingual', true);
-        $this->container->setParameter('languageurl', true);
-        $this->container->setParameter('language_detect', false);
         // clear container cache
         $this->container->get('zikula.cache_clearer')->clear('symfony.config');
     }

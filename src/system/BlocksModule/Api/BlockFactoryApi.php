@@ -65,8 +65,8 @@ class BlockFactoryApi implements BlockFactoryApiInterface
         if (!class_exists($blockClassName)) {
             throw new \RuntimeException($this->translator->__f('Block class %c does not exist.', ['%c' => $blockClassName]));
         }
-        if (!is_subclass_of($blockClassName, BlockHandlerInterface::class) && !is_subclass_of($blockClassName, 'Zikula_Controller_AbstractBlock')) {
-            throw new \RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface or be a subclass of Zikula_Controller_AbstractBlock.', $blockClassName));
+        if (!is_subclass_of($blockClassName, BlockHandlerInterface::class)) {
+            throw new \RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
         }
 
         $serviceNameHelper = new ServiceNameHelper();

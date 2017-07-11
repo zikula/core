@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
@@ -22,6 +21,8 @@ class InitStage implements StageInterface, InjectContainerInterface
      * @var ContainerInterface
      */
     private $container;
+
+    private $count;
 
     public function __construct(ContainerInterface $container)
     {
@@ -35,27 +36,27 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateName()
     {
-        return "";
+        return 'ZikulaCoreInstallerBundle:Migration:migrate.html.twig';
     }
 
     public function isNecessary()
     {
-        $currentVersion = $this->container->getParameter(\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare(ZikulaKernel::VERSION, '1.4.0', '>') && version_compare($currentVersion, '1.4.0', '>=')) {
-            // this stage is not necessary to upgrade from 1.4.0 -> 1.4.x
-            return false;
+        $migrationHelper = $this->container->get('zikula_core_installer.helper.migration_helper');
+        $this->count = $migrationHelper->countUnMigratedUsers();
+        if ($this->count > 0) {
+            $this->container->get('session')->set('user_migration_count', $this->count);
+            $this->container->get('session')->set('user_migration_complete', 0);
+            $this->container->get('session')->set('user_migration_lastuid', 0);
+            $this->container->get('session')->set('user_migration_maxuid', $migrationHelper->getMaxUnMigratedUid());
+
+            return true;
         }
-        $this->init();
 
         return false;
     }
 
     public function getTemplateParams()
     {
-        return [];
-    }
-
-    private function init()
-    {
+        return ['count' => $this->count];
     }
 }
