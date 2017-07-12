@@ -248,18 +248,6 @@ class FilterListener implements EventSubscriberInterface
         // file cache
         $config['Caching']['path'] = $config['General']['tmp_path'] . '/default_filter.cache';
 
-        // database cache
-        //$config['Caching']['wrapper'] = 'mysql:host=localhost;port=3306;dbname=phpids';
-        //$config['Caching']['user'] = 'phpids_user';
-        //$config['Caching']['password'] = '123456';
-        //$config['Caching']['table'] = 'cache';
-
-        // memcached
-        //$config['Caching']['host'] = 'localhost';
-        //$config['Caching']['port'] = 11211;
-        //$config['Caching']['key_prefix'] = 'PHPIDS';
-        //$config['Caching']['tmp_path'] = $config['General']['tmp_path'] . '/memcache.timestamp';
-
         return $config;
     }
 
