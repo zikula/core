@@ -11,10 +11,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    zikulasearchmodule.front_controller_listener:
-        alias: zikula_search_module.front_controller_listener
-        deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
-
     zikula_search_module.module_event_listener:
         class: Zikula\SearchModule\Listener\ModuleEventListener
         arguments:
@@ -22,7 +18,3 @@ services:
           - "@zikula_blocks_module.block_repository"
         tags:
             - { name: kernel.event_subscriber }
-
-    zikulasearchmodule.module_event_listener:
-        alias: zikula_search_module.module_event_listener
-        deprecated: The "%service_id%" service is deprecated since 1.4.4 and will be removed in 2.0.
