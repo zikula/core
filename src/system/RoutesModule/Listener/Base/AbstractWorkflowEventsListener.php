@@ -81,7 +81,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *
      * The currently handled request:
      *     `$request = $event->getRequest();`
-     
+     *
      * Access the entity: `$entity = $event->getSubject();`
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
@@ -168,7 +168,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *
      * The currently handled request:
      *     `$request = $event->getRequest();`
-     
+     *
      * Access the entity: `$entity = $event->getSubject();`
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
@@ -211,7 +211,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *
      * The currently handled request:
      *     `$request = $event->getRequest();`
-     
+     *
      * Access the entity: `$entity = $event->getSubject();`
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
@@ -254,7 +254,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *
      * The currently handled request:
      *     `$request = $event->getRequest();`
-     
+     *
      * Access the entity: `$entity = $event->getSubject();`
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
