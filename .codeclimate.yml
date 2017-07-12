@@ -9,7 +9,6 @@ engines:
         php:
   eslint:
     enabled: true
-    channel: "eslint-3"
     checks:
       no-alert:
         enabled: false
@@ -24,6 +23,9 @@ engines:
     enabled: true
   phan:
     enabled: true
+    config:
+      ignore-undeclared: true
+      dead-code-detection: true
   phpcodesniffer:
     enabled: true
   phpmd:
