@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a7f818176f971ec1375c6ce3565cfa2",
+    "content-hash": "ea5b7bc4a5788a5c846304b2dd3a1519",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -2291,16 +2291,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "6.1.0",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "f3a67699a16128b93b2725b5ab56c5e7a20cd8ca"
+                "reference": "8cb1fafc4c8eb4972804308fad66f07756f3f0e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/f3a67699a16128b93b2725b5ab56c5e7a20cd8ca",
-                "reference": "f3a67699a16128b93b2725b5ab56c5e7a20cd8ca",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/8cb1fafc4c8eb4972804308fad66f07756f3f0e3",
+                "reference": "8cb1fafc4c8eb4972804308fad66f07756f3f0e3",
                 "shasum": ""
             },
             "type": "library",
@@ -2324,10 +2324,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.0",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.1",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2017-05-18T11:23:10+00:00"
+            "time": "2017-07-11T16:25:44+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -2651,7 +2651,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -5203,16 +5203,16 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "dev-master",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100"
+                "reference": "ca453f9f13d8b05f86f20ea10be992a782e6f78c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
-                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/ca453f9f13d8b05f86f20ea10be992a782e6f78c",
+                "reference": "ca453f9f13d8b05f86f20ea10be992a782e6f78c",
                 "shasum": ""
             },
             "require": {
@@ -5248,7 +5248,7 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2017-04-25 02:31:25"
+            "time": "2017-03-13T16:52:55+00:00"
         },
         {
             "name": "willdurand/js-translation-bundle",
@@ -7079,7 +7079,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "wikimedia/composer-merge-plugin": 20,
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
         "zikula/filesystem": 20,
