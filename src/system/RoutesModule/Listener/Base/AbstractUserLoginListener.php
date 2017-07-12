@@ -51,6 +51,24 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      *
      * This event does not have any subject, arguments, or data.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function started(GenericEvent $event)
@@ -81,6 +99,24 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      * The arguments of the event are:
      *     `'authentication_method'` will contain the name of the module and the name of the method that was used to authenticated the user.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function veto(GenericEvent $event)
@@ -108,6 +144,24 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
      * programmatically by directly calling the core functions will not see this event fired.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function succeeded(GenericEvent $event)
@@ -134,6 +188,24 @@ abstract class AbstractUserLoginListener implements EventSubscriberInterface
      *
      * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
      * programmatically by directly calling core functions will not see this event fired.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
      *
      * @param GenericEvent $event The event instance
      */

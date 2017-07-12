@@ -13,8 +13,8 @@
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\MailerModule\MailerEvents;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\MailerModule\MailerEvents;
 
 /**
  * Event handler base class for mailing events.
@@ -43,6 +43,24 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
      * return data into `$event->data`, or `$event->setData()`.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function sendMessageStart(GenericEvent $event)
@@ -58,6 +76,24 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * This is a notifyUntil event so the event must `$event->stopPropagation()` and set any
      * return data into `$event->data`, or `$event->setData()`.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function sendMessagePerform(GenericEvent $event)
@@ -70,6 +106,24 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      *
      * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function sendMessageSuccess(GenericEvent $event)
@@ -81,6 +135,24 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * Occurs when a message could not be sent.
      *
      * Invoked from `Zikula\MailerModule\Api\MailerApi#performSending`.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
      *
      * @param GenericEvent $event The event instance
      */
