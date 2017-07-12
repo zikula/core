@@ -13,7 +13,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
 use Michelf\MarkdownExtra;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -28,11 +27,6 @@ class DocController
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
 
     /**
      * @var \Twig_Environment
@@ -58,20 +52,17 @@ class DocController
      * Constructor.
      *
      * @param ZikulaHttpKernelInterface $kernel
-     * @param RouterInterface $router The route generator
      * @param \Twig_Environment $twig
      * @param MarkdownExtra $parser
      * @param TranslatorInterface $translator
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        RouterInterface $router,
         \Twig_Environment $twig,
         MarkdownExtra $parser,
         TranslatorInterface $translator
     ) {
         $this->kernel = $kernel;
-        $this->router = $router;
         $this->twig = $twig;
         $this->parser = $parser;
         $this->translator = $translator;

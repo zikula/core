@@ -11,14 +11,12 @@
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
@@ -38,16 +36,6 @@ class ExceptionListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * @var CacheClearer
-     */
-    private $cacheClearer;
-
-    /**
      * @var CurrentUserApiInterface
      */
     private $currentUserApi;
@@ -59,24 +47,19 @@ class ExceptionListener implements EventSubscriberInterface
 
     /**
      * ExceptionListener constructor.
+     * @param TranslatorInterface $translator
      * @param RouterInterface $router
-     * @param EventDispatcherInterface $dispatcher
-     * @param CacheClearer $cacheClearer
      * @param CurrentUserApiInterface $currentUserApi
      * @param bool $installed
      */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        EventDispatcherInterface $dispatcher,
-        CacheClearer $cacheClearer,
         CurrentUserApiInterface $currentUserApi,
         $installed
     ) {
         $this->translator = $translator;
         $this->router = $router;
-        $this->dispatcher = $dispatcher;
-        $this->cacheClearer = $cacheClearer;
         $this->currentUserApi = $currentUserApi;
         $this->installed = $installed;
     }

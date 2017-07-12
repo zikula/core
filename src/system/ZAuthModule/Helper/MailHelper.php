@@ -82,7 +82,7 @@ class MailHelper
         }
 
         if (empty($subject)) {
-            $subject = $this->generateEmailSubject($notificationType, $templateArgs);
+            $subject = $this->generateEmailSubject($notificationType);
         }
 
         $sitename = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
@@ -96,7 +96,7 @@ class MailHelper
         return $this->mailerApi->sendMessage($message, $subject, $body, $altBody, $html);
     }
 
-    private function generateEmailSubject($notificationType, array $templateArgs = [])
+    private function generateEmailSubject($notificationType)
     {
         $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {

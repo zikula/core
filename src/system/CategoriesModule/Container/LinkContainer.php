@@ -77,9 +77,11 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $method = 'get' . ucfirst(strtolower($type));
-        if (method_exists($this, $method)) {
-            return $this->$method();
+        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            return $this->getAdmin();
+        }
+        if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
+            return $this->getAccount();
         }
 
         return [];
@@ -120,7 +122,7 @@ class LinkContainer implements LinkContainerInterface
     private function getAccount()
     {
         $links = [];
-
+/*
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT) && $this->variableApi->get($this->getBundleName(), 'allowusercatedit', 0)) {
             $request = $this->requestStack->getCurrentRequest();
             $referer = $request->headers->get('referer');
@@ -134,7 +136,7 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'server'
             ];
         }
-
+*/
         return $links;
     }
 

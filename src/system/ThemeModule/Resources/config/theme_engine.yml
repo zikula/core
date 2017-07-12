@@ -6,7 +6,6 @@ services:
           - "@annotation_reader"
           - "@kernel"
           - "@zikula_core.internal.theme_filter"
-          - "@zikula_blocks_module.api.block"
           - "@zikula_extensions_module.api.variable"
 
     zikula_core.common.theme.assets_js:

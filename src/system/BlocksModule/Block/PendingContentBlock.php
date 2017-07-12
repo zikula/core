@@ -34,7 +34,6 @@ class PendingContentBlock extends AbstractBlockHandler
         $content = [];
         foreach ($pendingCollection as $collection) {
             /** @var \Zikula\Common\Collection\Container $collection */
-            $module = $collection->getName();
             foreach ($collection as $item) {
                 if ($item instanceof PendingContentCollectible) {
                     $link = $this->get('router')->generate($item->getRoute(), $item->getArgs());

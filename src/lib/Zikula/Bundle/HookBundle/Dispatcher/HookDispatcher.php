@@ -13,7 +13,6 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
@@ -30,11 +29,6 @@ class HookDispatcher implements HookDispatcherInterface
     private $storage;
 
     /**
-     * @var HookCollectorInterface
-     */
-    private $hookCollector;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $dispatcher;
@@ -43,16 +37,13 @@ class HookDispatcher implements HookDispatcherInterface
      * Constructor.
      *
      * @param StorageInterface $storage
-     * @param HookCollectorInterface $hookCollector
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
         StorageInterface $storage,
-        HookCollectorInterface $hookCollector,
         EventDispatcherInterface $dispatcher
     ) {
         $this->storage = $storage;
-        $this->hookCollector = $hookCollector;
         $this->dispatcher = $dispatcher;
     }
 

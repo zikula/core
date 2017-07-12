@@ -43,8 +43,6 @@ services:
         arguments:
             - "@translator.default"
             - "@router"
-            - "@event_dispatcher"
-            - "@zikula.cache_clearer"
             - "@zikula_users_module.current_user"
             - "%installed%"
         tags:

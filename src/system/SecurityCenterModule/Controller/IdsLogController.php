@@ -274,8 +274,6 @@ class IdsLogController extends AbstractController
 
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $formData = $form->getData();
-
                 // delete all entries
                 $this->get('zikula_securitycenter_module.intrusion_repository')->truncateTable();
 

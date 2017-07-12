@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -29,24 +28,17 @@ class ValidPasswordValidator extends ConstraintValidator
     private $variableApi;
 
     /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
      * @var ValidatorInterface
      */
     private $validator;
 
     /**
      * @param VariableApiInterface $variableApi
-     * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
      */
-    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
+    public function __construct(VariableApiInterface $variableApi, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;
-        $this->translator = $translator;
         $this->validator = $validator;
     }
 

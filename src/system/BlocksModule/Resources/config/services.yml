@@ -47,8 +47,6 @@ services:
     zikula_blocks_module.form.block_type:
         class: Zikula\BlocksModule\Form\Type\BlockType
         arguments:
-          - "@zikula_blocks_module.api.block"
-          - "@zikula_blocks_module.api.block_filter"
           - "@translator.default"
           - "@zikula_settings_module.locale_api"
         tags:

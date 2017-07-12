@@ -133,6 +133,21 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->title;
     }
 
+    public function getLft()
+    {
+        return $this->lft;
+    }
+
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
     public function setRoot(MenuItemEntity $root)
     {
         $this->root = $root;

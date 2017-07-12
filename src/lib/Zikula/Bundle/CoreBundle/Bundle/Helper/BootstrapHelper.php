@@ -94,19 +94,9 @@ class BootstrapHelper
         $this->cacheClearer->clear('symfony.config');
     }
 
-    private function updateState($id, $state = AbstractBundle::STATE_DISABLED)
-    {
-        $this->conn->update('bundles', ['bundlestate' => $state], ['id' => $id]);
-    }
-
     private function removeById($id)
     {
         $this->conn->delete('bundles', ['id' => $id]);
-    }
-
-    private function truncate()
-    {
-        $this->conn->executeQuery('DELETE FROM bundles');
     }
 
     private function insert(MetaData $metadata)

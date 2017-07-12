@@ -19,7 +19,6 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Helper\RegistrationHelper;
 
 class LinkContainer implements LinkContainerInterface
 {
@@ -44,11 +43,6 @@ class LinkContainer implements LinkContainerInterface
     private $variableApi;
 
     /**
-     * @var RegistrationHelper
-     */
-    private $registrationHelper;
-
-    /**
      * @var CurrentUserApiInterface
      */
     private $currentUser;
@@ -65,7 +59,6 @@ class LinkContainer implements LinkContainerInterface
      * @param RouterInterface $router
      * @param PermissionApiInterface $permissionApi
      * @param VariableApiInterface $variableApi
-     * @param RegistrationHelper $registrationHelper
      * @param CurrentUserApiInterface $currentUserApi
      * @param LocaleApiInterface $localeApi
      */
@@ -74,7 +67,6 @@ class LinkContainer implements LinkContainerInterface
         RouterInterface $router,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
-        RegistrationHelper $registrationHelper,
         CurrentUserApiInterface $currentUserApi,
         LocaleApiInterface $localeApi
     ) {
@@ -82,19 +74,8 @@ class LinkContainer implements LinkContainerInterface
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
-        $this->registrationHelper = $registrationHelper;
         $this->currentUser = $currentUserApi;
         $this->localeApi = $localeApi;
-    }
-
-    /**
-     * set the BundleName as required by the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
-    {
-        return 'ZikulaUsersModule';
     }
 
     /**
@@ -106,9 +87,14 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $method = 'get' . ucfirst(strtolower($type));
-        if (method_exists($this, $method)) {
-            return $this->$method();
+        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            return $this->getAdmin();
+        }
+        if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
+            return $this->getAccount();
+        }
+        if (LinkContainerInterface::TYPE_USER == $type) {
+            return $this->getUser();
         }
 
         return [];
@@ -211,5 +197,15 @@ class LinkContainer implements LinkContainerInterface
         ];
 
         return $links;
+    }
+
+    /**
+     * set the BundleName as required by the interface
+     *
+     * @return string
+     */
+    public function getBundleName()
+    {
+        return 'ZikulaUsersModule';
     }
 }

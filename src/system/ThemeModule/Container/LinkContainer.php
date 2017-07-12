@@ -14,7 +14,6 @@ namespace Zikula\ThemeModule\Container;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
@@ -35,24 +34,17 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
-    /**
      * LinkContainer constructor.
      *
      * @param TranslatorInterface $translator    TranslatorInterface service instance
      * @param RouterInterface     $router        RouterInterface service instance
      * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     * @param VariableApiInterface $variableApi   VariableApi service instance
      */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApiInterface $permissionApi, VariableApiInterface $variableApi)
+    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApiInterface $permissionApi)
     {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
     }
 
     /**
@@ -64,9 +56,8 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        $method = 'get' . ucfirst(strtolower($type));
-        if (method_exists($this, $method)) {
-            return $this->$method();
+        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+            return $this->getAdmin();
         }
 
         return [];

@@ -371,11 +371,11 @@ class PagerExtension extends \Twig_Extension
             // predefined abc
             if (strtolower($params['skin']) == 'hu') {
                 // Hungarian
-                $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-                //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
-                //$params['values'] = array('A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z');
+                $pager['names'] = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+                //$params['names'] = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+                //$params['values'] = ['A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z'];
             } else {
-                $alphabet = (defined('_ALPHABET')) ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
+                $alphabet = defined('_ALPHABET') ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
                 $pager['names'] = $pager['values'] = explode(',', $alphabet);
             }
         }
@@ -415,6 +415,7 @@ class PagerExtension extends \Twig_Extension
             }
         }
         unset($pager['args'][$pager['posvar']]);
+
         // begin to fill the output
         $output = '<ul class="'.$params['class'].'">'."\n";
         $style = '';
@@ -426,13 +427,11 @@ class PagerExtension extends \Twig_Extension
                     $active = 'class="active"';
                 } elseif (!empty($params['class_num'])) {
                     $style = ' class="'.$params['class_num'].'"';
-                } else {
-                    $style = '';
                 }
             }
-            $vars[$pager['posvar']] = '';
             $output .= '<li '.$active.'><a '.$style.' href="'.$pagerUrl($pager).'"> -'."\n</a></li>";
         }
+
         $style = '';
         foreach (array_keys($pager['names']) as $i) {
             $active = '';

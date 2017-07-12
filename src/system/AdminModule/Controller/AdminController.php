@@ -309,7 +309,6 @@ class AdminController extends AbstractController
         // get admin capable modules
         $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
         $adminLinks = [];
-        $baseUrl = $request->getBasePath() . '/';
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', 'ANY', ACCESS_EDIT)) {
                 continue;

@@ -16,6 +16,9 @@ use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 
 class DefaultPathSimpleFunction
 {
+    /**
+     * @var CoreExtension
+     */
     private $coreExtension;
 
     /**

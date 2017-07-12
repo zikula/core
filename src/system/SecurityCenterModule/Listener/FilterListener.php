@@ -398,7 +398,7 @@ class FilterListener implements EventSubscriberInterface
             $message->setTo([$adminMail => $this->translator->__('Site Administrator')]);
 
             $subject = $this->translator->__('Intrusion attempt detected by PHPIDS');
-            $rc = $this->mailer->sendMessage($message, $subject, $mailBody);
+            $this->mailer->sendMessage($message, $subject, $mailBody);
         }
 
         if ($usedImpact > $impactThresholdThree) {
@@ -412,7 +412,12 @@ class FilterListener implements EventSubscriberInterface
             }
         }
 
-        // TODO $impactThresholdFour is not considered yet
+        if ($usedImpact > $impactThresholdFour) {
+            // kick user (destroy session)
+            if (!empty($session)) {
+                $session->invalidate();
+            }
+        }
 
         return;
     }
