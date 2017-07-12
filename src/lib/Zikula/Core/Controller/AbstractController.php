@@ -53,7 +53,7 @@ abstract class AbstractController extends Controller
      *
      * @param AbstractBundle $bundle
      */
-    public function boot(AbstractBundle $bundle)
+    protected function boot(AbstractBundle $bundle)
     {
         // load optional bootstrap
         $bootstrap = $bundle->getPath() . "/bootstrap.php";
@@ -185,7 +185,7 @@ abstract class AbstractController extends Controller
      * @param null $user
      * @return bool
      */
-    public function hasPermission($component = null, $instance = null, $level = null, $user = null)
+    protected function hasPermission($component = null, $instance = null, $level = null, $user = null)
     {
         return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a7f818176f971ec1375c6ce3565cfa2",
+    "content-hash": "ea5b7bc4a5788a5c846304b2dd3a1519",
     "packages": [
         {
             "name": "abeautifulsite/jquery-minicolors",
@@ -2291,16 +2291,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "6.1.0",
+            "version": "6.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "f3a67699a16128b93b2725b5ab56c5e7a20cd8ca"
+                "reference": "8cb1fafc4c8eb4972804308fad66f07756f3f0e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/f3a67699a16128b93b2725b5ab56c5e7a20cd8ca",
-                "reference": "f3a67699a16128b93b2725b5ab56c5e7a20cd8ca",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/8cb1fafc4c8eb4972804308fad66f07756f3f0e3",
+                "reference": "8cb1fafc4c8eb4972804308fad66f07756f3f0e3",
                 "shasum": ""
             },
             "type": "library",
@@ -2324,10 +2324,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.0",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.1",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2017-05-18T11:23:10+00:00"
+            "time": "2017-07-11T16:25:44+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -2651,7 +2651,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -5203,16 +5203,16 @@
         },
         {
             "name": "wikimedia/composer-merge-plugin",
-            "version": "dev-master",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wikimedia/composer-merge-plugin.git",
-                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100"
+                "reference": "ca453f9f13d8b05f86f20ea10be992a782e6f78c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
-                "reference": "81c6ac72a24a67383419c7eb9aa2b3437f2ab100",
+                "url": "https://api.github.com/repos/wikimedia/composer-merge-plugin/zipball/ca453f9f13d8b05f86f20ea10be992a782e6f78c",
+                "reference": "ca453f9f13d8b05f86f20ea10be992a782e6f78c",
                 "shasum": ""
             },
             "require": {
@@ -5248,7 +5248,7 @@
                 }
             ],
             "description": "Composer plugin to merge multiple composer.json files",
-            "time": "2017-04-25 02:31:25"
+            "time": "2017-03-13T16:52:55+00:00"
         },
         {
             "name": "willdurand/js-translation-bundle",
@@ -5853,12 +5853,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1"
+                "reference": "074465c6689a31bf7480c7892d1706477f28ce12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
-                "reference": "82e3abccbe3a0c7cebb11960f727a9be3cbff8f1",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/074465c6689a31bf7480c7892d1706477f28ce12",
+                "reference": "074465c6689a31bf7480c7892d1706477f28ce12",
                 "shasum": ""
             },
             "require": {
@@ -5916,20 +5916,20 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-05 13:32:16"
+            "time": "2017-07-05 23:49:40"
         },
         {
             "name": "zikula/seabreeze-theme",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092"
+                "reference": "9fdbc4560521f7b1d6d45571edf1a263156b70f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/2dc2e9558f9ace415566815c292d1645cf86b092",
-                "reference": "2dc2e9558f9ace415566815c292d1645cf86b092",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/9fdbc4560521f7b1d6d45571edf1a263156b70f7",
+                "reference": "9fdbc4560521f7b1d6d45571edf1a263156b70f7",
                 "shasum": ""
             },
             "require": {
@@ -5963,10 +5963,10 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.1",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.0.2",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2017-04-06T11:44:56+00:00"
+            "time": "2017-07-07T20:08:08+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -7079,7 +7079,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "wikimedia/composer-merge-plugin": 20,
         "zikula/legal-module": 20,
         "zikula/profile-module": 20,
         "zikula/filesystem": 20,

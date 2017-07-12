@@ -17,6 +17,8 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 
 /**
  * FilterUtil category filter plugin
+ *
+ * @deprecated
  */
 class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\JoinInterface
 {

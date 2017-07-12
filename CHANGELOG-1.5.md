@@ -40,6 +40,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Persisted Hooks are deprecated in favor on tagged, service-defined classes. See docs for more infomation.
         - The concept of hook 'subowners' is fully deprecated and will not be part of Core-2.0
     - `\Zikula\Bundle\HookBundle\Api\HookApi` is deprecated.
+    - \Zikula\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterCoreListenersPass is deprecated
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
@@ -77,6 +78,7 @@ CHANGELOG - ZIKULA 1.5.x
     - New FormAwareHook category added.
     - New Non-persisted hooks added (#2784, #2262, #236).
     - Added avatar display method to ProfileModuleInterface.
+    - Added auto-inclusion of theme stylesheets (#3548).
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0
@@ -117,9 +119,9 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at dev-master 
-    - zikula/andreas08-theme installed at 2.0.1
+    - zikula/andreas08-theme installed at 2.0.1 and upgraded to 2.0.2
     - zikula/legal-module updated (dev-master)
     - zikula/pagelock-module installed at 1.2.0
     - zikula/profile-module updated (dev-master)
     - zikula/oauth-module installed at 1.0.1
-    - zikula/seabreeze-theme installed at 4.0.1
+    - zikula/seabreeze-theme installed at 4.0.1 and upgraded to 4.0.2

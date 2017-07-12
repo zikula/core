@@ -14,6 +14,9 @@ namespace Zikula\Bundle\CoreBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @deprecated remove at Core-2.0
+ */
 class RegisterCoreListenersPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)

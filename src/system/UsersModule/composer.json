@@ -1,6 +1,6 @@
 {
     "name": "zikula/users-module",
-    "version": "3.0.4",
+    "version": "3.0.5",
     "description": "User account administration",
     "type": "zikula-module",
     "license": "LGPL-3.0+",

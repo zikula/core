@@ -133,7 +133,7 @@ abstract class AbstractControllerHelper
     {
         $contextArgs = ['controller' => $objectType, 'action' => 'view'];
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
-            throw new Exception($this->__('Error! Invalid object type received.'));
+            throw new \Exception($this->__('Error! Invalid object type received.'));
         }
     
         $request = $this->request;
@@ -150,6 +150,8 @@ abstract class AbstractControllerHelper
             $request->attributes->set('_route_params', $routeParams);
         }
         $sortdir = $request->query->get('sortdir', 'ASC');
+        $templateParameters['sort'] = $sort;
+        $templateParameters['sortdir'] = strtolower($sortdir);
     
         $templateParameters['all'] = 'csv' == $request->getRequestFormat() ? 1 : $request->query->getInt('all', 0);
         $templateParameters['own'] = $request->query->getInt('own', $this->variableApi->get('ZikulaRoutesModule', 'showOnlyOwnEntries', 0));
@@ -242,7 +244,7 @@ abstract class AbstractControllerHelper
     {
         $contextArgs = ['controller' => $objectType, 'action' => 'display'];
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
-            throw new Exception($this->__('Error! Invalid object type received.'));
+            throw new \Exception($this->__('Error! Invalid object type received.'));
         }
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
@@ -260,7 +262,7 @@ abstract class AbstractControllerHelper
     {
         $contextArgs = ['controller' => $objectType, 'action' => 'edit'];
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
-            throw new Exception($this->__('Error! Invalid object type received.'));
+            throw new \Exception($this->__('Error! Invalid object type received.'));
         }
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
@@ -278,7 +280,7 @@ abstract class AbstractControllerHelper
     {
         $contextArgs = ['controller' => $objectType, 'action' => 'delete'];
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs))) {
-            throw new Exception($this->__('Error! Invalid object type received.'));
+            throw new \Exception($this->__('Error! Invalid object type received.'));
         }
     
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);

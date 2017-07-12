@@ -25,10 +25,19 @@ use Zikula\RoutesModule\Listener\Base\AbstractInstallerListener;
  */
 class InstallerListener extends AbstractInstallerListener
 {
+    /**
+     * @var CacheClearer
+     */
     private $cacheClearer;
 
+    /**
+     * @var RouteDumperHelper
+     */
     private $routeDumperHelper;
 
+    /**
+     * @var MultilingualRoutingHelper
+     */
     private $multilingualRoutingHelper;
 
     /**
@@ -63,20 +72,12 @@ class InstallerListener extends AbstractInstallerListener
     /**
      * @inheritDoc
      */
-//    public function moduleInstalled(ModuleStateEvent $event)
-//    {
-//        parent::moduleInstalled($event);
-//    }
-
-    /**
-     * @inheritDoc
-     */
     public function modulePostInstalled(ModuleStateEvent $event)
     {
         parent::modulePostInstalled($event);
 
         $module = $event->getModule();
-        if ($module === null) {
+        if (null === $module) {
             return;
         }
 
@@ -98,7 +99,7 @@ class InstallerListener extends AbstractInstallerListener
         parent::moduleUpgraded($event);
 
         $module = $event->getModule();
-        if ($module === null) {
+        if (null === $module) {
             return;
         }
 
@@ -107,22 +108,6 @@ class InstallerListener extends AbstractInstallerListener
         // reload **all** JS routes
         $this->routeDumperHelper->dumpJsRoutes();
     }
-
-    /**
-     * @inheritDoc
-     */
-//    public function moduleEnabled(ModuleStateEvent $event)
-//    {
-//        parent::moduleEnabled($event);
-//    }
-
-    /**
-     * @inheritDoc
-     */
-//    public function moduleDisabled(ModuleStateEvent $event)
-//    {
-//        parent::moduleDisabled($event);
-//    }
 
     /**
      * @inheritDoc
@@ -141,14 +126,6 @@ class InstallerListener extends AbstractInstallerListener
 
         $this->cacheClearer->clear('symfony.routing');
     }
-
-    /**
-     * @inheritDoc
-     */
-//    public function subscriberAreaUninstalled(GenericEvent $event)
-//    {
-//        parent::subscriberAreaUninstalled($event);
-//    }
 
     /**
      * @inheritDoc

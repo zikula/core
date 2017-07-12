@@ -44,7 +44,7 @@
         {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
-    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\Container\\HookContainer::REGISTRATION_FORM')) %}
+    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) %}
     {% if hooks is iterable %}
     <fieldset>
         <legend>{{ __('Further information') }}</legend>

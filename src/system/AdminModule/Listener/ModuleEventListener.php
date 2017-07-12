@@ -86,7 +86,7 @@ class ModuleEventListener implements EventSubscriberInterface
         } else {
             // Legacy for non Symfony-styled modules.
             // @deprecated remove at Core-2.0
-            $modInfo = $event->modinfo;
+            $modInfo = $event->getModInfo();
             $modName = $modInfo['name'];
         }
         $category = $this->variableApi->get('ZikulaAdminModule', 'defaultcategory');
