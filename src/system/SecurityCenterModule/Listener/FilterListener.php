@@ -133,39 +133,36 @@ class FilterListener implements EventSubscriberInterface
         }
 
         // Run IDS if desired
+        $request = $event->getRequest();
         try {
-            $request = [];
+            $requestArgs = [];
             // build request array defining what to scan
-            // @todo: change the order of the arrays to merge if ini_get('variables_order') != 'EGPCS'
-            if (isset($_REQUEST)) {
-                $request['REQUEST'] = $_REQUEST;
+            if ($request->query->count() > 0) {
+                $requestArgs['GET'] = $request->query->all();
             }
-            if (isset($_GET)) {
-                $request['GET'] = $_GET;
+            if ($request->request->count() > 0) {
+                $requestArgs['POST'] = $request->request->all();
             }
-            if (isset($_POST)) {
-                $request['POST'] = $_POST;
+            if ($request->cookies->count() > 0) {
+                $requestArgs['COOKIE'] = $request->cookies->all();
             }
-            if (isset($_COOKIE)) {
-                $request['COOKIE'] = $_COOKIE;
+            if ($request->server->has('HTTP_HOST')) {
+                $requestArgs['HOST'] = $request->server->get('HTTP_HOST');
             }
-            if (isset($_SERVER['HTTP_HOST'])) {
-                $request['HOST'] = $_SERVER['HTTP_HOST'];
+            if ($request->server->has('HTTP_ACCEPT')) {
+                $requestArgs['ACCEPT'] = $request->server->get('HTTP_ACCEPT');
             }
-            if (isset($_SERVER['HTTP_ACCEPT'])) {
-                $request['ACCEPT'] = $_SERVER['HTTP_ACCEPT'];
-            }
-            if (isset($_SERVER['USER_AGENT'])) {
-                $request['USER_AGENT'] = $_SERVER['USER_AGENT'];
+            if ($request->server->has('USER_AGENT')) {
+                $requestArgs['USER_AGENT'] = $request->server->get('USER_AGENT');
             }
             // while i think that REQUEST_URI is unnecessary,
             // the REFERER would be important, but results in way too many false positives
             /*
-            if (isset($_SERVER['REQUEST_URI'])) {
-                $request['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
+            if ($request->server->has('REQUEST_URI')) {
+                $requestArgs['REQUEST_URI'] = $request->server->get('REQUEST_URI');
             }
-            if (isset($_SERVER['HTTP_REFERER'])) {
-                $request['REFERER'] = $_SERVER['HTTP_REFERER'];
+            if ($request->server->has('HTTP_REFERER')) {
+                $requestArgs['REFERER'] = $request->server->get('HTTP_REFERER');
             }
             */
 
@@ -179,13 +176,13 @@ class FilterListener implements EventSubscriberInterface
             $ids = new IdsMonitor($init);
 
             // run the request check and fetch the results
-            $result = $ids->run($request);
+            $result = $ids->run($requestArgs);
 
             // analyze the results
             if (!$result->isEmpty()) {
                 // process the IdsReport object
-                $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
-                $this->processIdsResult($init, $result, $session, $event->getRequest());
+                $session = $request->hasSession() ? $request->getSession() : null;
+                $this->processIdsResult($init, $result, $session, $request);
             } else {
                 // no attack detected
             }

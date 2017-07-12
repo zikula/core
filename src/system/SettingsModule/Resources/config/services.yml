@@ -21,6 +21,7 @@ services:
         class: Zikula\SettingsModule\Api\LocaleApi
         arguments:
             - "@kernel"
+            - "@request_stack"
 
     zikula_settings_module.listener.localized_variable_listener:
         class: Zikula\SettingsModule\Listener\LocalizedVariableListener
