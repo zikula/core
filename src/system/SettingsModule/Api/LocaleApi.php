@@ -12,6 +12,8 @@
 namespace Zikula\SettingsModule\Api;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Intl;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -30,12 +32,19 @@ class LocaleApi implements LocaleApiInterface
     private $kernel;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * LocaleApi constructor.
      * @param ZikulaHttpKernelInterface $kernel
+     * @param RequestStack $requestStack
      */
-    public function __construct(ZikulaHttpKernelInterface $kernel)
+    public function __construct(ZikulaHttpKernelInterface $kernel, RequestStack $requestStack)
     {
         $this->kernel = $kernel;
+        $this->request = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -86,10 +95,10 @@ class LocaleApi implements LocaleApiInterface
     public function getBrowserLocale($default = 'en')
     {
         // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
-        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || php_sapi_name() == "cli") {
+        if (!$this->request->server->has('HTTP_ACCEPT_LANGUAGE') || php_sapi_name() == 'cli') {
             return $default;
         }
-        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
+        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($this->request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
         $availableLanguages = [];
         foreach ($matches as $match) {
             list($languageCode, $unusedVar) = explode('-', $match[1]) + ['', ''];
