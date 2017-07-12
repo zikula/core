@@ -11,6 +11,7 @@
 
 namespace Zikula\SettingsModule\Tests\Api;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
 
@@ -55,7 +56,8 @@ class LocaleApiTest extends \PHPUnit_Framework_TestCase
     {
         $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
         $kernel->method('getRootDir')->willReturn(__DIR__ . $dir);
+        $requestStack = $this->getMockBuilder(RequestStack::class)->getMock();
 
-        return new LocaleApi($kernel);
+        return new LocaleApi($kernel, $requestStack);
     }
 }

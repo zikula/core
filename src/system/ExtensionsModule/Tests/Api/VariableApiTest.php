@@ -11,6 +11,7 @@
 
 namespace Zikula\ExtensionsModule\Tests\Api;
 
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository;
 use Zikula\ExtensionsModule\Tests\Fixtures\BaseBundle\BaseBundle;
@@ -28,7 +29,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $kernel = $this
-            ->getMockBuilder('Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface')
+            ->getMockBuilder(ZikulaHttpKernelInterface::class)
             ->disableOriginalConstructor()
             ->getMock()
         ;
