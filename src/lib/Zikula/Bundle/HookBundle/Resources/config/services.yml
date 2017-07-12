@@ -24,7 +24,6 @@ services:
         class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
         arguments:
             - "@hook_dispatcher.storage"
-            - "@zikula_hook_bundle.collector.hook_collector"
             - "@event_dispatcher"
 
     zikula.hookmanager:
