@@ -21,7 +21,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 /**
  * Event handler implementation class for workflow events.
  *
- * @see /src/docs/Core-2.0/Workflows/WorkflowEvents.md
+ * @see /src/docs/Workflows/WorkflowEvents.md
  */
 abstract class AbstractWorkflowEventsListener implements EventSubscriberInterface
 {
@@ -63,6 +63,32 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * of a specific workflow by listening to `workflow.<workflow_name>.guard` instead.
      * You can even listen to some specific transitions or states for a specific workflow
      * using `workflow.<workflow_name>.guard.<transition_name>`.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     
+     * Access the entity: `$entity = $event->getSubject();`
+     * Access the marking: `$marking = $event->getMarking();`
+     * Access the transition: `$transition = $event->getTransition();`
+     * Example for preventing a transition:
+     *     `if (!$event->isBlocked()) {
+     *         $event->setBlocked(true);
+     *     }`
      *
      * @param GuardEvent $event The event instance
      */
@@ -125,6 +151,28 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * You can even listen to some specific transitions or states for a specific workflow
      * using `workflow.<workflow_name>.leave.<state_name>`.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     
+     * Access the entity: `$entity = $event->getSubject();`
+     * Access the marking: `$marking = $event->getMarking();`
+     * Access the transition: `$transition = $event->getTransition();`
+     *
      * @param Event $event The event instance
      */
     public function onLeave(Event $event)
@@ -146,6 +194,28 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * You can even listen to some specific transitions or states for a specific workflow
      * using `workflow.<workflow_name>.transition.<transition_name>`.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     
+     * Access the entity: `$entity = $event->getSubject();`
+     * Access the marking: `$marking = $event->getMarking();`
+     * Access the transition: `$transition = $event->getTransition();`
+     *
      * @param Event $event The event instance
      */
     public function onTransition(Event $event)
@@ -166,6 +236,28 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * of a specific workflow by listening to `workflow.<workflow_name>.enter` instead.
      * You can even listen to some specific transitions or states for a specific workflow
      * using `workflow.<workflow_name>.enter.<state_name>`.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     
+     * Access the entity: `$entity = $event->getSubject();`
+     * Access the marking: `$marking = $event->getMarking();`
+     * Access the transition: `$transition = $event->getTransition();`
      *
      * @param Event $event The event instance
      */

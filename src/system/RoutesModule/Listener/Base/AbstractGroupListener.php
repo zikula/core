@@ -43,6 +43,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      * Occurs after a group is created. All handlers are notified.
      * The full group record created is available as the subject.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function create(GenericEvent $event)
@@ -55,6 +73,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      * Occurs after a group is updated. All handlers are notified.
      * The full updated group record is available as the subject.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function update(GenericEvent $event)
@@ -66,6 +102,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      *
      * Occurs after a group is deleted from the system. All handlers are notified.
      * The full group record deleted is available as the subject.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
      *
      * @param GenericEvent $event The event instance
      */
@@ -80,6 +134,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      * It does not apply to pending membership requests.
      * The uid and gid are available as the subject.
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function addUser(GenericEvent $event)
@@ -91,6 +163,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      *
      * Occurs after a user is removed from a group. All handlers are notified.
      * The uid and gid are available as the subject.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
      *
      * @param GenericEvent $event The event instance
      */
@@ -105,6 +195,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      * The subject is the GroupApplicationEntity.
      * Arguments are the form data from \Zikula\GroupsModule\Form\Type\ManageApplicationType
      *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
+     *
      * @param GenericEvent $event The event instance
      */
     public function applicationProcessed(GenericEvent $event)
@@ -116,6 +224,24 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      *
      * Occurs after the successful creation of a group application.
      * The subject is the GroupApplicationEntity.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * The current request's type: `MASTER_REQUEST` or `SUB_REQUEST`.
+     * If a listener should only be active for the master request,
+     * be sure to check that at the beginning of your method.
+     *     `if ($event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+     *         return;
+     *     }`
+     *
+     * The kernel instance handling the current request:
+     *     `$kernel = $event->getKernel();`
+     *
+     * The currently handled request:
+     *     `$request = $event->getRequest();`
      *
      * @param GenericEvent $event The event instance
      */
