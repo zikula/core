@@ -463,7 +463,7 @@ abstract class AbstractEditHandler
      *
      * @return mixed Redirect or false on errors
      */
-    public function handleCommand($args = [])
+    public function handleCommand(array $args = [])
     {
         // build $args for BC (e.g. used by redirect handling)
         foreach ($this->templateParameters['actions'] as $action) {
@@ -479,11 +479,8 @@ abstract class AbstractEditHandler
         $isRegularAction = !in_array($action, ['delete', 'cancel']);
     
         if ($isRegularAction || $action == 'delete') {
-            $this->fetchInputData($args);
+            $this->fetchInputData();
         }
-    
-        // get treated entity reference from persisted member var
-        $entity = $this->entityRef;
     
         if ($isRegularAction || $action == 'delete') {
             $success = $this->applyAction($args);
@@ -509,7 +506,7 @@ abstract class AbstractEditHandler
      *
      * @return String desired status or error message
      */
-    protected function getDefaultMessage($args, $success = false)
+    protected function getDefaultMessage(array $args = [], $success = false)
     {
         $message = '';
         switch ($args['commandName']) {
@@ -547,7 +544,7 @@ abstract class AbstractEditHandler
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
-    protected function addDefaultMessage($args, $success = false)
+    protected function addDefaultMessage(array $args = [], $success = false)
     {
         $message = $this->getDefaultMessage($args, $success);
         if (empty($message)) {
@@ -566,10 +563,8 @@ abstract class AbstractEditHandler
 
     /**
      * Input data processing called by handleCommand method.
-     *
-     * @param array $args Additional arguments
      */
-    public function fetchInputData($args)
+    public function fetchInputData()
     {
         // fetch posted data input values as an associative array
         $formData = $this->form->getData();
