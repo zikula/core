@@ -85,7 +85,7 @@ class MetaData implements \ArrayAccess
         $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
         $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : self::TYPE_MODULE;
-        $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : '>=1.4.0 <3.0.0'; // @todo >=1.4.1
+        $this->coreCompatibility = $json['extra']['zikula']['core-compatibility'];
     }
 
     public function getName()
