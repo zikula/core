@@ -195,26 +195,26 @@ class BundleSyncHelper
      */
     private function validate(array $extensions)
     {
-        $modulenames = [];
-        $displaynames = [];
-        $urls = [];
+        $fieldNames = ['name', 'displayname', 'url'];
+        $moduleValues = [
+            'name' => [],
+            'displayname' => [],
+            'url' => []
+        ];
 
         // check for duplicate name, displayname or url
         foreach ($extensions as $dir => $modInfo) {
-            $fields = ['name', 'displayname', 'url'];
-            foreach ($fields as $field) {
-                if (isset($modulenames[strtolower($modInfo[$field])])) {
+            foreach ($fieldNames as $fieldName) {
+                $key = strtolower($modInfo[$fieldName]);
+                if (isset($moduleValues[$fieldName][$key])) {
                     throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same %field. [%ext1%] and [%ext2%]', [
-                        '%field' => $field,
+                        '%field' => $fieldName,
                         '%ext1%' => $modInfo['name'],
-                        '%ext2%' => $modulenames[strtolower($modInfo['name'])]
+                        '%ext2%' => $moduleNames[strtolower($modInfo['name'])]
                     ]));
                 }
+                $moduleValues[$fieldName][$key] = $dir;
             }
-
-            $modulenames[strtolower($modInfo['name'])] = $dir;
-            $displaynames[strtolower($modInfo['displayname'])] = $dir;
-            $urls[strtolower($modInfo['url'])] = $dir;
         }
     }
 
