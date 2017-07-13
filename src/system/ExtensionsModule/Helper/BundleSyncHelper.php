@@ -26,8 +26,8 @@ use Zikula\Core\Exception\FatalErrorException;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionDependencyRepository;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
-use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 /**
@@ -41,12 +41,12 @@ class BundleSyncHelper
     private $kernel;
 
     /**
-     * @var ExtensionRepository
+     * @var ExtensionRepositoryInterface
      */
     private $extensionRepository;
 
     /**
-     * @var ExtensionVarRepository
+     * @var ExtensionVarRepositoryInterface
      */
     private $extensionVarRepository;
 
@@ -89,19 +89,20 @@ class BundleSyncHelper
      * BundleSyncHelper constructor.
      *
      * @param ZikulaHttpKernelInterface $kernel
-     * @param ExtensionRepository $extensionRepository
-     * @param ExtensionVarRepository $extensionVarRepository
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param ExtensionVarRepositoryInterface $extensionVarRepository
      * @param ExtensionDependencyRepository $extensionDependencyRepository
      * @param TranslatorInterface $translator
      * @param EventDispatcherInterface $dispatcher
      * @param ExtensionStateHelper $extensionStateHelper
+     * @param BootstrapHelper $bootstrapHelper
      * @param ComposerValidationHelper $composerValidationHelper
      * @param SessionInterface $session
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        ExtensionRepository $extensionRepository,
-        ExtensionVarRepository $extensionVarRepository,
+        ExtensionRepositoryInterface $extensionRepository,
+        ExtensionVarRepositoryInterface $extensionVarRepository,
         ExtensionDependencyRepository $extensionDependencyRepository,
         TranslatorInterface $translator,
         EventDispatcherInterface $dispatcher,
