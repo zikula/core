@@ -61,7 +61,6 @@ checks:
         psr2_class_declaration: true
         precedence_mistakes: true
         precedence_in_conditions: true
-        phpunit_assertions: true
         php5_style_constructor: true
         overriding_private_members: true
         no_unnecessary_if: true
