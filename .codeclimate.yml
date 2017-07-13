@@ -27,6 +27,8 @@ engines:
       ignore-undeclared: true
       dead-code-detection: true
     checks:
+      PhanNonClassMethodCall:
+        enabled: false
       PhanTypeMismatchProperty:
         enabled: false
   phpcodesniffer:
