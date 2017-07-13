@@ -31,7 +31,7 @@ class CssResolver implements ResolverInterface
     private $merger;
 
     /**
-     * @var boole
+     * @var bool
      */
     private $combine;
 
