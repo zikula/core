@@ -515,10 +515,6 @@ class ConfigController extends AbstractController
                         $directiveRec['value'] = implode(PHP_EOL, $directiveRec['value']);
                         break;
                     case HTMLPurifier_VarParser::HASH:
-//                        $value = '';
-//                        foreach ($directiveRec['value'] as $i => $v) {
-//                            $value .= "{$i}:{$v}" . PHP_EOL;
-//                        }
                         $directiveRec['value'] = json_encode($directiveRec['value']);
                         break;
                     default:

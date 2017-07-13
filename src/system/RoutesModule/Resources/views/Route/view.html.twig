@@ -237,7 +237,8 @@
         {% if canBeCreated %}
             {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
                 {% set createTitle = __('Create route') %}
-                {# disabled for now <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>#}
+                {# disabled for now, see https://github.com/zikula/core/issues/3625
+                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>#}
             {% endif %}
         {% endif %}
         {#% if showAllEntries == 1 %}

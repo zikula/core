@@ -122,15 +122,16 @@ class ExtensionEntity extends EntityAccess
         $this->name = $name;
     }
 
-//    public function getNamespace()
-//    {
-//        return $this->namespace;
-//    }
-//
-//    public function setNamespace($namespace)
-//    {
-//        $this->namespace = $namespace;
-//    }
+    /*
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
+    }*/
 
     public function getType()
     {

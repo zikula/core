@@ -140,8 +140,6 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
                     list($domain, $locale, $format) = explode('.', basename($file), 3);
                 }
 
-//                list ($domain, $format) = explode('.', basename($file), 2);
-
                 $this->addResource($format, $file, $locale, $domain);
                 unset($this->options['resource_files'][$locale][$key]);
             }

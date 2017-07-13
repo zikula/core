@@ -80,9 +80,6 @@ class LinkContainer implements LinkContainerInterface
         if (LinkContainerInterface::TYPE_ADMIN == $type) {
             return $this->getAdmin();
         }
-        if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
-            return $this->getAccount();
-        }
 
         return [];
     }
@@ -111,32 +108,6 @@ class LinkContainer implements LinkContainerInterface
             ];
         }
 
-        return $links;
-    }
-
-    /**
-     * get the Account links for this extension
-     *
-     * @return array
-     */
-    private function getAccount()
-    {
-        $links = [];
-/*
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT) && $this->variableApi->get($this->getBundleName(), 'allowusercatedit', 0)) {
-            $request = $this->requestStack->getCurrentRequest();
-            $referer = $request->headers->get('referer');
-            if (false === strpos($referer, 'categories')) {
-                $request->getSession()->set('categories_referer', $referer);
-            }
-
-            $links[] = [
-                'url' => $this->router->generate('zikulacategoriesmodule_user_index'),
-                'text' => $this->translator->__('Categories manager'),
-                'icon' => 'server'
-            ];
-        }
-*/
         return $links;
     }
 

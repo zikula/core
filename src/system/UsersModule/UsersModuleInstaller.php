@@ -140,8 +140,6 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $this->delVar('password_reminder_enabled');
                 $this->delVar('password_reminder_mandatory');
             case '3.0.3':
-//                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
-//                $this->hookApi->uninstallProviderHooks($this->bundle->getMetaData());
             case '3.0.4':
                 $this->schemaTool->update([UserEntity::class]);
             case '3.0.5':

@@ -31,9 +31,6 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // unrequired
-        //$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        //$loader->load('services.yml');
     }
 
     /**

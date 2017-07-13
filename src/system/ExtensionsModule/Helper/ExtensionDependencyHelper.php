@@ -177,27 +177,27 @@ class ExtensionDependencyHelper
         return true;
         /**
          * The section below is disabled because it doesn't work with dependencies that are in the module's own vendor directory.
-         */
-//        if (strpos($dependency->getModname(), '/') !== false) {
-//            if ($this->kernel->isBundle($dependency->getModname())) {
-//                if (empty($this->installedPackages)) {
-//                    // create and cache installed packages from composer.lock file
-//                    $appPath = $this->kernel->getRootDir();
-//                    $composerLockPath = realpath($appPath . '/../') . 'composer.lock';
-//                    $packages = json_decode(file_get_contents($composerLockPath), true);
-//                    foreach ($packages as $package) {
-//                        $this->installedPackages[$package['name']] = $package;
-//                    }
-//                }
-//                if (Semver::satisfies($this->installedPackages[$dependency->getModname()]['version'], $dependency->getMinversion())) {
-//                    return true;
-//                }
-//            }
-//
-//            throw new \InvalidArgumentException(sprintf('This dependency can only be resolved by adding %s to the core\'s composer.json file and running `composer update`.', $dependency->getModname()));
-//        }
-//
-//        return false;
+         * /
+        if (strpos($dependency->getModname(), '/') !== false) {
+            if ($this->kernel->isBundle($dependency->getModname())) {
+                if (empty($this->installedPackages)) {
+                    // create and cache installed packages from composer.lock file
+                    $appPath = $this->kernel->getRootDir();
+                    $composerLockPath = realpath($appPath . '/../') . 'composer.lock';
+                    $packages = json_decode(file_get_contents($composerLockPath), true);
+                    foreach ($packages as $package) {
+                        $this->installedPackages[$package['name']] = $package;
+                    }
+                }
+                if (Semver::satisfies($this->installedPackages[$dependency->getModname()]['version'], $dependency->getMinversion())) {
+                    return true;
+                }
+            }
+
+            throw new \InvalidArgumentException(sprintf('This dependency can only be resolved by adding %s to the core\'s composer.json file and running `composer update`.', $dependency->getModname()));
+        }
+
+        return false;*/
     }
 
     /**

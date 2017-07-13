@@ -146,7 +146,7 @@ class RouteLoader extends Loader
 
         /** @var Route $route */
         foreach ($routeCollection as $oldRouteName => $route) {
-//          set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
+            // set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
             $this->fixRequirements($route);
             $this->prependBundlePrefix($route, $bundle);
             list($type, $func) = $this->setZikulaDefaults($route, $bundle, $name);
@@ -184,53 +184,54 @@ class RouteLoader extends Loader
 
         $routeCollection->addCollection($topRouteCollection);
 
-//        try {
-//            $routes = $this->objectManager->getRepository('ZikulaRoutesModule:RouteEntity')->findBy([], ['group' => 'ASC', 'sort' => 'ASC']);
-//        } catch (DBALException $e) {
-//            // It seems like the module is not yet installed. Fail silently.
-//            return $routeCollection;
-//        }
-//
-//        if (!empty($routes)) {
-//            /**
-//             * @var \Zikula\RoutesModule\Entity\RouteEntity $dbRoute
-//             */
-//            foreach ($routes as $dbRoute) {
-//                // Add modname, type and func to the route's default values.
-//                $defaults = $dbRoute->getDefaults();
-//                $defaults['_zkModule'] = $dbRoute->getBundle();
-//                list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
-//                list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
-//                $defaults['_zkType'] = $type;
-//                $defaults['_zkFunc'] = $func;
-//                // @todo @cmfcmf when reimplementing loading routews from DB, see #2593 (i.e. ucfirst problems)
-//                $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
-//
-//                // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
-//                $options = $dbRoute->getOptions();
-//                $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
-//                if ($prependBundle) {
-//                    $path = $dbRoute->getPathWithBundlePrefix();
-//                } else {
-//                    $path = $dbRoute->getPath();
-//                }
-//
-//                $this->fixRequirements($dbRoute);
-//
-//                $route = new Route(
-//                    $path,
-//                    $defaults,
-//                    $dbRoute->getRequirements(),
-//                    $options,
-//                    $dbRoute->getHost(),
-//                    $dbRoute->getSchemes(),
-//                    $dbRoute->getMethods(),
-//                    $dbRoute->getCondition()
-//                );
-//
-//                $routeCollection->add($dbRoute->getName(), $route);
-//            }
-//        }
+        /* support for custom routes is currently disabled, see https://github.com/zikula/core/issues/3625
+        try {
+            $routes = $this->objectManager->getRepository('ZikulaRoutesModule:RouteEntity')->findBy([], ['group' => 'ASC', 'sort' => 'ASC']);
+        } catch (DBALException $e) {
+            // It seems like the module is not yet installed. Fail silently.
+            return $routeCollection;
+        }
+
+        if (!empty($routes)) {
+            /**
+             * @var \Zikula\RoutesModule\Entity\RouteEntity $dbRoute
+             * /
+            foreach ($routes as $dbRoute) {
+                // Add modname, type and func to the route's default values.
+                $defaults = $dbRoute->getDefaults();
+                $defaults['_zkModule'] = $dbRoute->getBundle();
+                list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
+                list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
+                $defaults['_zkType'] = $type;
+                $defaults['_zkFunc'] = $func;
+                // @todo @cmfcmf when reimplementing loading routews from DB, see #2593 (i.e. ucfirst problems)
+                $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
+
+                // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
+                $options = $dbRoute->getOptions();
+                $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
+                if ($prependBundle) {
+                    $path = $dbRoute->getPathWithBundlePrefix();
+                } else {
+                    $path = $dbRoute->getPath();
+                }
+
+                $this->fixRequirements($dbRoute);
+
+                $route = new Route(
+                    $path,
+                    $defaults,
+                    $dbRoute->getRequirements(),
+                    $options,
+                    $dbRoute->getHost(),
+                    $dbRoute->getSchemes(),
+                    $dbRoute->getMethods(),
+                    $dbRoute->getCondition()
+                );
+
+                $routeCollection->add($dbRoute->getName(), $route);
+            }
+        }*/
         $routeCollection->addCollection($newRouteCollection);
         $routeCollection->addCollection($bottomRouteCollection);
 

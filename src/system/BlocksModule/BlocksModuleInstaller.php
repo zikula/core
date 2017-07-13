@@ -63,7 +63,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldversion) {
             case '3.8.1':
-//                $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
             case '3.8.2':
             case '3.9.0':
                 $sql = "SELECT * FROM blocks";
@@ -169,7 +168,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
-//                $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
             case '3.9.8':
             // future upgrade routines
         }

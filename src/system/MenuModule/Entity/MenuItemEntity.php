@@ -104,17 +104,17 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
     public function __construct()
     {
         $this->title = '';
-        $this->options = []; //new ArrayCollection();
-//        $this->options = [
-//            'routeParameters' => [],
-//            'attributes' => [],
-//            'linkAttributes' => [],
-//            'childrenAttributes' => [],
-//            'labelAttributes' => [],
-//            'extras' => [],
-//            'display' => true,
-//            'displayChildren' => true,
-//        ];
+        $this->options = []; /*new ArrayCollection();
+        $this->options = [
+            'routeParameters' => [],
+            'attributes' => [],
+            'linkAttributes' => [],
+            'childrenAttributes' => [],
+            'labelAttributes' => [],
+            'extras' => [],
+            'display' => true,
+            'displayChildren' => true,
+        ];*/
         $this->children = new ArrayCollection();
     }
 
