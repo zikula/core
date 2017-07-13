@@ -405,25 +405,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     }
 
     /**
-     * Gets the environment parameters.
-     *
-     * Only the parameters starting with "ZIKULA__" are considered.
-     *
-     * @return array An array of parameters
-     */
-    protected function getEnvParameters()
-    {
-        $parameters = parent::getEnvParameters();
-        foreach ($_SERVER as $key => $value) {
-            if (0 === strpos($key, 'ZIKULA__')) {
-                $parameters[strtolower(str_replace('__', '.', substr($key, 9)))] = $value;
-            }
-        }
-
-        return $parameters;
-    }
-
-    /**
      * Prepares the ContainerBuilder before it is compiled.
      *
      * @param SymfonyContainerBuilder $container A ContainerBuilder instance
