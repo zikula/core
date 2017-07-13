@@ -70,7 +70,7 @@ class AppKernel extends ZikulaKernel
      */
     public function getCacheDir()
     {
-        return __DIR__ . '/../../../../../../app/cache/test';
+        return __DIR__ . '/../../../../../../var/cache/test';
     }
 
     /*
@@ -78,7 +78,7 @@ class AppKernel extends ZikulaKernel
      */
     public function getLogDir()
     {
-        return __DIR__ . '/../../../../../../app/logs';
+        return __DIR__ . '/../../../../../../var/logs';
     }
 
     /**
