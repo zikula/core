@@ -124,7 +124,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
                 $domain = $args->hasNode($domainNode) ? $args->getNode($domainNode)->getAttribute('value') : $domain;
 
                 $message = new Message($id, $domain);
-                $message->addSource(new FileSource((string) $this->file, $node->getTemplateLine()));
+                $message->addSource(new FileSource((string)$this->file, $node->getTemplateLine()));
                 $this->catalogue->add($message);
             }
         }

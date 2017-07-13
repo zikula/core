@@ -56,7 +56,7 @@ abstract class AbstractBundle extends Bundle
     public function getInstallerClass()
     {
         $ns = $this->getNamespace();
-        $class = $ns.'\\'.substr($ns, strrpos($ns, '\\') + 1, strlen($ns)).'Installer';
+        $class = $ns . '\\' . substr($ns, strrpos($ns, '\\') + 1, strlen($ns)) . 'Installer';
 
         return $class;
     }
@@ -78,7 +78,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function getLocalePath()
     {
-        return $this->getPath().'/Resources/locale';
+        return $this->getPath() . '/Resources/locale';
     }
 
     /**
@@ -88,7 +88,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function getViewsPath()
     {
-        return $this->getPath().'/Resources/views';
+        return $this->getPath() . '/Resources/views';
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function getConfigPath()
     {
-        return $this->getPath().'/Resources/config';
+        return $this->getPath() . '/Resources/config';
     }
 
     /**
@@ -139,9 +139,9 @@ abstract class AbstractBundle extends Bundle
         $type = $this->getNameType();
         $typeLower = strtolower($type);
         if (null === $this->extension) {
-            $basename = preg_replace('/'.$type.'/', '', $this->getName());
+            $basename = preg_replace('/' . $type . '/', '', $this->getName());
 
-            $class = $this->getNamespace().'\\DependencyInjection\\'.$basename.'Extension';
+            $class = $this->getNamespace() . '\\DependencyInjection\\' . $basename . 'Extension';
             if (class_exists($class)) {
                 $extension = new $class();
 

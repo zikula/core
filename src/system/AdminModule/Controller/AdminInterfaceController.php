@@ -182,9 +182,9 @@ class AdminInterfaceController extends AbstractController
                     $ldir = dirname(__FILE__);
                     $p = strpos($ldir, DIRECTORY_SEPARATOR . 'system'); // we are in system/AdminModule
                     $b = substr($ldir, 0, $p);
-                    $filePath = $b.'/'.$appDir.'/.htaccess';
+                    $filePath = $b . '/' . $appDir . '/.htaccess';
                 } else {
-                    $filePath = $appDir.'/.htaccess';
+                    $filePath = $appDir . '/.htaccess';
                 }
                 $app_htaccess = file_exists($filePath);
             }

@@ -66,7 +66,7 @@ class PermissionController extends AbstractController
         $templateParameters['lockadmin'] = $this->getVar('lockadmin', 1) ? 1 : 0;
         $templateParameters['adminId'] = $this->getVar('adminid', 1);
         $templateParameters['schema'] = $this->get('zikula_permissions_module.helper.schema_helper')->getAllSchema();
-        $templateParameters['enableFilter'] = (bool) $this->getVar('filter', 1);
+        $templateParameters['enableFilter'] = (bool)$this->getVar('filter', 1);
 
         return $templateParameters;
     }

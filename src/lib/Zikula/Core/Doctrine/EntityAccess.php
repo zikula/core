@@ -128,7 +128,7 @@ class EntityAccess implements \ArrayAccess
             return $getMethod;
         }
 
-        $isMethod  = 'is' . ucfirst($name);
+        $isMethod = 'is' . ucfirst($name);
         if (method_exists($this, $isMethod)) {
             return $isMethod;
         }

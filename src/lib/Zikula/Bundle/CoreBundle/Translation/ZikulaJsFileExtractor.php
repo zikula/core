@@ -45,7 +45,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         preg_match_all($argumentsRegex, file_get_contents($file), $singularMatches);
         foreach ($singularMatches[2] as $string) {
             $message = new Message($string, self::JAVASCRIPT_DOMAIN);
-            $message->addSource(new FileSource((string) $file));
+            $message->addSource(new FileSource((string)$file));
             $catalogue->add($message);
         }
         // plural type
@@ -54,7 +54,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         foreach ($pluralMatches[2] as $key => $singularString) {
             $fullString = $singularString . '|' . $pluralMatches[4][$key];
             $message = new Message($fullString, self::JAVASCRIPT_DOMAIN);
-            $message->addSource(new FileSource((string) $file));
+            $message->addSource(new FileSource((string)$file));
             $catalogue->add($message);
         }
     }

@@ -47,7 +47,7 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
         }
         if (isset($component)) {
             $qb->andWhere("p.component LIKE :permgrpparts")
-                ->setParameter('permgrpparts', $component.'%');
+                ->setParameter('permgrpparts', $component . '%');
         }
 
         return $qb->getQuery()->getResult();

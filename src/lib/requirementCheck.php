@@ -33,7 +33,7 @@ function requirementCheck($parameters)
         if (php_sapi_name() != 'cli') {
             echo '<html><body><pre>';
         }
-        echo 'The following errors were discovered when checking the' .PHP_EOL. 'Zikula Core system/environment requirements:' . PHP_EOL;
+        echo 'The following errors were discovered when checking the' . PHP_EOL . 'Zikula Core system/environment requirements:' . PHP_EOL;
         echo '******************************************************' . PHP_EOL . PHP_EOL;
         foreach ($versionChecker->requirementsErrors as $error) {
             echo $error . PHP_EOL;

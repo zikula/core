@@ -24,7 +24,7 @@ class ZikulaRequirements
     public function runSymfonyChecks($parameters = [])
     {
         try {
-            $path = realpath(__DIR__.'/../../../../../var/SymfonyRequirements.php');
+            $path = realpath(__DIR__ . '/../../../../../var/SymfonyRequirements.php');
             require $path;
             $symfonyRequirements = new \SymfonyRequirements();
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
@@ -44,8 +44,8 @@ class ZikulaRequirements
         if ($requirement->isFulfilled()) {
             return;
         }
-        $errorMessage = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL.'   ').PHP_EOL;
-        $errorMessage .= '   > '.wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL.'   > ').PHP_EOL;
+        $errorMessage = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL . '   ') . PHP_EOL;
+        $errorMessage .= '   > ' . wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL . '   > ') . PHP_EOL;
 
         return $errorMessage;
     }
@@ -66,7 +66,7 @@ class ZikulaRequirements
         $symfonyRequirements->addRequirement(
             is_writable($src . '/' . $parameters['datadir']),
             $parameters['datadir'] . '/ directory must be writable',
-            'Change the permissions of "<strong>' . $parameters['datadir']. '</strong>" directory so that the web server can write into it.'
+            'Change the permissions of "<strong>' . $parameters['datadir'] . '</strong>" directory so that the web server can write into it.'
         );
         $customParametersPath = $src . '/app/config/custom_parameters.yml';
         if (file_exists($customParametersPath)) {

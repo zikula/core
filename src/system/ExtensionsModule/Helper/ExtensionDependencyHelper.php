@@ -158,7 +158,7 @@ class ExtensionDependencyHelper
      * @param ExtensionDependencyEntity $dependency
      * @return bool
      */
-    private function bundleDependencySatisfied(ExtensionDependencyEntity &$dependency)
+    private function bundleDependencySatisfied(ExtensionDependencyEntity & $dependency)
     {
         if ($dependency->getModname() == "php") {
             // Do not use PHP_VERSION constant, because it might throw off the semver parser.

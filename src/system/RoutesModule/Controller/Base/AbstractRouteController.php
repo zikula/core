@@ -496,7 +496,7 @@ abstract class AbstractRouteController extends AbstractController
             try {
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $e->getMessage());
                 $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemId, 'errorMessage' => $e->getMessage()]);
             }

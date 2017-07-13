@@ -57,7 +57,7 @@ class CssResolver implements ResolverInterface
         }
         $headers = '';
         foreach ($assets as $asset) {
-            $headers .= '<link rel="stylesheet" href="'.$asset.'" type="text/css">'."\n";
+            $headers .= '<link rel="stylesheet" href="' . $asset . '" type="text/css">' . "\n";
         }
 
         return $headers;

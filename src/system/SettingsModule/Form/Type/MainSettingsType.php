@@ -45,15 +45,15 @@ class MainSettingsType extends AbstractType
         $this->translator = $options['translator'];
 
         $spaceReplaceCallbackTransformer = new CallbackTransformer(
-            function ($originalDescription) {
+            function($originalDescription) {
                 return $originalDescription;
             },
-            function ($submittedDescription) {
+            function($submittedDescription) {
                 return mb_ereg_replace(' ', '', $submittedDescription);
             }
         );
         $pageTitleLocalizationTransformer = new CallbackTransformer(
-            function ($originalPageTitle) {
+            function($originalPageTitle) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
                 $originalPageTitle = str_replace('%pagetitle%', $this->translator->__('%pagetitle%'), $originalPageTitle);
                 $originalPageTitle = str_replace('%sitename%', $this->translator->__('%sitename%'), $originalPageTitle);
@@ -61,7 +61,7 @@ class MainSettingsType extends AbstractType
 
                 return $originalPageTitle;
             },
-            function ($submittedPageTitle) {
+            function($submittedPageTitle) {
                 $submittedPageTitle = str_replace($this->translator->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
                 $submittedPageTitle = str_replace($this->translator->__('%sitename%'), '%sitename%', $submittedPageTitle);
                 $submittedPageTitle = str_replace($this->translator->__('%modulename%'), '%modulename%', $submittedPageTitle);
@@ -107,7 +107,7 @@ class MainSettingsType extends AbstractType
             ->add('entrypoint', TextType::class, [
                 'label' => $this->translator->__('Site entry point (front controller)'),
                 'constraints' => new Callback([
-                    'callback' => function ($data, ExecutionContextInterface $context) {
+                    'callback' => function($data, ExecutionContextInterface $context) {
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
                         if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
@@ -148,7 +148,7 @@ class MainSettingsType extends AbstractType
                 $builder->create('permasearch', TextType::class, [
                     'label' => $this->translator->__('List to search for'),
                     'constraints' => new Callback([
-                        'callback' => function ($data, ExecutionContextInterface $context) {
+                        'callback' => function($data, ExecutionContextInterface $context) {
                             if (mb_ereg(',$', $data)) {
                                 $context->addViolation($this->translator->__('Error! In your permalink settings, strings cannot be terminated with a comma.'));
                             }

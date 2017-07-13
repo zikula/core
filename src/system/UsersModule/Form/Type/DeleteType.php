@@ -26,7 +26,7 @@ class DeleteType extends AbstractType
     {
         $builder
             ->add('users', EntityType::class, [
-                'choice_attr' => function () {
+                'choice_attr' => function() {
                     return ['class' => 'user-checkboxes'];
                 },
                 'class' => 'ZikulaUsersModule:UserEntity',

@@ -29,7 +29,7 @@ class Configuration implements ConfigurationInterface
      */
     public function __construct($debug)
     {
-        $this->debug = (bool) $debug;
+        $this->debug = (bool)$debug;
     }
 
     /**
@@ -56,7 +56,7 @@ class Configuration implements ConfigurationInterface
         ->fixXmlConfig('fallback')
         ->children()
         ->arrayNode('fallbacks')
-        ->beforeNormalization()->ifString()->then(function ($v) {
+        ->beforeNormalization()->ifString()->then(function($v) {
             return [$v];
         })->end()
         ->prototype('scalar')->end()

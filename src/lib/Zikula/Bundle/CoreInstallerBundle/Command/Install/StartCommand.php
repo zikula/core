@@ -120,7 +120,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // write the parameters to personal_config.php and custom_parameters.yml
-        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml', 'parameters.yml');
+        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml', 'parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
         $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);

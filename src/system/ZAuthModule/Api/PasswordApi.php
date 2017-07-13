@@ -109,7 +109,7 @@ class PasswordApi implements PasswordApiInterface
         $factory = new RandomLibFactory();
         $generator = $factory->getMediumStrengthGenerator();
         $chars = str_replace($saltDelimiter, '', $this->randomStringCharacters);
-        $saltStr =  $generator->generateString($saltLength, $chars);
+        $saltStr = $generator->generateString($saltLength, $chars);
 
         return $this->buildSaltedHash($unhashedData, $hashMethodName, $saltStr, $hashMethodNameToCode, $saltDelimiter);
     }

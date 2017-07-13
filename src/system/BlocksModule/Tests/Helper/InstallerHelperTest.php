@@ -54,7 +54,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $kernel
             ->method('getModule')
-            ->will($this->returnCallback(function ($moduleName) {
+            ->will($this->returnCallback(function($moduleName) {
                 if ($moduleName == 'ExceptionModule') {
                     // mocks situation where module is not namespaced.
                     throw new \Exception();

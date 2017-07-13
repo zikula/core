@@ -91,7 +91,7 @@ class ThemeEntityRepository extends EntityRepository
         $result = $query->getResult();
         $themesArray = [];
         foreach ($result as $theme) {
-            $themesArray[$theme->getName()]= $theme->toArray();
+            $themesArray[$theme->getName()] = $theme->toArray();
             $kernel = $this->getKernel(); // allow to throw exception outside the try/catch block
             try {
                 $themeBundle = $kernel->getTheme($theme['name']);

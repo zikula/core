@@ -153,7 +153,7 @@ class MailerApi implements MailerApiInterface
 
         // add body with formatting
         $bodyFormat = 'text/plain';
-        if (!empty($altBody) || ((bool) $html) || $this->dataValues['html']) {
+        if (!empty($altBody) || ((bool)$html) || $this->dataValues['html']) {
             $bodyFormat = 'text/html';
         }
         if (isset($body)) {

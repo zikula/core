@@ -139,7 +139,7 @@ class PagerExtension extends \Twig_Extension
                     case 'lang':
                         $addcurrentlang2url = $systemVars['languageurl'];
                         if ($addcurrentlang2url == 0) {
-                            $pager['args'][$k] =  $v;
+                            $pager['args'][$k] = $v;
                         }
                         break;
                     default:
@@ -161,19 +161,19 @@ class PagerExtension extends \Twig_Extension
                                     }
                                 } elseif (strlen($vv)) {
                                     $tkey = $k . '[' . $kk . ']';
-                                    $pager['args'][$tkey] =  $vv;
+                                    $pager['args'][$tkey] = $vv;
                                 }
                             }
                         } else {
                             if (strlen($v)) {
-                                $pager['args'][$k] =  $v;
+                                $pager['args'][$k] = $v;
                             }
                         }
                 }
             }
         }
 
-        $pagerUrl = function ($pager) use ($routeName, $systemVars) {
+        $pagerUrl = function($pager) use ($routeName, $systemVars) {
             if ($routeName) {
                 return $this->container->get('router')->generate($routeName, $pager['args']);
             }
@@ -385,7 +385,7 @@ class PagerExtension extends \Twig_Extension
         unset($params['names']);
         unset($params['values']);
         unset($params['route']);
-        $pagerUrl = function ($pager) {
+        $pagerUrl = function($pager) {
             return $this->container->get('router')->generate($pager['route'], $pager['args']);
         };
         $allVars = array_merge($request->request->all(), $request->query->all(), $request->attributes->get('_route_params', []));
@@ -417,19 +417,19 @@ class PagerExtension extends \Twig_Extension
         unset($pager['args'][$pager['posvar']]);
 
         // begin to fill the output
-        $output = '<ul class="'.$params['class'].'">'."\n";
+        $output = '<ul class="' . $params['class'] . '">' . "\n";
         $style = '';
         if ($params['printempty']) {
             $active = '';
             if (!empty($params['class_numon'])) {
                 if (!isset($allVars[$pager['posvar']])) {
-                    $style = ' class="'.$params['class_numon'].'"';
+                    $style = ' class="' . $params['class_numon'] . '"';
                     $active = 'class="active"';
                 } elseif (!empty($params['class_num'])) {
-                    $style = ' class="'.$params['class_num'].'"';
+                    $style = ' class="' . $params['class_num'] . '"';
                 }
             }
-            $output .= '<li '.$active.'><a '.$style.' href="'.$pagerUrl($pager).'"> -'."\n</a></li>";
+            $output .= '<li ' . $active . '><a ' . $style . ' href="' . $pagerUrl($pager) . '"> -' . "\n</a></li>";
         }
 
         $style = '';
@@ -437,16 +437,16 @@ class PagerExtension extends \Twig_Extension
             $active = '';
             if (!empty($params['class_numon'])) {
                 if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i]) {
-                    $style = ' class="'.$params['class_numon'].'"';
+                    $style = ' class="' . $params['class_numon'] . '"';
                     $active = 'class="active"';
                 } elseif (!empty($params['class_num'])) {
-                    $style = ' class="'.$params['class_num'].'"';
+                    $style = ' class="' . $params['class_num'] . '"';
                 } else {
                     $style = '';
                 }
             }
             $pager['args'][$pager['posvar']] = $pager['values'][$i];
-            $output .= '<li '.$active.'><a '.$style.' href="'.$pagerUrl($pager).'">'.$pager['names'][$i]."</a></li>\n";
+            $output .= '<li ' . $active . '><a ' . $style . ' href="' . $pagerUrl($pager) . '">' . $pager['names'][$i] . "</a></li>\n";
         }
         $output .= "</ul>\n";
 

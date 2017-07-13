@@ -23,7 +23,7 @@ class LoginBlock extends AbstractBlockHandler
 {
     public function display(array $properties)
     {
-        if ($this->hasPermission('Loginblock::', $properties['title'].'::', ACCESS_READ)) {
+        if ($this->hasPermission('Loginblock::', $properties['title'] . '::', ACCESS_READ)) {
             if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
                 $request = $this->get('request_stack')->getCurrentRequest();
 

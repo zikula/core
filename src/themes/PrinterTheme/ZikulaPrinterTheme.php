@@ -43,7 +43,7 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
     {
         $text = preg_replace_callback(
             '/<a [^>]*href\s*=\s*\"?([^>\"]*)\"?[^>]*>(.*?)<\/a.*?>/i',
-            function ($matches) {
+            function($matches) {
                 // @todo - work out why some links need decoding twice (&amp;amp;....)
                 $this->links[] = html_entity_decode(html_entity_decode($matches[1]));
                 // return the replaced link

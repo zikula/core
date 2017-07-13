@@ -49,7 +49,7 @@ class UpgraderController extends AbstractController
             $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
 
-        $yamlDumper = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        $yamlDumper = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
         $yamlDumper->setParameter('upgrading', true);
         $request->setLocale($this->container->getParameter('locale'));
 

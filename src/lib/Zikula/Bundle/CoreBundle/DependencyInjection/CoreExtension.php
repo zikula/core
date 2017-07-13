@@ -109,7 +109,7 @@ class CoreExtension extends Extension
             }
 
             $finder = Finder::create()->files()
-                ->filter(function (\SplFileInfo $file) {
+                ->filter(function(\SplFileInfo $file) {
                     return 2 === substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
                 })
                 ->in($dirs);
@@ -119,7 +119,7 @@ class CoreExtension extends Extension
                 list($domain, $locale, $format) = explode('.', $file->getBasename(), 3);
                 $translatorServiceDefinition->addMethodCall('addResource', [
                     $format,
-                    (string) $file,
+                    (string)$file,
                     $locale,
                     $domain
                 ]);

@@ -50,7 +50,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $containsUpgrade = $routeInfo['_route'] == 'upgrade';
         $containsLogin = $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::loginAction';
         $containsDoc = $routeInfo['_route'] == 'doc';
-        $containsWdt =  $routeInfo['_route'] == '_wdt';
+        $containsWdt = $routeInfo['_route'] == '_wdt';
         $containsProfiler = strpos($routeInfo['_route'], '_profiler') !== false;
         $containsRouter = $routeInfo['_route'] == 'fos_js_routing_js';
         $doNotRedirect = $containsProfiler || $containsWdt || $containsRouter || $request->isXmlHttpRequest();

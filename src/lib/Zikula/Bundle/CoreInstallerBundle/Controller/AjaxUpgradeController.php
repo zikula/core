@@ -45,8 +45,8 @@ class AjaxUpgradeController extends AbstractController
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getRootDir() .'/config/parameters.yml'));
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getRootDir() . '/config/parameters.yml'));
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
         $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
@@ -57,7 +57,7 @@ class AjaxUpgradeController extends AbstractController
         $stage = $request->request->get('stage');
         $this->yamlManager->setParameter('upgrading', true);
         $status = $this->executeStage($stage);
-        $response = ['status' => (bool) $status];
+        $response = ['status' => (bool)$status];
         if (is_array($status)) {
             $response['results'] = $status;
         }

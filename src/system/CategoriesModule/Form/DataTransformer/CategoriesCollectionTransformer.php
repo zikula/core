@@ -41,7 +41,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         $class = $this->entityCategoryClass;
 
         foreach ($value as $regId => $categories) {
-            $regId = (int) substr($regId, strpos($regId, '_') + 1);
+            $regId = (int)substr($regId, strpos($regId, '_') + 1);
             $subCollection = new ArrayCollection();
             if (!is_array($categories) && $categories instanceof CategoryEntity) {
                 $categories = [$categories];

@@ -434,7 +434,7 @@ abstract class AbstractRouteType extends AbstractType
             ->setDefaults([
                 // define class for underlying data (required for embedding forms)
                 'data_class' => 'Zikula\RoutesModule\Entity\RouteEntity',
-                'empty_data' => function (FormInterface $form) {
+                'empty_data' => function(FormInterface $form) {
                     return $this->entityFactory->createRoute();
                 },
                 'error_mapping' => [

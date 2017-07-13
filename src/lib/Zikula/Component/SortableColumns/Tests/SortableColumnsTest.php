@@ -31,7 +31,7 @@ class SortableColumnsTest extends \PHPUnit_Framework_TestCase
 
         $router
             ->method('generate')
-            ->will($this->returnCallback(function ($id, $params) {
+            ->will($this->returnCallback(function($id, $params) {
                 return '/foo?' . http_build_query($params);
             }));
 

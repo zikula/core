@@ -65,8 +65,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         switch ($oldVersion) {
             case '2.3.2':
             case '2.4.0':
-                $this->setVar('mailwarning', (bool) $this->getVar('mailwarning'));
-                $this->setVar('hideclosed', (bool) $this->getVar('hideclosed'));
+                $this->setVar('mailwarning', (bool)$this->getVar('mailwarning'));
+                $this->setVar('hideclosed', (bool)$this->getVar('hideclosed'));
                 $this->setVar('hidePrivate', false);
             case '2.4.1':
                 /** @var UserEntity $anonymousUser */

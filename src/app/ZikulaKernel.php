@@ -63,10 +63,10 @@ class ZikulaKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->rootDir.'/config/config_'.$this->getEnvironment().'.yml');
-        $loader->load($this->rootDir.'/config/parameters.yml');
-        if (is_readable($this->rootDir.'/config/custom_parameters.yml')) {
-            $loader->load($this->rootDir.'/config/custom_parameters.yml');
+        $loader->load($this->rootDir . '/config/config_' . $this->getEnvironment() . '.yml');
+        $loader->load($this->rootDir . '/config/parameters.yml');
+        if (is_readable($this->rootDir . '/config/custom_parameters.yml')) {
+            $loader->load($this->rootDir . '/config/custom_parameters.yml');
         }
 
         if (!is_readable($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED)) {
@@ -91,7 +91,7 @@ class ZikulaKernel extends Kernel
      */
     public function getCacheDir()
     {
-        return dirname(__DIR__).'/var/cache/'.$this->environment;
+        return dirname(__DIR__) . '/var/cache/' . $this->environment;
     }
 
     /**
@@ -99,6 +99,6 @@ class ZikulaKernel extends Kernel
      */
     public function getLogDir()
     {
-        return dirname(__DIR__).'/var/logs';
+        return dirname(__DIR__) . '/var/logs';
     }
 }

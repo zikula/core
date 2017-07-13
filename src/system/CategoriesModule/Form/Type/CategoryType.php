@@ -91,7 +91,7 @@ class CategoryType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) use ($options) {
                 // ensure all locales have a display name
                 /** @var CategoryEntity $category */
                 $category = $event->getData();
@@ -109,10 +109,10 @@ class CategoryType extends AbstractType
         $builder->get('name')
             ->addModelTransformer(new CallbackTransformer(
                 // remove slash from name before persistence to prevent issues with path
-                function ($string) {
+                function($string) {
                     return $string;
                 },
-                function ($string) {
+                function($string) {
                     return str_replace('/', '&#47;', $string);
                 }
             ))
