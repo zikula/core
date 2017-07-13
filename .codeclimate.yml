@@ -26,6 +26,9 @@ engines:
     config:
       ignore-undeclared: true
       dead-code-detection: true
+    checks:
+      PhanTypeMismatchProperty:
+        enabled: false
   phpcodesniffer:
     enabled: true
   phpmd:
