@@ -68,7 +68,7 @@ class StartCommand extends AbstractCoreInstallerCommand
 
             return;
         }
-        $checks = $controllerHelper->requirementsMet($this->getContainer());
+        $checks = $controllerHelper->requirementsMet();
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 

@@ -112,7 +112,7 @@ class ControllerHelper
         return $warnings;
     }
 
-    public function requirementsMet(ContainerInterface $container)
+    public function requirementsMet()
     {
         // several other requirements are checked before Symfony is loaded.
         // @see app/SymfonyRequirements.php

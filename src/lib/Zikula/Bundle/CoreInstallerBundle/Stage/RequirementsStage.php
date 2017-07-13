@@ -41,7 +41,7 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary()
     {
-        $this->requirementsMet = $this->container->get('zikula_core_installer.controller.helper')->requirementsMet($this->container);
+        $this->requirementsMet = $this->container->get('zikula_core_installer.controller.helper')->requirementsMet();
 
         return !$this->requirementsMet;
     }
