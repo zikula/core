@@ -1,4 +1,32 @@
+build:
+    environment:
+        php: '7.1.6'
+        apache2:
+            modules: ['rewrite']
+filter:
+    excluded_paths:
+        - 'src/lib/Zikula/Bundle/WorkflowBundle/Resources/public/js/jsPlumb/*'
+        - '*.min.js'
+        - '*/vendor/*'
+    dependency_paths:
 checks:
     php:
         code_rating: true
         duplication: true
+        unused_methods: true
+        unused_parameters: false
+        argument_type_checks: true
+        verify_property_names: false
+        method_calls_on_non_object: true
+        fix_doc_comments: false
+        instanceof_class_exists: true
+        catch_class_exists: true
+        assignment_of_null_return: true
+        use_statement_alias_conflict: false
+        simplify_boolean_return: true
+        check_method_contracts:
+            verify_interface_like_constraints: true
+            verify_documented_constraints: true
+            verify_parent_constraints: true
+        avoid_multiple_statements_on_same_line: true
+    javascript: true
