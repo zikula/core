@@ -65,16 +65,27 @@ class CategoryProcessingHelper
      */
     public function mayCategoryBeDeletedOrMoved(CategoryEntity $category)
     {
+        // collect parents
+        $isOnTop = false;
+        $parentIds = [$category->getId()];
+        $directParent = $category;
+        while (false === $isOnTop) {
+            $directParent = $category->getParent();
+            if (null === $directParent) {
+                $isOnTop = true;
+            } else {
+                $parentIds[] = $directParent->getId();
+            }
+        }
+
         // fetch registries
         $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
             ->findAll();
 
         // iterate over all registries
         foreach ($registries as $registry) {
-            // check if the registry subtree contains our category - iPath is constructed on demand
-            $rPath = $registry->getCategory()->getIPath() . '/';
-            $cPath = $category->getIPath();
-            if (strpos($cPath, $rPath) !== 0) {
+            // check if the registry subtree contains our category
+            if (!in_array($registry->getCategory()->getId(), $parentIds)) {
                 continue;
             }
 
