@@ -106,7 +106,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     {
         $params['database_driver'] = substr($params['database_driver'], 4);
         try {
-            $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
+            new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
         } catch (\PDOException $e) {
             return $e->getMessage();
         }

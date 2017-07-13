@@ -74,7 +74,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
                 $commands[] = "ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL";
 
                 foreach ($commands as $sql) {
-                    $stmt = $connection->executeQuery($sql);
+                    $connection->executeQuery($sql);
                 }
             case '3.7.11':
                 $this->schemaTool->update([ExtensionEntity::class]);

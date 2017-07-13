@@ -62,7 +62,7 @@ class PotDumper extends ArrayStructureDumper
     {
         $isFirst = true;
         foreach ($structure as $k => $v) {
-            if ($isMessage = $v instanceof Message) {
+            if ($v instanceof Message) {
                 /** @var Message $v */
                 $desc = $v->getDesc();
                 $meaning = $v->getMeaning();

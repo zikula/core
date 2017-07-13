@@ -6,6 +6,5 @@ services:
           - "@router"
           - "@zikula_permissions_module.api.permission"
           - "@zikula_extensions_module.api.variable"
-          - "@request_stack"
         tags:
             - { name: zikula.link_container }

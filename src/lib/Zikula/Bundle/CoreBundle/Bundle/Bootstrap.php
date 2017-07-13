@@ -52,9 +52,9 @@ class Bootstrap
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
-        $res = $conn->executeQuery('SELECT bundlename, bundleclass, autoload, bundlestate, bundletype FROM bundles');
+        $res = $conn->executeQuery('SELECT bundleclass, autoload, bundlestate, bundletype FROM bundles');
         foreach ($res->fetchAll(\PDO::FETCH_NUM) as $row) {
-            list($name, $class, $autoload, $state, $type) = $row;
+            list($class, $autoload, $state, $type) = $row;
             $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
             if ($extensionIsActive) {
                 try {
@@ -74,8 +74,6 @@ class Bootstrap
                     }
                 } catch (\Exception $e) {
                     // unable to autoload $prefix / $path
-                    // todo - should we catch class not loadable here or not? If so how to handle it?
-                    // see https://github.com/zikula/core/issues/1424
                 }
             }
         }

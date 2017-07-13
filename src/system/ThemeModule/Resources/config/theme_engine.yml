@@ -44,8 +44,6 @@ services:
         class: Zikula\ThemeModule\Engine\Asset\Merger
         arguments:
           - "@router"
-          - "@doctrine_cache.providers.zikula_js_asset_cache"
-          - "@doctrine_cache.providers.zikula_css_asset_cache"
           - "%kernel.project_dir%"
           - "%zikula_asset_manager.lifetime%"
           - "%zikula_asset_manager.minify%"
