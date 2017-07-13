@@ -11,6 +11,7 @@
 
 namespace Zikula\Bridge\HttpFoundation;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
@@ -38,6 +39,11 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     private $variableApi;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * @var bool is Zikula installed?
      */
     private $installed;
@@ -47,10 +53,15 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      * @param VariableApiInterface $variableApi
      * @param $installed
      */
-    public function __construct(UserSessionRepositoryInterface $userSessionRepository, VariableApiInterface $variableApi, $installed)
-    {
+    public function __construct(
+        UserSessionRepositoryInterface $userSessionRepository,
+        VariableApiInterface $variableApi,
+        RequestStack $requestStack,
+        $installed
+    ) {
         $this->userSessionRepository = $userSessionRepository;
         $this->variableApi = $variableApi;
+        $this->requestStack = $requestStack;
         $this->installed = $installed;
     }
 
@@ -101,15 +112,12 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
             return true;
         }
 
-        // http host is not given for CLI requests for example
-        $ipDefault = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-
         $sessionEntity = $this->userSessionRepository->find($sessionId);
         if (!$sessionEntity) {
             $sessionEntity = new UserSessionEntity();
         }
         $sessionEntity->setSessid($sessionId);
-        $sessionEntity->setIpaddr($this->storage->getBag('attributes')->get('obj/ipaddr', $ipDefault));
+        $sessionEntity->setIpaddr($this->getCurrentIp());
         $sessionEntity->setLastused(date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed()));
         $sessionEntity->setUid($this->storage->getBag('attributes')->get('uid', Constant::USER_ID_ANONYMOUS));
         $sessionEntity->setRemember($this->storage->getBag('attributes')->get('rememberme', 0));
@@ -145,5 +153,18 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
             $this->variableApi->getSystemVar('secinactivemins', 20),
             $this->variableApi->getSystemVar('secmeddays', 7)
         );
+    }
+
+    /**
+     * find the current IP address
+     * @param string $default
+     * @return string
+     */
+    private function getCurrentIp($default = '127.0.0.1')
+    {
+        $ipAddress = $this->requestStack->getCurrentRequest()->getClientIp();
+        $ipAddress = !empty($ipAddress) ? $ipAddress : $this->requestStack->getCurrentRequest()->server->get('HTTP_HOST');
+
+        return !empty($ipAddress) ? $ipAddress : $default;
     }
 }
