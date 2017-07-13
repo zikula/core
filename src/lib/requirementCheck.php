@@ -25,20 +25,22 @@ function requirementCheck($parameters)
             && version_compare($parameters[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM], ZikulaKernel::VERSION, '<'))) {
         $versionChecker = new ZikulaRequirements();
         $versionChecker->runSymfonyChecks($parameters);
-        if (!empty($versionChecker->requirementsErrors)) {
-            // formatting for both HTML and CLI display
-            if (isset($_SERVER['HTTP_HOST'])) {
-                echo "<html><body><pre>";
-            }
-            echo 'The following errors were discovered when checking the' .PHP_EOL. 'Zikula Core system/environment requirements:' . PHP_EOL;
-            echo '******************************************************' . PHP_EOL . PHP_EOL;
-            foreach ($versionChecker->requirementsErrors as $error) {
-                echo $error . PHP_EOL;
-            }
-            if (isset($_SERVER['HTTP_HOST'])) {
-                echo "</pre></body></html>";
-            }
-            die();
+        if (empty($versionChecker->requirementsErrors)) {
+            return;
         }
+
+        // formatting for both HTML and CLI display
+        if (php_sapi_name() != 'cli') {
+            echo '<html><body><pre>';
+        }
+        echo 'The following errors were discovered when checking the' .PHP_EOL. 'Zikula Core system/environment requirements:' . PHP_EOL;
+        echo '******************************************************' . PHP_EOL . PHP_EOL;
+        foreach ($versionChecker->requirementsErrors as $error) {
+            echo $error . PHP_EOL;
+        }
+        if (php_sapi_name() != 'cli') {
+            echo '</pre></body></html>';
+        }
+        die();
     }
 }

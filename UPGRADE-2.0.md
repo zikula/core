@@ -62,7 +62,7 @@ The following process should be followed for all upgrades even small point relea
       - Access your main zikula directory (`/src` if a Github clone) and run this command:
 
          ```Shell
-         $ php app/console zikula:upgrade
+         $ php bin/console zikula:upgrade
          ```
 
       - Follow the prompts and complete that step. When you are finished, Open your browser and login!
