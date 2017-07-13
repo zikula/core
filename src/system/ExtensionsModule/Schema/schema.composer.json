@@ -82,7 +82,7 @@
                             "additionalProperties": true
                         }
                     },
-                    "required": ["class", "core-compatibility"],
+                    "required": ["core-compatibility", "class"],
                     "additionalProperties": false
                 }
             },
