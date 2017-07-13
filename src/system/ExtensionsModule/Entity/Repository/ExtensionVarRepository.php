@@ -54,16 +54,6 @@ class ExtensionVarRepository extends EntityRepository implements ExtensionVarRep
         return (bool)$result;
     }
 
-    public function findAll()
-    {
-        return parent::findAll();
-    }
-
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
-    {
-        return parent::findBy($criteria, $orderBy, $limit, $offset);
-    }
-
     public function updateName($oldName, $newName)
     {
         $query = $this->_em->createQueryBuilder()
