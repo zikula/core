@@ -439,6 +439,8 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * Only the parameters starting with "ZIKULA__" are considered.
      *
      * @return array An array of parameters
+     * @deprecated in Core-2.0 use runtime environment variables instead
+     * @see https://symfony.com/blog/new-in-symfony-3-2-runtime-environment-variables
      */
     protected function getEnvParameters()
     {
