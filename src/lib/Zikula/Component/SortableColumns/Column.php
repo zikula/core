@@ -140,7 +140,7 @@ class Column
     /**
      * @param boolean $isSortColumn
      */
-    public function setIsSortColumn($isSortColumn)
+    public function setSortColumn($isSortColumn)
     {
         $this->isSortColumn = $isSortColumn;
     }

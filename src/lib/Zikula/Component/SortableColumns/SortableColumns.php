@@ -200,7 +200,7 @@ class SortableColumns
     {
         if ($this->columnCollection->contains($sortColumn)) {
             $this->sortColumn = $sortColumn;
-            $sortColumn->setIsSortColumn(true);
+            $sortColumn->setSortColumn(true);
             $sortColumn->setCurrentSortDirection($this->getSortDirection());
         }
     }

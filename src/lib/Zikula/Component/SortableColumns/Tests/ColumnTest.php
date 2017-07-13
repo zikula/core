@@ -114,11 +114,11 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Column::setIsSortColumn
+     * @covers Column::setSortColumn
      */
-    public function testSetIsSortColumn()
+    public function testSetSortColumn()
     {
-        $this->column->setIsSortColumn(true);
+        $this->column->setSortColumn(true);
         $this->assertTrue(true, $this->column->isSortColumn());
     }
 }
