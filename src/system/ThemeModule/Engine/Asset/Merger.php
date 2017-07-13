@@ -26,7 +26,7 @@ class Merger implements MergerInterface
      */
     private $jsCache;
 
-     /**
+    /**
      * @var CacheProvider
      */
     private $cssCache;
