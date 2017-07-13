@@ -175,9 +175,8 @@ class ExtensionDependencyHelper
         }
 
         return true;
-        /**
-         * The section below is disabled because it doesn't work with dependencies that are in the module's own vendor directory.
-         * /
+        // The section below is disabled because it doesn't work with dependencies that are in the module's own vendor directory.
+        /*
         if (strpos($dependency->getModname(), '/') !== false) {
             if ($this->kernel->isBundle($dependency->getModname())) {
                 if (empty($this->installedPackages)) {
