@@ -162,7 +162,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      */
     private function getCurrentIp($default = '127.0.0.1')
     {
-        $ipAddress = $this->requestStack->getCurrentRequest()->getClientIp();
+        $ipAddress = (php_sapi_name() != 'cli') ? $this->requestStack->getCurrentRequest()->getClientIp() : '';
         $ipAddress = !empty($ipAddress) ? $ipAddress : $this->requestStack->getCurrentRequest()->server->get('HTTP_HOST');
 
         return !empty($ipAddress) ? $ipAddress : $default;
