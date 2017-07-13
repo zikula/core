@@ -359,7 +359,7 @@ class AdminController extends AbstractController
                 ];
             }
         }
-        usort($adminLinks, 'Zikula\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
+        usort($adminLinks, 'Zikula\AdminModule\Controller\AdminController::sortAdminModsByOrder');
         $templateParameters['adminLinks'] = $adminLinks;
 
         return $templateParameters;
@@ -438,7 +438,7 @@ class AdminController extends AbstractController
         }
 
         foreach ($adminLinks as &$item) {
-            usort($item, 'Zikula\AdminModule\Controller\AdminController::_sortAdminModsByOrder');
+            usort($item, 'Zikula\AdminModule\Controller\AdminController::sortAdminModsByOrder');
         }
 
         $menuOptions = [];
@@ -537,7 +537,7 @@ class AdminController extends AbstractController
      *
      * @return int < 0 if module a should be ordered before module b > 0 otherwise
      */
-    private static function _sortAdminModsByOrder($a, $b)
+    private static function sortAdminModsByOrder($a, $b)
     {
         if ((int)$a['order'] == (int)$b['order']) {
             return strcmp($a['moduleName'], $b['moduleName']);
