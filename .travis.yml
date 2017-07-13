@@ -18,21 +18,33 @@ services:
   - mysql
 
 before_install:
-    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then phpenv config-rm xdebug.ini; fi;
-    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
-    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]] && [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
-    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then (pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || echo "Let's continue without memcache extension"; fi;
-    # - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then php -i; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then (pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || echo "Continuing without memcache extension"; fi;
     # Set the COMPOSER_ROOT_VERSION to the right version according to the branch being built
     - if [ "$TRAVIS_BRANCH" = "master" ]; then export COMPOSER_ROOT_VERSION=dev-master; else export COMPOSER_ROOT_VERSION="$TRAVIS_BRANCH".x-dev; fi;
-    - mysql -e 'create database zk_test;'
 
-install:
     - composer install -o
+
+    - cd src
+    - php bin/console lint:yaml app/config/
+    - php bin/console lint:yaml system/
+    - php bin/console lint:yaml themes/
+    - php bin/console lint:yaml lib/Zikula/
+    - php bin/console lint:twig system/ lib/Zikula/
+    # twig linting in themes won't work because the themes are not active bundles
+
+    - cd ..
+    - phpunit
+
     - cd src
 
+install:
+    - mysql -e 'create database zk_test;'
+
     # extract en translations
-    - php -dmemory_limit=2G bin/console translation:extract en --output-format=po --output-dir=app/Resources/translations --enable-extractor=jms_i18n_routing --dir=system --dir=lib/Zikula/Bundle -vvv
+    - php -dmemory_limit=2G bin/console translation:extract en --output-format=po --output-dir=app/Resources/translations --enable-extractor=jms_i18n_routing --dir=system --dir=lib/Zikula/Bundle
 
     # test the installer
     - php bin/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost -vvv
@@ -45,7 +57,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core143.sql
     # run the upgrade from the 143 db
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
+    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
 
     # drop the install test db
     - mysql -e 'drop database zk_test'
@@ -54,7 +66,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core144.sql
     # run the upgrade from the 144 db
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
+    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
 
     # drop the install test db
     - mysql -e 'drop database zk_test'
@@ -63,7 +75,7 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core145.sql
     # run the upgrade from the 145 db
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
+    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
 
     # drop the install test db
     - mysql -e 'drop database zk_test'
@@ -72,35 +84,12 @@ install:
     - mysql -e 'create database zk_test;'
     - mysql zk_test < ../test_dbs/core146.sql
     # run the upgrade from the 146 db
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
+    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
 
-# We cannot install Apache2 for now, because this requires sudo mode in which composer takes too long to install the depencencies.
-#before_script:
-#    - sudo apt-get update
-#    - sudo apt-get install apache2 libapache2-mod-fastcgi
-#    # enable php-fpm
-#    - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-#    - sudo a2enmod rewrite actions fastcgi alias
-#    - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-#    - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-#    # configure apache virtual hosts
-#    - sudo cp -f travis-ci-apache /etc/apache2/sites-available/default
-#    - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-#    - sudo service apache2 restart
-#
 script:
-  - php bin/console lint:yaml app/config/
-  - php bin/console lint:yaml system/
-  - php bin/console lint:yaml themes/
-  - php bin/console lint:yaml lib/Zikula/
-  - php bin/console lint:twig system/ lib/Zikula/
-  # twig linting in themes won't work because the themes are not active bundles
   - cd ..
-  - phpunit
   # execute Symfony deprecation detector
   - git clone https://github.com/sensiolabs-de/deprecation-detector.git
   - cd deprecation-detector
   - composer install
   - ./bin/deprecation-detector check ../src ../src/vendor
-#     - echo "Nothing to do.. yet!"
-#    - wget -dO - localhost/src
