@@ -11,8 +11,8 @@
 
 namespace Zikula\ExtensionsModule\Tests\Api;
 
-use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionStubRepository;
 
 class CapabilityApiTest extends \PHPUnit_Framework_TestCase

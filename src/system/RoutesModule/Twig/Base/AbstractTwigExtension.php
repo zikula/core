@@ -16,8 +16,8 @@ use Twig_Extension;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\RoutesModule\Helper\ListEntriesHelper;
 use Zikula\RoutesModule\Helper\EntityDisplayHelper;
+use Zikula\RoutesModule\Helper\ListEntriesHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
 
 /**

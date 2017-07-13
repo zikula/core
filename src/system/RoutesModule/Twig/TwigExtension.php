@@ -13,9 +13,9 @@
 namespace Zikula\RoutesModule\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use ZLanguage;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Twig\Base\AbstractTwigExtension;
-use ZLanguage;
 
 /**
  * Twig extension implementation class.

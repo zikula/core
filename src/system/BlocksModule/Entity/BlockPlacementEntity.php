@@ -11,8 +11,8 @@
 
 namespace Zikula\BlocksModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
 use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * BlockPlacement entity class.

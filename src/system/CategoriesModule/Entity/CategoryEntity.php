@@ -11,10 +11,10 @@
 
 namespace Zikula\CategoriesModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Zikula\Core\Doctrine\EntityAccess;
 
 /**
  * Category entity.
