@@ -23,11 +23,14 @@ services:
 
     zikula_permissions_module.helper.schema_helper:
         class: Zikula\PermissionsModule\Helper\SchemaHelper
-        arguments: ["@zikula_extensions_module.extension_repository"]
+        arguments:
+          - "@zikula_extensions_module.extension_repository"
 
     twig.extension.zikula_permissions_module:
         class: Zikula\PermissionsModule\Twig\Extension\PermissionsExtension
         public: false
-        arguments: ["@service_container"]
+        arguments:
+          - "@translator.default"
+          - "@zikula_permissions_module.api.permission"
         tags:
             - { name: twig.extension }

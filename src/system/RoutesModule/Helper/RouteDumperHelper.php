@@ -81,7 +81,7 @@ class RouteDumperHelper
             try {
                 $command->run($input, $output);
             } catch (\RuntimeException $e) {
-                $errors .= $e->getMessage() . ". ";
+                $errors .= $e->getMessage() . '. ';
             }
         }
 

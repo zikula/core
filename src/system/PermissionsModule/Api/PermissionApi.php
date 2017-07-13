@@ -59,7 +59,7 @@ class PermissionApi implements PermissionApiInterface
     private $currentUserApi;
 
     /**
-     * @var \Zikula\Common\Translator\Translator
+     * @var TranslatorInterface
      */
     private $translator;
 
