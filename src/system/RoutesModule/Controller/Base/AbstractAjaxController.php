@@ -48,7 +48,6 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         $entityFactory = $this->get('zikula_routes_module.entity_factory');
-        $workflowHelper = $this->get('zikula_routes_module.workflow_helper');
         $repository = $entityFactory->getRepository($objectType);
         $sortableFieldMap = [
             'route' => 'sort'

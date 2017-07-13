@@ -154,13 +154,6 @@ abstract class AbstractWorkflowHelper
         $wfActions = $workflow->getEnabledTransitions($entity);
         $currentState = $entity->getWorkflowState();
     
-        // as we use the workflows for multiple object types we must maybe filter out some actions
-        $states = $this->listEntriesHelper->getEntries($entity->get_objectType(), 'workflowState');
-        $allowedStates = [];
-        foreach ($states as $state) {
-            $allowedStates[] = $state['value'];
-        }
-    
         $actions = [];
         foreach ($wfActions as $action) {
             $actionId = $action->getName();

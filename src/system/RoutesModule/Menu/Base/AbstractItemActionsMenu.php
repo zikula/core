@@ -69,7 +69,6 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             $component = 'ZikulaRoutesModule:Route:';
             $instance = $entity->getKey() . '::';
             $routePrefix = 'zikularoutesmodule_route_';
-            $isOwner = $currentUserId > 0 && null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
         
             if ($routeArea == 'admin') {
                 $menu->addChild($this->__('Preview'), [

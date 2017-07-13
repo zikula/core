@@ -5,7 +5,6 @@ services:
             - "@translator.default"
             - "@router"
             - "@zikula_permissions_module.api.permission"
-            - "@zikula_users_module.current_user"
             - "@zikula_routes_module.controller_helper"
         tags:
             - { name: zikula.link_container }

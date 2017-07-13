@@ -30,7 +30,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     public function install()
     {
         $logger = $this->container->get('logger');
-        $userName = $this->container->get('zikula_users_module.current_user')->get('uname');
     
         // create all tables from according entity definitions
         try {
