@@ -15,9 +15,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 
 /**
  * Doctrine class.

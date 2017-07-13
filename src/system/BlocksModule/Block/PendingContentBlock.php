@@ -11,9 +11,9 @@
 
 namespace Zikula\BlocksModule\Block;
 
+use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\Common\Collection\Collectible\PendingContentCollectible;
 use Zikula\Common\Collection\Container;
-use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\Core\Event\GenericEvent;
 
 /**

@@ -12,8 +12,8 @@
 namespace Zikula\Bundle\CoreBundle\Translation\Dumper;
 
 use JMS\TranslationBundle\Model\Message;
-use JMS\TranslationBundle\Util\Writer;
 use JMS\TranslationBundle\Translation\Dumper\ArrayStructureDumper;
+use JMS\TranslationBundle\Util\Writer;
 
 class PotDumper extends ArrayStructureDumper
 {

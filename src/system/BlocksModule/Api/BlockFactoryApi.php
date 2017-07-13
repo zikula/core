@@ -15,10 +15,10 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\BlocksModule\Helper\ServiceNameHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractModule;
-use Zikula\BlocksModule\BlockHandlerInterface;
 
 /**
  * Class BlockFactoryApi

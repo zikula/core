@@ -11,9 +11,9 @@
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 class Scanner
 {
