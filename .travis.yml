@@ -48,7 +48,7 @@ install:
     - mysql -e 'create database zk_test;'
     # run the installer
     - php bin/console zikula:install:start -n --database_user=root --database_name=zk_test --password=12345678 --email=admin@example.com --router:request_context:host=localhost
-    - php bin/console zikula:install:finish -vvv
+    - php bin/console zikula:install:finish
     # drop the test db
     - mysql -e 'drop database zk_test'
 
