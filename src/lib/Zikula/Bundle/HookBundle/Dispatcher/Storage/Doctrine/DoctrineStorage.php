@@ -208,6 +208,8 @@ class DoctrineStorage implements StorageInterface
      */
     public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
     {
+        $subscriberTypes = [];
+        $subscriberCategory = '';
         if ($this->hookCollector->hasSubscriber($subscriberArea)) {
             $subscriberTypes = $this->hookCollector->getSubscriber($subscriberArea)->getEvents(); // array('hookType' => 'eventName')
             $subscriberTypes = array_keys($subscriberTypes);
@@ -219,13 +221,15 @@ class DoctrineStorage implements StorageInterface
         }
 
         foreach ($subscriberTypes as $subscriberType) {
-            if ($this->hookCollector->hasProvider($providerArea)) {
-                $providerTypes = $this->hookCollector->getProvider($providerArea)->getProviderTypes();
-                $providerCategory = $this->hookCollector->getProvider($providerArea)->getCategory();
-                foreach (array_keys($providerTypes) as $providerType) {
-                    if ($subscriberCategory == $providerCategory && $subscriberType == $providerType) {
-                        return true;
-                    }
+            if (!$this->hookCollector->hasProvider($providerArea)) {
+                continue;
+            }
+
+            $providerTypes = $this->hookCollector->getProvider($providerArea)->getProviderTypes();
+            $providerCategory = $this->hookCollector->getProvider($providerArea)->getCategory();
+            foreach (array_keys($providerTypes) as $providerType) {
+                if ($subscriberCategory == $providerCategory && $subscriberType == $providerType) {
+                    return true;
                 }
             }
         }

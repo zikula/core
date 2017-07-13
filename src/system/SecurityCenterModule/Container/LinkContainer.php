@@ -26,7 +26,7 @@ class LinkContainer implements LinkContainerInterface
     private $translator;
 
     /**
-     * @var VariableApiInterface
+     * @var RouterInterface
      */
     private $router;
 
@@ -36,7 +36,7 @@ class LinkContainer implements LinkContainerInterface
     private $permissionApi;
 
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $variableApi;
 

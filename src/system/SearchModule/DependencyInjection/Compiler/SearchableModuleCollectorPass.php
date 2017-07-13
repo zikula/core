@@ -25,6 +25,7 @@ class SearchableModuleCollectorPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('zikula_search_module.internal.searchable_module_collector');
 
+        $bundleName = '';
         foreach ($container->findTaggedServiceIds('zikula.searchable_module') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['bundleName'])) {

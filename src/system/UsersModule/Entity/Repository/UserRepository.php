@@ -30,7 +30,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
             $uids = [$uids];
         }
 
-        return parent::findBy(['uid' => $uids]);
+        return $this->findBy(['uid' => $uids]);
     }
 
     public function persistAndFlush(UserEntity $user)
@@ -58,7 +58,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
     /**
      * @param array $formData
-     * @return Paginator
+     * @return Paginator|UserEntity[]
      */
     public function queryBySearchForm(array $formData = [])
     {
@@ -120,7 +120,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      * @param int $limit
      * @param int $offset
      * @param string $exprType
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator|UserEntity[]
+     * @return Paginator|UserEntity[]
      */
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
     {

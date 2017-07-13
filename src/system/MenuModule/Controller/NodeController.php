@@ -56,7 +56,7 @@ class NodeController extends AbstractController
                         $parent = $repo->find($request->request->get('parent'));
                         $menuItemEntity->setParent($parent);
                         $menuItemEntity->setRoot($parent->getRoot());
-                    } elseif (empty($parent) && $request->request->has('after')) { // sibling of top-level child
+                    } elseif (empty($parentId) && $request->request->has('after')) { // sibling of top-level child
                         $sibling = $repo->find($request->request->get('after'));
                         $menuItemEntity->setParent($sibling->getParent());
                         $menuItemEntity->setRoot($sibling->getRoot());

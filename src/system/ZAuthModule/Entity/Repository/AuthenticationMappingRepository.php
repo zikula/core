@@ -31,7 +31,7 @@ class AuthenticationMappingRepository extends EntityRepository implements Authen
 
     public function removeByZikulaId($uid)
     {
-        $mapping = parent::findOneBy(['uid' => $uid]);
+        $mapping = $this->findOneBy(['uid' => $uid]);
         if (isset($mapping)) {
             $this->_em->remove($mapping);
             $this->_em->flush();
@@ -40,12 +40,12 @@ class AuthenticationMappingRepository extends EntityRepository implements Authen
 
     public function getByZikulaId($uid)
     {
-        return parent::findOneBy(['uid' => $uid]);
+        return $this->findOneBy(['uid' => $uid]);
     }
 
     public function setEmailVerification($uid, $value = true)
     {
-        $mapping = parent::findOneBy(['uid' => $uid]);
+        $mapping = $this->findOneBy(['uid' => $uid]);
         if (isset($mapping)) {
             $mapping->setVerifiedEmail($value);
             $this->_em->flush($mapping);

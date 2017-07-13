@@ -278,7 +278,7 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
         $extensionHelper = $this->get('zikula_extensions_module.extension_helper');
-        if (!$this->get('kernel')->isBundle($extension->getName()) && !$extensionHelper->isLegacyModuleType($extension)) { // @deprecated method call
+        if (!$this->get('kernel')->isBundle($extension->getName())) {
             $this->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
             $this->get('zikula.cache_clearer')->clear('symfony');
 

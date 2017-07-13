@@ -97,12 +97,15 @@ class HookController extends Controller
             $subscriberAreasToCategories = [];
             $subscriberAreasAndCategories = [];
             foreach ($subscriberAreas as $subscriberArea) {
+                $category = null;
                 if (isset($nonPersistedSubscribers[$subscriberArea])) {
                     $subscriberAreasToTitles[$subscriberArea] = $nonPersistedSubscribers[$subscriberArea]->getTitle();
                     $category = $nonPersistedSubscribers[$subscriberArea]->getCategory();
                 }
                 $subscriberAreasToCategories[$subscriberArea] = $category;
-                $subscriberAreasAndCategories[$category][] = $subscriberArea;
+                if (null !== $category) {
+                    $subscriberAreasAndCategories[$category][] = $subscriberArea;
+                }
             }
             $templateParameters['subscriberAreasToTitles'] = $subscriberAreasToTitles;
             $templateParameters['subscriberAreasToCategories'] = $subscriberAreasToCategories;

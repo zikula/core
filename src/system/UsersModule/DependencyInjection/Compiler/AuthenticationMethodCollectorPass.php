@@ -25,6 +25,7 @@ class AuthenticationMethodCollectorPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('zikula_users_module.internal.authentication_method_collector');
 
+        $alias = '';
         foreach ($container->findTaggedServiceIds('zikula.authentication_method') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['alias'])) {

@@ -44,7 +44,7 @@ class AdministrationActionsHelper
     private $verificationRepository;
 
     /**
-     * @var VariableApi
+     * @var UserRepositoryInterface
      */
     private $userRepository;
 

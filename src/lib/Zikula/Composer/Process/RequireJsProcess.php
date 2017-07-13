@@ -110,7 +110,7 @@ class RequireJsProcess extends Process
             if (!empty($scripts)) {
                 // Put all scripts into a build.js file.
                 $result = $this->aggregateScripts($package, $scripts, $name.DIRECTORY_SEPARATOR.$name.'-built.js');
-                if ($result) {
+                if (false !== $result) {
                     // If the aggregation was successful, add the script to the
                     // packages array.
                     $component['main'] = $name.'-built.js';

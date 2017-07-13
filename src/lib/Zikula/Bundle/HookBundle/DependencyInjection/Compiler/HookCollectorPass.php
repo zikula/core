@@ -25,6 +25,7 @@ class HookCollectorPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('zikula_hook_bundle.collector.hook_collector');
 
+        $areaName = '';
         foreach ($container->findTaggedServiceIds('zikula.hook_provider') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['areaName'])) {
@@ -36,6 +37,7 @@ class HookCollectorPass implements CompilerPassInterface
             $definition->addMethodCall('addProvider', [$areaName, $id, new Reference($id)]);
         }
 
+        $areaName = '';
         foreach ($container->findTaggedServiceIds('zikula.hook_subscriber') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['areaName'])) {
