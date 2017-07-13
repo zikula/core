@@ -174,7 +174,8 @@ class UpdateCheckHelper
         $ref = $this->requestStack
             ->getMasterRequest()
             ->getBaseURL();
-        $port = (($urlArray['scheme'] == 'https') ? 443 : 80);
+        $port = ($urlArray['scheme'] == 'https') ? 443 : 80;
+
         if (function_exists('curl_init')) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -185,18 +186,17 @@ class UpdateCheckHelper
             curl_setopt($ch, CURLOPT_REFERER, $ref);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
-                // This option doesnt work in safe_mode or with open_basedir set in php.ini
+                // This option does not work in safe_mode or with open_basedir set in php.ini
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
             $data = curl_exec($ch);
-            if (!$data && $port = 443) {
+            if (!$data && $port == 443) {
                 // retry non ssl
                 $url = str_replace('https://', 'http://', $url);
                 curl_setopt($ch, CURLOPT_URL, "$url?");
-                $data = @curl_exec($ch);
+                $data = curl_exec($ch);
             }
-            //$headers = curl_getinfo($ch);
             curl_close($ch);
 
             return $data;
@@ -206,24 +206,24 @@ class UpdateCheckHelper
             // handle SSL connections
             $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
             $host = ($port == 443 ? "ssl://$urlArray[host]" : $urlArray['host']);
-            $fp = @fsockopen($host, $port, $errno, $errstr, $timeout);
+            $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
             if (!$fp) {
                 return false;
-            } else {
-                $out = "GET $path_query? HTTP/1.1\r\n";
-                $out .= "User-Agent: $userAgent\r\n";
-                $out .= "Referer: $ref\r\n";
-                $out .= "Host: $urlArray[host]\r\n";
-                $out .= "Connection: Close\r\n\r\n";
-                fwrite($fp, $out);
-                while (!feof($fp)) {
-                    $data .= fgets($fp, 1024);
-                }
-                fclose($fp);
-                $dataArray = explode("\r\n\r\n", $data);
-
-                return $dataArray[1];
             }
+
+            $out = "GET $path_query? HTTP/1.1\r\n";
+            $out .= "User-Agent: $userAgent\r\n";
+            $out .= "Referer: $ref\r\n";
+            $out .= "Host: $urlArray[host]\r\n";
+            $out .= "Connection: Close\r\n\r\n";
+            fwrite($fp, $out);
+            while (!feof($fp)) {
+                $data .= fgets($fp, 1024);
+            }
+            fclose($fp);
+            $dataArray = explode("\r\n\r\n", $data);
+
+            return $dataArray[1];
         }
 
         return false;

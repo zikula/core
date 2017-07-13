@@ -123,8 +123,8 @@ class ControllerHelper
         $phpVersion = "$x[0].$x[1].$x[2]";
         $results['phpsatisfied'] = version_compare($phpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
         $results['pdo'] = extension_loaded('pdo');
-        $isEnabled = @preg_match('/^\p{L}+$/u', 'TheseAreLetters');
-        $results['pcreUnicodePropertiesEnabled'] = (isset($isEnabled) && (bool)$isEnabled);
+        $supportsUnicode = preg_match('/^\p{L}+$/u', 'TheseAreLetters');
+        $results['pcreUnicodePropertiesEnabled'] = (isset($supportsUnicode) && (bool)$supportsUnicode);
         $requirementsMet = true;
         foreach ($results as $check) {
             if (!$check) {

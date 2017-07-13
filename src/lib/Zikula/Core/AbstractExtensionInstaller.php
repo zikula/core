@@ -137,6 +137,6 @@ class MockHookApi
     public function __call($name, $arguments)
     {
         // intentionally do nothing
-        @trigger_error('All methods from HookApi are no longer needed. They should be completely removed from the Installer class.');
+        trigger_error('All methods from HookApi are no longer needed. They should be completely removed from the Installer class.');
     }
 }
