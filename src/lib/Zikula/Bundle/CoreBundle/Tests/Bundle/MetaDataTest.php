@@ -112,6 +112,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     "extra": {
         "zikula": {
             "class": "Zikula\\AdminModule\\ZikulaAdminModule",
+            "core-compatibility": ">=1.4.2",
             "base-path": "",
             "root-path": "",
             "short-name": ""
