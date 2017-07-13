@@ -5,6 +5,7 @@ services:
         arguments:
             - "@zikula_users_module.user_session_repository"
             - "@zikula_extensions_module.api.variable"
+            - "@request_stack"
             - "%installed%"
         calls:
             - [setStorage, ["@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine"]]
