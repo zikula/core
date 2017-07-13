@@ -247,7 +247,7 @@ class BundleSyncHelper
                     throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same %field. [%ext1%] and [%ext2%]', [
                         '%field' => $fieldName,
                         '%ext1%' => $modInfo['name'],
-                        '%ext2%' => $moduleNames[strtolower($modInfo['name'])]
+                        '%ext2%' => $moduleValues['name'][strtolower($modInfo['name'])]
                     ]));
                 }
                 $moduleValues[$fieldName][$key] = $dir;
