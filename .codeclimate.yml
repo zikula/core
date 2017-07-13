@@ -39,10 +39,7 @@ ratings:
   - "**.php"
 
 exclude_paths:
-- "src/lib/legacy/"
-- "src/javascript/jquery-plugins/"
-- "src/javascript/plugins/"
-- "src/javascript/underscore/"
+- "src/lib/Zikula/Bundle/WorkflowBundle/Resources/public/js/jsPlumb/"
 - "*.min.js"
 - "**/tests/"
 - "**/vendor/"
