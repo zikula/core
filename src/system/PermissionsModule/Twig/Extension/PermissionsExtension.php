@@ -11,26 +11,31 @@
 
 namespace Zikula\PermissionsModule\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class PermissionsExtension extends \Twig_Extension
 {
     /**
-     * @var ContainerInterface
+     * @var TranslatorInterface
      */
-    private $container;
-
-    public function __construct(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+    private $translator;
 
     /**
-     * @return ContainerInterface
+     * @var PermissionApiInterface
      */
-    public function getContainer()
+    private $permissionApi;
+
+    /**
+     * PermissionsExtension constructor.
+     *
+     * @param TranslatorInterface $translator
+     * @param PermissionApiInterface $permissionApi
+     */
+    public function __construct(TranslatorInterface $translator, PermissionApiInterface $permissionApi)
     {
-        return $this->container;
+        $this->translator = $translator;
+        $this->permissionApi = $permissionApi;
     }
 
     /**
@@ -40,11 +45,9 @@ class PermissionsExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        $functions = [
+        return [
             new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
         ];
-
-        return $functions;
     }
 
     /**
@@ -56,12 +59,9 @@ class PermissionsExtension extends \Twig_Extension
     public function hasPermission($component, $instance, $level)
     {
         if (empty($component) || empty($instance) || empty($level)) {
-            $translator = $this->container->get('translator.default');
-            throw new \InvalidArgumentException($translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
-        $result = $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, constant($level));
-
-        return (bool) $result;
+        return $this->permissionApi->hasPermission($component, $instance, constant($level));
     }
 }
