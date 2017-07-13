@@ -105,7 +105,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         if (substr($transitionName, 0, 6) == 'update') {
             $transitionName = 'update';
         }
-        $targetState = $event->getTransition()->getTos()[0];
+        
         $hasApproval = false;
     
         switch ($transitionName) {
