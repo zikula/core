@@ -107,7 +107,7 @@ class BlockController extends AbstractController
         }
         $form->handleRequest($request);
 
-        list($moduleName, ) = explode(':', $blockEntity->getBkey());
+        list($moduleName) = explode(':', $blockEntity->getBkey());
         if ($form->isSubmitted() && $form->get('save')->isClicked() && $form->isValid()) {
             // sort Filter array so keys are always sequential.
             $filters = $blockEntity->getFilters();

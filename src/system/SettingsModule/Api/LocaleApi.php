@@ -62,7 +62,7 @@ class LocaleApi implements LocaleApiInterface
                     ->notName('*.template.*');
                 foreach ($files as $file) {
                     $fileName = $file->getBasename('.po');
-                    list( , $locale) = explode('.', $fileName);
+                    list(, $locale) = explode('.', $fileName);
                     if (!in_array($locale, $this->supportedLocales)) {
                         $this->supportedLocales[] = $locale;
                     }
@@ -101,7 +101,7 @@ class LocaleApi implements LocaleApiInterface
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
         $availableLanguages = [];
         foreach ($matches as $match) {
-            list($languageCode, ) = explode('-', $match[1]) + ['', ''];
+            list($languageCode) = explode('-', $match[1]) + ['', ''];
             $priority = isset($match[2]) ? (float) $match[2] : 1.0;
             $availableLanguages[][$languageCode] = $priority;
         }
