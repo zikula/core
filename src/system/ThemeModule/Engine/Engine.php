@@ -272,7 +272,6 @@ class Engine
         unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master']); // remove to avoid scanning/matching in loop
         $pathInfo = $request->getPathInfo();
         foreach ($themeConfig as $realm => $config) {
-            // @todo is there a faster way to do this?
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
                 $valuesToMatch = [];
