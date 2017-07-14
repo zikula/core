@@ -138,7 +138,7 @@ class AccessController extends AbstractController
             }
         }
         // login failed
-        // @todo implement auto-register setting. If true, do so and proceed from here.
+        // implement auto-register setting here. If true, do so and proceed. #2915
         $this->addFlash('error', $this->__('Login failed.'));
         $returnUrl = $this->dispatchLoginFailedEvent($user, $returnUrl, $authenticationMethod);
 
