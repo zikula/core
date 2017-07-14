@@ -32,6 +32,7 @@
 
     <route id="doc" path="/installdoc/{name}">
         <default key="_controller">zikula_core_installer.controller.doc:displayAction</default>
-        <default key="name">INSTALL-1.4.md</default>
+        <default key="name">INSTALL-2.0.md</default>
+        <condition>request.query.get('name') matches "/[^\/]+.md/"</condition>
     </route>
 </routes>
