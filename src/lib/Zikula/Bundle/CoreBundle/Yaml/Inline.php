@@ -13,10 +13,6 @@ namespace Zikula\Bundle\CoreBundle\Yaml;
 
 /**
  * Inline implements a YAML parser/dumper for the YAML inline syntax.
- *
- * @todo remove after migration to Symfony 3.x and use new parameters instead
- * @see https://github.com/zikula/core/issues/2889
- * @see http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
  */
 class Inline extends \Symfony\Component\Yaml\Inline
 {
