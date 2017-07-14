@@ -56,7 +56,6 @@ class ExtensionInstallationListener implements EventSubscriberInterface
             CoreEvents::MODULE_ENABLE => ['clearCombinedAssetCache'],
             CoreEvents::MODULE_DISABLE => ['clearCombinedAssetCache'],
             CoreEvents::MODULE_REMOVE => ['clearCombinedAssetCache'],
-            // @todo create theme events for same and add here
         ];
     }
 }
