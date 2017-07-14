@@ -1,7 +1,7 @@
 CHANGELOG - ZIKULA 1.3.13
 -------------------------
 
-- ?
+- Fixed JavaScript problem related to admin tabs
 
 CHANGELOG - ZIKULA 1.3.12
 -------------------------
