@@ -96,7 +96,7 @@ CHANGELOG - ZIKULA 1.5.x
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.30
     - guzzlehttp/guzzle  updated from 6.2.3 to 6.3.0
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
-    - jquery.mmenu updated from 5.7.8 to 6.1.0
+    - jquery.mmenu updated from 5.7.8 to 6.1.1
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
     - matthiasnoback/symfony-service-definition-validator updated from 1.2.6 to 1.2.6.1 (zikula fork)
