@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 
 /**
  * Entity collection filter helper base class.
