@@ -76,7 +76,7 @@ class UserAdministrationController extends AbstractController
         if (!empty($letter) && 'all' != $letter) {
             $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
         }
-        $limit = 25; // @todo make this configurable?
+        $limit = 25;
 
         $mappings = $this->get('zikula_zauth_module.authentication_mapping_repository')->query(
             $filter,

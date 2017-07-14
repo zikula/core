@@ -7,6 +7,9 @@
       "name": "Zikula Team"
     }
   ],
+  "autoload": {
+    "psr-4": { "Zikula\\FooModule\\": "" }
+  },
   "require": {
     "php": ">=5.5.9"
   },

@@ -24,7 +24,6 @@ class VarController extends AbstractController
     /**
      * Configure a theme's variables based on provided .yml definitions for each field.
      * @Route("/admin/var/{themeName}")
-     * @todo change route name to /admin/variable/{themeName} when similar named is removed?
      * @Theme("admin")
      * @Template
      *

@@ -235,7 +235,7 @@ class ExtensionEntity extends EntityAccess
 
     public function setCorecompatibility($coreCompatibility)
     {
-        // @todo temporarily use core_min to store the string - rename and remove core_max
+        // temporarily use core_min to store the string - rename and remove core_max refs #3649
         $this->core_min = $coreCompatibility;
     }
 }

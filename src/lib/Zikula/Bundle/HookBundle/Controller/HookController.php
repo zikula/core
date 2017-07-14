@@ -394,7 +394,7 @@ class HookController extends Controller
         if (!$currentRequest->isXmlHttpRequest()) {
             throw new \Exception();
         }
-        // @todo how to SET the $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] ?
+        // how/where is $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] set? refs #3454
         $headerToken = ($currentRequest->server->has('HTTP_X_ZIKULA_AJAX_TOKEN')) ? $currentRequest->server->get('HTTP_X_ZIKULA_AJAX_TOKEN') : null;
         if ($headerToken == $currentRequest->getSession()->getId()) {
             return;

@@ -52,6 +52,12 @@ services:
         tags:
             - { name: form.type }
 
+    zikula_blocks_module.block.finclude_block_type:
+        class: Zikula\BlocksModule\Block\Form\Type\FincludeBlockType
+        arguments: ['@translator.default']
+        tags:
+            - { name: form.type, alias: Zikula\BlocksModule\Block\Form\Type\FincludeBlockType }
+
     twig.extension.zikula_blocks_module:
         class: Zikula\BlocksModule\Twig\Extension\BlocksExtension
         public: false

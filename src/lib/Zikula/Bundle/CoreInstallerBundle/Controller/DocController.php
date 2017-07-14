@@ -73,12 +73,8 @@ class DocController
      * @param string $name
      * @return Response
      */
-    public function displayAction(Request $request, $name = 'INSTALL-1.4.md')
+    public function displayAction(Request $request, $name = 'INSTALL-2.0.md')
     {
-        // @TODO this is temporary method of restricting the user input
-        if (!in_array($name, ['INSTALL-1.4.md', 'UPGRADE-1.4.md', 'CHANGELOG.md', 'README.md'])) {
-            $name = 'INSTALL-1.4.md';
-        }
         $this->setBasePath($request);
 
         if (file_exists($this->basePath . "/$name")) {
