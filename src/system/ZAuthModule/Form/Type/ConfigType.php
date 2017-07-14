@@ -42,7 +42,7 @@ class ConfigType extends AbstractType
                 'help' => $options['translator']->__('This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'),
                 'constraints' => [
                     new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 3]) // @todo
+                    new GreaterThanOrEqual(['value' => 5])
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_HASH_METHOD, ChoiceType::class, [
@@ -51,7 +51,7 @@ class ConfigType extends AbstractType
                 'choices' => [
                     'SHA1'  => 'sha1',
                     'SHA256' => 'sha256',
-                    // @todo bcrypt
+                    // add bcrypt #2842
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [
