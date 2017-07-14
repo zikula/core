@@ -288,7 +288,7 @@ class MetaData implements \ArrayAccess
             'user' => isset($capabilities['user']) ? $capabilities['user'] : true,
             'admin' => isset($capabilities['admin']) ? $capabilities['admin'] : true,
             'system' => isset($capabilities['system']) ? $capabilities['system'] : false,
-            'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // @todo is this valid any longer?
+            'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // this is not truly valid in 2.0
         ];
     }
 
