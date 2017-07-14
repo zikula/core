@@ -31,7 +31,6 @@ class CoreBundle extends Bundle
 
         $container->addCompilerPass(new OverrideBlameableListenerPass());
 
-        // todo - see if we can do this only on module install/upgrade - drak
         $container->addCompilerPass(new ValidateServiceDefinitionsPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
 }
