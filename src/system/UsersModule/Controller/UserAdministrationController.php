@@ -326,7 +326,7 @@ class UserAdministrationController extends AbstractController
                 }
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
-                // @todo send email to 'denied' registrations. see MailHelper::sendNotification (regdeny)
+                // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $this->get('zikula_users_module.user_repository')->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
                     $eventName = $deletedUser->getActivated() == UsersConstant::ACTIVATED_ACTIVE ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
@@ -364,7 +364,7 @@ class UserAdministrationController extends AbstractController
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            // @TODO the users.search.process_edit event is no longer dispatched with this method. could it be done in a Transformer?
+            // the users.search.process_edit event is no longer dispatched with this method. could it be done in a Transformer? #3652
             $deleteForm = $this->createForm(DeleteType::class, [], [
                 'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm($form->getData()),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
