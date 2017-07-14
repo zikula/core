@@ -34,6 +34,8 @@ engines:
   phpcodesniffer:
     enabled: true
     checks:
+      Generic Files LineLength TooLong:
+        enabled: false
       Squiz Functions MultiLineFunctionDeclaration SpaceAfterFunction:
         enabled: false
   phpmd:
