@@ -120,7 +120,7 @@ class BootstrapHelper
             'autoload'    => $autoload,
             'bundleclass' => $class,
             'bundletype'  => $type,
-            'bundlestate' => AbstractBundle::STATE_ACTIVE, // todo - this has to be changed
+            'bundlestate' => AbstractBundle::STATE_ACTIVE,
         ]);
     }
 
