@@ -24,7 +24,4 @@ disabled:
 
 finder:
   exclude:
-    - "src/javascript"
-    - "src/lib/legacy/idn"
-    - "tools"
     - "src/system/RoutesModule"
