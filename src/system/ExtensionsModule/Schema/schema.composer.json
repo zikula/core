@@ -48,7 +48,8 @@
                     "type": "object",
                     "additionalProperties": true
                 }
-            }
+            },
+            "required": ["psr-4"]
         },
         "require": {
             "type": "object",
@@ -90,5 +91,5 @@
             "additionalProperties": true
         }
     },
-    "required": ["name", "description", "type", "license", "authors", "require", "extra"]
+    "required": ["name", "description", "type", "license", "authors", "require", "extra", "autoload"]
 }
