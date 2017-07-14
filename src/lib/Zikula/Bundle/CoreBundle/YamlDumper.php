@@ -12,7 +12,7 @@
 namespace Zikula\Bundle\CoreBundle;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Zikula\Bundle\CoreBundle\Yaml\Yaml;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ConfigDumper.

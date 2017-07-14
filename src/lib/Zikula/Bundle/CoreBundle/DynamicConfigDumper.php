@@ -12,7 +12,7 @@
 namespace Zikula\Bundle\CoreBundle;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Zikula\Bundle\CoreBundle\Yaml\Yaml;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class DynamicConfigDumper.
@@ -45,7 +45,8 @@ class DynamicConfigDumper extends YamlDumper
      */
     protected function dumpFile($configuration)
     {
-        $yaml = "#This is a dynamically generated configuration file. Do not touch!\n\n" . Yaml::dump($configuration);
+        $flags = Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE; // see #2889
+        $yaml = "#This is a dynamically generated configuration file. Do not touch!\n\n" . Yaml::dump($configuration, 2, 4, $flags);
         $this->fs->dumpFile($this->fullPath, $yaml);
     }
 }
