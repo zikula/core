@@ -284,11 +284,11 @@ class MetaData implements \ArrayAccess
             'description' => $this->getDescription(),
             'version' => $this->getVersion(),
 //            'capabilities' => $this->getCapabilities(),
-            // @todo temp - add to DB and move to inverse in legacy code and refactor later checks
+            // It would be better to add capabilities to DB and move to inverse in legacy code and refactor later checks. refs #3644
             'user' => isset($capabilities['user']) ? $capabilities['user'] : true,
             'admin' => isset($capabilities['admin']) ? $capabilities['admin'] : true,
             'system' => isset($capabilities['system']) ? $capabilities['system'] : false,
-            'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // @todo is this valid any longer?
+            'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // this is not truly valid in 2.0
         ];
     }
 

@@ -123,8 +123,6 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
 
     /**
      * Load zikula resource files
-     *
-     * @todo better load resource
      */
     private function loadResources()
     {

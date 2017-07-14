@@ -13,10 +13,6 @@ namespace Zikula\Bundle\CoreBundle\Yaml;
 
 /**
  * Dumper dumps PHP variables to YAML strings.
- *
- * @todo remove after migration to Symfony 3.x and use new parameters instead
- * @see https://github.com/zikula/core/issues/2889
- * @see http://symfony.com/blog/new-in-symfony-3-1-customizable-yaml-parsing-and-dumping
  */
 class Dumper extends \Symfony\Component\Yaml\Dumper
 {

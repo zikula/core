@@ -9,7 +9,7 @@
     }
   ],
   "autoload": {
-    "psr-4": { "Zikula\\FooModule\\": "" }
+    "psr-0": { "Zikula\\Module\\FooModule\\": "" }
   },
   "require": {
     "php": ">=5.5.9"

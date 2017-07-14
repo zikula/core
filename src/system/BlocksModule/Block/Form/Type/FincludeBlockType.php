@@ -22,12 +22,26 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\BlocksModule\Block\FincludeBlock;
 use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * Class FincludeBlockType
  */
 class FincludeBlockType extends AbstractType
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $options['translator'];
@@ -76,7 +90,7 @@ class FincludeBlockType extends AbstractType
     public function validateFileAgainstMimeType($data, ExecutionContextInterface $context)
     {
         if (('text/html' == mime_content_type($data['filo'])) && (0 !== $data['typo'])) {
-            $context->addViolation('For Html files please select the Html file type.'); // @todo get translator instance from somewhere?
+            $context->addViolation($this->translator->__('For Html files please select the Html file type.'));
         }
     }
 }

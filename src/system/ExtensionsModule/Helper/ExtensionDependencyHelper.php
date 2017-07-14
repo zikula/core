@@ -170,7 +170,7 @@ class ExtensionDependencyHelper
             return true;
         }
         if (strpos($dependency->getModname(), 'composer/') !== false) {
-            // @todo this specifically is for `composer/installers` but will catch all with `composer/`
+            // this specifically is for `composer/installers` but will catch all with `composer/`
             return true;
         }
 

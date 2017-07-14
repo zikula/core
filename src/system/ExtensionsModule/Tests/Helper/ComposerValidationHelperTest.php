@@ -61,6 +61,7 @@ class ComposerValidationHelperTest extends \PHPUnit_Framework_TestCase
             ['minimum_composer.json', true, []],
             ['maximum_composer.json', true, []],
             ['minimum_error1_composer.json', false, ["Error found in composer file of Fixtures (/../Fixtures) in property \"description\": The property description is required."]],
+            ['minimum_error2_composer.json', false, ["Error found in composer file of Fixtures (/../Fixtures) in property \"autoload.psr-4\": The property psr-4 is required."]],
             ['minimum_syntax_error_composer.json', false, ["Unable to decode composer file of Fixtures (/../Fixtures): Syntax error. Ensure the composer.json file has a valid syntax."]],
             ['empty_composer.json', false, [
                 "Error found in composer file of Fixtures (/../Fixtures) in property \"name\": The property name is required.",
@@ -70,6 +71,7 @@ class ComposerValidationHelperTest extends \PHPUnit_Framework_TestCase
                 "Error found in composer file of Fixtures (/../Fixtures) in property \"authors\": The property authors is required.",
                 "Error found in composer file of Fixtures (/../Fixtures) in property \"require\": The property require is required.",
                 "Error found in composer file of Fixtures (/../Fixtures) in property \"extra\": The property extra is required.",
+                "Error found in composer file of Fixtures (/../Fixtures) in property \"autoload\": The property autoload is required.",
             ]],
         ];
     }

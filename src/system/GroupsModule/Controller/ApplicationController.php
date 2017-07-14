@@ -103,11 +103,12 @@ class ApplicationController extends AbstractController
             throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
         $userEntity = $this->get('zikula_users_module.user_repository')->find($currentUserApi->get('uid'));
-        if (($group->getGtype() == CommonHelper::GTYPE_CORE)
-            || ($group->getState() == CommonHelper::STATE_CLOSED)
-            || ($group->getNbumax() > 0 && $group->getUsers()->count() > $group->getNbumax())
-            || ($group->getUsers()->contains($userEntity))) {
-            $this->addFlash('error', $this->__('Sorry!, You cannot apply to join the requested group')); // @todo more specific info would be better
+        $groupTypeIsCore = $group->getGtype() == CommonHelper::GTYPE_CORE;
+        $groupStateIsClosed = $group->getState() == CommonHelper::STATE_CLOSED;
+        $groupCountIsLimit = $group->getNbumax() > 0 && $group->getUsers()->count() > $group->getNbumax();
+        $alreadyGroupMember = $group->getUsers()->contains($userEntity);
+        if ($groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {
+            $this->addFlash('error', $this->getSpecificGroupMessage($groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
@@ -145,5 +146,25 @@ class ApplicationController extends AbstractController
             'form' => $form->createView(),
             'group' => $group,
         ];
+    }
+
+    private function getSpecificGroupMessage($groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember)
+    {
+        $messages = [];
+        $messages[] = $this->__('Sorry!, You cannot apply to join the requested group');
+        if ($groupTypeIsCore) {
+            $messages[] = $this->__('This group is a core-only group');
+        }
+        if ($groupStateIsClosed) {
+            $messages[] = $this->__('This group is closed.');
+        }
+        if ($groupCountIsLimit) {
+            $messages[] = $this->__('This group is has reached its membership limit.');
+        }
+        if ($alreadyGroupMember) {
+            $messages[] = $this->__('You are already a member of this group.');
+        }
+
+        return implode('<br>', $messages);
     }
 }
