@@ -92,26 +92,21 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
 
     public function updateName($oldName, $newName)
     {
-        // TODO: Implement updateName() method.
     }
 
     public function find($id)
     {
-        // TODO: Implement find() method.
     }
 
     public function findOneBy(array $criteria)
     {
-        // TODO: Implement findOneBy() method.
     }
 
     public function getClassName()
     {
-        // TODO: Implement getClassName() method.
     }
 
     public function matching(Criteria $criteria)
     {
-        // TODO: Implement matching() method.
     }
 }
