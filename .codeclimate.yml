@@ -33,6 +33,9 @@ engines:
         enabled: false
   phpcodesniffer:
     enabled: true
+    checks:
+      Squiz Functions MultiLineFunctionDeclaration SpaceAfterFunction:
+        enabled: false
   phpmd:
     enabled: true
 
