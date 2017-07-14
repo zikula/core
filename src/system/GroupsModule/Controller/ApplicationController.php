@@ -165,6 +165,6 @@ class ApplicationController extends AbstractController
             $messages[] = $this->__('You are already a member of this group.');
         }
 
-        return implode ('<br>', $messages);
+        return implode('<br>', $messages);
     }
 }
