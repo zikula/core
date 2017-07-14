@@ -60,7 +60,7 @@ class MenuItemType extends AbstractType
         $builder->get('options')
             ->addModelTransformer(new KeyValueTransformer())
             ->addEventSubscriber(new KeyValueFixerListener())
-            ->addEventSubscriber(new OptionValidatorListener())
+            ->addEventSubscriber(new OptionValidatorListener($options['translator']))
         ;
         if ($options['includeRoot']) {
             $builder->add('root', EntityType::class, [

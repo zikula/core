@@ -15,9 +15,23 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Zikula\Common\Translator\TranslatorInterface;
 
 class OptionValidatorListener implements EventSubscriberInterface
 {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -44,14 +58,16 @@ class OptionValidatorListener implements EventSubscriberInterface
                                 $option['value'] = false;
                                 break;
                             default:
-                                $form->addError(new FormError($option['key'] . ' must be either (string) "true" or "false").')); // @todo translate
+                                $error = $this->translator->__f('%k must be either (string) "%t" or "%f").', ['%k' => $option['key'], '%t' => 'true', '%f' => 'false']);
+                                $form->addError(new FormError($error));
                         }
                         break;
                     case 'array':
                         $option['value'] = str_replace("'", '"', $option['value']);
                         $json = json_decode($option['value'], true);
                         if (null === $json) {
-                            $form->addError(new FormError($option['key'] . ' must have a value that can be json_decoded.')); // @todo translate
+                            $error = $this->translator->__f('%k must have a value that can be json_decoded.', ['%k' => $option['key']]);
+                            $form->addError(new FormError($error));
                         }
                         break;
                 }
