@@ -111,9 +111,6 @@ class BootstrapHelper
             case 'zikula-theme':
                 $type = 'T';
                 break;
-            case 'zikula-plugin':
-                $type = 'P';
-                break;
             default:
                 throw new \InvalidArgumentException(sprintf('Unknown type %s', $metadata->getType()));
         }
