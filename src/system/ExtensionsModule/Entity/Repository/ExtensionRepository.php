@@ -24,7 +24,7 @@ class ExtensionRepository extends EntityRepository implements ExtensionRepositor
      */
     public function get($name)
     {
-        return parent::findOneBy(['name' => $name]);
+        return $this->findOneBy(['name' => $name]);
     }
 
     public function getPagedCollectionBy(array $criteria, array $orderBy = null, $limit = 0, $offset = 1)

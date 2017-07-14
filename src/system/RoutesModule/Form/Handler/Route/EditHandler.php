@@ -14,8 +14,8 @@ namespace Zikula\RoutesModule\Form\Handler\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Helper\SanitizeHelper;
 use Zikula\RoutesModule\Form\Handler\Route\Base\AbstractEditHandler;
+use Zikula\RoutesModule\Helper\SanitizeHelper;
 
 /**
  * This handler class handles the page events of the Form called by the zikulaRoutesModule_route_edit() function.

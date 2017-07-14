@@ -11,9 +11,11 @@
 
 namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
+use Doctrine\Common\Collections\Selectable;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 
-interface ExtensionVarRepositoryInterface
+interface ExtensionVarRepositoryInterface extends ObjectRepository, Selectable
 {
     /**
      * @param ExtensionVarEntity $entity
@@ -41,16 +43,9 @@ interface ExtensionVarRepositoryInterface
     public function deleteByExtension($extensionName);
 
     /**
-     * @return array
+     * @param $oldName
+     * @param $newName
+     * @return mixed
      */
-    public function findAll();
-
-    /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @param null $limit
-     * @param null $offset
-     * @return array
-     */
-    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null);
+    public function updateName($oldName, $newName);
 }

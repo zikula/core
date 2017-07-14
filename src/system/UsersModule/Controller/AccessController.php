@@ -13,6 +13,7 @@ namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Core\Controller\AbstractController;
@@ -33,7 +34,7 @@ class AccessController extends AbstractController
     /**
      * @Route("/login", options={"zkNoBundlePrefix"=1})
      * @param Request $request
-     * @return string
+     * @return Response
      * @throws InvalidAuthenticationMethodLoginFormException
      */
     public function loginAction(Request $request)
@@ -65,6 +66,7 @@ class AccessController extends AbstractController
 
         $dispatcher->dispatch(AccessEvents::LOGIN_STARTED, new GenericEvent());
 
+        $form = null;
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
             $form = $this->createForm($authenticationMethod->getLoginFormClassName());
             if (!$form->has('rememberme')) {

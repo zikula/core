@@ -11,9 +11,9 @@
 
 namespace Zikula\ThemeModule\Engine;
 
+use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\Common\Annotations\Reader;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 

@@ -18,7 +18,7 @@ class BlockPositionRepository extends EntityRepository implements BlockPositionR
 {
     public function findByName($name)
     {
-        return parent::findOneBy(['name' => $name]);
+        return $this->findOneBy(['name' => $name]);
     }
 
     /**

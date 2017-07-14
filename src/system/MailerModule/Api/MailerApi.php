@@ -265,6 +265,7 @@ class MailerApi implements MailerApiInterface
         $logFile = $this->kernel->getLogDir() . '/mailer.log';
         $event = new GenericEvent($this->message);
 
+        $failedEmails = [];
         if (!$this->mailer->send($this->message, $failedEmails)) {
             // message was not sent successfully, do error handling
 

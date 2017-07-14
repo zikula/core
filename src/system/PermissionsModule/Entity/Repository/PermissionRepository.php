@@ -58,7 +58,7 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
      */
     public function getAllComponents()
     {
-        $all = parent::findBy([], ['sequence' => 'ASC']);
+        $all = $this->findBy([], ['sequence' => 'ASC']);
         $components = [];
         foreach ($all as $perm) {
             // extract components, we keep everything up to the first colon
@@ -112,7 +112,7 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
     public function reSequence()
     {
         /** @var PermissionEntity[] $permissions */
-        $permissions = parent::findBy([], ['sequence' => 'ASC']);
+        $permissions = $this->findBy([], ['sequence' => 'ASC']);
         $sequence = 1;
         foreach ($permissions as $permission) {
             $permission->setSequence($sequence);

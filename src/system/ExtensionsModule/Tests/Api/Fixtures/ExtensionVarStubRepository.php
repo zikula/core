@@ -11,6 +11,7 @@
 
 namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
+use Doctrine\Common\Collections\Criteria;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 
@@ -87,5 +88,25 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         return isset($this->entities[$criteria['modname']][$criteria['name']]) ? $this->entities[$criteria['modname']][$criteria['name']] : [];
+    }
+
+    public function updateName($oldName, $newName)
+    {
+    }
+
+    public function find($id)
+    {
+    }
+
+    public function findOneBy(array $criteria)
+    {
+    }
+
+    public function getClassName()
+    {
+    }
+
+    public function matching(Criteria $criteria)
+    {
     }
 }

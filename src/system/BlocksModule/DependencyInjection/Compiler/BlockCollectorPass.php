@@ -25,6 +25,7 @@ class BlockCollectorPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('zikula_blocks_module.internal.block_collector');
 
+        $module = '';
         foreach ($container->findTaggedServiceIds('zikula.block_handler') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['module'])) {

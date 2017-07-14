@@ -32,7 +32,7 @@ class UserVerificationRepository extends EntityRepository implements UserVerific
 
     public function removeByZikulaId($uid)
     {
-        $entity = parent::findOneBy(['uid' => $uid]);
+        $entity = $this->findOneBy(['uid' => $uid]);
         if ($entity) {
             $this->removeAndFlush($entity);
         }

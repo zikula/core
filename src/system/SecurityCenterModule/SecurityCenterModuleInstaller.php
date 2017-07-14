@@ -11,9 +11,9 @@
 
 namespace Zikula\SecurityCenterModule;
 
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 /**

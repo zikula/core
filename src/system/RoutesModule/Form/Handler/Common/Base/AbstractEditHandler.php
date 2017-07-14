@@ -27,11 +27,11 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\PageLockModule\Api\ApiInterface\LockingApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
-use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\ControllerHelper;
 use Zikula\RoutesModule\Helper\ModelHelper;
 use Zikula\RoutesModule\Helper\WorkflowHelper;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * This handler class handles the page events of editing forms.

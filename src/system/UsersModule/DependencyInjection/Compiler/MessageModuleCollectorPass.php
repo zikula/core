@@ -25,6 +25,7 @@ class MessageModuleCollectorPass implements CompilerPassInterface
 
         $definition = $container->getDefinition('zikula_users_module.internal.message_module_collector');
 
+        $bundleName = '';
         foreach ($container->findTaggedServiceIds('zikula.message_module') as $id => $tagParameters) {
             foreach ($tagParameters as $tagParameter) {
                 if (!isset($tagParameter['bundleName'])) {

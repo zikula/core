@@ -118,7 +118,7 @@ abstract class AbstractBaseResponse extends PlainResponse
     {
         $core = [];
 
-        if ($this->options) {
+        if (!empty($this->options)) {
             foreach ($this->options as $key => $value) {
                 $core[$key] = $value;
             }

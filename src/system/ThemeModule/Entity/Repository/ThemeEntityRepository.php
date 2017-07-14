@@ -101,11 +101,7 @@ class ThemeEntityRepository extends EntityRepository
             $themesArray[$theme['name']]['vars'] = isset($themeBundle) ? $themeBundle->getThemeVars() : false;
         }
 
-        if (!$themesArray) {
-            return false;
-        }
-
-        return $themesArray;
+        return !empty($themesArray) ? $themesArray : false;
     }
 
     public function removeAndFlush($entity)

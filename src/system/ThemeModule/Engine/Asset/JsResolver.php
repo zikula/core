@@ -31,7 +31,7 @@ class JsResolver implements ResolverInterface
     private $merger;
 
     /**
-     * @var string
+     * @var bool
      */
     private $combine;
 

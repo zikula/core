@@ -12,8 +12,8 @@
 namespace Zikula\Bridge\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;

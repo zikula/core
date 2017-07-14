@@ -11,7 +11,6 @@
 
 namespace Zikula\AdminModule\Controller;
 
-use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -21,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Form\Type\CreateCategoryType;
 use Zikula\AdminModule\Form\Type\DeleteCategoryType;
 use Zikula\AdminModule\Form\Type\EditCategoryType;

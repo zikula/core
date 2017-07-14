@@ -191,20 +191,19 @@ class PagerExtension extends \Twig_Extension
         // build links to items / pages
         // entries are marked as current or displayed / hidden
         $pager['pages'] = [];
-        if ($pager['maxPages'] > 0) {
-            $pageInterval = floor($pager['maxPages'] / 2);
 
-            $leftMargin = $pager['currentPage'] - $pageInterval;
-            $rightMargin = $pager['currentPage'] + $pageInterval;
+        $pageInterval = floor($pager['maxPages'] / 2);
 
-            if ($leftMargin < 1) {
-                $rightMargin += abs($leftMargin) + 1;
-                $leftMargin = 1;
-            }
-            if ($rightMargin > $pager['countPages']) {
-                $leftMargin -= $rightMargin - $pager['countPages'];
-                $rightMargin = $pager['countPages'];
-            }
+        $leftMargin = $pager['currentPage'] - $pageInterval;
+        $rightMargin = $pager['currentPage'] + $pageInterval;
+
+        if ($leftMargin < 1) {
+            $rightMargin += abs($leftMargin) + 1;
+            $leftMargin = 1;
+        }
+        if ($rightMargin > $pager['countPages']) {
+            $leftMargin -= $rightMargin - $pager['countPages'];
+            $rightMargin = $pager['countPages'];
         }
 
         if ($processDetailLinks) {
