@@ -1,4 +1,4 @@
-<h2>{{ __('Choose an authentication method') }}</h2>
+<h2>{{ __('Choose a login authentication method') }}</h2>
 <ul>
 {% for method in collector.activeKeys %}
     <li><a href="{{ path(path, {"authenticationMethod": method}) }}">{{ collector.get(method).DisplayName }}</a></li>
