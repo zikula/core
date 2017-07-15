@@ -29,27 +29,4 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RouteEntity extends BaseEntity
 {
-    const POSITION_FIXED_TOP = 3;
-
-    const POSITION_MIDDLE = 5;
-
-    const POSITION_FIXED_BOTTOM = 7;
-
-    /**
-     * Returns the route's path prepended with the bundle prefix.
-     *
-     * @return string
-     */
-    public function getPathWithBundlePrefix()
-    {
-        if (isset($this->options['zkNoBundlePrefix']) && $this->options['zkNoBundlePrefix']) {
-            // return path only
-            return $this->path;
-        }
-
-        $bundle = $this->getBundle();
-
-        // return path prepended with bundle prefix
-        return '/' . $bundle->getMetaData()->getUrl() . $this->path;
-    }
 }

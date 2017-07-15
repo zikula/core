@@ -18,13 +18,6 @@
             {% if workflowStateFilter is defined and workflowStateFilter != true %}
                 </div>
             {% endif %}
-            {% if routeTypeFilter is defined and routeTypeFilter != true %}
-                <div class="hidden">
-            {% endif %}
-                {{ form_row(quickNavForm.routeType) }}
-            {% if routeTypeFilter is defined and routeTypeFilter != true %}
-                </div>
-            {% endif %}
             {% if schemesFilter is defined and schemesFilter != true %}
                 <div class="hidden">
             {% endif %}

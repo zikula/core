@@ -13,6 +13,7 @@
 namespace Zikula\RoutesModule\Entity\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use InvalidArgumentException;
 use Zikula\RoutesModule\Entity\Repository\Base\AbstractRouteRepository;
 
 /**
@@ -23,17 +24,26 @@ use Zikula\RoutesModule\Entity\Repository\Base\AbstractRouteRepository;
 class RouteRepository extends AbstractRouteRepository
 {
     /**
-     * @inheritDoc
+     * Deletes all custom routes for a certain bundle.
+     *
+     * @param string $bundleName Name of the bundle
+     *
+     * @return void
+     *
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    protected function genericBaseQueryAddOrderBy(QueryBuilder $qb, $orderBy = '')
+    public function deleteByBundle($bundleName)
     {
-        if ($orderBy == 'sort asc') {
-            $qb->addOrderBy('tbl.group', 'asc');
-            $qb->addOrderBy('tbl.sort', 'asc');
-
-            return $qb;
+        // check id parameter
+        if (empty($bundleName)) {
+            throw new InvalidArgumentException('Invalid bundle name received.');
         }
 
-        return parent::genericBaseQueryAddOrderBy($qb, $orderBy);
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->delete($this->mainEntityClass, 'tbl')
+           ->where('tbl.bundle = :bundle')
+           ->setParameter('bundle', $bundleName);
+        $query = $qb->getQuery();
+        $query->execute();
     }
 }

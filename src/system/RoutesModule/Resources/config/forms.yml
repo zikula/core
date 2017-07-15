@@ -26,7 +26,10 @@ services:
             - "@zikula_routes_module.workflow_helper"
         calls:
             - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+            - [setPathBuilderHelper, ["@zikula_routes_module.path_builder_helper"]]
+            - [setRouteDumperHelper, ["@zikula_routes_module.route_dumper_helper"]]
             - [setSanitizeHelper, ["@zikula_routes_module.sanitize_helper"]]
+            - [setCacheClearer, ["@zikula.cache_clearer"]]
         tags:
             - { name: form.type }
     

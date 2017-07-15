@@ -83,6 +83,7 @@ CHANGELOG - ZIKULA 1.5.x
     - New Non-persisted hooks added (#2784, #2262, #236).
     - Added avatar display method to ProfileModuleInterface.
     - Added auto-inclusion of theme stylesheets (#3548).
+    - Readded possibility to define and manage custom routes (#3625).
 
  - Vendor updates:
     - behat/transliterator updated from 1.1.0 to 1.2.0

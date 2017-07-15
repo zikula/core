@@ -95,39 +95,6 @@ abstract class AbstractRouteType extends AbstractType
     public function addEntityFields(FormBuilderInterface $builder, array $options)
     {
         
-        $listEntries = $this->listHelper->getEntries('route', 'routeType');
-        $choices = [];
-        $choiceAttributes = [];
-        foreach ($listEntries as $entry) {
-            $choices[$entry['text']] = $entry['value'];
-            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
-        }
-        $builder->add('routeType', ChoiceType::class, [
-            'label' => $this->__('Route type') . ':',
-            'empty_data' => 'additional',
-            'attr' => [
-                'class' => '',
-                'title' => $this->__('Choose the route type')
-            ],
-            'required' => true,
-            'choices' => $choices,
-            'choices_as_values' => true,
-            'choice_attr' => $choiceAttributes,
-            'multiple' => false,
-            'expanded' => false
-        ]);
-        
-        $builder->add('replacedRouteName', TextType::class, [
-            'label' => $this->__('Replaced route name') . ':',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 255,
-                'class' => '',
-                'title' => $this->__('Enter the replaced route name of the route')
-            ],
-            'required' => false,
-        ]);
-        
         $builder->add('bundle', TextType::class, [
             'label' => $this->__('Bundle') . ':',
             'empty_data' => '',
@@ -192,6 +159,9 @@ abstract class AbstractRouteType extends AbstractType
         }
         $builder->add('schemes', MultiListType::class, [
             'label' => $this->__('Schemes') . ':',
+            'label_attr' => [
+                'class' => 'checkbox-inline'
+            ],
             'empty_data' => 'http',
             'attr' => [
                 'class' => '',
@@ -202,7 +172,7 @@ abstract class AbstractRouteType extends AbstractType
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
-            'expanded' => false
+            'expanded' => true
         ]);
         
         $listEntries = $this->listHelper->getEntries('route', 'methods');
@@ -214,6 +184,9 @@ abstract class AbstractRouteType extends AbstractType
         }
         $builder->add('methods', MultiListType::class, [
             'label' => $this->__('Methods') . ':',
+            'label_attr' => [
+                'class' => 'checkbox-inline'
+            ],
             'empty_data' => 'GET',
             'attr' => [
                 'class' => '',
@@ -224,7 +197,7 @@ abstract class AbstractRouteType extends AbstractType
             'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
-            'expanded' => false
+            'expanded' => true
         ]);
         
         $builder->add('prependBundlePrefix', CheckboxType::class, [
@@ -233,7 +206,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('prepend bundle prefix ?')
             ],
-            'required' => true,
+            'required' => false,
         ]);
         
         $builder->add('translatable', CheckboxType::class, [
@@ -242,7 +215,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('translatable ?')
             ],
-            'required' => true,
+            'required' => false,
         ]);
         
         $builder->add('translationPrefix', TextType::class, [
@@ -264,7 +237,7 @@ abstract class AbstractRouteType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the defaults of the route')
             ],
-            'required' => true,
+            'required' => false,
         ]);
         
         $builder->add('requirements', ArrayType::class, [
@@ -274,6 +247,17 @@ abstract class AbstractRouteType extends AbstractType
             'attr' => [
                 'class' => '',
                 'title' => $this->__('Enter the requirements of the route')
+            ],
+            'required' => false,
+        ]);
+        
+        $builder->add('options', ArrayType::class, [
+            'label' => $this->__('Options') . ':',
+            'help' => $this->__('Enter one entry per line.'),
+            'empty_data' => '',
+            'attr' => [
+                'class' => '',
+                'title' => $this->__('Enter the options of the route')
             ],
             'required' => false,
         ]);
@@ -310,17 +294,6 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => false,
             'scale' => 0
-        ]);
-        
-        $builder->add('group', TextType::class, [
-            'label' => $this->__('Group') . ':',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 255,
-                'class' => '',
-                'title' => $this->__('Enter the group of the route')
-            ],
-            'required' => false,
         ]);
     }
 
