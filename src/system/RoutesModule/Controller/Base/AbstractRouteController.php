@@ -144,8 +144,6 @@ abstract class AbstractRouteController extends AbstractController
         $sortableColumns = new SortableColumns($this->get('router'), 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
 
         $sortableColumns->addColumns([
-            new Column('routeType'),
-            new Column('replacedRouteName'),
             new Column('bundle'),
             new Column('controller'),
             new Column('action'),
@@ -159,7 +157,6 @@ abstract class AbstractRouteController extends AbstractController
             new Column('condition'),
             new Column('description'),
             new Column('sort'),
-            new Column('group'),
             new Column('createdBy'),
             new Column('createdDate'),
             new Column('updatedBy'),

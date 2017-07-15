@@ -111,25 +111,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'multiple' => false,
             'expanded' => false
         ]);
-        $listEntries = $this->listHelper->getEntries('route', 'routeType');
-        $choices = [];
-        $choiceAttributes = [];
-        foreach ($listEntries as $entry) {
-            $choices[$entry['text']] = $entry['value'];
-            $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
-        }
-        $builder->add('routeType', ChoiceType::class, [
-            'label' => $this->__('Route type'),
-            'attr' => [
-                'class' => 'input-sm'
-            ],
-            'required' => false,
-            'placeholder' => $this->__('All'),
-            'choices' => $choices,
-            'choice_attr' => $choiceAttributes,
-            'multiple' => false,
-            'expanded' => false
-        ]);
         $listEntries = $this->listHelper->getEntries('route', 'schemes');
         $choices = [];
         $choiceAttributes = [];
@@ -204,8 +185,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                     'class' => 'input-sm'
                 ],
                 'choices' =>             [
-                    $this->__('Route type') => 'routeType',
-                    $this->__('Replaced route name') => 'replacedRouteName',
                     $this->__('Bundle') => 'bundle',
                     $this->__('Controller') => 'controller',
                     $this->__('Action') => 'action',
@@ -219,7 +198,6 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                     $this->__('Condition') => 'condition',
                     $this->__('Description') => 'description',
                     $this->__('Sort') => 'sort',
-                    $this->__('Group') => 'group',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',

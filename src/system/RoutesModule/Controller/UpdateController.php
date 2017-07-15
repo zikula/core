@@ -44,8 +44,7 @@ class UpdateController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $cacheClearer = $this->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.routing');
+        $this->get('zikula.cache_clearer')->clear('symfony.routing');
 
         $this->addFlash('status', $this->__('Done! Routes reloaded.'));
 

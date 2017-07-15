@@ -11,7 +11,7 @@
 
 namespace Zikula\RoutesModule\Routing;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\DBALException;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -19,11 +19,15 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
+use Zikula\RoutesModule\Helper\PathBuilderHelper;
 use Zikula\RoutesModule\Helper\SanitizeHelper;
 use Zikula\ThemeModule\AbstractTheme;
 
 /**
- * Custom loader following http://symfony.com/doc/current/routing/custom_route_loader.html
+ * Custom route loader.
+ *
+ * @see https://symfony.com/doc/current/routing/custom_route_loader.html
  */
 class RouteLoader extends Loader
 {
@@ -33,9 +37,9 @@ class RouteLoader extends Loader
     private $loaded = false;
 
     /**
-     * @var ObjectManager
+     * @var ZikulaHttpKernelInterface
      */
-    private $objectManager;
+    private $kernel;
 
     /**
      * @var TranslatorInterface
@@ -43,9 +47,14 @@ class RouteLoader extends Loader
     private $translator;
 
     /**
-     * @var ZikulaHttpKernelInterface
+     * @var EntityFactory
      */
-    private $kernel;
+    private $entityFactory;
+
+    /**
+     * @var PathBuilderHelper
+     */
+    private $pathBuilderHelper;
 
     /**
      * @var SanitizeHelper
@@ -60,24 +69,62 @@ class RouteLoader extends Loader
     /**
      * RouteLoader constructor.
      *
-     * @param ObjectManager             $objectManager  Doctrine object manager
-     * @param TranslatorInterface       $translator     Translator
-     * @param ZikulaHttpKernelInterface $kernel         Zikula kernel
-     * @param SanitizeHelper            $sanitizeHelper Sanitize helper
+     * @param ZikulaHttpKernelInterface $kernel            Zikula kernel
+     * @param TranslatorInterface       $translator        Translator
+     * @param EntityFactory             $entityFactory     Entity factory
+     * @param PathBuilderHelper         $pathBuilderHelper Path builder helper
+     * @param SanitizeHelper            $sanitizeHelper    Sanitize helper
      * @param string                    $locale
      */
     public function __construct(
-        ObjectManager $objectManager,
-        TranslatorInterface $translator,
         ZikulaHttpKernelInterface $kernel,
+        TranslatorInterface $translator,
+        EntityFactory $entityFactory,
+        PathBuilderHelper $pathBuilderHelper,
         SanitizeHelper $sanitizeHelper,
         $locale)
     {
-        $this->objectManager = $objectManager;
         $this->kernel = $kernel;
         $this->translator = $translator;
+        $this->entityFactory = $entityFactory;
+        $this->pathBuilderHelper = $pathBuilderHelper;
         $this->sanitizeHelper = $sanitizeHelper;
         $this->locale = $locale;
+    }
+
+    public function load($resource, $type = null)
+    {
+        if (true === $this->loaded) {
+            throw new \RuntimeException('Do not add the "zikularoutesmodule" loader twice');
+        }
+        unset($type);
+
+        $routeCollection = new RouteCollection();
+
+        list ($topRoutes, $middleRoutes, $bottomRoutes) = $this->findAll();
+
+        $routeCollection->addCollection($topRoutes);
+
+        try {
+            $customRoutes = $this->entityFactory->getRepository('route')->findBy([], ['sort' => 'ASC']);
+        } catch (DBALException $e) {
+            $routeCollection->addCollection($middleRoutes);
+            $routeCollection->addCollection($bottomRoutes);
+
+            // It seems like the module is not yet installed. Fail silently.
+            return $routeCollection;
+        }
+
+        if (!empty($customRoutes)) {
+            $this->addCustomRoutes($routeCollection, $customRoutes);
+        }
+
+        $routeCollection->addCollection($middleRoutes);
+        $routeCollection->addCollection($bottomRoutes);
+
+        $this->loaded = true;
+
+        return $routeCollection;
     }
 
     /**
@@ -91,17 +138,17 @@ class RouteLoader extends Loader
         $themes = $this->kernel->getThemes();
         $bundles = array_merge($modules, $themes);
 
-        $topRouteCollection = new RouteCollection();
-        $middleRouteCollection = new RouteCollection();
-        $bottomRouteCollection = new RouteCollection();
+        $topRoutes = new RouteCollection();
+        $middleRoutes = new RouteCollection();
+        $bottomRoutes = new RouteCollection();
         foreach ($bundles as $bundle) {
-            list ($currentMiddleRouteCollection, $currentTopRouteCollection, $currentBottomRouteCollection) = $this->find($bundle);
-            $middleRouteCollection->addCollection($currentMiddleRouteCollection);
-            $topRouteCollection->addCollection($currentTopRouteCollection);
-            $bottomRouteCollection->addCollection($currentBottomRouteCollection);
+            list ($currentMiddleRoutes, $currentTopRoutes, $currentBottomRoutes) = $this->find($bundle);
+            $middleRoutes->addCollection($currentMiddleRoutes);
+            $topRoutes->addCollection($currentTopRoutes);
+            $bottomRoutes->addCollection($currentBottomRoutes);
         }
 
-        return [$middleRouteCollection, $topRouteCollection, $bottomRouteCollection];
+        return [$topRoutes, $middleRoutes, $bottomRoutes];
     }
 
     /**
@@ -121,9 +168,9 @@ class RouteLoader extends Loader
         }
         $name = $bundle->getName();
 
-        $topRouteCollection = new RouteCollection();
-        $middleRouteCollection = new RouteCollection();
-        $bottomRouteCollection = new RouteCollection();
+        $topRoutes = new RouteCollection();
+        $middleRoutes = new RouteCollection();
+        $bottomRoutes = new RouteCollection();
 
         /**
          * These are all routes of the module, as loaded by Symfony.
@@ -135,19 +182,12 @@ class RouteLoader extends Loader
         // The actual collection (top, middle, bottom) to add the resources too does not matter,
         // they just must be added to one of them, so that they don't get lost.
         foreach ($routeCollection->getResources() as $resource) {
-            $middleRouteCollection->addResource($resource);
+            $middleRoutes->addResource($resource);
         }
-        // It would be great to auto-reload routes here if the module version changes or a module is uninstalled.
-        // @todo this seems to be possible in Symfony 2.8+ - check these out:
-        // - https://github.com/symfony/symfony/issues/7176
-        // - https://github.com/symfony/symfony/pull/15738
-        // - https://github.com/symfony/symfony/pull/15692
-        // $routeCollection->addResource(new ZikulaResource())
 
         /** @var Route $route */
         foreach ($routeCollection as $oldRouteName => $route) {
             // set break here with $oldRouteName == 'zikula_routesmodule_route_renew'
-            $this->fixRequirements($route);
             $this->prependBundlePrefix($route, $bundle);
             list($type, $func) = $this->setZikulaDefaults($route, $bundle, $name);
             $routeName = $this->getRouteName($oldRouteName, $name, $type, $func);
@@ -155,89 +195,69 @@ class RouteLoader extends Loader
             if ($route->hasOption('zkPosition')) {
                 switch ($route->getOption('zkPosition')) {
                     case 'top':
-                        $topRouteCollection->add($routeName, $route);
+                        $topRoutes->add($routeName, $route);
                         break;
                     case 'bottom':
-                        $bottomRouteCollection->add($routeName, $route);
+                        $bottomRoutes->add($routeName, $route);
                         break;
                     default:
-                        throw new \RuntimeException('Unknown route position. Got "' . $route->getOption('zkPosition') . '", expected "top" or "bottom"');
+                        $middleRoutes->add($routeName, $route);
                 }
             } else {
-                $middleRouteCollection->add($routeName, $route);
+                $middleRoutes->add($routeName, $route);
             }
         }
 
-        return [$middleRouteCollection, $topRouteCollection, $bottomRouteCollection];
+        return [$topRoutes, $middleRoutes, $bottomRoutes];
     }
 
-    public function load($resource, $type = null)
+    /**
+     * Adds custom routes from database to the given route collection.
+     *
+     * @param RouteCollection $routeCollection The route collection
+     * @param array           $customRoutes    List of custom routes to add
+     */
+    private function addCustomRoutes(RouteCollection $routeCollection, $customRoutes = [])
     {
-        if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "zikularoutesmodule" loader twice');
-        }
-        unset($type);
+        /**
+         * @var \Zikula\RoutesModule\Entity\RouteEntity $dbRoute
+         */
+        foreach ($customRoutes as $dbRoute) {
+            // Add modname, type and func to the route's default values.
+            $defaults = $dbRoute->getDefaults();
+            $defaults['_zkModule'] = $dbRoute->getBundle();
+            list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
+            list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
+            $defaults['_zkType'] = $type;
+            $defaults['_zkFunc'] = $func;
+            $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
 
-        $routeCollection = new RouteCollection();
-
-        list ($newRouteCollection, $topRouteCollection, $bottomRouteCollection) = $this->findAll();
-
-        $routeCollection->addCollection($topRouteCollection);
-
-        /* support for custom routes is currently disabled, see https://github.com/zikula/core/issues/3625
-        try {
-            $routes = $this->objectManager->getRepository('ZikulaRoutesModule:RouteEntity')->findBy([], ['group' => 'ASC', 'sort' => 'ASC']);
-        } catch (DBALException $e) {
-            // It seems like the module is not yet installed. Fail silently.
-            return $routeCollection;
-        }
-
-        if (!empty($routes)) {
-            /**
-             * @var \Zikula\RoutesModule\Entity\RouteEntity $dbRoute
-             * /
-            foreach ($routes as $dbRoute) {
-                // Add modname, type and func to the route's default values.
-                $defaults = $dbRoute->getDefaults();
-                $defaults['_zkModule'] = $dbRoute->getBundle();
-                list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
-                list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
-                $defaults['_zkType'] = $type;
-                $defaults['_zkFunc'] = $func;
-                // @todo @cmfcmf when reimplementing loading routews from DB, see #2593 (i.e. ucfirst problems)
-                $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
-
-                // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
-                $options = $dbRoute->getOptions();
-                $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
-                if ($prependBundle) {
-                    $path = $dbRoute->getPathWithBundlePrefix();
-                } else {
-                    $path = $dbRoute->getPath();
-                }
-
-                $this->fixRequirements($dbRoute);
-
-                $route = new Route(
-                    $path,
-                    $defaults,
-                    $dbRoute->getRequirements(),
-                    $options,
-                    $dbRoute->getHost(),
-                    $dbRoute->getSchemes(),
-                    $dbRoute->getMethods(),
-                    $dbRoute->getCondition()
-                );
-
-                $routeCollection->add($dbRoute->getName(), $route);
+            // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
+            $options = $dbRoute->getOptions();
+            $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
+            if ($prependBundle) {
+                $path = $this->pathBuilderHelper->getPathWithBundlePrefix($dbRoute);
+            } else {
+                $path = $dbRoute->getPath();
             }
-        }*/
-        $routeCollection->addCollection($newRouteCollection);
-        $routeCollection->addCollection($bottomRouteCollection);
 
-        $this->loaded = true;
+            $schemes = explode('###', $dbRoute->getSchemes());
+            $methods = explode('###', $dbRoute->getMethods());
 
-        return $routeCollection;
+            $route = new Route(
+                $path,
+                $defaults,
+                $dbRoute->getRequirements(),
+                $options,
+                $dbRoute->getHost(),
+                $schemes,
+                $methods,
+                $dbRoute->getCondition()
+            );
+
+            $routeName = 'custom_' . str_replace('/', '_', $path);
+            $routeCollection->add($routeName, $route);
+        }
     }
 
     /**
@@ -269,25 +289,6 @@ class RouteLoader extends Loader
         $route->setDefaults($defaults);
 
         return [$type, $func];
-    }
-
-    /**
-     * Removes some deprecated requirements which cause depreciation notices.
-     *
-     * @param Route $route
-     *
-     * @todo Remove when Symfony 3.0 is used.
-     */
-    private function fixRequirements(Route $route)
-    {
-        $requirements = $route->getRequirements();
-        if (isset($requirements['_method'])) {
-            unset($requirements['_method']);
-        }
-        if (isset($requirements['_scheme'])) {
-            unset($requirements['_scheme']);
-        }
-        $route->setRequirements($requirements);
     }
 
     /**
@@ -364,6 +365,7 @@ class RouteLoader extends Loader
             // This allows multiple routes for the same action.
             $suffix = '_' . $lastPart;
         }
+
         return strtolower($bundleName . '_' . $type . '_' . $func) . $suffix;
     }
 

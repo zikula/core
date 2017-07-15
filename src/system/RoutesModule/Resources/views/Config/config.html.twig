@@ -15,10 +15,10 @@
             <li role="presentation" class="active">
                 <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
             </li>
-            {% set tabTitle = __('Workflows') %}
+            {#% set tabTitle = __('Workflows') %}
             <li role="presentation">
                 <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
+            </li>#}
             </ul>
 
             {{ form_errors(form) }}
@@ -33,7 +33,7 @@
                         {{ form_row(form.routeEntriesPerPage) }}
                     </fieldset>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
+                {#<div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
                     {% set tabTitle = __('Workflows') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
@@ -43,7 +43,7 @@
                         <h4>{{ __('Routes') }}</h4>
                         <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'zikularoutesmodule_none' }) }}" title="{{ __('Edit workflow for routes') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit routes workflow') }}</a>
                     </fieldset>
-                </div>
+                </div>#}
             </div>
         </div>
 

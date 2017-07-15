@@ -13,11 +13,9 @@
 namespace Zikula\RoutesModule\Helper;
 
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
 
 /**
@@ -25,11 +23,6 @@ use Zikula\RoutesModule\Helper\Base\AbstractViewHelper;
  */
 class ViewHelper extends AbstractViewHelper
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     /**
      * @var DynamicConfigDumper
      */
@@ -41,16 +34,13 @@ class ViewHelper extends AbstractViewHelper
     private $extensionRepository;
 
     /**
-     * @param TranslatorInterface $translator
      * @param DynamicConfigDumper $configDumper
      * @param ExtensionRepositoryInterface $extensionRepository
      */
     public function setAdditionalDependencies(
-        TranslatorInterface $translator,
         DynamicConfigDumper $configDumper,
         ExtensionRepositoryInterface $extensionRepository
     ) {
-        $this->translator = $translator;
         $this->configDumper = $configDumper;
         $this->extensionRepository = $extensionRepository;
     }
@@ -63,14 +53,6 @@ class ViewHelper extends AbstractViewHelper
         $enrichedTemplateParameters = $templateParameters;
 
         if ($type == 'route' && $func == 'view') {
-            $groupMessages = [
-                RouteEntity::POSITION_FIXED_TOP => $this->translator->__('Routes fixed to the top of the list:'),
-                RouteEntity::POSITION_MIDDLE => $this->translator->__('Normal routes:'),
-                RouteEntity::POSITION_FIXED_BOTTOM => $this->translator->__('Routes fixed to the bottom of the list:'),
-            ];
-            $enrichedTemplateParameters['groupMessages'] = $groupMessages;
-            $enrichedTemplateParameters['sortableGroups'] = [RouteEntity::POSITION_MIDDLE];
-
             $enrichedTemplateParameters['jms_i18n_routing'] = $this->configDumper->getConfigurationForHtml('jms_i18n_routing');
         } elseif ($type == 'route' && $func == 'edit') {
             $urlNames = [];

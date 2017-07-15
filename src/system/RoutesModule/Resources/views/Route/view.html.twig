@@ -1,90 +1,40 @@
 {# purpose of this template: routes list view #}
 {% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
-{% block title own ? __('My routes') : __('Route list') %}
+{% block title own ? __('My custom routes') : __('Custom routes list') %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}
-{% if items|length > 1 %}
-{% set customScriptAndStyles %}
-    <script type="text/javascript">
-        ( function($) {
-            $(document).ready(function() {
-                $(function() {
-                    // Return a helper with preserved width of cells
-                    var fixHelper = function(e, ui) {
-                        ui.children().each(function() {
-                            $(this).css({ width: $(this).width() });
-                        });
-                        return ui;
-                    };
-
-                    $('#indicator').hide().removeClass('hidden');
-
-                    $('#routesViewForm table tbody').sortable({
-                        helper: fixHelper,
-                        items: '> tr.sortable',
-                        update: function (event, ui) {
-                            function showIndicator() {
-                                $('#indicator').fadeIn();
-                            }
-                            function hideIndicator() {
-                                $('#indicator').fadeOut();
-                            }
-                            showIndicator();
-                            $.ajax({
-                                url: '{{ url('zikularoutesmodule_sort_resort') }}',
-                                type: 'POST',
-                                data: {
-                                    sort: $('#routesViewForm table tbody').sortable('toArray')
-                                }
-                            }).always(hideIndicator);
-                        }
-                    }).disableSelection();
-                });
-            });
-        })(jQuery);
-    </script>
-    <style type="text/css">
-        #indicator {
-            position: fixed;
-            right: 10px;
-            top: 10px;
-            z-index: 9999;
-        }
-        .zikularoutesmodule-view .ui-sortable .sortable {
-            cursor: move;
-        }
-    </style>
-{% endset %}
-{{ pageAddAsset('header', customScriptAndStyles) }}
-<img src="{{ asset('bundles/core/images/ajax/zktimer_48px_white_rounded.gif') }}" width="48" height="48" alt="{{ __('Indicator') }}" id="indicator" class="hidden" />
-{% endif %}
 <div class="zikularoutesmodule-route zikularoutesmodule-view">
 
     <div class="alert alert-warning">
-        {{ __f('Below you see your current routing configuration (see %s for configuration reference).', { '%s': '<a href="http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration">JMSI18nRoutingBundle</a>' })|raw }}
+        {{ __f('Below you see your current routing configuration (see %s for reference).', { '%s': '<a href="http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration">JMSI18nRoutingBundle</a>' })|raw }}
         {% set title = __('Localisation settings') %}
         {% set url = path('zikulasettingsmodule_settings_locale') %}
-        {{ __f('You can change your routing configuration in the Settings module: %s.', { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>' })|raw }}
-        {{ __('In case one or more installed languages are not listed below, click "Reload multilingual routing settings" in the menu above to reload installed languages.') }}
+        {{ __f('You can change your routing configuration in the general settings: %s.', { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>' })|raw }}
+        {% set title = __('reload installed languages') %}
+        {% set url = path('zikularoutesmodule_update_renew') %}
+        {{ __f('In case one or more installed languages are not listed below, %s.', { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>' })|raw }}
         {{ jms_i18n_routing|raw }}
     </div>
 
     {{ block('page_nav_links') }}
 
-    {# { include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
+    {{ include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { workflowStateFilter: false, schemesFilter: false, methodsFilter: false, sorting: false, pageSizeSelector: false }) }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="routesViewForm" class="form-horizontal" role="form">
         <div>
     {% endif %}
+        {% set activateSortable = routeArea == 'admin' and sort.sort.class == 'z-order-asc' %}
         <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover table-condensed">
+        <table{% if activateSortable and items|length > 1 %} id="sortableTable" data-object-type="route" data-min="{{ items|first.sort }}" data-max="{{ items|last.sort }}"{% endif %} class="table table-striped table-bordered table-hover table-condensed">
             <colgroup>
                 {% if routeArea == 'admin' %}
                     <col id="cSelect" />
                 {% endif %}
                 <col id="cItemActions" />
-                <col id="cRouteType" />
+                {% if activateSortable %}
+                    <col id="cSortable" />
+                {% endif %}
                 <col id="cBundle" />
                 <col id="cPath" />
                 <col id="cHost" />
@@ -103,9 +53,9 @@
                     </th>
                 {% endif %}
                 <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted">{{ __('Actions') }}</th>
-                <th id="hRouteType" scope="col" class="text-left">
-                    <a href="{{ sort.routeType.url }}" title="{{ __f('Sort by %s', {'%s': 'route type'}) }}" class="{{ sort.routeType.class }}">{{ __('Route type') }}</a>
-                </th>
+                {% if activateSortable %}
+                    <th id="hSortable" scope="col" class="z-order-unsorted z-w02">{{ __('Sorting') }}</th>
+                {% endif %}
                 <th id="hBundle" scope="col" class="text-left">
                     <a href="{{ sort.bundle.url }}" title="{{ __f('Sort by %s', {'%s': 'bundle'}) }}" class="{{ sort.bundle.class }}">{{ __('Bundle') }}</a>
                 </th>
@@ -137,16 +87,8 @@
             </thead>
             <tbody>
 
-        {% set groupOld = null %}
         {% for route in items %}
-            {% if route.group != groupOld %}
-                <tr>
-                    <td class="text-left" colspan="{% if routeArea == 'admin' %}12{% else %}11{% endif %}">
-                        {{ groupMessages[route.group] }}
-                    </td>
-                </tr>
-            {% endif %}
-            <tr id="row_{{ route.id }}"{% if route.group in sortableGroups %} class="sortable"{% endif %}>
+            <tr{% if activateSortable %} data-item-id="{{ route.getKey() }}" class="sort-item"{% endif %}>
                 {% if routeArea == 'admin' %}
                     <td headers="hSelect" class="fixed-column text-center">
                         <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
@@ -159,14 +101,16 @@
                         {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
                     </div>
                 </td>
-                <td headers="hRouteType" class="text-left">
-                    {{ route.routeType|zikularoutesmodule_listEntry('route', 'routeType') }}
-                </td>
+                {% if activateSortable %}
+                    <td headers="hSortable" class="text-center z-w02">
+                        <i class="fa fa-arrows sort-handle pointer" title="{{ __('Drag to reorder') }}"></i>
+                    </td>
+                {% endif %}
                 <td headers="hBundle" class="text-left">
-                    {{ route.bundle }}
+                    <abbr title="{{ route.controller|e('html_attr') }} # {{ route.action|e('html_attr') }}">{{ route.bundle }}</abbr>
                 </td>
                 <td headers="hPath" class="text-left">
-                    {{ route.path|zikularoutesmodule_pathToString(route) }}{% if route.methods|length > 0 %} <span class="small">[{{ route.methods|join(', ') }}</span>]{% endif %}
+                    {{ route.path|zikularoutesmodule_pathToString(route) }}
                 </td>
                 <td headers="hHost" class="text-left">
                     {{ route.host }}
@@ -198,11 +142,10 @@
                     {{ route.description|truncate(50, true) }}
                 </td>
             </tr>
-            {% set groupOld = route.group %}
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}12{% else %}11{% endif %}">
-            {{ __('No routes found.') }}
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}11{% else %}10{% endif %}">
+            {{ __('No custom routes found.') }}
               </td>
             </tr>
         {% endfor %}
@@ -236,17 +179,15 @@
     <p>
         {% if canBeCreated %}
             {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
-                {% set createTitle = __('Create route') %}
-                {# disabled for now, see https://github.com/zikula/core/issues/3625
-                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>#}
+                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ __('Add an additional route to the system')|e('html_attr') }}" class="fa fa-plus">{{ __('Create a custom route') }}</a>
             {% endif %}
         {% endif %}
-        {#% if showAllEntries == 1 %}
+        {% if all == 1 %}
             {% set linkTitle = __('Back to paginated view') %}
             <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
         {% else %}
             {% set linkTitle = __('Show all entries') %}
             <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
-        {% endif %#}
+        {% endif %}
     </p>
 {% endblock %}

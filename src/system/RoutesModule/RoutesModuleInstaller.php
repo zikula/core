@@ -52,6 +52,28 @@ class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
                 ';
                 $this->entityManager->getConnection()->exec($sql);
             case '1.1.1':
+                // drop obsolete fields
+                $fieldNames = ['routeType', 'replacedRouteName', 'sort_group'];
+                foreach ($fieldNames as $fieldName) {
+                    $sql = '
+                        ALTER TABLE `zikula_routes_route`
+                        DROP COLUMN `' . $fieldName . '`
+                    ';
+                    $this->entityManager->getConnection()->exec($sql);
+                }
+                // add new field
+                $sql = '
+                    ALTER TABLE `zikula_routes_route`
+                    ADD `options` LONGTEXT NOT NULL
+                    COMMENT \'(DC2Type:array)\' AFTER `requirements`
+                ';
+                $this->entityManager->getConnection()->exec($sql);
+                $sql = '
+                    UPDATE `zikula_routes_route`
+                    SET `options` = \'a:0:{}\';
+                ';
+                $this->entityManager->getConnection()->exec($sql);
+            case '1.1.2':
                 // current version
         }
 

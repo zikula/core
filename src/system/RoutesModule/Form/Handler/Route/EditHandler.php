@@ -13,8 +13,11 @@
 namespace Zikula\RoutesModule\Form\Handler\Route;
 
 use Symfony\Component\Routing\RouteCollection;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Form\Handler\Route\Base\AbstractEditHandler;
+use Zikula\RoutesModule\Helper\PathBuilderHelper;
+use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\RoutesModule\Helper\SanitizeHelper;
 
 /**
@@ -24,9 +27,44 @@ use Zikula\RoutesModule\Helper\SanitizeHelper;
 class EditHandler extends AbstractEditHandler
 {
     /**
+     * @var PathBuilderHelper
+     */
+    private $pathBuilderHelper;
+
+    /**
+     * @var RouteDumperHelper
+     */
+    private $routeDumperHelper;
+
+    /**
      * @var SanitizeHelper
      */
     private $sanitizeHelper;
+
+    /**
+     * @var CacheClearer
+     */
+    private $cacheClearer;
+
+    /**
+     * Sets the path builder helper.
+     *
+     * @param PathBuilderHelper $pathBuilderHelper Path builder helper
+     */
+    public function setPathBuilderHelper(PathBuilderHelper $pathBuilderHelper)
+    {
+        $this->pathBuilderHelper = $pathBuilderHelper;
+    }
+
+    /**
+     * Sets the route dumper helper.
+     *
+     * @param RouteDumperHelper $routeDumperHelper Route dumper helper
+     */
+    public function setRouteDumperHelper(RouteDumperHelper $routeDumperHelper)
+    {
+        $this->routeDumperHelper = $routeDumperHelper;
+    }
 
     /**
      * Sets the sanitize helper.
@@ -36,6 +74,16 @@ class EditHandler extends AbstractEditHandler
     public function setSanitizeHelper(SanitizeHelper $sanitizeHelper)
     {
         $this->sanitizeHelper = $sanitizeHelper;
+    }
+
+    /**
+     * Sets the cache clearer.
+     *
+     * @param CacheClearer $cacheClearer Cache clearer
+     */
+    public function setCacheClearer(CacheClearer $cacheClearer)
+    {
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -50,8 +98,10 @@ class EditHandler extends AbstractEditHandler
 
         $return = parent::applyAction($args);
 
-        $cacheClearer = $this->container->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.routing');
+        $this->cacheClearer->clear('symfony.routing');
+
+        // reload **all** JS routes
+        $this->routeDumperHelper->dumpJsRoutes(null);
 
         return $return;
     }
@@ -68,7 +118,6 @@ class EditHandler extends AbstractEditHandler
 
         $entity['controller'] = $controller;
         $entity['action'] = $action;
-        $entity['group'] = RouteEntity::POSITION_MIDDLE;
         $entity['sort'] = 0;
 
         $this->entityRef = $entity;
@@ -81,9 +130,7 @@ class EditHandler extends AbstractEditHandler
      */
     private function hasConflicts()
     {
-        $routeEntity = $this->entityRef;
-
-        $newPath = $routeEntity->getPathWithBundlePrefix();
+        $newPath = $this->pathBuilderHelper->getPathWithBundlePrefix($this->entityRef);
 
         /** @var RouteCollection $routeCollection */
         $routeCollection = $this->router->getRouteCollection();
@@ -91,7 +138,7 @@ class EditHandler extends AbstractEditHandler
         $errors = [];
         foreach ($routeCollection->all() as $route) {
             $path = $route->getPath();
-            if ($path === '/{url}') {
+            if (in_array($path, ['/{url}', '/{path}'])) {
                 continue;
             }
 

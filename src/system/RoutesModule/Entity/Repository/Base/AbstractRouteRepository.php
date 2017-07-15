@@ -55,8 +55,6 @@ abstract class AbstractRouteRepository extends SortableRepository
     public function getAllowedSortingFields()
     {
         return [
-            'routeType',
-            'replacedRouteName',
             'bundle',
             'controller',
             'action',
@@ -70,7 +68,6 @@ abstract class AbstractRouteRepository extends SortableRepository
             'condition',
             'description',
             'sort',
-            'group',
             'createdBy',
             'createdDate',
             'updatedBy',
