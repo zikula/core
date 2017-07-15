@@ -112,6 +112,7 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, CheckboxType::class, [
                 'label' => $options['translator']->__('Newly registered users are logged in automatically'),
+                'help' => $options['translator']->__('Users authenticating off site (re-entrant) are logged in automatically regardless of this setting.'),
                 'required' => false,
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, TextType::class, [

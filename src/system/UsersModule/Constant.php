@@ -176,7 +176,7 @@ namespace Zikula\UsersModule
         /**
          * Default value for MODVAR_REGISTRATION_AUTO_LOGIN; false == no auto log-in
          */
-        const DEFAULT_REGISTRATION_AUTO_LOGIN = false;
+        const DEFAULT_REGISTRATION_AUTO_LOGIN = true;
         /**
          * Module variable key for the registration disabled reason text.
          */

@@ -121,8 +121,10 @@ class AccessController extends AbstractController
                 $validators = $hook->getValidators();
                 if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
                     $dispatcher->dispatch(AccessEvents::LOGIN_PROCESS, new GenericEvent($user));
-                    $formDataEvent = new UserFormDataEvent($user, $form);
-                    $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM_HANDLE, $formDataEvent);
+                    if (isset($form)) {
+                        $formDataEvent = new UserFormDataEvent($user, $form);
+                        $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM_HANDLE, $formDataEvent);
+                    }
                     $this->get('hook_dispatcher')->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
                     $dispatcher->dispatch(AccessEvents::LOGIN_VETO, $event);
