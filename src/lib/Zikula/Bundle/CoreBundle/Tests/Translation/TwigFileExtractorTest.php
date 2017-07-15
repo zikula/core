@@ -97,7 +97,7 @@ class TwigFileExtractorTest extends KernelTestCase
     {
         $expected = new MessageCatalogue();
         $fileSourceFactory = $this->getFileSourceFactory();
-        $fixtureSplInfo = new \SplFileInfo('/' . __DIR__ . '/Fixture/delete.html.twig');  // extra slash in path is necessary :(
+        $fixtureSplInfo = new \SplFileInfo('/' . __DIR__ . '/Fixture/delete.html.twig'); // extra slash in path is necessary :(
 
         $message = new Message('Delete block position', 'zikula');
         $message->addSource($fileSourceFactory->create($fixtureSplInfo, 9));
@@ -116,7 +116,7 @@ class TwigFileExtractorTest extends KernelTestCase
 
     private function extract($file, ZikulaTwigFileExtractor $extractor = null)
     {
-        if (!is_file($file = __DIR__.'/Fixture/'.$file)) {
+        if (!is_file($file = __DIR__ . '/Fixture/' . $file)) {
             throw new RuntimeException(sprintf('The file "%s" does not exist.', $file));
         }
         $kernel = $this
@@ -125,7 +125,7 @@ class TwigFileExtractorTest extends KernelTestCase
             ->getMock();
         $kernel
             ->method('getBundle')
-            ->will($this->returnCallback(function ($bundleName) {
+            ->will($this->returnCallback(function($bundleName) {
                 $bundle = $this
                     ->getMockBuilder('Zikula\Core\AbstractBundle')
                     ->disableOriginalConstructor()

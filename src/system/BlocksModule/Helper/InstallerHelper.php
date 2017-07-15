@@ -82,7 +82,7 @@ class InstallerHelper
             $blockClassName = preg_match('/.*Block$/', $blockClassName) ? $blockClassName : $blockClassName . 'Block';
         } catch (\Exception $e) {
             $moduleBundle = null;
-            $blockClassName = '\\' . ucwords($moduleName).'\\'.'Block\\'.ucwords($blockEntity->getBkey());
+            $blockClassName = '\\' . ucwords($moduleName) . '\\' . 'Block\\' . ucwords($blockEntity->getBkey());
             $blockClassName = preg_match('/.*Block$/', $blockClassName) ? $blockClassName : $blockClassName . 'Block';
             $blockClassNameOld = '\\' . ucwords($moduleName) . '_' . 'Block_' . ucwords($blockEntity->getBkey());
             $blockClassName = class_exists($blockClassName) ? $blockClassName : $blockClassNameOld;

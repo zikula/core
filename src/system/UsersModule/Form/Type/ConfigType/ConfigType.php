@@ -125,7 +125,7 @@ class ConfigType extends AbstractType
                 'constraints' => [
                     new Type('string'),
                     new Regex([
-                        'pattern' => '/^(?:'. UsersConstant::UNAME_VALIDATION_PATTERN .'(?:\s*,\s*'. UsersConstant::UNAME_VALIDATION_PATTERN .')*)?$/uD',
+                        'pattern' => '/^(?:' . UsersConstant::UNAME_VALIDATION_PATTERN . '(?:\s*,\s*' . UsersConstant::UNAME_VALIDATION_PATTERN . ')*)?$/uD',
                         'message' => $options['translator']->__('The value provided does not appear to be a valid list of user names. The list should consist of one or more user names made up of lowercase letters, numbers, underscores, periods, or dashes. Separate each user name with a comma. For example: \'root, administrator, superuser\' (the quotes should not appear in the list). Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).')
                     ])
                 ]
@@ -152,7 +152,7 @@ class ConfigType extends AbstractType
                 'constraints' => [
                     new Type('string'),
                     new Regex([
-                        'pattern' => '/^(?:'. UsersConstant::EMAIL_DOMAIN_VALIDATION_PATTERN .'(?:\s*,\s*'. UsersConstant::EMAIL_DOMAIN_VALIDATION_PATTERN .')*)?$/Ui',
+                        'pattern' => '/^(?:' . UsersConstant::EMAIL_DOMAIN_VALIDATION_PATTERN . '(?:\s*,\s*' . UsersConstant::EMAIL_DOMAIN_VALIDATION_PATTERN . ')*)?$/Ui',
                         'message' => $options['translator']->__('The contents of this field does not appear to be a valid list of e-mail address domains. The list should consist of one or more e-mail address domains (the part after the \'@\'), separated by commas. For example: \'gmail.com, example.org, acme.co.uk\' (the quotes should not appear in the list). Do not include the \'@\' itself. Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).')
                     ])
                 ]

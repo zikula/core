@@ -25,7 +25,7 @@ class OnlineBlock extends AbstractBlockHandler
      */
     public function display(array $properties)
     {
-        if (!$this->hasPermission('Onlineblock::', $properties['bid'].'::', ACCESS_READ)) {
+        if (!$this->hasPermission('Onlineblock::', $properties['bid'] . '::', ACCESS_READ)) {
             return '';
         }
 

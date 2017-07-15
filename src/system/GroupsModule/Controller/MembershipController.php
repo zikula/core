@@ -187,7 +187,7 @@ class MembershipController extends AbstractController
         if ($gid < 1 || $uid < 1) {
             throw new \InvalidArgumentException($this->__('Invalid Group ID or User ID.'));
         }
-        if (!$this->hasPermission('ZikulaGroupsModule::', $gid.'::', ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         $group = $this->get('zikula_groups_module.group_repository')->find($gid);

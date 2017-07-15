@@ -71,7 +71,7 @@ class StripFrontControllerListener implements EventSubscriberInterface
         }
         $requestUri = $event->getRequest()->getRequestUri();
         $frontController = $this->variableApi->getSystemVar('entrypoint', 'index.php');
-        $stripEntryPoint = (bool) $this->variableApi->getSystemVar('shorturlsstripentrypoint', false);
+        $stripEntryPoint = (bool)$this->variableApi->getSystemVar('shorturlsstripentrypoint', false);
         $containsFrontController = (strpos($requestUri, "$frontController") !== false);
 
         if ($containsFrontController && $stripEntryPoint) {

@@ -102,10 +102,10 @@ class LocaleApi implements LocaleApiInterface
         $availableLanguages = [];
         foreach ($matches as $match) {
             list($languageCode) = explode('-', $match[1]) + ['', ''];
-            $priority = isset($match[2]) ? (float) $match[2] : 1.0;
+            $priority = isset($match[2]) ? (float)$match[2] : 1.0;
             $availableLanguages[][$languageCode] = $priority;
         }
-        $defaultPriority = (float) 0;
+        $defaultPriority = (float)0;
         $matchedLanguage = '';
         foreach ($availableLanguages as $key => $value) {
             $languageCode = key($value);

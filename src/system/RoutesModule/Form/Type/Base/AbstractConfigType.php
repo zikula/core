@@ -103,7 +103,7 @@ abstract class AbstractConfigType extends AbstractType
                 'attr' => [
                     'maxlength' => 255,
                     'title' => $this->__('Enter the route entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
+                ], 'scale' => 0
             ])
         ;
     }

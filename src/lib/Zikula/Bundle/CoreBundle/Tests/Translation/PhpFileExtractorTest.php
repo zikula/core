@@ -75,7 +75,7 @@ class PhpFileExtractorTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
             $kernel
                 ->method('getBundles')
-                ->will($this->returnCallback(function () {
+                ->will($this->returnCallback(function() {
                     $bundle = $this
                         ->getMockBuilder('Zikula\Core\AbstractBundle')
                         ->disableOriginalConstructor()

@@ -106,13 +106,13 @@ class TwigExtension extends AbstractTwigExtension
         $path = htmlspecialchars($route->getPathWithBundlePrefix());
         $container = $this->container;
 
-        $path = preg_replace_callback('#%(.*?)%#', function ($matches) use ($container) {
+        $path = preg_replace_callback('#%(.*?)%#', function($matches) use ($container) {
             return '<abbr title="' . htmlspecialchars($matches[0]) . '">' . htmlspecialchars($container->getParameter($matches[1])) . '</abbr>';
         }, $path);
 
         $defaults = $route->getDefaults();
         $requirements = $route->getRequirements();
-        $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($defaults, $requirements) {
+        $path = preg_replace_callback('#{(.*?)}#', function($matches) use ($defaults, $requirements) {
             $title = '';
             if (isset($defaults[$matches[1]])) {
                 $title .= $this->__f('Default: %s', ['%s' => htmlspecialchars($defaults[$matches[1]])]);

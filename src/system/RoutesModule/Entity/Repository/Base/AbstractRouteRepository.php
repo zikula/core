@@ -387,7 +387,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     public function getSelectWherePaginatedQuery(QueryBuilder $qb, $currentPage = 1, $resultsPerPage = 25)
     {
         $query = $this->getQueryFromBuilder($qb);
-        $offset = ($currentPage-1) * $resultsPerPage;
+        $offset = ($currentPage - 1) * $resultsPerPage;
     
         $query->setFirstResult($offset)
               ->setMaxResults($resultsPerPage);

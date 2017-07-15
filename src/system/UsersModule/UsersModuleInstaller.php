@@ -113,7 +113,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                     UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS
                 ];
                 foreach ($modvarsToConvertToBool as $modvarToConvert) {
-                    $this->setVar($modvarToConvert, (bool) $this->getVar($modvarToConvert));
+                    $this->setVar($modvarToConvert, (bool)$this->getVar($modvarToConvert));
                 }
                 $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
                 $this->delVar('login_redirect');
@@ -282,7 +282,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             $value = in_array($migratedModVarName, [
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
                 ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED
-            ]) ? (bool) $value : $value;
+            ]) ? (bool)$value : $value;
             $this->container->get('zikula_extensions_module.api.variable')->set('ZikulaZAuthModule', $migratedModVarName, $value);
         }
     }

@@ -42,7 +42,7 @@ class GenerateVendorDocCommand extends Command
             'composer-plugin' => 'Composer Plugins'
         ];
         $types = array_keys($typeOrder);
-        usort($packages, function ($a, $b) use ($types) {
+        usort($packages, function($a, $b) use ($types) {
             return array_search($a['type'], $types) - array_search($b['type'], $types);
         });
 

@@ -74,7 +74,7 @@ class CategoryRegistryType extends AbstractType
             ])
         ;
 
-        $formModifier = function (FormInterface $form, $modName = null) use ($options) {
+        $formModifier = function(FormInterface $form, $modName = null) use ($options) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
             $form->add('entityname', ChoiceType::class, [
                 'label' => $options['translator']->__('Entity'),
@@ -85,7 +85,7 @@ class CategoryRegistryType extends AbstractType
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
+            function(FormEvent $event) use ($formModifier) {
                 /** @var CategoryRegistryEntity $data */
                 $data = $event->getData();
                 $formModifier($event->getForm(), $data->getModname());
@@ -94,7 +94,7 @@ class CategoryRegistryType extends AbstractType
 
         $builder->get('modname')->addEventListener(
             FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
+            function(FormEvent $event) use ($formModifier) {
                 $modName = $event->getForm()->getData();
                 $formModifier($event->getForm()->getParent(), $modName);
             }

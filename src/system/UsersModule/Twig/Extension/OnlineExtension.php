@@ -69,6 +69,6 @@ class OnlineExtension extends \Twig_Extension
             ->andWhere(Criteria::expr()->gt('lastused', $since));
         $online = $this->sessionRepository->matching($c)->count();
 
-        return (bool) $online;
+        return (bool)$online;
     }
 }

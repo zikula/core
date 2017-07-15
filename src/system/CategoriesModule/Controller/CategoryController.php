@@ -79,7 +79,7 @@ class CategoryController extends AbstractController
         return [
             'decorate' => true,
             'html' => true,
-            'childOpen' => function ($node) {
+            'childOpen' => function($node) {
                 $jsTreeData = [];
                 $jsTreeData['disabled'] = $node['status'] != 'A';
                 $jsTreeData['type'] = $node['is_leaf'] ? 'leaf' : 'default';
@@ -87,7 +87,7 @@ class CategoryController extends AbstractController
 
                 return '<li ' . $jsTreeData . 'class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
             },
-            'nodeDecorator' => function ($node) use ($locale) {
+            'nodeDecorator' => function($node) use ($locale) {
                 $displayName = isset($node['display_name'][$locale]) ? $node['display_name'][$locale] : $node['name'];
                 $title = ' title="' . $this->createTitleAttribute($node, $displayName, $locale) . '"';
                 $classes = [];

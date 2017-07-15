@@ -33,10 +33,10 @@ class TextBlockType extends AbstractType
         ;
         $builder->get('content')
             ->addModelTransformer(new CallbackTransformer(
-                function ($originalDescription) {
+                function($originalDescription) {
                     return $originalDescription;
                 },
-                function ($submittedDescription) {
+                function($submittedDescription) {
                     // remove all HTML tags
                     return strip_tags($submittedDescription);
                 }

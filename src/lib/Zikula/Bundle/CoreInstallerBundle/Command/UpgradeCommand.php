@@ -97,7 +97,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $count = $migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
             $io->text($this->translator->__('Beginning user migration...'));
-            $userMigrationMaxuid = (int) $migrationHelper->getMaxUnMigratedUid();
+            $userMigrationMaxuid = (int)$migrationHelper->getMaxUnMigratedUid();
             $progressBar = new ProgressBar($output, ceil($count / MigrationHelper::BATCH_LIMIT));
             $progressBar->start();
             $lastUid = 0;
@@ -133,7 +133,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->newLine();
 
         // write the parameters to custom_parameters.yml
-        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() .'/config', 'custom_parameters.yml');
+        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
         unset($params['upgrading']);
         $yamlManager->setParameters($params);

@@ -173,7 +173,7 @@ abstract class AbstractCollectionFilterHelper
                 if ((!is_numeric($v) && $v != '') || (is_numeric($v) && $v > 0)) {
                     if ($k == 'workflowState' && substr($v, 0, 1) == '!') {
                         $qb->andWhere('tbl.' . $k . ' != :' . $k)
-                           ->setParameter($k, substr($v, 1, strlen($v)-1));
+                           ->setParameter($k, substr($v, 1, strlen($v) - 1));
                     } elseif (substr($v, 0, 1) == '%') {
                         $qb->andWhere('tbl.' . $k . ' LIKE :' . $k)
                            ->setParameter($k, '%' . $v . '%');

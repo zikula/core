@@ -93,7 +93,7 @@ class HtmlFilterApi implements HtmlFilterApiInterface
             // Fix the HTML that we want
             $value = preg_replace_callback(
                 '#\022([^\024]*)\024#',
-                    function ($matches) {
+                    function($matches) {
                         if (!$matches) {
                             return;
                         }

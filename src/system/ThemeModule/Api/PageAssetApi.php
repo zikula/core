@@ -68,9 +68,9 @@ class PageAssetApi implements PageAssetApiInterface
         }
 
         // ensure proper variable types
-        $value = (string) $value;
-        $type = (string) $type;
-        $weight = (int) $weight;
+        $value = (string)$value;
+        $type = (string)$type;
+        $weight = (int)$weight;
 
         if ('stylesheet' == $type) {
             $this->styleSheets->add([$value => $weight]);

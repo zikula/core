@@ -40,10 +40,10 @@ class MenuType extends AbstractType
         ;
         $builder->get('options')
             ->addModelTransformer(new CallbackTransformer(
-                function ($text) {
+                function($text) {
                     return $text;
                 },
-                function ($text) {
+                function($text) {
                     if (empty($text)) {
                         return '{}';
                     }

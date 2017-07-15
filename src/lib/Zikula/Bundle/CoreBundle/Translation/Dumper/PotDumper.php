@@ -75,10 +75,10 @@ class PotDumper extends ArrayStructureDumper
                     $this->writer->writeln('#: ' . $source);
                 }
                 if ($desc) {
-                    $this->writer->writeln('# Desc: '.$desc);
+                    $this->writer->writeln('# Desc: ' . $desc);
                 }
                 if ($meaning) {
-                    $this->writer->writeln('# Meaning: '.$meaning);
+                    $this->writer->writeln('# Meaning: ' . $meaning);
                 }
                 $this->writer->writeln('msgid "' . $v->getId() . '"')
                     ->writeln('msgstr ""');

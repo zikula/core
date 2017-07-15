@@ -86,7 +86,7 @@ class PositionController extends AbstractController
      */
     public function deleteAction(Request $request, BlockPositionEntity $positionEntity)
     {
-        if (!$this->hasPermission('ZikulaBlocksModule::position', $positionEntity->getName() .'::'. $positionEntity->getPid(), ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaBlocksModule::position', $positionEntity->getName() . '::' . $positionEntity->getPid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 

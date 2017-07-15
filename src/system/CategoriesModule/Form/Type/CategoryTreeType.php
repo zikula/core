@@ -81,7 +81,7 @@ class CategoryTreeType extends AbstractType
         $resolver->setAllowedTypes('includeLeaf', 'bool');
         $resolver->setAllowedTypes('all', 'bool');
 
-        $resolver->setNormalizer('label', function (Options $options, $label) {
+        $resolver->setNormalizer('label', function(Options $options, $label) {
             if (null === $label || empty($label)) {
                 $isMultiple = $options['multiple'];
                 $translator = $options['translator'];
@@ -91,7 +91,7 @@ class CategoryTreeType extends AbstractType
 
             return $label;
         });
-        $resolver->setNormalizer('placeholder', function (Options $options, $placeholder) {
+        $resolver->setNormalizer('placeholder', function(Options $options, $placeholder) {
             if (!$options['required']) {
                 if (null === $placeholder || empty($placeholder)) {
                     $isMultiple = $options['multiple'];
@@ -103,7 +103,7 @@ class CategoryTreeType extends AbstractType
 
             return $placeholder;
         });
-        $resolver->setNormalizer('choices', function (Options $options, $choices) {
+        $resolver->setNormalizer('choices', function(Options $options, $choices) {
             if (empty($choices)) {
                 $choices = $this->getCategoryChoices($options);
             }

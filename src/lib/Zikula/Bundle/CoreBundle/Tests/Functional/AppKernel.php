@@ -27,7 +27,7 @@ class AppKernel extends ZikulaKernel
 
         $fs = new Filesystem();
         if (!$fs->isAbsolutePath($config)) {
-            $config = __DIR__.'/config/'.$config;
+            $config = __DIR__ . '/config/' . $config;
         }
 
         if (!file_exists($config)) {

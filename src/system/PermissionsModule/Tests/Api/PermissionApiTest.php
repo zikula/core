@@ -55,7 +55,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
         $this->userRepo
             ->method('findByUids')
             ->with($this->anything())
-            ->will($this->returnCallback(function (array $uids) {
+            ->will($this->returnCallback(function(array $uids) {
                 $groups = [];
                 // getGroups returns [gid => $group, gid => $group, ...]
                 if (in_array(self::RANDOM_USER_ID, $uids)) {
@@ -125,7 +125,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
         $this->currentUserApi
             ->method('get')
             ->with($this->equalTo('uid'))
-            ->will($this->returnCallback(function () use ($uid) {
+            ->will($this->returnCallback(function() use ($uid) {
                 return isset($uid) ? $uid : Constant::USER_ID_ANONYMOUS;
             }));
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);

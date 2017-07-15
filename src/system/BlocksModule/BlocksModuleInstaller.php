@@ -115,7 +115,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->flush();
 
                 $collapseable = $this->getVar('collapseable');
-                $this->setVar('collapseable', (bool) $collapseable);
+                $this->setVar('collapseable', (bool)$collapseable);
 
             case '3.9.2':
                 // convert Text and Html block types so properties is proper array
@@ -134,10 +134,10 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $searchBlocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => 'Search']);
                 foreach ($searchBlocks as $searchBlock) {
                     $properties = $searchBlock->getProperties();
-                    $properties['displaySearchBtn'] = (bool) $properties['displaySearchBtn'];
+                    $properties['displaySearchBtn'] = (bool)$properties['displaySearchBtn'];
                     if (isset($properties['active'])) {
                         foreach ($properties['active'] as $module => $active) {
-                            $properties['active'][$module] = (bool) $active;
+                            $properties['active'][$module] = (bool)$active;
                         }
                     }
                     $searchBlock->setProperties($properties);

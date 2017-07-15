@@ -56,7 +56,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_FILE);
         $this->setSystemVar('sessionsavepath', '');
         $this->setSystemVar('gc_probability', 100);
-        $this->setSystemVar('sessioncsrftokenonetime', 1);  // 1 means use same token for entire session
+        $this->setSystemVar('sessioncsrftokenonetime', 1); // 1 means use same token for entire session
         $this->setSystemVar('sessionrandregenerate', 1);
         $this->setSystemVar('sessionregenerate', 1);
         $this->setSystemVar('sessionregeneratefreq', 10);
@@ -78,13 +78,13 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('useids', 0);
         $this->setSystemVar('idsmail', 0);
         $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
-        $this->setSystemVar('idssoftblock', 1);                // do not block requests, but warn for debugging
-        $this->setSystemVar('idsfilter', 'xml');               // filter type
-        $this->setSystemVar('idsimpactthresholdone', 1);       // db logging
-        $this->setSystemVar('idsimpactthresholdtwo', 10);      // mail admin
-        $this->setSystemVar('idsimpactthresholdthree', 25);    // block request
-        $this->setSystemVar('idsimpactthresholdfour', 75);     // kick user, destroy session
-        $this->setSystemVar('idsimpactmode', 1);               // per request per default
+        $this->setSystemVar('idssoftblock', 1); // do not block requests, but warn for debugging
+        $this->setSystemVar('idsfilter', 'xml'); // filter type
+        $this->setSystemVar('idsimpactthresholdone', 1); // db logging
+        $this->setSystemVar('idsimpactthresholdtwo', 10); // mail admin
+        $this->setSystemVar('idsimpactthresholdthree', 25); // block request
+        $this->setSystemVar('idsimpactthresholdfour', 75); // kick user, destroy session
+        $this->setSystemVar('idsimpactmode', 1); // per request per default
         $this->setSystemVar('idshtmlfields', ['POST.__wysiwyg']);
         $this->setSystemVar('idsjsonfields', ['POST.__jsondata']);
         $this->setSystemVar('idsexceptions', [

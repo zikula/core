@@ -78,6 +78,6 @@ class ComposerValidationHelperTest extends \PHPUnit_Framework_TestCase
 
     private function getSplFileInfo($file)
     {
-        return new SplFileInfo(realpath(__DIR__ . '/../Fixtures/'. $file), '/../Fixtures', '/../Fixtures/' . $file);
+        return new SplFileInfo(realpath(__DIR__ . '/../Fixtures/' . $file), '/../Fixtures', '/../Fixtures/' . $file);
     }
 }

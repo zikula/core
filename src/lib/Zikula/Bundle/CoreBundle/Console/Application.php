@@ -34,7 +34,7 @@ class Application extends BaseApplication
         parent::__construct($kernel);
 
         $this->setName('Zikula');
-        $this->setVersion(ZikulaKernel::VERSION.' - '.$kernel->getName().'/'.$kernel->getEnvironment().($kernel->isDebug() ? '/debug' : ''));
+        $this->setVersion(ZikulaKernel::VERSION . ' - ' . $kernel->getName() . '/' . $kernel->getEnvironment() . ($kernel->isDebug() ? '/debug' : ''));
     }
 
     protected function registerCommands()

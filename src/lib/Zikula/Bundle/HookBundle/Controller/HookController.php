@@ -205,7 +205,7 @@ class HookController extends Controller
                 }
 
                 // does the user have admin permissions on the provider module?
-                if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($hookproviders[$i]['name']."::", '::', ACCESS_ADMIN)) {
+                if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($hookproviders[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
                     unset($hookproviders[$i]);
                     continue;
                 }
