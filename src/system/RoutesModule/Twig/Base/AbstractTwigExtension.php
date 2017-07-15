@@ -83,7 +83,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     /**
      * Returns a list of custom Twig functions.
      *
-     * @return array
+     * @return \Twig_SimpleFunction[]
      */
     public function getFunctions()
     {
@@ -96,7 +96,7 @@ abstract class AbstractTwigExtension extends Twig_Extension
     /**
      * Returns a list of custom Twig filters.
      *
-     * @return array
+     * @return \Twig_SimpleFilter[]
      */
     public function getFilters()
     {

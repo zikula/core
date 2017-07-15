@@ -445,7 +445,7 @@ abstract class AbstractEditHandler
     /**
      * Get list of allowed redirect codes.
      *
-     * @return array list of possible redirect codes
+     * @return string[] list of possible redirect codes
      */
     protected function getRedirectCodes()
     {

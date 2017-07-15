@@ -124,7 +124,7 @@ abstract class AbstractCollectionFilterHelper
     protected function getViewQuickNavParametersForRoute($context = '', $args = [])
     {
         $parameters = [];
-        if (!is_object($this->request)) {
+        if (null === $this->request) {
             return $parameters;
         }
     
@@ -147,6 +147,9 @@ abstract class AbstractCollectionFilterHelper
      */
     protected function addCommonViewFiltersForRoute(QueryBuilder $qb)
     {
+        if (null === $this->request) {
+            return $qb;
+        }
         $routeName = $this->request->get('_route');
         if (false !== strpos($routeName, 'edit')) {
             return $qb;
@@ -198,6 +201,9 @@ abstract class AbstractCollectionFilterHelper
      */
     protected function applyDefaultFiltersForRoute(QueryBuilder $qb, $parameters = [])
     {
+        if (null === $this->request) {
+            return $qb;
+        }
         $routeName = $this->request->get('_route');
         $isAdminArea = false !== strpos($routeName, 'zikularoutesmodule_route_admin');
         if ($isAdminArea) {

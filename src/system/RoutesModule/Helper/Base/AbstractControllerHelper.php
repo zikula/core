@@ -88,7 +88,7 @@ abstract class AbstractControllerHelper
      * @param string $context Usage context (allowed values: controllerAction, api, helper, actionHandler, block, contentType, util)
      * @param array  $args    Additional arguments
      *
-     * @return array List of allowed object types
+     * @return string[] List of allowed object types
      */
     public function getObjectTypes($context = '', array $args = [])
     {

@@ -83,7 +83,7 @@ abstract class AbstractEditHandler extends EditHandler
     /**
      * Get list of allowed redirect codes.
      *
-     * @return array list of possible redirect codes
+     * @return string[] list of possible redirect codes
      */
     protected function getRedirectCodes()
     {
