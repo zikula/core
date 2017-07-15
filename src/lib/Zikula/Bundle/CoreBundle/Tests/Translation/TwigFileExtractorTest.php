@@ -114,6 +114,9 @@ class TwigFileExtractorTest extends KernelTestCase
         $this->assertEquals($expected, $this->extract('delete.html.twig'));
     }
 
+    /**
+     * @param string $file
+     */
     private function extract($file, ZikulaTwigFileExtractor $extractor = null)
     {
         if (!is_file($file = __DIR__ . '/Fixture/' . $file)) {

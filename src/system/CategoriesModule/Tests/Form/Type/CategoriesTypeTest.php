@@ -385,6 +385,9 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
+    /**
+     * @param string $name
+     */
     protected function createRegistryMock($name, $em)
     {
         $registry = $this->getMockBuilder(ManagerRegistry::class)->getMock();
@@ -396,6 +399,9 @@ class CategoriesTypeTest extends TypeTestCase
         return $registry;
     }
 
+    /**
+     * @param \DateTime $now
+     */
     protected function generateCategoryRegistry($now)
     {
         $registry = new CategoryRegistryEntity();
@@ -411,6 +417,9 @@ class CategoriesTypeTest extends TypeTestCase
         $this->em->flush();
     }
 
+    /**
+     * @param \DateTime $now
+     */
     protected function generateCategories($now)
     {
         // root

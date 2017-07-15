@@ -118,6 +118,9 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         $response->setContent($content);
     }
 
+    /**
+     * @param string $search
+     */
     private function readdUntrimmedBlocks($search, $replace, &$subject)
     {
         $len = strlen($search);

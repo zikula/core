@@ -110,7 +110,7 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
      * This function is only ever called once during the lifetime of a particular
      * module instance
      *
-     * @return bool false
+     * @return boolean|null false
      */
     public function defaultdata()
     {

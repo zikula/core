@@ -87,7 +87,7 @@ class Bootstrap
      * @param string $class
      * @param string $type
      *
-     * @return bool
+     * @return boolean|null
      */
     private function extensionIsActive(Connection $conn, $class, $type)
     {

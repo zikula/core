@@ -83,6 +83,7 @@ class BlockApi implements BlockApiInterface
 
     /**
      * {@inheritdoc}
+     * @param string $positionName
      */
     public function getBlocksByPosition($positionName)
     {

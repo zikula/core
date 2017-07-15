@@ -289,7 +289,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
 
     /**
      * These modvar names used to have UsersConstant values, but have been moved to ZAuthConstant and maintain their actual values.
-     * @return array
+     * @return string[]
      */
     private function getMigratedModVarNames()
     {

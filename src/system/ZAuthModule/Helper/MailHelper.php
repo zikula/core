@@ -96,6 +96,9 @@ class MailHelper
         return $this->mailerApi->sendMessage($message, $subject, $body, $altBody, $html);
     }
 
+    /**
+     * @param string $notificationType
+     */
     private function generateEmailSubject($notificationType)
     {
         $siteName = $this->variableApi->getSystemVar('sitename');
