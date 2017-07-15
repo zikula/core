@@ -50,7 +50,7 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Retrieves an array with all fields which can be used for sorting instances.
      *
-     * @return array Sorting fields array
+     * @return string[] Sorting fields array
      */
     public function getAllowedSortingFields()
     {
@@ -321,8 +321,8 @@ abstract class AbstractRouteRepository extends SortableRepository
     /**
      * Adds where clauses excluding desired identifiers from selection.
      *
-     * @param QueryBuilder $qb           Query builder to be enhanced
-     * @param array        $excludesions Array of ids to be excluded from selection
+     * @param QueryBuilder $qb         Query builder to be enhanced
+     * @param array        $exclusions Array of ids to be excluded from selection
      *
      * @return QueryBuilder Enriched query builder instance
      */
