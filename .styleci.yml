@@ -6,6 +6,7 @@ enabled:
 disabled:
   - cast_spaces
   - concat_without_spaces
+  - function_declaration
   - no_blank_lines_after_phpdoc
   - no_blank_lines_after_throw
   - php_unit_fqcn_annotation
