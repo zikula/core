@@ -70,7 +70,7 @@ class Validator
             return false;
         }
 
-        list($id,, $timestamp) = $this->tokenGenerator->decode($token);
+        list($id, , $timestamp) = $this->tokenGenerator->decode($token);
         $decoded = [
             'id' => $id,
             'time' => $timestamp
