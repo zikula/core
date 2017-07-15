@@ -31,6 +31,10 @@ class LinkContainerCollector
         $this->linkContainers[$linkContainer->getBundleName()] = $linkContainer;
     }
 
+    /**
+     * @param string $containerName
+     * @param string $type
+     */
     public function getLinks($containerName, $type = LinkContainerInterface::TYPE_ADMIN)
     {
         $links = [];

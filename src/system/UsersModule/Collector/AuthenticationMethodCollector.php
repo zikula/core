@@ -91,7 +91,7 @@ class AuthenticationMethodCollector
     }
 
     /**
-     * @return array of service aliases
+     * @return integer[] of service aliases
      */
     public function getKeys()
     {
@@ -99,7 +99,7 @@ class AuthenticationMethodCollector
     }
 
     /**
-     * @return array of active service aliases
+     * @return integer[] of active service aliases
      */
     public function getActiveKeys()
     {

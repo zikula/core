@@ -76,7 +76,7 @@ abstract class AbstractController
     }
 
     /**
-     * @param $moduleName
+     * @param string $moduleName
      * @return bool
      */
     protected function installModule($moduleName)
@@ -120,7 +120,7 @@ abstract class AbstractController
     /**
      * Set an admin category for a module or set to default
      * @param $moduleName
-     * @param $translatedCategoryName
+     * @param string $translatedCategoryName
      */
     protected function setModuleCategory($moduleName, $translatedCategoryName)
     {

@@ -271,6 +271,9 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         return false;
     }
 
+    /**
+     * @param string $name
+     */
     private function setSystemVar($name, $value = '')
     {
         return $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, $name, $value);

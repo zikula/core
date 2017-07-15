@@ -112,8 +112,8 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
 
     /**
      * Convenience shortcut to add a session flash message.
-     * @param $type
-     * @param $message
+     * @param string $type
+     * @param string $message
      */
     public function addFlash($type, $message)
     {

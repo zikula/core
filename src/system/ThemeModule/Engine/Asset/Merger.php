@@ -290,7 +290,7 @@ class Merger implements MergerInterface
 
     /**
      * Remove comments, whitespace and spaces from css files
-     * @param $contents
+     * @param string $contents
      * @return string
      */
     private function minify($contents)

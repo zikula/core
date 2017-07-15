@@ -202,9 +202,9 @@ class ExtensionDependencyHelper
     /**
      * Determine if a $currentVersion value is between $requiredMin and $requiredMax.
      *
-     * @param $requiredMin
-     * @param $requiredMax
-     * @param $currentVersion
+     * @param string $requiredMin
+     * @param string $requiredMax
+     * @param string $currentVersion
      * @return bool
      */
     private function meetsVersionRequirements($requiredMin, $requiredMax, $currentVersion)

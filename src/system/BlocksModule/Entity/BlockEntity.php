@@ -277,7 +277,7 @@ class BlockEntity extends EntityAccess
     /**
      * set the filters for the block
      *
-     * @param array $filter the blocks's filters
+     * @param array $filters the blocks's filters
      */
     public function setFilters($filters)
     {

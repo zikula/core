@@ -99,7 +99,7 @@ abstract class AbstractBaseResponse extends PlainResponse
     /**
      * Generates payload.
      *
-     * @return array
+     * @return string
      */
     protected function generatePayload()
     {

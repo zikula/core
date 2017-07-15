@@ -111,6 +111,9 @@ class FileIOHelper
         $this->passwordApi = $passwordApi;
     }
 
+    /**
+     * @param TranslatorInterface $translator
+     */
     public function setTranslator($translator)
     {
         $this->translator = $translator;
@@ -274,8 +277,8 @@ class FileIOHelper
     /**
      * Convert errors to string and add current line.
      * @param $errors
-     * @param $type
-     * @param $line
+     * @param string $type
+     * @param integer $line
      * @return string
      */
     private function locateErrors($errors, $type, $line)

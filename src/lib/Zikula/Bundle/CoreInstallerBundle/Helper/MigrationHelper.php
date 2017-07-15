@@ -105,7 +105,7 @@ class MigrationHelper
 
     /**
      * @param $uid
-     * @param $limit
+     * @param integer $limit
      * @return array
      */
     private function getUnMigratedUsers($uid, $limit)
