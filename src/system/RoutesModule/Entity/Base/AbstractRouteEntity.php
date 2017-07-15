@@ -65,21 +65,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * @ORM\Column(length=255)
      * @Assert\NotBlank()
-     * @RoutesAssert\ListEntry(entityName="route", propertyName="routeType", multiple=false)
-     * @var string $routeType
-     */
-    protected $routeType = 'additional';
-    
-    /**
-     * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255")
-     * @var string $replacedRouteName
-     */
-    protected $replacedRouteName = '';
-    
-    /**
-     * @ORM\Column(length=255)
-     * @Assert\NotBlank()
      * @Assert\Length(min="0", max="255")
      * @var string $bundle
      */
@@ -134,7 +119,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\IsTrue(message="This option is mandatory.")
+     * @Assert\NotNull()
      * @Assert\Type(type="bool")
      * @var boolean $prependBundlePrefix
      */
@@ -142,7 +127,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\IsTrue(message="This option is mandatory.")
+     * @Assert\NotNull()
      * @Assert\Type(type="bool")
      * @var boolean $translatable
      */
@@ -157,7 +142,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(name="route_defaults", type="array")
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      * @Assert\Type(type="array")
      * @var array $defaults
      */
@@ -170,6 +155,14 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var array $requirements
      */
     protected $requirements = [];
+    
+    /**
+     * @ORM\Column(type="array")
+     * @Assert\NotNull()
+     * @Assert\Type(type="array")
+     * @var array $options
+     */
+    protected $options = [];
     
     /**
      * @ORM\Column(name="route_condition", length=255, nullable=true)
@@ -194,15 +187,6 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @var integer $sort
      */
     protected $sort = 0;
-    
-    /**
-     * @Gedmo\SortableGroup
-     * @ORM\Column(name="sort_group", length=255)
-     * @Assert\NotNull()
-     * @Assert\Length(min="0", max="255")
-     * @var string $group
-     */
-    protected $group = '';
     
     
     
@@ -287,54 +271,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
         if ($this->workflowState !== $workflowState) {
             $this->workflowState = isset($workflowState) ? $workflowState : '';
-        }
-    }
-    
-    /**
-     * Returns the route type.
-     *
-     * @return string
-     */
-    public function getRouteType()
-    {
-        return $this->routeType;
-    }
-    
-    /**
-     * Sets the route type.
-     *
-     * @param string $routeType
-     *
-     * @return void
-     */
-    public function setRouteType($routeType)
-    {
-        if ($this->routeType !== $routeType) {
-            $this->routeType = isset($routeType) ? $routeType : '';
-        }
-    }
-    
-    /**
-     * Returns the replaced route name.
-     *
-     * @return string
-     */
-    public function getReplacedRouteName()
-    {
-        return $this->replacedRouteName;
-    }
-    
-    /**
-     * Sets the replaced route name.
-     *
-     * @param string $replacedRouteName
-     *
-     * @return void
-     */
-    public function setReplacedRouteName($replacedRouteName)
-    {
-        if ($this->replacedRouteName !== $replacedRouteName) {
-            $this->replacedRouteName = $replacedRouteName;
         }
     }
     
@@ -627,6 +563,30 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     /**
+     * Returns the options.
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+    
+    /**
+     * Sets the options.
+     *
+     * @param array $options
+     *
+     * @return void
+     */
+    public function setOptions($options)
+    {
+        if ($this->options !== $options) {
+            $this->options = isset($options) ? $options : '';
+        }
+    }
+    
+    /**
      * Returns the condition.
      *
      * @return string
@@ -698,30 +658,6 @@ abstract class AbstractRouteEntity extends EntityAccess
         }
     }
     
-    /**
-     * Returns the group.
-     *
-     * @return string
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-    
-    /**
-     * Sets the group.
-     *
-     * @param string $group
-     *
-     * @return void
-     */
-    public function setGroup($group)
-    {
-        if ($this->group !== $group) {
-            $this->group = isset($group) ? $group : '';
-        }
-    }
-    
     
     
     
@@ -777,7 +713,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      */
     public function __toString()
     {
-        return 'Route ' . $this->getKey() . ': ' . $this->getReplacedRouteName();
+        return 'Route ' . $this->getKey() . ': ' . $this->getBundle();
     }
     
     /**

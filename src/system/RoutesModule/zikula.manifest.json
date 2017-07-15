@@ -10,7 +10,7 @@
         "icon": ""
     },
     "version": {
-        "semver": "1.1.1",
+        "semver": "1.1.2",
         "compatibility": ">=1.5.0 <3.0.0",
         "composerpath": "composer.json",
         "description": "Routes management",

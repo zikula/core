@@ -86,7 +86,7 @@ abstract class AbstractEntityDisplayHelper
     public function getTitleFieldName($objectType)
     {
         if ($objectType == 'route') {
-            return 'replacedRouteName';
+            return 'bundle';
         }
     
         return '';
@@ -102,7 +102,7 @@ abstract class AbstractEntityDisplayHelper
     public function getDescriptionFieldName($objectType)
     {
         if ($objectType == 'route') {
-            return 'bundle';
+            return 'description';
         }
     
         return '';

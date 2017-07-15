@@ -43,8 +43,8 @@ class TwigExtension extends AbstractTwigExtension
         return [
             new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from base class
             new \Twig_SimpleFilter('zikularoutesmodule_formattedTitle', [$this, 'getFormattedEntityTitle']), // from base class
-            new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString']),
-            new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'])
+            new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'], ['is_safe' => ['html']])
         ];
     }
 
@@ -102,9 +102,10 @@ class TwigExtension extends AbstractTwigExtension
             }
         }
 
-        $prefix = htmlspecialchars($prefix);
-        $path = htmlspecialchars($route->getPathWithBundlePrefix());
         $container = $this->container;
+
+        $prefix = htmlspecialchars($prefix);
+        $path = htmlspecialchars($container->get('zikula_routes_module.path_builder_helper')->getPathWithBundlePrefix($route));
 
         $path = preg_replace_callback('#%(.*?)%#', function ($matches) use ($container) {
             return '<abbr title="' . htmlspecialchars($matches[0]) . '">' . htmlspecialchars($container->getParameter($matches[1])) . '</abbr>';

@@ -6,14 +6,13 @@
     {{ parent() }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js', 98)) }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js', 99)) }}
-{% set customScript %}
     <script type="text/javascript">
         (function($) {
             $(function() {
                 function updatePathPrefix() {
                     var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');
                     var bundlePrefix = $('#zikularoutesmodule_route_prependBundlePrefix').prop('checked');
-                    var baseUrl = {{ app.request.baseUrl|json_encode }};
+                    var baseUrl = {{ app.request.baseUrl|json_encode|raw }}
                     var moduleUrlNames = {{ moduleUrlNames|json_encode|raw }};
 
                     if (bundlePrefix) {
@@ -38,8 +37,6 @@
             });
         })(jQuery)
     </script>
-{% endset %}
-{{ pageAddAsset('header', customScript) }}
 {% endblock %}
 
 {% block title mode == 'create' ? __('Create route') : __('Edit route') %}
@@ -53,25 +50,34 @@
 {{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Content') }}</legend>
-    {{ form_row(form.routeType) }}
-    {{ form_row(form.replacedRouteName) }}
+    <legend>{{ __('Basic settings') }}</legend>
     {{ form_row(form.bundle) }}
     {{ form_row(form.controller) }}
     {{ form_row(form.action) }}
     {{ form_row(form.path) }}
-    {{ form_row(form.host) }}
-    {{ form_row(form.schemes) }}
-    {{ form_row(form.methods) }}
-    {{ form_row(form.prependBundlePrefix) }}
-    {{ form_row(form.translatable) }}
-    {{ form_row(form.translationPrefix) }}
-    {{ form_row(form.condition) }}
     {{ form_row(form.description) }}
     <div class="hidden">
         {{ form_row(form.sort) }}
-        {{ form_row(form.group) }}
     </div>
+    {{ form_row(form.prependBundlePrefix) }}
+    {{ form_row(form.translatable) }}
+    {{ form_row(form.translationPrefix) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Route scope') }}</legend>
+    {{ form_row(form.schemes) }}
+    {{ form_row(form.methods) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Parameter settings') }}</legend>
+    {{ form_row(form.defaults) }}
+    {{ form_row(form.requirements) }}
+    {{ form_row(form.options) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Advanced settings') }}</legend>
+    {{ form_row(form.host) }}
+    {{ form_row(form.condition) }}
 </fieldset>
 
 {% if mode != 'create' %}
@@ -123,7 +129,7 @@
             $(document).ready(function() {
                 // initialise auto completion for user fields
                 {% if form.moderationSpecificCreator is defined %}
-                    zikulaRoutesInitUserField('zikularoutesmodule_route_moderationSpecificCreator', 'getCommonUsersList');
+                    initUserLiveSearch('zikularoutesmodule_route_moderationSpecificCreator');
                 {% endif %}
                 zikulaRoutesInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
             });

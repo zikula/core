@@ -56,6 +56,7 @@ class RouteType extends AbstractRouteType
             $moduleChoices[$module->getDisplayName()] = $module->getName();
             $moduleChoiceAttributes[$module->getDisplayName()] = ['title' => $module->getDisplayName()];
         }
+        ksort($moduleChoices);
 
         $builder->add('bundle', ChoiceType::class, [
             'label' => $this->__('Bundle') . ':',
@@ -106,7 +107,7 @@ class RouteType extends AbstractRouteType
             ],
             'required' => true,
             'help' => $this->__('The path must start with a "/" and can be a regular expression. Example: "/login"'),
-            'input_group' => ['left' => '<span class="input-group-addon" id="pathPrefix"></span>']
+            'input_group' => ['left' => '<span id="pathPrefix"></span>']
         ]);
 
         $builder->add('host', TextType::class, [
@@ -118,7 +119,7 @@ class RouteType extends AbstractRouteType
                 'title' => $this->__('Enter the host of the route')
             ],
             'required' => false,
-            'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/components/routing/hostname_pattern.html'])
+            'help' => $this->__f('Advanced setting, see %s', ['%s' => 'https://symfony.com/doc/current/routing/hostname_pattern.html'])
         ]);
 
         $builder->add('condition', TextType::class, [
@@ -130,7 +131,7 @@ class RouteType extends AbstractRouteType
                 'title' => $this->__('Enter the condition of the route')
             ],
             'required' => false,
-            'help' => $this->__f('Advanced setting, see %s', ['%s' => 'http://symfony.com/doc/current/book/routing.html#completely-customized-route-matching-with-conditions'])
+            'help' => $this->__f('Advanced setting, see %s', ['%s' => 'https://symfony.com/doc/current/routing/conditions.html'])
         ]);
 
         $builder->add('description', TextType::class, [

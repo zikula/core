@@ -16,6 +16,7 @@ use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\RoutesModule\Listener\Base\AbstractInstallerListener;
@@ -41,6 +42,11 @@ class InstallerListener extends AbstractInstallerListener
     private $multilingualRoutingHelper;
 
     /**
+     * @var EntityFactory
+     */
+    private $entityFactory;
+
+    /**
      * @inheritDoc
      */
     public static function getSubscribedEvents()
@@ -57,16 +63,21 @@ class InstallerListener extends AbstractInstallerListener
     /**
      * InstallerListener constructor.
      *
-     * @param ObjectManager $objectManager
+     * @param CacheClearer $cacheClearer
+     * @param RouteDumperHelper $routeDumperHelper
+     * @param MultilingualRoutingHelper $multilingualRoutingHelper
+     * @param EntityFactory $entityFactory
      */
     public function __construct(
         CacheClearer $cacheClearer,
         RouteDumperHelper $routeDumperHelper,
-        MultilingualRoutingHelper $multilingualRoutingHelper
+        MultilingualRoutingHelper $multilingualRoutingHelper,
+        EntityFactory $entityFactory
     ) {
         $this->cacheClearer = $cacheClearer;
         $this->routeDumperHelper = $routeDumperHelper;
         $this->multilingualRoutingHelper = $multilingualRoutingHelper;
+        $this->entityFactory = $entityFactory;
     }
 
     /**
@@ -88,7 +99,8 @@ class InstallerListener extends AbstractInstallerListener
 
         $this->cacheClearer->clear('symfony.routing');
 
-        // dumping the JS routes after module install occurs in \Zikula\ExtensionsModule\Controller\AdminController::viewAction
+        // reload **all** JS routes
+        $this->routeDumperHelper->dumpJsRoutes();
     }
 
     /**
@@ -120,6 +132,9 @@ class InstallerListener extends AbstractInstallerListener
         if (null === $module || $module->getName() == 'ZikulaRoutesModule') {
             return;
         }
+
+        // delete any custom routes for the removed bundle
+        $this->entityFactory->deleteByBundle($bundleName);
 
         // reload **all** JS routes
         $this->routeDumperHelper->dumpJsRoutes();

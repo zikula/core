@@ -18,14 +18,6 @@
 
 
     <dl>
-        {% if route.routeType is not empty %}
-            <dt>{{ __('Route type') }}</dt>
-            <dd>{{ route.routeType|zikularoutesmodule_listEntry('route', 'routeType') }}</dd>
-        {% endif %}
-        {% if route.replacedRouteName is not empty %}
-            <dt>{{ __('Replaced route name') }}</dt>
-            <dd>{{ route.replacedRouteName }}</dd>
-        {% endif %}
         {% if route.bundle is not empty %}
             <dt>{{ __('Bundle') }}</dt>
             <dd>{{ route.bundle }}</dd>
@@ -40,20 +32,17 @@
         {% endif %}
         {% if route.path is not empty %}
             <dt>{{ __('Path') }}</dt>
-            <dd>{{ route.path }}</dd>
+            {#<dd>{{ route.path }}</dd>#}
+            <dd>{{ route.path|zikularoutesmodule_pathToString(route) }}</dd>
         {% endif %}
-        {% if route.host is not empty %}
-            <dt>{{ __('Host') }}</dt>
-            <dd>{{ route.host }}</dd>
+        {% if route.description is not empty %}
+            <dt>{{ __('Description') }}</dt>
+            <dd>{{ route.description }}</dd>
         {% endif %}
-        {% if route.schemes is not empty %}
-            <dt>{{ __('Schemes') }}</dt>
-            <dd>{{ route.schemes|zikularoutesmodule_listEntry('route', 'schemes') }}</dd>
-        {% endif %}
-        {% if route.methods is not empty %}
-            <dt>{{ __('Methods') }}</dt>
-            <dd>{{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}</dd>
-        {% endif %}
+        {#% if route.sort is not empty %}
+            <dt>{{ __('Sort') }}</dt>
+            <dd>{{ route.sort }}</dd>
+        {% endif %#}
         {% if route.prependBundlePrefix is not empty %}
             <dt>{{ __('Prepend bundle prefix') }}</dt>
             <dd>{% if route.prependBundlePrefix %}
@@ -76,6 +65,14 @@
             <dt>{{ __('Translation prefix') }}</dt>
             <dd>{{ route.translationPrefix }}</dd>
         {% endif %}
+        {% if route.schemes is not empty %}
+            <dt>{{ __('Schemes') }}</dt>
+            <dd>{{ route.schemes|zikularoutesmodule_listEntry('route', 'schemes') }}</dd>
+        {% endif %}
+        {% if route.methods is not empty %}
+            <dt>{{ __('Methods') }}</dt>
+            <dd>{{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}</dd>
+        {% endif %}
         {% if route.defaults is not empty %}
             <dt>{{ __('Defaults') }}</dt>
             <dd>{{ route.defaults|zikularoutesmodule_arrayToString }}</dd>
@@ -84,21 +81,17 @@
             <dt>{{ __('Requirements') }}</dt>
             <dd>{{ route.requirements|zikularoutesmodule_arrayToString }}</dd>
         {% endif %}
+        {% if route.options is not empty %}
+            <dt>{{ __('Options') }}</dt>
+            <dd>{{ route.options|zikularoutesmodule_arrayToString }}</dd>
+        {% endif %}
+        {% if route.host is not empty %}
+            <dt>{{ __('Host') }}</dt>
+            <dd>{{ route.host }}</dd>
+        {% endif %}
         {% if route.condition is not empty %}
             <dt>{{ __('Condition') }}</dt>
             <dd>{{ route.condition }}</dd>
-        {% endif %}
-        {% if route.description is not empty %}
-            <dt>{{ __('Description') }}</dt>
-            <dd>{{ route.description }}</dd>
-        {% endif %}
-        {% if route.sort is not empty %}
-            <dt>{{ __('Sort') }}</dt>
-            <dd>{{ route.sort }}</dd>
-        {% endif %}
-        {% if route.group is not empty %}
-            <dt>{{ __('Group') }}</dt>
-            <dd>{{ route.group }}</dd>
         {% endif %}
         
     </dl>

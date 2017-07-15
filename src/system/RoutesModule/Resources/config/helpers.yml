@@ -46,7 +46,6 @@ services:
         calls:
             - method: setAdditionalDependencies
               arguments:
-                - "@translator.default"
                 - "@zikula.dynamic_config_dumper"
                 - "@zikula_extensions_module.extension_repository"
 

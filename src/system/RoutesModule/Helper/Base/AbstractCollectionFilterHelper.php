@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
-use Zikula\RoutesModule\Entity\Factory\RoutesFactory;
 
 /**
  * Entity collection filter helper base class.
@@ -130,7 +129,6 @@ abstract class AbstractCollectionFilterHelper
         }
     
         $parameters['workflowState'] = $this->request->query->get('workflowState', '');
-        $parameters['routeType'] = $this->request->query->get('routeType', '');
         $parameters['schemes'] = $this->request->query->get('schemes', '');
         $parameters['methods'] = $this->request->query->get('methods', '');
         $parameters['q'] = $this->request->query->get('q', '');
@@ -234,10 +232,6 @@ abstract class AbstractCollectionFilterHelper
         $parameters = [];
     
         if ($objectType == 'route') {
-            $filters[] = 'tbl.routeType = :searchRouteType';
-            $parameters['searchRouteType'] = $fragment;
-            $filters[] = 'tbl.replacedRouteName LIKE :searchReplacedRouteName';
-            $parameters['searchReplacedRouteName'] = '%' . $fragment . '%';
             $filters[] = 'tbl.bundle LIKE :searchBundle';
             $parameters['searchBundle'] = '%' . $fragment . '%';
             $filters[] = 'tbl.controller LIKE :searchController';
@@ -260,8 +254,6 @@ abstract class AbstractCollectionFilterHelper
             $parameters['searchDescription'] = '%' . $fragment . '%';
             $filters[] = 'tbl.sort = :searchSort';
             $parameters['searchSort'] = $fragment;
-            $filters[] = 'tbl.group LIKE :searchGroup';
-            $parameters['searchGroup'] = '%' . $fragment . '%';
         }
     
         $qb->andWhere('(' . implode(' OR ', $filters) . ')');
