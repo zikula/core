@@ -13,6 +13,7 @@ namespace Zikula\RoutesModule\Translation;
 
 use JMS\I18nRoutingBundle\Router\DefaultRouteExclusionStrategy as BaseDefaultRouteExclusionStrategy;
 use Symfony\Component\Routing\Route;
+use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 
 /**
  * Class DefaultRouteExclusionStrategy.
@@ -20,15 +21,33 @@ use Symfony\Component\Routing\Route;
 class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
 {
     /**
+     * @var ExtractTranslationHelper
+     */
+    private $extractTranslationHelper;
+
+    /**
+     * DefaultRouteExclusionStrategy constructor.
+     *
+     * @param ExtractTranslationHelper $extractTranslationHelper Extract translation helper
+     */
+    public function __construct(ExtractTranslationHelper $extractTranslationHelper)
+    {
+        $this->extractTranslationHelper = $extractTranslationHelper;
+    }
+
+    /**
      * @inheritDoc
      */
     public function shouldExcludeRoute($routeName, Route $route)
     {
         $exclude = parent::shouldExcludeRoute($routeName, $route);
+        if ($exclude) {
+            return $exclude;
+        }
 
         $module = $route->getDefault('_zkModule');
-        if (!$exclude && null !== $module && isset($GLOBALS['translation_extract_routes_bundle'])) {
-            return $module !== $GLOBALS['translation_extract_routes_bundle'];
+        if (null !== $module && !empty($this->extractTranslationHelper->getBundleName())) {
+            return $module !== $this->extractTranslationHelper->getBundleName();
         }
 
         return $exclude;

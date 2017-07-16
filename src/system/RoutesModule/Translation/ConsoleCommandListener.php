@@ -14,12 +14,31 @@ namespace Zikula\RoutesModule\Translation;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 
 /**
  * Class ConsoleCommandListener.
  */
 class ConsoleCommandListener implements EventSubscriberInterface
 {
+    /**
+     * @var ExtractTranslationHelper
+     */
+    private $extractTranslationHelper;
+
+    /**
+     * ConsoleCommandListener constructor.
+     *
+     * @param ExtractTranslationHelper $extractTranslationHelper
+     */
+    public function __construct(ExtractTranslationHelper $extractTranslationHelper)
+    {
+        $this->extractTranslationHelper = $extractTranslationHelper;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -39,7 +58,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
             return;
         }
 
-        $GLOBALS['translation_extract_routes'] = true;
+        $this->extractTranslationHelper->setBundleName('');
 
         if ($event->getInput()->hasParameterOption('--bundle')) {
             $bundle = $event->getInput()->getParameterOption('--bundle');
@@ -47,7 +66,7 @@ class ConsoleCommandListener implements EventSubscriberInterface
                 $bundle = substr($bundle, 1);
             }
 
-            $GLOBALS['translation_extract_routes_bundle'] = $bundle;
+            $this->extractTranslationHelper->setBundleName($bundle);
         }
     }
 }

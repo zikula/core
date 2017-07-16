@@ -20,6 +20,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
+use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 use Zikula\RoutesModule\Helper\PathBuilderHelper;
 use Zikula\RoutesModule\Helper\SanitizeHelper;
 use Zikula\ThemeModule\AbstractTheme;
@@ -52,6 +53,11 @@ class RouteLoader extends Loader
     private $entityFactory;
 
     /**
+     * @var ExtractTranslationHelper
+     */
+    private $extractTranslationHelper;
+
+    /**
      * @var PathBuilderHelper
      */
     private $pathBuilderHelper;
@@ -69,17 +75,19 @@ class RouteLoader extends Loader
     /**
      * RouteLoader constructor.
      *
-     * @param ZikulaHttpKernelInterface $kernel            Zikula kernel
-     * @param TranslatorInterface       $translator        Translator
-     * @param EntityFactory             $entityFactory     Entity factory
-     * @param PathBuilderHelper         $pathBuilderHelper Path builder helper
-     * @param SanitizeHelper            $sanitizeHelper    Sanitize helper
-     * @param string                    $locale
+     * @param ZikulaHttpKernelInterface $kernel                   Zikula kernel
+     * @param TranslatorInterface       $translator               Translator
+     * @param EntityFactory             $entityFactory            Entity factory
+     * @param ExtractTranslationHelper  $extractTranslationHelper Extract translation helper
+     * @param PathBuilderHelper         $pathBuilderHelper        Path builder helper
+     * @param SanitizeHelper            $sanitizeHelper           Sanitize helper
+     * @param string                    $locale                   The current locale
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
+        ExtractTranslationHelper $extractTranslationHelper,
         PathBuilderHelper $pathBuilderHelper,
         SanitizeHelper $sanitizeHelper,
         $locale)
@@ -87,6 +95,7 @@ class RouteLoader extends Loader
         $this->kernel = $kernel;
         $this->translator = $translator;
         $this->entityFactory = $entityFactory;
+        $this->extractTranslationHelper = $extractTranslationHelper;
         $this->pathBuilderHelper = $pathBuilderHelper;
         $this->sanitizeHelper = $sanitizeHelper;
         $this->locale = $locale;
@@ -230,11 +239,11 @@ class RouteLoader extends Loader
             list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
             $defaults['_zkType'] = $type;
             $defaults['_zkFunc'] = $func;
-            $defaults['_controller'] = $dbRoute->getBundle() . ":" . ucfirst($type) . ":" . ucfirst($func);
+            $defaults['_controller'] = $dbRoute->getBundle() . ':' . ucfirst($type) . ':' . ucfirst($func);
 
             // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
             $options = $dbRoute->getOptions();
-            $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
+            $prependBundle = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
             if ($prependBundle) {
                 $path = $this->pathBuilderHelper->getPathWithBundlePrefix($dbRoute);
             } else {
@@ -309,7 +318,7 @@ class RouteLoader extends Loader
     {
         $prefix = '';
         $options = $route->getOptions();
-        $prependBundle = !isset($GLOBALS['translation_extract_routes']) && isset($options['i18n']) && !$options['i18n'];
+        $prependBundle = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
         if (!$prependBundle || (isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix'])) {
             return;
         }
