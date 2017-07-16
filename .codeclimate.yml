@@ -39,6 +39,12 @@ engines:
   phpmd:
     enabled: true
     checks:
+      CleanCode/ElseExpression:
+        enabled: false
+      Design/LongMethod:
+        enabled: false
+      Design/NpathComplexity:
+        enabled: false
       Design/TooManyFields:
         enabled: false
       Design/TooManyPublicMethods:
@@ -48,6 +54,10 @@ engines:
       ExcessivePublicCount:
         enabled: false
       Naming/LongVariable:
+        enabled: false
+      Naming/ShortVariable:
+        enabled: false
+      UnusedFormalParameter:
         enabled: false
 
 ratings:
