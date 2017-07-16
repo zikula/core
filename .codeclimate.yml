@@ -4,6 +4,8 @@ engines:
   eslint:
     enabled: true
     checks:
+      max-statements:
+        enabled: false
       no-alert:
         enabled: false
   fixme:
@@ -35,6 +37,10 @@ engines:
   phpmd:
     enabled: true
     checks:
+      Design/TooManyPublicMethods:
+        enabled: false
+      Design/WeightedMethodCount:
+        enabled: false
       Naming/LongVariable:
         enabled: false
 
