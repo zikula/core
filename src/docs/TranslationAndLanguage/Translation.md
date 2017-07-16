@@ -4,20 +4,7 @@ Zikula Translation
 Zikula translation *is* Symfony translation, with some added bonus features. Please refer to 
 http://symfony.com/doc/current/translation.html for more information about Symfony features.
 
-### Path to install translations in Zikula 1.4.x
-
-**Zikula Symfony translator supports LEGACY zikula paths for core and modules on systems versions 1.4.x - only bundle type!**
-
-    `app/Resources/locale/<locale>/LC_MESSAGES/zikula.po`
-    
-    e.g.
-    
-    `app/Resources/locale/en/LC_MESSAGES/zikula.po`
-
-Note: only `.po` files are loaded (`.mo` files are ignored). 
-This format is deprecated and will not be used in Core-2.0.
-
-**Paths and file names used by the Symfony Translator - and standard for Zikula Core-2.0**
+**Paths and file names used by the Symfony Translator**
 
     `app/Resources/translations/<domain>.<locale>.<loader>`
     
@@ -31,7 +18,7 @@ domain because it is loaded second.
 Using a *partial* overwrite is possible if you only define the keys you wish to overwrite.
 
 
-**Paths and file names used by Symfony Translator - and standard for Zikula Core-2.0 - bundles (modules, themes etc.)**
+**Paths and file names used by Symfony Translator - bundles (modules, themes etc.)**
 
     `.../Resources/translations/<domain>.<locale>.<loader>` where domain is `modulebundlename` or `themebundlename`
 

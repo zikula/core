@@ -1,8 +1,8 @@
 Searchable
 ==========
 
-The Api/methodology for the search module has changed again for Core-2.0. All previous methods are deprecated (but still
-fully functional) in favor of a dedicated class that is identified as a DependencyInjection tagged service, like so:
+The Api/methodology for the search module requires a dedicated class that is identified as a DependencyInjection tagged 
+service, like so:
 
 ```
     acme_foo_module.helper.search_helper:

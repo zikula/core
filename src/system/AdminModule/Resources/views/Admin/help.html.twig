@@ -122,9 +122,6 @@
     <h5 id="securitywarnings">{{ __('Security analyser warnings') }}</h5>
     <p>{{ __('In the Administration panel, you will see security warnings displayed if the Security analyser detects potential security vulnerabilities in your site\'s installation. If you see no warning box then it means that no vulnerabilities have been found. Below are explanations for each vulnerability possibly identified.') }}</p>
 
-    <h5 id="admin_psakwarning">{{ __('You see the message') }}: {{ __("Stop, please! The Swiss Army Knife tool ('psak.php' file) is in the site root, but must be removed before you can access the site admin panel. Moreover, for your information, this tool is now deprecated in favor of the Zikula recovery console ('zrc.php').") }}</h5>
-    <p>{{ __("The Zikula recovery console tool (a file called 'zrc.php') is a useful utility for resolving certain problems, but should not be left in any directory accessible from the Internet, because this leaves an easy opportunity for a security breach. If the Security analyser detects this vulnerability, you will have to remove 'zrc.php' before you can access the Administration panel.") }}</p>
-
     <h5 id="admin_installwarning">{{ __('You see the message') }}: {{ __("Stop, please! The installer file 'install.php' and directory 'install' are in the site root, but must be removed before you can access the site admin panel.") }}</h5>
     <p>{{ __('After completing the installation process, it is very important to delete the Installer\'s file \'install.php\' and directory \'install\' from the site root directory, especially if it is on-line on the Internet, because otherwise there is an opportunity for a security breach. If the Security analyser detects this vulnerability, you will have to remove them before you can access the Administration panel.') }}</p>
 
