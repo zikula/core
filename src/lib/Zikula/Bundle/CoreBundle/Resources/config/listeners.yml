@@ -57,14 +57,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    zikula_core.internal.strip_front_controller_listener:
-        class: Zikula\Bundle\CoreBundle\EventListener\StripFrontControllerListener
-        arguments:
-            - "@zikula_extensions_module.api.variable"
-            - "%installed%"
-        tags:
-            - { name: kernel.event_subscriber }
-
     stof_doctrine_extensions.listener.logger:
         class: Zikula\Bundle\CoreBundle\EventListener\LoggerListener
         arguments:

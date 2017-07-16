@@ -52,6 +52,13 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
 
     /**
+     * The controller at the front of the application (the first file loaded as controlled by the server & .htaccess)
+     * @see src/.htaccess
+     * @see \Zikula\ThemeModule\EventListener\AddJSConfigListener::addJSConfig
+     */
+    const FRONT_CONTROLLER = 'index.php';
+
+    /**
      * Public list of core modules and their bundle class.
      * @var array
      */
