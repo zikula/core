@@ -72,7 +72,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
 
         // notify EVENT here to gather any system service links
         $args = ['modname' => $event->getArgument('modname')];
-        $localevent = new \Zikula\Core\Event\GenericEvent($event->getSubject(), $args);
+        $localevent = new GenericEvent($event->getSubject(), $args);
         $this->eventDispatcher->dispatch('module_dispatch.service_links', $localevent);
         $sublinks = $localevent->getData();
 
