@@ -265,10 +265,16 @@ class FileIOHelper
                 $groups[$group]->addUser($user);
             }
             $this->entityManager->persist($user);
-            $this->entityManager->flush();
-            $eventName = $importValue['activated'] ? UserEvents::CREATE_ACCOUNT : RegistrationEvents::CREATE_REGISTRATION;
-            $this->eventDispatcher->dispatch($eventName, new GenericEvent($user));
             $importValues[$k]['unHashedPass'] = $unHashedPass;
+            $importValues[$k]['userReference'] = $user;
+        }
+        $this->entityManager->flush();
+
+        // post processing
+        foreach ($importValues as $k => $importValue) {
+            $eventName = $importValue['activated'] ? UserEvents::CREATE_ACCOUNT : RegistrationEvents::CREATE_REGISTRATION;
+            $user = $importValue['userReference'];
+            $this->eventDispatcher->dispatch($eventName, new GenericEvent($user));
         }
 
         return true;
