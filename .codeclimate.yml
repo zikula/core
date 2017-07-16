@@ -40,6 +40,9 @@ engines:
         enabled: false
   phpmd:
     enabled: true
+    checks:
+      Naming/LongVariable:
+        enabled: false
 
 ratings:
   paths:
