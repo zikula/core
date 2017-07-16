@@ -4,6 +4,14 @@ parameters:
     jms_i18n_routing.route_translation_extractor.class: Zikula\RoutesModule\Translation\ZikulaRouteTranslationExtractor
 
 services:
+    jms_i18n_routing.route_exclusion_strategy:
+        class: '%jms_i18n_routing.route_exclusion_strategy.class%'
+        arguments:
+            - "@zikula_routes_module.extract_translation_helper"
+
+    zikula_routes_module.extract_translation_helper:
+        class: Zikula\RoutesModule\Helper\ExtractTranslationHelper
+
     zikula_routes_module.multilingual_routing_helper:
         class: Zikula\RoutesModule\Helper\MultilingualRoutingHelper
         arguments:
@@ -44,6 +52,7 @@ services:
             - "@kernel"
             - "@translator"
             - "@zikula_routes_module.entity_factory"
+            - "@zikula_routes_module.extract_translation_helper"
             - "@zikula_routes_module.path_builder_helper"
             - "@zikula_routes_module.sanitize_helper"
             - "%locale%"
@@ -52,5 +61,7 @@ services:
 
     zikula_routes_module.console_command_listener:
         class: Zikula\RoutesModule\Translation\ConsoleCommandListener
+        arguments:
+            - "@zikula_routes_module.extract_translation_helper"
         tags:
             - { name: kernel.event_subscriber }
