@@ -63,7 +63,7 @@ class NodeController extends AbstractController
                     }
                 }
                 $form = $this->createForm(MenuItemType::class, $menuItemEntity, [
-                    'translator' => $this->get('translator.default'),
+                    'translator' => $this->getTranslator(),
                 ]);
                 $form->get('after')->setData($request->request->get('after', null));
                 if ($form->handleRequest($request)->isValid()) {
