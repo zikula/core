@@ -14,6 +14,9 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
+/**
+ * @deprecated removed in 2.0
+ */
 class MetaTagExtension extends \Twig_Extension
 {
     /**

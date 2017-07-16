@@ -45,6 +45,7 @@ CHANGELOG - ZIKULA 1.5.x
         - In Core-2.0 you can use runtime environment variables instead:
           https://symfony.com/blog/new-in-symfony-3-2-runtime-environment-variables
     - `\Zikula\Component\SortableColumns\Column#setIsSortColumn()` is deprecated. Use `setSortColumn() instead.
+    - The `MetaTagExtension` class is deprecated which includes the Twig function named `setMetaTag`. Use `pageSetVar` instead.
 
  - Fixes:
     - Corrected path to legacy module's admin icons.
