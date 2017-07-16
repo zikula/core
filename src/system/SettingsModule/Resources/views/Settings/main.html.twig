@@ -72,22 +72,6 @@
             {{ form_row(form.startargs) }}
         </fieldset>
         <fieldset>
-            <legend>{{ __('Front Controller settings') }}</legend>
-            {{ form_row(form.entrypoint) }}
-            <div class="col-sm-offset-3 col-sm-9">
-                <em class="help-block">{{ __('(Default: index.php)') }}</em>
-                <p class="help-block alert alert-info">{{ __("Notice: The entry point file must be present in the Zikula root directory before you set it here as your site's start page.") }}</p>
-                <p class="help-block alert alert-danger">{{ __("Warning: This feature is deprecated and it is not recommended to change from index.php.") }}</p>
-            </div>
-            {{ form_row(form.shorturlsstripentrypoint) }}
-            <div class="col-sm-offset-3 col-sm-9">
-                <em class="help-block alert alert-info">{{ __('Recommended.') }}</em>
-                <em class="help-block alert alert-warning">{{ __("This setting was part of the 'shorturl configuration in the past (below).") }}<br />
-                        {{ __("It is now moved here because it is also used with core-1.4.x routing. This feature is deprecated.") }}
-                </em>
-            </div>
-        </fieldset>
-        <fieldset>
             <legend>{{ __('General settings') }}</legend>
             {{ form_row(form.useCompression) }}
             {% if zlibEnabled is defined and not zlibEnabled %}

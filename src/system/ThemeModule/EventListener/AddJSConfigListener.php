@@ -14,6 +14,7 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ThemeModule\Engine\ParameterBag;
@@ -97,7 +98,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
 
         $config = [
-            'entrypoint' => $this->variableApi->getSystemVar('entrypoint', 'index.php'),
+            'entrypoint' => ZikulaKernel::FRONT_CONTROLLER,
             'baseURL' => $event->getRequest()->getSchemeAndHttpHost() . '/',
             'baseURI' => $event->getRequest()->getBasePath(),
             'ajaxtimeout' => (int)$this->variableApi->getSystemVar('ajaxtimeout', 5000),

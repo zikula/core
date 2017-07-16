@@ -104,25 +104,6 @@ class MainSettingsType extends AbstractType
                 'required' => false,
                 'help' => $this->translator->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
             ])
-            ->add('entrypoint', TextType::class, [
-                'label' => $this->translator->__('Site entry point (front controller)'),
-                'constraints' => new Callback([
-                    'callback' => function($data, ExecutionContextInterface $context) {
-                        $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
-                        $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
-                        if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
-                            $context->addViolation($this->translator->__('Error! You entered an invalid entry point.'));
-                        }
-                        if (!file_exists($data)) {
-                            $context->addViolation($this->translator->__('Error! The file was not found in the Zikula root directory.'));
-                        }
-                    }
-                ])
-            ])
-            ->add('shorturlsstripentrypoint', CheckboxType::class, [
-                'label' => $this->translator->__('Strip entry point (front controller) from URLs'),
-                'required' => false
-            ])
             ->add('useCompression', CheckboxType::class, [
                 'label' => $this->translator->__('Activate compression'),
                 'required' => false

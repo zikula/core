@@ -54,7 +54,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('siteoff', 0);
         $this->setSystemVar('siteoffreason', '');
         $this->setSystemVar('startargs', '');
-        $this->setSystemVar('entrypoint', 'index.php');
         $this->setSystemVar('language_detect', 0);
         // Multilingual support
         foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $lang) {
@@ -64,14 +63,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             $this->setSystemVar('defaultmetadescription_' . $lang, $this->__('Site description'));
         }
 
-        if (function_exists('apache_get_modules') && in_array('mod_rewrite', apache_get_modules())) {
-            // Only strip entry point if "mod_rewrite" is available.
-            $this->setSystemVar('shorturlsstripentrypoint', true);
-        } else {
-            $this->setSystemVar('shorturlsstripentrypoint', false);
-        }
-
-        $this->setSystemVar('shorturlsdefaultmodule', '');
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
         $this->setSystemVar('languageurl', 0);
@@ -141,13 +132,16 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $newStargArgs = str_replace(',', '&', $this->getSystemVar('startargs')); // replace comma with `&`
                 $this->setSystemVar('startargs', $newStargArgs);
             case '2.9.11':
-                $this->setSystemVar('shorturls', (bool)$this->getSystemVar('shorturls'));
-                $this->setSystemVar('shorturlsstripentrypoint', (bool)$this->getSystemVar('shorturlsstripentrypoint'));
                 $this->setSystemVar('useCompression', (bool)$this->getSystemVar('useCompression'));
             case '2.9.12': // ship with Core-1.4.4
                 // reconfigure TZ settings
                 $this->setGuestTimeZone();
-            case '2.9.13': // ship with Core-1.5.0
+            case '2.9.13':
+                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'entrypoint');
+                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
+                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'shorturls');
+                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
+            case '2.9.14': // ship with Core-1.5.0
                 // current version
         }
 
