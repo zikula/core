@@ -10,6 +10,8 @@ engines:
         enabled: false
       no-alert:
         enabled: false
+      wrap-iife:
+        enabled: false
   fixme:
     enabled: true
     config:
@@ -19,6 +21,11 @@ engines:
       - TODO
   markdownlint:
     enabled: true
+    checks:
+      MD009: # trailing spaces
+        enabled: false
+      MD013: # line length
+        enabled: false
   phan:
     enabled: true
     config:
@@ -34,12 +41,18 @@ engines:
     checks:
       Generic Files LineLength TooLong:
         enabled: false
+      PSR2 ControlStructures SwitchDeclaration TerminatingComment:
+        enabled: false
       Squiz Functions MultiLineFunctionDeclaration SpaceAfterFunction:
         enabled: false
   phpmd:
     enabled: true
     checks:
       CleanCode/ElseExpression:
+        enabled: false
+      CyclomaticComplexity:
+        enabled: false
+      Design/CouplingBetweenObjects:
         enabled: false
       Design/LongMethod:
         enabled: false
