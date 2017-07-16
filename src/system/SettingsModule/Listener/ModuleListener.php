@@ -72,8 +72,6 @@ class ModuleListener implements EventSubscriberInterface
         if ($moduleName == $startModule) {
             // since the start module has been removed, set all related variables to ''
             $this->variableApi->set(VariableApi::CONFIG, 'startpage', '');
-            $this->variableApi->set(VariableApi::CONFIG, 'starttype', '');
-            $this->variableApi->set(VariableApi::CONFIG, 'startfunc', '');
             $this->variableApi->set(VariableApi::CONFIG, 'startargs', '');
             $this->session->getFlashBag()->add('info', $this->translator->__('The start module was reset to a static frontpage.'));
         }
