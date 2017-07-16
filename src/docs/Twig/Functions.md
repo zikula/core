@@ -28,7 +28,6 @@ Functions
  * pageSetVar(name, value)
  * pager(params)
  * polyfill(features = ["forms"])
- * setMetaTag(name, value)
  * showflashes(params = [])
  * stateLabel(extensionEntity, upgradedExtensions = null)
  * zasset(path)

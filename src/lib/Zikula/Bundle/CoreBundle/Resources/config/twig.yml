@@ -26,14 +26,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    zikula_bundle_core.twig_extension.meta_tag_extension:
-        class: Zikula\Bundle\CoreBundle\Twig\Extension\MetaTagExtension
-        arguments:
-          - '@service_container'
-          - '@translator.default'
-        tags:
-            - { name: twig.extension }
-
     zikula_bundle_core.twig_extension.event_dispatcher_extension:
         class: Zikula\Bundle\CoreBundle\Twig\Extension\EventDispatcherExtension
         arguments: ['@event_dispatcher']
