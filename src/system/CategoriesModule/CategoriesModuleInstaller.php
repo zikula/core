@@ -133,7 +133,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $categoryData = $this->getDefaultCategoryData();
         $categoryObjectMap = [];
         /**
-         * @var ClassMetadata $categoryMetaData
+         * @var ClassMetadata
          */
         $categoryMetaData = $this->entityManager->getClassMetaData(CategoryEntity::class);
         // disable auto-generation of keys to allow manual setting from this data set.
