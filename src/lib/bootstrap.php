@@ -13,30 +13,31 @@ use Symfony\Component\Debug\Debug;
 use Symfony\Component\Yaml\Yaml;
 
 require __DIR__ . '/../app/autoload.php';
-require __DIR__ . '/../lib/requirementCheck.php';
+require __DIR__ . '/../lib/RequirementChecker.php';
 
 $kernelConfig = Yaml::parse(file_get_contents(__DIR__ . '/../app/config/parameters.yml'));
 if (is_readable($file = __DIR__ . '/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
-$kernelConfig = $kernelConfig['parameters'];
-if (true === $kernelConfig['debug']) {
+$parameters = $kernelConfig['parameters'];
+if (true === $parameters['debug']) {
     Debug::enable();
 }
-if ($kernelConfig['env'] == 'prod') {
+if ($parameters['env'] == 'prod') {
     // improves performance for prod env
     include_once __DIR__ . '/../var/bootstrap.php.cache';
 }
 
-if ((isset($kernelConfig['umask'])) && (!is_null($kernelConfig['umask']))) {
-    umask($kernelConfig['umask']);
+if ((isset($parameters['umask'])) && (!is_null($parameters['umask']))) {
+    umask($parameters['umask']);
 }
 
 // set default locale for Intl classes
-\Locale::setDefault($kernelConfig['locale']);
+\Locale::setDefault($parameters['locale']);
 
 // on install or upgrade, check if system requirements are met.
-requirementCheck($kernelConfig);
+$requirementChecker = new RequirementChecker();
+$requirementChecker->verify($parameters);
 
-$kernel = new ZikulaKernel($kernelConfig['env'], $kernelConfig['debug']);
+$kernel = new ZikulaKernel($parameters['env'], $parameters['debug']);
 $kernel->boot();

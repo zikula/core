@@ -9,7 +9,7 @@ use Zikula\Bundle\CoreBundle\Console\Application;
 set_time_limit(0);
 
 require __DIR__ . '/../app/autoload.php';
-require __DIR__ . '/../lib/requirementCheck.php';
+require __DIR__ . '/../lib/RequirementChecker.php';
 
 $getZikulaEnv = function(ArgvInput $input) {
     $defaultEnv = $input->getParameterOption(['--env', '-e'], getenv('ZIKULA_ENV') ?: 'dev');
@@ -33,7 +33,8 @@ $kernelConfig = Yaml::parse(file_get_contents(__DIR__.'/../app/config/parameters
 if (is_readable($file = __DIR__.'/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
-requirementCheck($kernelConfig['parameters']);
+$requirementChecker = new RequirementChecker();
+$requirementChecker->verify($kernelConfig['parameters']);
 
 $kernel = new ZikulaKernel($env, $debug);
 $kernel->boot();
