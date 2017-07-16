@@ -8,6 +8,7 @@ CHANGELOG - ZIKULA 1.5.x
     - User Categories feature removed.
     - All categories configuration removed.
     - Many methods from CategoryUtil are no longer functional.
+    - `Zikula\CategoriesModule\Entity\CategoryRegistryEntity::setCategory_id()` removed. use `setCategory(CategoryEntity $c)` instead.
     - vierbergenlars/php-semver vendor removed, use composer/semver.
     - Global avatar management is moved to the Profile module.
     - typeahead.js removed, use jQuery UI.
