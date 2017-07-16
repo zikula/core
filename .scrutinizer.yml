@@ -39,7 +39,7 @@ checks:
         var_never_initialized: true
         var_sometimes_initialized: true
     php:
-        duplication: true
+        duplication: false
         unused_parameters: false
         verify_property_names: false
         check_method_contracts:
