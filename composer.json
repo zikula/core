@@ -36,7 +36,7 @@
         "phpunit/phpunit": "4.*"
     },
     "scripts": {
-        "post-install-cmd": [
+        "zikula-scripts": [
             "Zikula\\Composer\\CopyRequirementsFile::copy",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
@@ -45,14 +45,11 @@
             "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
             "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
         ],
+        "post-install-cmd": [
+            "@zikula-scripts"
+        ],
         "post-update-cmd": [
-            "Zikula\\Composer\\CopyRequirementsFile::copy",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Zikula\\Composer\\ManuallyInstallAssets::install",
-            "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
-            "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
+            "@zikula-scripts"
         ]
     },
     "config": {
@@ -72,9 +69,11 @@
             "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
         },
         "merge-plugin": {
-            "include": [
+            "require": [
                 "src/lib/Zikula/Bundle/*/composer.json",
-                "src/system/*/composer.json",
+                "src/system/*/composer.json"
+            ],
+            "include": [
                 "src/modules/*/composer.json",
                 "src/modules/*/*/composer.json",
                 "src/themes/*/composer.json",
