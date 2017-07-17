@@ -42,7 +42,7 @@ class BarLinkContainer implements LinkContainerInterface
      *
      * @return array
      */
-    private function getAdmin()
+    private function getBar()
     {
         $links = [];
         $links[] = [
