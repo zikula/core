@@ -48,6 +48,7 @@ application "Routes" {
             README.md,
             Resources/config/routing.yml,
             Resources/public/css/style.css,
+            Resources/workflows/none.yml,
             RoutesModuleInstaller.php,
             Twig/TwigExtension.php
         "
