@@ -177,4 +177,28 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
         return $qb->getQuery()->iterate();
     }
+
+    /**
+     * Searches for a user name excluding pending and deleted users.
+     *
+     * @param array $unameFilter
+     * @param int $limit
+     * @return UserEntity[]
+     */
+    public function searchActiveUser(array $unameFilter = [], $limit = 50)
+    {
+        if (!count($unameFilter)) {
+            return [];
+        }
+
+        $filter = [
+            'activated' => ['operator' => 'notIn', 'operand' => [
+                UsersConstant::ACTIVATED_PENDING_REG,
+                UsersConstant::ACTIVATED_PENDING_DELETE
+            ]],
+            'uname' => $unameFilter
+        ];
+
+        return $this->query($filter, ['uname' => 'asc'], $limit);
+    }
 }
