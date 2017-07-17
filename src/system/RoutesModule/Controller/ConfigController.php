@@ -35,7 +35,7 @@ class ConfigController extends AbstractConfigController
      *
      * @param Request $request Current request instance
      *
-     * @return string Output
+     * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
