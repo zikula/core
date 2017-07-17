@@ -314,7 +314,7 @@ abstract class AbstractEditHandler
             if (null !== $entity) {
                 if (true === $this->hasPageLockSupport && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
                     // try to guarantee that only one person at a time can be editing this entity
-                    $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->getKey();
+                    $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->entityRef->getKey();
                     $this->lockingApi->addLock($lockName, $this->getRedirectUrl(null));
                 }
             }
@@ -491,7 +491,7 @@ abstract class AbstractEditHandler
         }
     
         if (true === $this->hasPageLockSupport && $this->templateParameters['mode'] == 'edit' && $this->kernel->isBundle('ZikulaPageLockModule') && null !== $this->lockingApi) {
-            $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->getKey();
+            $lockName = 'ZikulaRoutesModule' . $this->objectTypeCapital . $this->entityRef->getKey();
             $this->lockingApi->releaseLock($lockName);
         }
     

@@ -102,7 +102,7 @@ abstract class AbstractEntityDisplayHelper
     public function getDescriptionFieldName($objectType)
     {
         if ($objectType == 'route') {
-            return 'description';
+            return 'controller';
         }
     
         return '';
