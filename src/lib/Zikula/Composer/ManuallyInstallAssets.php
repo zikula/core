@@ -12,8 +12,8 @@
 namespace Zikula\Composer;
 
 use Composer\Script\Event;
-use Symfony\Component\Filesystem\Filesystem;
 use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class ManuallyInstallAssets

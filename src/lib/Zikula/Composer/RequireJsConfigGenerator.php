@@ -55,5 +55,24 @@ class RequireJsConfigGenerator
             }
             $process->process();
         }
+
+        // move files into subfolder
+        $webDir = 'src/web/';
+        $requireDir = $webDir . 'require/';
+        if (!file_exists($requireDir)) {
+            mkdir($requireDir, 0755);
+        }
+        $requireJsFiles = [
+            'require.config.js',
+            'require.css',
+            'require.js',
+            'require-built.js'
+        ];
+        foreach ($requireJsFiles as $fileName) {
+            if (!file_exists($webDir . $fileName)) {
+                continue;
+            }
+            rename($webDir . $fileName, $requireDir . $fileName);
+        }
     }
 }
