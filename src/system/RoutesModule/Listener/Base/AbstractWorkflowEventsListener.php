@@ -49,7 +49,8 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
             'workflow.guard' => ['onGuard', 5],
             'workflow.leave' => ['onLeave', 5],
             'workflow.transition' => ['onTransition', 5],
-            'workflow.enter' => ['onEnter', 5]    ];
+            'workflow.enter' => ['onEnter', 5]
+        ];
     }
     
     /**
