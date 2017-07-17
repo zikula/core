@@ -30,7 +30,8 @@ before_install:
     - mysql -e 'create database zk_test;'
 
 install:
-    - composer install -o
+    - composer install -o --no-scripts
+    - composer run-script post-install-cmd
     - cd src
 
     # extract en translations
