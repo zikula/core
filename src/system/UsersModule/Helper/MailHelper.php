@@ -273,6 +273,7 @@ class MailHelper
                 if (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
                     return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
+
                 return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
 
             case 'regdeny':
