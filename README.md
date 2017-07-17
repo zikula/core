@@ -45,7 +45,7 @@ Before installing
 -----------------
 
 Zikula makes use of [Composer](https://getcomposer.org/) to manage and download all dependencies.
-If cloning via github, composer must be run prior to installation. Run:
+If cloning via github, Composer must be run prior to installation. Run:
 
     `composer self-update`
     `composer install`
