@@ -16,7 +16,7 @@ interface StorageInterface
     /**
      * Get token by ID.
      *
-     * @param string $id Id
+     * @param string|boolean $id Id
      *
      * @return string
      */

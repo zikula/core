@@ -79,18 +79,14 @@ class AdminInterfaceController extends AbstractController
         $requestedCid = $masterRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
-        $cid = null;
-        if ($caller['_zkModule'] == 'ZikulaAdminModule') {
-            $cid = $defaultCid;
-        } else {
+        $categoryId = $defaultCid;
+        if (!empty($caller['_zkModule']) && $caller['_zkModule'] != 'ZikulaAdminModule') {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
-                $cid = $moduleRelation->getCid();
-            } else {
-                $cid = $defaultCid;
+                $categoryId = $moduleRelation->getCid();
             }
         }
-        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
+        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($categoryId);
 
         return $this->render('@ZikulaAdminModule/AdminInterface/breadCrumbs.html.twig', [
             'caller' => $caller
@@ -259,17 +255,15 @@ class AdminInterfaceController extends AbstractController
         // category we are in
         $requestedCid = $masterRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
-        if ($caller['_zkModule'] == 'ZikulaAdminModule' || empty($caller['_zkModule'])) {
-            $cid = $defaultCid;
-        } else {
+
+        $categoryId = $defaultCid;
+        if (!empty($caller['_zkModule']) && $caller['_zkModule'] != 'ZikulaAdminModule') {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
-                $cid = $moduleRelation->getCid();
-            } else {
-                $cid = $defaultCid;
+                $categoryId = $moduleRelation->getCid();
             }
         }
-        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($cid);
+        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($categoryId);
 
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';

@@ -140,6 +140,7 @@ class HookController extends Controller
                 $hooksubscriberAreasToTitles = []; // and get the titles
                 $hooksubscriberAreasToCategories = []; // and get the categories
                 foreach ($hooksubscriberAreas as $hooksubscriberArea) {
+                    $category = null;
                     if (isset($nonPersistedSubscribers[$hooksubscriberArea])) {
                         $hooksubscriberAreasToTitles[$hooksubscriberArea] = $nonPersistedSubscribers[$hooksubscriberArea]->getTitle();
                         $category = $nonPersistedSubscribers[$hooksubscriberArea]->getCategory();
