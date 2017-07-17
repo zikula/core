@@ -56,10 +56,12 @@ class RequireJsConfigGenerator
             $process->process();
         }
 
-        // move into subfolder
-        $webDir = 'web/';
+        // move files into subfolder
+        $webDir = 'src/web/';
         $requireDir = $webDir . 'require/';
-        mkdir($requireDir, 0755);
+        if (!file_exists($requireDir)) {
+            mkdir($requireDir, 0755);
+        }
         $requireJsFiles = [
             'require.config.js',
             'require.css',
