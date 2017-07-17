@@ -64,6 +64,7 @@ div.z-pager a, div.z-pager strong {
     width: 1.8em;
     height: 1.7em;
     -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 div.z-pager strong {
@@ -91,6 +92,7 @@ div.z-pager .skip:visited {
 div.z-pager .skip:hover, div.z-pager .skip:active, div.z-pager .skip:focus {
     background-color: transparent;
     color: inherit;
+    -webkit-appearance: none;
     -moz-appearance: none;
 }
 
@@ -121,6 +123,7 @@ div.z-pager span.select {
     /*min-height: 1.6em;*/
     height: 1.7em;
     -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 div.z-pager span.select:hover {

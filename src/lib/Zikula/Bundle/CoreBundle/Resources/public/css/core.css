@@ -71,8 +71,9 @@ ul.navbar > li.active > a {
 .navbar-modulelinks .navbar-nav > .open > a:focus {
     background-color: transparent;
     background-image: none;
-    box-shadow: none;
     -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 .navbar-modulelinks .navbar-nav a,
