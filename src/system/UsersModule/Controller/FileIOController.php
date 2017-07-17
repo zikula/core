@@ -30,7 +30,7 @@ class FileIOController extends AbstractController
      * @Theme("admin")
      * @Template
      * @param Request $request
-     * @return array
+     * @return array|StreamedResponse
      */
     public function exportAction(Request $request)
     {

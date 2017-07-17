@@ -51,7 +51,7 @@ trait ExtensionVariablesTrait
     /**
      * Convenience shortcut to set Extension Variable.
      * @param string $variableName
-     * @param string $value
+     * @param string|integer|boolean $value
      * @return bool
      */
     public function setVar($variableName, $value = '')

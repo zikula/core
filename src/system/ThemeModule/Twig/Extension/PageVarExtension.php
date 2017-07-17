@@ -70,10 +70,10 @@ class PageVarExtension extends \Twig_Extension
 
     /**
      * @param $name
-     * @param null $default
+     * @param string $default
      * @return mixed
      */
-    public function pageGetVar($name, $default = null)
+    public function pageGetVar($name, $default = '')
     {
         if (empty($name)) {
             throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
