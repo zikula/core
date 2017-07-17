@@ -7,11 +7,11 @@ The CategoriesModule provides a CategoryTreeType form type for ease of use with 
 
 With this you can add choice fields for selecting one or multiple categories from the overall categories tree.
 
-###Required Options
+### Required Options
 
  - `translator` - the `translator.default` service
 
-###Optional Options
+### Optional Options
 
  - all attributes from the `choice` form type
  - `locale` - (string) the locale to be used (default `en`).
