@@ -11,11 +11,11 @@
 
 namespace Zikula\Composer\Process;
 
-use ComponentInstaller\Process\Process;
 use Assetic\Asset\StringAsset;
-use Composer\Json\JsonFile;
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
+use ComponentInstaller\Process\Process;
+use Composer\Json\JsonFile;
 
 /**
  * Builds the require.js configuration.
