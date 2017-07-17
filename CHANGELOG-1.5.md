@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.5.x
     - vierbergenlars/php-semver vendor removed, use composer/semver.
     - Global avatar management is moved to the Profile module.
     - typeahead.js removed, use jQuery UI.
+    - Path to require.js changed (`web/require` instead of `web`) (#3669, #3671).
 
  - Deprecated:
     - Search block templates have been modified. This will break existing overrides for
