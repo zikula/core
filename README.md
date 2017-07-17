@@ -18,7 +18,7 @@ Introduction
 Zikula Core-1.5 is based on Symfony 2.8.x as a foundation and includes other technologies including a dynamic
 modular development paradigm and Twig-based theming system which allows for quick expansion of Symfony.
 
-For more information visit http://zikula.org/
+For more information visit http://zikula.de/
 
 
 <a name="requirements"></a>

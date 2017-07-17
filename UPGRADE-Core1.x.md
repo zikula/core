@@ -18,7 +18,7 @@ before proceeding with this upgrade process.
 
 Zikula Core 1.4 and 1.5 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
-For more information visit http://zikula.org/ and read our
+For more information visit http://zikula.de/ and read our
 [documentation](https://github.com/zikula/core/tree/1.5/src/docs).
 
 
@@ -63,13 +63,13 @@ Before upgrading
 
 #### FOR DEVELOPERS ONLY: Clone Zikula/Core from the repo at Github. Use the 1.5 branch.
 
-Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
+Zikula makes use of [Composer](https://getcomposer.org/) to manage and download all dependencies.
 Composer must be run prior to installing or upgrading a site using Zikula. Run `composer self-update` and `composer update`.
 
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to
 `composer` to avoid your IDE reading the package contents.
 
-#### FOR NORMAL USERS: Download the current release from [http://www.zikula.org/](http://www.zikula.org/)
+#### FOR NORMAL USERS: Download the current release from [GitHub releases](https://github.com/zikula/core/releases/)
 
 All the dependencies and requirements are included in this package.
 
