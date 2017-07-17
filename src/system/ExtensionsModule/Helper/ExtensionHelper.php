@@ -99,7 +99,7 @@ class ExtensionHelper
         switch ($extension->getState()) {
             case Constant::STATE_NOTALLOWED:
                 throw new \RuntimeException($this->translator->__f('Error! Not allowed to upgrade %s.', ['%s' => $extension->getDisplayname()]));
-                break;
+
             default:
                 if ($extension->getState() > 10) {
                     throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getDisplayname()]));
@@ -120,9 +120,11 @@ class ExtensionHelper
             }
 
             return false;
-        } elseif (true !== $result) {
+        }
+        if (true !== $result) {
             return false;
         }
+
         // persist the updated version
         $newVersion = $bundle->getMetaData()->getVersion();
         $extension->setVersion($newVersion);
