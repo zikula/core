@@ -54,6 +54,8 @@ engines:
     checks:
       CleanCode/ElseExpression:
         enabled: false
+      CleanCode/StaticAccess:
+        enabled: false
       CyclomaticComplexity:
         enabled: false
       Design/CouplingBetweenObjects:
@@ -70,11 +72,17 @@ engines:
         enabled: false
       ExcessivePublicCount:
         enabled: false
+      Naming/BooleanGetMethodName:
+        enabled: false
       Naming/LongVariable:
+        enabled: false
+      Naming/ShortMethodName:
         enabled: false
       Naming/ShortVariable:
         enabled: false
       UnusedFormalParameter:
+        enabled: false
+      UnusedLocalVariable:
         enabled: false
 
 ratings:
