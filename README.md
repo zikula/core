@@ -29,7 +29,7 @@ Requirements
    to 128 MB for the installation process.
  - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
  - Zikula requires `AllowOverride All` and the `mod_rewrite` module (be aware the Apache 2.3.9+ has changed
-   the default setting for `AllowOverride` to `None`.
+   the default setting for `AllowOverride` to `None`).
  - Zikula also requires other php extensions and configurations. These are checked during the installation
    process and if there are problems, you will be notified. If you discover errors, check with your hosting
    provider on how to rectify these issues. Typically, they will require changing the `php.ini` file or

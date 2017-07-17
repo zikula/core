@@ -82,22 +82,22 @@ to see potential solutions to this problem when installing from the CLI.
 check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
 recommended, please use the Web Installer. 
 
-###Create the Database
+### Create the Database
 
 Create a database on your server. Take note of the database **name** as well as the database **username** and
 **password** which are possibly given by your provider. These will be needed during install. You can use an existing
 database, but this is not recommended unless Zikula will be the only application using that database. In this case,
 remove all existing tables from the existing database.
 
-###Install by the Web installer or Command Line (not both!):
+### Install by the Web installer or Command Line (not both!):
 
-####Web Installer
+#### Web Installer
 
 To begin the installer, simply visit the root directory with your browser, e.g. `http://www.example.com/`.
 If you installed Zikula into a subdirectory 'foo' the URL would be `http://www.example.com/foo/`. You will be
 automatically redirected to the installer.
 
-####Command Line Installer
+#### Command Line Installer
 
 Via CLI, access your main zikula directory (`/src` if a Github clone) and run this command:
 ```Shell
