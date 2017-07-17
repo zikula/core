@@ -23,9 +23,9 @@
     <div id="footer" class="footer">
         <ul>
             <li><strong>{{ __("Useful resources") }}:</strong></li>
-            <li><a href="{{ path('doc', {'name': 'INSTALL-1.4.md'}) }}" onclick="window.open(this.href);return false;">{{ __("Installation guide") }}</a></li>
+            <li><a href="{{ path('doc', {'name': 'INSTALL-1.x.md'}) }}" onclick="window.open(this.href);return false;">{{ __("Installation guide") }}</a></li>
             <li><a href="https://github.com/zikula/core/wiki" onclick="window.open(this.href);return false;">{{ __("Zikula documentation") }}</a></li>
-            <li><a href="http://www.zikula.org/forums" onclick="window.open(this.href);return false;">{{ __("Support forums") }}</a></li>
+            <li><a href="https://zikula.slack.com/" onclick="window.open(this.href);return false;">{{ __("Support @ Slack") }}</a></li>
             {# custom links for each action go here #}
             {% if currentstage == 'requirements' %}
             <li class="highlight"><a href="http://www.wikipedia.org/wiki/File_system_permissions" onclick="window.open(this.href);return false;">{{ __("File system permissions") }}</a></li>

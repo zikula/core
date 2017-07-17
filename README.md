@@ -17,7 +17,7 @@ and module development called [ModuleStudio](http://modulestudio.de/en/) or MOST
 
 Zikula can quickly become a Content Management System utilizing community-driven modules.
 
-For more information visit http://zikula.org/
+For more information visit http://zikula.de/
 
 Requirements
 ------------

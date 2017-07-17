@@ -22,7 +22,7 @@ Download
 
 ***Prior to any upgrade ensure that you have created a reliable backup of all files and the database.***
 
-Download the current release from [http://www.zikula.org/](http://www.zikula.org/)
+Download the current release from [GitHub releases](https://github.com/zikula/core/releases/)
 All the dependencies and requirements are included in this package.
 
 

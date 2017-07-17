@@ -14,14 +14,14 @@ Install by uploading package
 
 ### Upload
 
-If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
-or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
-uploading many small files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the
-correct permissions (for example: `tar -xpzvf Zikula_Core-2.0.0.build123.tar.gz`) change the filename to match the
-current download.**  Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
+If you obtained Zikula Core from the CI server, then you can upload the entire archive (`.zip` or `.tgz` file)
+to your server and then `unzip` them there. (This is faster and much more reliable than uploading many small
+files via FTP). **Make sure to include the `-p` flag if you extract from `.tgz` to keep the correct permissions
+(for example: `tar -xpzvf Zikula_Core-2.0.0.build123.tar.gz`) change the filename to match the current download.**
+Copy all the files and directories to your webroot (typically `public_html` or `httpdocs`).
 
 Another option can be to download the tar.gz directly from the ci server: e.g. 
-`wget http://ci.zikula.org/job/Zikula_Core-2.0.0/123/artifact/build/archive/Zikula_Core-2.0.0.build123.tar.gz`. 
+`wget http://ci.zikula.org/job/Zikula_Core-2.0.0/lastSuccessfulBuild/artifact/build/archive/Zikula_Core-2.0.0.tar.gz`. 
 Again, change the filename/url to match the correct filename from the ci server.
 
 Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
