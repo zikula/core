@@ -269,18 +269,18 @@ class MailHelper
             case 'regadminnotify':
                 if (!$templateArgs['reginfo']->isApproved()) {
                     return $this->translator->__f('New registration pending approval: %s', ['%s' => $templateArgs['reginfo']['uname']]);
-                } elseif (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
-                    return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);
-                } else {
-                    return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
-                break;
+                if (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
+                    return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);
+                }
+                return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
+
             case 'regdeny':
                 return $this->translator->__f('Your recent request at %s.', ['%s' => $siteName]);
-                break;
+
             case 'welcome':
                 return $this->translator->__f('Welcome to %1$s, %2$s!', ['%1$s' => $siteName, '%2$s' => $templateArgs['reginfo']['uname']]);
-                break;
+
             default:
                 return $this->translator->__f('A message from %s.', ['%s' => $siteName]);
         }

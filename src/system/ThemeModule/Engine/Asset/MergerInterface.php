@@ -17,7 +17,7 @@ interface MergerInterface
      * Merge the assets and publish.
      * @param array $assets
      * @param string $type
-     * @return $this
+     * @return array List of output files
      */
     public function merge(array $assets, $type = 'js');
 }

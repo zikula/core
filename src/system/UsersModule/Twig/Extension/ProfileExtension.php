@@ -145,7 +145,7 @@ class ProfileExtension extends \Twig_Extension
         if (!isset($userId) && !isset($userName)) {
             throw new \InvalidArgumentException();
         }
-        if ($userId) {
+        if (null !== $userId) {
             $user = $this->userRepository->find($userId);
         } else {
             $user = $this->userRepository->findOneBy(['uname' => $userName]);

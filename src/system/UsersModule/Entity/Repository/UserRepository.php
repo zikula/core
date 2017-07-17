@@ -57,8 +57,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * @param array $formData
-     * @return Paginator|UserEntity[]
+     * {@inheritdoc}
      */
     public function queryBySearchForm(array $formData = [])
     {
@@ -111,16 +110,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * Fetch a collection of users. Optionally filter, sort, limit, offset results.
-     *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
-     *   when value is not an array, operator is assumed to be '='
-     *
-     * @param array $filter
-     * @param array $sort
-     * @param int $limit
-     * @param int $offset
-     * @param string $exprType
-     * @return Paginator|UserEntity[]
+     * {@inheritdoc}
      */
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
     {
@@ -179,8 +169,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     }
 
     /**
-     * Return all users as memory-saving iterable result.
-     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     * {@inheritdoc}
      */
     public function findAllAsIterable()
     {
