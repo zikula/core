@@ -2,6 +2,8 @@ engines:
   csslint:
     enabled: true
     checks:
+      overqualified-elements:
+        enabled: false
       unique-headings:
         enabled: false
   eslint:
