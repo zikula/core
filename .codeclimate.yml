@@ -1,6 +1,9 @@
 engines:
   csslint:
     enabled: true
+    checks:
+      unique-headings:
+        enabled: false
   eslint:
     enabled: true
     checks:
@@ -67,6 +70,8 @@ engines:
       Design/CouplingBetweenObjects:
         enabled: false
       Design/LongMethod:
+        enabled: false
+      Design/LongParameterList:
         enabled: false
       Design/NpathComplexity:
         enabled: false
