@@ -47,6 +47,8 @@ engines:
         enabled: false
       PSR2 ControlStructures SwitchDeclaration TerminatingComment:
         enabled: false
+      PSR2 Methods MethodDeclaration Underscore:
+        enabled: false
       Squiz Functions MultiLineFunctionDeclaration SpaceAfterFunction:
         enabled: false
   phpmd:

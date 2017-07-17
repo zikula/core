@@ -66,8 +66,6 @@ abstract class AbstractRouteController extends AbstractController
      */
     protected function indexInternal(Request $request, $isAdmin = false)
     {
-        $controllerHelper = $this->get('zikula_routes_module.controller_helper');
-
         // parameter specifying which type of objects we are treating
         $objectType = 'route';
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
