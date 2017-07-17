@@ -2,7 +2,7 @@ Zikula Installation Instructions
 ================================
 
   1.  [Install by uploading package](#upload)
-  2.  [Install via composer](#composer)
+  2.  [Install via Composer](#composer)
   3.  [Install with Vagrant](#vagrant)
   4.  [Finish Installation](#install)
 
@@ -12,7 +12,7 @@ Zikula Installation Instructions
 Install by uploading package
 ----------------------------
 
-###Upload
+### Upload
 
 If you obtained Zikula Core from zikula.org or the CI server, then you can upload the entire archive (`.zip`
 or `.tgz` file) to your server and then `unzip` them there. (This is faster and much more reliable than 
@@ -27,7 +27,7 @@ Again, change the filename/url to match the correct filename from the ci server.
 Windows/FTP users: Take care about copying all files. If there are some files you are not able to transfer 
 to the server check if your longest path length is longer than Windows/FTP-Software allows (more than 256 characters).
 
-###Set file permissions (Critical)
+### Set file permissions (Critical)
 
 If you installed from a `.zip` archive or uploaded the files via FTP, the permissions for some folders must be changed 
 prior to installing so that your webserver's user has write access:
@@ -46,8 +46,8 @@ the permission settings as they were set correctly by the development team, if y
 Installing using Composer (for developers)
 ------------------------------------------
 
-Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
-If cloning via github, composer must be run prior to installation. Run:
+Zikula makes use of [Composer](https://getcomposer.org/) to manage and download all dependencies.
+If cloning via GitHub, Composer must be run prior to installation. Run:
 
     composer self-update
     composer install
