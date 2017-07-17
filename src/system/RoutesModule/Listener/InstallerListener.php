@@ -134,7 +134,7 @@ class InstallerListener extends AbstractInstallerListener
         }
 
         // delete any custom routes for the removed bundle
-        $this->entityFactory->deleteByBundle($module->getName());
+        $this->entityFactory->getRepository('route')->deleteByBundle($module->getName());
 
         // reload **all** JS routes
         $this->routeDumperHelper->dumpJsRoutes();
