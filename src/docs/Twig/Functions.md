@@ -24,12 +24,12 @@ Functions
  * hasPermission(component, instance, level)
  * modAvailable(modname, force = false)
  * pageAddAsset(type, value, weight = 100)
- * pageAddVar(name, value)
+ * pageAddVar(name, value) _(deprecated, removed in 2.0)_
  * pageGetVar(name, default = null)
  * pageSetVar(name, value)
  * pager(params)
  * polyfill(features = ["forms"])
- * setMetaTag(name, value) _(deprecated)_
+ * setMetaTag(name, value) _(deprecated, removed in 2.0)_
  * showflashes(params = [])
  * stateLabel(extensionEntity, upgradedExtensions = null)
  * zasset(path)
