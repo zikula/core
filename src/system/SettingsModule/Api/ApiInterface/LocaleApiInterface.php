@@ -23,8 +23,8 @@ interface LocaleApiInterface
     /**
      * Get array of supported locales with their translated name
      *
-     * @param null $region
-     * @param null $displayLocale
+     * @param string $region
+     * @param string $displayLocale
      * @return array
      */
     public function getSupportedLocaleNames($region = null, $displayLocale = null);
