@@ -24,8 +24,8 @@ class FooLinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        if (LinkContainerInterface::TYPE_ADMIN == $type) {
-            return $this->getAdmin();
+        if ('bar' == $type) {
+            return $this->getBar();
         }
         if (LinkContainerInterface::TYPE_USER == $type) {
             return $this->getUser();

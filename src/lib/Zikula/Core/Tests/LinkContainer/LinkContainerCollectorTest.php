@@ -91,21 +91,21 @@ class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
     public function linksProvider()
     {
         return [
-            ['Unknown Extension', 'Admin', []],
+            ['Unknown Extension', 'admin', []],
             ['ZikulaFooExtension', 'UnknownType', []],
-            ['ZikulaFooExtension', 'Admin',
+            ['ZikulaFooExtension', 'admin',
                 [['url' => '/foo/admin',
                     'text' => 'Foo Admin',
                     'icon' => 'wrench']]],
-            ['ZikulaFooExtension', 'User',
+            ['ZikulaFooExtension', 'user',
                 [['url' => '/foo',
                     'text' => 'Foo',
                     'icon' => 'check-square-o']]],
-            ['ZikulaBarExtension', 'Bar',
+            ['ZikulaBarExtension', 'bar',
                 [['url' => '/bar/admin',
                     'text' => 'Bar Admin',
                     'icon' => 'plus']]],
-            ['ZikulaBarExtension', 'User',
+            ['ZikulaBarExtension', 'user',
                 [
                     ['url' => '/bar',
                         'text' => 'Bar',
