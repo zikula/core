@@ -5,7 +5,6 @@ div.z-pager {
     /*        padding: 4em 10px 0; */
     font-size: .9em;
     text-align: right;
-    margin: 0 0 1em 0;
     line-height: 180%;
     white-space: normal;
     word-wrap: break-word;
@@ -59,7 +58,6 @@ div.z-pager a, div.z-pager strong {
     text-align: center;
     vertical-align: top;
     float: left;
-    text-align: center;
     padding: 0;
     margin-right: 2px;
     border: 1px solid;
@@ -189,10 +187,6 @@ div.z-pager span.select span.option span.items::after {
     clear: both;
     visibility: hidden;
     overflow: hidden;
-}
-
-div.z-pager span.select span.option:hover {
-    /*opacity: 1;*/
 }
 
 div.z-pager span.select:hover span.option {
