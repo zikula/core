@@ -63,9 +63,11 @@
             "src/themes/{$vendor}/{$name}": ["type:zikula-theme"]
         },
         "merge-plugin": {
-            "include": [
+            "require": [
                 "src/lib/Zikula/Bundle/*/composer.json",
-                "src/system/*/composer.json",
+                "src/system/*/composer.json"
+            ],
+            "include": [
                 "src/modules/*/composer.json",
                 "src/modules/*/*/composer.json",
                 "src/themes/*/composer.json",
