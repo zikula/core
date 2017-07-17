@@ -26,8 +26,8 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
 
     /**
      * @param UserEntity $user
-     * @param $approvedOn
-     * @param null $approvedBy if null, user is 'self-approved'
+     * @param \DateTime $approvedOn
+     * @param string $approvedBy if null, user is 'self-approved'
      */
     public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null);
 
@@ -50,7 +50,7 @@ interface UserRepositoryInterface extends ObjectRepository, Selectable
      * @param int $limit
      * @param int $offset
      * @param string (and|or) $exprType expression type to use in the filter
-     * @return Paginator
+     * @return Paginator|UserEntity[]
      */
     public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and');
 

@@ -273,7 +273,7 @@ class UserEntity extends EntityAccess
     /**
      * get the approved date of the user
      *
-     * @return \Datetime the user's approved date
+     * @return \DateTime the user's approved date
      */
     public function getApproved_Date()
     {
@@ -283,7 +283,7 @@ class UserEntity extends EntityAccess
     /**
      * set the approved date for the user
      *
-     * @param \Datetime $approved_date the user's approved date
+     * @param \DateTime $approved_date the user's approved date
      */
     public function setApproved_Date($approved_date)
     {
@@ -326,7 +326,7 @@ class UserEntity extends EntityAccess
     /**
      * get the regdate of the user
      *
-     * @return \Datetime the user's regdate
+     * @return \DateTime the user's regdate
      */
     public function getUser_Regdate()
     {
@@ -336,7 +336,7 @@ class UserEntity extends EntityAccess
     /**
      * set the regdate for the user
      *
-     * @param \Datetime $user_regdate the user's regdate
+     * @param \DateTime $user_regdate the user's regdate
      */
     public function setUser_Regdate($user_regdate)
     {
@@ -351,7 +351,7 @@ class UserEntity extends EntityAccess
     /**
      * get the last login of the user
      *
-     * @return \Datetime the user's last login
+     * @return \DateTime the user's last login
      */
     public function getLastlogin()
     {
@@ -361,7 +361,7 @@ class UserEntity extends EntityAccess
     /**
      * set the last login for the user
      *
-     * @param \Datetime $lastlogin the user's last login
+     * @param \DateTime $lastlogin the user's last login
      */
     public function setLastlogin($lastlogin)
     {

@@ -34,6 +34,8 @@ engines:
     checks:
       PhanNonClassMethodCall:
         enabled: false
+      PhanParamSignatureMismatch:
+        enabled: false
       PhanTypeMismatchProperty:
         enabled: false
       PhanUnreferencedClass:

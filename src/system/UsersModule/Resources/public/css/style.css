@@ -40,7 +40,7 @@ div.z-accountlink  img {
 }
 
 #percent {
-    margin-top: 0px;
+    margin-top: 0;
     float: left;
 }
 
@@ -86,13 +86,13 @@ div.authentication_module_list {
 }
 
 table.z-datatable td.users_activated {
-    padding: 5px 0px 5px 0px;
+    padding: 5px 0;
     text-align: center;
 }
 
 table.z-datatable td.users_action {
     text-align: center;
-    padding: 5px 0px 5px 0px;
+    padding: 5px 0;
 
 }
 
