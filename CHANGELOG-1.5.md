@@ -106,13 +106,13 @@ CHANGELOG - ZIKULA 1.5.x
     - monolog/monolog updated from 1.22.0 to 1.23.0
     - paragonie/random_compat updated from 2.0.9 to 2.0.10
     - phpdocumentor/reflection-common installed at 1.0
-    - phpdocumentor/type-resolver installed at 0.2.1
-    - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.1.1
+    - phpdocumentor/type-resolver installed at 0.2.1 and updated to 0.4.0
+    - phpdocumentor/reflection-docblock updated from 2.0.4 to 3.2.0
     - phpunit/phpunit updated from 4.8.35 to 4.8.36
     - sebastian/diff updated from 1.4.1 to 1.4.3
     - sensio/distribution-bundle updated from 5.0.18 to 5.0.20
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.26
-    - sensio/generator-bundle updated from 3.1.2 to 3.1.4
+    - sensio/generator-bundle updated from 3.1.2 to 3.1.5
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
     - symfony/polyfill-* updated from 1.3.0 to 1.4.0
@@ -125,7 +125,7 @@ CHANGELOG - ZIKULA 1.5.x
     - vierbergenlars/php-semver removed
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
-    - wikimedia/composer-merge-plugin installed at dev-master 
+    - wikimedia/composer-merge-plugin installed at v1.3.1 and updated to 1.4.1
     - zikula/andreas08-theme installed at 2.0.1 and upgraded to 2.0.2
     - zikula/legal-module updated (dev-master)
     - zikula/pagelock-module installed at 1.2.0
