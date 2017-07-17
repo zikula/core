@@ -69,6 +69,9 @@ class RequireJsConfigGenerator
             'require-built.js'
         ];
         foreach ($requireJsFiles as $fileName) {
+            if (!file_exists($webDir . $fileName)) {
+                continue;
+            }
             rename($webDir . $fileName, $requireDir . $fileName);
         }
     }
