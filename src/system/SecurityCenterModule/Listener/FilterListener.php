@@ -391,15 +391,15 @@ class FilterListener implements EventSubscriberInterface
             } else {
                 $mailBody .= $this->translator->__f('Session Impact: %d', ['%d' => $sessionImpact]) . "\n";
             }
-            $mailBody .= $this->translator->__f('Affected tags: %s', implode(' ', $result->getTags())) . "\n";
+            $mailBody .= $this->translator->__f('Affected tags: %s', ['%s' => implode(' ', $result->getTags())]) . "\n";
 
             $attackedParameters = '';
             foreach ($result as $event) {
                 $attackedParameters .= $event->getName() . '=' . urlencode($event->getValue()) . ", ";
             }
 
-            $mailBody .= $this->translator->__f('Affected parameters: %s', trim($attackedParameters)) . "\n";
-            $mailBody .= isset($currentPage) ? $this->translator->__f('Request URI: %s', urlencode($currentPage)) : '';
+            $mailBody .= $this->translator->__f('Affected parameters: %s', ['%s' => trim($attackedParameters)]) . "\n";
+            $mailBody .= isset($currentPage) ? $this->translator->__f('Request URI: %s', ['%s' => urlencode($currentPage)]) : '';
 
             // prepare other mail arguments
             $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));
