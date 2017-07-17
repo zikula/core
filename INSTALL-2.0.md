@@ -49,8 +49,8 @@ Installing using Composer (for developers)
 Zikula makes use of [composer](http://getcomposer.org/) to manage and download all dependencies.
 If cloning via github, composer must be run prior to installation. Run:
 
-    `composer self-update`
-    `composer install`
+    composer self-update
+    composer install
 
 If you store Composer in the root of the Zikula Core checkout, please rename it from `composer.phar` to `composer`
 to avoid your IDE reading the package contents.
