@@ -70,7 +70,7 @@ class NodeController extends AbstractController
                         $parent = $repo->find($parentId);
                         $category->setParent($parent);
                         $category->setRoot($parent->getRoot());
-                    } elseif (empty($parent) && $request->request->has('after')) { // sibling of top-level child
+                    } elseif (empty($parentId) && $request->request->has('after')) { // sibling of top-level child
                         $sibling = $repo->find($request->request->get('after'));
                         $category->setParent($sibling->getParent());
                         $category->setRoot($sibling->getRoot());
