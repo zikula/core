@@ -24,6 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
@@ -97,7 +98,11 @@ class MainSettingsType extends AbstractType
             ])
             ->add('startController', TextType::class, [
                 'label' => $this->translator->__('Start Controller'),
-                'required' => false
+                'required' => false,
+                'help' => $this->translator->__('MyModuleName:Controller:method'),
+                'constraints' => [
+                    new Regex('/\w+:\w+:\w+/')
+                ]
             ])
             ->add('startargs', TextType::class, [
                 'label' => $this->translator->__('Start function arguments'),
@@ -196,8 +201,7 @@ class MainSettingsType extends AbstractType
             'messageModules' => [],
             'languages' => [],
             'constraints' => [
-                new Callback(['callback' => [$this, 'validatePermalinkSettings']]),
-                new Callback(['callback' => [$this, 'validateStartpageSettings']])
+                new Callback(['callback' => [$this, 'validatePermalinkSettings']])
             ]
         ]);
     }
@@ -224,21 +228,6 @@ class MainSettingsType extends AbstractType
 
         if ($permareplaceCount !== $permasearchCount) {
             $context->addViolation($this->translator->__('Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'));
-        }
-    }
-
-    /**
-     * Validate startpage settings.
-     *
-     * @param $data
-     * @param ExecutionContextInterface $context
-     */
-    public function validateStartpageSettings($data, ExecutionContextInterface $context)
-    {
-        if (!empty($data['startpage'])) {
-            if (empty($data['starttype']) || empty($data['startfunc'])) {
-                $context->addViolation($this->translator->__('Error! When setting a startpage, starttype and startfunc are required fields.'));
-            }
         }
     }
 }

@@ -189,7 +189,10 @@ class AjaxUpgradeController extends AbstractController
                     $stmt->closeCursor();
                 }
                 $variableApi = $this->container->get('zikula_extensions_module.api.variable');
-                $variableApi->del(VariableApi::CONFIG, 'metakeywords');
+            $variableApi->del(VariableApi::CONFIG, 'metakeywords');
+            $variableApi->del(VariableApi::CONFIG, 'startpage');
+            $variableApi->del(VariableApi::CONFIG, 'startfunc');
+            $variableApi->del(VariableApi::CONFIG, 'starttype');
                 if ($this->container->getParameter('datadir') == 'userdata') {
                     $this->yamlManager->setParameter('datadir', 'web/uploads');
                     $fs = $this->container->get('filesystem');
@@ -267,7 +270,7 @@ class AjaxUpgradeController extends AbstractController
         $variableApi->set(VariableApi::CONFIG, 'Version_Sub', ZikulaKernel::VERSION_SUB);
 
         // set the 'start' page information to empty to avoid missing module errors.
-        $variableApi->set(VariableApi::CONFIG, 'startpage', '');
+        $variableApi->set(VariableApi::CONFIG, 'startController', '');
         $variableApi->set(VariableApi::CONFIG, 'startargs', '');
 
         return true;

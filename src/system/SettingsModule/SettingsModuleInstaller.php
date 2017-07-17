@@ -43,7 +43,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('timezone', date_default_timezone_get());
         $this->setSystemVar('funtext', '1');
         $this->setSystemVar('reportlevel', '0');
-        $this->setSystemVar('startpage', '');
         $this->setSystemVar('Version_Num', ZikulaKernel::VERSION);
         $this->setSystemVar('Version_Sub', ZikulaKernel::VERSION_SUB);
         $this->setSystemVar('debug_sql', '0');
@@ -53,6 +52,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('UseCompression', '0');
         $this->setSystemVar('siteoff', 0);
         $this->setSystemVar('siteoffreason', '');
+        $this->setSystemVar('startController', '');
         $this->setSystemVar('startargs', '');
         $this->setSystemVar('language_detect', 0);
         // Multilingual support
