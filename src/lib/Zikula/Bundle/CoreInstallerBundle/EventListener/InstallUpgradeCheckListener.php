@@ -45,7 +45,11 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
             $requiresUpgrade = $installed && version_compare($currentVersion, ZikulaKernel::VERSION, '<');
         }
 
-        $routeInfo = $this->container->get('router')->match($request->getPathInfo());
+        try {
+            $routeInfo = $this->container->get('router')->match($request->getPathInfo());
+        } catch (\Exception $e) {
+            return;
+        }
         $containsInstall = $routeInfo['_route'] == 'install';
         $containsUpgrade = $routeInfo['_route'] == 'upgrade';
         $containsLogin = $routeInfo['_controller'] == 'Zikula\\UsersModule\\Controller\\AccessController::loginAction';
