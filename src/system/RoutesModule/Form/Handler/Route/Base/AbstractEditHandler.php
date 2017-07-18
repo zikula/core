@@ -223,7 +223,7 @@ abstract class AbstractEditHandler extends EditHandler
         try {
             // execute the workflow action
             $success = $this->workflowHelper->executeAction($entity, $action);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $flashBag->add('error', $this->__f('Sorry, but an error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]) . ' ' . $exception->getMessage());
             $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => 'route', 'id' => $entity->getKey(), 'errorMessage' => $exception->getMessage()];
             $this->logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', $logArgs);
