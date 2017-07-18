@@ -190,8 +190,6 @@ class ConfigController extends AbstractController
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
 
-                // set the session name in the current container
-                $this->get('service_container')->setParameter('zikula.session.name', $newSessionName);
                 $this->setSystemVar('sessionname', $newSessionName);
                 $this->setSystemVar('sessionstoretofile', $sessionStoreToFile);
 
