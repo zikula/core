@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -39,7 +40,7 @@ class BlockController extends AbstractController
      * @Route("/new")
      * @Theme("admin")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
@@ -76,7 +77,7 @@ class BlockController extends AbstractController
      * @Theme("admin")
      * @param Request $request
      * @param BlockEntity $blockEntity
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, BlockEntity $blockEntity = null)
     {
@@ -89,6 +90,7 @@ class BlockController extends AbstractController
             $blockEntity = new BlockEntity(); // sets defaults in constructor
             $blockEntity->setBkey($bKey);
             $accessLevelRequired = ACCESS_ADD;
+            $request->attributes->set('blockEntity', $blockEntity);
         }
 
         if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBlocktype() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), $accessLevelRequired)) {
@@ -144,7 +146,7 @@ class BlockController extends AbstractController
      *
      * @param Request $request
      * @param BlockEntity $blockEntity
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function deleteAction(Request $request, BlockEntity $blockEntity)
     {
