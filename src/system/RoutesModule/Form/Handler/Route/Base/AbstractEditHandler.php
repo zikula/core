@@ -253,7 +253,7 @@ abstract class AbstractEditHandler extends EditHandler
         }
     
         if ($this->request->getSession()->has('zikularoutesmodule' . $this->objectTypeCapital . 'Referer')) {
-            $this->request->getSession()->del('zikularoutesmodule' . $this->objectTypeCapital . 'Referer');
+            $this->request->getSession()->remove('zikularoutesmodule' . $this->objectTypeCapital . 'Referer');
         }
     
         // normal usage, compute return url from given redirect code
