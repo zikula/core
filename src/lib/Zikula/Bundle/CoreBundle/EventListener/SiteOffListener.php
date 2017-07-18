@@ -86,7 +86,11 @@ class SiteOffListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $request = $event->getRequest();
         $this->router->getContext()->setBaseUrl($request->getBaseUrl());
-        $routeInfo = $this->router->match($request->getPathInfo());
+        try {
+            $routeInfo = $this->router->match($request->getPathInfo());
+        } catch (\Exception $e) {
+            return;
+        }
         if ($routeInfo['_route'] == 'zikulausersmodule_access_login'
         || $routeInfo['_route'] == 'zikulathememodule_combinedasset_asset') {
             return;

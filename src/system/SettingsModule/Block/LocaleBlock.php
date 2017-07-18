@@ -36,7 +36,11 @@ class LocaleBlock extends AbstractBlockHandler
         $localeLinks = [];
         /** @var Request $request */
         $request = $this->get('request_stack')->getMasterRequest();
-        $routeInfo = $this->get('router')->match($request->getPathInfo());
+        try {
+            $routeInfo = $this->get('router')->match($request->getPathInfo());
+        } catch (\Exception $e) {
+            return '';
+        }
         $selectedRoute = false;
         foreach ($locales as $displayName => $code) {
             if ($request->getLocale() == $code) {
