@@ -113,14 +113,14 @@ CHANGELOG - ZIKULA 1.5.x
     - sebastian/diff updated from 1.4.1 to 1.4.3
     - sensio/distribution-bundle updated from 5.0.18 to 5.0.20
     - sensio/framework-extra-bundle updated from 3.0.21 to 3.0.26
-    - sensio/generator-bundle updated from 3.1.2 to 3.1.5
+    - sensio/generator-bundle updated from 3.1.2 to 3.1.6
     - sensiolabs/security-checker updated from 4.0.0 to 4.0.4
     - swiftmailer/swiftmailer updated from v5.4.5 to v5.4.8
     - symfony/polyfill-* updated from 1.3.0 to 1.4.0
     - symfony/symfony updated from 2.8.17 to 2.8.25
     - symfony/security-acl updated from 2.8.0 to 3.0.0
     - symfony/swiftmailer-bundle updated from 2.4.2 to 2.4.3
-    - symfony/workflow installed at 3.2.8 and updated to 3.3.4
+    - symfony/workflow installed at 3.2.8 and updated to 3.3.5
     - twig/twig updated from 1.31.0 to 1.34.4
     - vakata/jstree updated from 3.3.3 to 3.3.4
     - vierbergenlars/php-semver removed
@@ -128,8 +128,14 @@ CHANGELOG - ZIKULA 1.5.x
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at v1.3.1 and updated to 1.4.1
     - zikula/andreas08-theme installed at 2.0.1 and upgraded to 2.0.2
-    - zikula/legal-module updated (dev-master)
+    - zikula/bootstrap-bundle updated to 3.0.1
+    - zikula/filesystem updated to 1.0.0
+    - zikula/jquery-bundle updated to 1.0.0
+    - zikula/jquery-minicolors-bundle updated to 1.0.0
+    - zikula/jquery-ui-bundle updated to 1.0.0
+    - zikula/fontawesome updated to 4.1.0
+    - zikula/legal-module updated to 3.1.0
     - zikula/pagelock-module installed at 1.2.0
-    - zikula/profile-module updated (dev-master)
+    - zikula/profile-module updated to 3.0.0
     - zikula/oauth-module installed at 1.0.1
     - zikula/seabreeze-theme installed at 4.0.1 and upgraded to 4.0.2

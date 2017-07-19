@@ -3981,16 +3981,16 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v3.1.5",
+            "version": "v3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "535417a99ac1b387df3bfbc0c060122c24665b78"
+                "reference": "128bc5dabc91ca40b7445f094968dd70ccd58305"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/535417a99ac1b387df3bfbc0c060122c24665b78",
-                "reference": "535417a99ac1b387df3bfbc0c060122c24665b78",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/128bc5dabc91ca40b7445f094968dd70ccd58305",
+                "reference": "128bc5dabc91ca40b7445f094968dd70ccd58305",
                 "shasum": ""
             },
             "require": {
@@ -4031,7 +4031,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2017-07-12T17:28:00+00:00"
+            "time": "2017-07-18T07:57:44+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -4964,7 +4964,7 @@
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.3.4",
+            "version": "v3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
@@ -5405,7 +5405,7 @@
         },
         {
             "name": "zikula/bootstrap-bundle",
-            "version": "dev-master",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/BootstrapBundle.git",
@@ -5445,11 +5445,11 @@
                 "css",
                 "zikula"
             ],
-            "time": "2014-02-03 01:01:00"
+            "time": "2014-02-03T01:01:00+00:00"
         },
         {
             "name": "zikula/filesystem",
-            "version": "dev-master",
+            "version": "1.0.0",
             "target-dir": "Zikula/Component/FileSystem",
             "source": {
                 "type": "git",
@@ -5477,27 +5477,25 @@
             ],
             "authors": [
                 {
-                    "name": "Karma Dordrak",
-                    "email": "drak@zikula.org",
-                    "homepage": "http://zikula.org",
-                    "role": "OO & PSR-4 migration"
-                },
-                {
                     "name": "Kyle Giovannetti",
                     "email": "kylegio@gmail.com"
                 },
                 {
                     "name": "Zikula Community",
                     "homepage": "http://zikula.org/"
+                },
+                {
+                    "name": "Karma Dordrak",
+                    "email": "drak@zikula.org"
                 }
             ],
             "description": "Zikula FileSystem Component",
             "homepage": "http://zikula.org",
-            "time": "2012-12-11 23:50:23"
+            "time": "2012-12-11T23:50:23+00:00"
         },
         {
             "name": "zikula/fontawesome-bundle",
-            "version": "dev-master",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/FontAwesomeBundle.git",
@@ -5537,11 +5535,11 @@
                 "typography",
                 "webfonts"
             ],
-            "time": "2014-06-07 22:21:47"
+            "time": "2014-06-07T22:21:47+00:00"
         },
         {
             "name": "zikula/jquery-bundle",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/JQueryBundle.git",
@@ -5580,25 +5578,25 @@
                 "jquery",
                 "zikula"
             ],
-            "time": "2016-01-16 01:13:55"
+            "time": "2016-01-16T01:13:55+00:00"
         },
         {
             "name": "zikula/jquery-minicolors-bundle",
-            "version": "dev-master",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/jQueryMiniColorsBundle.git",
-                "reference": "cabd60ef57eb9080883eccabac30736e39b40b43"
+                "reference": "ecfc4a9e4c5189fd7209dbedcf9a1ef579edb451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/jQueryMiniColorsBundle/zipball/cabd60ef57eb9080883eccabac30736e39b40b43",
-                "reference": "cabd60ef57eb9080883eccabac30736e39b40b43",
+                "url": "https://api.github.com/repos/zikula/jQueryMiniColorsBundle/zipball/ecfc4a9e4c5189fd7209dbedcf9a1ef579edb451",
+                "reference": "ecfc4a9e4c5189fd7209dbedcf9a1ef579edb451",
                 "shasum": ""
             },
             "require": {
                 "abeautifulsite/jquery-minicolors": "dev-master",
-                "zikula/jquery-bundle": "dev-master"
+                "zikula/jquery-bundle": "1.*"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -5623,11 +5621,11 @@
                 "jquery",
                 "symfony"
             ],
-            "time": "2014-06-05 18:56:34"
+            "time": "2017-07-19T11:12:48+00:00"
         },
         {
             "name": "zikula/jquery-ui-bundle",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/JQueryUIBundle.git",
@@ -5667,20 +5665,20 @@
                 "jquery",
                 "zikula"
             ],
-            "time": "2013-08-16 17:00:32"
+            "time": "2013-08-16T17:00:32+00:00"
         },
         {
             "name": "zikula/legal-module",
-            "version": "dev-master",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "09a19095e07a3964f0d7f1e3d5557be5c07c608e"
+                "reference": "57b1ce3f7544942b49896ed3ae6615498fe48a4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/09a19095e07a3964f0d7f1e3d5557be5c07c608e",
-                "reference": "09a19095e07a3964f0d7f1e3d5557be5c07c608e",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/57b1ce3f7544942b49896ed3ae6615498fe48a4e",
+                "reference": "57b1ce3f7544942b49896ed3ae6615498fe48a4e",
                 "shasum": ""
             },
             "require": {
@@ -5732,10 +5730,10 @@
             ],
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
-                "source": "https://github.com/zikula-modules/Legal/tree/master",
+                "source": "https://github.com/zikula-modules/Legal/tree/3.1.0",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-06-18 12:39:01"
+            "time": "2017-07-19T02:19:01+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -5850,7 +5848,7 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "dev-master",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
@@ -5917,7 +5915,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-05 23:49:40"
+            "time": "2017-07-05T23:49:40+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
@@ -7080,18 +7078,10 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "zikula/legal-module": 20,
-        "zikula/profile-module": 20,
-        "zikula/filesystem": 20,
         "drak/doctrine1": 20,
         "drak/smarty": 20,
         "oyejorge/less.php": 20,
         "phpids/phpids": 20,
-        "zikula/jquery-bundle": 20,
-        "zikula/jquery-ui-bundle": 20,
-        "zikula/bootstrap-bundle": 20,
-        "zikula/fontawesome-bundle": 20,
-        "zikula/jquery-minicolors-bundle": 20,
         "bootstrap-plus/bootstrap-jqueryui": 20
     },
     "prefer-stable": true,
