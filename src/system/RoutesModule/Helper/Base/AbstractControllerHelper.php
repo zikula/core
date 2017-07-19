@@ -287,7 +287,7 @@ abstract class AbstractControllerHelper
     }
 
     /**
-     * Returns an array of additional template variables which are specific to the object type treated by this repository.
+     * Returns an array of additional template variables which are specific to the object type.
      *
      * @param string $objectType Name of treated entity type
      * @param array  $parameters Given parameters to enrich
