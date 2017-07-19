@@ -16,10 +16,10 @@
     "require": {
         "php": ">=5.5.9",
         "robloach/component-installer": "*",
-        "zikula/jquery-bundle": "dev-master",
-        "zikula/jquery-ui-bundle": "dev-master",
-        "zikula/bootstrap-bundle": "dev-master",
-        "zikula/fontawesome-bundle": "dev-master",
+        "zikula/jquery-bundle": "1.*",
+        "zikula/jquery-ui-bundle": "1.*",
+        "zikula/bootstrap-bundle": "3.*",
+        "zikula/fontawesome-bundle": "4.1.*",
         "bootstrap-plus/bootstrap-jqueryui": "dev-master",
         "dimsemenov/magnific-popup": "1.*",
         "vakata/jstree": "3.*"

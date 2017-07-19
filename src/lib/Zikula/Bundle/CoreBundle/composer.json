@@ -15,10 +15,10 @@
         "php": ">=5.5.9",
         "composer/installers": "1.*",
 
-        "zikula/legal-module": "dev-master",
-        "zikula/profile-module": "dev-master",
-        "zikula/oauth-module": "dev-master",
-        "zikula/pagelock-module": "dev-master",
+        "zikula/legal-module": ">=3.1.0",
+        "zikula/profile-module": "3.*",
+        "zikula/oauth-module": "1.*",
+        "zikula/pagelock-module": "1.2.*",
         "zikula/andreas08-theme": "3.*",
         "zikula/seabreeze-theme": "4.*",
 
@@ -41,14 +41,14 @@
 
         "michelf/php-markdown": "1.7.*",
         "twig/extensions": "1.4.*",
-        "zikula/filesystem": "dev-master",
+        "zikula/filesystem": "1.*",
 
         "ramsey/array_column": "1.1.*",
 
         "oyejorge/less.php": "dev-master",
         "liip/imagine-bundle": "1.*",
 
-        "zikula/generator-bundle": "dev-master"
+        "zikula/generator-bundle": "2.*"
     },
     "repositories": [
         {

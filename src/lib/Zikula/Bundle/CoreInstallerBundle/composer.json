@@ -15,7 +15,7 @@
         "php": ">=5.5.9",
         "symfony/framework-bundle": "~3.0",
         "matthiasnoback/symfony-console-form": "2.*",
-        "zikula/wizard": "dev-master"
+        "zikula/wizard": "2.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }
