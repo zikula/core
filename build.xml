@@ -51,6 +51,7 @@
         <mkdir dir="${builddir}/jsdoc"/>
         <exec command="curl -s https://getcomposer.org/installer | php;mv composer.phar ${workspace}/source"/>
         <exec command="${workspace}/source/composer.phar install --prefer-dist --no-dev --optimize-autoloader --no-scripts" checkreturn="true" passthru="true" />
+        <exec command="${workspace}/source/composer.phar run-script post-autoload-dump" checkreturn="true" passthru="true" />
         <exec command="${workspace}/source/composer.phar run-script post-install-cmd" checkreturn="true" passthru="true" />
     </target>
 
