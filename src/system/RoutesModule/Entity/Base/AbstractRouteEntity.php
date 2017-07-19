@@ -27,8 +27,6 @@ use Zikula\RoutesModule\Validator\Constraints as RoutesAssert;
  * inherit orm properties.
  *
  * @ORM\MappedSuperclass
- *
- * @abstract
  */
 abstract class AbstractRouteEntity extends EntityAccess
 {
