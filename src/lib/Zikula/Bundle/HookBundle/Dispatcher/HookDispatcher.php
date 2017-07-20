@@ -42,20 +42,39 @@ class HookDispatcher implements HookDispatcherInterface
     private $dispatcher;
 
     /**
+     * Runtime hooks handlers loaded flag.
+     * @deprecated no longer required with non-persisted hooks
+     *
+     * @var boolean
+     */
+    private $loaded;
+
+    /**
+     * Service Factory.
+     * @deprecated no longer required with non-persisted hooks
+     *
+     * @var ServiceFactory
+     */
+    private $factory;
+
+    /**
      * Constructor.
      *
      * @param StorageInterface $storage
      * @param HookCollectorInterface $hookCollector
      * @param EventDispatcherInterface $dispatcher
+     * @param ServiceFactory $factory
      */
     public function __construct(
         StorageInterface $storage,
         HookCollectorInterface $hookCollector,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        ServiceFactory $factory
     ) {
         $this->storage = $storage;
         $this->hookCollector = $hookCollector;
         $this->dispatcher = $dispatcher;
+        $this->factory = $factory;
     }
 
     /**
@@ -78,6 +97,14 @@ class HookDispatcher implements HookDispatcherInterface
      */
     public function dispatch($name, Hook $hook)
     {
+        // deprecated start
+        if (!$this->loaded) {
+            // lazy load handlers for the first time
+            $this->loadRuntimeHandlers();
+            $this->loaded = true;
+        }
+        // deprecated end
+
         $this->decorateHook($name, $hook);
         if (!$hook->getAreaId()) {
             return $hook;
@@ -275,6 +302,37 @@ class HookDispatcher implements HookDispatcherInterface
     public function unbindSubscriber($subscriberArea, $providerArea)
     {
         return $this->storage->unbindSubscriber($subscriberArea, $providerArea);
+    }
+
+    /**
+     * Load runtime hook listeners.
+     * @deprecated no longer required with non-persisted hooks
+     *
+     * @return HookDispatcher
+     */
+    public function loadRuntimeHandlers()
+    {
+        $handlers = $this->storage->getRuntimeHandlers();
+        foreach ($handlers as $handler) {
+            $callable = [$handler['classname'], $handler['method']];
+            if (is_callable($callable)) {
+                // some classes may not always be callable, for example, when upgrading.
+                if ($handler['serviceid']) {
+                    $callable = $this->factory->buildService($handler['serviceid'], $handler['classname'], $handler['method']);
+                    //                $this->dispatcher->addListenerService($handler['eventname'], $callable);
+                    $o = $this->dispatcher->getContainer()->get($callable[0]);
+                    $this->dispatcher->addListener($handler['eventname'], [$o, $handler['method']]);
+                } else {
+                    try {
+                        $this->dispatcher->addListener($handler['eventname'], $callable);
+                    } catch (\InvalidArgumentException $e) {
+                        throw new Exception\RuntimeException("Hook event handler could not be attached because %s", $e->getMessage(), 0, $e);
+                    }
+                }
+            }
+        }
+
+        return $this;
     }
 
     /**

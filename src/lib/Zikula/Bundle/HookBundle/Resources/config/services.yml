@@ -22,12 +22,20 @@ services:
             - "@translator.default"
             - "@zikula_hook_bundle.collector.hook_collector"
 
+    hook_dispatcher.servicefactory:
+        class: Zikula\Bundle\HookBundle\Dispatcher\ServiceFactory
+        deprecated: 'The "%service_id%" service is deprecated. Use non-persisted hooks instead'
+        arguments:
+            - "@service_container"
+            - "event_dispatcher" # note: this arg is intentionally a string.
+
     hook_dispatcher:
         class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
         arguments:
             - "@hook_dispatcher.storage"
             - "@zikula_hook_bundle.collector.hook_collector"
             - "@event_dispatcher"
+            - "@hook_dispatcher.servicefactory"
 
     zikula.hookmanager:
         alias: hook_dispatcher
