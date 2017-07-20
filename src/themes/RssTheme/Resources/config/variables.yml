@@ -3,15 +3,16 @@
 ##
 showdescription:
   default_value: true
-  type: checkbox
+  type: 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
   options:
     label: "Show item descriptions"
     disabled: true
 rsslevel:
   default_value: rss20
-  type: choice
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
+    choices_as_values: true
     label: "RSS Version"
     choices:
-      rss091: "RSS v0.91"
-      rss20: "RSS v0.20"
+      "RSS v0.91": rss091
+      "RSS v0.20": rss20

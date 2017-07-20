@@ -48,6 +48,9 @@ CHANGELOG - ZIKULA 1.5.x
           https://symfony.com/blog/new-in-symfony-3-2-runtime-environment-variables
     - `\Zikula\Component\SortableColumns\Column#setIsSortColumn()` is deprecated. Use `setSortColumn() instead.
     - The `MetaTagExtension` class is deprecated which includes the Twig function named `setMetaTag`. Use `pageSetVar` instead.
+    - Using simple strings as form types in a theme's variables.yml is deprecated, use FqCN instead.
+        - Form options are similarly modified, for example a `choices` array must be formatted according to Symfony's
+            rules with respect to `choices_as_values`, etc. This changes from Core-1.5 to Core-2.0 which adopts Symfony 3
 
  - Fixes:
     - Corrected path to legacy module's admin icons.

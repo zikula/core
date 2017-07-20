@@ -3,31 +3,34 @@
 ##
 home:
   default_value: 3col_w_centerblock
-  type: choice
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
+    choices_as_values: true
     choices:
-      1col: One column
-      2col: Two columns
-      2col_w_centerblock: Two columns with centerblock
-      3col: Three columns
-      3col_w_centerblock: Three columns with centerblock
+      'One column': 1col
+      'Two columns': 2col
+      'Two columns with centerblock': 2col_w_centerblock
+      'Three columns': 3col
+      'Three columns with centerblock': 3col_w_centerblock
 master:
   default_value: 2col
-  type: choice
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
+    choices_as_values: true
     choices:
-      1col: One column
-      2col: Two columns
-      2col_w_centerblock: Two columns with centerblock
-      3col: Three columns
-      3col_w_centerblock: Three columns with centerblock
+      'One column': 1col
+      'Two columns': 2col
+      'Two columns with centerblock': 2col_w_centerblock
+      'Three columns': 3col
+      'Three columns with centerblock': 3col_w_centerblock
 admin:
   default_value: 1col
-  type: choice
+  type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
+    choices_as_values: true
     choices:
-      1col: One column
-      2col: Two columns
-      2col_w_centerblock: Two columns with centerblock
-      3col: Three columns
-      3col_w_centerblock: Three columns with centerblock
+      'One column': 1col
+      'Two columns': 2col
+      'Two columns with centerblock': 2col_w_centerblock
+      'Three columns': 3col
+      'Three columns with centerblock': 3col_w_centerblock
