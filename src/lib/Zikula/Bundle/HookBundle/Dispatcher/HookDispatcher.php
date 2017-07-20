@@ -331,6 +331,7 @@ class HookDispatcher implements HookDispatcherInterface
                 }
             }
         }
+
         return $this;
     }
 
