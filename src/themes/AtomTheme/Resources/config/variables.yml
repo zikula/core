@@ -3,7 +3,7 @@
 ##
 showdescription:
   default_value: true
-  type: checkbox
+  type: 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
   options:
     label: "Show item descriptions"
     disabled: true
