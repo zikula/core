@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Zikula\Bundle\HookBundle\Hook\AbstractHookListener;
 
 class HookListenerBuilderListener implements EventSubscriberInterface
 {
@@ -58,12 +59,15 @@ class HookListenerBuilderListener implements EventSubscriberInterface
             $callable = [$handler['classname'], $handler['method']];
             if (is_callable($callable)) {
                 if (!empty($handler['serviceid'])) {
-                    if ($this->container->get('kernel')->isBundle($handler['powner'])) {
+                    if ($this->container->get('kernel')->isBundle($handler['powner']) || \ModUtil::available($handler['powner'])) { // @deprecated call
+                        $eventDispatcher = $this->container->get('event_dispatcher');
                         if (!$this->container->has($handler['serviceid'])) {
                             // @deprecated - in Core-2.0 all services must be pre-registered with the container via DI
-                            $this->container->set($handler['serviceid'], new $handler['classname']());
+                            $className = $handler['classname'];
+                            $args = is_subclass_of($className, AbstractHookListener::class) ? $eventDispatcher : null;
+                            $this->container->set($handler['serviceid'], new $className($args));
                         }
-                        $this->container->get('event_dispatcher')->addListenerService($handler['eventname'], [$handler['serviceid'], $handler['method']]);
+                        $eventDispatcher->addListenerService($handler['eventname'], [$handler['serviceid'], $handler['method']]);
                     }
                 } else {
                     throw new \InvalidArgumentException('Hook definitions must include a valid service ID.'); // add 'that is already registered with the container' at Core-2.0
