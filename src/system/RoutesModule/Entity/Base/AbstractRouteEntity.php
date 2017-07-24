@@ -660,16 +660,6 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     
     /**
-     * Return entity data in JSON format.
-     *
-     * @return string JSON-encoded data
-     */
-    public function toJson()
-    {
-        return json_encode($this->toArray());
-    }
-    
-    /**
      * Creates url arguments array for easy creation of display urls.
      *
      * @return array The resulting arguments list
