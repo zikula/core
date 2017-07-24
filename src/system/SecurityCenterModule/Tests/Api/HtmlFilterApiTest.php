@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Tests\Api;
+namespace Zikula\SecurityCenterModule\Tests\Api;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
