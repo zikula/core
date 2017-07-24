@@ -11,6 +11,7 @@
 
 namespace Zikula\ThemeModule\Tests\Engine;
 
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class ParameterBagTest extends \PHPUnit_Framework_TestCase
@@ -69,7 +70,6 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ParameterBag::set()
-     * @expectedException \Symfony\Component\Debug\Exception\ContextErrorException
      * The parameter `foo` is already set as a scalar value in the constructor. Attempting to recast that
      * value as a namespaced parameter should fail. Resetting the entire parameter to an array will
      * work as expected (see `testSetAndGetArrayValue()` below)
@@ -77,6 +77,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
      */
     public function testExpectedFailureToRecastToNamespace()
     {
+        $this->setExpectedException(ContextErrorException::class);
         $this->bag->set('foo.bang', 6);
     }
 
