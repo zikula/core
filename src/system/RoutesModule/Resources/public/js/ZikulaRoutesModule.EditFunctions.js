@@ -81,3 +81,4 @@ function zikulaRoutesInitEditForm(mode, entityId)
         zikulaRoutesTriggerFormValidation();
     }
 }
+
