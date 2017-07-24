@@ -174,7 +174,49 @@
             ],
             "description": "A jqueryui version for bootstrap3.",
             "homepage": "http://bootstrap-plus.github.io/bootstrap-jqueryui/",
-            "time": "2014-06-27 20:29:52"
+            "time": "2014-06-27T20:29:52+00:00"
+        },
+        {
+            "name": "carlosio/jenkins",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/carlosbuenosvinos/php-jenkins-api.git",
+                "reference": "a96fd6cafe61a9a944912d6a824c73878a37a8ed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/carlosbuenosvinos/php-jenkins-api/zipball/a96fd6cafe61a9a944912d6a824c73878a37a8ed",
+                "reference": "a96fd6cafe61a9a944912d6a824c73878a37a8ed",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "CarlosIO": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Carlos Buenosvinos",
+                    "email": "hi@carlos.io",
+                    "homepage": "http://carlosbuenosvinos.com"
+                }
+            ],
+            "description": "Jenkins API",
+            "homepage": "https://github.com/carlosbuenosvinos/php-jenkins-api",
+            "keywords": [
+                "api",
+                "jenkins"
+            ],
+            "time": "2014-07-31 18:06:21"
         },
         {
             "name": "components/bootstrap",
@@ -731,16 +773,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.6.1",
+            "version": "v1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "b6f544a20f4807e81f7044d31e679ccbb1866dc3"
+                "reference": "eb152c5100571c7a45470ff2a35095ab3f3b900b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/b6f544a20f4807e81f7044d31e679ccbb1866dc3",
-                "reference": "b6f544a20f4807e81f7044d31e679ccbb1866dc3",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/eb152c5100571c7a45470ff2a35095ab3f3b900b",
+                "reference": "eb152c5100571c7a45470ff2a35095ab3f3b900b",
                 "shasum": ""
             },
             "require": {
@@ -797,7 +839,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2016-10-29T11:16:17+00:00"
+            "time": "2017-07-22T12:49:21+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -940,16 +982,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.12",
+            "version": "v2.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44"
+                "reference": "729340d8d1eec8f01bff708e12e449a3415af873"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/7b9e911f9d8b30d43b96853dab26898c710d8f44",
-                "reference": "7b9e911f9d8b30d43b96853dab26898c710d8f44",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/729340d8d1eec8f01bff708e12e449a3415af873",
+                "reference": "729340d8d1eec8f01bff708e12e449a3415af873",
                 "shasum": ""
             },
             "require": {
@@ -1007,7 +1049,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2017-02-08T12:53:47+00:00"
+            "time": "2017-07-22T20:44:48+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1528,7 +1570,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-06-24 02:50:48"
+            "time": "2017-06-24T02:50:48+00:00"
         },
         {
             "name": "fig/link-util",
@@ -1719,6 +1761,99 @@
                 "uploadable"
             ],
             "time": "2017-07-02T09:46:37+00:00"
+        },
+        {
+            "name": "guzzle/guzzle",
+            "version": "v3.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": ">=2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/cache": "*",
+                "monolog/monolog": "1.*",
+                "phpunit/phpunit": "3.7.*",
+                "psr/log": "1.0.*",
+                "symfony/class-loader": "*",
+                "zendframework/zend-cache": "<2.3",
+                "zendframework/zend-log": "<2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "abandoned": "guzzlehttp/guzzle",
+            "time": "2014-01-28T22:29:15+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -2061,16 +2196,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "6.1.1",
+            "version": "6.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "8cb1fafc4c8eb4972804308fad66f07756f3f0e3"
+                "reference": "d9232fd18a9d74915165f83f55e7c1ef006c5dc2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/8cb1fafc4c8eb4972804308fad66f07756f3f0e3",
-                "reference": "8cb1fafc4c8eb4972804308fad66f07756f3f0e3",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/d9232fd18a9d74915165f83f55e7c1ef006c5dc2",
+                "reference": "d9232fd18a9d74915165f83f55e7c1ef006c5dc2",
                 "shasum": ""
             },
             "type": "library",
@@ -2094,10 +2229,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.1",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.2",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2017-07-11T16:25:44+00:00"
+            "time": "2017-07-20T11:12:59+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -2372,6 +2507,68 @@
             "time": "2016-12-22T16:43:46+00:00"
         },
         {
+            "name": "knplabs/github-api",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/php-github-api.git",
+                "reference": "98d0bcd2c4c96a40ded9081f8f6289907f73823c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/98d0bcd2c4c96a40ded9081f8f6289907f73823c",
+                "reference": "98d0bcd2c4c96a40ded9081f8f6289907f73823c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "guzzle/guzzle": "~3.7",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "sllh/php-cs-fixer-styleci-bridge": "~1.3"
+            },
+            "suggest": {
+                "knplabs/gaufrette": "Needed for optional Gaufrette cache"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Github\\": "lib/Github/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com",
+                    "homepage": "http://ornicar.github.com"
+                },
+                {
+                    "name": "KnpLabs Team",
+                    "homepage": "http://knplabs.com"
+                }
+            ],
+            "description": "GitHub API v3 client",
+            "homepage": "https://github.com/KnpLabs/php-github-api",
+            "keywords": [
+                "api",
+                "gh",
+                "gist",
+                "github"
+            ],
+            "time": "2016-07-26T08:49:38+00:00"
+        },
+        {
             "name": "knplabs/knp-menu",
             "version": "2.2.0",
             "source": {
@@ -2636,16 +2833,16 @@
         },
         {
             "name": "league/oauth2-facebook",
-            "version": "1.4.4",
+            "version": "1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/oauth2-facebook.git",
-                "reference": "c1af92b501649f99bd7670abd0c8153bed8d3d47"
+                "reference": "c68e09f67b1364eefcc7614897100391dac71518"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/oauth2-facebook/zipball/c1af92b501649f99bd7670abd0c8153bed8d3d47",
-                "reference": "c1af92b501649f99bd7670abd0c8153bed8d3d47",
+                "url": "https://api.github.com/repos/thephpleague/oauth2-facebook/zipball/c68e09f67b1364eefcc7614897100391dac71518",
+                "reference": "c68e09f67b1364eefcc7614897100391dac71518",
                 "shasum": ""
             },
             "require": {
@@ -2683,7 +2880,7 @@
                 "oauth",
                 "oauth2"
             ],
-            "time": "2016-10-21T00:54:37+00:00"
+            "time": "2017-07-22T01:43:12+00:00"
         },
         {
             "name": "league/oauth2-github",
@@ -3342,7 +3539,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2017-03-28 22:19:25"
+            "time": "2017-03-28T22:19:25+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3428,7 +3625,7 @@
             ],
             "description": "PHPIDS (PHP-Intrusion Detection System) is a simple to use, well structured, fast and state-of-the-art security layer for your PHP based web application",
             "homepage": "http://phpids.org",
-            "time": "2014-09-03 11:39:39"
+            "time": "2014-09-03T11:39:39+00:00"
         },
         {
             "name": "psr/cache",
@@ -4878,6 +5075,58 @@
             "time": "2017-04-06T14:23:09+00:00"
         },
         {
+            "name": "vierbergenlars/php-semver",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vierbergenlars/php-semver.git",
+                "reference": "be22b86be4c1133acc42fd1685276792024af5f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vierbergenlars/php-semver/zipball/be22b86be4c1133acc42fd1685276792024af5f9",
+                "reference": "be22b86be4c1133acc42fd1685276792024af5f9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4"
+            },
+            "bin": [
+                "bin/semver",
+                "bin/update-versions"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "vierbergenlars\\SemVer\\": "src/",
+                    "vierbergenlars\\LibJs\\": "src/"
+                },
+                "classmap": [
+                    "src/vierbergenlars/SemVer/internal.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lars Vierbergen",
+                    "email": "vierbergenlars@gmail.com"
+                }
+            ],
+            "description": "The Semantic Versioner for PHP",
+            "keywords": [
+                "semantic",
+                "semver",
+                "versioning"
+            ],
+            "time": "2017-07-11T09:53:59+00:00"
+        },
+        {
             "name": "wikimedia/composer-merge-plugin",
             "version": "v1.4.1",
             "source": {
@@ -5483,16 +5732,16 @@
         },
         {
             "name": "zikula/pagelock-module",
-            "version": "1.2.0",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "975e30da3a9297c445d01e1723aa178e2a103594"
+                "reference": "64974be844a93a906b5a1e36c366e863e6fdcf88"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/975e30da3a9297c445d01e1723aa178e2a103594",
-                "reference": "975e30da3a9297c445d01e1723aa178e2a103594",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/64974be844a93a906b5a1e36c366e863e6fdcf88",
+                "reference": "64974be844a93a906b5a1e36c366e863e6fdcf88",
                 "shasum": ""
             },
             "require": {
@@ -5526,10 +5775,10 @@
             ],
             "description": "Page locking support",
             "support": {
-                "source": "https://github.com/zikula-modules/PageLock/tree/1.2.0",
+                "source": "https://github.com/zikula-modules/PageLock/tree/1.2.3",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2017-04-01T13:46:17+00:00"
+            "time": "2017-07-24T10:54:55+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6710,6 +6959,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "carlosio/jenkins": 20,
         "sensio/framework-extra-bundle": 20,
         "matthiasnoback/symfony-service-definition-validator": 20,
         "oyejorge/less.php": 20,
