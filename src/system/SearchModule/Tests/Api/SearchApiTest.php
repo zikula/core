@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Zikula\UsersModule\Tests\Api;
+namespace Zikula\SearchModule\Tests\Api;
 
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
