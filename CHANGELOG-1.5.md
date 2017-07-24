@@ -95,15 +95,17 @@ CHANGELOG - ZIKULA 1.5.x
     - behat/transliterator updated from 1.1.0 to 1.2.0
     - composer/installers updated from 1.2.0 to 1.3.0
     - composer/semver installed at 1.4.2
-    - doctrine/cache updated from 1.5.4 to 1.6.1
+    - doctrine/cache updated from 1.5.4 to 1.6.2
     - doctrine/common updated from 2.5.3 to 2.6.2
+    - doctrine/dbal updated from v2.5.12 to v2.5.13
     - doctrine/doctrine-bundle updated from 1.5.2 to 1.6.8
     - ezyang/htmlpurifier updated (dev-master)
     - fduch/workflow-bundle installed at 2.0.2
     - gedmo/doctrine-extensions updated from 2.4.26 to 2.4.30
     - guzzlehttp/guzzle  updated from 6.2.3 to 6.3.0
     - jms/translation-bundle updated from 1.3.1 to 1.3.2
-    - jquery.mmenu updated from 5.7.8 to 6.1.1
+    - jquery.mmenu updated from 5.7.8 to 6.1.2
+    - league/oauth2-facebook updated from 1.4.4 to 1.4.5
     - liip/imagine-bundle updated from 1.7.2 to 1.8.0
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.3.0
     - matthiasnoback/symfony-service-definition-validator updated from 1.2.6 to 1.2.6.1 (zikula fork)
@@ -130,7 +132,7 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at v1.3.1 and updated to 1.4.1
-    - zikula/andreas08-theme installed at 2.0.1 and upgraded to 2.0.2
+    - zikula/andreas08-theme installed at 2.0.1 and updated to 2.0.2
     - zikula/bootstrap-bundle updated to 3.0.1
     - zikula/filesystem updated to 1.0.0
     - zikula/jquery-bundle updated to 1.0.0
@@ -138,7 +140,7 @@ CHANGELOG - ZIKULA 1.5.x
     - zikula/jquery-ui-bundle updated to 1.0.0
     - zikula/fontawesome updated to 4.1.0
     - zikula/legal-module updated to 3.1.0
-    - zikula/pagelock-module installed at 1.2.0
+    - zikula/pagelock-module installed at 1.2.0 and updated to 1.2.3
     - zikula/profile-module updated to 3.0.0
     - zikula/oauth-module installed at 1.0.1
-    - zikula/seabreeze-theme installed at 4.0.1 and upgraded to 4.0.2
+    - zikula/seabreeze-theme installed at 4.0.1 and updated to 4.0.2
