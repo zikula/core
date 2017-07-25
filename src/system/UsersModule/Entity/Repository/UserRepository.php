@@ -93,16 +93,20 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     public function getSearchResults(array $words)
     {
         $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.attributes', 'a')
             ->andWhere('u.activated <> :activated')
             ->setParameter('activated', UsersConstant::ACTIVATED_PENDING_REG);
         $where = $qb->expr()->orX();
+        $searchFields = ['u.uname', 'a.value'];
         $i = 1;
         foreach ($words as $word) {
             $subWhere = $qb->expr()->orX();
-            $expr = $qb->expr()->like('u.uname', "?$i");
-            $subWhere->add($expr);
-            $qb->setParameter($i, '%' . $word . '%');
-            $i++;
+            foreach ($searchFields as $searchField) {
+                $expr = $qb->expr()->like($searchField, "?$i");
+                $subWhere->add($expr);
+                $qb->setParameter($i, '%' . $word . '%');
+                $i++;
+            }
             $where->add($subWhere);
         }
         $qb->andWhere($where);

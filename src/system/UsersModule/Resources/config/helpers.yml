@@ -32,7 +32,8 @@ services:
 
     zikula_users_module.helper.account_links_helper:
         class: Zikula\UsersModule\Helper\AccountLinksHelper
-        arguments: ["@zikula.link_container_collector"]
+        arguments:
+          - "@zikula.link_container_collector"
 
     zikula_users_module.helper.access_helper:
         class: Zikula\UsersModule\Helper\AccessHelper
@@ -49,5 +50,6 @@ services:
           - '@zikula_permissions_module.api.permission'
           - '@session'
           - '@zikula_users_module.user_repository'
+          - '@zikula_users_module.internal.profile_module_collector'
         tags:
             - { name: zikula.searchable_module, bundleName: ZikulaUsersModule }

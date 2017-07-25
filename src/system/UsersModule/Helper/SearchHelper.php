@@ -13,9 +13,11 @@ namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Zikula\Core\RouteUrl;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
+use Zikula\UsersModule\Collector\ProfileModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class SearchHelper implements SearchableInterface
@@ -36,19 +38,27 @@ class SearchHelper implements SearchableInterface
     private $userRepository;
 
     /**
+     * @var ProfileModuleCollector
+     */
+    private $profileModuleCollector;
+
+    /**
      * SearchHelper constructor.
      * @param PermissionApiInterface $permissionApi
      * @param SessionInterface $session
      * @param UserRepositoryInterface $userRepository
+     * @param ProfileModuleCollector $profileModuleCollector
      */
     public function __construct(
         PermissionApiInterface $permissionApi,
         SessionInterface $session,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ProfileModuleCollector $profileModuleCollector
     ) {
         $this->permissionApi = $permissionApi;
         $this->session = $session;
         $this->userRepository = $userRepository;
+        $this->profileModuleCollector = $profileModuleCollector;
     }
 
     /**
@@ -71,14 +81,24 @@ class SearchHelper implements SearchableInterface
 
         $results = [];
         foreach ($users as $user) {
-            if ($user->getUid() != 1 && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
-                $result = new SearchResultEntity();
-                $result->setTitle($user->getUname())
-                    ->setModule('ZikulaUsersModule')
-                    ->setCreated($user->getUser_Regdate())
-                    ->setSesid($this->session->getId());
-                $results[] = $result;
+            if ($user->getUid() == 1 || !$this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
+                continue;
             }
+            $userDisplayName = $user->getUname();
+            $profileUrl = $this->profileModuleCollector->getSelected()->getProfileUrl($user->getUid());
+            if ($profileUrl != '#') {
+                $userDisplayName = $this->profileModuleCollector->getSelected()->getDisplayName($user->getUid());
+            }
+
+            $result = new SearchResultEntity();
+            $result->setTitle($userDisplayName)
+                ->setModule('ZikulaUsersModule')
+                ->setCreated($user->getUser_Regdate())
+                ->setSesid($this->session->getId());
+            if ($profileUrl != '#') {
+                $result->setUrl(new RouteUrl($profileUrl));
+            }
+            $results[] = $result;
         }
 
         return $results;
