@@ -165,12 +165,12 @@ class CategoryUtil
      * @param integer $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='')
      * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
      * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value')
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='')
      * @param array   $columnArray The list of columns to fetch (optional) (default=null)
      *
      * @return array the resulting folder object array
      */
-    public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
+    public static function getSubCategories($cid, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = '', $columnArray = null)
     {
         @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
@@ -190,11 +190,11 @@ class CategoryUtil
      * @param integer $excludeCid  CategoryID (root folder) to exclude from the result set (optional) (default='')
      * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
      * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value')
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='')
      *
      * @return array resulting folder object array
      */
-    public static function getSubCategoriesByPath($apath, $pathField = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = 'sort_value')
+    public static function getSubCategoriesByPath($apath, $pathField = 'ipath', $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCid = '', $assocKey = '', $attributes = null, $sortField = '')
     {
         @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
@@ -213,12 +213,12 @@ class CategoryUtil
      * @param string  $excludeCat  The root category of the hierarchy to exclude from the result set (optional) (default='')
      * @param string  $assocKey    The field to use as the associated array key (optional) (default='')
      * @param array   $attributes  The associative array of attribute field names to filter by (optional) (default=null)
-     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='sort_value')
+     * @param string  $sortField   The field to sort the resulting category array by (optional) (default='')
      * @param array   $columnArray The list of columns to fetch (optional) (default=null)
      *
      * @return array resulting folder object array
      */
-    public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = 'sort_value', $columnArray = null)
+    public static function getSubCategoriesForCategory($category, $recurse = true, $relative = true, $includeRoot = false, $includeLeaf = true, $all = false, $excludeCat = null, $assocKey = '', $attributes = null, $sortField = '', $columnArray = null)
     {
         @trigger_error('CategoryUtil is deprecated. please use the new category api instead.', E_USER_DEPRECATED);
 
