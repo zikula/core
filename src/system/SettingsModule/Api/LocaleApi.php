@@ -62,6 +62,9 @@ class LocaleApi implements LocaleApiInterface
                     ->notName('*.template.*');
                 foreach ($files as $file) {
                     $fileName = $file->getBasename('.po');
+                    if (false === strpos($fileName, '.')) {
+                        continue;
+                    }
                     list(, $locale) = explode('.', $fileName);
                     if (!in_array($locale, $this->supportedLocales)) {
                         $this->supportedLocales[] = $locale;
