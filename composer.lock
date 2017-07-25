@@ -4235,16 +4235,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.4",
+            "version": "v4.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc"
+                "reference": "6a3b0c3b42e41c777b1ad75032d8177863fdc5e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
-                "reference": "9e69eddf3bc49d1ee5c7908564da3141796d4bbc",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/6a3b0c3b42e41c777b1ad75032d8177863fdc5e1",
+                "reference": "6a3b0c3b42e41c777b1ad75032d8177863fdc5e1",
                 "shasum": ""
             },
             "require": {
@@ -4276,7 +4276,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-03-31T14:50:32+00:00"
+            "time": "2017-07-24T11:42:56+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -5989,16 +5989,16 @@
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "78eb4a2e7d5e6faad9200deb8332d8f461fa9a68"
+                "reference": "c5a2f1de16809ec4aa7e423d5c9bd040eab2fec1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/78eb4a2e7d5e6faad9200deb8332d8f461fa9a68",
-                "reference": "78eb4a2e7d5e6faad9200deb8332d8f461fa9a68",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/c5a2f1de16809ec4aa7e423d5c9bd040eab2fec1",
+                "reference": "c5a2f1de16809ec4aa7e423d5c9bd040eab2fec1",
                 "shasum": ""
             },
             "require": {
@@ -6043,10 +6043,10 @@
             ],
             "description": "Integrates league/oauth2-client and various providers.",
             "support": {
-                "source": "https://github.com/zikula/OAuth/tree/1.0.1",
+                "source": "https://github.com/zikula/OAuth/tree/1.0.2",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2017-05-10T21:19:54+00:00"
+            "time": "2017-07-25T13:24:55+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6100,16 +6100,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "074465c6689a31bf7480c7892d1706477f28ce12"
+                "reference": "8f8f9b6f80e2bcc1119a28448ec1fa6fbd2330ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/074465c6689a31bf7480c7892d1706477f28ce12",
-                "reference": "074465c6689a31bf7480c7892d1706477f28ce12",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8f8f9b6f80e2bcc1119a28448ec1fa6fbd2330ba",
+                "reference": "8f8f9b6f80e2bcc1119a28448ec1fa6fbd2330ba",
                 "shasum": ""
             },
             "require": {
@@ -6164,10 +6164,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/master",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.0.1",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-05T23:49:40+00:00"
+            "time": "2017-07-25T13:31:06+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
