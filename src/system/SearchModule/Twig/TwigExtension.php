@@ -129,11 +129,12 @@ class TwigExtension extends \Twig_Extension
     {
         if ($url instanceof ModUrl) { // @deprecated
             return $url->getUrl();
-        } elseif ($url instanceof RouteUrl) {
+        }
+        if ($url instanceof RouteUrl) {
             try {
                 return $this->router->generate($url->getRoute(), $url->getArgs()) . $url->getFragment();
             } catch (RouteNotFoundException $exception) {
-                // do nothing
+                return $url->getRoute();
             }
         }
 
