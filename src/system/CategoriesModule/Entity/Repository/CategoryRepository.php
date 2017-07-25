@@ -68,53 +68,6 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * Selects categories using arbitrary parameters.
-     *
-     * @param string  $where       The where clause to use in the select (optional) (default='')
-     * @param string  $sort        The order-by clause to use in the select (optional) (default='')
-     * @param array   $columnArray Array of columns to select (optional) (default=null)
-     *
-     * @return array
-     * @deprecated
-     */
-    public function freeSelect($where = '', $sort = '', $columnArray = null)
-    {
-        $selection = 'c';
-        if (!empty($columnArray)) {
-            $columns = [];
-            foreach ($columnArray as $column) {
-                $columns[] = 'c.' . $column;
-            }
-            $selection = implode(', ', $columns);
-        }
-
-        $qb = $this->createQueryBuilder('c')
-            ->select($selection);
-
-        if (!empty($where)) {
-            $qb->where($where);
-        }
-
-        if ($sort != '') {
-            $sort = str_replace('ORDER BY', '', $sort);
-            if (false !== stripos($sort, 'ASC')) {
-                $qb->orderBy(str_ireplace('ASC', '', $sort), 'ASC');
-            } elseif (false !== stripos($sort, 'DESC')) {
-                $qb->orderBy(str_ireplace('DESC', '', $sort), 'DESC');
-            } else {
-                $qb->orderBy($sort);
-            }
-        } else {
-            $qb->orderBy('c.lft');
-        }
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
->>>>>>> 1.5
      * {@inheritdoc}
      */
     public function updateParent($oldParentId = 0, $newParentId = 0, $includeRoot = true)
