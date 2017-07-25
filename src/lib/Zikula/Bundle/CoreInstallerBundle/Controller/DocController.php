@@ -95,7 +95,7 @@ class DocController
             // fallback to English docs
             $this->basePath = str_replace('docs/' . $request->getLocale(), 'docs/en', $this->basePath);
         }
-        if (!file_exists($this->basePath . "/$name")) {
+        if (file_exists($this->basePath . "/$name")) {
             $content = file_get_contents($this->basePath . "/$name");
         } else {
             $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => "$name"]);
