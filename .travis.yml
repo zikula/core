@@ -37,7 +37,8 @@ before_install:
     # twig linting in themes won't work because the themes are not active bundles
 
     - cd ..
-    - ./src/vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bin/simple-phpunit
+    - ./bin/phpunit
+    #- ./src/vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bin/simple-phpunit
 
     - cd src
 
