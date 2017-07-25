@@ -142,6 +142,7 @@ class AccessController extends AbstractController
         // login failed
         // implement auto-register setting here. If true, do so and proceed. #2915
         $this->addFlash('error', $this->__('Login failed.'));
+        $request->getSession()->remove('authenticationMethod');
         $returnUrl = $this->dispatchLoginFailedEvent($user, $returnUrl, $authenticationMethod);
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
