@@ -156,7 +156,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
                 $qb->orderBy($sort);
             }
         } else {
-            $qb->orderBy('c.sort_value, c.path');
+            $qb->orderBy('c.lft');
         }
 
         return $qb->getQuery()->getResult();

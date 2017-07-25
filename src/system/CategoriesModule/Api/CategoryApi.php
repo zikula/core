@@ -177,6 +177,9 @@ class CategoryApi
 
         // convert to array
         $cat = $category->toArray();
+        // add BC
+        $cat['path'] = $category->getPath();
+        $cat['ipath'] = $category->getIPath();
 
         // set name and description by languages if not set
         $languages = $this->localeApi->getSupportedLocales();
@@ -289,6 +292,9 @@ class CategoryApi
         /** @var CategoryEntity[] $categories */
         foreach ($categories as $category) {
             $cat = $category->toArray();
+            // add BC
+            $cat['path'] = $category->getPath();
+            $cat['ipath'] = $category->getIPath();
 
             // set name and description by languages if not set
             foreach ($languages as $lang) {

@@ -112,9 +112,9 @@ class Categories_DBObject_Category extends DBObject
         $data['name'] = str_replace('/', '&#47;', $data['name']);
 
         // set defaults: necessary @since 1.4.0
-        $data['obj_status'] = isset($data['obj_status']) ? $data['obj_status'] : 'A';
+//        $data['obj_status'] = isset($data['obj_status']) ? $data['obj_status'] : 'A';
         $data['status'] = isset($data['status']) ? $data['status'] : 'A';
-        $data['sort_value'] = isset($data['sort_value']) ? $data['sort_value'] : 2147483647;
+//        $data['sort_value'] = isset($data['sort_value']) ? $data['sort_value'] : 2147483647;
         $data['value'] = isset($data['value']) ? $data['value'] : '';
 
         $this->_objData = $data;
@@ -160,8 +160,8 @@ class Categories_DBObject_Category extends DBObject
 
         $this->insertPreProcess();
         $data = $this->_objData;
-        $data['path'] = "$parent[path]/$data[name]";
-        $data['ipath'] = "$parent[ipath]/$data[id]";
+//        $data['path'] = "$parent[path]/$data[name]";
+//        $data['ipath'] = "$parent[ipath]/$data[id]";
 
         // encode slash
         $data['name'] = str_replace('/', '&#47;', $data['name']);
