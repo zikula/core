@@ -12,6 +12,7 @@
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Bundle\ProviderBundle;
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
@@ -31,6 +32,11 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     private $storage;
 
     /**
+     * @var HookCollectorInterface
+     */
+    private $hookCollector;
+
+    /**
      * @var EventDispatcherInterface
      */
     private $dispatcher;
@@ -38,14 +44,19 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
     /**
      * Constructor.
      *
-     * @param StorageInterface         $storage
+     * @param StorageInterface $storage
+     * @param HookCollectorInterface $hookCollector
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(StorageInterface $storage, EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        StorageInterface $storage,
+        HookCollectorInterface $hookCollector,
+        EventDispatcherInterface $dispatcher
+    ) {
         @trigger_error('Old hook class is deprecated, please use Hook bundle instead.', E_USER_DEPRECATED);
 
         $this->storage = $storage;
+        $this->hookCollector = $hookCollector;
         $this->dispatcher = $dispatcher;
     }
 
@@ -148,7 +159,10 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
      */
     public function getSubscriberAreasByOwner($owner)
     {
-        return $this->storage->getSubscriberAreasByOwner($owner);
+        $persistedAreas = $this->storage->getSubscriberAreasByOwner($owner);
+        $nonPersistedAreas = $this->hookCollector->getSubscriberAreasByOwner($owner);
+
+        return array_merge($persistedAreas, $nonPersistedAreas);
     }
 
     /**
@@ -160,7 +174,10 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
      */
     public function getProviderAreasByOwner($owner)
     {
-        return $this->storage->getProviderAreasByOwner($owner);
+        $persistedAreas = $this->storage->getProviderAreasByOwner($owner);
+        $nonPersistedAreas = $this->hookCollector->getProviderAreasByOwner($owner);
+
+        return array_merge($persistedAreas, $nonPersistedAreas);
     }
 
     /**
@@ -172,7 +189,13 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
      */
     public function getOwnerByArea($areaName)
     {
-        return $this->storage->getOwnerByArea($areaName);
+        if ($this->hookCollector->hasProvider($areaName)) {
+            return $this->hookCollector->getProvider($areaName)->getOwner();
+        } elseif ($this->hookCollector->hasSubscriber($areaName)) {
+            return $this->hookCollector->getSubscriber($areaName)->getOwner();
+        } else {
+            return $this->storage->getOwnerByArea($areaName); // @deprecated
+        }
     }
 
     /**

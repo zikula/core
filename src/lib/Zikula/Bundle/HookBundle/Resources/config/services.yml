@@ -23,7 +23,8 @@ services:
             - "@zikula_hook_bundle.collector.hook_collector"
 
     hook_dispatcher:
-        class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
+        # class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
+        class: \Zikula_HookDispatcher
         arguments:
             - "@hook_dispatcher.storage"
             - "@zikula_hook_bundle.collector.hook_collector"
