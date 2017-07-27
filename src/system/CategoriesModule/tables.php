@@ -32,11 +32,11 @@ function ZikulaCategoriesModule_tables()
         'is_leaf'         => 'is_leaf',
         'name'            => 'name',
         'value'           => 'value',
-        'sort_value'      => 'sort_value',
+//        'sort_value'      => 'sort_value',
         'display_name'    => 'display_name',
         'display_desc'    => 'display_desc',
-        'path'            => 'path',
-        'ipath'           => 'ipath',
+//        'path'            => 'path',
+//        'ipath'           => 'ipath',
         'status'          => 'status'
     ];
     ObjectUtil::addStandardFieldsToTableDefinition($columns);
@@ -60,11 +60,11 @@ function ZikulaCategoriesModule_tables()
         'is_leaf'         => 'I1 NOTNULL DEFAULT 0',
         'name'            => "C(255) NOTNULL DEFAULT ''",
         'value'           => "C(255) NOTNULL DEFAULT ''",
-        'sort_value'      => 'I4 NOTNULL DEFAULT 2147483647',
+//        'sort_value'      => 'I4 NOTNULL DEFAULT 2147483647',
         'display_name'    => "X NOTNULL DEFAULT ''",
         'display_desc'    => "X NOTNULL DEFAULT ''",
-        'path'            => "$pathType NOTNULL DEFAULT ''",
-        'ipath'           => "C(255) NOTNULL DEFAULT ''",
+//        'path'            => "$pathType NOTNULL DEFAULT ''",
+//        'ipath'           => "C(255) NOTNULL DEFAULT ''",
         'status'          => "C(1) NOTNULL DEFAULT 'A'"
     ];
     ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
