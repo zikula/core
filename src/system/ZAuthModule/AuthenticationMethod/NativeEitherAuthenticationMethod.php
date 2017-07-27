@@ -69,8 +69,11 @@ class NativeEitherAuthenticationMethod extends AbstractNativeAuthenticationMetho
      */
     public function authenticate(array $data = [])
     {
-        $field = filter_var($data['either'], FILTER_VALIDATE_EMAIL) ? 'email' : 'uname';
-        $data[$field] = $data['either'];
+        $field = 'email'; // default
+        if (isset($data['either'])) {
+            $field = filter_var($data['either'], FILTER_VALIDATE_EMAIL) ? 'email' : 'uname';
+            $data[$field] = $data['either'];
+        }
 
         return $this->authenticateByField($data, $field);
     }
