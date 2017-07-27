@@ -102,7 +102,12 @@ class MigrationHelper
      */
     public function createMappingFromUserCriteria(array $criteria, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
     {
+        /** @var UserEntity $userEntity */
         $userEntity = $this->userRepository->findOneBy($criteria);
+        if ($userEntity->hasAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
+            // user has been migrated or is registered via another authentication method.
+            return null;
+        }
         $mapping = isset($userEntity) ? $this->createMappingFromUser($userEntity, $method) : null;
         if (isset($mapping)) {
             $this->entityManager->persist($mapping);
