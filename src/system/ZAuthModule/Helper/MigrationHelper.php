@@ -104,7 +104,7 @@ class MigrationHelper
     {
         /** @var UserEntity $userEntity */
         $userEntity = $this->userRepository->findOneBy($criteria);
-        if ($userEntity->hasAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
+        if (!isset($userEntity) || $userEntity->hasAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
             // user has been migrated or is registered via another authentication method.
             return null;
         }
