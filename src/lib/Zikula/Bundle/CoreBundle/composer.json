@@ -50,6 +50,9 @@
 
         "zikula/generator-bundle": "2.*"
     },
+    "require-dev": {
+        "symfony/phpunit-bridge": "3.*"
+    },
     "repositories": [
         {
             "type": "vcs",
