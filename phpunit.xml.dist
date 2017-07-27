@@ -13,6 +13,7 @@
 >
     <php>
         <server name="KERNEL_DIR" value="./src/app/" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
     </php>
     <testsuites>
         <testsuite name="Zikula Bundle Tests">
