@@ -40,6 +40,7 @@ function ZikulaCategoriesModule_tables()
         'status'          => 'status'
     ];
     ObjectUtil::addStandardFieldsToTableDefinition($columns);
+    unset($columns['obj_status']);
     $dbtable['categories_category_column'] = $columns;
 
     // Enable attribution services
@@ -68,6 +69,7 @@ function ZikulaCategoriesModule_tables()
         'status'          => "C(1) NOTNULL DEFAULT 'A'"
     ];
     ObjectUtil::addStandardFieldsToTableDataDefinition($tabledef);
+    unset($tabledef['obj_status']);
     $dbtable['categories_category_column_def'] = $tabledef;
 
     $table = 'categories_mapmeta';
