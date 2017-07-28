@@ -65,6 +65,8 @@ class AssetBagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers AssetBag::add()
+     * @group ignore
+     * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.sort-order
      */
     public function testAddSameWeighted()
     {
