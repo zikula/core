@@ -75,10 +75,18 @@ class Categories_DBObject_CategoryArray extends DBObjectArray
         if (!$objArray) {
             return $objArray;
         }
+        /** @var \Doctrine\Common\Persistence\ObjectManager $manager */
+        $manager = ServiceUtil::get('doctrine')->getManager();
 
         foreach ($objArray as $k => $obj) {
             $objArray[$k]['display_name'] = DataUtil::formatForDisplayHTML(unserialize($obj['display_name']));
             $objArray[$k]['display_desc'] = DataUtil::formatForDisplayHTML(unserialize($obj['display_desc']));
+            /**
+             * ugly BC hack
+             */
+            $entity = $manager->getRepository(\Zikula\CategoriesModule\Entity\CategoryEntity::class)->find($k);
+            $objArray[$k]['path'] = $entity->getPath();
+            $objArray[$k]['ipath'] = $entity->getIPath();
         }
 
         return $objArray;
