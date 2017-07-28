@@ -687,7 +687,31 @@ class CategoryUtil
     public static function hasCategoryAccess($categories, $module, $permLevel = ACCESS_OVERVIEW)
     {
         @trigger_error('CategoryUtil is deprecated. please use the new category permission api instead.', E_USER_DEPRECATED);
+        // Always allow access to content with no categories associated
+        if (count($categories) == 0) {
+            return true;
+        }
 
-        return ServiceUtil::get('zikula_categories_module.api.category_permission')->hasCategoryAccess($categories, $permLevel);
+        // Check if access is required for all categories or for at least one category
+        $requireAccessForAll = \ModUtil::getVar('ZikulaCategoriesModule', 'permissionsall', 0);
+
+        $accessGranted = true;
+        foreach ($categories as $propertyName => $cats) {
+            $categoriesForProperty = is_array($cats) ? $cats : [$cats];
+            foreach ($categoriesForProperty as $cat) {
+                $hasAccess = \SecurityUtil::checkPermission("ZikulaCategoriesModule:$propertyName:Category", "$cat[id]:$cat[path]:$cat[ipath]", $permLevel);
+                if ($requireAccessForAll && !$hasAccess) {
+                    return false;
+                }
+                if (!$requireAccessForAll) {
+                    if ($hasAccess) {
+                        return true;
+                    }
+                    $accessGranted = false;
+                }
+            }
+        }
+
+        return $accessGranted;
     }
 }
