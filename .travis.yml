@@ -21,8 +21,10 @@ before_install:
     - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi;
     # load apc.so only for php 5
     - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [ $(php -r "echo PHP_MAJOR_VERSION;") == 5 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;
-    # load memcache.so for php 5 and php >= 7.1
-    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [[ $(php -r "echo PHP_MAJOR_VERSION;") == 5 ] || [[ $(php -r "echo PHP_MAJOR_VERSION;") == 7 ] && [ $(php -r "echo PHP_MINOR_VERSION;") >= 1 ]]]; then (pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || echo "Continuing without memcache extension"; fi;
+    # load memcache.so for php 5
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [ $(php -r "echo PHP_MAJOR_VERSION;") == 5 ]; then (pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || echo "Continuing without memcache extension"; fi;
+    # load memcache.so for php >= 7.1
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]] && [ $(php -r "echo PHP_MAJOR_VERSION;") == 7 ] && [ $(php -r "echo PHP_MINOR_VERSION;") >= 1 ]; then (pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini) || echo "Continuing without memcache extension"; fi;
     # Set the COMPOSER_ROOT_VERSION to the right version according to the branch being built
     - if [ "$TRAVIS_BRANCH" = "master" ]; then export COMPOSER_ROOT_VERSION=dev-master; else export COMPOSER_ROOT_VERSION="$TRAVIS_BRANCH".x-dev; fi;
 
