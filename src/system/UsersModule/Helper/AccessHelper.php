@@ -79,19 +79,19 @@ class AccessHelper
             case UsersConstant::ACTIVATED_ACTIVE:
                 return true;
             case UsersConstant::ACTIVATED_INACTIVE:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Your account has been disabled. Please contact a site administrator for more information.'));
+                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied: Your account has been disabled. Please contact a site administrator for more information.'));
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_DELETE:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.'));
+                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.'));
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_REG:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Your request to register with this site is still waiting for approval from a site administrator.'));
+                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied: Your request to register with this site is pending or awaiting verification.'));
 
                 return false;
             default:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Nope'));
+                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied!'));
 
                 return false;
         }
