@@ -142,8 +142,13 @@ class UpdateCheckHelper
             } else {
                 $this->releases = $newVersionInfo;
                 $this->checked = true;
-                $this->updateversion = $this->releases[0]['tag_name'];
-                //updateversion - get latest version from releases - move all git releases/updatechecker management to separate class
+                foreach ($this->releases as $release) {
+                    if (true === $release['prerelease']) {
+                        continue;
+                    }
+                    $this->updateversion = $release['tag_name'];
+                    break;
+                }
             }
         }
 
