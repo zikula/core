@@ -2291,16 +2291,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "6.1.2",
+            "version": "6.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "d9232fd18a9d74915165f83f55e7c1ef006c5dc2"
+                "reference": "1ed4ca9ee80a1382803c6770136b56a82a374600"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/d9232fd18a9d74915165f83f55e7c1ef006c5dc2",
-                "reference": "d9232fd18a9d74915165f83f55e7c1ef006c5dc2",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/1ed4ca9ee80a1382803c6770136b56a82a374600",
+                "reference": "1ed4ca9ee80a1382803c6770136b56a82a374600",
                 "shasum": ""
             },
             "type": "library",
@@ -2324,10 +2324,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.2",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v6.1.3",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2017-07-20T11:12:59+00:00"
+            "time": "2017-07-28T18:09:21+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -4035,16 +4035,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.0.5",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "6a3b0c3b42e41c777b1ad75032d8177863fdc5e1"
+                "reference": "cf61ce9d9706ba35e60a894fe6f3584c6d0e5c9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/6a3b0c3b42e41c777b1ad75032d8177863fdc5e1",
-                "reference": "6a3b0c3b42e41c777b1ad75032d8177863fdc5e1",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/cf61ce9d9706ba35e60a894fe6f3584c6d0e5c9f",
+                "reference": "cf61ce9d9706ba35e60a894fe6f3584c6d0e5c9f",
                 "shasum": ""
             },
             "require": {
@@ -4057,7 +4057,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -4076,7 +4076,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-07-24T11:42:56+00:00"
+            "time": "2017-07-28T18:31:05+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -5848,16 +5848,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "8f8f9b6f80e2bcc1119a28448ec1fa6fbd2330ba"
+                "reference": "23b5f2bfb60e1a90399c5ff5ed1eb57738420206"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8f8f9b6f80e2bcc1119a28448ec1fa6fbd2330ba",
-                "reference": "8f8f9b6f80e2bcc1119a28448ec1fa6fbd2330ba",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/23b5f2bfb60e1a90399c5ff5ed1eb57738420206",
+                "reference": "23b5f2bfb60e1a90399c5ff5ed1eb57738420206",
                 "shasum": ""
             },
             "require": {
@@ -5912,10 +5912,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.0.1",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.0.2",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2017-07-25T13:31:06+00:00"
+            "time": "2017-07-29T11:28:10+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
