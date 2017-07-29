@@ -41,10 +41,16 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
     public function removeAndFlush(UserEntity $user)
     {
-        foreach ($user->getAttributes() as $attribute) {
-            // this should be unnecessary because cascade = all but MySQL 5.7 not working with that
-            $this->_em->remove($attribute);
-        }
+        // the following process should be unnecessary because cascade = all but MySQL 5.7 not working with that (#3726)
+        $qb = $this->_em->createQueryBuilder();
+        $qb->delete('Zikula\UsersModule\Entity\UserAttributeEntity', 'a')
+           ->where('a.user = :userId')
+           ->setParameter('userId', $user->getUid());
+        $query = $qb->getQuery();
+        $query->execute();
+        // end of theoretically unrequired process
+
+        $user->setAttributes(new ArrayCollection());
         $this->_em->remove($user);
         $this->_em->flush($user);
     }
