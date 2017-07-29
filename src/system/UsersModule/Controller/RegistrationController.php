@@ -152,7 +152,6 @@ class RegistrationController extends AbstractController
                     if (true !== $externalRegistrationSuccess) {
                         // revert registration
                         $this->addFlash('error', $this->__('The registration process failed.'));
-                        // @todo this is not cascading to remove attributes on ralfs site
                         $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
                         $dispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 

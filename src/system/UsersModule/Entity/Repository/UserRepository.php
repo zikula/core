@@ -41,6 +41,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
 
     public function removeAndFlush(UserEntity $user)
     {
+        foreach ($user->getAttributes() as $attribute) {
+            // this should be unnecessary because cascade = all but MySQL 5.7 not working with that
+            $this->_em->remove($attribute);
+        }
         $this->_em->remove($user);
         $this->_em->flush($user);
     }
