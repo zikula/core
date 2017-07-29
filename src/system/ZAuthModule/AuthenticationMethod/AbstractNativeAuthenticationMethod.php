@@ -109,7 +109,11 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                     $this->session->getFlashBag()->add('error', $this->translator->__('Incorrect login credentials'));
                 }
             } else {
-                $this->session->getFlashBag()->add('error', $this->translator->__f('User not found with %field %value', ['%field' => $field, '%value' => $data[$field]]));
+                $this->session->getFlashBag()->add('error', $this->translator->__f('User not found with %field %value using %method method.', [
+                    '%field' => $field,
+                    '%value' => $data[$field],
+                    '%method' => $this->getDisplayName()
+                ]));
             }
         }
 
