@@ -54,9 +54,7 @@ class RegistrationEventsListener implements EventSubscriberInterface
     public function sendRegistrationEmail(GenericEvent $event)
     {
         $userEntity = $event->getSubject();
-        if ($userEntity->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
-            $notificationErrors = $this->mailHelper->createAndSendRegistrationMail($userEntity);
-        } else {
+        if ($userEntity->getActivated() != UsersConstant::ACTIVATED_PENDING_REG) {
             $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
         }
         if (!empty($notificationErrors)) {
