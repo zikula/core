@@ -496,9 +496,9 @@ class UserEntity extends EntityAccess
     /**
      * set the attributes for the user
      *
-     * @param UserAttributeEntity $attributes the attributes for the user
+     * @param ArrayCollection $attributes the attributes for the user
      */
-    public function setAttributes($attributes)
+    public function setAttributes(ArrayCollection $attributes)
     {
         $this->attributes = $attributes;
     }
@@ -547,6 +547,11 @@ class UserEntity extends EntityAccess
         return $this->groups;
     }
 
+    /**
+     * set the groups for the user
+     *
+     * @param ArrayCollection $groups the groups for the user
+     */
     public function setGroups(ArrayCollection $groups)
     {
         $this->groups = $groups;
