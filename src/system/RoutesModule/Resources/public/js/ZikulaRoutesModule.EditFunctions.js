@@ -1,6 +1,5 @@
 'use strict';
 
-
 var editedObjectType;
 var editedEntityId;
 var editForm;
