@@ -22,6 +22,8 @@ node {
         sh 'rm -f ' + composerFile
         */
 
+        sh 'mkdir ' + sourceDir
+        sh 'mv ' + env.WORKSPACE + '/* ' + sourceDir + '/'
         sh 'mkdir ' + buildDir
         sh 'mkdir ' + exportDir
         sh 'mkdir ' + packageDir
