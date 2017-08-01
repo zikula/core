@@ -4,7 +4,7 @@ pipeline {
     env.WORKSPACE = pwd()
     def buildDir = env.WORKSPACE + '/build'
     def sourceDir = env.WORKSPACE + '/source'
-    def jobName = currentBuild.projectName
+    def jobName = 'Zikula_Core-2.0.0' /** TODO currentBuild.projectName */
     def package = jobName
     def exportDir = buildDir + '/export'
     def packageDir = exportDir + '/' + jobName
