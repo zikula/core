@@ -23,7 +23,7 @@ node {
         */
 
         sh 'mkdir ' + sourceDir
-        sh 'mv ' + env.WORKSPACE + '/* ' + sourceDir + '/'
+        sh 'mv -f ' + env.WORKSPACE + '/* ' + sourceDir + '/'
         sh 'mkdir ' + buildDir
         sh 'mkdir ' + exportDir
         sh 'mkdir ' + packageDir
