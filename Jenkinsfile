@@ -41,7 +41,7 @@ node {
     }
     stage('Pre-process') {
         echo 'Copying sources to package directory...'
-        sh 'cp -a ' + sourceDir + '/src/* ' + packageDir
+        sh 'cp -a ' + sourceDir + '/src/. ' + packageDir
 
         echo 'Generating composer_vendors file...'
         sh phpBuild + ' build:generate_vendor_doc --write-to \'' + packageDir + '/docs/Composer_Vendors.md\''
