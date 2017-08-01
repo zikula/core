@@ -2,7 +2,7 @@
 
 node {
     env.WORKSPACE = pwd()
-    def buildDir = env.WORKSPACE + '/build'
+    def buildDir = env.WORKSPACE + '/build_work'
     def sourceDir = env.WORKSPACE
     def jobName = currentBuild.projectName
     def exportDir = buildDir + '/export'
