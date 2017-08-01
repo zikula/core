@@ -111,9 +111,6 @@ node {
         sh 'cat ' + tmpFile + ' | sed \'s!' + archiveDir + '/!!g\' > ' + checksumPath + '.txt'
         sh 'rm -f ' + tmpFile
     }
-    stage('Generate documentation') {
-        sh 'vendor/bin/phpdox -f ' + sourceDir + '/phpdox.xml'
-    }
     stage('Archive artifacts') {
         echo 'Archiving the artifacts...'
         archiveArtifacts([
