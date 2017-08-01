@@ -1,23 +1,21 @@
-pipeline {
-    agent any
+#!groovy
 
-    def buildDir, sourceDir, jobName, exportDir, packageDir, archiveDir, docPath, checksumPath, artifacts
+node {
+    env.WORKSPACE = pwd()
+    def buildDir = env.WORKSPACE + '/build'
+    def sourceDir = env.WORKSPACE + '/source'
+    def jobName = currentBuild.projectName
+    def exportDir = buildDir + '/export'
+    def packageDir = exportDir + '/' + jobName
+    def archiveDir = buildDir + '/archive'
+    def docPath = packageDir + '/docs/en'
+    def checksumPath = archiveDir + '/' + jobName + '-checksums'
+    def artifacts = archiveDir + '/**'
 
     ansiColor('xterm') {
         stages {
             stage('Prepare') {
                 steps {
-                    env.WORKSPACE = pwd()
-                    buildDir = env.WORKSPACE + '/build'
-                    sourceDir = env.WORKSPACE + '/source'
-                    jobName = currentBuild.projectName
-                    exportDir = buildDir + '/export'
-                    packageDir = exportDir + '/' + jobName
-                    archiveDir = buildDir + '/archive'
-                    docPath = packageDir + '/docs/en'
-                    checksumPath = archiveDir + '/' + jobName + '-checksums'
-                    artifacts = archiveDir + '/**'
-
                     sh 'rm -rf ${buildDir}'
                     /*
                     sh 'rm -rf ${sourceDir}/src/vendor'
