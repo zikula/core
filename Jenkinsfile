@@ -107,7 +107,7 @@ node {
         sh 'rm -f ' + tmpFile
     }
     stage('Generate documentation') {
-        sh 'vendor/bin/phpdox -f build/phpdox.xml'
+        sh 'vendor/bin/phpdox -f ' + sourceDir + '/phpdox.xml'
     }
     stage('Archive artifacts') {
         echo 'Archiving the artifacts...'
