@@ -10,13 +10,13 @@ pipeline {
                     env.WORKSPACE = pwd()
                     buildDir = env.WORKSPACE + '/build'
                     sourceDir = env.WORKSPACE + '/source'
-                    jobName = 'Zikula_Core-2.0.0' /** TODO currentBuild.projectName */
+                    jobName = currentBuild.projectName
                     exportDir = buildDir + '/export'
                     packageDir = exportDir + '/' + jobName
                     archiveDir = buildDir + '/archive'
                     docPath = packageDir + '/docs/en'
                     checksumPath = archiveDir + '/' + jobName + '-checksums'
-                    def artifacts = archiveDir + '/**'
+                    artifacts = archiveDir + '/**'
 
                     sh 'rm -rf ${buildDir}'
                     /*
