@@ -108,7 +108,7 @@ node {
         sh 'echo -----------------sha1sums----------------- >> ' + tmpFile
         sh 'sha1sum ' + archiveDir + '/*.tar.gz ' + archiveDir + '/*.zip >> ' + tmpFile
 
-        sh 'cat ' + tmpFile + ' | sed 's!' + archiveDir + '/!!g' > ' + checksumPath + '.txt'
+        sh 'cat ' + tmpFile + ' | sed \'s!' + archiveDir + '/!!g\' > ' + checksumPath + '.txt'
         sh 'rm -f ' + tmpFile
     }
     stage('Generate documentation') {
