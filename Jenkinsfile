@@ -45,6 +45,7 @@ node {
     stage('Composer Install') {
         sh 'cd ' + sourceDir + ' && wget -nc "http://getcomposer.org/composer.phar"'
         sh 'chmod +x ' + composerFile
+        sh composerFile + ' self-update'
         sh composerFile + ' install --prefer-dist --no-dev --optimize-autoloader --no-scripts'
         sh composerFile + ' run-script post-autoload-dump'
         sh composerFile + ' run-script post-install-cmd'
@@ -78,11 +79,14 @@ node {
     }
     stage('Post-processing') {
         echo 'Clearing cache directory...'
-        sh 'find ' + packageDir + '/var/cache -type \'f\' | grep -v ".htaccess" | xargs rm '
-        sh 'find ' + packageDir + '/var/cache -type \'d\' | xargs rmdir'
+        sh 'mv ' + packageDir + '/var/cache/.htaccess ' + packageDir + '/var/'
+        sh 'rm -rf ' + packageDir + '/var/cache/*'
+        sh 'mv ' + packageDir + '/var/.htaccess ' + packageDir + '/var/cache/'
+
         echo 'Clearing log directory...'
-        sh 'find ' + packageDir + '/var/logs -type \'f\' | grep -v ".htaccess" | xargs rm '
-        sh 'find ' + packageDir + '/var/logs -type \'d\' | xargs rmdir'
+        sh 'mv ' + packageDir + '/var/logs/.htaccess ' + packageDir + '/var/'
+        sh 'rm -rf ' + packageDir + '/var/logs/*'
+        sh 'mv ' + packageDir + '/var/.htaccess ' + packageDir + '/var/logs/'
 
         echo 'Setting directory permissions...'
         sh 'chmod -R 0777 ' + packageDir + '/app/config'
