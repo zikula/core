@@ -10,8 +10,8 @@ node {
     def archiveDir = buildDir + '/archive'
     def composerFile = sourceDir + '/composer.phar'
     def phpBuild = sourceDir + '/build.php'
-    def docPath = packageDir + '/docs/en'
 
+    def docPath = packageDir + '/docs/en'
     def copyFiles = [
         'README.md': [docPath],
         'INSTALL-2.0.md': [packageDir, docPath],
@@ -60,11 +60,10 @@ node {
         sh phpBuild + ' build:generate_less --write-to \'' + packageDir + '/web/bootstrap-font-awesome.css\''
 
         echo 'Moving docs and composer files to /docs/en ...'
-        copyFiles.each {
-            fileName, destinationFolders -> 
-                for (folder in destinationFolders) {
-                    sh 'cp -f ' + sourceDir + '/' + fileName ' ' + folder + '/' + fileName
-                }
+        copyFiles.each { fileName, destinationFolders -> 
+            destinationFolders.each { k, folder ->
+                sh 'cp -f ' + sourceDir + '/' + fileName ' ' + folder + '/' + fileName
+            }
         }
 
         echo 'Purging tests from vendors...'
