@@ -63,7 +63,7 @@ node {
         copyFiles.each {
             fileName, destinationFolders -> 
                 for (folder in destinationFolders) {
-                    sh 'cp -f ' + sourceDir + '/' + fileName ' ' + destinationFolder + '/' + fileName
+                    sh 'cp -f ' + sourceDir + '/' + fileName ' ' + folder + '/' + fileName
                 }
         }
 
