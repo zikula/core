@@ -5,11 +5,10 @@ pipeline {
     def buildDir = env.WORKSPACE + '/build'
     def sourceDir = env.WORKSPACE + '/source'
     def jobName = 'Zikula_Core-2.0.0' /** TODO currentBuild.projectName */
-    def package = jobName
     def exportDir = buildDir + '/export'
     def packageDir = exportDir + '/' + jobName
     def archiveDir = buildDir + '/archive'
-    def checksumPath = archiveDir + '/' + package + '-checksums'
+    def checksumPath = archiveDir + '/' + jobName + '-checksums'
 
     def docPath = packageDir + '/docs/en'
     def artifacts = archiveDir + '/**'
@@ -94,8 +93,8 @@ pipeline {
             stage('Create archives') {
                 steps {
                     echo 'Creating archives...'
-                    sh 'cd ${exportDir}; zip -D -r ${archiveDir}/${package}.zip .'
-                    sh 'cd ${exportDir}; tar cp ${package} > ${archiveDir}/${package}.tar; gzip ${archiveDir}/${package}.tar'
+                    sh 'cd ${exportDir}; zip -D -r ${archiveDir}/${jobName}.zip .'
+                    sh 'cd ${exportDir}; tar cp ${jobName} > ${archiveDir}/${jobName}.tar; gzip ${archiveDir}/${jobName}.tar'
                 }
             }
             stage('Build checksums') {
