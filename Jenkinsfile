@@ -22,7 +22,7 @@ node {
     ]
 
     def checksumPath = archiveDir + '/' + jobName + '-checksums'
-    def artifacts = archiveDir + '/**'
+    def artifacts = 'build_work/archive/**'
 
     stage('Prepare') {
         echo 'Checkout from Git repository...'
