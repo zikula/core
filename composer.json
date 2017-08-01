@@ -21,7 +21,8 @@
         "wikimedia/composer-merge-plugin": "1.*"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "theseer/phpdox": "*"
     },
     "scripts": {
         "zikula-scripts": [
