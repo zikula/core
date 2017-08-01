@@ -1,22 +1,23 @@
 pipeline {
     agent any
 
-    env.WORKSPACE = pwd()
-    def buildDir = env.WORKSPACE + '/build'
-    def sourceDir = env.WORKSPACE + '/source'
-    def jobName = 'Zikula_Core-2.0.0' /** TODO currentBuild.projectName */
-    def exportDir = buildDir + '/export'
-    def packageDir = exportDir + '/' + jobName
-    def archiveDir = buildDir + '/archive'
-    def checksumPath = archiveDir + '/' + jobName + '-checksums'
-
-    def docPath = packageDir + '/docs/en'
-    def artifacts = archiveDir + '/**'
+    def buildDir, sourceDir, jobName, exportDir, packageDir, archiveDir, docPath, checksumPath, artifacts
 
     ansiColor('xterm') {
         stages {
             stage('Prepare') {
                 steps {
+                    env.WORKSPACE = pwd()
+                    buildDir = env.WORKSPACE + '/build'
+                    sourceDir = env.WORKSPACE + '/source'
+                    jobName = 'Zikula_Core-2.0.0' /** TODO currentBuild.projectName */
+                    exportDir = buildDir + '/export'
+                    packageDir = exportDir + '/' + jobName
+                    archiveDir = buildDir + '/archive'
+                    docPath = packageDir + '/docs/en'
+                    checksumPath = archiveDir + '/' + jobName + '-checksums'
+                    def artifacts = archiveDir + '/**'
+
                     sh 'rm -rf ${buildDir}'
                     /*
                     sh 'rm -rf ${sourceDir}/src/vendor'
