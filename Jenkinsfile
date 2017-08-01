@@ -31,16 +31,12 @@ node {
         sh 'rm -rf ' + buildDir
         /*
         sh 'rm -rf ' + sourceDir + '/src/vendor'
-        sh 'rm -f ' + sourceDir + '/composer.lock'
-        sh 'rm -f ' + composerFile
         */
 
         sh 'mkdir ' + buildDir
         sh 'mkdir ' + exportDir
         sh 'mkdir ' + packageDir
         sh 'mkdir ' + archiveDir
-        sh 'mkdir ' + buildDir + '/api'
-        sh 'mkdir ' + buildDir + '/phpdox'
     }
     stage('Composer Install') {
         sh 'cd ' + sourceDir + ' && wget -nc "http://getcomposer.org/composer.phar"'
