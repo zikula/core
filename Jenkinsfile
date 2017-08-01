@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     env.WORKSPACE = pwd()
-    def buildDir = ${env.WORKSPACE} + '/build'
-    def sourceDir = ${env.WORKSPACE} + '/source'
+    def buildDir = env.WORKSPACE + '/build'
+    def sourceDir = env.WORKSPACE + '/source'
     def jobName = currentBuild.projectName
     def package = jobName
     def exportDir = buildDir + '/export'
