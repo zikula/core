@@ -280,7 +280,6 @@ class AjaxUpgradeController extends AbstractController
             $variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
         }
 
-
         return true;
     }
 
