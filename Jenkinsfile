@@ -4,7 +4,7 @@ pipeline {
     env.WORKSPACE = pwd()
     def buildDir = '${env.WORKSPACE}/build'
     def sourceDir = '${env.WORKSPACE}/source'
-    def jobName = currentBuild.getProjectName();
+    def jobName = currentBuild.getProjectName()
     def package = jobName
     def exportDir = '${buildDir}/export'
     def packageDir = '${exportDir}/${jobName}'
