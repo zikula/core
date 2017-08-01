@@ -62,7 +62,7 @@ node {
         echo 'Moving docs and composer files to /docs/en ...'
         copyFiles.each { fileName, folders -> 
             folders.each { folder ->
-                sh 'cp -f ' + sourceDir + '/' + fileName + ' ' + folder + '/' + fileName
+                sh 'cp -f ' + sourceDir + '/' + fileName + ' ' + folder
             }
         }
 
