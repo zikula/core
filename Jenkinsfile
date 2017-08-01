@@ -15,6 +15,9 @@ node {
     def artifacts = archiveDir + '/**'
 
     stage('Prepare') {
+        echo 'Checkout from Git repository...'
+        checkout scm
+
         sh 'rm -rf ' + buildDir
         /*
         sh 'rm -rf ' + sourceDir + '/src/vendor'
