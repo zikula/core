@@ -277,7 +277,7 @@ class AjaxUpgradeController extends AbstractController
         if (!$this->container->get('kernel')->isBundle($defaultTheme)
             && $this->container->get('kernel')->isBundle('ZikulaBootstrapTheme')
         ) {
-            $variableApi->set(VariableApi::CONFIG,'Default_Theme', 'ZikulaBootstrapTheme');
+            $variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
         }
 
 
