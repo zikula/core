@@ -30,7 +30,7 @@ node {
         sh 'mkdir ' + buildDir + '/phpdox'
     }
     stage('Composer Install') {
-        sh 'wget -nc "http://getcomposer.org/composer.phar"'
+        sh 'cd ' + sourceDir + ' && wget -nc "http://getcomposer.org/composer.phar"'
         sh 'chmod +x ' + composerFile
         sh composerFile + ' install --prefer-dist --no-dev --optimize-autoloader --no-scripts'
         sh composerFile + ' run-script post-autoload-dump'
