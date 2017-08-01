@@ -61,8 +61,9 @@ node {
 
         echo 'Moving docs and composer files to /docs/en ...'
         copyFiles.each { fileName, folders -> 
+            echo 'Test: ' + folders
             folders.eachWithIndex { k, folder ->
-                echo 'Folder: ' + folder
+                echo 'K: ' + k + ', Folder: ' + folder
                 sh 'cp -f ' + sourceDir + '/' + fileName ' ' + folder + '/' + fileName
             }
         }
