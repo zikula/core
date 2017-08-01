@@ -61,7 +61,7 @@ node {
 
         echo 'Moving docs and composer files to /docs/en ...'
         copyFiles.each { fileName, folders -> 
-            [folders].flatten().eachWithIndex { k, folder ->
+            folders.eachWithIndex { k, folder ->
                 sh 'cp -f ' + sourceDir + '/' + fileName ' ' + folder + '/' + fileName
             }
         }
