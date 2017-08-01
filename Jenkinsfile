@@ -60,8 +60,8 @@ node {
         sh phpBuild + ' build:generate_less --write-to \'' + packageDir + '/web/bootstrap-font-awesome.css\''
 
         echo 'Moving docs and composer files to /docs/en ...'
-        copyFiles.each { fileName, destinationFolders -> 
-            destinationFolders.each { k, folder ->
+        copyFiles.each { fileName, folders -> 
+            [folders].flatten().eachWithIndex { k, folder ->
                 sh 'cp -f ' + sourceDir + '/' + fileName ' ' + folder + '/' + fileName
             }
         }
