@@ -2,17 +2,17 @@ pipeline {
     agent any
 
     env.WORKSPACE = pwd()
-    def buildDir = '${env.WORKSPACE}/build'
-    def sourceDir = '${env.WORKSPACE}/source'
-    def jobName = currentBuild.getProjectName()
+    def buildDir = ${env.WORKSPACE} + '/build'
+    def sourceDir = ${env.WORKSPACE} + '/source'
+    def jobName = currentBuild.projectName
     def package = jobName
-    def exportDir = '${buildDir}/export'
-    def packageDir = '${exportDir}/${jobName}'
-    def archiveDir = '${buildDir}/archive'
-    def checksumPath = '${archiveDir}/${package}-checksums'
+    def exportDir = buildDir + '/export'
+    def packageDir = exportDir + '/' + jobName
+    def archiveDir = buildDir + '/archive'
+    def checksumPath = archiveDir + '/' + package + '-checksums'
 
-    def docPath = '${packageDir}/docs/en'
-    def artifacts = '${buildDir}/archive/**'
+    def docPath = packageDir + '/docs/en'
+    def artifacts = archiveDir + '/**'
 
     ansiColor('xterm') {
         stages {
