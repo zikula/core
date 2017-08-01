@@ -11,6 +11,16 @@ node {
     def composerFile = sourceDir + '/composer.phar'
     def phpBuild = sourceDir + '/build.php'
     def docPath = packageDir + '/docs/en'
+
+    def copyFiles = [
+        'README.md': [docPath],
+        'INSTALL-2.0.md': [packageDir, docPath],
+        'UPGRADE-2.0.md': [packageDir, docPath],
+        'CHANGELOG-2.0.md': [docPath],
+        'composer.json': [docPath + '/dev'],
+        'composer.lock': [docPath + '/dev']
+    ]
+
     def checksumPath = archiveDir + '/' + jobName + '-checksums'
     def artifacts = archiveDir + '/**'
 
@@ -50,14 +60,12 @@ node {
         sh phpBuild + ' build:generate_less --write-to \'' + packageDir + '/web/bootstrap-font-awesome.css\''
 
         echo 'Moving docs and composer files to /docs/en ...'
-        sh 'mv -f ' + sourceDir + '/README.md ' + docPath + '/README.md'
-        sh 'cp -f ' + sourceDir + '/INSTALL-2.0.md ' + packageDir + '/INSTALL-2.0.md'
-        sh 'mv -f ' + sourceDir + '/INSTALL-2.0.md ' + docPath + '/INSTALL-2.0.md'
-        sh 'cp -f ' + sourceDir + '/UPGRADE-2.0.md ' + packageDir + '/UPGRADE-2.0.md'
-        sh 'mv -f ' + sourceDir + '/UPGRADE-2.0.md ' + docPath + '/UPGRADE-2.0.md'
-        sh 'mv -f ' + sourceDir + '/CHANGELOG-2.0.md ' + docPath + '/CHANGELOG-2.0.md'
-        sh 'mv -f ' + sourceDir + '/composer.json ' + docPath + '/dev/composer.json'
-        sh 'mv -f ' + sourceDir + '/composer.lock ' + docPath + '/dev/composer.lock'
+        copyFiles.each {
+            fileName, destinationFolders -> 
+                for (folder in destinationFolders) {
+                    sh 'cp -f ' + sourceDir + '/' + fileName ' ' + destinationFolder + '/' + fileName
+                }
+        }
 
         echo 'Purging tests from vendors...'
         sh phpBuild + ' build:purge_vendors ' + packageDir + '/vendor'
