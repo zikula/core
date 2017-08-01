@@ -272,6 +272,13 @@ class AjaxUpgradeController extends AbstractController
         // set the 'start' page information to empty to avoid missing module errors.
         $variableApi->set(VariableApi::CONFIG, 'startController', '');
         $variableApi->set(VariableApi::CONFIG, 'startargs', '');
+        // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
+        $defaultTheme = $variableApi->getSystemVar('Default_Theme');
+        if (!$this->container->get('kernel')->isBundle($defaultTheme)
+            && $this->container->get('kernel')->isBundle('ZikulaBootstrapTheme')) {
+                $variableApi->set(VariableApi::CONFIG,'Default_Theme', 'ZikulaBootstrapTheme');
+        }
+
 
         return true;
     }
