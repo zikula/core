@@ -3,7 +3,7 @@
 node {
     env.WORKSPACE = pwd()
     def buildDir = env.WORKSPACE + '/build'
-    def sourceDir = env.WORKSPACE + '/source'
+    def sourceDir = env.WORKSPACE
     def jobName = currentBuild.projectName
     def exportDir = buildDir + '/export'
     def packageDir = exportDir + '/' + jobName
@@ -22,8 +22,6 @@ node {
         sh 'rm -f ' + composerFile
         */
 
-        sh 'mkdir ' + sourceDir
-        sh 'mv -f ' + env.WORKSPACE + '/* ' + sourceDir + '/'
         sh 'mkdir ' + buildDir
         sh 'mkdir ' + exportDir
         sh 'mkdir ' + packageDir
@@ -32,7 +30,7 @@ node {
         sh 'mkdir ' + buildDir + '/phpdox'
     }
     stage('Composer Install') {
-        sh 'cd ' + sourceDir + ' && wget -nc "http://getcomposer.org/composer.phar" && cd ..'
+        sh 'wget -nc "http://getcomposer.org/composer.phar"'
         sh 'chmod +x ' + composerFile
         sh composerFile + ' install --prefer-dist --no-dev --optimize-autoloader --no-scripts'
         sh composerFile + ' run-script post-autoload-dump'
