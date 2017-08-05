@@ -6,8 +6,10 @@ CHANGELOG - ZIKULA 2.0.x
  - Fixes:
 
  - Vendor updates:
-    - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.0.2
-    - symfony updated from 2.8.x to 3.3.x (#3027, #2099, #2639).
+    - jquery.mmenu updated from 6.1.3 to 6.1.4
+    - matthiasnoback/symfony-service-definition-validator updated from dev-master to 1.2.8
+    - sensiolabs/security-checker updated from 4.1.1 to 4.1.3
+    - symfony/symfony updated from 3.3.5 to 3.3.6
 
 
 * 2.0.0 (2017-08-05)
