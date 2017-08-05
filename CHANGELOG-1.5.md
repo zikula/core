@@ -1,7 +1,25 @@
 CHANGELOG - ZIKULA 1.5.x
 ------------------------
 
-* 1.5.0 (?)
+* 1.5.1 (?)
+
+ - BC Breaks:
+    - ?
+
+ - Deprecated:
+    - ?
+
+ - Fixes:
+    - ?
+
+ - Features:
+    - ?
+
+ - Vendor updates:
+    - ?
+
+
+* 1.5.0 (2017-08-05)
 
  - BC Breaks:
     - PHP minimum version raised to >=5.5.9.
