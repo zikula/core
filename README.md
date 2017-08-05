@@ -39,7 +39,7 @@ Requirements
 Documentation
 -------------
 
-Please see our [developer documentation](https://github.com/zikula/core/tree/master/src/docs)
+Please see our [developer documentation](https://github.com/zikula/core/tree/2.0/src/docs)
 
 
 Contributing
