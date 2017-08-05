@@ -1,7 +1,16 @@
 CHANGELOG - ZIKULA 2.0.x
 ------------------------
 
-* 2.0.0 (?)
+* 2.0.1 (?)
+
+ - Fixes:
+
+ - Vendor updates:
+    - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.0.2
+    - symfony updated from 2.8.x to 3.3.x (#3027, #2099, #2639).
+
+
+* 2.0.0 (2017-08-05)
 
  - BC Breaks:
     - Removed all @deprecated items from Core-1.x.
@@ -15,6 +24,7 @@ CHANGELOG - ZIKULA 2.0.x
  - Fixes:
 
  - Features:
+    - See feature docs
 
  - Vendor updates:
     - matthiasnoback/symfony-console-form updated from 1.2.0 to 2.0.2
