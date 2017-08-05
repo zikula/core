@@ -16,7 +16,12 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Vendor updates:
-    - ?
+    - jquery.mmenu updated from 6.1.3 to 6.1.4
+    - phpdocumentor/reflection-docblock updated from 3.2.0 to 3.2.1
+    - phpdocumentor/type-resolver downgraded from 0.4.0 to 0.3.0
+    - sensiolabs/security-checker updated from 4.1.1 to 4.1.3
+    - symfony/symfony updated from 2.8.25 to 2.8.26
+    - symfony/workflow updated from 3.3.5 to 3.3.6
 
 
 * 1.5.0 (2017-08-05)
