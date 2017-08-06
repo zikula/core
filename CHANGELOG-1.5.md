@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Fixes:
-    - ?
+    - Correcting conditional statement for searchable modules.
 
  - Features:
     - ?
