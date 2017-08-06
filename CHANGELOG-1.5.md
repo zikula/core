@@ -3,17 +3,11 @@ CHANGELOG - ZIKULA 1.5.x
 
 * 1.5.1 (?)
 
- - BC Breaks:
-    - ?
-
  - Deprecated:
     - ?
 
  - Fixes:
-    - Correcting conditional statement for searchable modules.
-
- - Features:
-    - ?
+    - Corrected conditional statement for searchable modules (#3752).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
