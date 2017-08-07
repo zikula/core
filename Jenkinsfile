@@ -79,14 +79,14 @@ node {
     }
     stage('Post-processing') {
         echo 'Clearing cache directory...'
-        sh 'mv ' + packageDir + '/app/cache/.htaccess ' + packageDir + '/var/'
-        sh 'rm -rf ' + packageDir + '/var/cache/*'
-        sh 'mv ' + packageDir + '/app/.htaccess ' + packageDir + '/var/cache/'
+        sh 'mv ' + packageDir + '/app/cache/.htaccess ' + packageDir + '/app/'
+        sh 'rm -rf ' + packageDir + '/app/cache/*'
+        sh 'mv ' + packageDir + '/app/.htaccess ' + packageDir + '/app/cache/'
 
         echo 'Clearing log directory...'
-        sh 'mv ' + packageDir + '/app/logs/.htaccess ' + packageDir + '/var/'
-        sh 'rm -rf ' + packageDir + '/var/logs/*'
-        sh 'mv ' + packageDir + '/app/.htaccess ' + packageDir + '/var/logs/'
+        sh 'mv ' + packageDir + '/app/logs/.htaccess ' + packageDir + '/app/'
+        sh 'rm -rf ' + packageDir + '/app/logs/*'
+        sh 'mv ' + packageDir + '/app/.htaccess ' + packageDir + '/app/logs/'
 
         echo 'Setting directory permissions...'
         sh 'chmod -R 0777 ' + packageDir + '/app/config'
