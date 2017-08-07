@@ -75,8 +75,8 @@ node {
     }
     stage('Create translations') {
         echo 'Copying legacy translations...'
-        sh 'cp /var/lib/jenkins/jobs/Zikula_Core-1.5-POT/lastSuccessful/archive/source/src/app/Resources/locale/zikula.pot ' + packageDir + '/config/locale/zikula.pot'
-        sh 'cp /var/lib/jenkins/jobs/Zikula_Core-1.5-POT/lastSuccessful/archive/source/src/app/Resources/locale/zikula_js.pot ' + packageDir + '/config/locale/zikula_js.pot'
+        sh 'cp /var/lib/jenkins/jobs/Zikula_Core-1.5-POT/lastSuccessful/archive/source/src/app/Resources/locale/zikula.pot ' + packageDir + '/app/Resources/locale/zikula.pot'
+        sh 'cp /var/lib/jenkins/jobs/Zikula_Core-1.5-POT/lastSuccessful/archive/source/src/app/Resources/locale/zikula_js.pot ' + packageDir + '/app/Resources/locale/zikula_js.pot'
         echo 'Creating translation files...'
         sh 'php -dmemory_limit=2G ' + packageDir + '/app/console translation:extract template --output-format=po --output-dir=' + packageDir + '/app/Resources/translations --enable-extractor=jms_i18n_routing --dir=' + packageDir + '/system --dir=' + packageDir + '/lib/Zikula/Bundle'
     }
