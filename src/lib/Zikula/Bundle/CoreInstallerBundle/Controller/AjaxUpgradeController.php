@@ -211,6 +211,10 @@ class AjaxUpgradeController extends AbstractController
                     $doctrine->getManager()->remove($block);
                 }
                 $doctrine->getManager()->flush();
+            case '2.0.0':
+                // nothing needed
+            case '2.0.1':
+                // current version - cannot perform anything yet
         }
 
         // always do this

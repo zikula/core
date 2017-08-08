@@ -85,7 +85,7 @@ class SearchApi implements SearchApiInterface
             $words = ($searchType == 'EXACT') ? [trim($q)] : preg_split('/ /', $q, -1, PREG_SPLIT_NO_EMPTY);
             $searchableModules = $this->searchableModuleCollector->getAll();
             foreach ($searchableModules as $moduleName => $searchableInstance) {
-                if ((isset($moduleData['active']) && !$moduleData['active']) || ($this->variableApi->get('ZikulaSearchModule', 'disable_' . $moduleName, false))) {
+                if ((isset($moduleData[$moduleName]['active']) && !$moduleData[$moduleName]['active']) || ($this->variableApi->get('ZikulaSearchModule', 'disable_' . $moduleName, false))) {
                     continue;
                 }
                 $moduleFormData = isset($moduleData[$moduleName]) ? $moduleData[$moduleName] : null;
