@@ -27,6 +27,7 @@ Functions
  * pageGetVar(name, default = null)
  * pageSetVar(name, value)
  * pager(params)
+ * pagerabc(params)
  * polyfill(features = ["forms"])
  * showflashes(params = [])
  * stateLabel(extensionEntity, upgradedExtensions = null)
