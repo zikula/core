@@ -22,9 +22,9 @@ class Column
     const DIRECTION_ASCENDING = 'ASC';
     const DIRECTION_DESCENDING = 'DESC';
 
-    const CSS_CLASS_UNSORTED = 'z-order-unsorted';
-    const CSS_CLASS_ASCENDING = 'z-order-asc';
-    const CSS_CLASS_DESCENDING = 'z-order-desc';
+    const CSS_CLASS_UNSORTED = 'unsorted';
+    const CSS_CLASS_ASCENDING = 'sorted-asc';
+    const CSS_CLASS_DESCENDING = 'sorted-desc';
 
     private $name;
 
