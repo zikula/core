@@ -4,6 +4,9 @@ CHANGELOG - ZIKULA 2.0.x
 * 2.0.1 (?)
 
  - Fixes:
+    - Corrected conditional statement for searchable modules (#3752).
+    - Corrected path to recent search results in pager (#3654, #3760).
+    - Corrected access to category properties on edit (#3763, #3762).
     - Corrected missing sortable column css class definitions (#3757).
 
  - Vendor updates:
