@@ -8,7 +8,7 @@ CHANGELOG - ZIKULA 1.5.x
 
  - Fixes:
     - Corrected conditional statement for searchable modules (#3752).
-    - Corrected path to recent search results in pager.
+    - Corrected path to recent search results in pager (#3760).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
