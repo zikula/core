@@ -260,3 +260,20 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
 .zikula-bootstrap-tab-container .nav-tabs li {
     margin: 0 0 -1px 0;
 }
+
+.sorted-desc:after,
+.sorted-asc:after,
+.unsorted:after {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: normal;
+}
+.sorted-asc:after {
+    content: "\A0\f0de";
+}
+.sorted-desc:after {
+    content: "\A0\f0dd";
+}
+.unsorted:after {
+    content: "\A0\f0dc"
+}

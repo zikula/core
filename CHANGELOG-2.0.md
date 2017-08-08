@@ -4,6 +4,7 @@ CHANGELOG - ZIKULA 2.0.x
 * 2.0.1 (?)
 
  - Fixes:
+    - Corrected missing sortable column css class definitions (#3757).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
