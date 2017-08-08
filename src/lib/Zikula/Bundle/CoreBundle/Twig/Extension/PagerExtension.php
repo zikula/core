@@ -41,8 +41,7 @@ class PagerExtension extends \Twig_Extension
     }
 
     /**
-     * @TODO SIMPLIFY THIS AND REMOVE ALL LEGACY!
-     * template pager plugin
+     * Pager function.
      *
      *   {{ pager({rowcount:pager.numitems, limit:pager.itemsperpage, posvar:'startnum', route:'zikulapagesmodule_admin_index', template:'pager.html.twig'}) }}
      *
@@ -282,7 +281,7 @@ class PagerExtension extends \Twig_Extension
     }
 
     /**
-     * @TODO SIMPLIFY THIS AND REMOVE ALL LEGACY!
+     * ABC-Pager function.
      *
      *  Examples:
      *    code:

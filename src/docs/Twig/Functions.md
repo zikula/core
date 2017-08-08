@@ -28,6 +28,7 @@ Functions
  * pageGetVar(name, default = null)
  * pageSetVar(name, value)
  * pager(params)
+ * pagerabc(params)
  * polyfill(features = ["forms"])
  * setMetaTag(name, value) _(deprecated, removed in 2.0)_
  * showflashes(params = [])
