@@ -428,6 +428,14 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+     * Alias to self::getDisplay_name() required for Twig property access
+     */
+    public function getDisplayName()
+    {
+        return $this->getDisplay_name();
+    }
+
+    /**
      * set the category display name
      *
      * @param array $display_name the category display name array
@@ -450,6 +458,14 @@ class CategoryEntity extends EntityAccess
         }
 
         return $this->display_desc;
+    }
+
+    /**
+     * Alias to self::getDisplay_desc() required for Twig property access
+     */
+    public function getDisplayDesc($lang = null)
+    {
+        return $this->getDisplay_desc($lang);
     }
 
     /**
