@@ -4,7 +4,11 @@ Zikula utilises the Symfony Workflow component to provide workflow functionality
 
 You can read more about it in [the manual](https://symfony.com/doc/master/components/workflow.html).
 
-Because this is for Symfony 3 only we use [a backport](https://github.com/fduch/workflow-bundle/) in Zikula 1.4. Thus workflow configuration must be set under `workflow` section instead of `framework` section. In Zikula 2.x we will remove the backport again.
+Because this is for Symfony 3 only we use [a backport](https://github.com/fduch/workflow-bundle/) in Zikula 1.5. Thus workflow configuration must be set under `workflow` section instead of `framework` section. In Zikula 2.x we will remove the backport again.
+
+## Workflow events
+
+Please see the [Symfony docs](http://symfony.com/doc/current/workflow/usage.html#using-events) for a list of existing workflow events.
 
 ## Custom functionality
 
