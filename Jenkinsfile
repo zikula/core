@@ -1,5 +1,9 @@
 #!groovy
 
+properties([
+    buildDiscarder(logRotator(numToKeepStr: '3'))
+])
+
 node {
     env.WORKSPACE = pwd()
     def buildDir = env.WORKSPACE + '/build_work'
