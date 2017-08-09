@@ -58,7 +58,7 @@ The following process should be followed for all upgrades even small point relea
 
   - Copy your custom theme to your new installation. The folders of your theme should be in the exact same place as your
     backup.
-  - Return compatible modules `/modules` directory.
+  - Return compatible modules to the `/modules` directory.
     - **DO NOT copy the old Profile and Legal module** as new versions of these are provided, and their location may differ.
   - Copy your backup contents of `/userdata` into `/web/uploads`
 
