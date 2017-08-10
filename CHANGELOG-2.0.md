@@ -9,6 +9,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Corrected access to category properties on edit (#3763, #3762).
     - Corrected missing sortable column css class definitions (#3757).
     - Update upgrade instructions (#3761, #3764).
+    - Corrected visibility of properties in \Zikula\Core\Doctrine\Entity\AbstractEntityAttribute (#3765).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
