@@ -27,19 +27,19 @@ abstract class AbstractEntityAttribute extends EntityAccess
      * @ORM\GeneratedValue
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\Column(type="array")
      * @var string
      */
-    private $value;
+    protected $value;
 
     abstract public function getEntity();
 
