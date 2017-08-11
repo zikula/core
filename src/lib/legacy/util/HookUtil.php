@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
+
 /**
  * HookUtil.
  * @deprecated remove at Core-2.0
@@ -51,7 +53,14 @@ class HookUtil
     {
         @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
 
-        return ModUtil::getModulesCapableOf(self::PROVIDER_CAPABLE);
+        $nonPersistedHookProviders = ServiceUtil::get('zikula_hook_bundle.collector.hook_collector')->getOwnersCapableOf(HookCollectorInterface::HOOK_PROVIDER);
+        foreach ($nonPersistedHookProviders as $nonPersistedHookProvider) {
+            $nonPersisted[] = ServiceUtil::get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $nonPersistedHookProvider]);
+        }
+
+        $persistedHookProviders = ModUtil::getModulesCapableOf(self::PROVIDER_CAPABLE);
+
+        return array_merge($nonPersisted, $persistedHookProviders);
     }
 
     /**
@@ -65,7 +74,14 @@ class HookUtil
     {
         @trigger_error('HookUtil is deprecated. please use CapabilityApi instead.', E_USER_DEPRECATED);
 
-        return ModUtil::getModulesCapableOf(self::SUBSCRIBER_CAPABLE);
+        $nonPersistedHookSubscribers = ServiceUtil::get('zikula_hook_bundle.collector.hook_collector')->getOwnersCapableOf(HookCollectorInterface::HOOK_SUBSCRIBER);
+        foreach ($nonPersistedHookSubscribers as $nonPersistedHookSubscriber) {
+            $nonPersisted[] = ServiceUtil::get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $nonPersistedHookSubscriber]);
+        }
+
+        $persistedHookSubscribers = ModUtil::getModulesCapableOf(self::SUBSCRIBER_CAPABLE);
+
+        return array_merge($nonPersisted, $persistedHookSubscribers);
     }
 
     /**
