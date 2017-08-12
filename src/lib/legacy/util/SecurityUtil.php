@@ -471,6 +471,7 @@ class SecurityUtil
 
                 // We have a match - set the level and quit
                 $level = $perm['level'];
+
                 break;
             }
 
@@ -494,6 +495,7 @@ class SecurityUtil
 
             // We have a match - set the level and quit looking
             $level = $perm['level'];
+
             break;
         }
 

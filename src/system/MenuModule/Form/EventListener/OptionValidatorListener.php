@@ -39,13 +39,16 @@ class OptionValidatorListener implements EventSubscriberInterface
                         switch ($option['value']) {
                             case 'true':
                                 $option['value'] = true;
+
                                 break;
                             case 'false':
                                 $option['value'] = false;
+
                                 break;
                             default:
                                 $form->addError(new FormError($option['key'] . ' must be either (string) "true" or "false").')); // @todo translate
                         }
+
                         break;
                     case 'array':
                         $option['value'] = str_replace("'", '"', $option['value']);
@@ -53,6 +56,7 @@ class OptionValidatorListener implements EventSubscriberInterface
                         if (null === $json) {
                             $form->addError(new FormError($option['key'] . ' must have a value that can be json_decoded.')); // @todo translate
                         }
+
                         break;
                 }
             }

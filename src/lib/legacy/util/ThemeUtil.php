@@ -124,12 +124,15 @@ class ThemeUtil
             switch ($filter) {
                 case self::FILTER_USER:
                     $qb->andWhere('t.user = 1');
+
                     break;
                 case self::FILTER_SYSTEM:
                     $qb->andWhere('t.system = 1');
+
                     break;
                 case self::FILTER_ADMIN:
                     $qb->andWhere('t.admin = 1');
+
                     break;
             }
 
@@ -332,6 +335,7 @@ class ThemeUtil
         foreach ($paths as $path) {
             if (is_readable("$path/$osstylesheet")) {
                 $csssrc = "$path/$osstylesheet";
+
                 break;
             }
         }

@@ -250,9 +250,11 @@ class DataUtil
                                 break;
                             case 1:
                                 $allowedHTML[] = "/?$k\s*/?";
+
                                 break;
                             case 2:
                                 $allowedHTML[] = "/?\s*$k" . "(\s+[\w\-:]+\s*=\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
+
                                 break;
                         }
                     }
@@ -530,21 +532,27 @@ class DataUtil
         switch (strtolower($ini_val)) {
             case 'off':
                 return false;
+
                 break;
             case 'on':
                 return true;
+
                 break;
             case 'false':
                 return false;
+
                 break;
             case 'true':
                 return true;
+
                 break;
             case '0':
                 return false;
+
                 break;
             case '1':
                 return true;
+
                 break;
             default:
                 return $ini_val;

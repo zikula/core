@@ -42,41 +42,51 @@ class DateUtil
             case 'datelong':
                 //! datelong
                 $format = $translateFormat ? __('%A, %B %d, %Y') : '%A, %B %d, %Y';
+
                 break;
             case 'datebrief':
                 //! datebrief
                 $format = $translateFormat ? __('%b %d, %Y') : '%b %d, %Y';
+
                 break;
             case 'datestring':
                 //! datestring
                 $format = $translateFormat ? __('%A, %B %d @ %H:%M:%S') : '%A, %B %d @ %H:%M:%S';
+
                 break;
             case 'datestring2':
                 //! datestring2
                 $format = $translateFormat ? __('%A, %B %d') : '%A, %B %d';
+
                 break;
             case 'datetimebrief':
                 //! datetimebrief
                 $format = $translateFormat ? __('%b %d, %Y - %I:%M %p') : '%b %d, %Y - %I:%M %p';
+
                 break;
             case 'datetimelong':
                 //! datetimelong
                 $format = $translateFormat ? __('%A, %B %d, %Y - %I:%M %p') : '%A, %B %d, %Y - %I:%M %p';
+
                 break;
             case 'datefeed':
                 //! RFC 822 date format for RSS feeds
                 $format = $translateFormat ? __('%a, %d %b %Y %H:%M:%S %Z') : '%a, %d %b %Y %H:%M:%S %Z';
+
                 break;
             case 'timebrief':
                 //! timebrief
                 $format = $translateFormat ? __('%I:%M %p') : '%I:%M %p';
+
                 break;
             case 'timelong':
                 //! timelong
                 $format = $translateFormat ? __('%T %p') : '%T %p';
+
                 break;
             default:
                 $format = $translateFormat ? __($format) : $format;
+
                 break;
         } // switch
 
@@ -923,14 +933,17 @@ class DateUtil
             case 8:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)#';
                 $type = 'date';
+
                 break;
             case 14:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)\s%(\w)(.)%(\w)#';
                 $type = 'datetimeshort';
+
                 break;
             case 17:
                 $regex = '#%(\w)(.)%(\w)(.)%(\w)\s%(\w)(.)%(\w)(.)%(\w)#';
                 $type = 'datetimefull';
+
                 break;
             default:
                 throw new \Exception(__f('Dateformat must be with 8, 14 or 17 characters long.', $dateformat));

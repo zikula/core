@@ -145,6 +145,7 @@ class ControllerHelper
         foreach ($results as $check) {
             if (!$check) {
                 $requirementsMet = false;
+
                 break;
             }
         }
@@ -170,6 +171,7 @@ class ControllerHelper
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
         $params = array_merge($yamlManager->getParameters(), $data);
+
         try {
             $yamlManager->setParameters($params);
         } catch (IOException $e) {

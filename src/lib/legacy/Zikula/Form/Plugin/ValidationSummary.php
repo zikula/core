@@ -52,6 +52,7 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
                     foreach ($view->plugins as $plugin) {
                         if (get_class($plugin) == 'Zikula_Form_Plugin_Label' && $plugin->for == $validator->dataField) {
                             $label = $plugin->text;
+
                             break;
                         }
                     }

@@ -106,6 +106,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
     foreach ($searchpaths as $path) {
         if (is_readable("$path/$osscript")) {
             $scriptsrc = "$path/$osscript";
+
             break;
         }
     }

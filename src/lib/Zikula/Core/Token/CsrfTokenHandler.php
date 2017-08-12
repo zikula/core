@@ -87,6 +87,7 @@ class CsrfTokenHandler
             $this->session->invalidate();
             $this->session->set('session_expire', true);
         }
+
         throw new AccessDeniedException('Error! Something went wrong: security token validation failed. Go to the <a href="' . $request->getBaseUrl() . '">homepage</a>.');
     }
 

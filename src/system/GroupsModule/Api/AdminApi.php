@@ -45,6 +45,7 @@ class AdminApi
         // Argument check
         if (!isset($args['name'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -235,6 +236,7 @@ class AdminApi
         // Argument check
         if (!isset($args['gid']) || !isset($args['uid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -286,6 +288,7 @@ class AdminApi
         // Argument check
         if (!isset($args['gid']) || !isset($args['uid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -332,6 +335,7 @@ class AdminApi
         // Argument check
         if (!isset($args['name'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -365,6 +369,7 @@ class AdminApi
         // Argument check
         if (!isset($args['gid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Error! Invalid arguments array received.'));
         }
 
@@ -498,6 +503,7 @@ class AdminApi
 
                 $mailer = ServiceUtil::get('zikula_mailer_module.api.mailer');
                 $send = $mailer->sendMessage($message, $args['reasontitle'], $args['reason']);
+
                 break;
             default:
                 $send = true;

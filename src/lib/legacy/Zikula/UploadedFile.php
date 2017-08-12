@@ -50,18 +50,23 @@ class Zikula_UploadedFile extends \Symfony\Component\HttpFoundation\File\Uploade
         switch ($offset) {
             case 'name':
                 $value = $this->getClientOriginalName();
+
                 break;
             case 'type':
                 $value = $this->getClientMimeType();
+
                 break;
             case 'size':
                 $value = $this->getClientSize();
+
                 break;
             case 'tmp_name':
                 $value = $this->getRealPath();
+
                 break;
             case 'error':
                 $value = $this->getError();
+
                 break;
             default:
                 $value = null;

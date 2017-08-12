@@ -133,11 +133,13 @@ class HookController extends Controller
                 // unless subscriber has the ability to connect to it's own providers
                 if ($hooksubscribers[$i]['name'] == $moduleName) {
                     unset($hooksubscribers[$i]);
+
                     continue;
                 }
                 // does the user have admin permissions on the subscriber module?
                 if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($hooksubscribers[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
                     unset($hooksubscribers[$i]);
+
                     continue;
                 }
 
@@ -239,12 +241,14 @@ class HookController extends Controller
                 // unless subscriber has the ability to connect to it's own providers
                 if ($hookproviders[$i]['name'] == $moduleName && !$isSubscriberSelfCapable) {
                     unset($hookproviders[$i]);
+
                     continue;
                 }
 
                 // does the user have admin permissions on the provider module?
                 if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($hookproviders[$i]['name']."::", '::', ACCESS_ADMIN)) {
                     unset($hookproviders[$i]);
+
                     continue;
                 }
 

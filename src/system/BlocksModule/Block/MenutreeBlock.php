@@ -508,6 +508,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         switch ($menuType) {
             case 'menutree':
                 $data = isset($menuVars['menutree_content']) ? $menuVars['menutree_content'] : [];
+
                 break;
 
             case 'menu':
@@ -531,6 +532,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                     $langs = (array)$reflang;
                     $lineno++;
                 }
+
                 break;
 
             case 'extmenu':
@@ -556,6 +558,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                     $pid = $id + 2;
                     $lineno = count($data);
                 }
+
                 break;
         }
 

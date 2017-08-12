@@ -125,6 +125,7 @@ class BlockUtil
                             $key = array_search($test, $customargs);
                             if ($key === false) {
                                 $rule4 = false;
+
                                 break;
                             } else {
                                 $rule4 = true;
@@ -133,6 +134,7 @@ class BlockUtil
                     }
                     if ($rule1 == true && $rule2 == true && $rule3 == true && $rule4 !== false) {
                         $showblock = true;
+
                         break;
                     }
                 }
@@ -314,6 +316,7 @@ class BlockUtil
         // get the block info
         $kernel = $sm->get('kernel');
         $module = null;
+
         try {
             /** @var $module \Zikula\Core\AbstractModule */
             $module = $kernel->getModule($modinfo['name']);

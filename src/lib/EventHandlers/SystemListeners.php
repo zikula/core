@@ -82,6 +82,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
     public function requireSession(Zikula_Event $event)
     {
         $session = $this->serviceManager->get('session');
+
         try {
             $request = ServiceUtil::get('request');
             $request->setSession($session);

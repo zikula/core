@@ -51,18 +51,23 @@ function smarty_function_formutil_getpassedvalue($params, Zikula_View $view)
     switch ($source) {
         case 'GET':
             $val = $view->getRequest()->query->get($key, $default);
+
             break;
         case 'POST':
             $val = $view->getRequest()->request->get($key, $default);
+
             break;
         case 'SERVER':
             $val = $view->getRequest()->server->get($key, $default);
+
             break;
         case 'FILES':
             $val = $view->getRequest()->files->get($key, $default);
+
             break;
         default:
             $val = $view->getRequest()->query->get($key, $view->getRequest()->request->get($key, $default));
+
             break;
     }
 

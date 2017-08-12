@@ -134,12 +134,14 @@ class PagerExtension extends \Twig_Extension
                         if (!isset($routeName)) {
                             $routeName = $v;
                         }
+
                         break;
                     case 'lang':
                         $addcurrentlang2url = $systemVars['languageurl'];
                         if ($addcurrentlang2url == 0) {
                             $pager['args'][$k] =  $v;
                         }
+
                         break;
                     default:
                         if (is_array($v)) {

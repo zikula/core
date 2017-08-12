@@ -312,6 +312,7 @@ class UserAdministrationController extends AbstractController
                 if (in_array($uid, [1, 2, $this->get('zikula_users_module.current_user')->get('uid')])) {
                     unset($userIds[$k]);
                     $this->addFlash('danger', $this->__f('You are not allowed to delete Uid %uid', ['%uid' => $uid]));
+
                     continue;
                 }
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());

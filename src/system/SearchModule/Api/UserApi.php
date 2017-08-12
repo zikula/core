@@ -114,6 +114,7 @@ class UserApi
                     $ok = ModUtil::apiFunc($mod['title'], 'search', $function, $param);
                     if (!$ok) {
                         $translator = ServiceUtil::get('translator.default');
+
                         throw new \RuntimeException($translator->__f('Error! \'%1$s\' module returned false in search function \'%2$s\'.', [
                             '%1$s' => $mod['title'],
                             '%2$s' => $function
@@ -165,10 +166,12 @@ class UserApi
                 break;
             case 'oldest':
                 $sort = 'created';
+
                 break;
             case 'newest':
                 $sort = 'created';
                 $dir = 'DESC';
+
                 break;
         }
 

@@ -100,6 +100,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     private function writeParams($data = [])
     {
         $params = array_merge($this->yamlManager->getParameters(), $data);
+
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {

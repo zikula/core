@@ -76,6 +76,7 @@ class UserApi
         // Argument check
         if (!isset($args['gid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -203,6 +204,7 @@ class UserApi
         }
         if (!is_numeric($args['uid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -423,6 +425,7 @@ class UserApi
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -460,6 +463,7 @@ class UserApi
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -641,6 +645,7 @@ class UserApi
         if ((!isset($args['gid']) && !is_numeric($args['gid'])) ||
             (!isset($args['uid']) && !is_numeric($args['uid']))) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -704,6 +709,7 @@ class UserApi
         if ((!isset($args['uid']) && !is_numeric($args['uid'])) ||
             (!isset($args['gid']) && !is_numeric($args['gid']))) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 

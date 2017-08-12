@@ -85,10 +85,12 @@ class PageUtil
                 case 'description':
                 case 'keywords':
                     return true;
+
                     break;
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
+
                     break;
             }
         }
@@ -136,10 +138,12 @@ class PageUtil
                 case 'description':
                 case 'keywords':
                     return true;
+
                     break;
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
+
                     break;
             }
         }
@@ -196,13 +200,16 @@ class PageUtil
             switch ($varname) {
                 case 'description':
                     return $metaTags['description'];
+
                     break;
                 case 'keywords':
                     return $metaTags['keywords'];
+
                     break;
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
+
                     break;
             }
         }
@@ -265,16 +272,19 @@ class PageUtil
                     $sm->setParameter('zikula_view.metatags', $metaTags);
 
                     return true;
+
                     break;
                 case 'keywords':
                     $metaTags['keywords'] = $value;
                     $sm->setParameter('zikula_view.metatags', $metaTags);
 
                     return true;
+
                     break;
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
+
                     break;
             }
         }
@@ -355,6 +365,7 @@ class PageUtil
                 case 'rawtext':
                     LogUtil::log(__f('Warning! The page variable %1$s is deprecated. Please use %2$s instead.', ['rawtext', 'header']), E_USER_DEPRECATED);
                     $varname = 'header';
+
                     break;
             }
         }

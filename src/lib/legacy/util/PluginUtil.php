@@ -343,6 +343,7 @@ class PluginUtil
 
             if ($parts[0] == 'ModulePlugin' && $parts[1] == $modulename) {
                 $hasPlugins = true;
+
                 break;
             }
         }

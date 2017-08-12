@@ -52,6 +52,7 @@ class ThemeEntityRepository extends EntityRepository
             $message = 'The "kernel" attribute is NULL. '
                 . 'Did you retrieved this repository using `$doctrine->getRepository()`? '
                 . 'If so, retrieve it instead directly from the container';
+
             throw new \LogicException($message);
         }
 
@@ -75,12 +76,15 @@ class ThemeEntityRepository extends EntityRepository
         switch ($filter) {
             case self::FILTER_USER:
                 $qb->andWhere('t.user = 1');
+
                 break;
             case self::FILTER_SYSTEM:
                 $qb->andWhere('t.system = 1');
+
                 break;
             case self::FILTER_ADMIN:
                 $qb->andWhere('t.admin = 1');
+
                 break;
         }
 

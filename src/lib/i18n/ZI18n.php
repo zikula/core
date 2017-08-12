@@ -143,18 +143,23 @@ class ZI18n
         switch ($this->sign_posn) {
             case 0:
                 $number = "($number)";
+
                 break;
             case 1:
                 $number = "$this->sign{$number}";
+
                 break;
             case 2:
                 $number = "{$number}$this->sign";
+
                 break;
             case 3:
                 $number = "$this->sign{$number}";
+
                 break;
             case 4:
                 $number = "{$number}$this->sign";
+
                 break;
             default:
                 $number = "$number [error sign_posn=$this->sign_posn]";
@@ -180,18 +185,23 @@ class ZI18n
         switch ($this->sign_posn) {
             case 0:
                 $number = "($number)";
+
                 break;
             case 1:
                 $number = "$this->sign{$number}";
+
                 break;
             case 2:
                 $number = "{$number}$this->sign";
+
                 break;
             case 3:
                 $number = "$this->sign{$number}";
+
                 break;
             case 4:
                 $number = "{$number}$this->sign";
+
                 break;
             default:
                 $number = "$number [error sign_posn=$this->sign_posn]";

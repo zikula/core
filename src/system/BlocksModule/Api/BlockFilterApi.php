@@ -56,6 +56,7 @@ class BlockFilterApi implements BlockFilterApiInterface
             switch ($filter['attribute']) {
                 case 'query param':
                     $name = $request->query->get($filter['queryParameter']);
+
                     break;
                 case '_route_params':
                     $params = $request->attributes->get('_route_params');

@@ -57,6 +57,7 @@ class FormUtil
                 }
                 $value = filter_var($_REQUEST[$key], $filter, $args);
                 $failed = ($value === false) ? $_REQUEST : null;
+
                 break;
             case isset($_GET[$key]) && (!$source || $source == 'G' || $source == 'GET'):
                 if (is_array($_GET[$key])) {
@@ -64,6 +65,7 @@ class FormUtil
                 }
                 $value = filter_var($_GET[$key], $filter, $args);
                 $failed = ($value === false) ? $_GET : null;
+
                 break;
             case isset($_POST[$key]) && (!$source || $source == 'P' || $source == 'POST'):
                 if (is_array($_POST[$key])) {
@@ -71,6 +73,7 @@ class FormUtil
                 }
                 $value = filter_var($_POST[$key], $filter, $args);
                 $failed = ($value === false) ? $_POST : null;
+
                 break;
             case isset($_COOKIE[$key]) && (!$source || $source == 'C' || $source == 'COOKIE'):
                 if (is_array($_COOKIE[$key])) {
@@ -78,6 +81,7 @@ class FormUtil
                 }
                 $value = filter_var($_COOKIE[$key], $filter, $args);
                 $failed = ($value === false) ? $_COOKIE : null;
+
                 break;
             case isset($_FILES[$key]) && ($source == 'F' || $source == 'FILES'):
                 if (is_array($_FILES[$key])) {
@@ -85,6 +89,7 @@ class FormUtil
                 }
                 $value = $_FILES[$key];
                 $failed = ($value === false) ? $_COOKIE : null;
+
                 break;
             case (isset($_GET[$key]) || isset($_POST[$key])) && ($source == 'GP' || $source == 'GETPOST'):
                 if (isset($_GET[$key])) {
@@ -101,6 +106,7 @@ class FormUtil
                     $value = filter_var($_POST[$key], $filter, $args);
                     $failed = ($value === false) ? $_POST : null;
                 }
+
                 break;
             default:
                 if ($source) {

@@ -67,6 +67,7 @@ class MailHelper
         $html = false;
 
         $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.html.twig";
+
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
@@ -75,6 +76,7 @@ class MailHelper
         }
 
         $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.txt.twig";
+
         try {
             $textBody = $this->twig->render($templateName, $templateArgs);
         } catch (\Twig_Error_Loader $e) {
@@ -102,18 +104,23 @@ class MailHelper
         switch ($notificationType) {
             case 'importnotify':
                 return $this->translator->__f('Welcome to %s!', ['%s' => $siteName]);
+
                 break;
             case 'lostpassword':
                 return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $siteName]);
+
                 break;
             case 'lostuname':
                 return $this->translator->__f('\'%s\' account information', ['%s' => $siteName]);
+
                 break;
             case 'regverifyemail':
                 return $this->translator->__f('Verify your e-mail address for %s.', ['%s' => $siteName]);
+
                 break;
             case 'userverifyemail':
                 return $this->translator->__f('Verify your request to change your e-mail address at \'%s\'', ['%s' => $siteName]);
+
                 break;
             default:
                 return $this->translator->__f('A message from %s.', ['%s' => $siteName]);

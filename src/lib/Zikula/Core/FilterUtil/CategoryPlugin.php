@@ -143,9 +143,11 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
         switch ($op) {
             case 'eq':
                 $con = $expr->eq($column, $config->toParam($value, 'category', $field));
+
                 break;
             case 'ne':
                 $con = $expr->neq($column, $config->toParam($value, 'category', $field));
+
                 break;
             case 'sub':
                 $items = [];
@@ -156,6 +158,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
                     $items[] = $category->getId();
                 }
                 $con = $expr->in($column, $config->toParam($items, 'category', $field));
+
                 break;
         }
         if (null !== $this->modname && null !== $this->property) {

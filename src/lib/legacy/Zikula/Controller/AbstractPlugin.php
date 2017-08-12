@@ -101,6 +101,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
         } else {
             if (!$view instanceof Zikula_View_Plugin) {
                 $name = is_object($view) ? get_class($view) : '$view';
+
                 throw new InvalidArgumentException(sprintf('%s must be an instance of Zikula_View_Plugin', $name));
             }
         }

@@ -104,23 +104,27 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
             case 'year':
                 $from = mktime(0, 0, 0, 1, 1, $datearray['year']);
                 $to = strtotime('+1 year', $from);
+
                 break;
 
             case 'month':
                 $from = mktime(0, 0, 0, $datearray['mon'], 1, $datearray['year']);
                 $to = strtotime('+1 month', $from);
+
                 break;
 
             case 'week':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
                 $from = ($datearray['wday'] != 1) ? strtotime('last monday', $from) : $from;
                 $to = strtotime('+1 week', $from);
+
                 break;
 
             case 'day':
             case 'tomorrow':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
                 $to = strtotime('+1 day', $from);
+
                 break;
 
             case 'hour':
@@ -133,6 +137,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                     $datearray['year']
                 );
                 $to = $from + 3600;
+
                 break;
 
             case 'min':
@@ -146,6 +151,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                     $datearray['year']
                 );
                 $to = $from + 60;
+
                 break;
         }
 

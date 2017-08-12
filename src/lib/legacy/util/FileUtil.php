@@ -233,10 +233,12 @@ class FileUtil
                             if ($regexpMatch) {
                                 if (preg_match("/$regexpMatch/$caseFlag", $file)) {
                                     $files[] = $filenameToStore;
+
                                     break;
                                 }
                             } else {
                                 $files[] = $filenameToStore;
+
                                 break;
                             }
                         }
@@ -516,18 +518,23 @@ class FileUtil
         switch ($code) {
             case 1:
                 $msg = __('The uploaded file exceeds the upload_max_filesize directive in php.ini.');
+
                 break;
             case 2:
                 $msg = __('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form.');
+
                 break;
             case 3:
                 $msg = __('The uploaded file was only partially uploaded.');
+
                 break;
             case 4:
                 $msg = __('No file was uploaded.');
+
                 break;
             case 5:
                 $msg = __('Uploaded file size 0 bytes.');
+
                 break;
         }
 
@@ -587,7 +594,7 @@ class FileUtil
             fputcsv($out, $datarow, $delimiter, $enclosure);
         }
 
-         //close the out file
+        //close the out file
         fclose($out);
 
         exit;

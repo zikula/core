@@ -774,6 +774,7 @@ class ModUtil
         foreach ($files as $file) {
             if ($found = is_readable($file)) {
                 include_once $file;
+
                 break;
             }
         }
@@ -1232,6 +1233,7 @@ class ModUtil
                     if (!$api && $newType) {
                         // resolve request args.
                         $resolver = new ControllerResolver($sm, new ControllerNameParser(ServiceUtil::get('kernel')));
+
                         try {
                             $r = new \ReflectionClass($modfunc[0]);
                             if (!$r->hasMethod($modfunc[1])) {
@@ -1405,6 +1407,7 @@ class ModUtil
             try {
                 $url = $router->generate($routeName, $args, ($fqurl) ? $router::ABSOLUTE_URL : $router::ABSOLUTE_PATH);
                 $found = true;
+
                 break;
             } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
             }
@@ -1522,6 +1525,7 @@ class ModUtil
             if (!is_array($v)) {
                 if (strpos($v, '%') !== false) {
                     $shorturls = false;
+
                     break;
                 }
             } else {
@@ -1530,14 +1534,17 @@ class ModUtil
                         foreach ($vv as $vvv) {
                             if (!is_array($vvv) && strpos($vvv, '%') !== false) {
                                 $shorturls = false;
+
                                 break;
                             }
                         }
                     } elseif (strpos($vv, '%') !== false) {
                         $shorturls = false;
+
                         break;
                     }
                 }
+
                 break;
             }
         }
@@ -2107,6 +2114,7 @@ class ModUtil
 
         /** @var $kernel Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel */
         $kernel = ServiceUtil::getManager()->get('kernel');
+
         try {
             return $kernel->getModule($moduleName);
         } catch (\InvalidArgumentException $e) {

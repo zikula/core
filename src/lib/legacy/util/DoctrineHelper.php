@@ -27,6 +27,7 @@ class DoctrineHelper
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
+
         try {
             $tool->createSchema($metaClasses);
         } catch (\PDOException $e) {
@@ -43,6 +44,7 @@ class DoctrineHelper
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
+
         try {
             $tool->dropSchema($metaClasses);
         } catch (\PDOException $e) {
@@ -59,6 +61,7 @@ class DoctrineHelper
         foreach ($classes as $class) {
             $metaClasses[] = $em->getClassMetadata($class);
         }
+
         try {
             $tool->updateSchema($metaClasses, $saveMode);
         } catch (\PDOException $e) {

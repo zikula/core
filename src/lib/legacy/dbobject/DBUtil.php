@@ -583,6 +583,7 @@ class DBUtil
                 'definition' => $definition
             ]
         ];
+
         try {
             Doctrine_Manager::getInstance()->getCurrentConnection()->export->alterTable($tableName, ['rename' => $renameColumnArray]);
         } catch (Exception $e) {
@@ -1746,6 +1747,7 @@ class DBUtil
                     $instance = $oil . ':' . $oim . ':' . $oir;
                     if (!SecurityUtil::checkPermission($component, $instance, $level)) {
                         $havePerm = false;
+
                         break;
                     }
                 }
@@ -2086,7 +2088,7 @@ class DBUtil
                 }
                 $wherecat = '(' . implode(' OR ', $wherecat) . ')';
 
-            // if there's only one category ID
+                // if there's only one category ID
             } else {
                 $wherecat = "{$prefix}category_id='" . DataUtil::formatForStore($category) . "'";
             }
@@ -3148,6 +3150,7 @@ class DBUtil
         }
 
         $resultID = 0;
+
         try {
             if (!$resultID = Doctrine_Manager::getInstance()->getCurrentConnection()->lastInsertId($tableName, $fieldName)) {
                 if ($exitOnError) {
@@ -3255,10 +3258,12 @@ class DBUtil
                 switch (count($matches)) {
                     case 2:
                         $type = $matches[1];
+
                         break;
                     case 4:
                         $type = $matches[2];
                         $fLen = $matches[3];
+
                         break;
                     case 6:
                         $type = $matches[4];
@@ -3269,6 +3274,7 @@ class DBUtil
                         } else {
                             $fLen = $matches[5];
                         }
+
                         break;
                 }
 
@@ -3643,6 +3649,7 @@ class DBUtil
                 continue;
             }
             $alterTableDefinition = ['add' => [$key => $columnDefinition]];
+
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -3653,6 +3660,7 @@ class DBUtil
         // second round, alter table structures to match new tables definition.
         foreach ($definition as $key => $columnDefinition) {
             $alterTableDefinition = ['change' => [$key => ['definition' => $columnDefinition]]];
+
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -3667,6 +3675,7 @@ class DBUtil
                     continue;
                 }
                 $alterTableDefinition = ['remove' => [$key => []]];
+
                 try {
                     $connection->export->alterTable($tableName, $alterTableDefinition);
                 } catch (Exception $e) {
@@ -4074,6 +4083,7 @@ class DBUtil
                         DataUtil::formatForDisplay($_tablename)
                     ]));
                 }
+
                 break;
 
             default: // no action necessary, use tablename as is

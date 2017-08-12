@@ -99,12 +99,14 @@ class ZikulaSessionStorage extends NativeSessionStorage
                     if ((!$rememberMe && $cookieExpired) || ($cookieAgedOut) || ($uid == Constant::USER_ID_ANONYMOUS && $cookieExpired)) {
                         parent::regenerate(true, 2 * 365 * 24 * 60 * 60); // two years
                     }
+
                     break;
                 case self::SECURITY_LEVEL_HIGH:
                 default:
                     if ($cookieExpired) {
                         parent::regenerate(true, $this->cookieLifeTime);
                     }
+
                     break;
             }
         }

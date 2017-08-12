@@ -465,6 +465,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             // skip pages which are disabled for display in menu
             if (in_array($page['parentPageId'], $blocked) || !$page['isInMenu']) {
                 $blocked[] = $page['id'];
+
                 continue;
             }
             $links[$page['id']] = [

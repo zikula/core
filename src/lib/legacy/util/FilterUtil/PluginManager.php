@@ -210,6 +210,7 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
         foreach ($dest as $file) {
             if (is_readable($file)) {
                 include_once $file;
+
                 break;
             }
         }

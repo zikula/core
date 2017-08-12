@@ -106,11 +106,13 @@ class NodeController extends AbstractController
                     'id' => $category->getId(),
                     'mode' => $mode
                 ];
+
                 break;
             case 'deleteandmovechildren':
                 $newParent = $repo->find($request->request->get('parent', 1));
                 if ($newParent == $category->getParent()) {
                     $response = ['result' => true];
+
                     break;
                 }
                 // move the children
@@ -141,6 +143,7 @@ class NodeController extends AbstractController
                 ];
                 $repo->recover();
                 $this->getDoctrine()->getManager()->flush();
+
                 break;
             case 'activate':
             case 'deactivate':
@@ -152,6 +155,7 @@ class NodeController extends AbstractController
                     'action' => $action,
                     'result' => true
                 ];
+
                 break;
             default:
                 $response = ['result' => true];

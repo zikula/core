@@ -67,18 +67,23 @@ foreach ($_GET as $domain => $meta) {
     switch ($type) {
         case 'module':
             $type = "modules/$name/";
+
             break;
         case 'theme':
             $type = "themes/$name/";
+
             break;
         case 'moduleplugin':
             $type = "modules/$name/plugins/$pluginName/";
+
             break;
         case 'systemplugin':
             $type = "plugins/$name/";
+
             break;
         case 'zikula':
             $type = '';
+
             break;
     }
 

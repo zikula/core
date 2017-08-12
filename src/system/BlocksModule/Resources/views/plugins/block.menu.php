@@ -57,6 +57,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
     } catch (Exception $e) {
         $currentKey = null;
     }
+
     try {
         $iterator->seek($index - 1);
         $lastKey = $iterator->key();

@@ -321,6 +321,7 @@ class AdminController extends AbstractController
                 }
 
                 $sortOrder = $association['sortorder'];
+
                 break;
             }
 
@@ -346,6 +347,7 @@ class AdminController extends AbstractController
                 $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
                 // @deprecated remove at Core-2.0
                 $links = (false == $links) ? (array) ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks') : $links;
+
                 try {
                     $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
                 } catch (\Exception $e) {
@@ -411,6 +413,7 @@ class AdminController extends AbstractController
             }
 
             $menuText = $adminModule['displayname'];
+
             try {
                 $menuTextUrl = isset($adminModule['capabilities']['admin']['url'])
                     ? $adminModule['capabilities']['admin']['url']
@@ -430,6 +433,7 @@ class AdminController extends AbstractController
                 }
 
                 $sortOrder = $association['sortorder'];
+
                 break;
             }
 

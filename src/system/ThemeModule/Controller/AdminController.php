@@ -769,6 +769,7 @@ class AdminController extends AbstractController
             foreach ($legacyView->plugins_dir as $plugindir) {
                 if (file_exists($plugindir .'/'. $ostype .'.'. DataUtil::formatForOS($filter) .'.php')) {
                     $newfilters[] = $filter;
+
                     break;
                 }
             }

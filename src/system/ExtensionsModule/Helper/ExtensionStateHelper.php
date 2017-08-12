@@ -91,17 +91,20 @@ class ExtensionStateHelper
         switch ($state) {
             case Constant::STATE_INACTIVE:
                 $eventName = CoreEvents::MODULE_DISABLE;
+
                 break;
             case Constant::STATE_ACTIVE:
                 if ($extension->getState() === Constant::STATE_INACTIVE) {
                     // ACTIVE is used for freshly installed modules, so only register the transition if previously inactive.
                     $eventName = CoreEvents::MODULE_ENABLE;
                 }
+
                 break;
             case Constant::STATE_UPGRADED:
                 if ($extension->getState() == Constant::STATE_UNINITIALISED) {
                     throw new \RuntimeException($this->translator->__('Error! Invalid module state transition.'));
                 }
+
                 break;
         }
 

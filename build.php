@@ -80,6 +80,7 @@ class GenerateVendorDocCommand extends Command
         foreach ($authors as $k => $author) {
             if (in_array($author['name'], $tmp)) {
                 unset($authors[$k]);
+
                 continue;
             }
             $tmp[] = $author['name'];

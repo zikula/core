@@ -43,6 +43,7 @@ class RequireJsConfigGenerator
         foreach ($processes as $class) {
             if (!class_exists($class)) {
                 $io->write("<warning>Process class '$class' not found, skipping this process</warning>");
+
                 continue;
             }
             $io->write("<info>Running '$class' </info>");
@@ -51,6 +52,7 @@ class RequireJsConfigGenerator
             // When an error occurs during initialization, end the process.
             if (!$process->init()) {
                 $io->write("<warning>An error occurred while initializing the '$class' process.</warning>");
+
                 break;
             }
             $process->process();

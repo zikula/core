@@ -120,12 +120,15 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
         switch ($modinfo['type']) {
             case ModUtil::TYPE_SYSTEM:
                 $pluginsDir = "system/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
+
                 break;
             case ModUtil::TYPE_MODULE:
                 $pluginsDir = "modules/{$modinfo['directory']}/plugins/$plugin/templates/plugins";
+
                 break;
             case ModUtil::TYPE_CORE:
                 $pluginsDir = "plugins/$plugin/templates/plugins";
+
                 break;
         }
 

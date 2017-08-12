@@ -42,7 +42,7 @@ function smarty_outputfilter_pagevars($source, $view)
             if (empty($stylesheet)) {
                 continue;
             }
-                // check if the stylesheets is in the additional_header array
+            // check if the stylesheets is in the additional_header array
             if ($themeinfo['xhtml']) {
                 $return .= '<link rel="stylesheet" href="' . DataUtil::formatForDisplay($stylesheet) . '" type="text/css" />' . "\n";
             } else {
@@ -61,6 +61,7 @@ function smarty_outputfilter_pagevars($source, $view)
         foreach ($jcss['javascripts'] as $j => $javascript) {
             if (empty($javascript)) {
                 unset($jcss['javascripts'][$j]);
+
                 continue;
             }
             // check if the javascript is in the additional_header array

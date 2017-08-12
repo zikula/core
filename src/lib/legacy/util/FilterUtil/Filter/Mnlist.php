@@ -233,12 +233,14 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
                 $where = $value.' NOT IN ('.
                          'SELECT '.$this->mncolumn[$field][$this->fields[$field]].' FROM '.$this->mntable[$field].' '.$alias.
                          ' WHERE '.$this->column[$this->comparefield[$field]]." = $alias.".$this->mncolumn[$field][$this->comparefield[$field]].')';
+
                 break;
 
             case 'eq':
                 $where = $value.' IN ('.
                          'SELECT '.$this->mncolumn[$field][$this->fields[$field]].' FROM '.$this->mntable[$field].' '.$alias.
                          ' WHERE '.$this->column[$this->comparefield[$field]]." = $alias.".$this->mncolumn[$field][$this->comparefield[$field]].')';
+
                 break;
         }
 

@@ -415,6 +415,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
 
                     if ($item['value'] == $value[$j]) {
                         $ok2 = true;
+
                         break;
                     }
                 }

@@ -692,12 +692,15 @@ class UserUtil
                 switch ($idfield) {
                     case 'uid':
                         $cache[$id] = false;
+
                         break;
                     case 'uname':
                         $unames[$id] = false;
+
                         break;
                     case 'email':
                         $emails[$id] = false;
+
                         break;
                 }
 
@@ -1362,6 +1365,7 @@ class UserUtil
         // check for an admin theme
         // first setting the theme from the method annotation (Core-2.0 FC)
         $router = ServiceUtil::get('router');
+
         try {
             $parameters = $router->matchRequest($request);
             if (strpos($parameters['_controller'], '::')) {

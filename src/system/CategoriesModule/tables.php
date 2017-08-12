@@ -49,7 +49,7 @@ function ZikulaCategoriesModule_tables()
     $pathType = 'X';
     $dbType = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
 
-   // mssql can't sort on fields of type text
+    // mssql can't sort on fields of type text
     if ($dbType == 'mssql') {
         $pathType = 'C(8000)';
     }

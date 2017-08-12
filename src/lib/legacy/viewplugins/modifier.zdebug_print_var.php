@@ -42,6 +42,7 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
                         . smarty_modifier_debug_print_var($curr_val, ++$depth, $length);
                 $depth--;
             }
+
             break;
         case 'object':
             $object_vars = get_object_vars($var);
@@ -52,6 +53,7 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
                         . smarty_modifier_debug_print_var($curr_val, ++$depth, $length);
                 $depth--;
             }
+
             break;
         case 'boolean':
         case 'NULL':
@@ -66,10 +68,12 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
                 $results = htmlspecialchars((string)$var);
             }
             $results = '<em>' . $results . '</em>';
+
             break;
         case 'integer':
         case 'float':
             $results = htmlspecialchars((string)$var);
+
             break;
         case 'string':
             $results = strtr($var, $_replace);
@@ -77,6 +81,7 @@ function smarty_modifier_zdebug_print_var($var, $depth = 0, $length = 40)
                 $results = substr($var, 0, $length - 3) . '...';
             }
             $results = htmlspecialchars('"' . $results . '"');
+
             break;
         case 'unknown type':
         default:

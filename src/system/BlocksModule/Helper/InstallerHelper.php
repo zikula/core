@@ -76,6 +76,7 @@ class InstallerHelper
     public function upgradeBkeyToFqClassname(ZikulaHttpKernelInterface $kernel, BlockEntity $blockEntity)
     {
         $moduleName = $blockEntity->getModule()->getName();
+
         try {
             $moduleBundle = $kernel->getModule($moduleName);
             $blockClassName = $moduleBundle->getNamespace() . '\Block\\' . ucwords($blockEntity->getBkey());

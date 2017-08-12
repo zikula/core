@@ -31,15 +31,18 @@ class FincludeBlock extends AbstractBlockHandler
         switch ($properties['typo']) {
             case self::FILETYPE_HTML:
                 return file_get_contents($properties['filo']);
+
                 break;
             case self::FILETYPE_TEXT:
                 return htmlspecialchars(file_get_contents($properties['filo']));
+
                 break;
             case self::FILETYPE_PHP:
                 ob_start();
                 include $properties['filo'];
 
                 return ob_get_clean();
+
                 break;
             default:
                 return '';

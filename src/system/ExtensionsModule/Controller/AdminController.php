@@ -138,6 +138,7 @@ class AdminController extends \Zikula_AbstractController
                         'color' => '#0c0',
                         'title' => $this->__('Install')
                     ];
+
                     break;
                 case PluginUtil::ENABLED:
                     $status = $this->__('Active');
@@ -188,6 +189,7 @@ class AdminController extends \Zikula_AbstractController
                             'title' => $this->__('Remove plugin')
                         ];
                     }
+
                     break;
                 case PluginUtil::DISABLED:
                     $status = $this->__('Inactive');
