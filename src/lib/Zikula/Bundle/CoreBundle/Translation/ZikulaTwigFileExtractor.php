@@ -90,11 +90,13 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
                     case '_n':
                     case '_fn':
                         $id = $args->getNode(0)->getAttribute('value') . '|' . $args->getNode(1)->getAttribute('value');
+
                         break;
                     default:
                     case '__f':
                     case '__':
                         $id = $args->getNode(0)->getAttribute('value');
+
                         break;
                 }
 

@@ -188,6 +188,7 @@ class Zikula_Collection_Container implements CollectionInterface
         if ($this->has($key)) {
             return $this->collection[$key];
         }
+
         throw new InvalidArgumentException(sprintf('Key %s does not exist in collection', $key));
     }
 

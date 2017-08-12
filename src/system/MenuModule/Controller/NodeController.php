@@ -89,6 +89,7 @@ class NodeController extends AbstractController
                     'id' => $menuItemEntity->getId(),
                     'mode' => $mode
                 ];
+
                 break;
             case 'delete':
                 $id = $menuItemEntity->getId();
@@ -98,6 +99,7 @@ class NodeController extends AbstractController
                     'id' => $id,
                     'action' => $action,
                 ];
+
                 break;
             default:
                 $response = ['result' => true];

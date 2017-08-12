@@ -180,6 +180,7 @@ function smarty_function_img($params, Zikula_View $view)
         $fullpath = $path . ($osset ? "/$osset/" : '/') . $ossrc;
         if (is_readable($fullpath)) {
             $imgsrc = $fullpath;
+
             break;
         }
     }

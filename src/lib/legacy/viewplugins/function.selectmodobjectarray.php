@@ -57,7 +57,7 @@ function smarty_function_selectmodobjectarray($params, Zikula_View $view)
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['selectmodobjectarray', 'assign']));
     }
 
-     // load object depending on mode: doctrine or dbobject
+    // load object depending on mode: doctrine or dbobject
     if (!$doctrineMode) {
         if (!ModUtil::available($params['module'])) {
             $view->trigger_error(__f('Invalid %1$s passed to %2$s.', ['module', 'selectmodobjectarray']));

@@ -269,14 +269,14 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // delete block's placements
-//        $query = $this->entityManager->createQueryBuilder()
-//                                     ->delete()
-//                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
-//                                     ->where('p.bid = :bid')
-//                                     ->setParameter('bid', $block['bid'])
-//                                     ->getQuery();
-//
-//        $query->getResult();
+        //        $query = $this->entityManager->createQueryBuilder()
+        //                                     ->delete()
+        //                                     ->from('ZikulaBlocksModule:BlockPlacementEntity', 'p')
+        //                                     ->where('p.bid = :bid')
+        //                                     ->setParameter('bid', $block['bid'])
+        //                                     ->getQuery();
+        //
+        //        $query->getResult();
 
         // Now actually delete the block
         $this->entityManager->remove($block);

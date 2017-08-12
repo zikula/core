@@ -220,6 +220,7 @@ class ThemeController extends AbstractController
                 if ($data['deletefiles']) {
                     $fs = new Filesystem();
                     $path = realpath($this->get('kernel')->getRootDir() . '/../themes/' . $themeEntity->getDirectory());
+
                     try {
                         // attempt to delete files
                         $fs->remove($path);

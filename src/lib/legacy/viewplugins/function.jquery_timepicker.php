@@ -160,7 +160,7 @@ function smarty_function_jquery_timepicker($params, Zikula_View $view)
                 onSelect: function(dateText, inst) {
                     jQuery('#$valueStorageElement').attr('value', timepickerFormatTime(jQuery(this).datepicker('getDate')));
                 },";
-//        note: as of v1.4.3, the altField param doesn't work as expected because it is getting it's default time from
+        //        note: as of v1.4.3, the altField param doesn't work as expected because it is getting it's default time from
 //        somewhere else so, the time in the picker defaults to 00:00 instead of the actual time. So this doesn't work yet:
 //        $javascript .= "
 //                altField: '#$valueStorageElement',

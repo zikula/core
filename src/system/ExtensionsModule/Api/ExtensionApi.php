@@ -84,6 +84,7 @@ class ExtensionApi
     public function getModuleInstanceOrNull($name)
     {
         $moduleInstance = null;
+
         try {
             $moduleInstance = $this->kernel->getModule($name);
         } catch (\Exception $e) {

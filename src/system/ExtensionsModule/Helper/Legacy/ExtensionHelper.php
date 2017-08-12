@@ -29,6 +29,7 @@ class ExtensionHelper
         switch ($extension->getState()) {
             case \ModUtil::STATE_NOTALLOWED:
                 throw new \RuntimeException(__f('Error! No permission to install %s.', $extension->getName()));
+
                 break;
             default:
                 if ($extension->getState() > 10) {

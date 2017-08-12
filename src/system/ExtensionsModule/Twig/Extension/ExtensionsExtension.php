@@ -56,26 +56,32 @@ class ExtensionsExtension extends \Twig_Extension
             case Constant::STATE_INACTIVE:
                 $status = $this->translator->__('Inactive');
                 $statusclass = "warning";
+
                 break;
             case Constant::STATE_ACTIVE:
                 $status = $this->translator->__('Active');
                 $statusclass = "success";
+
                 break;
             case Constant::STATE_MISSING:
                 $status = $this->translator->__('Files missing');
                 $statusclass = "danger";
+
                 break;
             case Constant::STATE_UPGRADED:
                 $status = $this->translator->__('New version');
                 $statusclass = "danger";
+
                 break;
             case Constant::STATE_INVALID:
                 $status = $this->translator->__('Invalid structure');
                 $statusclass = "danger";
+
                 break;
             case Constant::STATE_NOTALLOWED:
                 $status = $this->translator->__('Not allowed');
                 $statusclass = "danger";
+
                 break;
             case Constant::STATE_UNINITIALISED:
             default:
@@ -86,6 +92,7 @@ class ExtensionsExtension extends \Twig_Extension
                     $status = $this->translator->__('Not installed');
                     $statusclass = "primary";
                 }
+
                 break;
         }
 

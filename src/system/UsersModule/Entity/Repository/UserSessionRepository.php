@@ -93,6 +93,7 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
                     $qb->expr()->eq('s.remember', 0),
                     $qb->expr()->lt('s.lastused', '?1'))
                 )->setParameter(1, $inactive);
+
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM:
                 $qb->where(
@@ -105,10 +106,12 @@ class UserSessionRepository extends EntityRepository implements UserSessionRepos
                         $qb->expr()->eq('s.uid', Constant::USER_ID_ANONYMOUS),
                         $qb->expr()->lt('s.lastused', '?3')
                     ))->setParameter(3, $inactive);
+
                 break;
             case ZikulaSessionStorage::SECURITY_LEVEL_HIGH:
             default:
                 $qb->where($qb->expr()->lt('s.lastused', '?1'))->setParameter(1, $inactive);
+
                 break;
         }
         $qb->getQuery()->execute();

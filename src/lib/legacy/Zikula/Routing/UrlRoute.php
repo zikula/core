@@ -128,15 +128,18 @@ class Zikula_Routing_UrlRoute
             switch ($token[0]) {
                 case 'variable':
                     $url .= urlencode($allParams[$token[1]]);
+
                     break;
                 case 'text':
                     // exclude star sign for additional parameters
                     if ($token[1] != '*') {
                         $url .= $token[1];
                     }
+
                     break;
                 case 'separator':
                     $url .= $token[1];
+
                     break;
             }
         }

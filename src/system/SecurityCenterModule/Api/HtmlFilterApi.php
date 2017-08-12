@@ -127,9 +127,11 @@ class HtmlFilterApi implements HtmlFilterApiInterface
                             break;
                         case self::TAG_ALLOWED_PLAIN:
                             $allowedHTML[] = "/?$k\s*/?";
+
                             break;
                         case self::TAG_ALLOWED_WITH_ATTRIBUTES:
                             $allowedHTML[] = "/?\s*$k" . "(\s+[\w\-:]+\s*=\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
+
                             break;
                     }
                 }

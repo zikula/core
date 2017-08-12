@@ -60,6 +60,7 @@ class ActionsMenu implements ContainerAwareInterface
                     ])->setAttribute('icon', 'fa fa-plug')
                         ->setLinkAttribute('style', 'color:black');
                 }
+
                 break;
             case Constant::STATE_INACTIVE:
                 $menu->addChild($this->__f('Activate %s', ['%s' => $extension->getDisplayname()]), [
@@ -72,6 +73,7 @@ class ActionsMenu implements ContainerAwareInterface
                     'routeParameters' => ['id' => $extension->getId()],
                 ])->setAttribute('icon', 'fa fa-trash-o')
                     ->setLinkAttribute('style', 'color:#c00');
+
                 break;
             case Constant::STATE_MISSING:
                 // Nothing to do.
@@ -82,6 +84,7 @@ class ActionsMenu implements ContainerAwareInterface
                     'routeParameters' => ['id' => $extension->getId(), 'csrftoken' => $csrfToken],
                 ])->setAttribute('icon', 'fa fa-refresh')
                     ->setLinkAttribute('style', 'color:#00c');
+
                 break;
             case Constant::STATE_INVALID:
                 // nothing to do.
@@ -93,6 +96,7 @@ class ActionsMenu implements ContainerAwareInterface
                     'routeParameters' => ['id' => $extension->getId()],
                 ])->setAttribute('icon', 'fa fa-trash-o')
                     ->setLinkAttribute('style', 'color:#c00');
+
                 break;
             case Constant::STATE_UNINITIALISED:
             default:
@@ -109,6 +113,7 @@ class ActionsMenu implements ContainerAwareInterface
                     ])->setAttribute('icon', 'fa fa-info-circle')
                         ->setLinkAttribute('style', 'color:black');
                 }
+
                 break;
         }
 

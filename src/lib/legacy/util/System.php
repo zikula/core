@@ -323,6 +323,7 @@ class System
 
         // obtain the uri from symfony container
         $serviceManager = ServiceUtil::getManager();
+
         try {
             $requestBasePath = $serviceManager->has('request') ? $serviceManager->get('request')->getBasePath() : '';
             if (!empty($requestBasePath)) {
@@ -748,6 +749,7 @@ class System
         $requestContext->fromRequest($request);
         /** @var \Symfony\Component\Routing\Matcher\RequestMatcherInterface $router */
         $router = ServiceUtil::get('router');
+
         try {
             $parameters = $router->matchRequest($request);
 
@@ -1113,7 +1115,7 @@ class System
     {
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-//        self::$installing = (bool) $flag;
+        //        self::$installing = (bool) $flag;
     }
 
     /**

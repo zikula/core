@@ -148,6 +148,7 @@ class ExtensionDependencyHelper
         }
         if (!is_null($foundExtension) && !$this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())) {
             $versionString = ($dependency->getMinversion() == $dependency->getMaxversion()) ? $dependency->getMinversion() : $dependency->getMinversion() . ' - ' . $dependency->getMaxversion();
+
             throw new ExtensionDependencyException(sprintf('A required dependency is found, but does not meet version requirements: %s (%s)', $dependency->getModname(), $versionString));
         }
     }

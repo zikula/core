@@ -77,6 +77,7 @@ class SwitchTokenParser extends \Twig_TokenParser
 
                 case 'endswitch':
                     $end = true;
+
                     break;
 
                 default:

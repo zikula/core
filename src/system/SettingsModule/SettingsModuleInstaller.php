@@ -220,6 +220,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             foreach ($zones as $zone) {
                 if ($zone['offset'] == $actualOffset) {
                     $timeZone = $zone['timezone_id'];
+
                     break 2;
                 }
             }

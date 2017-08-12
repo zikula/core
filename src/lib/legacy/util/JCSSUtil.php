@@ -348,9 +348,11 @@ class JCSSUtil
             switch ($script) {
                 case 'javascript/ajax/validation.js':
                     $script = 'validation';
+
                     break;
                 case 'javascript/ajax/unittest.js':
                     $script = 'javascript/ajax/unittest.min.js';
+
                     break;
                 case 'javascript/ajax/prototype.js':
                 case 'javascript/ajax/builder.js':
@@ -360,6 +362,7 @@ class JCSSUtil
                 case 'javascript/ajax/slider.js':
                 case 'javascript/ajax/sound.js':
                     $script = 'prototype';
+
                     break;
             }
             if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
@@ -593,12 +596,15 @@ class JCSSUtil
         switch ($ext) {
             case 'css':
                 $ctype = 'text/css';
+
                 break;
             case 'js':
                 $ctype = 'text/javascript';
+
                 break;
             default:
                 $ctype = 'text/plain';
+
                 break;
         }
         $includedFiles = [];

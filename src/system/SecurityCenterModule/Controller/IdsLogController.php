@@ -181,12 +181,15 @@ class IdsLogController extends AbstractController
                 switch ($delimiter) {
                     case 1:
                         $delimiter = ',';
+
                         break;
                     case 2:
                         $delimiter = ';';
+
                         break;
                     case 3:
                         $delimiter = ':';
+
                         break;
                     case 4:
                         $delimiter = chr(9);

@@ -25,6 +25,7 @@ function smarty_function_adminheader($params, $view)
 {
     // check to make sure adminmodule is available and route is available
     $router = $view->getContainer()->get('router');
+
     try {
         $router->generate('zikulaadminmodule_admininterface_header');
     } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {

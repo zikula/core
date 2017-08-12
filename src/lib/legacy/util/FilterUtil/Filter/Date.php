@@ -203,34 +203,40 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
             case 'year':
                 $from = mktime(0, 0, 0, 1, 1, $datearray['year']);
                 $to = strtotime('+1 year', $from);
+
                 break;
 
             case 'month':
                 $from = mktime(0, 0, 0, $datearray['mon'], 1, $datearray['year']);
                 $to = strtotime('+1 month', $from);
+
                 break;
 
             case 'week':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
                 $from = ($datearray['wday'] != 1) ? strtotime('last monday', $from) : $from;
                 $to = strtotime('+1 week', $from);
+
                 break;
 
             case 'day':
             case 'tomorrow':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
                 $to = strtotime('+1 day', $from);
+
                 break;
 
             case 'hour':
                 $from = mktime($datearray['hours'], 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
                 $to = $from + 3600;
+
                 break;
 
             case 'min':
             case 'minute':
                 $from = mktime($datearray['hours'], $datearray['minutes'], 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
                 $to = $from + 60;
+
                 break;
         }
 
@@ -277,6 +283,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 } else {
                     $where = "$column = '".DateUtil::getDatetime($time)."'";
                 }
+
                 break;
 
             case 'ne':
@@ -287,6 +294,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 } else {
                     $where = "$column <> '".DateUtil::getDatetime($time)."'";
                 }
+
                 break;
 
             case 'gt':
@@ -294,14 +302,17 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
                 $where = "$column > '".DateUtil::getDatetime($time)."'";
+
                 break;
 
             case 'ge':
                 $where = "$column >= '".DateUtil::getDatetime($time)."'";
+
                 break;
 
             case 'lt':
                 $where = "$column < '".DateUtil::getDatetime($time)."'";
+
                 break;
 
             case 'le':
@@ -309,6 +320,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
                 $where = "$column <= '".DateUtil::getDatetime($time)."'";
+
                 break;
         }
 
@@ -359,6 +371,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                     $where = "$column = ?";
                     $params[] = DateUtil::getDatetime($time);
                 }
+
                 break;
 
             case 'ne':
@@ -371,6 +384,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                     $where = "$column <> ?";
                     $params[] = DateUtil::getDatetime($time);
                 }
+
                 break;
 
             case 'gt':
@@ -379,16 +393,19 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 }
                 $where = "$column > ?";
                 $params[] = DateUtil::getDatetime($time);
+
                 break;
 
             case 'ge':
                 $where = "$column >= ?";
                 $params[] = DateUtil::getDatetime($time);
+
                 break;
 
             case 'lt':
                 $where = "$column < ?";
                 $params[] = DateUtil::getDatetime($time);
+
                 break;
 
             case 'le':
@@ -397,6 +414,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 }
                 $where = "$column <= ?";
                 $params[] = DateUtil::getDatetime($time);
+
                 break;
         }
 

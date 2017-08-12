@@ -110,6 +110,7 @@ class RegistrationController extends AbstractController
                     } else {
                         $this->addFlash('status', $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.'));
                     }
+
                     break;
                 case UsersConstant::ACTIVATED_ACTIVE:
                     $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity, true, false);
@@ -118,10 +119,12 @@ class RegistrationController extends AbstractController
                     }
                     $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
                     $this->addFlash('status', $this->__('Done! Your account has been verified. You have been logged in.'));
+
                     break;
                 default:
                     $this->addFlash('status', $this->__('Done! Your account has been verified.'));
                     $this->addFlash('status', $this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
+
                     break;
             }
 

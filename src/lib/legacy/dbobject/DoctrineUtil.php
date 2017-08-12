@@ -435,6 +435,7 @@ class DoctrineUtil
                 continue;
             }
             $alterTableDefinition = ['add' => [$key => $columnDefinition]];
+
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -445,6 +446,7 @@ class DoctrineUtil
         // second round - alter table structures to match new tables definition.
         foreach ($modelColumns as $key => $columnDefinition) {
             $alterTableDefinition = ['change' => [$key => ['definition' => $columnDefinition]]];
+
             try {
                 $connection->export->alterTable($tableName, $alterTableDefinition);
             } catch (Exception $e) {
@@ -459,6 +461,7 @@ class DoctrineUtil
                     continue;
                 }
                 $alterTableDefinition = ['remove' => [$key => []]];
+
                 try {
                     $connection->export->alterTable($tableName, $alterTableDefinition);
                 } catch (Exception $e) {

@@ -238,20 +238,24 @@ class DBObjectArray
             switch ($init) {
                 case DBObject::GET_FROM_DB:
                     $this->get($where, $orderBy, $limitOffset, $limitNumRows, $assocKey, true);
+
                     break;
 
                 case DBObject::GET_FROM_GET:
                 case DBObject::GET_FROM_POST:
                 case DBObject::GET_FROM_REQUEST:
                     $this->setData($this->getDataFromInput($this->_objPath, null, $init));
+
                     break;
 
                 case DBObject::GET_FROM_SESSION:
                     $this->getDataFromSource($_SESSION, $this->_objPath);
+
                     break;
 
                 case DBObject::GET_FROM_VALIDATION_FAILED:
                     $this->getDataFromSource($_SESSION['validationFailedObjects'], $this->_objPath);
+
                     break;
 
                 default:

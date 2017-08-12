@@ -318,6 +318,7 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
             case 'Zikula\Bundle\HookBundle\Hook\ValidationHook':
                 /** @var $hook \Zikula\Bundle\HookBundle\Hook\ValidationHook */
                 return new \Zikula_ValidationHook($name, $hook->getValidators());
+
                 break;
             case 'Zikula\Bundle\HookBundle\Hook\ProcessHook':
                 /** @var $oldUrl \Zikula\Core\ModUrl */
@@ -330,10 +331,12 @@ class Zikula_HookDispatcher implements HookDispatcherInterface
                 }
 
                 return new \Zikula_ProcessHook($name, $hook->getId(), $newUrl);
+
                 break;
             case 'Zikula\Bundle\HookBundle\Hook\FilterHook':
                 /** @var $hook \Zikula\Bundle\HookBundle\Hook\FilterHook */
                 return new \Zikula_FilterHook($name, $hook->getData());
+
                 break;
             default:
                 return $hook;

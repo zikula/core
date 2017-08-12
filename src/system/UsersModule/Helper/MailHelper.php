@@ -233,6 +233,7 @@ class MailHelper
         $html = false;
 
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.html.twig";
+
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
@@ -241,6 +242,7 @@ class MailHelper
         }
 
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.txt.twig";
+
         try {
             $textBody = $this->twig->render($templateName, $templateArgs);
         } catch (\Twig_Error_Loader $e) {
@@ -274,12 +276,15 @@ class MailHelper
                 } else {
                     return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
+
                 break;
             case 'regdeny':
                 return $this->translator->__f('Your recent request at %s.', ['%s' => $siteName]);
+
                 break;
             case 'welcome':
                 return $this->translator->__f('Welcome to %1$s, %2$s!', ['%1$s' => $siteName, '%2$s' => $templateArgs['reginfo']['uname']]);
+
                 break;
             default:
                 return $this->translator->__f('A message from %s.', ['%s' => $siteName]);

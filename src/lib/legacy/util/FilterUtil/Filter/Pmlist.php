@@ -159,10 +159,12 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
         switch ($op) {
             case 'eq':
                 $where = "$column = '$value'";
+
                 break;
 
             case 'ne':
                 $where = "$column <> '$value'";
+
                 break;
 
             case 'sub':
@@ -177,6 +179,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 } else {
                     $where = "$column IN ('".implode("','", $items)."')";
                 }
+
                 break;
         }
 
@@ -204,10 +207,12 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
         switch ($op) {
             case 'eq':
                 $where = "$column = '$value'";
+
                 break;
 
             case 'ne':
                 $where = "$column <> '$value'";
+
                 break;
 
             case 'sub':
@@ -221,6 +226,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 } else {
                     $where = "$column IN ('".implode("','", $items)."')";
                 }
+
                 break;
         }
 

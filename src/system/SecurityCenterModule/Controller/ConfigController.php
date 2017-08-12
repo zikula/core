@@ -375,6 +375,7 @@ class ConfigController extends AbstractController
                             if (empty($config[$namespace][$directive])) {
                                 unset($config[$namespace][$directive]);
                             }
+
                             break;
                         case HTMLPurifier_VarParser::ALIST:
                             $value = explode(PHP_EOL, $config[$namespace][$directive]);
@@ -388,6 +389,7 @@ class ConfigController extends AbstractController
                             if (empty($config[$namespace][$directive])) {
                                 unset($config[$namespace][$directive]);
                             }
+
                             break;
                         case HTMLPurifier_VarParser::HASH:
                             $value = explode(PHP_EOL, $config[$namespace][$directive]);
@@ -403,6 +405,7 @@ class ConfigController extends AbstractController
                             if (empty($config[$namespace][$directive])) {
                                 unset($config[$namespace][$directive]);
                             }
+
                             break;
                     }
                 }
@@ -512,9 +515,11 @@ class ConfigController extends AbstractController
                             $value[] = $val;
                         }
                         $directiveRec['value'] = implode(PHP_EOL, $value);
+
                         break;
                     case HTMLPurifier_VarParser::ALIST:
                         $directiveRec['value'] = implode(PHP_EOL, $directiveRec['value']);
+
                         break;
                     case HTMLPurifier_VarParser::HASH:
 //                        $value = '';
@@ -522,6 +527,7 @@ class ConfigController extends AbstractController
 //                            $value .= "{$i}:{$v}" . PHP_EOL;
 //                        }
                         $directiveRec['value'] = json_encode($directiveRec['value']);
+
                         break;
                     default:
                         $directiveRec['value'] = '';

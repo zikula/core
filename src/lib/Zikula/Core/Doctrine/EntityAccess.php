@@ -145,6 +145,7 @@ class EntityAccess implements \ArrayAccess
         }
 
         $class = get_class($this);
+
         throw new \RuntimeException("Entity \"$class\" does not have a setter for property \"$name\". Please add $setMethod().");
     }
 }

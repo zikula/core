@@ -244,15 +244,19 @@ class Engine
             switch ($themeAnnotation->value) {
                 case 'admin':
                     $newThemeName = $this->variableApi->get('ZikulaAdminModule', 'admintheme', '');
+
                     break;
                 case 'print':
                     $newThemeName = 'ZikulaPrinterTheme';
+
                     break;
                 case 'atom':
                     $newThemeName = 'ZikulaAtomTheme';
+
                     break;
                 case 'rss':
                     $newThemeName = 'ZikulaRssTheme';
+
                     break;
                 default:
                     $newThemeName = $themeAnnotation->value;
@@ -378,6 +382,7 @@ class Engine
                 $activeTheme = $themeByRequest;
             }
         }
+
         try {
             $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
             $this->activeThemeBundle->loadThemeVars();

@@ -74,26 +74,37 @@ class ValidationUtil
 
             switch ($cmp_op) {
                 case 'eq ': $rc = ($postval === $testval);
+
                     break;
                 case 'neq': $rc = ($postval != $testval);
+
                     break;
                 case 'gt': $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
+
                     break;
                 case 'gte': $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
+
                     break;
                 case 'lt': $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
+
                     break;
                 case 'lte': $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
+
                     break;
                 case 'in': $rc = ($postval !== '' && is_array($testval) && in_array($postval, $testval));
+
                     break;
                 case 'notin': $rc = ($postval !== '' && is_array($testval) && !in_array($postval, $testval));
+
                     break;
                 case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
+
                     break;
                 case 'url': $rc = System::varValidate($postval, 'url');
+
                     break;
                 case 'email': $rc = System::varValidate($postval, 'email');
+
                     break;
                 case 'noop':
                 case '':
@@ -101,6 +112,7 @@ class ValidationUtil
                         throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for non-required field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
                     }
                     $rc = true;
+
                     break;
                 default: throw new \Exception(__f('%1$s: invalid cmp_op [%2$s] supplied for field [%3$s].', ['ValidationUtil::validateField', $cmp_op, $field]));
             }

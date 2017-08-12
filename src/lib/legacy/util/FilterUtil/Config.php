@@ -530,6 +530,7 @@ class FilterUtil_Config
                     $operator = ':';
                 case 'LEFT':
                     array_shift($parts);
+
                     break;
             }
 

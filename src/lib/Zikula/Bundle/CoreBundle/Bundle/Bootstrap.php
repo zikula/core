@@ -62,6 +62,7 @@ class Bootstrap
 
                     if (class_exists($class)) {
                         $bundle = new $class();
+
                         try {
                             if ($bundle instanceof AbstractBundle) {
                                 $bundle->setState($state);
@@ -126,6 +127,7 @@ class Bootstrap
         switch ($type) {
             case 'T':
                 return $state['state'] == ThemeEntityRepository::STATE_ACTIVE;
+
                 break;
             default:
                 if (($state['state'] == Constant::STATE_ACTIVE) || ($state['state'] == Constant::STATE_UPGRADED) || ($state['state'] == Constant::STATE_TRANSITIONAL)) {

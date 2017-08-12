@@ -38,6 +38,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             'Zikula\UsersModule\Entity\UserAttributeEntity',
             'Zikula\UsersModule\Entity\UserSessionEntity',
         ];
+
         try {
             $this->schemaTool->create($classes);
         } catch (\Exception $e) {

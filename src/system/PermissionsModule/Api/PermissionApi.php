@@ -235,6 +235,7 @@ class PermissionApi implements PermissionApiInterface
 
                 // We have a match - set the level and quit
                 $level = $perm['level'];
+
                 break;
             }
 
@@ -258,6 +259,7 @@ class PermissionApi implements PermissionApiInterface
 
             // We have a match - set the level and quit looking
             $level = $perm['level'];
+
             break;
         }
 

@@ -349,6 +349,7 @@ class FilterUtil
                             $subexpr = null;
                         } else {
                             $string = '';
+
                             break;
                         }
                     }
@@ -365,6 +366,7 @@ class FilterUtil
                     $op = $or;
                     $and = null;
                     $string = '';
+
                     break;
                 case ',': // Operator: AND
                     $con = $this->makeCondition($string);
@@ -374,6 +376,7 @@ class FilterUtil
                             $subexpr = null;
                         } else {
                             $string = '';
+
                             break;
                         }
                     }
@@ -386,6 +389,7 @@ class FilterUtil
                     }
                     $this->addBtoA($and, $con);
                     $string = '';
+
                     break;
                 case '(': // Subquery
                     $level++;
@@ -396,9 +400,11 @@ class FilterUtil
                         switch ($c) {
                             case '(':
                                 $level++;
+
                                 break;
                             case ')':
                                 $level--;
+
                                 break;
                         }
                         if ($level > 0) {
@@ -409,9 +415,11 @@ class FilterUtil
                         $subexpr = $this->genFilterExprRecursive($string);
                     }
                     $string = '';
+
                     break;
                 default:
                     $string .= $c;
+
                     break;
             }
         }

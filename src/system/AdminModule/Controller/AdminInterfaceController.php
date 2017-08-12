@@ -327,6 +327,7 @@ class AdminInterfaceController extends AbstractController
                     $links = [];
                 }
             }
+
             try {
                 $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
             } catch (\Exception $e) {

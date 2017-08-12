@@ -54,9 +54,11 @@ function smarty_function_html_select_modules($params, Zikula_View $view)
     switch ($params['capability']) {
         case 'all':
             $modules = ModUtil::getAllMods();
+
             break;
         default:
             $modules = ModUtil::getModulesCapableOf($params['capability']);
+
             break;
     }
 

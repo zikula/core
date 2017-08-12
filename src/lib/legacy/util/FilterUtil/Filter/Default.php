@@ -152,46 +152,57 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
         switch ($op) {
             case 'eq':
                 $where = "$column = '$value'";
+
                 break;
 
             case 'ne':
                 $where = "$column <> '$value'";
+
                 break;
 
             case 'lt':
                 $where = "$column < '$value'";
+
                 break;
 
             case 'le':
                 $where = "$column <= '$value'";
+
                 break;
 
             case 'gt':
                 $where = "$column > '$value'";
+
                 break;
 
             case 'ge':
                 $where = "$column >= '$value'";
+
                 break;
 
             case 'search':
                 $where = "$column LIKE '%$value%'";
+
                 break;
 
             case 'like':
                 $where = "$column LIKE '$value'";
+
                 break;
 
             case 'likefirst':
                 $where = "$column LIKE '$value%'";
+
                 break;
 
             case 'null':
                 $where = "($column = '' OR $column IS NULL)";
+
                 break;
 
             case 'notnull':
                 $where = "($column <> '' OR $column IS NOT NULL)";
+
                 break;
         }
 
@@ -221,54 +232,65 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
             case 'eq':
                 $where = "$column = ?";
                 $params[] = $value;
+
                 break;
 
             case 'ne':
                 $where = "$column <> ?";
                 $params[] = $value;
+
                 break;
 
             case 'lt':
                 $where = "$column < ?";
                 $params[] = $value;
+
                 break;
 
             case 'le':
                 $where = "$column <= ?";
                 $params[] = $value;
+
                 break;
 
             case 'gt':
                 $where = "$column > ?";
                 $params[] = $value;
+
                 break;
 
             case 'ge':
                 $where = "$column >= ?";
                 $params[] = $value;
+
                 break;
 
             case 'search':
                 $where = "$column LIKE ?";
                 $params[] = '%'.$value.'%';
+
                 break;
 
             case 'like':
                 $where = "$column LIKE ?";
                 $params[] = $value;
+
                 break;
 
             case 'likefirst':
                 $where = "$column LIKE ?";
                 $params[] = $value."%";
+
                 break;
 
             case 'null':
                 $where = "($column = '' OR $column IS NULL)";
+
                 break;
 
             case 'notnull':
                 $where = "($column <> '' OR $column IS NOT NULL)";
+
                 break;
         }
 

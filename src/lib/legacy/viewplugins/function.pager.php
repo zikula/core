@@ -193,22 +193,26 @@ function smarty_function_pager($params, Zikula_View $view)
                     if (!isset($params['modname'])) {
                         $pager['module'] = $v;
                     }
+
                     break;
                 case 'func':
                     if (!isset($params['func'])) {
                         $pager['func'] = $v;
                     }
+
                     break;
                 case 'type':
                     if (!isset($params['type'])) {
                         $pager['type'] = $v;
                     }
+
                     break;
                 case 'lang':
                     $addcurrentlang2url = System::getVar('languageurl');
                     if ($addcurrentlang2url == 0) {
                         $pager['args'][$k] =  $v;
                     }
+
                     break;
                 default:
                     if (is_array($v)) {

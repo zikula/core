@@ -43,12 +43,14 @@ class Zikula_View_Resource
                     if (self::load($arguments[1], $type, $name)) {
                         return $func($arguments[0], $arguments[1]);
                     }
+
                     break;
 
                 case 'block':
                     if (self::load($arguments[2], $type, $name)) {
                         return $func($arguments[0], $arguments[1], $arguments[2]);
                     }
+
                     break;
             }
         }
@@ -269,6 +271,7 @@ class Zikula_View_Resource
                 }
 
                 self::$cache[$type][$name] = true;
+
                 break;
             }
         }

@@ -104,6 +104,7 @@ class ExtensionHelper
         switch ($extension->getState()) {
             case Constant::STATE_NOTALLOWED:
                 throw new \RuntimeException($this->translator->__f('Error! Not allowed to upgrade %s.', ['%s' => $extension->getDisplayname()]));
+
                 break;
             default:
                 if ($extension->getState() > 10) {

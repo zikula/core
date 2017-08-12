@@ -63,6 +63,7 @@ class Zikula_Workflow_Parser
         // parse XML
         if (!xml_parse($this->parser, $xmldata, true)) {
             xml_parser_free($this->parser);
+
             throw new \Exception(__f('Unable to parse XML workflow (line %1$s, %2$s): %3$s', [
                 xml_get_current_line_number($this->parser),
                 xml_get_current_column_number($this->parser),
@@ -186,6 +187,7 @@ class Zikula_Workflow_Parser
                     $state = 'error';
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                 }
+
                 break;
 
             case 'workflow':
@@ -193,20 +195,25 @@ class Zikula_Workflow_Parser
                     case 'TITLE':
                     case 'DESCRIPTION':
                         $this->workflow['value'] = '';
+
                         break;
                     case 'STATES':
                         $state = 'states';
                         $this->workflow['states'] = [];
+
                         break;
                     case 'ACTIONS':
                         $state = 'actions';
                         $this->workflow['actions'] = [];
+
                         break;
                     default:
                         $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                         $state = 'error';
+
                         break;
                 }
+
                 break;
 
             case 'states':
@@ -217,6 +224,7 @@ class Zikula_Workflow_Parser
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                     $state = 'error';
                 }
+
                 break;
 
             case 'state':
@@ -226,6 +234,7 @@ class Zikula_Workflow_Parser
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                     $state = 'error';
                 }
+
                 break;
 
             case 'actions':
@@ -241,6 +250,7 @@ class Zikula_Workflow_Parser
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                     $state = 'error';
                 }
+
                 break;
 
             case 'action':
@@ -251,20 +261,25 @@ class Zikula_Workflow_Parser
                     case 'STATE':
                     case 'NEXTSTATE':
                         $this->workflow['value'] = '';
+
                         break;
                     case 'OPERATION':
                         $this->workflow['value'] = '';
                         $this->workflow['operationParameters'] = $attribs;
+
                         break;
                     case 'PARAMETER':
                         $this->workflow['value'] = '';
                         $this->workflow['actionParameter'] = $attribs;
+
                         break;
                     default:
                         $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                         $state = 'error';
+
                         break;
                 }
+
                 break;
 
             case '':
@@ -274,6 +289,7 @@ class Zikula_Workflow_Parser
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
                     $state = 'error';
                 }
+
                 break;
 
             case 'error':
@@ -283,6 +299,7 @@ class Zikula_Workflow_Parser
             default:
                 $this->workflow['errorMessage'] = __f('Workflow state error: \'%2$s\' tag of the state \'%1$s\'.', [$state, $name]);
                 $state = 'error';
+
                 break;
         }
     }
@@ -305,45 +322,57 @@ class Zikula_Workflow_Parser
                 switch ($name) {
                     case 'TITLE':
                         $this->workflow['workflow']['title'] = $this->workflow['value'];
+
                         break;
                     case 'DESCRIPTION':
                         $this->workflow['workflow']['description'] = $this->workflow['value'];
+
                         break;
                 }
+
                 break;
 
             case 'state':
                 switch ($name) {
                     case 'TITLE':
                         $this->workflow['stateValue']['title'] = $this->workflow['value'];
+
                         break;
                     case 'DESCRIPTION':
                         $this->workflow['stateValue']['description'] = $this->workflow['value'];
+
                         break;
                     case 'STATE':
                         $this->workflow['states'][] = $this->workflow['stateValue'];
                         $this->workflow['stateValue'] = null;
                         $state = 'states';
+
                         break;
                 }
+
                 break;
 
             case 'action':
                 switch ($name) {
                     case 'TITLE':
                         $this->workflow['action']['title'] = $this->workflow['value'];
+
                         break;
                     case 'DESCRIPTION':
                         $this->workflow['action']['description'] = $this->workflow['value'];
+
                         break;
                     case 'PERMISSION':
                         $this->workflow['action']['permission'] = trim($this->workflow['value']);
+
                         break;
                     case 'STATE':
                         $this->workflow['action']['state'] = trim($this->workflow['value']);
+
                         break;
                     case 'NEXTSTATE':
                         $this->workflow['action']['nextState'] = trim($this->workflow['value']);
+
                         break;
                     case 'OPERATION':
                         $this->workflow['action']['operations'][] = [
@@ -351,29 +380,35 @@ class Zikula_Workflow_Parser
                             'parameters' => $this->workflow['operationParameters']
                         ];
                         $this->workflow['operation'] = null;
+
                         break;
                     case 'PARAMETER':
                         $this->workflow['action']['parameters'][trim($this->workflow['value'])] = $this->workflow['actionParameter'];
+
                         break;
                     case 'ACTION':
                         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 1);
                         $this->workflow['actions'][] = $this->workflow['action'];
                         $this->workflow['action'] = null;
                         $state = 'actions';
+
                         break;
                 }
+
                 break;
 
             case 'actions':
                 if ($name == 'ACTIONS') {
                     $state = 'workflow';
                 }
+
                 break;
 
             case 'states':
                 if ($name == 'STATES') {
                     $state = 'workflow';
                 }
+
                 break;
         }
     }

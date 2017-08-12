@@ -147,6 +147,7 @@ class UpdateCheckHelper
                         continue;
                     }
                     $this->updateversion = $release['tag_name'];
+
                     break;
                 }
             }

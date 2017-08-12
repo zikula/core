@@ -43,6 +43,7 @@ class AdminApi
         if (!isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -79,6 +80,7 @@ class AdminApi
             !isset($args['name']) || !strlen($args['name']) ||
             !isset($args['description'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -221,6 +223,7 @@ class AdminApi
         // Argument check
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -254,6 +257,7 @@ class AdminApi
         if (!isset($args['module']) ||
             (!isset($args['category']) || !is_numeric($args['category']))) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -304,6 +308,7 @@ class AdminApi
         // Argument check
         if (!isset($args['mid']) || !is_numeric($args['mid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -331,6 +336,7 @@ class AdminApi
         // Argument check
         if (!isset($args['mid']) || !is_numeric($args['mid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -349,6 +355,7 @@ class AdminApi
             }
 
             $sortOrder = $association['sortorder'];
+
             break;
         }
 
@@ -377,6 +384,7 @@ class AdminApi
             !is_string($args['modname']) ||
             !is_array($modinfo = ModUtil::getInfoFromName($args['modname']))) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 
@@ -425,6 +433,7 @@ class AdminApi
     {
         if (!isset($args['cid']) || !is_numeric($args['cid'])) {
             $translator = ServiceUtil::get('translator.default');
+
             throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
         }
 

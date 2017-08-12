@@ -336,6 +336,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
+
                 break;
 
             case 'multiline':
@@ -352,10 +353,12 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 if ($this->mandatory && $this->mandatorysym) {
                     $result .= '<span class="z-form-mandatory-flag">*</span>';
                 }
+
                 break;
 
             case 'hidden':
                 $result = "<input type=\"hidden\"{$idHtml}{$nameHtml} class=\"{$class}\" value=\"{$text}\" />";
+
                 break;
 
             default:

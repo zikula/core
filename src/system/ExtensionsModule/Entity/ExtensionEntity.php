@@ -40,7 +40,7 @@ class ExtensionEntity extends EntityAccess
      * @ORM\Column(type="string", length=64)
      * @var string
      */
-//    private $namespace;
+    //    private $namespace;
 
     /**
      * @ORM\Column(type="integer", length=2)
@@ -129,15 +129,15 @@ class ExtensionEntity extends EntityAccess
         $this->name = $name;
     }
 
-//    public function getNamespace()
-//    {
-//        return $this->namespace;
-//    }
-//
-//    public function setNamespace($namespace)
-//    {
-//        $this->namespace = $namespace;
-//    }
+    //    public function getNamespace()
+    //    {
+    //        return $this->namespace;
+    //    }
+    //
+    //    public function setNamespace($namespace)
+    //    {
+    //        $this->namespace = $namespace;
+    //    }
 
     public function getType()
     {

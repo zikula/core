@@ -130,6 +130,7 @@ function smarty_function_helplink($params, Zikula_View $view)
             $found = true;
             $contents = StringUtil::getMarkdownExtraParser()->transform(file_get_contents($path));
             $url = $path . $chapter;
+
             break;
         }
     }

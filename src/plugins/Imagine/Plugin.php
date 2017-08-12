@@ -114,6 +114,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
             // check thumb validity
             $lastCleanup = new DateTime($this->getVar('last_cleanup'));
             $thumb_auto_cleanup_period = $this->getVar('thumb_auto_cleanup_period', 'P1D');
+
             try {
                 $nextCleanup = $lastCleanup->setTime(0, 0, 0)->add(new DateInterval($thumb_auto_cleanup_period));
             } catch (Exception $exception) {

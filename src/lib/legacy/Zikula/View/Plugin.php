@@ -135,15 +135,18 @@ class Zikula_View_Plugin extends Zikula_View
         switch ($modinfo['type']) {
             case ModUtil::TYPE_SYSTEM:
                 $pluginsDir = "system/{$modinfo['directory']}/plugins/$plugin/Resources/plugins";
+
                 break;
             case ModUtil::TYPE_MODULE:
                 $pluginsDir = is_dir("modules/{$modinfo['directory']}/plugins/$plugin/templates/plugins") ?
                 "modules/{$modinfo['directory']}/plugins/$plugin/templates/plugins" :
                 "modules/{$modinfo['directory']}/plugins/$plugin/Resources/views/plugins";
+
                 break;
             case ModUtil::TYPE_CORE:
                 $pluginsDir = is_dir("plugins/$plugin/templates/plugins") ?
                 "plugins/$plugin/templates/plugins" : "plugins/$plugin/Resources/views/plugins";
+
                 break;
         }
 
@@ -178,6 +181,7 @@ class Zikula_View_Plugin extends Zikula_View
             $ostemplate = DataUtil::formatForOS($template);
 
             $search_path = [];
+
             try {
                 $bundle = $this->getContainer()->get('kernel')->getBundle($module);
                 $bundlePath = $relativepath = $bundle->getRelalativePath().'/Resources/views';

@@ -52,6 +52,7 @@ class BundleSyncHelper
                         $modversion = ExtensionsUtil::getVersionMeta($dir, $rootdir);
                     } catch (\Exception $e) {
                         throw new \RuntimeException($e->getMessage());
+
                         continue;
                     }
 

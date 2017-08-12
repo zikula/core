@@ -52,6 +52,7 @@ class ControllerResolver extends BaseControllerResolver
             foreach ($bundles as $bundle) {
                 if ($bundle->getNamespace() == $bundleNamespace) {
                     $currentBundle = $bundle;
+
                     break;
                 }
             }

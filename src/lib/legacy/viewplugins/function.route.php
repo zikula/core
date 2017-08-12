@@ -43,6 +43,7 @@ function smarty_function_route($params, Zikula_View $view)
 
     /** @var $router \JMS\I18nRoutingBundle\Router\I18nRouter */
     $router = $view->getContainer()->get('router');
+
     try {
         $route = $router->generate($name, $params, $absolute);
     } catch (Symfony\Component\Routing\Exception\RouteNotFoundException $e) {

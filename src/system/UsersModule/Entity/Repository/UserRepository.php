@@ -78,15 +78,18 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
                 switch ($k) {
                     case 'registered_before':
                         $filter['user_regdate'] = ['operator' => '<=', 'operand' => $v];
+
                         break;
                     case 'registered_after':
                         $filter['user_regdate'] = ['operator' => '>=', 'operand' => $v];
+
                         break;
                     case 'groups':
                         /** @var ArrayCollection $v */
                         if (!$v->isEmpty()) {
                             $filter['groups'] = ['operator' => 'in', 'operand' => $v->getValues()];
                         }
+
                         break;
                     default:
                         $filter[$k] = ['operator' => 'like', 'operand' => "%$v%"];

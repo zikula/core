@@ -194,6 +194,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             case 10:
                 $qb->andWhere($qb->expr()->gt('e.state', 10));
+
                 break;
         }
 
@@ -267,9 +268,11 @@ class AdminApi extends \Zikula_AbstractApi
                         throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                     }
                 }
+
                 break;
             case ModUtil::STATE_INACTIVE:
                 $eventName = CoreEvents::MODULE_DISABLE;
+
                 break;
             case ModUtil::STATE_ACTIVE:
                 if ($module->getState() === ModUtil::STATE_INACTIVE) {
@@ -277,6 +280,7 @@ class AdminApi extends \Zikula_AbstractApi
                     // if previously inactive.
                     $eventName = CoreEvents::MODULE_ENABLE;
                 }
+
                 break;
             case ModUtil::STATE_MISSING:
                 break;
@@ -285,6 +289,7 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($oldstate == ModUtil::STATE_UNINITIALISED) {
                     throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                 }
+
                 break;
         }
 
@@ -353,6 +358,7 @@ class AdminApi extends \Zikula_AbstractApi
         switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 throw new \RuntimeException($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
+
                 break;
         }
 
@@ -581,6 +587,7 @@ class AdminApi extends \Zikula_AbstractApi
                         $modversion = ExtensionsUtil::getVersionMeta($dir, $rootdir);
                     } catch (\Exception $e) {
                         throw new \RuntimeException($e->getMessage());
+
                         continue;
                     }
 
@@ -969,6 +976,7 @@ class AdminApi extends \Zikula_AbstractApi
         switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 throw new \RuntimeException($this->__f('Error! No permission to install %s.', $modinfo['name']));
+
                 break;
             default:
                 if ($modinfo['state'] > 10) {
@@ -1054,6 +1062,7 @@ class AdminApi extends \Zikula_AbstractApi
         switch ($modinfo['state']) {
             case ModUtil::STATE_NOTALLOWED:
                 throw new \RuntimeException($this->__f('Error! No permission to upgrade %s.', $modinfo['name']));
+
                 break;
             default:
                 if ($modinfo['state'] > 10) {
@@ -1225,6 +1234,7 @@ class AdminApi extends \Zikula_AbstractApi
 
             case 10:
                 $qb->andWhere($qb->expr()->gt('e.state', 10));
+
                 break;
         }
 

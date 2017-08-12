@@ -197,20 +197,24 @@ class DBObject
                         throw new \Exception("Invalid DB-key in DBObject::_init() ...");
                     }
                     $this->get($key, $field);
+
                     break;
 
                 case self::GET_FROM_GET:
                 case self::GET_FROM_POST:
                 case self::GET_FROM_REQUEST:
                     $this->setData($this->getDataFromInput($this->_objPath, null, $init));
+
                     break;
 
                 case self::GET_FROM_SESSION:
                     $this->getDataFromSource($_SESSION, $this->_objPath);
+
                     break;
 
                 case self::GET_FROM_VALIDATION_FAILED:
                     $this->getDataFromSource($_SESSION['validationFailedObjects'], $this->_objPath);
+
                     break;
 
                 default:

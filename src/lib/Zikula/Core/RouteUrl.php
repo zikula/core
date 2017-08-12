@@ -61,6 +61,7 @@ class RouteUrl extends ModUrl implements UrlInterface
         if ($ssl) {
             $router->getContext()->setScheme('https');
         }
+
         try {
             $url = $router->generate($this->route, $this->args, $fqUrl) . $fragment;
         } catch (\Exception $e) {

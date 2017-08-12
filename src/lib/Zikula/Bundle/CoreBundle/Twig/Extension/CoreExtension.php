@@ -193,6 +193,7 @@ class CoreExtension extends \Twig_Extension
         if (function_exists($callable)) {
             return call_user_func_array($callable, $params);
         }
+
         throw new \InvalidArgumentException($this->translator->__('Function does not exist or is not callable.'));
     }
 }

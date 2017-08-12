@@ -64,6 +64,7 @@ class EditorController extends Controller
         $markingStoreType = '';
         $markingStoreField = '';
         $supportedEntityClassNames = [];
+
         try {
             $reflection = new \ReflectionClass('Symfony\Component\Workflow\Workflow');
             $markingStoreProperty = $reflection->getProperty('markingStore');
