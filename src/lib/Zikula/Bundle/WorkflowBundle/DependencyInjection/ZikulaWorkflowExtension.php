@@ -31,9 +31,6 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // unrequired
-        //$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        //$loader->load('services.yml');
     }
 
     /**
@@ -41,17 +38,22 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      */
     public function prepend(ContainerBuilder $container)
     {
-        // central workflows in the core system are placed in: lib/Zikula/Bundle/CoreBundle/Resources/workflows/
-        $this->workflowDirectories[] = __DIR__ . '/../Resources/workflows';
+        // modules may define their workflows in: <bundlePath>/Resources/workflows/
+        $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
+        foreach ($bundleMetaData as $bundleName => $metaData) {
+            if (substr($bundleName, -6) != 'Module') {
+                continue;
+            }
 
-        $rootDirectory = $container->getParameter('kernel.root_dir');
+            $workflowPath = $metaData['path'] . '/Resources/workflows';
+            if (!file_exists($workflowPath)) {
+                continue;
+            }
+            $this->workflowDirectories[] = $workflowPath;
+        }
 
-        // Modules can define their own workflows in: modules/Acme/MyBundle/Resources/workflows/
-        $this->workflowDirectories[] = $rootDirectory . '/../system/*/Resources/workflows';
-        $this->workflowDirectories[] = $rootDirectory . '/../modules/*/*/Resources/workflows';
-
-        // also it is possible to define custom workflows (or override existing ones) in: app/Resources/workflows/
-        $this->workflowDirectories[] = $rootDirectory . '/Resources/workflows';
+        // also it is possible to define custom workflows in: app/Resources/workflows/
+        $this->workflowDirectories[] = $container->getParameter('kernel.root_dir') . '/Resources/workflows';
 
         $this->loadWorkflowDefinitions($container);
     }
@@ -63,35 +65,11 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
      */
     private function loadWorkflowDefinitions(ContainerBuilder $container)
     {
-        // get all bundles
-        $bundleNames = array_keys($container->getParameter('kernel.bundles'));
-
         try {
             $finder = new Finder();
             $finder->files()->name('*.yml')->in($this->workflowDirectories);
             foreach ($finder as $file) {
                 $filePath = $file->getPath();
-                if (false !== strpos($filePath, 'modules/')) {
-                    // check if the module is installed and active
-                    $composerFile = str_replace('/Resources/workflows', '', $filePath) . '/composer.json';
-                    if (!file_exists($composerFile)) {
-                        // no composer file, skip the module
-                        continue;
-                    }
-                    $composerData = json_decode(file_get_contents($composerFile));
-                    if (!isset($composerData->extra) || !isset($composerData->extra->zikula) || !isset($composerData->extra->zikula->{'class'})) {
-                        // no zikula extra information, skip the module
-                        continue;
-                    }
-
-                    $moduleClass = $composerData->extra->zikula->{'class'};
-                    $moduleClassParts = explode('\\', $moduleClass);
-                    $moduleName = array_pop($moduleClassParts);
-                    if (!in_array($moduleName, $bundleNames)) {
-                        // module is not active, skip it
-                        continue;
-                    }
-                }
                 $loader = new YamlFileLoader($container, new FileLocator($filePath));
                 $loader->load($file->getFilename());
             }
