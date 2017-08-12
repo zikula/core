@@ -77,11 +77,11 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
         }
         $_rval = $compiler->_dequote($_attrs['php']);
 
-    /* check for a scalar the value parameter */
+        /* check for a scalar the value parameter */
     } elseif (isset($_attrs['value'])) {
         $_rval = $_attrs['value'];
 
-    /* list of array-values */
+        /* list of array-values */
     } elseif (isset($_attrs['values'])) {
         $_delim = (isset($_attrs['delim'])) ? $_attrs['delim'] : "','";
         $_rval = 'explode('.$_delim.', '.$_attrs['values'].')';

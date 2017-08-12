@@ -70,14 +70,14 @@ class Util
             $legacyVersionPath = "$rootdir/$moduleName/pnversion.php";
             if (!file_exists($legacyVersionPath)) {
                 //                if (!System::isUpgrading()) {
-//                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRITICAL);
-//                    throw new \InvalidArgumentException(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
-//                }
-//                $modversion = [
-//                    'name' => $moduleName,
-//                    'description' => '',
-//                    'version' => 0
-//                ];
+                //                    LogUtil::log(__f("Error! Could not load the file '%s'.", $legacyVersionPath), \Monolog\Logger::CRITICAL);
+                //                    throw new \InvalidArgumentException(__f("Error! Could not load the file '%s'.", $legacyVersionPath));
+                //                }
+                //                $modversion = [
+                //                    'name' => $moduleName,
+                //                    'description' => '',
+                //                    'version' => 0
+                //                ];
                 return [];
             }
 

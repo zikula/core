@@ -306,9 +306,9 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->register_block('nocache', ['Zikula_View_Resource', 'block_nocache'], false);
 
         // For ajax requests we use the short urls filter to 'fix' relative paths
-//        if (($this->serviceManager->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
-            $this->load_filter('output', 'shorturls');
-//        }
+        //        if (($this->serviceManager->get('zikula')->getStage() & Zikula_Core::STAGE_AJAX) && System::getVar('shorturls')) {
+        $this->load_filter('output', 'shorturls');
+        //        }
 
         // register prefilters
         $this->register_prefilter('z_prefilter_add_literal');
@@ -358,7 +358,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // add ServiceManager, EventManager and others to all templates
         parent::assign('serviceManager', $this->serviceManager);
         parent::assign('eventManager', $this->eventManager);
-//        parent::assign('zikula_core', $this->serviceManager->get('zikula'));
+        //        parent::assign('zikula_core', $this->serviceManager->get('zikula'));
         parent::assign('request', $this->request);
         $modvars = ModUtil::getModvars(); // Get all modvars from any modules that have accessed their modvars at least once.
         // provide compatibility 'alias' array keys
@@ -1005,10 +1005,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
                 if (is_dir($path)) {
                     // search recusively
-                   $this->rmtpl($path, $template, $expire);
+                    $this->rmtpl($path, $template, $expire);
                 } elseif (strpos($entry, $filebase) === 0) {
                     // delete the files that matches the template base filename
-                   $this->_unlink($path, $expire);
+                    $this->_unlink($path, $expire);
                 }
             }
         }
@@ -1039,13 +1039,13 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
                 if (is_dir($path)) {
                     // remove recursively
-                   $this->rmdir($path, $expire, true);
+                    $this->rmdir($path, $expire, true);
                 } elseif ($expire !== false) {
                     // check expiration time of cached templates
-                   $this->_unlink($path, $expire);
+                    $this->_unlink($path, $expire);
                 } else {
                     // delete compiled templates directly
-                   unlink($path);
+                    unlink($path);
                 }
             }
         }

@@ -587,7 +587,7 @@ class FileUtil
             fputcsv($out, $datarow, $delimiter, $enclosure);
         }
 
-         //close the out file
+        //close the out file
         fclose($out);
 
         exit;

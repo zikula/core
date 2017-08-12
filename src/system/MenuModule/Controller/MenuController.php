@@ -43,8 +43,8 @@ class MenuController extends AbstractController
         }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
         $rootNodes = $repo->getRootNodes();
-//        $children = $repo->getChildren();
-//        $childrenHierarchy = $repo->childrenHierarchy();
+        //        $children = $repo->getChildren();
+        //        $childrenHierarchy = $repo->childrenHierarchy();
 
         return [
             'rootNodes' => $rootNodes
