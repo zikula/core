@@ -26,6 +26,7 @@ disabled:
   - blank_line_before_declare
   - blank_line_before_throw
   - blank_line_before_try
+  - align_comments
 
 finder:
   exclude:
