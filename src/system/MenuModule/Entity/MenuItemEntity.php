@@ -105,16 +105,16 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
     {
         $this->title = '';
         $this->options = []; //new ArrayCollection();
-//        $this->options = [
-//            'routeParameters' => [],
-//            'attributes' => [],
-//            'linkAttributes' => [],
-//            'childrenAttributes' => [],
-//            'labelAttributes' => [],
-//            'extras' => [],
-//            'display' => true,
-//            'displayChildren' => true,
-//        ];
+        //        $this->options = [
+        //            'routeParameters' => [],
+        //            'attributes' => [],
+        //            'linkAttributes' => [],
+        //            'childrenAttributes' => [],
+        //            'labelAttributes' => [],
+        //            'extras' => [],
+        //            'display' => true,
+        //            'displayChildren' => true,
+        //        ];
         $this->children = new ArrayCollection();
     }
 

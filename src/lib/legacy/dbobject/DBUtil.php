@@ -2086,7 +2086,7 @@ class DBUtil
                 }
                 $wherecat = '(' . implode(' OR ', $wherecat) . ')';
 
-            // if there's only one category ID
+                // if there's only one category ID
             } else {
                 $wherecat = "{$prefix}category_id='" . DataUtil::formatForStore($category) . "'";
             }

@@ -1113,7 +1113,7 @@ class System
     {
         @trigger_error('System class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-//        self::$installing = (bool) $flag;
+        //        self::$installing = (bool) $flag;
     }
 
     /**
