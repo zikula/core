@@ -37,12 +37,6 @@ class ExtensionEntity extends EntityAccess
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=64)
-     * @var string
-     */
-//    private $namespace;
-
-    /**
      * @ORM\Column(type="integer", length=2)
      * @var integer
      */
@@ -121,17 +115,6 @@ class ExtensionEntity extends EntityAccess
     {
         $this->name = $name;
     }
-
-    /*
-    public function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-    public function setNamespace($namespace)
-    {
-        $this->namespace = $namespace;
-    }*/
 
     public function getType()
     {

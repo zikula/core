@@ -53,8 +53,8 @@ class Controller
     public function nonExtractableButIgnoredAction()
     {
         /** @Ignore */ $this->translator->__($foo);
-/** Foobar */
-/** @Ignore */ $this->translator->__f('foo', [], $baz);
+        /** Foobar */
+        /** @Ignore */ $this->translator->__f('foo', [], $baz);
     }
 
     public function irrelevantDocComment()
