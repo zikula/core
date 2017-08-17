@@ -80,6 +80,11 @@ class HookBundleInstaller implements InstallerInterface
                 $stmt->closeCursor();
             }
         }
+        switch ($currentCoreVersion) {
+            case '2.0.0':
+                $this->schemaTool->update([HookRuntimeEntity::class]);
+            case '2.0.1': //current version
+        }
 
         // Update successful
         return true;
