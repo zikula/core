@@ -131,7 +131,11 @@ class HookBundleInstaller implements InstallerInterface
                     ->execute();
             }
         }
-        // @todo at Core-2.0 remove deprecated entities
+        switch ($currentCoreVersion) {
+            case '1.5.0':
+                $this->schemaTool->update([HookRuntimeEntity::class]);
+            case '1.5.1': //current version
+        }
 
         // Update successful
         return true;

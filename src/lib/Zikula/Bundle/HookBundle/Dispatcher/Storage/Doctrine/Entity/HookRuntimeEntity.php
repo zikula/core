@@ -34,7 +34,7 @@ class HookRuntimeEntity extends EntityAccess
     /**
      * @var string
      *
-     * @ORM\Column(name="sowner", type="string", length=40, nullable=false)
+     * @ORM\Column(name="sowner", type="string", length=60, nullable=false)
      */
     private $sowner;
 
@@ -49,7 +49,7 @@ class HookRuntimeEntity extends EntityAccess
     /**
      * @var string
      *
-     * @ORM\Column(name="powner", type="string", length=40, nullable=false)
+     * @ORM\Column(name="powner", type="string", length=60, nullable=false)
      */
     private $powner;
 
@@ -78,14 +78,14 @@ class HookRuntimeEntity extends EntityAccess
     /**
      * @var string
      *
-     * @ORM\Column(name="eventname", type="string", length=100, nullable=false)
+     * @ORM\Column(name="eventname", type="string", length=120, nullable=false)
      */
     private $eventname;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="classname", type="string", length=60, nullable=false)
+     * @ORM\Column(name="classname", type="string", length=120, nullable=false)
      */
     private $classname;
 
@@ -99,7 +99,7 @@ class HookRuntimeEntity extends EntityAccess
     /**
      * @var string
      *
-     * @ORM\Column(name="serviceid", type="string", length=60, nullable=true)
+     * @ORM\Column(name="serviceid", type="string", length=120, nullable=true)
      */
     private $serviceid;
 
