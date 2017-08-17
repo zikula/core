@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Corrected access to category properties on edit (#3763, #3762).
     - Corrected visibility of properties in \Zikula\Core\Doctrine\Entity\AbstractEntityAttribute (#3765).
     - Improved collecting module workflow definitions (#3767).
+    - Updated field lengths in HookRuntimeEntity to facilitate longer classnames and serviceIds.
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
