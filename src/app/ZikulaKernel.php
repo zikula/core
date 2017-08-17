@@ -101,4 +101,12 @@ class ZikulaKernel extends Kernel
     {
         return dirname(__DIR__) . '/var/logs';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProjectDir()
+    {
+        return dirname(__DIR__);
+    }
 }
