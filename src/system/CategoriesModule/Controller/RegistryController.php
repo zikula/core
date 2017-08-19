@@ -97,13 +97,13 @@ class RegistryController extends AbstractController
             $moduleOptions[$module['name']] = $module['displayname'];
         }
 
-/*
-        $modules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
-        $moduleOptions = [];
-        foreach ($modules as $module) {
-            $moduleOptions[$module->getName()] = $module->getName();
-        }
-*/
+        /*
+            $modules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
+            $moduleOptions = [];
+            foreach ($modules as $module) {
+                $moduleOptions[$module->getName()] = $module->getName();
+            }
+        */
 
         return $moduleOptions;
     }
