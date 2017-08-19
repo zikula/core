@@ -448,7 +448,7 @@ class CategoryApi
             @trigger_error('The arguments "exclPath", "assocKey", "attributes" and "columnArray" no longer affect the query.', E_USER_DEPRECATED);
         }
 
-        return $this->getCategoryByPath($apath, $pathField, $sort, $includeLeaf, $all);
+        return [$this->getCategoryByPath($apath, $pathField, $sort, $includeLeaf, $all)];
     }
 
     /**
