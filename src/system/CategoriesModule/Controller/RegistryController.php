@@ -79,31 +79,11 @@ class RegistryController extends AbstractController
 
     private function getCategorizableModules()
     {
-        $entityManager = $this->get('doctrine')->getManager();
-
-        $modules = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
-            ->findBy(['state' => 3], ['displayname' => 'ASC']);
+        $modules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
         $moduleOptions = [];
         foreach ($modules as $module) {
-            $bundle = \ModUtil::getModule($module['name']);
-            if (null !== $bundle && !class_exists($bundle->getVersionClass())) {
-                // this check just confirming a Core-2.0 spec bundle - remove in 2.0.0
-                // then instead of getting MetaData, could just do $capabilityApi->getCapabilitiesOf($module['name'])
-                $capabilities = $bundle->getMetaData()->getCapabilities();
-                if (!isset($capabilities['categorizable'])) {
-                    continue; // skip this module if not categorizable
-                }
-            }
-            $moduleOptions[$module['name']] = $module['displayname'];
+            $moduleOptions[$module->getName()] = $module->getName();
         }
-
-        /*
-            $modules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
-            $moduleOptions = [];
-            foreach ($modules as $module) {
-                $moduleOptions[$module->getName()] = $module->getName();
-            }
-        */
 
         return $moduleOptions;
     }
