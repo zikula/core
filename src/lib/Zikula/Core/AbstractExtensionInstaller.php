@@ -62,7 +62,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     abstract public function install();
 
     /**
-     * upgrade the blocks extension
+     * upgrade the extension
      *
      * @param string $oldversion version being upgraded
      *
@@ -71,10 +71,9 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     abstract public function upgrade($oldversion);
 
     /**
-     * delete the blocks extension
+     * delete the extension
      *
-     * Since the blocks extension should never be deleted we'all always return false here
-     * @return bool false
+     * @return bool true if successful, false otherwise
      */
     abstract public function uninstall();
 
