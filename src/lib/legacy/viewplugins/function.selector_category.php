@@ -77,6 +77,8 @@ function smarty_function_selector_category($params, Zikula_View $view)
         $catCache = [];
     }
 
+    $recurse = false;
+
     $cacheKey = "$category[id]||$recurse|$relative|$includeRoot|$includeLeaf|$all|||$attributes|$sortField";
     if (!isset($catCache[$cacheKey])) {
         $catCache[$cacheKey] = CategoryUtil::getSubCategoriesForCategory($category, $recurse, $relative, $includeRoot,
@@ -87,11 +89,12 @@ function smarty_function_selector_category($params, Zikula_View $view)
                                                   $allValue, $allText, $submit, $displayPath, $doReplaceRootCat, $multipleSize, $fieldIsAttribute, $cssClass, $lang
                                                   );
 
-    if ($editLink && !empty($category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
-        $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', ['dr' => $category['id']]));
-        $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.png\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
-    }
-
+    /*
+        if ($editLink && !empty($category) && SecurityUtil::checkPermission('ZikulaCategoriesModule::', "$category[id]::", ACCESS_EDIT)) {
+            $url = DataUtil::formatForDisplay(ModUtil::url('ZikulaCategoriesModule', 'user', 'edit', ['dr' => $category['id']]));
+            $html .= "&nbsp;&nbsp;<a href=\"$url\"><img src=\"".System::getBaseUrl()."images/icons/extrasmall/xedit.png\" title=\"" . __('Edit sub-category') . '" alt="' . __('Edit sub-category') . '" /></a>';
+        }
+    */
     if (isset($params['lang'])) {
         // Reset language again.
         ZLanguage::setLocale($oldLocale);
