@@ -493,13 +493,13 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      */
     public function locateResource($name, $dir = null, $first = true)
     {
-        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
         $locations = parent::locateResource($name, $dir, false);
         if ($locations && (false !== strpos($locations[0], $dir))) {
             // if found in $dir (typically app/Resources) return it immediately.
             return $locations[0];
         }
 
+        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
         // add theme path to template locator
         // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
         // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
