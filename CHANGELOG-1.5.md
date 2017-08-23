@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Improved collecting module workflow definitions (#3767).
     - Updated field lengths in HookRuntimeEntity to facilitate longer classnames and serviceIds.
     - Fixed two category issues with legacy modules (#3775, News#172, News#174).
+    - Corrected pdo driver name for pgsql (#3783).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
