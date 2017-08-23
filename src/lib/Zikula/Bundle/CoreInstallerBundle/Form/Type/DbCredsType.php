@@ -109,7 +109,7 @@ class DbCredsType extends AbstractType
             $types['Oracle (alpha) via Oracle driver'] = 'oracle';
         }
         if (function_exists('pg_connect')) {
-            $types['PostgreSQL'] = 'postgres';
+            $types['PostgreSQL'] = 'pgsql';
         }
 
         return $types;
