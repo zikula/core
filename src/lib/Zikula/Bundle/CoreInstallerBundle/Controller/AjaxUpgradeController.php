@@ -226,6 +226,7 @@ class AjaxUpgradeController extends AbstractController
     private function finalizeParameters()
     {
         $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+        $kernel = $this->container->get('kernel');
         // Set the System Identifier as a unique string.
         if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
             $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
@@ -273,14 +274,17 @@ class AjaxUpgradeController extends AbstractController
         $variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
         $variableApi->set(VariableApi::CONFIG, 'Version_Sub', ZikulaKernel::VERSION_SUB);
 
-        // set the 'start' page information to empty to avoid missing module errors.
-        $variableApi->set(VariableApi::CONFIG, 'startController', '');
-        $variableApi->set(VariableApi::CONFIG, 'startargs', '');
+        $startController = $variableApi->getSystemVar('startController');
+        list($moduleName) = explode(':', $startController);
+        if (!$kernel->isBundle($moduleName)) {
+            // set the 'start' page information to empty to avoid missing module errors.
+            $variableApi->set(VariableApi::CONFIG, 'startController', '');
+            $variableApi->set(VariableApi::CONFIG, 'startargs', '');
+        }
+
         // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
         $defaultTheme = $variableApi->getSystemVar('Default_Theme');
-        if (!$this->container->get('kernel')->isBundle($defaultTheme)
-            && $this->container->get('kernel')->isBundle('ZikulaBootstrapTheme')
-        ) {
+        if (!$kernel->isBundle($defaultTheme) && $kernel->isBundle('ZikulaBootstrapTheme')) {
             $variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
         }
 
