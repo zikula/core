@@ -13,6 +13,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Improved collecting module workflow definitions (#3767).
     - Updated field lengths in HookRuntimeEntity to facilitate longer classnames and serviceIds.
     - Introduce override of `Kernel::getProjectDir()` (#3773).
+    - Do not clear start controller if it is available (#3780, #3782).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
