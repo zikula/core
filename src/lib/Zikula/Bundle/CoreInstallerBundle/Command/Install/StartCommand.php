@@ -128,6 +128,6 @@ class StartCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
         $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
 
-        $io->success($this->translator->__('First stage of installation complete. Run `php app/console zikula:install:finish` to complete the installation.'));
+        $io->success($this->translator->__('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
     }
 }
