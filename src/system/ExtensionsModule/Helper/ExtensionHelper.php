@@ -233,7 +233,7 @@ class ExtensionHelper
     }
 
     /**
-     * Run the console command app/console assets:install
+     * Run the console command assets:install
      *
      * @throws \Exception
      */
