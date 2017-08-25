@@ -16,6 +16,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed two category issues with legacy modules (#3775, News#172, News#174).
     - Corrected pdo driver name for pgsql (#3783).
     - Notify admin on registration if admin email is not empty (#3725).
+    - Correct paging of search results (#3754).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
