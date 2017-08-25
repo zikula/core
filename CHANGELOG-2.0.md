@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Introduce override of `Kernel::getProjectDir()` (#3773).
     - Do not clear start controller if it is available (#3780, #3782).
     - Corrected pdo driver name for pgsql (#3783).
+    - Notify admin on registration if admin email is not empty (#3725).
 
  - Vendor updates:
     - jquery.mmenu updated from 6.1.3 to 6.1.4
