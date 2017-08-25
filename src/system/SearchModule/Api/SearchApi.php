@@ -108,9 +108,7 @@ class SearchApi implements SearchApiInterface
             'resultCount' => $resultCount,
             'sqlResult' => $results,
         ];
-        if (isset($searchableInstance)) {
-            $result['errors'] = $searchableInstance->getErrors();
-        }
+        $result['errors'] = isset($searchableInstance) ? $searchableInstance->getErrors() : [];
 
         return $result;
     }

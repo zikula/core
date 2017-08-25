@@ -29,6 +29,7 @@ class SearchType extends AbstractType
         $translator = $options['translator'];
 
         $builder
+            ->setMethod('GET')
             ->add('q', SearchInputType::class, [
                 'label' => $translator->__('Search keywords'),
                 'attr' => [
