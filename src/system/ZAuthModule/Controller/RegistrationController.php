@@ -99,10 +99,11 @@ class RegistrationController extends AbstractController
             $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
             $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
             $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL);
+            $adminNotificationEmail = $this->get('zikula_extensions_module.api.variable')->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
 
             switch ($userEntity->getActivated()) {
                 case UsersConstant::ACTIVATED_PENDING_REG:
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity, true, false);
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity, true, !empty($adminNotificationEmail));
                     if (!empty($notificationErrors)) {
                         $this->addFlash('error', implode('<br>', $notificationErrors));
                     }
@@ -113,7 +114,7 @@ class RegistrationController extends AbstractController
                     }
                     break;
                 case UsersConstant::ACTIVATED_ACTIVE:
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity, true, false);
+                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity, true, !empty($adminNotificationEmail));
                     if (!empty($notificationErrors)) {
                         $this->addFlash('error', implode('<br>', $notificationErrors));
                     }
