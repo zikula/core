@@ -94,7 +94,7 @@ class RegistryController extends AbstractController
                     continue; // skip this module if not categorizable
                 }
             }
-            $moduleOptions[$module['name']] = $module['displayname'];
+            $moduleOptions[$module['name']] = $module['name'];
         }
 
         /*
