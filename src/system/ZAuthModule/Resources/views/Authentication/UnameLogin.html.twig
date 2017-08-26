@@ -23,10 +23,7 @@
         {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
     <div id="zikulausersmodule-login-hooks">
-        {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) %}
-        {% for hook in hooks %}
-            {{ hook|raw }}
-        {% endfor %}
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) }}
     </div>
 
     {{ form_row(form.submit) }}

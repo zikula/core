@@ -22,16 +22,7 @@
         {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
-    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) %}
-    {% if hooks is iterable %}
-    <fieldset>
-        <legend>{{ __('Further information') }}</legend>
-            {% for providerArea, hook in hooks %}
-                {{ hook }}
-                <div class="clearfix"></div>
-            {% endfor %}
-    </fieldset>
-    {% endif %}
+    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) }}
 
     {% set regQuestion = getModVar('ZikulaUsersModule', 'reg_question', '') %}
     {% if regQuestion is not empty %}

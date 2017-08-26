@@ -17,13 +17,7 @@
         {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
 
-    {% set hooks = notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) %}
-    {% if hooks is iterable %}
-        {% for providerArea, hook in hooks %}
-            {{ hook }}
-            <div class="clearfix"></div>
-        {% endfor %}
-    {% endif %}
+    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) }}
 
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
