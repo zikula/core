@@ -19,9 +19,14 @@ CHANGELOG - ZIKULA 2.0.x
     - Correct paging of search results (#3754).
 
  - Vendor updates:
-    - jquery.mmenu updated from 6.1.3 to 6.1.4
+    - composer/installers updated from 1.3.0 to v1.4.0
+    - doctrine/orm updated from 2.5.6 to 2.5.10
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.0 to 1.6.3
+    - jquery.mmenu updated from 6.1.3 to 6.1.5
     - matthiasnoback/symfony-service-definition-validator updated from dev-master to 1.2.8
-    - sensiolabs/security-checker updated from 4.1.1 to 4.1.3
+    - sensiolabs/security-checker updated from 4.1.1 to 4.1.5
+    - sensio/distribution-bundle updated from 5.0.20 to 5.0.21
+    - symfony/polyfill-* updated from 1.4.0 to 1.5.0
     - symfony/symfony updated from 3.3.5 to 3.3.6
 
 
