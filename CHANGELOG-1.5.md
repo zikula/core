@@ -19,10 +19,16 @@ CHANGELOG - ZIKULA 1.5.x
     - Correct paging of search results (#3754).
 
  - Vendor updates:
-    - jquery.mmenu updated from 6.1.3 to 6.1.4
-    - phpdocumentor/reflection-docblock updated from 3.2.0 to 3.2.1
+    - composer/installers updated from 1.3.0 to v1.4.0
+    - doctrine/orm updated from 2.5.6 to 2.5.10
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.0 to 1.6.3
+    - jquery.mmenu updated from 6.1.3 to 6.1.5
+    - phpdocumentor/reflection-docblock updated from 3.2.0 to 3.2.2
     - phpdocumentor/type-resolver downgraded from 0.4.0 to 0.3.0
-    - sensiolabs/security-checker updated from 4.1.1 to 4.1.3
+    - sensiolabs/security-checker updated from 4.1.1 to 4.1.5
+    - sensio/distribution-bundle updated from 5.0.20 to 5.0.21
+    - sensio/framework-extra-bundle updated from 3.0.26 to 3.0.27
+    - symfony/polyfill-* updated from 1.4.0 to 1.5.0
     - symfony/symfony updated from 2.8.25 to 2.8.26
     - symfony/workflow updated from 3.3.5 to 3.3.6
 
