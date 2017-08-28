@@ -19,8 +19,9 @@ CHANGELOG - ZIKULA 1.5.x
     - Correct paging of search results (#3754).
 
  - Vendor updates:
-    - composer/installers updated from 1.3.0 to v1.4.0
+    - composer/installers updated from 1.3.0 to 1.4.0
     - doctrine/orm updated from 2.5.6 to 2.5.10
+    - elao/web-profiler-extra-bundle updated from 2.3.3 to 2.3.4
     - friendsofsymfony/jsrouting-bundle updated from 1.6.0 to 1.6.3
     - jquery.mmenu updated from 6.1.3 to 6.1.5
     - phpdocumentor/reflection-docblock updated from 3.2.0 to 3.2.2
@@ -29,8 +30,8 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/distribution-bundle updated from 5.0.20 to 5.0.21
     - sensio/framework-extra-bundle updated from 3.0.26 to 3.0.27
     - symfony/polyfill-* updated from 1.4.0 to 1.5.0
-    - symfony/symfony updated from 2.8.25 to 2.8.26
-    - symfony/workflow updated from 3.3.5 to 3.3.6
+    - symfony/symfony updated from 2.8.25 to 2.8.27
+    - symfony/workflow updated from 3.3.5 to 3.3.8
 
 
 * 1.5.0 (2017-08-05)
