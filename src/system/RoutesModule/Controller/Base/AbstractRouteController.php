@@ -30,12 +30,6 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This is the default action handling the main admin area called without defining arguments.
      *
-     * @Route("/admin/routes",
-     *        methods = {"GET"}
-     * )
-     * @Cache(expires="+7 days", public=true)
-     * @Theme("admin")
-     *
      * @param Request $request Current request instance
      *
      * @return Response Output
@@ -49,11 +43,6 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This is the default action handling the main area called without defining arguments.
-     *
-     * @Route("/routes",
-     *        methods = {"GET"}
-     * )
-     * @Cache(expires="+7 days", public=true)
      *
      * @param Request $request Current request instance
      *
@@ -86,14 +75,6 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides an item list overview in the admin area.
      *
-     * @Route("/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
-     *        methods = {"GET"}
-     * )
-     * @Cache(expires="+2 hours", public=false)
-     * @Theme("admin")
-     *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
      * @param string $sortdir      Sorting direction
@@ -111,13 +92,6 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This action provides an item list overview.
-     *
-     * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
-     *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
-     *        methods = {"GET"}
-     * )
-     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -186,15 +160,6 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides a item detail view in the admin area.
      *
-     * @Route("/admin/route/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"_format" = "html"},
-     *        methods = {"GET"}
-     * )
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
-     * @Theme("admin")
-     *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
      *
@@ -210,14 +175,6 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This action provides a item detail view.
-     *
-     * @Route("/route/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"_format" = "html"},
-     *        methods = {"GET"}
-     * )
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
@@ -265,14 +222,6 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides a handling of edit requests in the admin area.
      *
-     * @Route("/admin/route/edit/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"id" = "0", "_format" = "html"},
-     *        methods = {"GET", "POST"}
-     * )
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
-     * @Theme("admin")
-     *
      * @param Request $request Current request instance
      *
      * @return Response Output
@@ -288,13 +237,6 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This action provides a handling of edit requests.
-     *
-     * @Route("/route/edit/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"id" = "0", "_format" = "html"},
-     *        methods = {"GET", "POST"}
-     * )
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      *
@@ -342,15 +284,6 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides a handling of simple delete requests in the admin area.
      *
-     * @Route("/admin/route/delete/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"_format" = "html"},
-     *        methods = {"GET", "POST"}
-     * )
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
-     * @Theme("admin")
-     *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
      *
@@ -367,14 +300,6 @@ abstract class AbstractRouteController extends AbstractController
     
     /**
      * This action provides a handling of simple delete requests.
-     *
-     * @Route("/route/delete/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"_format" = "html"},
-     *        methods = {"GET", "POST"}
-     * )
-     * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
