@@ -1,2 +1,2 @@
 {{ form_widget(form) }}
-{{ notifyDisplayHooks('blocks.ui_hooks.htmlblock.content.form_edit', form.vars.value.bid|default(null)) }}
+{{ notifyDisplayHooks(constant('Zikula\\BlocksModule\\HookSubscriber\\UiHooksSubscriber::HTMLBLOCK_EDIT_FORM'), form.vars.value.bid|default(null)) }}
