@@ -17,6 +17,8 @@ use Zikula\Common\Translator\TranslatorInterface;
 
 class UiHooksSubscriber implements HookSubscriberInterface
 {
+    const HTMLBLOCK_EDIT_FORM = 'blocks.ui_hooks.htmlblock.content.form_edit';
+
     /**
      * @var TranslatorInterface
      */
