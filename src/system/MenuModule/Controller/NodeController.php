@@ -29,7 +29,7 @@ class NodeController extends AbstractController
     private $domTreeNodePrefix = 'node_';
 
     /**
-     * @Route("/contextMenu/{action}/{id}", options={"expose"=true})
+     * @Route("/contextMenu/{action}/{id}", options={"expose"=true, "i18n"=false})
      * @param Request $request
      * @param string $action
      * @param MenuItemEntity $menuItemEntity
