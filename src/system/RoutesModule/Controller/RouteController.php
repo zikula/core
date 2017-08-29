@@ -173,7 +173,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
+     * @Cache(expires="+30 minutes", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -197,7 +197,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
+     * @Cache(expires="+30 minutes", public=false)
      *
      * @param Request $request Current request instance
      *
@@ -220,7 +220,6 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -246,7 +245,6 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
