@@ -220,6 +220,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(expires="+2 hours", public=false)
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -245,6 +246,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
+     * @Cache(expires="+2 hours", public=false)
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
