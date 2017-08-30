@@ -700,7 +700,7 @@ class ConfigController extends AbstractController
             'rp' => 'https://www.w3schools.com/tags/tag_rp.asp',
             'rt' => 'https://www.w3schools.com/tags/tag_rt.asp',
             'ruby' => 'https://www.w3schools.com/tags/tag_ruby.asp',
-            's' => 'https://www.w3schools.com/tags/tag_strike.asp',
+            's' => 'https://www.w3schools.com/tags/tag_s.asp',
             'samp' => 'https://www.w3schools.com/tags/tag_samp.asp',
             'script' => 'https://www.w3schools.com/tags/tag_script.asp',
             'section' => 'https://www.w3schools.com/tags/tag_section.asp',
