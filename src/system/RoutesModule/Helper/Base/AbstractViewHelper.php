@@ -142,12 +142,6 @@ abstract class AbstractViewHelper
             $template = $this->getViewTemplate($type, $func);
         }
     
-        if ($templateExtension == 'pdf.twig') {
-            $template = str_replace('.pdf', '.html', $template);
-    
-            return $this->processPdf($templateParameters, $template);
-        }
-    
         // look whether we need output with or without the theme
         $raw = $this->request->query->getBoolean('raw', false);
         if (!$raw && $templateExtension != 'html.twig') {
@@ -218,53 +212,5 @@ abstract class AbstractViewHelper
         }
     
         return $extensions;
-    }
-
-    /**
-     * Processes a template file using dompdf (LGPL).
-     *
-     * @param array  $templateParameters Template data
-     * @param string $template           Name of template to use
-     *
-     * @return mixed Output
-     */
-    protected function processPdf(array $templateParameters = [], $template)
-    {
-        // first the content, to set page vars
-        $output = $this->twig->render($template, $templateParameters);
-    
-        // make local images absolute
-        $output = str_replace('img src="/', 'img src="' . $this->request->server->get('DOCUMENT_ROOT') . '/', $output);
-    
-        // then the surrounding
-        $output = $this->twig->render('@ZikulaRoutesModule/includePdfHeader.html.twig') . $output . '</body></html>';
-    
-        // create name of the pdf output file
-        $siteName = $this->variableApi->getSystemVar('sitename');
-        $pageTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $this->pageVars->get('title', ''));
-        $fileTitle = iconv('UTF-8', 'ASCII//TRANSLIT', $siteName)
-                   . '-'
-                   . ($pageTitle != '' ? $pageTitle . '-' : '')
-                   . date('Ymd') . '.pdf';
-       $fileTitle = str_replace(' ', '_', $fileTitle);
-    
-        /*
-        if (true === $this->request->query->getBoolean('dbg', false)) {
-            die($output);
-        }
-        */
-    
-        // instantiate pdf object
-        $pdf = new \Dompdf\Dompdf();
-        // define page properties
-        $pdf->setPaper('A4', 'portrait');
-        // load html input data
-        $pdf->loadHtml($output);
-        // create the actual pdf file
-        $pdf->render();
-        // stream output to browser
-        $pdf->stream($fileTitle);
-    
-        return new Response();
     }
 }
