@@ -1,7 +1,16 @@
 CHANGELOG - ZIKULA 2.0.x
 ------------------------
 
-* 2.0.1 (?)
+* 2.0.2 (?)
+
+ - Fixes:
+    - ?
+
+ - Vendor updates:
+    - ?
+
+
+* 2.0.1 (2017-09-01)
 
  - Fixes:
     - Corrected conditional statement for searchable modules (#3752).
