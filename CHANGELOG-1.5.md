@@ -1,7 +1,19 @@
 CHANGELOG - ZIKULA 1.5.x
 ------------------------
 
-* 1.5.1 (?)
+* 1.5.2 (?)
+
+ - Deprecated:
+    - ?
+
+ - Fixes:
+    - ?
+
+ - Vendor updates:
+    - ?
+
+
+* 1.5.1 (2017-09-01)
 
  - Deprecated:
     - ?
