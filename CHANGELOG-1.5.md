@@ -7,16 +7,13 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Fixes:
-    - ?
+    - Allow hooks to be managed in display (#3793).
 
  - Vendor updates:
     - ?
 
 
 * 1.5.1 (2017-09-01)
-
- - Deprecated:
-    - ?
 
  - Fixes:
     - Corrected conditional statement for searchable modules (#3752).
