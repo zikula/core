@@ -28,17 +28,12 @@ if it's a brand new form or a submitted form by reading the form submit property
 Accordingly, we can notify the system of the hook events.
 
 When displaying a new empty form, we simply trigger a `form_edit` in the template with
-{notifydisplayhooks} using a null id.
+{{ notifydisplayhooks }} using a null id.
 
     {{ notifyDisplayHooks('foo.ui_hooks.form_edit', null) }}
 
-The function will return all display hook handlers that responde, sorted according to
-the administration settings.  The return is an array of
-
-    [
-        'providerarea1' => `\Zikula\Bundle\HookBundle\Hook\DisplayHook`,
-        'providerarea2' => `\Zikula\Bundle\HookBundle\Hook\DisplayHook`,
-    ];
+The function will return all display hook handlers that respond, sorted according to
+the administration settings. By default, the return is a string.
 
 When we come to validate a new create form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` hook with
@@ -56,8 +51,8 @@ If it's ok simply commit the form data, then trigger a `process_edit` Zikula_Pro
 
     new \Zikula\Bundle\HookBundle\Hook\ProcessHook($name, $id, $url);
 
-The URL should be an instance of Zikula_ModUrl which describes how to get the newly created object.
-For this reason you must determine the ID of the object before you issue a `\Zikula\Bundle\HookBundle\Hook\ProcessHook`.
+The URL should be an instance of `Zikula\Core\UrlInterface` which describes how to get the newly created object.
+For this reason you must determine the ID of the object before you issue a `Zikula\Bundle\HookBundle\Hook\ProcessHook`.
 
 If the data is not ok, then redisplay the template.
 
@@ -77,7 +72,7 @@ Accordingly, we can notify the system of the hook events.
 
 When displaying an edit form, we simply trigger a `form_edit` hook with with
 
-    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id }}
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id) }}
 
 When we come to validate an edit form, this means we have received a submit command
 in the form.  We can then validate our form and then trigger a `validate_edit` event with
@@ -97,12 +92,12 @@ If it's ok simply commit the form data, then trigger a `process_edit` event with
 
 If the data is not ok, then simply redisplay the template.  The triggered event will pick up
 the validation problems automatically as the validation of each handler will persist in
-the `Zikula_Hook_AbstractHandler` instances unless using an outdated workflow where the validation method
-redirects to display methods, in which case you will have to do validation again.
+the `Zikula\Bundle\HookBundle\Hook\AbstractHookListener` instances unless using an outdated workflow where the 
+validation method redirects to display methods, in which case you will have to do validation again.
 
 `form_edit` hooks are displayed in the template with
 
-    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id }}
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id) }}
 
 
 ### Deleting an item
@@ -119,4 +114,23 @@ triggering a hookable event with
 
 `form_delete` hooks are displayed in the template with
 
-    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_delete', id }}
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_delete', id) }}
+
+### Optionally managing display of hooks
+
+In most situations, it is fine to display hooks as they have been loaded by the providers. e.g.
+
+    {{ notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id) }}
+
+This is because the order the hooks are displayed in can be controlled by the Hook UI via drag and drop.
+
+But if a subscriber must exert more fine-grained control over the display of hooks, this can be done by passing
+the fourth argument as `true` and then assigning the hooks to a variable like so:
+
+    {% set hooks = notifyDisplayHooks('<module>.ui_hooks.<area>.form_edit', id, null, true) %}
+
+Then the subscriber template must loop that variable and display each hook:
+
+    {% for area, hook in hooks %}
+        <div class="z-displayhook my-special-hook-class" data-area="{{ area }}">{{ hook }}</div>
+    {% endfor %}

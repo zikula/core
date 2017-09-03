@@ -47,9 +47,17 @@ class HookExtension extends \Twig_Extension
         ];
     }
 
-    public function notifyDisplayHooks($eventName, $id = null, $urlObject = null)
+    /**
+     * @param $eventName
+     * @param integer $id The object id
+     * @param UrlInterface $urlObject
+     * @param bool $outputAsArray set to true to output results as array (requires additional handling in template)
+     *
+     * @return bool|string|array
+     */
+    public function notifyDisplayHooks($eventName, $id = null, $urlObject = null, $outputAsArray = false)
     {
-        if (!isset($eventName)) {
+        if (empty($eventName)) {
             return trigger_error('Error! "eventname" must be set in notifydisplayhooks');
         }
         if ($urlObject && !($urlObject instanceof UrlInterface)) {
@@ -60,6 +68,10 @@ class HookExtension extends \Twig_Extension
         $hook = new DisplayHook($id, $urlObject);
         $this->hookDispatcher->dispatch($eventName, $hook);
         $responses = $hook->getResponses();
+
+        if ($outputAsArray) {
+            return $responses;
+        }
 
         $output = '';
         foreach ($responses as $result) {
