@@ -4,7 +4,7 @@ CHANGELOG - ZIKULA 2.0.x
 * 2.0.2 (?)
 
  - Fixes:
-    - ?
+    - Allow hooks to be managed in display (#3793).
 
  - Vendor updates:
     - ?
