@@ -10,6 +10,7 @@ services:
     zikula_routes_module.controller_helper:
         class: Zikula\RoutesModule\Helper\ControllerHelper
         arguments:
+            - "@translator.default"
             - "@request_stack"
             - "@form.factory"
             - "@zikula_extensions_module.api.variable"
