@@ -7,7 +7,12 @@ CHANGELOG - ZIKULA 2.0.x
     - Allow hooks to be managed in display (#3793).
 
  - Vendor updates:
-    - ?
+    - composer/ca-bundle updated from 1.0.7 to 1.0.8
+    - imagine/imagine updated from 0.6.3 to 0.7.1
+    - jquery.mmenu updated from 6.1.5 to 6.1.6
+    - liip/imagine-bundle updated from 1.8.0 to 1.9.1
+    - phpspec/prophecy updated from 1.7.0 to 1.7.2
+    - symfony/symfony updated from 3.3.8 to 3.3.9
 
 
 * 2.0.1 (2017-09-01)
