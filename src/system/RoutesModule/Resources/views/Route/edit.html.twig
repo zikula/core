@@ -43,77 +43,69 @@
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-edit">
-{% form_theme form with [
-    '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
-] %}
-{{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
-{{ form_errors(form) }}
-<fieldset>
-    <legend>{{ __('Basic settings') }}</legend>
-    {{ form_row(form.bundle) }}
-    {{ form_row(form.controller) }}
-    {{ form_row(form.action) }}
-    {{ form_row(form.path) }}
-    {{ form_row(form.description) }}
-    <div class="hidden">
-        {{ form_row(form.sort) }}
-    </div>
-    {{ form_row(form.prependBundlePrefix) }}
-    {{ form_row(form.translatable) }}
-    {{ form_row(form.translationPrefix) }}
-</fieldset>
-<fieldset>
-    <legend>{{ __('Route scope') }}</legend>
-    {{ form_row(form.schemes) }}
-    {{ form_row(form.methods) }}
-</fieldset>
-<fieldset>
-    <legend>{{ __('Parameter settings') }}</legend>
-    {{ form_row(form.defaults) }}
-    {{ form_row(form.requirements) }}
-    {{ form_row(form.options) }}
-</fieldset>
-<fieldset>
-    <legend>{{ __('Advanced settings') }}</legend>
-    {{ form_row(form.host) }}
-    {{ form_row(form.condition) }}
-</fieldset>
+        {% form_theme form with [
+            '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
+        {{ form_errors(form) }}
+        <fieldset>
+            <legend>{{ __('Basic settings') }}</legend>
+            {{ form_row(form.bundle) }}
+            {{ form_row(form.controller) }}
+            {{ form_row(form.action) }}
+            {{ form_row(form.path) }}
+            {{ form_row(form.description) }}
+            <div class="hidden">
+                {{ form_row(form.sort) }}
+            </div>
+            {{ form_row(form.prependBundlePrefix) }}
+            {{ form_row(form.translatable) }}
+            {{ form_row(form.translationPrefix) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Route scope') }}</legend>
+            {{ form_row(form.schemes) }}
+            {{ form_row(form.methods) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Parameter settings') }}</legend>
+            {{ form_row(form.defaults) }}
+            {{ form_row(form.requirements) }}
+            {{ form_row(form.options) }}
+        </fieldset>
+        <fieldset>
+            <legend>{{ __('Advanced settings') }}</legend>
+            {{ form_row(form.host) }}
+            {{ form_row(form.condition) }}
+        </fieldset>
 
-{% if mode != 'create' %}
-    {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', { obj: route }) }}
-{% endif %}
+        {% if mode != 'create' %}
+            {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', { obj: route }) }}
+        {% endif %}
 
-{% if form.moderationSpecificCreator is defined %}
-    <fieldset id="moderationFieldsSection">
-        <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
-        <div id="moderationFieldsContent">
-            {{ form_row(form.moderationSpecificCreator) }}
-            {{ form_row(form.moderationSpecificCreationDate) }}
+        {% if form.moderationSpecificCreator is defined %}
+            <fieldset id="moderationFieldsSection">
+                <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
+                <div id="moderationFieldsContent">
+                    {{ form_row(form.moderationSpecificCreator) }}
+                    {{ form_row(form.moderationSpecificCreationDate) }}
+                </div>
+            </fieldset>
+        {% endif %}
+
+        {# include possible submit actions #}
+        <div class="form-group form-buttons">
+            <div class="col-sm-offset-3 col-sm-9">
+                {% for action in actions %}
+                    {{ form_widget(attribute(form, action.id)) }}
+                {% endfor %}
+                {{ form_widget(form.reset) }}
+                {{ form_widget(form.cancel) }}
+            </div>
         </div>
-    </fieldset>
-{% endif %}
-
-{# include return control #}
-{% if mode == 'create' %}
-    <fieldset>
-        <legend>{{ __('Return control') }}</legend>
-        {{ form_row(form.repeatCreation) }}
-    </fieldset>
-{% endif %}
-
-{# include possible submit actions #}
-<div class="form-group form-buttons">
-    <div class="col-sm-offset-3 col-sm-9">
-        {% for action in actions %}
-            {{ form_widget(attribute(form, action.id)) }}
-        {% endfor %}
-        {{ form_widget(form.reset) }}
-        {{ form_widget(form.cancel) }}
+        {{ form_end(form) }}
     </div>
-</div>
-{{ form_end(form) }}
-</div>
 {% endblock %}
 {% block footer %}
     {{ parent() }}
