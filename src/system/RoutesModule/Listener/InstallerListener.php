@@ -163,7 +163,7 @@ class InstallerListener extends AbstractInstallerListener
     /**
      * Reloads all JavaScript routes and adds errors to the flash bag.
      */
-    public function updateJsRoutes()
+    private function updateJsRoutes()
     {
         $errors = $this->routeDumperHelper->dumpJsRoutes();
         if ($errors == '') {
