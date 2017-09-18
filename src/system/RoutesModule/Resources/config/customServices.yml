@@ -35,6 +35,7 @@ services:
             - "@zikula_routes_module.route_dumper_helper"
             - "@zikula_routes_module.multilingual_routing_helper"
             - "@zikula_routes_module.entity_factory"
+            - "@request_stack"
         tags:
             - { name: kernel.event_subscriber }
 
