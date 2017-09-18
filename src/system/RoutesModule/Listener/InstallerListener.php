@@ -175,6 +175,6 @@ class InstallerListener extends AbstractInstallerListener
             return;
         }
 
-        $request->getSession()->getFlashBag->add('error', $errors);
+        $request->getSession()->getFlashBag()->add('error', $errors);
     }
 }
