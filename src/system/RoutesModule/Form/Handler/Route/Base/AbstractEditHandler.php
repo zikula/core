@@ -161,6 +161,10 @@ abstract class AbstractEditHandler extends EditHandler
                 $args['commandName'] = $action['id'];
             }
         }
+        if ($this->templateParameters['mode'] == 'create' && $this->form->get('submitrepeat')->isClicked()) {
+            $args['commandName'] = 'submit';
+            $this->repeatCreateAction = true;
+        }
         if ($this->form->get('cancel')->isClicked()) {
             $args['commandName'] = 'cancel';
         }
