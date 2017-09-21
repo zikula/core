@@ -229,6 +229,23 @@ class CategoryApi
         $values = [];
         foreach ($apath as $path) {
             $parts = explode('/', $path);
+
+            if ($pathField == 'path') {
+                $parts = array_values(array_filter($parts));
+            
+                if (!empty($parts)) {
+                    $last = count($parts) - 1;
+                
+                    foreach ($parts as $part_key => $part_value) {
+                        if ($part_key == 0) {
+                            $parent = $repo->findOneBy(['name' => $parts[$part_key]])->getID();
+                        } elseif ($part_key != $last) {
+                            $parent = $repo->findOneBy(['name' => $parts[$part_key], 'parent' => $parent])->getID();
+                        }
+                    }
+                }
+            }
+            
             $values[] = array_pop($parts);
         }
         if (count($values) > 1) {
@@ -238,6 +255,9 @@ class CategoryApi
             $values = array_pop($values);
         }
         $criteria = [$fieldMap[$pathField] => $values];
+        if ($pathField == 'path') {
+            $criteria['parent'] = $parent;
+        }
         if (!$includeLeaf) {
             $criteria['is_leaf'] = false;
         }
