@@ -183,8 +183,8 @@ class UserApi
         // add displayname of modules found
         $sqlResult = [];
         foreach ($results as $result) {
-            // reformat url for 1.4.0+ type searches @todo - refactor to do this in the template
-            $result['url'] = (isset($result['url']) && ($result['url'] instanceof UrlInterface)) ? $result['url']->getUrl() : null;
+            // reformat url for 1.4.0+ type searches
+            $result['url'] = isset($result['url']) && $result['url'] instanceof UrlInterface ? $result['url'] : null;
             // process result for LEGACY (<1.4.0) searches
             if ($checker->checkResult($result)) {
                 $sqlResult[] = $result;
