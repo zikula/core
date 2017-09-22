@@ -55,17 +55,16 @@ abstract class AbstractAjaxController extends AbstractController
         
         $sortFieldSetter = 'set' . ucfirst($sortableFieldMap[$objectType]);
         $sortCounter = $min;
-        foreach ($itemIds as $itemId) {
-            if (empty($itemId) || !is_numeric($itemId)) {
-                continue;
+        $entityFactory->getObjectManager()->transactional(function($entityManager) use($itemIds, $repository, $sortFieldSetter, $sortCounter) {
+            foreach ($itemIds as $itemId) {
+                if (empty($itemId) || !is_numeric($itemId)) {
+                    continue;
+                }
+                $entity = $repository->selectById($itemId);
+                $entity->$sortFieldSetter($sortCounter);
+                $sortCounter++;
             }
-            $entity = $repository->selectById($itemId);
-            $entity->$sortFieldSetter($sortCounter);
-            $sortCounter++;
-        }
-        
-        // save entities back to database
-        $entityFactory->getObjectManager()->flush();
+        });
         
         // return response
         return new JsonResponse([

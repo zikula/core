@@ -249,14 +249,13 @@ abstract class AbstractWorkflowHelper
         try {
             $workflow->apply($entity, $actionId);
     
-            //$entityManager->transactional(function($entityManager) {
-            if ($actionId == 'delete') {
-                $entityManager->remove($entity);
-            } else {
-                $entityManager->persist($entity);
-            }
-            $entityManager->flush();
-            //});
+            $entityManager->transactional(function($entityManager) use ($actionId) {
+                if ($actionId == 'delete') {
+                    $entityManager->remove($entity);
+                } else {
+                    $entityManager->persist($entity);
+                }
+            });
             $result = true;
             if ($actionId == 'delete') {
                 $this->logger->notice('{app}: User {user} deleted an entity.', $logArgs);
