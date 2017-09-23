@@ -107,7 +107,7 @@ class DbCredsType extends AbstractType
             $types['MySQL'] = 'mysql';
         }
         if (in_array('sqlsrv', $availableDrivers)) {
-            $types['MSSQL (alpha)'] = 'sqlsrv';
+            $types['MSSQL (alpha)'] = 'mssql';
         }
         if (in_array('oci8', $availableDrivers)) {
             $types['Oracle (alpha) via OCI8 driver'] = 'oci8';
