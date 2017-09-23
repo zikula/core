@@ -100,7 +100,7 @@ class DbCredsType extends AbstractType
 
     private function getDbTypes()
     {
-        $availableDrivers = PDO::getAvailableDrivers();
+        $availableDrivers = \PDO::getAvailableDrivers();
 
         $types = [];
         if (in_array('mysql', $availableDrivers)) {
