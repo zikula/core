@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Allow hooks to be managed in display (#3793).
     - Fixed broken search result url handling for new-style modules.
     - Improved detection and naming of available PDO drivers (#3785).
+    - Use uncached JS routes (#3807).
 
  - Vendor updates:
     - ?
