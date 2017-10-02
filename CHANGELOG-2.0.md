@@ -6,6 +6,7 @@ CHANGELOG - ZIKULA 2.0.x
  - Fixes:
     - Allow hooks to be managed in display (#3793).
     - Improved detection and naming of available PDO drivers (#3785).
+    - Use uncached JS routes (#3807).
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.7 to 1.0.8
