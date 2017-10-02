@@ -148,18 +148,19 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addFosJsRouting()
     {
-        if ($this->params['env'] != 'dev' && file_exists(realpath('web/js/fos_js_routes.js'))) {
+        // commented out as a workaround for #3807 until #3804 is solved
+        /*if ($this->params['env'] != 'dev' && file_exists(realpath('web/js/fos_js_routes.js'))) {
             $this->jsAssetBag->add([
                 $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
                 $this->assetHelper->resolve('js/fos_js_routes.js') => AssetBag::WEIGHT_ROUTES_JS
             ]);
-        } else {
-            $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
-            $this->jsAssetBag->add([
-                $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
-                $routeScript => AssetBag::WEIGHT_ROUTES_JS
-            ]);
-        }
+        } else {*/
+        $routeScript = $this->router->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
+        $this->jsAssetBag->add([
+            $this->assetHelper->resolve('bundles/fosjsrouting/js/router.js') => AssetBag::WEIGHT_ROUTER_JS,
+            $routeScript => AssetBag::WEIGHT_ROUTES_JS
+        ]);
+        /*}*/
     }
 
     private function addJsTranslation()
