@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed broken search result url handling for new-style modules.
     - Improved detection and naming of available PDO drivers (#3785).
     - Use uncached JS routes (#3807).
+    - Fixed issue with category retrieval by path (#3815).
 
  - Vendor updates:
     - ?

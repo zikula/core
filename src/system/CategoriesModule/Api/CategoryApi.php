@@ -229,6 +229,25 @@ class CategoryApi
         $values = [];
         foreach ($apath as $path) {
             $parts = explode('/', $path);
+
+            if ($pathField == 'path') {
+                $parts = array_values(array_filter($parts));
+
+                if (!empty($parts)) {
+                    $last = count($parts) - 1;
+
+                    foreach ($parts as $part_key => $part_value) {
+                        $criteria = [];
+                        if ($part_key == 0) {
+                            $criteria = ['name' => $parts[$part_key]];
+                        } elseif ($part_key != $last) {
+                            $criteria = ['name' => $parts[$part_key], 'parent' => $parent];
+                        }
+                        $parent = $repo->findOneBy($criteria)->getId();
+                    }
+                }
+            }
+
             $values[] = array_pop($parts);
         }
         if (count($values) > 1) {
