@@ -1,7 +1,19 @@
 CHANGELOG - ZIKULA 2.0.x
 ------------------------
 
-* 2.0.2 (?)
+* 2.0.3 (?)
+
+ - Deprecated:
+    - ?
+
+ - Fixes:
+    - ?
+
+ - Vendor updates:
+    - ?
+
+
+* 2.0.2 (2017-10-03)
 
  - Fixes:
     - Allow hooks to be managed in display (#3793).
