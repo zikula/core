@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 2.0.x
     - ?
 
  - Vendor updates:
-    - ?
+    - symfony/symfony updated from 3.3.9 to 3.3.10
 
 
 * 2.0.2 (2017-10-03)
