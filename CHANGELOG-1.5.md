@@ -10,7 +10,19 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Vendor updates:
-    - ?
+    - composer/ca-bundle updated from 1.0.7 to 1.0.8
+    - doctrine/doctrine-bundle updated from 1.6.8 to 1.6.11
+    - doctrine/doctrine-cache-bundle updated from 1.3.0 to 1.3.1
+    - doctrine/orm updated from 2.5.10 to 2.5.11
+    - imagine/imagine updated from 0.6.3 to 0.7.1
+    - jquery.mmenu updated from 6.1.5 to 6.1.8
+    - liip/imagine-bundle updated from 1.8.0 to 1.9.1
+    - paragonie/random_compat updated from 2.0.10 to 2.0.11
+    - phpdocumentor/reflection-common updated from 1.0 to 1.0.1
+    - phpspec/prophecy updated from 1.7.0 to 1.7.2
+    - symfony/symfony updated from 2.8.27 to 2.8.28
+    - symfony/workflow updated from 3.3.8 to 3.3.10
+    - twig/twig updated from 1.34.4 to 1.35.0
 
 
 * 1.5.2 (2017-10-03)
