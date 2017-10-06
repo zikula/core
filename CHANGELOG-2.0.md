@@ -10,7 +10,14 @@ CHANGELOG - ZIKULA 2.0.x
     - ?
 
  - Vendor updates:
+    - doctrine/doctrine-bundle updated from 1.6.8 to 1.6.11
+    - doctrine/doctrine-cache-bundle updated from 1.3.0 to 1.3.1
+    - doctrine/orm updated from 2.5.10 to 2.5.11
+    - jquery.mmenu updated from 6.1.5 to 6.1.8
+    - liip/imagine-bundle updated from 1.8.0 to 1.9.1
+    - phpdocumentor/reflection-common updated from 1.0 to 1.0.1
     - symfony/symfony updated from 3.3.9 to 3.3.10
+    - twig/twig updated from 1.34.4 to 1.35.0
 
 
 * 2.0.2 (2017-10-03)
