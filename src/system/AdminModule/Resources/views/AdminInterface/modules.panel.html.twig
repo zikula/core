@@ -7,7 +7,7 @@
 {% macro draw(links, caller, module) %}
     {% for link in links %}
         <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
-            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
+            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="fa fa-fw fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             {% if link.links is defined %}
                 <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>
             {% endif %}
