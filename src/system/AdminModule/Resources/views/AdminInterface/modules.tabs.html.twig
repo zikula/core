@@ -2,7 +2,7 @@
 {% macro draw(links) %}
     {% for link in links %}
         <li>
-            <a href="{{ link.url }}" title="{{ link.text|e('html_attr') }}">{% if link.icon is defined %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
+            <a href="{{ link.url }}" title="{{ link.text|e('html_attr') }}">{% if link.icon is defined %}<i class="fa fa-fw fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
             {% if link.links is defined %}
                 <ul class="dropdown-toggle">{{ _self.draw(link.links) }}</ul>
             {% endif %}

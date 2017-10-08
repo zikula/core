@@ -24,7 +24,7 @@
                             <a class="caret" data-toggle="dropdown" href="#" title="{{ __('Functions') }}"></a>
                             <ul class="dropdown-menu" role="menu">
                                 {% for item in adminLink.links %}
-                                    <li><a href="{{ item.url }}">{{ item.text }}</a></li>
+                                    <li><a href="{{ item.url }}">{% if item.icon is defined %}<i class="fa fa-fw fa-{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
