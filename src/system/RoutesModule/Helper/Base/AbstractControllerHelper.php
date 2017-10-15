@@ -199,7 +199,7 @@ abstract class AbstractControllerHelper
                     $sort = $fieldValue;
                 } elseif ($fieldName == 'sortdir' && !empty($fieldValue)) {
                     $sortdir = $fieldValue;
-                } elseif (false === stripos($parameterName, 'thumbRuntimeOptions')) {
+                } elseif (false === stripos($fieldName, 'thumbRuntimeOptions')) {
                     // set filter as query argument, fetched inside repository
                     $request->query->set($fieldName, $fieldValue);
                 }
