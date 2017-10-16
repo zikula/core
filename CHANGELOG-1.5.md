@@ -7,7 +7,12 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Fixes:
+<<<<<<< HEAD
+    - Allow hooks to be managed in display (#3793).
+    - Adding missing class to pager (#3824).
+=======
     - Added missing action icons to admin menu sub entries and admin panel module links.
+>>>>>>> a1671cacf1f2831ed02087f96dd6d20ed579840c
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.7 to 1.0.8
