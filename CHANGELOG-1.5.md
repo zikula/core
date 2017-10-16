@@ -8,6 +8,7 @@ CHANGELOG - ZIKULA 1.5.x
 
  - Fixes:
     - Allow hooks to be managed in display (#3793).
+    - Adding missing class to pager (#3824).
 
  - Vendor updates:
     - ?
