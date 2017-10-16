@@ -8,7 +8,7 @@ CHANGELOG - ZIKULA 1.5.x
 
  - Fixes:
     - Added missing action icons to admin menu sub entries and admin panel module links.
-    - Adding missing class to pager.
+    - Adding missing class to pager (#3825).
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.7 to 1.0.8
