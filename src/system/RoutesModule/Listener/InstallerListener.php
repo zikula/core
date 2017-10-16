@@ -12,6 +12,7 @@
 
 namespace Zikula\RoutesModule\Listener;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
@@ -47,6 +48,11 @@ class InstallerListener extends AbstractInstallerListener
     private $entityFactory;
 
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * @inheritDoc
      */
     public static function getSubscribedEvents()
@@ -67,17 +73,20 @@ class InstallerListener extends AbstractInstallerListener
      * @param RouteDumperHelper $routeDumperHelper
      * @param MultilingualRoutingHelper $multilingualRoutingHelper
      * @param EntityFactory $entityFactory
+     * @param RequestStack $requestStack
      */
     public function __construct(
         CacheClearer $cacheClearer,
         RouteDumperHelper $routeDumperHelper,
         MultilingualRoutingHelper $multilingualRoutingHelper,
-        EntityFactory $entityFactory
+        EntityFactory $entityFactory,
+        RequestStack $requestStack
     ) {
         $this->cacheClearer = $cacheClearer;
         $this->routeDumperHelper = $routeDumperHelper;
         $this->multilingualRoutingHelper = $multilingualRoutingHelper;
         $this->entityFactory = $entityFactory;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -100,7 +109,7 @@ class InstallerListener extends AbstractInstallerListener
         $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
-        $this->routeDumperHelper->dumpJsRoutes();
+        $this->updateJsRoutes();
     }
 
     /**
@@ -118,7 +127,7 @@ class InstallerListener extends AbstractInstallerListener
         $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
-        $this->routeDumperHelper->dumpJsRoutes();
+        $this->updateJsRoutes();
     }
 
     /**
@@ -137,7 +146,7 @@ class InstallerListener extends AbstractInstallerListener
         $this->entityFactory->getRepository('route')->deleteByBundle($module->getName());
 
         // reload **all** JS routes
-        $this->routeDumperHelper->dumpJsRoutes();
+        $this->updateJsRoutes();
 
         $this->cacheClearer->clear('symfony.routing');
     }
@@ -148,6 +157,24 @@ class InstallerListener extends AbstractInstallerListener
     public function newRoutesAvail(GenericEvent $event)
     {
         // reload **all** JS routes
-        $this->routeDumperHelper->dumpJsRoutes();
+        $this->updateJsRoutes();
+    }
+
+    /**
+     * Reloads all JavaScript routes and adds errors to the flash bag.
+     */
+    private function updateJsRoutes()
+    {
+        $errors = $this->routeDumperHelper->dumpJsRoutes();
+        if ($errors == '') {
+            return;
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return;
+        }
+
+        $request->getSession()->getFlashBag()->add('error', $errors);
     }
 }
