@@ -1550,7 +1550,7 @@ class ModUtil
             unset($args['lang']);
         }
         if (!isset($language)) {
-            $language = ZLanguage::getLanguageCode();
+            $language = ServiceUtil::get('request_stack')->getCurrentRequest()->getLocale();
         }
 
         $language = ($forcelang && in_array($forcelang, ZLanguage::getInstalledLanguages()) ? $forcelang : $language);
