@@ -179,15 +179,15 @@
     <p>
         {% if canBeCreated %}
             {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
-                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ __('Add an additional route to the system')|e('html_attr') }}" class="fa fa-plus">{{ __('Create a custom route') }}</a>
+                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ __('Add an additional route to the system')|e('html_attr') }}"><i class="fa fa-plus"></i> {{ __('Create a custom route') }}</a>
             {% endif %}
         {% endif %}
         {% if all == 1 %}
             {% set linkTitle = __('Back to paginated view') %}
-            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
         {% else %}
             {% set linkTitle = __('Show all entries') %}
-            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
         {% endif %}
     </p>
 {% endblock %}

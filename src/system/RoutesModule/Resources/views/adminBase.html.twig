@@ -8,7 +8,7 @@
 {% endblock %}
 {% block appTitle %}{# empty on purpose #}{% endblock %}
 {% block titleArea %}
-    <h3><span class="fa fa-{% block admin_page_icon %}{% endblock %}"></span> {% block title %}{% endblock %}</h3>
+    <h3><i class="fa fa-{% block admin_page_icon %}{% endblock %}"></i> {% block title %}{% endblock %}</h3>
 {% endblock %}
 {% block footer %}
     {% if not app.request.query.getBoolean('raw', false) %}
