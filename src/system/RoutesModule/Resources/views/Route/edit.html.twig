@@ -112,23 +112,21 @@
 {% endblock %}
 {% block footer %}
     {{ parent() }}
-
-    {% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
-    {% set deleteImage = '<span class="fa fa-trash-o"></span>' %}
-
-    <script type="text/javascript">
-    /* <![CDATA[ */
-
-
-        ( function($) {
-            $(document).ready(function() {
-                // initialise auto completion for user fields
-                {% if form.moderationSpecificCreator is defined %}
-                    initUserLiveSearch('zikularoutesmodule_route_moderationSpecificCreator');
-                {% endif %}
-                zikulaRoutesInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
-            });
-        })(jQuery);
-    /* ]]> */
-    </script>
+    {% set formInitScript %}
+        <script type="text/javascript">
+        /* <![CDATA[ */
+            
+            ( function($) {
+                $(document).ready(function() {
+                    // initialise auto completion for user fields
+                    {% if form.moderationSpecificCreator is defined %}
+                        initUserLiveSearch('zikularoutesmodule_route_moderationSpecificCreator');
+                    {% endif %}
+                    zikulaRoutesInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', formInitScript) }}
 {% endblock %}
