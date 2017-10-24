@@ -23,7 +23,7 @@
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-arrows admintabs-lock"></span>
                     <span>{{ category.title }}</span> <span class="fa fa-caret-down"></span></a>
                 <ul class="dropdown-menu">
-                    <li class="admintabs-lock admintabs-makedefault{% if caller.category.id == category.cid %} hide{% endif %}">
+                    <li class="admintabs-lock admintabs-makedefault{% if caller.category.id == category.cid %} hidden{% endif %}">
                         <a href="#"><span class="fa fa-asterisk fa-fw"></span> {{ __('Make default category') }}</a>
                     </li>
                     <li class="admintabs-lock admintabs-edit" data-toggle="modal"
@@ -53,11 +53,11 @@
         <li class="admintabs-add admintabs-lock">
             <a href="{{ path('zikulaadminmodule_admin_newcat') }}" title="{{ __('New module category') }}"
                class="tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span></a>
-            <div id="admintabs-add-popover" class="hide">
+            <div id="admintabs-add-popover" class="hidden">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="name" id="admintabs-add-name"/>
-                    <span class="input-group-addon fa fa-times fa-red pointer"></span>
-                    <span class="input-group-addon fa fa-check fa-green pointer"></span>
+                    <input type="text" name="name" id="admintabs-add-name" class="form-control" />
+                    <span class="input-group-addon fa fa-times fa-red pointer" style="display: table-cell"></span>
+                    <span class="input-group-addon fa fa-check fa-green pointer" style="display: table-cell"></span>
                 </div>
             </div>
         </li>
