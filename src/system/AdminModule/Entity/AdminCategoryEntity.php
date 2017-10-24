@@ -59,7 +59,7 @@ class AdminCategoryEntity extends EntityAccess
     {
         $this->name = '';
         $this->description = '';
-        $this->sortorder = 0;
+        $this->sortorder = 99;
     }
 
     /**
@@ -119,7 +119,7 @@ class AdminCategoryEntity extends EntityAccess
      */
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->description = null !== $description ? $description : '';
     }
 
     /**
