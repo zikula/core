@@ -8,6 +8,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Fixes:
     - Added missing action icons to admin menu sub entries and admin panel module links.
+    - Fixed admin category creation issues (#3826, #3827).
 
  - Vendor updates:
     - doctrine/doctrine-bundle updated from 1.6.8 to 1.6.11
