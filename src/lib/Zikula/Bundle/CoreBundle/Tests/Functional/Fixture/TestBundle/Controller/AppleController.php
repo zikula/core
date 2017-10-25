@@ -21,7 +21,7 @@ class AppleController
 {
     /**
      * @Route("/view/{d}")
-     * @Template("TestBundle:Apple:view.html.twig")
+     * @Template
      *
      * @param null $d
      * @return array
@@ -38,7 +38,7 @@ class AppleController
 
     /**
      * @Route("/t")
-     * @Template("TestBundle:Apple:translated.html.twig")
+     * @Template
      *
      * @return array
      */
