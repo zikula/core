@@ -25,8 +25,8 @@
         <div class="tab-content">
             {% for name, code in locales %}
                 <div role="tabpanel" class="tab-pane{% if code == app.request.locale %} active{% endif %}" id="{{ code }}">
-                    {{ form_row(form.display_name[code], {'label': form.display_name.vars.label ~ ' (' ~ code ~ ')' }) }}
-                    {{ form_row(form.display_desc[code], {'label': form.display_desc.vars.label ~ ' (' ~ code ~ ')' }) }}
+                    {{ form_row(form.display_name[code], {label: form.display_name.vars.label ~ ' (' ~ code ~ ')' }) }}
+                    {{ form_row(form.display_desc[code], {label: form.display_desc.vars.label ~ ' (' ~ code ~ ')' }) }}
                 </div>
             {% endfor %}
         </div>
