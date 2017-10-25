@@ -446,6 +446,16 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+     * Alias to self::setDisplay_name() required for PropertyAccess of collection form type
+     *
+     * @param array $display_name the category display name array
+     */
+    public function setDisplayName($display_name)
+    {
+        $this->setDisplay_name($display_name);
+    }
+
+    /**
      * get the category display description
      * @param $lang
      *
@@ -476,6 +486,16 @@ class CategoryEntity extends EntityAccess
     public function setDisplay_desc($display_desc)
     {
         $this->display_desc = $display_desc;
+    }
+
+    /**
+     * Alias to self::setDisplay_desc() required for PropertyAccess of collection form type
+     *
+     * @param array $display_desc the category display description
+     */
+    public function setDisplayDesc($display_desc)
+    {
+        $this->setDisplay_desc($display_desc);
     }
 
     /**
