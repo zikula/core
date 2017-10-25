@@ -823,30 +823,6 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
-     * Get the display name(s) of the category
-     *
-     * @deprecated since 1.4.0 use setDisplay_name instead
-     *
-     * @param array $displayName the display name(s)
-     */
-    public function setDisplayName($displayName)
-    {
-        $this->setDisplay_name($displayName);
-    }
-
-    /**
-     * Set the display description(s) of the category
-     *
-     * @deprecated since 1.4.0 use setDisplay_desc instead
-     *
-     * @param array $displayDesc the display descriptions(s)
-     */
-    public function setDisplayDesc($displayDesc)
-    {
-        $this->setDisplay_desc($displayDesc);
-    }
-
-    /**
      * @return int
      */
     public function getLft()
