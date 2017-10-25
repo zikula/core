@@ -34,7 +34,7 @@ class PlacementController extends AbstractController
      *
      * @Route("/edit/{pid}", requirements={"pid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaBlocksModule:Placement:edit.html.twig")
      *
      * @param BlockPositionEntity $positionEntity
      * @return \Symfony\Component\HttpFoundation\Response

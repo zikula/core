@@ -32,7 +32,7 @@ class GroupController extends AbstractController
     /**
      * @Route("/list/{startnum}", requirements={"startnum" = "\d+"})
      * @Method("GET")
-     * @Template
+     * @Template("ZikulaGroupsModule:Group:list.html.twig")
      *
      * View a list of all groups (user view)
      *
@@ -74,7 +74,7 @@ class GroupController extends AbstractController
      * @Route("/admin/list/{startnum}", requirements={"startnum" = "\d+"})
      * @Method("GET")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaGroupsModule:Group:adminList.html.twig")
      *
      * View a list of all groups (admin view)
      *
@@ -108,7 +108,7 @@ class GroupController extends AbstractController
     /**
      * @Route("/admin/create")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaGroupsModule:Group:create.html.twig")
      *
      * Display a form to add a new group.
      *
@@ -148,7 +148,7 @@ class GroupController extends AbstractController
     /**
      * @Route("/admin/edit/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaGroupsModule:Group:edit.html.twig")
      *
      * Modify a group.
      *
@@ -189,7 +189,7 @@ class GroupController extends AbstractController
     /**
      * @Route("/admin/remove/{gid}", requirements={"gid"="\d+"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaGroupsModule:Group:remove.html.twig")
      *
      * Deletes a group.
      *

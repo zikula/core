@@ -33,8 +33,8 @@ class RegistryController extends AbstractController
 {
     /**
      * @Route("/edit/{id}", requirements={"id" = "^[1-9]\d*$"}, defaults={"id" = null})
-     * @Template
      * @Theme("admin")
+     * @Template("ZikulaCategoriesModule:Registry:edit.html.twig")
      *
      * Creates or edits a category registry.
      *
@@ -110,8 +110,8 @@ class RegistryController extends AbstractController
 
     /**
      * @Route("/delete/{id}", requirements={"id" = "^[1-9]\d*$"})
-     * @Template
      * @Theme("admin")
+     * @Template("ZikulaCategoriesModule:Registry:delete.html.twig")
      *
      * Deletes a category registry.
      *

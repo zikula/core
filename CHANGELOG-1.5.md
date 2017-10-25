@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed locale determination in legacy url creation.
     - Fixed admin category creation issues (#3826, #3827).
     - Fixed several category editing problems (#3833, #3834).
+    - Explicitly set template names in template annotations (#3835, #3836).
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.7 to 1.0.8

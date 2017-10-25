@@ -30,7 +30,7 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/verify-registration/{uname}/{verifycode}")
-     * @Template
+     * @Template("ZikulaZAuthModule:Registration:verify.html.twig")
      * @param Request $request
      * @param null|string $uname
      * @param null|string $verifycode

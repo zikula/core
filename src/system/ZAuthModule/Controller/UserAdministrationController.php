@@ -45,7 +45,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaZAuthModule:UserAdministration:list.html.twig")
      * @param Request $request
      * @param string $sort
      * @param string $sortdir
@@ -121,7 +121,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/user/create")
      * @Theme("admin")
-     * @Template()
+     * @Template("ZikulaZAuthModule:UserAdministration:create.html.twig")
      * @param Request $request
      * @return array
      */
@@ -206,7 +206,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/user/modify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template()
+     * @Template("ZikulaZAuthModule:UserAdministration:modify.html.twig")
      * @param Request $request
      * @param AuthenticationMappingEntity $mapping
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -281,7 +281,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/verify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template()
+     * @Template("ZikulaZAuthModule:UserAdministration:verify.html.twig")
      * @param Request $request
      * @param AuthenticationMappingEntity $mapping
      * @return array
@@ -373,7 +373,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/toggle-password-change/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaZAuthModule:UserAdministration:togglePasswordChange.html.twig")
      * @param Request $request
      * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
      * @return array|RedirectResponse

@@ -31,8 +31,9 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/list/{id}", requirements={"category" = "^[1-9]\d*$"}, defaults={"id" = 1})
-     * @Template
      * @Theme("admin")
+     * @Template("ZikulaCategoriesModule:Category:list.html.twig")
+     *
      * @param Request $request
      * @param CategoryEntity $category
      * @return array

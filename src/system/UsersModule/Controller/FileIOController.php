@@ -27,7 +27,7 @@ class FileIOController extends AbstractController
     /**
      * @Route("/export")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaUsersModule:FileIO:export.html.twig")
      * @param Request $request
      * @return array
      */

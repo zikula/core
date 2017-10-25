@@ -30,7 +30,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaExtensionsModule:Config:config.html.twig")
      *
      * Display services available to the module
      *

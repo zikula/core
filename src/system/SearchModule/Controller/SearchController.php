@@ -24,7 +24,7 @@ class SearchController extends AbstractController
 {
     /**
      * @Route("/{page}", requirements={"page"="\d+"})
-     * @Template
+     * @Template("ZikulaSearchModule:Search:execute.html.twig")
      *
      * @param Request $request
      * @param int $page
@@ -164,7 +164,7 @@ class SearchController extends AbstractController
 
     /**
      * @Route("/recent")
-     * @Template
+     * @Template("ZikulaSearchModule:Search:recent.html.twig")
      *
      * Display a list of recent searches
      *
