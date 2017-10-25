@@ -62,8 +62,9 @@ class NodeController extends AbstractController
                 $category = $newCategory;
                 // intentionally no break here
             case 'edit':
+                $localeApi = $this->get('zikula_settings_module.locale_api');
                 if (!isset($category)) {
-                    $category = new CategoryEntity($this->get('zikula_settings_module.locale_api')->getSupportedLocales());
+                    $category = new CategoryEntity($localeApi->getSupportedLocales());
                     $parentId = $request->request->get('parent');
                     $mode = 'new';
                     if (!empty($parentId)) {
@@ -78,7 +79,7 @@ class NodeController extends AbstractController
                 }
                 $form = $this->createForm(CategoryType::class, $category, [
                     'translator' => $this->get('translator.default'),
-                    'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocales(),
+                    'locales' => $localeApi->getSupportedLocales(),
                 ]);
                 $form->get('after')->setData($request->request->get('after', null));
                 if ($form->handleRequest($request)->isValid()) {
@@ -99,7 +100,7 @@ class NodeController extends AbstractController
                 }
                 $response = [
                     'result' => $this->renderView('@ZikulaCategoriesModule/Category/edit.html.twig', [
-                        'locales' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale()),
+                        'locales' => $localeApi->getSupportedLocaleNames(null, $request->getLocale()),
                         'form' => $form->createView()
                     ]),
                     'action' => $action,
