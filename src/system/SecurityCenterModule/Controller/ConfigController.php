@@ -37,7 +37,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaSecurityCenterModule:Config:config.html.twig")
      *
      * This is a standard function to modify the configuration parameters of the module.
      *
@@ -308,7 +308,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/purifierconfig/{reset}")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaSecurityCenterModule:Config:purifierconfig.html.twig")
      *
      * HTMLPurifier configuration.
      *
@@ -535,7 +535,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/allowedhtml")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaSecurityCenterModule:Config:allowedhtml.html.twig")
      *
      * Display the allowed html form.
      *

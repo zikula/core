@@ -27,7 +27,7 @@ class FileIOController extends AbstractController
     /**
      * @Route("/import")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaZAuthModule:FileIO:import.html.twig")
      * @param Request $request
      * @return array
      */

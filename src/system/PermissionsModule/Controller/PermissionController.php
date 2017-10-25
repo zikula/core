@@ -31,7 +31,7 @@ class PermissionController extends AbstractController
     /**
      * @Route("/list")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaPermissionsModule:Permission:list.html.twig")
      *
      * view permissions
      *

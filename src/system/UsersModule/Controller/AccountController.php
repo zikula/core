@@ -29,7 +29,7 @@ class AccountController extends AbstractController
 {
     /**
      * @Route("")
-     * @Template
+     * @Template("ZikulaUsersModule:Account:menu.html.twig")
      * @return Response|array
      */
     public function menuAction()
@@ -48,7 +48,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/change-language")
-     * @Template
+     * @Template("ZikulaUsersModule:Account:changeLanguage.html.twig")
      * @param Request $request
      * @return array|RedirectResponse
      */

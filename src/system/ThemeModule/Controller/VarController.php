@@ -25,7 +25,7 @@ class VarController extends AbstractController
      * Configure a theme's variables based on provided .yml definitions for each field.
      * @Route("/admin/var/{themeName}")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaThemeModule:Var:var.html.twig")
      *
      * @param Request $request
      * @param string $themeName
