@@ -30,7 +30,7 @@ class ServicesController extends AbstractController
      * @Route("/{moduleName}", options={"zkNoBundlePrefix" = 1})
      * @Method("GET")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaExtensionsModule:Services:moduleServices.html.twig")
      *
      * Display services available to the module
      *

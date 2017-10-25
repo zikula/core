@@ -32,7 +32,7 @@ class AccountController extends AbstractController
 {
     /**
      * @Route("/lost-user-name")
-     * @Template
+     * @Template("ZikulaZAuthModule:Account:lostUserName.html.twig")
      * @param Request $request
      * @return array|RedirectResponse
      */
@@ -87,7 +87,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/lost-password")
-     * @Template
+     * @Template("ZikulaZAuthModule:Account:lostPassword.html.twig")
      * @param Request $request
      * @return array|RedirectResponse
      */
@@ -177,7 +177,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/lost-password/reset")
-     * @Template
+     * @Template("ZikulaZAuthModule:Account:lostPasswordReset.html.twig")
      * @param Request $request
      * @return array|RedirectResponse
      */
@@ -264,7 +264,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/change-email")
-     * @Template
+     * @Template("ZikulaZAuthModule:Account:changeEmail.html.twig")
      * @param Request $request
      * @return array
      */
@@ -348,7 +348,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/change-password")
-     * @Template
+     * @Template("ZikulaZAuthModule:Account:changePassword.html.twig")
      * @param Request $request
      * @return array|RedirectResponse
      */

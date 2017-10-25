@@ -33,7 +33,7 @@ class IdsLogController extends AbstractController
     /**
      * @Route("/view")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaSecurityCenterModule:IdsLog:view.html.twig")
      *
      * Function to view ids log events.
      *
@@ -134,7 +134,7 @@ class IdsLogController extends AbstractController
     /**
      * @Route("/export")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaSecurityCenterModule:IdsLog:export.html.twig")
      *
      * Export ids log.
      *
@@ -254,7 +254,7 @@ class IdsLogController extends AbstractController
     /**
      * @Route("/purge")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaSecurityCenterModule:IdsLog:purge.html.twig")
      *
      * Purge ids log.
      *

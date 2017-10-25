@@ -34,7 +34,7 @@ class HookController extends Controller
      * @Route("/{moduleName}", options={"zkNoBundlePrefix" = 1})
      * @Method("GET")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaHookBundle:Hook:edit.html.twig")
      *
      * Display hooks user interface
      *

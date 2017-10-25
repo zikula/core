@@ -26,7 +26,7 @@ class VarController extends AbstractController
      * @Route("/admin/var/{themeName}")
      * @todo change route name to /admin/variable/{themeName} when similar named is removed?
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaThemeModule:Var:var.html.twig")
      *
      * @param Request $request
      * @param string $themeName

@@ -47,7 +47,8 @@ class ModuleController extends AbstractController
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaExtensionsModule:Module:viewModuleList.html.twig")
+     *
      * @param Request $request
      * @param int $pos
      * @return array
@@ -182,8 +183,8 @@ class ModuleController extends AbstractController
 
     /**
      * @Route("/modify/{id}/{forceDefaults}", requirements={"id" = "^[1-9]\d*$", "forceDefaults" = "0|1"})
-     * @Template
      * @Theme("admin")
+     * @Template("ZikulaExtensionsModule:Module:modify.html.twig")
      *
      * Modify a module.
      *
@@ -267,8 +268,8 @@ class ModuleController extends AbstractController
     /**
      * @Route("/compatibility/{id}", requirements={"id" = "^[1-9]\d*$"})
      * @Method("GET")
-     * @Template
      * @Theme("admin")
+     * @Template("ZikulaExtensionsModule:Module:compatibility.html.twig")
      *
      * Display information of a module compatibility with the version of the core
      *
@@ -291,7 +292,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/install/{id}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaExtensionsModule:Module:install.html.twig")
      *
      * Initialise an extension.
      *
@@ -438,7 +439,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/uninstall/{id}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaExtensionsModule:Module:uninstall.html.twig")
      *
      * Uninstall an extension.
      *

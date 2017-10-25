@@ -32,7 +32,7 @@ class MigrationController extends AbstractController
      * @deprecated
      * @Route("/migrate", options={"expose"=true, "i18n"=false})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaUsersModule:Migration:migrate.html.twig")
      * @param Request $request
      * @return array|AjaxResponse
      */
