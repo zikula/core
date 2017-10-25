@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Added missing action icons to admin menu sub entries and admin panel module links.
     - Fixed locale determination in legacy url creation.
     - Fixed admin category creation issues (#3826, #3827).
-    - Fixed multilingual category editing problem (#3833).
+    - Fixed multilingual category editing problem.
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.7 to 1.0.8
