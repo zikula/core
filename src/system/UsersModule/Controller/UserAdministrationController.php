@@ -50,7 +50,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaUsersModule:UserAdministration:list.html.twig")
      * @param Request $request
      * @param string $sort
      * @param string $sortdir
@@ -129,7 +129,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template()
+     * @Template("ZikulaUsersModule:UserAdministration:modify.html.twig")
      * @param Request $request
      * @param UserEntity $user
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -192,7 +192,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template()
+     * @Template("ZikulaUsersModule:UserAdministration:approve.html.twig")
      * @param Request $request
      * @param UserEntity $user
      * @param bool $force
@@ -258,8 +258,8 @@ class UserAdministrationController extends AbstractController
 
     /**
      * @Route("/delete/{user}", requirements={"user" = "^[1-9]\d*$"})
-     * @Template
      * @Theme("admin")
+     * @Template("ZikulaUsersModule:UserAdministration:delete.html.twig")
      * @param Request $request
      * @param UserEntity|null $user
      * @return array
@@ -350,7 +350,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/search")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaUsersModule:UserAdministration:search.html.twig")
      * @param Request $request
      * @return array
      */

@@ -29,7 +29,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaGroupsModule:Config:config.html.twig")
      *
      * This is a standard function to modify the configuration parameters of the module.
      *

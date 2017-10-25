@@ -32,7 +32,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaUsersModule:Config:config.html.twig")
      * @param Request $request
      * @return array
      */
@@ -67,7 +67,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config/authentication-methods")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaUsersModule:Config:authenticationMethods.html.twig")
      * @param Request $request
      * @return array
      */

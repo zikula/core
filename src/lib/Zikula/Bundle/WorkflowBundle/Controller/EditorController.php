@@ -33,7 +33,7 @@ class EditorController extends Controller
      *        methods = {"GET"}
      * )
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaWorkflowBundle:Editor:index.html.twig")
      *
      * @param Request $request Current request instance
      *

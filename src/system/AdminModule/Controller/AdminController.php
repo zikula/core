@@ -60,7 +60,7 @@ class AdminController extends AbstractController
      * @Route("/categories/{startnum}", requirements={"startnum" = "\d+"})
      * @Method("GET")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaAdminModule:Admin:view.html.twig")
      *
      * @param integer $startnum
      *
@@ -102,7 +102,7 @@ class AdminController extends AbstractController
      *
      * @Route("/newcategory")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaAdminModule:Admin:newcat.html.twig")
      *
      * @param Request $request
      *
@@ -147,7 +147,7 @@ class AdminController extends AbstractController
      *
      * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaAdminModule:Admin:modify.html.twig")
      *
      * @param Request $request
      *
@@ -193,7 +193,7 @@ class AdminController extends AbstractController
      *
      * @Route("/deletecategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaAdminModule:Admin:delete.html.twig")
      *
      * @param Request $request
      * @param AdminCategoryEntity $category
@@ -234,7 +234,7 @@ class AdminController extends AbstractController
      * @Route("/panel/{acid}", requirements={"acid" = "^[1-9]\d*$"})
      * @Method("GET")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaAdminModule:Admin:adminpanel.html.twig")
      *
      * @param Request $request
      * @param integer $acid
@@ -514,7 +514,7 @@ class AdminController extends AbstractController
      *
      * @Route("/help")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaAdminModule:Admin:help.html.twig")
      *
      * @return Response symfony response object
      *

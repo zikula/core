@@ -30,7 +30,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaBlocksModule:Config:config.html.twig")
      *
      * @param Request $request
      * @return array|RedirectResponse

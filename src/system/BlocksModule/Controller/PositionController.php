@@ -32,7 +32,7 @@ class PositionController extends AbstractController
      *
      * @Route("/edit/{positionEntity}", requirements={"positionEntity" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaBlocksModule:Position:edit.html.twig")
      *
      * @param Request $request
      * @param BlockPositionEntity $positionEntity
@@ -76,7 +76,7 @@ class PositionController extends AbstractController
     /**
      * @Route("/delete/{pid}", requirements={"pid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template
+     * @Template("ZikulaBlocksModule:Position:delete.html.twig")
      *
      * Delete a position.
      *
