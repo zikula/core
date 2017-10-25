@@ -9,6 +9,7 @@ CHANGELOG - ZIKULA 1.5.x
  - Fixes:
     - Added missing action icons to admin menu sub entries and admin panel module links.
     - Fixed locale determination in legacy url creation.
+    - Fixed locale determination in legacy (Smarty) view class.
     - Fixed admin category creation issues (#3826, #3827).
     - Fixed several category editing problems (#3833, #3834).
     - Explicitly set template names in template annotations (#3835, #3836).

@@ -219,7 +219,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->module  = [$moduleName => $this->modinfo];
 
         // initialise environment vars
-        $this->language = ZLanguage::getLanguageCode();
+        $request = ServiceUtil::get('request_stack')->getCurrentRequest();
+        $this->language = null !== $request ? $request->getLocale() : ZLanguage::getLanguageCode();
         $this->baseurl = System::getBaseUrl();
         $this->baseuri = System::getBaseUri();
 
