@@ -421,6 +421,16 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+     * Alias to self::setDisplay_name() required for PropertyAccess of collection form type
+     *
+     * @param array $display_name the category display name array
+     */
+    public function setDisplayName($display_name)
+    {
+        $this->setDisplay_name($display_name);
+    }
+
+    /**
      * get the category display description
      * @param $lang
      *
@@ -454,6 +464,82 @@ class CategoryEntity extends EntityAccess
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Alias to self::setDisplay_desc() required for PropertyAccess of collection form type
+     *
+     * @param array $display_desc the category display description
+     */
+    public function setDisplayDesc($display_desc)
+    {
+        $this->setDisplay_desc($display_desc);
+    }
+
+    /**
+     * get the fully qualified category path
+     *
+     * @return string the category path
+     */
+    public function getPath()
+    {
+        @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
+
+        return $this->getPathByField('name');
+    }
+
+    /**
+     * set the fully qualified category path
+     *
+     * @param string $path the category path
+     */
+    public function setPath($path)
+    {
+        @trigger_error('The path property is no longer available for setting.', E_USER_DEPRECATED);
+        // do nothing
+    }
+
+    /**
+     * get the numeric fully qualified category path
+     *
+     * @return string the category path
+     */
+    public function getIPath()
+    {
+        @trigger_error('The path property is deprecated. Use NestedTree functionality instead.', E_USER_DEPRECATED);
+
+        return $this->getPathByField('id');
+    }
+
+    /**
+     * @param string $field
+     * @return string
+     */
+    private function getPathByField($field = 'name')
+    {
+        $path = [];
+        $method = 'get' . lcfirst($field);
+        $entity = $this;
+        do {
+            array_unshift($path, $entity->$method());
+            $entity = $entity->getParent();
+        } while (null !== $entity);
+
+        return '/' . implode('/', $path);
+    }
+
+    /**
+     * set the numeric fully qualified category path
+     *
+     * @param string $ipath the category path
+     */
+    public function setIPath($ipath)
+    {
+        @trigger_error('The ipath property is no longer available for setting.', E_USER_DEPRECATED);
+        // do nothing
+    }
+
+    /**
+>>>>>>> 1.5
      * get the category status
      *
      * @return bool the category status
