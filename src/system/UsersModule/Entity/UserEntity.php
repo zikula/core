@@ -490,7 +490,7 @@ class UserEntity extends EntityAccess
 
     public function getAttributeValue($name)
     {
-        return $this->getAttributes()->offsetExists($name) ? $this->getAttributes()->get($name)->getValue() : null;
+        return $this->getAttributes()->offsetExists($name) ? $this->getAttributes()->get($name)->getValue() : '';
     }
 
     /**
