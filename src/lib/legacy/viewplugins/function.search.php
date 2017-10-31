@@ -57,7 +57,7 @@ function smarty_function_search($params, Zikula_View $view)
     $search_class     = (!isset($params['search_class']) || empty($params['search_class'])) ? '' : 'class="'.DataUtil::formatForDisplay($params['search_class']).'" ';
     $value            = (!isset($params['value']) || empty($params['value'])) ? '' : $params['value'];
     $js               = (!isset($params['js']) || empty($params['js'])) ? '' : ' onblur="if (this.value==\'\')this.value=\''.$params['value'].'\';" onfocus="if (this.value==\''.$params['value'].'\')this.value=\'\';"';
-    $bool             = (!isset($params['bool']) || ($params['bool'] != 'OR')) ? 'AND' : $params['bool'];
+    $bool             = (!isset($params['bool']) || ('OR' != $params['bool'])) ? 'AND' : $params['bool'];
     $button_tabindex  =  (!isset($params['button_tabindex']) || empty($params['button_tabindex'])) ? 0 : (int)$params['button_tabindex'];
     $button_accesskey = (!isset($params['button_accesskey']) || empty($params['button_accesskey'])) ? '' : 'accesskey="'.DataUtil::formatForDisplay($params['button_accesskey']).'" ';
     $button_class     = (!isset($params['button_class']) || empty($params['button_class'])) ? '' : 'class="'.DataUtil::formatForDisplay($params['button_class']).'" ';

@@ -33,7 +33,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
 
         parent::__construct($serviceManager, $bundle);
 
-        if ($bundle !== null) {
+        if (null !== $bundle) {
             // Get bundle from route.
             $module = $bundle->getName();
             // Load module.
@@ -156,7 +156,7 @@ abstract class Zikula_AbstractController extends Zikula_AbstractBase
         }
 
         // BC for default entry point as 'index' if not present try main
-        if ($method == 'index' && (false === $r->hasMethod('index') && false === $r->hasMethod('indexAction'))) {
+        if ('index' == $method && (false === $r->hasMethod('index') && false === $r->hasMethod('indexAction'))) {
             $method = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
 
             return call_user_func_array([$this, $method], $args);

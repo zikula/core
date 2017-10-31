@@ -85,7 +85,7 @@ class Asset
         // @AcmeBundle:jss/foo.js
         // @AcmeBundle:images/foo.png
         $parts = explode(':', $path);
-        if (count($parts) !== 2) {
+        if (2 !== count($parts)) {
             throw new \InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
         }
 

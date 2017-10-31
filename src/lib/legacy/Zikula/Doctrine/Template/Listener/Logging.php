@@ -36,7 +36,7 @@ class Zikula_Doctrine_Template_Listener_Logging extends Zikula_Doctrine_Template
             'op' => $opType
         ];
 
-        if ($opType == 'U') {
+        if ('U' == $opType) {
             $oldValues = $data->getLastModified(true);
 
             $diff = [];

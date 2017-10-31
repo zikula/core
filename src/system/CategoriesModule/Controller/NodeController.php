@@ -87,7 +87,7 @@ class NodeController extends AbstractController
                     if (!empty($after)) {
                         $sibling = $repo->find($after);
                         $repo->persistAsNextSiblingOf($category, $sibling);
-                    } elseif ($mode == 'new') {
+                    } elseif ('new' == $mode) {
                         $repo->persistAsLastChild($category);
                     } // no need to persist edited entity
                     $entityManager->flush();
@@ -127,7 +127,7 @@ class NodeController extends AbstractController
                 $categoryId = $category->getId();
                 $this->removeRecursive($category);
                 $categoryRemoved = false;
-                if ($category->getChildren()->count() == 0
+                if (0 == $category->getChildren()->count()
                     && $this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category)) {
                     $entityManager->remove($category);
                     $categoryRemoved = true;
@@ -144,7 +144,7 @@ class NodeController extends AbstractController
                 break;
             case 'activate':
             case 'deactivate':
-                $category->setStatus($category->getStatus() == 'A' ? 'I' : 'A');
+                $category->setStatus('A' == $category->getStatus() ? 'I' : 'A');
                 $entityManager->flush();
                 $response = [
                     'id' => $category->getId(),

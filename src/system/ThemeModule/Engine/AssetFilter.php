@@ -84,14 +84,14 @@ class AssetFilter
         // compile and replace head
         $header = $this->cssResolver->compile();
         $header .= implode("\n", $this->headers->all()) . "\n";
-        $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
+        $header .= ('head' == $this->scriptPosition) ? $this->jsResolver->compile() : '';
         $header .= trim(implode("\n", \PageUtil::getVar('header', [])) . "\n"); // @todo legacy - remove at Core-2.0
         if (strripos($source, '</head>')) {
             $source = str_replace('</head>', $header."\n</head>", $source);
         }
 
         // compile and replace foot
-        $footer = ($this->scriptPosition == 'foot') ? $this->jsResolver->compile() : '';
+        $footer = ('foot' == $this->scriptPosition) ? $this->jsResolver->compile() : '';
         $footer .= trim(implode("\n", $this->footers->all()) . "\n");
         $footer .= trim(implode("\n", \PageUtil::getVar('footer', [])) . "\n"); // @todo legacy - remove at Core-2.0
         if (false === empty($footer)) {

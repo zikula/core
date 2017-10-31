@@ -194,7 +194,7 @@ class MailHelper
         $mailSent = false;
         $message = \Swift_Message::newInstance();
         $message->setFrom([$messageData['replyto'] => $messageData['from']]);
-        if (count($users) == 1) {
+        if (1 == count($users)) {
             $message->setTo([$users[0]->getEmail() => $users[0]->getUname()]);
         } else {
             $message->setTo([$messageData['replyto'] => $messageData['from']]);
@@ -207,13 +207,13 @@ class MailHelper
                 $bcc[] = $user->getEmail();
                 if (count($bcc) == $messageData['batchsize']) {
                     $message->setBcc($bcc);
-                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', $messageData['format'] == 'html');
+                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' == $messageData['format']);
                     $bcc = [];
                 }
             }
             $message->setBcc($bcc);
         }
-        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', $messageData['format'] == 'html');
+        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' == $messageData['format']);
 
         return $mailSent;
     }

@@ -93,7 +93,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
      */
     public function clearCacheObserver(Zikula_Event $event)
     {
-        if ($event['modname'] == 'ZikulaThemeModule') {
+        if ('ZikulaThemeModule' == $event['modname']) {
             // clear thumb when render cache is cleared
             // what with theme cache?
             $themeClearMethods = ['clear_cache', 'render_clear_cache', 'clearallcompiledcaches'];
@@ -286,7 +286,7 @@ class SystemPlugin_Imagine_Plugin extends Zikula_AbstractPlugin implements Zikul
     {
         if ($this->hasPreset($name)) {
             $preset = $this->presets[$name];
-        } elseif ($name == 'default') {
+        } elseif ('default' == $name) {
             // this is the case when something happen to default preset so we need to recreate it
             $defaults = $this->defaultSettings();
             $preset = $defaults['presets']['default'];

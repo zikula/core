@@ -99,7 +99,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
             return;
         }
 
-        if ($this->text !== '') {
+        if ('' !== $this->text) {
             $i = (int)$this->text;
             if (null !== $this->minValue && $i < $this->minValue || null !== $this->maxValue && $i > $this->maxValue) {
                 if (null !== $this->minValue && null !== $this->maxValue) {
@@ -123,7 +123,7 @@ class Zikula_Form_Plugin_IntInput extends Zikula_Form_Plugin_TextInput
      */
     public function parseValue(Zikula_Form_View $view, $text)
     {
-        if ($text === '') {
+        if ('' === $text) {
             return null;
         }
 

@@ -73,7 +73,7 @@ class SessionExtension extends \Twig_Extension
                 $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
                 $total_messages = $total_messages + $messages;
                 // Build output of the messages.
-                if (empty($params['tag']) || ($params['tag'] != 'span')) {
+                if (empty($params['tag']) || ('span' != $params['tag'])) {
                     $params['tag'] = 'div';
                 }
                 $result .= '<' . $params['tag'] . ' class="' . $class . '"';

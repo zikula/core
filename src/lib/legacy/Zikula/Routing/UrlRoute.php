@@ -77,7 +77,7 @@ class Zikula_Routing_UrlRoute
         @trigger_error('UrlRoute is deprecated, please use Symfony routing instead.', E_USER_DEPRECATED);
 
         // check if given url pattern ends with a trailing slash
-        if (substr($urlPattern, -1) != '/') {
+        if ('/' != substr($urlPattern, -1)) {
             // add missing trailing slash
             $urlPattern .= '/';
         }
@@ -131,7 +131,7 @@ class Zikula_Routing_UrlRoute
                     break;
                 case 'text':
                     // exclude star sign for additional parameters
-                    if ($token[1] != '*') {
+                    if ('*' != $token[1]) {
                         $url .= $token[1];
                     }
                     break;
@@ -142,7 +142,7 @@ class Zikula_Routing_UrlRoute
         }
 
         // check if url ends with a trailing slash
-        if (substr($url, -1) == '/') {
+        if ('/' == substr($url, -1)) {
             // remove the trailing slash
             $url = substr($url, 0, strlen($url) - 1);
         }
@@ -303,13 +303,13 @@ class Zikula_Routing_UrlRoute
         $regex = '#^';
         for ($i = 0, $max = count($this->tokens); $i < $max; $i++) {
             $token = $this->tokens[$i];
-            if ($token[0] == 'variable') {
+            if ('variable' == $token[0]) {
                 if (!isset($this->requirements[$token[1]])) {
                     $this->requirements[$token[1]] = '[^/\.\-]+';
                 }
                 $regex .= '(?P<'.$token[1].'>'.$this->requirements[$token[1]].')';
-            } elseif ($token[0] == 'text' || $token[0] == 'separator') {
-                if ($token[1] == '*') {
+            } elseif ('text' == $token[0] || 'separator' == $token[0]) {
+                if ('*' == $token[1]) {
                     if ($this->tokens[$i - 1] && $this->tokens[$i - 1][0] == 'separator') {
                         $sep_regex = $this->tokens[$i - 1][1];
                     } else {
@@ -317,7 +317,7 @@ class Zikula_Routing_UrlRoute
                     }
                     $regex .= '(?:' . $sep_regex . '(?P<_star>.*))?';
                 } else {
-                    if ($token[0] == 'separator' && $this->tokens[$i + 1] && $this->tokens[$i + 1][1] == '*') {
+                    if ('separator' == $token[0] && $this->tokens[$i + 1] && $this->tokens[$i + 1][1] == '*') {
                     } else {
                         $regex .= $token[1];
                     }

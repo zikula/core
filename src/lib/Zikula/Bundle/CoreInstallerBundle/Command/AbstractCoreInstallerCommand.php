@@ -119,7 +119,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     {
         $failures = [];
         foreach ($warnings as $key => $value) {
-            if ($value === true) {
+            if (true === $value) {
                 continue;
             }
             $failures[] = $this->errorCodeToMessage($key);

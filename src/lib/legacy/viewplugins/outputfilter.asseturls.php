@@ -32,7 +32,7 @@ function smarty_outputfilter_asseturls($source, $view)
 function _smarty_outputfilter_asseturls($m)
 {
     $url = $m[3];
-    if ($url[0] !== '/') {
+    if ('/' !== $url[0]) {
         $url = $GLOBALS['__request']->getBasePath().'/'.$url;
     }
 

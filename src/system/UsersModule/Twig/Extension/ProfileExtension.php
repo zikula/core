@@ -168,7 +168,7 @@ class ProfileExtension extends \Twig_Extension
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }
         $href = $this->profileModuleCollector->getSelected()->getProfileUrl($user->getUid());
-        if ($href == '#') {
+        if ('#' == $href) {
             return $userDisplayName;
         }
 

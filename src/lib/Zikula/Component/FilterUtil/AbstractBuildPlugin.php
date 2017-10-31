@@ -60,7 +60,7 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && false === array_search($fields, $this->fields)) {
             $this->fields[] = $fields;
         }
     }
@@ -90,8 +90,8 @@ abstract class AbstractBuildPlugin extends AbstractPlugin implements BuildInterf
                 $this->activateOperators($v);
             }
         } elseif (!empty($op)
-            && array_search($op, $this->ops) === false
-            && array_search($op, $ops) !== false
+            && false === array_search($op, $this->ops)
+            && false !== array_search($op, $ops)
         ) {
             $this->ops[] = $op;
         }

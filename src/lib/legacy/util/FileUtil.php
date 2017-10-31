@@ -33,7 +33,7 @@ class FileUtil
 
         $base = basename($filename);
         $p = strrpos($base, '.');
-        if ($p !== false) {
+        if (false !== $p) {
             if ($keepDot) {
                 return substr($base, 0, $p + 1);
             } else {
@@ -79,7 +79,7 @@ class FileUtil
         }
 
         $p = strrpos($filename, '.');
-        if ($p !== false) {
+        if (false !== $p) {
             if ($keepDot) {
                 return substr($filename, $p);
             } else {
@@ -107,7 +107,7 @@ class FileUtil
         }
 
         $p = strrpos($filename, '.');
-        if ($p !== false) {
+        if (false !== $p) {
             if ($keepDot) {
                 return substr($filename, 0, $p + 1);
             } else {
@@ -179,7 +179,7 @@ class FileUtil
         $files = [];
         $type  = strtolower($type);
 
-        if ($type && $type != 'd' && $type != 'f') {
+        if ($type && 'd' != $type && 'f' != $type) {
             throw new \Exception(__f('Error! Invalid type of object [%s] received.', $type));
         }
 
@@ -192,16 +192,16 @@ class FileUtil
         $el       = (is_string($extensions) ? strlen($extensions) : 0);
         $dh       = opendir($rootPath);
         $caseFlag = $regexpMatchCaseSensitive ? '' : 'i';
-        while (($file = readdir($dh)) !== false) {
+        while (false !== ($file = readdir($dh))) {
             $relativepath = $relativePath;
             if (!in_array($file, $skiplist)) {
                 $path = $rootPath . DIRECTORY_SEPARATOR . $file;
 
-                if ($type == 'f' && !$recurse && is_dir($path)) {
+                if ('f' == $type && !$recurse && is_dir($path)) {
                     continue;
                 }
 
-                if ($type == 'd' && !is_dir($path)) {
+                if ('d' == $type && !is_dir($path)) {
                     continue;
                 }
 
@@ -304,10 +304,10 @@ class FileUtil
         $path = DataUtil::formatForOS($path, $absolute);
 
         if ($dh = opendir($path)) {
-            while (($file = readdir($dh)) !== false) {
-                if (is_dir("$path/$file") && ($file != '.' && $file != '..')) {
+            while (false !== ($file = readdir($dh))) {
+                if (is_dir("$path/$file") && ('.' != $file && '..' != $file)) {
                     self::deldir("$path/$file", $absolute);
-                } elseif ($file != '.' && $file != '..') {
+                } elseif ('.' != $file && '..' != $file) {
                     unlink("$path/$file");
                 }
             }
@@ -390,7 +390,7 @@ class FileUtil
 
         if (!$filename) {
             $filename = self::generateRandomFilename(10, 15, true, true);
-        } elseif (strrchr($filename, '.') !== false) {
+        } elseif (false !== strrchr($filename, '.')) {
             // do we have an extension?
             $ext = self::getExtension($filename);
             $filename = self::stripExtension($filename);
@@ -555,7 +555,7 @@ class FileUtil
         }
 
         // check if $datarows is empty
-        if (count($datarows) == 0) {
+        if (0 == count($datarows)) {
             throw new \Exception(__f('%1$s: %2$s is empty', ['FileUtil::exportCSV', 'datarows']));
         }
 

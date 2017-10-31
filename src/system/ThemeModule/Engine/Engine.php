@@ -304,7 +304,7 @@ class Engine
     {
         $themeConfig = $this->getTheme()->getConfig();
         // defining an admin realm overrides all other options for 'admin' annotated methods
-        if ($this->annotationValue == 'admin' && isset($themeConfig['admin'])) {
+        if ('admin' == $this->annotationValue && isset($themeConfig['admin'])) {
             $this->realm = 'admin';
 
             return;
@@ -313,15 +313,15 @@ class Engine
         $requestAttributes = $request->attributes->all();
         // @todo BC remove at Core-2.0
         $lct = $request->query->get('lct', null);
-        if ((isset($requestAttributes['_zkType']) && $requestAttributes['_zkType'] == 'admin')
-            || ((isset($requestAttributes['_route']) && in_array($requestAttributes['_route'], ['legacy', 'legacy_short_url'])) && ($request->query->get('type') == 'admin'))
+        if ((isset($requestAttributes['_zkType']) && 'admin' == $requestAttributes['_zkType'])
+            || ((isset($requestAttributes['_route']) && in_array($requestAttributes['_route'], ['legacy', 'legacy_short_url'])) && ('admin' == $request->query->get('type')))
             || isset($lct)) {
             $this->realm = 'admin';
 
             return;
         }
         // match `/` for home realm
-        if (isset($requestAttributes['_route']) && $requestAttributes['_route'] == 'home') {
+        if (isset($requestAttributes['_route']) && 'home' == $requestAttributes['_route']) {
             $this->realm = 'home';
 
             return;
@@ -345,7 +345,7 @@ class Engine
                 }
                 foreach ($valuesToMatch as $value) {
                     $match = preg_match($pattern, $value);
-                    if ($match === 1) {
+                    if (1 === $match) {
                         $this->realm = $realm;
 
                         return; // use first match and do not continue to attempt to match patterns
@@ -403,9 +403,9 @@ class Engine
             $i = 60;
             $legacyAjaxScripts = 0;
             foreach ($javascripts as $javascript) {
-                if (substr($javascript, 0, 4) !== 'http') {
+                if ('http' !== substr($javascript, 0, 4)) {
                     $javascript = (!empty($baseUri) && (0 !== strpos($javascript, "$baseUri/"))) ? "$baseUri/$javascript" : "$javascript";
-                    $javascript = $javascript[0] == '/' ? $javascript : "/$javascript"; // add slash to start if not present.
+                    $javascript = '/' == $javascript[0] ? $javascript : "/$javascript"; // add slash to start if not present.
                 }
                 // Add legacy ajax scripts (like prototype/scriptaculous) at the lightest weight (0) and in order from there.
                 // Add others after core default assets (like jQuery) but before pageAddAsset default weight (100) and in order from there.
@@ -414,7 +414,7 @@ class Engine
             $stylesheets = \PageUtil::getVar('stylesheet', []);
             $i = 60;
             foreach ($stylesheets as $stylesheet) {
-                if (substr($stylesheet, 0, 4) !== 'http') {
+                if ('http' !== substr($stylesheet, 0, 4)) {
                     $stylesheet = $baseUri . '/' . $stylesheet;
                 }
                 $cssAssets[$stylesheet] = $i++; // add before pageAddAsset default weight (100)

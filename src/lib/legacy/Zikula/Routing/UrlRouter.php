@@ -106,7 +106,7 @@ class Zikula_Routing_UrlRouter
             // check if this route does the job
             $testParams = $testRoute->matchesUrl($url);
             // if not...
-            if ($testParams === false) {
+            if (false === $testParams) {
                 // skip it
                 continue;
             }

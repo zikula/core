@@ -53,7 +53,7 @@ class AccessController extends AbstractController
                 'path' => 'zikulausersmodule_access_login'
             ]);
         } else {
-            if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) == 1) {
+            if (empty($selectedMethod) && 1 == count($authenticationMethodCollector->getActiveKeys())) {
                 $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
             }
             $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
@@ -86,7 +86,7 @@ class AccessController extends AbstractController
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-            $uid = ($request->getMethod() == 'POST') ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
+            $uid = ('POST' == $request->getMethod()) ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
             /** AccessEvents::LOGIN_FORM is @deprecated */
             $hasListeners = $dispatcher->hasListeners(AccessEvents::LOGIN_FORM) || $dispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM);
             $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');

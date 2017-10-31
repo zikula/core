@@ -95,9 +95,9 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
     {
         $idHtml = $this->getIdHtml();
 
-        $text = $view->translateForDisplay($this->text, ($this->html == 1) ? false : true);
+        $text = $view->translateForDisplay($this->text, (1 == $this->html) ? false : true);
 
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $classHtml = " class=\"$this->cssClass\"";
         } else {
             $classHtml = '';
@@ -127,8 +127,8 @@ class Zikula_Form_Plugin_Label extends Zikula_Form_AbstractStyledPlugin
     {
         $plugin = $view->getPluginById($this->for);
 
-        if ($plugin != null) {
-            $plugin->myLabel = $view->translateForDisplay($this->text, ($this->html == 1) ? false : true);
+        if (null != $plugin) {
+            $plugin->myLabel = $view->translateForDisplay($this->text, (1 == $this->html) ? false : true);
         }
     }
 }

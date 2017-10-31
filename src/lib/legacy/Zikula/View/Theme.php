@@ -193,7 +193,7 @@ class Zikula_View_Theme extends Zikula_View
         //}
 
         // if caching and is not an admin controller
-        if ($this->caching && strpos($this->type, 'admin') !== 0) {
+        if ($this->caching && 0 !== strpos($this->type, 'admin')) {
             $modulesnocache = array_filter(explode(',', ModUtil::getVar('ZikulaThemeModule', 'modulesnocache')));
 
             if (in_array($this->toplevelmodule, $modulesnocache)) {
@@ -204,7 +204,7 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         // halt caching for write operations to prevent strange things happening
-        if (isset($_POST) && count($_POST) != 0) {
+        if (isset($_POST) && 0 != count($_POST)) {
             $this->caching = Zikula_View::CACHE_DISABLED;
         }
         // and also for GET operations with csrftoken/authkey
@@ -371,13 +371,13 @@ class Zikula_View_Theme extends Zikula_View
         }
 
         // fix block positions - for now....
-        if ($position == 'l') {
+        if ('l' == $position) {
             $position = 'left';
         }
-        if ($position == 'c') {
+        if ('c' == $position) {
             $position = 'center';
         }
-        if ($position == 'r') {
+        if ('r' == $position) {
             $position = 'right';
         }
 
@@ -440,7 +440,7 @@ class Zikula_View_Theme extends Zikula_View
 
         $templateFile = "$relativePath/$osTemplate";
         $override = self::getTemplateOverride($templateFile);
-        if ($override === false) {
+        if (false === $override) {
             if (!System::isLegacyMode()) {
                 if (is_readable($templateFile)) {
                     $this->templateCache[$template] = $relativePath;
@@ -576,7 +576,7 @@ class Zikula_View_Theme extends Zikula_View
         $path .= !empty($auto_id) ? '/' . $auto_id : '';
 
         // takes in account the source subdirectory
-        $path .= strpos($auto_source, '/') !== false ? '/' . dirname($auto_source) : '';
+        $path .= false !== strpos($auto_source, '/') ? '/' . dirname($auto_source) : '';
 
         // make sure the path exists to write the compiled/cached template there
         if (!file_exists($path)) {
@@ -595,7 +595,7 @@ class Zikula_View_Theme extends Zikula_View
                 // add the variable stuff only if $auto_source is present
                 // to allow a easy flush cache for all the languages (if needed)
                 $path .= '-l';
-                if (System::getVar('multilingual') == 1) {
+                if (1 == System::getVar('multilingual')) {
                     $path .= $this->language;
                 }
                 // end with a suffix convention of filename--Themename-lang.ext
@@ -615,7 +615,7 @@ class Zikula_View_Theme extends Zikula_View
     {
         // identify the page type
         $this->pagetype = 'module';
-        if ((stristr(System::serverGetVar('PHP_SELF'), 'admin.php') || strtolower($this->type) == 'admin')) {
+        if ((stristr(System::serverGetVar('PHP_SELF'), 'admin.php') || 'admin' == strtolower($this->type))) {
             $this->pagetype = 'admin';
         } else {
             $module = FormUtil::getPassedValue('module', null, 'GETPOST', FILTER_SANITIZE_STRING);
@@ -696,12 +696,12 @@ class Zikula_View_Theme extends Zikula_View
         // common arguments are ones that we don't want affecting our url matching or ones that are
         // already considered; These are same args defined as reserved by the MDG.
         $customargs = '';
-        if ($this->pagetype != 'admin' && System::getVar('shorturls')) {
+        if ('admin' != $this->pagetype && System::getVar('shorturls')) {
             // remove the base URI and the entrypoint from the request URI
             $customargs = str_replace(System::getBaseUri(), '', $this->requesturi);
             $entrypoint = System::getVar('entrypoint');
             $customargs = str_replace("/{$entrypoint}/", '/', $customargs);
-            $customargs = ($customargs == '/') ? '' : $customargs;
+            $customargs = ('/' == $customargs) ? '' : $customargs;
         } else {
             $queryparts = explode('&', $this->qstring);
             foreach ($queryparts as $querypart) {
@@ -749,8 +749,8 @@ class Zikula_View_Theme extends Zikula_View
 
                 // identify an admin-like type
             } elseif (isset($pageconfigurations['*admin'])
-                && ((strpos($this->type, 'admin') === 0)
-                || (isset($methodAnnotationValue) && ($methodAnnotationValue == 'admin')))) { // Core-2.0 FC
+                && ((0 === strpos($this->type, 'admin'))
+                || (isset($methodAnnotationValue) && ('admin' == $methodAnnotationValue)))) { // Core-2.0 FC
                 $file = $pageconfigurations['*admin']['file'];
 
                 // search for arguments match

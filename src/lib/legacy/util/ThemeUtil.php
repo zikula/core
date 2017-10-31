@@ -113,11 +113,11 @@ class ThemeUtil
                      ->select('t')
                      ->from('ZikulaThemeModule:ThemeEntity', 't');
 
-            if ($state != self::STATE_ALL) {
+            if (self::STATE_ALL != $state) {
                 $qb->andWhere('t.state = :state')
                    ->setParameter('state', $state);
             }
-            if ($type != self::TYPE_ALL) {
+            if (self::TYPE_ALL != $type) {
                 $qb->andWhere('t.type = :type')
                    ->setParameter('type', $type);
             }
@@ -218,7 +218,7 @@ class ThemeUtil
     {
         @trigger_error('UserUtil is deprecated, please use Theme entity instead.', E_USER_DEPRECATED);
 
-        if ($themeid == 0 || !is_numeric($themeid)) {
+        if (0 == $themeid || !is_numeric($themeid)) {
             return false;
         }
 

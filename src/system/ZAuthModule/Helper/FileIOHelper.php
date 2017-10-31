@@ -186,7 +186,7 @@ class FileIOHelper
             // validate activation value
             $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : UsersConstant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
-            if (($activated != UsersConstant::ACTIVATED_INACTIVE) && ($activated != UsersConstant::ACTIVATED_ACTIVE)) {
+            if ((UsersConstant::ACTIVATED_INACTIVE != $activated) && (UsersConstant::ACTIVATED_ACTIVE != $activated)) {
                 return $this->locateErrors($this->__('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.'), 'activated', $counter);
             }
 

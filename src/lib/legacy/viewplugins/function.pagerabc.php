@@ -109,7 +109,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
         }
     } else {
         // predefined abc
-        if (strtolower($params['skin']) == 'hu') {
+        if ('hu' == strtolower($params['skin'])) {
             // Hungarian
             $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
             //$params['names']  = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z'];
@@ -225,7 +225,7 @@ function smarty_function_pagerabc($params, Zikula_View $view)
     foreach (array_keys($pager['names']) as $i) {
         $active = '';
         if (!empty($params['class_numon'])) {
-            if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i]) {
+            if (isset($allVars[$pager['posvar']]) && $pager['values'][$i] == $allVars[$pager['posvar']]) {
                 $style = ' class="'.$params['class_numon'].'"';
                 $active = 'class="active"';
             } elseif (!empty($params['class_num'])) {

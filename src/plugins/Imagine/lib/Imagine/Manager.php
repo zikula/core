@@ -413,18 +413,18 @@ class SystemPlugin_Imagine_Manager extends Zikula_Controller_AbstractPlugin
             $options = $preset['options'];
         }
 
-        if (isset($preset['mode']) && $preset['mode'] === 'inset') {
+        if (isset($preset['mode']) && 'inset' === $preset['mode']) {
             $mode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
         } else {
             $mode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
         }
 
         // check for w/h autoscaling and scale to ratio
-        if ($preset['height'] == 'auto') {
+        if ('auto' == $preset['height']) {
             $imageSize = @getimagesize($image->getRealPath());
             $preset['height'] = round($imageSize[1] / $imageSize[0] * $preset['width']);
         }
-        if ($preset['width'] == 'auto') {
+        if ('auto' == $preset['width']) {
             $imageSize = @getimagesize($image->getRealPath());
             $preset['width'] = round($imageSize[0] / $imageSize[1] * $preset['height']);
         }

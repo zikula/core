@@ -377,7 +377,7 @@ class HtmlUtil
                 $fname = $namePrefix . '[' . $k . ']';
             }
 
-            if (strpos($excludeList, ',' . $k . ',') === false) {
+            if (false === strpos($excludeList, ',' . $k . ',')) {
                 $disp = $v['display_name'][$lang];
                 if (!$disp) {
                     $disp = $v['name'];
@@ -423,14 +423,14 @@ class HtmlUtil
         $data = [];
         if (is_array($tables) && $tables) {
             foreach ($tables as $k => $v) {
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
+                if (false === strpos($k, '_column') && false === strpos($k, '_db_extra_enable') && false === strpos($k, '_primary_key_column')) {
                     $checkColumns = $k . '_column';
                     if (!isset($tables[$checkColumns])) {
                         continue;
                     }
                 }
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    if (strpos($k, 'z_') === 0) {
+                if (false === strpos($k, '_column') && false === strpos($k, '_db_extra_enable') && false === strpos($k, '_primary_key_column')) {
+                    if (0 === strpos($k, 'z_')) {
                         $k = substr($k, 4);
                     }
 
@@ -496,7 +496,7 @@ class HtmlUtil
                     $entityName = array_pop($nameParts);
                     $data[$entityName] = $entityName;
                 }
-                $selectedValue = (count($data) == 1) ? $entityName : $defaultValue;
+                $selectedValue = (1 == count($data)) ? $entityName : $defaultValue;
 
                 return self::getSelector_Generic($name, $data, $selectedValue, $defaultValue, $defaultText, null, null, $submit, $disabled, $multipleSize);
             }
@@ -504,7 +504,7 @@ class HtmlUtil
 
         // (Core-1.3 spec)
         $modinfo = ModUtil::getInfo(ModUtil::getIdFromName($modname));
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
         $osdir   = DataUtil::formatForOS($modinfo['directory']);
         $entityDirs = [
             "$modpath/$osdir/Entity/", // Core 1.4.0++
@@ -516,7 +516,7 @@ class HtmlUtil
             if (file_exists($entityDir)) {
                 $files = scandir($entityDir);
                 foreach ($files as $file) {
-                    if ($file != '.' && $file != '..' && substr($file, -4) === '.php') {
+                    if ('.' != $file && '..' != $file && '.php' === substr($file, -4)) {
                         $entities[] = $file;
                     }
                 }
@@ -767,7 +767,7 @@ class HtmlUtil
         foreach ($grouplist as $k => $v) {
             $id = $v['gid'];
             $disp = $v['name'];
-            if (strpos($excludeList, ",$id,") === false) {
+            if (false === strpos($excludeList, ",$id,")) {
                 $data[$id] = $disp;
             }
         }
@@ -1077,7 +1077,7 @@ class HtmlUtil
         $output = '<select' . ' name="' . DataUtil::formatForDisplay($fieldname) . '"'
                 . ' id="' . DataUtil::formatForDisplay($idname) . '"'
                 . ' size="' . DataUtil::formatForDisplay($size) . '"'
-                . (($multiple == 1) ? ' multiple="multiple"' : '')
+                . ((1 == $multiple) ? ' multiple="multiple"' : '')
                 . ((empty($accesskey)) ? '' : ' accesskey="' . DataUtil::formatForDisplay($accesskey) . '"')
                 //. ' tabindex="'.$this->tabindex.'"'
                 . ($onchange ? " onchange=\"$onchange\"" : '') . '>';

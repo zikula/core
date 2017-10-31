@@ -108,11 +108,11 @@ class PermissionApi implements PermissionApiInterface
         if (!isset($user)) {
             $user = $this->currentUserApi->get('uid');
         }
-        if (!isset($this->groupPermsByUser[$user]) || $this->groupPermsByUser[$user] === false) {
+        if (!isset($this->groupPermsByUser[$user]) || false === $this->groupPermsByUser[$user]) {
             $this->setGroupPermsForUser($user);
         }
 
-        return (count($this->groupPermsByUser[$user]) == 0)
+        return (0 == count($this->groupPermsByUser[$user]))
             ? false
             : $this->getSecurityLevel($this->groupPermsByUser[$user], $component, $instance) >= $level;
     }
@@ -138,7 +138,7 @@ class PermissionApi implements PermissionApiInterface
         }
 
         $defaultGids = [self::ALL_GROUPS];
-        if ($user == Constant::USER_ID_ANONYMOUS) {
+        if (Constant::USER_ID_ANONYMOUS == $user) {
             $defaultGids[] = self::UNREGISTERED_USER_GROUP; // Unregistered GID
         }
         $allGroups = array_merge_recursive($defaultGids, $foundGids);
@@ -192,7 +192,7 @@ class PermissionApi implements PermissionApiInterface
         }
 
         // Test if user has ANY access to given component, without determining exact instance
-        if ($instance == 'ANY') {
+        if ('ANY' == $instance) {
             $levels = [$level];
             foreach ($perms as $perm) {
                 // component check
@@ -245,7 +245,7 @@ class PermissionApi implements PermissionApiInterface
         // there *is* a $instance at this point.
         foreach ($perms as $perm) {
             // if there is a component, check that it matches
-            if (($component != '') && (!preg_match("=^$perm[component]$=", $component))) {
+            if (('' != $component) && (!preg_match("=^$perm[component]$=", $component))) {
                 // component exists, and does not match.
                 continue;
             }
@@ -276,7 +276,7 @@ class PermissionApi implements PermissionApiInterface
         if (empty($string)) {
             $string = '.*';
         }
-        if (strpos($string, ':') === 0) {
+        if (0 === strpos($string, ':')) {
             $string = '.*' . $string;
         }
         $string = str_replace('::', ':.*:', $string);

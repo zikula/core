@@ -121,7 +121,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
             return;
         }
 
-        if ($this->text !== '') {
+        if ('' !== $this->text) {
             $this->text = DataUtil::transformNumberInternal($this->text);
             if (!is_numeric($this->text)) {
                 $this->setError(__('Error! Invalid number.'));
@@ -151,7 +151,7 @@ class Zikula_Form_Plugin_FloatInput extends Zikula_Form_Plugin_TextInput
      */
     public function parseValue(Zikula_Form_View $view, $text)
     {
-        if ($text === '') {
+        if ('' === $text) {
             return null;
         }
 

@@ -74,7 +74,7 @@ class Zikula_Workflow_Parser
         xml_parser_free($this->parser);
 
         // check for errors
-        if ($this->workflow['state'] == 'error') {
+        if ('error' == $this->workflow['state']) {
             return LogUtil::registerError($this->workflow['errorMessage']);
         }
 
@@ -114,7 +114,7 @@ class Zikula_Workflow_Parser
         $states = array_keys($stateMap);
 
         foreach ($this->workflow['actions'] as $action) {
-            if (($action['state'] == 'initial') || ($action['state'] == null) || in_array($action['state'], $states)) {
+            if (('initial' == $action['state']) || (null == $action['state']) || in_array($action['state'], $states)) {
                 $action['state'] = $stateID = !empty($action['state']) ? $action['state'] : 'initial';
 
                 // change the case of array keys for parameter variables
@@ -179,7 +179,7 @@ class Zikula_Workflow_Parser
 
         switch ($state) {
             case 'initial':
-                if ($name == 'WORKFLOW') {
+                if ('WORKFLOW' == $name) {
                     $state = 'workflow';
                     $this->workflow['workflow'] = [];
                 } else {
@@ -210,7 +210,7 @@ class Zikula_Workflow_Parser
                 break;
 
             case 'states':
-                if ($name == 'STATE') {
+                if ('STATE' == $name) {
                     $this->workflow['stateValue'] = ['id' => trim($attribs['ID'])];
                     $state = 'state';
                 } else {
@@ -220,7 +220,7 @@ class Zikula_Workflow_Parser
                 break;
 
             case 'state':
-                if ($name == 'TITLE' || $name == 'DESCRIPTION') {
+                if ('TITLE' == $name || 'DESCRIPTION' == $name) {
                     $this->workflow['value'] = '';
                 } else {
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
@@ -230,7 +230,7 @@ class Zikula_Workflow_Parser
 
             case 'actions':
                 xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-                if ($name == 'ACTION') {
+                if ('ACTION' == $name) {
                     $this->workflow['action'] = [
                         'id' => trim($attribs['ID']),
                         'operations' => [],
@@ -268,7 +268,7 @@ class Zikula_Workflow_Parser
                 break;
 
             case '':
-                if ($name == '') {
+                if ('' == $name) {
                     $state = '';
                 } else {
                     $this->workflow['errorMessage'] = $this->unexpectedXMLError($name, "$state ". __LINE__);
@@ -365,13 +365,13 @@ class Zikula_Workflow_Parser
                 break;
 
             case 'actions':
-                if ($name == 'ACTIONS') {
+                if ('ACTIONS' == $name) {
                     $state = 'workflow';
                 }
                 break;
 
             case 'states':
-                if ($name == 'STATES') {
+                if ('STATES' == $name) {
                     $state = 'workflow';
                 }
                 break;

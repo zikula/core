@@ -177,11 +177,11 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
         }
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $class .= ' ' . $this->cssClass;
         }
 
-        $classHtml = ($class == '' ? '' : " class=\"$class\"");
+        $classHtml = ('' == $class ? '' : " class=\"$class\"");
         $nameHtml = " name=\"{$this->inputName}[]\"";
 
         $selectedByValue = [];
@@ -197,7 +197,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         }
 
         for ($i = 0, $count = count($this->items); $i < $count; ++$i) {
-            if ($this->repeatColumns > 0 && ($i % $this->repeatColumns) == 0) {
+            if ($this->repeatColumns > 0 && 0 == ($i % $this->repeatColumns)) {
                 $result .= '<tr>';
             }
 
@@ -206,7 +206,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
 
             $text = DataUtil::formatForDisplay($item['text']);
 
-            if ($item['value'] === null) {
+            if (null === $item['value']) {
                 $value = '#null#';
             } else {
                 $value = DataUtil::formatForDisplay($item['value']);
@@ -241,7 +241,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
             }
         }
 
-        if ($this->repeatColumns > 0 && $i % $this->repeatColumns != 0) {
+        if ($this->repeatColumns > 0 && 0 != $i % $this->repeatColumns) {
             $result .= '</tr>';
         }
 
@@ -267,11 +267,11 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
         // Besides that, a disabled checkbox returns nothing at all, so old values are good to keep
         if (!$this->readOnly) {
             $value = $this->request->request->get($this->inputName, null);
-            if ($value == null) {
+            if (null == $value) {
                 $value = [];
             }
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
-                $value[$i] = ($value[$i] == '#null#' ? null : $value[$i]);
+                $value[$i] = ('#null#' == $value[$i] ? null : $value[$i]);
             }
 
             $this->setSelectedValue($value);
@@ -289,7 +289,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
     {
         $this->clearValidation($view);
 
-        if ($this->mandatory && count($this->selectedValue) == 0) {
+        if ($this->mandatory && 0 == count($this->selectedValue)) {
             $this->setError(__('Error! You must make a selection.'));
         }
     }
@@ -334,7 +334,7 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data[$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
@@ -362,11 +362,11 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
             $items = null;
             $value = null;
 
-            if ($this->group == null) {
-                if ($this->dataField != null && isset($values[$this->dataField])) {
+            if (null == $this->group) {
+                if (null != $this->dataField && isset($values[$this->dataField])) {
                     $value = $values[$this->dataField];
                 }
-                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($values[$this->itemsDataField])) {
                     $items = $values[$this->itemsDataField];
                 }
             } else {
@@ -374,14 +374,14 @@ class Zikula_Form_Plugin_CheckboxList extends Zikula_Form_Plugin_BaseListSelecto
                     $data = $values[$this->group];
                     if (isset($data[$this->dataField])) {
                         $value = $data[$this->dataField];
-                        if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                        if (null != $this->itemsDataField && isset($data[$this->itemsDataField])) {
                             $items = $data[$this->itemsDataField];
                         }
                     }
                 }
             }
 
-            if ($items != null) {
+            if (null != $items) {
                 $this->setItems($items);
             }
 

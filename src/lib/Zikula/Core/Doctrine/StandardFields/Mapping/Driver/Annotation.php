@@ -86,13 +86,13 @@ class Annotation implements AnnotationDriverInterface
                 if (!$this->isValidField($meta, $field)) {
                     throw new InvalidMappingException("Field - [{$field}] type is not valid and must be 'integer' in class - {$meta->name}");
                 }
-                if ($timestampable->type != 'userid') {
+                if ('userid' != $timestampable->type) {
                     throw new InvalidMappingException("Field - [{$field}] StandardFields annotation attribute 'type' is not 'userid' in class - {$meta->name}");
                 }
                 if (!in_array($timestampable->on, ['update', 'create', 'change'])) {
                     throw new InvalidMappingException("Field - [{$field}] trigger 'on' is not one of [update, create, change] in class - {$meta->name}");
                 }
-                if ($timestampable->on == 'change') {
+                if ('change' == $timestampable->on) {
                     if (!isset($timestampable->field) || !isset($timestampable->value)) {
                         throw new InvalidMappingException("Missing parameters on property - {$field}, field and value must be set on [change] trigger in class - {$meta->name}");
                     }

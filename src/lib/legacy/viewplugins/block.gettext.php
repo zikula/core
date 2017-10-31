@@ -39,7 +39,7 @@ function smarty_block_gettext($params, $content, Zikula_View $view)
 {
     if ($content) {
         if (isset($params['domain'])) {
-            $domain = (strtolower($params['domain']) == 'zikula' ? null : $params['domain']);
+            $domain = ('zikula' == strtolower($params['domain']) ? null : $params['domain']);
         } else {
             $domain = $view->getDomain(); // default domain
         }
@@ -52,7 +52,7 @@ function smarty_block_gettext($params, $content, Zikula_View $view)
                 $tags[] = $value;
             }
         }
-        $tags = (count($tags) == 0 ? null : $tags);
+        $tags = (0 == count($tags) ? null : $tags);
 
         // perform gettext
         $output = (isset($tags) ? __f($content, $tags, $domain) : __($content, $domain));

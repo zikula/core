@@ -54,7 +54,7 @@ class ValidationUtil
         }
 
         if ($required) {
-            if (!isset($object[$field]) || $object[$field] === '') {
+            if (!isset($object[$field]) || '' === $object[$field]) {
                 $rc = false;
             }
         }
@@ -62,7 +62,7 @@ class ValidationUtil
         if ($rc && $object[$field]) {
             $postval = $object[$field];
             $testval = $cmp_value;
-            if (substr($testval, 0, 1) == ':') {
+            if (':' == substr($testval, 0, 1)) {
                 // denotes an object access key
                 $v2 = substr($testval, 1);
                 $testval = $object[$v2];
@@ -77,19 +77,19 @@ class ValidationUtil
                     break;
                 case 'neq': $rc = ($postval != $testval);
                     break;
-                case 'gt': $rc = ($postval !== '' && is_numeric($postval) && $postval > $testval);
+                case 'gt': $rc = ('' !== $postval && is_numeric($postval) && $postval > $testval);
                     break;
-                case 'gte': $rc = ($postval !== '' && is_numeric($postval) && $postval >= $testval);
+                case 'gte': $rc = ('' !== $postval && is_numeric($postval) && $postval >= $testval);
                     break;
-                case 'lt': $rc = ($postval !== '' && is_numeric($postval) && $postval < $testval);
+                case 'lt': $rc = ('' !== $postval && is_numeric($postval) && $postval < $testval);
                     break;
-                case 'lte': $rc = ($postval !== '' && is_numeric($postval) && $postval <= $testval);
+                case 'lte': $rc = ('' !== $postval && is_numeric($postval) && $postval <= $testval);
                     break;
-                case 'in': $rc = ($postval !== '' && is_array($testval) && in_array($postval, $testval));
+                case 'in': $rc = ('' !== $postval && is_array($testval) && in_array($postval, $testval));
                     break;
-                case 'notin': $rc = ($postval !== '' && is_array($testval) && !in_array($postval, $testval));
+                case 'notin': $rc = ('' !== $postval && is_array($testval) && !in_array($postval, $testval));
                     break;
-                case 'regexp': $rc = ($postval !== '' && preg_match($testval, $postval));
+                case 'regexp': $rc = ('' !== $postval && preg_match($testval, $postval));
                     break;
                 case 'url': $rc = System::varValidate($postval, 'url');
                     break;
@@ -106,7 +106,7 @@ class ValidationUtil
             }
         }
 
-        if ($rc === false) {
+        if (false === $rc) {
             if (!isset($_SESSION['validationErrors'][$objectType][$field])) {
                 $_SESSION['validationErrors'][$objectType][$field] = $err_msg;
             }
@@ -175,7 +175,7 @@ class ValidationUtil
 
         foreach ($validationControls as $vc) {
             $t = self::validateFieldByArray($object, $vc);
-            if ($t === false) {
+            if (false === $t) {
                 $rc = false;
             }
         }

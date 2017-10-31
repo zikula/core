@@ -230,7 +230,7 @@ class CategoryApi
         foreach ($apath as $path) {
             $parts = explode('/', $path);
 
-            if ($pathField == 'path') {
+            if ('path' == $pathField) {
                 $parts = array_values(array_filter($parts));
 
                 if (!empty($parts)) {
@@ -238,7 +238,7 @@ class CategoryApi
 
                     foreach ($parts as $part_key => $part_value) {
                         $criteria = [];
-                        if ($part_key == 0) {
+                        if (0 == $part_key) {
                             $criteria = ['name' => $parts[$part_key]];
                         } elseif ($part_key != $last) {
                             $criteria = ['name' => $parts[$part_key], 'parent' => $parent];
@@ -365,7 +365,7 @@ class CategoryApi
         $cats = $this->getCategories($where, '', 'id');
 
         $result = [];
-        if ($cats !== false) {
+        if (false !== $cats) {
             foreach ($registry as $property => $catID) {
                 if (isset($cats[$catID])) {
                     $result[$property] = $cats[$catID];

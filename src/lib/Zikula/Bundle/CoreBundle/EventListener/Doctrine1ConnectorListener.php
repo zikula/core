@@ -118,10 +118,10 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
                 $connection = Doctrine_Manager::connection($dsn, $name);
             } else {
                 $dbh = null;
-                if ($connectionInfo['dbdriver'] == 'derby' || $connectionInfo['dbdriver'] == 'splice') {
+                if ('derby' == $connectionInfo['dbdriver'] || 'splice' == $connectionInfo['dbdriver']) {
                     $class = 'Doctrine_Connection_' . ucwords($connectionInfo['dbdriver']) . '_Pdo';
                     $dbh   = new $class("odbc:$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
-                } elseif ($connectionInfo['dbdriver'] == 'jdbcbridge') {
+                } elseif ('jdbcbridge' == $connectionInfo['dbdriver']) {
                     $dbh = new Doctrine_Adapter_Jdbcbridge($connectionInfo, $connectionInfo['user'], $connectionInfo['password']);
                 } else {
                     $dbh = new \PDO("$connectionInfo[dbdriver]:host=$connectionInfo[host];dbname=$connectionInfo[dbname]", $connectionInfo['user'], $connectionInfo['password']);
@@ -137,7 +137,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
         }
 
         // set mysql engine type
-        if ($connectionInfo['dbdriver'] == 'mysql') {
+        if ('mysql' == $connectionInfo['dbdriver']) {
             $connection->setAttribute(Doctrine_Core::ATTR_DEFAULT_TABLE_TYPE, $connectionInfo['dbtabletype']);
         }
 
@@ -152,7 +152,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
             // do nothing
         }
 
-        if ($connectionInfo['dbdriver'] != 'oracle') {
+        if ('oracle' != $connectionInfo['dbdriver']) {
             $connection->setAttribute(Doctrine_Core::ATTR_PORTABILITY, Doctrine_Core::PORTABILITY_ALL ^ Doctrine_Core::PORTABILITY_EMPTY_TO_NULL);
         }
 
@@ -185,7 +185,7 @@ class Doctrine1ConnectorListener implements EventSubscriberInterface
             $doctrineCacheClass = "Doctrine_Cache_$type";
             $r = new \ReflectionClass($doctrineCacheClass);
             $options = ['prefix' => 'dd'];
-            if (strpos($type, 'Memcache') === 0) {
+            if (0 === strpos($type, 'Memcache')) {
                 $servers = $this->container['dbcache.servers'];
                 $options = array_merge($options, ['servers' => $servers, 'compression' => $this->container['dbcache.compression']]);
             }

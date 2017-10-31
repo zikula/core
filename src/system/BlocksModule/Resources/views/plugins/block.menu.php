@@ -35,7 +35,7 @@ function smarty_block_menu($params, $content, $smarty, &$repeat)
 
     // find this block in smarty tag stack
     foreach ($smarty->_tag_stack as $key => $tag_stack) {
-        if ($tag_stack[0] == 'menu') {
+        if ('menu' == $tag_stack[0]) {
             $menuTagStackKey = $key;
         }
     }

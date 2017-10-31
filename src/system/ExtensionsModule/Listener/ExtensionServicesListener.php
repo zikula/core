@@ -72,7 +72,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
     public function addServiceLink(\Zikula_Event $event)
     {
         // check if this is for this handler
-        if (!($event['modfunc'][1] == 'getLinks' && $event['type'] == 'admin' && $event['api'] == true)) {
+        if (!($event['modfunc'][1] == 'getLinks' && 'admin' == $event['type'] && true == $event['api'])) {
             return;
         }
 

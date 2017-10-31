@@ -55,7 +55,7 @@ function smarty_function_pageaddvar($params, Zikula_View $view)
     $value = isset($params['value']) ? $params['value'] : null;
     $raw = isset($params['raw']) ? $params['raw'] : false;
 
-    if ($value == 'polyfill') {
+    if ('polyfill' == $value) {
         $features = isset($params['features']) ? $params['features'] : 'forms';
     } else {
         $features = null;

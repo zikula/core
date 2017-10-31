@@ -88,11 +88,11 @@ function smarty_function_ajaxheader($params, Zikula_View $view)
     }
 
     $modinfo = ModUtil::getInfoFromName($modname);
-    if ($modinfo !== false) {
+    if (false !== $modinfo) {
         $osdirectory = DataUtil::formatForOS($modinfo['directory']);
         $osfilename = DataUtil::formatForOS($filename);
 
-        $base = $modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules';
+        $base = ModUtil::TYPE_SYSTEM == $modinfo['type'] ? 'system' : 'modules';
         if (file_exists($file = "$base/$osdirectory/Resources/public/js/$osfilename") || file_exists($file = "$base/$osdirectory/javascript/$osfilename") || file_exists($file = "$base/$osdirectory/pnjavascript/$osfilename")) {
             $scripts[] = DataUtil::formatForDisplay($file);
         }

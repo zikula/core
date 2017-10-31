@@ -200,7 +200,7 @@ class JCSSUtil
         $sm = ServiceUtil::getManager();
         $javascripts = is_array($javascripts) ? $javascripts : [];
         array_unshift($javascripts, 'jquery', 'web' . $sm->getParameter('zikula.javascript.bootstrap.min.path'), 'web/bundles/core/js/bootstrap-zikula.js');
-        if ($sm->getParameter('env') == 'prod' && file_exists(realpath('web/js/fos_js_routes.js'))) {
+        if ('prod' == $sm->getParameter('env') && file_exists(realpath('web/js/fos_js_routes.js'))) {
             array_unshift($javascripts, 'web/bundles/fosjsrouting/js/router.js', 'web/js/fos_js_routes.js');
         } else {
             $routeScript = $sm->get('router')->generate('fos_js_routing_js', ['callback' => 'fos.Router.setData']);
@@ -342,9 +342,9 @@ class JCSSUtil
         @trigger_error('JCSSUtil is deprecated. please use Twig and asset merger instead.', E_USER_DEPRECATED);
 
         // Handle legacy references to non-minimised scripts.
-        if (strpos($script, 'javascript/livepipe/') === 0) {
+        if (0 === strpos($script, 'javascript/livepipe/')) {
             $script = 'livepipe';
-        } elseif (strpos($script, 'javascript/ajax/') === 0) {
+        } elseif (0 === strpos($script, 'javascript/ajax/')) {
             switch ($script) {
                 case 'javascript/ajax/validation.js':
                     $script = 'validation';
@@ -362,10 +362,10 @@ class JCSSUtil
                     $script = 'prototype';
                     break;
             }
-            if (strpos($script, 'javascript/ajax/scriptaculous') === 0) {
+            if (0 === strpos($script, 'javascript/ajax/scriptaculous')) {
                 $script = 'prototype';
             }
-        } elseif (System::isLegacyMode() && (strpos($script, 'system/') === 0 || strpos($script, 'modules/') === 0)) {
+        } elseif (System::isLegacyMode() && (0 === strpos($script, 'system/') || 0 === strpos($script, 'modules/'))) {
             // check for customized javascripts
             $custom = str_replace(['javascript/', 'pnjavascript/'], '', $script);
             $custom = str_replace(['modules', 'system'], 'config/javascript', $custom);
@@ -624,7 +624,7 @@ class JCSSUtil
 
         $contents = implode('', $contents);
         // optional minify
-        if ($themevars['cssjsminify'] && $ext == 'css') {
+        if ($themevars['cssjsminify'] && 'css' == $ext) {
             // Remove comments.
             $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
             // Compress whitespace.
@@ -678,7 +678,7 @@ class JCSSUtil
         $importsAllowd = true;
         $wasCommentHack = false;
         while (!feof($source)) {
-            if ($ext == 'css') {
+            if ('css' == $ext) {
                 $line = fgets($source, 4096);
                 $lineParse = trim($line);
                 $lineParse_length = mb_strlen($lineParse, 'UTF-8');
@@ -687,35 +687,35 @@ class JCSSUtil
                 for ($i = 0; $i < $lineParse_length; $i++) {
                     $char = $lineParse[$i];
                     $nextchar = $i < ($lineParse_length - 1) ? $lineParse[$i + 1] : '';
-                    if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
+                    if (!$inMultilineComment && '/' == $char && '*' == $nextchar) {
                         // a multiline comment starts here
                         $inMultilineComment = true;
                         $wasCommentHack = false;
                         $newLine .= $char . $nextchar;
                         $i++;
-                    } elseif ($inMultilineComment && $char == '*' && $nextchar == '/') {
+                    } elseif ($inMultilineComment && '*' == $char && '/' == $nextchar) {
                         // a multiline comment stops here
                         $inMultilineComment = false;
                         $newLine .= $char . $nextchar;
-                        if (substr($lineParse, $i - 3, 8) == '/*\*//*/') {
+                        if ('/*\*//*/' == substr($lineParse, $i - 3, 8)) {
                             $wasCommentHack = true;
                             $i += 3; // move to end of hack process hack as it where
                             $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
                         }
                         $i++;
-                    } elseif ($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
+                    } elseif ($importsAllowd && '@' == $char && '@import' == substr($lineParse, $i, 7)) {
                         // an @import starts here
                         $lineParseRest = trim(substr($lineParse, $i + 7));
-                        if (strtolower(substr($lineParseRest, 0, 3)) == 'url') {
+                        if ('url' == strtolower(substr($lineParseRest, 0, 3))) {
                             // the @import uses url to specify the path
                             $posEnd = strpos($lineParse, ';', $i);
                             $charsEnd = substr($lineParse, $posEnd - 1, 2);
-                            if ($charsEnd == ');') {
+                            if (');' == $charsEnd) {
                                 // used url() without media
                                 $start = strpos($lineParseRest, '(') + 1;
                                 $end = strpos($lineParseRest, ')');
                                 $url = substr($lineParseRest, $start, $end - $start);
-                                if ($url[0] == '"' | $url[0] == "'") {
+                                if ('"' == $url[0] | "'" == $url[0]) {
                                     $url = substr($url, 1, strlen($url) - 2);
                                 }
                                 // fix url
@@ -737,7 +737,7 @@ class JCSSUtil
                                 $start = strpos($lineParseRest, '(') + 1;
                                 $end = strpos($lineParseRest, ')');
                                 $url = substr($lineParseRest, $start, $end - $start);
-                                if ($url[0] == '"' | $url[0] == "'") {
+                                if ('"' == $url[0] | "'" == $url[0]) {
                                     $url = substr($url, 1, strlen($url) - 2);
                                 }
                                 // fix url
@@ -747,7 +747,7 @@ class JCSSUtil
                                 // skip @import statement
                                 $i += $posEnd - $i;
                             }
-                        } elseif (substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
+                        } elseif ('"' == substr($lineParseRest, 0, 1) || '\'' == substr($lineParseRest, 0, 1)) {
                             // the @import uses an normal string to specify the path
                             $posEnd = strpos($lineParseRest, ';');
                             $url = substr($lineParseRest, 1, $posEnd - 2);
@@ -766,7 +766,7 @@ class JCSSUtil
                             // skip @import statement
                             $i += $posEnd - $i;
                         }
-                    } elseif (!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
+                    } elseif (!$inMultilineComment && ' ' != $char && "\n" != $char && "\r\n" != $char && "\r" != $char) {
                         // css rule found -> stop processing of @import statements
                         $importsAllowd = false;
                         $newLine .= $char;
@@ -784,7 +784,7 @@ class JCSSUtil
             }
         }
         fclose($source);
-        if ($ext == 'js') {
+        if ('js' == $ext) {
             $contents[] = "\n;\n";
         } else {
             $contents[] = "\n\n";
@@ -808,7 +808,7 @@ class JCSSUtil
 
         preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
-            if ((strpos($match[1], '/') !== 0) && (substr($match[2], 0, 7) != 'http://') && (substr($match[2], 0, 8) != 'https://')) {
+            if ((0 !== strpos($match[1], '/')) && ('http://' != substr($match[2], 0, 7)) && ('https://' != substr($match[2], 0, 8))) {
                 $depth = substr_count($match[1], '../') * -1;
                 $path = $depth < 0 ? array_slice($filepath, 0, $depth) : $filepath;
                 $path = implode('/', $path);

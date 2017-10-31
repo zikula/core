@@ -85,7 +85,7 @@ class Config
             /** @var Join $join */
             foreach ($parts['join'][$this->alias] as $join) {
                 $j = explode('.', $join->getJoin(), 2);
-                if (count($j) != 2) {
+                if (2 != count($j)) {
                     throw new \InvalidArgumentException('Join in wrong format: '.$join->getJoin());
                 }
                 if (!isset($this->meta[$j[0]])) {
@@ -220,7 +220,7 @@ class Config
      */
     public function addAliasTo($s)
     {
-        if (strpos($s, '.') === false) {
+        if (false === strpos($s, '.')) {
             return $this->alias.'.'.$s;
         }
 

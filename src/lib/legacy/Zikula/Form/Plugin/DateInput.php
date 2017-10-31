@@ -130,24 +130,24 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
             $now = getdate();
             $date = null;
 
-            if ($d == 'now') {
+            if ('now' == $d) {
                 $date = time();
-            } elseif ($d == 'today') {
+            } elseif ('today' == $d) {
                 $date = mktime(0, 0, 0, $now['mon'], $now['mday'], $now['year']);
-            } elseif ($d == 'monthstart') {
+            } elseif ('monthstart' == $d) {
                 $date = mktime(0, 0, 0, $now['mon'], 1, $now['year']);
-            } elseif ($d == 'monthend') {
+            } elseif ('monthend' == $d) {
                 $daysInMonth = date('t');
                 $date = mktime(0, 0, 0, $now['mon'], $daysInMonth, $now['year']);
-            } elseif ($d == 'yearstart') {
+            } elseif ('yearstart' == $d) {
                 $date = mktime(0, 0, 0, 1, 1, $now['year']);
-            } elseif ($d == 'yearend') {
+            } elseif ('yearend' == $d) {
                 $date = mktime(0, 0, 0, 12, 31, $now['year']);
-            } elseif ($d == 'custom') {
+            } elseif ('custom' == $d) {
                 $date = strtotime($this->initDate);
             }
 
-            if ($date != null) {
+            if (null != $date) {
                 $this->text = DateUtil::getDatetime($date, $this->ifFormat, false);
             } else {
                 $this->text = __('Unknown date');
@@ -310,7 +310,7 @@ class Zikula_Form_Plugin_DateInput extends Zikula_Form_Plugin_TextInput
                 $dateValue = DateUtil::transformInternalDate(DateUtil::parseUIDate($this->text, $this->ifFormat));
             }
 
-            if ($dateValue == null) {
+            if (null == $dateValue) {
                 $this->setError(__('Error! Invalid date.'));
             } else {
                 // the date validated so we can use the transformed date

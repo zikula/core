@@ -63,7 +63,7 @@ abstract class AbstractTheme extends AbstractBundle
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $template = $this->config[$realm]['page'];
-        $classes = $realm == 'home' ? 'z-homepage' : '' . (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
+        $classes = 'home' == $realm ? 'z-homepage' : '' . (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
         $content = $this->getContainer()->get('templating')->render('ZikulaThemeModule:Default:maincontent.html.twig', [
             'classes' => $classes,
             'maincontent' => $response->getContent()

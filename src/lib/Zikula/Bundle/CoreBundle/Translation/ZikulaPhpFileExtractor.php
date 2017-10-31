@@ -265,7 +265,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         // /** @Desc("FOO") */ $translator->trans('my.id')
         if (null !== $comment = $node->getDocComment()) {
             return $comment->getText();
-        } elseif (null !== $this->previousNode && $this->previousNode->getDocComment() !== null) {
+        } elseif (null !== $this->previousNode && null !== $this->previousNode->getDocComment()) {
             $comment = $this->previousNode->getDocComment();
 
             return is_object($comment) ? $comment->getText() : $comment;

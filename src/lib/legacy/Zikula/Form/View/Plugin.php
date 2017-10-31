@@ -28,7 +28,7 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
 
         $this->pluginName = $pluginName;
 
-        if ($this->modinfo['type'] == ModUtil::TYPE_CORE) {
+        if (ModUtil::TYPE_CORE == $this->modinfo['type']) {
             $path = "plugins/{$pluginName}/templates/plugins";
         } else {
             $base = ModUtil::getBaseDir($this->modinfo['name']);
@@ -78,7 +78,7 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
             $view->cache_id = $cache_id;
         }
 
-        if ($moduleName === null) {
+        if (null === $moduleName) {
             $moduleName = $view->toplevelmodule;
         }
 
@@ -155,14 +155,14 @@ class Zikula_Form_View_Plugin extends Zikula_Form_View
             $module = $modinfo['name'];
             $os_module = DataUtil::formatForOS($module);
             //$os_theme = DataUtil::formatForOS($this->theme);
-            $os_dir = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
+            $os_dir = (ModUtil::TYPE_MODULE == $modinfo['type']) ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template);
 
             // check the module for which we're looking for a template is the
             // same as the top level mods. This limits the places to look for
             // templates.
-            $base = ($modinfo['type'] == ModUtil::TYPE_CORE) ? '' : "$os_dir/$os_module/";
+            $base = (ModUtil::TYPE_CORE == $modinfo['type']) ? '' : "$os_dir/$os_module/";
             //$configPath = ($modinfo['type'] == ModUtil::TYPE_CORE) ? 'zikula/' : "$os_module/";
             $search_path = [
                 //"config/plugins/$configPath/{$this->pluginName}/templates", //global path

@@ -117,7 +117,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             $mods = ModUtil::getModulesCapableOf('user');
 
             // Separate from current content, if any
-            if ($vars['content'] == 1) {
+            if (1 == $vars['content']) {
                 $menuitems[] = self::addMenuItem('', '', '');
             }
 
@@ -164,7 +164,7 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
             $uri = System::getCurrentUri();
         }
 
-        if (!isset($title) || $title == '') {
+        if (!isset($title) || '' == $title) {
             $title = '&nbsp;';
         }
 
@@ -177,10 +177,10 @@ class MenuBlock extends \Zikula_Controller_AbstractBlock
         }
 
         // allow a simple portable way to link to the home page of the site
-        if ($url == '{homepage}') {
+        if ('{homepage}' == $url) {
             $url = System::getBaseUrl();
         } elseif (!empty($url)) {
-            if ($url[0] == '{') {
+            if ('{' == $url[0]) {
                 $url = explode(':', substr($url, 1, -1));
 
                 // url[0] should be the module name

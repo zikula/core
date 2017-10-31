@@ -548,7 +548,7 @@ class CategoryEntity extends EntityAccess
      */
     public function getStatus()
     {
-        return $this->status == 'A';
+        return 'A' == $this->status;
     }
 
     /**

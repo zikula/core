@@ -89,7 +89,7 @@ class ExtensionsExtension extends \Twig_Extension
                 break;
         }
 
-        $newVersionString = ($extensionEntity->getState() == Constant::STATE_UPGRADED) ? '&nbsp;<span class="label label-warning">' . $upgradedExtensions[$extensionEntity->getName()] . '</span>' : null;
+        $newVersionString = (Constant::STATE_UPGRADED == $extensionEntity->getState()) ? '&nbsp;<span class="label label-warning">' . $upgradedExtensions[$extensionEntity->getName()] . '</span>' : null;
 
         return '<span class="label label-' . $statusclass . '">' . $status . '</span>' . $newVersionString;
     }

@@ -57,7 +57,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     public function get($name, array $options = [])
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
-        if ($node === null) {
+        if (null === $node) {
             throw new \InvalidArgumentException(sprintf('The menu "%s" is not defined.', $name));
         }
         $menu = $this->nodeLoader->load($node);
@@ -76,6 +76,6 @@ class DoctrineTreeProvider implements MenuProviderInterface
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
 
-        return $node !== null;
+        return null !== $node;
     }
 }

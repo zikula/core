@@ -82,7 +82,7 @@ class CapabilityApi implements CapabilityApiInterface
             $this->extensionsByName[$extensionName] = $this->extensionRepository->findOneBy(['name' => $extensionName]);
         }
         $capabilities = $this->extensionsByName[$extensionName]->getCapabilities();
-        if ($requestedCapability == CapabilityApiInterface::HOOK_SUBSCRIBE_OWN) {
+        if (CapabilityApiInterface::HOOK_SUBSCRIBE_OWN == $requestedCapability) {
             return array_key_exists(CapabilityApiInterface::HOOK_SUBSCRIBER, $capabilities)
                 && array_key_exists($requestedCapability, $capabilities[CapabilityApiInterface::HOOK_SUBSCRIBER]);
         }

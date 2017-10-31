@@ -20,7 +20,7 @@ function smarty_function_authentication_method_selector($params, $view)
     if (isset($params['authentication_method'])
             && is_array($params['authentication_method'])
             && !empty($params['authentication_method'])
-            && (count($params['authentication_method']) == 2)
+            && (2 == count($params['authentication_method']))
             ) {
         $authenticationMethod = $params['authentication_method'];
 
@@ -37,7 +37,7 @@ function smarty_function_authentication_method_selector($params, $view)
 
     if (isset($params['selected_authentication_method']) && is_array($params['selected_authentication_method'])
                 && !empty($params['selected_authentication_method'])) {
-        if (count($params['selected_authentication_method']) == 2) {
+        if (2 == count($params['selected_authentication_method'])) {
             if (!isset($params['selected_authentication_method']['modname']) || empty($params['selected_authentication_method']['modname'])
                     || !is_string($params['selected_authentication_method']['modname'])
                     ) {
@@ -50,8 +50,8 @@ function smarty_function_authentication_method_selector($params, $view)
                 throw new Zikula_Exception_Fatal(__f('An invalid selected authentication method was received by the template function \'%1$s\'.', ['authentication_method_selector'], 'Zikula'));
             }
 
-            $isSelected = ($authenticationMethod['modname'] == $params['selected_authentication_method']['modname'])
-                    && ($authenticationMethod['method'] == $params['selected_authentication_method']['method']);
+            $isSelected = ($params['selected_authentication_method']['modname'] == $authenticationMethod['modname'])
+                    && ($params['selected_authentication_method']['method'] == $authenticationMethod['method']);
         } else {
             throw new Zikula_Exception_Fatal(__f('An invalid \'%1$s\' parameter was received by the template function \'%2$s\'.', ['selected_authentication_method', 'authentication_method_selector'], 'Zikula'));
         }

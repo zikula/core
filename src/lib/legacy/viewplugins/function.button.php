@@ -129,7 +129,7 @@ function smarty_function_button($params, Zikula_View $view)
     }
 
     // form the button html
-    if ($mode == 'button') {
+    if ('button' == $mode) {
         $return = '<button'.$id.$class.' type="'.DataUtil::formatForDisplay($type).
         '"'.$name.$value.' title="'.DataUtil::formatForDisplay($title).'">'.$img.$text.'</button>';
     } else {

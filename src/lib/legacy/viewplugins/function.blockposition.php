@@ -33,13 +33,13 @@
 function smarty_function_blockposition($params, Zikula_View $view)
 {
     // fix the core positions for a better name
-    if ($params['name'] == 'l') {
+    if ('l' == $params['name']) {
         $params['name'] = 'left';
     }
-    if ($params['name'] == 'r') {
+    if ('r' == $params['name']) {
         $params['name'] = 'right';
     }
-    if ($params['name'] == 'c') {
+    if ('c' == $params['name']) {
         $params['name'] = 'center';
     }
 

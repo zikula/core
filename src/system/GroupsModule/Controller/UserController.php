@@ -49,9 +49,9 @@ class UserController extends AbstractController
     {
         @trigger_error('The zikulagroupsmodule_user_membership route is deprecated.', E_USER_DEPRECATED);
         $group = $this->get('zikula_groups_module.group_repository')->find($gid);
-        if ($action == 'unsubscribe') {
+        if ('unsubscribe' == $action) {
             return $this->redirectToRoute('zikulagroupsmodule_membership_leave', ['gid' => $gid]);
-        } elseif ($action == 'subscribe' && $group->getType() == CommonHelper::GTYPE_PRIVATE) {
+        } elseif ('subscribe' == $action && CommonHelper::GTYPE_PRIVATE == $group->getType()) {
             return $this->redirectToRoute('zikulagroupsmodule_application_create', ['gid' => $gid]);
         }
 

@@ -59,10 +59,10 @@ abstract class Zikula_AbstractInstaller extends Zikula_AbstractBase
 
         $this->modinfo = [
             'directory' => $this->name,
-            'type'      => ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE
+            'type'      => 'system' == ModUtil::getModuleBaseDir($this->name) ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE
         ];
 
-        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+        if (ModUtil::TYPE_MODULE == $this->modinfo['type']) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
     }

@@ -245,7 +245,7 @@ class AdminController extends AbstractController
             }
         }
 
-        if (!$this->getVar('ignoreinstallercheck') && $this->get('kernel')->getEnvironment() == 'dev') {
+        if (!$this->getVar('ignoreinstallercheck') && 'dev' == $this->get('kernel')->getEnvironment()) {
             // check if the Zikula Recovery Console exists
             $zrcExists = file_exists('zrc.php');
             // check if upgrade scripts exist
@@ -326,11 +326,11 @@ class AdminController extends AbstractController
 
             if ($catid == $acid || (false === $catid && $acid == $this->getVar('defaultcategory'))) {
                 $menuText = '';
-                if ($displayNameType == 1) {
+                if (1 == $displayNameType) {
                     $menuText = $adminModule['displayname'];
-                } elseif ($displayNameType == 2) {
+                } elseif (2 == $displayNameType) {
                     $menuText = $adminModule['name'];
-                } elseif ($displayNameType == 3) {
+                } elseif (3 == $displayNameType) {
                     $menuText = $adminModule['displayname'] . ' (' . $adminModule['name'] . ')';
                 }
 

@@ -29,14 +29,14 @@ class LegacyEntitySelectionBuilder
         $data = [];
         if (is_array($tables) && $tables) {
             foreach ($tables as $k => $v) {
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
+                if (false === strpos($k, '_column') && false === strpos($k, '_db_extra_enable') && false === strpos($k, '_primary_key_column')) {
                     $checkColumns = $k . '_column';
                     if (!isset($tables[$checkColumns])) {
                         continue;
                     }
                 }
-                if (strpos($k, '_column') === false && strpos($k, '_db_extra_enable') === false && strpos($k, '_primary_key_column') === false) {
-                    if (strpos($k, 'z_') === 0) {
+                if (false === strpos($k, '_column') && false === strpos($k, '_db_extra_enable') && false === strpos($k, '_primary_key_column')) {
+                    if (0 === strpos($k, 'z_')) {
                         $k = substr($k, 4);
                     }
                     $data[$k] = $k;
@@ -79,7 +79,7 @@ class LegacyEntitySelectionBuilder
             if (file_exists($entityDir)) {
                 $files = scandir($entityDir);
                 foreach ($files as $file) {
-                    if ($file != '.' && $file != '..' && substr($file, -4) === '.php') {
+                    if ('.' != $file && '..' != $file && '.php' === substr($file, -4)) {
                         $entities[] = $file;
                     }
                 }

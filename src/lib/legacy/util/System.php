@@ -101,7 +101,7 @@ class System
         // The database parameter are not allowed to change
         $sm = ServiceUtil::getManager();
         $multisitesParameters = $sm->getParameter('multisites');
-        if (empty($name) || $name == 'system' || $name == 'prefix' || in_array($name, $multisitesParameters['protected.systemvars'])) {
+        if (empty($name) || 'system' == $name || 'prefix' == $name || in_array($name, $multisitesParameters['protected.systemvars'])) {
             return false;
         }
 
@@ -135,7 +135,7 @@ class System
         }
 
         // The database parameter are not allowed to be deleted
-        if (empty($name) || $name == 'dbtype' || $name == 'dbhost' || $name == 'dbuname' || $name == 'dbpass' || $name == 'dbname' || $name == 'system' || $name == 'prefix' || $name == 'encoded') {
+        if (empty($name) || 'dbtype' == $name || 'dbhost' == $name || 'dbuname' == $name || 'dbpass' == $name || 'dbname' == $name || 'system' == $name || 'prefix' == $name || 'encoded' == $name) {
             return false;
         }
 
@@ -227,24 +227,24 @@ class System
         ];
 
         // special cases
-        if ($type == 'mod' && $var == ModUtil::CONFIG_MODULE) {
+        if ('mod' == $type && ModUtil::CONFIG_MODULE == $var) {
             return true;
         }
 
-        if ($type == 'config' && ($var == 'dbtype') || ($var == 'dbhost') || ($var == 'dbuname') || ($var == 'dbpass') || ($var == 'dbname') || ($var == 'system') || ($var == 'prefix') || ($var == 'encoded')) {
+        if ('config' == $type && ('dbtype' == $var) || ('dbhost' == $var) || ('dbuname' == $var) || ('dbpass' == $var) || ('dbname' == $var) || ('system' == $var) || ('prefix' == $var) || ('encoded' == $var)) {
             // The database parameter are not allowed to change
             return false;
         }
 
-        if ($type == 'email' && !filter_var($var, FILTER_VALIDATE_EMAIL)) {
+        if ('email' == $type && !filter_var($var, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
 
-        if ($type == 'url' && !filter_var($var, FILTER_VALIDATE_URL)) {
+        if ('url' == $type && !filter_var($var, FILTER_VALIDATE_URL)) {
             return false;
         }
 
-        if ($type == 'email' || $type == 'url') {
+        if ('email' == $type || 'url' == $type) {
             // CSRF protection for email and url
             $var = str_replace(['\r', '\n', '%0d', '%0a'], '', $var);
 
@@ -265,7 +265,7 @@ class System
             }
         }
 
-        if ($type == 'url') {
+        if ('url' == $type) {
             // check for url
             $url_array = @parse_url($var);
             if (!empty($url_array) && empty($url_array['scheme'])) {
@@ -273,7 +273,7 @@ class System
             }
         }
 
-        if ($type == 'uname') {
+        if ('uname' == $type) {
             // check for invalid characters
             if (!preg_match('/^[\p{L}\p{N}_\.\-]+$/uD', $var)) {
                 return false;
@@ -361,7 +361,7 @@ class System
 
         // IIS sets HTTPS=off
         $https = self::serverGetVar('HTTPS', 'off');
-        if ($https != 'off') {
+        if ('off' != $https) {
             $proto = 'https://';
         } else {
             $proto = 'http://';
@@ -448,9 +448,9 @@ class System
 
         if (preg_match('!^(?:http|https|ftp|ftps):\/\/!', $url)) {
             // Absolute URL - simple redirect
-        } elseif (substr($url, 0, 1) == '/') {
+        } elseif ('/' == substr($url, 0, 1)) {
             // Root-relative links
-            $url = 'http' . (self::serverGetVar('HTTPS') == 'on' ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $url;
+            $url = 'http' . ('on' == self::serverGetVar('HTTPS') ? 's' : '') . '://' . self::serverGetVar('HTTP_HOST') . $url;
         } else {
             // Relative URL
             // Removing leading slashes from redirect url
@@ -581,7 +581,7 @@ class System
             // HTTP_HOST is reliable only for HTTP 1.1
             $server = self::serverGetVar('SERVER_NAME');
             $port = self::serverGetVar('SERVER_PORT');
-            if ($port != '80') {
+            if ('80' != $port) {
                 $server .= ':' . $port;
             }
         }
@@ -624,7 +624,7 @@ class System
 
         // add optional parameters
         if (count($args) > 0) {
-            if (strpos($request, '?') === false) {
+            if (false === strpos($request, '?')) {
                 $request .= '?';
             } else {
                 $request .= '&';
@@ -646,7 +646,7 @@ class System
                         if (!empty($v)) {
                             $request = preg_replace("/(&|\?)$find/", "$1$k=$v", $request);
                             // ... or remove it otherwise
-                        } elseif ($matches[1] == '?') {
+                        } elseif ('?' == $matches[1]) {
                             $request = preg_replace("/\?$find(&|)/", '?', $request);
                         } else {
                             $request = preg_replace("/&$find/", '', $request);
@@ -683,7 +683,7 @@ class System
         $HTTPS = self::serverGetVar('HTTPS');
 
         // IIS seems to set HTTPS = off for some reason
-        return (!empty($HTTPS) && $HTTPS != 'off') ? 'https' : 'http';
+        return (!empty($HTTPS) && 'off' != $HTTPS) ? 'https' : 'http';
     }
 
     /**
@@ -757,7 +757,7 @@ class System
             }
             // The following block is needed as long as not every url is a route. To be removed when all legacy routing
             // is removed.
-            if ($parameters['_route'] == 'zikularoutesmodule_redirectingcontroller_removetrailingslash') {
+            if ('zikularoutesmodule_redirectingcontroller_removetrailingslash' == $parameters['_route']) {
                 $pathInfo = $request->getPathInfo();
                 $requestUri = $request->getRequestUri();
 
@@ -853,7 +853,7 @@ class System
 
         // check if entry point is part of the URL expectation.  If so throw error if it's not present
         // since this URL is technically invalid.
-        if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) !== 0) {
+        if ($expectEntrypoint && self::getCurrentUrl() != self::getBaseUrl() && 0 !== strpos(self::getCurrentUrl(), self::getBaseUrl() . $root)) {
             $protocol = self::serverGetVar('SERVER_PROTOCOL');
             header("{$protocol} 404 Not Found");
             echo __('The requested URL cannot be found');
@@ -865,7 +865,7 @@ class System
             self::shutDown();
         }
 
-        if (!$expectEntrypoint && strpos(self::getCurrentUrl(), self::getBaseUrl() . $root) === 0) {
+        if (!$expectEntrypoint && 0 === strpos(self::getCurrentUrl(), self::getBaseUrl() . $root)) {
             $protocol = self::serverGetVar('SERVER_PROTOCOL');
             header("{$protocol} 404 Not Found");
             echo __('The requested URL cannot be found');
@@ -962,7 +962,7 @@ class System
 
         // check if there is a module and a custom url handler for it
         // if not decode the url using the default handler
-        if ($modinfo && $modinfo['type'] != 0) {
+        if ($modinfo && 0 != $modinfo['type']) {
             // prepare the arguments to the module handler
             array_unshift($args, ''); // support for 1.2- empty parameter due the initial explode
             array_unshift($args, $modinfo['url']);
@@ -1032,7 +1032,7 @@ class System
         // add the variable into the get superglobal
         $res = preg_match('/(.*)\[(.*)\]/i', $name, $match);
 
-        if ($res != 0) {
+        if (0 != $res) {
             // possibly an array entry in the form a[0] or a[0][1] or a[0][1][2]
             parse_str($match[0], $data);
 
@@ -1163,7 +1163,7 @@ class System
 
         $s = ServiceUtil::getManager();
 
-        return $s->getParameter('kernel.environment') !== 'dev' ? false : true;
+        return 'dev' !== $s->getParameter('kernel.environment') ? false : true;
     }
 
     /**
@@ -1179,7 +1179,7 @@ class System
 
         $templatePath = "system/ThemeModule/Resources/views/system/$templateFile";
         $override = Zikula_View::getTemplateOverride($templatePath);
-        if ($override !== false) {
+        if (false !== $override) {
             return $override;
         }
 

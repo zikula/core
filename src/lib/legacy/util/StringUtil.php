@@ -193,21 +193,21 @@ class StringUtil
                 }
             }
             // No search phrase found
-            if ($foundStartPos === false) {
+            if (false === $foundStartPos) {
                 $startPos = 0;
             }
 
             // Get context on the left
             $startPos = (int) max(0, $startPos - floor($contextSize / 2));
             // Get the first word of section in full length
-            while ($startPos > 0 && $text[$startPos] != ' ') {
+            while ($startPos > 0 && ' ' != $text[$startPos]) {
                 --$startPos;
             }
 
             // Get context on the right
             $endPos = (int) min($textLen, $startPos + $contextSize);
             // Get the last word of section in full length
-            while ($endPos < (mb_strlen($text)) && $text[$endPos] != ' ') {
+            while ($endPos < (mb_strlen($text)) && ' ' != $text[$endPos]) {
                 ++$endPos;
             }
 
@@ -219,7 +219,7 @@ class StringUtil
         }
 
         // Highlight search phrases within section
-        if (($textLen <= $contextSize) || ($foundStartPos === true)) {
+        if (($textLen <= $contextSize) || (true === $foundStartPos)) {
             $i = 1;
             foreach ($words as $word) {
                 $section = str_replace($word, '<strong class="highlight' . ($i % 10) . '">' . $word . '</strong>', $section);
@@ -242,10 +242,10 @@ class StringUtil
     {
         @trigger_error('StringUtil is deprecated, please use Symfony or native PHP instead.', E_USER_DEPRECATED);
 
-        if (strpos($string, $separator) !== false) {
+        if (false !== strpos($string, $separator)) {
             $c = $string;
             $result = '';
-            while (($p = strpos($c, '_')) !== false) {
+            while (false !== ($p = strpos($c, '_'))) {
                 $result .= ucwords(substr($c, 0, $p));
                 $c = substr($c, $p + 1);
             }

@@ -151,7 +151,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
      */
     public function getGroupByName($name = '', $excludedGroupId = 0)
     {
-        if ($name == '') {
+        if ('' == $name) {
             return null;
         }
 

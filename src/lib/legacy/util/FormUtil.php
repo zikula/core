@@ -51,55 +51,55 @@ class FormUtil
         $failed = null;
 
         switch (true) {
-            case isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || $source == 'R' || $source == 'REQUEST'):
+            case isset($_REQUEST[$key]) && !isset($_FILES[$key]) && (!$source || 'R' == $source || 'REQUEST' == $source):
                 if (is_array($_REQUEST[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
                 $value = filter_var($_REQUEST[$key], $filter, $args);
-                $failed = ($value === false) ? $_REQUEST : null;
+                $failed = (false === $value) ? $_REQUEST : null;
                 break;
-            case isset($_GET[$key]) && (!$source || $source == 'G' || $source == 'GET'):
+            case isset($_GET[$key]) && (!$source || 'G' == $source || 'GET' == $source):
                 if (is_array($_GET[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
                 $value = filter_var($_GET[$key], $filter, $args);
-                $failed = ($value === false) ? $_GET : null;
+                $failed = (false === $value) ? $_GET : null;
                 break;
-            case isset($_POST[$key]) && (!$source || $source == 'P' || $source == 'POST'):
+            case isset($_POST[$key]) && (!$source || 'P' == $source || 'POST' == $source):
                 if (is_array($_POST[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
                 $value = filter_var($_POST[$key], $filter, $args);
-                $failed = ($value === false) ? $_POST : null;
+                $failed = (false === $value) ? $_POST : null;
                 break;
-            case isset($_COOKIE[$key]) && (!$source || $source == 'C' || $source == 'COOKIE'):
+            case isset($_COOKIE[$key]) && (!$source || 'C' == $source || 'COOKIE' == $source):
                 if (is_array($_COOKIE[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
                 $value = filter_var($_COOKIE[$key], $filter, $args);
-                $failed = ($value === false) ? $_COOKIE : null;
+                $failed = (false === $value) ? $_COOKIE : null;
                 break;
-            case isset($_FILES[$key]) && ($source == 'F' || $source == 'FILES'):
+            case isset($_FILES[$key]) && ('F' == $source || 'FILES' == $source):
                 if (is_array($_FILES[$key])) {
                     $args['flags'] = FILTER_REQUIRE_ARRAY;
                 }
                 $value = $_FILES[$key];
-                $failed = ($value === false) ? $_COOKIE : null;
+                $failed = (false === $value) ? $_COOKIE : null;
                 break;
-            case (isset($_GET[$key]) || isset($_POST[$key])) && ($source == 'GP' || $source == 'GETPOST'):
+            case (isset($_GET[$key]) || isset($_POST[$key])) && ('GP' == $source || 'GETPOST' == $source):
                 if (isset($_GET[$key])) {
                     if (is_array($_GET[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
                     }
                     $value = filter_var($_GET[$key], $filter, $args);
-                    $failed = ($value === false) ? $_GET : null;
+                    $failed = (false === $value) ? $_GET : null;
                 }
                 if (isset($_POST[$key])) {
                     if (is_array($_POST[$key])) {
                         $args['flags'] = FILTER_REQUIRE_ARRAY;
                     }
                     $value = filter_var($_POST[$key], $filter, $args);
-                    $failed = ($value === false) ? $_POST : null;
+                    $failed = (false === $value) ? $_POST : null;
                 }
                 break;
             default:

@@ -75,6 +75,6 @@ class ZLanguageBrowser
             }
         }
 
-        return $matchedLanguage != '' ? $matchedLanguage : $default;
+        return '' != $matchedLanguage ? $matchedLanguage : $default;
     }
 }

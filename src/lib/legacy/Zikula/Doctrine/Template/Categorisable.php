@@ -139,7 +139,7 @@ class Zikula_Doctrine_Template_Categorisable extends Doctrine_Template
         }
 
         // update existring object
-        if ($mapobjFound != null) {
+        if (null != $mapobjFound) {
             if (is_object($category) && $category instanceof Zikula_Doctrine_Model_Category) {
                 $mapobjFound['Category'] = $category;
             } else {

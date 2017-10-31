@@ -48,7 +48,7 @@ function smarty_block_case($params, $content, Zikula_View $view, &$repeat)
         // find corresponding switch block
         for ($i = count($view->_tag_stack) - 1; $i >= 0; $i--) {
             list($tag_name, $tag_params) = $view->_tag_stack[$i];
-            if ($tag_name == 'switch') {
+            if ('switch' == $tag_name) {
                 break;
             }
         }

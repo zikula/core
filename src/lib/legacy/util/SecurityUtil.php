@@ -126,9 +126,9 @@ class SecurityUtil
             $user = UserUtil::getVar('uid');
         }
 
-        if (!isset($GLOBALS['authinfogathered'][$user]) || (int)$GLOBALS['authinfogathered'][$user] == 0) {
+        if (!isset($GLOBALS['authinfogathered'][$user]) || 0 == (int)$GLOBALS['authinfogathered'][$user]) {
             $groupperms[$user] = self::getAuthInfo($user); // First time here - get auth info
-            if (count($groupperms[$user]) == 0) {
+            if (0 == count($groupperms[$user])) {
                 return false; // No permissions
             }
         }
@@ -188,7 +188,7 @@ class SecurityUtil
         }
 
         // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
+        if (System::isLegacyMode() && 'Modules' == $modname) {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Warning! "Modules" module has been renamed to "Extensions".  Please update any "confirmAuthKey" calls in PHP or templates.'));
             $modname = 'ZikulaExtensionsModule';
         }
@@ -269,7 +269,7 @@ class SecurityUtil
         }
 
         // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
+        if (System::isLegacyMode() && 'Modules' == $modname) {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "Extensions".  Please update any generateAuthKey calls in PHP or templates.'));
             $modname = 'ZikulaExtensionsModule';
         }
@@ -347,7 +347,7 @@ class SecurityUtil
 
         $usergroups = [];
         $usergroups[] = ['gid' => -1];
-        if ($user == 0 || !UserUtil::isLoggedIn()) {
+        if (0 == $user || !UserUtil::isLoggedIn()) {
             $usergroups[] = 0; // Unregistered GID
         }
 
@@ -428,7 +428,7 @@ class SecurityUtil
         }
 
         // Test if user has ANY access to given component, without determining exact instance
-        if ($instance == 'ANY') {
+        if ('ANY' == $instance) {
             $levels = [$level];
             foreach ($perms as $perm) {
                 // component check
@@ -481,7 +481,7 @@ class SecurityUtil
         // there *is* a $instance at this point.
         foreach ($perms as $perm) {
             // if there is a component, check that it matches
-            if (($component != '') && (!preg_match("=^$perm[component]$=", $component))) {
+            if (('' != $component) && (!preg_match("=^$perm[component]$=", $component))) {
                 // component exists, and doestn't match.
                 continue;
             }
@@ -514,7 +514,7 @@ class SecurityUtil
         if (empty($string)) {
             $string = '.*';
         }
-        if (strpos($string, ':') === 0) {
+        if (0 === strpos($string, ':')) {
             $string = '.*' . $string;
         }
         $string = str_replace('::', ':.*:', $string);
@@ -586,7 +586,7 @@ class SecurityUtil
         $saltedHash = false;
         $algoList = hash_algos();
 
-        if ((array_search($hashMethodName, $algoList) !== false) && is_string($saltStr) && is_string($saltDelimeter) && (strlen($saltDelimeter) == 1)) {
+        if ((false !== array_search($hashMethodName, $algoList)) && is_string($saltStr) && is_string($saltDelimeter) && (1 == strlen($saltDelimeter))) {
             $hashedData = hash($hashMethodName, $saltStr . $unhashedData);
             if (!empty($hashMethodNameToCode)) {
                 if (isset($hashMethodNameToCode[$hashMethodName])) {
@@ -647,8 +647,8 @@ class SecurityUtil
 
         $algoList = hash_algos();
 
-        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimeter) && (strlen($saltDelimeter) == 1)
-                && (strpos($saltedHash, $saltDelimeter) !== false)) {
+        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimeter) && (1 == strlen($saltDelimeter))
+                && (false !== strpos($saltedHash, $saltDelimeter))) {
             list($hashMethod, $saltStr, $correctHash) = explode($saltDelimeter, $saltedHash);
 
             if (!empty($hashMethodCodeToName)) {
@@ -664,7 +664,7 @@ class SecurityUtil
                 $hashMethodName = $hashMethod;
             }
 
-            if (array_search($hashMethodName, $algoList) !== false) {
+            if (false !== array_search($hashMethodName, $algoList)) {
                 $dataHash = hash($hashMethodName, $saltStr . $unhashedData);
                 $dataMatches = is_string($dataHash) ? (int)($dataHash == $correctHash) : false;
             }

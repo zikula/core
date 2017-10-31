@@ -278,7 +278,7 @@ class Zikula_Tree
             }
             // process nested sets
             if ($this->config['nestedSet']) {
-                if ((string)$item['level'] == 0) {
+                if (0 == (string)$item['level']) {
                     $parents[0] = $item[$objid];
                 } else {
                     $item['parent_id'] = $parents[$item['level'] - 1];
@@ -398,7 +398,7 @@ class Zikula_Tree
         $iconImage = !empty($item['icon']) ? $item['icon'] : (!empty($tab['nodes']) ? $this->config['parentOpen'] : $this->config['item']);
         $icon      = $indent.'<img class="'.$this->config['icon'].'" alt="" src="'.$this->config['imagesDir'].$iconImage.'" />';
 
-        $linkClass = $item['active'] == 1 ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
+        $linkClass = 1 == $item['active'] ? $item['class'] : $this->config['nodeUnactive'].' '.$item['class'];
         $linkClass = !empty($linkClass) ? ' class="'.$linkClass.'"' : '';
         $linkHref  = 'href="'.DataUtil::formatForDisplay($item['href']).'"';
         $linkTitle = !empty($item['title']) ? ' title="'.$item['title'].'"' : '';
@@ -406,8 +406,8 @@ class Zikula_Tree
 
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
         $liClass = [];
-        $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
-        $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
+        $liClass[] = 1 == $size ? $this->config['nodeSingle'] : '';
+        $liClass[] = (1 == $i && $size > 1) ? $this->config['nodeFirst'] : '';
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
         $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
         $liClass[] = isset($item['class']) ? $item['class'] : '';

@@ -54,7 +54,7 @@ class ExtensionHelper
         // system or module
         $func = [$installer, 'install'];
         if (is_callable($func)) {
-            if (call_user_func($func) != true) {
+            if (true != call_user_func($func)) {
                 return false;
             }
         }
@@ -104,7 +104,7 @@ class ExtensionHelper
                 }
 
                 return false;
-            } elseif ($result != true) {
+            } elseif (true != $result) {
                 return false;
             }
         }
@@ -134,11 +134,11 @@ class ExtensionHelper
 
     public static function uninstall(ExtensionEntity $extension)
     {
-        if ($extension->getState() == Constant::STATE_NOTALLOWED
+        if (Constant::STATE_NOTALLOWED == $extension->getState()
             || (ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException(__f('Error! No permission to upgrade %s.', ['%s' => $extension->getDisplayname()]));
         }
-        if ($extension->getState() == Constant::STATE_UNINITIALISED) {
+        if (Constant::STATE_UNINITIALISED == $extension->getState()) {
             throw new \RuntimeException(__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
         }
 
@@ -160,7 +160,7 @@ class ExtensionHelper
         $installer = self::getInstaller($extension->getName());
         $func = [$installer, 'uninstall'];
         if (is_callable($func)) {
-            if (call_user_func($func) != true) {
+            if (true != call_user_func($func)) {
                 return false;
             }
         }

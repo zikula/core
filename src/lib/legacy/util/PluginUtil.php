@@ -341,7 +341,7 @@ class PluginUtil
         foreach ($pluginClasses as $pluginClass) {
             $parts = explode('_', $pluginClass);
 
-            if ($parts[0] == 'ModulePlugin' && $parts[1] == $modulename) {
+            if ('ModulePlugin' == $parts[0] && $parts[1] == $modulename) {
                 $hasPlugins = true;
                 break;
             }
@@ -411,7 +411,7 @@ class PluginUtil
 
         $result = $plugin->upgrade($state['version']);
         if ($result) {
-            $state['version'] = ($result == true) ? $plugin->getMetaVersion() : $result;
+            $state['version'] = (true == $result) ? $plugin->getMetaVersion() : $result;
             self::setState($plugin->getServiceId(), $state);
 
             return true;
@@ -534,9 +534,9 @@ class PluginUtil
         @trigger_error('PluginUtil is deprecated, please use tagged services instead of module plugins.', E_USER_DEPRECATED);
 
         $p = explode('_', $className);
-        if (count($p) == 3) {
+        if (3 == count($p)) {
             $className = "{$p[0]}_{$p[1]}";
-        } elseif (count($p) == 4) {
+        } elseif (4 == count($p)) {
             $className = "{$p[0]}_{$p[1]}_{$p[2]}";
         }
 

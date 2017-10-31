@@ -67,7 +67,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
         $attr = '';
         $style = '';
         foreach ($this->attributes as $name => $value) {
-            if ($name == 'style') {
+            if ('style' == $name) {
                 $style = $value;
             } elseif (in_array($name, $styleElements)) {
                 $this->styleAttributes[$name] = $value;
@@ -77,7 +77,7 @@ abstract class Zikula_Form_AbstractStyledPlugin extends Zikula_Form_AbstractPlug
         }
 
         $style = trim($style);
-        if (count($this->styleAttributes) > 0 && strlen($style) > 0 && $style[strlen($style) - 1] != ';') {
+        if (count($this->styleAttributes) > 0 && strlen($style) > 0 && ';' != $style[strlen($style) - 1]) {
             $style .= ';';
         }
 
