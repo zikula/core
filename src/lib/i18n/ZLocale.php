@@ -85,7 +85,7 @@ class ZLocale implements ArrayAccess
             $array = parse_ini_file($file, false);
             foreach ($array as $k => $v) {
                 $k = strtolower($k);
-                if ($k == "grouping" || $k == "mon_grouping") {
+                if ("grouping" == $k || "mon_grouping" == $k) {
                     $v = explode(',', $v);
                 }
                 if (!is_array($v)) {
@@ -108,7 +108,7 @@ class ZLocale implements ArrayAccess
      */
     private function validateLocale($file)
     {
-        if (count($this->localeData) == 0) {
+        if (0 == count($this->localeData)) {
             $this->registerError(__f('Error! The locale file %s contains invalid data.', [$file]));
 
             return;
@@ -144,7 +144,7 @@ class ZLocale implements ArrayAccess
      */
     private function detectErrors()
     {
-        if (count($this->errors) == 0) {
+        if (0 == count($this->errors)) {
             return true;
         }
 

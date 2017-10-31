@@ -68,7 +68,7 @@ class Zikula_Form_Plugin_UrlInput extends Zikula_Form_Plugin_TextInput
      */
     public function render(Zikula_Form_View $view)
     {
-        if (!empty($this->defaultText) && ($this->text == null || empty($this->text))) {
+        if (!empty($this->defaultText) && (null == $this->text || empty($this->text))) {
             $this->text = $this->defaultText;
         }
 

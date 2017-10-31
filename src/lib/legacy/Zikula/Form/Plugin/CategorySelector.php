@@ -123,7 +123,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $list->category = CategoryUtil::getCategoryByID($list->category);
             unset($list->category['parent'], $list->category['cr_uid'], $list->category['lu_uid']); // prevent form serialization errors in session
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
-        } elseif (is_string($list->category) && strpos($list->category, '/') === 0) {
+        } elseif (is_string($list->category) && 0 === strpos($list->category, '/')) {
             // check if we have a string/path category
             $list->category = CategoryUtil::getCategoryByPath($list->category, $pathfield);
             $allCats = CategoryUtil::getSubCategoriesForCategory($list->category, $recurse, $relative, $includeRoot, $includeLeaf, $all, null, '', null, $sortField);
@@ -207,7 +207,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->enableDBUtil && $this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
@@ -216,7 +216,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                 $data[$this->group]['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             }
         } elseif ($this->enableDoctrine && $this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data['Categories'][$this->dataField] = [
                     'category_id' => $this->getSelectedValue(),
                     'reg_property' => $this->dataField
@@ -271,13 +271,13 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             //$em->flush();
 
             $categoryEntityClass = 'Zikula_Doctrine2_Entity_Category';
-            if (strpos($entityClass, '\\') !== false) {
+            if (false !== strpos($entityClass, '\\')) {
                 // if using namespaces, use new base class
                 $categoryEntityClass = 'Zikula\CategoriesModule\Entity\CategoryEntity';
             }
 
             foreach ($selectedValues as $selectedValue) {
-                if ($selectedValue === null) {
+                if (null === $selectedValue) {
                     // If no category has been selected.
                     continue;
                 }
@@ -307,11 +307,11 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $items = null;
             $value = null;
 
-            if ($this->group == null) {
-                if ($this->dataField != null && isset($values['__CATEGORIES__'][$this->dataField])) {
+            if (null == $this->group) {
+                if (null != $this->dataField && isset($values['__CATEGORIES__'][$this->dataField])) {
                     $value = $values['__CATEGORIES__'][$this->dataField];
                 }
-                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($values[$this->itemsDataField])) {
                     $items = $values[$this->itemsDataField];
                 }
             } else {
@@ -319,14 +319,14 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                     $data = $values[$this->group];
                     if (isset($data['__CATEGORIES__'][$this->dataField])) {
                         $value = $data['__CATEGORIES__'][$this->dataField];
-                        if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                        if (null != $this->itemsDataField && isset($data[$this->itemsDataField])) {
                             $items = $data[$this->itemsDataField];
                         }
                     }
                 }
             }
 
-            if ($items != null) {
+            if (null != $items) {
                 $this->setItems($items);
             }
 
@@ -335,11 +335,11 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
             $items = null;
             $value = null;
 
-            if ($this->group == null) {
-                if ($this->dataField != null && isset($values['Categories'][$this->dataField])) {
+            if (null == $this->group) {
+                if (null != $this->dataField && isset($values['Categories'][$this->dataField])) {
                     $value = $values['Categories'][$this->dataField]['category_id'];
                 }
-                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($values[$this->itemsDataField])) {
                     $items = $values[$this->itemsDataField];
                 }
             } else {
@@ -347,14 +347,14 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                     $data = $values[$this->group];
                     if (isset($data['Categories'][$this->dataField])) {
                         $value = $data['Categories'][$this->dataField]['category_id'];
-                        if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                        if (null != $this->itemsDataField && isset($data[$this->itemsDataField])) {
                             $items = $data[$this->itemsDataField];
                         }
                     }
                 }
             }
 
-            if ($items != null) {
+            if (null != $items) {
                 $this->setItems($items);
             }
 
@@ -372,7 +372,7 @@ class Zikula_Form_Plugin_CategorySelector extends Zikula_Form_Plugin_DropdownLis
                             $selectedValues[] = $c->getCategory()->getId();
                         }
                     }
-                    if ($this->selectionMode == 'single' && isset($selectedValues[0])) {
+                    if ('single' == $this->selectionMode && isset($selectedValues[0])) {
                         $this->setSelectedValue($selectedValues[0]);
                     } else {
                         $this->setSelectedValue($selectedValues);

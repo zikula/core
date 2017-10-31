@@ -44,7 +44,7 @@ class MigrationController extends AbstractController
         $userRepo = $this->get('zikula_users_module.user_repository');
         if (!$request->isXmlHttpRequest()) {
             $count = $userRepo->count(['pass' => ['operator' => '!=', 'operand' => '']]);
-            if ($count == 0) {
+            if (0 == $count) {
                 throw new \LogicException($this->__('All users have been migrated already.'));
             }
             // set up

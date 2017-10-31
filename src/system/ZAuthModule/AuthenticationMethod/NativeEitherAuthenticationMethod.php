@@ -53,8 +53,8 @@ class NativeEitherAuthenticationMethod extends AbstractNativeAuthenticationMetho
      */
     public function getLoginTemplateName($type = 'page', $position = 'left')
     {
-        if ($type == 'block') {
-            if ($position == 'topnav') {
+        if ('block' == $type) {
+            if ('topnav' == $position) {
                 return 'ZikulaZAuthModule:Authentication:EitherLoginBlock.topnav.html.twig';
             }
 

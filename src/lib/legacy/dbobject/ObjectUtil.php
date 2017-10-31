@@ -31,7 +31,7 @@ class ObjectUtil
         // ensure correct handling of prefix with and without underscore
         if ($col_prefix) {
             $plen = strlen($col_prefix);
-            if ($col_prefix[$plen - 1] != '_') {
+            if ('_' != $col_prefix[$plen - 1]) {
                 $col_prefix .= '_';
             }
         }
@@ -390,12 +390,12 @@ class ObjectUtil
             $where2 = " AND $column[$field2]='" . DataUtil::formatForStore($value2) . "'";
         }
 
-        if ($direction == 'up') {
+        if ('up' == $direction) {
             $sql = "SELECT $column[$idcolumn], $column[$field]
                     FROM $table
                     WHERE $column[$field] < '" . DataUtil::formatForStore($seq) . "' $where2
                     ORDER BY $column[$field] DESC LIMIT 0,1";
-        } elseif ($direction == 'down') {
+        } elseif ('down' == $direction) {
             $sql = "SELECT $column[$idcolumn], $column[$field]
                     FROM $table
                     WHERE $column[$field] > '" . DataUtil::formatForStore($seq) . "' $where2
@@ -547,7 +547,7 @@ class ObjectUtil
         // process all the attribute fields
         $tobj = [];
         foreach ($atrs as $k => $v) {
-            if (strlen($v) || $v == false) {
+            if (strlen($v) || false == $v) {
                 // special treatment for false value, otherwise it doesn't get stored at all
                 $tobj['attribute_name'] = $k;
                 $tobj['object_id'] = $objID;

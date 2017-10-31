@@ -23,7 +23,7 @@
  */
 function smarty_modifier_yesno($string, $images = false)
 {
-    if ($string != '0' && $string != '1') {
+    if ('0' != $string && '1' != $string) {
         return $string;
     }
 

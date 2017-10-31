@@ -207,7 +207,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
         if ($this->dataBased) {
             $value = null;
 
-            if ($this->group == null) {
+            if (null == $this->group) {
                 if (array_key_exists($this->dataField, $values)) {
                     if (isset($values[$this->dataField])) {
                         $value = $values[$this->dataField];
@@ -225,7 +225,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
                 }
             }
 
-            if ($value !== null) {
+            if (null !== $value) {
                 $this->checked = $value;
             }
         }
@@ -243,7 +243,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
         $idHtml = $this->getIdHtml();
 
         $nameHtml = " name=\"{$this->inputName}\"";
-        $titleHtml = ($this->toolTip != null ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
+        $titleHtml = (null != $this->toolTip ? ' title="' . $view->translateForDisplay($this->toolTip) . '"' : '');
         $readOnlyHtml = ($this->readOnly ? " disabled=\"disabled\"" : '');
         $checkedHtml = ($this->checked ? " checked=\"checked\"" : '');
 
@@ -271,7 +271,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     {
         // Do not read new value if readonly (evil submiter might have forged it)
         if (!$this->readOnly) {
-            $this->checked = ($this->request->request->get($this->inputName, null) == null ? false : true);
+            $this->checked = (null == $this->request->request->get($this->inputName, null) ? false : true);
         }
     }
 
@@ -289,7 +289,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data[$this->dataField] = $this->checked;
             } else {
                 if (!array_key_exists($this->group, $data)) {
@@ -365,7 +365,7 @@ class Zikula_Form_Plugin_Checkbox extends Zikula_Form_AbstractStyledPlugin
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
         }
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $class .= ' ' . $this->cssClass;
         }
 

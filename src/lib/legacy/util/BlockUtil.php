@@ -96,7 +96,7 @@ class BlockUtil
         $blockoutput = [];
         foreach ($blockplacements as $blockplacement) {
             // don't display a block if it's not in this block position
-            if ($blockplacement['pid'] != $positions[$side]['pid']) {
+            if ($positions[$side]['pid'] != $blockplacement['pid']) {
                 continue;
             }
             // get the full block info
@@ -123,7 +123,7 @@ class BlockUtil
                         $testargs = explode('&', $filter['fargs']);
                         foreach ($testargs as $test) {
                             $key = array_search($test, $customargs);
-                            if ($key === false) {
+                            if (false === $key) {
                                 $rule4 = false;
                                 break;
                             } else {
@@ -131,7 +131,7 @@ class BlockUtil
                             }
                         }
                     }
-                    if ($rule1 == true && $rule2 == true && $rule3 == true && $rule4 !== false) {
+                    if (true == $rule1 && true == $rule2 && true == $rule3 && false !== $rule4) {
                         $showblock = true;
                         break;
                     }
@@ -223,10 +223,10 @@ class BlockUtil
         if (!isset($blockinfo['title'])) {
             $blockinfo['title'] = '';
         }
-        if (UserUtil::isLoggedIn() && ModUtil::getVar(
+        if (UserUtil::isLoggedIn() && 1 == ModUtil::getVar(
                 'ZikulaBlocksModule',
                 'collapseable'
-            ) == 1 && isset($blockinfo['collapsable']) && ($blockinfo['collapsable'] == '1')
+            ) && isset($blockinfo['collapsable']) && ('1' == $blockinfo['collapsable'])
         ) {
             if (!isset($themeinfo)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName(UserUtil::getTheme()));
@@ -296,17 +296,17 @@ class BlockUtil
 
         $sm = ServiceUtil::getManager();
         $modinfo = ModUtil::getInfoFromName($modname);
-        if ($modinfo['state'] != \ModUtil::STATE_ACTIVE) {
+        if (\ModUtil::STATE_ACTIVE != $modinfo['state']) {
             return false;
         }
         $serviceId = strtolower('block.'.$modinfo['name'].'_'.'Block_'.$block);
         if ($sm->has($serviceId)) {
             return $sm->get($serviceId);
         }
-        if ($modinfo['type'] == ModUtil::TYPE_MODULE) {
+        if (ModUtil::TYPE_MODULE == $modinfo['type']) {
             ZLanguage::bindModuleDomain($modinfo['name']);
         }
-        $basedir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $basedir = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
         $moddir = DataUtil::formatForOS($modinfo['directory']);
         $blockdir = "$basedir/$moddir/lib/$moddir/Block";
         $ooblock = "$blockdir/".ucwords($block).'.php';

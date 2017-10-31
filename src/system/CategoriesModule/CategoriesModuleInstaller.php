@@ -435,7 +435,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             $metadata = $this->entityManager->getClassMetaData(get_class($category));
             $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadataInfo::GENERATOR_TYPE_NONE);
 
-            if ($obj['parent_id'] == 0) {
+            if (0 == $obj['parent_id']) {
                 $obj['parent'] = null;
             } else {
                 $obj['parent'] = $this->entityManager->getReference('ZikulaCategoriesModule:CategoryEntity', $obj['parent_id']);

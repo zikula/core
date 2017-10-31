@@ -205,7 +205,7 @@ class Zikula_Workflow
         foreach ($action['operations'] as $operation) {
             // execute the operation
             $result[$operation['name']] = $this->executeOperation($operation, $obj, $nextState);
-            if ($result[$operation['name']] === false) {
+            if (false === $result[$operation['name']]) {
                 // if an operation fails here, do not process further and return false
                 return false;
             }
@@ -217,7 +217,7 @@ class Zikula_Workflow
         }
 
         // if this is an initial object then we need to register with the DB
-        if ($stateID == 'initial') {
+        if ('initial' == $stateID) {
             $this->registerWorkflow($obj, $stateID);
             $this->workflowData = $obj['__WORKFLOW__'];
         }

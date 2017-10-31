@@ -75,8 +75,8 @@ class Zikula_Form_Plugin_ErrorMessage extends Zikula_Form_AbstractPlugin
      */
     public function render(Zikula_Form_View $view)
     {
-        if ($this->message != '') {
-            $cssClass = ($this->cssClass == null ? 'alert alert-danger' : $this->cssClass);
+        if ('' != $this->message) {
+            $cssClass = (null == $this->cssClass ? 'alert alert-danger' : $this->cssClass);
             $html = "<div class=\"$cssClass\">" . $this->message . "</div>\n";
 
             return $html;

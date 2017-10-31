@@ -133,7 +133,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     public function destroy($sessionId)
     {
         // expire the cookie
-        if (php_sapi_name() != 'cli') {
+        if ('cli' != php_sapi_name()) {
             setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
         }
         $this->userSessionRepository->removeAndFlush($sessionId);
@@ -162,7 +162,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      */
     private function getCurrentIp($default = '127.0.0.1')
     {
-        if (php_sapi_name() != 'cli') {
+        if ('cli' != php_sapi_name()) {
             $ipAddress = $this->requestStack->getCurrentRequest()->getClientIp();
             $ipAddress = !empty($ipAddress) ? $ipAddress : $this->requestStack->getCurrentRequest()->server->get('HTTP_HOST');
         }

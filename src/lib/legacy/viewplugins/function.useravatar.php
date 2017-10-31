@@ -49,9 +49,9 @@ function smarty_function_useravatar($params, Zikula_View $view)
     $avatarpath      = ModUtil::getVar(UsersConstant::MODNAME, 'avatarpath', 'images/avatar');
     $allowgravatars  = ModUtil::getVar(UsersConstant::MODNAME, 'allowgravatars', true);
 
-    if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && $avatar != 'blank.gif') {
+    if (isset($avatar) && !empty($avatar) && $avatar != $gravatarimage && 'blank.gif' != $avatar) {
         $avatarURL = System::getBaseUrl() . $avatarpath . '/' . $avatar;
-    } elseif (($avatar == $gravatarimage) && ($allowgravatars == 1)) {
+    } elseif (($avatar == $gravatarimage) && (1 == $allowgravatars)) {
         if (!isset($params['rating'])) {
             $params['rating'] = false;
         }

@@ -36,7 +36,7 @@ class ExtensionsManager
             return $this->listeners[$type];
         }
 
-        if ($type == 'uploadable') {
+        if ('uploadable' == $type) {
             $this->listeners[$type] = $this->serviceManager->get('stof_doctrine_extensions.' . $type . '.manager');
 
             return $this->listeners[$type];
@@ -49,7 +49,7 @@ class ExtensionsManager
         }
 
         $service = '';
-        if ($type == 'standardfields') {
+        if ('standardfields' == $type) {
             $service = 'doctrine_extensions.listener.' . $type;
         }
 

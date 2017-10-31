@@ -71,7 +71,7 @@ class NodeController extends AbstractController
                     if (!empty($after)) {
                         $sibling = $repo->find($after);
                         $repo->persistAsNextSiblingOf($menuItemEntity, $sibling);
-                    } elseif ($mode == 'new') {
+                    } elseif ('new' == $mode) {
                         $repo->persistAsLastChild($menuItemEntity);
                     } // no need to persist edited entity
                     $this->get('doctrine')->getManager()->flush();

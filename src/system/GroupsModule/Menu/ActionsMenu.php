@@ -46,7 +46,7 @@ class ActionsMenu implements ContainerAwareInterface
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil');
         if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
-            && $gid != $defaultGroup && $gid != Constant::GROUP_ID_ADMIN) {
+            && $gid != $defaultGroup && Constant::GROUP_ID_ADMIN != $gid) {
             $menu->addChild($this->__f('Delete ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
@@ -77,8 +77,8 @@ class ActionsMenu implements ContainerAwareInterface
 
         if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
             && ('zikulagroupsmodule_membership_list' != $requestAttributes['_route'])
-            && ($group->getGtype() == CommonHelper::GTYPE_PUBLIC
-                || ($group->getGtype() == CommonHelper::GTYPE_PRIVATE && isset($currentUser) && $group->getUsers()->contains($currentUser)))
+            && (CommonHelper::GTYPE_PUBLIC == $group->getGtype()
+                || (CommonHelper::GTYPE_PRIVATE == $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
         ) {
             $menu->addChild($this->__f('View membership of ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_membership_list',
@@ -91,7 +91,7 @@ class ActionsMenu implements ContainerAwareInterface
                     'route' => 'zikulagroupsmodule_membership_leave',
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-times text-danger');
-            } elseif ($group->getGtype() == CommonHelper::GTYPE_PRIVATE) {
+            } elseif (CommonHelper::GTYPE_PRIVATE == $group->getGtype()) {
                 $existingApplication = $this->container->get('zikula_groups_module.group_application_repository')->findOneBy(['group' => $group, 'user' => $currentUser]);
                 if ($existingApplication) {
                     $menu->addChild($this->__('Applied!'));
@@ -101,7 +101,7 @@ class ActionsMenu implements ContainerAwareInterface
                         'routeParameters' => ['gid' => $gid],
                     ])->setAttribute('icon', 'fa fa-paper-plane');
                 }
-            } elseif ($group->getState() !== CommonHelper::STATE_CLOSED) {
+            } elseif (CommonHelper::STATE_CLOSED !== $group->getState()) {
                 $menu->addChild($this->__f('Join ":name" group', [':name' => $group->getName()]), [
                     'route' => 'zikulagroupsmodule_membership_join',
                     'routeParameters' => ['gid' => $gid],

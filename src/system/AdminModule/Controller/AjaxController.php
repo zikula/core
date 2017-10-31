@@ -103,7 +103,7 @@ class AjaxController extends AbstractController
         $name = trim($request->request->get('name'));
 
         // make sure name is set.
-        if ($name == '') {
+        if ('' == $name) {
             return new BadDataResponse($this->__('Error! No category name given.'));
         }
 
@@ -235,7 +235,7 @@ class AjaxController extends AbstractController
         }
 
         //make sure cid and category name (cat) are both set
-        if (!isset($cid) || $cid == '' || !isset($name) || $name == '') {
+        if (!isset($cid) || '' == $cid || !isset($name) || '' == $name) {
             return new BadDataResponse($this->__('No category name or id set.'));
         }
 

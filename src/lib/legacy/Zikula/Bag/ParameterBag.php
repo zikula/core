@@ -38,13 +38,13 @@ class Zikula_Bag_ParameterBag extends \Symfony\Component\HttpFoundation\Paramete
             if (is_bool(func_get_arg(2))) {
                 // usage is compatible with normal ParameterBag
                 $deep = func_get_arg(2);
-                $filter = (func_num_args() >= 4) && (func_get_arg(3) !== false) ? func_get_arg(3) : FILTER_DEFAULT;
-                $options = (func_num_args() == 5) && (func_get_arg(4) !== false) ? func_get_arg(4) : [];
+                $filter = (func_num_args() >= 4) && (false !== func_get_arg(3)) ? func_get_arg(3) : FILTER_DEFAULT;
+                $options = (5 == func_num_args()) && (false !== func_get_arg(4)) ? func_get_arg(4) : [];
             } else {
                 // using old signature - third param exists and is a constant, not a bool
                 LogUtil::log('The method signature for filter() has changed. See \Symfony\Component\HttpFoundation\ParameterBag::filter().', E_USER_DEPRECATED);
-                $filter = (func_num_args() >= 3) && (func_get_arg(2) !== false) ? func_get_arg(2) : FILTER_DEFAULT;
-                $options = (func_num_args() >= 4) && (func_get_arg(3) !== false) ? func_get_arg(3) : [];
+                $filter = (func_num_args() >= 3) && (false !== func_get_arg(2)) ? func_get_arg(2) : FILTER_DEFAULT;
+                $options = (func_num_args() >= 4) && (false !== func_get_arg(3)) ? func_get_arg(3) : [];
             }
         }
 

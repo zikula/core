@@ -515,7 +515,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      */
     public function dataBound(Zikula_Form_View $view, &$params)
     {
-        if ($this->onDataBound != null) {
+        if (null != $this->onDataBound) {
             $dataBoundHandlerName = $this->onDataBound;
             $view->eventHandler->$dataBoundHandlerName($view, $this, $params);
         }
@@ -641,7 +641,7 @@ abstract class Zikula_Form_AbstractPlugin implements Zikula_TranslatableInterfac
      */
     public function getIdHtml($id = null)
     {
-        if ($id == null) {
+        if (null == $id) {
             $id = $this->id;
         }
 

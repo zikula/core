@@ -22,7 +22,7 @@
  */
 function smarty_modifier_activeinactive($string)
 {
-    if ($string != '0' && $string != '1') {
+    if ('0' != $string && '1' != $string) {
         return $string;
     }
 

@@ -267,7 +267,7 @@ class Zikula_Form_View extends Zikula_View
             $this->decodeStateData();
             $this->decodeState();
 
-            if ($this->eventHandler->initialize($this) === false) {
+            if (false === $this->eventHandler->initialize($this)) {
                 return $this->getErrorMsg();
             }
 
@@ -282,7 +282,7 @@ class Zikula_Form_View extends Zikula_View
             $this->decodePostBackEvent(); // Execute optional postback after plugins have read their values
         } else {
             $this->setFormId(uniqid('f'));
-            if ($this->eventHandler->initialize($this) === false) {
+            if (false === $this->eventHandler->initialize($this)) {
                 return $this->getErrorMsg();
             }
             $this->eventHandler->postInitialize();
@@ -517,7 +517,7 @@ class Zikula_Form_View extends Zikula_View
 
         for ($i = 0; $i < $lim; ++$i) {
             $plugin = $this->getPluginById_rec($this->plugins[$i], $id);
-            if ($plugin != null) {
+            if (null != $plugin) {
                 return $plugin;
             }
         }
@@ -545,7 +545,7 @@ class Zikula_Form_View extends Zikula_View
 
         for ($i = 0; $i < $lim; ++$i) {
             $subPlugin = $this->getPluginById_rec($plugin->plugins[$i], $id);
-            if ($subPlugin != null) {
+            if (null != $subPlugin) {
                 return $subPlugin;
             }
         }
@@ -901,7 +901,7 @@ class Zikula_Form_View extends Zikula_View
         $handlerClass = &$this->eventHandler;
 
         if (method_exists($handlerClass, $eventHandlerName)) {
-            if ($handlerClass->$eventHandlerName($this, $args) === false) {
+            if (false === $handlerClass->$eventHandlerName($this, $args)) {
                 return false;
             }
         }
@@ -1283,9 +1283,9 @@ class Zikula_Form_View extends Zikula_View
         $eventTarget = $this->request->request->get('FormEventTarget', 1);
         $eventArgument = $this->request->request->get('FormEventArgument', 1);
 
-        if ($eventTarget != '') {
+        if ('' != $eventTarget) {
             $targetPlugin = $this->getPluginById($eventTarget);
-            if ($targetPlugin != null) {
+            if (null != $targetPlugin) {
                 $targetPlugin->raisePostBackEvent($this, $eventArgument);
             }
         }
@@ -1434,7 +1434,7 @@ class Zikula_Form_View extends Zikula_View
      */
     public function setValues2(&$values, $group = null, $plugins = null)
     {
-        if ($plugins == null) {
+        if (null == $plugins) {
             $this->setValues_rec($values, $group, $this->plugins);
         } else {
             $this->setValues_rec($values, $group, $plugins);

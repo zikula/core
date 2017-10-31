@@ -167,10 +167,10 @@ class PermissionController extends AbstractController
             throw new AccessDeniedException();
         }
         // check if this is the overall admin permission and return if this shall be deleted
-        if ($permissionEntity->getPid() == 1
-            && $permissionEntity->getLevel() == ACCESS_ADMIN
-            && $permissionEntity->getComponent() == '.*'
-            && $permissionEntity->getInstance() == '.*'
+        if (1 == $permissionEntity->getPid()
+            && ACCESS_ADMIN == $permissionEntity->getLevel()
+            && '.*' == $permissionEntity->getComponent()
+            && '.*' == $permissionEntity->getInstance()
         ) {
             throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
@@ -217,13 +217,13 @@ class PermissionController extends AbstractController
             $uid = Constant::USER_ID_ANONYMOUS;
         }
 
-        if ($uid === false) {
+        if (false === $uid) {
             $result .= '<span id="permissiontestinfored">' . $this->__('unknown user.') . '</span>';
         } else {
             $granted = $this->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
 
             $result .= '<span id="' . ($granted ? 'permissiontestinfogreen' : 'permissiontestinfored') . '">';
-            $result .= ($uid == 0) ? $this->__('unregistered user') : $data['user'];
+            $result .= (0 == $uid) ? $this->__('unregistered user') : $data['user'];
             $result .= ': ';
             if ($granted) {
                 $result .= $this->__('permission granted.');

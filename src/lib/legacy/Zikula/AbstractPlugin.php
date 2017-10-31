@@ -203,7 +203,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
         $separator = (false === strpos($this->className, '_')) ? '\\' : '_';
         $p = explode($separator, $this->className);
 
-        if (strpos($this->serviceId, 'moduleplugin') === 0) {
+        if (0 === strpos($this->serviceId, 'moduleplugin')) {
             // ModulePlugin_{ModuleName}_{PluginName}_Plugin
             // $p[1] = ModuleName, $p[2] = PluginName
             $this->moduleName = $p[1];
@@ -211,7 +211,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
             $this->pluginType = self::TYPE_MODULE;
             $this->domain = ZLanguage::getModulePluginDomain($this->moduleName, $this->pluginName);
             ZLanguage::bindModulePluginDomain($this->moduleName, $this->pluginName);
-        } elseif (strpos($this->serviceId, 'systemplugin') === 0) {
+        } elseif (0 === strpos($this->serviceId, 'systemplugin')) {
             // SystemPlugin_{PluginName}_Plugin
             // $p[1] = ModuleName
             $this->moduleName = 'zikula';
@@ -481,7 +481,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
 
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
 
-        return ($plugin['state'] === PluginUtil::ENABLED) ? true : false;
+        return (PluginUtil::ENABLED === $plugin['state']) ? true : false;
     }
 
     /**
@@ -497,7 +497,7 @@ abstract class Zikula_AbstractPlugin extends Zikula_AbstractEventHandler impleme
 
         $plugin = PluginUtil::getState($this->serviceId, PluginUtil::getDefaultState());
 
-        return ($plugin['state'] === PluginUtil::NOTINSTALLED) ? false : true;
+        return (PluginUtil::NOTINSTALLED === $plugin['state']) ? false : true;
     }
 
     /**

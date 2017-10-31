@@ -70,10 +70,10 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
         $this->pluginName = $this->plugin->getPluginName();
         $this->moduleName = $this->plugin->getModuleName();
         $this->modinfo = $this->plugin->getModInfo();
-        if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_SYSTEM) {
+        if (Zikula_AbstractPlugin::TYPE_SYSTEM == $this->plugin->getPluginType()) {
             $this->libBaseDir = realpath("{$this->baseDir}/plugins/{$this->pluginName}/lib/{$this->pluginName}");
         } else {
-            $modbase = ($this->modinfo['type'] == Zikula_AbstractPlugin::TYPE_MODULE) ? 'modules' : 'system';
+            $modbase = (Zikula_AbstractPlugin::TYPE_MODULE == $this->modinfo['type']) ? 'modules' : 'system';
             $this->baseDir = realpath("{$this->systemBaseDir}/$modbase/{$this->moduleName}/plugins/{$this->pluginName}");
             $this->libBaseDir = realpath("{$this->baseDir}/lib/{$this->pluginName}");
         }
@@ -93,7 +93,7 @@ abstract class Zikula_Controller_AbstractPlugin extends Zikula_AbstractControlle
 
         // please note the docblock param signature is deliberately different to the method signature - drak
         if (is_null($view)) {
-            if ($this->plugin->getPluginType() == Zikula_AbstractPlugin::TYPE_MODULE) {
+            if (Zikula_AbstractPlugin::TYPE_MODULE == $this->plugin->getPluginType()) {
                 $view = Zikula_View_Plugin::getModulePluginInstance($this->moduleName, $this->pluginName);
             } else {
                 $view = Zikula_View_Plugin::getSystemPluginInstance($this->pluginName);

@@ -130,7 +130,7 @@ class DateUtil
     {
         @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
 
-        if ($datetime === null) {
+        if (null === $datetime) {
             return '';
         }
 
@@ -204,12 +204,12 @@ class DateUtil
     {
         @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
 
-        $next = mktime($hour != null ? (int)$hour : date('H'),
-                        $minute != null ? (int)$minute : date('i'),
-                        $second != null ? (int)$second : date('s'),
-                        $month != null ? (int)$month : date('m'),
-                        $day != null ? (int)$day + $num : date('d') + $num,
-                        $year != null ? (int)$year : date('y'));
+        $next = mktime(null != $hour ? (int)$hour : date('H'),
+                        null != $minute ? (int)$minute : date('i'),
+                        null != $second ? (int)$second : date('s'),
+                        null != $month ? (int)$month : date('m'),
+                        null != $day ? (int)$day + $num : date('d') + $num,
+                        null != $year ? (int)$year : date('y'));
 
         return self::strftime($format, $next);
     }
@@ -233,12 +233,12 @@ class DateUtil
         @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
 
         $num *= 7;
-        $next = mktime($hour != null ? (int)$hour : date('H'),
-                        $minute != null ? (int)$minute : date('i'),
-                        $second != null ? (int)$second : date('s'),
-                        $month != null ? (int)$month : date('m'),
-                        $day != null ? (int)$day + $num : date('d') + $num,
-                        $year != null ? (int)$year : date('y'));
+        $next = mktime(null != $hour ? (int)$hour : date('H'),
+                        null != $minute ? (int)$minute : date('i'),
+                        null != $second ? (int)$second : date('s'),
+                        null != $month ? (int)$month : date('m'),
+                        null != $day ? (int)$day + $num : date('d') + $num,
+                        null != $year ? (int)$year : date('y'));
 
         return self::strftime($format, $next);
     }
@@ -261,12 +261,12 @@ class DateUtil
     {
         @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
 
-        $next = mktime($hour != null ? (int)$hour : date('H'),
-                        $minute != null ? (int)$minute : date('i'),
-                        $second != null ? (int)$second : date('s'),
-                        $month != null ? (int)$month + $num : date('m') + $num,
-                        $day != null ? (int)$day : date('d'),
-                        $year != null ? (int)$year : date('y'));
+        $next = mktime(null != $hour ? (int)$hour : date('H'),
+                        null != $minute ? (int)$minute : date('i'),
+                        null != $second ? (int)$second : date('s'),
+                        null != $month ? (int)$month + $num : date('m') + $num,
+                        null != $day ? (int)$day : date('d'),
+                        null != $year ? (int)$year : date('y'));
 
         return self::strftime($format, $next);
     }
@@ -289,12 +289,12 @@ class DateUtil
     {
         @trigger_error('DateUtil is deprecated, please use Symfony and Twig extensions instead.', E_USER_DEPRECATED);
 
-        $next = mktime($hour != null ? (int)$hour : date('H'),
-                        $minute != null ? (int)$minute : date('i'),
-                        $second != null ? (int)$second : date('s'),
-                        $month != null ? (int)$month : date('m'),
-                        $day != null ? (int)$day : date('d'),
-                        $year != null ? (int)$year + $num : date('y') + $num);
+        $next = mktime(null != $hour ? (int)$hour : date('H'),
+                        null != $minute ? (int)$minute : date('i'),
+                        null != $second ? (int)$second : date('s'),
+                        null != $month ? (int)$month : date('m'),
+                        null != $day ? (int)$day : date('d'),
+                        null != $year ? (int)$year + $num : date('y') + $num);
 
         return self::strftime($format, $next);
     }
@@ -318,7 +318,7 @@ class DateUtil
         $dTime = strtotime($datetime);
         $sTime = self::getDatetime($dTime, $format);
 
-        if ($format == DATEFORMAT_FIXED) {
+        if (DATEFORMAT_FIXED == $format) {
             return substr($sTime, 0, 10);
         }
 
@@ -346,7 +346,7 @@ class DateUtil
         $dTime = strtotime($datetime);
         $sTime = self::getDatetime($dTime, $format);
 
-        if ($format == DATEFORMAT_FIXED) {
+        if (DATEFORMAT_FIXED == $format) {
             return substr($sTime, 11);
         }
 
@@ -471,15 +471,15 @@ class DateUtil
         $s = $date2 - $date1;
         $diff = 0;
 
-        if ($field == 1) {
+        if (1 == $field) {
             $diff = $s / (60 * 60 * 24 * 31 * 12);
-        } elseif ($field == 2) {
+        } elseif (2 == $field) {
             $diff = $s / (60 * 60 * 24 * 31);
-        } elseif ($field == 3) {
+        } elseif (3 == $field) {
             $diff = $s / (60 * 60 * 24);
-        } elseif ($field == 4) {
+        } elseif (4 == $field) {
             $diff = $s / (60 * 60);
-        } elseif ($field == 5) {
+        } elseif (5 == $field) {
             $diff = $s / (60);
         } else {
             $diff = $s;
@@ -516,7 +516,7 @@ class DateUtil
 
         $adddays = ($kw - 1) * 7;
 
-        if ($flag != 's') {
+        if ('s' != $flag) {
             $return = mktime(0, 0, 0, $month, $day + $adddays, $year);
         } else {
             $return = self::getDatetime(mktime(0, 0, 0, $month, $day + $adddays, $year));
@@ -545,11 +545,11 @@ class DateUtil
 
         $d = $days[$month - 1];
 
-        if ($month == 2) {
+        if (2 == $month) {
             // Check for leap year, no 4000 rule
-            if ($year % 4 == 0) {
-                if ($year % 100 == 0) {
-                    if ($year % 400 == 0) {
+            if (0 == $year % 4) {
+                if (0 == $year % 100) {
+                    if (0 == $year % 400) {
                         $d = 29;
                     }
                 } else {
@@ -638,10 +638,10 @@ class DateUtil
         $yearPos = $format['matches']['year'];
         $monthPos = $format['matches']['month'];
         $dayPos = $format['matches']['day'];
-        if ($format['type'] == 'datetimeshort') {
+        if ('datetimeshort' == $format['type']) {
             $hourPos = $format['matches']['hour'];
             $minutePos = $format['matches']['minute'];
-        } elseif ($format['type'] == 'datetimefull') {
+        } elseif ('datetimefull' == $format['type']) {
             $hourPos = $format['matches']['hour'];
             $minutePos = $format['matches']['minute'];
             $secondPos = $format['matches']['second'];
@@ -657,10 +657,10 @@ class DateUtil
             $min = 0;
             $hour = 0;
 
-            if ($format['type'] == 'datetimeshort') {
+            if ('datetimeshort' == $format['type']) {
                 $hour = $matches[$hourPos];
                 $min = $matches[$minutePos];
-            } elseif ($format['type'] == 'datetimefull') {
+            } elseif ('datetimefull' == $format['type']) {
                 $hour = $matches[$hourPos];
                 $min = $matches[$minutePos];
                 $sec = $matches[$secondPos];
@@ -703,7 +703,7 @@ class DateUtil
         } else {
             // strtotime should handle it
             $time = strtotime($string);
-            if ($time == -1 || $time === false) {
+            if ($time == -1 || false === $time) {
                 // strtotime() was not able to parse $string, use 'now'
                 $time = time();
             }
@@ -967,14 +967,14 @@ class DateUtil
             $format[] = $matches[3]; // position 2
             $format[] = $matches[5]; // position 3
             if ($matchCount > 8) {
-                if ($matchCount == 11 && $matches[7] != $matches[9]) {
+                if (11 == $matchCount && $matches[7] != $matches[9]) {
                     throw new \Exception(__f('Dateformat time separators must be the same in %s', $dateformat));
                 }
 
                 $timeseparator = preg_quote($matches[7]);
                 $format[] = $matches[6]; // position 3
                 $format[] = $matches[8]; // position 3
-                if ($matchCount == 11) {
+                if (11 == $matchCount) {
                     $format[] = $matches[10]; // position 3
                 }
             }
@@ -993,7 +993,7 @@ class DateUtil
 
             if ($matchCount > 7) {
                 $regex .= '\s' . $meaning[3]['regex'] . $timeseparator . $meaning[4]['regex'];
-                if ($matchCount == 11) {
+                if (11 == $matchCount) {
                     $regex .= $timeseparator . $meaning[5]['regex'];
                 }
             }

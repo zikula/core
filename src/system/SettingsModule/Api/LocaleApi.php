@@ -92,7 +92,7 @@ class LocaleApi implements LocaleApiInterface
     public function getBrowserLocale($default = 'en')
     {
         // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
-        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || php_sapi_name() == "cli") {
+        if (!isset($_SERVER["HTTP_ACCEPT_LANGUAGE"]) || "cli" == php_sapi_name()) {
             return $default;
         }
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($_SERVER["HTTP_ACCEPT_LANGUAGE"]), $matches, PREG_SET_ORDER);
@@ -114,7 +114,7 @@ class LocaleApi implements LocaleApiInterface
             }
         }
 
-        return $matchedLanguage != '' ? $matchedLanguage : $default;
+        return '' != $matchedLanguage ? $matchedLanguage : $default;
     }
 
     /**

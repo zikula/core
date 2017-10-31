@@ -53,16 +53,16 @@ class AccountController extends AbstractController
             $userName = '';
 
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy(['email' => $email]);
-            if (count($mapping) == 1) {
+            if (1 == count($mapping)) {
                 $userName = $mapping[0]->getUname();
             } elseif (count($mapping) < 1) {
                 $user = $this->get('zikula_users_module.user_repository')->findBy(['email' => $email]);
-                if (count($user) == 1) {
+                if (1 == count($user)) {
                     $userName = $user[0]->getUname();
                 }
             }
 
-            if ($userName != '') {
+            if ('' != $userName) {
                 // send email
                 $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($email, 'lostuname', [
                     'uname' => $userName,
@@ -109,16 +109,16 @@ class AccountController extends AbstractController
             ];
             $data = $form->getData();
             $field = empty($data['uname']) ? 'email' : 'uname';
-            $inverse = $field == 'uname' ? 'email' : 'uname';
+            $inverse = 'uname' == $field ? 'email' : 'uname';
 
             $user = null;
 
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy([$field => $data[$field]]);
-            if (count($mapping) == 1) {
+            if (1 == count($mapping)) {
                 $user = $this->get('zikula_users_module.user_repository')->find($mapping[0]->getUid());
             } elseif (count($mapping) < 1) {
                 $users = $this->get('zikula_users_module.user_repository')->findBy([$field => $data[$field]]);
-                if (count($users) == 1) {
+                if (1 == count($users)) {
                     $user = $users[0];
                 }
             }
@@ -205,7 +205,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute($redirectToRoute);
         }
 
-        if ($requestDetails['userId'] == '' || $requestDetails['userName'] == '' || $requestDetails['emailAddress'] == '') {
+        if ('' == $requestDetails['userId'] || '' == $requestDetails['userName'] || '' == $requestDetails['emailAddress']) {
             $this->addFlash('error', $this->__('Your request could not be processed due to invalid arguments.'));
 
             return $this->redirectToRoute($redirectToRoute);

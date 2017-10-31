@@ -62,7 +62,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
     /* test a possible variable */
     $_lval_var = $compiler->_parse_var_props('$'.$compiler->_dequote($_lval));
 
-    if ($_lval_var[0] == '$') {
+    if ('$' == $_lval_var[0]) {
         $_lval = $_lval_var;
     } else {
         /* take it as a variable-name */
@@ -72,7 +72,7 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
     /* check for a PHP command as value */
     if (isset($_attrs['php'])) {
         // do not allow more than one PHP command
-        if (strpos($_attrs['php'], ';') !== false) {
+        if (false !== strpos($_attrs['php'], ';')) {
             $_attrs['php'] = substr($_attrs['php'], 0, strpos($_attrs['php'], ';'));
         }
         $_rval = $compiler->_dequote($_attrs['php']);

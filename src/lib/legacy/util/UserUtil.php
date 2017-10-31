@@ -266,7 +266,7 @@ class UserUtil
 
         $str = self::getGroupListForUser($uid, '_');
 
-        return $str == '-1' ? 'guest' : 'groups_'.$str;
+        return '-1' == $str ? 'guest' : 'groups_'.$str;
     }
 
     /**
@@ -300,7 +300,7 @@ class UserUtil
         // decide if we have to use the (obsolete) DUDs from the Profile module
         $profileModule = System::getVar('profilemodule', '');
 
-        if (empty($profileModule) || $profileModule != 'Profile' || !ModUtil::available($profileModule)) {
+        if (empty($profileModule) || 'Profile' != $profileModule || !ModUtil::available($profileModule)) {
             return [];
         }
 
@@ -565,7 +565,7 @@ class UserUtil
     {
         @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
 
-        if ($userObj['activated'] == UsersConstant::ACTIVATED_PENDING_REG) {
+        if (UsersConstant::ACTIVATED_PENDING_REG == $userObj['activated']) {
             // Get isverified from the attributes.
             if (isset($userObj['__ATTRIBUTES__']['_Users_isVerified'])) {
                 $userObj['isverified'] = $userObj['__ATTRIBUTES__']['_Users_isVerified'];
@@ -627,7 +627,7 @@ class UserUtil
         }
 
         // assign a value for the parameter idfield if it is necessary and prevent from possible typing mistakes
-        if ($idfield == '' || ($idfield != 'uid' && $idfield != 'uname' && $idfield != 'email')) {
+        if ('' == $idfield || ('uid' != $idfield && 'uname' != $idfield && 'email' != $idfield)) {
             $idfield = 'uid';
             if (!is_numeric($id)) {
                 $idfield = 'uname';
@@ -641,17 +641,17 @@ class UserUtil
 
         // caching
         $user = null;
-        if ($force == false) {
-            if ($idfield == 'uname' && isset($unames[$id])) {
-                if ($unames[$id] !== false) {
+        if (false == $force) {
+            if ('uname' == $idfield && isset($unames[$id])) {
+                if (false !== $unames[$id]) {
                     $user = $cache[$unames[$id]];
                 } else {
                     return false;
                 }
             }
 
-            if ($idfield == 'email' && isset($emails[$id])) {
-                if ($emails[$id] !== false) {
+            if ('email' == $idfield && isset($emails[$id])) {
+                if (false !== $emails[$id]) {
                     $user = $cache[$emails[$id]];
                 } else {
                     return false;
@@ -680,9 +680,9 @@ class UserUtil
             }
 
             // If $idfield is email, make sure that we are getting a unique record.
-            if ($user && ($idfield == 'email')) {
+            if ($user && ('email' == $idfield)) {
                 $emailCount = self::getEmailUsageCount($id);
-                if (($emailCount > 1) || ($emailCount === false)) {
+                if (($emailCount > 1) || (false === $emailCount)) {
                     $user = false;
                 }
             }
@@ -706,8 +706,8 @@ class UserUtil
                 // This check should come at the very end, here, so that if $force is true the vars get
                 // reloaded into cache no matter what $getRegistration is set to. If not, and this is
                 // called from setVar(), and setVar() changed the 'activated' value, then we'd have trouble.
-                if (($getRegistration && ($user['activated'] != UsersConstant::ACTIVATED_PENDING_REG))
-                        || (!$getRegistration && ($user['activated'] == UsersConstant::ACTIVATED_PENDING_REG))) {
+                if (($getRegistration && (UsersConstant::ACTIVATED_PENDING_REG != $user['activated']))
+                        || (!$getRegistration && (UsersConstant::ACTIVATED_PENDING_REG == $user['activated']))) {
                     return false;
                 }
 
@@ -717,8 +717,8 @@ class UserUtil
                 $unames[$user['uname']] = $user['uid'];
                 $emails[$user['email']] = $user['uid'];
             }
-        } elseif (($getRegistration && ($user['activated'] != UsersConstant::ACTIVATED_PENDING_REG))
-                || (!$getRegistration && ($user['activated'] == UsersConstant::ACTIVATED_PENDING_REG))) {
+        } elseif (($getRegistration && (UsersConstant::ACTIVATED_PENDING_REG != $user['activated']))
+                || (!$getRegistration && (UsersConstant::ACTIVATED_PENDING_REG == $user['activated']))) {
             return false;
         }
 
@@ -763,7 +763,7 @@ class UserUtil
         // get this user's variables
         $vars = self::getVars($uid, false, '', $getRegistration);
 
-        if ($vars === false) {
+        if (false === $vars) {
             return null;
         }
 
@@ -890,7 +890,7 @@ class UserUtil
         $varIsSet = false;
 
         // Cannot setVar the user's uid or uname
-        if (($name != 'uid') && ($name != 'uname')) {
+        if (('uid' != $name) && ('uname' != $name)) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
             $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(['uid' => $uid]);
@@ -934,7 +934,7 @@ class UserUtil
 
             // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
             // the password being updated, and the system is not currently being installed.
-            if ($varIsSet && ($name != 'pass') && \ServiceUtil::getManager()->getParameter('installed')) {
+            if ($varIsSet && ('pass' != $name) && \ServiceUtil::getManager()->getParameter('installed')) {
                 // Fire the event
                 $eventName = $isRegistration ? 'user.registration.update' : 'user.account.update';
                 $eventArgs = [
@@ -1153,7 +1153,7 @@ class UserUtil
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
-        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (strpos($hashedPassword, UsersConstant::SALT_DELIM) === false)) {
+        if (!isset($hashedPassword) || !is_string($hashedPassword) || empty($hashedPassword) || (false === strpos($hashedPassword, UsersConstant::SALT_DELIM))) {
             throw new \InvalidArgumentException(__('Invalid arguments array received'));
         }
 
@@ -1188,8 +1188,8 @@ class UserUtil
         @trigger_error('UserUtil is deprecated, please use User and Group entities instead.', E_USER_DEPRECATED);
 
         // Prevent deletion of core fields (duh)
-        if (empty($name) || ($name == 'uid') || ($name == 'email') || ($name == 'pass') || ($name == 'uname')
-                || ($name == 'activated')) {
+        if (empty($name) || ('uid' == $name) || ('email' == $name) || ('pass' == $name) || ('uname' == $name)
+                || ('activated' == $name)) {
             return false;
         }
 
@@ -1202,7 +1202,7 @@ class UserUtil
         }
 
         // Special delete value for approved_by
-        if ($name == 'approved_by') {
+        if ('approved_by' == $name) {
             return (bool)self::setVar($name, -1, $uid);
         }
 
@@ -1216,7 +1216,7 @@ class UserUtil
         $varIsDeleted = false;
 
         // Cannot delVar the user's uid or uname
-        if (($name != 'uid') && ($name != 'uname')) {
+        if (('uid' != $name) && ('uname' != $name)) {
             // get user given a uid
             $em = \ServiceUtil::get('doctrine.orm.default_entity_manager');
             $user = $em->getRepository('ZikulaUsersModule:UserEntity')->findOneBy(['uid' => $uid]);
@@ -1258,7 +1258,7 @@ class UserUtil
 
             // Do not fire update event/hook unless the update happened, it was not a registration record, it was not
             // the password being updated, and the system is not currently being installed.
-            if ($varIsDeleted && ($name != 'pass') && \ServiceUtil::getManager()->getParameter('installed')) {
+            if ($varIsDeleted && ('pass' != $name) && \ServiceUtil::getManager()->getParameter('installed')) {
                 // Fire the event
                 $eventArgs = [
                     'action'    => 'delVar',
@@ -1302,7 +1302,7 @@ class UserUtil
 
         // if this method is called from the command line scope, always return a default core theme (ZikulaAndreas08Theme)
         // this prevents calls for the Request object or other unwanted behaviors.
-        if (php_sapi_name() == 'cli') {
+        if ('cli' == php_sapi_name()) {
             return 'ZikulaAndreas08Theme';
         }
 
@@ -1345,10 +1345,10 @@ class UserUtil
 
         // Page-specific theme
         if (!empty($pagetheme)) {
-            if ($themeinfo['state'] == ThemeUtil::STATE_ACTIVE
+            if (ThemeUtil::STATE_ACTIVE == $themeinfo['state']
                 && ($themeinfo['user']
                     || $themeinfo['system']
-                    || ($themeinfo['admin'] && ($type == 'admin')))
+                    || ($themeinfo['admin'] && ('admin' == $type)))
                 && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 $pagetheme = $themeinfo['name'];
 
@@ -1382,7 +1382,7 @@ class UserUtil
             if (!empty($admintheme)) {
                 $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($admintheme));
                 if ($themeinfo
-                    && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE
+                    && ThemeUtil::STATE_ACTIVE == $themeinfo['state']
                     && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                     $pagetheme = $themeinfo['name'];
 
@@ -1400,7 +1400,7 @@ class UserUtil
         if (!empty($newtheme) && System::getVar('theme_change')) {
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($newtheme));
             if ($themeinfo
-                && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE
+                && ThemeUtil::STATE_ACTIVE == $themeinfo['state']
                 && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 if (self::isLoggedIn()) {
                     self::setVar('theme', $newtheme);
@@ -1425,7 +1425,7 @@ class UserUtil
             }
             $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($usertheme));
             if ($themeinfo
-                && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE
+                && ThemeUtil::STATE_ACTIVE == $themeinfo['state']
                 && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
                 $pagetheme = $themeinfo['name'];
 
@@ -1440,7 +1440,7 @@ class UserUtil
         $defaulttheme = System::getVar('Default_Theme');
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($defaulttheme));
         if ($themeinfo
-            && $themeinfo['state'] == ThemeUtil::STATE_ACTIVE
+            && ThemeUtil::STATE_ACTIVE == $themeinfo['state']
             && is_dir('themes/' . DataUtil::formatForOS($themeinfo['directory']))) {
             $pagetheme = $themeinfo['name'];
 
@@ -1521,7 +1521,7 @@ class UserUtil
 
             $sortFragments[] = 'u.'. $sortbyfield . ' ' . DataUtil::formatForStore($sortorder);
 
-            if ($sortbyfield != 'uname') {
+            if ('uname' != $sortbyfield) {
                 $sortFragments[] = 'u.uname ASC';
             }
 
@@ -1602,7 +1602,7 @@ class UserUtil
         $isFieldAlias = false;
 
         // no change in uid or uname allowed, empty label is not an alias
-        if (($label != 'uid') && ($label != 'uname') && !empty($label)) {
+        if (('uid' != $label) && ('uname' != $label) && !empty($label)) {
             $userObj = new \Zikula\UsersModule\Entity\UserEntity();
             $isFieldAlias = property_exists($userObj, $label);
         }

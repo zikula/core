@@ -63,11 +63,11 @@ function smarty_function_pager($params, Zikula_View $view)
 
     if (is_array($params['rowcount'])) {
         $params['rowcount'] = count($params['rowcount']);
-    } elseif ($params['rowcount'] == 0) {
+    } elseif (0 == $params['rowcount']) {
         return '';
     }
 
-    if ($params['limit'] == 0) {
+    if (0 == $params['limit']) {
         $params['limit'] = 5;
     }
 
@@ -119,7 +119,7 @@ function smarty_function_pager($params, Zikula_View $view)
     } else {
         $pager['pos'] = (int)$view->getRequest()->query->get($pager['posvar'], '');
     }
-    if ($params['display'] == 'page') {
+    if ('page' == $params['display']) {
         $pager['pos'] = $pager['pos'] * $pager['perpage'];
         $pager['increment'] = 1;
     } else {
@@ -206,7 +206,7 @@ function smarty_function_pager($params, Zikula_View $view)
                     break;
                 case 'lang':
                     $addcurrentlang2url = System::getVar('languageurl');
-                    if ($addcurrentlang2url == 0) {
+                    if (0 == $addcurrentlang2url) {
                         $pager['args'][$k] =  $v;
                     }
                     break;
@@ -274,7 +274,7 @@ function smarty_function_pager($params, Zikula_View $view)
     }
 
     $params['processUrls']        = isset($params['processUrls']) ? (bool)$params['processUrls'] : true;
-    $params['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($template != 'pagerimage.tpl');
+    $params['processDetailLinks'] = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('pagerimage.tpl' != $template);
     if ($params['processDetailLinks']) {
         for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
             $currItemVisible = true;
@@ -289,7 +289,7 @@ function smarty_function_pager($params, Zikula_View $view)
                 }
             }
 
-            if ($params['display'] == 'page') {
+            if ('page' == $params['display']) {
                 $pager['args'][$pager['posvar']] = $currItem;
             } else {
                 $pager['args'][$pager['posvar']] = (($currItem - 1) * $pager['perpage']) + 1;
@@ -328,7 +328,7 @@ function smarty_function_pager($params, Zikula_View $view)
         ];
     }
 
-    if ($params['display'] == 'page') {
+    if ('page' == $params['display']) {
         $pager['prev'] = ($pager['currentPage'] - 1);
     } else {
         $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
@@ -347,7 +347,7 @@ function smarty_function_pager($params, Zikula_View $view)
     }
 
     // link to next & last page
-    if ($params['display'] == 'page') {
+    if ('page' == $params['display']) {
         $pager['next'] = $pager['currentPage'] + 1;
     } else {
         $pager['next'] = $rightMargin * $pager['perpage'] + 1;
@@ -365,7 +365,7 @@ function smarty_function_pager($params, Zikula_View $view)
         ];
     }
 
-    if ($params['display'] == 'page') {
+    if ('page' == $params['display']) {
         $pager['last'] = $pager['countPages'];
     } else {
         $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;

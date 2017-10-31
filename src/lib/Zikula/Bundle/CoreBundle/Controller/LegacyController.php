@@ -169,7 +169,7 @@ class LegacyController
         if ($isAjax
             && $this->variableApi->getSystemVar('siteoff')
             && !$this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN)
-            && !($modName == 'ZikulaUsersModule' && $func == 'siteofflogin')) {
+            && !('ZikulaUsersModule' == $modName && 'siteofflogin' == $func)) {
             return new UnavailableResponse(__('The site is currently off-line.'));
         }
 

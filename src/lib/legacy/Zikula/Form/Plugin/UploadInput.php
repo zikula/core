@@ -110,7 +110,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
      */
     public function isEmpty()
     {
-        return $this->result == null || $this->result['name'] == '';
+        return null == $this->result || '' == $this->result['name'];
     }
 
     /**
@@ -168,11 +168,11 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
         }
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $class .= ' ' . $this->cssClass;
         }
 
-        $titleHtml = ($this->errorMessage != null ? " title=\"{$this->errorMessage}\"" : '');
+        $titleHtml = (null != $this->errorMessage ? " title=\"{$this->errorMessage}\"" : '');
         $attributes = $this->renderAttributes($view);
         $requiredFlag = $this->mandatory ? ' required="required"' : '';
         $result = "<input{$idHtml}{$nameHtml} type=\"file\" class=\"{$class}\"{$readOnlyHtml}{$titleHtml}{$requiredFlag}{$attributes} />";
@@ -205,7 +205,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
     {
         $this->clearValidation($view);
 
-        if (isset($this->result['error']) && $this->result['error'] != 0 && $this->result['name'] != '') {
+        if (isset($this->result['error']) && 0 != $this->result['error'] && '' != $this->result['name']) {
             $this->setError(__('Error! Did not succeed in uploading file.'));
         }
 
@@ -255,7 +255,7 @@ class Zikula_Form_Plugin_UploadInput extends Zikula_Form_AbstractStyledPlugin
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data[$this->dataField] = $this->result;
             } else {
                 if (!array_key_exists($this->group, $data)) {

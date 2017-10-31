@@ -85,7 +85,7 @@ class TwigExtension extends \Twig_Extension
      */
     public function searchVarToFieldNames($data = '', $prefix = 'modvar', $isRecursiveCall = false)
     {
-        $dataValues = $data != '' && $isRecursiveCall ? $data : $this->variableApi->getAll('ZikulaSearchModule');
+        $dataValues = '' != $data && $isRecursiveCall ? $data : $this->variableApi->getAll('ZikulaSearchModule');
 
         $fields = [];
         if (empty($dataValues)) {

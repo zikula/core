@@ -306,11 +306,11 @@ class LogUtil
         self::log($message, Log::DEBUG);
         $session = ServiceUtil::getManager()->get('session');
 
-        if ($type === Log::INFO) {
+        if (Log::INFO === $type) {
             $session->addMessage(Zikula_Session::MESSAGE_STATUS, DataUtil::formatForDisplayHTML($message));
-        } elseif ($type === Log::WARNING) {
+        } elseif (Log::WARNING === $type) {
             $session->addMessage(Zikula_Session::MESSAGE_WARNING, DataUtil::formatForDisplayHTML($message));
-        } elseif ($type === E_USER_ERROR) {
+        } elseif (E_USER_ERROR === $type) {
             $session->addMessage(Zikula_Session::MESSAGE_ERROR, DataUtil::formatForDisplayHTML($message));
         } else {
             throw new InvalidArgumentException(__f('Invalid type %s for LogUtil::_addPopup', $type));
@@ -469,7 +469,7 @@ class LogUtil
         }
 
         // @todo remove in 1.5.0 this is a BC hack - drak
-        if ($level === E_USER_DEPRECATED) {
+        if (E_USER_DEPRECATED === $level) {
             $level = Log::DEBUG;
         }
 

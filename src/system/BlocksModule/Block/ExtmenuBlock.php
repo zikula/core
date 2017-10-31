@@ -137,7 +137,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
                 $denied = !SecurityUtil::checkPermission('ExtendedMenublock::', $blockinfo['bid'] . ':' . $linkid . ':', ACCESS_READ);
                 if ($denied || (!is_null($link['parentid']) && in_array($link['parentid'], $blocked))) {
                     $blocked[] = $linkid;
-                } elseif (!isset($link['active']) || $link['active'] != '1') {
+                } elseif (!isset($link['active']) || '1' != $link['active']) {
                     $blocked[] = $linkid;
                 } else {
                     // pre zk1.2 check
@@ -278,7 +278,7 @@ class ExtmenuBlock extends \Zikula_Controller_AbstractBlock
         $fromblock = $this->request->request->get('fromblock', null);
 
         $redirect = '';
-        if ($addurl == 1) {
+        if (1 == $addurl) {
             // set a marker for redirection later on
             $newurl = System::serverGetVar('HTTP_REFERER');
             $redirect = urlencode($newurl);

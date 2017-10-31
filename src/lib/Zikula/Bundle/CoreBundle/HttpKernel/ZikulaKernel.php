@@ -463,7 +463,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     {
         $extensions = [];
         foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractBundle && $bundle->getState() != AbstractBundle::STATE_ACTIVE) {
+            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE != $bundle->getState()) {
                 continue;
             }
             if ($extension = $bundle->getContainerExtension()) {
@@ -476,7 +476,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
             }
         }
         foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractBundle && $bundle->getState() != AbstractBundle::STATE_ACTIVE) {
+            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE != $bundle->getState()) {
                 continue;
             }
             $bundle->build($container);

@@ -44,7 +44,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
     public function replace($field, $op, $value)
     {
         // First check if this plugin have to work with this field
-        if (array_search($field, $this->getFields()) === false) {
+        if (false === array_search($field, $this->getFields())) {
             return [$field, $op, $value]; // If not, return given value
         }
 
@@ -66,7 +66,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
      */
     protected function dateConvert($date)
     {
-        if (strptime($date, '%d.%m.%Y %H:%M:%S') !== false) {
+        if (false !== strptime($date, '%d.%m.%Y %H:%M:%S')) {
             $date = \DateTime::createFromFormat('%d.%m.%Y %H:%M:%S', $date);
             $time = $date->format('%Y-%m-%d %H:%M:%S');
         } elseif (is_numeric($date)) {
@@ -113,7 +113,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
 
             case 'week':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
-                $from = ($datearray['wday'] != 1) ? strtotime('last monday', $from) : $from;
+                $from = (1 != $datearray['wday']) ? strtotime('last monday', $from) : $from;
                 $to = strtotime('+1 week', $from);
                 break;
 
@@ -171,7 +171,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
         $type = 'point';
         if (preg_match('~^(year|month|week|day|hour|min):\s*(.*)$~i', $value, $res)) {
             $type = strtolower($res[1]);
-            if (strlen($res[2]) == 4) {
+            if (4 == strlen($res[2])) {
                 $res[2] = "01.01.".$res[2];
             }
             $time = strtotime($res[2]);
@@ -183,7 +183,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
         }
         switch ($op) {
             case 'eq':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $to) = $this->makePeriod($time, $type);
 
                     return $expr->andX(
@@ -194,7 +194,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                     return $expr->eq($column, $config->toParam($time, 'date', $field));
                 }
             case 'ne':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $to) = $this->makePeriod($time, $type);
 
                     return $expr->orX(
@@ -206,7 +206,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                 }
 
             case 'gt':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
 
@@ -219,7 +219,7 @@ class DatePlugin extends FilterUtil\AbstractBuildPlugin implements FilterUtil\Re
                 return $expr->lt($column, $config->toParam($time, 'date', $field));
 
             case 'le':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
 

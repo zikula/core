@@ -220,7 +220,7 @@ class DBObjectArray
      */
     public function _init($init = null, $where = null, $orderBy = null, $limitOffset = -1, $limitNumRows = -1, $assocKey = null)
     {
-        if ($this->_objType != 'DBOBJECTARRAY') {
+        if ('DBOBJECTARRAY' != $this->_objType) {
             $dbtables = DBUtil::getTables();
             $tkey = $this->_objType;
             $ckey = $tkey . "_column";
@@ -311,7 +311,7 @@ class DBObjectArray
      */
     public function getCount($where = '', $doJoin = null)
     {
-        if ($doJoin === null) {
+        if (null === $doJoin) {
             $doJoin = (bool)($this->_objJoin);
         } else {
             $doJoin = (bool)$doJoin;
@@ -871,11 +871,11 @@ class DBObjectArray
     {
         EventUtil::dispatch('dbobjectarray.setdbfield', new \Zikula\Core\Event\GenericEvent($this));
 
-        if ($column === null) {
+        if (null === $column) {
             throw new \Exception(__f("Invalid [column] received"));
         }
 
-        if ($value === null) {
+        if (null === $value) {
             throw new \Exception(__f("Invalid [value] received"));
         }
 
@@ -1110,13 +1110,13 @@ class DBObjectArray
     public function prayerData($print = true, $offset = null)
     {
         if ($print) {
-            if ($offset !== null) {
+            if (null !== $offset) {
                 return prayer($this->_objData[$offset]);
             }
             prayer($this->_objData);
         }
 
-        if ($offset !== null) {
+        if (null !== $offset) {
             return _prayer($this->_objData[$offset]);
         }
 

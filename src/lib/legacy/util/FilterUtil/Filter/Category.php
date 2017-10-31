@@ -93,7 +93,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && !$this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && !$this->fieldExists($fields) && false === array_search($fields, $this->fields)) {
             // the field must not be a column of the table as it should be using the zikula categorization system
             $this->fields[] = $fields;
         }
@@ -122,7 +122,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $this->availableOperators()) !== false) {
+        } elseif (!empty($op) && false === array_search($op, $this->ops) && false !== array_search($op, $this->availableOperators())) {
             $this->ops[] = $op;
         }
     }
@@ -135,7 +135,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
     public function getOperators()
     {
         $fields = $this->getFields();
-        if ($this->default == true) {
+        if (true == $this->default) {
             $fields[] = '-';
         }
 
@@ -171,12 +171,12 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
      */
     public function getSQL($field, $op, $value)
     {
-        if (array_search($op, $this->availableOperators()) === false || array_search($field, $this->fields) === false) {
+        if (false === array_search($op, $this->availableOperators()) || false === array_search($field, $this->fields)) {
             return '';
         }
 
         $items = [$value];
-        if ($op == 'sub') {
+        if ('sub' == $op) {
             $cats = CategoryUtil::getSubCategories($value);
             foreach ($cats as $item) {
                 $items[] = $item['id'];
@@ -189,7 +189,7 @@ class FilterUtil_Filter_Category extends FilterUtil_AbstractPlugin implements Fi
         }
 
         $where = DBUtil::generateCategoryFilterWhere($this->dbtable, false, $filter);
-        if ($op == 'ne') {
+        if ('ne' == $op) {
             $where = str_replace(' IN ', ' NOT IN ', $where);
         }
 

@@ -52,7 +52,7 @@ class SessionUtil
 
         $session = ServiceUtil::getManager()->get('session');
 
-        if ($name == 'uid') {
+        if ('uid' == $name) {
             $session->regenerate(true);
         }
 
@@ -102,7 +102,7 @@ class SessionUtil
     {
         @trigger_error('SessionUtil is deprecated, please use Symfony session instead.', E_USER_DEPRECATED);
 
-        if (self::getVar('uid') == '0') {
+        if ('0' == self::getVar('uid')) {
             // no need to display expiry for anon users with sessions since it's invisible anyway
             // handle expired sessions differently
             self::regenerate(true);

@@ -513,7 +513,7 @@ class AdminController extends AbstractController
         $existingconfigs = [];
         foreach ($pageconfigurations as $name => $pageconfiguration) {
             // checks for non-standard pagetypes
-            if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
+            if (0 === strpos($name, '*') && !isset($pagetypes[$name])) {
                 //! Pages inside a specific Controller type (editor, moderator, user)
                 $pagetypes[$name] = $this->__f('%s type pages', ['%s' => ucfirst(substr($name, 1))]);
             }
@@ -830,7 +830,7 @@ class AdminController extends AbstractController
 
         // checks for non-standard pagetypes
         foreach ($pageconfigurations as $name => $pageconfiguration) {
-            if (strpos($name, '*') === 0 && !isset($pagetypes[$name])) {
+            if (0 === strpos($name, '*') && !isset($pagetypes[$name])) {
                 //! Pages inside a specific Controller type (editor, moderator, user)
                 $pagetypes[$name] = $this->__f('%s type pages', ['%s' => ucfirst(substr($name, 1))]);
             }
@@ -927,7 +927,7 @@ class AdminController extends AbstractController
 
         // form the new page configuration
         $newpageconfiguration = $pagemodule;
-        if (strpos($pagemodule, '*') !== 0 && $pagemodule != 'master') {
+        if (0 !== strpos($pagemodule, '*') && 'master' != $pagemodule) {
             $newpageconfiguration .= '/';
             if (isset($pagetype)) {
                 $newpageconfiguration .= $pagetype;
@@ -993,7 +993,7 @@ class AdminController extends AbstractController
         // Get the theme info
         $themeinfo = ThemeUtil::getInfo(ThemeUtil::getIDFromName($themename));
 
-        if ($themeinfo == false) {
+        if (false == $themeinfo) {
             throw new \InvalidArgumentException();
         }
 

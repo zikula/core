@@ -54,7 +54,7 @@ class SearchController extends AbstractController
         // get Core-2.0 searchable modules
         $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
 
-        if (count($legacySearchModules) == 0 && count($core14searchableModules) == 0 && count($searchableModules) == 0) {
+        if (0 == count($legacySearchModules) && 0 == count($core14searchableModules) && 0 == count($searchableModules)) {
             return $this->render('@ZikulaSearchModule/Search/unsearchable.html.twig');
         }
 
@@ -88,7 +88,7 @@ class SearchController extends AbstractController
             if (!($searchableInstance instanceof AbstractSearchable)) {
                 continue;
             }
-            $active = !$setActiveDefaults || (isset($activeModules[$searchableModule['name']]) && ($activeModules[$searchableModule['name']] == 1));
+            $active = !$setActiveDefaults || (isset($activeModules[$searchableModule['name']]) && (1 == $activeModules[$searchableModule['name']]));
             $pluginOptions[$searchableModule['name']] = $searchableInstance->getOptions($active, $request->query->get('modvar', []));
         }
 
@@ -111,7 +111,7 @@ class SearchController extends AbstractController
             $moduleFormBuilder->add($moduleName, 'Zikula\SearchModule\Form\Type\AmendableModuleSearchType', [
                 'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
                 'translator' => $this->getTranslator(),
-                'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && ($activeModules[$moduleName] == 1)),
+                'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && (1 == $activeModules[$moduleName])),
                 'permissionApi' => $this->get('zikula_permissions_module.api.permission')
             ]);
             $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));

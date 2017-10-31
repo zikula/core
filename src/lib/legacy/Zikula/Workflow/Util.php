@@ -102,10 +102,10 @@ class Zikula_Workflow_Util
         $moduledir = $modinfo['directory'];
 
         // determine which folder to look in (system or modules)
-        if ($modinfo['type'] == ModUtil::TYPE_SYSTEM) {
+        if (ModUtil::TYPE_SYSTEM == $modinfo['type']) {
             // system module
             $modulepath = "system/$moduledir";
-        } elseif ($modinfo['type'] == ModUtil::TYPE_MODULE) {
+        } elseif (ModUtil::TYPE_MODULE == $modinfo['type']) {
             // non system module
             $modulepath = "modules/$moduledir";
         } else {
@@ -113,7 +113,7 @@ class Zikula_Workflow_Util
         }
 
         // ensure module is active
-        if (!$modinfo['state'] == 3) {
+        if (3 == !$modinfo['state']) {
             throw new \Exception(__f('%1$s: The module [%2$s] is not active.', ['Zikula_Workflow_Util', $module]));
         }
 

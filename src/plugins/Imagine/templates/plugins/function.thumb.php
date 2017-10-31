@@ -104,7 +104,7 @@ function smarty_function_thumb($params, Zikula_View $view)
         $attributes[] = $thumbSize[3]; // width and height
         // get tag params
         foreach ($params as $key => $value) {
-            if (strpos($key, 'img_') === 0) {
+            if (0 === strpos($key, 'img_')) {
                 $key = str_replace('img_', '', $key);
                 $attributes[$key] = "{$key}=\"{$value}\"";
             }

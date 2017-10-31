@@ -59,7 +59,7 @@ function smarty_function_sortlink($params, Zikula_View $view)
     if ($params['currentsort'] == $params['sort']) {
         $cssclass = 'z-order-'.strtolower($sortdir);
         // reverse the direction
-        $params['sortdir'] = ($sortdir == 'ASC') ? 'DESC' : 'ASC';
+        $params['sortdir'] = ('ASC' == $sortdir) ? 'DESC' : 'ASC';
     } else {
         $cssclass = 'z-order-unsorted';
         // defaults the direction to ASC

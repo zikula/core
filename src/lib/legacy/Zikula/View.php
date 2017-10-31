@@ -187,8 +187,8 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // set vars based on the module structures
         $pathInfo = null !== $this->request ? $this->request->getPathInfo() : '/';
-        $routeParams = isset($pathInfo) && $pathInfo != '/' ? $this->serviceManager->get('router')->match($pathInfo) : null;
-        if (!isset($routeParams) && $pathInfo == '/') {
+        $routeParams = isset($pathInfo) && '/' != $pathInfo ? $this->serviceManager->get('router')->match($pathInfo) : null;
+        if (!isset($routeParams) && '/' == $pathInfo) {
             $this->homepage = true;
             $this->type = System::getVar('starttype');
             $this->func = System::getVar('startfunc');
@@ -206,7 +206,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // you need to set this property to the name of the respective module!
         $masterRequest = $this->serviceManager->get('request_stack')->getMasterRequest();
         $masterRequestModule = !empty($routeParams['_zkModule']) ? $routeParams['_zkModule'] : null;
-        if (!isset($masterRequestModule) && null !== $masterRequest && $masterRequest->attributes->get('_route') == 'zikula_hook_hook_edit' && $masterRequest->attributes->has('moduleName')) {
+        if (!isset($masterRequestModule) && null !== $masterRequest && 'zikula_hook_hook_edit' == $masterRequest->attributes->get('_route') && $masterRequest->attributes->has('moduleName')) {
             // accommodates HookBundle
             $masterRequestModule = $masterRequest->attributes->get('moduleName');
         }
@@ -283,7 +283,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->cache_dir      = CacheUtil::getLocalDir('view_cache');
         $this->cache_lifetime = ModUtil::getVar('ZikulaThemeModule', 'render_lifetime');
 
-        $this->expose_template = (ModUtil::getVar('ZikulaThemeModule', 'render_expose_template') == true) ? true : false;
+        $this->expose_template = (true == ModUtil::getVar('ZikulaThemeModule', 'render_expose_template')) ? true : false;
 
         // register resource type 'z' this defines the way templates are searched
         // during {include file='my_template.tpl'} this enables us to store selected module
@@ -348,7 +348,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
              ->assign('imagelangpath', $imageLangPath);
 
         // for {gt} template plugin to detect gettext domain
-        if ($this->modinfo['type'] == ModUtil::TYPE_MODULE) {
+        if (ModUtil::TYPE_MODULE == $this->modinfo['type']) {
             $this->domain = ZLanguage::getModuleDomain($this->modinfo['name']);
         }
 
@@ -436,7 +436,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
     {
         if (is_null($module)) {
             $module = ModUtil::getName();
-            if ($module === false) {
+            if (false === $module) {
                 // fallback if no module is given or called (see #2303)
                 $module = ModUtil::CONFIG_MODULE;
             }
@@ -641,7 +641,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             $os_modname = DataUtil::formatForOS($modname);
             $os_module = DataUtil::formatForOS($module);
             $os_theme = DataUtil::formatForOS($this->theme);
-            $os_dir = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
+            $os_dir = ModUtil::TYPE_MODULE == $modinfo['type'] ? 'modules' : 'system';
 
             $ostemplate = DataUtil::formatForOS($template);
             try {
@@ -659,7 +659,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
             $templatefile = "$relativepath/$ostemplate";
             $override = self::getTemplateOverride($templatefile);
-            if ($override === false) {
+            if (false === $override) {
                 // no override present
                 if (!System::isLegacyMode()) {
                     if (is_readable($templatefile)) {
@@ -759,7 +759,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                 // if the modulename is empty do nothing
                 if (!empty($modulename) && !is_array($modulename) && !array_key_exists($modulename, $this->module)) {
                     // check if user wants to have config
-                    if ($modulename == ModUtil::CONFIG_MODULE) {
+                    if (ModUtil::CONFIG_MODULE == $modulename) {
                         $ZConfig = ModUtil::getVar(ModUtil::CONFIG_MODULE);
                         foreach ($ZConfig as $key => $value) {
                             // gather all config vars
@@ -811,7 +811,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $this->template = $this->template_dir . '/' . $template;
         $output = $this->_fetch($template, $cache_id, $compile_id, $display);
 
-        if ($this->expose_template == true) {
+        if (true == $this->expose_template) {
             $template = DataUtil::formatForDisplay($template);
             //$output = "\n<!-- Start " . $this->template_dir . "/$template -->\n" . $output . "\n<!-- End " . $this->template_dir . "/$template -->\n";
             // Changed comment into conditional statement for IE<10
@@ -914,17 +914,17 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 
         // takes in account the source subdirectory
         if ($auto_source) {
-            if (strpos($auto_source, 'file:') === 0) {
+            if (0 === strpos($auto_source, 'file:')) {
                 // This is an absolute path needing special handling.
                 $auto_source = substr($auto_source, 5);
                 $cwd = DataUtil::formatForOS(getcwd());
-                if (strpos($auto_source, $cwd) !== 0) {
+                if (0 !== strpos($auto_source, $cwd)) {
                     throw new \RuntimeException('The template path cannot be outside the Zikula root.');
                 }
 
                 $path .= '/absolutepath' . substr(dirname($auto_source), strlen($cwd));
             } else {
-                $path .= strpos($auto_source, '/') !== false ? '/' . dirname($auto_source) : '';
+                $path .= false !== strpos($auto_source, '/') ? '/' . dirname($auto_source) : '';
             }
         }
 
@@ -999,14 +999,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         $filebase = FileUtil::getFilebase($template);
 
         $dh = opendir($tplpath);
-        while (($entry = readdir($dh)) !== false) {
-            if ($entry != '.' && $entry != '..') {
+        while (false !== ($entry = readdir($dh))) {
+            if ('.' != $entry && '..' != $entry) {
                 $path = $tplpath . DIRECTORY_SEPARATOR . $entry;
 
                 if (is_dir($path)) {
                     // search recusively
                     $this->rmtpl($path, $template, $expire);
-                } elseif (strpos($entry, $filebase) === 0) {
+                } elseif (0 === strpos($entry, $filebase)) {
                     // delete the files that matches the template base filename
                     $this->_unlink($path, $expire);
                 }
@@ -1033,14 +1033,14 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         }
 
         $dh = opendir($dirname);
-        while (($entry = readdir($dh)) !== false) {
-            if ($entry != '.' && $entry != '..' && $entry != 'index.html') {
+        while (false !== ($entry = readdir($dh))) {
+            if ('.' != $entry && '..' != $entry && 'index.html' != $entry) {
                 $path = $dirname . DIRECTORY_SEPARATOR . $entry;
 
                 if (is_dir($path)) {
                     // remove recursively
                     $this->rmdir($path, $expire, true);
-                } elseif ($expire !== false) {
+                } elseif (false !== $expire) {
                     // check expiration time of cached templates
                     $this->_unlink($path, $expire);
                 } else {
@@ -1214,7 +1214,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
             return;
         }
 
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
         if (is_dir("$modpath/$modinfo[directory]/Resources/views/plugins")) {
             $this->addPluginDir("$modpath/$modinfo[directory]/Resources/views/plugins");
 
@@ -2872,7 +2872,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                ? $this->error_reporting : error_reporting() & ~E_NOTICE);
         $_smarty_old_error_level &= ~E_USER_DEPRECATED;
 
-        if (!$this->debugging && $this->debugging_ctrl == 'URL') {
+        if (!$this->debugging && 'URL' == $this->debugging_ctrl) {
             $_query_string = $this->request_use_auto_globals ? $_SERVER['QUERY_STRING'] : $GLOBALS['HTTP_SERVER_VARS']['QUERY_STRING'];
             if (@strstr($_query_string, $this->_smarty_debug_id)) {
                 if (@strstr($_query_string, $this->_smarty_debug_id . '=on')) {
@@ -2953,10 +2953,10 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
                         $_server_vars = ($this->request_use_auto_globals) ? $_SERVER : $GLOBALS['HTTP_SERVER_VARS'];
                         $_last_modified_date = @substr($_server_vars['HTTP_IF_MODIFIED_SINCE'], 0, strpos($_server_vars['HTTP_IF_MODIFIED_SINCE'], 'GMT') + 3);
                         $_gmt_mtime = gmdate('D, d M Y H:i:s', $this->_cache_info['timestamp']).' GMT';
-                        if (@count($this->_cache_info['insert_tags']) == 0
+                        if (0 == @count($this->_cache_info['insert_tags'])
                             && !$this->_cache_serials
                             && $_gmt_mtime == $_last_modified_date) {
-                            if (php_sapi_name() == 'cgi') {
+                            if ('cgi' == php_sapi_name()) {
                                 header('Status: 304 Not Modified');
                             } else {
                                 header('HTTP/1.1 304 Not Modified');
@@ -3003,7 +3003,7 @@ class Zikula_View extends Smarty implements Zikula_TranslatableInterface
         // buffering - for speed
         $_cache_including = $this->_cache_including;
         $this->_cache_including = false;
-        if ($display && !$this->caching && count($this->_plugins['outputfilter']) == 0) {
+        if ($display && !$this->caching && 0 == count($this->_plugins['outputfilter'])) {
             if ($this->_is_compiled($resource_name, $_smarty_compile_path) || $this->_compile_resource($resource_name, $_smarty_compile_path)) {
                 include $_smarty_compile_path;
             }

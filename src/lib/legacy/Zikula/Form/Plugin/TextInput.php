@@ -231,7 +231,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
      */
     public function isEmpty()
     {
-        return $this->text == '';
+        return '' == $this->text;
     }
 
     /**
@@ -255,7 +255,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 
         if (array_key_exists('maxLength', $params)) {
             $this->maxLength = $params['maxLength'];
-        } elseif ($this->maxLength == null && !in_array(strtolower($this->textMode), ['multiline', 'hidden'])) {
+        } elseif (null == $this->maxLength && !in_array(strtolower($this->textMode), ['multiline', 'hidden'])) {
             $view->formDie("Missing maxLength value in textInput plugin '$this->id'.");
         }
         if (array_key_exists('minLength', $params)) {
@@ -340,11 +340,11 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
 
             case 'multiline':
                 $colsrowsHtml = '';
-                if ($this->cols != null) {
+                if (null != $this->cols) {
                     $colsrowsHtml .= " cols=\"{$this->cols}\"";
                 }
 
-                if ($this->rows != null) {
+                if (null != $this->rows) {
                     $colsrowsHtml .= " rows=\"{$this->rows}\"";
                 }
 
@@ -385,7 +385,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
         }
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $class .= ' ' . $this->cssClass;
         }
 
@@ -430,7 +430,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
             $this->setError(sprintf(__f('Error! Input text must be no longer than %s characters.', $this->maxLength)));
         } elseif (mb_strlen($this->text) < $this->minLength && $this->minLength >= 0) {
             $this->setError(sprintf(__f('Error! Input text must be longer than %s characters.', $this->minLength)));
-        } elseif ($this->regexValidationPattern != null && $this->text != '' && !preg_match($this->regexValidationPattern, $this->text)) {
+        } elseif (null != $this->regexValidationPattern && '' != $this->text && !preg_match($this->regexValidationPattern, $this->text)) {
             $this->setError($view->translateForDisplay($this->regexValidationMessage));
         }
     }
@@ -479,7 +479,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
         if ($this->dataBased) {
             $value = $this->parseValue($view, $this->text);
 
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data[$this->dataField] = $value;
             } else {
                 if (!array_key_exists($this->group, $data)) {
@@ -521,7 +521,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
         if ($this->dataBased) {
             $value = null;
 
-            if ($this->group == null) {
+            if (null == $this->group) {
                 if (array_key_exists($this->dataField, $values)) {
                     $value = $values[$this->dataField];
                 }
@@ -531,7 +531,7 @@ class Zikula_Form_Plugin_TextInput extends Zikula_Form_AbstractStyledPlugin
                 }
             }
 
-            if ($value !== null) {
+            if (null !== $value) {
                 $this->text = $this->formatValue($view, $value);
             }
         }

@@ -62,7 +62,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
     {
         try {
             $schemaManager = $this->databaseConnection->getSchemaManager();
-            if ($schemaManager->tablesExist(['zauth_authentication_mapping']) == true) {
+            if (true == $schemaManager->tablesExist(['zauth_authentication_mapping'])) {
                 $user = $this->databaseConnection->fetchAssoc('SELECT uid, pass FROM zauth_authentication_mapping WHERE uname= ?', [$object['username']]);
             }
             if (empty($user)) {

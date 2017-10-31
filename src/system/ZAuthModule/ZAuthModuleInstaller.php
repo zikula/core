@@ -32,7 +32,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
             try {
                 $this->schemaTool->create([$entity]);
             } catch (\Exception $e) {
-                if ($entity != 'Zikula\ZAuthModule\Entity\UserVerificationEntity') {
+                if ('Zikula\ZAuthModule\Entity\UserVerificationEntity' != $entity) {
                     throw $e;
                 }
                 // silently fail. This is because on core upgrade the UserVerificationEntity already exists from the UsersModule.

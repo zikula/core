@@ -69,7 +69,7 @@ class AdministrationActionsHelper
         if (!$this->permissionsApi->hasPermission('ZikulaUsersModule::', 'ANY', ACCESS_MODERATE)) {
             return $actions;
         }
-        if ($user->getActivated() != UsersConstant::ACTIVATED_ACTIVE && $this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
+        if (UsersConstant::ACTIVATED_ACTIVE != $user->getActivated() && $this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             $actions['approveForce'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_approve', ['user' => $user->getUid(), 'force' => true]),
                 'text' => $this->translator->__f('Approve %sub%', ["%sub%" => $user->getUname()]),

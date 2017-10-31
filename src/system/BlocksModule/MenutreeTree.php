@@ -80,7 +80,7 @@ class MenutreeTree extends \Zikula_Tree
                     'expanded'  => isset($_item['expanded']) ? $_item['expanded'] : null,
                     'href'      => isset($_item['href']) ? $_item['href'] : '',
                     'lang'      => isset($_item['lang']) ? $_item['lang'] : '',
-                    'dynamic'   => strpos($_item['href'], '{ext:') === 0,
+                    'dynamic'   => 0 === strpos($_item['href'], '{ext:'),
                 ];
                 if ($this->config['parseURL']) {
                     $item[$lang]['href'] = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'encodebracketurl', $item[$lang]['href']);
@@ -107,7 +107,7 @@ class MenutreeTree extends \Zikula_Tree
                 $path[] = $a[$reflang]['parent'];
                 $handle = &$this->tree;
                 while (list($key, $value) = each($path)) {
-                    if ($value === 0) {
+                    if (0 === $value) {
                         continue;
                     }
                     $handle = &$handle[$value]['nodes'];
@@ -190,7 +190,7 @@ class MenutreeTree extends \Zikula_Tree
         $links = [];
         foreach ($item as $lang => $translated) {
             $isDynamic = $isDynamic || $translated['dynamic'];
-            $linkClass = $translated['active'] == 1 ? $translated['class'] : $this->config['nodeUnactive'].' '.$translated['class'];
+            $linkClass = 1 == $translated['active'] ? $translated['class'] : $this->config['nodeUnactive'].' '.$translated['class'];
             $linkClass = !empty($linkClass) ? ' class="'.$linkClass.'"' : '';
             $linkLang  = ' lang="'.$translated['lang'].'"';
             $linkHref  = ' href="'.DataUtil::formatForDisplay($translated['href']).'"';
@@ -205,8 +205,8 @@ class MenutreeTree extends \Zikula_Tree
         $liId    = !empty($this->config['nodePrefix']) ? ' id="'.$this->config['nodePrefix'].$id.'"' : '';
         $liClass = [];
         $liClass[] = $isDynamic ? $this->config['dynamicClass'] : '';
-        $liClass[] = $size == 1 ? $this->config['nodeSingle'] : '';
-        $liClass[] = ($i == 1 && $size > 1) ? $this->config['nodeFirst'] : '';
+        $liClass[] = 1 == $size ? $this->config['nodeSingle'] : '';
+        $liClass[] = (1 == $i && $size > 1) ? $this->config['nodeFirst'] : '';
         $liClass[] = ($i == $size && $size > 1) ? $this->config['nodeLast'] : '';
         $liClass[] = !empty($tab['nodes']) ? $this->config['nodeParent'] : $this->config['nodeLeaf'];
         $liClass = trim(implode(' ', array_filter($liClass)));

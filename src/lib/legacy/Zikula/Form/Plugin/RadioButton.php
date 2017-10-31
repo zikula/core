@@ -240,7 +240,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
         if ($this->dataBased) {
             $value = null;
 
-            if ($this->group == null) {
+            if (null == $this->group) {
                 if (array_key_exists($this->dataField, $values)) {
                     $value = (string)$values[$this->dataField];
                 }
@@ -250,7 +250,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
                 }
             }
 
-            if ($value !== null) {
+            if (null !== $value) {
                 $this->checked = ($this->value === $value);
             } else {
                 $this->checked = false;
@@ -298,7 +298,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
         }
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $class .= ' ' . $this->cssClass;
         }
 
@@ -398,7 +398,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
     {
         if ($plugin instanceof self && $plugin->groupName == $this->groupName) {
             $plugin->validationChecked = true;
-            if ($firstRadioButton == null) {
+            if (null == $firstRadioButton) {
                 $firstRadioButton = $plugin;
             }
             if ($plugin->checked) {
@@ -454,7 +454,7 @@ class Zikula_Form_Plugin_RadioButton extends Zikula_Form_AbstractStyledPlugin
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 if ($this->checked) {
                     $data[$this->dataField] = $this->value;
                 }

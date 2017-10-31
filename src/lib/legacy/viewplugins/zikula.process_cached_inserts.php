@@ -44,7 +44,7 @@ function smarty_core_process_cached_inserts($params, &$smarty)
             $resource_type = $_params['resource_type'];
             $php_resource = $_params['php_resource'];
 
-            if ($resource_type == 'file') {
+            if ('file' == $resource_type) {
                 $smarty->_include($php_resource, true);
             } else {
                 $smarty->_eval($php_resource);

@@ -87,11 +87,11 @@ function smarty_function_icon($params, Zikula_View $view)
         }
     }
 
-    if ($imgsrc == '' && isset($params['default'])) {
+    if ('' == $imgsrc && isset($params['default'])) {
         $imgsrc = $params['default'];
     }
 
-    if ($imgsrc == '') {
+    if ('' == $imgsrc) {
         if (!isset($optional)) {
             $view->trigger_error(__f("%s: Image '%s' not found", ['icon', DataUtil::formatForDisplay($params['type'])]));
         }

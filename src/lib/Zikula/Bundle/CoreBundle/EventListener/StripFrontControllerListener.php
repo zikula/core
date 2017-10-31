@@ -72,10 +72,10 @@ class StripFrontControllerListener implements EventSubscriberInterface
         $requestUri = $event->getRequest()->getRequestUri();
         $frontController = $this->variableApi->getSystemVar('entrypoint', 'index.php');
         $stripEntryPoint = (bool) $this->variableApi->getSystemVar('shorturlsstripentrypoint', false);
-        $containsFrontController = (strpos($requestUri, "$frontController") !== false);
+        $containsFrontController = (false !== strpos($requestUri, "$frontController"));
 
         if ($containsFrontController && $stripEntryPoint) {
-            $replacedString = (strpos($requestUri, "$frontController/") !== false) ? "$frontController/" : $frontController;
+            $replacedString = (false !== strpos($requestUri, "$frontController/")) ? "$frontController/" : $frontController;
             $url = str_ireplace($replacedString, "", $requestUri);
             $response = new RedirectResponse($url, 301);
             $event->setResponse($response);

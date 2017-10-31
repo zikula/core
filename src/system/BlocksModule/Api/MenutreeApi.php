@@ -141,7 +141,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                         ['mid' => ModUtil::getIdFromName($adminmodule['name'])]);
                 $cid = (isset($catinfo[$cid])) ? $cid : $default_cid;  // make sure each module is assigned a category
 
-                if ($adminmodule['type'] == 2 || $adminmodule['type'] == 3) {
+                if (2 == $adminmodule['type'] || 3 == $adminmodule['type']) {
                     $menutexturl = isset($adminmodule['capabilities']['admin']['url'])
                         ? $adminmodule['capabilities']['admin']['url']
                         : $this->get('router')->generate($adminmodule['capabilities']['admin']['route']);
@@ -149,11 +149,11 @@ class MenutreeApi extends \Zikula_AbstractApi
                     $menutexturl = 'admin.php?module=' . $adminmodule['name'];
                 }
 
-                if ($displayNameType == 1) {
+                if (1 == $displayNameType) {
                     $menutext = $adminmodule['displayname'];
-                } elseif ($displayNameType == 2) {
+                } elseif (2 == $displayNameType) {
                     $menutext = $adminmodule['name'];
-                } elseif ($displayNameType == 3) {
+                } elseif (3 == $displayNameType) {
                     $menutext = $adminmodule['displayname'] . ' (' . $adminmodule['name'] . ')';
                 }
 
@@ -360,7 +360,7 @@ class MenutreeApi extends \Zikula_AbstractApi
 
         foreach ((array)$publist as $pub) {
             // skip publications not online
-            if ($pub['core_online'] != 1) {
+            if (1 != $pub['core_online']) {
                 continue;
             }
 
@@ -423,7 +423,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         $links = [];
 
         // if $extrainfo['group'] if false - don't group pages
-        if ($extrainfo['groupby'] == 'menuitem') {
+        if ('menuitem' == $extrainfo['groupby']) {
             $links['content'] = [
                 $lang => [
                     'id' => $idoffset++,
@@ -439,7 +439,7 @@ class MenutreeApi extends \Zikula_AbstractApi
             ];
         }
         // need to set parent node id according to groupby mode
-        $parentNode = $extrainfo['groupby'] == 'menuitem' ? $links['content'][$lang]['id'] : $item['parent'];
+        $parentNode = 'menuitem' == $extrainfo['groupby'] ? $links['content'][$lang]['id'] : $item['parent'];
 
         // set option and get page list
         $options = [
@@ -459,7 +459,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         foreach ((array)$pages as $page) {
             // grouping - skip first page if pages are filtered by parent id
             // and grouping is not set to page
-            if ($extrainfo['parent'] == $page['id'] && $extrainfo['groupby'] != 'page') {
+            if ($extrainfo['parent'] == $page['id'] && 'page' != $extrainfo['groupby']) {
                 continue;
             }
             // skip pages which are disabled for display in menu
@@ -516,7 +516,7 @@ class MenutreeApi extends \Zikula_AbstractApi
 
         $links = [];
         // if $extrainfo if 'flat' - don't group links
-        if ($extrainfo != 'flat') {
+        if ('flat' != $extrainfo) {
             $links['modules'] = [
                 $lang => [
                     'id' => $idoffset++,
@@ -533,7 +533,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
         // need to set parent node id - if links are grouped - use your_accont item id
         // otherwise parent id of replaced menu node
-        $parentNode = $extrainfo != 'flat' ? $links['modules'][$lang]['id'] : $item['parent'];
+        $parentNode = 'flat' != $extrainfo ? $links['modules'][$lang]['id'] : $item['parent'];
 
         $mods = ModUtil::getModulesCapableOf('user');
 
@@ -745,7 +745,7 @@ class MenutreeApi extends \Zikula_AbstractApi
                 if (isset($links[$l]) && !empty($links[$l])) {
                     $sortedLinks[] = $links[$l];
                 }
-                if ($l == 'cat') {
+                if ('cat' == $l) {
                     $sortedLinks = array_merge((array)$sortedLinks, (array)$catLinks);
                 }
             }
@@ -809,7 +809,7 @@ class MenutreeApi extends \Zikula_AbstractApi
 
         $links = [];
         // if $extrainfo if 'flat' - don't group links in your_account node
-        if ($extrainfo != 'flat') {
+        if ('flat' != $extrainfo) {
             $links['your_account'] = [
                 $lang => [
                     'id' => $idoffset++,
@@ -826,7 +826,7 @@ class MenutreeApi extends \Zikula_AbstractApi
         }
         // need to set parent node id - if links are grouped - use your_accont item id
         // otherwise parent id of replaced menu node
-        $parentNode = $extrainfo != 'flat' ? $links['your_account'][$lang]['id'] : $item['parent'];
+        $parentNode = 'flat' != $extrainfo ? $links['your_account'][$lang]['id'] : $item['parent'];
 
         if (UserUtil::isLoggedIn()) {
             $links['profile'] = [

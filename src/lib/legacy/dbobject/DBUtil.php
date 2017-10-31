@@ -45,7 +45,7 @@ class DBUtil
             self::$cache_enabled = ServiceUtil::getManager()->getParameter('dbcache.enable');
         }
 
-        return $tablename != 'session_info' && ServiceUtil::getManager()->getParameter('installed') && self::$cache_enabled;
+        return 'session_info' != $tablename && ServiceUtil::getManager()->getParameter('installed') && self::$cache_enabled;
     }
 
     /**
@@ -224,7 +224,7 @@ class DBUtil
         $databases = $serviceManager['databases'];
         $connName = Doctrine_Manager::getInstance()->getCurrentConnection()->getName();
         $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-        if ($dbDriverName == 'mysql') {
+        if ('mysql' == $dbDriverName) {
             $tableoptions['type'] = Doctrine_Manager::getInstance()->getCurrentConnection()->getAttribute(Doctrine_Core::ATTR_DEFAULT_TABLE_TYPE);
         }
 
@@ -252,7 +252,7 @@ class DBUtil
     {
         @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
 
-        if ($table != '') {
+        if ('' != $table) {
             $tables = self::getTables();
             if (isset($tables[$table . '_def'])) {
                 return $tables[$table . '_def'];
@@ -291,7 +291,7 @@ class DBUtil
         try {
             if ($limitNumRows > 0) {
                 $tStr = strtoupper(substr(trim($sql), 0, 7)); // Grab first 7 chars to allow syntax like "(SELECT" which may happen with UNION statements
-                if (strpos($tStr, 'SELECT') === false) {
+                if (false === strpos($tStr, 'SELECT')) {
                     // TODO D [use normal Select instead of showing an error message if paging is desired for something different than SELECTs] (Guite)
                     throw new Exception(__('Paging parameters can only be used for SELECT statements'));
                 }
@@ -313,13 +313,13 @@ class DBUtil
                 // catch manual SQL which requires cache flushes
                 $tab = null;
                 $sql = strtolower(trim(preg_replace("/\s+/", " ", $sql)));
-                if (strpos($sql, 'update') === 0) {
+                if (0 === strpos($sql, 'update')) {
                     list(, $tab) = explode(' ', $sql);
                 }
-                if (strpos($sql, 'delete') === 0) {
+                if (0 === strpos($sql, 'delete')) {
                     list(, , $tab) = explode(' ', $sql);
                 }
-                if ($tab && strpos($tab, 'session_info') === false) {
+                if ($tab && false === strpos($tab, 'session_info')) {
                     self::flushCache($tab);
                 }
 
@@ -366,7 +366,7 @@ class DBUtil
         }
 
         if (isset($numericFields[$fieldType])) {
-            if ($fieldType[0] == 'I' || $fieldType == 'L') {
+            if ('I' == $fieldType[0] || 'L' == $fieldType) {
                 $value = (int)$value;
             } else {
                 $value = (float)$value;
@@ -705,9 +705,9 @@ class DBUtil
             // No need to DataUtil::formatForStore when casted to int
             return (int)$value;
             // Avoid SQL strict problems where false would be stored as ''
-        } elseif ($value === false) {
+        } elseif (false === $value) {
             return 0;
-        } elseif ($value === true) {
+        } elseif (true === $value) {
             return 1;
         }
 
@@ -774,7 +774,7 @@ class DBUtil
                 $columnDefFields  = explode(' ', $columnDefinition);
                 $colType = substr($columnDefinition, 0, 1);
                 // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
-                if ($colType == 'F' || $colType == 'N') {
+                if ('F' == $colType || 'N' == $colType) {
                     if (is_float($object[$key]) || is_float($object[$key])) {
                         $object[$key] = number_format($object[$key], 8, '.', '');
                     }
@@ -784,8 +784,8 @@ class DBUtil
                 if (!$skip) {
                     $cArray[] = $columnList[$key];
                     $value    = is_bool($object[$key]) ? (int)$object[$key] : $object[$key];
-                    if (($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
-                        (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
+                    if (('derby' == $dbDriverName || 'splice' == $dbDriverName || 'jdbcbridge' == $dbDriverName) &&
+                        ('XL' != strtoupper($columnDefFields[0]) || 'B' != strtoupper($columnDefFields[0])) && strlen($object[$key]) > 32000) {
                         $chunks = str_split($object[$key], 32000);
                         $str    = '';
                         foreach ($chunks as $chunk) {
@@ -801,7 +801,7 @@ class DBUtil
                 }
             } else {
                 if ($key == $idfield) {
-                    if ($dbDriverName == 'pgsql') {
+                    if ('pgsql' == $dbDriverName) {
                         $cArray[] = $columnList[$key];
                         $vArray[] = 'DEFAULT';
                     }
@@ -820,7 +820,7 @@ class DBUtil
         $sql .= ' VALUES (' . implode(',', $vArray) . ')';
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -832,7 +832,7 @@ class DBUtil
                 $columnDefFields  = explode(' ', $columnDefinition);
                 $colType = substr($columnDefinition, 0, 1);
                 $colAuto = in_array('AUTO', $columnDefFields);
-                if ($colType == 'I' && $colAuto) {
+                if ('I' == $colType && $colAuto) {
                     $obj_id = self::getInsertID($table, $idfield);
                     $object[$idfield] = $obj_id;
                 }
@@ -900,14 +900,14 @@ class DBUtil
                 continue;
             }
 
-            if ($key != $idfield || ($key == $idfield && $updateid == true)) {
+            if ($key != $idfield || ($key == $idfield && true == $updateid)) {
                 if ($force || array_key_exists($key, $object)) {
                     $skip = false;
                     $columnDefinition = $columnDefList[$key];
                     $columnDefFields  = explode(' ', $columnDefinition);
                     $colType = substr($columnDefinition, 0, 1);
                     // ensure that international float numbers are stored with '.' rather than ',' for decimal separator
-                    if ($colType == 'F' || $colType == 'N') {
+                    if ('F' == $colType || 'N' == $colType) {
                         if (is_float($object[$key]) || is_float($object[$key])) {
                             $object[$key] = number_format($object[$key], 8, '.', '');
                         }
@@ -917,8 +917,8 @@ class DBUtil
                     if (!$skip) {
                         $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
                         if (isset($object[$key]) &&
-                            ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') &&
-                            (strtoupper($columnDefFields[0]) != 'XL' || strtoupper($columnDefFields[0]) != 'B') && strlen($object[$key]) > 32000) {
+                            ('derby' == $dbDriverName || 'splice' == $dbDriverName || 'jdbcbridge' == $dbDriverName) &&
+                            ('XL' != strtoupper($columnDefFields[0]) || 'B' != strtoupper($columnDefFields[0])) && strlen($object[$key]) > 32000) {
                             $chunks = str_split($object[$key], 32000);
                             $str    = '';
                             foreach ($chunks as $chunk) {
@@ -946,7 +946,7 @@ class DBUtil
             $sql .= implode(',', $tArray) . ' ' . $_where;
 
             $res = self::executeSQL($sql);
-            if ($res === false) {
+            if (false === $res) {
                 return $res;
             }
         }
@@ -1044,9 +1044,9 @@ class DBUtil
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
-                strcmp($table, 'categories_') !== 0 &&
-                strcmp($table, 'objectdata_attributes') !== 0 &&
-                strcmp($table, 'objectdata_log') !== 0 &&
+                0 !== strcmp($table, 'categories_') &&
+                0 !== strcmp($table, 'objectdata_attributes') &&
+                0 !== strcmp($table, 'objectdata_log') &&
                 ModUtil::available('ZikulaCategoriesModule')) {
             ObjectUtil::storeObjectCategories($object, $table, $idfield, $update);
         }
@@ -1054,24 +1054,24 @@ class DBUtil
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
-                strcmp($table, 'objectdata_attributes') !== 0 &&
-                strcmp($table, 'objectdata_log') !== 0) {
+                0 !== strcmp($table, 'objectdata_attributes') &&
+                0 !== strcmp($table, 'objectdata_log')) {
             ObjectUtil::storeObjectAttributes($object, $table, $idfield, $update);
         }
 
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
-                $table != 'objectdata_attributes' &&
-                $table != 'objectdata_meta' &&
-                $table != 'objectdata_log') {
+                'objectdata_attributes' != $table &&
+                'objectdata_meta' != $table &&
+                'objectdata_log' != $table) {
             ObjectUtil::updateObjectMetaData($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-                strcmp($table, 'objectdata_log') !== 0) {
+                0 !== strcmp($table, 'objectdata_log')) {
             $oldObj = self::selectObjectByID($table, $object[$idfield], $idfield);
 
             $log = new ObjectData_Log();
@@ -1117,7 +1117,7 @@ class DBUtil
         $sql .= " WHERE $idFieldName = " . self::_typesafeQuotedValue($table, $idfield, $id);
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return false;
         }
 
@@ -1186,7 +1186,7 @@ class DBUtil
         }
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -1228,7 +1228,7 @@ class DBUtil
         $sql .= implode(',', $sqlArray) . ')';
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -1268,7 +1268,7 @@ class DBUtil
     {
         @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
 
-        if ($table == 'categories_mapobj') {
+        if ('categories_mapobj' == $table) {
             // table no longer exists >= 1.4.0
             return true;
         }
@@ -1305,9 +1305,9 @@ class DBUtil
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') &&
-                $table != 'categories_' &&
-                $table != 'objectdata_attributes' &&
-                $table != 'objectdata_log' &&
+                'categories_' != $table &&
+                'objectdata_attributes' != $table &&
+                'objectdata_log' != $table &&
                 ModUtil::available('ZikulaCategoriesModule')) {
             ObjectUtil::deleteObjectCategories($object, $table, $idfield);
         }
@@ -1315,24 +1315,24 @@ class DBUtil
         if (((isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]) ||
                 (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) &&
-                $table != 'objectdata_attributes' &&
-                $table != 'objectdata_log') {
+                'objectdata_attributes' != $table &&
+                'objectdata_log' != $table) {
             ObjectUtil::deleteObjectAttributes($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) ||
                 System::getVar('Z_CONFIG_USE_OBJECT_META')) &&
-                $table != 'objectdata_attributes' &&
-                $table != 'objectdata_meta' &&
-                $table != 'objectdata_log') {
+                'objectdata_attributes' != $table &&
+                'objectdata_meta' != $table &&
+                'objectdata_log' != $table) {
             ObjectUtil::deleteObjectMetaData($object, $table, $idfield);
         }
 
         if (($enableAllServices ||
                 (isset($tables["{$table}_db_extra_enable_logging"]) && $tables["{$table}_db_extra_enable_logging"])) &&
                 System::getVar('Z_CONFIG_USE_OBJECT_LOGGING') &&
-                strcmp($table, 'objectdata_log') !== 0) {
+                0 !== strcmp($table, 'objectdata_log')) {
             $log = new ObjectData_Log();
             $log['object_type'] = $table;
             $log['object_id'] = $object[$idfield];
@@ -1359,7 +1359,7 @@ class DBUtil
 
         $where = trim($where);
         $upwhere = strtoupper($where);
-        if (strstr($upwhere, 'WHERE') === false || strpos($upwhere, 'WHERE') > 1) {
+        if (false === strstr($upwhere, 'WHERE') || strpos($upwhere, 'WHERE') > 1) {
             $where = 'WHERE ' . $where;
         }
 
@@ -1383,7 +1383,7 @@ class DBUtil
             return $orderby;
         }
 
-        if (strpos($orderby, 'GROUP BY') === 0) {
+        if (0 === strpos($orderby, 'GROUP BY')) {
             return $orderby;
         }
 
@@ -1403,17 +1403,17 @@ class DBUtil
         }
 
         // given that we use quotes in our generated SQL, oracle requires the same quotes in the order-by
-        if ($dbDriverName == 'oracle') {
+        if ('oracle' == $dbDriverName) {
             // anything which doesn't look like a basic ORDER BY clause (with possibly an ASC/DESC modifier)
             // we don't touch. To use such stuff with Oracle, you'll have to apply the quotes yourself.
 
             foreach ($tokens as $k => $v) {
                 $v = trim($v);
-                if (strpos($v, ' ') === false) {
+                if (false === strpos($v, ' ')) {
                     // 1 word
-                    if (strpos($v, '(') === false) {
+                    if (false === strpos($v, '(')) {
                         // not a function call
-                        if (strpos($v, '"') === false) {
+                        if (false === strpos($v, '"')) {
                             // not surrounded by quotes already
                             if (isset($columns[$v])) {
                                 // ensure that token is an alias
@@ -1424,12 +1424,12 @@ class DBUtil
                 } else {
                     // multiple words, perform a few basic hecks
                     $ttok = explode(' ', $v); // split on space
-                    if (count($ttok) == 2) {
+                    if (2 == count($ttok)) {
                         // see if we have 2 tokens
                         $t1 = strtolower(trim($ttok[0]));
                         $t2 = strtolower(trim($ttok[1]));
-                        $haveQuotes = strpos($t1, '"') === false;
-                        $isAscDesc = (strpos($t2, 'asc') === 0 || strpos($t2, 'desc') === 0);
+                        $haveQuotes = false === strpos($t1, '"');
+                        $isAscDesc = (0 === strpos($t2, 'asc') || 0 === strpos($t2, 'desc'));
                         $isColumn = isset($columns[$ttok[0]]);
                         if ($haveQuotes && $isAscDesc && $isColumn) {
                             $ttok[0] = '"' . $ttok[0] . '"'; // surround it by quotes
@@ -1522,12 +1522,12 @@ class DBUtil
         $fieldName = $columns[$field];
         $fieldDef = $columnsdef[$field];
 
-        if ($dbDriverName == 'oracle') {
+        if ('oracle' == $dbDriverName) {
             // we are using oracle - split up the field definition and check if it is defined as a LOB
             // oracle does not like LOBs in an ORDERBY
             $definition = explode(' ', $fieldDef);
             // [0] contains the dangerous information, either XL or B
-            if (strtoupper($definition[0]) != 'XL' && strtoupper($definition[0]) != 'B') {
+            if ('XL' != strtoupper($definition[0]) && 'B' != strtoupper($definition[0])) {
                 // no BLOB, no problem
                 $orderby = 'ORDER BY ' . $fieldName;
             }
@@ -1734,7 +1734,7 @@ class DBUtil
                         throw new Exception('Permission filter instance is empty: [' . $il . '], [' . $im . '], [' . $ir . ']');
                     }
 
-                    if ($oil == '__PERM_NO_SUCH_ITEM__' && $oim == '__PERM_NO_SUCH_ITEM__' && $oir == '__PERM_NO_SUCH_ITEM__') {
+                    if ('__PERM_NO_SUCH_ITEM__' == $oil && '__PERM_NO_SUCH_ITEM__' == $oim && '__PERM_NO_SUCH_ITEM__' == $oir) {
                         throw new Exception('Permission filter instance is invalid: [' . $oil . '], [' . $oim . '], [' . $oir . ']');
                     }
 
@@ -1782,7 +1782,7 @@ class DBUtil
         @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return false;
         }
 
@@ -1871,7 +1871,7 @@ class DBUtil
 
         $key = $field . $where . $orderby . $distinct . $assocKey;
         $objects = self::getCache($table, $key);
-        if ($objects !== false) {
+        if (false !== $objects) {
             return $objects;
         }
 
@@ -1908,7 +1908,7 @@ class DBUtil
         $sql = "SELECT $dSql $assoc FROM $tableName AS tbl $where $orderby";
 
         $res = self::executeSQL($sql, $limitOffset, $limitNumRows, $exitOnError);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -1971,7 +1971,7 @@ class DBUtil
         $sql .= ' ' . $where;
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return false;
         }
 
@@ -2014,7 +2014,7 @@ class DBUtil
         $sql .= ' ' . "GROUP BY $assocKey";
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return false;
         }
 
@@ -2074,7 +2074,7 @@ class DBUtil
         $where = [];
         foreach ($categoryFilter as $property => $category) {
             $prefix = '';
-            if ($op == 'AND') {
+            if ('AND' == $op) {
                 $prefix = "table$n.";
             }
 
@@ -2092,7 +2092,7 @@ class DBUtil
             }
 
             // process the where depending of the operator
-            if ($op == 'AND') {
+            if ('AND' == $op) {
                 $where[] = "obj_id IN (SELECT {$prefix}obj_id FROM $catmapobjtbl table$n WHERE {$prefix}reg_id = '".DataUtil::formatForStore($propids[$property])."' AND $wherecat)";
             } else {
                 $where[] = "(reg_id='" . DataUtil::formatForStore($propids[$property]) . "' AND $wherecat)";
@@ -2168,7 +2168,7 @@ class DBUtil
         }
 
         $res = self::executeSQL($sql, 0, 1);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -2197,7 +2197,7 @@ class DBUtil
 
         $key = $where . serialize($columnArray) . serialize($permissionFilter) . serialize($categoryFilter);
         $objects = self::getCache($table, $key);
-        if ($objects !== false) {
+        if (false !== $objects) {
             return $objects;
         }
 
@@ -2246,7 +2246,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'id'));
         }
 
-        if ($field == 'id' && !is_numeric($id)) {
+        if ('id' == $field && !is_numeric($id)) {
             throw new Exception(__f('The parameter %s must be numeric', 'id'));
         }
 
@@ -2283,7 +2283,7 @@ class DBUtil
 
         $key = $where . $orderby . $limitOffset . $limitNumRows . $assocKey . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray) . ($distinct ? '1' : '0');
         $objects = self::getCache($table, $key);
-        if ($objects !== false) {
+        if (false !== $objects) {
             return $objects;
         }
 
@@ -2303,7 +2303,7 @@ class DBUtil
             $limitOffset += $fetchedObjectCount;
 
             $res = self::executeSQL($stmt, $limitOffset, $limitNumRows);
-            if ($res === false) {
+            if (false === $res) {
                 return $res;
             }
 
@@ -2387,7 +2387,7 @@ class DBUtil
             $limitOffset += $fetchedObjectCount;
 
             $res = self::executeSQL($stmt, $limitOffset, $limitNumRows);
-            if ($res === false) {
+            if (false === $res) {
                 return $res;
             }
 
@@ -2426,7 +2426,7 @@ class DBUtil
 
         $key = $column . $where. serialize($categoryFilter) . $subquery;
         $sum = self::getCache($table, $key);
-        if ($sum !== false) {
+        if (false !== $sum) {
             return $sum;
         }
 
@@ -2445,7 +2445,7 @@ class DBUtil
         }
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -2477,7 +2477,7 @@ class DBUtil
 
         $key = $column . $where. (int)$distinct . serialize($categoryFilter) . $subquery;
         $sum = self::getCache($table, $key);
-        if ($sum !== false) {
+        if (false !== $sum) {
             return $sum;
         }
 
@@ -2485,8 +2485,8 @@ class DBUtil
         $tableName = $tables[$table];
         $columns = $tables["{$table}_column"];
 
-        $dst = ($distinct && $column != '1' ? 'DISTINCT' : '');
-        $col = ($column === '1' ? '1' : $columns[$column]);
+        $dst = ($distinct && '1' != $column ? 'DISTINCT' : '');
+        $col = ('1' === $column ? '1' : $columns[$column]);
 
         $where = self::generateCategoryFilterWhere($table, $where, $categoryFilter);
         $where = self::_checkWhereClause($where);
@@ -2498,7 +2498,7 @@ class DBUtil
         }
 
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -2507,7 +2507,7 @@ class DBUtil
         if ($res) {
             if (isset($res[0])) {
                 $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-                if ($dbDriverName == 'jdbcbridge') {
+                if ('jdbcbridge' == $dbDriverName) {
                     $count = $res[0][0];
                 } else {
                     $count = $res[0];
@@ -2541,7 +2541,7 @@ class DBUtil
             throw new Exception(__f('The parameter %s must not be empty', 'id'));
         }
 
-        if ($field == 'id' && !is_numeric($id)) {
+        if ('id' == $field && !is_numeric($id)) {
             throw new Exception(__f('The parameter %s must be numeric', 'id'));
         }
 
@@ -2598,7 +2598,7 @@ class DBUtil
         $sql       = 'SELECT ' . implode(',', $sqlExpressionArray) . " FROM $tableName WHERE $where";
         $res       = self::executeSQL($sql, 0, 1);
 
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -2629,7 +2629,7 @@ class DBUtil
 
         $key = $field . $where . $orderby . $distinct . $assocKey . serialize($joinInfo) . serialize($permissionFilter);
         $objects = self::getCache($table, $key);
-        if ($objects !== false) {
+        if (false !== $objects) {
             return $objects;
         }
 
@@ -2655,7 +2655,7 @@ class DBUtil
 
         $res = self::executeSQL($sql, $limitOffset, $limitNumRows);
 
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -2746,7 +2746,7 @@ class DBUtil
 
         $key = serialize($joinInfo) . $where . $orderby . $limitOffset . $limitNumRows . serialize($assocKey) . serialize($permissionFilter) . serialize($categoryFilter) . serialize($columnArray) . ($distinct ? '1' : '0');
         $objects = self::getCache($table, $key);
-        if ($objects !== false) {
+        if (false !== $objects) {
             return $objects;
         }
 
@@ -2785,7 +2785,7 @@ class DBUtil
             $limitOffset += $fetchedObjectCount;
 
             $res = self::executeSQL($stmt, $limitOffset, $limitNumRows);
-            if ($res === false) {
+            if (false === $res) {
                 return $res;
             }
 
@@ -2909,7 +2909,7 @@ class DBUtil
 
         $sql = "$sqlStart $sqlJoinFieldList $sqlFrom $sqlJoin $where $sqlGroupBy";
         $res = self::executeSQL($sql);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -2981,7 +2981,7 @@ class DBUtil
                 $currentColumn = $jcol[$v];
                 // attempt to remove encoded table name in column list used by some tables
                 $t = strstr($currentColumn, '.');
-                if ($t !== false) {
+                if (false !== $t) {
                     $currentColumn = substr($t, 1);
                 }
 
@@ -2998,7 +2998,7 @@ class DBUtil
                 $compareColumn = $jcol[$cfj];
                 // attempt to remove encoded table name in column list used by some tables
                 $t = strstr($compareColumn, '.');
-                if ($t !== false) {
+                if (false !== $t) {
                     $compareColumn = substr($t, 1);
                 }
 
@@ -3033,14 +3033,14 @@ class DBUtil
         @trigger_error('DBUtil is deprecated. please use Doctrine 2 instead.', E_USER_DEPRECATED);
 
         // nothing to do if objects is empty
-        if (is_array($objects) && count($objects) == 0) {
+        if (is_array($objects) && 0 == count($objects)) {
             return $objects;
         }
 
         $tables = self::getTables();
         $enableAllServices = (isset($tables["{$table}_db_extra_enable_all"]) && $tables["{$table}_db_extra_enable_all"]);
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && strcmp($table, 'categories_') !== 0 && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0 && ModUtil::available('ZikulaCategoriesModule')) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_categorization"]) && $tables["{$table}_db_extra_enable_categorization"])) && System::getVar('Z_CONFIG_USE_OBJECT_CATEGORIZATION') && 0 !== strcmp($table, 'categories_') && 0 !== strcmp($table, 'objectdata_attributes') && 0 !== strcmp($table, 'objectdata_log') && ModUtil::available('ZikulaCategoriesModule')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -3052,11 +3052,11 @@ class DBUtil
         }
 
         // temporary hack to prevent recursive loop because available() calls selectObjectArray again (Guite)
-        if ($table == 'modules') {
+        if ('modules' == $table) {
             return $objects;
         }
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) || System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_log') !== 0) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_attribution"]) && $tables["{$table}_db_extra_enable_attribution"]) || System::getVar('Z_CONFIG_USE_OBJECT_ATTRIBUTION')) && 0 !== strcmp($table, 'objectdata_attributes') && 0 !== strcmp($table, 'objectdata_log')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -3069,7 +3069,7 @@ class DBUtil
             }
         }
 
-        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) || System::getVar('Z_CONFIG_USE_OBJECT_META')) && strcmp($table, 'objectdata_attributes') !== 0 && strcmp($table, 'objectdata_meta') !== 0 && strcmp($table, 'objectdata_log') !== 0) {
+        if (($enableAllServices || (isset($tables["{$table}_db_extra_enable_meta"]) && $tables["{$table}_db_extra_enable_meta"]) || System::getVar('Z_CONFIG_USE_OBJECT_META')) && 0 !== strcmp($table, 'objectdata_attributes') && 0 !== strcmp($table, 'objectdata_meta') && 0 !== strcmp($table, 'objectdata_log')) {
             if (is_array($objects)) {
                 $ak = array_keys($objects);
                 if ($ak && is_array($objects[$ak[0]])) {
@@ -3103,12 +3103,12 @@ class DBUtil
 
         $key = $sql . serialize($columnArray) . serialize($permissionFilter) . $limitOffSet . $limitNumRows;
         $objects = self::getCache($table, $key);
-        if ($objects !== false) {
+        if (false !== $objects) {
             return $objects;
         }
 
         $res = self::executeSQL($sql, $limitOffSet, $limitNumRows);
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -3263,7 +3263,7 @@ class DBUtil
                     case 6:
                         $type = $matches[4];
                         $p = explode('.', $matches[5]);
-                        if (count($p) == 2) {
+                        if (2 == count($p)) {
                             $fLen = $p[0];
                             $fScale = $p[1];
                         } else {
@@ -3284,18 +3284,18 @@ class DBUtil
                 // transform to Doctrine datadict representation
                 for ($i = 1; $i <= count($fields); $i++) {
                     $fields[$i] = strtoupper($fields[$i]);
-                    if ($fields[$i] == 'AUTO' || $fields[$i] == 'AUTOINCREMENT') {
+                    if ('AUTO' == $fields[$i] || 'AUTOINCREMENT' == $fields[$i]) {
                         $fAuto = true;
-                    } elseif ($fields[$i] == 'PRIMARY') {
+                    } elseif ('PRIMARY' == $fields[$i]) {
                         $fPrim = true;
-                    } elseif ($fields[$i] == 'NOTNULL' || $fields[$i] == 'NULL') {
+                    } elseif ('NOTNULL' == $fields[$i] || 'NULL' == $fields[$i]) {
                         $fNull = $fields[$i];
                         if ($fAuto) {
                             $fNull = null;
                         }
-                    } elseif ($fields[$i] == 'UNSIGNED') {
+                    } elseif ('UNSIGNED' == $fields[$i]) {
                         $fUSign = true;
-                    } elseif ($fields[$i] == 'DEFAULT') {
+                    } elseif ('DEFAULT' == $fields[$i]) {
                         if (!isset($fields[$i + 1])) {
                             throw new Exception(__f('Missing default value in field datadict specification for %1$s.%2$s', $table, $id));
                         }
@@ -3304,7 +3304,7 @@ class DBUtil
                                 $fDef .= ' ';
                             }
                             $fDef .= str_replace(['"', "'"], ['', ''], $fields[$j]);
-                            if ($fDef == 'NULL') {
+                            if ('NULL' == $fDef) {
                                 $fDef = '';
                             }
                         }
@@ -3315,15 +3315,15 @@ class DBUtil
                 $fieldDef['type'] = $fType;
                 $fieldDef['length'] = (!$fLen && isset($iLengthMap[$type]) ? $iLengthMap[$type] : $fLen);
 
-                if ($fType == 'decimal') {
+                if ('decimal' == $fType) {
                     $fieldDef['scale'] = $fScale;
                 }
 
                 $fieldDef['autoincrement'] = $fAuto;
                 $fieldDef['primary'] = $fPrim;
                 $fieldDef['unsigned'] = $fUSign;
-                $fieldDef['notnull'] = ($fNull !== null && $fType != 'boolean' ? ($fNull == 'NOTNULL' ? true : false) : null);
-                if ($fDef != null) {
+                $fieldDef['notnull'] = (null !== $fNull && 'boolean' != $fType ? ('NOTNULL' == $fNull ? true : false) : null);
+                if (null != $fDef) {
                     $fieldDef['default'] = $fDef;
                 }
 
@@ -3366,7 +3366,7 @@ class DBUtil
                 if (!array_key_exists($id, $tables[$tabledef])) {
                     throw new Exception(__f('Invalid field pattern detected in table [%s] ...', $table));
                 }
-                if ($flag == true) {
+                if (true == $flag) {
                     $sql .= ', ';
                 }
                 $sql .= $val . ' ' . trim($tables[$tabledef][$id]);
@@ -3735,7 +3735,7 @@ class DBUtil
         $sql = 'DELETE FROM ' . $tableName;
         $res = self::executeSQL($sql);
 
-        if ($res === false) {
+        if (false === $res) {
             return $res;
         }
 
@@ -4116,7 +4116,7 @@ class DBUtil
             unset($array['length']);
             $array = array_filter($array);
             $array = !empty($array) ? ', ' . var_export($array, true) : null;
-            $length = (!empty($array) || $length != 'null') ? ", $length" : '';
+            $length = (!empty($array) || 'null' != $length) ? ", $length" : '';
             $hasColumns .= "\$this->hasColumn('$columnName as $columnAlias', '$type'{$length}{$array});\n";
         }
 

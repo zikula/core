@@ -41,7 +41,7 @@ class CategoryPermissionApi implements CategoryPermissionApiInterface
     public function hasCategoryAccess(array $categoryAssignments, $permLevel = ACCESS_OVERVIEW, $requireAccessForAll = false)
     {
         // Always allow access to content with no categories associated
-        if (count($categoryAssignments) == 0) {
+        if (0 == count($categoryAssignments)) {
             return true;
         }
 

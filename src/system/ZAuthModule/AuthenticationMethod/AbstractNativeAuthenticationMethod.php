@@ -144,8 +144,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $mapping = $this->mappingRepository->findOneBy([$field => $value]);
         if (!isset($mapping)) {
             return $this->migrationHelper->createMappingFromUserCriteria([$field => $value]); // @deprecated
-        } elseif (($field == 'email' && ZAuthConstant::AUTHENTICATION_METHOD_UNAME == $mapping->getMethod())
-            || ($field == 'uname' && ZAuthConstant::AUTHENTICATION_METHOD_EMAIL == $mapping->getMethod())) {
+        } elseif (('email' == $field && ZAuthConstant::AUTHENTICATION_METHOD_UNAME == $mapping->getMethod())
+            || ('uname' == $field && ZAuthConstant::AUTHENTICATION_METHOD_EMAIL == $mapping->getMethod())) {
             // mapping exists but method is set to opposite. allow either if possible.
             $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
             $errors = $this->validator->validate($mapping);

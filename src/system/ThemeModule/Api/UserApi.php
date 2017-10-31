@@ -121,8 +121,8 @@ class UserApi extends \Zikula_AbstractApi
      */
     private function _variable_options(&$options, $args, $dom)
     {
-        if (!isset($args['explode']) || $args['explode'] != false) {
-            if (isset($options['type']) && $options['type'] == 'select') {
+        if (!isset($args['explode']) || false != $args['explode']) {
+            if (isset($options['type']) && 'select' == $options['type']) {
                 $options['values'] = explode(',', $options['values']);
                 $options['output'] = explode(',', __($options['output'], $dom));
             }
@@ -327,7 +327,7 @@ class UserApi extends \Zikula_AbstractApi
             $templatedir = 'themes/'.DataUtil::formatForOS($themeinfo['directory']).'/templates';
         }
 
-        if ($args['type'] == 'modules') {
+        if ('modules' == $args['type']) {
             // for module templates also search on the theme/templates folder
             $templatelist = FileUtil::getFiles($templatedir, false, true, ['.tpl', '.htm'], 'f');
         } else {
@@ -446,7 +446,7 @@ class UserApi extends \Zikula_AbstractApi
         if (!isset($handle) || !is_resource($handle)) {
             throw new \RuntimeException($this->__f('Error! Could not open file so that it could be written to: %s', $osfile));
         } else {
-            if (fwrite($handle, $content) === false) {
+            if (false === fwrite($handle, $content)) {
                 fclose($handle);
 
                 throw new \RuntimeException($this->__f('Error! Could not write to file: %s', $osfile));

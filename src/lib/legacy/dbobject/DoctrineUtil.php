@@ -48,7 +48,7 @@ class DoctrineUtil
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modinfo = ModUtil::getInfoFromName($modname);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
-        $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
+        $base = ModUtil::TYPE_MODULE == $modinfo['type'] ? 'modules' : 'system';
         $dm = Doctrine_Manager::getInstance();
         $save = $dm->getAttribute(Doctrine_Core::ATTR_MODEL_LOADING);
         $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
@@ -77,7 +77,7 @@ class DoctrineUtil
         $modname = (isset($modname) ? strtolower((string)$modname) : '');
         $modinfo = ModUtil::getInfoFromName($modname);
         $osdir = DataUtil::formatForOS($modinfo['directory']);
-        $base = $modinfo['type'] == ModUtil::TYPE_MODULE ? 'modules' : 'system';
+        $base = ModUtil::TYPE_MODULE == $modinfo['type'] ? 'modules' : 'system';
         $dm = Doctrine_Manager::getInstance();
         $save = $dm->getAttribute(Doctrine_Core::ATTR_MODEL_LOADING);
         $dm->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_AGGRESSIVE);
@@ -261,11 +261,11 @@ class DoctrineUtil
         if (isset($columnList[$oldColumnName])) {
             $coldef = $columnList[$oldColumnName];
 
-            if ($coldef['type'] == 'string' && in_array('clob', $coldef['alltypes'])) {
+            if ('string' == $coldef['type'] && in_array('clob', $coldef['alltypes'])) {
                 // fix detection for TEXT fields
                 $coldef['type'] = 'clob';
                 $coldef['length'] = 65532;
-            } elseif ($coldef['type'] == 'integer' && in_array('boolean', $coldef['alltypes'])) {
+            } elseif ('integer' == $coldef['type'] && in_array('boolean', $coldef['alltypes'])) {
                 // fix detection for BOOLEAN fields
                 $coldef['type'] = 'boolean';
                 $coldef['length'] = null;

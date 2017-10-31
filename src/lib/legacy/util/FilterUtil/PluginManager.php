@@ -62,11 +62,11 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
     {
         parent::__construct($config);
 
-        if ($plgs !== null && is_array($plgs) && count($plgs) > 0) {
+        if (null !== $plgs && is_array($plgs) && count($plgs) > 0) {
             $ok = $this->loadPlugins($plgs);
         }
 
-        if ($ok == false) {
+        if (false == $ok) {
             return false;
         }
     }
@@ -199,9 +199,9 @@ class FilterUtil_PluginManager extends FilterUtil_AbstractBase
 
         // Load hierarchy
         $dest = [];
-        if ($module != 'core' && ModUtil::available($module)) {
+        if ('core' != $module && ModUtil::available($module)) {
             $modinfo = ModUtil::getInfoFromName($module);
-            $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $modpath = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
             $directory = $modinfo['directory'];
             $dest[] = "config/filter/$directory/$file";
             $dest[] = "$modpath/$directory/filter/$file";

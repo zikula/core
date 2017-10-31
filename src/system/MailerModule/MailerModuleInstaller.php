@@ -84,7 +84,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                     'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
                     'spool' => ['type' => 'memory'],
                     'delivery_addresses' => [],
-                    'disable_delivery' => $modVars['mailertype'] == 5,
+                    'disable_delivery' => 5 == $modVars['mailertype'],
                 ];
                 $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $configDumper->setConfiguration('swiftmailer', $config);

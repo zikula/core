@@ -32,7 +32,7 @@ class UserApi extends \Zikula_AbstractApi
         // Get all user modules
         $mods = ModUtil::getAllMods();
 
-        if ($mods == false) {
+        if (false == $mods) {
             return false;
         }
 
@@ -40,11 +40,11 @@ class UserApi extends \Zikula_AbstractApi
 
         foreach ($mods as $mod) {
             // saves 17 system checks
-            if ($mod['type'] == 3 && !in_array($mod['name'], ['ZikulaAdminModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name])) {
+            if (3 == $mod['type'] && !in_array($mod['name'], ['ZikulaAdminModule', 'ZikulaCategoriesModule', 'ZikulaGroupsModule', 'ZikulaThemeModule', $this->name])) {
                 continue;
             }
 
-            $modpath = ($mod['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+            $modpath = (ModUtil::TYPE_SYSTEM == $mod['type']) ? 'system' : 'modules';
 
             $module = ModUtil::getModule($this->name);
 

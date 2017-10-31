@@ -171,7 +171,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // filter by type
         $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
-        if ($type != 0) {
+        if (0 != $type) {
             $qb->andWhere($qb->expr()->eq('e.type', ':type'))->setParameter('type', $type);
         }
 
@@ -255,7 +255,7 @@ class AdminApi extends \Zikula_AbstractApi
             return false;
         }
 
-        if ($module === false) {
+        if (false === $module) {
             throw new AccessDeniedException();
         }
 
@@ -272,7 +272,7 @@ class AdminApi extends \Zikula_AbstractApi
                 $eventName = CoreEvents::MODULE_DISABLE;
                 break;
             case ModUtil::STATE_ACTIVE:
-                if ($module->getState() === ModUtil::STATE_INACTIVE) {
+                if (ModUtil::STATE_INACTIVE === $module->getState()) {
                     // ACTIVE is used for freshly installed modules, so only register the transition
                     // if previously inactive.
                     $eventName = CoreEvents::MODULE_ENABLE;
@@ -282,7 +282,7 @@ class AdminApi extends \Zikula_AbstractApi
                 break;
             case ModUtil::STATE_UPGRADED:
                 $oldstate = $module->getState();
-                if ($oldstate == ModUtil::STATE_UNINITIALISED) {
+                if (ModUtil::STATE_UNINITIALISED == $oldstate) {
                     throw new \RuntimeException($this->__('Error! Invalid module state transition.'));
                 }
                 break;
@@ -304,7 +304,7 @@ class AdminApi extends \Zikula_AbstractApi
         if (isset($eventName)) {
             // only notify for enable or disable transitions
             $moduleBundle = \ModUtil::getModule($modinfo['name']);
-            $event = new ModuleStateEvent($moduleBundle, ($moduleBundle === null) ? $modinfo : null);
+            $event = new ModuleStateEvent($moduleBundle, (null === $moduleBundle) ? $modinfo : null);
             $this->getDispatcher()->dispatch($eventName, $event);
         }
 
@@ -357,7 +357,7 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         $osdir = DataUtil::formatForOS($modinfo['directory']);
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
 
         $oomod = ModUtil::isOO($modinfo['name']);
 
@@ -381,13 +381,13 @@ class AdminApi extends \Zikula_AbstractApi
         }
 
         // Module deletion function. Only execute if the module is initialised.
-        if ($modinfo['state'] != ModUtil::STATE_UNINITIALISED) {
+        if (ModUtil::STATE_UNINITIALISED != $modinfo['state']) {
             $installer = $this->getInstaller($module, $modinfo);
 
             // perform the actual deletion of the module
             $func = [$installer, 'uninstall'];
             if (is_callable($func)) {
-                if (call_user_func($func) != true) {
+                if (true != call_user_func($func)) {
                     return false;
                 }
             }
@@ -412,12 +412,12 @@ class AdminApi extends \Zikula_AbstractApi
         if ($this->serviceManager['multisites']['enabled'] == 1) {
             // who can access to the mainSite can delete the modules in any other site
             $canDelete = (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)
-                    && $this->serviceManager['multisites.based_on_domains'] == 0)
+                    && 0 == $this->serviceManager['multisites.based_on_domains'])
                 || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST']
-                    && $this->serviceManager['multisites.based_on_domains'] == 1))
+                    && 1 == $this->serviceManager['multisites.based_on_domains']))
                 ? 1 : 0;
             //delete the module infomation only if it is not allowed, missign or invalid
-            if ($canDelete == 1 || $modinfo['state'] == ModUtil::STATE_NOTALLOWED || $modinfo['state'] == ModUtil::STATE_MISSING || $modinfo['state'] == ModUtil::STATE_INVALID) {
+            if (1 == $canDelete || ModUtil::STATE_NOTALLOWED == $modinfo['state'] || ModUtil::STATE_MISSING == $modinfo['state'] || ModUtil::STATE_INVALID == $modinfo['state']) {
                 // remove the entry from the modules table
                 $query = $this->entityManager->createQueryBuilder()
                                              ->delete()
@@ -450,7 +450,7 @@ class AdminApi extends \Zikula_AbstractApi
         $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.uninstalled', $event);
 
-        $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+        $event = new ModuleStateEvent($module, (null === $module) ? $modinfo : null);
         $this->getDispatcher()->dispatch(CoreEvents::MODULE_REMOVE, $event);
 
         return true;
@@ -539,7 +539,7 @@ class AdminApi extends \Zikula_AbstractApi
             }
 
             // loads the gettext domain for 3rd party modules
-            if (!strpos($bundle->getPath(), 'modules') === false) {
+            if (false === !strpos($bundle->getPath(), 'modules')) {
                 ZLanguage::bindModuleDomain($bundle->getName());
             }
 
@@ -824,12 +824,12 @@ class AdminApi extends \Zikula_AbstractApi
                     throw new \RuntimeException($this->__f('Error! Could not load data for module %s.', [$name]));
                 }
                 $lostModuleState = $lostModule->getState();
-                if (($lostModuleState == ModUtil::STATE_INVALID) || ($lostModuleState == ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
+                if ((ModUtil::STATE_INVALID == $lostModuleState) || ($lostModuleState == ModUtil::STATE_INVALID + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
                     // module was invalid and subsequently removed from file system,
                     // or module was incompatible with core and subsequently removed, delete it
                     $this->entityManager->remove($lostModule);
                     $this->entityManager->flush();
-                } elseif (($lostModuleState == ModUtil::STATE_UNINITIALISED) || ($lostModuleState == ModUtil::STATE_UNINITIALISED + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
+                } elseif ((ModUtil::STATE_UNINITIALISED == $lostModuleState) || ($lostModuleState == ModUtil::STATE_UNINITIALISED + ModUtil::INCOMPATIBLE_CORE_SHIFT)) {
                     // module was uninitialised and subsequently removed from file system, delete it
                     $this->entityManager->remove($lostModule);
                     $this->entityManager->flush();
@@ -870,9 +870,9 @@ class AdminApi extends \Zikula_AbstractApi
                 if ($this->serviceManager['multisites']['enabled'] == 1) {
                     // only the main site can regenerate the modules list
                     if (($this->serviceManager['multisites.mainsiteurl'] == $this->request->query->get('sitedns', null)
-                            && $this->serviceManager['multisites.based_on_domains'] == 0)
+                            && 0 == $this->serviceManager['multisites.based_on_domains'])
                         || ($this->serviceManager['multisites.mainsiteurl'] == $_SERVER['HTTP_HOST']
-                            && $this->serviceManager['multisites.based_on_domains'] == 1)) {
+                            && 1 == $this->serviceManager['multisites.based_on_domains'])) {
                         $item = new ExtensionEntity();
                         $item->merge($modinfo);
                         $this->entityManager->persist($item);
@@ -978,7 +978,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
 
         // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
@@ -996,7 +996,7 @@ class AdminApi extends \Zikula_AbstractApi
         // system or module
         $func = [$installer, 'install'];
         if (is_callable($func)) {
-            if (call_user_func($func) != true) {
+            if (true != call_user_func($func)) {
                 return false;
             }
         }
@@ -1016,7 +1016,7 @@ class AdminApi extends \Zikula_AbstractApi
         $event = new GenericEvent(null, $modinfo);
         $this->getDispatcher()->dispatch('installer.module.installed', $event);
 
-        $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+        $event = new ModuleStateEvent($module, (null === $module) ? $modinfo : null);
         $this->getDispatcher()->dispatch(CoreEvents::MODULE_INSTALL, $event);
 
         // Success
@@ -1063,7 +1063,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         ModUtil::dbInfoLoad($modinfo['name'], $osdir);
-        $modpath = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
 
         // add autoloaders for 1.3-type modules
         if ((false === strpos($osdir, '/')) && (is_dir("$modpath/$osdir/lib"))) {
@@ -1091,7 +1091,7 @@ class AdminApi extends \Zikula_AbstractApi
                 }
 
                 return false;
-            } elseif ($result != true) {
+            } elseif (true != $result) {
                 return false;
             }
         }
@@ -1124,7 +1124,7 @@ class AdminApi extends \Zikula_AbstractApi
             $event = new GenericEvent(null, $modinfo);
             $this->getDispatcher()->dispatch('installer.module.upgraded', $event);
 
-            $event = new ModuleStateEvent($module, ($module === null) ? $modinfo : null);
+            $event = new ModuleStateEvent($module, (null === $module) ? $modinfo : null);
             $this->getDispatcher()->dispatch(CoreEvents::MODULE_UPGRADE, $event);
         }
         // Success
@@ -1202,7 +1202,7 @@ class AdminApi extends \Zikula_AbstractApi
 
         // filter by type
         $type = (empty($args['type']) || $args['type'] < 0 || $args['type'] > ModUtil::TYPE_SYSTEM) ? 0 : (int)$args['type'];
-        if ($type != 0) {
+        if (0 != $type) {
             $qb->andWhere($qb->expr()->eq('e.type', ':type'))->setParameter('type', $type);
         }
 
@@ -1394,7 +1394,7 @@ class AdminApi extends \Zikula_AbstractApi
      */
     public function iscoremodule($args)
     {
-        return ModUtil::getModuleBaseDir($args['modulename']) === 'system' ? true : false;
+        return 'system' === ModUtil::getModuleBaseDir($args['modulename']) ? true : false;
     }
 
     /**

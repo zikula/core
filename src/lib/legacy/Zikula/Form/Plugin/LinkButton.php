@@ -119,7 +119,7 @@ class Zikula_Form_Plugin_LinkButton extends Zikula_Form_AbstractStyledPlugin
         $text = $view->translateForDisplay($this->text);
 
         $onclickHtml = '';
-        if ($this->confirmMessage != null) {
+        if (null != $this->confirmMessage) {
             $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }

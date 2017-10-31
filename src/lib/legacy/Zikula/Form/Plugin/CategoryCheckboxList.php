@@ -134,7 +134,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->enableDBUtil && $this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
@@ -143,7 +143,7 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
                 $data[$this->group]['__CATEGORIES__'][$this->dataField] = $this->getSelectedValue();
             }
         } elseif ($this->enableDoctrine && $this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data['Categories'][$this->dataField] = [
                     'category_id' => $this->getSelectedValue(),
                     'reg_property' => $this->dataField
@@ -198,13 +198,13 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
             //$em->flush();
 
             $categoryEntityClass = 'Zikula_Doctrine2_Entity_Category';
-            if (strpos($entityClass, '\\') !== false) {
+            if (false !== strpos($entityClass, '\\')) {
                 // if using namespaces, use new base class
                 $categoryEntityClass = 'Zikula\CategoriesModule\Entity\CategoryEntity';
             }
 
             foreach ($selectedValues as $selectedValue) {
-                if ($selectedValue === null) {
+                if (null === $selectedValue) {
                     // If no category has been selected.
                     continue;
                 }
@@ -234,11 +234,11 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
             $items = null;
             $value = null;
 
-            if ($this->group == null) {
-                if ($this->dataField != null && isset($values['__CATEGORIES__'][$this->dataField])) {
+            if (null == $this->group) {
+                if (null != $this->dataField && isset($values['__CATEGORIES__'][$this->dataField])) {
                     $value = $values['__CATEGORIES__'][$this->dataField];
                 }
-                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($values[$this->itemsDataField])) {
                     $items = $values[$this->itemsDataField];
                 }
             } else {
@@ -246,14 +246,14 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
                     $data = $values[$this->group];
                     if (isset($data['__CATEGORIES__'][$this->dataField])) {
                         $value = $data['__CATEGORIES__'][$this->dataField];
-                        if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                        if (null != $this->itemsDataField && isset($data[$this->itemsDataField])) {
                             $items = $data[$this->itemsDataField];
                         }
                     }
                 }
             }
 
-            if ($items != null) {
+            if (null != $items) {
                 $this->setItems($items);
             }
 
@@ -262,11 +262,11 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
             $items = null;
             $value = null;
 
-            if ($this->group == null) {
-                if ($this->dataField != null && isset($values['Categories'][$this->dataField])) {
+            if (null == $this->group) {
+                if (null != $this->dataField && isset($values['Categories'][$this->dataField])) {
                     $value = $values['Categories'][$this->dataField]['category_id'];
                 }
-                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($values[$this->itemsDataField])) {
                     $items = $values[$this->itemsDataField];
                 }
             } else {
@@ -274,14 +274,14 @@ class Zikula_Form_Plugin_CategoryCheckboxList extends Zikula_Form_Plugin_Checkbo
                     $data = $values[$this->group];
                     if (isset($data['Categories'][$this->dataField])) {
                         $value = $data['Categories'][$this->dataField]['category_id'];
-                        if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                        if (null != $this->itemsDataField && isset($data[$this->itemsDataField])) {
                             $items = $data[$this->itemsDataField];
                         }
                     }
                 }
             }
 
-            if ($items != null) {
+            if (null != $items) {
                 $this->setItems($items);
             }
 

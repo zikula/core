@@ -78,7 +78,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $this->availableOperators()) !== false) {
+        } elseif (!empty($op) && false === array_search($op, $this->ops) && false !== array_search($op, $this->availableOperators())) {
             $this->ops[] = $op;
         }
     }
@@ -96,7 +96,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && $this->fieldExists($fields) && false === array_search($fields, $this->fields)) {
             $this->fields[] = $fields;
         }
     }
@@ -119,7 +119,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
     public function getOperators()
     {
         $fields = $this->getFields();
-        if ($this->default == true) {
+        if (true == $this->default) {
             $fields[] = '-';
         }
 
@@ -165,7 +165,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      */
     protected function dateConvert($date)
     {
-        if (strptime($date, "%d.%m.%Y %H:%M:%S") !== false) {
+        if (false !== strptime($date, "%d.%m.%Y %H:%M:%S")) {
             $arr = strptime($date, "%d.%m.%Y %H:%M:%S");
             $time = DateUtil::buildDatetime($arr['tm_year'], $arr['tm_mon'], $arr['tm_monday'], $arr['tm_hour'], $arr['tm_min'], $arr['tm_sec']);
         } elseif (is_numeric($date)) {
@@ -212,7 +212,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
 
             case 'week':
                 $from = mktime(0, 0, 0, $datearray['mon'], $datearray['mday'], $datearray['year']);
-                $from = ($datearray['wday'] != 1) ? strtotime('last monday', $from) : $from;
+                $from = (1 != $datearray['wday']) ? strtotime('last monday', $from) : $from;
                 $to = strtotime('+1 week', $from);
                 break;
 
@@ -248,14 +248,14 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      */
     public function getSQL($field, $op, $value)
     {
-        if (array_search($op, $this->ops) === false || array_search($field, $this->fields) === false) {
+        if (false === array_search($op, $this->ops) || false === array_search($field, $this->fields)) {
             return '';
         }
 
         $type = 'point';
         if (preg_match('~^(year|month|week|day|hour|min):\s*(.*)$~i', $value, $res)) {
             $type = strtolower($res[1]);
-            if (strlen($res[2]) == 4) {
+            if (4 == strlen($res[2])) {
                 $res[2] = "01.01." . $res[2];
             }
             $time = strtotime($res[2]);
@@ -270,7 +270,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
 
         switch ($op) {
             case 'eq':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $to) = $this->makePeriod($time, $type);
                     $where = "($column >= '".DateUtil::getDatetime($from)."' AND ".
                               "$column < '".DateUtil::getDatetime($to)."')";
@@ -280,7 +280,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
 
             case 'ne':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $to) = $this->makePeriod($time, $type);
                     $where = "($column < '".DateUtil::getDatetime($from)."' AND ".
                               "$column >= '".DateUtil::getDatetime($to)."')";
@@ -290,7 +290,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
 
             case 'gt':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
                 $where = "$column > '".DateUtil::getDatetime($time)."'";
@@ -305,7 +305,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
 
             case 'le':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
                 $where = "$column <= '".DateUtil::getDatetime($time)."'";
@@ -326,14 +326,14 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
      */
     public function getDql($field, $op, $value)
     {
-        if (array_search($op, $this->ops) === false || !$this->fieldExists($field)) {
+        if (false === array_search($op, $this->ops) || !$this->fieldExists($field)) {
             return '';
         }
 
         $type = 'point';
         if (preg_match('~^(year|month|week|day|hour|min):\s*(.*)$~i', $value, $res)) {
             $type = strtolower($res[1]);
-            if (strlen($res[2]) == 4) {
+            if (4 == strlen($res[2])) {
                 $res[2] = "01.01." . $res[2];
             }
             $time = strtotime($res[2]);
@@ -350,7 +350,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
 
         switch ($op) {
             case 'eq':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $to) = $this->makePeriod($time, $type);
                     $where = "($column >= ? AND $column < ?)";
                     $params[] = DateUtil::getDatetime($from);
@@ -362,7 +362,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
 
             case 'ne':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $to) = $this->makePeriod($time, $type);
                     $where = "($column < ? OR $column >= ?)";
                     $params[] = DateUtil::getDatetime($from);
@@ -374,7 +374,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
 
             case 'gt':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
                 $where = "$column > ?";
@@ -392,7 +392,7 @@ class FilterUtil_Filter_Date extends FilterUtil_AbstractPlugin implements Filter
                 break;
 
             case 'le':
-                if ($type != 'point') {
+                if ('point' != $type) {
                     list($from, $time) = $this->makePeriod($time, $type);
                 }
                 $where = "$column <= ?";

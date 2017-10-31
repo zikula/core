@@ -123,7 +123,7 @@ class UserApi
             }
 
             // send an *array* of queried words for >1.4.0 modules
-            $words = ($vars['searchtype'] == 'EXACT') ? [trim($vars['q'])] : preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
+            $words = ('EXACT' == $vars['searchtype']) ? [trim($vars['q'])] : preg_split('/ /', $vars['q'], -1, PREG_SPLIT_NO_EMPTY);
 
             // Ask 1.4.0+ type modules for search results and persist them @deprecated remove at Core-2.0
             $searchableModules = ModUtil::getModulesCapableOf(AbstractSearchable::SEARCHABLE);
@@ -382,9 +382,9 @@ class UserApi
             $q = DataUtil::formatForStore($args['q']);
             $q = str_replace('%', '\\%', $q);  // Don't allow user input % as wildcard
             $where .= ' (';
-            if ($args['searchtype'] !== 'EXACT') {
+            if ('EXACT' !== $args['searchtype']) {
                 $searchwords = self::split_query($q);
-                $connector = $args['searchtype'] == 'AND' ? ' AND ' : ' OR ';
+                $connector = 'AND' == $args['searchtype'] ? ' AND ' : ' OR ';
             } else {
                 $searchwords = ['%' . $q . '%'];
                 $connector = ' OR ';
@@ -403,7 +403,7 @@ class UserApi
         }
 
         // Check if we're in a multilingual setup
-        if (isset($mlfield) && System::getVar('multilingual') == 1) {
+        if (isset($mlfield) && 1 == System::getVar('multilingual')) {
             $currentlang = ZLanguage::getLanguageCode();
             $where .= "AND ({$mlfield} = '$currentlang' OR {$mlfield} = '')";
         }

@@ -171,7 +171,7 @@ class DBObject
      */
     public function _init($init = null, $key = null, $field = null)
     {
-        if ($this->_objType != 'DBOBJECT') {
+        if ('DBOBJECT' != $this->_objType) {
             $dbtables = DBUtil::getTables();
             $tkey = $this->_objType;
             $ckey = $this->_objType . "_column";
@@ -371,7 +371,7 @@ class DBObject
                 $objArray = DBUtil::selectObjectArray($this->_objType, $where, '', -1, -1, '', $this->_objPermissionFilter, $this->_objCategoryFilter, $this->_objColumnArray);
             }
 
-            if ($objArray === false) {
+            if (false === $objArray) {
                 $this->_objData = false;
             } else {
                 if (isset($objArray[0])) {

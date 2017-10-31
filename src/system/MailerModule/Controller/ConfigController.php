@@ -59,11 +59,11 @@ class ConfigController extends AbstractController
                 $this->setVars($vars);
 
                 // fetch different username and password fields depending on the transport type
-                $credentialsSuffix = $formData['transport'] == 'gmail' ? 'Gmail' : '';
+                $credentialsSuffix = 'gmail' == $formData['transport'] ? 'Gmail' : '';
 
                 $transport = (string)$formData['transport'];
                 $disableDelivery = false;
-                if ($transport == 'test') {
+                if ('test' == $transport) {
                     $transport = null;
                     $disableDelivery = true;
                 }
@@ -87,10 +87,10 @@ class ConfigController extends AbstractController
                         : (!empty($currentConfig['delivery_address']) ? [$currentConfig['delivery_address']] : []),
                     'disable_delivery' => $disableDelivery
                 ];
-                if ($config['encryption'] == '') {
+                if ('' == $config['encryption']) {
                     $config['encryption'] = null;
                 }
-                if ($config['auth_mode'] == '') {
+                if ('' == $config['auth_mode']) {
                     $config['auth_mode'] = null;
                 }
                 $configDumper->setConfiguration('swiftmailer', $config);

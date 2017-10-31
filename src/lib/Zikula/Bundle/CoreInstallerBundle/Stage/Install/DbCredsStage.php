@@ -66,7 +66,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         if (!empty($params['database_host']) && !empty($params['database_user']) && !empty($params['database_name'])) {
             // test the connection here.
             $test = $this->testDBConnection($params);
-            if ($test !== true) {
+            if (true !== $test) {
                 throw new AbortStageException($test);
             }
 

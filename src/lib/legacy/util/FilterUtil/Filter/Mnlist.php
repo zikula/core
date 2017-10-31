@@ -144,7 +144,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $ops) !== false) {
+        } elseif (!empty($op) && false === array_search($op, $this->ops) && false !== array_search($op, $ops)) {
             $this->ops[] = $op;
         }
     }
@@ -167,7 +167,7 @@ class FilterUtil_Filter_Mnlist extends FilterUtil_AbstractPlugin implements Filt
     public function getOperators()
     {
         $fields = $this->getFields();
-        if ($this->default == true) {
+        if (true == $this->default) {
             $fields[] = '-';
         }
 

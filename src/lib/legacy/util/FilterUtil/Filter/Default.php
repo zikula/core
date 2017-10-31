@@ -54,7 +54,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
             $this->activateOperators(['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'search', 'like', 'likefirst', 'null', 'notnull']);
         }
 
-        if (isset($config['default']) && $config['default'] == true || count($this->_fields) <= 0) {
+        if (isset($config['default']) && true == $config['default'] || count($this->_fields) <= 0) {
             $this->default = true;
         }
     }
@@ -78,7 +78,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->_ops) === false && array_search($op, $ops) !== false) {
+        } elseif (!empty($op) && false === array_search($op, $this->_ops) && false !== array_search($op, $ops)) {
             $this->_ops[] = $op;
         }
     }
@@ -96,7 +96,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->_fields) === false) {
+        } elseif (!empty($fields) && $this->fieldExists($fields) && false === array_search($fields, $this->_fields)) {
             $this->_fields[] = $fields;
         }
     }
@@ -119,7 +119,7 @@ class FilterUtil_Filter_Default extends FilterUtil_AbstractPlugin implements Fil
     public function getOperators()
     {
         $fields = $this->getFields();
-        if ($this->default == true) {
+        if (true == $this->default) {
             $fields[] = '-';
         }
 

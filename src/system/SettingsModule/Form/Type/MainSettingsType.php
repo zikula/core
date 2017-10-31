@@ -127,7 +127,7 @@ class MainSettingsType extends AbstractType
                     'callback' => function ($data, ExecutionContextInterface $context) {
                         $falseEntryPoints = ['admin.php', 'ajax.php', 'user.php', 'mo2json.php', 'jcss.php'];
                         $entryPointExt = pathinfo($data, PATHINFO_EXTENSION);
-                        if (in_array($data, $falseEntryPoints) || strtolower($entryPointExt) != 'php') {
+                        if (in_array($data, $falseEntryPoints) || 'php' != strtolower($entryPointExt)) {
                             $context->addViolation($this->translator->__('Error! You entered an invalid entry point.'));
                         }
                         if (!file_exists($data)) {
@@ -262,13 +262,13 @@ class MainSettingsType extends AbstractType
      */
     public function validatePermalinkSettings($data, ExecutionContextInterface $context)
     {
-        if (mb_strlen($data['permasearch']) == 0) {
+        if (0 == mb_strlen($data['permasearch'])) {
             $permasearchCount = 0;
         } else {
             $permasearchCount = (!mb_ereg(',', $data['permasearch']) && mb_strlen($data['permasearch']) > 0) ? 1 : count(explode(',', $data['permasearch']));
         }
 
-        if (mb_strlen($data['permareplace']) == 0) {
+        if (0 == mb_strlen($data['permareplace'])) {
             $permareplaceCount = 0;
         } else {
             $permareplaceCount = (!mb_ereg(',', $data['permareplace']) && mb_strlen($data['permareplace']) > 0) ? 1 : count(explode(',', $data['permareplace']));

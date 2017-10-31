@@ -225,7 +225,7 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
     public function saveValue(Zikula_Form_View $view, &$data)
     {
         if ($this->dataBased) {
-            if ($this->group == null) {
+            if (null == $this->group) {
                 $data[$this->dataField] = $this->getSelectedValue();
             } else {
                 if (!array_key_exists($this->group, $data)) {
@@ -253,11 +253,11 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
             $items = null;
             $value = null;
 
-            if ($this->group == null) {
-                if ($this->dataField != null && isset($values[$this->dataField])) {
+            if (null == $this->group) {
+                if (null != $this->dataField && isset($values[$this->dataField])) {
                     $value = $values[$this->dataField];
                 }
-                if ($this->itemsDataField != null && isset($values[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($values[$this->itemsDataField])) {
                     $items = $values[$this->itemsDataField];
                 }
             } elseif (isset($values[$this->group])) {
@@ -265,12 +265,12 @@ class Zikula_Form_Plugin_BaseListSelector extends Zikula_Form_AbstractStyledPlug
                 if (isset($data[$this->dataField])) {
                     $value = $data[$this->dataField];
                 }
-                if ($this->itemsDataField != null && isset($data[$this->itemsDataField])) {
+                if (null != $this->itemsDataField && isset($data[$this->itemsDataField])) {
                     $items = $data[$this->itemsDataField];
                 }
             }
 
-            if ($items !== null) {
+            if (null !== $items) {
                 $this->setItems($items);
             }
 
