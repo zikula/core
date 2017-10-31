@@ -83,7 +83,7 @@ class AjaxUpgradeController extends AbstractController
                 return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $this->currentVersion]);
             case "upgrademodules":
                 $result = $this->upgradeModules();
-                if (count($result) === 0) {
+                if (0 === count($result)) {
                     return true;
                 }
 
@@ -238,7 +238,7 @@ class AjaxUpgradeController extends AbstractController
         $RandomLibFactory = new Factory();
         $generator = $RandomLibFactory->getMediumStrengthGenerator();
 
-        if (!isset($params['secret']) || ($params['secret'] == 'ThisTokenIsNotSoSecretChangeIt')) {
+        if (!isset($params['secret']) || ('ThisTokenIsNotSoSecretChangeIt' == $params['secret'])) {
             $params['secret'] = $generator->generateString(50);
         }
         if (!isset($params['url_secret'])) {

@@ -83,13 +83,13 @@ class AssetFilter
         // compile and replace head
         $header = $this->cssResolver->compile();
         $header .= implode("\n", $this->headers->all()) . "\n";
-        $header .= ($this->scriptPosition == 'head') ? $this->jsResolver->compile() : '';
+        $header .= ('head' == $this->scriptPosition) ? $this->jsResolver->compile() : '';
         if (strripos($source, '</head>')) {
             $source = str_replace('</head>', $header . "\n</head>", $source);
         }
 
         // compile and replace foot
-        $footer = ($this->scriptPosition == 'foot') ? $this->jsResolver->compile() : '';
+        $footer = ('foot' == $this->scriptPosition) ? $this->jsResolver->compile() : '';
         $footer .= trim(implode("\n", $this->footers->all()) . "\n");
         if (false === empty($footer)) {
             $source = str_replace('</body>', $footer . "\n</body>", $source);

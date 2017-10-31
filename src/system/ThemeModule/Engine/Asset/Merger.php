@@ -103,7 +103,7 @@ class Merger implements MergerInterface
         $cacheService = $this->$cacheName;
         $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.' . $type;
         $data = $cacheService->fetch($key);
-        if ($data === false) {
+        if (false === $data) {
             $data = [];
             foreach ($cachedFiles as $file) {
                 $this->readFile($data, $file, $type);
@@ -112,7 +112,7 @@ class Merger implements MergerInterface
             array_unshift($data, sprintf("/* --- Combined file written: %s */\n\n", $now->format('c')));
             array_unshift($data, sprintf("/* --- Combined files:\n%s\n*/\n\n", implode("\n", $cachedFiles)));
             $data = implode('', $data);
-            if ($type == 'css' && $this->minify) {
+            if ('css' == $type && $this->minify) {
                 $data = $this->minify($data);
             }
             $cacheService->save($key, $data, $this->lifetime);
@@ -147,7 +147,7 @@ class Merger implements MergerInterface
         $importsAllowd = true;
         $wasCommentHack = false;
         while (!feof($source)) {
-            if ($ext == 'css') {
+            if ('css' == $ext) {
                 $line = fgets($source, 4096);
                 $lineParse = trim($line);
                 $lineParse_length = mb_strlen($lineParse, 'UTF-8');
@@ -156,35 +156,35 @@ class Merger implements MergerInterface
                 for ($i = 0; $i < $lineParse_length; $i++) {
                     $char = $lineParse[$i];
                     $nextchar = $i < ($lineParse_length - 1) ? $lineParse[$i + 1] : '';
-                    if (!$inMultilineComment && $char == '/' && $nextchar == '*') {
+                    if (!$inMultilineComment && '/' == $char && '*' == $nextchar) {
                         // a multiline comment starts here
                         $inMultilineComment = true;
                         $wasCommentHack = false;
                         $newLine .= $char . $nextchar;
                         $i++;
-                    } elseif ($inMultilineComment && $char == '*' && $nextchar == '/') {
+                    } elseif ($inMultilineComment && '*' == $char && '/' == $nextchar) {
                         // a multiline comment stops here
                         $inMultilineComment = false;
                         $newLine .= $char . $nextchar;
-                        if (substr($lineParse, $i - 3, 8) == '/*\*//*/') {
+                        if ('/*\*//*/' == substr($lineParse, $i - 3, 8)) {
                             $wasCommentHack = true;
                             $i += 3; // move to end of hack process hack as it where
                             $newLine .= '/*/'; // fix hack comment because we lost some chars with $i += 3
                         }
                         $i++;
-                    } elseif ($importsAllowd && $char == '@' && substr($lineParse, $i, 7) == '@import') {
+                    } elseif ($importsAllowd && '@' == $char && '@import' == substr($lineParse, $i, 7)) {
                         // an @import starts here
                         $lineParseRest = trim(substr($lineParse, $i + 7));
-                        if (strtolower(substr($lineParseRest, 0, 3)) == 'url') {
+                        if ('url' == strtolower(substr($lineParseRest, 0, 3))) {
                             // the @import uses url to specify the path
                             $posEnd = strpos($lineParse, ';', $i);
                             $charsEnd = substr($lineParse, $posEnd - 1, 2);
-                            if ($charsEnd == ');') {
+                            if (');' == $charsEnd) {
                                 // used url() without media
                                 $start = strpos($lineParseRest, '(') + 1;
                                 $end = strpos($lineParseRest, ')');
                                 $url = substr($lineParseRest, $start, $end - $start);
-                                if ($url[0] == '"' | $url[0] == "'") {
+                                if ('"' == $url[0] | "'" == $url[0]) {
                                     $url = substr($url, 1, strlen($url) - 2);
                                 }
                                 // fix url
@@ -206,7 +206,7 @@ class Merger implements MergerInterface
                                 $start = strpos($lineParseRest, '(') + 1;
                                 $end = strpos($lineParseRest, ')');
                                 $url = substr($lineParseRest, $start, $end - $start);
-                                if ($url[0] == '"' | $url[0] == "'") {
+                                if ('"' == $url[0] | "'" == $url[0]) {
                                     $url = substr($url, 1, strlen($url) - 2);
                                 }
                                 // fix url
@@ -216,7 +216,7 @@ class Merger implements MergerInterface
                                 // skip @import statement
                                 $i += $posEnd - $i;
                             }
-                        } elseif (substr($lineParseRest, 0, 1) == '"' || substr($lineParseRest, 0, 1) == '\'') {
+                        } elseif ('"' == substr($lineParseRest, 0, 1) || '\'' == substr($lineParseRest, 0, 1)) {
                             // the @import uses an normal string to specify the path
                             $posEnd = strpos($lineParseRest, ';');
                             $url = substr($lineParseRest, 1, $posEnd - 2);
@@ -235,7 +235,7 @@ class Merger implements MergerInterface
                             // skip @import statement
                             $i += $posEnd - $i;
                         }
-                    } elseif (!$inMultilineComment && $char != ' ' && $char != "\n" && $char != "\r\n" && $char != "\r") {
+                    } elseif (!$inMultilineComment && ' ' != $char && "\n" != $char && "\r\n" != $char && "\r" != $char) {
                         // css rule found -> stop processing of @import statements
                         $importsAllowd = false;
                         $newLine .= $char;
@@ -254,7 +254,7 @@ class Merger implements MergerInterface
             }
         }
         fclose($source);
-        if ($ext == 'js') {
+        if ('js' == $ext) {
             $contents[] = "\n;\n";
         } else {
             $contents[] = "\n\n";
@@ -276,7 +276,7 @@ class Merger implements MergerInterface
 
         preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
-            if ((strpos($match[1], '/') !== 0) && (substr($match[2], 0, 7) != 'http://') && (substr($match[2], 0, 8) != 'https://')) {
+            if ((0 !== strpos($match[1], '/')) && ('http://' != substr($match[2], 0, 7)) && ('https://' != substr($match[2], 0, 8))) {
                 $depth = substr_count($match[1], '../') * -1;
                 $path = $depth < 0 ? array_slice($relativeFilePath, 0, $depth) : $relativeFilePath;
                 $path = implode('/', $path);

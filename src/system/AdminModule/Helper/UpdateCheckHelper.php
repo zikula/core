@@ -152,7 +152,7 @@ class UpdateCheckHelper
             }
         }
 
-        if ($this->checked === true && $this->updateversion !== '') {
+        if (true === $this->checked && '' !== $this->updateversion) {
             $this->variableApi->set(VariableApi::CONFIG, 'updatelastchecked', (int)time());
             $this->variableApi->set(VariableApi::CONFIG, 'updateversion', $this->updateversion);
             $this->lastChecked = (int)$this->variableApi->getSystemVar('updatelastchecked');
@@ -179,7 +179,7 @@ class UpdateCheckHelper
         $ref = $this->requestStack
             ->getMasterRequest()
             ->getBaseURL();
-        $port = ($urlArray['scheme'] == 'https') ? 443 : 80;
+        $port = ('https' == $urlArray['scheme']) ? 443 : 80;
 
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -210,7 +210,7 @@ class UpdateCheckHelper
         if (ini_get('allow_url_fopen')) {
             // handle SSL connections
             $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
-            $host = ($port == 443 ? "ssl://$urlArray[host]" : $urlArray['host']);
+            $host = (443 == $port ? "ssl://$urlArray[host]" : $urlArray['host']);
             $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
             if (!$fp) {
                 return false;

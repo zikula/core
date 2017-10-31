@@ -107,7 +107,7 @@ class CategoryPermissionApiTest extends \PHPUnit_Framework_TestCase
             function($component = null, $instance = null, $level = ACCESS_NONE, $user = null) {
                 list($regId, $catId) = explode('::', $instance);
 
-                return $catId % 2 == 0;
+                return 0 == $catId % 2;
             }
         ));
 

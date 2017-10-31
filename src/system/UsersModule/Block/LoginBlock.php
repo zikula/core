@@ -46,7 +46,7 @@ class LoginBlock extends AbstractBlockHandler
                 // if form is too complicated for a simple block display, display only a link to main form
                 $templateParams['linkOnly'] = ($addedContent || count($hookBindings) > 0);
 
-                if (!$addedContent && count($hookBindings) == 0 && count($authenticationMethodCollector->getActiveKeys()) == 1) {
+                if (!$addedContent && 0 == count($hookBindings) && 1 == count($authenticationMethodCollector->getActiveKeys())) {
                     $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
                     if ($request->hasSession()) {
                         $request->getSession()->set('authenticationMethod', $selectedMethod);

@@ -255,7 +255,7 @@ class Engine
     {
         $themeConfig = $this->getTheme()->getConfig();
         // defining an admin realm overrides all other options for 'admin' annotated methods
-        if ($this->annotationValue == 'admin' && isset($themeConfig['admin'])) {
+        if ('admin' == $this->annotationValue && isset($themeConfig['admin'])) {
             $this->realm = 'admin';
 
             return;
@@ -263,7 +263,7 @@ class Engine
         $request = $this->requestStack->getMasterRequest();
         $requestAttributes = $request->attributes->all();
         // match `/` for home realm
-        if (isset($requestAttributes['_route']) && $requestAttributes['_route'] == 'home') {
+        if (isset($requestAttributes['_route']) && 'home' == $requestAttributes['_route']) {
             $this->realm = 'home';
 
             return;
@@ -286,7 +286,7 @@ class Engine
                 }
                 foreach ($valuesToMatch as $value) {
                     $match = preg_match($pattern, $value);
-                    if ($match === 1) {
+                    if (1 === $match) {
                         $this->realm = $realm;
 
                         return; // use first match and do not continue to attempt to match patterns

@@ -214,13 +214,13 @@ class MainSettingsType extends AbstractType
      */
     public function validatePermalinkSettings($data, ExecutionContextInterface $context)
     {
-        if (mb_strlen($data['permasearch']) == 0) {
+        if (0 == mb_strlen($data['permasearch'])) {
             $permasearchCount = 0;
         } else {
             $permasearchCount = (!mb_ereg(',', $data['permasearch']) && mb_strlen($data['permasearch']) > 0) ? 1 : count(explode(',', $data['permasearch']));
         }
 
-        if (mb_strlen($data['permareplace']) == 0) {
+        if (0 == mb_strlen($data['permareplace'])) {
             $permareplaceCount = 0;
         } else {
             $permareplaceCount = (!mb_ereg(',', $data['permareplace']) && mb_strlen($data['permareplace']) > 0) ? 1 : count(explode(',', $data['permareplace']));

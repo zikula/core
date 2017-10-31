@@ -152,13 +152,13 @@ class UserAdministrationController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 $mapping = $form->getData();
                 $passToSend = $form['sendpass']->getData() ? $mapping->getPass() : '';
-                $authMethodName = ($mapping->getMethod() == ZAuthConstant::AUTHENTICATION_METHOD_EITHER) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->getMethod();
+                $authMethodName = (ZAuthConstant::AUTHENTICATION_METHOD_EITHER == $mapping->getMethod()) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->getMethod();
                 $authMethod = $this->get('zikula_users_module.internal.authentication_method_collector')->get($authMethodName);
                 $user = new UserEntity();
                 $user->merge($mapping->getUserEntityData());
                 $user->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($user);
-                if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
                     $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
                 } else {
                     $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
@@ -181,7 +181,7 @@ class UserAdministrationController extends AbstractController
                 $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
 
-                if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
                     $this->addFlash('status', $this->__('Done! Created new registration application.'));
                 } elseif (null !== $user->getActivated()) {
                     $this->addFlash('status', $this->__('Done! Created new user account.'));

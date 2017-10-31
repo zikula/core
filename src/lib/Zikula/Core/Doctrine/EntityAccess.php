@@ -87,7 +87,7 @@ class EntityAccess implements \ArrayAccess
             'lazyPropertiesDefaults'
         ];
 
-        while ($r !== false) {
+        while (false !== $r) {
             $properties = $r->getProperties();
             $r = $r->getParentClass();
 

@@ -73,11 +73,11 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                         $content = unserialize($content);
                         foreach ($content as $k => $item) {
                             if (is_string($item)) {
-                                if (strpos($item, 'blocks_block_extmenu_topnav.tpl') !== false) {
+                                if (false !== strpos($item, 'blocks_block_extmenu_topnav.tpl')) {
                                     $content[$k] = str_replace('blocks_block_extmenu_topnav.tpl', 'Block/Extmenu/topnav.tpl', $item);
-                                } elseif (strpos($item, 'blocks_block_extmenu.tpl') !== false) {
+                                } elseif (false !== strpos($item, 'blocks_block_extmenu.tpl')) {
                                     $content[$k] = str_replace('blocks_block_extmenu.tpl', 'Block/Extmenu/extmenu.tpl', $item);
-                                } elseif (strpos($item, 'menutree/blocks_block_menutree_') !== false) {
+                                } elseif (false !== strpos($item, 'menutree/blocks_block_menutree_')) {
                                     $content[$k] = str_replace('menutree/blocks_block_menutree_', 'Block/Menutree/', $item);
                                 }
                             }
@@ -282,6 +282,6 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
     private function isSerialized($string)
     {
-        return $string === 'b:0;' || @unserialize($string) !== false;
+        return 'b:0;' === $string || false !== @unserialize($string);
     }
 }

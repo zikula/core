@@ -36,7 +36,7 @@ class CombinedAssetController extends AbstractController
             ini_set('zlib.output_compression', 1);
         }
         $response = new Response($cachedFile);
-        $response->headers->set('Content-type', $type == 'js' ? 'text/javascript' : 'text/css');
+        $response->headers->set('Content-type', 'js' == $type ? 'text/javascript' : 'text/css');
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $key);
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->addCacheControlDirective('must-revalidate');

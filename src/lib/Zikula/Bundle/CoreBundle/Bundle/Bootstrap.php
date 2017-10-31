@@ -118,16 +118,16 @@ class Bootstrap
             if (isset($this->extensionStateMap[$extensionName])) {
                 $state = $this->extensionStateMap[$extensionName];
             } else {
-                $state = ['state' => ($type == 'T') ? ThemeEntityRepository::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
+                $state = ['state' => ('T' == $type) ? ThemeEntityRepository::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
             }
         }
 
         switch ($type) {
             case 'T':
-                return $state['state'] == ThemeEntityRepository::STATE_ACTIVE;
+                return ThemeEntityRepository::STATE_ACTIVE == $state['state'];
                 break;
             default:
-                if (($state['state'] == Constant::STATE_ACTIVE) || ($state['state'] == Constant::STATE_UPGRADED) || ($state['state'] == Constant::STATE_TRANSITIONAL)) {
+                if ((Constant::STATE_ACTIVE == $state['state']) || (Constant::STATE_UPGRADED == $state['state']) || (Constant::STATE_TRANSITIONAL == $state['state'])) {
                     return true;
                 }
 

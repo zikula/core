@@ -334,12 +334,12 @@ class BundleSyncHelper
                 throw new \RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
             }
             $lostModuleState = $lostModule->getState();
-            if (($lostModuleState == Constant::STATE_INVALID)
+            if ((Constant::STATE_INVALID == $lostModuleState)
                 || ($lostModuleState == Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was invalid and subsequently removed from file system,
                 // or extension was incompatible with core and subsequently removed, delete it
                 $this->extensionRepository->removeAndFlush($lostModule);
-            } elseif (($lostModuleState == Constant::STATE_UNINITIALISED)
+            } elseif ((Constant::STATE_UNINITIALISED == $lostModuleState)
                 || ($lostModuleState == Constant::STATE_UNINITIALISED + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was uninitialised and subsequently removed from file system, delete it
                 $this->extensionRepository->removeAndFlush($lostModule);

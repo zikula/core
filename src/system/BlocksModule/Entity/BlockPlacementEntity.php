@@ -68,11 +68,11 @@ class BlockPlacementEntity extends EntityAccess
 
     public function setPosition(BlockPositionEntity $position = null)
     {
-        if ($this->position !== null) {
+        if (null !== $this->position) {
             $this->position->removePlacement($this);
         }
 
-        if ($position !== null) {
+        if (null !== $position) {
             $position->addPlacement($this);
         }
 
@@ -91,11 +91,11 @@ class BlockPlacementEntity extends EntityAccess
 
     public function setBlock(BlockEntity $block = null)
     {
-        if ($this->block !== null) {
+        if (null !== $this->block) {
             $this->block->removePlacement($this);
         }
 
-        if ($block !== null) {
+        if (null !== $block) {
             $block->addPlacement($this);
         }
 

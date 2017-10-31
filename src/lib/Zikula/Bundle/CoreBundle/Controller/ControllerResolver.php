@@ -56,7 +56,7 @@ class ControllerResolver extends BaseControllerResolver
                 }
             }
 
-            if ($currentBundle === false) {
+            if (false === $currentBundle) {
                 throw new \LogicException(sprintf('Unable to calculate the bundle from controller "%s".', $class));
             }
 

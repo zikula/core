@@ -31,12 +31,12 @@ class InstallerController extends AbstractController
     public function installAction(Request $request, $stage)
     {
         // already installed?
-        if (true === $this->container->getParameter('installed') && $stage != 'complete') {
+        if (true === $this->container->getParameter('installed') && 'complete' != $stage) {
             $stage = 'installed';
         }
 
         // not installed but requesting installed stage?
-        if (false === $this->container->getParameter('installed') && $stage == 'installed') {
+        if (false === $this->container->getParameter('installed') && 'installed' == $stage) {
             $stage = 'notinstalled';
         }
 

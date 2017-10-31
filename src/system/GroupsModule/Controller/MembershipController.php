@@ -146,10 +146,10 @@ class MembershipController extends AbstractController
         }
         /** @var UserEntity $userEntity */
         $userEntity = $this->get('zikula_users_module.user_repository')->find($currentUserApi->get('uid'));
-        $groupTypeIsPrivate = $group->getGtype() == CommonHelper::GTYPE_PRIVATE;
-        $groupTypeIsCore = $group->getGtype() == CommonHelper::GTYPE_CORE;
-        $groupStateIsClosed = $group->getState() == CommonHelper::STATE_CLOSED;
-        $groupCountIsLimit = $group->getNbumax() > 0 && $group->getUsers()->count() > $group->getNbumax();
+        $groupTypeIsPrivate = CommonHelper::GTYPE_PRIVATE == $group->getGtype();
+        $groupTypeIsCore = CommonHelper::GTYPE_CORE == $group->getGtype();
+        $groupStateIsClosed = CommonHelper::STATE_CLOSED == $group->getState();
+        $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
         $alreadyGroupMember = $group->getUsers()->contains($userEntity);
         if ($groupTypeIsPrivate || $groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {
             $this->addFlash('error', $this->getSpecificGroupMessage($groupTypeIsPrivate, $groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember));

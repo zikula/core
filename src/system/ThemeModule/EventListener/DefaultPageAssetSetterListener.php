@@ -141,7 +141,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJquery()
     {
-        $jquery = $this->params['env'] != 'dev' ? 'jquery.min.js' : 'jquery.js';
+        $jquery = 'dev' != $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add([$this->assetHelper->resolve("jquery/$jquery") => AssetBag::WEIGHT_JQUERY]);
         $this->jsAssetBag->add([$this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1]);
     }

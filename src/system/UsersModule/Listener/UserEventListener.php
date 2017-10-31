@@ -94,10 +94,10 @@ class UserEventListener implements EventSubscriberInterface
     public function clearUsersNamespace($event, $eventName)
     {
         $doClear = false;
-        if ($eventName == KernelEvents::EXCEPTION) {
+        if (KernelEvents::EXCEPTION == $eventName) {
             $request = $this->requestStack->getCurrentRequest();
             if (!is_null($request)) {
-                $doClear = $request->attributes->has('_zkModule') && $request->attributes->get('_zkModule') == UsersConstant::MODNAME;
+                $doClear = $request->attributes->has('_zkModule') && UsersConstant::MODNAME == $request->attributes->get('_zkModule');
             }
         } else {
             // Logout

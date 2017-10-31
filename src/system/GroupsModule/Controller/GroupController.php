@@ -215,7 +215,7 @@ class GroupController extends AbstractController
         }
 
         // get the primary admin group - we do not allow its deletion
-        if ($groupEntity->getGid() == Constant::GROUP_ID_ADMIN) {
+        if (Constant::GROUP_ID_ADMIN == $groupEntity->getGid()) {
             $this->addFlash('error', $this->__('Error! You cannot delete the primary administration group.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');

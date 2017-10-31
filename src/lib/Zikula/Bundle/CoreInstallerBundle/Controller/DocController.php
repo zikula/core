@@ -78,7 +78,7 @@ class DocController
         $this->setBasePath($request);
 
         $content = '';
-        if (!file_exists($this->basePath . "/$name") && $request->getLocale() != 'en') {
+        if (!file_exists($this->basePath . "/$name") && 'en' != $request->getLocale()) {
             // fallback to English docs
             $this->basePath = str_replace('docs/' . $request->getLocale(), 'docs/en', $this->basePath);
         }

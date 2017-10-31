@@ -71,7 +71,7 @@ class RegistrationController extends AbstractController
                 'path' => 'zikulausersmodule_registration_register'
             ]);
         } else {
-            if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) == 1) {
+            if (empty($selectedMethod) && 1 == count($authenticationMethodCollector->getActiveKeys())) {
                 $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
             }
             $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
@@ -108,7 +108,7 @@ class RegistrationController extends AbstractController
         }
         $hasListeners = $dispatcher->hasListeners(UserEvents::EDIT_FORM);
         $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.registration');
-        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && count($hookBindings) == 0) {
+        if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && 0 == count($hookBindings)) {
             // skip form display and process immediately.
             $userData['_token'] = $this->get('security.csrf.token_manager')->getToken($form->getName())->getValue();
             $userData['submit'] = true;
@@ -159,7 +159,7 @@ class RegistrationController extends AbstractController
                     $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
-                    $canLogIn = $userEntity->getActivated() == UsersConstant::ACTIVATED_ACTIVE;
+                    $canLogIn = UsersConstant::ACTIVATED_ACTIVE == $userEntity->getActivated();
                     $autoLogIn = $this->getVar(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN);
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
@@ -225,9 +225,9 @@ class RegistrationController extends AbstractController
      */
     private function generateRegistrationFlashMessage($activatedStatus, $autoLogIn = false)
     {
-        if ($activatedStatus == UsersConstant::ACTIVATED_PENDING_REG) {
+        if (UsersConstant::ACTIVATED_PENDING_REG == $activatedStatus) {
             $this->addFlash('status', $this->__('Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.'));
-        } elseif ($activatedStatus == UsersConstant::ACTIVATED_ACTIVE) {
+        } elseif (UsersConstant::ACTIVATED_ACTIVE == $activatedStatus) {
             // The account is saved, and is active.
             if ($autoLogIn) {
                 // No errors and auto-login is turned on. A simple post-log-in message.

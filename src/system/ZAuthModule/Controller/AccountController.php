@@ -53,7 +53,7 @@ class AccountController extends AbstractController
         if ($form->isSubmitted()) {
             $data = $form->getData();
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy(['email' => $data['email']]);
-            if (count($mapping) == 1) {
+            if (1 == count($mapping)) {
                 // send email
                 $sent = $this->get('zikula_zauth_module.helper.mail_helper')->sendNotification($mapping[0]->getEmail(), 'lostuname', [
                     'uname' => $mapping[0]->getUname(),
@@ -64,7 +64,7 @@ class AccountController extends AbstractController
                 } else {
                     $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
                 }
-            } elseif (count($mapping) > 1) {
+            } elseif (1 < count($mapping)) {
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
                 $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
@@ -97,9 +97,9 @@ class AccountController extends AbstractController
             $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
             $data = $form->getData();
             $field = empty($data['uname']) ? 'email' : 'uname';
-            $inverse = $field == 'uname' ? 'email' : 'uname';
+            $inverse = 'uname' == $field ? 'email' : 'uname';
             $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findBy([$field => $data[$field]]);
-            if (count($mapping) == 1) {
+            if (1 == count($mapping)) {
                 $mapping = $mapping[0];
                 $user = $this->get('zikula_users_module.user_repository')->find($mapping->getUid());
                 switch ($user->getActivated()) {
@@ -138,7 +138,7 @@ class AccountController extends AbstractController
                     default:
                         $this->addFlash('error', $this->__('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
                 }
-            } elseif (count($mapping) > 1) {
+            } elseif (1 < count($mapping)) {
                 $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
             } else {
                 $this->addFlash('error', $this->__f('%s not found. Please contact the system administrator for assistance.', ['%s' => ucwords($map[$field])]));
@@ -183,7 +183,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute($redirectToRoute);
         }
 
-        if ($requestDetails['userId'] == '' || $requestDetails['userName'] == '' || $requestDetails['emailAddress'] == '') {
+        if ('' == $requestDetails['userId'] || '' == $requestDetails['userName'] || '' == $requestDetails['emailAddress']) {
             $this->addFlash('error', $this->__('Your request could not be processed due to invalid arguments.'));
 
             return $this->redirectToRoute($redirectToRoute);
