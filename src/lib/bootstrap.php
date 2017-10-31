@@ -23,7 +23,7 @@ $parameters = $kernelConfig['parameters'];
 if (true === $parameters['debug']) {
     Debug::enable();
 }
-if ($parameters['env'] == 'prod') {
+if ('prod' == $parameters['env']) {
     // improves performance for prod env
     include_once __DIR__ . '/../var/bootstrap.php.cache';
 }

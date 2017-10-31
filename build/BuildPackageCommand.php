@@ -82,7 +82,7 @@ class BuildPackageCommand extends Command
         // build zip
         $zip = new \ZipArchive();
         $fileName = "$name.zip";
-        if ($zip->open($fileName, \ZipArchive::CREATE) !== true) {
+        if (true !== $zip->open($fileName, \ZipArchive::CREATE)) {
             $output->writeln("<error>Error creating $fileName</error>");
         }
 
