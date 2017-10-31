@@ -86,6 +86,7 @@ class HooksListener implements EventSubscriberInterface
         $event->setArgument('modname', $event->getSubject());
         $event->setArgument('modfunc', [1 => 'getLinks']);
         $event->setArgument('api', true);
+
         // return if not collection admin links
         if (LinkContainerInterface::TYPE_ADMIN != $event->getArgument('type')) {
             return;

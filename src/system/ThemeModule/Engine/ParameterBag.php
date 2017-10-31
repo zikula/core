@@ -188,7 +188,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     private function &resolvePath($key, $writeContext = false)
     {
         $array = &$this->parameters;
-        $key = (strpos($key, $this->ns) === 0) ? substr($key, 1) : $key;
+        $key = (0 === strpos($key, $this->ns)) ? substr($key, 1) : $key;
 
         // Check if there is anything to do, else return
         if (!$key) {
@@ -234,7 +234,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     private function resolveKey($key)
     {
-        if (strpos($key, $this->ns) !== false) {
+        if (false !== strpos($key, $this->ns)) {
             $key = substr($key, strrpos($key, $this->ns) + 1, strlen($key));
         }
 

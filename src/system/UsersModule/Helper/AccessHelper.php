@@ -106,7 +106,7 @@ class AccessHelper
         $user->setLastlogin(new \DateTime());
         $this->userRepository->persistAndFlush($user);
         $lifetime = 0;
-        if ($rememberMe && $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM) != ZikulaSessionStorage::SECURITY_LEVEL_HIGH) {
+        if ($rememberMe && ZikulaSessionStorage::SECURITY_LEVEL_HIGH != $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM)) {
             $lifetime = 2 * 365 * 24 * 60 * 60; // two years
         }
         $this->session->migrate(true, $lifetime);

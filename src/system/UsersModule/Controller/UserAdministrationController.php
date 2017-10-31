@@ -232,7 +232,7 @@ class UserAdministrationController extends AbstractController
             if ($form->get('confirm')->isClicked()) {
                 $this->get('zikula_users_module.helper.registration_helper')->approve($user);
                 $mailHelper = $this->get('zikula_users_module.helper.mail_helper');
-                if ($user->getActivated() == UsersConstant::ACTIVATED_PENDING_REG) {
+                if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
                     $notificationErrors = $mailHelper->createAndSendRegistrationMail($user, true, false);
                 } else {
                     $notificationErrors = $mailHelper->createAndSendUserMail($user, true, false);
@@ -270,7 +270,7 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
         $users = new ArrayCollection();
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             $deleteForm = $this->createForm(DeleteType::class, [], [
                 'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm(),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
@@ -329,7 +329,7 @@ class UserAdministrationController extends AbstractController
                 // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $this->get('zikula_users_module.user_repository')->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
-                    $eventName = $deletedUser->getActivated() == UsersConstant::ACTIVATED_ACTIVE ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
+                    $eventName = UsersConstant::ACTIVATED_ACTIVE == $deletedUser->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
                     $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
                     $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));

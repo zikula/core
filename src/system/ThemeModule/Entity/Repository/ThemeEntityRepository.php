@@ -64,11 +64,11 @@ class ThemeEntityRepository extends EntityRepository
             ->select('t')
             ->from('ZikulaThemeModule:ThemeEntity', 't');
 
-        if ($state != self::STATE_ALL) {
+        if (self::STATE_ALL != $state) {
             $qb->andWhere('t.state = :state')
                 ->setParameter('state', $state);
         }
-        if ($type != self::TYPE_ALL) {
+        if (self::TYPE_ALL != $type) {
             $qb->andWhere('t.type = :type')
                 ->setParameter('type', $type);
         }

@@ -41,7 +41,7 @@ class PermissionRepository extends EntityRepository implements PermissionReposit
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->orderBy('p.sequence', 'ASC');
-        if ($group != PermissionApi::ALL_GROUPS) {
+        if (PermissionApi::ALL_GROUPS != $group) {
             $qb->where('p.gid = :gid')
                 ->setParameter('gid', $group);
         }

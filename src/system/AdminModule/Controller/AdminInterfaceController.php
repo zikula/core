@@ -80,7 +80,7 @@ class AdminInterfaceController extends AbstractController
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $categoryId = $defaultCid;
-        if (!empty($caller['_zkModule']) && $caller['_zkModule'] != 'ZikulaAdminModule') {
+        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' != $caller['_zkModule']) {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
                 $categoryId = $moduleRelation->getCid();
@@ -109,7 +109,7 @@ class AdminInterfaceController extends AbstractController
         $modvars = $this->get('zikula_extensions_module.api.variable')->getAll('ZikulaThemeModule');
         $data = [];
         $data['mode'] = $this->get('kernel')->getEnvironment();
-        if ($data['mode'] != 'prod') {
+        if ('prod' != $data['mode']) {
             $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');
             $data['legacy'] = [
                 'status' => true,
@@ -170,7 +170,7 @@ class AdminInterfaceController extends AbstractController
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if (mb_substr($appDir, 0, 1) == '/' && false === strpos($appDir, $docRoot)) {
+            if ('/' == mb_substr($appDir, 0, 1) && false === strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
             } else {
@@ -198,7 +198,7 @@ class AdminInterfaceController extends AbstractController
                 'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,
                 // check for outputfilter
-                'useids' => $hasSecurityCenter && $variableApi->getSystemVar('useids') == 1,
+                'useids' => $hasSecurityCenter && 1 == $variableApi->getSystemVar('useids'),
                 'idssoftblock' => $variableApi->getSystemVar('idssoftblock')
             ]
         ]);
@@ -257,7 +257,7 @@ class AdminInterfaceController extends AbstractController
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $categoryId = $defaultCid;
-        if (!empty($caller['_zkModule']) && $caller['_zkModule'] != 'ZikulaAdminModule') {
+        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' != $caller['_zkModule']) {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
                 $categoryId = $moduleRelation->getCid();

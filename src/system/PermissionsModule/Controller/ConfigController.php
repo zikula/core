@@ -62,7 +62,7 @@ class ConfigController extends AbstractController
                 $variableApi->set('ZikulaPermissionsModule', 'lockadmin', $lockadmin);
 
                 $adminId = isset($formData['adminid']) ? (int)$formData['adminid'] : 1;
-                if ($adminId != 0) {
+                if (0 != $adminId) {
                     $perm = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->find($adminId);
                     if (!$perm) {
                         $adminId = 0;

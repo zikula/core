@@ -31,7 +31,7 @@ class InstallerHelper
         if (count($filters) <= 1) {
             foreach ($filters as $filter) {
                 foreach ($filter as $parameter => $value) {
-                    if ($parameter == 'fargs') {
+                    if ('fargs' == $parameter) {
                         parse_str($value, $queryVars);
                         foreach ($queryVars as $queryVarName => $queryVarValue) {
                             $newFilter[] = [$queryVarName, '==', $queryVarValue];
@@ -52,7 +52,7 @@ class InstallerHelper
                 }
             }
             foreach ($parameterValues as $parameter => $valueArray) {
-                if ($parameter == 'fargs') {
+                if ('fargs' == $parameter) {
                     $queryVarValues = [];
                     foreach ($valueArray as $value) {
                         parse_str($value, $queryVars);

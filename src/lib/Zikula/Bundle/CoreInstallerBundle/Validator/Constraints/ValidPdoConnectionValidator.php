@@ -32,7 +32,7 @@ class ValidPdoConnectionValidator extends ConstraintValidator
 
     public function validate($object, Constraint $constraint)
     {
-        if ($object['database_host'] == '' || $object['database_name'] == '' || $object['database_user'] == '') {
+        if ('' == $object['database_host'] || '' == $object['database_name'] || '' == $object['database_user']) {
             $this->context->buildViolation($this->__('Error! Please enter your database credentials.'))
                 ->addViolation();
 
@@ -42,7 +42,7 @@ class ValidPdoConnectionValidator extends ConstraintValidator
         try {
             $dbh = new \PDO("$object[database_driver]:host=$object[database_host];dbname=$object[database_name]", $object['database_user'], $object['database_password']);
             $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $sql = ($object['database_driver'] == 'mysql' || $object['database_driver'] == 'mysqli') ?
+            $sql = ('mysql' == $object['database_driver'] || 'mysqli' == $object['database_driver']) ?
                 "SHOW TABLES FROM `$object[database_name]` LIKE '%'" : "SHOW TABLES FROM $object[database_name] LIKE '%'";
             $tables = $dbh->query($sql);
             if (!is_object($tables)) {

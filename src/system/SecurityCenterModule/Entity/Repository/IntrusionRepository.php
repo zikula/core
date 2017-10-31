@@ -142,7 +142,7 @@ class IntrusionRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('tbl');
 
-        if ($fieldName == 'uid') {
+        if ('uid' == $fieldName) {
             $qb->select('DISTINCT(u.' . $fieldName . ')')
                ->from('ZikulaUsersModule:UserEntity', 'u')
                ->where($qb->expr()->eq('tbl.user', 'u.uid'))

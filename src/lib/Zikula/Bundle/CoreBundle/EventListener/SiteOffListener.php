@@ -91,8 +91,8 @@ class SiteOffListener implements EventSubscriberInterface
         } catch (\Exception $e) {
             return;
         }
-        if ($routeInfo['_route'] == 'zikulausersmodule_access_login'
-        || $routeInfo['_route'] == 'zikulathememodule_combinedasset_asset') {
+        if ('zikulausersmodule_access_login' == $routeInfo['_route']
+        || 'zikulathememodule_combinedasset_asset' == $routeInfo['_route']) {
             return;
         }
         if ($response instanceof PlainResponse

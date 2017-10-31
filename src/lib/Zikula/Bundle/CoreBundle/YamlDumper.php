@@ -231,7 +231,7 @@ class YamlDumper
      */
     protected function validateName($name, $isParameter)
     {
-        if (!is_string($name) || strlen($name) <= 0 || (!$isParameter && $name == 'parameters')) {
+        if (!is_string($name) || strlen($name) <= 0 || (!$isParameter && 'parameters' == $name)) {
             if ($isParameter) {
                 throw new \InvalidArgumentException('The parameter name must be a string');
             } else {

@@ -137,7 +137,7 @@ class PurifierHelper
         $config = \HTMLPurifier_Config::createDefault();
 
         $charset = $this->kernel->getCharset();
-        if (strtolower($charset) != 'utf-8') {
+        if ('utf-8' != strtolower($charset)) {
             // set a different character encoding with iconv
             $config->set('Core.Encoding', $charset);
             // Note that HTML Purifier's support for non-Unicode encodings is crippled by the

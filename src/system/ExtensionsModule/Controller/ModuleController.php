@@ -73,7 +73,7 @@ class ModuleController extends AbstractController
         $upgradedExtensions = [];
         $vetoEvent = new GenericEvent();
         $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
-        if (!$vetoEvent->isPropagationStopped() && $pos == 1) {
+        if (!$vetoEvent->isPropagationStopped() && 1 == $pos) {
             // regenerate the extension list only when viewing the first page
             $bundleSyncHelper = $this->get('zikula_extensions_module.bundle_sync_helper');
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
@@ -87,7 +87,7 @@ class ModuleController extends AbstractController
         $adminRoutes = [];
 
         foreach ($pagedResult as $module) {
-            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || $module['state'] != Constant::STATE_ACTIVE) {
+            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || Constant::STATE_ACTIVE != $module['state']) {
                 continue;
             }
 
@@ -139,7 +139,7 @@ class ModuleController extends AbstractController
         $this->get('zikula_core.common.csrf_token_handler')->validate($csrftoken);
 
         $extension = $this->getDoctrine()->getManager()->find('ZikulaExtensionsModule:ExtensionEntity', $id);
-        if ($extension->getState() == Constant::STATE_NOTALLOWED) {
+        if (Constant::STATE_NOTALLOWED == $extension->getState()) {
             $this->addFlash('error', $this->__f('Error! Activation of module %s not allowed.', ['%s' => $extension->getName()]));
         } else {
             // Update state
@@ -297,7 +297,7 @@ class ModuleController extends AbstractController
                 $extensionsInstalled = [];
                 $data = $form->getData();
                 foreach ($data['dependencies'] as $dependencyId => $installSelected) {
-                    if (!$installSelected && $unsatisfiedDependencies[$dependencyId]->getStatus() != MetaData::DEPENDENCY_REQUIRED) {
+                    if (!$installSelected && MetaData::DEPENDENCY_REQUIRED != $unsatisfiedDependencies[$dependencyId]->getStatus()) {
                         continue;
                     }
                     $dependencyExtensionEntity = $this->get('zikula_extensions_module.extension_repository')->get($unsatisfiedDependencies[$dependencyId]->getModname());
@@ -427,7 +427,7 @@ class ModuleController extends AbstractController
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        if ($extension->getState() == Constant::STATE_MISSING) {
+        if (Constant::STATE_MISSING == $extension->getState()) {
             throw new \RuntimeException($this->__("Error! The requested extension cannot be uninstalled because its files are missing!"));
         }
         if (!$this->get('kernel')->isBundle($extension->getName())) {

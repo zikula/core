@@ -109,7 +109,7 @@ class LostPasswordVerificationHelper
         }
 
         $params = explode($this->delimiter, $id);
-        if (count($params) != 4) {
+        if (4 != count($params)) {
             throw new \Exception('Unexpected extraction results in lost password verification helper.');
         }
 

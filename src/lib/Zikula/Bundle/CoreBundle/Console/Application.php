@@ -39,7 +39,7 @@ class Application extends BaseApplication
 
     protected function registerCommands()
     {
-        if ($this->kernel->getContainer()->getParameter('installed') !== true) {
+        if (true !== $this->kernel->getContainer()->getParameter('installed')) {
             // composer is called, the system may not be installed yet
             return parent::registerCommands();
         }

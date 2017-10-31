@@ -82,7 +82,7 @@ class PasswordApi implements PasswordApiInterface
         if (empty($unhashedPassword) || !is_string($unhashedPassword)) {
             throw new \InvalidArgumentException();
         }
-        if (empty($hashedPassword) || !is_string($hashedPassword) || (strpos($hashedPassword, self::SALT_DELIM) === false) || (2 != substr_count($hashedPassword, self::SALT_DELIM))) {
+        if (empty($hashedPassword) || !is_string($hashedPassword) || (false === strpos($hashedPassword, self::SALT_DELIM)) || (2 != substr_count($hashedPassword, self::SALT_DELIM))) {
             throw new \InvalidArgumentException();
         }
 
@@ -132,7 +132,7 @@ class PasswordApi implements PasswordApiInterface
         $saltedHash = false;
         $algoList = hash_algos();
 
-        if ((array_search($hashMethodName, $algoList) !== false) && is_string($saltStr) && is_string($saltDelimiter) && (strlen($saltDelimiter) == 1)) {
+        if ((false !== array_search($hashMethodName, $algoList)) && is_string($saltStr) && is_string($saltDelimiter) && (1 == strlen($saltDelimiter))) {
             $hashedData = hash($hashMethodName, $saltStr . $unhashedData);
             if (!empty($hashMethodNameToCode)) {
                 if (isset($hashMethodNameToCode[$hashMethodName])) {
@@ -163,8 +163,8 @@ class PasswordApi implements PasswordApiInterface
         $algoList = hash_algos();
         $hashMethodCodeToName = array_flip($this->methods);
 
-        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimiter) && (strlen($saltDelimiter) == 1)
-            && (strpos($saltedHash, $saltDelimiter) !== false)) {
+        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimiter) && (1 == strlen($saltDelimiter))
+            && (false !== strpos($saltedHash, $saltDelimiter))) {
             list($hashMethod, $saltStr, $correctHash) = explode($saltDelimiter, $saltedHash);
 
             if (is_numeric($hashMethod) && ((int)$hashMethod == $hashMethod)) {
@@ -176,7 +176,7 @@ class PasswordApi implements PasswordApiInterface
                 $hashMethodName = $hashMethod;
             }
 
-            if (array_search($hashMethodName, $algoList) !== false) {
+            if (false !== array_search($hashMethodName, $algoList)) {
                 $dataHash = hash($hashMethodName, $saltStr . $unhashedData); // throws ContextErrorException if $hashMethodName is unknown algorithm
                 $dataMatches = $dataHash == $correctHash;
             }

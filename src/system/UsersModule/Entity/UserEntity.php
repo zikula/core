@@ -320,7 +320,7 @@ class UserEntity extends EntityAccess
      */
     public function isApproved()
     {
-        return $this->approved_by != 0;
+        return 0 != $this->approved_by;
     }
 
     /**

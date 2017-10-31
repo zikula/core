@@ -58,7 +58,7 @@ class OnlineExtension extends \Twig_Extension
         if (empty($userEntity)) {
             return;
         }
-        if ($this->sessionStorageInFile == Constant::SESSION_STORAGE_FILE) {
+        if (Constant::SESSION_STORAGE_FILE == $this->sessionStorageInFile) {
             return;
         }
 

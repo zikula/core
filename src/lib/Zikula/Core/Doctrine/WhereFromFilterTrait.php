@@ -38,7 +38,7 @@ trait WhereFromFilterTrait
         $expr = $qb->expr()->$exprMethod();
         $i = 1; // parameter counter
         foreach ($filter as $field => $value) {
-            if ($field == 'groups') {
+            if ('groups' == $field) {
                 $field = 'gid';
                 $alias = 'g';
             }

@@ -152,7 +152,7 @@ class Column
      */
     private function reverse($direction)
     {
-        return ($direction == self::DIRECTION_ASCENDING) ? self::DIRECTION_DESCENDING : self::DIRECTION_ASCENDING;
+        return (self::DIRECTION_ASCENDING == $direction) ? self::DIRECTION_DESCENDING : self::DIRECTION_ASCENDING;
     }
 
     /**
@@ -162,6 +162,6 @@ class Column
      */
     private function cssFromDirection($direction)
     {
-        return ($direction == self::DIRECTION_ASCENDING) ? self::CSS_CLASS_ASCENDING : self::CSS_CLASS_DESCENDING;
+        return (self::DIRECTION_ASCENDING == $direction) ? self::CSS_CLASS_ASCENDING : self::CSS_CLASS_DESCENDING;
     }
 }

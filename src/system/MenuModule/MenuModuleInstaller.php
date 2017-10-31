@@ -57,7 +57,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
             case '1.0.0':
                 $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
                 foreach ($menuItems as $menuItem) {
-                    if ($menuItem->getOption('route') == 'zikulasearchmodule_user_form') {
+                    if ('zikulasearchmodule_user_form' == $menuItem->getOption('route')) {
                         $menuItem->setOption('route', 'zikulasearchmodule_search_execute');
                     }
                 }

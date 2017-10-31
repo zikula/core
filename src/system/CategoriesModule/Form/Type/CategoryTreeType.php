@@ -138,7 +138,7 @@ class CategoryTreeType extends AbstractType
 
         $choices = [];
         foreach ($children as $child) {
-            if (($child['is_leaf'] && !$includeLeaf) || ($child['status'] == 'I' && $all)) {
+            if (($child['is_leaf'] && !$includeLeaf) || ('I' == $child['status'] && $all)) {
                 continue;
             }
             $indent = $child['lvl'] > 0 ? str_repeat('--', $child['lvl']) : '';

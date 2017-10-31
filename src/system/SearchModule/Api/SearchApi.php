@@ -82,7 +82,7 @@ class SearchApi implements SearchApiInterface
             // Clear also older searches from other users.
             $this->searchResultRepository->clearOldResults($this->session->getId());
             // convert query string to an *array* of words
-            $words = ($searchType == 'EXACT') ? [trim($q)] : preg_split('/ /', $q, -1, PREG_SPLIT_NO_EMPTY);
+            $words = ('EXACT' == $searchType) ? [trim($q)] : preg_split('/ /', $q, -1, PREG_SPLIT_NO_EMPTY);
             $searchableModules = $this->searchableModuleCollector->getAll();
             foreach ($searchableModules as $moduleName => $searchableInstance) {
                 if ((isset($moduleData[$moduleName]['active']) && !$moduleData[$moduleName]['active']) || ($this->variableApi->get('ZikulaSearchModule', 'disable_' . $moduleName, false))) {

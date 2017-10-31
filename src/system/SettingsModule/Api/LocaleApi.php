@@ -98,7 +98,7 @@ class LocaleApi implements LocaleApiInterface
         $request = null !== $this->requestStack ? $this->requestStack->getCurrentRequest() : null;
 
         // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
-        if (null === $request || !$request->server->has('HTTP_ACCEPT_LANGUAGE') || php_sapi_name() == 'cli') {
+        if (null === $request || !$request->server->has('HTTP_ACCEPT_LANGUAGE') || 'cli' == php_sapi_name()) {
             return $default;
         }
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
@@ -120,6 +120,6 @@ class LocaleApi implements LocaleApiInterface
             }
         }
 
-        return $matchedLanguage != '' ? $matchedLanguage : $default;
+        return '' != $matchedLanguage ? $matchedLanguage : $default;
     }
 }

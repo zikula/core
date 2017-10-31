@@ -41,7 +41,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         // modules may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            if (substr($bundleName, -6) != 'Module') {
+            if ('Module' != substr($bundleName, -6)) {
                 continue;
             }
 
