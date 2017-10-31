@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Fixes:
+    - Fixed getAttributeValue error in case attribute does not exist.
     - Added missing action icons to admin menu sub entries and admin panel module links.
     - Fixed locale determination in legacy url creation.
     - Fixed locale determination in legacy (Smarty) view class.
