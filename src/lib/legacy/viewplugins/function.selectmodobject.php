@@ -82,7 +82,7 @@ function smarty_function_selectmodobject($params, Zikula_View $view)
     } else {
         if ($params['recordClass'] instanceof \Doctrine_Record) {
             $objectData = Doctrine_Core::getTable($params['recordClass'])->find($params['id']);
-            if ($objectData === false) {
+            if (false === $objectData) {
                 $view->trigger_error(__('Sorry! No such item found.'));
             }
         } else {

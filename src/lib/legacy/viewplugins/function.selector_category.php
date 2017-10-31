@@ -67,7 +67,7 @@ function smarty_function_selector_category($params, Zikula_View $view)
     } elseif (is_numeric($category)) {
         // check if we have a numeric category
         $category = CategoryUtil::getCategoryByID($category);
-    } elseif (is_string($category) && strpos($category, '/') === 0) {
+    } elseif (is_string($category) && 0 === strpos($category, '/')) {
         // check if we have a string/path category
         $category = CategoryUtil::getCategoryByPath($category, $pathfield);
     }

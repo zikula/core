@@ -59,7 +59,7 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
         $fullName = $this->id . '_' . $this->commandName;
 
         $onclickHtml = '';
-        if ($this->confirmMessage != null) {
+        if (null != $this->confirmMessage) {
             $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
         }
@@ -94,7 +94,7 @@ class Zikula_Form_Plugin_ImageButton extends Zikula_Form_Plugin_Button
                 'posY' => (int)$_POST[$fullNameY]
             ];
             if (!empty($this->onCommand)) {
-                if ($view->raiseEvent($this->onCommand, $args) === false) {
+                if (false === $view->raiseEvent($this->onCommand, $args)) {
                     return false;
                 }
             }

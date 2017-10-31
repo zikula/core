@@ -215,9 +215,9 @@ class PageUtil
         }
 
         if (isset($_pageVars[$varname]) && isset($_pageVars[$varname]['contents'])) {
-            if ($varname == 'title') {
+            if ('title' == $varname) {
                 $title = System::getVar('pagetitle', '');
-                if (!empty($title) && $title != '%pagetitle%') {
+                if (!empty($title) && '%pagetitle%' != $title) {
                     $title = str_replace('%pagetitle%', $_pageVars[$varname]['contents'], $title);
                     $title = str_replace('%sitename%', System::getVar('sitename', ''), $title);
                     $moduleInfo = ModUtil::getInfoFromName(ModUtil::getName());
@@ -436,7 +436,7 @@ class PageUtil
             return $return;
         }
 
-        if (substr($path, 0, 1) != "@") {
+        if ("@" != substr($path, 0, 1)) {
             return $path;
         }
         $sm = \ServiceUtil::getManager();

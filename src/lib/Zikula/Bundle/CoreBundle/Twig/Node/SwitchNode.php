@@ -50,7 +50,7 @@ class SwitchNode extends \Twig_Node
             $compiler->outdent();
         }
 
-        if ($this->hasNode('default') && $this->getNode('default') !== null) {
+        if ($this->hasNode('default') && null !== $this->getNode('default')) {
             $compiler
                 ->write('default')
                 ->raw(":\n")

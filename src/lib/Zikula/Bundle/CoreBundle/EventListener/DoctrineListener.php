@@ -52,7 +52,7 @@ class DoctrineListener implements EventSubscriberInterface
 
         $config = $GLOBALS['ZConfig']['DBInfo']['databases']['default'];
         // setup MySQL specific listener (storage engine and encoding)
-        if ($config['dbdriver'] == 'mysql') {
+        if ('mysql' == $config['dbdriver']) {
             $mysqlSessionInit = new \Doctrine\DBAL\Event\Listeners\MysqlSessionInit($config['charset']);
             $eventManager->addEventSubscriber($mysqlSessionInit);
 

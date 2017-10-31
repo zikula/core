@@ -125,11 +125,11 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
                 // check the permission access to the current link
                 $hasperms = Securityutil::checkPermission('Menutree:menutreeblock:', "$blockinfo[bid]:$item[name]:$item[id]", ACCESS_READ);
                 // checks if has no access to it or the link is not active
-                if (!$hasperms || in_array($item['parent'], $blocked) || $item['state'] != 1) {
+                if (!$hasperms || in_array($item['parent'], $blocked) || 1 != $item['state']) {
                     $blocked[] = $item['id'];
                 } else {
                     // dynamic components
-                    if (strpos($item['href'], '{ext:') === 0) {
+                    if (0 === strpos($item['href'], '{ext:')) {
                         $dynamic = explode(':', substr($item['href'], 1, -1));
                         $modname = $dynamic[1];
                         $func = $dynamic[2]; // plugin
@@ -315,7 +315,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
 
         $vars['redirect'] = '';
         $vars['menutree_newurl'] = '';
-        if ($addurl == 1) {
+        if (1 == $addurl) {
             // set a marker for redirection later on
             $newurl = System::serverGetVar('HTTP_REFERER');
             $vars['redirect'] = urlencode($newurl);
@@ -360,7 +360,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         // check if import old menu
         $menutree_menus = $this->request->request->get('menutree_menus', 'null');
 
-        if ($menutree_menus != 'null') {
+        if ('null' != $menutree_menus) {
             $vars['menutree_content'] = $this->_import_menu($menutree_menus);
         } else {
             $vars['menutree_content'] = $this->request->request->get('menutree_content', '');
@@ -383,7 +383,7 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
         }
 
         $vars['menutree_stylesheet'] = isset($menutree_data['stylesheet']) ? $menutree_data['stylesheet'] : '';
-        if (empty($vars['menutree_stylesheet']) || $vars['menutree_stylesheet'] == 'null' || !file_exists($vars['menutree_stylesheet'])) {
+        if (empty($vars['menutree_stylesheet']) || 'null' == $vars['menutree_stylesheet'] || !file_exists($vars['menutree_stylesheet'])) {
             $vars['menutree_stylesheet'] = '';
         }
 
@@ -422,12 +422,12 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             $vars['olddefaultlanguage'] = $vars['oldlanguages'][0];
 
             // strip base url - if needed
-            if ($vars['menutree_stripbaseurl'] === true) {
+            if (true === $vars['menutree_stripbaseurl']) {
                 $baseurl = System::getBaseUrl();
                 foreach ($vars['menutree_content'] as $itemid => $item) {
                     foreach ($item as $lang => $_item) {
                         // strip base url only when it occurs at the beginning of url and only once
-                        if (strpos($_item['href'], $baseurl) === 0) {
+                        if (0 === strpos($_item['href'], $baseurl)) {
                             $vars['menutree_content'][$itemid][$lang]['href'] = substr_replace($_item['href'], '', 0, strlen($baseurl));
                         }
                     }

@@ -106,7 +106,7 @@ abstract class AbstractSearchable implements SearchableInterface
         if (empty($words) || empty($fields)) {
             return null;
         }
-        $method = ($searchtype == 'OR') ? 'orX' : 'andX';
+        $method = ('OR' == $searchtype) ? 'orX' : 'andX';
         /** @var $where \Doctrine\ORM\Query\Expr\Composite */
         $where = $qb->expr()->$method();
         $i = 1;

@@ -58,10 +58,10 @@ class UserApi extends \Zikula_AbstractApi
         $params = $dumper->getConfiguration('swiftmailer');
 
         // Development mailer mode
-        if ($params['transport'] == 'test') {
+        if ('test' == $params['transport']) {
             $output = '<p>';
             foreach ($args as $key => $value) {
-                if ($key == 'password') {
+                if ('password' == $key) {
                     // do not expose the password (#2149)
                     continue;
                 }

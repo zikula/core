@@ -79,7 +79,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
      */
     public function getCategoriesInPath($pathField = 'ipath', $path = '')
     {
-        if (!in_array($pathField, ['path', 'ipath']) || $path == '') {
+        if (!in_array($pathField, ['path', 'ipath']) || '' == $path) {
             return null;
         }
         $fieldMap = ['path' => 'name', 'ipath' => 'id'];
@@ -146,7 +146,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
             $qb->where($where);
         }
 
-        if ($sort != '') {
+        if ('' != $sort) {
             $sort = str_replace('ORDER BY', '', $sort);
             if (false !== stripos($sort, 'ASC')) {
                 $qb->orderBy(str_ireplace('ASC', '', $sort), 'ASC');

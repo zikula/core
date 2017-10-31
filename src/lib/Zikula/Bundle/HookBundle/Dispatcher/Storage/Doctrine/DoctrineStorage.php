@@ -606,7 +606,7 @@ class DoctrineStorage implements StorageInterface
      */
     private function registerArea($areaName, $areaType, $owner, $subOwner, $category)
     {
-        if ($areaType !== self::PROVIDER && $areaType !== self::SUBSCRIBER) {
+        if (self::PROVIDER !== $areaType && self::SUBSCRIBER !== $areaType) {
             throw new InvalidArgumentException('$areaType must be "p" or "s"');
         }
 

@@ -40,7 +40,7 @@ class CookieUtil
             throw new \Exception('setCookie: ' . DataUtil::formatForDisplay($value) . ' must be a string');
         }
 
-        if (System::getVar('signcookies') && (!$signed == false)) {
+        if (System::getVar('signcookies') && (false == !$signed)) {
             // sign the cookie
             $value = SecurityUtil::signData($value);
         }
@@ -68,7 +68,7 @@ class CookieUtil
         }
 
         $cookie = $request->cookies->get($name);
-        if (System::getVar('signcookies') && (!$signed == false)) {
+        if (System::getVar('signcookies') && (false == !$signed)) {
             return SecurityUtil::checkSignedData($cookie);
         }
 

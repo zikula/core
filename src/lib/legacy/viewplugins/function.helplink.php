@@ -74,7 +74,7 @@ function smarty_function_helplink($params, Zikula_View $view)
     $iconParams = [];
     if (!empty($params) && is_array($params)) {
         foreach ($params as $key => $value) {
-            if ((strpos($key, 'icon_') === 0) && (strlen($key) > 5)) {
+            if ((0 === strpos($key, 'icon_')) && (strlen($key) > 5)) {
                 $iconParams[substr($key, 5)] = $value;
                 unset($params[$key]);
             }

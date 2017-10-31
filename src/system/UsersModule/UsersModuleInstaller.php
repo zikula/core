@@ -93,7 +93,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                     }
                 }
             case '2.2.2':
-                if ($this->getVar('gravatarimage', null) == 'gravatar.gif') {
+                if ('gravatar.gif' == $this->getVar('gravatarimage', null)) {
                     $this->setVar('gravatarimage', 'gravatar.jpg');
                 }
             case '2.2.3':
@@ -284,7 +284,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         foreach ($migratedModVarNames as $migratedModVarName) {
             $value = $this->getVar($migratedModVarName);
             $this->delVar($migratedModVarName); // removes from UsersModule
-            $migratedModVarName = ($migratedModVarName == 'reg_verifyemail') ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
+            $migratedModVarName = ('reg_verifyemail' == $migratedModVarName) ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
             $value = in_array($migratedModVarName, [
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
                 ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED

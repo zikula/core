@@ -198,10 +198,10 @@ class Loader
 
         $prefix = (string) $prefix;
 
-        if (strpos($base_obj_type, '_') !== false) {
+        if (false !== strpos($base_obj_type, '_')) {
             $c = $base_obj_type;
             $class = '';
-            while (($p = strpos($c, '_')) !== false) {
+            while (false !== ($p = strpos($c, '_'))) {
                 $class .= ucwords(substr($c, 0, $p));
                 $c = substr($c, $p + 1);
             }
@@ -274,7 +274,7 @@ class Loader
         @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
 
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'include_once'], E_USER_DEPRECATED));
-        if (strpos($file, 'includes/') === 0) {
+        if (0 === strpos($file, 'includes/')) {
             return true;
         }
 
@@ -293,7 +293,7 @@ class Loader
         @trigger_error('Loader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
 
         LogUtil::log(__f('Warning! Function %1$s is deprecated. Please use autoloading or only if absolutely necessary, %2$s instead.', [__CLASS__ . '#' . __FUNCTION__, 'require_once'], E_USER_DEPRECATED));
-        if (strpos($file, 'includes/') === 0) {
+        if (0 === strpos($file, 'includes/')) {
             return true;
         }
 

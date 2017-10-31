@@ -48,9 +48,9 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
         foreach ($validators as $validator) {
             if (!$validator->isValid) {
                 $label = '';
-                if (get_class($validator) == 'Zikula_Form_Plugin_RadioButton') {
+                if ('Zikula_Form_Plugin_RadioButton' == get_class($validator)) {
                     foreach ($view->plugins as $plugin) {
-                        if (get_class($plugin) == 'Zikula_Form_Plugin_Label' && $plugin->for == $validator->dataField) {
+                        if ('Zikula_Form_Plugin_Label' == get_class($plugin) && $plugin->for == $validator->dataField) {
                             $label = $plugin->text;
                             break;
                         }
@@ -62,7 +62,7 @@ class Zikula_Form_Plugin_ValidationSummary extends Zikula_Form_AbstractPlugin
             }
         }
 
-        if ($html != '') {
+        if ('' != $html) {
             $html = "<div class=\"{$this->cssClass}\">\n<ul>\n{$html}</ul>\n</div>\n";
         }
 

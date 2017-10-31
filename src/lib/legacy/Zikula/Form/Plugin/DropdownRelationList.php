@@ -236,7 +236,7 @@ class Zikula_Form_Plugin_DropdownRelationList extends Zikula_Form_Plugin_Dropdow
      */
     public function load(Zikula_Form_View $view, &$params)
     {
-        if ($this->showEmptyValue != 0) {
+        if (0 != $this->showEmptyValue) {
             $this->addItem('- - -', 0);
         }
 

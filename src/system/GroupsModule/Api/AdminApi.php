@@ -130,7 +130,7 @@ class AdminApi
             throw new \RuntimeException($translator->__('Sorry! You cannot delete the default users group.'));
         }
 
-        if ($group['gid'] == Constant::GROUP_ID_ADMIN) {
+        if (Constant::GROUP_ID_ADMIN == $group['gid']) {
             throw new \RuntimeException($translator->__('Sorry! You cannot delete the primary administrators group.'));
         }
 
@@ -475,7 +475,7 @@ class AdminApi
         $entityManager->remove($application);
         $entityManager->flush();
 
-        if ($args['action'] == 'accept') {
+        if ('accept' == $args['action']) {
             $adduser = $this->adduser([
                 'gid' => $args['gid'],
                 'uid' => $args['userid']

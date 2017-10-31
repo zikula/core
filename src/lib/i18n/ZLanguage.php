@@ -263,7 +263,7 @@ class ZLanguage
      */
     private function processErrors()
     {
-        if (count($this->errors) == 0) {
+        if (0 == count($this->errors)) {
             return;
         }
 
@@ -482,7 +482,7 @@ class ZLanguage
     {
         // system modules are in the zikula domain
         $module = ModUtil::getInfoFromName($moduleName);
-        if ($module['type'] == ModUtil::TYPE_SYSTEM) {
+        if (ModUtil::TYPE_SYSTEM == $module['type']) {
             return 'zikula';
         }
 
@@ -663,9 +663,9 @@ class ZLanguage
             $translations = $finder->files()->name('zikula.*.po')->in(['app/Resources/translations']);
             foreach ($translations as $translationFile) {
                 $fileNameParts = explode('.', $translationFile->getFilename());
-                if (count($fileNameParts) == 3) {
+                if (3 == count($fileNameParts)) {
                     $localeCode = $fileNameParts[1];
-                    if ($localeCode != 'template' && !in_array($localeCode, $localeArray)) {
+                    if ('template' != $localeCode && !in_array($localeCode, $localeArray)) {
                         $localeArray[] = $localeCode;
                     }
                 }

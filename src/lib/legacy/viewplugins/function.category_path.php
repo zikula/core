@@ -67,7 +67,7 @@ function smarty_function_category_path($params, Zikula_View $view)
 
     if (!$idcolumn) {
         $view->trigger_error(__f('Error! in %1$s: the %2$s parameter must be specified.', ['category_path', 'idcolumn']));
-    } elseif (($idcolumn != 'id') && ($idcolumn != 'path') && ($idcolumn != 'ipath')) {
+    } elseif (('id' != $idcolumn) && ('path' != $idcolumn) && ('ipath' != $idcolumn)) {
         $view->trigger_error(__f('Error! in %1$s: invalid value for the %2$s parameter (%3$s).', ['category_path', 'idcolumn', $idcolumn]));
     }
 
@@ -76,9 +76,9 @@ function smarty_function_category_path($params, Zikula_View $view)
     }
 
     $result = null;
-    if ($idcolumn == 'id') {
+    if ('id' == $idcolumn) {
         $cat = CategoryUtil::getCategoryByID($id);
-    } elseif (($idcolumn == 'path') || ($idcolumn == 'ipath')) {
+    } elseif (('path' == $idcolumn) || ('ipath' == $idcolumn)) {
         $cat = CategoryUtil::getCategoryByPath($id, $idcolumn);
     }
 

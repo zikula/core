@@ -81,7 +81,7 @@ class AdminInterfaceController extends AbstractController
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $cid = null;
-        if ($caller['_zkModule'] == 'ZikulaAdminModule') {
+        if ('ZikulaAdminModule' == $caller['_zkModule']) {
             $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
@@ -114,7 +114,7 @@ class AdminInterfaceController extends AbstractController
         $modvars = $this->get('zikula_extensions_module.api.variable')->getAll('ZikulaThemeModule');
         $data = [];
         $data['mode'] = $this->get('kernel')->getEnvironment();
-        if ($data['mode'] != 'prod') {
+        if ('prod' != $data['mode']) {
             $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');
             $data['legacy'] = [
                 'status' => true,
@@ -175,7 +175,7 @@ class AdminInterfaceController extends AbstractController
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if (mb_substr($appDir, 0, 1) == '/' && false === strpos($appDir, $docRoot)) {
+            if ('/' == mb_substr($appDir, 0, 1) && false === strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
             } else {
@@ -205,7 +205,7 @@ class AdminInterfaceController extends AbstractController
                 'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,
                 // check for outputfilter
-                'useids' => $hasSecurityCenter && $variableApi->getSystemVar('useids') == 1,
+                'useids' => $hasSecurityCenter && 1 == $variableApi->getSystemVar('useids'),
                 'idssoftblock' => $variableApi->getSystemVar('idssoftblock')
             ]
         ]);
@@ -262,7 +262,7 @@ class AdminInterfaceController extends AbstractController
         // category we are in
         $requestedCid = $masterRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
-        if ($caller['_zkModule'] == 'ZikulaAdminModule' || empty($caller['_zkModule'])) {
+        if ('ZikulaAdminModule' == $caller['_zkModule'] || empty($caller['_zkModule'])) {
             $cid = $defaultCid;
         } else {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
@@ -320,10 +320,10 @@ class AdminInterfaceController extends AbstractController
             }
 
             $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
-            if ($links == false) {
+            if (false == $links) {
                 // @deprecated remove at Core-2.0
                 $links = \ModUtil::apiFunc($adminModule['name'], 'admin', 'getLinks');
-                if ($links == false) {
+                if (false == $links) {
                     $links = [];
                 }
             }

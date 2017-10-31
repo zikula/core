@@ -151,8 +151,8 @@ function _htmlListExt($tree, $treeNodePrefix, $treeClassPrefix, $ext, $depth, $t
     foreach ($tree as $tab) {
         $classes = [];
         if (!$bootstrap) {
-            $classes[] = $size == 1 ? $ext['single'] : '';
-            $classes[] = ($i == 1 && $size > 1) ? $ext['first'] : '';
+            $classes[] = 1 == $size ? $ext['single'] : '';
+            $classes[] = (1 == $i && $size > 1) ? $ext['first'] : '';
             $classes[] = ($i == $size && $size > 1) ? $ext['last'] : '';
             $classes[] = !empty($treeClassPrefix) ? $treeClassPrefix.$tab['item']['id'] : '';
             $classes[] = !empty($tab['nodes']) ? $ext['parent'] : $ext['childless'];

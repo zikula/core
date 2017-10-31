@@ -57,7 +57,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
             $this->activateOperators(['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'like', 'null', 'notnull']);
         }
 
-        if ($config['default'] == true || count($this->fields) <= 0) {
+        if (true == $config['default'] || count($this->fields) <= 0) {
             $this->default = true;
         }
     }
@@ -75,7 +75,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
             foreach ($fields as $fld) {
                 $this->addFields($fld);
             }
-        } elseif (!empty($fields) && $this->fieldExists($fields) && array_search($fields, $this->fields) === false) {
+        } elseif (!empty($fields) && $this->fieldExists($fields) && false === array_search($fields, $this->fields)) {
             $this->fields[] = $fields;
         }
     }
@@ -103,7 +103,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
             foreach ($op as $v) {
                 $this->activateOperators($v);
             }
-        } elseif (!empty($op) && array_search($op, $this->ops) === false && array_search($op, $this->availableOperators()) !== false) {
+        } elseif (!empty($op) && false === array_search($op, $this->ops) && false !== array_search($op, $this->availableOperators())) {
             $this->ops[] = $op;
         }
     }
@@ -116,7 +116,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
     public function getOperators()
     {
         $fields = $this->getFields();
-        if ($this->default == true) {
+        if (true == $this->default) {
             $fields[] = '-';
         }
 
@@ -149,7 +149,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      */
     public function getSQL($field, $op, $value)
     {
-        if (array_search($op, $this->availableOperators()) === false || array_search($field, $this->fields) === false) {
+        if (false === array_search($op, $this->availableOperators()) || false === array_search($field, $this->fields)) {
             return '';
         }
 
@@ -172,7 +172,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
                 }
-                if (count($items) == 1) {
+                if (1 == count($items)) {
                     $where = "$column = '".implode("", $items)."'";
                 } else {
                     $where = "$column IN ('".implode("','", $items)."')";
@@ -194,7 +194,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
      */
     public function getDql($field, $op, $value)
     {
-        if (array_search($op, $this->ops) === false || !$this->fieldExists($field)) {
+        if (false === array_search($op, $this->ops) || !$this->fieldExists($field)) {
             return '';
         }
 
@@ -216,7 +216,7 @@ class FilterUtil_Filter_Pmlist extends FilterUtil_AbstractPlugin implements Filt
                 foreach ($cats as $item) {
                     $items[] = $item['id'];
                 }
-                if (count($items) == 1) {
+                if (1 == count($items)) {
                     $where = "$column = '".implode("", $items)."'";
                 } else {
                     $where = "$column IN ('".implode("','", $items)."')";

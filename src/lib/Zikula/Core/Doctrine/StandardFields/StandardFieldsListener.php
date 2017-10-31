@@ -143,7 +143,7 @@ class StandardFieldsListener extends MappedEventSubscriber
         if ($config = $this->getConfiguration($om, $meta->name)) {
             if (isset($config['update'])) {
                 foreach ($config['update'] as $field) {
-                    if ($meta->getReflectionProperty($field)->getValue($object) === null) { // let manual values
+                    if (null === $meta->getReflectionProperty($field)->getValue($object)) { // let manual values
                         $meta->getReflectionProperty($field)->setValue($object, $ea->getUserIdValue($meta, $field));
                     }
                 }
@@ -151,7 +151,7 @@ class StandardFieldsListener extends MappedEventSubscriber
 
             if (isset($config['create'])) {
                 foreach ($config['create'] as $field) {
-                    if ($meta->getReflectionProperty($field)->getValue($object) === null) { // let manual values
+                    if (null === $meta->getReflectionProperty($field)->getValue($object)) { // let manual values
                         $meta->getReflectionProperty($field)->setValue($object, $ea->getUserIdValue($meta, $field));
                     }
                 }

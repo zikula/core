@@ -202,17 +202,17 @@ class RandomUtil
             $rnd = self::getInteger(0, $nDictWords);
             $word = $dictArray[$rnd];
 
-            if ($i == 0) {
+            if (0 == $i) {
                 $word = ucfirst($word);
             } else {
                 $word = strtolower($word);
             }
 
-            if (self::getInteger(0, 10) == 1 && $i < $nWords - 1 && !strpos($word, ',') && !strpos($word, '.')) {
+            if (1 == self::getInteger(0, 10) && $i < $nWords - 1 && !strpos($word, ',') && !strpos($word, '.')) {
                 $word .= ', ';
             }
 
-            if (strpos($word, '.') !== false) {
+            if (false !== strpos($word, '.')) {
                 $word = substr($word, 0, -1);
             }
 

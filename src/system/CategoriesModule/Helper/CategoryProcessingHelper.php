@@ -82,7 +82,7 @@ class CategoryProcessingHelper
             // check if the registry subtree contains our category - iPath is constructed on demand
             $rPath = $registry->getCategory()->getIPath() . '/';
             $cPath = $category->getIPath();
-            if (strpos($cPath, $rPath) !== 0) {
+            if (0 !== strpos($cPath, $rPath)) {
                 continue;
             }
 

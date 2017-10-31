@@ -71,7 +71,7 @@ class SearchHelper implements SearchableInterface
 
         $results = [];
         foreach ($users as $user) {
-            if ($user->getUid() != 1 && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
+            if (1 != $user->getUid() && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
                 $result = new SearchResultEntity();
                 $result->setTitle($user->getUname())
                     ->setModule('ZikulaUsersModule')

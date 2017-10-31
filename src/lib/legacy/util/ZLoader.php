@@ -53,7 +53,7 @@ class ZLoader
     {
         @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
 
-        $separator = $separator === '\\' ? '' : $separator;
+        $separator = '\\' === $separator ? '' : $separator;
 
         self::$autoloader->add($namespace.$separator, $paths);
     }
@@ -84,7 +84,7 @@ class ZLoader
         @trigger_error('ZLoader is deprecated. please use Composer and namespaces instead.', E_USER_DEPRECATED);
 
         // Classloader for SystemPlugin
-        if (strpos($class, 'SystemPlugin') === 0) {
+        if (0 === strpos($class, 'SystemPlugin')) {
             $array = explode('_', $class);
             $pluginName = $array[1];
             $name = substr($class, strlen("SystemPlugin_{$pluginName}") + 1, strlen($class));
@@ -99,12 +99,12 @@ class ZLoader
         }
 
         // Classloader for ModulePlugin
-        if (strpos($class, 'ModulePlugin') === 0) {
+        if (0 === strpos($class, 'ModulePlugin')) {
             $array = explode('_', $class);
             $moduleName = $array[1];
             $pluginName = $array[2];
             $modinfo = ModUtil::getInfoFromName($moduleName);
-            $base = ($modinfo['type'] == ModUtil::TYPE_MODULE) ? 'modules' : 'system';
+            $base = (ModUtil::TYPE_MODULE == $modinfo['type']) ? 'modules' : 'system';
             $name = substr($class, strlen("ModulePlugin_{$moduleName}_{$pluginName}") + 1, strlen($class));
             $path = str_replace('_', '/', "$base/$moduleName/plugins/$pluginName/$name.php");
             if (file_exists($path)) {
@@ -117,7 +117,7 @@ class ZLoader
         }
 
         // Classloader for Themes
-        if (strpos($class, 'Themes') === 0) {
+        if (0 === strpos($class, 'Themes')) {
             $array = explode('_', $class);
             $themeName = $array[1];
             $name = substr($class, strlen("Themes") + 1, strlen($class));

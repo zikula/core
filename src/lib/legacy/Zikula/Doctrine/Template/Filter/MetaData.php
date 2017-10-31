@@ -30,9 +30,9 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
     {
         @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
 
-        if ($name == '__META__') {
+        if ('__META__' == $name) {
             $record->mapValue('__META__', new ArrayObject($value, ArrayObject::ARRAY_AS_PROPS));
-            if ($record->state() == Doctrine_Record::STATE_CLEAN) {
+            if (Doctrine_Record::STATE_CLEAN == $record->state()) {
                 $record->state(Doctrine_Record::STATE_DIRTY);
             }
         }
@@ -53,11 +53,11 @@ class Zikula_Doctrine_Template_Filter_MetaData extends Doctrine_Record_Filter
     {
         @trigger_error('Doctrine 1 is deprecated, please use Doctrine 2 instead.', E_USER_DEPRECATED);
 
-        if ($name == '__META__') {
+        if ('__META__' == $name) {
             $value = new ArrayObject([], ArrayObject::ARRAY_AS_PROPS);
 
             $record->mapValue('__META__', $value);
-            if ($record->state() == Doctrine_Record::STATE_CLEAN) {
+            if (Doctrine_Record::STATE_CLEAN == $record->state()) {
                 $record->state(Doctrine_Record::STATE_DIRTY);
             }
 

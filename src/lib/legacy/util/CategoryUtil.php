@@ -688,7 +688,7 @@ class CategoryUtil
     {
         @trigger_error('CategoryUtil is deprecated. please use the new category permission api instead.', E_USER_DEPRECATED);
         // Always allow access to content with no categories associated
-        if (count($categories) == 0) {
+        if (0 == count($categories)) {
             return true;
         }
 

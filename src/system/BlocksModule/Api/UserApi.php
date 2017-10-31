@@ -91,7 +91,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // add clause for filtering status
         if (isset($args['active_status']) && is_numeric($args['active_status']) && $args['active_status']) {
-            if ($args['active_status'] == 1) {
+            if (1 == $args['active_status']) {
                 $active = 1;
             } else {
                 $active = 0;
@@ -283,7 +283,7 @@ class UserApi extends \Zikula_AbstractApi
     public function encodebracketurl($url)
     {
         // allow a simple portable way to link to the home page of the site
-        if (empty($url) || $url == '{homepage}') {
+        if (empty($url) || '{homepage}' == $url) {
             return htmlspecialchars(System::getHomepageUrl());
         }
 
@@ -293,7 +293,7 @@ class UserApi extends \Zikula_AbstractApi
 
         // filter out links that begin with `ext` (Menutree)
         // send original string back for later processing
-        if (strpos($url, '{ext:') === 0) {
+        if (0 === strpos($url, '{ext:')) {
             return $url;
         }
 

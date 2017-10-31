@@ -128,7 +128,7 @@ class DataUtil
         if (!$key) {
             return LogUtil::registerError('Invalid NVP key received');
         }
-        if ($includeEmpty || ($value != null && strlen($value) > 1)) {
+        if ($includeEmpty || (null != $value && strlen($value) > 1)) {
             return "&" . urlencode($key) . "=" . urlencode($value);
         }
 
@@ -240,8 +240,8 @@ class DataUtil
             $allowableHTML = System::getVar('AllowableHTML');
             if (is_array($allowableHTML)) {
                 foreach ($allowableHTML as $k => $v) {
-                    if ($k == '!--') {
-                        if ($v != 0) {
+                    if ('!--' == $k) {
+                        if (0 != $v) {
                             $allowedHTML[] = "$k.*?--";
                         }
                     } else {
@@ -339,7 +339,7 @@ class DataUtil
             }
         } else {
             $dbDriverName = strtolower(Doctrine_Manager::getInstance()->getCurrentConnection()->getDriverName());
-            if ($dbDriverName == 'mssql' || $dbDriverName == 'oracle' || $dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') {
+            if ('mssql' == $dbDriverName || 'oracle' == $dbDriverName || 'derby' == $dbDriverName || 'splice' == $dbDriverName || 'jdbcbridge' == $dbDriverName) {
                 $var = str_replace("'", "''", $var);
             } else {
                 $var = addslashes($var);
@@ -381,7 +381,7 @@ class DataUtil
         //Check if it is a windows absolute path beginning with "c:" or similar
         $windowsAbsolutePath = preg_match("#^[A-Za-z]:#", $var);
         //Check if it is a linux absolute path beginning "/"
-        $linuxAbsolutePath = (substr($var, 0, 1) == '/') ? true : false;
+        $linuxAbsolutePath = ('/' == substr($var, 0, 1)) ? true : false;
         //if we're supporting absolute paths and the first charater is a slash and , then
         //an absolute path is passed
         $absolutepathused = ($absolute && ($linuxAbsolutePath || $windowsAbsolutePath));
@@ -390,9 +390,9 @@ class DataUtil
         $dirty_array = preg_split('#[/\\\\]#', $var, -1, PREG_SPLIT_NO_EMPTY);
         // now walk the path and do the relevant things
         foreach ($dirty_array as $current) {
-            if ($current == '.') {
+            if ('.' == $current) {
                 // current path element is a dot, so we don't do anything
-            } elseif ($current == '..') {
+            } elseif ('..' == $current) {
                 // current path element is .., so we remove the last path in case of relative paths
                 if (!$absolutepathused) {
                     array_pop($clean_array);
@@ -475,7 +475,7 @@ class DataUtil
     {
         @trigger_error('DataUtil is deprecated, please use Doctrine slug extension instead.', E_USER_DEPRECATED);
 
-        $strIsUpper = (strcmp($var, mb_strtoupper($var)) == 0);
+        $strIsUpper = (0 == strcmp($var, mb_strtoupper($var)));
         // replace all chars $permasearch with the one in $permareplace
         $permaSearch = explode(',', System::getVar('permasearch'));
         $permaReplace = explode(',', System::getVar('permareplace'));
@@ -563,15 +563,15 @@ class DataUtil
     {
         @trigger_error('DataUtil is deprecated, please use Symfony or native PHP functions instead.', E_USER_DEPRECATED);
 
-        if ($string == 'b:0;') {
+        if ('b:0;' == $string) {
             return true;
         }
 
         if ($checkmb) {
-            return self::mb_unserialize($string) === false ? false : true;
+            return false === self::mb_unserialize($string) ? false : true;
         }
 
-        return @unserialize($string) === false ? false : true;
+        return false === @unserialize($string) ? false : true;
     }
 
     /**

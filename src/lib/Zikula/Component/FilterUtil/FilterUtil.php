@@ -160,7 +160,7 @@ class FilterUtil
             }
         }
 
-        if ($this->filter == '()') {
+        if ('()' == $this->filter) {
             $this->filter = '';
         }
 
@@ -201,7 +201,7 @@ class FilterUtil
             foreach ($filter as $tmp) {
                 $this->addFilter($tmp);
             }
-        } elseif (substr($filter, 0, 1) == ',' || substr($filter, 0, 1) == '*') {
+        } elseif (',' == substr($filter, 0, 1) || '*' == substr($filter, 0, 1)) {
             $this->filter .= $filter;
         } else {
             $this->andFilter($filter);
@@ -221,9 +221,9 @@ class FilterUtil
             foreach ($filter as $tmp) {
                 $this->andFilter($tmp);
             }
-        } elseif (substr($filter, 0, 1) == ',') {
+        } elseif (',' == substr($filter, 0, 1)) {
             $this->filter .= $filter;
-        } elseif (substr($filter, 0, 1) == '*') {
+        } elseif ('*' == substr($filter, 0, 1)) {
             $this->filter .= ','.(substr($filter, 1));
         } else {
             $this->filter .= ','.($filter);
@@ -243,9 +243,9 @@ class FilterUtil
             foreach ($filter as $tmp) {
                 $this->orFilter($tmp);
             }
-        } elseif (substr($filter, 0, 1) == '*') {
+        } elseif ('*' == substr($filter, 0, 1)) {
             $this->filter .= $filter;
-        } elseif (substr($filter, 0, 1) == ',') {
+        } elseif (',' == substr($filter, 0, 1)) {
             $this->filter .= '*'.(substr($filter, 1));
         } else {
             $this->filter .= '*'.($filter);
@@ -276,7 +276,7 @@ class FilterUtil
         if (isset($parts) && is_array($parts) && count($parts) > 2) {
             $con['field'] = $parts[0];
             $con['op'] = $parts[1];
-            if (null !== $this->request && substr($parts[2], 0, 1) == '$') {
+            if (null !== $this->request && '$' == substr($parts[2], 0, 1)) {
                 $value = $this->request->filter(substr($parts[2], 1));
                 // !is_numeric because empty(0) == false
                 if (empty($value) && !is_numeric($value)) {
@@ -389,7 +389,7 @@ class FilterUtil
                     break;
                 case '(': // Subquery
                     $level++;
-                    while ($level != 0 && $i <= strlen($filter)) {
+                    while (0 != $level && $i <= strlen($filter)) {
                         // get closing bracket
                         $i++;
                         $c = substr($filter, $i, 1);

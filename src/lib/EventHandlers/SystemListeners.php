@@ -149,7 +149,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function setupAutoloaderForGeneratedCategoryModels(Zikula_Event $event)
     {
-        if ($event['stage'] == Zikula_Core::STAGE_CONFIG) {
+        if (Zikula_Core::STAGE_CONFIG == $event['stage']) {
             ZLoader::addAutoloader('GeneratedDoctrineModel', CacheUtil::getLocalDir('doctrinemodels'));
         }
     }
@@ -194,7 +194,7 @@ class SystemListeners extends Zikula_AbstractEventHandler
      */
     public function coreStylesheetOverride(Zikula_Event $event)
     {
-        if ($event->getSubject() == 'stylesheet' && ($key = array_search('style/core.css', (array)$event->data)) !== false) {
+        if ('stylesheet' == $event->getSubject() && false !== ($key = array_search('style/core.css', (array)$event->data))) {
             if (file_exists('config/style/core.css')) {
                 $event->data[$key] = 'config/style/core.css';
             }

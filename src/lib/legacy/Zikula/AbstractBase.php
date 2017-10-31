@@ -162,7 +162,7 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
             if (realpath("{$this->baseDir}/lib/" . $this->name)) {
                 $this->libBaseDir = realpath("{$this->baseDir}/lib/" . $this->name);
             }
-            if ($baseDir == 'modules') {
+            if ('modules' == $baseDir) {
                 $this->domain = strtolower('module_'.$this->name);
             }
         }

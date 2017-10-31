@@ -120,7 +120,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
     {
         @trigger_error('ServiceManager is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
 
-        if ($id === 'request' && isset($GLOBALS['__request'])) {
+        if ('request' === $id && isset($GLOBALS['__request'])) {
             return $GLOBALS['__request'];
         }
 
@@ -182,7 +182,7 @@ class Zikula_ServiceManager extends ContainerBuilder implements ArrayAccess
 
         $list = [];
         foreach ($this->getServiceIds() as $service) {
-            if (empty($prefix) || strpos($service, $prefix) === 0) {
+            if (empty($prefix) || 0 === strpos($service, $prefix)) {
                 $list[] = $service;
             }
         }

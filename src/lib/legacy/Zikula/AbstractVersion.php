@@ -214,8 +214,8 @@ abstract class Zikula_AbstractVersion implements ArrayAccess
             }
         }
 
-        $this->type = ModUtil::getModuleBaseDir($this->name) == 'system' ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE;
-        if ($this->type == ModUtil::TYPE_MODULE) {
+        $this->type = 'system' == ModUtil::getModuleBaseDir($this->name) ? ModUtil::TYPE_SYSTEM : ModUtil::TYPE_MODULE;
+        if (ModUtil::TYPE_MODULE == $this->type) {
             $this->domain = ZLanguage::getModuleDomain($this->name);
         }
 

@@ -452,14 +452,14 @@ class ModUtil
         if (!is_array(self::$cache['modid']) || !\ServiceUtil::getManager()->getParameter('installed')) {
             $modules = self::getModsTable();
 
-            if ($modules === false) {
+            if (false === $modules) {
                 return false;
             }
 
             foreach ($modules as $id => $mod) {
                 $mName = strtolower($mod['name']);
                 self::$cache['modid'][$mName] = $mod['id'];
-                if (!$id == 0) {
+                if (0 == !$id) {
                     $mdName = strtolower($mod['url']);
                     self::$cache['modid'][$mdName] = $mod['id'];
                 }
@@ -693,9 +693,9 @@ class ModUtil
             $all = self::getModsTable();
             foreach ($all as $mod) {
                 // "Core" modules should be returned in this list
-                if (($mod['state'] == self::STATE_ACTIVE)
+                if ((self::STATE_ACTIVE == $mod['state'])
                     || (preg_match('/^(zikulaextensionsmodule|zikulaadminmodule|zikulathememodule|zikulablockmodule|zikulagroupsmodule|zikulapermissionsmodule|zikulausersmodule)$/i', $mod['name'])
-                        && ($mod['state'] == self::STATE_UPGRADED || $mod['state'] == self::STATE_INACTIVE))) {
+                        && (self::STATE_UPGRADED == $mod['state'] || self::STATE_INACTIVE == $mod['state']))) {
                     self::$cache['modsarray'][$mod['name']] = $mod;
                 }
             }
@@ -751,14 +751,14 @@ class ModUtil
             $modinfo = self::getInfo(self::getIdFromName($modname));
             $directory = $modinfo['directory'];
 
-            $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
+            $modpath = (self::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
         } else {
             $modpath = is_dir("system/$directory") ? 'system' : 'modules';
         }
 
         // all system modules do not require tables.php, return immediately
         // but (old) third party modules may require search table info
-        if ($modpath == 'system' && $modname != 'zikulasearchmodule') {
+        if ('system' == $modpath && 'zikulasearchmodule' != $modname) {
             return true;
         }
 
@@ -796,17 +796,17 @@ class ModUtil
             // Generate _column automatically from _column_def if it is not present.
             foreach ($data as $key => $value) {
                 $table_col = substr($key, 0, -4);
-                if (substr($key, -11) == "_column_def" && !isset($data[$table_col])) {
+                if ("_column_def" == substr($key, -11) && !isset($data[$table_col])) {
                     foreach ($value as $fieldname => $def) {
                         $data[$table_col][$fieldname] = $fieldname;
                     }
                 }
 
-                if ($dbDriverName == 'derby' || $dbDriverName == 'splice' || $dbDriverName == 'jdbcbridge') {
-                    if (substr($key, -7) == '_column') {
+                if ('derby' == $dbDriverName || 'splice' == $dbDriverName || 'jdbcbridge' == $dbDriverName) {
+                    if ('_column' == substr($key, -7)) {
                         if (is_array($value) && $value) {
                             foreach ($value as $alias => $fieldname) {
-                                if ($alias != 'user') {
+                                if ('user' != $alias) {
                                     $data[$key][$alias] = strtoupper($fieldname);
                                 }
                             }
@@ -845,7 +845,7 @@ class ModUtil
     {
         @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        if (strtolower(substr($type, -3)) == 'api') {
+        if ('api' == strtolower(substr($type, -3))) {
             return false;
         }
 
@@ -923,7 +923,7 @@ class ModUtil
         }
 
         // create variables for the OS preped version of the directory
-        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (self::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
 
         // if class is loadable or has been loaded exit here.
         if (self::isInitialized($modname)) {
@@ -936,7 +936,7 @@ class ModUtil
 
         self::$cache['loaded'][$modtype] = $modname;
 
-        if ($modinfo['type'] == self::TYPE_MODULE) {
+        if (self::TYPE_MODULE == $modinfo['type']) {
             ZLanguage::bindModuleDomain($modname);
         }
 
@@ -991,7 +991,7 @@ class ModUtil
             if (!empty($moduleStylesheet)) {
                 PageUtil::addVar('stylesheet', $moduleStylesheet);
             }
-            if (strpos($type, 'admin') === 0) {
+            if (0 === strpos($type, 'admin')) {
                 // load special admin stylesheets for administrator controllers
                 PageUtil::addVar('stylesheet', ThemeUtil::getModuleStylesheet('ZikulaAdminModule'));
             }
@@ -1240,7 +1240,7 @@ class ModUtil
                                 $modfunc[1] = preg_replace('/(\w+)Action$/', '$1', $modfunc[1]);
                                 if (!$r->hasMethod($modfunc[1])) {
                                     // Method still not found. Try to use the old 'main' method name.
-                                    if ($modfunc[1] == 'index') {
+                                    if ('index' == $modfunc[1]) {
                                         $modfunc[1] = $r->hasMethod('mainAction') ? 'mainAction' : 'main';
                                     }
                                 }
@@ -1258,16 +1258,16 @@ class ModUtil
                             if ($modfunc[0] instanceof \Zikula_AbstractBase) {
                                 $r = new \ReflectionMethod($modfunc[0], $modfunc[1]);
                                 $parameters = $r->getParameters();
-                                if (count($parameters) == 1) {
+                                if (1 == count($parameters)) {
                                     $firstParameter = $parameters[0];
-                                    if ($firstParameter->getName() == 'args') {
+                                    if ('args' == $firstParameter->getName()) {
                                         // The method really uses the old $args parameter. In this case we can continue
                                         // using the old Controller call and don't have to throw an exception.
                                         $newType = false;
                                     }
                                 }
                             }
-                            if ($newType !== false) {
+                            if (false !== $newType) {
                                 throw $e;
                             }
                         }
@@ -1379,8 +1379,8 @@ class ModUtil
         }
 
         $routeNames = [strtolower($modname) . '_' . strtolower($type) . '_' . strtolower($func)];
-        if ($func == 'index' || $func == 'main') {
-            if ($func == 'index') {
+        if ('index' == $func || 'main' == $func) {
+            if ('index' == $func) {
                 $routeNames[] = strtolower($modname) . '_' . strtolower($type) . '_main';
             } else {
                 $routeNames[] = strtolower($modname) . '_' . strtolower($type) . '_index';
@@ -1393,7 +1393,7 @@ class ModUtil
         }
 
         // check for default route provided by capabilities array, unshift to beginning of search array.
-        if ($func == 'index') {
+        if ('index' == $func) {
             $modInfo = self::getInfoFromName($modname);
             if (isset($modInfo['capabilities'][$type]['route'])) {
                 array_unshift($routeNames, $modInfo['capabilities'][$type]['route']);
@@ -1479,14 +1479,14 @@ class ModUtil
         }
 
         // Remove from 1.4
-        if (System::isLegacyMode() && $modname == 'Modules') {
+        if (System::isLegacyMode() && 'Modules' == $modname) {
             LogUtil::log(__('Warning! "Modules" module has been renamed to "ZikulaExtensionsModule".  Please update your ModUtil::url() or {modurl} calls with $module = "ZikulaExtensionsModule".'));
             $modname = 'ZikulaExtensionsModule';
         }
 
         // Try to generate the url using Symfony routing.
         $url = self::symfonyRoute($modname, $type, $func, $args, $ssl, $fragment, $fqurl, $forcelang);
-        if ($url !== false) {
+        if (false !== $url) {
             return $url;
         }
 
@@ -1520,7 +1520,7 @@ class ModUtil
         // Don't encode URLs with escaped characters, like return urls.
         foreach ($args as $v) {
             if (!is_array($v)) {
-                if (strpos($v, '%') !== false) {
+                if (false !== strpos($v, '%')) {
                     $shorturls = false;
                     break;
                 }
@@ -1528,12 +1528,12 @@ class ModUtil
                 foreach ($v as $vv) {
                     if (is_array($vv)) {
                         foreach ($vv as $vvv) {
-                            if (!is_array($vvv) && strpos($vvv, '%') !== false) {
+                            if (!is_array($vvv) && false !== strpos($vvv, '%')) {
                                 $shorturls = false;
                                 break;
                             }
                         }
-                    } elseif (strpos($vv, '%') !== false) {
+                    } elseif (false !== strpos($vv, '%')) {
                         $shorturls = false;
                         break;
                     }
@@ -1558,14 +1558,14 @@ class ModUtil
 
         // Only produce full URL when HTTPS is on or $ssl is set
         $siteRoot = '';
-        if ((isset($https) && $https == 'on') || $ssl != null || $fqurl == true) {
-            $protocol = 'http' . (($https == 'on' && $ssl !== false) || $ssl === true ? 's' : '');
+        if ((isset($https) && 'on' == $https) || null != $ssl || true == $fqurl) {
+            $protocol = 'http' . (('on' == $https && false !== $ssl) || true === $ssl ? 's' : '');
             $secureDomain = System::getVar('secure_domain');
-            $siteRoot = $protocol . '://' . (($secureDomain != '') ? $secureDomain : ($host . $baseuri)) . '/';
+            $siteRoot = $protocol . '://' . (('' != $secureDomain) ? $secureDomain : ($host . $baseuri)) . '/';
         }
 
         // Only convert type=user. Exclude links that append a theme parameter
-        if ($shorturls && $type == 'user' && $forcelongurl == false) {
+        if ($shorturls && 'user' == $type && false == $forcelongurl) {
             if (isset($args['theme'])) {
                 $theme = $args['theme'];
                 unset($args['theme']);
@@ -1590,7 +1590,7 @@ class ModUtil
                         $vars .= "/$k/$v"; // &$k=$v
                     }
                 }
-                $url = $modname . ($vars || $func != 'main' ? "/$func$vars" : '');
+                $url = $modname . ($vars || 'main' != $func ? "/$func$vars" : '');
             }
 
             if ($modinfo && $shorturlsdefaultmodule && $shorturlsdefaultmodule == $modinfo['name']) {
@@ -1633,19 +1633,19 @@ class ModUtil
                             if (is_array($w)) {
                                 foreach ($w as $m => $n) {
                                     if (is_numeric($n) || !empty($n)) {
-                                        $n = strpos($n, '%') !== false ? $n : urlencode($n);
+                                        $n = false !== strpos($n, '%') ? $n : urlencode($n);
                                         $url .= "&$key" . "[$l][$m]=$n";
                                     }
                                 }
                             } else {
-                                $w = strpos($w, '%') !== false ? $w : urlencode($w);
+                                $w = false !== strpos($w, '%') ? $w : urlencode($w);
                                 $url .= "&$key" . "[$l]=$w";
                             }
                         }
                     }
                 } elseif (is_numeric($value) || !empty($value)) {
                     // we suppress '', but allow 0 as value (see #193)
-                    $value = strpos($value, '%') !== false ? $value : urlencode($value);
+                    $value = false !== strpos($value, '%') ? $value : urlencode($value);
                     $url .= "&$key=$value";
                 }
             }
@@ -1683,14 +1683,14 @@ class ModUtil
             self::$cache['modstate'] = [];
         }
 
-        if (!isset(self::$cache['modstate'][$modname]) || $force == true) {
+        if (!isset(self::$cache['modstate'][$modname]) || true == $force) {
             $modinfo = self::getInfo(self::getIDFromName($modname));
             if (isset($modinfo['state'])) {
                 self::$cache['modstate'][$modname] = $modinfo['state'];
             }
         }
 
-        if ($force == true) {
+        if (true == $force) {
             self::$cache['modstate'][$modname] = self::STATE_ACTIVE;
         }
 
@@ -1729,7 +1729,7 @@ class ModUtil
 
                 self::$cache['modgetname'] = $modinfo['name'];
 
-                if ((!$type == 'init' || !$type == 'initeractiveinstaller') && !self::available(self::$cache['modgetname'])) {
+                if (('init' == !$type || 'initeractiveinstaller' == !$type) && !self::available(self::$cache['modgetname'])) {
                     self::$cache['modgetname'] = System::getVar('startpage');
                 }
             }
@@ -1762,7 +1762,7 @@ class ModUtil
         unset($modules[0]);
         foreach ($modules as $module) {
             $path = "modules/$module[directory]/lib";
-            if ($module['type'] == self::TYPE_MODULE) {
+            if (self::TYPE_MODULE == $module['type']) {
                 if (is_dir($path)) {
                     ZLoader::addAutoloader($module['directory'], $path);
                 } elseif (file_exists("modules/$module[directory]/Version.php")) {
@@ -1802,7 +1802,7 @@ class ModUtil
 
         $path = System::getBaseUri();
         $directory = 'system/' . $modname;
-        if ($path != '') {
+        if ('' != $path) {
             $path .= '/';
         }
 
@@ -1928,7 +1928,7 @@ class ModUtil
             return false;
         }
 
-        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (self::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
         $osdir = DataUtil::formatForOS($modinfo['directory']);
         if (false === strpos($modinfo['directory'], '/')) {
             ZLoader::addAutoloader($moduleName, [
@@ -2037,12 +2037,12 @@ class ModUtil
     {
         @trigger_error('ModUtil class is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        if ($moduleName == '') {
+        if ('' == $moduleName) {
             return false;
         }
 
         $modinfo = self::getInfoFromName($moduleName);
-        $modpath = ($modinfo['type'] == self::TYPE_SYSTEM) ? 'system' : 'modules';
+        $modpath = (self::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
         $modulePath = self::getModuleRelativePath($modinfo['name']);
@@ -2119,7 +2119,7 @@ class ModUtil
                 throw new \RuntimeException(__('Error! No such module exists.'));
             }
             $osDir = DataUtil::formatForOS($modInfo['directory']);
-            $modPath = ($modInfo['type'] == self::TYPE_SYSTEM) ? "system" : "modules";
+            $modPath = (self::TYPE_SYSTEM == $modInfo['type']) ? "system" : "modules";
             $scanner = new Scanner();
             $scanner->scan(["$modPath/$osDir"], 1);
             $modules = $scanner->getModulesMetaData(true);
@@ -2129,7 +2129,7 @@ class ModUtil
                 // moduleMetaData only exists for bundle-type modules
                 $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
                 $boot->addAutoloaders($kernel, $moduleMetaData->getAutoload());
-                if ($modInfo['type'] == self::TYPE_MODULE) {
+                if (self::TYPE_MODULE == $modInfo['type']) {
                     if (is_dir("modules/$osDir/Resources/locale")) {
                         ZLanguage::bindModuleDomain($modInfo['name']);
                     }

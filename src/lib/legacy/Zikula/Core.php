@@ -533,7 +533,7 @@ class Zikula_Core
         // check the users status, if not 1 then log him out
         if (ServiceUtil::getManager()->getParameter('installed') && UserUtil::isLoggedIn()) {
             $userstatus = UserUtil::getVar('activated');
-            if ($userstatus != Users_Constant::ACTIVATED_ACTIVE) {
+            if (Users_Constant::ACTIVATED_ACTIVE != $userstatus) {
                 UserUtil::logout();
                 // TODO - When getting logged out this way, the existing session is destroyed and
                 //        then a new one is created on the reentry into index.php. The message

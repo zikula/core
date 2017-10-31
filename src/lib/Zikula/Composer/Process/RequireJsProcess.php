@@ -53,7 +53,7 @@ class RequireJsProcess extends Process
         // Attempt to write the require.config.js file.
         $destination = $this->componentDir . '/require.config.js';
         $this->fs->ensureDirectoryExists(dirname($destination));
-        if (file_put_contents($destination, $requireConfig) === false) {
+        if (false === file_put_contents($destination, $requireConfig)) {
             $this->io->write('<error>Error writing require.config.js</error>');
 
             return false;
@@ -71,7 +71,7 @@ class RequireJsProcess extends Process
         $assets->add(new StringAsset($requireConfig));
 
         // Append the config to the require.js and write it.
-        if (file_put_contents($this->componentDir . '/require.js', $assets->dump()) === false) {
+        if (false === file_put_contents($this->componentDir . '/require.js', $assets->dump())) {
             $this->io->write('<error>Error writing require.js to the components directory</error>');
 
             return false;

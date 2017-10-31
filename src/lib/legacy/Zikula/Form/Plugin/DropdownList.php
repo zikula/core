@@ -254,13 +254,13 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         if ($this->readOnly) {
             $class .= ' z-form-readonly';
         }
-        if ($this->cssClass != null) {
+        if (null != $this->cssClass) {
             $class .= ' ' . $this->cssClass;
         }
 
-        $classHtml = ($class == '' ? '' : " class=\"{$class}\"");
+        $classHtml = ('' == $class ? '' : " class=\"{$class}\"");
 
-        $sizeHtml = ($this->size == null ? '' : " size=\"{$this->size}\"");
+        $sizeHtml = (null == $this->size ? '' : " size=\"{$this->size}\"");
 
         $postbackHtml = '';
         if ($this->autoPostBack) {
@@ -268,7 +268,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         }
 
         $multipleHtml = '';
-        if ($this->selectionMode == 'multiple') {
+        if ('multiple' == $this->selectionMode) {
             $multipleHtml = " multiple=\"multiple\"";
         }
 
@@ -280,10 +280,10 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         foreach ($this->items as $item) {
             $optgroup = (isset($item['optgroup']) ? $item['optgroup'] : null);
             if ($optgroup != $currentOptGroup) {
-                if ($currentOptGroup != null) {
+                if (null != $currentOptGroup) {
                     $result .= "</optgroup>\n";
                 }
-                if ($optgroup != null) {
+                if (null != $optgroup) {
                     $result .= "<optgroup label=\"" . DataUtil::formatForDisplay($optgroup) . "\">\n";
                 }
                 $currentOptGroup = $optgroup;
@@ -291,22 +291,22 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
 
             $text = DataUtil::formatForDisplay($item['text']);
 
-            if ($item['value'] === null) {
+            if (null === $item['value']) {
                 $value = '#null#';
             } else {
                 $value = DataUtil::formatForDisplay($item['value']);
             }
 
-            if ($this->selectionMode == 'single' && $value == $this->selectedValue) {
+            if ('single' == $this->selectionMode && $value == $this->selectedValue) {
                 $selected = ' selected="selected"';
-            } elseif ($this->selectionMode == 'multiple' && in_array($value, (array)$this->selectedValue)) {
+            } elseif ('multiple' == $this->selectionMode && in_array($value, (array)$this->selectedValue)) {
                 $selected = ' selected="selected"';
             } else {
                 $selected = '';
             }
             $result .= "<option value=\"{$value}\"{$selected}>{$text}</option>\n";
         }
-        if ($currentOptGroup != null) {
+        if (null != $currentOptGroup) {
             $result .= "</optgroup>\n";
         }
         $result .= "</select>\n";
@@ -351,12 +351,12 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
             $value = (null == $value) ? [] : (array)$value;
 
             for ($i = 0, $count = count($value); $i < $count; ++$i) {
-                if ($value[$i] == '#null#') {
+                if ('#null#' == $value[$i]) {
                     $value[$i] = null;
                 }
             }
 
-            if ($this->selectionMode == 'single') {
+            if ('single' == $this->selectionMode) {
                 $value = $value[0];
             }
 
@@ -376,7 +376,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
         $this->clearValidation($view);
 
         // we have to allow 0 as a value, see #986
-        $valueNotSelected = ((empty($this->selectedValue) && !is_numeric($this->selectedValue)) || $this->selectedValue === null);
+        $valueNotSelected = ((empty($this->selectedValue) && !is_numeric($this->selectedValue)) || null === $this->selectedValue);
         if ($this->mandatory && $valueNotSelected) {
             $this->setError(__('Error! You must make a selection.'));
         }
@@ -391,7 +391,7 @@ class Zikula_Form_Plugin_DropdownList extends Zikula_Form_Plugin_BaseListSelecto
      */
     public function setSelectedValue($value)
     {
-        if ($this->selectionMode == 'single') {
+        if ('single' == $this->selectionMode) {
             // Check for exiting value in list (avoid tampering with post values)
             for ($i = 0, $count = count($this->items); $i < $count; ++$i) {
                 $item = &$this->items[$i];

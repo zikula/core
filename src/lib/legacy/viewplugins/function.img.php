@@ -92,8 +92,8 @@ function smarty_function_img($params, Zikula_View $view)
     $osset = DataUtil::formatForOS($set);
 
     // if the module name is 'core'
-    if ($modname == 'core') {
-        if (System::isLegacyMode() && (strpos($osset, 'icons/') !== false || strpos($osset, 'global/') !== false) && strpos($params['src'], '.gif')) {
+    if ('core' == $modname) {
+        if (System::isLegacyMode() && (false !== strpos($osset, 'icons/') || false !== strpos($osset, 'global/')) && strpos($params['src'], '.gif')) {
             LogUtil::log(__f('Core image %s does not exist, please use the png format (called from %s).', [$params['src'], $view->getTemplatePath()]), E_USER_DEPRECATED);
             $params['src'] = str_replace('.gif', '.png', $params['src']);
         }
@@ -120,10 +120,10 @@ function smarty_function_img($params, Zikula_View $view)
         $paths = [$pluglangpath, $plugpath];
     } else {
         // module directory
-        if ($modname != 'core') {
+        if ('core' != $modname) {
             $modinfo   = ModUtil::getInfoFromName($modname);
             $osmoddir  = DataUtil::formatForOS($modinfo['directory']);
-            $moduleDir = ($modinfo['type'] == ModUtil::TYPE_SYSTEM ? 'system' : 'modules');
+            $moduleDir = (ModUtil::TYPE_SYSTEM == $modinfo['type'] ? 'system' : 'modules');
         }
 
         if ($modplugin) {
@@ -143,7 +143,7 @@ function smarty_function_img($params, Zikula_View $view)
             $themepath     = $themePath;
             $corethemepath = "themes/$ostheme/images";
 
-            if ($modname == 'core') {
+            if ('core' == $modname) {
                 $modpath = 'images';
                 $paths = [$themepath, $corethemepath, $modpath];
             } else {
@@ -184,14 +184,14 @@ function smarty_function_img($params, Zikula_View $view)
         }
     }
 
-    if ($imgsrc == '' && isset($params['default'])) {
+    if ('' == $imgsrc && isset($params['default'])) {
         $imgsrc = $params['default'];
     }
 
     // default for the optional flag
     $optional = isset($params['optional']) ? $params['optional'] : true;
 
-    if ($imgsrc == '') {
+    if ('' == $imgsrc) {
         if ($optional) {
             if (!$nostoponerror) {
                 $view->trigger_error(__f("%s: Image '%s' not found", ['img', DataUtil::formatForDisplay(($set ? "$set/" : '') . $params['src'])]));

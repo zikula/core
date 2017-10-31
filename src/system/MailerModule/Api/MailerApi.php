@@ -218,7 +218,7 @@ class MailerApi implements MailerApiInterface
     {
         foreach ($attachments as $attachment) {
             if (is_array($attachment)) {
-                if (count($attachment) != 4) {
+                if (4 != count($attachment)) {
                     // skip invalid arrays
                     continue;
                 }
@@ -237,7 +237,7 @@ class MailerApi implements MailerApiInterface
     private function addStringAttachments(array $attachments)
     {
         foreach ($attachments as $attachment) {
-            if (is_array($attachment) && count($attachment) == 4) {
+            if (is_array($attachment) && 4 == count($attachment)) {
                 $this->message->attach(Swift_Attachment::fromPath($attachment[0], $attachment[3])->setFilename($attachment[1]));
             }
         }

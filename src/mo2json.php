@@ -50,7 +50,7 @@ $translations = [];
 $translations[$lang] = [];
 
 foreach ($_GET as $domain => $meta) {
-    if ($domain == 'lang') {
+    if ('lang' == $domain) {
         continue;
     }
 

@@ -52,8 +52,8 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getLoginTemplateName($type = 'page', $position = 'left')
     {
-        if ($type == 'block') {
-            if ($position == 'topnav') {
+        if ('block' == $type) {
+            if ('topnav' == $position) {
                 return 'ZikulaZAuthModule:Authentication:UnameLoginBlock.topnav.html.twig';
             }
 

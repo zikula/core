@@ -98,7 +98,7 @@ class Zikula_EventManager extends EventDispatcher
     {
         @trigger_error('Zikula_EventManager is deprecated, please use Symfony events instead.', E_USER_DEPRECATED);
 
-        $dispatcher = func_num_args() === 3 ? func_get_arg(2) : null;
+        $dispatcher = 3 === func_num_args() ? func_get_arg(2) : null;
 
         return parent::dispatch($name, $event, $dispatcher);
     }

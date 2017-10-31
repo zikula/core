@@ -73,7 +73,7 @@ function smarty_function_adminpanelmenu($params, Zikula_View $view)
             $links = (array)ModUtil::apiFunc($module['name'], 'admin', 'getLinks');
         }
 
-        if (count($links) > 0 && $links[0] != false) {
+        if (count($links) > 0 && false != $links[0]) {
             // create second-level list from module adminLinks
             $htmlContent .= '<ul class="text-left">';
             foreach ($links as $link) {

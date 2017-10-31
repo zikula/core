@@ -225,7 +225,7 @@ class AdminController extends \Zikula_AbstractController
             }
 
             // upgrade ?
-            if ($pluginstate['state'] != PluginUtil::NOTINSTALLED
+            if (PluginUtil::NOTINSTALLED != $pluginstate['state']
                 && $pluginstate['version'] != $instance->getMetaVersion()) {
                 $status = $this->__('New version');
                 $statusclass = 'danger';
@@ -265,12 +265,12 @@ class AdminController extends \Zikula_AbstractController
                 'status'      => $status,
                 'statusclass' => $statusclass,
                 'actions'     => $actions,
-                'version'     => $pluginstate['state'] == PluginUtil::NOTINSTALLED ?
+                'version'     => PluginUtil::NOTINSTALLED == $pluginstate['state'] ?
                                         $instance->getMetaVersion() : $pluginstate['version']
             ];
 
             // new version of plugin?
-            if ($pluginstate['state'] != PluginUtil::NOTINSTALLED
+            if (PluginUtil::NOTINSTALLED != $pluginstate['state']
                 && $pluginstate['version'] != $instance->getMetaVersion()) {
                 $info['newversion'] = $instance->getMetaVersion();
             }
@@ -279,9 +279,9 @@ class AdminController extends \Zikula_AbstractController
         }
 
         // sort plugins array
-        if (empty($sort) || $sort == 'module') {
+        if (empty($sort) || 'module' == $sort) {
             usort($plugins, [$this, 'viewPluginsSorter_byModule']);
-        } elseif ($sort == 'name') {
+        } elseif ('name' == $sort) {
             usort($plugins, [$this, 'viewPluginsSorter_byName']);
         }
 

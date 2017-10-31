@@ -48,7 +48,7 @@ function smarty_function_datetime($params, Zikula_View $view)
     // set some defaults
     $format = isset($params['format']) ? $params['format'] : __('%b %d, %Y - %I:%M %p');
 
-    if (strpos($format, '%') !== false) {
+    if (false !== strpos($format, '%')) {
         // allow the use of conversion specifiers
         return DateUtil::formatDatetime('', $format);
     }

@@ -289,10 +289,10 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     private function chooseMessage($m1, $m2, $n, $domain = null)
     {
         $message = $m2;
-        if (($this->getLocale() == 'en') || ($domain == 'en')) {
+        if (('en' == $this->getLocale()) || ('en' == $domain)) {
             $domains = $this->getCatalogue($this->getLocale())->getDomains();
             if (!in_array($this->domain, $domains)) {
-                $message = ($n == 1) ? $m1 : $m2;
+                $message = (1 == $n) ? $m1 : $m2;
             }
         }
 

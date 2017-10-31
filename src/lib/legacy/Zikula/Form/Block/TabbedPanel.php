@@ -82,11 +82,11 @@ class Zikula_Form_Block_TabbedPanel extends Zikula_Form_AbstractPlugin
         // Locate parent panelset and register with it
         $panelSet = $this->parentPlugin;
 
-        while ($panelSet != null && !($panelSet instanceof Zikula_Form_Block_TabbedPanelSet)) {
+        while (null != $panelSet && !($panelSet instanceof Zikula_Form_Block_TabbedPanelSet)) {
             $panelSet = $panelSet->parentPlugin;
         }
 
-        if ($panelSet != null) {
+        if (null != $panelSet) {
             $panelSet->registerTabbedPanel($view, $this, $this->title);
         }
 

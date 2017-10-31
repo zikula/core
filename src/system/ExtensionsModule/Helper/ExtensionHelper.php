@@ -64,7 +64,7 @@ class ExtensionHelper
      */
     public function install(ExtensionEntity $extension)
     {
-        if ($extension->getState() == Constant::STATE_NOTALLOWED) {
+        if (Constant::STATE_NOTALLOWED == $extension->getState()) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to install %s.', ['%s' => $extension->getName()]));
         } elseif ($extension->getState() > 10) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
@@ -162,11 +162,11 @@ class ExtensionHelper
      */
     public function uninstall(ExtensionEntity $extension)
     {
-        if ($extension->getState() == Constant::STATE_NOTALLOWED
+        if (Constant::STATE_NOTALLOWED == $extension->getState()
             || (ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
-        if ($extension->getState() == Constant::STATE_UNINITIALISED) {
+        if (Constant::STATE_UNINITIALISED == $extension->getState()) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
         }
 

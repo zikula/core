@@ -263,7 +263,7 @@ class UserApi
         $uid = UserUtil::getVar('uid');
 
         $memberships = false;
-        if ($uid != 0) {
+        if (0 != $uid) {
             $memberships = $this->getusergroups([
                 'uid' => $uid,
                 'clean' => true
@@ -297,7 +297,7 @@ class UserApi
             $ismember = is_array($memberships) && in_array($gid, $memberships) ? true : false;
 
             $status = false;
-            if ($uid != 0) {
+            if (0 != $uid) {
                 $status = $this->isuserpending([
                     'gid' => $gid,
                     'uid' => $uid
@@ -314,7 +314,7 @@ class UserApi
             }
 
             // Anon users or non-members should not be able to see private groups.
-            if ($gtype == CommonHelper::GTYPE_PRIVATE) {
+            if (CommonHelper::GTYPE_PRIVATE == $gtype) {
                 if (!$uid || !$this->isgroupmember([
                     'uid' => $uid,
                     'gid' => $gid
@@ -329,7 +329,7 @@ class UserApi
                 'gtype' => $gtype,
                 'description' => $description,
                 'state' => $state,
-                'nbuser' => (($nbuser != false) ? $nbuser : 0),
+                'nbuser' => ((false != $nbuser) ? $nbuser : 0),
                 'nbumax' => $nbumax,
                 'ismember' => $ismember,
                 'status' => $status,
@@ -339,7 +339,7 @@ class UserApi
                 'row' => $row
             ];
 
-            if ($row == 1) {
+            if (1 == $row) {
                 $row = 2;
             } else {
                 $row = 1;
@@ -507,8 +507,8 @@ class UserApi
 
         $userid = UserUtil::getVar('uid');
 
-        if ($args['action'] == 'subscribe') {
-            if ($args['gtype'] == CommonHelper::GTYPE_PRIVATE) {
+        if ('subscribe' == $args['action']) {
+            if (CommonHelper::GTYPE_PRIVATE == $args['gtype']) {
                 if (!isset($args['applytext'])) {
                     throw new \InvalidArgumentException($translator->__('Invalid arguments array received'));
                 }
@@ -549,7 +549,7 @@ class UserApi
                     throw new \RuntimeException($translator->__('Error! Could not add the user to the group.'));
                 }
             }
-        } elseif ($args['action'] == 'cancel') {
+        } elseif ('cancel' == $args['action']) {
             $save = $this->cancelapp(['gid' => $args['gid'], 'uid' => $userid]);
             if (false === $save) {
                 throw new \RuntimeException($translator->__('Error! Could not remove the user from the group.'));

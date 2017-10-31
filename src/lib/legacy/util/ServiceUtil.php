@@ -63,7 +63,7 @@ class ServiceUtil
     {
         @trigger_error('ServiceUtil is deprecated, please use Symfony container instead.', E_USER_DEPRECATED);
 
-        return self::$serviceManager !== null;
+        return null !== self::$serviceManager;
     }
 
     public static function setContainer(ContainerInterface $container)

@@ -41,13 +41,13 @@ class Application extends BaseApplication
 
     protected function registerCommands()
     {
-        if ($this->kernel->getContainer()->getParameter('installed') !== true) {
+        if (true !== $this->kernel->getContainer()->getParameter('installed')) {
             // composer is called, the system may not be installed yet
             return parent::registerCommands();
         }
 
         // ensure that we have admin access
-        if ($this->kernel->getContainer()->getParameter('installed') === true) {
+        if (true === $this->kernel->getContainer()->getParameter('installed')) {
             // don't attempt to login if the Core needs an upgrade
             VersionUtil::defineCurrentInstalledCoreVersion($this->kernel->getContainer());
             $currentVersion = $this->kernel->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);

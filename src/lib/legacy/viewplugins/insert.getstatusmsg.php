@@ -74,7 +74,7 @@ function smarty_insert_getstatusmsg($params, $view)
         /**
          * Build output of the messages.
          */
-        if ((!$params['tag']) || ($params['tag'] != 'span')) {
+        if ((!$params['tag']) || ('span' != $params['tag'])) {
             $params['tag'] = 'div';
         }
 
@@ -104,7 +104,7 @@ function smarty_insert_getstatusmsg($params, $view)
         /**
          * Build output of the messages.
          */
-        if ((!$params['tag']) || ($params['tag'] != 'span')) {
+        if ((!$params['tag']) || ('span' != $params['tag'])) {
             $params['tag'] = 'div';
         }
 
@@ -135,7 +135,7 @@ function smarty_insert_getstatusmsg($params, $view)
         /**
          * Build output of the messages.
          */
-        if ((!$params['tag']) || ($params['tag'] != 'span')) {
+        if ((!$params['tag']) || ('span' != $params['tag'])) {
             $params['tag'] = 'div';
         }
 

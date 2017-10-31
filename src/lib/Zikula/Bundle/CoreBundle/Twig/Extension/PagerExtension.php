@@ -89,7 +89,7 @@ class PagerExtension extends \Twig_Extension
         $includePostVars = isset($params['includePostVars']) ? $params['includePostVars'] : true;
         $routeName = isset($params['route']) ? $params['route'] : false;
         $templateName = (isset($params['template'])) ? $params['template'] : 'CoreBundle:Pager:pagercss.html.twig';
-        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ($templateName != 'CoreBundle:Pager:pagerimage.html.twig');
+        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('CoreBundle:Pager:pagerimage.html.twig' != $templateName);
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
         $systemVars = $this->container->get('zikula_extensions_module.api.variable')->getAll(VariableApi::CONFIG);
 
@@ -104,7 +104,7 @@ class PagerExtension extends \Twig_Extension
         } else {
             $pager['pos'] = (int)$request->query->get($pager['posvar'], '');
         }
-        if ($displayType == 'page') {
+        if ('page' == $displayType) {
             $pager['pos'] = $pager['pos'] * $pager['perpage'];
             $pager['increment'] = 1;
         } else {
@@ -137,7 +137,7 @@ class PagerExtension extends \Twig_Extension
                         break;
                     case 'lang':
                         $addcurrentlang2url = $systemVars['languageurl'];
-                        if ($addcurrentlang2url == 0) {
+                        if (0 == $addcurrentlang2url) {
                             $pager['args'][$k] =  $v;
                         }
                         break;
@@ -222,7 +222,7 @@ class PagerExtension extends \Twig_Extension
                     }
                 }
 
-                if ($displayType == 'page') {
+                if ('page' == $displayType) {
                     $pager['args'][$pager['posvar']] = $currItem;
                 } else {
                     $pager['args'][$pager['posvar']] = (($currItem - 1) * $pager['perpage']) + 1;
@@ -240,7 +240,7 @@ class PagerExtension extends \Twig_Extension
         $pager['args'][$pager['posvar']] = $pager['first'] = '1';
         $pager['firstUrl'] = $pagerUrl($pager) . $anchorText;
 
-        if ($displayType == 'page') {
+        if ('page' == $displayType) {
             $pager['prev'] = ($pager['currentPage'] - 1);
         } else {
             $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
@@ -249,7 +249,7 @@ class PagerExtension extends \Twig_Extension
         $pager['prevUrl'] = $pagerUrl($pager) . $anchorText;
 
         // link to next & last page
-        if ($displayType == 'page') {
+        if ('page' == $displayType) {
             $pager['next'] = $pager['currentPage'] + 1;
         } else {
             $pager['next'] = $rightMargin * $pager['perpage'] + 1;
@@ -257,7 +257,7 @@ class PagerExtension extends \Twig_Extension
         $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
         $pager['nextUrl'] = $pagerUrl($pager) . $anchorText;
 
-        if ($displayType == 'page') {
+        if ('page' == $displayType) {
             $pager['last'] = $pager['countPages'];
         } else {
             $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;
@@ -370,7 +370,7 @@ class PagerExtension extends \Twig_Extension
             }
         } else {
             // predefined abc
-            if (strtolower($params['skin']) == 'hu') {
+            if ('hu' == strtolower($params['skin'])) {
                 // Hungarian
                 $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
                 //$params['names']  = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z');
@@ -438,7 +438,7 @@ class PagerExtension extends \Twig_Extension
         foreach (array_keys($pager['names']) as $i) {
             $active = '';
             if (!empty($params['class_numon'])) {
-                if (isset($allVars[$pager['posvar']]) && $allVars[$pager['posvar']] == $pager['values'][$i]) {
+                if (isset($allVars[$pager['posvar']]) && $pager['values'][$i] == $allVars[$pager['posvar']]) {
                     $style = ' class="'.$params['class_numon'].'"';
                     $active = 'class="active"';
                 } elseif (!empty($params['class_num'])) {

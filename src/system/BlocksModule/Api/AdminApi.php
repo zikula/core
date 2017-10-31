@@ -358,7 +358,7 @@ class AdminApi extends \Zikula_AbstractApi
         /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $item */
         $item = ModUtil::apiFunc('ZikulaBlocksModule', 'user', 'getposition', ['pid' => $args['pid']]);
 
-        if ($item == false) {
+        if (false == $item) {
             return false;
         }
 

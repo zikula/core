@@ -260,7 +260,7 @@ class AdminApi extends \Zikula_AbstractApi
         // Get the theme info
         $themeinfo = ThemeUtil::getInfo($themeid);
 
-        if ($themeinfo == false) {
+        if (false == $themeinfo) {
             return false;
         }
 

@@ -117,7 +117,7 @@ class LinkContainer implements LinkContainerInterface
         ];
 
         $outputfilter = $this->variableApi->getSystemVar('outputfilter');
-        if ($outputfilter == 1) {
+        if (1 == $outputfilter) {
             $links[] = [
                 'url' => $this->router->generate('zikulasecuritycentermodule_config_purifierconfig'),
                 'text' => $this->translator->__('HTMLPurifier settings'),

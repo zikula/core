@@ -91,7 +91,7 @@ class Zikula_View_Resource
         @trigger_error('Old theme system is deprecated, please use Twig instead.', E_USER_DEPRECATED);
 
         // check if the z resource sent by Smarty is a cached insert
-        if (strpos($resource, 'insert.') === 0) {
+        if (0 === strpos($resource, 'insert.')) {
             return self::z_get_insert($resource, $tpl_source, $view);
         }
 
@@ -99,7 +99,7 @@ class Zikula_View_Resource
         // determine the template path and store the template source
         $tpl_path = $view->get_template_path($resource);
 
-        if ($tpl_path !== false) {
+        if (false !== $tpl_path) {
             $tpl_source = file_get_contents(DataUtil::formatForOS($tpl_path . '/' . $resource));
 
             return true;
@@ -125,7 +125,7 @@ class Zikula_View_Resource
         // get path, checks also if tpl_name file_exists and is_readable
         $tpl_path = $view->get_template_path($tpl_name);
 
-        if ($tpl_path !== false) {
+        if (false !== $tpl_path) {
             $tpl_timestamp = filemtime(DataUtil::formatForOS($tpl_path . '/' . $tpl_name));
 
             return true;
@@ -227,7 +227,7 @@ class Zikula_View_Resource
         @trigger_error('Old theme system is deprecated, please use Twig instead.', E_USER_DEPRECATED);
 
         if ($delayed_load || self::load($view, $type, $name)) {
-            $callable = ($type != 'insert') ? [self::getInstance(), "load_{$type}_{$name}"] : "smarty_{$type}_{$name}";
+            $callable = ('insert' != $type) ? [self::getInstance(), "load_{$type}_{$name}"] : "smarty_{$type}_{$name}";
 
             $view->_plugins[$type][$name] = [$callable, null, null, $delayed_load, $cacheable, $cache_attrs];
 

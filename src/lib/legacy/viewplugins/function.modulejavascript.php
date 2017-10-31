@@ -78,7 +78,7 @@ function smarty_function_modulejavascript($params, Zikula_View $view)
     }
 
     // if modname is empty, we will search the main javascript folder
-    if ($params['modname'] == '') {
+    if ('' == $params['modname']) {
         $searchpaths = ['javascript', 'javascript/ajax'];
     } else {
         // theme directory

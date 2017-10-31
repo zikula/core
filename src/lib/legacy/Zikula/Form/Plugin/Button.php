@@ -116,7 +116,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
 
         $onclickHtml = '';
         $onkeypressHtml = '';
-        if ($this->confirmMessage != null) {
+        if (null != $this->confirmMessage) {
             $msg = $view->translateForDisplay($this->confirmMessage) . '?';
             $onclickHtml = " onclick=\"return confirm('$msg');\"";
             $onkeypressHtml = " onkeypress=\"return confirm('$msg');\"";
@@ -148,7 +148,7 @@ class Zikula_Form_Plugin_Button extends Zikula_Form_AbstractStyledPlugin
                 'commandArgument' => $this->commandArgument
             ];
             if (!empty($this->onCommand)) {
-                if ($view->raiseEvent($this->onCommand, $args) === false) {
+                if (false === $view->raiseEvent($this->onCommand, $args)) {
                     return false;
                 }
             }

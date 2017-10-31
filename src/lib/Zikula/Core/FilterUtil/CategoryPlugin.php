@@ -132,7 +132,7 @@ class CategoryPlugin extends FilterUtil\AbstractBuildPlugin implements FilterUti
         $config = $this->config;
         $alias = $config->getAlias();
         $expr = $config->getQueryBuilder()->expr();
-        if ($op == 'sub' || is_numeric($value)) {
+        if ('sub' == $op || is_numeric($value)) {
             $column = $alias.'_cat_plugin_category.id';
             $prop = 'id';
         } else {

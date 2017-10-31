@@ -144,10 +144,10 @@ class ZMO
         $this->stream = $reader;
         $magic = $this->readint();
 
-        if ($magic == -1794895138 || $magic == 2500072158) {
+        if ($magic == -1794895138 || 2500072158 == $magic) {
             // (int)0x950412de; PHP 5.2 wont convert this properly
             $this->byteorder = 0;
-        } elseif ($magic == -569244523 || $magic == 3725722773) {
+        } elseif ($magic == -569244523 || 3725722773 == $magic) {
             // (int)0xde120495; PHP 5.2 wont convert this properly
             $this->byteorder = 1;
         } else {
@@ -272,7 +272,7 @@ class ZMO
      */
     private function readint()
     {
-        if ($this->byteorder == 0) {
+        if (0 == $this->byteorder) {
             // low endian
             $data = unpack('V', $this->stream->read(4));
         } else {
@@ -292,7 +292,7 @@ class ZMO
      */
     public function readintarray($count)
     {
-        if ($this->byteorder == 0) {
+        if (0 == $this->byteorder) {
             // low endian
             return unpack('V' . $count, $this->stream->read(4 * $count));
         }
@@ -408,7 +408,7 @@ class ZMO
         // Divide table in two parts
         $half = (int)(($start + $end) / 2);
         $cmp = strcmp($string, $this->get_original_string($half));
-        if ($cmp == 0) {
+        if (0 == $cmp) {
             // string is exactly in the middle => return it
             return $half;
         }
@@ -519,7 +519,7 @@ class ZMO
     public function ngettext($single, $plural, $number)
     {
         if ($this->short_circuit) {
-            if ($number != 1) {
+            if (1 != $number) {
                 return $plural;
             }
 
@@ -534,7 +534,7 @@ class ZMO
 
         if ($this->enable_cache) {
             if (!array_key_exists($key, $this->cache_translations)) {
-                return ($number != 1) ? $plural : $single;
+                return (1 != $number) ? $plural : $single;
             }
 
             $result = $this->cache_translations[$key];
@@ -544,7 +544,7 @@ class ZMO
         } else {
             $num = $this->find_string($key);
             if ($num == -1) {
-                return ($number != 1) ? $plural : $single;
+                return (1 != $number) ? $plural : $single;
             }
 
             $result = $this->get_translation_string($num);

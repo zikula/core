@@ -388,7 +388,7 @@ class AdminApi
         $styles = [];
 
         $osmoddir = DataUtil::formatForOS($modinfo['directory']);
-        $base = ($modinfo['type'] == ModUtil::TYPE_SYSTEM) ? 'system' : 'modules';
+        $base = (ModUtil::TYPE_SYSTEM == $modinfo['type']) ? 'system' : 'modules';
 
         $mpath = ModUtil::getModuleRelativePath($modinfo['name']);
         if ($mpath) {

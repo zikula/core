@@ -162,11 +162,11 @@ class IdsLogController extends AbstractController
                 $formData = $form->getData();
 
                 // export the titles ?
-                $exportTitles = isset($formData['titles']) && $formData['titles'] == 1 ? true : false;
+                $exportTitles = isset($formData['titles']) && 1 == $formData['titles'] ? true : false;
 
                 // name of the exported file
                 $exportFile = isset($formData['file']) ? $formData['file'] : null;
-                if (is_null($exportFile) || $exportFile == '') {
+                if (is_null($exportFile) || '' == $exportFile) {
                     $exportFile = 'idslog.csv';
                 }
                 if (!strrpos($exportFile, '.csv')) {
@@ -175,7 +175,7 @@ class IdsLogController extends AbstractController
 
                 // delimeter
                 $delimiter = isset($formData['delimiter']) ? $formData['delimiter'] : null;
-                if (is_null($delimiter) || $delimiter == '') {
+                if (is_null($delimiter) || '' == $delimiter) {
                     $delimiter = 1;
                 }
                 switch ($delimiter) {

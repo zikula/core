@@ -156,7 +156,7 @@ class CoreExtension extends Extension
             foreach ($zfinder as $file) {
                 // filepath/name is locale/<catalogue>/LC_MESSAGES/<domain>.po
                 $path_arr = explode('/', $file->getRelativePathname());
-                if (count($path_arr) == 3 && $path_arr[1] == 'LC_MESSAGES') {
+                if (3 == count($path_arr) && 'LC_MESSAGES' == $path_arr[1]) {
                     $locale = $path_arr[0];
                     list($domain) = explode('.', $file->getBasename(), 2);
                     $translatorServiceDefinition->addMethodCall('addResource', [

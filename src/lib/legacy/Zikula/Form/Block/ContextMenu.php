@@ -99,7 +99,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     public function create(Zikula_Form_View $view, &$params)
     {
         $this->styleAttributes['display'] = 'none';
-        $this->styleAttributes['z-index'] = ($this->zIndex === null ? 10 : $this->zIndex);
+        $this->styleAttributes['z-index'] = (null === $this->zIndex ? 10 : $this->zIndex);
     }
 
     /**
@@ -127,7 +127,7 @@ class Zikula_Form_Block_ContextMenu extends Zikula_Form_AbstractStyledPlugin
     public function renderBegin(Zikula_Form_View $view)
     {
         if ($this->firstTime(false)) {
-            $cssClass = ($this->cssClass == null ? "contextMenu" : $this->cssClass);
+            $cssClass = (null == $this->cssClass ? "contextMenu" : $this->cssClass);
             $attributes = $this->renderAttributes($view);
             $hiddenName = "contentMenuArgument" . $this->id;
             $html = "<input type=\"hidden\" name=\"{$hiddenName}\" id=\"{$hiddenName}\" /><div id=\"{$this->id}\" class=\"{$cssClass}\"{$attributes}><ul>";

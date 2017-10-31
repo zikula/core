@@ -138,7 +138,7 @@ class FilterUtil_Config
             $this->_module = $module;
 
             return true;
-        } elseif (strtolower($module) == 'core') {
+        } elseif ('core' == strtolower($module)) {
             $this->_module = 'core';
 
             return true;
@@ -472,7 +472,7 @@ class FilterUtil_Config
      */
     private function _getFilterRelations(&$joins, $obj)
     {
-        if (!is_array($obj) || count($obj) == 0) {
+        if (!is_array($obj) || 0 == count($obj)) {
             return [];
         }
 
@@ -491,8 +491,8 @@ class FilterUtil_Config
                 unset($obj[0]);
             }
             foreach ($obj as $op => $tmp) {
-                $op = strtoupper(substr($op, 0, 3)) == 'AND' ? 'AND' : 'OR';
-                if (strtoupper($op) == 'AND' || strtoupper($op) == 'OR') {
+                $op = 'AND' == strtoupper(substr($op, 0, 3)) ? 'AND' : 'OR';
+                if ('AND' == strtoupper($op) || 'OR' == strtoupper($op)) {
                     $j = $this->_getFilterRelations($joins, $tmp);
                 }
             }
@@ -544,7 +544,7 @@ class FilterUtil_Config
 
                 $e = explode(' ', $part);
 
-                if (end($e) == 'INNER' || end($e) == 'LEFT') {
+                if ('INNER' == end($e) || 'LEFT' == end($e)) {
                     $last = array_pop($e);
                 }
                 $part = implode(' ', $e);
@@ -561,7 +561,7 @@ class FilterUtil_Config
                     $tables[] = $this->_doctrineQuery->load(implode(' ', $e));
                 }
 
-                $operator = ($last == 'INNER') ? ':' : '.';
+                $operator = ('INNER' == $last) ? ':' : '.';
             }
         }
 
@@ -614,7 +614,7 @@ class FilterUtil_Config
         foreach ($tables as $alias => $table) {
             $columns = $this->getDoctrineTableColumns($table['table'], $dynaMap);
 
-            if (strpos($alias, '.') === false) {
+            if (false === strpos($alias, '.')) {
                 // add main table aliases only
                 $aliases[] = "$alias.";
             }

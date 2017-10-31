@@ -125,7 +125,7 @@ class FilterListener implements EventSubscriberInterface
             return;
         }
 
-        if ($this->getSystemVar('useids') != 1) {
+        if (1 != $this->getSystemVar('useids')) {
             return;
         }
         if (!$event->isMasterRequest()) {
@@ -298,11 +298,11 @@ class FilterListener implements EventSubscriberInterface
         // let's see which impact mode we are using
         $idsImpactMode = $this->getSystemVar('idsimpactmode', 1);
         $idsImpactFactor = 1;
-        if ($idsImpactMode == 1) {
+        if (1 == $idsImpactMode) {
             $idsImpactFactor = 1;
-        } elseif ($idsImpactMode == 2) {
+        } elseif (2 == $idsImpactMode) {
             $idsImpactFactor = 10;
-        } elseif ($idsImpactMode == 3) {
+        } elseif (3 == $idsImpactMode) {
             $idsImpactFactor = 5;
         }
 
@@ -312,7 +312,7 @@ class FilterListener implements EventSubscriberInterface
         $impactThresholdThree = $this->getSystemVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
         $impactThresholdFour  = $this->getSystemVar('idsimpactthresholdfour', 75) * $idsImpactFactor;
 
-        $usedImpact = ($idsImpactMode == 1) ? $requestImpact : $sessionImpact;
+        $usedImpact = (1 == $idsImpactMode) ? $requestImpact : $sessionImpact;
 
         // react according to given impact
         if ($usedImpact > $impactThresholdOne) {
@@ -386,7 +386,7 @@ class FilterListener implements EventSubscriberInterface
             $mailBody .= isset($currentUid) ? $this->translator->__f('UserID: %s', ['%s' => $currentUid]) . "\n" : '';
             $currentDate = new \DateTime();
             $mailBody .= $this->translator->__f('Date: %s', ['%s' => $currentDate->format('%b %d, %Y')]) . "\n";
-            if ($idsImpactMode == 1) {
+            if (1 == $idsImpactMode) {
                 $mailBody .= $this->translator->__f('Request Impact: %d', ['%d' => $requestImpact]) . "\n";
             } else {
                 $mailBody .= $this->translator->__f('Session Impact: %d', ['%d' => $sessionImpact]) . "\n";

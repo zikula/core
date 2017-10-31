@@ -228,7 +228,7 @@ class Generator
      */
     public function garbageCollection($probability = 20)
     {
-        if (mt_rand(1, $probability) === 1) {
+        if (1 === mt_rand(1, $probability)) {
             $this->storage->gc($this->maxLifetime);
         }
     }

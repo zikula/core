@@ -32,7 +32,7 @@ function smarty_outputfilter_pagevars($source, $view)
     $type = $view->getRequest()->get('type');
     $zkType = $view->getRequest()->attributes->get('_zkType');
     $methodAnnotationValue = ServiceUtil::get('zikula_core.common.theme_engine')->getAnnotationValue(); // Core-2.0 FC
-    $isAdminController = ($type == 'admin' || $zkType == 'admin' || (isset($methodAnnotationValue) && ($methodAnnotationValue == 'admin')));
+    $isAdminController = ('admin' == $type || 'admin' == $zkType || (isset($methodAnnotationValue) && ('admin' == $methodAnnotationValue)));
 
     // get list of stylesheets and scripts from JCSSUtil
     $jcss = JCSSUtil::prepareJCSS($cssjscombine, $view->cache_dir, $themeinfo, $isAdminController);
@@ -76,7 +76,7 @@ function smarty_outputfilter_pagevars($source, $view)
     // if we've got some page vars to add the header wrap the output in
     // suitable identifying comments when in development mode
     $return = trim($return);
-    if (!empty($return) && System::getVar('development') != 0) {
+    if (!empty($return) && 0 != System::getVar('development')) {
         $return = "<!-- zikula pagevars -->\n" . $return . "\n<!-- /zikula pagevars -->";
     }
 
@@ -99,7 +99,7 @@ function smarty_outputfilter_pagevars($source, $view)
         $source = str_replace('<!-- pagevars -->', $return, $source);
     } else {
         $headPos = stripos($source, '</head>');
-        if ($headPos !== false) {
+        if (false !== $headPos) {
             if ($headPos == strripos($source, '</head>')) {
                 // Position of the first </head> matches the last </head> so str_replace is safe
                 $source = str_replace('</head>', $return . "\n</head>", $source);

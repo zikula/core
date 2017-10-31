@@ -211,7 +211,7 @@ class BlockController extends AbstractController
         }
         $em = $this->getDoctrine()->getManager();
         $block = $em->find('ZikulaBlocksModule:BlockEntity', $bid);
-        $block->setActive($block->getActive() == BlockApi::BLOCK_ACTIVE ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
+        $block->setActive(BlockApi::BLOCK_ACTIVE == $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
         $em->flush();
 
         return new JsonResponse(['bid' => $bid]);
