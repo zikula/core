@@ -196,7 +196,7 @@ class UpdateCheckHelper
             }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
             $data = curl_exec($ch);
-            if (!$data && $port == 443) {
+            if (!$data && 443 == $port) {
                 // retry non ssl
                 $url = str_replace('https://', 'http://', $url);
                 curl_setopt($ch, CURLOPT_URL, "$url?");

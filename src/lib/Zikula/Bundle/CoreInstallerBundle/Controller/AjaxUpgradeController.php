@@ -193,7 +193,7 @@ class AjaxUpgradeController extends AbstractController
                 $variableApi->del(VariableApi::CONFIG, 'startpage');
                 $variableApi->del(VariableApi::CONFIG, 'startfunc');
                 $variableApi->del(VariableApi::CONFIG, 'starttype');
-                if ($this->container->getParameter('datadir') == 'userdata') {
+                if ('userdata' == $this->container->getParameter('datadir')) {
                     $this->yamlManager->setParameter('datadir', 'web/uploads');
                     $fs = $this->container->get('filesystem');
                     $src = realpath(__DIR__ . '/../../../../../');

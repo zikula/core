@@ -51,7 +51,7 @@ class GenerateVendorDocCommand extends Command
         $authors = [];
         foreach ($packages as $package) {
             if ($currentType != $package['type']) {
-                if ($currentType != '') {
+                if ('' != $currentType) {
                     $content .= "\n";
                 }
                 $content .= $typeOrder[$package['type']] . "\n";
