@@ -15,7 +15,7 @@ namespace Zikula\RoutesModule\Controller;
 use Zikula\RoutesModule\Controller\Base\AbstractRouteController;
 
 use RuntimeException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ class RouteController extends AbstractRouteController
      * @Route("/admin/routes",
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+7 days", public=true)
+    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -55,7 +55,7 @@ class RouteController extends AbstractRouteController
      * @Route("/routes",
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+7 days", public=true)
+    
      *
      * @param Request $request Current request instance
      *
@@ -75,7 +75,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+2 hours", public=false)
+    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -101,7 +101,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-     * @Cache(expires="+2 hours", public=false)
+    
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -126,7 +126,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
+    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -151,7 +151,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
+    
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
@@ -173,7 +173,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(expires="+30 minutes", public=false)
+    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -197,7 +197,7 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-     * @Cache(expires="+30 minutes", public=false)
+    
      *
      * @param Request $request Current request instance
      *
@@ -220,7 +220,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
+    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -246,7 +246,7 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-     * @Cache(lastModified="route.getUpdatedDate()", ETag="'Route' ~ route.getid() ~ route.getUpdatedDate().format('U')")
+    
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
