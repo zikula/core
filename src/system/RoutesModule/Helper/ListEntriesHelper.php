@@ -19,55 +19,5 @@ use Zikula\RoutesModule\Helper\Base\AbstractListEntriesHelper;
  */
 class ListEntriesHelper extends AbstractListEntriesHelper
 {
-    /**
-     * @inheritDoc
-     */
-    public function getMethodsEntriesForRoute()
-    {
-        $states = [];
-        $states[] = [
-            'value'   => 'GET',
-            'text'    => $this->__('GET'),
-            'title'   => '',
-            'image'   => '',
-            'default' => true
-        ];
-        $states[] = [
-            'value'   => 'POST',
-            'text'    => $this->__('POST'),
-            'title'   => '',
-            'image'   => '',
-            'default' => false
-        ];
-        $states[] = [
-            'value'   => 'HEAD',
-            'text'    => $this->__('HEAD'),
-            'title'   => '',
-            'image'   => '',
-            'default' => false
-        ];
-        $states[] = [
-            'value'   => 'PUT',
-            'text'    => $this->__('PUT'),
-            'title'   => '',
-            'image'   => '',
-            'default' => false
-        ];
-        $states[] = [
-            'value'   => 'DELETE',
-            'text'    => $this->__('DELETE'),
-            'title'   => '',
-            'image'   => '',
-            'default' => false
-        ];
-        $states[] = [
-            'value'   => 'OPTIONS',
-            'text'    => $this->__('OPTIONS'),
-            'title'   => '',
-            'image'   => '',
-            'default' => false
-        ];
-
-        return $states;
-    }
+    // feel free to add your own convenience methods here
 }

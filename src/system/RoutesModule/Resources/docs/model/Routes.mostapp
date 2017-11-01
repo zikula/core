@@ -42,7 +42,6 @@ application "Routes" {
             Entity/Repository/RouteRepository.php,
             Form/Handler/Route/EditHandler.php,
             Form/Type/RouteType.php,
-            Helper/ListEntriesHelper.php,
             Helper/ViewHelper.php,
             Listener/EntityLifecycleListener.php,
             Listener/InstallerListener.php,
