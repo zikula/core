@@ -246,42 +246,42 @@ abstract class AbstractListEntriesHelper
         $states = [];
         $states[] = [
             'value'   => 'GET',
-            'text'    => $this->__('G e t'),
+            'text'    => $this->__('GET'),
             'title'   => '',
             'image'   => '',
             'default' => true
         ];
         $states[] = [
             'value'   => 'POST',
-            'text'    => $this->__('P o s t'),
+            'text'    => $this->__('POST'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'HEAD',
-            'text'    => $this->__('H e a d'),
+            'text'    => $this->__('HEAD'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'PUT',
-            'text'    => $this->__('P u t'),
+            'text'    => $this->__('PUT'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'DELETE',
-            'text'    => $this->__('D e l e t e'),
+            'text'    => $this->__('DELETE'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'OPTIONS',
-            'text'    => $this->__('O p t i o n s'),
+            'text'    => $this->__('OPTIONS'),
             'title'   => '',
             'image'   => '',
             'default' => false
