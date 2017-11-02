@@ -35,7 +35,6 @@ class RouteController extends AbstractRouteController
      * @Route("/admin/routes",
      *        methods = {"GET"}
      * )
-    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -55,7 +54,6 @@ class RouteController extends AbstractRouteController
      * @Route("/routes",
      *        methods = {"GET"}
      * )
-    
      *
      * @param Request $request Current request instance
      *
@@ -75,7 +73,6 @@ class RouteController extends AbstractRouteController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -101,7 +98,6 @@ class RouteController extends AbstractRouteController
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
-    
      *
      * @param Request $request Current request instance
      * @param string $sort         Sorting field
@@ -126,7 +122,6 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -151,7 +146,6 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-    
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
@@ -173,7 +167,6 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -197,7 +190,6 @@ class RouteController extends AbstractRouteController
      *        defaults = {"id" = "0", "_format" = "html"},
      *        methods = {"GET", "POST"}
      * )
-    
      *
      * @param Request $request Current request instance
      *
@@ -220,7 +212,6 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-    
      * @Theme("admin")
      *
      * @param Request $request Current request instance
@@ -246,7 +237,6 @@ class RouteController extends AbstractRouteController
      *        methods = {"GET", "POST"}
      * )
      * @ParamConverter("route", class="ZikulaRoutesModule:RouteEntity", options = {"repository_method" = "selectById", "mapping": {"id": "id"}, "map_method_signature" = true})
-    
      *
      * @param Request $request Current request instance
      * @param RouteEntity $route Treated route instance
