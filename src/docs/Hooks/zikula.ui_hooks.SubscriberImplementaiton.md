@@ -132,5 +132,5 @@ the fourth argument as `true` and then assigning the hooks to a variable like so
 Then the subscriber template must loop that variable and display each hook:
 
     {% for area, hook in hooks %}
-        <div class="z-displayhook my-special-hook-class" data-area="{{ area }}">{{ hook }}</div>
+        <div class="z-displayhook my-special-hook-class" data-area="{{ area }}">{{ hook|raw }}</div>
     {% endfor %}
