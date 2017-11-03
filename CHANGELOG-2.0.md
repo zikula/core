@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed admin category creation issues (#3826, #3827).
     - Fixed several category editing problems (#3833, #3834).
     - Explicitly set template names in template annotations (#3835, #3836).
+    - Fixed wrong argument in avatar detection during ajax-based user search.
 
  - Vendor updates:
     - doctrine/doctrine-bundle updated from 1.6.8 to 1.6.11

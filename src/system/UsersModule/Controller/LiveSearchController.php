@@ -50,7 +50,7 @@ class LiveSearchController extends AbstractController
                 $resultItems[] = [
                     'uid' => $result->getUid(),
                     'uname' => $result->getUname(),
-                    'avatar' => $profileModule->getAvatar(['uid' => $result->getUid(), ['rating' => 'g']])
+                    'avatar' => $profileModule->getAvatar($result->getUid(), ['rating' => 'g'])
                 ];
             }
         }
