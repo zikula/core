@@ -1,7 +1,7 @@
 CHANGELOG - ZIKULA 1.5.x
 ------------------------
 
-* 1.5.3 (?)
+* 1.5.3 (2017-11-04)
 
  - Fixes:
     - Fixed getAttributeValue error in case attribute does not exist.
