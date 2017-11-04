@@ -1,6 +1,15 @@
 CHANGELOG - ZIKULA 1.5.x
 ------------------------
 
+* 1.5.4 (?)
+
+ - Fixes:
+    - ?
+
+ - Vendor updates:
+    - ?
+
+
 * 1.5.3 (2017-11-04)
 
  - Fixes:
