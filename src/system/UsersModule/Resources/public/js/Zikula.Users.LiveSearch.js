@@ -9,6 +9,7 @@ function initUserLiveSearch(fieldName)
         event.preventDefault();
         jQuery('#' + fieldName).val('');
         jQuery('#' + fieldName + 'Selector').val('');
+        jQuery('#' + fieldName + 'Avatar').text('');
     }).removeClass('hidden');
 
     if (jQuery('#' + fieldName + 'LiveSearch').length < 1) {

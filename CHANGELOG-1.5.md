@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed several category editing problems (#3833, #3834).
     - Explicitly set template names in template annotations (#3835, #3836).
     - Fixed wrong argument in avatar detection during ajax-based user search.
+    - Properly reset avatar image if user is removed after ajax-based user search.
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.7 to 1.0.8
