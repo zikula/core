@@ -7,7 +7,7 @@ CHANGELOG - ZIKULA 2.0.x
     - ?
 
  - Vendor updates:
-    - ?
+    - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
 * 2.0.3 (2017-11-04)
