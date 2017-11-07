@@ -4,7 +4,7 @@ CHANGELOG - ZIKULA 1.5.x
 * 1.5.4 (?)
 
  - Fixes:
-    - ?
+    - Disabling CSRF Protection for search results (#3831).
 
  - Vendor updates:
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
