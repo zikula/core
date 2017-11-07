@@ -1,10 +1,18 @@
 CHANGELOG - ZIKULA 1.5.x
 ------------------------
 
-* 1.5.3 (?)
+* 1.5.4 (?)
 
  - Deprecated:
     - ?
+
+ - Fixes:
+    - Disabling CSRF Protection for search results (#3831).
+
+ - Vendor updates:
+    - ?
+
+* 1.5.3 (2017-11-04)
 
  - Fixes:
     - Added missing action icons to admin menu sub entries and admin panel module links.
@@ -26,7 +34,6 @@ CHANGELOG - ZIKULA 1.5.x
     - symfony/workflow updated from 3.3.8 to 3.3.10
     - twig/twig updated from 1.34.4 to 1.35.0
 
-
 * 1.5.2 (2017-10-03)
 
  - Fixes:
@@ -35,7 +42,6 @@ CHANGELOG - ZIKULA 1.5.x
     - Improved detection and naming of available PDO drivers (#3785).
     - Use uncached JS routes (#3807).
     - Fixed issue with category retrieval by path (#3815).
-
 
 * 1.5.1 (2017-09-01)
 
@@ -65,7 +71,6 @@ CHANGELOG - ZIKULA 1.5.x
     - symfony/polyfill-* updated from 1.4.0 to 1.5.0
     - symfony/symfony updated from 2.8.25 to 2.8.27
     - symfony/workflow updated from 3.3.5 to 3.3.8
-
 
 * 1.5.0 (2017-08-05)
 
