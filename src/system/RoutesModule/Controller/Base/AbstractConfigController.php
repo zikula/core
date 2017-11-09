@@ -42,8 +42,8 @@ abstract class AbstractConfigController extends AbstractController
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $formData = $form->getData();
-                $this->setVars($formData);
+                $appSettings = $form->getData();
+                $appSettings->save();
         
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
                 $userName = $this->get('zikula_users_module.current_user')->get('uname');
