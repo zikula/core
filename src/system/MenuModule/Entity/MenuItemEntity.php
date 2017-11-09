@@ -148,7 +148,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->rgt;
     }
 
-    public function setRoot(MenuItemEntity $root)
+    public function setRoot(self $root)
     {
         $this->root = $root;
     }
@@ -158,7 +158,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return $this->root;
     }
 
-    public function setParent(MenuItemEntity $parent = null)
+    public function setParent(self $parent = null)
     {
         $this->parent = $parent;
     }
