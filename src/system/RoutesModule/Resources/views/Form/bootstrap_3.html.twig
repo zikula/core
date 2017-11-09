@@ -1,6 +1,13 @@
 {# purpose of this template: apply some general form extensions #}
 {% extends 'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig' %}
 
+{%- block datetime_widget -%}
+    {{- parent() -}}
+    {%- if not required -%}
+        <em class="help-block small"><a id="reset{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{{ __('Reset to empty value') }}</a></em>
+    {%- endif -%}
+{%- endblock -%}
+
 {%- block date_widget -%}
     {{- parent() -}}
     {%- if not required -%}
