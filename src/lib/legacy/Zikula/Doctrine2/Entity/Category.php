@@ -150,7 +150,7 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
         return $this->parent;
     }
 
-    public function setParent(Zikula_Doctrine2_Entity_Category $parent)
+    public function setParent(self $parent)
     {
         $this->parent = $parent;
     }
@@ -391,7 +391,7 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
     /**
      * @param Zikula_Doctrine2_Entity_Category $root
      */
-    public function setRoot(Zikula_Doctrine2_Entity_Category $root)
+    public function setRoot(self $root)
     {
         $this->root = $root;
     }
