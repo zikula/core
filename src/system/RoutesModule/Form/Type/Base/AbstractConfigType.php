@@ -14,10 +14,13 @@ namespace Zikula\RoutesModule\Form\Type\Base;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\RoutesModule\AppSettings;
 
 /**
  * Configuration form type base class.
@@ -27,22 +30,14 @@ abstract class AbstractConfigType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @var array
-     */
-    protected $moduleVars;
-
-    /**
      * ConfigType constructor.
      *
-     * @param TranslatorInterface $translator  Translator service instance
-     * @param object              $moduleVars  Existing module vars
+     * @param TranslatorInterface $translator Translator service instance
      */
     public function __construct(
-        TranslatorInterface $translator,
-        $moduleVars
+        TranslatorInterface $translator
     ) {
         $this->setTranslator($translator);
-        $this->moduleVars = $moduleVars;
     }
 
     /**
@@ -62,23 +57,7 @@ abstract class AbstractConfigType extends AbstractType
     {
         $this->addListViewsFields($builder, $options);
 
-        $builder
-            ->add('save', SubmitType::class, [
-                'label' => $this->__('Update configuration'),
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default',
-                    'formnovalidate' => 'formnovalidate'
-                ]
-            ])
-        ;
+        $this->addSubmitButtons($builder, $options);
     }
 
     /**
@@ -89,23 +68,56 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addListViewsFields(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('routeEntriesPerPage', IntegerType::class, [
-                'label' => $this->__('Route entries per page') . ':',
-                'label_attr' => [
-                    'class' => 'tooltips',
-                    'title' => $this->__('The amount of routes shown per page')
-                ],
-                'help' => $this->__('The amount of routes shown per page'),
-                'required' => false,
-                'data' => isset($this->moduleVars['routeEntriesPerPage']) ? intval($this->moduleVars['routeEntriesPerPage']) : intval(10),
-                'empty_data' => intval('10'),
-                'attr' => [
-                    'maxlength' => 255,
-                    'title' => $this->__('Enter the route entries per page.') . ' ' . $this->__('Only digits are allowed.')
-                ],'scale' => 0
-            ])
-        ;
+        
+        $builder->add('routeEntriesPerPage', IntegerType::class, [
+            'label' => $this->__('Route entries per page') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('The amount of routes shown per page')
+            ],
+            'help' => $this->__('The amount of routes shown per page'),
+            'empty_data' => '10',
+            'attr' => [
+                'maxlength' => 11,
+                'class' => '',
+                'title' => $this->__('Enter the route entries per page.') . ' ' . $this->__('Only digits are allowed.')
+            ],
+            'required' => true,
+            'scale' => 0
+        ]);
+    }
+
+    /**
+     * Adds submit buttons.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('save', SubmitType::class, [
+            'label' => $this->__('Update configuration'),
+            'icon' => 'fa-check',
+            'attr' => [
+                'class' => 'btn btn-success'
+            ]
+        ]);
+        $builder->add('reset', ResetType::class, [
+            'label' => $this->__('Reset'),
+            'icon' => 'fa-refresh',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
+        $builder->add('cancel', SubmitType::class, [
+            'label' => $this->__('Cancel'),
+            'icon' => 'fa-times',
+            'attr' => [
+                'class' => 'btn btn-default',
+                'formnovalidate' => 'formnovalidate'
+            ]
+        ]);
     }
 
     /**
@@ -114,5 +126,17 @@ abstract class AbstractConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikularoutesmodule_config';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver
+            ->setDefaults([
+                // define class for underlying data
+                'data_class' => AppSettings::class,
+            ]);
     }
 }
