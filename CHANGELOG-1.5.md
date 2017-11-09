@@ -4,7 +4,8 @@ CHANGELOG - ZIKULA 1.5.x
 * 1.5.4 (?)
 
  - Fixes:
-    - ?
+    - Use display name in category selection form type (#3828).
+    - Show label for each category selection field.
 
  - Vendor updates:
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
