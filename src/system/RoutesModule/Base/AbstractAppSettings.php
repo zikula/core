@@ -41,7 +41,7 @@ abstract class AbstractAppSettings
      *
      * @param VariableApiInterface $variableApi VariableApi service instance
      */
-    protected function __construct(
+    public function __construct(
         VariableApiInterface $variableApi
     ) {
         $this->variableApi = $variableApi;
