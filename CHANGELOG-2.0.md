@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Fixes:
     - Use display name in category selection form type (#3828).
-    - Show label for each category selection field.
+    - Provide showRegistryLabels option in category selection form type to show a label for each single selector based on the base category assigned in the corresponding registry.
 
  - Vendor updates:
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
