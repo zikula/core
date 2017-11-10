@@ -153,6 +153,15 @@ abstract class AbstractRouteController extends AbstractController
         
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters);
         
+        // filter by permissions
+        $filteredEntities = [];
+        foreach ($templateParameters['items'] as $route) {
+            if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', $route->getKey() . '::', $permLevel)) {
+                continue;
+            }
+            $filteredEntities[] = $route;
+        }
+        $templateParameters['items'] = $filteredEntities;
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
