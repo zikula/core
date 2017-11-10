@@ -80,18 +80,25 @@ class CategoriesType extends AbstractType
 
                 return (!empty($indent) ? '|' : '') . $indent . $categoryName;
             };
-            $builder->add('registry_' . $registry->getId(), EntityType::class,
-                [
-                    'em' => $options['em'],
-                    'label' => (isset($baseCategory['display_name'][$locale]) ? $baseCategory['display_name'][$locale] : $baseCategory['display_name']['en']),
-                    'attr' => $options['attr'],
-                    'required' => $options['required'],
-                    'multiple' => $options['multiple'],
-                    'expanded' => $options['expanded'],
-                    'class' => CategoryEntity::class,
-                    'choice_label' => $choiceLabelClosure,
-                    'query_builder' => $queryBuilderClosure
-                ]);
+
+            $registryOptions = [
+                'em' => $options['em'],
+                'attr' => $options['attr'],
+                'required' => $options['required'],
+                'multiple' => $options['multiple'],
+                'expanded' => $options['expanded'],
+                'class' => CategoryEntity::class,
+                'choice_label' => $choiceLabelClosure,
+                'query_builder' => $queryBuilderClosure
+            ];
+
+            if ($options['showRegistryLabels']) {
+                $registryOptions['label'] = isset($baseCategory['display_name'][$locale]) ? $baseCategory['display_name'][$locale] : $baseCategory['display_name']['en'];
+            } else {
+                $registryOptions['label_attr'] = !$options['expanded'] ? ['class' => 'hidden'] : [];
+            }
+
+            $builder->add('registry_' . $registry->getId(), EntityType::class, $registryOptions);
         }
 
         $builder->addViewTransformer(new CategoriesCollectionTransformer($options), true);
@@ -123,7 +130,8 @@ class CategoriesType extends AbstractType
             'entity' => '',
             'entityCategoryClass' => '',
             'em' => null,
-            'required' => false
+            'required' => false,
+            'showRegistryLabels' => false
         ]);
         $resolver->setAllowedTypes('attr', 'array');
         $resolver->setAllowedTypes('multiple', 'bool');
@@ -135,6 +143,7 @@ class CategoriesType extends AbstractType
         $resolver->setAllowedTypes('entity', 'string');
         $resolver->setAllowedTypes('entityCategoryClass', 'string');
         $resolver->setAllowedTypes('em', [ObjectManager::class, 'null']);
+        $resolver->setAllowedTypes('showRegistryLabels', 'bool');
 
         // remove this normalizer when the 'includeGrandChildren' option is removed
         $resolver->setNormalizer('direct', function (Options $options, $value) {
