@@ -11,7 +11,7 @@
     },
     "version": {
         "semver": "1.1.2",
-        "compatibility": ">=1.5.3 <3.0.0",
+        "compatibility": ">=1.5.4 <3.0.0",
         "composerpath": "composer.json",
         "description": "Routes management",
         "keywords": [

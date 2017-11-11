@@ -243,7 +243,6 @@ abstract class AbstractControllerHelper
         $templateParameters['sortdir'] = $sortdir;
         $templateParameters['items'] = $entities;
     
-    
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['quickNavForm'] = $quickNavForm->createView();
     
