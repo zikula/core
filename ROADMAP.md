@@ -19,8 +19,9 @@ Long Term Support Versions
 --------------------------
 
 1.5.x - LTS (inc. Symfony 2.8.x LTS)
-  - Bug Fix support ending *31 August 2019*
-  - Security Fix support ending *31 August 2020* (EOL)
+  - Bug Fix support ending **31 August 2018**
+  - Security Fix support ending **31 August 2019** (EOL)
+  - Technical Support (without commits) ending **31 August 2020**
   - Paid support beyond the posted dates _may_ be available. Please contact the team for information.
 
 
