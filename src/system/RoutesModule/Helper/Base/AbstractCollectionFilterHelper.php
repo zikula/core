@@ -188,7 +188,7 @@ abstract class AbstractCollectionFilterHelper
                 } else {
                     $qb->andWhere('tbl.' . $k . ' = :' . $k)
                        ->setParameter($k, $v);
-               }
+                }
             }
         }
     
