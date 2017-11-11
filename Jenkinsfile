@@ -21,6 +21,7 @@ node {
         'INSTALL-2.0.md': [packageDir, docPath],
         'UPGRADE-2.0.md': [packageDir, docPath],
         'CHANGELOG-2.0.md': [docPath],
+        'ROADMAP.md': [docPath],
         'composer.json': [docPath + '/dev'],
         'composer.lock': [docPath + '/dev']
     ]
