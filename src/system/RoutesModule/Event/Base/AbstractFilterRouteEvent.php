@@ -36,7 +36,7 @@ class AbstractFilterRouteEvent extends Event
      * @param RouteEntity $route Processed entity
      * @param array $entityChangeSet Change set for preUpdate events
      */
-    public function __construct(RouteEntity $route, $entityChangeSet = [])
+    public function __construct(RouteEntity $route, array $entityChangeSet = [])
     {
         $this->route = $route;
         $this->entityChangeSet = $entityChangeSet;
@@ -55,7 +55,7 @@ class AbstractFilterRouteEvent extends Event
     /**
      * Returns the change set.
      *
-     * @return array
+     * @return array Entity change set
      */
     public function getEntityChangeSet()
     {
