@@ -83,8 +83,8 @@ class SearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
-            'csrf_token_id'   => 'zikulasearchmodule_search',
+            'csrf_protection' => false,
+            'translator' => null
         ]);
     }
 }
