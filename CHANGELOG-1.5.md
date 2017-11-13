@@ -6,6 +6,7 @@ CHANGELOG - ZIKULA 1.5.x
  - Fixes:
     - Use display name in category selection form type (#3828).
     - Provide showRegistryLabels option in category selection form type to show a label for each single selector based on the base category assigned in the corresponding registry.
+    - Correcting Category API to properly get the category by path (#3852).
     - Disabling CSRF Protection for search results (#3831). 
 
  - Vendor updates:
