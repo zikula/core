@@ -155,13 +155,13 @@ abstract class AbstractUserRegistrationListener implements EventSubscriberInterf
      * the log-in process issues its own `module.users.ui.login.succeeded` event that includes the opportunity to set a redirect URL.
      * The URL specified on this event, as mentioned previously, is passed to the log-in process as the default redirect URL, and
      * therefore is offered on the `module.users.ui.login.succeeded` event as the default. Any handler of that event, however, has
-     * the opportunity to change the redirect URL offered. A `module.users.ui.registration.succeeded` handler can reliably predict 
-     * whether the user will be directed into the log-in process automatically by inspecting the Users module variable 
-     * `Users_Constant::MODVAR_REGISTRATION_AUTO_LOGIN` (which evaluates to `'reg_autologin'`), and by inspecting the `'activated'`
-     * status of the registration or user object received.
+     * the opportunity to change the redirect URL offered. A `module.users.ui.registration.succeeded` handler can reliably predict
+     * whether the user will be directed into the log-in process automatically by inspecting the Users module variable
+     * `Zikula\UsersModule\Constant::MODVAR_REGISTRATION_AUTO_LOGIN` (which evaluates to `'reg_autologin'`),
+     * and by inspecting the `'activated'` status of the registration or user object received.
      *
-     * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may 
-     * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second, 
+     * An event handler should carefully consider whether changing the `'redirecturl'` argument is appropriate. First, the user may
+     * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second,
      * an event handler that was notified prior to the current handler may already have changed the `'redirectUrl'`.
      *
      * You can access general data available in the event.

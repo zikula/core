@@ -73,7 +73,7 @@ abstract class AbstractEditHandler extends EditHandler
         $options = [
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
-            'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_MODERATE),
+            'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->idValue . '::', ACCESS_ADMIN),
         ];
     
         return $this->formFactory->create(RouteType::class, $this->entityRef, $options);

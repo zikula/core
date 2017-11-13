@@ -207,6 +207,7 @@ abstract class AbstractControllerHelper
         }
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
         $resultsPerPage = $templateParameters['num'];
+        $request->query->set('own', $templateParameters['own']);
     
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
@@ -241,7 +242,6 @@ abstract class AbstractControllerHelper
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = $sortdir;
         $templateParameters['items'] = $entities;
-    
     
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['quickNavForm'] = $quickNavForm->createView();

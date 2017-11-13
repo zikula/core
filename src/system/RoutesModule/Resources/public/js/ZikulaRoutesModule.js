@@ -1,15 +1,13 @@
 'use strict';
 
-function zikulaRoutesCapitaliseFirstLetter(string)
-{
+function zikulaRoutesCapitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.substring(1);
 }
 
 /**
  * Initialise the quick navigation form in list views.
  */
-function zikulaRoutesInitQuickNavigation()
-{
+function zikulaRoutesInitQuickNavigation() {
     var quickNavForm;
     var objectType;
 
@@ -34,8 +32,7 @@ function zikulaRoutesInitQuickNavigation()
 /**
  * Simulates a simple alert using bootstrap.
  */
-function zikulaRoutesSimpleAlert(anchorElement, title, content, alertId, cssClass)
-{
+function zikulaRoutesSimpleAlert(anchorElement, title, content, alertId, cssClass) {
     var alertBox;
 
     alertBox = ' \
@@ -56,8 +53,7 @@ function zikulaRoutesSimpleAlert(anchorElement, title, content, alertId, cssClas
 /**
  * Initialises the mass toggle functionality for admin view pages.
  */
-function zikulaRoutesInitMassToggle()
-{
+function zikulaRoutesInitMassToggle() {
     if (jQuery('.zikularoutes-mass-toggle').length > 0) {
         jQuery('.zikularoutes-mass-toggle').unbind('click').click(function (event) {
             if (jQuery('.table.fixed-columns').length > 0) {
@@ -73,10 +69,9 @@ function zikulaRoutesInitMassToggle()
 /**
  * Initialises fixed table columns.
  */
-function zikulaRoutesInitFixedColumns()
-{
+function zikulaRoutesInitFixedColumns() {
     jQuery('.table.fixed-columns').remove();
-    jQuery('.table').each(function() {
+    jQuery('.table').each(function () {
         var originalTable, fixedColumnsTable, fixedTableWidth;
 
         originalTable = jQuery(this);
@@ -105,8 +100,7 @@ function zikulaRoutesInitFixedColumns()
 /**
  * Creates a dropdown menu for the item actions.
  */
-function zikulaRoutesInitItemActions(context)
-{
+function zikulaRoutesInitItemActions(context) {
     var containerSelector;
     var containers;
     var listClasses;
@@ -146,8 +140,7 @@ function zikulaRoutesInitItemActions(context)
 /**
  * Initialises reordering view entries using drag n drop.
  */
-function zikulaRoutesInitSortable()
-{
+function zikulaRoutesInitSortable() {
     if (jQuery('#sortableTable').length < 1) {
         return;
     }
@@ -158,14 +151,14 @@ function zikulaRoutesInitSortable()
         items: '.sort-item',
         placeholder: 'ui-state-highlight',
         tolerance: 'pointer',
-        sort: function(event, ui) {
+        sort: function (event, ui) {
             ui.item.addClass('active-item-shadow');
         },
-        stop: function(event, ui) {
+        stop: function (event, ui) {
             ui.item.removeClass('active-item-shadow');
             zikulaRoutesInitFixedColumns();
         },
-        update: function(event, ui) {
+        update: function (event, ui) {
             jQuery.ajax({
                 method: 'POST',
                 url: Routing.generate('zikularoutesmodule_ajax_updatesortpositions'),
@@ -175,7 +168,7 @@ function zikulaRoutesInitSortable()
                     min: jQuery('#sortableTable').data('min'),
                     max: jQuery('#sortableTable').data('max')
                 },
-                success: function(data) {
+                success: function (data) {
                     /*if (data.message) {
                         zikulaRoutesSimpleAlert(jQuery('#sortableTable'), Translator.__('Success'), data.message, 'sortingDoneAlert', 'success');
                     }*/
@@ -187,7 +180,7 @@ function zikulaRoutesInitSortable()
     jQuery('#sortableTable').disableSelection();
 }
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     var isViewPage;
     var isDisplayPage;
 

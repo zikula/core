@@ -1,0 +1,5 @@
+services:
+    zikula_routes_module.app_settings:
+        class: Zikula\RoutesModule\AppSettings
+        arguments:
+            - "@zikula_extensions_module.api.variable"

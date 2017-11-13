@@ -156,3 +156,4 @@ PageType
  - `includeGrandChildren` - @deprecated - use 'direct'.
  - `direct` - (boolean) use only direct children or include all descendant generations (default `true`).
  - `attr` - (array) attributes array for each select box (default `[]`).
+ - `showRegistryLabels` - (boolean) set to `true` to show a label for each single selector based on the base category assigned in the corresponding registry (default `false`).

@@ -42,7 +42,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         }
     
         // set up all our vars with initial values
-        $this->setVar('routeEntriesPerPage', '10');
+        $this->setVar('routeEntriesPerPage', 10);
     
         // initialisation successful
         return true;

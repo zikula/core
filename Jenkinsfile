@@ -22,6 +22,7 @@ node {
         'UPGRADE-Core1.x.md': [packageDir, docPath],
         'CHANGELOG-1.4.md': [docPath],
         'CHANGELOG-1.5.md': [docPath],
+        'ROADMAP.md': [docPath],
         'composer.json': [docPath + '/dev'],
         'composer.lock': [docPath + '/dev']
     ]

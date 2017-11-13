@@ -164,7 +164,7 @@ abstract class AbstractRouteType extends AbstractType
             'empty_data' => 'http',
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Choose the schemes')
+                'title' => $this->__('Choose the schemes.')
             ],
             'required' => true,
             'choices' => $choices,
@@ -189,7 +189,7 @@ abstract class AbstractRouteType extends AbstractType
             'empty_data' => 'GET',
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Choose the methods')
+                'title' => $this->__('Choose the methods.')
             ],
             'required' => true,
             'choices' => $choices,
