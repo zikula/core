@@ -77,7 +77,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
      *
      * @param string $type The type to collect links for
      *
-     * @return array Array of header links
+     * @return array List of header links
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {

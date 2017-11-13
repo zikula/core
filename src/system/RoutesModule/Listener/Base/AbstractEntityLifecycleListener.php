@@ -63,7 +63,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
     /**
      * Returns list of events to subscribe.
      *
-     * @return array list of events
+     * @return string[] List of events
      */
     public function getSubscribedEvents()
     {

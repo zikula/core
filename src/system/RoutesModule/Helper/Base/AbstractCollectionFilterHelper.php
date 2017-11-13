@@ -44,7 +44,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @param RequestStack $requestStack RequestStack service instance
      * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param bool           $showOnlyOwnEntries  Fallback value to determine whether only own entries should be selected or not
+     * @param boolean        $showOnlyOwnEntries  Fallback value to determine whether only own entries should be selected or not
      */
     public function __construct(
         RequestStack $requestStack,
@@ -65,7 +65,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return array List of template variables to be assigned
      */
-    public function getViewQuickNavParameters($objectType = '', $context = '', $args = [])
+    public function getViewQuickNavParameters($objectType = '', $context = '', array $args = [])
     {
         if (!in_array($context, ['controllerAction', 'api', 'actionHandler', 'block', 'contentType'])) {
             $context = 'controllerAction';
@@ -104,7 +104,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    public function applyDefaultFilters($objectType, QueryBuilder $qb, $parameters = [])
+    public function applyDefaultFilters($objectType, QueryBuilder $qb, array $parameters = [])
     {
         if ($objectType == 'route') {
             return $this->applyDefaultFiltersForRoute($qb, $parameters);
@@ -121,7 +121,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return array List of template variables to be assigned
      */
-    protected function getViewQuickNavParametersForRoute($context = '', $args = [])
+    protected function getViewQuickNavParametersForRoute($context = '', array $args = [])
     {
         $parameters = [];
         if (null === $this->request) {
@@ -188,7 +188,7 @@ abstract class AbstractCollectionFilterHelper
                 } else {
                     $qb->andWhere('tbl.' . $k . ' = :' . $k)
                        ->setParameter($k, $v);
-               }
+                }
             }
         }
     
@@ -205,7 +205,7 @@ abstract class AbstractCollectionFilterHelper
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    protected function applyDefaultFiltersForRoute(QueryBuilder $qb, $parameters = [])
+    protected function applyDefaultFiltersForRoute(QueryBuilder $qb, array $parameters = [])
     {
         if (null === $this->request) {
             return $qb;

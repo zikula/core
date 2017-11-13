@@ -115,7 +115,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     /**
      * Build array with all entity classes for ZikulaRoutesModule.
      *
-     * @return array list of class names
+     * @return string[] List of class names
      */
     protected function listEntityClasses()
     {

@@ -41,7 +41,7 @@ class RouteType extends AbstractRouteType
     /**
      * @inheritDoc
      */
-    public function addEntityFields(FormBuilderInterface $builder, array $options)
+    public function addEntityFields(FormBuilderInterface $builder, array $options = [])
     {
         parent::addEntityFields($builder, $options);
 
