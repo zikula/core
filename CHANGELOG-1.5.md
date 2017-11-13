@@ -9,8 +9,9 @@ CHANGELOG - ZIKULA 1.5.x
     - Correcting Category API to properly get the category by path (#3852). 
 
  - Vendor updates:
-    - symfony/symfony updated from 2.8.28 to 2.8.29
-    - symfony/workflow updated from 3.3.10 to 3.3.11
+    - composer/ca-bundle updated from 1.0.8 to 1.0.9
+    - symfony/symfony updated from 2.8.28 to 2.8.30
+    - symfony/workflow updated from 3.3.10 to 3.3.12
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
