@@ -4,9 +4,13 @@ CHANGELOG - ZIKULA 1.5.x
 * 1.5.4 (?)
 
  - Fixes:
-    - Disabling CSRF Protection for search results (#3831).
+    - Use display name in category selection form type (#3828).
+    - Provide showRegistryLabels option in category selection form type to show a label for each single selector based on the base category assigned in the corresponding registry.
+    - Disabling CSRF Protection for search results (#3831). 
 
  - Vendor updates:
+    - symfony/symfony updated from 2.8.28 to 2.8.29
+    - symfony/workflow updated from 3.3.10 to 3.3.11
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
