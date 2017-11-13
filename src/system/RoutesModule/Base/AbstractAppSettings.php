@@ -27,6 +27,7 @@ abstract class AbstractAppSettings
     
     /**
      * The amount of routes shown per page
+     *
      * @Assert\Type(type="integer")
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
@@ -89,7 +90,7 @@ abstract class AbstractAppSettings
     /**
      * Saves module variables into the database.
      */
-    protected function save()
+    public function save()
     {
         $this->variableApi->set('ZikulaRoutesModule', 'routeEntriesPerPage', $this->getRouteEntriesPerPage());
     }
