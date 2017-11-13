@@ -128,10 +128,10 @@ abstract class AbstractViewHelper
     /**
      * Helper method for managing view templates.
      *
-     * @param string  $type               Current controller (name of currently treated entity)
-     * @param string  $func               Current function (index, view, ...)
-     * @param array   $templateParameters Template data
-     * @param string  $template           Optional assignment of precalculated template file
+     * @param string $type               Current controller (name of currently treated entity)
+     * @param string $func               Current function (index, view, ...)
+     * @param array  $templateParameters Template data
+     * @param string $template           Optional assignment of precalculated template file
      *
      * @return mixed Output
      */
@@ -191,7 +191,7 @@ abstract class AbstractViewHelper
      * @param string $type Current controller (name of currently treated entity)
      * @param string $func Current function (index, view, ...)
      *
-     * @return array List of allowed template extensions
+     * @return string[] List of allowed template extensions
      */
     public function availableExtensions($type, $func)
     {

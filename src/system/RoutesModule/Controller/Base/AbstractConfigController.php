@@ -38,7 +38,7 @@ abstract class AbstractConfigController extends AbstractController
             throw new AccessDeniedException();
         }
         
-        $form = $this->createForm(ConfigType::class);
+        $form = $this->createForm(ConfigType::class, $this->get('zikula_routes_module.app_settings'));
         
         if ($form->handleRequest($request)->isValid()) {
             if ($form->get('save')->isClicked()) {
