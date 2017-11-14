@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Routes management">
+    <meta name="author" content="Zikula contributors">
+    <title>Routes &ndash; Technische Struktur</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="/system/RoutesModule/Resources//public/images/admin.png">
+    <style>
+        body {
+            padding-bottom: 80px;
+        }
+        h2 {
+            margin-top: 80px;
+        }
+        h3 {
+            margin-top: 50px;
+        }
+        table {
+            width: 100%;
+        }
+        th, td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+      <div class="container">
+          <h1>
+              <img src="/system/RoutesModule/Resources//public/images/admin.png" width="48" height="48" alt="Icon" class="img-thumbnail pull-right" />
+              Routes &ndash; Technische Struktur
+          </h1>
+          <p>Routes management</p>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cBasicField" />
+            <col id="cBasicValue" />
+        </colgroup>
+        <thead>
+            <tr class="sr-only">
+                <th id="hBasicField" scope="col">Feld</th>
+                <th id="hBasicValue" scope="col">Wert</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hVendor" scope="row" headers="hBasicField">Anbieter</th>
+                <td headers="hBasicValue hVendor">Zikula</td>
+            </tr>
+            <tr>
+                <th id="hAuthor" scope="row" headers="hBasicField">Autor</th>
+                <td headers="hBasicValue hAuthor">Zikula contributors</td>
+            </tr>
+            <tr>
+                <th id="hEmail" scope="row" headers="hBasicField">E-Mail</th>
+                <td headers="hBasicValue hEmail"><a href="mailto:support@zikula.org"><i class="fa fa-envelope"></i> support@zikula.org</a></td>
+            </tr>
+            <tr>
+                <th id="hUrl" scope="row" headers="hBasicField">URL</th>
+                <td headers="hBasicValue hUrl"><a href="http://www.zikula.org" title="Projektseite" target="_blank"><i class="fa fa-external-link-square"></i> http://www.zikula.org</a></td>
+            </tr>
+            <tr>
+                <th id="hVersion" scope="row" headers="hBasicField">Version</th>
+                <td headers="hBasicValue hVersion">1.1.2</td>
+            </tr>
+            <tr>
+                <th id="hLicense" scope="row" headers="hBasicField">Lizenz</th>
+                <td headers="hBasicValue hLicense">http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License</td>
+            </tr>
+            <tr>
+                <th id="hPlatform" scope="row" headers="hBasicField">Plattform</th>
+                <td headers="hBasicValue hPlatform"><a href="https://zikula.de/de/" title="Internetseite von Zikula" target="_blank">Zikula</a> 1.5.4</td>
+            </tr>
+            <tr>
+                <th id="hGenerated" scope="row" headers="hBasicField">Generiert</th>
+                <td headers="hBasicValue hGenerated">durch <a href="https://modulestudio.de" title="Internetseite von ModuleStudio" target="_blank">ModuleStudio</a> 1.1.0 am Tue Nov 14 17:52:20 CET 2017</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h2><i class="fa fa-sitemap"></i> Modell der Anwendung</h2>
+<p><img src="Routes_Entities%20Diagram.jpg" alt="Routes Modell" class="img-thumbnail img-responsive" /></p>
+<h2><i class="fa fa-database"></i> Datentabellen</h2>
+<h3><i class="fa fa-vcard-o"></i> Route / Routes</h3>
+<h4><i class="fa fa-cog"></i> Grundlegende Einstellungen</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cRouteSettingsName" />
+            <col id="cRouteSettingsValue" />
+            <col id="cRouteSettingsDescription" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hRouteSettingsName" scope="col">Name</th>
+                <th id="hRouteSettingsValue" scope="col">Wert</th>
+                <th id="hRouteSettingsDescription" scope="col">Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hRouteSettingsLeading" scope="row" headers="hRouteSettingsName">Führend</th>
+                <td headers="hRouteSettingsLeading hRouteSettingsValue" class="text-center"><i class="fa fa-check"></i>
+                </td>
+                <td headers="hRouteSettingsLeading hRouteSettingsDescription">Ob dies die primäre Entität der Anwendung darstellt</td>
+            </tr>
+            <tr>
+                <th id="hRouteSettingsDisplayPattern" scope="row" headers="hRouteSettingsName">Anzeigemuster</th>
+                <td headers="hRouteSettingsDisplayPattern hRouteSettingsValue">#path# (#sort#)</td>
+                <td headers="hRouteSettingsDisplayPattern hRouteSettingsDescription">Muster zur Anzeige von Instanzen dieser Entität</td>
+            </tr>
+            <tr>
+                <th id="hRouteSettingsIdentifierStrategy" scope="row" headers="hRouteSettingsName">ID-Strategie</th>
+                <td headers="hRouteSettingsIdentifierStrategy hRouteSettingsValue">AUTO &ndash; Automatische Auswahl.</td>
+                <td headers="hRouteSettingsIdentifierStrategy hRouteSettingsDescription">Ob und welche Strategie zur Generierung von IDs angewendet wird</td>
+            </tr>
+            <tr>
+                <th id="hRouteSettingsChangeTrackingPolicy" scope="row" headers="hRouteSettingsName">Methode zur Erkennung von Änderungen</th>
+                <td headers="hRouteSettingsChangeTrackingPolicy hRouteSettingsValue">DEFERRED_IMPLICIT &ndash; Änderungen werden durch Vergleich der Eigenschaften während des Commits ermittelt.</td>
+                <td headers="hRouteSettingsChangeTrackingPolicy hRouteSettingsDescription">Wie die Erkennung von Änderungen durchgeführt wird</td>
+            </tr>
+            <tr>
+                <th id="hRouteSettingsLockType" scope="row" headers="hRouteSettingsName">Sperrstrategie</th>
+                <td headers="hRouteSettingsLockType hRouteSettingsValue">PAGELOCK &ndash; Verwendet das PageLock-Modul.</td>
+                <td headers="hRouteSettingsLockType hRouteSettingsDescription">Ob und welche Strategie zum Sperren angewendet wird</td>
+            </tr>
+            <tr>
+                <th id="hRouteSettingsReadOnly" scope="row" headers="hRouteSettingsName">Nur Lesen</th>
+                <td headers="hRouteSettingsReadOnly hRouteSettingsValue" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hRouteSettingsReadOnly hRouteSettingsDescription">Ob diese Entität nur gelesen werden darf oder nicht. Falls ja, ist das Bearbeiten nicht möglich.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h4><i class="fa fa-bars"></i> Felder</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cEntityRouteFieldName" />
+            <col id="cEntityRouteFieldType" />
+            <col id="cEntityRouteFieldMandatory" />
+            <col id="cEntityRouteFieldDefault" />
+            <col id="cEntityRouteFieldDisplayType" />
+            <col id="cEntityRouteFieldConstraints" />
+            <col id="cEntityRouteFieldRemarks" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hEntityRouteFieldName" scope="col">Name</th>
+                <th id="hEntityRouteFieldType" scope="col">Typ</th>
+                <th id="hEntityRouteFieldMandatory" scope="col">Pflicht</th>
+                <th id="hEntityRouteFieldDefault" scope="col">Standardwert</th>
+                <th id="hEntityRouteFieldDisplayType" scope="col">Anzeige</th>
+                <th id="hEntityRouteFieldConstraints" scope="col">Beschränkungen</th>
+                <th id="hEntityRouteFieldRemarks" scope="col">Anmerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hEntityRouteFieldId" scope="row" headers="hEntityRouteFieldName">Id</th>
+                <td headers="hEntityRouteFieldId hEntityRouteFieldType">Ganzzahl</td>
+                <td headers="hEntityRouteFieldId hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldId hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldId hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldId hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 9.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldId hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist null eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Fungiert als Primärschlüssel.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldWorkflowState" scope="row" headers="hEntityRouteFieldName">Workflow state</th>
+                <td headers="hEntityRouteFieldWorkflowState hEntityRouteFieldType">Liste</td>
+                <td headers="hEntityRouteFieldWorkflowState hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldWorkflowState hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldWorkflowState hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldWorkflowState hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 20 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldWorkflowState hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>the current workflow state </li>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Die Liste wird durch eine einwertige Dropdownliste repräsentiert.</li>
+                        <li>Verfügbare Einträge: <ul><li>Initial (initial)</li><li>Approved (approved)</li><li>Deleted (deleted)</li></ul></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldBundle" scope="row" headers="hEntityRouteFieldName">Bundle</th>
+                <td headers="hEntityRouteFieldBundle hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldBundle hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldBundle hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldBundle hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldBundle hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldBundle hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldController" scope="row" headers="hEntityRouteFieldName">Controller</th>
+                <td headers="hEntityRouteFieldController hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldController hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldController hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldController hEntityRouteFieldDisplayType">DISPLAY_SORTING</td>
+                <td headers="hEntityRouteFieldController hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldController hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldAction" scope="row" headers="hEntityRouteFieldName">Action</th>
+                <td headers="hEntityRouteFieldAction hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldAction hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldAction hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldAction hEntityRouteFieldDisplayType">DISPLAY_SORTING</td>
+                <td headers="hEntityRouteFieldAction hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldAction hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Wird in der Datenbank als "route_action" gespeichert.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldPath" scope="row" headers="hEntityRouteFieldName">Path</th>
+                <td headers="hEntityRouteFieldPath hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldPath hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldPath hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldPath hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldPath hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldPath hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Wird in der Datenbank als "route_path" gespeichert.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldHost" scope="row" headers="hEntityRouteFieldName">Host</th>
+                <td headers="hEntityRouteFieldHost hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldHost hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldHost hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldHost hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldHost hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldHost hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt null Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldSchemes" scope="row" headers="hEntityRouteFieldName">Schemes</th>
+                <td headers="hEntityRouteFieldSchemes hEntityRouteFieldType">Liste</td>
+                <td headers="hEntityRouteFieldSchemes hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldSchemes hEntityRouteFieldDefault">http</td>
+                <td headers="hEntityRouteFieldSchemes hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldSchemes hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldSchemes hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Die Liste wird durch Checkboxen</li>
+                        <li>Verfügbare Einträge: <ul><li>Http (http)</li><li>Https (https)</li></ul></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldMethods" scope="row" headers="hEntityRouteFieldName">Methods</th>
+                <td headers="hEntityRouteFieldMethods hEntityRouteFieldType">Liste</td>
+                <td headers="hEntityRouteFieldMethods hEntityRouteFieldMandatory">true</td>
+                <td headers="hEntityRouteFieldMethods hEntityRouteFieldDefault">GET</td>
+                <td headers="hEntityRouteFieldMethods hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldMethods hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldMethods hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Die Liste wird durch Checkboxen</li>
+                        <li>Verfügbare Einträge: <ul><li>G e t (GET)</li><li>P o s t (POST)</li><li>H e a d (HEAD)</li><li>P u t (PUT)</li><li>D e l e t e (DELETE)</li><li>O p t i o n s (OPTIONS)</li></ul></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldPrependBundlePrefix" scope="row" headers="hEntityRouteFieldName">Prepend bundle prefix</th>
+                <td headers="hEntityRouteFieldPrependBundlePrefix hEntityRouteFieldType">Boolesches</td>
+                <td headers="hEntityRouteFieldPrependBundlePrefix hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldPrependBundlePrefix hEntityRouteFieldDefault">true</td>
+                <td headers="hEntityRouteFieldPrependBundlePrefix hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldPrependBundlePrefix hEntityRouteFieldConstraints">
+                    <ul>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldPrependBundlePrefix hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldTranslatable" scope="row" headers="hEntityRouteFieldName">Translatable</th>
+                <td headers="hEntityRouteFieldTranslatable hEntityRouteFieldType">Boolesches</td>
+                <td headers="hEntityRouteFieldTranslatable hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldTranslatable hEntityRouteFieldDefault">true</td>
+                <td headers="hEntityRouteFieldTranslatable hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldTranslatable hEntityRouteFieldConstraints">
+                    <ul>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldTranslatable hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldTranslationPrefix" scope="row" headers="hEntityRouteFieldName">Translation prefix</th>
+                <td headers="hEntityRouteFieldTranslationPrefix hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldTranslationPrefix hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldTranslationPrefix hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldTranslationPrefix hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldTranslationPrefix hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldTranslationPrefix hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt null Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldDefaults" scope="row" headers="hEntityRouteFieldName">Defaults</th>
+                <td headers="hEntityRouteFieldDefaults hEntityRouteFieldType">Array</td>
+                <td headers="hEntityRouteFieldDefaults hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldDefaults hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldDefaults hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldDefaults hEntityRouteFieldConstraints">
+                    <ul>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldDefaults hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Wird in der Datenbank als "route_defaults" gespeichert.</li>
+                        <li>Verwendet ein normales Array.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldRequirements" scope="row" headers="hEntityRouteFieldName">Requirements</th>
+                <td headers="hEntityRouteFieldRequirements hEntityRouteFieldType">Array</td>
+                <td headers="hEntityRouteFieldRequirements hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldRequirements hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldRequirements hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldRequirements hEntityRouteFieldConstraints">
+                    <ul>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldRequirements hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Verwendet ein normales Array.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldOptions" scope="row" headers="hEntityRouteFieldName">Options</th>
+                <td headers="hEntityRouteFieldOptions hEntityRouteFieldType">Array</td>
+                <td headers="hEntityRouteFieldOptions hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldOptions hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldOptions hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldOptions hEntityRouteFieldConstraints">
+                    <ul>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldOptions hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Verwendet ein normales Array.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldCondition" scope="row" headers="hEntityRouteFieldName">Condition</th>
+                <td headers="hEntityRouteFieldCondition hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldCondition hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldCondition hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldCondition hEntityRouteFieldDisplayType">DISPLAY_SORTING</td>
+                <td headers="hEntityRouteFieldCondition hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldCondition hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt null Null-Werte.</li>
+                        <li>Wird in der Datenbank als "route_condition" gespeichert.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldDescription" scope="row" headers="hEntityRouteFieldName">Description</th>
+                <td headers="hEntityRouteFieldDescription hEntityRouteFieldType">Zeichenkette</td>
+                <td headers="hEntityRouteFieldDescription hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldDescription hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldDescription hEntityRouteFieldDisplayType">ALL</td>
+                <td headers="hEntityRouteFieldDescription hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 255 Zeichen.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldDescription hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt null Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hEntityRouteFieldSort" scope="row" headers="hEntityRouteFieldName">Sort</th>
+                <td headers="hEntityRouteFieldSort hEntityRouteFieldType">Ganzzahl</td>
+                <td headers="hEntityRouteFieldSort hEntityRouteFieldMandatory">false</td>
+                <td headers="hEntityRouteFieldSort hEntityRouteFieldDefault"></td>
+                <td headers="hEntityRouteFieldSort hEntityRouteFieldDisplayType">DISPLAY_SORTING</td>
+                <td headers="hEntityRouteFieldSort hEntityRouteFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 11.</li>
+                    </ul>
+                </td>
+                <td headers="hEntityRouteFieldSort hEntityRouteFieldRemarks">
+                    <ul>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                        <li>Speichert die Position für die Sortable-Erweiterung.</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h4><i class="fa fa-key"></i> Indexe</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cRouteIndexName" />
+            <col id="cRouteIndexType" />
+            <col id="cRouteIndexSize" />
+            <col id="cRouteIndexDescription" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hRouteIndexName" scope="col">Name</th>
+                <th id="hRouteIndexType" scope="col">Typ</th>
+                <th id="hRouteIndexSize" scope="col">Größe</th>
+                <th id="hRouteIndexDescription" scope="col">Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hRouteIndexWorkflowStateIndex" scope="row" headers="hRouteIndexName">Workflow state index</th>
+                <td headers="hRouteIndexWorkflowStateIndex hRouteIndexType">NORMAL &ndash; normaler Index</td>
+                <td headers="hRouteIndexWorkflowStateIndex hRouteIndexSize">1 Feld</td>
+                <td headers="hRouteIndexWorkflowStateIndex hRouteIndexDescription"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h4><i class="fa fa-paw"></i> Aktionen</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cRouteActionName" />
+            <col id="cRouteActionDescription" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hRouteActionName" scope="col">Name</th>
+                <th id="hRouteActionDescription" scope="col">Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hRouteActionMain" scope="row" headers="hRouteActionName">Main</th>
+                <td headers="hRouteActionMain hRouteActionDescription">Main-Aktion im Route-Controller</td>
+            </tr>
+            <tr>
+                <th id="hRouteActionView" scope="row" headers="hRouteActionName">View</th>
+                <td headers="hRouteActionView hRouteActionDescription">View-Aktion im Route-Controller</td>
+            </tr>
+            <tr>
+                <th id="hRouteActionDisplay" scope="row" headers="hRouteActionName">Display</th>
+                <td headers="hRouteActionDisplay hRouteActionDescription">Display-Aktion im Route-Controller</td>
+            </tr>
+            <tr>
+                <th id="hRouteActionEdit" scope="row" headers="hRouteActionName">Edit</th>
+                <td headers="hRouteActionEdit hRouteActionDescription">Edit-Aktion im Route-Controller</td>
+            </tr>
+            <tr>
+                <th id="hRouteActionDelete" scope="row" headers="hRouteActionName">Delete</th>
+                <td headers="hRouteActionDelete hRouteActionDescription">Delete-Aktion im Route-Controller</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h4><i class="fa fa-map-signs"></i> Workflow</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cRouteWorkflowName" />
+            <col id="cRouteWorkflowDescription" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hRouteWorkflowName" scope="col">Name</th>
+                <th id="hRouteWorkflowDescription" scope="col">Beschreibung</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hRouteWorkflowType" scope="row" headers="hRouteWorkflowName">Workflow-Typ</th>
+                <td headers="hRouteWorkflowType hRouteWorkflowDescription">NONE &ndash; keine Freigabe.</td>
+            </tr>
+            <tr>
+                <th id="hRouteWorkflowStates" scope="row" headers="hRouteWorkflowName">Zustände</th>
+                <td headers="hRouteWorkflowStates hRouteWorkflowDescription">
+                    <ul>
+                        <li><strong>Initial:</strong> Inhalt wurde soeben erstellt und noch nicht persistiert.</li>
+                        <li><strong>Freigegeben:</strong> Inhalt wurde freigegeben und ist online verfügbar.</li>
+                        <li><strong>Gelöscht:</strong> Inhalt wurde aus der Datenbank gelöscht.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th id="hRouteWorkflowOwnerPermission" scope="row" headers="hRouteWorkflowName">Benutzer können ihre eigenen Daten verwalten und bearbeiten</th>
+                <td headers="hRouteWorkflowOwnerPermission hRouteWorkflowDescription" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <th id="hRouteWorkflowAccountDeletionCreator" scope="row" headers="hRouteWorkflowName">Wenn Ersteller gelöscht wird</th>
+                <td headers="hRouteWorkflowAccountDeletionCreator hRouteWorkflowDescription">wird als Nutzer "Admin" zugewiesen.</td>
+            </tr>
+            <tr>
+                <th id="hRouteWorkflowAccountDeletionLastEditor" scope="row" headers="hRouteWorkflowName">Wenn letzter Bearbeiter gelöscht wird</th>
+                <td headers="hRouteWorkflowAccountDeletionLastEditor hRouteWorkflowDescription">wird als Nutzer "Admin" zugewiesen.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h4><i class="fa fa-magic"></i> Verhalten</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cRouteBehaviourName1" />
+            <col id="cRouteBehaviourValue1" />
+            <col id="cRouteBehaviourName2" />
+            <col id="cRouteBehaviourValue2" />
+        </colgroup>
+        <thead>
+            <tr class="sr-only">
+                <th id="hRouteBehaviourName1" scope="col">Name</th>
+                <th id="hRouteBehaviourValue1" scope="col">Wert</th>
+                <th id="hRouteBehaviourName2" scope="col">Name</th>
+                <th id="hRouteBehaviourValue2" scope="col">Wert</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hRouteBehaviourAttributable" scope="row" headers="hRouteBehaviourName1">Attributierbar</th>
+                <td headers="hRouteBehaviourAttributable hRouteBehaviourValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <th id="hRouteBehaviourLoggable" scope="row" headers="hRouteBehaviourName2">Versionierbar</th>
+                <td headers="hRouteBehaviourLoggable hRouteBehaviourValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <th id="hRouteBehaviourCategorisable" scope="row" headers="hRouteBehaviourName1">Kategorisierbar</th>
+                <td headers="hRouteBehaviourCategorisable hRouteBehaviourValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <th id="hRouteBehaviourCategorisableMulti" scope="row" headers="hRouteBehaviourName2">Kategorien Mehrfachauswahl</th>
+                <td headers="hRouteBehaviourCategorisableMulti hRouteBehaviourValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <th id="hRouteBehaviourSluggable" scope="row" headers="hRouteBehaviourName1">Permalinks</th>
+                <td headers="hRouteBehaviourSluggable hRouteBehaviourValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hRouteBehaviourSluggable hRouteBehaviourValue2" class="text-center"></td>
+                <td headers="hRouteBehaviourSluggable hRouteBehaviourValue2" class="text-center"></td>
+            </tr>
+            <tr>
+                <th id="hRouteBehaviourTree" scope="row" headers="hRouteBehaviourName1">Baum</th>
+                <td headers="hRouteBehaviourAttributable hRouteBehaviourValue1" class="text-center">NONE</td>
+                <th id="hRouteBehaviourGeographical" scope="row" headers="hRouteBehaviourName2">Geografisch</th>
+                <td headers="hRouteBehaviourGeographical hRouteBehaviourValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <th id="hRouteBehaviourStandardFields" scope="row" headers="hRouteBehaviourName1">Standardfelder</th>
+                <td headers="hRouteBehaviourStandardFields hRouteBehaviourValue1" class="text-center"><i class="fa fa-check"></i>
+                </td>
+                <th id="hRouteBehaviourHookSubscribers" scope="row" headers="hRouteBehaviourName2">Hook-Abonnenten</th>
+                <td headers="hRouteBehaviourHookSubscribers hRouteBehaviourValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <th id="hRouteBehaviourFormAwareHookProvider" scope="row" headers="hRouteBehaviourName1">Anbieter für Formular-Hooks</th>
+                <td headers="hRouteBehaviourFormAwareHookProvider hRouteBehaviourValue1" class="text-center">DISABLED &ndash; kein Hook-Anbieter verfügbar</td>
+                <th id="hRouteBehaviourUiHooksProvider" scope="row" headers="hRouteBehaviourName2">Anbieter für UI-Hooks</th>
+                <td headers="hRouteBehaviourUiHooksProvider hRouteBehaviourValue2" class="text-center">DISABLED &ndash; kein Hook-Anbieter verfügbar</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h2><i class="fa fa-wrench"></i> Variablen zur Konfiguration</h2>
+<h3><i class="fa fa-server"></i> List views</h3>
+<p>Here you can configure parameters for list views.</p>
+<p>Kombination: <i class="fa fa-times"></i>
+</p>
+<h4><i class="fa fa-bars"></i> Felder</h4>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cVariablesListViewsFieldName" />
+            <col id="cVariablesListViewsFieldType" />
+            <col id="cVariablesListViewsFieldMandatory" />
+            <col id="cVariablesListViewsFieldDefault" />
+            <col id="cVariablesListViewsFieldDisplayType" />
+            <col id="cVariablesListViewsFieldConstraints" />
+            <col id="cVariablesListViewsFieldRemarks" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hVariablesListViewsFieldName" scope="col">Name</th>
+                <th id="hVariablesListViewsFieldType" scope="col">Typ</th>
+                <th id="hVariablesListViewsFieldMandatory" scope="col">Pflicht</th>
+                <th id="hVariablesListViewsFieldDefault" scope="col">Standardwert</th>
+                <th id="hVariablesListViewsFieldDisplayType" scope="col">Anzeige</th>
+                <th id="hVariablesListViewsFieldConstraints" scope="col">Beschränkungen</th>
+                <th id="hVariablesListViewsFieldRemarks" scope="col">Anmerkungen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hVariablesListViewsFieldRouteEntriesPerPage" scope="row" headers="hVariablesListViewsFieldName">Route entries per page</th>
+                <td headers="hVariablesListViewsFieldRouteEntriesPerPage hVariablesListViewsFieldType">Ganzzahl</td>
+                <td headers="hVariablesListViewsFieldRouteEntriesPerPage hVariablesListViewsFieldMandatory">true</td>
+                <td headers="hVariablesListViewsFieldRouteEntriesPerPage hVariablesListViewsFieldDefault">10</td>
+                <td headers="hVariablesListViewsFieldRouteEntriesPerPage hVariablesListViewsFieldDisplayType">ALL</td>
+                <td headers="hVariablesListViewsFieldRouteEntriesPerPage hVariablesListViewsFieldConstraints">
+                    <ul>
+                        <li>Hat eine Länge von 11.</li>
+                    </ul>
+                </td>
+                <td headers="hVariablesListViewsFieldRouteEntriesPerPage hVariablesListViewsFieldRemarks">
+                    <ul>
+                        <li>The amount of routes shown per page </li>
+                        <li>Dieses Feld ist nicht  eindeutig und erlaubt keine  Null-Werte.</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h2><i class="fa fa-puzzle-piece"></i> Integrationseinstellungen</h2>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cSettingName1" />
+            <col id="cSettingValue1" />
+            <col id="cSettingName2" />
+            <col id="cSettingValue2" />
+        </colgroup>
+        <thead>
+            <tr class="sr-only">
+                <th id="hSettingName1" scope="col">Einstellung</th>
+                <th id="hSettingValue1" scope="col">Wert</th>
+                <th id="hSettingName2" scope="col">Einstellung</th>
+                <th id="hSettingValue2" scope="col">Wert</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td headers="hSettingName1">Systemmodul</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-check"></i>
+                </td>
+                <td headers="hSettingName2">Anzahl Beispielsätze</td>
+                <td headers="hSettingValue2" class="text-center">0</td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Benutzerkonto</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">Suche</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Block für Listenansichten</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">Block für Detailansichten</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">ContentType für Listenansichten</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">ContentType für Detailansichten</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Support für Mailz</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">Newsletter Plugin</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Block zur Moderation</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">Panel zur Moderation</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Support für wartende Inhalte</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">MultiHook Needles</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Externe Aufrufe und Finder</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">WYSIWYG-Plugins</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Authentifizierungsmethode</td>
+                <td headers="hSettingValue1" class="text-center">NONE &ndash; keine Authentifizierungsmethode verfügbar.</td>
+                <td headers="hSettingName2">Support für Tagging</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">Anbieter für Filter-Hooks</td>
+                <td headers="hSettingValue1" class="text-center">DISABLED &ndash; kein Hook-Anbieter verfügbar</td>
+                <td headers="hSettingName2">Separate Admin-Templates</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">RSS-Templates</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">Atom-Templates</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">CSV-Templates</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">XML-Templates</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">JSON-Templates</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">KML-Templates</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+            <tr>
+                <td headers="hSettingName1">ICS-Templates</td>
+                <td headers="hSettingValue1" class="text-center"><i class="fa fa-times"></i>
+                </td>
+                <td headers="hSettingName2">PDF-Unterstützung</td>
+                <td headers="hSettingValue2" class="text-center"><i class="fa fa-times"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </body>
+</html>

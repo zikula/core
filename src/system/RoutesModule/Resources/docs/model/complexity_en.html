@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Routes management">
+    <meta name="author" content="Zikula contributors">
+    <title>Routes &ndash; Application complexity</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="icon" href="/system/RoutesModule/Resources//public/images/admin.png">
+    <style>
+        body {
+            padding-bottom: 80px;
+        }
+        h2 {
+            margin-top: 80px;
+        }
+        h3 {
+            margin-top: 50px;
+        }
+        table {
+            width: 100%;
+        }
+        th, td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+      <div class="container">
+          <h1>
+              <img src="/system/RoutesModule/Resources//public/images/admin.png" width="48" height="48" alt="Icon" class="img-thumbnail pull-right" />
+              Routes &ndash; Application complexity
+          </h1>
+          <p>Routes management</p>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cBasicField" />
+            <col id="cBasicValue" />
+        </colgroup>
+        <thead>
+            <tr class="sr-only">
+                <th id="hBasicField" scope="col">Field</th>
+                <th id="hBasicValue" scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hVendor" scope="row" headers="hBasicField">Vendor</th>
+                <td headers="hBasicValue hVendor">Zikula</td>
+            </tr>
+            <tr>
+                <th id="hAuthor" scope="row" headers="hBasicField">Author</th>
+                <td headers="hBasicValue hAuthor">Zikula contributors</td>
+            </tr>
+            <tr>
+                <th id="hEmail" scope="row" headers="hBasicField">Email</th>
+                <td headers="hBasicValue hEmail"><a href="mailto:support@zikula.org"><i class="fa fa-envelope"></i> support@zikula.org</a></td>
+            </tr>
+            <tr>
+                <th id="hUrl" scope="row" headers="hBasicField">URL</th>
+                <td headers="hBasicValue hUrl"><a href="http://www.zikula.org" title="Project page" target="_blank"><i class="fa fa-external-link-square"></i> http://www.zikula.org</a></td>
+            </tr>
+            <tr>
+                <th id="hVersion" scope="row" headers="hBasicField">Version</th>
+                <td headers="hBasicValue hVersion">1.1.2</td>
+            </tr>
+            <tr>
+                <th id="hLicense" scope="row" headers="hBasicField">License</th>
+                <td headers="hBasicValue hLicense">http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License</td>
+            </tr>
+            <tr>
+                <th id="hPlatform" scope="row" headers="hBasicField">Platform</th>
+                <td headers="hBasicValue hPlatform"><a href="https://zikula.de/en/" title="Zikula website" target="_blank">Zikula</a> 1.5.4</td>
+            </tr>
+            <tr>
+                <th id="hGenerated" scope="row" headers="hBasicField">Generated</th>
+                <td headers="hBasicValue hGenerated">by <a href="https://modulestudio.de/en/" title="ModuleStudio website" target="_blank">ModuleStudio</a> 1.1.0 at Tue Nov 14 17:52:20 CET 2017</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h2><i class="fa fa-sitemap"></i> Application model</h2>
+<p><img src="Routes_Entities%20Diagram.jpg" alt="Routes Model" class="img-thumbnail img-responsive" /></p>
+<h2><i class="fa fa-calculator"></i> Function points analysis</h2>
+<p>
+    A function point is a unit to specify the complexity of a software system. More information is available <a href="https://en.wikipedia.org/wiki/Function_point" target="_blank">at Wikipedia</a>.
+</p>
+<div class="table-responsive">
+    <table class="table-striped table-bordered table-hover table-condensed">
+        <colgroup>
+            <col id="cDesignation" />
+            <col id="cComplexity" />
+            <col id="cAmount" />
+            <col id="cWeight" />
+            <col id="cPoints" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hDesignation" scope="col">Designation</th>
+                <th id="hComplexity" scope="col">Complexity</th>
+                <th id="hAmount" scope="col" class="text-right">Amount</th>
+                <th id="hWeight" scope="col" class="text-right">Weight</th>
+                <th id="hPoints" scope="col" class="text-right">Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="hInternalData" scope="row" headers="hDesignation">
+                    Internal data
+                    <div class="table-responsive">
+                        <table class="table-striped table-bordered table-hover table-condensed">
+                            <colgroup>
+                                <col id="cInternalTable" />
+                                <col id="cInternalColumnAmount" />
+                                <col id="cInternalRelationAmount" />
+                                <col id="cInternalComplexity" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th id="hInternalTable" scope="col">Table name</th>
+                                    <th id="hInternalColumnAmount" scope="col">Columns</th>
+                                    <th id="hInternalRelationAmount" scope="col">Relations</th>
+                                    <th id="hInternalComplexity" scope="col">Complexity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th id="hInternalRoute" scope="row" headers="hInternalTable">Route</th>
+                                    <td headers="hInternalRoute hInternalColumnAmount" class="text-right">22</td>
+                                    <td headers="hInternalRoute hInternalRelationAmount" class="text-right">0</td>
+                                    <td headers="hInternalRoute hInternalComplexity">Medium</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </th>
+                <td headers="hInternalData hComplexity">
+                    <br />
+                    Low<br />
+                    Medium<br />
+                    High<br />
+                </td>
+                <td headers="hInternalData hAmount" class="text-right">
+                    <br />
+                    0<br />
+                    1<br />
+                    0<br />
+                </td>
+                <td headers="hInternalData hWeight" class="text-right">
+                    <br />
+                    7<br />
+                    10<br />
+                    15<br />
+                </td>
+                <td headers="hInternalData hPoints" class="text-right">
+                    <br />
+                    0<br />
+                    10<br />
+                    0<br />
+                </td>
+            </tr>
+            <tr>
+                <th id="hExternalData" scope="row" headers="hDesignation">
+                    Interface data (e. g. external tables)
+                </th>
+                <td headers="hExternalData hComplexity">
+                    <br />
+                    Low<br />
+                    Medium<br />
+                    High<br />
+                </td>
+                <td headers="hExternalData hAmount" class="text-right">
+                    <br />
+                    
+                </td>
+                <td headers="hExternalData hWeight" class="text-right">
+                    <br />
+                    5<br />
+                    7<br />
+                    10<br />
+                </td>
+                <td headers="hExternalData hPoints" class="text-right">
+                    <br />
+                    
+                </td>
+            </tr>
+            <tr>
+                <th id="hInputs" scope="row" headers="hDesignation">
+                    Inputs
+                    <div class="table-responsive">
+                        <table class="table-striped table-bordered table-hover table-condensed">
+                            <colgroup>
+                                <col id="cInputTable" />
+                                <col id="cInputFieldAmount" />
+                                <col id="cInputRelationAmount" />
+                                <col id="cInputComplexity" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th id="hInputTable" scope="col">Table name</th>
+                                    <th id="hInputFieldAmount" scope="col">Fields</th>
+                                    <th id="hInputRelationAmount" scope="col">Relations</th>
+                                    <th id="hInputComplexity" scope="col">Complexity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th id="hInputRoute" scope="row" headers="hInputTable">Route</th>
+                                    <td headers="hInputRoute hInputFieldAmount" class="text-right">22</td>
+                                    <td headers="hInputRoute hInputRelationAmount" class="text-right">0</td>
+                                    <td headers="hInputRoute hInputComplexity">Medium</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </th>
+                <td headers="hInputs hComplexity">
+                    <br />
+                    Low<br />
+                    Medium<br />
+                    High<br />
+                </td>
+                <td headers="hInputs hAmount" class="text-right">
+                    <br />
+                    0<br />
+                    1<br />
+                    0<br />
+                </td>
+                <td headers="hInputs hWeight" class="text-right">
+                    <br />
+                    3<br />
+                    4<br />
+                    6<br />
+                </td>
+                <td headers="hInputs hPoints" class="text-right">
+                    <br />
+                    0<br />
+                    4<br />
+                    0<br />
+                </td>
+            </tr>
+            <tr>
+                <th id="hOutputs" scope="row" headers="hDesignation">
+                    Outputs
+                    <div class="table-responsive">
+                        <table class="table-striped table-bordered table-hover table-condensed">
+                            <colgroup>
+                                <col id="cOutputTable" />
+                                <col id="cOutputViewAmount" />
+                                <col id="cOutputRelationAmount" />
+                                <col id="cOutputComplexity" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th id="hOutputTable" scope="col">Table name</th>
+                                    <th id="hOutputViewAmount" scope="col">Views</th>
+                                    <th id="hOutputRelationAmount" scope="col">Relations</th>
+                                    <th id="hOutputComplexity" scope="col">Complexity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th id="hInputRoute" scope="row" headers="hInputTable">Route</th>
+                                    <td headers="hInputRoute hInputViewAmount" class="text-right">22</td>
+                                    <td headers="hInputRoute hInputRelationAmount" class="text-right">0</td>
+                                    <td headers="hInputRoute hInputComplexity">Medium</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </th>
+                <td headers="hOutputs hComplexity">
+                    <br />
+                    Low<br />
+                    Medium<br />
+                    High<br />
+                </td>
+                <td headers="hOutputs hAmount" class="text-right">
+                    <br />
+                    0<br />
+                    1<br />
+                    0<br />
+                </td>
+                <td headers="hOutputs hWeight" class="text-right">
+                    <br />
+                    4<br />
+                    5<br />
+                    7<br />
+                </td>
+                <td headers="hOutputs hPoints" class="text-right">
+                    <br />
+                    0<br />
+                    5<br />
+                    0<br />
+                </td>
+            </tr>
+            <tr>
+                <th id="hQueries" scope="row" headers="hDesignation">
+                    Queries
+                </th>
+                <td headers="hQueries hComplexity">
+                    <br />
+                    Low<br />
+                    Medium<br />
+                    High<br />
+                </td>
+                <td headers="hQueries hAmount" class="text-right">
+                    <br />
+                    
+                </td>
+                <td headers="hQueries hWeight" class="text-right">
+                    <br />
+                    3<br />
+                    4<br />
+                    6<br />
+                </td>
+                <td headers="hQueries hPoints" class="text-right">
+                    <br />
+                    
+                </td>
+            </tr>
+            <tr>
+                <th id="hSum" scope="row" headers="hDesignation">Sum of unadjusted function points</th>
+                <td headers="hSum hComplexity"></td>
+                <td headers="hSum hAmount" class="text-right"></td>
+                <td headers="hSum hWeight" class="text-right"></td>
+                <td headers="hSum hPoints" class="text-right"><strong>19</strong></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<h3>Further actions</h3>
+<p>
+    <a href="http://csse.usc.edu/tools/COCOMOII.php" target="_blank" class="btn btn-primary"><i class="fa fa-money"></i> Calculate effort, schedule and costs with COCOMO II</a>
+</p>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    </body>
+</html>
