@@ -9,7 +9,8 @@ CHANGELOG - ZIKULA 2.0.x
     - Disabled CSRF protection for search results (#3831).
 
  - Vendor updates:
-    - symfony/symfony updated from 3.3.10 to 3.3.11
+    - composer/ca-bundle updated from 1.0.8 to 1.0.9
+    - symfony/symfony updated from 3.3.10 to 3.3.12
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
