@@ -1531,7 +1531,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-10-08 23:52:05"
+            "time": "2017-10-08T23:52:05+00:00"
         },
         {
             "name": "fig/link-util",
@@ -2426,7 +2426,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3936,7 +3936,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-10-20 14:04:00"
+            "time": "2017-10-20T14:04:00+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -4613,16 +4613,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.3.12",
+            "version": "v3.3.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "1452970fc29131776505f684bd81d7a33cbaada4"
+                "reference": "9b0226340705f75fd0cebd220746a36050ead8a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/1452970fc29131776505f684bd81d7a33cbaada4",
-                "reference": "1452970fc29131776505f684bd81d7a33cbaada4",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/9b0226340705f75fd0cebd220746a36050ead8a9",
+                "reference": "9b0226340705f75fd0cebd220746a36050ead8a9",
                 "shasum": ""
             },
             "require": {
@@ -4763,7 +4763,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-11-13T19:37:31+00:00"
+            "time": "2017-11-16T18:15:01+00:00"
         },
         {
             "name": "twig/extensions",

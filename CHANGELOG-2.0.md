@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.8 to 1.0.9
-    - symfony/symfony updated from 3.3.10 to 3.3.12
+    - symfony/symfony updated from 3.3.10 to 3.3.13
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
