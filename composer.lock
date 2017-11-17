@@ -40,7 +40,7 @@
             ],
             "description": "jQuery MiniColors Plugin",
             "homepage": "http://www.abeautifulsite.net/",
-            "time": "2017-10-26 13:39:15"
+            "time": "2017-10-26T13:39:15+00:00"
         },
         {
             "name": "afarkas/html5shiv",
@@ -1582,7 +1582,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2015-11-24 19:03:11"
+            "time": "2015-11-24T19:03:11+00:00"
         },
         {
             "name": "drak/smarty",
@@ -1612,7 +1612,7 @@
                 }
             ],
             "description": "Smarty repository for Zikula Core",
-            "time": "2014-02-18 09:33:52"
+            "time": "2014-02-18T09:33:52+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -1713,7 +1713,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-10-08 23:52:05"
+            "time": "2017-10-08T23:52:05+00:00"
         },
         {
             "name": "fduch/workflow-bundle",
@@ -2656,7 +2656,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4834,16 +4834,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.30",
+            "version": "v2.8.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "628af9253369a8d5a42525386edd28b757d93695"
+                "reference": "fa9fa59d7bf9d5c73a264d348f0da793cafdc73c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/628af9253369a8d5a42525386edd28b757d93695",
-                "reference": "628af9253369a8d5a42525386edd28b757d93695",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/fa9fa59d7bf9d5c73a264d348f0da793cafdc73c",
+                "reference": "fa9fa59d7bf9d5c73a264d348f0da793cafdc73c",
                 "shasum": ""
             },
             "require": {
@@ -4969,11 +4969,11 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-11-13T19:30:38+00:00"
+            "time": "2017-11-16T17:44:10+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.3.12",
+            "version": "v3.3.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",

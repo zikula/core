@@ -11,8 +11,8 @@ CHANGELOG - ZIKULA 1.5.x
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.8 to 1.0.9
-    - symfony/symfony updated from 2.8.28 to 2.8.30
-    - symfony/workflow updated from 3.3.10 to 3.3.12
+    - symfony/symfony updated from 2.8.28 to 2.8.31
+    - symfony/workflow updated from 3.3.10 to 3.3.13
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
