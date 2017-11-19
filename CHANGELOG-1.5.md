@@ -8,6 +8,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Provide showRegistryLabels option in category selection form type to show a label for each single selector based on the base category assigned in the corresponding registry.
     - Corrected Category API to properly get the category by path (#3852). 
     - Disabled CSRF protection for search results (#3831).
+    - Allowing audio files with the .mp3 and .wav extensions to be accessible via the modules and themes folders. (#3858).
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.8 to 1.0.9
