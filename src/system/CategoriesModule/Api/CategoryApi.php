@@ -237,13 +237,11 @@ class CategoryApi
                     $last = count($parts) - 1;
 
                     foreach ($parts as $part_key => $part_value) {
-                        $criteria = [];
                         if (0 == $part_key) {
-                            $criteria = ['name' => $parts[$part_key]];
+                            $parent = $repo->findOneBy(['name' => $parts[$part_key]])->getID();
                         } elseif ($part_key != $last) {
-                            $criteria = ['name' => $parts[$part_key], 'parent' => $parent];
+                            $parent = $repo->findOneBy(['name' => $parts[$part_key], 'parent' => $parent])->getID();
                         }
-                        $parent = $repo->findOneBy($criteria)->getId();
                     }
                 }
             }
@@ -257,6 +255,9 @@ class CategoryApi
             $values = array_pop($values);
         }
         $criteria = [$fieldMap[$pathField] => $values];
+        if ('path' == $pathField) {
+            $criteria['parent'] = $parent;
+        }
         if (!$includeLeaf) {
             $criteria['is_leaf'] = false;
         }

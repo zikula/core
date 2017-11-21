@@ -56,45 +56,9 @@ function zikulaRoutesSimpleAlert(anchorElement, title, content, alertId, cssClas
 function zikulaRoutesInitMassToggle() {
     if (jQuery('.zikularoutes-mass-toggle').length > 0) {
         jQuery('.zikularoutes-mass-toggle').unbind('click').click(function (event) {
-            if (jQuery('.table.fixed-columns').length > 0) {
-                jQuery('.zikularoutes-toggle-checkbox').prop('checked', false);
-                jQuery('.table.fixed-columns .zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            } else {
-                jQuery('.zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
-            }
+            jQuery('.zikularoutes-toggle-checkbox').prop('checked', jQuery(this).prop('checked'));
         });
     }
-}
-
-/**
- * Initialises fixed table columns.
- */
-function zikulaRoutesInitFixedColumns() {
-    jQuery('.table.fixed-columns').remove();
-    jQuery('.table').each(function () {
-        var originalTable, fixedColumnsTable, fixedTableWidth;
-
-        originalTable = jQuery(this);
-        fixedTableWidth = 0;
-        if (originalTable.find('.fixed-column').length > 0) {
-            fixedColumnsTable = originalTable.clone().insertBefore(originalTable).addClass('fixed-columns').removeAttr('id');
-            originalTable.find('.dropdown').addClass('hidden');
-            fixedColumnsTable.find('.dropdown').removeClass('hidden');
-            fixedColumnsTable.css('left', originalTable.parent().position().left);
-
-            fixedColumnsTable.find('th, td').not('.fixed-column').remove();
-            fixedColumnsTable.find('th').each(function (i, elem) {
-                jQuery(this).css('width', originalTable.find('th').eq(i).css('width'));
-                fixedTableWidth += originalTable.find('th').eq(i).width();
-            });
-            fixedColumnsTable.css('width', fixedTableWidth + 'px');
-
-            fixedColumnsTable.find('tr').each(function (i, elem) {
-                jQuery(this).height(originalTable.find('tr:eq(' + i + ')').height());
-            });
-        }
-    });
-    zikulaRoutesInitMassToggle();
 }
 
 /**
@@ -156,7 +120,6 @@ function zikulaRoutesInitSortable() {
         },
         stop: function (event, ui) {
             ui.item.removeClass('active-item-shadow');
-            zikulaRoutesInitFixedColumns();
         },
         update: function (event, ui) {
             jQuery.ajax({
@@ -190,9 +153,6 @@ jQuery(document).ready(function () {
     if (isViewPage) {
         zikulaRoutesInitQuickNavigation();
         zikulaRoutesInitMassToggle();
-        jQuery(window).resize(zikulaRoutesInitFixedColumns);
-        zikulaRoutesInitFixedColumns();
-        window.setTimeout(zikulaRoutesInitFixedColumns, 1000);
         zikulaRoutesInitItemActions('view');
         zikulaRoutesInitSortable();
     } else if (isDisplayPage) {

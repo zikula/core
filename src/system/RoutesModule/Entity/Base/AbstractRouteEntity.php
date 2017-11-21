@@ -53,6 +53,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * the current workflow state
+     *
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
      * @RoutesAssert\ListEntry(entityName="route", propertyName="workflowState", multiple=false)
@@ -105,7 +106,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @RoutesAssert\ListEntry(entityName="route", propertyName="schemes", multiple=true)
      * @var string $schemes
      */
-    protected $schemes = 'http';
+    protected $schemes = 'http###https';
     
     /**
      * @ORM\Column(length=255)
@@ -688,7 +689,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * 
      * @return array List of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = []) 
+    public function getRelatedObjectsToPersist(&$objects = [])
     {
         return [];
     }
