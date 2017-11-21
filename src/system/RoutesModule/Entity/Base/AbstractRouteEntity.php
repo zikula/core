@@ -689,7 +689,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * 
      * @return array List of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = []) 
+    public function getRelatedObjectsToPersist(&$objects = [])
     {
         return [];
     }

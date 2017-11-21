@@ -49,7 +49,7 @@ abstract class AbstractWorkflowHelper
     /**
      * @var CurrentUserApiInterface
      */
-    private $currentUserApi;
+    protected $currentUserApi;
 
     /**
      * @var EntityFactory
