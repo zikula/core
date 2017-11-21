@@ -34,6 +34,7 @@ application "Routes" {
         generateIcsTemplates false
         generatePoweredByBacklinksIntoFooterTemplates false
         writeModelToDocs true
+        generateTechnicalDocumentation false
         skipFiles "
             .travis.yml,
             CHANGELOG.md,

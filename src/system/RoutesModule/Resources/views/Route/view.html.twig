@@ -48,11 +48,11 @@
             <thead>
             <tr>
                 {% if routeArea == 'admin' %}
-                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                    <th id="hSelect" scope="col" class="text-center z-w02">
                         <input type="checkbox" class="zikularoutes-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted">{{ __('Actions') }}</th>
+                <th id="hItemActions" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
                 {% if activateSortable %}
                     <th id="hSortable" scope="col" class="z-order-unsorted z-w02">{{ __('Sorting') }}</th>
                 {% endif %}
@@ -90,11 +90,11 @@
         {% for route in items %}
             <tr{% if activateSortable %} data-item-id="{{ route.getKey() }}" class="sort-item"{% endif %}>
                 {% if routeArea == 'admin' %}
-                    <td headers="hSelect" class="fixed-column text-center">
+                    <td headers="hSelect" class="text-center">
                         <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
                     </td>
                 {% endif %}
-                <td id="itemActions{{ route.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                <td id="itemActions{{ route.id }}" headers="hItemActions" class="actions nowrap z-w02">
                     {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
                     <div class="dropdown">
                         <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
