@@ -67,36 +67,24 @@ function zikulaRoutesInitMassToggle() {
 function zikulaRoutesInitItemActions(context) {
     var containerSelector;
     var containers;
-    var listClasses;
-
+    
     containerSelector = '';
     if (context == 'view') {
         containerSelector = '.zikularoutesmodule-view';
-        listClasses = 'list-unstyled dropdown-menu';
     } else if (context == 'display') {
         containerSelector = 'h2, h3';
-        listClasses = 'list-unstyled dropdown-menu';
     }
-
+    
     if (containerSelector == '') {
         return;
     }
-
+    
     containers = jQuery(containerSelector);
     if (containers.length < 1) {
         return;
     }
-
-    containers.find('.dropdown > ul').removeClass('list-inline').addClass(listClasses);
-    containers.find('.dropdown > ul a').each(function (index) {
-        var title;
-
-        title = jQuery(this).find('i').first().attr('title');
-        if (title == '') {
-            title = jQuery(this).find('i').first().data('original-title');
-        }
-        jQuery(this).html(jQuery(this).html() + title);
-    });
+    
+    containers.find('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
     containers.find('.dropdown > ul a i').addClass('fa-fw');
     containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
 }
