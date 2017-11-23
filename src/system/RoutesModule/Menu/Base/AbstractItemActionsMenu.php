@@ -75,46 +75,52 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
                 $menu->addChild($title, [
                     'route' => $routePrefix . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-search-plus');
+                ]);
                 $menu[$title]->setLinkAttribute('target', '_blank');
                 $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'zikularoutesmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
             if ($context != 'display') {
                 $title = $this->__('Details', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-eye');
+                ]);
                 $menu[$title]->setLinkAttribute('title', str_replace('"', '', $entityDisplayHelper->getFormattedTitle($entity)));
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_EDIT)) {
                 $title = $this->__('Edit', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-pencil-square-o');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $this->__('Edit this route', 'zikularoutesmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
                 $title = $this->__('Reuse', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
-                ])->setAttribute('icon', 'fa fa-files-o');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new route', 'zikularoutesmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
             if ($permissionApi->hasPermission($component, $instance, ACCESS_DELETE)) {
                 $title = $this->__('Delete', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'delete',
                     'routeParameters' => $entity->createUrlArgs()
-                ])->setAttribute('icon', 'fa fa-trash-o');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $this->__('Delete this route', 'zikularoutesmodule'));
+                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
             }
             if ($context == 'display') {
                 $title = $this->__('Back to overview', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
-                ])->setAttribute('icon', 'fa fa-reply');
+                ]);
                 $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
         }
 
