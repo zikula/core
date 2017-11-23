@@ -6,11 +6,14 @@ CHANGELOG - ZIKULA 1.5.x
  - Fixes:
     - Use display name in category selection form type (#3828).
     - Provide showRegistryLabels option in category selection form type to show a label for each single selector based on the base category assigned in the corresponding registry.
-    - Correcting Category API to properly get the category by path (#3852). 
+    - Corrected Category API to properly get the category by path (#3852). 
+    - Disabled CSRF protection for search results (#3831).
+    - Allowing audio files with the .mp3 and .wav extensions to be accessible via the modules and themes folders. (#3858).
 
  - Vendor updates:
-    - symfony/symfony updated from 2.8.28 to 2.8.29
-    - symfony/workflow updated from 3.3.10 to 3.3.11
+    - composer/ca-bundle updated from 1.0.8 to 1.0.9
+    - symfony/symfony updated from 2.8.28 to 2.8.31
+    - symfony/workflow updated from 3.3.10 to 3.3.13
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
