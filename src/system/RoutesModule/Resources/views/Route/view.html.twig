@@ -31,7 +31,7 @@
                 {% if routeArea == 'admin' %}
                     <col id="cSelect" />
                 {% endif %}
-                <col id="cItemActions" />
+                <col id="cItemActionsStart" />
                 {% if activateSortable %}
                     <col id="cSortable" />
                 {% endif %}
@@ -52,7 +52,7 @@
                         <input type="checkbox" class="zikularoutes-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActions" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
+                <th id="hItemActionsStart" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
                 {% if activateSortable %}
                     <th id="hSortable" scope="col" class="z-order-unsorted z-w02">{{ __('Sorting') }}</th>
                 {% endif %}
@@ -94,11 +94,11 @@
                         <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
                     </td>
                 {% endif %}
-                <td id="itemActions{{ route.id }}" headers="hItemActions" class="actions nowrap z-w02">
+                <td id="itemActions{{ route.id }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
                     {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
                     <div class="dropdown">
-                        <a id="itemActions{{ route.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                        <a id="itemActions{{ route.id }}DropDownToggleStart" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig' }) }}
                     </div>
                 </td>
                 {% if activateSortable %}
