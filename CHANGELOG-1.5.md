@@ -11,9 +11,12 @@ CHANGELOG - ZIKULA 1.5.x
     - Allowing audio files with the .mp3 and .wav extensions to be accessible via the modules and themes folders. (#3858).
 
  - Vendor updates:
-    - composer/ca-bundle updated from 1.0.8 to 1.0.9
+    - composer/ca-bundle updated from 1.0.8 to 1.1.0
+    - doctrine/orm updated from 2.5.12 to 2.5.13
+    - phpspec/prophecy updated from 1.7.2 to 1.7.3
+    - phpunit/php-file-iterator updated from 1.4.2 to 1.4.5
     - symfony/symfony updated from 2.8.28 to 2.8.31
-    - symfony/workflow updated from 3.3.10 to 3.3.13
+    - symfony/workflow updated from 3.3.10 to 3.4.0
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
