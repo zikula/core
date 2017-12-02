@@ -191,7 +191,7 @@ class MailHelper
      */
     public function mailUsers(array $users, array $messageData)
     {
-        $mailSent = false;
+        $mailSent = true;
         $message = \Swift_Message::newInstance();
         $message->setFrom([$messageData['replyto'] => $messageData['from']]);
         if (1 == count($users)) {
