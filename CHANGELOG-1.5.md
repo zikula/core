@@ -9,6 +9,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Corrected Category API to properly get the category by path (#3852). 
     - Disabled CSRF protection for search results (#3831).
     - Allowing audio files with the .mp3 and .wav extensions to be accessible via the modules and themes folders. (#3858).
+    - Fixed logical issue in Users module's mass mailing helper (#3863).
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.8 to 1.1.0
