@@ -61,7 +61,7 @@
                                     <li id="availablearea_{{ available_area_identifier }}" class="z-draggable clearfix list-group-item">
                                         <i class="fa fa-long-arrow-left"></i>
                                         <span>
-                                            {{ hookprovider.areasToTitles[parea] }} <span class="small">({{ parea }})
+                                            {{ hookprovider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
                                         </span>
                                         <a class="detachlink hide" title="{{ __('Detach') }} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-remove"></i></a></span>
                                         <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
