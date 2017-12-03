@@ -162,6 +162,9 @@ class HookController extends Controller
                         $category = $nonPersistedSubscribers[$hooksubscriberArea]->getCategory();
                     } else {
                         // @deprecated
+                        if (null === $hooksubscriberVersionObj) {
+                            continue;
+                        }
                         $hooksubscriberAreasToTitles[$hooksubscriberArea] = $this->get('translator.default')->__(/** @Ignore */
                             $hooksubscriberVersionObj->getHookSubscriberBundle($hooksubscriberArea)->getTitle());
                         $category = $this->get('translator.default')->__(/** @Ignore */
@@ -270,6 +273,9 @@ class HookController extends Controller
                         $category = $nonPersistedProviders[$hookproviderArea]->getCategory();
                     } else {
                         // @deprecated
+                        if (null === $hookproviderVersionObj) {
+                            continue;
+                        }
                         $providerBundle = $hookproviderVersionObj->getHookProviderBundle($hookproviderArea);
                         $hookproviderAreasToTitles[$hookproviderArea] = $this->get('translator.default')->__(/** @Ignore */$providerBundle->getTitle());
                         $category = $this->get('translator.default')->__(/** @Ignore */$providerBundle->getCategory());
