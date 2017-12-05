@@ -17,8 +17,9 @@ CHANGELOG - ZIKULA 1.5.x
     - doctrine/orm updated from 2.5.12 to 2.5.13
     - phpspec/prophecy updated from 1.7.2 to 1.7.3
     - phpunit/php-file-iterator updated from 1.4.2 to 1.4.5
-    - symfony/symfony updated from 2.8.28 to 2.8.31
-    - symfony/workflow updated from 3.3.10 to 3.4.0
+    - phpunit/php-token-stream updated from 1.4.11 to 1.4.12
+    - symfony/symfony updated from 2.8.28 to 2.8.32
+    - symfony/workflow updated from 3.3.10 to 3.4.1
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 

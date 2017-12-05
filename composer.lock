@@ -4831,16 +4831,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.31",
+            "version": "v2.8.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "fa9fa59d7bf9d5c73a264d348f0da793cafdc73c"
+                "reference": "0efa80d0a01f60e28ae5800c94d6288239cefefe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/fa9fa59d7bf9d5c73a264d348f0da793cafdc73c",
-                "reference": "fa9fa59d7bf9d5c73a264d348f0da793cafdc73c",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/0efa80d0a01f60e28ae5800c94d6288239cefefe",
+                "reference": "0efa80d0a01f60e28ae5800c94d6288239cefefe",
                 "shasum": ""
             },
             "require": {
@@ -4922,7 +4922,7 @@
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection": "^1.0.7",
                 "sensio/framework-extra-bundle": "^3.0.2",
-                "symfony/phpunit-bridge": "~3.2"
+                "symfony/phpunit-bridge": "~3.4|~4.0"
             },
             "type": "library",
             "extra": {
@@ -4966,20 +4966,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2017-11-16T17:44:10+00:00"
+            "time": "2017-12-04T22:02:29+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.4.0",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "9be01bc49cce8ed314708fb8233a393d2427cb52"
+                "reference": "a1ba5e92262d00b2c2b0afb5fcca4b52c42e8385"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/9be01bc49cce8ed314708fb8233a393d2427cb52",
-                "reference": "9be01bc49cce8ed314708fb8233a393d2427cb52",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/a1ba5e92262d00b2c2b0afb5fcca4b52c42e8385",
+                "reference": "a1ba5e92262d00b2c2b0afb5fcca4b52c42e8385",
                 "shasum": ""
             },
             "require": {
@@ -5033,7 +5033,7 @@
                 "transition",
                 "workflow"
             ],
-            "time": "2017-10-06T15:47:04+00:00"
+            "time": "2017-12-04T12:09:02+00:00"
         },
         {
             "name": "twig/extensions",
@@ -6431,16 +6431,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.11",
+            "version": "1.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7"
+                "reference": "1ce90ba27c42e4e44e6d8458241466380b51fa16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/e03f8f67534427a787e21a385a67ec3ca6978ea7",
-                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/1ce90ba27c42e4e44e6d8458241466380b51fa16",
+                "reference": "1ce90ba27c42e4e44e6d8458241466380b51fa16",
                 "shasum": ""
             },
             "require": {
@@ -6476,7 +6476,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27T10:12:30+00:00"
+            "time": "2017-12-04T08:55:13+00:00"
         },
         {
             "name": "phpunit/phpunit",
