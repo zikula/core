@@ -30,6 +30,7 @@ use Zikula\ExtensionsModule\ExtensionEvents;
 class ExtensionHelper
 {
     const TYPE_SYSTEM = 3;
+
     const TYPE_MODULE = 2;
 
     /**

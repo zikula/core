@@ -18,15 +18,21 @@ use Zikula\ThemeModule\Entity\ThemeEntity;
 class ThemeEntityRepository extends EntityRepository
 {
     const STATE_ALL = 0;
+
     const STATE_ACTIVE = 1;
+
     const STATE_INACTIVE = 2;
 
     const TYPE_ALL = 0;
+
     const TYPE_XANTHIA3 = 3;
 
     const FILTER_ALL = 0;
+
     const FILTER_USER = 1;
+
     const FILTER_SYSTEM = 2;
+
     const FILTER_ADMIN = 3;
 
     /**

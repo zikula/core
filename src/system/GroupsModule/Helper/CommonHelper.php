@@ -20,6 +20,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 class CommonHelper
 {
     use TranslatorTrait;
+
     /**
      * Constant value for core type groups.
      */

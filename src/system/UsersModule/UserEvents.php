@@ -73,7 +73,9 @@ class UserEvents
      * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
      */
     const DELETE_FORM = 'module.users.ui.form_delete';
+
     const DELETE_VALIDATE = 'module.users.ui.validate_delete';
+
     const DELETE_PROCESS = 'module.users.ui.process_delete';
 
     /**

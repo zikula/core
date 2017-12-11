@@ -18,6 +18,7 @@ use Zikula\Core\Event\GenericEvent;
 class LinkContainerCollector
 {
     private $linkContainers;
+
     private $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $dispatcher)

@@ -20,10 +20,13 @@ namespace Zikula\Component\SortableColumns;
 class Column
 {
     const DIRECTION_ASCENDING = 'ASC';
+
     const DIRECTION_DESCENDING = 'DESC';
 
     const CSS_CLASS_UNSORTED = 'unsorted';
+
     const CSS_CLASS_ASCENDING = 'sorted-asc';
+
     const CSS_CLASS_DESCENDING = 'sorted-desc';
 
     private $name;

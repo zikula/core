@@ -18,6 +18,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 class Scanner
 {
     private $jsons = [];
+
     private $invalid = [];
 
     /**

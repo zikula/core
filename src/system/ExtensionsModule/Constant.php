@@ -14,12 +14,20 @@ namespace Zikula\ExtensionsModule;
 class Constant
 {
     const STATE_UNINITIALISED = 1;
+
     const STATE_INACTIVE = 2;
+
     const STATE_ACTIVE = 3;
+
     const STATE_MISSING = 4;
+
     const STATE_UPGRADED = 5;
+
     const STATE_NOTALLOWED = 6;
+
     const STATE_INVALID = -1;
+
     const STATE_TRANSITIONAL = 7; // installing or uninstalling
+
     const INCOMPATIBLE_CORE_SHIFT = 20;
 }

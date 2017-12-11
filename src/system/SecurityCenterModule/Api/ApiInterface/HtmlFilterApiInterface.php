@@ -20,7 +20,9 @@ interface HtmlFilterApiInterface
     const HTML_STRING_FILTER = 'htmlfilter.outputfilter';
 
     const TAG_NOT_ALLOWED = 0;
+
     const TAG_ALLOWED_PLAIN = 1;
+
     const TAG_ALLOWED_WITH_ATTRIBUTES = 2;
 
     /**

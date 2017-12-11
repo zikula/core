@@ -20,6 +20,7 @@ use Symfony\Component\Yaml\Yaml;
 class YamlDumper
 {
     protected $fs;
+
     protected $fullPath;
 
     public function __construct($configDir, $filePath = 'custom_parameters.yml', $initCopy = null)

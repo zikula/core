@@ -19,8 +19,11 @@ namespace Zikula\Core\LinkContainer;
 interface LinkContainerInterface
 {
     const EVENT_NAME = 'zikula.link_collector';
+
     const TYPE_ADMIN = 'admin';
+
     const TYPE_USER = 'user';
+
     const TYPE_ACCOUNT = 'account';
 
     /**
