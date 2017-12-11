@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraint;
 class ValidUname extends Constraint
 {
     public $message = 'The uname "%string%" is invalid.';
+
     public $excludedUid;
 
     public function validatedBy()

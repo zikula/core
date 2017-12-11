@@ -17,6 +17,7 @@
 class DBObjectArray
 {
     // state/type (static)
+
     /**
      * Object type.
      *
@@ -177,10 +178,15 @@ class DBObjectArray
 
     // constants
     const GET_FROM_DB                = 'DB'; // get data from DB
+
     const GET_FROM_GET               = 'GET'; // get data from $_GET
+
     const GET_FROM_POST              = 'POST'; // get data from $_POST
+
     const GET_FROM_REQUEST           = 'REQUEST'; // get data from $_REQUEST
+
     const GET_FROM_SESSION           = 'SESSION'; // get data from $_SESSION
+
     const GET_FROM_VALIDATION_FAILED = 'VALIDATION'; // get data from failed validation
 
     /**

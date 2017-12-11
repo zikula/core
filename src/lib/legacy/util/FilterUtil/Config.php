@@ -23,6 +23,7 @@ class FilterUtil_Config
      * Enummeration what table type is used.
      */
     const TABLE_TABLES_MODE   = 1;
+
     const TABLE_DOCTRINE_MODE = 2;
 
     /**

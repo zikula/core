@@ -21,7 +21,10 @@ use Doctrine\Common\Annotations\Annotation;
 final class StandardFields extends Annotation
 {
     public $type;
+
     public $on = 'update';
+
     public $field;
+
     public $value;
 }

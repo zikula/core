@@ -23,6 +23,7 @@ use Zikula\Common\Translator\TranslatorInterface;
 class Controller
 {
     private $translator;
+
     private $session;
 
     public function __construct(TranslatorInterface $translator, SessionInterface $session)

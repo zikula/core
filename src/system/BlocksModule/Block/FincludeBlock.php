@@ -19,7 +19,9 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 class FincludeBlock extends AbstractBlockHandler
 {
     const FILETYPE_HTML = 0;
+
     const FILETYPE_TEXT = 1;
+
     const FILETYPE_PHP = 2;
 
     public function display(array $properties)

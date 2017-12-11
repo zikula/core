@@ -75,10 +75,12 @@ class UserEvents
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const NEW_FORM = 'module.users.ui.form_edit.new_user';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const NEW_VALIDATE = 'module.users.ui.validate_edit.new_user';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
      */
@@ -94,10 +96,12 @@ class UserEvents
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const MODIFY_FORM = 'module.users.ui.form_edit.modify_user';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const MODIFY_VALIDATE = 'module.users.ui.validate_edit.modify_user';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
      */
@@ -110,7 +114,9 @@ class UserEvents
      * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
      */
     const DELETE_FORM = 'module.users.ui.form_delete';
+
     const DELETE_VALIDATE = 'module.users.ui.validate_delete';
+
     const DELETE_PROCESS = 'module.users.ui.process_delete';
 
     /**

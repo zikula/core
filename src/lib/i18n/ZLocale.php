@@ -16,6 +16,7 @@
 class ZLocale implements ArrayAccess
 {
     // public properties
+
     /**
      * Locale.
      *

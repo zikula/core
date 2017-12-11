@@ -18,7 +18,9 @@ use Zikula\Common\Translator\TranslatorInterface;
 class LoginUiHooksSubscriber implements HookSubscriberInterface
 {
     const LOGIN_FORM = 'users.ui_hooks.login_screen.form_edit';
+
     const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
+
     const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
 
     /**

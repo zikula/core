@@ -16,8 +16,11 @@
 class PluginUtil
 {
     const DISABLED = 0;
+
     const ENABLED = 1;
+
     const NOTINSTALLED = 2;
+
     const CONFIG = '/Plugin';
 
     /**

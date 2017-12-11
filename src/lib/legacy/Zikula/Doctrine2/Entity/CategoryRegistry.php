@@ -40,11 +40,13 @@ class Zikula_Doctrine2_Entity_CategoryRegistry
      * @var integer
      */
     private $categoryId;
+
     /**
      * @ORM\Column(type="string", length=60)
      * @var string
      */
     private $modname;
+
     /**
      * @ORM\Column(type="string", length=60)
      * @var string

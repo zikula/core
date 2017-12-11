@@ -17,7 +17,9 @@
 class HtmlUtil
 {
     const MARKER_NONE = '&nbsp;&nbsp;';
+
     const REQUIRED_MARKER = '<span class="z-form-mandatory-flag">*</span>';
+
     const VALIDATION_MARKER = '<span class="z-form-mandatory-flag">!</span>';
 
     /**

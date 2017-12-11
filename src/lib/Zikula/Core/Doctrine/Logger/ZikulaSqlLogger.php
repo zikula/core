@@ -21,6 +21,7 @@ use Zikula\Core\Event\GenericEvent;
 class ZikulaSqlLogger implements SQLLogger
 {
     private $currentQuery;
+
     private $start;
 
     public function startQuery($sql, array $params = null, array $types = null)

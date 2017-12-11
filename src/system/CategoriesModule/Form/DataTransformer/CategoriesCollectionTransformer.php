@@ -23,6 +23,7 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
 class CategoriesCollectionTransformer implements DataTransformerInterface
 {
     private $entityCategoryClass;
+
     private $multiple;
 
     public function __construct(array $options)

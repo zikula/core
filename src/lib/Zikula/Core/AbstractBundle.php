@@ -23,7 +23,9 @@ use Zikula\ThemeModule\Engine\AssetBag;
 abstract class AbstractBundle extends Bundle
 {
     const STATE_DISABLED = 2;
+
     const STATE_ACTIVE = 3;
+
     const STATE_MISSING = 6;
 
     protected $state;
