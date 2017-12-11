@@ -23,6 +23,7 @@ class SchemaHelper
      * @var EntityManagerInterface
      */
     private $entityManager;
+
     private $tool;
 
     public function __construct(EntityManagerInterface $em)

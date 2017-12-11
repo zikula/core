@@ -19,8 +19,11 @@ use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 class ZikulaJsFileExtractor implements FileVisitorInterface
 {
     const JAVASCRIPT_DOMAIN = 'zikula_javascript'; // figure out way to compute the bundle's translation domain? #3650
+
     const SINGULAR_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?';
+
     const PLURAL_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?,\s?([\'"])((?:(?!\3).)*)\3\s?';
+
     const REGEX_DELIMITER = '/';
 
     private $singularFunctions = [
@@ -29,6 +32,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         '__',
         '__f',
     ];
+
     private $pluralFunctions = [
         '_n',
         '_fn'
