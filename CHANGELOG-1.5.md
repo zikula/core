@@ -3,6 +3,9 @@ CHANGELOG - ZIKULA 1.5.x
 
 * 1.5.4 (?)
 
+ - BC Breaks:
+    - CSRF tokens are now different for HTTP and HTTPS (#3856). See http://symfony.com/blog/cve-2017-16653-csrf-protection-does-not-use-different-tokens-for-http-and-https for more information.
+
  - Fixes:
     - Use display name in category selection form type (#3828).
     - Provide showRegistryLabels option in category selection form type to show a label for each single selector based on the base category assigned in the corresponding registry.
