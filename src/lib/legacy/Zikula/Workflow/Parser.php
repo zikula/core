@@ -19,6 +19,7 @@
 class Zikula_Workflow_Parser
 {
     // Declare object variables;
+
     /**
      * XML parser object.
      *

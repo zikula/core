@@ -18,6 +18,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class Scanner
 {
     private $jsons = [];
+
     private $invalid = [];
 
     /**

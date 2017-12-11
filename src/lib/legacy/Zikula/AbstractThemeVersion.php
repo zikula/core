@@ -74,7 +74,9 @@ abstract class Zikula_AbstractThemeVersion implements ArrayAccess
     protected $type;
 
     protected $user;
+
     protected $admin;
+
     protected $system;
 
     /**

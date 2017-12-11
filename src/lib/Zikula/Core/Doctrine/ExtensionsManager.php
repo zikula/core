@@ -20,7 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ExtensionsManager
 {
     private $eventManager;
+
     private $serviceManager;
+
     private $listeners;
 
     public function __construct(EventManager $eventManager, ContainerInterface $serviceManager)

@@ -32,6 +32,7 @@ use Zikula\ExtensionsModule\Helper\Legacy\ExtensionHelper as LegacyExtensionHelp
 class ExtensionHelper
 {
     const TYPE_SYSTEM = 3;
+
     const TYPE_MODULE = 2;
 
     /**

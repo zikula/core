@@ -38,6 +38,7 @@ class DoctrineStorage implements StorageInterface
      * @deprecated
      */
     const PROVIDER = 'p';
+
     /**
      * @deprecated
      */

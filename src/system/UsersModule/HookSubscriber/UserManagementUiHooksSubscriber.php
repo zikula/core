@@ -18,11 +18,17 @@ use Zikula\Common\Translator\TranslatorInterface;
 class UserManagementUiHooksSubscriber implements HookSubscriberInterface
 {
     const EDIT_DISPLAY = 'users.ui_hooks.user.display_view';
+
     const EDIT_FORM = 'users.ui_hooks.user.form_edit';
+
     const EDIT_VALIDATE = 'users.ui_hooks.user.validate_edit';
+
     const EDIT_PROCESS = 'users.ui_hooks.user.process_edit';
+
     const DELETE_FORM = 'users.ui_hooks.user.form_delete';
+
     const DELETE_VALIDATE = 'users.ui_hooks.user.validate_delete';
+
     const DELETE_PROCESS = 'users.ui_hooks.user.process_delete';
 
     /**

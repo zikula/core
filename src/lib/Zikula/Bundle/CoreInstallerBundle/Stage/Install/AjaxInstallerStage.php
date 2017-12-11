@@ -21,9 +21,13 @@ class AjaxInstallerStage implements StageInterface, InjectContainerInterface
     use TranslatorTrait;
 
     const NAME = 'name';
+
     const PRE = 'pre';
+
     const DURING = 'during';
+
     const SUCCESS = 'success';
+
     const FAIL = 'fail';
 
     public function __construct(ContainerInterface $container)

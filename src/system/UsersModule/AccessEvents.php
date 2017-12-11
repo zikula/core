@@ -112,10 +112,12 @@ class AccessEvents
      * @deprecated
      */
     const LOGIN_FORM = 'module.users.ui.form_edit.login_screen';
+
     /**
      * @deprecated
      */
     const LOGIN_VALIDATE = 'module.users.ui.validate_edit.login_screen';
+
     /**
      * @deprecated
      */

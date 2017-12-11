@@ -18,11 +18,17 @@ use Zikula\Common\Translator\TranslatorInterface;
 class RegistrationUiHooksSubscriber implements HookSubscriberInterface
 {
     const REGISTRATION_DISPLAY = 'users.ui_hooks.registration.display_view';
+
     const REGISTRATION_FORM = 'users.ui_hooks.registration.form_edit';
+
     const REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
+
     const REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
+
     const REGISTRATION_DELETE_FORM = 'users.ui_hooks.registration.form_delete';
+
     const REGISTRATION_DELETE_VALIDATE = 'users.ui_hooks.registration.validate_delete';
+
     const REGISTRATION_DELETE_PROCESS = 'users.ui_hooks.registration.process_delete';
 
     /**

@@ -77,6 +77,7 @@ class Zikula_Doctrine2_Entity_Category extends Zikula_EntityAccess
      * @var ArrayCollection
      */
     private $children;
+
     /**
      * @ORM\Column(type="boolean", name="is_locked")
      * @var boolean

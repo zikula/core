@@ -63,17 +63,29 @@ class Zikula_Core
     const CORE_INSTALLED_VERSION_PARAM = \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM;
 
     const STAGE_NONE = 0;
+
     const STAGE_PRE = 1;
+
     const STAGE_POST = 2;
+
     const STAGE_CONFIG = 4;
+
     const STAGE_DB = 8;
+
     const STAGE_TABLES = 16;
+
     const STAGE_SESSIONS = 32;
+
     const STAGE_LANGS = 64;
+
     const STAGE_MODS = 128;
+
     const STAGE_DECODEURLS = 1024;
+
     const STAGE_THEME = 2048;
+
     const STAGE_ALL = 4095;
+
     const STAGE_AJAX = 4096; // needs to be set explicitly, STAGE_ALL | STAGE_AJAX
 
     /**

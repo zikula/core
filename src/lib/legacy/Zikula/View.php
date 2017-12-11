@@ -17,7 +17,9 @@
 class Zikula_View extends Smarty implements Zikula_TranslatableInterface
 {
     const CACHE_DISABLED = 0;
+
     const CACHE_ENABLED = 1;
+
     const CACHE_INDIVIDUAL = 2;
 
     /**

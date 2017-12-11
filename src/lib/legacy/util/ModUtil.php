@@ -23,24 +23,35 @@ class ModUtil
 {
     // States
     const STATE_UNINITIALISED = 1;
+
     const STATE_INACTIVE = 2;
+
     const STATE_ACTIVE = 3;
+
     const STATE_MISSING = 4;
+
     const STATE_UPGRADED = 5;
+
     const STATE_NOTALLOWED = 6;
+
     const STATE_INVALID = -1;
+
     const INCOMPATIBLE_CORE_SHIFT = 20;
 
     const CONFIG_MODULE = 'ZConfig';
 
     // Types
     const TYPE_MODULE = 2;
+
     const TYPE_SYSTEM = 3;
+
     const TYPE_CORE = 4;
 
     // Module dependency states
     const DEPENDENCY_REQUIRED = 1;
+
     const DEPENDENCY_RECOMMENDED = 2;
+
     const DEPENDENCY_CONFLICTS = 3;
 
     /**

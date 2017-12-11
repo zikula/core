@@ -14,5 +14,6 @@ namespace Zikula\SecurityCenterModule;
 class Constant
 {
     const SESSION_STORAGE_DATABASE = 0;
+
     const SESSION_STORAGE_FILE = 1;
 }

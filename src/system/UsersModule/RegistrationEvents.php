@@ -158,10 +158,12 @@ class RegistrationEvents
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const NEW_FORM = 'module.users.ui.form_edit.new_registration';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const NEW_VALIDATE = 'module.users.ui.validate_edit.new_registration';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
      */
@@ -177,10 +179,12 @@ class RegistrationEvents
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const MODIFY_FORM = 'module.users.ui.form_edit.modify_registration';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM
      */
     const MODIFY_VALIDATE = 'module.users.ui.validate_edit.modify_registration';
+
     /**
      * @deprecated see \Zikula\UsersModule\UserEvents::EDIT_FORM_HANDLE
      */

@@ -31,16 +31,19 @@ abstract class Zikula_Doctrine2_Entity_AbstractAttribute extends Zikula_EntityAc
      * @var integer
      */
     private $id;
+
     /**
      * @ORM\Column(type="string", length=80, name="attribute_name")
      * @var string
      */
     private $name;
+
     /**
      * @ORM\Column(type="text")
      * @var string
      */
     private $value;
+
     /**
      * @ORM\Column(type="string", length=1, name="obj_status")
      * @var string

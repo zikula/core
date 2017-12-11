@@ -20,6 +20,7 @@ use Zikula\Bundle\CoreBundle\Yaml\Yaml;
 class DynamicConfigDumper extends YamlDumper
 {
     const CONFIG_GENERATED = 'dynamic/generated.yml';
+
     const CONFIG_DEFAULT = 'dynamic/default.yml';
 
     /**
