@@ -31,31 +31,31 @@ class PhpFileExtractorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message('text.foo_bar', 'zikula');
         $message->setDesc('Foo bar');
-        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 36));
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 37));
         $expected->add($message);
 
         $message = new Message('text.sign_up_successful %name%', 'zikula');
         $message->setDesc('Welcome %name%! Thanks for signing up.');
-        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 43));
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 44));
         $expected->add($message);
 
         $message = new Message('button.archive', 'zikula');
         $message->setDesc('Archive Message');
         $message->setMeaning('The verb (to archive), describes an action');
-        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 50));
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 51));
         $expected->add($message);
 
         $message = new Message('text.irrelevant_doc_comment', 'baz');
-        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 62));
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 63));
         $expected->add($message);
 
         $message = new Message('text.array_method_call', 'zikula');
-        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 67));
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 68));
         $expected->add($message);
 
         $message = new Message('text.var.assign %foo%', 'zikula');
         $message->setDesc('The var %foo% should be assigned.');
-        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 73));
+        $message->addSource($fileSourceFactory->create($fixtureSplInfo, 74));
         $expected->add($message);
 
         $this->assertEquals($expected, $this->extract('Controller.php'));
