@@ -17,6 +17,7 @@ disabled:
   - phpdoc_to_comment
   - phpdoc_type_to_var
   - pre_increment
+  - self_accessor
   - single_quote
   - trailing_comma_in_multiline_array
   - unalign_double_arrow

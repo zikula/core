@@ -240,7 +240,7 @@ class CategoryEntity extends EntityAccess
      *
      * @param CategoryEntity $parent
      */
-    public function setParent(self $parent = null)
+    public function setParent(CategoryEntity $parent = null)
     {
         $this->parent = $parent;
     }
@@ -881,7 +881,7 @@ class CategoryEntity extends EntityAccess
     /**
      * @param CategoryEntity $root
      */
-    public function setRoot(self $root)
+    public function setRoot(CategoryEntity $root)
     {
         $this->root = $root;
     }
