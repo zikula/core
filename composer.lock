@@ -1613,21 +1613,22 @@
         },
         {
             "name": "elao/web-profiler-extra-bundle",
-            "version": "v2.3.4",
+            "version": "v2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Elao/WebProfilerExtraBundle.git",
-                "reference": "befa5280d2b9a01587404e219b02af4f9272c6bf"
+                "reference": "7a51d4844c137880eee69287a6484ce48411cf57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/befa5280d2b9a01587404e219b02af4f9272c6bf",
-                "reference": "befa5280d2b9a01587404e219b02af4f9272c6bf",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/7a51d4844c137880eee69287a6484ce48411cf57",
+                "reference": "7a51d4844c137880eee69287a6484ce48411cf57",
                 "shasum": ""
             },
             "require": {
-                "symfony/framework-bundle": "~2.1|~3.0",
-                "symfony/twig-bundle": "~2.0|~3.0",
+                "symfony/framework-bundle": "~2.1|~3.0|~4.0",
+                "symfony/templating": "~2.0|~3.0|~4.0",
+                "symfony/twig-bundle": "~2.0|~3.0|~4.0",
                 "twig/twig": "~1.12|~2.0"
             },
             "type": "symfony-bundle",
@@ -1663,7 +1664,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2017-01-27T16:54:42+00:00"
+            "time": "2017-12-06T09:08:30+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -3983,16 +3984,16 @@
         },
         {
             "name": "sensio/generator-bundle",
-            "version": "v3.1.6",
+            "version": "v3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
-                "reference": "128bc5dabc91ca40b7445f094968dd70ccd58305"
+                "reference": "28cbaa244bd0816fd8908b93f90380bcd7b67a65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/128bc5dabc91ca40b7445f094968dd70ccd58305",
-                "reference": "128bc5dabc91ca40b7445f094968dd70ccd58305",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/28cbaa244bd0816fd8908b93f90380bcd7b67a65",
+                "reference": "28cbaa244bd0816fd8908b93f90380bcd7b67a65",
                 "shasum": ""
             },
             "require": {
@@ -4033,7 +4034,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2017-07-18T07:57:44+00:00"
+            "time": "2017-12-07T15:36:41+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -5676,16 +5677,16 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "3.1.1",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "04ea610a2110b77b359a8d813dac8f252af77789"
+                "reference": "674174841e4ffa9834a231e9704ded414b75a313"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/04ea610a2110b77b359a8d813dac8f252af77789",
-                "reference": "04ea610a2110b77b359a8d813dac8f252af77789",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/674174841e4ffa9834a231e9704ded414b75a313",
+                "reference": "674174841e4ffa9834a231e9704ded414b75a313",
                 "shasum": ""
             },
             "require": {
@@ -5737,10 +5738,10 @@
             ],
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
-                "source": "https://github.com/zikula-modules/Legal/tree/3.1.1",
+                "source": "https://github.com/zikula-modules/Legal/tree/3.1.2",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2017-11-04T15:42:12+00:00"
+            "time": "2017-12-13T15:20:37+00:00"
         },
         {
             "name": "zikula/oauth-module",
