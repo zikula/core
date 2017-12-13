@@ -40,8 +40,6 @@ before_install:
 
     - cd ..
     - ./bin/simple-phpunit
-    #- ./bin/phpunit
-    #- ./src/vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bin/simple-phpunit
 
     - cd src
 

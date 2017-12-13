@@ -75,7 +75,7 @@
             ],
             "recurse": false,
             "replace": false,
-            "merge-dev": false,
+            "merge-dev": true,
             "merge-extra": false,
             "merge-extra-deep": false
         }
