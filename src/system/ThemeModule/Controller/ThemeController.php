@@ -217,14 +217,13 @@ class ThemeController extends AbstractController
                         $this->addFlash('danger', $this->__('Could not remove files as requested.') . ' (' . $e->getMessage() . ') ' . $this->__('The files must be removed manually.'));
                     }
                 }
+
+                // remove any theme vars
+                $this->get('zikula_extensions_module.api.variable')->delAll($themeName);
+
                 // remove theme
                 $this->getDoctrine()->getManager()->remove($themeEntity);
-                // remove any theme vars
-                $vars = $this->get('zikula_extensions_module.api.variable')->getAll($themeName);
-                foreach ($vars as $var) {
-                    $this->getDoctrine()->getManager()->remove($var);
-                }
-                $this->getDoctrine()->getManager()->flush();
+
                 // clear all caches
                 $this->get('zikula.cache_clearer')->clear('twig');
                 $this->get('zikula.cache_clearer')->clear('symfony.config');
