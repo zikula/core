@@ -119,8 +119,9 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
         $sessionEntity->setSessid($sessionId);
         $sessionEntity->setIpaddr($this->getCurrentIp());
         $sessionEntity->setLastused(date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed()));
-        $sessionEntity->setUid($this->storage->getBag('attributes')->get('uid', Constant::USER_ID_ANONYMOUS));
-        $sessionEntity->setRemember($this->storage->getBag('attributes')->get('rememberme', 0));
+        $attributesBag = $this->storage->getBag('attributes')->getBag();
+        $sessionEntity->setUid($attributesBag->get('uid', Constant::USER_ID_ANONYMOUS));
+        $sessionEntity->setRemember($attributesBag->get('rememberme', 0));
         $sessionEntity->setVars($vars);
         $this->userSessionRepository->persistAndFlush($sessionEntity);
 

@@ -90,8 +90,9 @@ class ZikulaSessionStorage extends NativeSessionStorage
             $cookieLastUsed = $this->getMetadataBag()->getLastUsed();
             $cookieExpired = $cookieLastUsed < $inactiveTime;
             $cookieAgedOut = $cookieLastUsed < $daysOldTime;
-            $rememberMe = $this->getBag('attributes')->get('rememberme');
-            $uid = $this->getBag('attributes')->get('uid', Constant::USER_ID_ANONYMOUS);
+            $attributesBag = $this->getBag('attributes')->getBag();
+            $rememberMe = $attributesBag->get('rememberme');
+            $uid = $attributesBag->get('uid', Constant::USER_ID_ANONYMOUS);
             switch ($this->securityLevel) {
                 case self::SECURITY_LEVEL_LOW:
                     break;
