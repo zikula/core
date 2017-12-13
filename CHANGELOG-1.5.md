@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Allowing audio files with the .mp3 and .wav extensions to be accessible via the modules and themes folders. (#3858).
     - Fixed logical issue in Users module's mass mailing helper (#3863).
     - Fixed potential problems with invalid hook bundles (#3866).
+    - Fixed wrong deletion of Theme variables (#3857).
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.0.8 to 1.1.0
