@@ -11,7 +11,6 @@
 
 namespace Zikula\ZAuthModule\Tests\Api;
 
-use Symfony\Component\Debug\Exception\ContextErrorException;
 use Zikula\ZAuthModule\Api\PasswordApi;
 
 class PasswordApiTest extends \PHPUnit_Framework_TestCase
@@ -84,7 +83,7 @@ class PasswordApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetHashedPasswordOnUndefined()
     {
-        $this->setExpectedException(ContextErrorException::class);
+        $this->setExpectedException(\PHPUnit_Framework_Error::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 

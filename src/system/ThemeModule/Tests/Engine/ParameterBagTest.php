@@ -11,7 +11,6 @@
 
 namespace Zikula\ThemeModule\Tests\Engine;
 
-use Symfony\Component\Debug\Exception\ContextErrorException;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class ParameterBagTest extends \PHPUnit_Framework_TestCase
@@ -77,7 +76,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
      */
     public function testExpectedFailureToRecastToNamespace()
     {
-        $this->setExpectedException(ContextErrorException::class);
+        $this->setExpectedException(\PHPUnit_Framework_Error::class);
         $this->bag->set('foo.bang', 6);
     }
 
