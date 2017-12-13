@@ -13,10 +13,8 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Composer\Autoload\ClassLoader;
 use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
-use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
