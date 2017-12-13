@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Composer\Autoload\ClassLoader;
+use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -312,6 +313,8 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
             $this->bundles[$name] = $bundle;
 
             if ($parentName = $bundle->getParent()) {
+                @trigger_error('Bundle inheritance is deprecated as of 3.4 and will be removed in 4.0.', E_USER_DEPRECATED);
+
                 if (isset($directChildren[$parentName])) {
                     throw new \LogicException(sprintf('Bundle "%s" is directly extended by two bundles "%s" and "%s".', $parentName, $name, $directChildren[$parentName]));
                 }
@@ -325,7 +328,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
 
         // look for orphans
-        if (count($diff = array_values(array_diff(array_keys($directChildren), array_keys($this->bundles))))) {
+        if (!empty($directChildren) && count($diff = array_values(array_diff(array_keys($directChildren), array_keys($this->bundles))))) {
             throw new \LogicException(sprintf('Bundle "%s" extends bundle "%s", which is not registered.', $directChildren[$diff[0]], $diff[0]));
         }
 
@@ -367,26 +370,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     }
 
     /**
-     * Dumps the service container to PHP code in the cache.
-     *
-     * @param ConfigCache      $cache     The config cache
-     * @param SymfonyContainerBuilder $container The service container
-     * @param string           $class     The name of the class to generate
-     * @param string           $baseClass The name of the container's base class
-     */
-    protected function dumpContainer(ConfigCache $cache, SymfonyContainerBuilder $container, $class, $baseClass)
-    {
-        // cache the container
-        $dumper = new PhpDumper($container);
-        $content = $dumper->dump(['class' => $class, 'base_class' => $baseClass]);
-        if (!$this->debug) {
-            $content = self::stripComments($content);
-        }
-
-        $cache->write($content, $container->getResources());
-    }
-
-    /**
      * Gets the container's base class.
      *
      * All names except Container must be fully qualified.
@@ -408,7 +391,13 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      */
     protected function getContainerBuilder()
     {
-        return new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
+        $container = new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
+
+        if (class_exists('ProxyManager\Configuration') && class_exists('Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator')) {
+            $container->setProxyInstantiator(new RuntimeInstantiator());
+        }
+
+        return $container;
     }
 
     /**
@@ -432,12 +421,15 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
                 $container->addObjectResource($bundle);
             }
         }
+
         foreach ($this->bundles as $bundle) {
             if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE != $bundle->getState()) {
                 continue;
             }
             $bundle->build($container);
         }
+
+        $this->build($container);
 
         // ensure these extensions are implicitly loaded
         $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
