@@ -22,7 +22,7 @@ CHANGELOG - ZIKULA 2.0.x
     - phpunit/php-file-iterator updated from 1.4.2 to 1.4.5
     - phpunit/php-token-stream updated from 1.4.11 to 1.4.12
     - sensio/generator-bundle updated from 3.1.6 to 3.1.7
-    - symfony/symfony updated from 3.3.10 to 3.4.1
+    - symfony/symfony updated from 3.3.10 to 3.4.2
     - zikula/legal-module updated from 3.1.1 to 3.1.2
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
