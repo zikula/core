@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 [![Build Status](https://travis-ci.org/zikula/core.svg?branch=master)](https://travis-ci.org/zikula/core)
 [![StyleCI](https://styleci.io/repos/781544/shield?branch=master)](https://styleci.io/repos/781544)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487/mini.png)](https://insight.sensiolabs.com/projects/cc7028a5-80d5-4835-a4a4-0a179a690487)
 [![Code Climate](https://codeclimate.com/github/zikula/core/badges/gpa.svg)](https://codeclimate.com/github/zikula/core)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zikula/core/)
+=======
+[![Build Status](https://travis-ci.org/zikula/core.svg?branch=1.5)](https://travis-ci.org/zikula/core)
+[![StyleCI](https://styleci.io/repos/781544/shield)](https://styleci.io/repos/781544)
+>>>>>>> 1.5
 
 Zikula Core - Application Framework
 ===================================
