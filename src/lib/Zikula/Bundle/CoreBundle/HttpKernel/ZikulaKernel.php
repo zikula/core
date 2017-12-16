@@ -39,7 +39,7 @@ define('ACCESS_ADMIN', 800);
 
 abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 {
-    const VERSION = '1.5.4';
+    const VERSION = '1.5.5';
 
     const VERSION_SUB = 'Interlude';
 
