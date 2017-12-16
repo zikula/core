@@ -1,7 +1,8 @@
 CHANGELOG - ZIKULA 2.0.x
-------------------------
+========================
 
-* 2.0.4 (?)
+2.0.4 (2017-12-16)
+------------------
 
  - BC Breaks:
     - CSRF tokens are now different for HTTP and HTTPS (#3856). See http://symfony.com/blog/cve-2017-16653-csrf-protection-does-not-use-different-tokens-for-http-and-https for more information.
@@ -27,7 +28,8 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
-* 2.0.3 (2017-11-04)
+2.0.3 (2017-11-04)
+------------------
 
  - Fixes:
     - Fixed getAttributeValue error in case attribute does not exist.
@@ -55,7 +57,8 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/profile-module updated from 3.0.2 to 3.0.3
 
 
-* 2.0.2 (2017-10-03)
+2.0.2 (2017-10-03)
+------------------
 
  - Fixes:
     - Allow hooks to be managed in display (#3793).
@@ -71,7 +74,8 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/symfony updated from 3.3.8 to 3.3.9
 
 
-* 2.0.1 (2017-09-01)
+2.0.1 (2017-09-01)
+------------------
 
  - Fixes:
     - Corrected conditional statement for searchable modules (#3752).
@@ -103,7 +107,8 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/symfony updated from 3.3.5 to 3.3.8
 
 
-* 2.0.0 (2017-08-05)
+2.0.0 (2017-08-05)
+------------------
 
  - BC Breaks:
     - Removed all @deprecated items from Core-1.x.
