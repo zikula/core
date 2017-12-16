@@ -11,7 +11,7 @@ Zikula Installation Instructions
 <a name="zikula"></a>
 
 Zikula
----------
+------
 
 Zikula is an open source, open development application framework for dynamic websites. The core system includes a
 complete API on which third party developers can build. Zikula is built with other major open-source components like

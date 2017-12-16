@@ -1,24 +1,8 @@
 CHANGELOG - ZIKULA 1.4.x
-------------------------
+========================
 
-* 1.4.7 (?)
-
- - BC Breaks:
-    - ?
-
- - Deprecated:
-    - ?
-
- - Fixes:
-    - ?
-
- - Features:
-    - Improved Core upgrader to be more flexible (#2833)
-
- - Vendor updates:
-    - ?
-
-* 1.4.6 (2017-02-12)
+1.4.6 (2017-02-12)
+------------------
 
  - BC Breaks:
     - LocaleApi (introduced in 1.4.4) has been refactored and eliminates access to locale metadata.
@@ -78,7 +62,8 @@ CHANGELOG - ZIKULA 1.4.x
     - twitter/typeahead.js updated from 1.1.0 to 1.1.1
     - willdurand/js-translation-bundle updated from 2.6.2 to 2.6.3
 
-* 1.4.5 (2017-01-01)
+1.4.5 (2017-01-01)
+------------------
 
  - BC Breaks:
     - ?
@@ -131,7 +116,8 @@ CHANGELOG - ZIKULA 1.4.x
     - underscore.string updated from 2.3.0 to 3.3.4
     - willdurand/js-translation-bundle installed at 2.6.2
 
-* 1.4.4 (2016-12-08)
+1.4.4 (2016-12-08)
+------------------
 
  - BC Breaks:
     - Password reminder has been removed (#1682, #3172) in favour of easier lost password functionality (#1781, #3178).
@@ -207,7 +193,8 @@ CHANGELOG - ZIKULA 1.4.x
     - twig updated from 1.24.1 to 1.28.2
     - typeahead.js updated from 0.11.1 to 1.0.1
 
-* 1.4.3 (2016-09-02)
+1.4.3 (2016-09-02)
+------------------
 
  - BC Breaks:
     - Assetic Bundle has been removed (#2939).
@@ -274,7 +261,8 @@ CHANGELOG - ZIKULA 1.4.x
     - components/jquery-ui updated from 1.11.4 to 1.12.0.1
     - gedmo/doctrine-extensions updated from 2.4.13 to 2.4.22
 
-* 1.4.2 (2016-03-28)
+1.4.2 (2016-03-28)
+------------------
 
  - BC Breaks:
     - n/a
@@ -365,7 +353,8 @@ CHANGELOG - ZIKULA 1.4.x
     - Doctrine/Common updated to 2.5.3 and limited to 2.5.x for php compatibility
     - Sensio/Distribution-Bundle updated to 5.0.*
 
-* 1.4.1 (2015-11-23)
+1.4.1 (2015-11-23)
+------------------
 
  - BC Breaks:
      - Removed `Zikula\Core\Api\AbstractApi` that was introduced only in 1.4.0 (#2494)
@@ -424,7 +413,8 @@ CHANGELOG - ZIKULA 1.4.x
     - php-markdown updated to 1.5.x (#2617)
 
 
-* 1.4.0 (2015-07-20)
+1.4.0 (2015-07-20)
+------------------
 
  - BC Breaks:
     - Zikula 1.4.0 requires PHP >=5.4.1

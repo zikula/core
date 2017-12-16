@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/zikula/core.svg?branch=1.4)](https://travis-ci.org/zikula/core)
+[![Build Status](https://travis-ci.org/zikula/core.svg?branch=1.5)](https://travis-ci.org/zikula/core)
 [![StyleCI](https://styleci.io/repos/781544/shield)](https://styleci.io/repos/781544)
 
 Zikula Core - Application Framework

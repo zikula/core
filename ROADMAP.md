@@ -1,5 +1,5 @@
 Zikula Core Roadmap
--------------------
+===================
 
 Zikula manages its releases through a time-based model and follows the [Semantic Versioning](http://semver.org/) strategy. 
 A new Zikula patch version comes out about once per month. The Core-1.5 branch and the Core-2.0 branch

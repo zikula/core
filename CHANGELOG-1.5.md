@@ -1,7 +1,8 @@
 CHANGELOG - ZIKULA 1.5.x
-------------------------
+========================
 
-* 1.5.4 (?)
+1.5.4 (2017-12-16)
+------------------
 
  - BC Breaks:
     - CSRF tokens are now different for HTTP and HTTPS (#3856). See http://symfony.com/blog/cve-2017-16653-csrf-protection-does-not-use-different-tokens-for-http-and-https for more information.
@@ -30,7 +31,8 @@ CHANGELOG - ZIKULA 1.5.x
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
-* 1.5.3 (2017-11-04)
+1.5.3 (2017-11-04)
+------------------
 
  - Fixes:
     - Fixed getAttributeValue error in case attribute does not exist.
@@ -65,7 +67,8 @@ CHANGELOG - ZIKULA 1.5.x
     - zikula/profile-module updated from 3.0.2 to 3.0.3
 
 
-* 1.5.2 (2017-10-03)
+1.5.2 (2017-10-03)
+------------------
 
  - Fixes:
     - Allow hooks to be managed in display (#3793).
@@ -75,7 +78,8 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed issue with category retrieval by path (#3815).
 
 
-* 1.5.1 (2017-09-01)
+1.5.1 (2017-09-01)
+------------------
 
  - Fixes:
     - Corrected conditional statement for searchable modules (#3752).
@@ -105,7 +109,8 @@ CHANGELOG - ZIKULA 1.5.x
     - symfony/workflow updated from 3.3.5 to 3.3.8
 
 
-* 1.5.0 (2017-08-05)
+1.5.0 (2017-08-05)
+------------------
 
  - BC Breaks:
     - PHP minimum version raised to >=5.5.9.
@@ -170,6 +175,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Fix handling of 'anonymous' user in PermissionApi (#2800). 
 
  - Features:
+    - Improved Core upgrader to be more flexible (#2833).
     - Added Permission-based controls for MenuModule menu items (#3314).
     - SearchModule refactored to Core-2.0 standards.
     - SearchableInterface adds a method `amendForm()` to amend the search form instead of the old method `getOptions()`
