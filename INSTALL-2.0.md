@@ -33,8 +33,8 @@ If you installed from a `.zip` archive or uploaded the files via FTP, the permis
 prior to installing so that your webserver's user has write access:
 - `app/config`
 - `app/config/dynamic`
-- `bin/cache`
-- `bin/logs`
+- `var/cache`
+- `var/logs`
 - `web`
 
 You normally do so using `chmod 777 app/cache` and so on. (`.tgz` archives maintain
