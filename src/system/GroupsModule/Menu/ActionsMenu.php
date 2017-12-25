@@ -69,7 +69,7 @@ class ActionsMenu implements ContainerAwareInterface
         $gid = $group->getGid();
         $menu = $factory->createItem('userActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $requestAttributes = $this->container->get('request')->attributes->all();
+        $requestAttributes = $this->container->get('request_stack')->getCurrentRequest()->attributes->all();
         $currentUserId = $this->container->get('zikula_users_module.current_user')->get('uid');
         if (null !== $currentUserId) {
             $currentUser = $this->container->get('zikula_users_module.user_repository')->find($currentUserId);
