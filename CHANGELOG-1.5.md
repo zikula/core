@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 1.5.x
 ------------------
 
  - Fixes:
-    - Fix wrong request service call in GroupsModule menu #3874
+    - Fixed wrong request service call in GroupsModule menu (#3874).
 
  - Vendor updates:
     - ?
