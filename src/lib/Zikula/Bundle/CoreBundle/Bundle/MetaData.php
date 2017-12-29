@@ -178,11 +178,14 @@ class MetaData implements \ArrayAccess
 
     public function getUrl($translated = true)
     {
-        $this->confirmTranslator();
+        if ($translated) {
+            $this->confirmTranslator();
+            $url = $this->__(/** @Ignore */$this->url);
 
-        $url = $this->__(/** @Ignore */$this->url);
+            return empty($url) ? $this->url : $url;
+        }
 
-        return $translated ? ((empty($url)) ? $this->$url : $url) : $this->url;
+        return $this->url;
     }
 
     public function setUrl($url)
