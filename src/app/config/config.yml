@@ -134,8 +134,8 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
 
 stof_doctrine_extensions:
-    #default_locale: en_US
-    default_locale: "%locale%"
+    default_locale: en_US
+    #default_locale: "%locale%"
     persist_default_translation: false
     translation_fallback: true
     orm:
