@@ -112,20 +112,6 @@ abstract class AbstractBundle extends Bundle
         return strtolower($this->getNameType() . 's/' . substr($this->getName(), 0, -strlen($this->getNameType())));
     }
 
-    /**
-     * @return string
-     */
-    public function getBasePath()
-    {
-        if (null === $this->basePath) {
-            $ns = str_replace('\\', '/', $this->getNamespace());
-            $path = str_replace('\\', '/', $this->getPath());
-            $this->basePath = substr($path, 0, strrpos($path, $ns) - 1);
-        }
-
-        return $this->basePath;
-    }
-
     public function getNameType()
     {
         return 'Bundle';
