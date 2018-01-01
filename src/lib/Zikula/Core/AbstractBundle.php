@@ -139,6 +139,10 @@ abstract class AbstractBundle extends Bundle
 
     /**
      * @return string
+     * @deprecated removed at Core-2.0
+     * @see self::getPath()
+     *
+     * @internal this method is only useful with psr-0 type extensions. Usage is not recommended.
      */
     public function getBasePath()
     {

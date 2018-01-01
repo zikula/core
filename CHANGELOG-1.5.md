@@ -4,6 +4,9 @@ CHANGELOG - ZIKULA 1.5.x
 1.5.5 (unreleased)
 ------------------
 
+ - Deprecated
+    - \Zikula\Core\AbstractBundle::getBasePath() is deprecated (#3862).
+
  - Fixes:
     - Fixed wrong request service call in GroupsModule menu (#3874).
     - Fixed fetching module url from metadata when untranslated (#3876).
