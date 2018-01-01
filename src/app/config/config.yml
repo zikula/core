@@ -119,6 +119,9 @@ doctrine_cache:
 
 stof_doctrine_extensions:
     default_locale: en_US
+    #default_locale: "%locale%"
+    persist_default_translation: false
+    translation_fallback: true
     orm:
         default:
             # if removed these values default to false

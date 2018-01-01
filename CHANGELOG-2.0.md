@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 2.0.x
  - Fixes:
     - Fixed wrong request service call in GroupsModule menu (#3874).
     - Fixed fetching module url from metadata when untranslated (#3876).
+    - Activated translatable fallback for proper handling of content with missing translations.
 
  - Vendor updates:
     - ?
