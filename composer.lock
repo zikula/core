@@ -464,16 +464,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b"
+                "reference": "049797d727261bf27f2690430d935067710049c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
-                "reference": "9ce17fb70e9a38dd8acff0636a29f5cf4d575c1b",
+                "url": "https://api.github.com/repos/composer/installers/zipball/049797d727261bf27f2690430d935067710049c2",
+                "reference": "049797d727261bf27f2690430d935067710049c2",
                 "shasum": ""
             },
             "require": {
@@ -485,7 +485,7 @@
             },
             "require-dev": {
                 "composer/composer": "1.0.*@dev",
-                "phpunit/phpunit": "4.1.*"
+                "phpunit/phpunit": "^4.8.36"
             },
             "type": "composer-plugin",
             "extra": {
@@ -556,15 +556,18 @@
                 "lavalite",
                 "lithium",
                 "magento",
+                "majima",
                 "mako",
                 "mediawiki",
                 "modulework",
+                "modx",
                 "moodle",
                 "osclass",
                 "phpbb",
                 "piwik",
                 "ppi",
                 "puppet",
+                "pxcms",
                 "reindex",
                 "roundcube",
                 "shopware",
@@ -577,7 +580,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-08-09T07:53:48+00:00"
+            "time": "2017-12-29T09:13:20+00:00"
         },
         {
             "name": "composer/semver",
@@ -1355,16 +1358,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.5.13",
+            "version": "v2.5.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "93103f44a3e36e7b48165b6e6b736833f33b18ef"
+                "reference": "810a7baf81462a5ddf10e8baa8cb94b6eec02754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/93103f44a3e36e7b48165b6e6b736833f33b18ef",
-                "reference": "93103f44a3e36e7b48165b6e6b736833f33b18ef",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/810a7baf81462a5ddf10e8baa8cb94b6eec02754",
+                "reference": "810a7baf81462a5ddf10e8baa8cb94b6eec02754",
                 "shasum": ""
             },
             "require": {
@@ -1427,7 +1430,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2017-11-27T23:25:55+00:00"
+            "time": "2017-12-17T02:57:51+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -1490,12 +1493,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "5988f2958346b0f8f3acee0de36ff8954594c64b"
+                "reference": "64baeda65c7a54503d135588b29b27d8f3c2ee06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/5988f2958346b0f8f3acee0de36ff8954594c64b",
-                "reference": "5988f2958346b0f8f3acee0de36ff8954594c64b",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/64baeda65c7a54503d135588b29b27d8f3c2ee06",
+                "reference": "64baeda65c7a54503d135588b29b27d8f3c2ee06",
                 "shasum": ""
             },
             "require": {
@@ -1529,7 +1532,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-10-08T23:52:05+00:00"
+            "time": "2017-12-23T03:03:02+00:00"
         },
         {
             "name": "fig/link-util",
@@ -1646,16 +1649,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.31",
+            "version": "v2.4.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "79cd1d49898a21ede9a5dfad41c021abd9a14339"
+                "reference": "a268224b312353be62d72e6390a286f4166a7542"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/79cd1d49898a21ede9a5dfad41c021abd9a14339",
-                "reference": "79cd1d49898a21ede9a5dfad41c021abd9a14339",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/a268224b312353be62d72e6390a286f4166a7542",
+                "reference": "a268224b312353be62d72e6390a286f4166a7542",
                 "shasum": ""
             },
             "require": {
@@ -1668,7 +1671,7 @@
                 "doctrine/mongodb-odm": ">=1.0.2",
                 "doctrine/orm": ">=2.5.0",
                 "phpunit/phpunit": "*",
-                "symfony/yaml": "~2.6|~3.0"
+                "symfony/yaml": "~2.6|~3.0|~4.0"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
@@ -1720,7 +1723,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-10-12T06:26:21+00:00"
+            "time": "2017-12-28T14:36:10+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4890,16 +4893,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.4",
+            "version": "3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16"
+                "reference": "0097fab41981daf36c234b73b683166daabd5f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
-                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/0097fab41981daf36c234b73b683166daabd5f28",
+                "reference": "0097fab41981daf36c234b73b683166daabd5f28",
                 "shasum": ""
             },
             "require": {
@@ -4943,7 +4946,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2017-04-06T14:23:09+00:00"
+            "time": "2018-01-02T08:13:23+00:00"
         },
         {
             "name": "wikimedia/composer-merge-plugin",
