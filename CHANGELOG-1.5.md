@@ -13,7 +13,14 @@ CHANGELOG - ZIKULA 1.5.x
     - Activated translatable fallback for proper handling of content with missing translations.
 
  - Vendor updates:
-    - ?
+    - composer/installers updated from 1.4.0 to 1.5.0
+    - doctrine/orm updated from 2.5.13 to 2.5.14
+    - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.32
+    - sensio/framework-extra-bundle updated from 3.0.28 to 3.0.29
+    - symfony/security-acl updated from 3.0.0 to 3.0.1
+    - symfony/symfony updated from 2.8.32 to 2.8.33
+    - symfony/workflow updated from 3.4.1 to 3.4.2
+    - vakata/jstree updated from 3.3.4 to 3.3.5
 
 1.5.4 (2017-12-16)
 ------------------
