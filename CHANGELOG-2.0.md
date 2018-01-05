@@ -13,7 +13,10 @@ CHANGELOG - ZIKULA 2.0.x
     - Activated translatable fallback for proper handling of content with missing translations.
 
  - Vendor updates:
-    - ?
+    - composer/installers updated from 1.4.0 to 1.5.0
+    - doctrine/orm updated from 2.5.13 to 2.5.14
+    - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.32
+    - vakata/jstree updated from 3.3.4 to 3.3.5
 
 2.0.4 (2017-12-16)
 ------------------
