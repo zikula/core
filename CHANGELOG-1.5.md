@@ -4,7 +4,10 @@ CHANGELOG - ZIKULA 1.5.x
 1.5.5 (unreleased)
 ------------------
 
- - Deprecated
+ - BC Breaks:
+    - Removed matthiasnoback/symfony-service-definition-validator.
+
+ - Deprecated:
     - \Zikula\Core\AbstractBundle::getBasePath() is deprecated (#3862).
 
  - Fixes:
@@ -19,7 +22,7 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/framework-extra-bundle updated from 3.0.28 to 3.0.29
     - symfony/security-acl updated from 3.0.0 to 3.0.1
     - symfony/symfony updated from 2.8.32 to 2.8.33
-    - symfony/workflow updated from 3.4.1 to 3.4.2
+    - symfony/workflow updated from 3.4.1 to 3.4.3
     - vakata/jstree updated from 3.3.4 to 3.3.5
 
 1.5.4 (2017-12-16)
