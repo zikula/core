@@ -15,9 +15,11 @@ CHANGELOG - ZIKULA 2.0.x
  - Vendor updates:
     - composer/installers updated from 1.4.0 to 1.5.0
     - doctrine/orm updated from 2.5.13 to 2.5.14
-    - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.32
+    - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.33
+    - sensiolabs/security-checker updated from 4.1.6 to 4.1.7
     - symfony/symfony updated from 3.4.2 to 3.4.3
     - vakata/jstree updated from 3.3.4 to 3.3.5
+    - zikula/andreas08-theme updated from 3.0.1 to 3.0.2
 
 2.0.4 (2017-12-16)
 ------------------
