@@ -49,7 +49,7 @@ class AjaxUpgradeController extends AbstractController
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
         $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        $this->currentVersion = (version_compare($currentVersion, '1.4.0', '<')) ? '1.4.0' : $currentVersion;
+        $this->currentVersion = (version_compare($currentVersion, '1.4.0', '<')) ? '1.3.99' : $currentVersion;
     }
 
     public function ajaxAction(Request $request)
@@ -168,6 +168,7 @@ class AjaxUpgradeController extends AbstractController
          * through each case until the end.
          */
         switch ($this->currentVersion) {
+            case '1.3.99':
             case '1.4.0':
                 // perform the following SQL
                 //ALTER TABLE categories_category ADD CONSTRAINT FK_D0B2B0F88304AF18 FOREIGN KEY (cr_uid) REFERENCES users (uid);
