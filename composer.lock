@@ -1493,12 +1493,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "64baeda65c7a54503d135588b29b27d8f3c2ee06"
+                "reference": "6d6d88512a8146939a9161bb03e95e3e97840439"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/64baeda65c7a54503d135588b29b27d8f3c2ee06",
-                "reference": "64baeda65c7a54503d135588b29b27d8f3c2ee06",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/6d6d88512a8146939a9161bb03e95e3e97840439",
+                "reference": "6d6d88512a8146939a9161bb03e95e3e97840439",
                 "shasum": ""
             },
             "require": {
@@ -1532,7 +1532,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2017-12-23T03:03:02+00:00"
+            "time": "2017-12-30T05:23:44+00:00"
         },
         {
             "name": "fig/link-util",
@@ -1649,16 +1649,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.32",
+            "version": "v2.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "a268224b312353be62d72e6390a286f4166a7542"
+                "reference": "d5fdc573b6a2ecfa29c070ecb3db8397ac55ed78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/a268224b312353be62d72e6390a286f4166a7542",
-                "reference": "a268224b312353be62d72e6390a286f4166a7542",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/d5fdc573b6a2ecfa29c070ecb3db8397ac55ed78",
+                "reference": "d5fdc573b6a2ecfa29c070ecb3db8397ac55ed78",
                 "shasum": ""
             },
             "require": {
@@ -1723,7 +1723,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-12-28T14:36:10+00:00"
+            "time": "2018-01-08T14:13:45+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3883,12 +3883,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "87b74dc0505a4452bbde092201e313cb9a4f704d"
+                "reference": "072c00c52b947e88a1e619e9ff426cee6c8c482b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/87b74dc0505a4452bbde092201e313cb9a4f704d",
-                "reference": "87b74dc0505a4452bbde092201e313cb9a4f704d",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/072c00c52b947e88a1e619e9ff426cee6c8c482b",
+                "reference": "072c00c52b947e88a1e619e9ff426cee6c8c482b",
                 "shasum": ""
             },
             "require": {
@@ -3944,7 +3944,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-12-06T20:00:55+00:00"
+            "time": "2018-01-12T13:08:16+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -4002,16 +4002,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.1.6",
+            "version": "v4.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "387b6a3b723ba35588b33d5f8d14e28ed608bd30"
+                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/387b6a3b723ba35588b33d5f8d14e28ed608bd30",
-                "reference": "387b6a3b723ba35588b33d5f8d14e28ed608bd30",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
+                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
                 "shasum": ""
             },
             "require": {
@@ -4043,7 +4043,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-10-29T18:48:08+00:00"
+            "time": "2018-01-11T05:54:03+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -5101,16 +5101,16 @@
         },
         {
             "name": "zikula/andreas08-theme",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "407bd8ba2d51c7a8404cda75c9632173c4b28807"
+                "reference": "65ca4c08e68bdfc9477e45ece215f71e1513d7bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/407bd8ba2d51c7a8404cda75c9632173c4b28807",
-                "reference": "407bd8ba2d51c7a8404cda75c9632173c4b28807",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/65ca4c08e68bdfc9477e45ece215f71e1513d7bc",
+                "reference": "65ca4c08e68bdfc9477e45ece215f71e1513d7bc",
                 "shasum": ""
             },
             "require": {
@@ -5144,10 +5144,10 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.0.1",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.0.2",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2017-07-07T20:05:50+00:00"
+            "time": "2018-01-12T17:04:22+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
