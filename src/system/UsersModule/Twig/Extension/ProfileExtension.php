@@ -155,6 +155,10 @@ class ProfileExtension extends \Twig_Extension
         }
 
         $userDisplayName = $this->profileModuleCollector->getSelected()->getDisplayName($user->getUid());
+        if (!$userDisplayName) {
+            $userDisplayName = $user->getUname();
+        }
+
         $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
 
         if (!empty($imagePath)) {

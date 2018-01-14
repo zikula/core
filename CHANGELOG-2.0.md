@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed wrong request service call in GroupsModule menu (#3874).
     - Fixed fetching module url from metadata when untranslated (#3876).
     - Activated translatable fallback for proper handling of content with missing translations.
+    - Added fallback for missing user real names.
 
  - Vendor updates:
     - composer/installers updated from 1.4.0 to 1.5.0
