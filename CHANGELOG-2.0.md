@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed fetching module url from metadata when untranslated (#3876).
     - Activated translatable fallback for proper handling of content with missing translations.
     - Added fallback for missing user real names.
+    - Avoid exposure of server pathes in JS assets merger (#3883).
 
  - Vendor updates:
     - composer/installers updated from 1.4.0 to 1.5.0
