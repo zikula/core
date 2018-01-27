@@ -105,8 +105,11 @@ class Merger implements MergerInterface
         $data = $cacheService->fetch($key);
         if (false === $data) {
             $data = [];
-            foreach ($cachedFiles as $file) {
+            foreach ($cachedFiles as $k => $file) {
                 $this->readFile($data, $file, $type);
+                // avoid exposure of absolute server path
+                $pathParts = explode($this->rootDir, $file);
+                $cachedFiles[$k] = end($pathParts);
             }
             $now = new \DateTime();
             array_unshift($data, sprintf("/* --- Combined file written: %s */\n\n", $now->format('c')));
@@ -142,7 +145,10 @@ class Merger implements MergerInterface
             return;
         }
 
-        $contents[] = "/* --- Source file: {$file} */\n\n";
+        // avoid exposure of absolute server path
+        $pathParts = explode($this->rootDir, $file);
+        $relativePath = end($pathParts);
+        $contents[] = "/* --- Source file: {$relativePath} */\n\n";
         $inMultilineComment = false;
         $importsAllowd = true;
         $wasCommentHack = false;
@@ -264,10 +270,10 @@ class Merger implements MergerInterface
     /**
      * Fix paths in CSS files.
      * @param string $line CSS file line
-     * @param string $relativeFilePath relative path to original file
+     * @param array $filePathSegments segments of relative path to original file
      * @return string
      */
-    private function cssFixPath($line, $relativeFilePath)
+    private function cssFixPath($line, $filePathSegments = [])
     {
         $regexpurl = '/url\([\'"]?([\.\/]*)(.*?)[\'"]?\)/i';
         if (false === strpos($line, 'url')) {
@@ -276,11 +282,10 @@ class Merger implements MergerInterface
 
         preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
-            if ((0 !== strpos($match[1], '/')) && ('http://' != substr($match[2], 0, 7)) && ('https://' != substr($match[2], 0, 8))) {
+            if (0 !== strpos($match[1], '/') && 'http://' != substr($match[2], 0, 7) && 'https://' != substr($match[2], 0, 8)) {
                 $depth = substr_count($match[1], '../') * -1;
-                $path = $depth < 0 ? array_slice($relativeFilePath, 0, $depth) : $relativeFilePath;
-                $path = implode('/', $path);
-                $path = !empty($path) ? $path . '/' : '/';
+                $pathSegments = $depth < 0 ? array_slice($filePathSegments, 0, $depth) : $filePathSegments;
+                $path = implode('/', $pathSegments) . '/';
                 $line = str_replace($match[0], "url('{$path}{$match[2]}')", $line);
             }
         }
