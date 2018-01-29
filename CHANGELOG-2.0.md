@@ -18,8 +18,10 @@ CHANGELOG - ZIKULA 2.0.x
     - composer/installers updated from 1.4.0 to 1.5.0
     - doctrine/orm updated from 2.5.13 to 2.5.14
     - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.33
+    - jquery.mmenu updated from 6.1.8 to 7.0.1
     - sensiolabs/security-checker updated from 4.1.6 to 4.1.7
-    - symfony/symfony updated from 3.4.2 to 3.4.3
+    - swiftmailer/swiftmailer updated from v5.4.8 to v5.4.9
+    - symfony/symfony updated from 3.4.2 to 3.4.4
     - vakata/jstree updated from 3.3.4 to 3.3.5
     - zikula/andreas08-theme updated from 3.0.1 to 3.0.2
 
