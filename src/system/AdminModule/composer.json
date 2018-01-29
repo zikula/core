@@ -15,7 +15,7 @@
     },
     "require": {
         "php": ">=5.5.9",
-        "jquery.mmenu": "6.*"
+        "jquery.mmenu": "7.*"
     },
     "repositories": [
         {
