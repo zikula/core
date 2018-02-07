@@ -79,7 +79,6 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
     } elseif (isset($_attrs['value'])) {
         /* found a scalar in the value parameter */
         $_rval = $_attrs['value'];
-
     } elseif (isset($_attrs['values'])) {
         /* check for a list of array-values */
         $_delim = (isset($_attrs['delim'])) ? $_attrs['delim'] : "','";
