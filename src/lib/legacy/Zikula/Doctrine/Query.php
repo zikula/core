@@ -56,13 +56,12 @@ class Zikula_Doctrine_Query extends Doctrine_Query
                     . ' does not have the Zikula_Doctrine_Template_Categorisable behavoir');
         }
 
-        // array of category ids
         if (isset($categories[0])) {
+            // array of category ids
             $inDQL = array_fill(0, count($categories), '?');
             $this->addWhere($rootAlias . '.Categories.category_id in (' . implode(',', $inDQL) . ')', $categories);
-
-            // property => category ids array
         } else {
+            // property => category ids array
             if ($joinWithAnd) {
                 $idField = $this->getRoot()->getIdentifierColumnNames();
                 $idField = $idField[0];

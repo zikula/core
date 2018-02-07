@@ -642,14 +642,16 @@ class System
                     // if this parameter is already in the query string...
                     if (preg_match("/(&|\?)($k=[^&]*)/", $request, $matches)) {
                         $find = $matches[2];
-                        // ... replace it in-line if it's not empty
                         if (!empty($v)) {
+                            // ... replace it in-line if it's not empty
                             $request = preg_replace("/(&|\?)$find/", "$1$k=$v", $request);
-                            // ... or remove it otherwise
-                        } elseif ('?' == $matches[1]) {
-                            $request = preg_replace("/\?$find(&|)/", '?', $request);
                         } else {
-                            $request = preg_replace("/&$find/", '', $request);
+                            // ... or remove it otherwise
+                            if ('?' == $matches[1]) {
+                                $request = preg_replace("/\?$find(&|)/", '?', $request);
+                            } else {
+                                $request = preg_replace("/&$find/", '', $request);
+                            }
                         }
                     } elseif (!empty($v)) {
                         $request .= "$k=$v&";

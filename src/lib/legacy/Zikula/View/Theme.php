@@ -742,19 +742,16 @@ class Zikula_View_Theme extends Zikula_View
                     $file = $pageconfigurations['*home']['file'];
                 }
                 $file = $pageconfigurations['*home']['file'];
-
-                // identify a type match
             } elseif (isset($pageconfigurations['*'.$this->type])) {
+                // identified a type match
                 $file = $pageconfigurations['*'.$this->type]['file'];
-
-                // identify an admin-like type
             } elseif (isset($pageconfigurations['*admin'])
                 && ((0 === strpos($this->type, 'admin'))
                 || (isset($methodAnnotationValue) && ('admin' == $methodAnnotationValue)))) { // Core-2.0 FC
+                // identified an admin-like type
                 $file = $pageconfigurations['*admin']['file'];
-
-                // search for arguments match
             } else {
+                // search for arguments match
                 $customargs = $this->toplevelmodule . '/' . $this->type . '/' . $this->func . $this->_get_customargs();
                 // find any page configurations that match in a sub string comparison
                 $match = '';

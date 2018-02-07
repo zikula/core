@@ -704,10 +704,12 @@ class DBUtil
         if (is_int($value)) {
             // No need to DataUtil::formatForStore when casted to int
             return (int)$value;
+        }
+        if (false === $value) {
             // Avoid SQL strict problems where false would be stored as ''
-        } elseif (false === $value) {
             return 0;
-        } elseif (true === $value) {
+        }
+        if (true === $value) {
             return 1;
         }
 
@@ -2078,16 +2080,15 @@ class DBUtil
                 $prefix = "table$n.";
             }
 
-            // this allows to have an array of categories IDs
             if (is_array($category)) {
+                // this allows to have an array of categories IDs
                 $wherecat = [];
                 foreach ($category as $cat) {
                     $wherecat[] = "{$prefix}category_id='" . DataUtil::formatForStore($cat) . "'";
                 }
                 $wherecat = '(' . implode(' OR ', $wherecat) . ')';
-
-                // if there's only one category ID
             } else {
+                // if there's only one category ID
                 $wherecat = "{$prefix}category_id='" . DataUtil::formatForStore($category) . "'";
             }
 
@@ -3872,8 +3873,8 @@ class DBUtil
                     // $flds[] = ['name', 10];
                     // $idxoptarray['UNIQUE'] = true;
                     // self::createIndex($idxname, $table, $flds, $idxoptarray);
-                    $indexFields[$column[$fld]] = [];
                     // TODO - implement what is described in the above comment!
+                    $indexFields[$column[$fld]] = [];
                 } else {
                     $indexFields[$column[$fld]] = [];
                 }

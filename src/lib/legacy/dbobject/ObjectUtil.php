@@ -1386,15 +1386,15 @@ class ObjectUtil
             return false;
         }
 
-        // if the function was called to process the object categories
         if (isset($obj['__CATEGORIES__'])) {
+            // if the function was called to process the object categories
             $ak = array_keys($obj['__CATEGORIES__']);
             foreach ($ak as $prop) {
                 CategoryUtil::buildRelativePathsForCategory($rootCats[$prop], $obj['__CATEGORIES__'][$prop], $includeRoot);
             }
             self::makeBC($obj['__CATEGORIES__']);
-            // else, if the function was called to process the categories array directly
         } else {
+            // else, if the function was called to process the categories array directly
             $ak = array_keys($obj);
             foreach ($ak as $prop) {
                 CategoryUtil::buildRelativePathsForCategory($rootCats[$prop], $obj[$prop], $includeRoot);
