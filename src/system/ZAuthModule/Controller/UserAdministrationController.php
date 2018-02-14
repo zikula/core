@@ -134,7 +134,10 @@ class UserAdministrationController extends AbstractController
 
         $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminCreatedUserType',
-            $mapping, ['translator' => $this->get('translator.default')]
+            $mapping, [
+                'translator' => $this->get('translator.default'),
+                'minimumPasswordLength' => $this->get('zikula_extensions_module.api.variable')->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+            ]
         );
         $formEvent = new UserFormAwareEvent($form);
         $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
@@ -222,7 +225,10 @@ class UserAdministrationController extends AbstractController
         $dispatcher = $this->get('event_dispatcher');
 
         $form = $this->createForm('Zikula\ZAuthModule\Form\Type\AdminModifyUserType',
-            $mapping, ['translator' => $this->get('translator.default')]
+            $mapping, [
+                'translator' => $this->get('translator.default'),
+                'minimumPasswordLength' => $this->get('zikula_extensions_module.api.variable')->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
+            ]
         );
         $originalMapping = clone $mapping;
         $formEvent = new UserFormAwareEvent($form);
