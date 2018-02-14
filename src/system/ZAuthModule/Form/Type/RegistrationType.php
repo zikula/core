@@ -77,7 +77,7 @@ class RegistrationType extends AbstractType
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => $this->translator->__('Password')],
+                'first_options' => ['label' => $this->translator->__('Password'), 'help' => $this->translator->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])],
                 'second_options' => ['label' => $this->translator->__('Repeat Password')],
                 'invalid_message' => $this->translator->__('The passwords must match!'),
                 'constraints' => [
@@ -125,6 +125,7 @@ class RegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'minimumPasswordLength' => $this->zAuthModVars[ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH],
             'antiSpamQuestion' => $this->zAuthModVars[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]
         ]);
     }
