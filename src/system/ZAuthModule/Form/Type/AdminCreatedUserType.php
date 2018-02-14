@@ -68,7 +68,8 @@ class AdminCreatedUserType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => [
                     'label' => $options['translator']->__('Create new password'),
-                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
+                    'help' => $options['translator']->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
                     'label' => $options['translator']->__('Repeat new password'),
@@ -133,6 +134,7 @@ class AdminCreatedUserType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
+            'minimumPasswordLength' => 5,
             'constraints' => [
                 new ValidUserFields()
             ]
