@@ -13,6 +13,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Activated translatable fallback for proper handling of content with missing translations.
     - Added fallback for missing user real names.
     - Avoid exposure of server pathes in JS assets merger (#3883).
+    - Fixed missing routes table in CLI upgrade from 1.3.x (#3887, #3888).
 
  - Vendor updates:
     - composer/installers updated from 1.4.0 to 1.5.0
