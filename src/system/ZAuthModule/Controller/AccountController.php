@@ -373,7 +373,8 @@ class AccountController extends AbstractController
             'login' => $login,
             'authenticationMethod' => $authenticationMethod
         ], [
-            'translator' => $this->get('translator.default')
+            'translator' => $this->get('translator.default'),
+            'minimumPasswordLength' => $this->get('zikula_extensions_module.api.variable')->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

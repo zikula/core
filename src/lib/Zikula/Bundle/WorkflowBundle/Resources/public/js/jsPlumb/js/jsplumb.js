@@ -1303,20 +1303,20 @@
 
     var _vanquish = function(list, item) {
         var idx = list.indexOf(item);
-        if (idx != -1) list.splice(idx, 1);
+        if (idx !== -1) list.splice(idx, 1);
     };
 
     var _difference = function(l1, l2) {
         var d = [];
         for (var i = 0; i < l1.length; i++) {
-            if (l2.indexOf(l1[i]) == -1)
+            if (l2.indexOf(l1[i]) === -1)
                 d.push(l1[i]);
         }
         return d;
     };
 
     var _isString = function(f) {
-        return f == null ? false : (typeof f === "string" || f.constructor == String);
+        return f == null ? false : (typeof f === "string" || f.constructor === String);
     };
 
     var getOffsetRect = function (elem) {
@@ -1349,7 +1349,7 @@
 
     var iev = (function() {
             var rv = -1;
-            if (navigator.appName == 'Microsoft Internet Explorer') {
+            if (navigator.appName === 'Microsoft Internet Explorer') {
                 var ua = navigator.userAgent,
                     re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
                 if (re.exec(ua) != null)
@@ -1360,7 +1360,7 @@
         DEFAULT_GRID_X = 10,
         DEFAULT_GRID_Y = 10,
         isIELT9 = iev > -1 && iev < 9,
-        isIE9 = iev == 9,
+        isIE9 = iev === 9,
         _pl = function(e) {
             if (isIELT9) {
                 return [ e.clientX + document.documentElement.scrollLeft, e.clientY + document.documentElement.scrollTop ];
@@ -1387,7 +1387,8 @@
             active : "katavorio-drag-active",   // droppables that are targets of a currently dragged element
             hover : "katavorio-drag-hover",     // droppables over which a matching drag element is hovering
             noSelect : "katavorio-drag-no-select", // added to the body to provide a hook to suppress text selection
-            ghostProxy:"katavorio-ghost-proxy"  // added to a ghost proxy element in use when a drag has exited the bounds of its parent.
+            ghostProxy:"katavorio-ghost-proxy",  // added to a ghost proxy element in use when a drag has exited the bounds of its parent.
+            clonedDrag:"katavorio-clone-drag"     // added to a node that is a clone of an element created at the start of a drag
         },
         _defaultScope = "katavorio-drag-scope",
         _events = [ "stop", "start", "drag", "drop", "over", "out", "beforeStart" ],
@@ -1637,6 +1638,7 @@
                         var b = getOffsetRect(this.el);
                         dragEl.style.left = b.left + "px";
                         dragEl.style.top = b.top + "px";
+                        dragEl.className = _classes.clonedDrag;
                         document.body.appendChild(dragEl);
                     }
                     consumeStartEvent && _consume(e);
@@ -1845,7 +1847,7 @@
                 cPos = constrain(desiredLoc, dragEl);
 
             if (useGhostProxy(this.el)) {
-                if (desiredLoc[0] != cPos[0] || desiredLoc[1] != cPos[1]) {
+                if (desiredLoc[0] !== cPos[0] || desiredLoc[1] !== cPos[1]) {
                     if (!isConstrained) {
                         var gp = ghostProxy(this.el);
                         params.addClass(gp, _classes.ghostProxy);
@@ -1873,7 +1875,7 @@
             this.params.setPosition(dragEl, cPos);
             for (var i = 0; i < matchingDroppables.length; i++) {
                 var r2 = { x:matchingDroppables[i].pagePosition[0], y:matchingDroppables[i].pagePosition[1], w:matchingDroppables[i].size[0], h:matchingDroppables[i].size[1]};
-                if (this.params.intersects(pageRect, r2) && (_multipleDrop || focusDropElement == null || focusDropElement == matchingDroppables[i].el) && matchingDroppables[i].canDrop(this)) {
+                if (this.params.intersects(pageRect, r2) && (_multipleDrop || focusDropElement == null || focusDropElement === matchingDroppables[i].el) && matchingDroppables[i].canDrop(this)) {
                     if (!focusDropElement) focusDropElement = matchingDroppables[i].el;
                     intersectingDroppables.push(matchingDroppables[i]);
                     matchingDroppables[i].setHover(this, true, e);
@@ -1940,7 +1942,7 @@
 
         this.setHover = function(drag, val, e) {
             // if turning off hover but this was not the drag that caused the hover, ignore.
-            if (val || this.el._katavorioDragHover == null || this.el._katavorioDragHover == drag.el._katavorio) {
+            if (val || this.el._katavorioDragHover == null || this.el._katavorioDragHover === drag.el._katavorio) {
                 this.params[val ? "addClass" : "removeClass"](this.el, this._hoverClass);
                 //this.el._katavorioDragHover = val ? drag.el._katavorio : null;
                 this.el._katavorioDragHover = val ? drag.el._katavorio : null;
@@ -1966,7 +1968,7 @@
 
     var _uuid = function() {
         return ('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         }));
     };
@@ -1977,7 +1979,7 @@
 
     var _gel = function(el) {
         if (el == null) return null;
-        el = (typeof el === "string" || el.constructor == String)  ? document.getElementById(el) : el;
+        el = (typeof el === "string" || el.constructor === String)  ? document.getElementById(el) : el;
         if (el == null) return null;
         el._katavorio = el._katavorio || _uuid();
         return el;
@@ -2005,7 +2007,7 @@
                     for(var i = 0; i < _obj.scopes.length; i++) {
                         if (map[_obj.scopes[i]]) {
                             var idx = katavorioParams.indexOf(map[_obj.scopes[i]], _obj);
-                            if (idx != -1) {
+                            if (idx !== -1) {
                                 map[_obj.scopes[i]].splice(idx, 1);
                                 c++;
                             }
@@ -2352,7 +2354,7 @@
                 posses.push(_processOneSpec(el, arguments[i]));
             }
 
-            return posses.length == 1 ? posses[0] : posses;
+            return posses.length === 1 ? posses[0] : posses;
         };
 
         /**
@@ -2386,7 +2388,7 @@
                 }
             }.bind(this));
 
-            return posses.length == 1 ? posses[0] : posses;
+            return posses.length === 1 ? posses[0] : posses;
         };
 
         /**
@@ -2449,7 +2451,7 @@
 
     };
 
-    root.Katavorio.version = "0.19.3";
+    root.Katavorio.version = "0.23.0";
 
     if (typeof exports !== "undefined") {
         exports.Katavorio = root.Katavorio;
@@ -2458,18 +2460,12 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb
- *
- * Title:jsPlumb 2.3.0
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains utility functions that run in both browsers and headless.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
- * http://jsplumbtoolkit.com
- * http://github.com/sporritt/jsplumb
+ * https://jsplumbtoolkit.com
+ * https://github.com/jsplumb/jsplumb
  *
  * Dual licensed under the MIT and GPL2 licenses.
  */
@@ -2989,13 +2985,9 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains utility functions that run in browsers only.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -3058,27 +3050,20 @@
  }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb
- * 
- * Title:jsPlumb 2.3.0
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the core code.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
- * 
- * http://jsplumbtoolkit.com
- * http://github.com/sporritt/jsplumb
- * 
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
+ *
+ * https://jsplumbtoolkit.com
+ * https://github.com/jsplumb/jsplumb
+ *
  * Dual licensed under the MIT and GPL2 licenses.
  */
-(function () {
+;(function () {
 
     "use strict";
 
     var root = this;
-    var connectorTypes = [], rendererTypes;
 
     var _ju = root.jsPlumbUtil,
 
@@ -3530,7 +3515,7 @@
 
     var jsPlumbInstance = root.jsPlumbInstance = function (_defaults) {
 
-        this.version = "2.5.9";
+        this.version = "2.6.5";
 
         if (_defaults) {
             jsPlumb.extend(this.Defaults, _defaults);
@@ -4018,6 +4003,14 @@
                                 }
                             } else {
                                 newEndpoint.setDeleteOnEmpty(true);
+                            }
+
+                            //
+                            // copy in connector overlays if present on the source definition.
+                            //
+                            if (idx === 0 && tep.def.connectorOverlays) {
+                                _p.overlays = _p.overlays || [];
+                                Array.prototype.push.apply(_p.overlays, tep.def.connectorOverlays);
                             }
                         }
                     }
@@ -5048,10 +5041,10 @@
         // exposed for other objects to use to get a unique id.
         this.idstamp = _idstamp;
 
-        this.connectorsInitialized = false;
-        this.registerConnectorType = function (connector, name) {
-            connectorTypes.push([connector, name]);
-        };
+        // this.connectorsInitialized = false;
+        // this.registerConnectorType = function (connector, name) {
+        //     connectorTypes.push([connector, name]);
+        // };
 
         // ensure that, if the current container exists, it is a DOM element and not a selector.
         // if it does not exist and `candidate` is supplied, the offset parent of that element will be set as the Container.
@@ -5154,26 +5147,6 @@
          * mouse listeners etc; can't do that until the library has provided a bind method)
          */
         this.init = function () {
-            rendererTypes = root.jsPlumb.getRenderModes();
-
-            var _oneType = function (renderer, name, fn) {
-                root.jsPlumb.Connectors[renderer][name] = function () {
-                    fn.apply(this, arguments);
-                    root.jsPlumb.ConnectorRenderers[renderer].apply(this, arguments);
-                };
-                _ju.extend(root.jsPlumb.Connectors[renderer][name], [ fn, root.jsPlumb.ConnectorRenderers[renderer]]);
-            };
-
-            if (!root.jsPlumb.connectorsInitialized) {
-                for (var i = 0; i < connectorTypes.length; i++) {
-                    for (var j = 0; j < rendererTypes.length; j++) {
-                        _oneType(rendererTypes[j], connectorTypes[i][1], connectorTypes[i][0]);
-                    }
-
-                }
-                root.jsPlumb.connectorsInitialized = true;
-            }
-
             if (!initialized) {
                 _getContainerFromDefaults();
                 _currentInstance.anchorManager = new root.jsPlumb.AnchorManager({jsPlumbInstance: _currentInstance});
@@ -6416,13 +6389,9 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains the base functionality for DOM type adapters.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -7017,13 +6986,7 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
- * This file contains code for components that support overlays.
- *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -7309,20 +7272,16 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the code for Endpoints.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  * 
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
  * 
  * Dual licensed under the MIT and GPL2 licenses.
  */
-(function () {
+;(function () {
 
     "use strict";
     var root = this, _jp = root.jsPlumb, _ju = root.jsPlumbUtil;
@@ -7709,13 +7668,7 @@
          * returns a connection from the pool; used when dragging starts.  just gets the head of the array if it can.
          */
         this.connectorSelector = function () {
-            var candidate = this.connections[0];
-            if (candidate) {
-                return candidate;
-            }
-            else {
-                return (this.connections.length < this._jsPlumb.maxConnections) || this._jsPlumb.maxConnections === -1 ? null : candidate;
-            }
+            return this.connections[0];
         };
 
         this.setStyle = this.setPaintStyle;
@@ -8598,17 +8551,13 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the code for Connections.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
- * 
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
+ *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
- * 
+ *
  * Dual licensed under the MIT and GPL2 licenses.
  */
 ;
@@ -9226,17 +9175,13 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the code for creating and manipulating anchors.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
- * 
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
+ *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
- * 
+ *
  * Dual licensed under the MIT and GPL2 licenses.
  */
 ;
@@ -10449,13 +10394,9 @@
     };
 }).call(typeof window !== 'undefined' ? window : this);
 /*
- * jsPlumb Community Edition
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the default Connectors, Endpoint and Overlay definitions.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  * 
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -11109,7 +11050,8 @@
                 perpendicular: oProduct === 0,
                 orthogonal: oProduct === 1,
                 sourceAxis: so[0] === 0 ? "y" : "x",
-                points: [x, y, w, h, sx, sy, tx, ty ]
+                points: [x, y, w, h, sx, sy, tx, ty ],
+                stubs:[sourceStub, targetStub]
             };
             result.anchorOrientation = result.opposite ? "opposite" : result.orthogonal ? "orthogonal" : "perpendicular";
             return result;
@@ -12002,13 +11944,9 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains the base class for library adapters.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -12050,13 +11988,7 @@
 
 }).call(typeof window !== 'undefined' ? window : this);
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
- * This file contains the code for working with Groups.
- *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -12431,8 +12363,8 @@
         // TODO refactor this with the code that responds to `connection` events.
         function _updateConnectionsForGroup(group) {
             var members = group.getMembers();
-            var c1 = _jsPlumb.getConnections({source:members}, true);
-            var c2 = _jsPlumb.getConnections({target:members}, true);
+            var c1 = _jsPlumb.getConnections({source:members, scope:"*"}, true);
+            var c2 = _jsPlumb.getConnections({target:members, scope:"*"}, true);
             var processed = {};
             group.connections.source.length = 0;
             group.connections.target.length = 0;
@@ -12916,17 +12848,13 @@
 
 
 /*
- * jsPlumb Community Edition
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the 'flowchart' connectors, consisting of vertical and horizontal line segments.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
- * 
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
+ *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
- * 
+ *
  * Dual licensed under the MIT and GPL2 licenses.
  */
 ;
@@ -12934,6 +12862,8 @@
 
     "use strict";
     var root = this, _jp = root.jsPlumb, _ju = root.jsPlumbUtil;
+    var STRAIGHT = "Straight";
+    var ARC = "Arc";
 
     var Flowchart = function (params) {
         this.type = "Flowchart";
@@ -12953,6 +12883,12 @@
             sgn = function (n) {
                 return n < 0 ? -1 : n === 0 ? 0 : 1;
             },
+            segmentDirections = function(segment) {
+            return [
+                    sgn( segment[2] - segment[0] ),
+                    sgn( segment[3] - segment[1] )
+                ];
+            },
             /**
              * helper method to add a segment.
              */
@@ -12962,13 +12898,11 @@
                 }
                 var lx = lastx == null ? paintInfo.sx : lastx,
                     ly = lasty == null ? paintInfo.sy : lasty,
-                    o = lx === x ? "v" : "h",
-                    sgnx = sgn(x - lx),
-                    sgny = sgn(y - ly);
+                    o = lx === x ? "v" : "h";
 
                 lastx = x;
                 lasty = y;
-                segments.push([lx, ly, x, y, o, sgnx, sgny]);
+                segments.push([ lx, ly, x, y, o ]);
             },
             segLength = function (s) {
                 return Math.sqrt(Math.pow(s[0] - s[2], 2) + Math.pow(s[1] - s[3], 2));
@@ -12979,32 +12913,37 @@
                 return _a;
             },
             writeSegments = function (conn, segments, paintInfo) {
-                var current = null, next;
+                var current = null, next, currentDirection, nextDirection;
                 for (var i = 0; i < segments.length - 1; i++) {
 
                     current = current || _cloneArray(segments[i]);
                     next = _cloneArray(segments[i + 1]);
+
+                    currentDirection = segmentDirections(current);
+                    nextDirection = segmentDirections(next);
+
                     if (cornerRadius > 0 && current[4] !== next[4]) {
                         var radiusToUse = Math.min(cornerRadius, segLength(current), segLength(next));
-                        // right angle. adjust current segment's end point, and next segment's start point.
-                        current[2] -= current[5] * radiusToUse;
-                        current[3] -= current[6] * radiusToUse;
-                        next[0] += next[5] * radiusToUse;
-                        next[1] += next[6] * radiusToUse;
-                        var ac = (current[6] === next[5] && next[5] === 1) ||
-                                ((current[6] === next[5] && next[5] === 0) && current[5] !== next[6]) ||
-                                (current[6] === next[5] && next[5] === -1),
-                            sgny = next[1] > current[3] ? 1 : -1,
-                            sgnx = next[0] > current[2] ? 1 : -1,
-                            sgnEqual = sgny === sgnx,
-                            cx = (sgnEqual && ac || (!sgnEqual && !ac)) ? next[0] : current[2],
-                            cy = (sgnEqual && ac || (!sgnEqual && !ac)) ? current[3] : next[1];
 
-                        _super.addSegment(conn, "Straight", {
+                        current[2] -= currentDirection[0] * radiusToUse;
+                        current[3] -= currentDirection[1] * radiusToUse;
+                        next[0] += nextDirection[0] * radiusToUse;
+                        next[1] += nextDirection[1] * radiusToUse;
+
+                        var ac = (currentDirection[1] === nextDirection[0] && nextDirection[0] === 1) ||
+                                ((currentDirection[1] === nextDirection[0] && nextDirection[0] === 0) && currentDirection[0] !== nextDirection[1]) ||
+                                (currentDirection[1] === nextDirection[0] && nextDirection[0] === -1),
+                                sgny = next[1] > current[3] ? 1 : -1,
+                                sgnx = next[0] > current[2] ? 1 : -1,
+                                sgnEqual = sgny === sgnx,
+                                cx = (sgnEqual && ac || (!sgnEqual && !ac)) ? next[0] : current[2],
+                                cy = (sgnEqual && ac || (!sgnEqual && !ac)) ? current[3] : next[1];
+
+                        _super.addSegment(conn, STRAIGHT, {
                             x1: current[0], y1: current[1], x2: current[2], y2: current[3]
                         });
 
-                        _super.addSegment(conn, "Arc", {
+                        _super.addSegment(conn, ARC, {
                             r: radiusToUse,
                             x1: current[2],
                             y1: current[3],
@@ -13019,7 +12958,8 @@
                         // dx + dy are used to adjust for line width.
                         var dx = (current[2] === current[0]) ? 0 : (current[2] > current[0]) ? (paintInfo.lw / 2) : -(paintInfo.lw / 2),
                             dy = (current[3] === current[1]) ? 0 : (current[3] > current[1]) ? (paintInfo.lw / 2) : -(paintInfo.lw / 2);
-                        _super.addSegment(conn, "Straight", {
+
+                        _super.addSegment(conn, STRAIGHT, {
                             x1: current[0] - dx, y1: current[1] - dy, x2: current[2] + dx, y2: current[3] + dy
                         });
                     }
@@ -13027,7 +12967,7 @@
                 }
                 if (next != null) {
                     // last segment
-                    _super.addSegment(conn, "Straight", {
+                    _super.addSegment(conn, STRAIGHT, {
                         x1: next[0], y1: next[1], x2: next[2], y2: next[3]
                     });
                 }
@@ -13040,265 +12980,264 @@
             lasty = null;
             lastOrientation = null;
 
-            var commonStubCalculator = function () {
-                return [ paintInfo.startStubX, paintInfo.startStubY, paintInfo.endStubX, paintInfo.endStubY ];
-            },
-                stubCalculators = {
-                    perpendicular: commonStubCalculator,
-                    orthogonal: commonStubCalculator,
-                    opposite: function (axis) {
-                        var pi = paintInfo,
-                            idx = axis === "x" ? 0 : 1,
-                            areInProximity = {
-                                "x": function () {
-                                    return ( (pi.so[idx] === 1 && (
-                                        ( (pi.startStubX > pi.endStubX) && (pi.tx > pi.startStubX) ) ||
-                                        ( (pi.sx > pi.endStubX) && (pi.tx > pi.sx))))) ||
+            var geometry = this.getGeometry(),
+                sp = [ paintInfo.x, paintInfo.y ],
+                tp = [ paintInfo.x + paintInfo.w, paintInfo.y + paintInfo.h ];
 
-                                        ( (pi.so[idx] === -1 && (
+            if ((this.hasBeenEdited() || this.isEditing()) && geometry != null && geometry.segments != null && geometry.segments.length > 0) {
+                segments = geometry.segments;
+
+                _super.setGeometry({
+                    segments:segments,
+                    sourcePos:sp,
+                    targetPos:tp
+                });
+
+            } else {
+
+                var commonStubCalculator = function () {
+                        return [paintInfo.startStubX, paintInfo.startStubY, paintInfo.endStubX, paintInfo.endStubY];
+                    },
+                    stubCalculators = {
+                        perpendicular: commonStubCalculator,
+                        orthogonal: commonStubCalculator,
+                        opposite: function (axis) {
+                            var pi = paintInfo,
+                                idx = axis === "x" ? 0 : 1,
+                                areInProximity = {
+                                    "x": function () {
+                                        return ( (pi.so[idx] === 1 && (
+                                            ( (pi.startStubX > pi.endStubX) && (pi.tx > pi.startStubX) ) ||
+                                            ( (pi.sx > pi.endStubX) && (pi.tx > pi.sx))))) ||
+
+                                            ( (pi.so[idx] === -1 && (
                                             ( (pi.startStubX < pi.endStubX) && (pi.tx < pi.startStubX) ) ||
                                             ( (pi.sx < pi.endStubX) && (pi.tx < pi.sx)))));
-                                },
-                                "y": function () {
-                                    return ( (pi.so[idx] === 1 && (
-                                        ( (pi.startStubY > pi.endStubY) && (pi.ty > pi.startStubY) ) ||
-                                        ( (pi.sy > pi.endStubY) && (pi.ty > pi.sy))))) ||
+                                    },
+                                    "y": function () {
+                                        return ( (pi.so[idx] === 1 && (
+                                            ( (pi.startStubY > pi.endStubY) && (pi.ty > pi.startStubY) ) ||
+                                            ( (pi.sy > pi.endStubY) && (pi.ty > pi.sy))))) ||
 
-                                        ( (pi.so[idx] === -1 && (
+                                            ( (pi.so[idx] === -1 && (
                                             ( (pi.startStubY < pi.endStubY) && (pi.ty < pi.startStubY) ) ||
                                             ( (pi.sy < pi.endStubY) && (pi.ty < pi.sy)))));
-                                }
-                            };
+                                    }
+                                };
 
-                        if (!alwaysRespectStubs && areInProximity[axis]()) {
-                            return {
-                                "x": [(paintInfo.sx + paintInfo.tx) / 2, paintInfo.startStubY, (paintInfo.sx + paintInfo.tx) / 2, paintInfo.endStubY],
-                                "y": [paintInfo.startStubX, (paintInfo.sy + paintInfo.ty) / 2, paintInfo.endStubX, (paintInfo.sy + paintInfo.ty) / 2]
-                            }[axis];
-                        }
-                        else {
-                            return [ paintInfo.startStubX, paintInfo.startStubY, paintInfo.endStubX, paintInfo.endStubY ];
-                        }
-                    }
-                };
-
-            // calculate Stubs.
-            var stubs = stubCalculators[paintInfo.anchorOrientation](paintInfo.sourceAxis),
-                idx = paintInfo.sourceAxis === "x" ? 0 : 1,
-                oidx = paintInfo.sourceAxis === "x" ? 1 : 0,
-                ss = stubs[idx],
-                oss = stubs[oidx],
-                es = stubs[idx + 2],
-                oes = stubs[oidx + 2];
-
-            // add the start stub segment. use stubs for loopback as it will look better, with the loop spaced
-            // away from the element.
-            addSegment(segments, stubs[0], stubs[1], paintInfo);
-
-            // if its a loopback and we should treat it differently.
-            if (false &&params.sourcePos[0] === params.targetPos[0] && params.sourcePos[1] === params.targetPos[1]) {
-
-                // we use loopbackRadius here, as statemachine connectors do.
-                // so we go radius to the left from stubs[0], then upwards by 2*radius, to the right by 2*radius,
-                // down by 2*radius, left by radius.
-                addSegment(segments, stubs[0] - loopbackRadius, stubs[1], paintInfo);
-                addSegment(segments, stubs[0] - loopbackRadius, stubs[1] - (2 * loopbackRadius), paintInfo);
-                addSegment(segments, stubs[0] + loopbackRadius, stubs[1] - (2 * loopbackRadius), paintInfo);
-                addSegment(segments, stubs[0] + loopbackRadius, stubs[1], paintInfo);
-                addSegment(segments, stubs[0], stubs[1], paintInfo);
-
-            }
-            else {
-
-
-                var midx = paintInfo.startStubX + ((paintInfo.endStubX - paintInfo.startStubX) * midpoint),
-                    midy = paintInfo.startStubY + ((paintInfo.endStubY - paintInfo.startStubY) * midpoint);
-
-                var orientations = { x: [ 0, 1 ], y: [ 1, 0 ] },
-                    lineCalculators = {
-                        perpendicular: function (axis) {
-                            var pi = paintInfo,
-                                sis = {
-                                    x: [
-                                        [ [ 1, 2, 3, 4 ], null, [ 2, 1, 4, 3 ] ],
-                                        null,
-                                        [ [ 4, 3, 2, 1 ], null, [ 3, 4, 1, 2 ] ]
-                                    ],
-                                    y: [
-                                        [ [ 3, 2, 1, 4 ], null, [ 2, 3, 4, 1 ] ],
-                                        null,
-                                        [ [ 4, 1, 2, 3 ], null, [ 1, 4, 3, 2 ] ]
-                                    ]
-                                },
-                                stubs = {
-                                    x: [ [ pi.startStubX, pi.endStubX ], null, [ pi.endStubX, pi.startStubX ] ],
-                                    y: [ [ pi.startStubY, pi.endStubY ], null, [ pi.endStubY, pi.startStubY ] ]
-                                },
-                                midLines = {
-                                    x: [ [ midx, pi.startStubY ], [ midx, pi.endStubY ] ],
-                                    y: [ [ pi.startStubX, midy ], [ pi.endStubX, midy ] ]
-                                },
-                                linesToEnd = {
-                                    x: [ [ pi.endStubX, pi.startStubY ] ],
-                                    y: [ [ pi.startStubX, pi.endStubY ] ]
-                                },
-                                startToEnd = {
-                                    x: [ [ pi.startStubX, pi.endStubY ], [ pi.endStubX, pi.endStubY ] ],
-                                    y: [ [ pi.endStubX, pi.startStubY ], [ pi.endStubX, pi.endStubY ] ]
-                                },
-                                startToMidToEnd = {
-                                    x: [ [ pi.startStubX, midy ], [ pi.endStubX, midy ], [ pi.endStubX, pi.endStubY ] ],
-                                    y: [ [ midx, pi.startStubY ], [ midx, pi.endStubY ], [ pi.endStubX, pi.endStubY ] ]
-                                },
-                                otherStubs = {
-                                    x: [ pi.startStubY, pi.endStubY ],
-                                    y: [ pi.startStubX, pi.endStubX ]
-                                },
-                                soIdx = orientations[axis][0], toIdx = orientations[axis][1],
-                                _so = pi.so[soIdx] + 1,
-                                _to = pi.to[toIdx] + 1,
-                                otherFlipped = (pi.to[toIdx] === -1 && (otherStubs[axis][1] < otherStubs[axis][0])) || (pi.to[toIdx] === 1 && (otherStubs[axis][1] > otherStubs[axis][0])),
-                                stub1 = stubs[axis][_so][0],
-                                stub2 = stubs[axis][_so][1],
-                                segmentIndexes = sis[axis][_so][_to];
-
-                            if (pi.segment === segmentIndexes[3] || (pi.segment === segmentIndexes[2] && otherFlipped)) {
-                                return midLines[axis];
-                            }
-                            else if (pi.segment === segmentIndexes[2] && stub2 < stub1) {
-                                return linesToEnd[axis];
-                            }
-                            else if ((pi.segment === segmentIndexes[2] && stub2 >= stub1) || (pi.segment === segmentIndexes[1] && !otherFlipped)) {
-                                return startToMidToEnd[axis];
-                            }
-                            else if (pi.segment === segmentIndexes[0] || (pi.segment === segmentIndexes[1] && otherFlipped)) {
-                                return startToEnd[axis];
-                            }
-                        },
-                        orthogonal: function (axis, startStub, otherStartStub, endStub, otherEndStub) {
-                            var pi = paintInfo,
-                                extent = {
-                                    "x": pi.so[0] === -1 ? Math.min(startStub, endStub) : Math.max(startStub, endStub),
-                                    "y": pi.so[1] === -1 ? Math.min(startStub, endStub) : Math.max(startStub, endStub)
-                                }[axis];
-
-                            return {
-                                "x": [
-                                    [ extent, otherStartStub ],
-                                    [ extent, otherEndStub ],
-                                    [ endStub, otherEndStub ]
-                                ],
-                                "y": [
-                                    [ otherStartStub, extent ],
-                                    [ otherEndStub, extent ],
-                                    [ otherEndStub, endStub ]
-                                ]
-                            }[axis];
-                        },
-                        opposite: function (axis, ss, oss, es) {
-                            var pi = paintInfo,
-                                otherAxis = {"x": "y", "y": "x"}[axis],
-                                dim = {"x": "height", "y": "width"}[axis],
-                                comparator = pi["is" + axis.toUpperCase() + "GreaterThanStubTimes2"];
-
-                            if (params.sourceEndpoint.elementId === params.targetEndpoint.elementId) {
-                                var _val = oss + ((1 - params.sourceEndpoint.anchor[otherAxis]) * params.sourceInfo[dim]) + _super.maxStub;
+                            if (!alwaysRespectStubs && areInProximity[axis]()) {
                                 return {
-                                    "x": [
-                                        [ ss, _val ],
-                                        [ es, _val ]
-                                    ],
-                                    "y": [
-                                        [ _val, ss ],
-                                        [ _val, es ]
-                                    ]
-                                }[axis];
-
-                            }
-                            else if (!comparator || (pi.so[idx] === 1 && ss > es) || (pi.so[idx] === -1 && ss < es)) {
-                                return {
-                                    "x": [
-                                        [ ss, midy ],
-                                        [ es, midy ]
-                                    ],
-                                    "y": [
-                                        [ midx, ss ],
-                                        [ midx, es ]
-                                    ]
+                                    "x": [(paintInfo.sx + paintInfo.tx) / 2, paintInfo.startStubY, (paintInfo.sx + paintInfo.tx) / 2, paintInfo.endStubY],
+                                    "y": [paintInfo.startStubX, (paintInfo.sy + paintInfo.ty) / 2, paintInfo.endStubX, (paintInfo.sy + paintInfo.ty) / 2]
                                 }[axis];
                             }
-                            else if ((pi.so[idx] === 1 && ss < es) || (pi.so[idx] === -1 && ss > es)) {
-                                return {
-                                    "x": [
-                                        [ midx, pi.sy ],
-                                        [ midx, pi.ty ]
-                                    ],
-                                    "y": [
-                                        [ pi.sx, midy ],
-                                        [ pi.tx, midy ]
-                                    ]
-                                }[axis];
+                            else {
+                                return [paintInfo.startStubX, paintInfo.startStubY, paintInfo.endStubX, paintInfo.endStubY];
                             }
                         }
                     };
 
-                // compute the rest of the line
-                var p = lineCalculators[paintInfo.anchorOrientation](paintInfo.sourceAxis, ss, oss, es, oes);
-                if (p) {
-                    for (var i = 0; i < p.length; i++) {
-                        addSegment(segments, p[i][0], p[i][1], paintInfo);
+                // calculate Stubs.
+                var stubs = stubCalculators[paintInfo.anchorOrientation](paintInfo.sourceAxis),
+                    idx = paintInfo.sourceAxis === "x" ? 0 : 1,
+                    oidx = paintInfo.sourceAxis === "x" ? 1 : 0,
+                    ss = stubs[idx],
+                    oss = stubs[oidx],
+                    es = stubs[idx + 2],
+                    oes = stubs[oidx + 2];
+
+                // add the start stub segment. use stubs for loopback as it will look better, with the loop spaced
+                // away from the element.
+                addSegment(segments, stubs[0], stubs[1], paintInfo);
+
+                // if its a loopback and we should treat it differently.
+                // if (false && params.sourcePos[0] === params.targetPos[0] && params.sourcePos[1] === params.targetPos[1]) {
+                //
+                //     // we use loopbackRadius here, as statemachine connectors do.
+                //     // so we go radius to the left from stubs[0], then upwards by 2*radius, to the right by 2*radius,
+                //     // down by 2*radius, left by radius.
+                //     addSegment(segments, stubs[0] - loopbackRadius, stubs[1], paintInfo);
+                //     addSegment(segments, stubs[0] - loopbackRadius, stubs[1] - (2 * loopbackRadius), paintInfo);
+                //     addSegment(segments, stubs[0] + loopbackRadius, stubs[1] - (2 * loopbackRadius), paintInfo);
+                //     addSegment(segments, stubs[0] + loopbackRadius, stubs[1], paintInfo);
+                //     addSegment(segments, stubs[0], stubs[1], paintInfo);
+                //
+                // }
+                // else {
+
+
+                    var midx = paintInfo.startStubX + ((paintInfo.endStubX - paintInfo.startStubX) * midpoint),
+                        midy = paintInfo.startStubY + ((paintInfo.endStubY - paintInfo.startStubY) * midpoint);
+
+                    var orientations = {x: [0, 1], y: [1, 0]},
+                        lineCalculators = {
+                            perpendicular: function (axis) {
+                                var pi = paintInfo,
+                                    sis = {
+                                        x: [
+                                            [[1, 2, 3, 4], null, [2, 1, 4, 3]],
+                                            null,
+                                            [[4, 3, 2, 1], null, [3, 4, 1, 2]]
+                                        ],
+                                        y: [
+                                            [[3, 2, 1, 4], null, [2, 3, 4, 1]],
+                                            null,
+                                            [[4, 1, 2, 3], null, [1, 4, 3, 2]]
+                                        ]
+                                    },
+                                    stubs = {
+                                        x: [[pi.startStubX, pi.endStubX], null, [pi.endStubX, pi.startStubX]],
+                                        y: [[pi.startStubY, pi.endStubY], null, [pi.endStubY, pi.startStubY]]
+                                    },
+                                    midLines = {
+                                        x: [[midx, pi.startStubY], [midx, pi.endStubY]],
+                                        y: [[pi.startStubX, midy], [pi.endStubX, midy]]
+                                    },
+                                    linesToEnd = {
+                                        x: [[pi.endStubX, pi.startStubY]],
+                                        y: [[pi.startStubX, pi.endStubY]]
+                                    },
+                                    startToEnd = {
+                                        x: [[pi.startStubX, pi.endStubY], [pi.endStubX, pi.endStubY]],
+                                        y: [[pi.endStubX, pi.startStubY], [pi.endStubX, pi.endStubY]]
+                                    },
+                                    startToMidToEnd = {
+                                        x: [[pi.startStubX, midy], [pi.endStubX, midy], [pi.endStubX, pi.endStubY]],
+                                        y: [[midx, pi.startStubY], [midx, pi.endStubY], [pi.endStubX, pi.endStubY]]
+                                    },
+                                    otherStubs = {
+                                        x: [pi.startStubY, pi.endStubY],
+                                        y: [pi.startStubX, pi.endStubX]
+                                    },
+                                    soIdx = orientations[axis][0], toIdx = orientations[axis][1],
+                                    _so = pi.so[soIdx] + 1,
+                                    _to = pi.to[toIdx] + 1,
+                                    otherFlipped = (pi.to[toIdx] === -1 && (otherStubs[axis][1] < otherStubs[axis][0])) || (pi.to[toIdx] === 1 && (otherStubs[axis][1] > otherStubs[axis][0])),
+                                    stub1 = stubs[axis][_so][0],
+                                    stub2 = stubs[axis][_so][1],
+                                    segmentIndexes = sis[axis][_so][_to];
+
+                                if (pi.segment === segmentIndexes[3] || (pi.segment === segmentIndexes[2] && otherFlipped)) {
+                                    return midLines[axis];
+                                }
+                                else if (pi.segment === segmentIndexes[2] && stub2 < stub1) {
+                                    return linesToEnd[axis];
+                                }
+                                else if ((pi.segment === segmentIndexes[2] && stub2 >= stub1) || (pi.segment === segmentIndexes[1] && !otherFlipped)) {
+                                    return startToMidToEnd[axis];
+                                }
+                                else if (pi.segment === segmentIndexes[0] || (pi.segment === segmentIndexes[1] && otherFlipped)) {
+                                    return startToEnd[axis];
+                                }
+                            },
+                            orthogonal: function (axis, startStub, otherStartStub, endStub, otherEndStub) {
+                                var pi = paintInfo,
+                                    extent = {
+                                        "x": pi.so[0] === -1 ? Math.min(startStub, endStub) : Math.max(startStub, endStub),
+                                        "y": pi.so[1] === -1 ? Math.min(startStub, endStub) : Math.max(startStub, endStub)
+                                    }[axis];
+
+                                return {
+                                    "x": [
+                                        [extent, otherStartStub],
+                                        [extent, otherEndStub],
+                                        [endStub, otherEndStub]
+                                    ],
+                                    "y": [
+                                        [otherStartStub, extent],
+                                        [otherEndStub, extent],
+                                        [otherEndStub, endStub]
+                                    ]
+                                }[axis];
+                            },
+                            opposite: function (axis, ss, oss, es) {
+                                var pi = paintInfo,
+                                    otherAxis = {"x": "y", "y": "x"}[axis],
+                                    dim = {"x": "height", "y": "width"}[axis],
+                                    comparator = pi["is" + axis.toUpperCase() + "GreaterThanStubTimes2"];
+
+                                if (params.sourceEndpoint.elementId === params.targetEndpoint.elementId) {
+                                    var _val = oss + ((1 - params.sourceEndpoint.anchor[otherAxis]) * params.sourceInfo[dim]) + _super.maxStub;
+                                    return {
+                                        "x": [
+                                            [ss, _val],
+                                            [es, _val]
+                                        ],
+                                        "y": [
+                                            [_val, ss],
+                                            [_val, es]
+                                        ]
+                                    }[axis];
+
+                                }
+                                else if (!comparator || (pi.so[idx] === 1 && ss > es) || (pi.so[idx] === -1 && ss < es)) {
+                                    return {
+                                        "x": [
+                                            [ss, midy],
+                                            [es, midy]
+                                        ],
+                                        "y": [
+                                            [midx, ss],
+                                            [midx, es]
+                                        ]
+                                    }[axis];
+                                }
+                                else if ((pi.so[idx] === 1 && ss < es) || (pi.so[idx] === -1 && ss > es)) {
+                                    return {
+                                        "x": [
+                                            [midx, pi.sy],
+                                            [midx, pi.ty]
+                                        ],
+                                        "y": [
+                                            [pi.sx, midy],
+                                            [pi.tx, midy]
+                                        ]
+                                    }[axis];
+                                }
+                            }
+                        };
+
+                    // compute the rest of the line
+                    var p = lineCalculators[paintInfo.anchorOrientation](paintInfo.sourceAxis, ss, oss, es, oes);
+                    if (p) {
+                        for (var i = 0; i < p.length; i++) {
+                            addSegment(segments, p[i][0], p[i][1], paintInfo);
+                        }
                     }
-                }
 
-                // line to end stub
-                addSegment(segments, stubs[2], stubs[3], paintInfo);
+                    // line to end stub
+                    addSegment(segments, stubs[2], stubs[3], paintInfo);
 
+                //}
+
+                // end stub to end (common)
+                addSegment(segments, paintInfo.tx, paintInfo.ty, paintInfo);
+
+                _super.setGeometry({
+                    segments:segments,
+                    sourcePos:sp,
+                    targetPos:tp
+                }, true);
             }
-
-            // end stub to end (common)
-            addSegment(segments, paintInfo.tx, paintInfo.ty, paintInfo);
 
             // write out the segments.
             writeSegments(this, segments, paintInfo);
-        };
 
-        /*this.getPath = function () {
-            var _last = null, _lastAxis = null, s = [], segs = segments;
-            for (var i = 0; i < segs.length; i++) {
-                var seg = segs[i], axis = seg[4], axisIndex = (axis == "v" ? 3 : 2);
-                if (_last != null && _lastAxis === axis) {
-                    _last[axisIndex] = seg[axisIndex];
-                }
-                else {
-                    if (seg[0] != seg[2] || seg[1] != seg[3]) {
-                        s.push({
-                            start: [ seg[0], seg[1] ],
-                            end: [ seg[2], seg[3] ]
-                        });
-                        _last = seg;
-                        _lastAxis = seg[4];
-                    }
-                }
-            }
-            return s;
-        };*/
+        };
     };
 
-    _ju.extend(Flowchart, _jp.Connectors.AbstractConnector);
-    _jp.registerConnectorType(Flowchart, "Flowchart");
+    _jp.Connectors.Flowchart = Flowchart;
+    _ju.extend(_jp.Connectors.Flowchart, _jp.Connectors.AbstractConnector);
+
 }).call(typeof window !== 'undefined' ? window : this);
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains the code for the Bezier connector type.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
- * 
+ *
  * Dual licensed under the MIT and GPL2 licenses.
  */
 ;
@@ -13453,18 +13392,14 @@
 
     };
 
+    _jp.Connectors.Bezier = Bezier;
     _ju.extend(Bezier, _jp.Connectors.AbstractBezierConnector);
-    _jp.registerConnectorType(Bezier, "Bezier");
 
 }).call(typeof window !== 'undefined' ? window : this);
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains the state machine connectors, which extend AbstractBezierConnector.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -13668,18 +13603,14 @@
         };
     };
 
+    _jp.Connectors.StateMachine = StateMachine;
     _ju.extend(StateMachine, _jp.Connectors.AbstractBezierConnector);
-    _jp.registerConnectorType(StateMachine, "StateMachine");
 
 }).call(typeof window !== 'undefined' ? window : this);
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- *
  * This file contains the 'flowchart' connectors, consisting of vertical and horizontal line segments.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  *
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -13704,18 +13635,14 @@
         };
     };
 
+    _jp.Connectors.Straight = Straight;
     _ju.extend(Straight, _jp.Connectors.AbstractConnector);
-    _jp.registerConnectorType(Straight, STRAIGHT);
 
 }).call(typeof window !== 'undefined' ? window : this);
 /*
- * jsPlumb Community Edition
- * 
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the SVG renderers.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  * 
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb
@@ -14171,6 +14098,43 @@
     };
     _ju.extend(_jp.Endpoints.svg.Rectangle, [_jp.Endpoints.Rectangle, SvgEndpoint]);
 
+// ---------------------------------- Connectors ------------------------------------------------------------
+
+
+    _jp.Connectors.svg.Flowchart = function() {
+        _jp.Connectors.Flowchart.apply(this, arguments);
+        _jp.ConnectorRenderers.svg.apply(this, arguments);
+    };
+
+    _ju.extend(_jp.Connectors.svg.Flowchart, [ _jp.Connectors.Flowchart, _jp.ConnectorRenderers.svg]);
+
+
+
+    _jp.Connectors.svg.Bezier = function() {
+        _jp.Connectors.Bezier.apply(this, arguments);
+        _jp.ConnectorRenderers.svg.apply(this, arguments);
+    };
+
+    _ju.extend(_jp.Connectors.svg.Bezier, [ _jp.Connectors.Bezier, _jp.ConnectorRenderers.svg]);
+
+    _jp.Connectors.svg.Straight = function() {
+        _jp.Connectors.Straight.apply(this, arguments);
+        _jp.ConnectorRenderers.svg.apply(this, arguments);
+    };
+
+    _ju.extend(_jp.Connectors.svg.Straight, [ _jp.Connectors.Straight, _jp.ConnectorRenderers.svg]);
+
+
+    _jp.Connectors.svg.StateMachine = function() {
+        _jp.Connectors.StateMachine.apply(this, arguments);
+        _jp.ConnectorRenderers.svg.apply(this, arguments);
+    };
+
+    _ju.extend(_jp.Connectors.svg.StateMachine, [ _jp.Connectors.StateMachine, _jp.ConnectorRenderers.svg]);
+
+
+// ------------------------------------------ / Connectors -----------------------------------------
+
     /*
      * SVG Image Endpoint is the default image endpoint.
      */
@@ -14342,13 +14306,9 @@
 }).call(typeof window !== 'undefined' ? window : this);
 
 /*
- * jsPlumb Community Edition
- *
- * Provides a way to visually connect elements on an HTML page, using SVG.
- * 
  * This file contains the 'vanilla' adapter - having no external dependencies other than bundled libs.
  *
- * Copyright (c) 2010 - 2017 jsPlumb (hello@jsplumbtoolkit.com)
+ * Copyright (c) 2010 - 2018 jsPlumb (hello@jsplumbtoolkit.com)
  * 
  * https://jsplumbtoolkit.com
  * https://github.com/jsplumb/jsplumb

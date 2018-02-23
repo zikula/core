@@ -14,16 +14,25 @@ CHANGELOG - ZIKULA 1.5.x
     - Fixed wrong request service call in GroupsModule menu (#3874).
     - Fixed fetching module url from metadata when untranslated (#3876).
     - Activated translatable fallback for proper handling of content with missing translations.
+    - Added fallback for missing user real names.
+    - Avoid exposure of server pathes in JS assets merger (#3883, #3890).
+    - Fixed missing routes table in CLI upgrade from 1.3.x (#3887, #3888).
+    - Added hints about minimum password length (#3884, #3891).
+    - Fixed broken password strength meter usage in ZAuth administration (#3891).
 
  - Vendor updates:
     - composer/installers updated from 1.4.0 to 1.5.0
     - doctrine/orm updated from 2.5.13 to 2.5.14
-    - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.32
+    - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.33
+    - jquery.mmenu updated from 6.1.8 to 7.0.1
     - sensio/framework-extra-bundle updated from 3.0.28 to 3.0.29
+    - sensiolabs/security-checker updated from 4.1.6 to 4.1.7
+    - swiftmailer/swiftmailer updated from v5.4.8 to v5.4.9
     - symfony/security-acl updated from 3.0.0 to 3.0.1
-    - symfony/symfony updated from 2.8.32 to 2.8.33
+    - symfony/symfony updated from 2.8.32 to 2.8.34
     - symfony/workflow updated from 3.4.1 to 3.4.3
     - vakata/jstree updated from 3.3.4 to 3.3.5
+    - zikula/andreas08-theme updated from 2.0.1 to 2.0.3
 
 1.5.4 (2017-12-16)
 ------------------
@@ -266,7 +275,7 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert installed at 1.2.0
     - willdurand/js-translation-bundle updated from 2.6.3 to 2.6.5
     - wikimedia/composer-merge-plugin installed at v1.3.1 and updated to 1.4.1
-    - zikula/andreas08-theme installed at 2.0.1 and updated to 2.0.2
+    - zikula/andreas08-theme installed at 2.0.1
     - zikula/bootstrap-bundle updated to 3.0.1
     - zikula/filesystem updated to 1.0.0
     - zikula/jquery-bundle updated to 1.0.0

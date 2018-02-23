@@ -245,17 +245,17 @@ class MenutreeBlock extends \Zikula_Controller_AbstractBlock
             // check if there are new languages not present in current menu
             // if so - need to set reference lang to copy initial menu items data
             if (count(array_diff($vars['languages'], $vars['oldlanguages'])) > 1) {
-                // fisrt try current default lang
                 if (in_array($vars['defaultlanguage'], $vars['oldlanguages'])) {
+                    // first try current default lang
                     $langs['ref'] = $vars['defaultlanguage'];
-                    // or user lang
                 } elseif (in_array($userlanguage, $vars['oldlanguages'])) {
+                    // or user lang
                     $langs['ref'] = $userlanguage;
-                    // or old default lang
                 } elseif (in_array($vars['olddefaultlanguage'], $vars['languages'])) {
+                    // or old default lang
                     $langs['ref'] = $vars['olddefaultlanguage'];
-                    // it must be any language present in old and new lang list
                 } else {
+                    // it must be any language present in old and new lang list
                     $langs['ref'] = current(array_intersect($vars['languages'], $vars['oldlanguages']));
                 }
             }

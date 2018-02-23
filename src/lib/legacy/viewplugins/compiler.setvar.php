@@ -76,13 +76,11 @@ function smarty_compiler_setvar($params, Smarty_Compiler $compiler)
             $_attrs['php'] = substr($_attrs['php'], 0, strpos($_attrs['php'], ';'));
         }
         $_rval = $compiler->_dequote($_attrs['php']);
-
-        /* check for a scalar the value parameter */
     } elseif (isset($_attrs['value'])) {
+        /* found a scalar in the value parameter */
         $_rval = $_attrs['value'];
-
-        /* list of array-values */
     } elseif (isset($_attrs['values'])) {
+        /* check for a list of array-values */
         $_delim = (isset($_attrs['delim'])) ? $_attrs['delim'] : "','";
         $_rval = 'explode('.$_delim.', '.$_attrs['values'].')';
 

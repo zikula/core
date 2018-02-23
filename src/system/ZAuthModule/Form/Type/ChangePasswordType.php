@@ -40,7 +40,7 @@ class ChangePasswordType extends AbstractType
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => $options['translator']->__('New password')],
+                'first_options' => ['label' => $options['translator']->__('New password'), 'help' => $options['translator']->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])],
                 'second_options' => ['label' => $options['translator']->__('Repeat new password')],
                 'invalid_message' => $options['translator']->__('The passwords must match!'),
                 'constraints' => [
@@ -76,6 +76,7 @@ class ChangePasswordType extends AbstractType
     {
         $resolver->setDefaults([
             'translator' => null,
+            'minimumPasswordLength' => 5,
             'constraints' => [
                 new ValidPasswordChange()
             ]

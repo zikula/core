@@ -48,7 +48,6 @@
  *  lang           Language
  *  names          String or array of names to select from (array or csv)
  *  values         Optional parameter for the previous names (array or cvs)
- *  skin           Use predefined values (hu - hungarian ABC)
  *
  * @param array       $params All attributes passed to this function from the template
  * @param Zikula_View $view   Reference to the Zikula_View object
@@ -63,10 +62,6 @@ function smarty_function_pagerabc($params, Zikula_View $view)
 
     if (!isset($params['separator'])) {
         $params['separator'] = ' | ';
-    }
-
-    if (!isset($params['skin'])) {
-        $params['skin'] = '';
     }
 
     if (!isset($params['printempty']) || !is_bool($params['printempty'])) {
@@ -108,16 +103,8 @@ function smarty_function_pagerabc($params, Zikula_View $view)
             $pager['values'] = $pager['names'];
         }
     } else {
-        // predefined abc
-        if ('hu' == strtolower($params['skin'])) {
-            // Hungarian
-            $pager['names']  = $pager['values'] = ['A', '?', 'B', 'C', 'D', 'E', '?', 'F', 'G', 'H', 'I', '?', 'J', 'K', 'L', 'M', 'N', 'O', '?', '?', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', '?', '?', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-            //$params['names']  = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U'    ,'V','W','X','Y','Z'];
-            //$params['values'] = ['A,?','B','C','D','E,?','F','G','H','I,?','J','K','L','M','N','O,?,?,O','P','Q','R','S','T','U,?,?,U','V','W','X','Y','Z'];
-        } else {
-            $alphabet = (defined('_ALPHABET')) ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
-            $pager['names'] = $pager['values'] = explode(',', $alphabet);
-        }
+        $alphabet = defined('_ALPHABET') ? constant('_ALPHABET') : 'A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z';
+        $pager['names'] = $pager['values'] = explode(',', $alphabet);
     }
 
     $pager['posvar'] = $params['posvar'];
