@@ -1,7 +1,7 @@
 {
     "name": "zikula/core",
     "homepage": "http://zikula.org/",
-    "license": "LGPL-3.0+",
+    "license": "LGPL-3.0+-or-later",
     "description": "Zikula Application Framework",
     "minimum-stability": "dev",
     "prefer-stable": true,
