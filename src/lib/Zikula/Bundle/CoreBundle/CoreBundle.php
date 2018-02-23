@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\CoreBundle;
 
-use Matthias\SymfonyServiceDefinitionValidator\Compiler\ValidateServiceDefinitionsPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -32,8 +31,5 @@ class CoreBundle extends Bundle
         $container->addCompilerPass(new LinkContainerPass());
 
         $container->addCompilerPass(new OverrideBlameableListenerPass());
-
-        // todo - see if we can do this only on module install/upgrade - drak
-        $container->addCompilerPass(new ValidateServiceDefinitionsPass(), PassConfig::TYPE_AFTER_REMOVING);
     }
 }
