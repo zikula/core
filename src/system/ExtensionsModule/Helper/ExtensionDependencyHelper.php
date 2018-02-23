@@ -40,8 +40,9 @@ class ExtensionDependencyHelper
 
     /**
      * @var array
-     */
+     * unused, see below /
     private $installedPackages = [];
+    */
 
     /**
      * ExtensionDependencyHelper constructor.
@@ -160,7 +161,7 @@ class ExtensionDependencyHelper
      */
     private function bundleDependencySatisfied(ExtensionDependencyEntity &$dependency)
     {
-        if ("php" == $dependency->getModname()) {
+        if ('php' == $dependency->getModname()) {
             // Do not use PHP_VERSION constant, because it might throw off the semver parser.
             $phpVersion = PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "." . PHP_RELEASE_VERSION;
             if (!Semver::satisfies($phpVersion, $dependency->getMinversion())) {

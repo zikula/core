@@ -32,8 +32,6 @@ abstract class AbstractBundle extends Bundle
 
     protected $booted = false;
 
-    private $basePath;
-
     public function isBooted()
     {
         return $this->booted;
