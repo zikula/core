@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 1.5.x
 ------------------
 
  - BC Breaks:
-    - Removed matthiasnoback/symfony-service-definition-validator.
+    - Removed matthiasnoback/symfony-service-definition-validator (#3885).
 
  - Deprecated:
     - \Zikula\Core\AbstractBundle::getBasePath() is deprecated (#3862).
