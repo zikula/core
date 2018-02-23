@@ -96,7 +96,7 @@ class MetaDataTest extends \PHPUnit_Framework_TestCase
     "name": "zikula/admin-module",
     "description": "Backend Administration Module",
     "type": "zikula-module",
-    "license": "LGPL-3.0+",
+    "license": "LGPL-3.0+-or-later",
     "authors": [
         {
             "name": "Zikula",
