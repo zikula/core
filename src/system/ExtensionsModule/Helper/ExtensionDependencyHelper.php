@@ -42,7 +42,7 @@ class ExtensionDependencyHelper
      * @var array
      * unused, see below /
     private $installedPackages = [];
-    */
+     */
 
     /**
      * ExtensionDependencyHelper constructor.
