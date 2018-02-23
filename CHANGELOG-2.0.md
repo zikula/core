@@ -5,6 +5,7 @@ CHANGELOG - ZIKULA 2.0.x
 ------------------
 
  - BC Breaks:
+    - Removed matthiasnoback/symfony-service-definition-validator (#3885).
     - Removed \Zikula\Core\AbstractBundle::getBasePath() method. Use getPath() instead (#3862).
 
  - Fixes:
@@ -20,7 +21,7 @@ CHANGELOG - ZIKULA 2.0.x
     - composer/installers updated from 1.4.0 to 1.5.0
     - doctrine/orm updated from 2.5.13 to 2.5.14
     - gedmo/doctrine-extensions updated from 2.4.31 to 2.4.33
-    - jquery.mmenu updated from 6.1.8 to 7.0.1
+    - jquery.mmenu updated from 6.1.8 to 7.0.3
     - sensiolabs/security-checker updated from 4.1.6 to 4.1.7
     - swiftmailer/swiftmailer updated from v5.4.8 to v5.4.9
     - symfony/symfony updated from 3.4.2 to 3.4.4
