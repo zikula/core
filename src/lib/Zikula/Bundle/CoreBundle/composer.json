@@ -48,9 +48,8 @@
         "drak/smarty": "dev-master",
 
         "oyejorge/less.php": "dev-master",
-        "liip/imagine-bundle": "1.*"
-    },
-    "require-dev": {
+        "liip/imagine-bundle": "1.*",
+
         "zikula/generator-bundle": "1.4.*"
     },
     "repositories": [
