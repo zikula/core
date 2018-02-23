@@ -3,7 +3,7 @@
     "version": "1.5.1",
     "description": "Mailer support",
     "type": "zikula-module",
-    "license": "LGPL-3.0+-or-later",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Zikula",

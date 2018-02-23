@@ -3,7 +3,7 @@
     "version": "2.0.0",
     "description": "Backend administration interface",
     "type": "zikula-module",
-    "license": "LGPL-3.0+-or-later",
+    "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Zikula",
