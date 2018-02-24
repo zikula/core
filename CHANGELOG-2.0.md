@@ -1,7 +1,7 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.5 (unreleased)
+2.0.5 (2018-02-24)
 ------------------
 
  - BC Breaks:
@@ -27,6 +27,7 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/symfony updated from 3.4.2 to 3.4.4
     - vakata/jstree updated from 3.3.4 to 3.3.5
     - zikula/andreas08-theme updated from 3.0.1 to 3.0.2
+
 
 2.0.4 (2017-12-16)
 ------------------
