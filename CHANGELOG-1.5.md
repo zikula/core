@@ -1,7 +1,7 @@
 CHANGELOG - ZIKULA 1.5.x
 ========================
 
-1.5.5 (unreleased)
+1.5.5 (2018-02-24)
 ------------------
 
  - BC Breaks:
@@ -37,6 +37,7 @@ CHANGELOG - ZIKULA 1.5.x
     - webmozart/assert updated from 1.2.0 to 1.3.0
     - willdurand/js-translation-bundle updated from 2.6.5 to 2.6.6
     - zikula/andreas08-theme updated from 2.0.1 to 2.0.3
+
 
 1.5.4 (2017-12-16)
 ------------------
