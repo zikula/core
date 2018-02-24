@@ -1638,7 +1638,7 @@
                         var b = getOffsetRect(this.el);
                         dragEl.style.left = b.left + "px";
                         dragEl.style.top = b.top + "px";
-                        dragEl.className = _classes.clonedDrag;
+                        this.params.addClass(dragEl, _classes.clonedDrag);
                         document.body.appendChild(dragEl);
                     }
                     consumeStartEvent && _consume(e);
@@ -2291,17 +2291,48 @@
             }
         };
 
+        var _removeListener = function(el, type, evt, fn) {
+            el = _gel(el);
+            if (el[type]) {
+                el[type].off(evt, fn);
+            }
+        };
+
         this.elementRemoved = function(el) {
             this.destroyDraggable(el);
             this.destroyDroppable(el);
         };
 
-        this.destroyDraggable = function(el) {
-            _destroy(el, "_katavorioDrag", this._dragsByScope);
+        /**
+         * Either completely remove drag functionality from the given element, or remove a specific event handler. If you
+         * call this method with a single argument - the element - all drag functionality is removed from it. Otherwise, if
+         * you provide an event name and listener function, this function is de-registered (if found).
+         * @param el Element to update
+         * @param {string} [evt] Optional event name to unsubscribe
+         * @param {Function} [fn] Optional function to unsubscribe
+         */
+        this.destroyDraggable = function(el, evt, fn) {
+            if (arguments.length === 1) {
+                _destroy(el, "_katavorioDrag", this._dragsByScope);
+            } else {
+                _removeListener(el, "_katavorioDrag", evt, fn);
+            }
         };
 
-        this.destroyDroppable = function(el) {
-            _destroy(el, "_katavorioDrop", this._dropsByScope);
+        /**
+         * Either completely remove drop functionality from the given element, or remove a specific event handler. If you
+         * call this method with a single argument - the element - all drop functionality is removed from it. Otherwise, if
+         * you provide an event name and listener function, this function is de-registered (if found).
+         * @param el Element to update
+         * @param {string} [evt] Optional event name to unsubscribe
+         * @param {Function} [fn] Optional function to unsubscribe
+         */
+        this.destroyDroppable = function(el, evt, fn) {
+            if (arguments.length === 1) {
+                _destroy(el, "_katavorioDrop", this._dropsByScope);
+            } else {
+                _removeListener(el, "_katavorioDrop", evt, fn);
+            }
         };
 
         this.reset = function() {
@@ -3515,7 +3546,7 @@
 
     var jsPlumbInstance = root.jsPlumbInstance = function (_defaults) {
 
-        this.version = "2.6.5";
+        this.version = "2.6.8";
 
         if (_defaults) {
             jsPlumb.extend(this.Defaults, _defaults);
@@ -3809,9 +3840,6 @@
                                 }, false);
 
                                 options[dragEvent] = _ju.wrap(options[dragEvent], function () {
-                                    // TODO: here we could actually use getDragObject, and then compute it ourselves,
-                                    // since every adapter does the same thing. but i'm not sure why YUI's getDragObject
-                                    // differs from getUIPosition so much
                                     var ui = _currentInstance.getUIPosition(arguments, _currentInstance.getZoom());
                                     if (ui != null) {
                                         _draw(element, ui, null, true);
@@ -6034,13 +6062,15 @@
             return _currentInstance;
         };
 
-        this.reset = function () {
+        this.reset = function (doNotUnbindInstanceEventListeners) {
             _currentInstance.silently(function() {
                 _hoverSuspended = false;
                 _currentInstance.removeAllGroups();
                 _currentInstance.removeGroupManager();
                 _currentInstance.deleteEveryEndpoint();
-                _currentInstance.unbind();
+                if (!doNotUnbindInstanceEventListeners) {
+                    _currentInstance.unbind();
+                }
                 this.targetEndpointDefinitions = {};
                 this.sourceEndpointDefinitions = {};
                 connections.length = 0;
@@ -8611,20 +8641,28 @@
         this.previousConnection = params.previousConnection;
         this.source = _jp.getElement(params.source);
         this.target = _jp.getElement(params.target);
+
+
+        _jp.OverlayCapableJsPlumbUIComponent.apply(this, arguments);
+
         // sourceEndpoint and targetEndpoint override source/target, if they are present. but 
         // source is not overridden if the Endpoint has declared it is not the final target of a connection;
         // instead we use the source that the Endpoint declares will be the final source element.
         if (params.sourceEndpoint) {
             this.source = params.sourceEndpoint.getElement();
+            this.sourceId = params.sourceEndpoint.elementId;
+        } else {
+            this.sourceId = this._jsPlumb.instance.getId(this.source);
         }
+
         if (params.targetEndpoint) {
             this.target = params.targetEndpoint.getElement();
+            this.targetId = params.targetEndpoint.elementId;
+        } else {
+            this.targetId = this._jsPlumb.instance.getId(this.target);
         }
 
-        _jp.OverlayCapableJsPlumbUIComponent.apply(this, arguments);
 
-        this.sourceId = this._jsPlumb.instance.getId(this.source);
-        this.targetId = this._jsPlumb.instance.getId(this.target);
         this.scope = params.scope; // scope may have been passed in to the connect call. if it wasn't, we will pull it from the source endpoint, after having initialised the endpoints.            
         this.endpoints = [];
         this.endpointStyles = [];
@@ -9275,6 +9313,14 @@
                     }
                 }
 
+                if (sourceAnchor.isContinuous) {
+                    sourceAnchor.setCurrentFace(sourceEdge);
+                }
+
+                if (targetAnchor.isContinuous) {
+                    targetAnchor.setCurrentFace(targetEdge);
+                }
+
 // --------------------------------------------------------------------------------------
 
                 return {
@@ -9846,7 +9892,9 @@
                 antiClockwiseOptions = { "top": "left", "right": "top", "left": "bottom", "bottom": "right" },
                 secondBest = clockwise ? clockwiseOptions : antiClockwiseOptions,
                 lastChoice = clockwise ? antiClockwiseOptions : clockwiseOptions,
-                cssClass = anchorParams.cssClass || "";
+                cssClass = anchorParams.cssClass || "",
+                _currentFace = null, _lockedFace = null, X_AXIS_FACES = ["left", "right"], Y_AXIS_FACES = ["top", "bottom"],
+                _lockedAxis = null;
 
             for (var i = 0; i < faces.length; i++) {
                 availableFaces[faces[i]] = true;
@@ -9875,7 +9923,33 @@
             };
 
             this.isEdgeSupported = function (edge) {
-                return availableFaces[edge] === true;
+                return  _lockedAxis == null ?
+
+                            (_lockedFace == null ? availableFaces[edge] === true : _lockedFace === edge)
+
+                        : _lockedAxis.indexOf(edge) !== -1;
+            };
+
+            this.setCurrentFace = function(face) {
+                _currentFace = face;
+            };
+
+            this.getCurrentFace = function() { return _currentFace; };
+
+            this.lockCurrentFace = function() {
+                _lockedFace = _currentFace;
+            };
+
+            this.unlockCurrentFace = function() { _lockedFace = null; };
+
+            this.lockCurrentAxis = function() {
+                if (_currentFace != null) {
+                    _lockedAxis = (_currentFace === "left" || _currentFace === "right") ? X_AXIS_FACES : Y_AXIS_FACES;
+                }
+            };
+
+            this.unlockCurrentAxis = function() {
+                _lockedAxis = null;
             };
 
             this.compute = function (params) {
@@ -14449,8 +14523,14 @@
         destroyDraggable: function (el, category) {
             _getDragManager(this, category).destroyDraggable(el);
         },
+        unbindDraggable: function (el, evt, fn, category) {
+            _getDragManager(this, category).destroyDraggable(el, evt, fn);
+        },
         destroyDroppable: function (el, category) {
             _getDragManager(this, category).destroyDroppable(el);
+        },
+        unbindDroppable: function (el, evt, fn, category) {
+            _getDragManager(this, category).destroyDroppable(el, evt, fn);
         },
         initDraggable: function (el, options, category) {
             _getDragManager(this, category).draggable(el, options);
