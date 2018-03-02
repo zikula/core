@@ -3987,16 +3987,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434"
+                "reference": "dc270d5fec418cc6ac983671dba5d80ffaffb142"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
-                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/dc270d5fec418cc6ac983671dba5d80ffaffb142",
+                "reference": "dc270d5fec418cc6ac983671dba5d80ffaffb142",
                 "shasum": ""
             },
             "require": {
@@ -4028,7 +4028,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2018-01-11T05:54:03+00:00"
+            "time": "2018-02-28T22:10:01+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -4781,16 +4781,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.34",
+            "version": "v2.8.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "0455b5d26c5814062d7e9ea1ac99174ca13ad80e"
+                "reference": "7339c93c82f539305c0eaa52e53c5092d188a82b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/0455b5d26c5814062d7e9ea1ac99174ca13ad80e",
-                "reference": "0455b5d26c5814062d7e9ea1ac99174ca13ad80e",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/7339c93c82f539305c0eaa52e53c5092d188a82b",
+                "reference": "7339c93c82f539305c0eaa52e53c5092d188a82b",
                 "shasum": ""
             },
             "require": {
@@ -4916,20 +4916,20 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-01-29T10:48:31+00:00"
+            "time": "2018-03-01T16:45:46+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.4.4",
+            "version": "v3.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
-                "reference": "9e9330b4ea807cc1afca2a03151e7ef6c04478ef"
+                "reference": "b5fee44526791bfeb52573e87ca85405c92117c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/workflow/zipball/9e9330b4ea807cc1afca2a03151e7ef6c04478ef",
-                "reference": "9e9330b4ea807cc1afca2a03151e7ef6c04478ef",
+                "url": "https://api.github.com/repos/symfony/workflow/zipball/b5fee44526791bfeb52573e87ca85405c92117c9",
+                "reference": "b5fee44526791bfeb52573e87ca85405c92117c9",
                 "shasum": ""
             },
             "require": {
@@ -4983,7 +4983,7 @@
                 "transition",
                 "workflow"
             ],
-            "time": "2018-01-03T17:14:19+00:00"
+            "time": "2018-02-14T10:03:57+00:00"
         },
         {
             "name": "twig/extensions",
