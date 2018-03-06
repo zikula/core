@@ -9,8 +9,8 @@ CHANGELOG - ZIKULA 1.5.x
 
  - Vendor updates:
     - sensiolabs/security-checker updated from 4.1.7 to 4.1.8
-    - symfony/symfony updated from 2.8.34 to 2.8.35
-    - symfony/workflow updated from 3.4.4 to 3.4.5
+    - symfony/symfony updated from 2.8.34 to 2.8.36
+    - symfony/workflow updated from 3.4.4 to 3.4.6
     - twig/twig updated from 1.35.0 to 1.35.2
 
 
