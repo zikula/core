@@ -4,11 +4,17 @@ CHANGELOG - ZIKULA 2.0.x
 2.0.6 (unreleased)
 ------------------
 
+ - BC Breaks:
+    - Removed custom container builder bridge.
+
  - Fixes:
     - ?
 
  - Vendor updates:
-    - ?
+    - psr/simple-cache updated from 1.0.0 to 1.0.1
+    - sensiolabs/security-checker updated from 4.1.7 to 4.1.8
+    - symfony/symfony updated from 3.4.4 to 3.4.6
+    - twig/twig updated from 1.35.0 to 1.35.2
 
 
 2.0.5 (2018-02-24)
