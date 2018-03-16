@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 2.0.x
 ------------------
 
  - BC Breaks:
-    - Removed custom container builder bridge.
+    - Removed custom container builder bridge, so array access for the container is not available anymore (#3894).
 
  - Fixes:
     - ?
