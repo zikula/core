@@ -12,15 +12,12 @@
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Composer\Autoload\ClassLoader;
-use Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
 use Symfony\Component\Debug\DebugClassLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
-use Zikula\Bridge\DependencyInjection\ContainerBuilder;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\ThemeModule\AbstractTheme;
@@ -368,42 +365,11 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     }
 
     /**
-     * Gets the container's base class.
-     *
-     * All names except Container must be fully qualified.
-     *
-     * Allows container to build services after being dumped and frozen
-     *
-     * @return string
-     */
-    protected function getContainerBaseClass()
-    {
-        //return 'Symfony\Component\DependencyInjection\Container';
-        return 'Zikula\Bridge\DependencyInjection\ContainerBuilder';
-    }
-
-    /**
-     * Gets a new ContainerBuilder instance used to build the service container.
-     *
-     * @return ContainerBuilder
-     */
-    protected function getContainerBuilder()
-    {
-        $container = new ContainerBuilder(new ParameterBag($this->getKernelParameters()));
-
-        if (class_exists('ProxyManager\Configuration') && class_exists('Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator')) {
-            $container->setProxyInstantiator(new RuntimeInstantiator());
-        }
-
-        return $container;
-    }
-
-    /**
      * Prepares the ContainerBuilder before it is compiled.
      *
-     * @param SymfonyContainerBuilder $container A ContainerBuilder instance
+     * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    protected function prepareContainer(SymfonyContainerBuilder $container)
+    protected function prepareContainer(ContainerBuilder $container)
     {
         $extensions = [];
         foreach ($this->bundles as $bundle) {
@@ -428,6 +394,10 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
 
         $this->build($container);
+
+        foreach ($container->getExtensions() as $extension) {
+            $extensions[] = $extension->getAlias();
+        }
 
         // ensure these extensions are implicitly loaded
         $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
