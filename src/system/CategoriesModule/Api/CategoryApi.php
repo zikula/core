@@ -223,41 +223,41 @@ class CategoryApi
 
         $repo = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryEntity');
         $fieldMap = ['path' => 'name', 'ipath' => 'id'];
+        $selectField = $fieldMap[$pathField];
+
         if (!is_array($apath)) {
             $apath = [$apath];
         }
+
         $values = [];
         foreach ($apath as $path) {
             $parts = explode('/', $path);
+            $parts = array_values(array_filter($parts));
+            if (empty($parts)) {
+                continue;
+            }
+            $parent = null;
+            $last = count($parts) - 1;
 
-            if ('path' == $pathField) {
-                $parts = array_values(array_filter($parts));
-
-                if (!empty($parts)) {
-                    $last = count($parts) - 1;
-
-                    foreach ($parts as $part_key => $part_value) {
-                        if (0 == $part_key) {
-                            $parent = $repo->findOneBy(['name' => $parts[$part_key]])->getID();
-                        } elseif ($part_key != $last) {
-                            $parent = $repo->findOneBy(['name' => $parts[$part_key], 'parent' => $parent])->getID();
-                        }
-                    }
+            foreach ($parts as $partKey => $part_value) {
+                if (0 == $partKey) {
+                    $parent = $repo->findOneBy([$selectField => $parts[$partKey]])->getID();
+                } elseif ($partKey != $last) {
+                    $parent = $repo->findOneBy([$selectField => $parts[$partKey], 'parent' => $parent])->getID();
                 }
             }
 
             $values[] = array_pop($parts);
         }
+
         if (count($values) > 1) {
             $method = 'findBy';
         } else {
             $method = 'findOneBy';
             $values = array_pop($values);
         }
-        $criteria = [$fieldMap[$pathField] => $values];
-        if ('path' == $pathField) {
-            $criteria['parent'] = $parent;
-        }
+        $criteria = [$selectField => $values];
+        $criteria['parent'] = $parent;
         if (!$includeLeaf) {
             $criteria['is_leaf'] = false;
         }
@@ -269,19 +269,23 @@ class CategoryApi
         } else {
             $sort = null;
         }
+
         $categories = $repo->$method($criteria, $sort);
         if (!$categories) {
             return $categories;
         }
-        if ('ipath' == $pathField) {
-            return $categories;
-        }
+
         $result = [];
         if (!is_array($categories)) {
             $categories = [$categories];
         }
         foreach ($categories as $category) {
-            $path = $category->getPath();
+            $path = null;
+            if ('path' == $pathField) {
+                $path = $category->getPath();
+            } elseif ('ipath' == $pathField) {
+                $path = $category->getIPath();
+            }
             if (in_array($path, $apath)) {
                 $result[] = $category;
             }
@@ -468,7 +472,9 @@ class CategoryApi
             @trigger_error('The arguments "exclPath", "assocKey", "attributes" and "columnArray" no longer affect the query.', E_USER_DEPRECATED);
         }
 
-        return [$this->getCategoryByPath($apath, $pathField, $sort, $includeLeaf, $all)];
+        $baseCategory = $this->getCategoryByPath($apath, $pathField, $sort, $includeLeaf, $all);
+
+        return $baseCategory->getChildren();
     }
 
     /**
