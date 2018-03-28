@@ -137,6 +137,8 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
             setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
         }
         $this->userSessionRepository->removeAndFlush($sessionId);
+
+        return true;
     }
 
     /**
