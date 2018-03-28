@@ -8,7 +8,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Removed custom container builder bridge, so array access for the container is not available anymore (#3894).
 
  - Fixes:
-    - ?
+    - Fixed session regeneration warning with PHP 7 (#3886).
 
  - Vendor updates:
     - doctrine/doctrine-cache-bundle updated from 1.3.2 to 1.3.3
