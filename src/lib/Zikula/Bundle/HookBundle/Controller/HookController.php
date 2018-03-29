@@ -402,12 +402,6 @@ class HookController extends Controller
         if ($sessionId == $currentRequest->getSession()->getId()) {
             return;
         }
-<<<<<<< HEAD
-=======
-
-        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
-    }
->>>>>>> 1.5
 
         $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
