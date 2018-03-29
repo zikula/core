@@ -73,14 +73,6 @@
                 "text json": Zikula.Ajax.Response.convertResponseText
             }
         };
-        if (Zikula.Config.sessionName) {
-            var sessionId = Zikula.Core.getService('cookie').get(Zikula.Config.sessionName, false);
-            if (sessionId) {
-                Zikula.Ajax.defaultOptions.headers = {
-                    'X-ZIKULA-AJAX-TOKEN': sessionId
-                };
-            }
-        }
         $.ajaxSetup(Zikula.Ajax.defaultOptions);
 
         // Use prefilter to extend jQuery request and response object with Zikula.Ajax.Response

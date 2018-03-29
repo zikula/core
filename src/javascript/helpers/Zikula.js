@@ -1343,14 +1343,6 @@ Object.extend(Zikula.Ajax.Request,/** @lends Zikula.Ajax.Request.prototype */{
         options = Object.extend({
             method: 'POST'
         }, options || { });
-        if (Zikula.Config.sessionName) {
-            var sessionId = Zikula.Cookie.get(Zikula.Config.sessionName, false);
-            if (sessionId) {
-                options.requestHeaders = Object.extend({
-                    'X-ZIKULA-AJAX-TOKEN': sessionId
-                }, options.requestHeaders || { });
-            }
-        }
         return options;
     }
 });

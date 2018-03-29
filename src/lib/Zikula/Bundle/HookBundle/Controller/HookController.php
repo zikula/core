@@ -452,11 +452,14 @@ class HookController extends Controller
         if (!$currentRequest->isXmlHttpRequest()) {
             throw new \Exception();
         }
-        // @todo how to SET the $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] ?
-        $headerToken = ($currentRequest->server->has('HTTP_X_ZIKULA_AJAX_TOKEN')) ? $currentRequest->server->get('HTTP_X_ZIKULA_AJAX_TOKEN') : null;
-        if ($headerToken == $currentRequest->getSession()->getId()) {
+        
+        $sessionName = $this->container->getParameter('zikula.session.name');
+        $sessionId = $this->getRequest()->cookies->get($sessionName, null);
+        
+        if ($sessionId == $currentRequest->getSession()->getId()) {
             return;
         }
+        
         $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
 
