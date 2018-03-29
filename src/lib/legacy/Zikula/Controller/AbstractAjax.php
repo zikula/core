@@ -40,9 +40,10 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
     {
         @trigger_error('Old controller is deprecated, please use Symfony instead.', E_USER_DEPRECATED);
 
-        $headerToken = isset($_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN']) ? $_SERVER['HTTP_X_ZIKULA_AJAX_TOKEN'] : null;
-
-        if ($headerToken == session_id()) {
+        $sessionName = $this->serviceManager->getParameter('zikula.session.name');
+        $sessionId = $this->request->cookies->get($sessionName, null);
+        
+        if ($sessionId == session_id()) {
             return;
         }
 
