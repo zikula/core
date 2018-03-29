@@ -42,7 +42,7 @@ abstract class Zikula_Controller_AbstractAjax extends Zikula_AbstractController
 
         $sessionName = $this->serviceManager->getParameter('zikula.session.name');
         $sessionId = $this->request->cookies->get($sessionName, null);
-        
+
         if ($sessionId == session_id()) {
             return;
         }

@@ -452,14 +452,14 @@ class HookController extends Controller
         if (!$currentRequest->isXmlHttpRequest()) {
             throw new \Exception();
         }
-        
+
         $sessionName = $this->container->getParameter('zikula.session.name');
         $sessionId = $this->getRequest()->cookies->get($sessionName, null);
-        
+
         if ($sessionId == $currentRequest->getSession()->getId()) {
             return;
         }
-        
+
         $this->get('zikula_core.common.csrf_token_handler')->validate($token);
     }
 
