@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 1.5.x
  - Fixes:
     - Fixed broken fetching of sub categories using legacy category api (#3811).
     - Fixed session regeneration warning with PHP 7 (#3886).
+    - Removed legacy code to enable `cookie_httponly` setting for cookies (#3895).
 
  - Vendor updates:
     - doctrine/doctrine-cache-bundle updated from 1.3.2 to 1.3.3
