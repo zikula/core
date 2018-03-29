@@ -6,6 +6,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - BC Breaks:
     - Removed custom container builder bridge, so array access for the container is not available anymore (#3894).
+    - Removed legacy code to enable `cookie_httponly` setting for cookies (#3895).
 
  - Fixes:
     - Fixed session regeneration warning with PHP 7 (#3886).
