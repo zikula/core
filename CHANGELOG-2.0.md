@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed session regeneration warning with PHP 7 (#3886).
 
  - Vendor updates:
+    - composer/ca-bundle updated from 1.1.0 to 1.1.1
     - doctrine/doctrine-cache-bundle updated from 1.3.2 to 1.3.3
     - guzzlehttp/guzzle updated from 6.3.0 to 6.3.2
     - psr/simple-cache updated from 1.0.0 to 1.0.1
