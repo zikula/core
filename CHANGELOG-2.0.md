@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Fixes:
     - Fixed session regeneration warning with PHP 7 (#3886).
+    - Reduced priority of click jack protection listener to execute it later.
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.1.0 to 1.1.1
