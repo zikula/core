@@ -17,7 +17,7 @@ CHANGELOG - ZIKULA 2.0.x
     - guzzlehttp/guzzle updated from 6.3.0 to 6.3.2
     - psr/simple-cache updated from 1.0.0 to 1.0.1
     - sensiolabs/security-checker updated from 4.1.7 to 4.1.8
-    - symfony/symfony updated from 3.4.4 to 3.4.6
+    - symfony/symfony updated from 3.4.4 to 3.4.7
     - twig/twig updated from 1.35.0 to 1.35.3
 
 
