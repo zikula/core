@@ -36,7 +36,7 @@ class ClickjackProtectionListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::RESPONSE => [
-                ['onKernelResponse']
+                ['onKernelResponse', -99]
             ]
         ];
     }
