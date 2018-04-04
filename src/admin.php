@@ -14,6 +14,7 @@ use Zikula_Request_Http as Request;
 include 'lib/bootstrap.php';
 $request = Request::createFromGlobals();
 $core->getContainer()->set('request', $request);
+$core->getContainer()->get('request_stack')->push($request);
 $core->init(Zikula_Core::STAGE_ALL, $request);
 $url = $core->getContainer()->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], \Symfony\Component\Routing\RouterInterface::ABSOLUTE_URL);
 $url = str_replace('/admin.php', '', $url);
