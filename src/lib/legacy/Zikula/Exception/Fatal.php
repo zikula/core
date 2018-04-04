@@ -19,8 +19,9 @@ use Zikula\Core\Exception\FatalErrorException;
  */
 class Zikula_Exception_Fatal extends FatalErrorException
 {
-    public function __construct()
+    public function __construct($message = 'Fatal Error!', $code = 0, $severity = 1, $filename = __FILE__, $lineno = __LINE__)
     {
+        parent::__construct($message, $code, $severity, $filename, $lineno);
         @trigger_error('This exception is deprecated, please use FatalErrorException instead.', E_USER_DEPRECATED);
     }
 }
