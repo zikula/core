@@ -21,7 +21,7 @@ class Zikula_Exception_Forbidden extends AccessDeniedException
 {
     public function __construct($message = 'Access Denied.', \Exception $previous = null)
     {
-        parent::__ __construct($message, $previous);
+        parent::__construct($message, $previous);
         @trigger_error('This exception is deprecated, please use AccessDeniedException instead.', E_USER_DEPRECATED);
     }
 }
