@@ -10,7 +10,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Removed legacy code to enable `cookie_httponly` setting for cookies (#3895).
     - Reduced priority of click jack protection listener to execute it later.
     - Improved exception handling in legacy layer to remove errors
-    - Added current request to reqest stack in admin.php and user.php
+    - Added current request to request stack in admin.php and user.php
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.1.0 to 1.1.1
