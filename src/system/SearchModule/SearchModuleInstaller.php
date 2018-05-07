@@ -93,6 +93,19 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                     return false;
                 }
             case '1.5.4':
+                // nothing
+            case '1.6.0':
+                // update schema since field length has been increased
+                try {
+                    $this->schemaTool->update([
+                        'Zikula\SearchModule\Entity\SearchResultEntity',
+                    ]);
+                } catch (\Exception $e) {
+                    $this->addFlash('error', $e->getMessage());
+
+                    return false;
+                }
+            case '1.6.1':
                 // future upgrade routines
         }
 
