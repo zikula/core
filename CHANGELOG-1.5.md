@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 1.5.x
 ------------------
 
  - Fixes:
-    - ?
+    - Increased the length of the `extra` column of Search module's `search_result` entity (#3900, #3901).
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.33 to 2.4.34
