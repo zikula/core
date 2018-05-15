@@ -1539,10 +1539,10 @@
         };
 
         var _setConstrain = function(value) {
-            constrain = typeof value === "function" ? value : value ? function(pos) {
+            constrain = typeof value === "function" ? value : value ? function(pos, dragEl, _constrainRect, _size) {
                 return negativeFilter([
-                    Math.max(0, Math.min(constrainRect.w - this.size[0], pos[0])),
-                    Math.max(0, Math.min(constrainRect.h - this.size[1], pos[1]))
+                    Math.max(0, Math.min(_constrainRect.w - _size[0], pos[0])),
+                    Math.max(0, Math.min(_constrainRect.h - _size[1], pos[1]))
                 ]);
             }.bind(this) : function(pos) { return negativeFilter(pos); };
         }.bind(this);
@@ -1620,7 +1620,8 @@
         this.canDrag = this.params.canDrag || _true;
 
         var constrainRect,
-            matchingDroppables = [], intersectingDroppables = [];
+            matchingDroppables = [],
+            intersectingDroppables = [];
 
         this.downListener = function(e) {
             var isNotRightClick = this.rightButtonCanDrag || (e.which !== 3 && e.button !== 2);
@@ -1631,15 +1632,26 @@
                         dragEl = this.el;
                     else {
                         dragEl = this.el.cloneNode(true);
+                        this.params.addClass(dragEl, _classes.clonedDrag);
+
                         dragEl.setAttribute("id", null);
                         dragEl.style.position = "absolute";
-                        // the clone node is added to the body; getOffsetRect gives us a value
-                        // relative to the body.
-                        var b = getOffsetRect(this.el);
-                        dragEl.style.left = b.left + "px";
-                        dragEl.style.top = b.top + "px";
-                        this.params.addClass(dragEl, _classes.clonedDrag);
-                        document.body.appendChild(dragEl);
+
+                        if (this.params.parent != null) {
+                            var p = this.params.getPosition(this.el);
+                            dragEl.style.left = p[0] + "px";
+                            dragEl.style.top = p[1] + "px";
+                            this.params.parent.appendChild(dragEl);
+                        } else {
+                            // the clone node is added to the body; getOffsetRect gives us a value
+                            // relative to the body.
+                            var b = getOffsetRect(this.el);
+                            dragEl.style.left = b.left + "px";
+                            dragEl.style.top = b.top + "px";
+
+                            document.body.appendChild(dragEl);
+                        }
+
                     }
                     consumeStartEvent && _consume(e);
                     downAt = _pl(e);
@@ -1844,7 +1856,7 @@
         this.moveBy = function(dx, dy, e) {
             intersectingDroppables.length = 0;
             var desiredLoc = this.toGrid([posAtDown[0] + dx, posAtDown[1] + dy]),
-                cPos = constrain(desiredLoc, dragEl);
+                cPos = constrain(desiredLoc, dragEl, constrainRect, this.size);
 
             if (useGhostProxy(this.el)) {
                 if (desiredLoc[0] !== cPos[0] || desiredLoc[1] !== cPos[1]) {
@@ -1869,8 +1881,6 @@
             var rect = { x:cPos[0], y:cPos[1], w:this.size[0], h:this.size[1]},
                 pageRect = { x:rect.x + pageDelta[0], y:rect.y + pageDelta[1], w:rect.w, h:rect.h},
                 focusDropElement = null;
-
-
 
             this.params.setPosition(dragEl, cPos);
             for (var i = 0; i < matchingDroppables.length; i++) {
@@ -2482,7 +2492,7 @@
 
     };
 
-    root.Katavorio.version = "0.23.0";
+    root.Katavorio.version = "0.27.0";
 
     if (typeof exports !== "undefined") {
         exports.Katavorio = root.Katavorio;
@@ -3546,7 +3556,7 @@
 
     var jsPlumbInstance = root.jsPlumbInstance = function (_defaults) {
 
-        this.version = "2.6.9";
+        this.version = "2.6.12";
 
         if (_defaults) {
             jsPlumb.extend(this.Defaults, _defaults);
@@ -5326,7 +5336,7 @@
                 },
                 onDrop: function (jpc) {
                     var source = jpc.endpoints[0];
-                    source.anchor.locked = false;
+                    source.anchor.unlock();
                 },
                 isDropAllowed: function () {
                     return proxyComponent.isDropAllowed.apply(proxyComponent, arguments);
@@ -6032,7 +6042,7 @@
             else if (info.id) {
                 _currentInstance.batch(function () {
                     _doRemove(info, affectedElements);
-                }, doNotRepaint === false);
+                }, doNotRepaint === true);
             }
             return _currentInstance;
         };
@@ -7991,7 +8001,7 @@
                         var originalEvent = _jsPlumb.getDropEvent(arguments);
                         // unlock the other endpoint (if it is dynamic, it would have been locked at drag start)
                         var idx = _jsPlumb.getFloatingAnchorIndex(jpc);
-                        jpc.endpoints[idx === 0 ? 1 : 0].anchor.locked = false;
+                        jpc.endpoints[idx === 0 ? 1 : 0].anchor.unlock();
                         // TODO: Dont want to know about css classes inside jsplumb, ideally.
                         jpc.removeClass(_jsPlumb.draggingClass);
 
@@ -8091,7 +8101,7 @@
                         // make our canvas visible (TODO: hand off to library; we should not know about DOM)
                         this.canvas.style.visibility = "visible";
                         // unlock our anchor
-                        this.anchor.locked = false;
+                        this.anchor.unlock();
                         // clear floating anchor.
                         this._jsPlumb.floatingEndpoint = null;
                     }
@@ -9121,8 +9131,9 @@
             }
         },
         repaint: function (params) {
-            params = params || {};
-            this.paint({ elId: this.sourceId, recalc: !(params.recalc === false), timestamp: params.timestamp});
+            var p = jsPlumb.extend(params || {}, {});
+            p.elId = this.sourceId;
+            this.paint(p);
         },
         prepareEndpoint: function (_jsPlumb, _newEndpoint, conn, existing, index, params, element, elementId) {
             var e;
@@ -9220,97 +9231,12 @@
             continuousAnchorLocations = {},
             userDefinedContinuousAnchorLocations = {},
             continuousAnchorOrientations = {},
-            Orientation = { HORIZONTAL: "horizontal", VERTICAL: "vertical", DIAGONAL: "diagonal", IDENTITY: "identity" },
-            axes = ["left", "top", "right", "bottom"],
             connectionsByElementId = {},
             self = this,
             anchorLists = {},
             jsPlumbInstance = params.jsPlumbInstance,
             floatingConnections = {},
-            calculateOrientation = function (sourceId, targetId, sd, td, sourceAnchor, targetAnchor) {
-
-                if (sourceId === targetId) {
-                    return {
-                        orientation: Orientation.IDENTITY,
-                        a: ["top", "top"]
-                    };
-                }
-
-                var theta = Math.atan2((td.centery - sd.centery), (td.centerx - sd.centerx)),
-                    theta2 = Math.atan2((sd.centery - td.centery), (sd.centerx - td.centerx));
-
-// --------------------------------------------------------------------------------------
-
-                // improved face calculation. get midpoints of each face for source and target, then put in an array with all combinations of
-                // source/target faces. sort this array by distance between midpoints. the entry at index 0 is our preferred option. we can
-                // go through the array one by one until we find an entry in which each requested face is supported.
-                var candidates = [], midpoints = { };
-                (function (types, dim) {
-                    for (var i = 0; i < types.length; i++) {
-                        midpoints[types[i]] = {
-                            "left": [ dim[i].left, dim[i].centery ],
-                            "right": [ dim[i].right, dim[i].centery ],
-                            "top": [ dim[i].centerx, dim[i].top ],
-                            "bottom": [ dim[i].centerx , dim[i].bottom]
-                        };
-                    }
-                })([ "source", "target" ], [ sd, td ]);
-
-                for (var sf = 0; sf < axes.length; sf++) {
-                    for (var tf = 0; tf < axes.length; tf++) {
-                        candidates.push({
-                            source: axes[sf],
-                            target: axes[tf],
-                            dist: Biltong.lineLength(midpoints.source[axes[sf]], midpoints.target[axes[tf]])
-                        });
-                    }
-                }
-
-                candidates.sort(function (a, b) {
-                    return a.dist < b.dist ? -1 : a.dist > b.dist ? 1 : 0;
-                });
-
-                // now go through this list and try to get an entry that satisfies both (there will be one, unless one of the anchors
-                // declares no available faces)
-                var sourceEdge = candidates[0].source, targetEdge = candidates[0].target;
-                for (var i = 0; i < candidates.length; i++) {
-
-                    if (!sourceAnchor.isContinuous || sourceAnchor.isEdgeSupported(candidates[i].source)) {
-                        sourceEdge = candidates[i].source;
-                    }
-                    else {
-                        sourceEdge = null;
-                    }
-
-                    if (!targetAnchor.isContinuous || targetAnchor.isEdgeSupported(candidates[i].target)) {
-                        targetEdge = candidates[i].target;
-                    }
-                    else {
-                        targetEdge = null;
-                    }
-
-                    if (sourceEdge != null && targetEdge != null) {
-                        break;
-                    }
-                }
-
-                if (sourceAnchor.isContinuous) {
-                    sourceAnchor.setCurrentFace(sourceEdge);
-                }
-
-                if (targetAnchor.isContinuous) {
-                    targetAnchor.setCurrentFace(targetEdge);
-                }
-
-// --------------------------------------------------------------------------------------
-
-                return {
-                    a: [ sourceEdge, targetEdge ],
-                    theta: theta,
-                    theta2: theta2
-                };
-            },
-        // used by placeAnchors function
+            // used by placeAnchors function
             placeAnchorsOnLine = function (desc, elementDimensions, elementPosition, connections, horizontal, otherMultiplier, reverse) {
                 var a = [], step = elementDimensions[horizontal ? 0 : 1] / (connections.length + 1);
 
@@ -9328,7 +9254,7 @@
 
                 return a;
             },
-        // used by edgeSortFunctions
+            // used by edgeSortFunctions
             currySort = function (reverseAngles) {
                 return function (a, b) {
                     var r = true;
@@ -9341,7 +9267,7 @@
                     return r === false ? -1 : 1;
                 };
             },
-        // used by edgeSortFunctions
+            // used by edgeSortFunctions
             leftSort = function (a, b) {
                 // first get adjusted values
                 var p1 = a[0][0] < 0 ? -Math.PI - a[0][0] : Math.PI - a[0][0],
@@ -9353,7 +9279,7 @@
                     return -1;
                 }
             },
-        // used by placeAnchors
+            // used by placeAnchors
             edgeSortFunctions = {
                 "top": function (a, b) {
                     return a[0] > b[0] ? 1 : -1;
@@ -9362,11 +9288,11 @@
                 "bottom": currySort(true),
                 "left": leftSort
             },
-        // used by placeAnchors
+            // used by placeAnchors
             _sortHelper = function (_array, _fn) {
                 return _array.sort(_fn);
             },
-        // used by AnchorManager.redraw
+            // used by AnchorManager.redraw
             placeAnchors = function (elementId, _anchorLists) {
                 var cd = jsPlumbInstance.getCachedData(elementId), sS = cd.s, sO = cd.o,
                     placeSomeAnchors = function (desc, elementDimensions, elementPosition, unsortedConnections, isHorizontal, otherMultiplier, orientation) {
@@ -9449,7 +9375,7 @@
                 targetId = connInfo.targetId,
                 ep = connection.endpoints,
                 removeConnection = function (otherIndex, otherEndpoint, otherAnchor, elId, c) {
-                   _ju.removeWithFunction(connectionsByElementId[elId], function (_c) {
+                    _ju.removeWithFunction(connectionsByElementId[elId], function (_c) {
                         return _c[0].id === c.id;
                     });
                 };
@@ -9461,7 +9387,7 @@
                 removeEndpointFromAnchorLists(connection.floatingEndpoint);
             }
 
-            // remove from anchorLists            
+            // remove from anchorLists
             removeEndpointFromAnchorLists(connection.endpoints[0]);
             removeEndpointFromAnchorLists(connection.endpoints[1]);
 
@@ -9749,7 +9675,7 @@
                         }
                         else {
                             if (!o) {
-                                o = calculateOrientation(sourceId, targetId, sd.o, td.o, conn.endpoints[0].anchor, conn.endpoints[1].anchor);
+                                o = this.calculateOrientation(sourceId, targetId, sd.o, td.o, conn.endpoints[0].anchor, conn.endpoints[1].anchor, conn);
                                 orientationCache[oKey] = o;
                                 // this would be a performance enhancement, but the computed angles need to be clamped to
                                 //the (-PI/2 -> PI/2) range in order for the sorting to work properly.
@@ -9885,6 +9811,9 @@
                 return faces.length === 0 ? "top" : faces[0];
             };
 
+            this.isRelocatable = function() { return true; };
+            this.isSnapOnRelocate = function() { return true; };
+
             // if the given edge is supported, returns it. otherwise looks for a substitute that _is_
             // supported. if none supported we also return the request edge.
             this.verifyEdge = function (edge) {
@@ -9906,22 +9835,39 @@
             this.isEdgeSupported = function (edge) {
                 return  _lockedAxis == null ?
 
-                            (_lockedFace == null ? availableFaces[edge] === true : _lockedFace === edge)
+                    (_lockedFace == null ? availableFaces[edge] === true : _lockedFace === edge)
 
-                        : _lockedAxis.indexOf(edge) !== -1;
+                    : _lockedAxis.indexOf(edge) !== -1;
             };
 
-            this.setCurrentFace = function(face) {
+            this.setCurrentFace = function(face, overrideLock) {
                 _currentFace = face;
+                // if currently locked, and the user wants to override, do that.
+                if (overrideLock && _lockedFace != null) {
+                    _lockedFace = _currentFace;
+                }
             };
 
             this.getCurrentFace = function() { return _currentFace; };
-
-            this.lockCurrentFace = function() {
-                _lockedFace = _currentFace;
+            this.getSupportedFaces = function() {
+                var af = [];
+                for (var k in availableFaces) {
+                    if (availableFaces[k]) {
+                        af.push(k);
+                    }
+                }
+                return af;
             };
 
-            this.unlockCurrentFace = function() { _lockedFace = null; };
+            this.lock = function() {
+                _lockedFace = _currentFace;
+            };
+            this.unlock = function() {
+                _lockedFace = null;
+            };
+            this.isLocked = function() {
+                return _lockedFace != null;
+            };
 
             this.lockCurrentAxis = function() {
                 if (_currentFace != null) {
@@ -9965,6 +9911,93 @@
         };
     };
 
+    _jp.AnchorManager.prototype.calculateOrientation = function (sourceId, targetId, sd, td, sourceAnchor, targetAnchor) {
+
+        var Orientation = { HORIZONTAL: "horizontal", VERTICAL: "vertical", DIAGONAL: "diagonal", IDENTITY: "identity" },
+            axes = ["left", "top", "right", "bottom"];
+
+        if (sourceId === targetId) {
+            return {
+                orientation: Orientation.IDENTITY,
+                a: ["top", "top"]
+            };
+        }
+
+        var theta = Math.atan2((td.centery - sd.centery), (td.centerx - sd.centerx)),
+            theta2 = Math.atan2((sd.centery - td.centery), (sd.centerx - td.centerx));
+
+// --------------------------------------------------------------------------------------
+
+        // improved face calculation. get midpoints of each face for source and target, then put in an array with all combinations of
+        // source/target faces. sort this array by distance between midpoints. the entry at index 0 is our preferred option. we can
+        // go through the array one by one until we find an entry in which each requested face is supported.
+        var candidates = [], midpoints = { };
+        (function (types, dim) {
+            for (var i = 0; i < types.length; i++) {
+                midpoints[types[i]] = {
+                    "left": [ dim[i].left, dim[i].centery ],
+                    "right": [ dim[i].right, dim[i].centery ],
+                    "top": [ dim[i].centerx, dim[i].top ],
+                    "bottom": [ dim[i].centerx , dim[i].bottom]
+                };
+            }
+        })([ "source", "target" ], [ sd, td ]);
+
+        for (var sf = 0; sf < axes.length; sf++) {
+            for (var tf = 0; tf < axes.length; tf++) {
+                candidates.push({
+                    source: axes[sf],
+                    target: axes[tf],
+                    dist: Biltong.lineLength(midpoints.source[axes[sf]], midpoints.target[axes[tf]])
+                });
+            }
+        }
+
+        candidates.sort(function (a, b) {
+            return a.dist < b.dist ? -1 : a.dist > b.dist ? 1 : 0;
+        });
+
+        // now go through this list and try to get an entry that satisfies both (there will be one, unless one of the anchors
+        // declares no available faces)
+        var sourceEdge = candidates[0].source, targetEdge = candidates[0].target;
+        for (var i = 0; i < candidates.length; i++) {
+
+            if (!sourceAnchor.isContinuous || sourceAnchor.isEdgeSupported(candidates[i].source)) {
+                sourceEdge = candidates[i].source;
+            }
+            else {
+                sourceEdge = null;
+            }
+
+            if (!targetAnchor.isContinuous || targetAnchor.isEdgeSupported(candidates[i].target)) {
+                targetEdge = candidates[i].target;
+            }
+            else {
+                targetEdge = null;
+            }
+
+            if (sourceEdge != null && targetEdge != null) {
+                break;
+            }
+        }
+
+        if (sourceAnchor.isContinuous) {
+            sourceAnchor.setCurrentFace(sourceEdge);
+        }
+
+        if (targetAnchor.isContinuous) {
+            targetAnchor.setCurrentFace(targetEdge);
+        }
+
+// --------------------------------------------------------------------------------------
+
+        return {
+            a: [ sourceEdge, targetEdge ],
+            theta: theta,
+            theta2: theta2
+        };
+    };
+
     /**
      * Anchors model a position on some element at which an Endpoint may be located.  They began as a first class citizen of jsPlumb, ie. a user
      * was required to create these themselves, but over time this has been replaced by the concept of referring to them either by name (eg. "TopMiddle"),
@@ -9981,6 +10014,17 @@
         this.lastReturnValue = null;
         this.offsets = params.offsets || [ 0, 0 ];
         this.timestamp = null;
+
+        var relocatable = params.relocatable !== false;
+        this.isRelocatable = function() { return relocatable; };
+        this.setRelocatable = function(_relocatable) { relocatable = _relocatable; };
+        var snapOnRelocate = params.snapOnRelocate !== false;
+        this.isSnapOnRelocate = function() { return snapOnRelocate; };
+
+        var locked = false;
+        this.lock = function() { locked = true; };
+        this.unlock = function() { locked = false; };
+        this.isLocked = function() { return locked; };
 
         _ju.EventGenerator.apply(this);
 
@@ -10094,7 +10138,7 @@
                 // anchor: if it declares zero for some direction, we declare zero too. this might not be the most awesome. perhaps we can come
                 // up with a better way. it's just so that the line we draw looks like it makes sense. maybe this wont make sense.
                 return [ Math.abs(o[0]) * xDir * -1,
-                        Math.abs(o[1]) * yDir * -1 ];
+                    Math.abs(o[1]) * yDir * -1 ];
             }
         };
 
@@ -10150,37 +10194,37 @@
         this.getAnchors = function () {
             return this.anchors;
         };
-        this.locked = false;
+
         var _curAnchor = this.anchors.length > 0 ? this.anchors[0] : null,
             _lastAnchor = _curAnchor,
             self = this,
 
-        // helper method to calculate the distance between the centers of the two elements.
+            // helper method to calculate the distance between the centers of the two elements.
             _distance = function (anchor, cx, cy, xy, wh) {
                 var ax = xy[0] + (anchor.x * wh[0]), ay = xy[1] + (anchor.y * wh[1]),
                     acx = xy[0] + (wh[0] / 2), acy = xy[1] + (wh[1] / 2);
                 return (Math.sqrt(Math.pow(cx - ax, 2) + Math.pow(cy - ay, 2)) +
-                    Math.sqrt(Math.pow(acx - ax, 2) + Math.pow(acy - ay, 2)));
+                Math.sqrt(Math.pow(acx - ax, 2) + Math.pow(acy - ay, 2)));
             },
-        // default method uses distance between element centers.  you can provide your own method in the dynamic anchor
-        // constructor (and also to jsPlumb.makeDynamicAnchor). the arguments to it are four arrays:
-        // xy - xy loc of the anchor's element
-        // wh - anchor's element's dimensions
-        // txy - xy loc of the element of the other anchor in the connection
-        // twh - dimensions of the element of the other anchor in the connection.
-        // anchors - the list of selectable anchors
+            // default method uses distance between element centers.  you can provide your own method in the dynamic anchor
+            // constructor (and also to jsPlumb.makeDynamicAnchor). the arguments to it are four arrays:
+            // xy - xy loc of the anchor's element
+            // wh - anchor's element's dimensions
+            // txy - xy loc of the element of the other anchor in the connection
+            // twh - dimensions of the element of the other anchor in the connection.
+            // anchors - the list of selectable anchors
             _anchorSelector = params.selector || function (xy, wh, txy, twh, anchors) {
-                var cx = txy[0] + (twh[0] / 2), cy = txy[1] + (twh[1] / 2);
-                var minIdx = -1, minDist = Infinity;
-                for (var i = 0; i < anchors.length; i++) {
-                    var d = _distance(anchors[i], cx, cy, xy, wh);
-                    if (d < minDist) {
-                        minIdx = i + 0;
-                        minDist = d;
+                    var cx = txy[0] + (twh[0] / 2), cy = txy[1] + (twh[1] / 2);
+                    var minIdx = -1, minDist = Infinity;
+                    for (var i = 0; i < anchors.length; i++) {
+                        var d = _distance(anchors[i], cx, cy, xy, wh);
+                        if (d < minDist) {
+                            minIdx = i + 0;
+                            minDist = d;
+                        }
                     }
-                }
-                return anchors[minIdx];
-            };
+                    return anchors[minIdx];
+                };
 
         this.compute = function (params) {
             var xy = params.xy, wh = params.wh, txy = params.txy, twh = params.twh;
@@ -10195,7 +10239,7 @@
             // if anchor is locked or an opposite element was not given, we
             // maintain our state. anchor will be locked
             // if it is the source of a drag and drop.
-            if (this.locked || txy == null || twh == null) {
+            if (this.isLocked() || txy == null || twh == null) {
                 return _curAnchor.compute(params);
             }
             else {
@@ -10356,8 +10400,8 @@
                         var dx = (x2 - x1) / anchorsPerFace, dy = (y2 - y1) / anchorsPerFace;
                         for (var i = 0; i < anchorsPerFace; i++) {
                             a.push([
-                                    x1 + (dx * i),
-                                    y1 + (dy * i),
+                                x1 + (dx * i),
+                                y1 + (dy * i),
                                 0,
                                 0
                             ]);
@@ -10426,8 +10470,8 @@
                         _y = points[i][1] - 0.5;
 
                     o.push([
-                            0.5 + ((_x * Math.cos(theta)) - (_y * Math.sin(theta))),
-                            0.5 + ((_x * Math.sin(theta)) + (_y * Math.cos(theta))),
+                        0.5 + ((_x * Math.cos(theta)) - (_y * Math.sin(theta))),
+                        0.5 + ((_x * Math.sin(theta)) + (_y * Math.cos(theta))),
                         points[i][2],
                         points[i][3]
                     ]);
@@ -12950,7 +12994,9 @@
                     nextDirection = segmentDirections(next);
 
                     if (cornerRadius > 0 && current[4] !== next[4]) {
-                        var radiusToUse = Math.min(cornerRadius, segLength(current), segLength(next));
+
+                        var minSegLength = Math.min(segLength(current), segLength(next));
+                        var radiusToUse = Math.min(cornerRadius, minSegLength / 2);
 
                         current[2] -= currentDirection[0] * radiusToUse;
                         current[3] -= currentDirection[1] * radiusToUse;
