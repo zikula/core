@@ -8,11 +8,11 @@ CHANGELOG - ZIKULA 2.0.x
     - ?
 
  - Vendor updates:
-    - gedmo/doctrine-extensions updated from 2.4.33 to 2.4.34
+    - gedmo/doctrine-extensions updated from 2.4.33 to 2.4.35
     - guzzlehttp/guzzle updated from 6.3.2 to 6.3.3
     - phpspec/prophecy updated from 1.7.5 to 1.7.6
     - symfony/polyfill-* updated from 1.7.0 to 1.8.0
-    - symfony/symfony updated from 3.4.8 to 3.4.9
+    - symfony/symfony updated from 3.4.8 to 3.4.10
 
 
 2.0.6 (2018-04-13)
