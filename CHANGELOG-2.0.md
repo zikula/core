@@ -12,7 +12,7 @@ CHANGELOG - ZIKULA 2.0.x
     - guzzlehttp/guzzle updated from 6.3.2 to 6.3.3
     - phpspec/prophecy updated from 1.7.5 to 1.7.6
     - symfony/polyfill-* updated from 1.7.0 to 1.8.0
-    - symfony/symfony updated from 3.4.8 to 3.4.10
+    - symfony/symfony updated from 3.4.8 to 3.4.11
 
 
 2.0.6 (2018-04-13)
