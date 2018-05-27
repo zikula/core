@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "fa17414c67d4747f39d1aea26c211396",
@@ -4839,16 +4839,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.40",
+            "version": "v2.8.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "901a4fb385d02eb407774d6e81a91845a7fb6d66"
+                "reference": "24fc640d544a67869a4106de5fc303c597398629"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/901a4fb385d02eb407774d6e81a91845a7fb6d66",
-                "reference": "901a4fb385d02eb407774d6e81a91845a7fb6d66",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/24fc640d544a67869a4106de5fc303c597398629",
+                "reference": "24fc640d544a67869a4106de5fc303c597398629",
                 "shasum": ""
             },
             "require": {
@@ -4975,11 +4975,11 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-05-21T13:17:42+00:00"
+            "time": "2018-05-25T12:03:11+00:00"
         },
         {
             "name": "symfony/workflow",
-            "version": "v3.4.10",
+            "version": "v3.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/workflow.git",
