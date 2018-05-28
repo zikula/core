@@ -1,11 +1,8 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.7 (unreleased)
+2.0.7 (2018-05-28)
 ------------------
-
- - Fixes:
-    - ?
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.33 to 2.4.35
