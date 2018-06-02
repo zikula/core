@@ -9,6 +9,9 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Vendor updates:
     - ?
+    
+ - Features:
+    - Adding support for separator in dropdown menus.
 
 
 2.0.7 (2018-05-28)
