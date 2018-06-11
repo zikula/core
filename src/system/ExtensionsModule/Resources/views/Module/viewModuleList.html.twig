@@ -47,7 +47,8 @@
 </table>
 {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulaextensionsmodule_module_viewmodulelist'}) }}
 {{ adminFooter() }}
-<!-- @todo move to own file -->
+{# todo move to own file #}
+{% set initScript %}
 <script>
     ( function($) {
         $(document).ready(function() {
@@ -57,3 +58,5 @@
         });
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', initScript) }}
