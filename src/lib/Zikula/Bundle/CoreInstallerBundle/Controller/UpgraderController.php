@@ -57,6 +57,8 @@ class UpgraderController extends AbstractController
         $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/upgrade_stages.yml'));
         $currentStage = $wizard->getCurrentStage($stage);
         if ($currentStage instanceof WizardCompleteInterface) {
+            $this->container->setParameter('upgrading', false);
+
             return $currentStage->getResponse($request);
         }
         $templateParams = $this->controllerHelper->getTemplateGlobals($currentStage);
