@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 1.5.x
 ------------------
 
  - Fixes:
-    - ?
+    - Unset `upgrading` flag after successful upgrade (#3899).
 
  - Vendor updates:
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
