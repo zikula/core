@@ -6,6 +6,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Fixes:
     - Upgraded molog for PHP 7.2+ compatibility (#3906).
+    - Unset `upgrading` flag after successful upgrade (#3899).
 
  - Vendor updates:
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
