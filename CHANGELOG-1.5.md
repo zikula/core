@@ -8,7 +8,8 @@ CHANGELOG - ZIKULA 1.5.x
     - ?
 
  - Vendor updates:
-    - ?
+    - paragonie/random_compat updated from 2.0.12 to 2.0.15
+    - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
 
 
 1.5.7 (2018-05-28)
