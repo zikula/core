@@ -5,11 +5,12 @@ CHANGELOG - ZIKULA 2.0.x
 ------------------
 
  - Fixes:
-    - ?
+    - Upgraded molog for PHP 7.2+ compatibility (#3906).
 
  - Vendor updates:
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
+    - symfony/monolog-bundle updated from 2.12.1 to 3.2.0
 
 
 2.0.7 (2018-05-28)
