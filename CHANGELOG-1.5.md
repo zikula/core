@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 1.5.x
  - Fixes:
     - Unset `upgrading` flag after successful upgrade (#3899).
     - Move JavaScript code in extensions list to footer area to ensure jQuery is available.
+    - Fixed invalid request access in hook controller.
 
  - Vendor updates:
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
