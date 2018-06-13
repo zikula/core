@@ -397,7 +397,7 @@ class HookController extends Controller
         }
 
         $sessionName = $this->container->getParameter('zikula.session.name');
-        $sessionId = $this->getRequest()->cookies->get($sessionName, null);
+        $sessionId = $currentRequest->cookies->get($sessionName, null);
 
         if ($sessionId == $currentRequest->getSession()->getId()) {
             return;
