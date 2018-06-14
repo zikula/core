@@ -4,6 +4,9 @@ CHANGELOG - ZIKULA 1.5.x
 1.5.8 (unreleased)
 ------------------
 
+ - Deprecated:
+    - bootstrap-plus/bootstrap-jqueryui is deprecated and will be removed in 2.x. Use jQuery UI directly.
+
  - Fixes:
     - Unset `upgrading` flag after successful upgrade (#3899).
     - Move JavaScript code in extensions list to footer area to ensure jQuery is available.
