@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed invalid request access in hook controller.
 
  - Vendor updates:
+    - bootstrap-plus/bootstrap-jqueryui has been removed. Use jQuery UI directly.
     - jquery.mmenu updated from 7.0.3 to 7.0.4
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22

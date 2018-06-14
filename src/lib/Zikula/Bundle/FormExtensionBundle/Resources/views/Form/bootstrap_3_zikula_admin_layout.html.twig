@@ -131,9 +131,7 @@ col-sm-9
     {% endif %}
     {# load required assets: jQuery UI + custom search code #}
     {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
-    {{ pageAddAsset('stylesheet', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.css')) }}
     {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
-    {{ pageAddAsset('javascript', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.js')) }}
     {{ pageAddAsset('stylesheet', zasset('@ZikulaUsersModule:css/livesearch.css')) }}
     {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.LiveSearch.js')) }}
 {% endblock %}
