@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.5.9",
         "robloach/component-installer": "*",
-        "zikula/jquery-bundle": "1.*",
+        "zikula/jquery-bundle": "2.*",
         "zikula/jquery-ui-bundle": "1.*",
         "zikula/bootstrap-bundle": "3.*",
         "zikula/fontawesome-bundle": "4.1.*",
