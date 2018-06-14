@@ -4,6 +4,9 @@ CHANGELOG - ZIKULA 2.0.x
 2.0.8 (unreleased)
 ------------------
 
+ - Deprecated:
+    - bootstrap-plus/bootstrap-jqueryui is deprecated and will be removed in 2.1. Use jQuery UI directly.
+
  - Fixes:
     - Upgraded molog for PHP 7.2+ compatibility (#3906).
     - Unset `upgrading` flag after successful upgrade (#3899).
@@ -11,7 +14,6 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed invalid request access in hook controller.
 
  - Vendor updates:
-    - bootstrap-plus/bootstrap-jqueryui has been removed. Use jQuery UI directly.
     - jquery.mmenu updated from 7.0.3 to 7.0.4
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
