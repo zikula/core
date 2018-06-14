@@ -39,65 +39,23 @@
         },
         {
             "name": "afarkas/webshim",
-            "version": "1.16.0",
+            "version": "1.15.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aFarkas/webshim.git",
-                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d"
+                "reference": "82229e75e4482d496e8935b644c08c00019ae402"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
-                "reference": "1600cc692854ac06bf128681bb0f7dd3ccf6b35d",
+                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/82229e75e4482d496e8935b644c08c00019ae402",
+                "reference": "82229e75e4482d496e8935b644c08c00019ae402",
                 "shasum": ""
             },
-            "require": {
-                "components/jquery": ">=1.8.2 <3.0",
-                "robloach/component-installer": "^0.2"
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "scripts": [
-                        "js-webshim/minified/polyfiller.js"
-                    ],
-                    "files": [
-                        "js-webshim/minified/shims/**"
-                    ]
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexander Farkas",
-                    "homepage": "https://github.com/aFarkas/"
-                }
-            ],
-            "description": "The polyfilling, capability based loading JavaScript Library",
-            "homepage": "http://afarkas.github.com/webshim/demos/index.html",
-            "keywords": [
-                "HTML5",
-                "audio",
-                "canvas",
-                "forms",
-                "geolocation",
-                "getUserMedia",
-                "localstorage",
-                "polyfill",
-                "ui",
-                "validation",
-                "video",
-                "webshim",
-                "webshims",
-                "widgets"
-            ],
+            "type": "library",
             "support": {
-                "source": "https://github.com/aFarkas/webshim/tree/1.16.0",
+                "source": "https://github.com/aFarkas/webshim/tree/1.15.8",
                 "issues": "https://github.com/aFarkas/webshim/issues"
-            },
-            "time": "2016-11-13T20:27:50+00:00"
+            }
         },
         {
             "name": "behat/transliterator",
@@ -281,16 +239,16 @@
         },
         {
             "name": "components/jquery",
-            "version": "2.1.4",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/jquery.git",
-                "reference": "7b1d1104656a092423fbfba13c5920e9bbba290c"
+                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/jquery/zipball/7b1d1104656a092423fbfba13c5920e9bbba290c",
-                "reference": "7b1d1104656a092423fbfba13c5920e9bbba290c",
+                "url": "https://api.github.com/repos/components/jquery/zipball/459648cda77875519c5da3ae1dd0ed5d170aa649",
+                "reference": "459648cda77875519c5da3ae1dd0ed5d170aa649",
                 "shasum": ""
             },
             "type": "component",
@@ -302,8 +260,9 @@
                     "files": [
                         "jquery.min.js",
                         "jquery.min.map",
-                        "jquery-migrate.js",
-                        "jquery-migrate.min.js"
+                        "jquery.slim.js",
+                        "jquery.slim.min.js",
+                        "jquery.slim.min.map"
                     ]
                 }
             },
@@ -313,13 +272,12 @@
             ],
             "authors": [
                 {
-                    "name": "John Resig",
-                    "email": "jeresig@gmail.com"
+                    "name": "JS Foundation and other contributors"
                 }
             ],
             "description": "jQuery JavaScript Library",
             "homepage": "http://jquery.com",
-            "time": "2015-05-08T05:04:47+00:00"
+            "time": "2018-03-04T13:23:48+00:00"
         },
         {
             "name": "components/jqueryui",
@@ -2070,16 +2028,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "7.0.3",
+            "version": "7.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "e5df2d3d3fb07a3679c72153933517ca1ecd44f7"
+                "reference": "5b394a54e57e87a779515a5c4c9491fad720035b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/e5df2d3d3fb07a3679c72153933517ca1ecd44f7",
-                "reference": "e5df2d3d3fb07a3679c72153933517ca1ecd44f7",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/5b394a54e57e87a779515a5c4c9491fad720035b",
+                "reference": "5b394a54e57e87a779515a5c4c9491fad720035b",
                 "shasum": ""
             },
             "type": "library",
@@ -2103,10 +2061,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.0.3",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.0.4",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2018-02-09T20:41:36+00:00"
+            "time": "2018-06-12T19:48:58+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -5348,20 +5306,20 @@
         },
         {
             "name": "zikula/jquery-bundle",
-            "version": "1.0.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/JQueryBundle.git",
-                "reference": "5b6275c58da00d191c38d428d7a14d71c791d4e2"
+                "reference": "91ee208c80cbaee97a124cbd84ba1f4804c1dbe4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/JQueryBundle/zipball/5b6275c58da00d191c38d428d7a14d71c791d4e2",
-                "reference": "5b6275c58da00d191c38d428d7a14d71c791d4e2",
+                "url": "https://api.github.com/repos/zikula/JQueryBundle/zipball/91ee208c80cbaee97a124cbd84ba1f4804c1dbe4",
+                "reference": "91ee208c80cbaee97a124cbd84ba1f4804c1dbe4",
                 "shasum": ""
             },
             "require": {
-                "components/jquery": "2.1.*",
+                "components/jquery": "3.*",
                 "php": ">=5.3.3"
             },
             "type": "symfony-bundle",
@@ -5387,7 +5345,7 @@
                 "jquery",
                 "zikula"
             ],
-            "time": "2016-01-16T01:13:55+00:00"
+            "time": "2018-06-14T13:48:43+00:00"
         },
         {
             "name": "zikula/jquery-ui-bundle",
