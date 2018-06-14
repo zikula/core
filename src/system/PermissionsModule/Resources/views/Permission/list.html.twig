@@ -6,7 +6,8 @@
     </script>
 {% endset %}
 {{ pageAddAsset('header', scriptInit) }}
-{{ pageAddAsset('javascript', asset('bootstrap-jqueryui/bootstrap-jqueryui.min.js')) }}
+{{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+{{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaPermissionsModule:js/Zikula.Permission.Admin.View.js')) }}
 
 {{ adminHeader() }}

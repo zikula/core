@@ -102,39 +102,6 @@
             "time": "2017-04-04T11:38:05+00:00"
         },
         {
-            "name": "bootstrap-plus/bootstrap-jqueryui",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bootstrap-plus/bootstrap-jqueryui.git",
-                "reference": "ae53c890fa1445bc8361b85e63653bd0f282a104"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bootstrap-plus/bootstrap-jqueryui/zipball/ae53c890fa1445bc8361b85e63653bd0f282a104",
-                "reference": "ae53c890fa1445bc8361b85e63653bd0f282a104",
-                "shasum": ""
-            },
-            "type": "component",
-            "extra": {
-                "component": {
-                    "files": [
-                        "bootstrap-jqueryui.js",
-                        "bootstrap-jqueryui.min.js",
-                        "bootstrap-jqueryui.css",
-                        "bootstrap-jqueryui.min.css"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A jqueryui version for bootstrap3.",
-            "homepage": "http://bootstrap-plus.github.io/bootstrap-jqueryui/",
-            "time": "2014-06-27T20:29:52+00:00"
-        },
-        {
             "name": "components/bootstrap",
             "version": "3.3.7",
             "source": {
@@ -5810,8 +5777,7 @@
     "stability-flags": {
         "sensio/framework-extra-bundle": 20,
         "oyejorge/less.php": 20,
-        "phpids/phpids": 20,
-        "bootstrap-plus/bootstrap-jqueryui": 20
+        "phpids/phpids": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
