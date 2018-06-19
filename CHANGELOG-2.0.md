@@ -8,7 +8,7 @@ CHANGELOG - ZIKULA 2.0.x
     - bootstrap-plus/bootstrap-jqueryui is deprecated and will be removed in 2.1. Use jQuery UI directly.
 
  - Fixes:
-    - Upgraded molog for PHP 7.2+ compatibility (#3906).
+    - Upgraded monolog for PHP 7.2+ compatibility (#3906).
     - Unset `upgrading` flag after successful upgrade (#3899).
     - Move JavaScript code in extensions list to footer area to ensure jQuery is available.
     - Fixed invalid request access in hook controller.
