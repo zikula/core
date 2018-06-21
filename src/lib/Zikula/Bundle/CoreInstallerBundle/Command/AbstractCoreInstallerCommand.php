@@ -58,8 +58,8 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'default' => 'mysql'
         ],
         'dbtabletype' => [
-            'description' => '@todo ?',
-            'default' => 'myisam'
+            'description' => 'The database storage engine.',
+            'default' => 'innodb'
         ],
         /* Admin user */
         'username' => [
