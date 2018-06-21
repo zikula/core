@@ -14,7 +14,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed invalid request access in hook controller.
 
  - Vendor updates:
-    - jquery.mmenu updated from 7.0.3 to 7.0.4
+    - jquery.mmenu updated from 7.0.3 to 7.0.5
     - paragonie/random_compat updated from 2.0.12 to 2.0.15
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
     - symfony/monolog-bundle updated from 2.12.1 to 3.2.0
