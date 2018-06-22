@@ -8,19 +8,23 @@
         {% for method in collector.activeKeys %}
             <li><a href="{{ path(path, {"authenticationMethod": method}) }}">{{ collector.get(method).DisplayName }}</a></li>
         {% endfor %}
-        <li role="separator" class="divider"></li>
-        <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+        {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
+            <li role="separator" class="divider"></li>
+            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+        {% endif %}
     </ul>
 </div>
 {% else %}
 <div class="btn-group{% if 'nav' in position %} navbar-btn navbar-right{% endif %}">
     <a class="btn btn-default" href="{{ path(path, {"authenticationMethod": collector.activeKeys|first}) }}"><i class="fa fa-key"></i> {{ __('Login with') }} {{ collector.get(collector.activeKeys|first).DisplayName }}</a>
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="caret"></span>
-        <span class="sr-only">Toggle Dropdown</span>
-    </button>
-    <ul class="dropdown-menu">
-        <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
-    </ul>
+    {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+        </ul>
+    {% endif %}
 </div>
 {% endif %}

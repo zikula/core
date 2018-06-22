@@ -13,6 +13,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Move JavaScript code in extensions list to footer area to ensure jQuery is available.
     - Fixed invalid request access in hook controller.
     - Changed default storage engine in CLI installer to `InnoDB` (#3909).
+    - Avoid linking to user registration page if registration functionality is disabled.
 
  - Vendor updates:
     - jquery.mmenu updated from 7.0.3 to 7.0.5
