@@ -119,9 +119,9 @@
                 type: 'POST',
                 url: Routing.generate('zikulamenumodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
-            }).success(function(result) {
+            }).done(function(result) {
                 performContextMenuActionCallback(result.data);
-            }).error(function(result) {
+            }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
                 $('#temp-spinner').remove();
@@ -184,7 +184,7 @@
                             type: 'POST',
                             url: Routing.generate('zikulamenumodule_node_contextmenu', {action: data.action, id: entityId}),
                             data: pars
-                        }).success(function(result) {
+                        }).done(function(result) {
                             var data = result.data;
 
                             if (data.action) {
@@ -204,7 +204,7 @@
                                 }
                                 closeEditForm();
                             }
-                        }).error(function(result) {
+                        }).fail(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         });
 
@@ -254,12 +254,12 @@
                                 data: {
                                     id: $(node).attr('id').replace(id_prefix, '')
                                 }
-                            }).success(function(result) {
+                            }).done(function(result) {
                                 var children_move = result.data.result;
                                 deleteModal.find('.modal-body').append(children_move);
                                 deleteModal.find('#node_delete_move').hide();
                                 deleteModal.find('#node_delete_move_action').show();
-                            }).error(function(result) {
+                            }).fail(function(result) {
                                 alert(result.status + ': ' + result.statusText);
                             }).always(function() {
                                 $('#button-spinner').remove();
@@ -346,9 +346,9 @@
                     parent: data.parent,
                     position: data.position
                 }
-            }).success(function(result) {
+            }).done(function(result) {
                 console.log(result);
-            }).error(function(result) {
+            }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             });
         }

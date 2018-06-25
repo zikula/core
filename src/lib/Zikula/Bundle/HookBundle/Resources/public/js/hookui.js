@@ -159,7 +159,7 @@ var cloneDraggedItem = true;
         $.ajax({
             url: Routing.generate('zikula_hook_hook_togglesubscribeareastatus'),
             data: pars
-        }).success(function(result) {
+        }).done(function(result) {
             var data = result.data;
 
             if (data.action == 'bind') {
@@ -171,7 +171,7 @@ var cloneDraggedItem = true;
                     removeProviderAreaFromSubscriberArea(data.subscriberarea_id, data.providerarea_id)
                 }
             }
-        }).error(function(result) {
+        }).fail(function(result) {
             alert(result.status + ': ' + result.statusText);
         });
     };
@@ -306,12 +306,12 @@ var cloneDraggedItem = true;
         $.ajax({
             url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
             data: pars
-        }).success(function(result) {
+        }).done(function(result) {
             var data = result.data;
 
             // update new sort order
             recolorListElements(data.ol_id, $('#' + data.ol_id).down(0).attr('id'));
-        }).error(function(result) {
+        }).fail(function(result) {
             alert(result.status + ': ' + result.statusText);
         });
     };
