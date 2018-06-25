@@ -170,9 +170,9 @@
                 type: 'POST',
                 url: Routing.generate('zikulacategoriesmodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
-            }).success(function(result) {
+            }).done(function(result) {
                 performContextMenuActionCallback(result.data);
-            }).error(function(result) {
+            }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
                 $('#temp-spinner').remove();
@@ -233,7 +233,7 @@
                             type: 'POST',
                             url: Routing.generate('zikulacategoriesmodule_node_contextmenu', {action: data.action, id: entityId}),
                             data: pars
-                        }).success(function(result) {
+                        }).done(function(result) {
                             var data = result.data;
 
                             if (data.action) {
@@ -257,7 +257,7 @@
                                 treeElem.jstree(true).set_type(editedNode, nodeType);
                                 closeEditForm();
                             }
-                        }).error(function(result) {
+                        }).fail(function(result) {
                             alert(result.status + ': ' + result.statusText);
                         });
 
@@ -382,9 +382,9 @@
                     parent: data.parent,
                     position: data.position
                 }
-            }).success(function(result) {
+            }).done(function(result) {
                 console.log(result);
-            }).error(function(result) {
+            }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             });
         }
