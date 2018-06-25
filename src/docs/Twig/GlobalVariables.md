@@ -10,7 +10,6 @@ The `pagevars` variable makes registered variables available in the template.
     {{ pagevars.homepath }}
     {{ pagevars.title }}
     {{ pagevars.meta.description }}
-    {{ pagevars.meta.keywords }}
     {{ pagevars.meta.charset }}
 
 When creating a template, variables can be created, modified or retrieved using the template tags:
