@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
     - symfony/symfony updated from 2.8.41 to 2.8.42
     - symfony/workflow updated from 3.4.11 to 3.4.12
+    - zikula/seabreeze-theme updated from 4.0.2 to 4.0.3
 
 
 1.5.7 (2018-05-28)
