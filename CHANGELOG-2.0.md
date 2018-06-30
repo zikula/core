@@ -22,6 +22,7 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/monolog-bundle updated from 2.12.1 to 3.2.0
     - symfony/symfony updated from 3.4.11 to 3.4.12
     - zikula/jquery-bundle updated from 1.0.0 to 2.0.0 (includes update from jQuery 2.1.4 to 3.3.1)
+    - zikula/profile-module updated from 3.0.3 to 3.0.4
     - zikula/seabreeze-theme updated from 4.0.2 to 4.0.3
 
 
