@@ -5,6 +5,7 @@ CHANGELOG - ZIKULA 2.1.x
 ------------------
 
  - BC Breaks:
+    - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
 
  - Deprecated:
 
