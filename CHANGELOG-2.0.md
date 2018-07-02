@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed invalid request access in hook controller.
     - Changed default storage engine in CLI installer to `InnoDB` (#3909).
     - Avoid linking to user registration page if registration functionality is disabled.
+    - Use localised date format in user administration list.
 
  - Vendor updates:
     - jquery.mmenu updated from 7.0.3 to 7.0.5
