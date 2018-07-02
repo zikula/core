@@ -2,8 +2,8 @@
     <tr class="user">
         <td headers="hUserName">{{ user.uname }}</td>
         <td headers="hId">{{ user.uid }}</td>
-        <td headers="hRegistrationDate">{{ user.user_regdate|date() }}</td>
-        <td headers="hLastLogin">{{ user.lastlogin|date() }}</td>
+        <td headers="hRegistrationDate">{{ user.user_regdate|localizeddate('medium', 'short') }}</td>
+        <td headers="hLastLogin">{{ user.lastlogin|localizeddate('medium', 'short') }}</td>
         <td headers="hGroups">
             {% for group in user.groups %}
                 <div>{{ group.name }}</div>
