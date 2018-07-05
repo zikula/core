@@ -10,12 +10,13 @@ CHANGELOG - ZIKULA 2.0.x
  - Fixes:
     - Upgraded monolog for PHP 7.2+ compatibility (#3906).
     - Unset `upgrading` flag after successful upgrade (#3899).
-    - Move JavaScript code in extensions list to footer area to ensure jQuery is available.
     - Fixed invalid request access in hook controller.
     - Changed default storage engine in CLI installer to `InnoDB` (#3909).
     - Avoid linking to user registration page if registration functionality is disabled.
     - Use localised date format in user administration list.
     - Show user account menu on login page (like on registration and forgot xy pages, too).
+    - Moved JavaScript code in extensions list to footer area to ensure jQuery is available.
+    - Moved JavaScript code for password strength meter footer area to ensure jQuery is available.
 
  - Vendor updates:
     - jquery.mmenu updated from 7.0.3 to 7.0.5
