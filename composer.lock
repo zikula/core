@@ -3266,16 +3266,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.15",
+            "version": "v2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
-                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
                 "shasum": ""
             },
             "require": {
@@ -3311,7 +3311,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-06-08T15:26:40+00:00"
+            "time": "2018-07-04T16:31:37+00:00"
         },
         {
             "name": "phpids/phpids",
@@ -5572,16 +5572,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.0.4",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "8f4fd7ea66c9415df7783ad71a442382c9874d56"
+                "reference": "1a9c43c700448405d10e3e975f95c56368bf556a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8f4fd7ea66c9415df7783ad71a442382c9874d56",
-                "reference": "8f4fd7ea66c9415df7783ad71a442382c9874d56",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/1a9c43c700448405d10e3e975f95c56368bf556a",
+                "reference": "1a9c43c700448405d10e3e975f95c56368bf556a",
                 "shasum": ""
             },
             "require": {
@@ -5636,10 +5636,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.0.4",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.0.5",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2018-06-30T07:48:44+00:00"
+            "time": "2018-07-05T12:48:40+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
