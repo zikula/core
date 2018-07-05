@@ -48,10 +48,10 @@
     {% endif %}
 </div>
 
-<script type="text/javascript">
-    ( function($) {
-        PagerChangeClass = function(id, class1, class2)
-        {
+{% set customScript %}
+<script>
+    (function($) {
+        PagerChangeClass = function(id, class1, class2) {
             var myobj = $('#' + id);
             if (myobj.hasClass(class1)) {
                 myobj.removeClass(class1);
@@ -62,11 +62,12 @@
             }
         }
 
-        CheckPageLink = function(linkid)
-        {
+        CheckPageLink = function(linkid) {
             PagerChangeClass('showlink' + linkid + 'one', 'hide', 'show');
             PagerChangeClass('showlink' + linkid + 'two', 'hide', 'show');
             PagerChangeClass('showpages' + linkid, 'hide', 'show');
         }
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
