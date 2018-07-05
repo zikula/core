@@ -59,13 +59,13 @@
 
 </div>
 {{ adminFooter() }}
-<script type="text/javascript">
+{% set customScript %}
+<script>
     (function($) {
         /**
          * show|hide moderation-related form elements based on selections within the form.
          */
-        function toggleModerationItemsDisplay()
-        {
+        function toggleModerationItemsDisplay() {
             var autoLoginWrap = $('#{{ form[constant('MODVAR_REGISTRATION_AUTO_LOGIN', UC)].vars.id }}_wrap');
             var isModerated = $('#{{ form[constant('MODVAR_REGISTRATION_APPROVAL_REQUIRED', UC)].vars.id }}').is(':checked');
             if (isModerated == true) {
@@ -77,8 +77,7 @@
         /**
          * show|hide the registration disabled notice based on enabled value
          */
-        function toggleRegistrationDisabledDisplay()
-        {
+        function toggleRegistrationDisabledDisplay() {
             if ($('#{{ form[constant('MODVAR_REGISTRATION_ENABLED', UC)].vars.id }}').is(':checked')) {
                 $('#registration_disabled_reason').collapse('hide');
             } else {
@@ -95,3 +94,5 @@
         });
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
