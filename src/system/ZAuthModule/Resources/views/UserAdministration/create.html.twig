@@ -95,15 +95,18 @@
     })(jQuery);
 </script>
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
-    {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
-    <script type="text/javascript">
-        (function($) {
-            $(document).ready(function() {
-                ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
-                    username: '{{ form.uname.vars.id }}',
-                    minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
-                });
+{{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
+{% set customScript %}
+<script>
+    (function($) {
+        $(document).ready(function() {
+            ZikulaZAuthPassMeter.init('{{ form.pass.vars.id }}_first', '{{ form.vars.id }}_passmeter', {
+                username: '{{ form.uname.vars.id }}',
+                minLength: '{{ getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH')) }}'
             });
-        })(jQuery);
-    </script>
+        });
+    })(jQuery);
+</script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
 {% endif %}
