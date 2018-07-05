@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Changed default storage engine in CLI installer to `InnoDB` (#3909).
     - Avoid linking to user registration page if registration functionality is disabled.
     - Use localised date format in user administration list.
+    - Show user account menu on login page (like on registration and forgot xy pages, too).
 
  - Vendor updates:
     - jquery.mmenu updated from 7.0.3 to 7.0.5
