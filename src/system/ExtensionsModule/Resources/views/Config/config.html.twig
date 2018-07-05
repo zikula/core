@@ -25,8 +25,9 @@
     </div>
 </div>
 {{ adminFooter() }}
-<script type="text/javascript">
-    (function ($) {
+{% set customScript %}
+<script>
+    (function($) {
         $(document).ready(function() {
             $('#{{ form.hardreset.vars.id }}').click(function(event) {
                 if (!confirm('Warning! Do you really want to reset ALL displayname, url and description to defaults? This may break your existing indexed URLs, affecting SEO.')) {
@@ -36,3 +37,5 @@
         });
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
