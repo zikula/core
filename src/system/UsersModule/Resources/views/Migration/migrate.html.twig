@@ -27,14 +27,15 @@
 
 </div>
 {{ adminFooter() }}
-<script type="text/javascript">
+{% set customScript %}
+<script>
     (function($) {
         $(document).ready(function() {
-            $("#migrate").on("click", function() {
+            $('#migrate').on('click', function() {
                 $('#spinner').show();
                 $(this).addClass('disabled');
                 $(this).bind('click', false);
-                migrate()
+                migrate();
             });
             function migrate() {
                 $.ajax({
@@ -59,3 +60,5 @@
         });
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}

@@ -41,16 +41,21 @@
         </ul>
     </div>
 </nav>
-<script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        $('#zikula-admin-hiddenpanel-menu').mmenu({
-            extensions: ['hiddenpanel-customwidth'],
-            'header': {
-                'title': '{{ __('Administration') }}',
-                'add': true,
-                'update': true
-            },
-            'searchfield': true
+{% set customScript %}
+<script>
+    (function($) {
+        $(document).ready(function() {
+            $('#zikula-admin-hiddenpanel-menu').mmenu({
+                extensions: ['hiddenpanel-customwidth'],
+                'header': {
+                    'title': '{{ __('Administration') }}',
+                    'add': true,
+                    'update': true
+                },
+                'searchfield': true
+            });
         });
-    });
+    })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
