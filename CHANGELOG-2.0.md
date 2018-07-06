@@ -17,7 +17,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Show user account menu on login page (like on registration and forgot xy pages, too).
     - Moved JavaScript code in several templates into footer area to ensure jQuery is available.
     - Added `maxlength` constraint to username field in registration form.
-    - Added jQuery UI to default page assets to enforce loading it before bootstrap (#3912).
+    - Ensure jQuery UI is loaded before bootstrap (#3912).
     - Suppress warning in PHP 7.2 if session is accessed before it is regenerated (e.g. during a login) (#3898, #3914).
 
  - Vendor updates:

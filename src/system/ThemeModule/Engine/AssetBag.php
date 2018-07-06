@@ -26,25 +26,25 @@ namespace Zikula\ThemeModule\Engine;
  */
 class AssetBag implements \IteratorAggregate, \Countable
 {
-    const WEIGHT_JQUERY = 20;
+    const WEIGHT_JQUERY = 19;
 
-    const WEIGHT_JQUERY_UI = 21;
+    const WEIGHT_JQUERY_UI = 20;
 
-    const WEIGHT_BOOTSTRAP_JS = 22;
+    const WEIGHT_BOOTSTRAP_JS = 21;
 
-    const WEIGHT_BOOTSTRAP_ZIKULA = 23;
+    const WEIGHT_BOOTSTRAP_ZIKULA = 22;
 
-    const WEIGHT_HTML5SHIV = 24;
+    const WEIGHT_HTML5SHIV = 23;
 
-    const WEIGHT_ROUTER_JS = 30;
+    const WEIGHT_ROUTER_JS = 24;
 
-    const WEIGHT_ROUTES_JS = 31;
+    const WEIGHT_ROUTES_JS = 25;
 
-    const WEIGHT_JS_TRANSLATOR = 32;
+    const WEIGHT_JS_TRANSLATOR = 26;
 
-    const WEIGHT_ZIKULA_JS_TRANSLATOR = 33;
+    const WEIGHT_ZIKULA_JS_TRANSLATOR = 27;
 
-    const WEIGHT_JS_TRANSLATIONS = 34;
+    const WEIGHT_JS_TRANSLATIONS = 28;
 
     const WEIGHT_DEFAULT = 100;
 
@@ -73,7 +73,15 @@ class AssetBag implements \IteratorAggregate, \Countable
         if (!is_array($asset)) {
             $asset = [$asset => self::WEIGHT_DEFAULT];
         }
+
         foreach ($asset as $source => $weight) {
+            // jQueryUI must be loaded before Bootstrap, refs #3912
+            if ('jquery-ui.min.js' == substr($source, -16)
+                || 'jquery-ui.js' == substr($source, -12)
+            ) {
+                $weight = self::WEIGHT_JQUERY_UI;
+            }
+
             if ((isset($this->assets[$source]) && $this->assets[$source] > $weight) || !isset($this->assets[$source])) {
                 // keep original weight if lighter. set if not set already.
                 $this->assets[$source] = $weight;
