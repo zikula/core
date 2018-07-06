@@ -18,6 +18,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Moved JavaScript code in several templates into footer area to ensure jQuery is available.
     - Added `maxlength` constraint to username field in registration form.
     - Added jQuery UI to default page assets to enforce loading it before bootstrap (#3912).
+    - Suppress warning in PHP 7.2 if session is accessed before it is regenerated (e.g. during a login) (#3898).
 
  - Vendor updates:
     - jquery.mmenu updated from 7.0.3 to 7.0.5
