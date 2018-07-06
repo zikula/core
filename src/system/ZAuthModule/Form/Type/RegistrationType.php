@@ -24,6 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidAntiSpamAnswer;
 use Zikula\ZAuthModule\Validator\Constraints\ValidEmail;
@@ -63,6 +64,9 @@ class RegistrationType extends AbstractType
             ->add('uname', TextType::class, [
                 'label' => $this->translator->__('User name'),
                 'help' => $this->translator->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'attr' => [
+                    'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
+                ],
                 'constraints' => [new ValidUname()]
             ])
             ->add('email', RepeatedType::class, [
