@@ -19,6 +19,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Added `maxlength` constraint to username field in registration form.
     - Ensure jQuery UI is loaded before bootstrap (#3912).
     - Suppress warning in PHP 7.2 if session is accessed before it is regenerated (e.g. during a login) (#3898, #3914).
+    - Fixed wrong modvar reference in ZAuth validator (#3913).
 
  - Vendor updates:
     - jquery.mmenu updated from 7.0.3 to 7.0.6
