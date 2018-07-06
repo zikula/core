@@ -20,7 +20,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Suppress warning in PHP 7.2 if session is accessed before it is regenerated (e.g. during a login) (#3898, #3914).
 
  - Vendor updates:
-    - jquery.mmenu updated from 7.0.3 to 7.0.5
+    - jquery.mmenu updated from 7.0.3 to 7.0.6
     - paragonie/random_compat updated from 2.0.12 to 2.0.17
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
     - symfony/symfony updated from 2.8.41 to 2.8.42

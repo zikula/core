@@ -2300,16 +2300,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "7.0.5",
+            "version": "7.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "b5dad01b6da1852203dbdc54a0d9fb5955e96c40"
+                "reference": "8609c8ee6f7d460180f6c3854f4a3f013d9069e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/b5dad01b6da1852203dbdc54a0d9fb5955e96c40",
-                "reference": "b5dad01b6da1852203dbdc54a0d9fb5955e96c40",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/8609c8ee6f7d460180f6c3854f4a3f013d9069e7",
+                "reference": "8609c8ee6f7d460180f6c3854f4a3f013d9069e7",
                 "shasum": ""
             },
             "type": "library",
@@ -2333,10 +2333,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.0.5",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.0.6",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2018-06-14T19:25:37+00:00"
+            "time": "2018-07-05T21:28:13+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
