@@ -129,8 +129,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
         $settings = array_merge($settings, $data);
 
-        error_reporting($reportingLevel);
-
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
@@ -161,6 +159,8 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
                 $io->error($stage[AjaxInstallerStage::FAIL]);
             }
         }
+
+        error_reporting($reportingLevel);
 
         $io->success($this->translator->__('UPGRADE COMPLETE!'));
     }
