@@ -22,27 +22,29 @@ namespace Zikula\ThemeModule\Engine;
  *  - Assets not given a weight are assigned the self::WEIGHT_DEFAULT (100)
  *  - Core assets are loaded at weights 0, 1, 2, etc.
  * @see \Zikula\ThemeModule\EventListener\DefaultPageAssetSetterListener::setDefaultPageAssets()
- * @see \Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension::pageAddAsset()
+ * @see \Zikula\ThemeModule\Twig\Extension\AssetExtension::pageAddAsset()
  */
 class AssetBag implements \IteratorAggregate, \Countable
 {
     const WEIGHT_JQUERY = 20;
 
-    const WEIGHT_BOOTSTRAP_JS = 21;
+    const WEIGHT_JQUERY_UI = 21;
 
-    const WEIGHT_BOOTSTRAP_ZIKULA = 22;
+    const WEIGHT_BOOTSTRAP_JS = 22;
 
-    const WEIGHT_HTML5SHIV = 23;
+    const WEIGHT_BOOTSTRAP_ZIKULA = 23;
 
-    const WEIGHT_ROUTER_JS = 24;
+    const WEIGHT_HTML5SHIV = 24;
 
-    const WEIGHT_ROUTES_JS = 25;
+    const WEIGHT_ROUTER_JS = 30;
 
-    const WEIGHT_JS_TRANSLATOR = 26;
+    const WEIGHT_ROUTES_JS = 31;
 
-    const WEIGHT_ZIKULA_JS_TRANSLATOR = 27;
+    const WEIGHT_JS_TRANSLATOR = 32;
 
-    const WEIGHT_JS_TRANSLATIONS = 28;
+    const WEIGHT_ZIKULA_JS_TRANSLATOR = 33;
+
+    const WEIGHT_JS_TRANSLATIONS = 34;
 
     const WEIGHT_DEFAULT = 100;
 
