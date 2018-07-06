@@ -111,28 +111,26 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         } else {
             $io->text($this->translator->__('There was no need to migrate any users.'));
         }
-$io->text('Test 1');
+
+        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+        // session before regeneration happens (e.g. by an event listener executed before a login)
+        // see issue #3898 for the details
+        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
+
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
             'translator' => $this->translator,
             'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
         ]);
-$io->text('Test 2');
-        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-        // session before regeneration happens (e.g. by an event listener executed before a login)
-        // see issue #3898 for the details
-        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
-        ob_start();
-$io->text('Test 3');
+
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
         $settings = array_merge($settings, $data);
-$io->text('Test 4');
+
         error_reporting($reportingLevel);
-        ob_end_clean();
-$io->text('Test 5');
+
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
@@ -140,10 +138,10 @@ $io->text('Test 5');
             unset($data[$k]);
         }
         $settings = array_merge($settings, $data);
-$io->text('Test 6');
+
         $this->printSettings($settings, $io);
         $io->newLine();
-$io->text('Test 7');
+
         // write the parameters to custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
