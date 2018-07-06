@@ -82,6 +82,13 @@ class ZikulaSessionStorage extends NativeSessionStorage
      */
     public function start()
     {
+        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
+            // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+            // session before regeneration happens (e.g. by an event listener executed before a login)
+            // see issue #3898 for the details
+            $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
+        }
+
         if (parent::start()) {
             // check if session has expired or not
             $now = time();
@@ -108,6 +115,10 @@ class ZikulaSessionStorage extends NativeSessionStorage
                     }
                     break;
             }
+        }
+
+        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
+            error_reporting($reportingLevel);
         }
 
         return true;
