@@ -163,6 +163,6 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             }
             $rows[] = [$name, $givenSetting];
         }
-        $io->table([$this->translator->__('Param'), $this->translator->__('Value')], $rows);
+        $io->table([$this->translator->__('Parameter'), $this->translator->__('Value')], $rows);
     }
 }

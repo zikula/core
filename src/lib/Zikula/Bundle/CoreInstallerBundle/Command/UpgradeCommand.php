@@ -112,11 +112,13 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             $io->text($this->translator->__('There was no need to migrate any users.'));
         }
 
-        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-        // session before regeneration happens (e.g. by an event listener executed before a login)
-        // see issue #3898 for the details
-        // also disable deprecated warnings because create_function() is used in SymfonyRequirements.php but deprecated in PHP 7.2
-        $reportingLevel = error_reporting(E_ALL & ~E_WARNING & ~E_DEPRECATED);
+        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
+            // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+            // session before regeneration happens (e.g. by an event listener executed before a login)
+            // see issue #3898 for the details
+            $reportingLevel = error_reporting();
+            error_reporting($reportingLevel & ~E_WARNING);
+        }
 
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
@@ -161,7 +163,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             }
         }
 
-        error_reporting($reportingLevel);
+        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
+            error_reporting($reportingLevel);
+        }
 
         $io->success($this->translator->__('UPGRADE COMPLETE!'));
     }
