@@ -128,6 +128,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
         // add default javascripts to jsAssetBag
         $this->addJquery();
+        $this->addJqueryUi();
         $this->jsAssetBag->add(
             [
                 $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
@@ -167,8 +168,27 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addJquery()
     {
         $jquery = 'dev' != $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
-        $this->jsAssetBag->add([$this->assetHelper->resolve("jquery/$jquery") => AssetBag::WEIGHT_JQUERY]);
-        $this->jsAssetBag->add([$this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1]);
+        $this->jsAssetBag->add(
+            [
+                $this->assetHelper->resolve("jquery/$jquery") => AssetBag::WEIGHT_JQUERY,
+                $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1
+            ]
+        );
+    }
+
+    private function addJqueryUi()
+    {
+        $jqueryUi = 'dev' != $this->params['env'] ? 'jquery-ui.min.js' : 'jquery-ui.js';
+        $this->jsAssetBag->add(
+            [
+                $this->assetHelper->resolve("jquery-ui/$jqueryUi") => AssetBag::WEIGHT_JQUERY_UI
+            ]
+        );
+        $this->cssAssetBag->add(
+            [
+                $this->assetHelper->resolve('jquery-ui/themes/base/jquery-ui.min.css') => 1,
+            ]
+        );
     }
 
     private function addFosJsRouting()
