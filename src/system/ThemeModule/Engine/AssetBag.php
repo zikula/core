@@ -76,8 +76,8 @@ class AssetBag implements \IteratorAggregate, \Countable
 
         foreach ($asset as $source => $weight) {
             // jQueryUI must be loaded before Bootstrap, refs #3912
-            if (substr($source, -16) == 'jquery-ui.min.js'
-                || substr($source, -12) == 'jquery-ui.js'
+            if ('jquery-ui.min.js' == substr($source, -16)
+                || 'jquery-ui.js' == substr($source, -12)
             ) {
                 $weight = self::WEIGHT_JQUERY_UI;
             }
