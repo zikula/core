@@ -112,24 +112,25 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             $io->text($this->translator->__('There was no need to migrate any users.'));
         }
 
+        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
+            // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+            // session before regeneration happens (e.g. by an event listener executed before a login)
+            // see issue #3898 for the details
+            $reportingLevel = error_reporting();
+            error_reporting($reportingLevel & ~E_WARNING);
+        }
+
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
             'translator' => $this->translator,
             'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
         ]);
 
-        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-        // session before regeneration happens (e.g. by an event listener executed before a login)
-        // see issue #3898 for the details
-        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
-
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
         $settings = array_merge($settings, $data);
-
-        error_reporting($reportingLevel);
 
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
@@ -160,6 +161,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             } else {
                 $io->error($stage[AjaxInstallerStage::FAIL]);
             }
+        }
+
+        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
+            error_reporting($reportingLevel);
         }
 
         $io->success($this->translator->__('UPGRADE COMPLETE!'));
