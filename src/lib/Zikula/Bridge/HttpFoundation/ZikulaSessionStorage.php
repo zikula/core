@@ -119,6 +119,7 @@ class ZikulaSessionStorage extends NativeSessionStorage
     {
         // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
         // session before regeneration happens (e.g. by an event listener executed before a login)
+        // see issue #3898 for the details
         $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
 
         $result = parent::regenerate($destroy, $lifetime);
