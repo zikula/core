@@ -122,6 +122,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         // session before regeneration happens (e.g. by an event listener executed before a login)
         // see issue #3898 for the details
         $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
+        ob_start();
 
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
@@ -130,6 +131,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $settings = array_merge($settings, $data);
 
         error_reporting($reportingLevel);
+        ob_end_clean();
 
         $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
         foreach ($data as $k => $v) {
