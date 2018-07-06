@@ -63,7 +63,7 @@ class ValidEmailValidator extends ConstraintValidator
         }
 
         // ensure legal domain
-        $illegalDomains = $this->variableApi->get('ZikulaZAuthModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, '');
+        $illegalDomains = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, '');
         $pattern = ['/^((\s*,)*\s*)+/D', '/\b(\s*,\s*)+\b/D', '/((\s*,)*\s*)+$/D'];
         $replace = ['', '|', ''];
         $illegalDomains = preg_replace($pattern, $replace, preg_quote($illegalDomains, '/'));
