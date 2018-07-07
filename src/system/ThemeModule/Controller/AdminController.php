@@ -25,8 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Controller\AbstractController;
 
@@ -103,8 +102,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/modify/{themename}")
-     * @Method("GET")
+     * @Route("/modify/{themename}", methods = {"GET"})
      *
      * modify a theme
      *
@@ -139,8 +137,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/modify")
-     * @Method("POST")
+     * @Route("/modify", methods = {"POST"})
      *
      * update the theme variables
      *
@@ -241,8 +238,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/variables")
-     * @Method("POST")
+     * @Route("/variables", methods = {"POST"})
      *
      * update the theme variables
      *
@@ -332,8 +328,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/palettes/{themename}")
-     * @Method("GET")
+     * @Route("/palettes/{themename}", methods = {"GET"})
      *
      * display the themes palettes
      *
@@ -370,8 +365,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/palettes")
-     * @Method("POST")
+     * @Route("/palettes", methods = {"POST"})
      *
      * update the theme palettes
      *
@@ -465,8 +459,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/pageconfig/{themename}")
-     * @Method("GET")
+     * @Route("/pageconfig/{themename}", methods = {"GET"})
      *
      * display the content wrappers for the theme
      *
@@ -549,8 +542,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/modifypageconfigtemplates/{themename}/{filename}")
-     * @Method("GET")
+     * @Route("/modifypageconfigtemplates/{themename}/{filename}", methods = {"GET"})
      *
      * modify a theme page configuration
      *
@@ -654,8 +646,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/modifypageconfigtemplates")
-     * @Method("POST")
+     * @Route("/modifypageconfigtemplates", methods = {"POST"})
      *
      * modify a theme page configuration
      *
@@ -783,8 +774,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/modifypageconfigurationassignment/{themename}/{pcname}")
-     * @Method("GET")
+     * @Route("/modifypageconfigurationassignment/{themename}/{pcname}", methods = {"GET"})
      *
      * Modify a theme page configuration
      *
@@ -875,8 +865,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/pageconfig")
-     * @Method("POST")
+     * @Route("/pageconfig", methods = {"POST"})
      *
      * modify a theme page configuration
      *
@@ -1031,8 +1020,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/config")
-     * @Method("GET")
+     * @Route("/config", methods = {"GET"})
      *
      * Modify Theme module settings
      *
@@ -1085,8 +1073,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/config")
-     * @Method("POST")
+     * @Route("/config", methods = {"POST"})
      *
      * Update configuration
      *
@@ -1231,8 +1218,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/clearcompiled")
-     * @Method("GET")
+     * @Route("/clearcompiled", methods = {"GET"})
      *
      * Clear theme engine compiled templates
      *
@@ -1268,8 +1254,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/clearcache")
-     * @Method("GET")
+     * @Route("/clearcache", methods = {"GET"})
      *
      * Clear theme engine cached templates
      *
@@ -1323,8 +1308,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/clearcombo")
-     * @Method("GET")
+     * @Route("/clearcombo", methods = {"GET"})
      *
      * Clear CSS/JS combination cached files
      *
@@ -1356,8 +1340,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/clearconfig")
-     * @Method("GET")
+     * @Route("/clearconfig", methods = {"GET"})
      *
      * Clear theme engine configurations
      *
@@ -1393,8 +1376,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/renderclearcompiled")
-     * @Method("GET")
+     * @Route("/renderclearcompiled", methods = {"GET"})
      *
      * Clear render compiled templates
      *
@@ -1430,8 +1412,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/renderclearcache")
-     * @Method("GET")
+     * @Route("/renderclearcache", methods = {"GET"})
      *
      * Clear render cached templates
      *
@@ -1467,8 +1448,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/clearall")
-     * @Method("GET")
+     * @Route("/clearall", methods = {"GET"})
      *
      * Clear all cache and compile directories
      *

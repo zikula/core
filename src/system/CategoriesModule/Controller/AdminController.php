@@ -11,8 +11,8 @@
 
 namespace Zikula\CategoriesModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 
 /**

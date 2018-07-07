@@ -11,11 +11,10 @@
 
 namespace Zikula\BlocksModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
@@ -66,8 +65,7 @@ class PlacementController extends AbstractController
     }
 
     /**
-     * @Route("/ajax/changeorder", options={"expose"=true, "i18n"=false})
-     * @Method("POST")
+     * @Route("/ajax/changeorder", methods = {"POST"}, options={"expose"=true, "i18n"=false})
      *
      * Change the block order.
      *

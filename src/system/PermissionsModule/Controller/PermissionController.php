@@ -11,11 +11,10 @@
 
 namespace Zikula\PermissionsModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\Core\Response\Ajax\AjaxResponse;
@@ -124,8 +123,7 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/change-order", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/change-order", methods = {"POST"}, options={"expose"=true})
      *
      * Change the order of a permission rule
      *
@@ -151,8 +149,7 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{pid}", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/delete/{pid}", methods = {"POST"}, options={"expose"=true})
      *
      * Delete a permission
      *
@@ -187,8 +184,7 @@ class PermissionController extends AbstractController
     }
 
     /**
-     * @Route("/test", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/test", methods = {"POST"}, options={"expose"=true})
      *
      * Test a permission rule for a given username
      *

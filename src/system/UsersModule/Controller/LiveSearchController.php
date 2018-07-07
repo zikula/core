@@ -11,10 +11,9 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -25,8 +24,7 @@ class LiveSearchController extends AbstractController
     /**
      * Retrieves a list of users for a given search term (fragment).
      *
-     * @Route("/getUsers", options={"expose"=true})
-     * @Method("GET")
+     * @Route("/getUsers", methods = {"GET"}, options={"expose"=true})
      *
      * @param Request $request Current request instance
      *

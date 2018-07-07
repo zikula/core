@@ -11,12 +11,12 @@
 
 namespace Zikula\ExtensionsModule\Controller;
 
-use SecurityUtil;
 use PluginUtil;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use SecurityUtil;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula_Plugin_ConfigurableInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; // used in annotations - do not remove
 
 /**
  * @Route("/adminplugin")

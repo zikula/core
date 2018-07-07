@@ -13,13 +13,12 @@ namespace Zikula\AdminModule\Controller;
 
 use ModUtil;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -55,8 +54,7 @@ class AdminController extends AbstractController
     /**
      * Views all admin categories.
      *
-     * @Route("/categories/{startnum}", requirements={"startnum" = "\d+"})
-     * @Method("GET")
+     * @Route("/categories/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
      * @Theme("admin")
      * @Template("ZikulaAdminModule:Admin:view.html.twig")
      *
@@ -227,8 +225,7 @@ class AdminController extends AbstractController
     /**
      * Displays main admin panel for a category.
      *
-     * @Route("/panel/{acid}", requirements={"acid" = "^[1-9]\d*$"})
-     * @Method("GET")
+     * @Route("/panel/{acid}", methods = {"GET"}, requirements={"acid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaAdminModule:Admin:adminpanel.html.twig")
      *
@@ -374,8 +371,7 @@ class AdminController extends AbstractController
     /**
      * Displays main category menu.
      *
-     * @Route("/categorymenu/{acid}", requirements={"acid" = "^[1-9]\d*$"})
-     * @Method("GET")
+     * @Route("/categorymenu/{acid}", methods = {"GET"}, requirements={"acid" = "^[1-9]\d*$"})
      * @Theme("admin")
      *
      * @param Request $request

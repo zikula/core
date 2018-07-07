@@ -11,12 +11,11 @@
 
 namespace Zikula\BlocksModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
@@ -195,8 +194,7 @@ class BlockController extends AbstractController
      *
      *  bid int id of block to toggle.
      *
-     * @Route("/toggle-active", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/toggle-active", methods = {"POST"}, options={"expose"=true})
      * @param Request $request
      * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
      */

@@ -12,9 +12,8 @@
 namespace Zikula\ExtensionsModule\Controller;
 
 use ModUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 
@@ -83,8 +82,7 @@ class ExtensionsInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/breadcrumbs")
-     * @Method("GET")
+     * @Route("/breadcrumbs", methods = {"GET"})
      *
      * Admin breadcrumbs
      *

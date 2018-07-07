@@ -11,11 +11,10 @@
 
 namespace Zikula\ZAuthModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
@@ -96,8 +95,7 @@ class UserAdministrationController extends AbstractController
      * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      *
-     * @Route("/getusersbyfragmentastable", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
      * @param Request $request
      * @return PlainResponse
      */

@@ -11,8 +11,6 @@
 
 namespace Zikula\ThemeModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -20,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
@@ -35,8 +34,7 @@ use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 class ThemeController extends AbstractController
 {
     /**
-     * @Route("/view")
-     * @Method("GET")
+     * @Route("/view", methods = {"GET"})
      * @Theme("admin")
      * @Template("ZikulaThemeModule:Theme:view.html.twig")
      *
@@ -254,8 +252,7 @@ class ThemeController extends AbstractController
     }
 
     /**
-     * @Route("/credits/{themeName}")
-     * @Method("GET")
+     * @Route("/credits/{themeName}", methods = {"GET"})
      * @Theme("admin")
      * @Template("ZikulaThemeModule:Theme:credits.html.twig")
      *
