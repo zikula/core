@@ -11,9 +11,11 @@
 
 namespace Zikula\UsersModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\AuthenticateAdminLogin;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Core\Controller\AbstractController;
@@ -193,7 +195,7 @@ class AccessController extends AbstractController
      * @Route("/logout/{returnUrl}", options={"zkNoBundlePrefix"=1})
      * @param Request $request
      * @param null $returnUrl
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function logoutAction(Request $request, $returnUrl = null)
     {

@@ -11,10 +11,9 @@
 
 namespace Zikula\ExtensionsModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
@@ -27,8 +26,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class ServicesController extends AbstractController
 {
     /**
-     * @Route("/{moduleName}", options={"zkNoBundlePrefix" = 1})
-     * @Method("GET")
+     * @Route("/{moduleName}", methods = {"GET"}, options={"zkNoBundlePrefix" = 1})
      * @Theme("admin")
      * @Template("ZikulaExtensionsModule:Services:moduleServices.html.twig")
      *

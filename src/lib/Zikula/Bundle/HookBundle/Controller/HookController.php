@@ -11,11 +11,10 @@
 
 namespace Zikula\Bundle\HookBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -37,8 +36,7 @@ class HookController extends Controller
     }
 
     /**
-     * @Route("/{moduleName}", options={"zkNoBundlePrefix" = 1})
-     * @Method("GET")
+     * @Route("/{moduleName}", methods = {"GET"}, options={"zkNoBundlePrefix" = 1})
      * @Theme("admin")
      * @Template("ZikulaHookBundle:Hook:edit.html.twig")
      *
@@ -246,8 +244,7 @@ class HookController extends Controller
     }
 
     /**
-     * @Route("/togglestatus", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/togglestatus", methods = {"POST"}, options={"expose"=true})
      *
      * Attach/detach a subscriber area to a provider area
      *
@@ -326,11 +323,9 @@ class HookController extends Controller
     }
 
     /**
-     * @Route("/changeorder", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/changeorder", methods = {"POST"}, options={"expose"=true})
      *
-     * changeproviderareaorder
-     * This function changes the order of the providers' areas that are attached to a subscriber
+     * Changes the order of the providers' areas that are attached to a subscriber.
      *
      * @param Request $request
      *

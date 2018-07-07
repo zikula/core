@@ -15,8 +15,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
@@ -36,8 +35,7 @@ use Zikula\UsersModule\Entity\UserEntity;
 class MembershipController extends AbstractController
 {
     /**
-     * @Route("/list/{gid}/{letter}/{startNum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
-     * @Method("GET")
+     * @Route("/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
      * @Template("ZikulaGroupsModule:Membership:list.html.twig")
      *
      * Display all members of a group to a user
@@ -70,8 +68,7 @@ class MembershipController extends AbstractController
     }
 
     /**
-     * @Route("/admin/list/{gid}/{letter}/{startNum}", requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
-     * @Method("GET")
+     * @Route("/admin/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
      * @Theme("admin")
      * @Template("ZikulaGroupsModule:Membership:adminList.html.twig")
      *
@@ -259,8 +256,7 @@ class MembershipController extends AbstractController
      * Called from UsersModule/Resources/public/js/Zikula.Users.Admin.View.js
      * to populate a username search
      *
-     * @Route("/admin/getusersbyfragmentastable", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/admin/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
      * @param Request $request
      * @return Response
      */

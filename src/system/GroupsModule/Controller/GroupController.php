@@ -15,8 +15,7 @@ use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
@@ -33,8 +32,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class GroupController extends AbstractController
 {
     /**
-     * @Route("/list/{startnum}", requirements={"startnum" = "\d+"})
-     * @Method("GET")
+     * @Route("/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
      * @Template("ZikulaGroupsModule:Group:list.html.twig")
      *
      * View a list of all groups (user view)
@@ -74,8 +72,7 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @Route("/admin/list/{startnum}", requirements={"startnum" = "\d+"})
-     * @Method("GET")
+     * @Route("/admin/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
      * @Theme("admin")
      * @Template("ZikulaGroupsModule:Group:adminList.html.twig")
      *

@@ -13,10 +13,9 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AbstractAjaxController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Ajax controller implementation class.
@@ -29,8 +28,7 @@ class AjaxController extends AbstractAjaxController
     /**
      * Updates the sort positions for a given list of entities.
      *
-     * @Route("/updateSortPositions", options={"expose"=true})
-     * @Method("POST")
+     * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
      *
      * @param Request $request Current request instance
      *
