@@ -13,7 +13,7 @@ Current Stable Version
 Development Version
 -------------------
 
-2.1.0 - Currently Scheduled for August 2018 but this is not a fixed release yet
+2.1.0 - Currently Scheduled for March 2019 but this is not a fixed release yet.
 
 Long Term Support Versions
 --------------------------
