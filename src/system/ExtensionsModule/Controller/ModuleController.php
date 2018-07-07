@@ -11,13 +11,12 @@
 
 namespace Zikula\ExtensionsModule\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
@@ -121,8 +120,7 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/modules/activate/{id}/{csrftoken}", requirements={"id" = "^[1-9]\d*$"})
-     * @Method("GET")
+     * @Route("/modules/activate/{id}/{csrftoken}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      *
      * Activate an extension
      *
@@ -152,8 +150,7 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/modules/deactivate/{id}/{csrftoken}", requirements={"id" = "^[1-9]\d*$"})
-     * @Method("GET")
+     * @Route("/modules/deactivate/{id}/{csrftoken}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      *
      * Deactivate an extension
      *
@@ -240,8 +237,7 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/compatibility/{id}", requirements={"id" = "^[1-9]\d*$"})
-     * @Method("GET")
+     * @Route("/compatibility/{id}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaExtensionsModule:Module:compatibility.html.twig")
      *
@@ -342,8 +338,7 @@ class ModuleController extends AbstractController
     /**
      * Post-installation action to trigger the MODULE_POSTINSTALL event.
      * The additional Action is required because this event must occur AFTER the rebuild of the cache which occurs on Request.
-     * @Route("/postinstall/{extensions}")
-     * @Method("GET")
+     * @Route("/postinstall/{extensions}", methods = {"GET"})
      * @param string $extensions
      * @return RedirectResponse
      */
