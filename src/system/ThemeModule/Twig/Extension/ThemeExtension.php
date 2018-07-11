@@ -11,10 +11,17 @@
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
+use Zikula\ThemeModule\Api\PageAssetApi;
 use Zikula\ThemeModule\Engine\Asset;
+use Zikula\ThemeModule\Engine\AssetBag;
 
 class ThemeExtension extends \Twig_Extension
 {
+    /**
+     * @var PageAssetApi
+     */
+    private $pageAssetApi;
+
     /**
      * @var Asset
      */
@@ -22,10 +29,12 @@ class ThemeExtension extends \Twig_Extension
 
     /**
      * ThemeExtension constructor.
-     * @param $assetHelper
+     * @param PageAssetApi $pageAssetApi
+     * @param Asset $assetHelper
      */
-    public function __construct(Asset $assetHelper)
+    public function __construct(PageAssetApi $pageAssetApi, Asset $assetHelper)
     {
+        $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
     }
 
@@ -37,6 +46,7 @@ class ThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
+            new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new \Twig_SimpleFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
         ];
@@ -45,6 +55,24 @@ class ThemeExtension extends \Twig_Extension
     public function getFilters()
     {
         return [];
+    }
+
+    /**
+     * Zikula allows only the following asset types
+     * <ul>
+     *  <li>stylesheet</li>
+     *  <li>javascript</li>
+     *  <li>header</li>
+     *  <li>footer</li>
+     * </ul>
+     *
+     * @param string $type
+     * @param string $value
+     * @param int $weight
+     */
+    public function pageAddAsset($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
+    {
+        $this->pageAssetApi->add($type, $value, $weight);
     }
 
     /**
@@ -73,6 +101,12 @@ class ThemeExtension extends \Twig_Extension
         return $imagePath;
     }
 
+    /**
+     * Resolves a given asset path.
+     *
+     * @param string $path
+     * @return string
+     */
     public function getAssetPath($path)
     {
         return $this->assetHelper->resolve($path);
