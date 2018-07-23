@@ -5,7 +5,7 @@ CHANGELOG - ZIKULA 1.5.x
 ------------------
 
  - Deprecated:
-    - bootstrap-plus/bootstrap-jqueryui is deprecated and will be removed in 2.x. Use jQuery UI directly.
+    - bootstrap-plus/bootstrap-jqueryui is deprecated and will be removed in 2.1. Use jQuery UI directly.
 
  - Fixes:
     - Unset `upgrading` flag after successful upgrade (#3899).
@@ -26,6 +26,7 @@ CHANGELOG - ZIKULA 1.5.x
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
     - symfony/symfony updated from 2.8.41 to 2.8.42
     - symfony/workflow updated from 3.4.11 to 3.4.12
+    - twig/twig updated from 1.35.3 to 1.35.4
     - zikula/profile-module updated from 3.0.3 to 3.0.5
     - zikula/seabreeze-theme updated from 4.0.2 to 4.0.3
 
