@@ -24,7 +24,7 @@ CHANGELOG - ZIKULA 1.5.x
     - jquery.mmenu updated from 7.0.3 to 7.0.6
     - paragonie/random_compat updated from 2.0.12 to 2.0.17
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
-    - symfony/symfony updated from 2.8.41 to 2.8.42
+    - symfony/symfony updated from 2.8.41 to 2.8.43
     - symfony/workflow updated from 3.4.11 to 3.4.12
     - twig/twig updated from 1.35.3 to 1.35.4
     - zikula/profile-module updated from 3.0.3 to 3.0.5
