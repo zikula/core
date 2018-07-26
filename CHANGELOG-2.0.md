@@ -22,6 +22,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed wrong modvar reference in ZAuth validator (#3913).
 
  - Vendor updates:
+    - gedmo/doctrine-extensions updated from 2.4.35 to 2.4.36
     - jquery.mmenu updated from 7.0.3 to 7.0.6
     - paragonie/random_compat updated from 2.0.12 to 2.0.17
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
