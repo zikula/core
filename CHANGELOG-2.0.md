@@ -26,6 +26,7 @@ CHANGELOG - ZIKULA 2.0.x
     - jquery.mmenu updated from 7.0.3 to 7.0.6
     - paragonie/random_compat updated from 2.0.12 to 2.0.17
     - sensio/distribution-bundle updated from 5.0.21 to 5.0.22
+    - swiftmailer/swiftmailer updated from v5.4.9 to v5.4.10
     - symfony/monolog-bundle updated from 2.12.1 to 3.2.0
     - symfony/symfony updated from 3.4.11 to 3.4.13
     - twig/twig updated from 1.35.3 to 1.35.4

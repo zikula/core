@@ -1,12 +1,12 @@
 {
     "vendor": {
         "title": "Zikula",
-        "url": "http://www.zikula.org",
+        "url": "https://ziku.la",
         "logo": ""
     },
     "extension": {
         "name": "Routes",
-        "url": "http://www.zikula.org",
+        "url": "https://ziku.la",
         "icon": ""
     },
     "version": {

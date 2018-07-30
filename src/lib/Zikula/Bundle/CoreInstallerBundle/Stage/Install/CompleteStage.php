@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - http://zikula.org/
+ * Copyright Zikula Foundation - https://ziku.la/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -88,7 +88,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 <body>
 <h1>Hi $uName!</h1>
 <p>Zikula has been successfully installed at <a href="$url">$url</a>. If you have further questions,
-visit <a href="http://zikula.org">zikula.org</a></p>
+visit <a href="https://ziku.la">ziku.la</a></p>
 </body>
 EOF;
         $message = \Swift_Message::newInstance()
