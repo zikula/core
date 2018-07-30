@@ -13,11 +13,11 @@ website and application development. See the [Features](https://github.com/zikul
 document for more information.
 
 Zikula also features an [MDSD](https://en.wikipedia.org/wiki/Model-driven_engineering) tool for rapid prototyping
-and module development called [ModuleStudio](http://modulestudio.de/en/) or MOST.
+and module development called [ModuleStudio](https://modulestudio.de/en/) or MOST.
 
 Zikula can quickly become a Content Management System utilizing community-driven modules.
 
-For more information visit http://zikula.de/
+For more information visit https://ziku.la/
 
 Requirements
 ------------
