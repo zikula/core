@@ -2,8 +2,8 @@ application "Routes" {
     documentation "Routes management"
     vendor "Zikula"
     author "Zikula contributors"
-    email "support@zikula.org"
-    url "http://www.zikula.org"
+    email "info@ziku.la"
+    url "https://ziku.la"
     version "1.1.2"
     prefix "routes"
     generatorSettings {
