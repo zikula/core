@@ -96,10 +96,10 @@
                         ?>
                     </p>
                     <p>
-                        <?php echo __('Zikula is free software released under GPL license.  For more information, please visit <a href="http://zikula.org" title="Zikula Homepage">http://zikula.org</a>.'); ?>
+                        <?php echo __('Zikula is free software released under GPL license.  For more information, please visit <a href="https://ziku.la" title="Zikula Homepage">https://ziku.la</a>.'); ?>
                     </p>
                     <p>
-                        <a href="http://zikula.org"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>                        
+                        <a href="https://ziku.la"><img src="images/zk-power.png" alt="<?php echo __('Proudly powered by Zikula'); ?>" title="<?php echo __('Proudly powered by Zikula'); ?>"width="96" height="30" /></a>                        
                     </p>
                 </div>
             </div>

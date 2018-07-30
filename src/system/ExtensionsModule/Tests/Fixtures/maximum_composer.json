@@ -7,13 +7,13 @@
   "authors": [
     {
       "name": "Zikula Team",
-      "homepage": "http://zikula.org/",
+      "homepage": "https://ziku.la/",
       "email": "admin@example.com",
       "role": "lead"
     },
     {
       "name": "Zikula B Team",
-      "homepage": "http://zikula.org/",
+      "homepage": "https://ziku.la/",
       "email": "admin@example.com",
       "role": "minion"
     }

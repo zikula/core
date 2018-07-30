@@ -949,7 +949,7 @@ Themes must have a `composer.json` manifest which looks like the following:
     "authors": [
         {
             "name": "Zikula",
-            "homepage": "http://zikula.org/"
+            "homepage": "https://ziku.la/"
         }
     ],
     "autoload": {

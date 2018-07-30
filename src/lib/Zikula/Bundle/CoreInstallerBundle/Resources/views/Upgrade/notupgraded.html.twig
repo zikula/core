@@ -13,7 +13,7 @@
                     {{ __f('You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking
                     on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.',
                     { '%inst%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': path('doc', {'name': 'UPGRADE-1.4.md'}), '%text%': __('upgrade instructions') }),
-                      '%docs%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': 'http://www.zikula.org', '%text%': __('online documentation') }) } ) | raw }}
+                      '%docs%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': 'https://ziku.la', '%text%': __('online documentation') }) } ) | raw }}
                 </p>
                 <noscript><p class="alert alert-warning">{{ __('You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.') }}</p></noscript>
                 <div id="upgradebutton" class="row" style="display:none;">
@@ -28,7 +28,7 @@
                 <br />
                 <p class="text-muted">
                     {{ __("Zikula is free software released under the GPL license!") }}<br />
-                    {{ __f('For more information, please visit %link%.', { '%link%': '<a href="http://zikula.org/" title="Zikula Homepage">http://zikula.org</a>' }) | raw }}
+                    {{ __f('For more information, please visit %link%.', { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage">https://ziku.la</a>' }) | raw }}
                 </p>
             </div>
         </div>

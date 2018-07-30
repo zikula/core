@@ -2,12 +2,12 @@
     "name": "zikula/filter-util",
     "description": "Doctrine FilterUtil",
     "type": "library",
-    "homepage": "http://zikula.org",
+    "homepage": "https://ziku.la",
     "license": "MIT",
     "authors": [
         {
             "name": "Drak",
-            "email": "drak@zikula.org"
+            "email": "info@ziku.la"
         }
     ],
     "autoload": {

@@ -3,12 +3,12 @@
     "type": "symfony-bundle",
     "description": "An bundle providing zikula-related symfony form extensions.",
     "keywords": [ "zikula" ],
-    "homepage": "http://www.zikula.org",
+    "homepage": "https://ziku.la",
     "license": "MIT",
     "authors": [
         {
             "name": "Craig Heydenburg",
-            "email": "craig@zikula.org"
+            "email": "info@ziku.la"
         }
     ],
     "require": {
