@@ -18,7 +18,7 @@ before proceeding with this upgrade process.
 
 Zikula Core 1.4 and 1.5 introduces a lot of forward compatibility for new features that will come in Zikula 2.0.0.
 
-For more information visit http://zikula.de/ and read our
+For more information visit https://ziku.la/ and read our
 [documentation](https://github.com/zikula/core/tree/1.5/src/docs).
 
 
