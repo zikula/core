@@ -45,7 +45,13 @@ engines:
         enabled: false
       PhanUnreferencedClass:
         enabled: false
+      PhanUnreferencedConstant:
+        enabled: false
       PhanUnreferencedMethod:
+        enabled: false
+      PhanUnreferencedProtectedMethod:
+        enabled: false
+      PhanUnreferencedPublicMethod:
         enabled: false
   phpcodesniffer:
     enabled: true
