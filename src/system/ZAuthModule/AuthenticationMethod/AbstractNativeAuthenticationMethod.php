@@ -116,14 +116,10 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                     // @todo is this the place to update the hash method?
                     return $mapping->getUid();
                 } else {
-                    $this->session->getFlashBag()->add('error', $this->translator->__('Incorrect login credentials'));
+                    $this->session->getFlashBag()->add('error', $this->translator->__('Login failed.'));
                 }
             } else {
-                $this->session->getFlashBag()->add('error', $this->translator->__f('User not found with %field %value using %method method.', [
-                    '%field' => $field,
-                    '%value' => $data[$field],
-                    '%method' => $this->getDisplayName()
-                ]));
+                $this->session->getFlashBag()->add('error', $this->translator->__('Login failed.'));
             }
         }
 
