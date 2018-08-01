@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - http://zikula.org/
+ * Copyright Zikula Foundation - https://ziku.la
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -171,8 +171,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $mapping->setUname($data['uname']);
         $mapping->setEmail($data['email']);
 
-        if (empty($data['pass']))
-        {
+        if (empty($data['pass'])) {
             $mapping->setPass('');
         } else {
             $mapping->setPass($this->passwordApi->getHashedPassword($data['pass']));
