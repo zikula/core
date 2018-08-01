@@ -171,7 +171,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         $mapping->setUname($data['uname']);
         $mapping->setEmail($data['email']);
 
-        if(empty($data['pass'])){
+        if(empty($data['pass']))
+        {
             $mapping->setPass('');
         }else{
             $mapping->setPass($this->passwordApi->getHashedPassword($data['pass']));
