@@ -79,6 +79,9 @@ class LegacyController
         if (null === $moduleEntity) {
             $moduleEntity = $this->extensionRepository->findOneBy(['name' => $moduleUrl]);
         }
+        if (null === $moduleEntity){
+            throw new NotFoundHttpException(__('Page not found.'));
+        }
         $module = $moduleEntity->getName();
         $type = $request->query->get('type');
         $func = $request->query->get('func');
