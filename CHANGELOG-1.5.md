@@ -4,6 +4,10 @@ CHANGELOG - ZIKULA 1.5.x
 1.5.8 (unreleased)
 ------------------
 
+ - Security fixes from Symfony:
+    - Remove support for legacy and risky HTTP headers (CVE-2018-14773).
+    - Possible host header injection when using HttpCache (CVE-2018-14774).
+
  - Deprecated:
     - bootstrap-plus/bootstrap-jqueryui is deprecated and will be removed in 2.1. Use jQuery UI directly.
 
