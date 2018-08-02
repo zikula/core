@@ -1,11 +1,11 @@
 <div class="text-center">
     <ul class="pagination">
         {% if pagerPluginArray.currentPage > 1 %}
-            <li><a href="{{ pagerPluginArray.firstUrl|raw }}" title="{{ __('First page') }}">&laquo;</a></li>
-            <li><a href="{{ pagerPluginArray.prevUrl|raw }}" title="{{ __('Previous page') }}">&lsaquo;</a></li>
+            <li><a href="{{ pagerPluginArray.firstUrl|raw }}" title="{{ __('First page', 'zikula') }}">&laquo;</a></li>
+            <li><a href="{{ pagerPluginArray.prevUrl|raw }}" title="{{ __('Previous page', 'zikula') }}">&lsaquo;</a></li>
         {% else %}
-            <li class="disabled"><span title="{{ __('First page') }}">&laquo;</span></li>
-            <li class="disabled"><span title="{{ __('Previous page') }}">&lsaquo;</span></li>
+            <li class="disabled"><span title="{{ __('First page', 'zikula') }}">&laquo;</span></li>
+            <li class="disabled"><span title="{{ __('Previous page', 'zikula') }}">&lsaquo;</span></li>
         {% endif %}
 
         {% for currentItem, currentPage in pagerPluginArray.pages %}
@@ -17,11 +17,11 @@
         {% endfor %}
 
         {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
-            <li><a href="{{ pagerPluginArray.nextUrl|raw }}" title="{{ __('Next page') }}">&rsaquo;</a></li>
-            <li><a href="{{ pagerPluginArray.lastUrl|raw }}" title="{{ __('Last page') }}">&raquo;</a></li>
+            <li><a href="{{ pagerPluginArray.nextUrl|raw }}" title="{{ __('Next page', 'zikula') }}">&rsaquo;</a></li>
+            <li><a href="{{ pagerPluginArray.lastUrl|raw }}" title="{{ __('Last page', 'zikula') }}">&raquo;</a></li>
         {% else %}
-            <li class="disabled"><span  title="{{ __('Next page') }}">&rsaquo;</span></li>
-            <li class="disabled"><span title="{{ __('Last page') }}">&raquo;</span></li>
+            <li class="disabled"><span  title="{{ __('Next page', 'zikula') }}">&rsaquo;</span></li>
+            <li class="disabled"><span title="{{ __('Last page', 'zikula') }}">&raquo;</span></li>
         {% endif %}
     </ul>
 </div>
