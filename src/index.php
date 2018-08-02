@@ -15,7 +15,11 @@ require 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
 
-$core->init(Zikula_Core::STAGE_ALL, $request);
+try{
+    $core->init(Zikula_Core::STAGE_ALL, $request);
+} catch (Doctrine\DBAL\Exception\DriverException $ex) {
+    die('Database error: ' . $ex->getMessage());
+}
 
 // this event for BC only. remove in 2.0.0
 $core->getDispatcher()->dispatch('frontcontroller.predispatch', new \Zikula\Core\Event\GenericEvent());
