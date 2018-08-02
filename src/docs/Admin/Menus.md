@@ -15,7 +15,7 @@ blank and we will return to this later. Submit your new root. Your are returned 
 and your new root is listed therein with three action choices: Edit Children, Edit Menu Root
 and Delete.
 
-####Edit Children
+#### Edit Children
 
 You will notice that a 'dummy child' has been auto-created for you. This is simply to allow
 you to easily add more children via the context menu (right-click on the dummy child to view
@@ -37,7 +37,7 @@ at least two more children.
 
 You now have a "standard" menu that you can utilize anywhere on your site via the BlocksModule.
 
-####Create a menu block
+#### Create a menu block
 
 Visit the BlocksModule admin interface and select "Create new block" from the admin menu. Select
 "MenuModule/Menu" from the choices. Give your block the title "Test Menu" and leave the
