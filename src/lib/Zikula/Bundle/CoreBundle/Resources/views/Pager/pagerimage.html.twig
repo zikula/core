@@ -1,27 +1,27 @@
 {% set separator=' ' %}
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
-        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">
-            <i class="fa fa-backward fa-lg" title="{{ __('First page') }}"></i>
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page', 'zikula') }}">
+            <i class="fa fa-backward fa-lg" title="{{ __('First page', 'zikula') }}"></i>
         </a>
         {{ separator }}
-        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">
-            <i class="fa fa-step-backward fa-lg" title="{{ __('Previous page') }}"></i>
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page', 'zikula') }}">
+            <i class="fa fa-step-backward fa-lg" title="{{ __('Previous page', 'zikula') }}"></i>
         </a> {{ separator }}
     {% endif %}
 
     <span>
-    {{ __f('Page %1$s / %2$s (%3$s - %4$s of %5$s total)', [pagerPluginArray.currentPage, pagerPluginArray.countPages, pagerPluginArray.itemStart, pagerPluginArray.itemEnd, pagerPluginArray.total]) }}
+    {{ __f('Page %1$s / %2$s (%3$s - %4$s of %5$s total)', [pagerPluginArray.currentPage, pagerPluginArray.countPages, pagerPluginArray.itemStart, pagerPluginArray.itemEnd, pagerPluginArray.total], 'zikula') }}
     </span>
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
         {{ separator }}
-        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">
-            <i class="fa fa-step-forward fa-lg" title="{{ __('Next page') }}"></i>
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page', 'zikula') }}">
+            <i class="fa fa-step-forward fa-lg" title="{{ __('Next page', 'zikula') }}"></i>
         </a>
         {{ separator }}
-        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">
-            <i class="fa fa-forward fa-lg" title="{{ __('Last page') }}"></i>
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page', 'zikula') }}">
+            <i class="fa fa-forward fa-lg" title="{{ __('Last page', 'zikula') }}"></i>
         </a>
     {% endif %}
 </div>
