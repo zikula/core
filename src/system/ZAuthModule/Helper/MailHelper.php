@@ -104,7 +104,7 @@ class MailHelper
         switch ($notificationType) {
             case 'importnotify':
                 return $this->translator->__f('Welcome to %s!', ['%s' => $siteName], 'zikula');
-                 break;
+                break;
             case 'lostpassword':
                 return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $siteName], 'zikula');
                 break;
