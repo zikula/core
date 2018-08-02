@@ -809,7 +809,8 @@ abstract class Zikula_AbstractBase implements Zikula_TranslatableInterface, Cont
      */
     public function createAccessDeniedException($message = null, \Exception $previous = null)
     {
-        $message = null === $message ? __('Access denied') : $message;
+        //Do not translate Access denied. to ensure that the ExceptionListener is able to catch the message also in other languages.
+        $message = null === $message ? 'Access denied.' : $message;
 
         return new AccessDeniedException($message, $previous);
     }
