@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 1.5.x
     - Suppress warning in PHP 7.2 if session is accessed before it is regenerated (e.g. during a login) (#3898, #3914).
     - Fixed wrong modvar reference in ZAuth validator (#3913).
     - Explicitly specify translation domain in pager templates (#3917).
+    - Explicitly specify translation domain in user mail helper for calls from external modules (#3918).
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.35 to 2.4.36
