@@ -15,12 +15,6 @@ require 'lib/bootstrap.php';
 
 $request = Request::createFromGlobals();
 
-try {
-    $core->init(Zikula_Core::STAGE_ALL, $request);
-} catch (Doctrine\DBAL\Exception\DriverException $ex) {
-    die('Database error: ' . $ex->getMessage());
-}
-
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
