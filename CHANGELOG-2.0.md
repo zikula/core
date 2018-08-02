@@ -20,6 +20,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Ensure jQuery UI is loaded before bootstrap (#3912).
     - Suppress warning in PHP 7.2 if session is accessed before it is regenerated (e.g. during a login) (#3898, #3914).
     - Fixed wrong modvar reference in ZAuth validator (#3913).
+    - Explicitly specify translation domain in pager templates (#3917).
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.35 to 2.4.36
