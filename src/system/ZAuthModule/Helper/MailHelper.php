@@ -66,6 +66,8 @@ class MailHelper
     {
         $html = false;
 
+        //Set translation domain to avoid problems when calling sendNotification from external modules
+        $templateArgs['domain'] = 'zikula';
         $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.html.twig";
         try {
             $html = true;
@@ -104,22 +106,22 @@ class MailHelper
         $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {
             case 'importnotify':
-                return $this->translator->__f('Welcome to %s!', ['%s' => $siteName]);
+                return $this->translator->__f('Welcome to %s!', ['%s' => $siteName], 'zikula');
                 break;
             case 'lostpassword':
-                return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $siteName]);
+                return $this->translator->__f('Reset your password at \'%s\'', ['%s' => $siteName], 'zikula');
                 break;
             case 'lostuname':
-                return $this->translator->__f('\'%s\' account information', ['%s' => $siteName]);
+                return $this->translator->__f('\'%s\' account information', ['%s' => $siteName], 'zikula');
                 break;
             case 'regverifyemail':
-                return $this->translator->__f('Verify your e-mail address for %s.', ['%s' => $siteName]);
+                return $this->translator->__f('Verify your e-mail address for %s.', ['%s' => $siteName], 'zikula');
                 break;
             case 'userverifyemail':
-                return $this->translator->__f('Verify your request to change your e-mail address at \'%s\'', ['%s' => $siteName]);
+                return $this->translator->__f('Verify your request to change your e-mail address at \'%s\'', ['%s' => $siteName], 'zikula');
                 break;
             default:
-                return $this->translator->__f('A message from %s.', ['%s' => $siteName]);
+                return $this->translator->__f('A message from %s.', ['%s' => $siteName], 'zikula');
         }
     }
 }
