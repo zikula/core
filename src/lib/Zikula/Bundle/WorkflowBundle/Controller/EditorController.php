@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - https://ziku.la/
+ * Copyright Zikula Foundation - http://zikula.org/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Workflow\SupportStrategy\ClassInstanceSupportStrategy;
+use Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore;
+use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -65,20 +68,13 @@ class EditorController extends Controller
         $markingStoreField = '';
         $supportedEntityClassNames = [];
         try {
-            $reflection = new \ReflectionClass('Symfony\Component\Workflow\Workflow');
-            $markingStoreProperty = $reflection->getProperty('markingStore');
-            $markingStoreProperty->setAccessible(true);
-            $markingStore = $markingStoreProperty->getValue($workflow);
-            if ($markingStore instanceof \Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore) {
+            $markingStore = $workflow->getMarkingStore();
+            if ($markingStore instanceof MultipleStateMarkingStore) {
                 $markingStoreType = 'multiple_state';
-            } elseif ($markingStore instanceof \Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore) {
+            } elseif ($markingStore instanceof SingleStateMarkingStore) {
                 $markingStoreType = 'single_state';
             }
-
-            $reflection = new \ReflectionClass(get_class($markingStore));
-            $markingStoreFieldProperty = $reflection->getProperty('property');
-            $markingStoreFieldProperty->setAccessible(true);
-            $markingStoreField = $markingStoreFieldProperty->getValue($markingStore);
+            $markingStoreField = $markingStore->getProperty();
 
             $registry = $this->get('workflow.registry');
             $reflection = new \ReflectionClass(get_class($registry));
@@ -87,11 +83,8 @@ class EditorController extends Controller
             $workflows = $workflowsProperty->getValue($registry);
             foreach ($workflows as list($aWorkflow, $workflowClass)) {
                 if ($aWorkflow->getName() == $workflow->getName()) {
-                    if ($workflowClass instanceof \Symfony\Component\Workflow\SupportStrategy\ClassInstanceSupportStrategy) {
-                        $reflection = new \ReflectionClass(get_class($workflowClass));
-                        $workflowClassNameProperty = $reflection->getProperty('className');
-                        $workflowClassNameProperty->setAccessible(true);
-                        $workflowClass = $workflowClassNameProperty->getValue($workflowClass);
+                    if ($workflowClass instanceof ClassInstanceSupportStrategy) {
+                        $workflowClass = $workflowClass->getClassName();
                     }
                     $supportedEntityClassNames[] = $workflowClass;
                 }
