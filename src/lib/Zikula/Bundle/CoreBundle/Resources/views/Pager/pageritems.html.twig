@@ -1,8 +1,8 @@
 {% set separator = '–' %}
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
-        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page') }}">{{ __('First page') }}</a> {{ separator }}
-        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page') }}">{{ __('Previous page') }}</a> {{ separator }}
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page', 'zikula') }}">{{ __('First page', 'zikula') }}</a> {{ separator }}
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page', 'zikula') }}">{{ __('Previous page', 'zikula') }}</a> {{ separator }}
     {% endif %}
 
         {% for currentItem, currentPage in pagerPluginArray.pages %}
@@ -18,9 +18,9 @@
         {% endfor %}
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
-        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page') }}">{{ __('Next page') }}</a>
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page', 'zikula') }}">{{ __('Next page', 'zikula') }}</a>
 
          {{ separator }} 
-        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page') }}">{{ __('Last page') }}</a>
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page', 'zikula') }}">{{ __('Last page', 'zikula') }}</a>
     {% endif %}
 </div>

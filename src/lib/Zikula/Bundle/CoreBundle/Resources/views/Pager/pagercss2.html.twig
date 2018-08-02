@@ -6,11 +6,11 @@
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
         <a href="{{ pagerPluginArray.prevUrl }}" class="skip">
-            <i class="fa fa-chevron-left fa-lg" title="{{ __('Previous page') }}"></i>
+            <i class="fa fa-chevron-left fa-lg" title="{{ __('Previous page', 'zikula') }}"></i>
         </a>
     {% else %}
         <span class="skip">
-            <i class="fa fa-chevron-left text-muted fa-lg" title="{{ __('No previous pages') }}"></i>
+            <i class="fa fa-chevron-left text-muted fa-lg" title="{{ __('No previous page', 'zikula') }}"></i>
         </span>
     {% endif %}
     <span>{{ separator }}</span>
@@ -43,11 +43,11 @@
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
         <a href="{{ pagerPluginArray.nextUrl }}" class="skip">
-            <i class="fa fa-chevron-right fa-lg" title="{{ __('Next page') }}"></i>
+            <i class="fa fa-chevron-right fa-lg" title="{{ __('Next page', 'zikula') }}"></i>
         </a>
     {% else %}
         <span class="skip">
-            <i class="fa fa-chevron-right text-muted fa-lg" title="{{ __('No further pages') }}"></i>
+            <i class="fa fa-chevron-right text-muted fa-lg" title="{{ __('No further pages', 'zikula') }}"></i>
         </span>
     {% endif %}
 </div>
