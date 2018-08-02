@@ -26,6 +26,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Fixed wrong modvar reference in ZAuth validator (#3913).
     - Explicitly specify translation domain in pager templates (#3917).
     - Explicitly specify translation domain in user mail helper for calls from external modules (#3918).
+    - Simplified workflow editor controller (#3749).
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.35 to 2.4.36
