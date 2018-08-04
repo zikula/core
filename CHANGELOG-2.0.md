@@ -27,7 +27,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Explicitly specify translation domain in pager templates (#3917).
     - Explicitly specify translation domain in user mail helper for calls from external modules (#3918).
     - Simplified workflow editor controller (#3749).
-    - Avoid information disclosure if database exceptions occur.
+    - Fixed broken user search in Groups administration.
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.35 to 2.4.36
