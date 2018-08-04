@@ -32,7 +32,7 @@
                 return;
             }
 
-            var fragment = $(this).attr('value');
+            var fragment = $(this).val();
 
             if (fragment === "") {
                 userListTable.removeClass('hide');
