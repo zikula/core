@@ -1,11 +1,11 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.9 (unreleased)
+2.0.9 (2018-08-06)
 ------------------
 
  - Fixes:
-    - ...
+    - Fixed invalid parameter update for frozen container in the upgrader.
 
 
 2.0.8 (2018-08-05)
