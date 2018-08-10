@@ -3638,7 +3638,7 @@
 
     var jsPlumbInstance = root.jsPlumbInstance = function (_defaults) {
 
-        this.version = "2.7.9";
+        this.version = "2.7.14";
 
         this.Defaults = {
             Anchor: "Bottom",
@@ -5245,8 +5245,9 @@
          * values. if 'offset' is not null we use that (it would have been
          * passed in from a drag call) because it's faster; but if it is null,
          * or if 'recalc' is true in order to force a recalculation, we get the current values.
+         * @method updateOffset
          */
-        var _updateOffset = this.updateOffset = function (params) {
+        var _updateOffset = function (params) {
 
             var timestamp = params.timestamp, recalc = params.recalc, offset = params.offset, elId = params.elId, s;
             if (_suspendDrawing && !timestamp) {
@@ -5289,7 +5290,9 @@
             return {o: offsets[elId], s: sizes[elId]};
         };
 
-        /**
+        this.updateOffset = _updateOffset;
+
+            /**
          * callback from the current library to tell us to prepare ourselves (attach
          * mouse listeners etc; can't do that until the library has provided a bind method)
          */
@@ -6567,7 +6570,7 @@
          */
         this.register = function (el) {
             var id = _currentInstance.getId(el),
-                parentOffset = _currentInstance.getOffset(el);
+                parentOffset;
 
             if (!_draggables[id]) {
                 _draggables[id] = el;
@@ -6583,6 +6586,9 @@
                             var cEl = jsPlumb.getElement(p.childNodes[i]),
                                 cid = _currentInstance.getId(p.childNodes[i], null, true);
                             if (cid && _elementsWithEndpoints[cid] && _elementsWithEndpoints[cid] > 0) {
+                                if (!parentOffset) {
+                                    parentOffset = _currentInstance.getOffset(el);
+                                }
                                 var cOff = _currentInstance.getOffset(cEl);
                                 _delements[id][cid] = {
                                     id: cid,
@@ -6609,7 +6615,7 @@
                 var domEl = jsPlumb.getElement(elId),
                     id = _currentInstance.getId(domEl),
                     children = _delements[id],
-                    parentOffset = _currentInstance.getOffset(domEl);
+                    parentOffset;
 
                 if (children) {
                     for (var i in children) {
@@ -6620,6 +6626,10 @@
                             // do not update if we have a value already and we'd just be writing 0,0
                             if (cel.offsetParent == null && _delements[id][i] != null) {
                                 continue;
+                            }
+
+                            if (!parentOffset) {
+                                parentOffset = _currentInstance.getOffset(domEl);
                             }
 
                             _delements[id][i] = {
@@ -6798,18 +6808,20 @@
             // of an svg element's className. in the long run we'd like to move to just using classList anyway
             try {
                 var cl = el.classList;
-                while (cl.length > 0) {
-                    cl.remove(cl.item(0));
-                }
-                for (var i = 0; i < classList.length; i++) {
-                    if (classList[i]) {
-                        cl.add(classList[i]);
+                if (cl != null) {
+                    while (cl.length > 0) {
+                        cl.remove(cl.item(0));
+                    }
+                    for (var i = 0; i < classList.length; i++) {
+                        if (classList[i]) {
+                            cl.add(classList[i]);
+                        }
                     }
                 }
             }
             catch(e) {
                 // not fatal
-                console.log("JSPLUMB: cannot set class list", e);
+                jsPlumbUtil.log("JSPLUMB: cannot set class list", e);
             }
         },
         _getClassName = function (el) {
@@ -12289,7 +12301,6 @@
         this.addToGroup = function(group, el, doNotFireEvent) {
             group = this.getGroup(group);
             if (group) {
-                //group.add(el, doNotFireEvent);
                 var groupEl = group.getEl();
 
                 if (el._isJsPlumbGroup) {
@@ -12306,7 +12317,7 @@
                         currentGroup.remove(el, false, doNotFireEvent, false, group);
                         self.updateConnectionsForGroup(currentGroup);
                     }
-                    group.add(el, doNotFireEvent, currentGroup);
+                    group.add(el, doNotFireEvent/*, currentGroup*/);
 
                     var handleDroppedConnections = function (list, index) {
                         var oidx = index === 0 ? 1 : 0;
@@ -12341,9 +12352,13 @@
 
                     _jsPlumb.revalidate(elId);
 
-                    setTimeout(function () {
-                        _jsPlumb.fire(EVT_CHILD_ADDED, {group: group, el: el});
-                    }, 0);
+                    if (!doNotFireEvent) {
+                        var p = {group: group, el: el};
+                        if (currentGroup) {
+                            p.sourceGroup = currentGroup;
+                        }
+                        _jsPlumb.fire(EVT_CHILD_ADDED, p);
+                    }
                 }
             }
         };
@@ -12377,11 +12392,12 @@
         this.removeGroup = function(group, deleteMembers, manipulateDOM, doNotFireEvent) {
             group = this.getGroup(group);
             this.expandGroup(group, true); // this reinstates any original connections and removes all proxies, but does not fire an event.
-            group[deleteMembers ? CMD_REMOVE_ALL : CMD_ORPHAN_ALL](manipulateDOM, doNotFireEvent);
+            var newPositions = group[deleteMembers ? CMD_REMOVE_ALL : CMD_ORPHAN_ALL](manipulateDOM, doNotFireEvent);
             _jsPlumb.remove(group.getEl());
             delete _managedGroups[group.id];
             delete _jsPlumb._groups[group.id];
             _jsPlumb.fire(EVT_GROUP_REMOVED, { group:group });
+            return newPositions; // this will be null in the case or remove, but be a map of {id->[x,y]} in the case of orphan
         };
 
         this.removeAllGroups = function(deleteMembers, manipulateDOM, doNotFireEvent) {
@@ -12684,7 +12700,7 @@
             return dropOverride && (revert || prune || orphan);
         };
 
-        this.add = function(_el, doNotFireEvent, sourceGroup) {
+        this.add = function(_el, doNotFireEvent/*, sourceGroup*/) {
             var dragArea = getDragArea();
             _each(_el, function(__el) {
 
@@ -12707,13 +12723,13 @@
                     dragArea.appendChild(__el);
                 }
 
-                if (!doNotFireEvent) {
-                    var p = {group: self, el: __el};
-                    if (sourceGroup) {
-                        p.sourceGroup = sourceGroup;
-                    }
-                    _jsPlumb.fire(EVT_CHILD_ADDED, p);
-                }
+                // if (!doNotFireEvent) {
+                //     var p = {group: self, el: __el};
+                //     if (sourceGroup) {
+                //         p.sourceGroup = sourceGroup;
+                //     }
+                //     //_jsPlumb.fire(EVT_CHILD_ADDED, p);
+                // }
             });
 
             _jsPlumb.getGroupManager().updateConnectionsForGroup(self);
@@ -12748,16 +12764,22 @@
         };
         this.removeAll = function(manipulateDOM, doNotFireEvent) {
             for (var i = 0, l = elements.length; i < l; i++) {
-                self.remove(elements[0], manipulateDOM, doNotFireEvent, true);
+                var el = elements[0];
+                self.remove(el, manipulateDOM, doNotFireEvent, true);
+                _jsPlumb.remove(el, true);
             }
             elements.length = 0;
             _jsPlumb.getGroupManager().updateConnectionsForGroup(self);
         };
         this.orphanAll = function() {
+            var orphanedPositions = {};
             for (var i = 0; i < elements.length; i++) {
-                _orphan(elements[i]);
+                var newPosition = _orphan(elements[i]);
+                orphanedPositions[newPosition[0]] = newPosition[1];
             }
             elements.length = 0;
+
+            return orphanedPositions;
         };
         this.getMembers = function() { return elements; };
 
@@ -12788,6 +12810,7 @@
 
         //
         // orphaning an element means taking it out of the group and adding it to the main jsplumb container.
+        // we return the new calculated position from this method and the element's id.
         //
         function _orphan(_el) {
             var id = _jsPlumb.getId(_el);
@@ -12798,22 +12821,26 @@
             delete _el._jsPlumbGroup;
             _unbindDragHandlers(_el);
             _jsPlumb.dragManager.clearParent(_el, id);
+            return [id, pos];
         }
 
         //
         // remove an element from the group, then either prune it from the jsplumb instance, or just orphan it.
         //
         function _pruneOrOrphan(p) {
+            var orphanedPosition = null;
             if (!_isInsideParent(p.el, p.pos)) {
                 var group = p.el._jsPlumbGroup;
                 if (prune) {
                     _jsPlumb.remove(p.el);
                 } else {
-                    _orphan(p.el);
+                    orphanedPosition = _orphan(p.el);
                 }
 
                 group.remove(p.el);
             }
+
+            return orphanedPosition;
         }
 
         //
@@ -12934,9 +12961,10 @@
      * @param {String|Group} group Group to delete, or ID of Group to delete.
      * @param {Boolean} [deleteMembers=false] If true, group members will be removed along with the group. Otherwise they will
      * just be 'orphaned' (returned to the main container).
+     * @returns {Map[String, Position}} When deleteMembers is false, this method returns a map of {id->position}
      */
     _jpi.prototype.removeGroup = function(group, deleteMembers, manipulateDOM, doNotFireEvent) {
-        this.getGroupManager().removeGroup(group, deleteMembers, manipulateDOM, doNotFireEvent);
+        return this.getGroupManager().removeGroup(group, deleteMembers, manipulateDOM, doNotFireEvent);
     };
 
     /**
