@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 2.1.x
  - Deprecated:
 
  - Fixes:
+    - Fixed exception if no return url is given during login after upgrade (#3922).
 
  - Features:
 
