@@ -167,13 +167,17 @@ class RegistrationController extends AbstractController
 
                     if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
                         $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
-                    } elseif (!empty($redirectUrl)) {
-                        return $this->redirect($redirectUrl);
-                    } elseif (!$canLogIn) {
-                        return $this->redirectToRoute('home');
-                    } else {
-                        return $this->redirectToRoute('zikulausersmodule_access_login');
+
+                        return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
                     }
+                    if (!empty($redirectUrl)) {
+                        return $this->redirect($redirectUrl);
+                    }
+                    if (!$canLogIn) {
+                        return $this->redirectToRoute('home');
+                    }
+
+                    return $this->redirectToRoute('zikulausersmodule_access_login');
                 }
             }
             $request->getSession()->invalidate();
