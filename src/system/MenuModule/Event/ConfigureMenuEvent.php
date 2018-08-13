@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - http://zikula.org/
+ * Copyright Zikula Foundation - https://ziku.la/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,7 +23,7 @@ class ConfigureMenuEvent extends Event
     const POST_CONFIGURE = 'zikulamenumodule.menu_post_configure';
 
     /**
-     * @var FactoryInterface.
+     * @var FactoryInterface
      */
     protected $factory;
 
