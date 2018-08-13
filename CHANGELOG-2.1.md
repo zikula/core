@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 2.1.x
     - Added missing redirect after completed auto login after successful registration.
 
  - Features:
+    - Added post configuration event for amending or extending menus. See `docs/Menu/MenuEvents.md` for the details.
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.1.1 to 1.1.2

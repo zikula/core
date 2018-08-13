@@ -16,6 +16,7 @@ services:
           - "@knp_menu.factory"
           - "@zikula_permissions_module.api.permission"
           - "@zikula_menu_module.menu_item_repository"
+          - "@event_dispatcher"
         tags:
             - { name: knp_menu.provider }
 
