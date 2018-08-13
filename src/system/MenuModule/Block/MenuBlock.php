@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - https://ziku.la/
+ * Copyright Zikula Foundation - http://zikula.org/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,6 +12,7 @@
 namespace Zikula\MenuModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\MenuModule\Block\Form\Type\MenuType;
 
 class MenuBlock extends AbstractBlockHandler
 {
@@ -30,6 +31,6 @@ class MenuBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\MenuModule\Block\Form\Type\MenuType';
+        return MenuType::class;
     }
 }

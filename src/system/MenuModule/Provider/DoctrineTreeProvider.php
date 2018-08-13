@@ -12,7 +12,10 @@
 namespace Zikula\MenuModule\Provider;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\MenuModule\Event\ConfigureMenuEvent;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 use Zikula\MenuModule\Loader\PermissionAwareNodeLoader;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -35,15 +38,26 @@ class DoctrineTreeProvider implements MenuProviderInterface
     protected $menuItemRepository;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param FactoryInterface $factory the menu factory used to create the menu item
      * @param PermissionApiInterface $permissionApi
      * @param MenuItemRepositoryInterface $menuItemRepository
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(FactoryInterface $factory, PermissionApiInterface $permissionApi, MenuItemRepositoryInterface $menuItemRepository)
-    {
+    public function __construct(
+        FactoryInterface $factory,
+        PermissionApiInterface $permissionApi,
+        MenuItemRepositoryInterface $menuItemRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->factory = $factory;
         $this->nodeLoader = new PermissionAwareNodeLoader($factory, $permissionApi);
         $this->menuItemRepository = $menuItemRepository;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -51,7 +65,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
      *
      * @param string $name
      * @param array $options
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      * @throws \InvalidArgumentException if the menu does not exists
      */
     public function get($name, array $options = [])
@@ -61,6 +75,8 @@ class DoctrineTreeProvider implements MenuProviderInterface
             throw new \InvalidArgumentException(sprintf('The menu "%s" is not defined.', $name));
         }
         $menu = $this->nodeLoader->load($node);
+
+        $this->eventDispatcher->dispatch(ConfigureMenuEvent::POST_CONFIGURE, new ConfigureMenuEvent($this->factory, $menu, $options));
 
         return $menu;
     }

@@ -36,8 +36,8 @@ class AdminMenu implements ContainerAwareInterface
             if (isset($adminModule->getCapabilities()['admin']['route'])) {
                 $menu['Home']
                     ->addChild($adminModule->getDisplayname(), [
-                    'route' => $adminModule->getCapabilities()['admin']['route'],
-                    'routeParameters' => []
+                        'route' => $adminModule->getCapabilities()['admin']['route'],
+                        'routeParameters' => []
                     ])
                     ->setAttribute('icon', 'fa fa-star');
             }
