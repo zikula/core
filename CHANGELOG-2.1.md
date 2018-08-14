@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 2.1.x
  - Fixes:
     - Fixed exception if no return url is given during login after upgrade (#3922).
     - Added missing redirect after completed auto login after successful registration.
+    - Minor improvements in `CategoryEntity` accessors.
 
  - Features:
     - Added post configuration event for amending or extending menus. See `docs/Menu/MenuEvents.md` for the details.

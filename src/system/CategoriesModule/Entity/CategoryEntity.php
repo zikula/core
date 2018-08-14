@@ -390,13 +390,15 @@ class CategoryEntity extends EntityAccess
     public function getDisplay_name($lang = null)
     {
         if (!empty($lang)) {
-            if (isset($this->display_desc[$lang])) {
+            if (isset($this->display_name[$lang])) {
                 return $this->display_name[$lang];
-            } elseif (isset($this->display_name['en'])) {
-                return $this->display_name['en'];
-            } else {
-                return $this->name;
             }
+
+            if (isset($this->display_name['en'])) {
+                return $this->display_name['en'];
+            }
+
+            return $this->name;
         }
 
         return $this->display_name;
@@ -439,7 +441,13 @@ class CategoryEntity extends EntityAccess
     public function getDisplay_desc($lang = null)
     {
         if (!empty($lang)) {
-            return $this->display_desc[$lang];
+            if (isset($this->display_desc[$lang])) {
+                return $this->display_desc[$lang];
+            }
+
+            if (isset($this->display_desc['en'])) {
+                return $this->display_desc['en'];
+            }
         }
 
         return $this->display_desc;
