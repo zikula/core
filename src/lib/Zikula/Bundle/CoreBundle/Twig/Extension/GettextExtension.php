@@ -109,8 +109,16 @@ class GettextExtension extends \Twig_Extension
             /** @var \Symfony\Bridge\Twig\AppVariable $app */
             $app = $context['app'];
             $bundleName = $app->getRequest()->attributes->get('_zkBundle');
-            if (!empty($bundleName)) {
+            if (!empty($bundleName) && $this->kernel->isBundle($bundleName)) {
                 return $this->kernel->getBundle($bundleName)->getTranslationDomain();
+            }
+
+            $controller = $app->getRequest()->attributes->get('_controller');
+            if (!empty($controller)) {
+                $controllerParts = preg_split('/:/', $controller);
+                if ($this->kernel->isBundle($controllerParts[0])) {
+                    return $this->kernel->getBundle($controllerParts[0])->getTranslationDomain();
+                }
             }
         }
 
