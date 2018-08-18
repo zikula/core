@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.1.1 to 1.1.2
+    - phpspec/prophecy updated from 1.7.6 to 1.8.0
     - symfony/phpunit-bridge updated from 3.4.13 to 3.4.14
     - symfony/polyfill-* updated from 1.8.0 to 1.9.0
 
