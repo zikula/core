@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - http://zikula.org/
+ * Copyright Zikula Foundation - https://ziku.la/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,7 +11,7 @@
 
 namespace Zikula\Common\Content;
 
-use \Twig_Environment;
+use Twig_Environment;
 use Symfony\Bundle\TwigBundle\Loader\FilesystemLoader;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Engine\Asset;
@@ -76,14 +76,14 @@ abstract class AbstractContentType implements ContentTypeInterface
     /**
      * Reference to content item instance which allows to access page data,
      * layout area and styling data and other information.
-     * 
+     *
      * @var \Zikula\ContentModule\Entity\ContentItemEntity
      */
     protected $entity = null;
 
     /**
      * Reference to the data fields loaded from either default values or the entity.
-     * 
+     *
      * @var array
      */
     protected $data;

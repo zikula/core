@@ -3,7 +3,7 @@
 /*
  * This file is part of the Zikula package.
  *
- * Copyright Zikula Foundation - http://zikula.org/
+ * Copyright Zikula Foundation - https://ziku.la/
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,12 +14,17 @@ namespace Zikula\Common\Content;
 interface ContentTypeInterface
 {
     const CATEGORY_BASIC = 'basic';
+
     const CATEGORY_EXTERNAL = 'external';
+
     const CATEGORY_INTEGRATION = 'integration';
+
     const CATEGORY_EXPERT = 'expert';
 
     const CONTEXT_VIEW = 'view';
+
     const CONTEXT_EDIT = 'edit';
+
     const CONTEXT_TRANSLATION = 'translation';
 
     /**
