@@ -36,7 +36,7 @@ define('ACCESS_ADMIN', 800);
 
 abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 {
-    const VERSION = '2.0.10';
+    const VERSION = '2.0.11';
 
     const VERSION_SUB = 'Concerto';
 
