@@ -11,6 +11,7 @@ CHANGELOG - ZIKULA 2.0.x
 
  - Features:
     - Added post configuration event for amending or extending menus. See `docs/Menu/MenuEvents.md` for the details.
+    - Added common content types interfaces for extending the Content module.
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.1.1 to 1.1.2
