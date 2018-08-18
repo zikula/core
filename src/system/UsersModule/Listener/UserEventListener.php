@@ -66,14 +66,16 @@ class UserEventListener implements EventSubscriberInterface
         $locale = $userEntity->getLocale();
         if (!empty($locale)) {
             $url = $event->getArgument('returnUrl');
-            $request = $this->requestStack->getCurrentRequest();
-            $httpRoot = $request->getSchemeAndHttpHost() . $request->getBaseUrl();
-            if (0 === strpos($url, $httpRoot)) {
-                $url = str_replace($httpRoot, '', $url);
-            }
-            $pathInfo = $this->router->match($url);
-            if ($pathInfo['_route']) {
-                $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+            if ('' != $url) {
+                $request = $this->requestStack->getCurrentRequest();
+                $httpRoot = $request->getSchemeAndHttpHost() . $request->getBaseUrl();
+                if (0 === strpos($url, $httpRoot)) {
+                    $url = str_replace($httpRoot, '', $url);
+                }
+                $pathInfo = $this->router->match($url);
+                if ($pathInfo['_route']) {
+                    $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+                }
             }
             $this->session->set('_locale', $locale);
         }
