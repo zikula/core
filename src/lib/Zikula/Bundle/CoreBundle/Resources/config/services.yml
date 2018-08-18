@@ -26,3 +26,16 @@ services:
     zikula.link_container_collector:
         class: Zikula\Core\LinkContainer\LinkContainerCollector
         arguments: ["@event_dispatcher"]
+
+    zikula.content_type.base:
+        abstract: true
+        arguments:
+            - '@translator.default'
+            - '@twig'
+            - '@twig.loader'
+            - '@?zikula_content_module.permission_helper'
+            - '@zikula_core.common.theme.asset_helper'
+    zikula.content_type.form.base:
+        abstract: true
+        arguments:
+            - '@translator.default'
