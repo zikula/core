@@ -20,7 +20,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/aFarkas/webshim"
+            "url": "https://github.com/zikula/webshim"
         }
     ],
     "autoload": {
