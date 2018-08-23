@@ -1,11 +1,12 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.11 (unreleased)
+2.0.11 (2018-08-23)
 -------------------
 
  - Fixes:
-    - ?
+    - Avoid JS error if webshim is not available.
+    - Resolved dependency conflict re-adding webshims polyfill.
 
 
 2.0.10 (2018-08-18)

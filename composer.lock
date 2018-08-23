@@ -39,23 +39,64 @@
         },
         {
             "name": "afarkas/webshim",
-            "version": "1.15.8",
+            "version": "1.16.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/aFarkas/webshim.git",
-                "reference": "82229e75e4482d496e8935b644c08c00019ae402"
+                "url": "https://github.com/zikula/webshim.git",
+                "reference": "8d5f3579570618e7229f3f16d107790ac83f542f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aFarkas/webshim/zipball/82229e75e4482d496e8935b644c08c00019ae402",
-                "reference": "82229e75e4482d496e8935b644c08c00019ae402",
+                "url": "https://api.github.com/repos/zikula/webshim/zipball/8d5f3579570618e7229f3f16d107790ac83f542f",
+                "reference": "8d5f3579570618e7229f3f16d107790ac83f542f",
                 "shasum": ""
             },
-            "type": "library",
+            "require": {
+                "components/jquery": "3.*",
+                "robloach/component-installer": "^0.2"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "js-webshim/minified/polyfiller.js"
+                    ],
+                    "files": [
+                        "js-webshim/minified/shims/**"
+                    ]
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Farkas",
+                    "homepage": "https://github.com/aFarkas/"
+                }
+            ],
+            "description": "The polyfilling, capability based loading JavaScript Library",
+            "homepage": "http://afarkas.github.com/webshim/demos/index.html",
+            "keywords": [
+                "HTML5",
+                "audio",
+                "canvas",
+                "forms",
+                "geolocation",
+                "getUserMedia",
+                "localstorage",
+                "polyfill",
+                "ui",
+                "validation",
+                "video",
+                "webshim",
+                "webshims",
+                "widgets"
+            ],
             "support": {
-                "source": "https://github.com/aFarkas/webshim/tree/1.15.8",
-                "issues": "https://github.com/aFarkas/webshim/issues"
-            }
+                "source": "https://github.com/zikula/webshim/tree/1.16.1"
+            },
+            "time": "2018-08-23T16:37:47+00:00"
         },
         {
             "name": "behat/transliterator",
