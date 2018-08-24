@@ -65,6 +65,9 @@ class CategoryProcessingHelper
      */
     public function mayCategoryBeDeletedOrMoved(CategoryEntity $category)
     {
+        // TODO #3920
+        return true;
+
         // collect parents
         $isOnTop = false;
         $parentIds = [$category->getId()];

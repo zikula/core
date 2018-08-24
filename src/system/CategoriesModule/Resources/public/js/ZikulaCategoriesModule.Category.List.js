@@ -383,7 +383,7 @@
                     position: data.position
                 }
             }).done(function(result) {
-                console.log(result);
+                //console.log(result);
             }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             });
