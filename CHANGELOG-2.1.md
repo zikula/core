@@ -10,6 +10,7 @@ CHANGELOG - ZIKULA 2.1.x
  - Deprecated:
 
  - Fixes:
+    - Check if verification record is already deleted when confirming a changed mail address.
 
  - Features:
 

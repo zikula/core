@@ -303,21 +303,31 @@ class AccountController extends AbstractController
             'uid' => $currentUser->get('uid'),
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_EMAIL
         ]);
+
+        // check if verification record is already deleted
+        if (null === $verificationRecord) {
+            $this->addFlash('error', $this->__f('Error! Your e-mail has not been found. After your request you have %s days to confirm the new e-mail address.', ['%s' => $emailExpireDays]));
+
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
+        }
+
         $validCode = $this->get('zikula_zauth_module.api.password')->passwordsMatch($code, $verificationRecord->getVerifycode());
         if (!$validCode) {
             $this->addFlash('error', $this->__f('Error! Your e-mail has not been found. After your request you have %s days to confirm the new e-mail address.', ['%s' => $emailExpireDays]));
-        } else {
-            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $currentUser->get('uid')]);
-            $mapping->setEmail($verificationRecord->getNewemail());
-            $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
 
-            $user = $this->get('zikula_users_module.user_repository')->find($currentUser->get('uid'));
-            $user->setEmail($verificationRecord->getNewemail());
-            $this->get('zikula_users_module.user_repository')->persistAndFlush($user);
-
-            $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($user->getUid(), [ZAuthConstant::VERIFYCHGTYPE_EMAIL]);
-            $this->addFlash('success', $this->__('Done! Changed your e-mail address.'));
+            return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
+
+        $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->findOneBy(['uid' => $currentUser->get('uid')]);
+        $mapping->setEmail($verificationRecord->getNewemail());
+        $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
+
+        $user = $this->get('zikula_users_module.user_repository')->find($currentUser->get('uid'));
+        $user->setEmail($verificationRecord->getNewemail());
+        $this->get('zikula_users_module.user_repository')->persistAndFlush($user);
+
+        $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($user->getUid(), [ZAuthConstant::VERIFYCHGTYPE_EMAIL]);
+        $this->addFlash('success', $this->__('Done! Changed your e-mail address.'));
 
         return $this->redirectToRoute('zikulausersmodule_account_menu');
     }
