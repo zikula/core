@@ -15,3 +15,6 @@ CHANGELOG - ZIKULA 2.1.x
  - Features:
 
  - Vendor updates:
+    - symfony/phpunit-bridge updated from 3.4.14 to 3.4.15
+    - symfony/symfony updated from 3.4.14 to 3.4.15
+
