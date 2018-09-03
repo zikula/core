@@ -13,8 +13,8 @@
         {{ form_row(form.searchOrder) }}
         {{ form_row(form.modules) }}
     </div>
-    {% if properties.displaySearchBtn == 1 %}
+    {% if not properties.displaySearchBtn %}<div class="hidden">{% endif %}
         {{ form_row(form.search) }}
-    {% endif %}
+    {% if not properties.displaySearchBtn %}</div>{% endif %}
 </fieldset>
 {{ form_end(form) }}

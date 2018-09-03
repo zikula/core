@@ -12,6 +12,7 @@ CHANGELOG - ZIKULA 2.1.x
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
     - Updated listener priorities in Settings module to fix non-working variable localisation.
+    - Fixed broken functionality of hiding submit button in search block.
 
  - Features:
 

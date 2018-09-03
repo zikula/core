@@ -11,7 +11,11 @@
 
 namespace Zikula\SearchModule\Block;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\SearchModule\Block\Form\Type\SearchBlockType;
+use Zikula\SearchModule\Form\Type\AmendableModuleSearchType;
+use Zikula\SearchModule\Form\Type\SearchType;
 
 /**
  * Block to display a search form
@@ -37,7 +41,7 @@ class SearchBlock extends AbstractBlockHandler
         // get Core-2.0 searchable modules
         $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
         $moduleFormBuilder = $this->get('form.factory')
-            ->createNamedBuilder('modules', 'Symfony\Component\Form\Extension\Core\Type\FormType', [], [
+            ->createNamedBuilder('modules', FormType::class, [], [
                 'auto_initialize' => false,
                 'required' => false
             ]);
@@ -48,7 +52,7 @@ class SearchBlock extends AbstractBlockHandler
             if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
                 continue;
             }
-            $moduleFormBuilder->add($moduleName, 'Zikula\SearchModule\Form\Type\AmendableModuleSearchType', [
+            $moduleFormBuilder->add($moduleName, AmendableModuleSearchType::class, [
                 'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
                 'translator' => $this->getTranslator(),
                 'active' => true,
@@ -56,7 +60,7 @@ class SearchBlock extends AbstractBlockHandler
             ]);
             $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
         }
-        $form = $this->get('form.factory')->create('Zikula\SearchModule\Form\Type\SearchType', [], [
+        $form = $this->get('form.factory')->create(SearchType::class, [], [
             'translator' => $this->get('translator.default'),
             'action' => $this->get('router')->generate('zikulasearchmodule_search_execute')
         ]);
@@ -77,7 +81,7 @@ class SearchBlock extends AbstractBlockHandler
      */
     public function getFormClassName()
     {
-        return 'Zikula\SearchModule\Block\Form\Type\SearchBlockType';
+        return SearchBlockType::class;
     }
 
     /**
