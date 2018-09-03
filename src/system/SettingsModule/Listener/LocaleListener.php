@@ -56,7 +56,9 @@ class LocaleListener implements EventSubscriberInterface
     {
         return [
             // must be registered after the default Locale listener
-            KernelEvents::REQUEST => [['onKernelRequest', 15]]
+            KernelEvents::REQUEST => [
+                ['onKernelRequest', 15]
+            ]
         ];
     }
 }

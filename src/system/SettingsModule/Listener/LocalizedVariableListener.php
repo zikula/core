@@ -47,8 +47,9 @@ class LocalizedVariableListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            // must be registered after the default Locale listener
             KernelEvents::REQUEST => [
-                ['onKernelRequest', 201]
+                ['onKernelRequest', 14]
             ]
         ];
     }
