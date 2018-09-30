@@ -430,16 +430,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "049797d727261bf27f2690430d935067710049c2"
+                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/049797d727261bf27f2690430d935067710049c2",
-                "reference": "049797d727261bf27f2690430d935067710049c2",
+                "url": "https://api.github.com/repos/composer/installers/zipball/cfcca6b1b60bc4974324efb5783c13dca6932b5b",
+                "reference": "cfcca6b1b60bc4974324efb5783c13dca6932b5b",
                 "shasum": ""
             },
             "require": {
@@ -546,7 +546,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-12-29T09:13:20+00:00"
+            "time": "2018-08-27T06:10:37+00:00"
         },
         {
             "name": "composer/semver",
@@ -2036,16 +2036,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "7.0.6",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "8609c8ee6f7d460180f6c3854f4a3f013d9069e7"
+                "reference": "11254189dcd92e607789f6d353d0dfc4e5e2bfd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/8609c8ee6f7d460180f6c3854f4a3f013d9069e7",
-                "reference": "8609c8ee6f7d460180f6c3854f4a3f013d9069e7",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/11254189dcd92e607789f6d353d0dfc4e5e2bfd4",
+                "reference": "11254189dcd92e607789f6d353d0dfc4e5e2bfd4",
                 "shasum": ""
             },
             "type": "library",
@@ -2069,10 +2069,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.0.6",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.2.0",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2018-07-05T21:28:13+00:00"
+            "time": "2018-09-23T09:23:38+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -3799,12 +3799,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "6966aee1bfc020d6683156784d0c78c365d0f83b"
+                "reference": "535b56b7b0325e87b15b9c57bd3631ae2a0b9f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/6966aee1bfc020d6683156784d0c78c365d0f83b",
-                "reference": "6966aee1bfc020d6683156784d0c78c365d0f83b",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/535b56b7b0325e87b15b9c57bd3631ae2a0b9f16",
+                "reference": "535b56b7b0325e87b15b9c57bd3631ae2a0b9f16",
                 "shasum": ""
             },
             "require": {
@@ -3862,7 +3862,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2018-07-23T16:55:39+00:00"
+            "time": "2018-09-30T05:16:57+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -4600,16 +4600,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "5bb5c2d4b0d5cf10672015b68519a199e6ac27c1"
+                "reference": "43421aaec946240f79c2768edd2753b8b9080ffa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/5bb5c2d4b0d5cf10672015b68519a199e6ac27c1",
-                "reference": "5bb5c2d4b0d5cf10672015b68519a199e6ac27c1",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/43421aaec946240f79c2768edd2753b8b9080ffa",
+                "reference": "43421aaec946240f79c2768edd2753b8b9080ffa",
                 "shasum": ""
             },
             "require": {
@@ -4751,7 +4751,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-08-28T06:06:28+00:00"
+            "time": "2018-09-30T04:54:04+00:00"
         },
         {
             "name": "twig/extensions",
@@ -4873,16 +4873,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.5",
+            "version": "3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "0097fab41981daf36c234b73b683166daabd5f28"
+                "reference": "39d167dc3f931fa95e588d4d106d9b44cbcdb6f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/0097fab41981daf36c234b73b683166daabd5f28",
-                "reference": "0097fab41981daf36c234b73b683166daabd5f28",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/39d167dc3f931fa95e588d4d106d9b44cbcdb6f9",
+                "reference": "39d167dc3f931fa95e588d4d106d9b44cbcdb6f9",
                 "shasum": ""
             },
             "require": {
@@ -4926,7 +4926,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2018-01-02T08:13:23+00:00"
+            "time": "2018-09-17T12:38:44+00:00"
         },
         {
             "name": "wikimedia/composer-merge-plugin",
@@ -5752,16 +5752,16 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.4.15",
+            "version": "v3.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "f4fde1ede82c7ca2a4f06cf48521a185b26c0fed"
+                "reference": "4f2bbc1a84681e0dc59ee69d57d8dd32163f4eb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/f4fde1ede82c7ca2a4f06cf48521a185b26c0fed",
-                "reference": "f4fde1ede82c7ca2a4f06cf48521a185b26c0fed",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/4f2bbc1a84681e0dc59ee69d57d8dd32163f4eb0",
+                "reference": "4f2bbc1a84681e0dc59ee69d57d8dd32163f4eb0",
                 "shasum": ""
             },
             "require": {
@@ -5814,7 +5814,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-08-27T15:17:06+00:00"
+            "time": "2018-09-21T12:47:54+00:00"
         }
     ],
     "aliases": [],
