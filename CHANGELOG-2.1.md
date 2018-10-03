@@ -19,7 +19,7 @@ CHANGELOG - ZIKULA 2.1.x
  - Vendor updates:
     - composer/installers updated from 1.5.0 to 1.6.0
     - jquery.mmenu updated from 7.0.6 to 7.2.0
-    - symfony/phpunit-bridge updated from 3.4.14 to 3.4.16
-    - symfony/symfony updated from 3.4.14 to 3.4.16
+    - symfony/phpunit-bridge updated from 3.4.14 to 3.4.17
+    - symfony/symfony updated from 3.4.14 to 3.4.17
     - vakata/jstree updated from 3.3.5 to 3.3.6
 
