@@ -11,8 +11,8 @@
 
 namespace Zikula\Bridge\HttpFoundation;
 
+use Symfony\Component\HttpFoundation\Session\SessionStorageInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -66,10 +66,14 @@ class ZikulaSessionStorage extends NativeSessionStorage
      * @param VariableApiInterface $variableApi
      * @param array $options
      * @param AbstractProxy|NativeSessionHandler|\SessionHandlerInterface|null $handler
-     * @param MetadataBag $metaBag
+     * @param SessionStorageInterface $metaBag
      */
-    public function __construct(VariableApiInterface $variableApi, array $options = [], $handler = null, MetadataBag $metaBag = null)
-    {
+    public function __construct(
+        VariableApiInterface $variableApi,
+        array $options = [],
+        $handler = null,
+        MetadataBag $metaBag = null
+    ) {
         $this->securityLevel = $variableApi->getSystemVar('seclevel', self::SECURITY_LEVEL_MEDIUM);
         $this->inactiveSeconds = $variableApi->getSystemVar('secinactivemins', 20) * 60;
         $this->autoLogoutAfterSeconds = $variableApi->getSystemVar('secmeddays', 7) * 24 * 60 * 60;
