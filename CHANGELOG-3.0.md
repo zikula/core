@@ -1,7 +1,7 @@
-CHANGELOG - ZIKULA 2.1.x
+CHANGELOG - ZIKULA 3.0.x
 ========================
 
-2.1.0 (unreleased)
+3.0.0 (unreleased)
 ------------------
 
  - BC Breaks:
