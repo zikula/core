@@ -11,7 +11,7 @@
 
 namespace Zikula\ZAuthModule\AuthenticationMethod;
 
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -29,7 +29,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $mappingRepository;
 
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -55,8 +55,9 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
 
     /**
      * AbstractNativeAuthenticationMethod constructor.
+     *
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
-     * @param Session $session
+     * @param SessionInterface $session
      * @param TranslatorInterface $translator
      * @param VariableApiInterface $variableApi
      * @param ValidatorInterface $validator
@@ -64,7 +65,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     public function __construct(
         AuthenticationMappingRepositoryInterface $mappingRepository,
-        Session $session,
+        SessionInterface $session,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         ValidatorInterface $validator,
