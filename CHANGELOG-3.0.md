@@ -15,6 +15,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Fixed broken functionality of hiding submit button in search block.
     - Improved setting meta data for start page settings (#3929, #3932).
     - Provide more kernel information in coredata (#3651).
+    - Clear cache after changing active authentication methods (#3936).
 
  - Features:
 
