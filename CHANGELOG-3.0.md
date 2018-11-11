@@ -14,6 +14,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Updated listener priorities in Settings module to fix non-working variable localisation (#3934).
     - Fixed broken functionality of hiding submit button in search block.
     - Improved setting meta data for start page settings (#3929, #3932).
+    - Provide more kernel information in coredata (#3651).
 
  - Features:
 
