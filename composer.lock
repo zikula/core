@@ -1061,16 +1061,16 @@
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
-            "version": "1.3.3",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineCacheBundle.git",
-                "reference": "4c8e363f96427924e7e519c5b5119b4f54512697"
+                "reference": "5514c90d9fb595e1095e6d66ebb98ce9ef049927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineCacheBundle/zipball/4c8e363f96427924e7e519c5b5119b4f54512697",
-                "reference": "4c8e363f96427924e7e519c5b5119b4f54512697",
+                "url": "https://api.github.com/repos/doctrine/DoctrineCacheBundle/zipball/5514c90d9fb595e1095e6d66ebb98ce9ef049927",
+                "reference": "5514c90d9fb595e1095e6d66ebb98ce9ef049927",
                 "shasum": ""
             },
             "require": {
@@ -1083,7 +1083,7 @@
                 "instaclick/coding-standard": "~1.1",
                 "instaclick/object-calisthenics-sniffs": "dev-master",
                 "instaclick/symfony2-coding-standard": "dev-remaster",
-                "phpunit/phpunit": "~4|~5",
+                "phpunit/phpunit": "~4.8.36|~5.6|~6.5|~7.0",
                 "predis/predis": "~0.8",
                 "satooshi/php-coveralls": "^1.0",
                 "squizlabs/php_codesniffer": "~1.5",
@@ -1107,7 +1107,10 @@
             "autoload": {
                 "psr-4": {
                     "Doctrine\\Bundle\\DoctrineCacheBundle\\": ""
-                }
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1140,12 +1143,12 @@
                 }
             ],
             "description": "Symfony Bundle for Doctrine Cache",
-            "homepage": "http://www.doctrine-project.org",
+            "homepage": "https://www.doctrine-project.org",
             "keywords": [
                 "cache",
                 "caching"
             ],
-            "time": "2018-03-27T09:22:12+00:00"
+            "time": "2018-11-09T06:25:35+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -1459,12 +1462,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "39068e6d085e60f0fe6b8969ea498aa7bcb49cee"
+                "reference": "a93250f251350e306494af1ac3678d2cd36861d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/39068e6d085e60f0fe6b8969ea498aa7bcb49cee",
-                "reference": "39068e6d085e60f0fe6b8969ea498aa7bcb49cee",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/a93250f251350e306494af1ac3678d2cd36861d7",
+                "reference": "a93250f251350e306494af1ac3678d2cd36861d7",
                 "shasum": ""
             },
             "require": {
@@ -1498,7 +1501,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2018-10-24T00:03:41+00:00"
+            "time": "2018-11-11T23:20:33+00:00"
         },
         {
             "name": "fig/link-util",
@@ -2036,16 +2039,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "7.2.1",
+            "version": "7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "210244a32c3c8e29ed33b0e6812b289ff85f0e03"
+                "reference": "4a7b7f9e0988afd14aa163951a76ceb137290c7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/210244a32c3c8e29ed33b0e6812b289ff85f0e03",
-                "reference": "210244a32c3c8e29ed33b0e6812b289ff85f0e03",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/4a7b7f9e0988afd14aa163951a76ceb137290c7e",
+                "reference": "4a7b7f9e0988afd14aa163951a76ceb137290c7e",
                 "shasum": ""
             },
             "type": "library",
@@ -2069,10 +2072,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.2.1",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.2.2",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2018-10-23T20:43:53+00:00"
+            "time": "2018-11-08T12:25:01+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -3089,16 +3092,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.23.0",
+            "version": "1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
+                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
+                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
                 "shasum": ""
             },
             "require": {
@@ -3163,7 +3166,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19T01:22:40+00:00"
+            "time": "2018-11-05T09:00:11+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -3555,16 +3558,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
-                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
                 "shasum": ""
             },
             "require": {
@@ -3598,7 +3601,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2018-11-20T15:27:04+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -4874,16 +4877,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.6",
+            "version": "3.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "39d167dc3f931fa95e588d4d106d9b44cbcdb6f9"
+                "reference": "bc5187e5826244dee5ebdc0e9db2e2652fefe928"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/39d167dc3f931fa95e588d4d106d9b44cbcdb6f9",
-                "reference": "39d167dc3f931fa95e588d4d106d9b44cbcdb6f9",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/bc5187e5826244dee5ebdc0e9db2e2652fefe928",
+                "reference": "bc5187e5826244dee5ebdc0e9db2e2652fefe928",
                 "shasum": ""
             },
             "require": {
@@ -4927,7 +4930,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2018-09-17T12:38:44+00:00"
+            "time": "2018-11-06T21:15:47+00:00"
         },
         {
             "name": "wikimedia/composer-merge-plugin",
