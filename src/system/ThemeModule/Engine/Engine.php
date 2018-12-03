@@ -136,6 +136,8 @@ class Engine
      */
     public function wrapBlockContentInTheme($content, $title, $blockType, $bid, $positionName)
     {
+        $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
+
         $themeConfig = $this->getTheme()->getConfig();
         $wrap = isset($themeConfig['blockWrapping']) ? $themeConfig['blockWrapping'] : true;
 
