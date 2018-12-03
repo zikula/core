@@ -22,7 +22,6 @@ Functions
  * getModVar(module, name, default = null)
  * getSystemVar(name, default = null)
  * hasPermission(component, instance, level)
- * modAvailable(modname, force = false)
  * pageAddAsset(type, value, weight = 100)
  * pageGetVar(name, default = null)
  * pageSetVar(name, value)
