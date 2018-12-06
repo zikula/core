@@ -21,16 +21,5 @@ CHANGELOG - ZIKULA 3.0.x
  - Features:
 
  - Vendor updates:
-    - composer/ca-bundle updated from 1.1.2 to 1.1.3
-    - composer/installers updated from 1.5.0 to 1.6.0
-    - doctrine/doctrine-cache-bundle updated from 1.3.3 to 1.3.5
-    - jquery.mmenu updated from 7.0.6 to 7.2.2
-    - monolog/monolog updates from 1.23.0 to 1.24.0
-    - psr/log updated from 1.0.2 to 1.1.0
-    - sensio/distribution-bundle updated from 5.0.22 to 5.0.23
-    - sensiolabs/security-checker updated from 4.1.8 to 5.0.1
-    - symfony/phpunit-bridge updated from 3.4.14 to 3.4.20
-    - symfony/polyfill-* updated from 1.9.0 to 1.10.0
-    - symfony/symfony updated from 3.4.14 to 3.4.20
-    - vakata/jstree updated from 3.3.5 to 3.3.7
+    - symfony/phpunit-bridge installed in 3.4.14 and updated to 3.4.20
 
