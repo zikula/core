@@ -8,6 +8,9 @@ CHANGELOG - ZIKULA 2.0.x
     - Disclosure of uploaded files full path (CVE-2018-19789).
     - Open Redirect Vulnerability when using Security\Http (CVE-2018-19790).
 
+ - Fixes:
+    - Fixed broken support for custom block templates in themes.
+
  - Vendor updates:
     - composer/ca-bundle updated from 1.1.2 to 1.1.3
     - composer/installers updated from 1.5.0 to 1.6.0
