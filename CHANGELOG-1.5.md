@@ -1,11 +1,28 @@
 CHANGELOG - ZIKULA 1.5.x
 ========================
 
-1.5.9 (unreleased)
+1.5.9 (2018-12-06)
 ------------------
 
- - Fixes:
-    - ...
+ - Security fixes from Symfony:
+    - Disclosure of uploaded files full path (CVE-2018-19789).
+    - Open Redirect Vulnerability when using Security\Http (CVE-2018-19790).
+
+ - Vendor updates:
+    - composer/ca-bundle updated from 1.1.1 to 1.1.3
+    - doctrine/doctrine-cache-bundle updated from 1.3.3 to 1.3.5
+    - guzzlehttp/psr7 updated from 1.4.2 to 1.5.2
+    - jquery.mmenu updated from 7.0.6 to 7.2.2
+    - monolog/monolog updates from 1.23.0 to 1.24.0
+    - phpspec/prophecy updated from 1.7.6 to 1.8.0
+    - psr/log updated from 1.0.2 to 1.1.0
+    - ralouphie/getallheaders installed in 2.0.5
+    - sensio/distribution-bundle updated from 5.0.22 to 5.0.23
+    - sensiolabs/security-checker updated from 4.1.8 to 5.0.1
+    - symfony/polyfill-* updated from 1.8.0 to 1.10.0
+    - symfony/symfony updated from 2.8.44 to 2.8.49
+    - symfony/workflow updated from 3.4.14 to 3.4.20
+    - vakata/jstree updated from 3.3.5 to 3.3.7
 
 
 1.5.8 (2018-08-05)
