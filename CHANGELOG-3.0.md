@@ -29,8 +29,8 @@ CHANGELOG - ZIKULA 3.0.x
     - psr/log updated from 1.0.2 to 1.1.0
     - sensio/distribution-bundle updated from 5.0.22 to 5.0.23
     - sensiolabs/security-checker updated from 4.1.8 to 5.0.1
-    - symfony/phpunit-bridge updated from 3.4.14 to 3.4.17
+    - symfony/phpunit-bridge updated from 3.4.14 to 3.4.20
     - symfony/polyfill-* updated from 1.9.0 to 1.10.0
-    - symfony/symfony updated from 3.4.14 to 3.4.19
+    - symfony/symfony updated from 3.4.14 to 3.4.20
     - vakata/jstree updated from 3.3.5 to 3.3.7
 
