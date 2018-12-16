@@ -20,5 +20,9 @@ CHANGELOG - ZIKULA 3.0.x
  - Features:
 
  - Vendor updates:
+    - components/bootstrap updated from 3.3.7 to 3.4.0
+    - sensio/distribution-bundle updated from 5.0.23 to 5.0.24
+    - sensiolabs/security-checker updated from 5.0.1 to 5.0.2
     - symfony/phpunit-bridge installed in 3.4.14 and updated to 3.4.20
+    - twig/twig updated from 1.35.4 to 1.36.0
 
