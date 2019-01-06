@@ -1330,12 +1330,12 @@
             "version": "v2.5.14",
             "source": {
                 "type": "git",
-                "url": "https://github.com/doctrine/doctrine2.git",
+                "url": "https://github.com/doctrine/orm.git",
                 "reference": "810a7baf81462a5ddf10e8baa8cb94b6eec02754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/810a7baf81462a5ddf10e8baa8cb94b6eec02754",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/810a7baf81462a5ddf10e8baa8cb94b6eec02754",
                 "reference": "810a7baf81462a5ddf10e8baa8cb94b6eec02754",
                 "shasum": ""
             },
@@ -3279,16 +3279,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.17",
+            "version": "v2.0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d"
+                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/29af24f25bab834fcbb38ad2a69fa93b867e070d",
-                "reference": "29af24f25bab834fcbb38ad2a69fa93b867e070d",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
+                "reference": "0a58ef6e3146256cc3dc7cc393927bcc7d1b72db",
                 "shasum": ""
             },
             "require": {
@@ -3324,7 +3324,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-07-04T16:31:37+00:00"
+            "time": "2019-01-03T20:59:08+00:00"
         },
         {
             "name": "phpids/phpids",
@@ -3965,16 +3965,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v5.0.2",
+            "version": "v5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "728f9fb0fe815003b3bcfd331d33106c0d8a6b1e"
+                "reference": "46be3f58adac13084497961e10eed9a7fb4d44d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/728f9fb0fe815003b3bcfd331d33106c0d8a6b1e",
-                "reference": "728f9fb0fe815003b3bcfd331d33106c0d8a6b1e",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/46be3f58adac13084497961e10eed9a7fb4d44d1",
+                "reference": "46be3f58adac13084497961e10eed9a7fb4d44d1",
                 "shasum": ""
             },
             "require": {
@@ -4007,7 +4007,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2018-12-10T06:08:43+00:00"
+            "time": "2018-12-19T17:14:59+00:00"
         },
         {
             "name": "stof/doctrine-extensions-bundle",
@@ -4646,16 +4646,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.20",
+            "version": "v3.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "f6b8ddc362b1cf3fb06548693c3adbb736092412"
+                "reference": "c7a57e0bcc3c57ae697f072b3e862487b6fd0030"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/f6b8ddc362b1cf3fb06548693c3adbb736092412",
-                "reference": "f6b8ddc362b1cf3fb06548693c3adbb736092412",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/c7a57e0bcc3c57ae697f072b3e862487b6fd0030",
+                "reference": "c7a57e0bcc3c57ae697f072b3e862487b6fd0030",
                 "shasum": ""
             },
             "require": {
@@ -4797,7 +4797,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2018-12-06T15:24:36+00:00"
+            "time": "2019-01-06T15:54:26+00:00"
         },
         {
             "name": "twig/extensions",
@@ -5630,16 +5630,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.0.5",
+            "version": "3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "1a9c43c700448405d10e3e975f95c56368bf556a"
+                "reference": "c01b7f6620d6f31d6ab34c5834fdfbfead0cc81b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/1a9c43c700448405d10e3e975f95c56368bf556a",
-                "reference": "1a9c43c700448405d10e3e975f95c56368bf556a",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/c01b7f6620d6f31d6ab34c5834fdfbfead0cc81b",
+                "reference": "c01b7f6620d6f31d6ab34c5834fdfbfead0cc81b",
                 "shasum": ""
             },
             "require": {
@@ -5667,7 +5667,7 @@
                         "ZikulaProfileModule::": "::",
                         "ZikulaProfileModule::view": "::",
                         "ZikulaProfileModule::item": "PropertyId::",
-                        "ZikulaProfileModule:Members": "::",
+                        "ZikulaProfileModule:Members:": "::",
                         "ZikulaProfileModule:Members:recent": "::",
                         "ZikulaProfileModule:Members:online": "::",
                         "ZikulaProfileModule:FeaturedUserblock:": "Block title::",
@@ -5694,10 +5694,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.0.5",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.0.6",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2018-07-05T12:48:40+00:00"
+            "time": "2019-01-06T11:24:37+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
@@ -5798,16 +5798,16 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.4.20",
+            "version": "v3.4.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "2155067dfc73e0e77dbc26f236af17e4df552de5"
+                "reference": "5dab0d4b2ac99ab22b447b615fdfdc10ec4af3d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/2155067dfc73e0e77dbc26f236af17e4df552de5",
-                "reference": "2155067dfc73e0e77dbc26f236af17e4df552de5",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/5dab0d4b2ac99ab22b447b615fdfdc10ec4af3d5",
+                "reference": "5dab0d4b2ac99ab22b447b615fdfdc10ec4af3d5",
                 "shasum": ""
             },
             "require": {
@@ -5860,7 +5860,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2018-11-20T16:47:12+00:00"
+            "time": "2019-01-01T13:45:19+00:00"
         }
     ],
     "aliases": [],
