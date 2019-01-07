@@ -16,6 +16,8 @@ CHANGELOG - ZIKULA 3.0.x
     - Improved setting meta data for start page settings (#3929, #3932).
     - Provide more kernel information in coredata (#3651).
     - Clear cache after changing active authentication methods (#3936).
+    - Allow zasset syntax for relative assets also for normal bundles.
+    - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
 
  - Features:
 

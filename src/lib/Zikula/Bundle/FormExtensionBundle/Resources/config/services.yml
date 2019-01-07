@@ -7,9 +7,20 @@ services:
     zikula.form.type.deletion:
         class: Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType
         arguments:
-            - "@translator.default"
+            - '@translator.default'
         tags:
             - { name: form.type, alias: zikula_deletion }
+
+    zikula.form.type.dynamic_field_type:
+        class: Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicFieldType
+        arguments:
+            - '@event_dispatcher'
+            - '@zikula_settings_module.locale_api'
+            - '@translator.default'
+            - '@zikula_theme_module.api.page_asset'
+            - '@zikula_core.common.theme.asset_helper'
+        tags:
+            - { name: form.type, alias: zikula_dynamic_field }
 
     zikula.form_extension.icon:
         class: Zikula\Bundle\FormExtensionBundle\Form\Extension\ButtonTypeIconExtension
@@ -24,17 +35,15 @@ services:
     zikula.form_extension.form_detection_listener:
         class: Zikula\Bundle\FormExtensionBundle\Listener\FormDetectionListener
         arguments:
-            - "@zikula_core.common.theme.asset_helper"
-            - "@zikula_core.common.theme.assets_js"
-            - "@zikula_core.common.theme.pagevars"
-        tags:
-            - { name: kernel.event_subscriber }
+            - '@zikula_core.common.theme.asset_helper'
+            - '@zikula_core.common.theme.assets_js'
+            - '@zikula_core.common.theme.pagevars'
+        tags: ['kernel.event_subscriber']
 
     zikula_form_extension_bundle.form_extension:
         class: Zikula\Bundle\FormExtensionBundle\Twig\Extension\FormExtension
         arguments:
-            - "@zikula_core.common.theme.asset_helper"
-            - "@zikula_core.common.theme.assets_js"
-            - "@zikula_core.common.theme.pagevars"
-        tags:
-            - { name: twig.extension }
+            - '@zikula_core.common.theme.asset_helper'
+            - '@zikula_core.common.theme.assets_js'
+            - '@zikula_core.common.theme.pagevars'
+        tags: ['twig.extension']

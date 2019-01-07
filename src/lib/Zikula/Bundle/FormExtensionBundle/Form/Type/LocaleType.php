@@ -24,7 +24,8 @@ class LocaleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureDefaultOptions(OptionsResolver $resolver)
+    //public function configureDefaultOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'choices' => ['English' => 'en'],
