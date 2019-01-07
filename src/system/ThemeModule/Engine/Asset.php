@@ -12,6 +12,7 @@
 namespace Zikula\ThemeModule\Engine;
 
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 
@@ -91,8 +92,14 @@ class Asset
 
         // if file exists in /web, then use it first
         $bundle = $this->kernel->getBundle(substr($parts[0], 1));
-        if ($bundle instanceof AbstractBundle) {
-            $relativeAssetPath = $bundle->getRelativeAssetPath() . '/' . $parts[1];
+        if ($bundle instanceof AbstractBundle || $bundle instanceof Bundle) {
+            $relativeAssetPath = '/' . $parts[1];
+            if ($bundle instanceof AbstractBundle) {
+                $relativeAssetPath = $bundle->getRelativeAssetPath() . $relativeAssetPath;
+            } else {
+                $relativeAssetPath = strtolower('Bundles/' . substr($bundle->getName(), 0, -strlen('Bundle'))) . $relativeAssetPath;
+            }
+
             $webPath = $this->assetPackages->getUrl($relativeAssetPath);
             $filePath = realpath($this->kernel->getRootDir() . '/../../../' . $webPath);
             if (is_file($filePath)) {

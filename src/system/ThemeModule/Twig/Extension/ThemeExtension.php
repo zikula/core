@@ -11,14 +11,14 @@
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
-use Zikula\ThemeModule\Api\PageAssetApi;
+use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class ThemeExtension extends \Twig_Extension
 {
     /**
-     * @var PageAssetApi
+     * @var PageAssetApiInterface
      */
     private $pageAssetApi;
 
@@ -29,10 +29,10 @@ class ThemeExtension extends \Twig_Extension
 
     /**
      * ThemeExtension constructor.
-     * @param PageAssetApi $pageAssetApi
+     * @param PageAssetApiInterface $pageAssetApi
      * @param Asset $assetHelper
      */
-    public function __construct(PageAssetApi $pageAssetApi, Asset $assetHelper)
+    public function __construct(PageAssetApiInterface $pageAssetApi, Asset $assetHelper)
     {
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;

@@ -66,6 +66,7 @@ Features of Zikula
 ### Community Driven Modules
 
  - [Pages](https://github.com/zikula-modules/Pages) (Basic content pages)
+ - [Content](https://github.com/zikula-modules/Content) (Advanced content pages)
  - [Scribite](https://github.com/zikula-modules/Scribite) (WYSIWYG JS Editor integration)
  - [Dizkus](https://github.com/zikula-modules/DizkusModule) (Forum)
  - [MediaModule](https://github.com/cmfcmf/MediaModule) (Media management)
@@ -75,7 +76,6 @@ Features of Zikula
 ##### Legacy Modules not yet converted but intended to be done
 
  - [News](https://github.com/zikula-modules/News) (Blog system)
- - [Content](https://github.com/zikula-modules/Content) (Advanced content pages)
  - [Multisites](https://github.com/zikula-modules/Multisites) (Multisites system)
  - [PostCalendar](https://github.com/craigh/PostCalendar) (Calendar and event system)
  - [Tag](https://github.com/craigh/Tag) (Tagging hook)

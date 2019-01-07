@@ -18,6 +18,8 @@ CHANGELOG - ZIKULA 3.0.x
     - Clear cache after changing active authentication methods (#3936).
 
  - Features:
+    - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
+    - Allow zasset syntax for relative assets also for normal bundles.
 
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0
