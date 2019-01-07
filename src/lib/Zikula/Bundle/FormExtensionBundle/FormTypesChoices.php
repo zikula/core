@@ -36,9 +36,6 @@ class FormTypesChoices implements \ArrayAccess, \Iterator
 
     public function offsetSet($offset, $value)
     {
-        if (isset($this->choices[$offset])) {
-            throw new \Exception('Cannot set existing keys to new values!');
-        }
         $this->choices[$offset] = $value;
     }
 

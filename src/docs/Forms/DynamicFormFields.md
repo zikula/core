@@ -13,13 +13,18 @@ Sometimes you want to amend or extend the field type list. For example profile m
 ```php
     public function formTypeChoices(FormTypeChoiceEvent $event)
     {
-        $groupName = $this->translator->__('Other Fields');
-
         $choices = $event->getChoices();
+
+        $groupName = $this->translator->__('Other Fields');
         if (!isset($choices[$groupName])) {
             $choices[$groupName] = [];
         }
-        $choices[$groupName][] = AvatarType::class;
+
+        $groupChoices = $choices[$groupName];
+        $groupChoices[] = AvatarType::class;
+        $choices[$groupName] = $groupChoices;
+
+        $event->setChoices($choices);
     }
 ```
 

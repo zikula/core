@@ -33,7 +33,7 @@ class FormTypeChoiceEvent extends Event
      */
     public function __construct(FormTypesChoices $choices)
     {
-        $this->choices = $choices;
+        $this->setChoices($choices);
     }
 
     /**
@@ -44,5 +44,15 @@ class FormTypeChoiceEvent extends Event
     public function getChoices()
     {
         return $this->choices;
+    }
+
+    /**
+     * Returns the choices.
+     *
+     * @param FormTypesChoices $choices
+     */
+    public function setChoices(FormTypesChoices $choices)
+    {
+        $this->choices = $choices;
     }
 }
