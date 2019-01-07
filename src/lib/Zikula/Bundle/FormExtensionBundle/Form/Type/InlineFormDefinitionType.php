@@ -45,13 +45,13 @@ class InlineFormDefinitionType extends AbstractType
         }
 
         foreach ($this->dynamicFieldsContainer->getDynamicFieldsSpecification() as $fieldSpecification) {
-            $options = $fieldSpecification->getFormOptions();
-            $options['label'] = isset($options['label']) ? $options['label'] : $fieldSpecification->getLabel($this->translator->getLocale());
+            $fieldOptions = $fieldSpecification->getFormOptions();
+            $fieldOptions['label'] = isset($fieldOptions['label']) ? $fieldOptions['label'] : $fieldSpecification->getLabel($this->translator->getLocale());
 
             $prefix = $fieldSpecification->getPrefix();
             $prefix = null !== $prefix && '' != $prefix ? $prefix . ':' : '';
 
-            $builder->add($prefix . $fieldSpecification->getName(), $fieldSpecification->getFormType(), $options);
+            $builder->add($prefix . $fieldSpecification->getName(), $fieldSpecification->getFormType(), $fieldOptions);
         }
     }
 
