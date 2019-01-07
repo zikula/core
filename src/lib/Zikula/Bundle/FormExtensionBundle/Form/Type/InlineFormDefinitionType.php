@@ -72,7 +72,6 @@ class InlineFormDefinitionType extends AbstractType
             'translator' => null,
             'constraints' => [],
             'mapped' => false,
-            'inherit_data' => true,
             'dynamicFieldsContainer' => null
         ]);
     }
