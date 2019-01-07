@@ -31,12 +31,12 @@ class InlineFormDefinitionType extends AbstractType
      * @var DynamicFieldsContainerInterface
      */
     private $dynamicFieldsContainer = null;
-    
+
     /**
      * @var string
      */
     private $prefix;
-    
+
     /**
      * {@inheritdoc}
      */
