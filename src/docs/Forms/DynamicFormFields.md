@@ -6,7 +6,7 @@ The `FormExtensionBundle` offers helpers for handling dynamic form fields (*prop
 Dynamic selection of field types and corresponding options
 ----------------------------------------------------------
 
-The `Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicFieldType` class provides a form type which consists of two parts. First a choice field which allows to select a field type using a dropdown list. Upon selection further field-specific form fields for the field options are loaded using ajax and dynamically added/replaced in the form. To use this add something like `$builder->add('fieldInfo', DynamicFieldType::class, ['label' => false, 'mapped' => false]);` to your form type's `buildForm` method.
+The `Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicFieldType` class provides a form type which consists of two parts. First a choice field which allows to select a field type using a dropdown list. Upon selection further field-specific form fields for the field options are loaded using ajax and dynamically added/replaced in the form. To use this add something like `$builder->add('fieldInfo', DynamicFieldType::class, ['label' => false]);` to your form type's `buildForm` method.
 
 Sometimes you want to amend or extend the field type list. For example profile modules may want to add an avatar field type. Similarly other custom types may be relevant for other applications. For this purpose you can listen for an event provided by the `Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent` class. Implementation inside your listener might look similar to this example:
 
