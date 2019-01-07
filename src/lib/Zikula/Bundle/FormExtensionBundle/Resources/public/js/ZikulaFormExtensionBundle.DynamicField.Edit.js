@@ -1,19 +1,20 @@
 // Copyright Zikula Foundation, licensed MIT.
 (function($) {
     $(document).ready(function() {
-        var formType = $('#zikulaformextensionbundle_property_formType');
-        formType.change(function() {
-            $('#zikulaformextensionbundle_property_formOptions').html('<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>');
+        var formTypeField = $("select[id$='_fieldInfo_formType']");
+        formTypeField.change(function() {
+            $("[id$='_fieldInfo_formOptions']")
+                .html('<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>');
             var $form = $(this).closest('form');
             var data = {};
-            data[formType.attr('name')] = formType.val();
+            data[formTypeField.attr('name')] = formTypeField.val();
             $.ajax({
                 url : $form.attr('action'),
                 type: $form.attr('method'),
                 data : data,
                 success: function(html) {
-                    $('#zikulaformextensionbundle_property_formOptions').replaceWith(
-                        $(html).find('#zikulaformextensionbundle_property_formOptions')
+                    $("[id$='_fieldInfo_formOptions']").replaceWith(
+                        $(html).find("[id$='_fieldInfo_formOptions']")
                     );
                 }
             });
