@@ -33,18 +33,12 @@ class InlineFormDefinitionType extends AbstractType
     private $dynamicFieldsContainer = null;
 
     /**
-     * @var string
-     */
-    private $prefix;
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
         $this->translator = $options['translator'];
         $this->dynamicFieldsContainer = $options['dynamicFieldsContainer'];
-        $this->prefix = $options['prefix'];
 
         if (null === $this->dynamicFieldsContainer) {
             return;
@@ -54,7 +48,10 @@ class InlineFormDefinitionType extends AbstractType
             $options = $fieldSpecification->getFormOptions();
             $options['label'] = isset($options['label']) ? $options['label'] : $fieldSpecification->getLabel($this->translator->getLocale());
 
-            $builder->add($this->prefix . ':' . $fieldSpecification->getName(), $fieldSpecification->getFormType(), $options);
+            $prefix = $fieldSpecification->getPrefix();
+            $prefix = null !== $prefix && '' != $prefix ? $prefix . ':' : '';
+
+            $builder->add($prefix . $fieldSpecification->getName(), $fieldSpecification->getFormType(), $options);
         }
     }
 
@@ -76,8 +73,7 @@ class InlineFormDefinitionType extends AbstractType
             'constraints' => [],
             'mapped' => false,
             'inherit_data' => true,
-            'dynamicFieldsContainer' => null,
-            'prefix' => ''
+            'dynamicFieldsContainer' => null
         ]);
     }
 }

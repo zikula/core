@@ -2,7 +2,6 @@
 (function($) {
     $(document).ready(function() {
         var formType = $('#zikulaformextensionbundle_property_formType');
-        console.log(formType);
         formType.change(function() {
             $('#zikulaformextensionbundle_property_formOptions').html('<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>');
             var $form = $(this).closest('form');

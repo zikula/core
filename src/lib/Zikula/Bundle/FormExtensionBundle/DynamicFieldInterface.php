@@ -24,6 +24,12 @@ interface DynamicFieldInterface
     public function getName();
 
     /**
+     * Returns optional prefix of form field.
+     * @return string
+     */
+    public function getPrefix();
+
+    /**
      * Returns a list of labels per locale.
      * @return array
      */
