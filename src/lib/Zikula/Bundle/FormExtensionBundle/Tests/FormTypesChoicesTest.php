@@ -63,17 +63,4 @@ class FormTypesChoicesTest extends \PHPUnit_Framework_TestCase
         ]);
         unset($foo['foo']);
     }
-
-    /**
-     * @expectedException \Exception
-     */
-    public function testExceptionOnChange()
-    {
-        $foo = new FormTypesChoices([
-            'foo' => 'bar',
-            'three' => 'nine',
-            1 => 17
-        ]);
-        $foo['foo'] = 'four';
-    }
 }
