@@ -61,21 +61,21 @@ Features of Zikula
     - quick updating
  - Creates models describing your extensions
  - Generates the Zikula module implementation
- - Read more at the [project's website](http://modulestudio.de/en)
+ - Read more at the [project's website](https://modulestudio.de/en)
 
 ### Community Driven Modules
 
  - [Pages](https://github.com/zikula-modules/Pages) (Basic content pages)
  - [Content](https://github.com/zikula-modules/Content) (Advanced content pages)
- - [Scribite](https://github.com/zikula-modules/Scribite) (WYSIWYG JS Editor integration)
+ - [Scribite](https://github.com/zikula-modules/Scribite) (Integration of various WYSIWYG editors)
+ - [MediaModule](https://github.com/zikula-modules/MediaModule) (Media management)
+ - [News](https://github.com/Portugao/News) (Blog system)
  - [Dizkus](https://github.com/zikula-modules/DizkusModule) (Forum)
- - [MediaModule](https://github.com/cmfcmf/MediaModule) (Media management)
  - [Formicula](https://github.com/zikula-ev/Formicula) (Contact form generator)
- - [Piwik](https://github.com/Guite/Piwik) (Piwik integration)
+ - [Piwik](https://github.com/Guite/Piwik) (Piwik/Matomo integration)
 
 ##### Legacy Modules not yet converted but intended to be done
 
- - [News](https://github.com/zikula-modules/News) (Blog system)
  - [Multisites](https://github.com/zikula-modules/Multisites) (Multisites system)
  - [PostCalendar](https://github.com/craigh/PostCalendar) (Calendar and event system)
  - [Tag](https://github.com/craigh/Tag) (Tagging hook)
