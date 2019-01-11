@@ -40,7 +40,7 @@ class InlineFormDefinitionType extends AbstractType
         $this->translator = $options['translator'];
         $this->dynamicFieldsContainer = $options['dynamicFieldsContainer'];
 
-        if (null === $this->dynamicFieldsContainer) {
+        if (null === $this->dynamicFieldsContainer || !($this->dynamicFieldsContainer instanceof DynamicFieldsContainerInterface)) {
             return;
         }
 
