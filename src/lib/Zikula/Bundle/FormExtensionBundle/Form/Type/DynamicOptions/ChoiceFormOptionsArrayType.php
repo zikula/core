@@ -14,7 +14,6 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
 
 class ChoiceFormOptionsArrayType extends FormOptionsArrayType
 {
@@ -38,9 +37,6 @@ class ChoiceFormOptionsArrayType extends FormOptionsArrayType
                 'label' => $this->translator->__('Choices'),
                 'help' => $this->translator->__('A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"')
             ])
-        ;
-        $builder->get('choices')
-            ->addModelTransformer(new ChoiceValuesTransformer())
         ;
     }
 }
