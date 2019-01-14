@@ -41,8 +41,13 @@ class RegexConstraintTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if (is_array($value)) {
+            $value = $value[0];
+        }
         if (!$value) {
-            $value = new Regex('/.*/');
+            $value = '/.*/';
+        } elseif ($value instanceof Regex) {
+            $value = $value->pattern;
         }
 
         return [new Regex($value)];
