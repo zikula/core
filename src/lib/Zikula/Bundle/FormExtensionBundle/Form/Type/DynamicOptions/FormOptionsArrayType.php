@@ -59,7 +59,7 @@ class FormOptionsArrayType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => new IdentityTranslator(),
+            'translator' => new IdentityTranslator()
         ]);
     }
 }

@@ -40,6 +40,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\ChoiceFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\DateTimeFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayType;
@@ -114,7 +116,7 @@ class DynamicFieldType extends AbstractType
             'placeholder' => $this->translator->__('Select')
         ]);
 
-        $formModifier = function (FormInterface $form, $formType = null) {
+        $formModifier = function (FormInterface $form, $formType = null) use ($builder) {
             switch ($formType) {
                 case ChoiceType::class:
                     $optionsType = ChoiceFormOptionsArrayType::class;
@@ -132,10 +134,21 @@ class DynamicFieldType extends AbstractType
                 default:
                     $optionsType = FormOptionsArrayType::class;
             }
-            $form->add('formOptions', $optionsType, [
+            $formOptions = $builder->create('formOptions', $optionsType, [
                 'label' => $this->translator->__('Field options'),
-                'translator' => $this->translator
+                'translator' => $this->translator,
+                'auto_initialize' => false
             ]);
+            if (ChoiceFormOptionsArrayType::class == $optionsType) {
+                $formOptions->get('choices')->addModelTransformer(
+                    new ChoiceValuesTransformer()
+                );
+            } elseif (RegexibleFormOptionsArrayType::class == $optionsType) {
+                $formOptions->get('constraints')->addModelTransformer(
+                    new RegexConstraintTransformer()
+                );
+            }
+            $form->add($formOptions->getForm());
         };
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
             $data = $event->getData();

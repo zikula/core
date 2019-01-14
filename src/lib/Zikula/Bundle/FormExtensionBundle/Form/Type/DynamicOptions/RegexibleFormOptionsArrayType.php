@@ -14,7 +14,7 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Regex;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
 
 class RegexibleFormOptionsArrayType extends FormOptionsArrayType
 {
@@ -28,24 +28,11 @@ class RegexibleFormOptionsArrayType extends FormOptionsArrayType
         $builder
             ->add('constraints', TextType::class, [
                 'label' => $this->translator->__('Regex validation string constraint'),
-                'required' => false,
-            ]);
+                'required' => false
+            ])
+        ;
         $builder->get('constraints')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($dataToDisplay) {
-                    /** @var Regex $constraint */
-                    $constraint = isset($dataToDisplay[0]) ? $dataToDisplay[0] : new Regex('/.*/');
-
-                    return $constraint->pattern;
-                },
-                function ($dataToPersist) {
-                    if (!$dataToPersist) {
-                        $dataToPersist = new Regex('/.*/');
-                    }
-
-                    return [new Regex($dataToPersist)];
-                }
-            ))
+            ->addModelTransformer(new RegexConstraintTransformer())
         ;
     }
 }

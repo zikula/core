@@ -37,8 +37,7 @@ class DateTimeFormOptionsArrayType extends FormOptionsArrayType
                     $this->translator->__('Choice') => 'choice',
                     $this->translator->__('Text') => 'text',
                     $this->translator->__('Single Text') => 'single_text',
-                ],
-                'choices_as_values' => true,
+                ]
             ])
             ->add('input', ChoiceType::class, [
                 'label' => $this->translator->__('Input'),
@@ -47,8 +46,7 @@ class DateTimeFormOptionsArrayType extends FormOptionsArrayType
                     $this->translator->__('DateTime Object') => 'datetime',
                     $this->translator->__('Array') => 'array',
                     $this->translator->__('Timestamp') => 'timestamp',
-                ],
-                'choices_as_values' => true,
+                ]
             ])
             ->add('format', TextType::class, [
                 'label' => $this->translator->__('Format'),
