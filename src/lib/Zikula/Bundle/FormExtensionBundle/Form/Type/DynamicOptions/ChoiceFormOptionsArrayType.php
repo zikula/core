@@ -11,7 +11,6 @@
 
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions;
 
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

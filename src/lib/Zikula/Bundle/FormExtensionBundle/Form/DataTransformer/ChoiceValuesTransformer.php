@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\FormExtensionBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * Class ChoiceValuesTransformer
