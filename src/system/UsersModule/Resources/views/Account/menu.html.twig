@@ -17,12 +17,13 @@
 {% for link in accountLinks|default %}
     <div class="z-accountlink" style="width:{{ width|round(1, 'floor') }}%">
         {% if displayGraphics %}
-            {% if '.' in link.icon and accountLink.module.name|default %}
-                {% set icon = '<img title="'~link.text~'" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
-            {% elseif '.' in link.icon %}
-                {% set icon = '<img title="'~link.text~'" src="'~app.request.basepath~'/modules/'~link.module~'/images/'~link.icon~'" />' %}
+            {% set imageTitle = link.text|replace({'"': ''}) %}
+            {% if link.icon[:4] == 'http' or not link.module|default %}
+                {% set icon = '<img title="' ~ imageTitle ~ '" src="'~link.icon~'" />' %}
+            {% elseif '.' in link.icon and link.module|default %}
+                {% set icon = '<img title="' ~ imageTitle ~ '" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
             {% else %}
-                {% set icon = '<i title="'~link.text~'" class="fa fa-3x fa-'~link.icon~'"></i>' %}
+                {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-3x fa-'~link.icon~'"></i>' %}
             {% endif %}
             <a href="{{ link.url }}">{{ icon|raw }}</a><br />
         {% endif %}
