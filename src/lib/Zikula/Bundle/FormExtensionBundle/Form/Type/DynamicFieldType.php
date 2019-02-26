@@ -45,6 +45,7 @@ use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransform
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\ChoiceFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\DateTimeFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayType;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\MoneyFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -126,6 +127,9 @@ class DynamicFieldType extends AbstractType
                 case TimeType::class:
                 case BirthdayType::class:
                     $optionsType = DateTimeFormOptionsArrayType::class;
+                    break;
+                case MoneyType::class:
+                    $optionsType = MoneyFormOptionsArrayType::class;
                     break;
                 case TextType::class:
                 case TextareaType::class:
