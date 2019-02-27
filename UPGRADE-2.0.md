@@ -51,7 +51,8 @@ The following process should be followed for all upgrades even small point relea
       check your phpinfo.) `mod_suexec` often is used in shared hosting environments. In this case, the CLI installer is not 
       recommended, please use the Web Installer.
   - Copy your previous installation's `app/config/custom_parameters.yml` to the same location in your new installation.
-    - **Change the value of `datadir` to `web/uploads`** if upgrading from Core-1.x.
+      - **Add an entry named `core_installed_version: a.b.c`** whereby `a.b.c` should be your old version if it does not exist yet.
+      - **Change the value of `datadir` to `web/uploads`** if upgrading from Core-1.x.
     - Do not change any other values.
 
 #### Continue:
