@@ -22,42 +22,42 @@ use Zikula\ThemeModule\Engine\Asset;
 abstract class AbstractContentType implements ContentTypeInterface
 {
     /**
-     * Translator instance.
+     * Translator instance
      *
      * @var TranslatorInterface
      */
     protected $translator;
 
     /**
-     * Bundle name.
+     * Bundle name
      *
      * @var string
      */
     protected $bundleName;
 
     /**
-     * Translation domain.
+     * Translation domain
      *
      * @var string
      */
     protected $domain;
 
     /**
-     * The name of this content type.
+     * The name of this content type
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Twig template engine.
+     * Twig template engine
      *
      * @var Twig_Environment
      */
     protected $twig;
 
     /**
-     * Twig template loader.
+     * Twig template loader
      *
      * @var FilesystemLoader
      */
