@@ -1403,16 +1403,16 @@
         },
         {
             "name": "elao/web-profiler-extra-bundle",
-            "version": "v2.3.5",
+            "version": "v2.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Elao/WebProfilerExtraBundle.git",
-                "reference": "7a51d4844c137880eee69287a6484ce48411cf57"
+                "reference": "edbcd31a3e0b0940b0ed0301d467f2419280d679"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/7a51d4844c137880eee69287a6484ce48411cf57",
-                "reference": "7a51d4844c137880eee69287a6484ce48411cf57",
+                "url": "https://api.github.com/repos/Elao/WebProfilerExtraBundle/zipball/edbcd31a3e0b0940b0ed0301d467f2419280d679",
+                "reference": "edbcd31a3e0b0940b0ed0301d467f2419280d679",
                 "shasum": ""
             },
             "require": {
@@ -1454,7 +1454,7 @@
                 "extra",
                 "profiler"
             ],
-            "time": "2017-12-06T09:08:30+00:00"
+            "time": "2019-02-04T07:19:17+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -2041,16 +2041,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "7.2.3",
+            "version": "7.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "1661a878a447d7452607035fab316017bb741139"
+                "reference": "abef33d0a70a539d2669dd4a94c2c72b18af267a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/1661a878a447d7452607035fab316017bb741139",
-                "reference": "1661a878a447d7452607035fab316017bb741139",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/abef33d0a70a539d2669dd4a94c2c72b18af267a",
+                "reference": "abef33d0a70a539d2669dd4a94c2c72b18af267a",
                 "shasum": ""
             },
             "type": "library",
@@ -2074,10 +2074,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.2.3",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.3.2",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2019-02-02T23:05:38+00:00"
+            "time": "2019-02-20T19:14:45+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -4647,16 +4647,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v3.4.22",
+            "version": "v3.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "907d4d1d1a419663c3c37cfb33dd65c48fa62d1b"
+                "reference": "336cf12e5e82d71874e8522e0879794340351b56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/907d4d1d1a419663c3c37cfb33dd65c48fa62d1b",
-                "reference": "907d4d1d1a419663c3c37cfb33dd65c48fa62d1b",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/336cf12e5e82d71874e8522e0879794340351b56",
+                "reference": "336cf12e5e82d71874e8522e0879794340351b56",
                 "shasum": ""
             },
             "require": {
@@ -4798,7 +4798,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2019-02-03T12:23:08+00:00"
+            "time": "2019-03-03T18:52:48+00:00"
         },
         {
             "name": "twig/extensions",
@@ -5799,16 +5799,16 @@
     "packages-dev": [
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.4.22",
+            "version": "v3.4.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "6a2148bfc6ca0016846a32bdc55a317274283709"
+                "reference": "b539f37134c10edbf85dc0567be4151c56870f5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/6a2148bfc6ca0016846a32bdc55a317274283709",
-                "reference": "6a2148bfc6ca0016846a32bdc55a317274283709",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/b539f37134c10edbf85dc0567be4151c56870f5e",
+                "reference": "b539f37134c10edbf85dc0567be4151c56870f5e",
                 "shasum": ""
             },
             "require": {
@@ -5818,7 +5818,6 @@
                 "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0"
             },
             "suggest": {
-                "ext-zip": "Zip support is required when using bin/simple-phpunit",
                 "symfony/debug": "For tracking deprecated interfaces usages at runtime with DebugClassLoader"
             },
             "bin": [
@@ -5861,7 +5860,7 @@
             ],
             "description": "Symfony PHPUnit Bridge",
             "homepage": "https://symfony.com",
-            "time": "2019-01-30T13:30:37+00:00"
+            "time": "2019-02-16T18:50:26+00:00"
         }
     ],
     "aliases": [],
