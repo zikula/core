@@ -70,6 +70,7 @@ Features of Zikula
  - [Scribite](https://github.com/zikula-modules/Scribite) (Integration of various WYSIWYG editors)
  - [MediaModule](https://github.com/zikula-modules/MediaModule) (Media management)
  - [News](https://github.com/Portugao/News) (Blog system)
+ - [MultiHook](https://github.com/zikula-modules/MultiHook) (Abbreviations, acronyms, autolinks, censor)
  - [Dizkus](https://github.com/zikula-modules/DizkusModule) (Forum)
  - [Formicula](https://github.com/zikula-ev/Formicula) (Contact form generator)
  - [Piwik](https://github.com/Guite/Piwik) (Piwik/Matomo integration)
