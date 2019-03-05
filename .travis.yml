@@ -18,7 +18,7 @@ services:
 before_install:
     - phpenv config-rm xdebug.ini
     # load memcache.so
-    - pecl install -f memcached-2.1.0 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - pecl install -f memcached-3.1.3 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
     # Set the COMPOSER_ROOT_VERSION to the right version according to the branch being built
     - if [ "$TRAVIS_BRANCH" = "master" ]; then export COMPOSER_ROOT_VERSION=dev-master; else export COMPOSER_ROOT_VERSION="$TRAVIS_BRANCH".x-dev; fi;
 
