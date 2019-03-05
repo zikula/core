@@ -15,6 +15,7 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
+use Twig\Node\Node;
 
 class ZikulaJsFileExtractor implements FileVisitorInterface
 {
@@ -72,7 +73,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
     {
     }
 
-    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $node)
+    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, Node $node)
     {
     }
 }

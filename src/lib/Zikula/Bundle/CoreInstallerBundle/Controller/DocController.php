@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Michelf\MarkdownExtra;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
@@ -29,7 +30,7 @@ class DocController
     private $kernel;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -52,13 +53,13 @@ class DocController
      * Constructor.
      *
      * @param ZikulaHttpKernelInterface $kernel
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param MarkdownExtra $parser
      * @param TranslatorInterface $translator
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        \Twig_Environment $twig,
+        Environment $twig,
         MarkdownExtra $parser,
         TranslatorInterface $translator
     ) {

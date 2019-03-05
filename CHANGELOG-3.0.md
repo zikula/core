@@ -24,6 +24,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
 
  - Deprecated:
+    - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.

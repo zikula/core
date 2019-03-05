@@ -11,11 +11,13 @@
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
-class ThemeExtension extends \Twig_Extension
+class ThemeExtension extends AbstractExtension
 {
     /**
      * @var PageAssetApiInterface
@@ -46,15 +48,10 @@ class ThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('pageAddAsset', [$this, 'pageAddAsset']),
-            new \Twig_SimpleFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('zasset', [$this, 'getAssetPath']),
+            new TwigFunction('pageAddAsset', [$this, 'pageAddAsset']),
+            new TwigFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']]),
+            new TwigFunction('zasset', [$this, 'getAssetPath']),
         ];
-    }
-
-    public function getFilters()
-    {
-        return [];
     }
 
     /**

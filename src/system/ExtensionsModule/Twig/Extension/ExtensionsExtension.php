@@ -11,11 +11,14 @@
 
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-class ExtensionsExtension extends \Twig_Extension
+class ExtensionsExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface
@@ -39,14 +42,14 @@ class ExtensionsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('stateLabel', [$this, 'stateLabel'], ['is_safe' => ['html']]),
+            new TwigFunction('stateLabel', [$this, 'stateLabel'], ['is_safe' => ['html']]),
         ];
     }
 
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('isCoreModule', ['ZikulaKernel', 'isCoreModule']),
+            new TwigFilter('isCoreModule', ['ZikulaKernel', 'isCoreModule']),
         ];
     }
 
@@ -55,36 +58,36 @@ class ExtensionsExtension extends \Twig_Extension
         switch ($extensionEntity->getState()) {
             case Constant::STATE_INACTIVE:
                 $status = $this->translator->__('Inactive');
-                $statusclass = "warning";
+                $statusclass = 'warning';
                 break;
             case Constant::STATE_ACTIVE:
                 $status = $this->translator->__('Active');
-                $statusclass = "success";
+                $statusclass = 'success';
                 break;
             case Constant::STATE_MISSING:
                 $status = $this->translator->__('Files missing');
-                $statusclass = "danger";
+                $statusclass = 'danger';
                 break;
             case Constant::STATE_UPGRADED:
                 $status = $this->translator->__('New version');
-                $statusclass = "danger";
+                $statusclass = 'danger';
                 break;
             case Constant::STATE_INVALID:
                 $status = $this->translator->__('Invalid structure');
-                $statusclass = "danger";
+                $statusclass = 'danger';
                 break;
             case Constant::STATE_NOTALLOWED:
                 $status = $this->translator->__('Not allowed');
-                $statusclass = "danger";
+                $statusclass = 'danger';
                 break;
             case Constant::STATE_UNINITIALISED:
             default:
                 if ($extensionEntity->getState() > 10) {
                     $status = $this->translator->__('Incompatible');
-                    $statusclass = "info";
+                    $statusclass = 'info';
                 } else {
                     $status = $this->translator->__('Not installed');
-                    $statusclass = "primary";
+                    $statusclass = 'primary';
                 }
                 break;
         }

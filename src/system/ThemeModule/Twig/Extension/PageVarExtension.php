@@ -11,10 +11,12 @@
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
-class PageVarExtension extends \Twig_Extension
+class PageVarExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface
@@ -47,8 +49,8 @@ class PageVarExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('pageSetVar', [$this, 'pageSetVar']),
-            new \Twig_SimpleFunction('pageGetVar', [$this, 'pageGetVar']),
+            new TwigFunction('pageSetVar', [$this, 'pageSetVar']),
+            new TwigFunction('pageGetVar', [$this, 'pageGetVar']),
         ];
     }
 

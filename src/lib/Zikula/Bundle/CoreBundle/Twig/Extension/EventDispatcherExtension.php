@@ -12,9 +12,11 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\Core\Event\GenericEvent;
 
-class EventDispatcherExtension extends \Twig_Extension
+class EventDispatcherExtension extends AbstractExtension
 {
     /**
      * @var EventDispatcherInterface
@@ -39,7 +41,7 @@ class EventDispatcherExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('dispatchEvent', [$this, 'dispatchEvent']),
+            new TwigFunction('dispatchEvent', [$this, 'dispatchEvent']),
         ];
     }
 

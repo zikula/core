@@ -12,11 +12,11 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Symfony\Bundle\TwigBundle\Loader\FilesystemLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
+use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -29,12 +29,12 @@ use Zikula\RoutesModule\Helper\ControllerHelper;
 abstract class AbstractViewHelper
 {
     /**
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
     /**
-     * @var FilesystemLoader
+     * LoaderInterface
      */
     protected $twigLoader;
 
@@ -66,8 +66,8 @@ abstract class AbstractViewHelper
     /**
      * ViewHelper constructor.
      *
-     * @param Twig_Environment       $twig             Twig service instance
-     * @param FilesystemLoader       $twigLoader       Twig loader service instance
+     * @param Environment            $twig             Twig service instance
+     * @param LoaderInterface        $twigLoader       Twig loader service instance
      * @param RequestStack           $requestStack     RequestStack service instance
      * @param PermissionApiInterface $permissionApi    PermissionApi service instance
      * @param VariableApiInterface   $variableApi      VariableApi service instance
@@ -77,8 +77,8 @@ abstract class AbstractViewHelper
      * @return void
      */
     public function __construct(
-        Twig_Environment $twig,
-        FilesystemLoader $twigLoader,
+        Environment $twig,
+        LoaderInterface $twigLoader,
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,

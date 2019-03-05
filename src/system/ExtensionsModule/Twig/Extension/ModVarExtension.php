@@ -11,10 +11,12 @@
 
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
-class ModVarExtension extends \Twig_Extension
+class ModVarExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface
@@ -47,8 +49,8 @@ class ModVarExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('getModVar', [$this, 'getModVar']),
-            new \Twig_SimpleFunction('getSystemVar', [$this, 'getSystemVar']),
+            new TwigFunction('getModVar', [$this, 'getModVar']),
+            new TwigFunction('getSystemVar', [$this, 'getSystemVar']),
         ];
     }
 

@@ -12,9 +12,11 @@
 namespace Zikula\PermissionsModule\Twig\Extension;
 
 use Symfony\Component\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-class PermissionsExtension extends \Twig_Extension
+class PermissionsExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface
@@ -46,7 +48,7 @@ class PermissionsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('hasPermission', [$this, 'hasPermission']),
+            new TwigFunction('hasPermission', [$this, 'hasPermission']),
         ];
     }
 

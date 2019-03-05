@@ -13,5 +13,4 @@ services:
             - method: setContainer
               arguments:
                 - "@service_container"
-        tags:
-            - { name: twig.extension }
+        tags: ['twig.extension']

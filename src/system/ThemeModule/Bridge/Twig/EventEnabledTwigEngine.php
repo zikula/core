@@ -13,6 +13,8 @@ namespace Zikula\ThemeModule\Bridge\Twig;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Twig\Error\Error as TwigError;
+use Twig\Template as TwigTemplate;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 use Zikula\ThemeModule\ThemeEvents;
@@ -37,9 +39,9 @@ class EventEnabledTwigEngine extends TwigEngine
      *
      * This overrides the TwigEngine::render method in order to dispatch events both before and after rendering the content.
      *
-     * It also supports \Twig_Template as name parameter.
+     * It also supports TwigTemplate as name parameter.
      *
-     * @throws \Twig_Error if something went wrong like a thrown exception while rendering the template
+     * @throws TwigError if something went wrong like a thrown exception while rendering the template
      */
     public function render($name, array $parameters = [])
     {

@@ -11,8 +11,8 @@
 
 namespace Zikula\Common\Content;
 
-use Twig_Environment;
-use Symfony\Bundle\TwigBundle\Loader\FilesystemLoader;
+use Twig\Environment;
+use Twig\Loader\LoaderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Engine\Asset;
 
@@ -52,14 +52,14 @@ abstract class AbstractContentType implements ContentTypeInterface
     /**
      * Twig template engine
      *
-     * @var Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
     /**
      * Twig template loader
      *
-     * @var FilesystemLoader
+     * @var LoaderInterface
      */
     protected $twigLoader;
 
@@ -92,15 +92,15 @@ abstract class AbstractContentType implements ContentTypeInterface
      * AbstractContentType constructor.
      *
      * @param TranslatorInterface $translator       Translator service instance
-     * @param Twig_Environment    $twig             Twig service instance
-     * @param FilesystemLoader    $twigLoader       Twig loader service instance
+     * @param Environment         $twig             Twig service instance
+     * @param LoaderInterface     $twigLoader       Twig loader service instance
      * @param PermissionHelper    $permissionHelper PermissionHelper service instance
      * @param Asset               $assetHelper      Asset service instance
      */
     public function __construct(
         TranslatorInterface $translator,
-        Twig_Environment $twig,
-        FilesystemLoader $twigLoader,
+        Environment $twig,
+        LoaderInterface $twigLoader,
         /*PermissionHelper */$permissionHelper,
         Asset $assetHelper
     ) {

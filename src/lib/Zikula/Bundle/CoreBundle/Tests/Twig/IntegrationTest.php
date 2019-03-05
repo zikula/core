@@ -11,13 +11,16 @@
 
 namespace Zikula\Bundle\CoreBundle\Tests\Twig;
 
+use Twig\Test\IntegrationTestCase;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 
-class IntegrationTest extends \Twig_Test_IntegrationTestCase
+class IntegrationTest extends IntegrationTestCase
 {
     public function getExtensions()
     {
-        return [new CoreExtension()];
+        return [
+            new CoreExtension()
+        ];
     }
 
     public function getFixturesDir()

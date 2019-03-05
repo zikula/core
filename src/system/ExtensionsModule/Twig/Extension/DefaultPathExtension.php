@@ -12,9 +12,10 @@
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Extension\AbstractExtension;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
-class DefaultPathExtension extends \Twig_Extension
+class DefaultPathExtension extends AbstractExtension
 {
     /**
      * @var CapabilityApiInterface

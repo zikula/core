@@ -13,7 +13,7 @@
 namespace Zikula\RoutesModule\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use ZLanguage;
+use Twig\TwigFilter;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Twig\Base\AbstractTwigExtension;
 
@@ -41,10 +41,10 @@ class TwigExtension extends AbstractTwigExtension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from base class
-            new \Twig_SimpleFilter('zikularoutesmodule_formattedTitle', [$this, 'getFormattedEntityTitle']), // from base class
-            new \Twig_SimpleFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'], ['is_safe' => ['html']])
+            new TwigFilter('zikularoutesmodule_listEntry', [$this, 'getListEntry']), // from base class
+            new TwigFilter('zikularoutesmodule_formattedTitle', [$this, 'getFormattedEntityTitle']), // from base class
+            new TwigFilter('zikularoutesmodule_arrayToString', [$this, 'displayArrayAsString'], ['is_safe' => ['html']]),
+            new TwigFilter('zikularoutesmodule_pathToString', [$this, 'displayPathAsString'], ['is_safe' => ['html']])
         ];
     }
 
@@ -90,9 +90,13 @@ class TwigExtension extends AbstractTwigExtension
             $prefix = '/' . $translationPrefix;
         }
 
+        $container = $this->container;
+
         if ($route->getTranslatable()) {
-            $languages = ZLanguage::getInstalledLanguages();
-            $isRequiredLangParam = ZLanguage::isRequiredLangParam();
+            $localeApi = $container->get('zikula_settings_module.locale_api');
+            $languages = $localeApi->getSupportedLocales();
+            // TODO migrate this legacy call
+            $isRequiredLangParam = true;//ZLanguage::isRequiredLangParam();
             if (!$isRequiredLangParam) {
                 $defaultLanguage = $this->variableApi->getSystemVar('language_i18n');
                 unset($languages[array_search($defaultLanguage, $languages)]);
@@ -101,8 +105,6 @@ class TwigExtension extends AbstractTwigExtension
                 $prefix = ($isRequiredLangParam ? '/' : '{/') . implode('|', $languages) . ($isRequiredLangParam ? '' : '}');
             }
         }
-
-        $container = $this->container;
 
         $prefix = htmlspecialchars($prefix);
         $path = htmlspecialchars($container->get('zikula_routes_module.path_builder_helper')->getPathWithBundlePrefix($route));

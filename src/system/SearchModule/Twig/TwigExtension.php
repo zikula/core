@@ -13,13 +13,16 @@ namespace Zikula\SearchModule\Twig;
 
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Zikula\Core\RouteUrl;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
  * Twig extension class.
  */
-class TwigExtension extends \Twig_Extension
+class TwigExtension extends AbstractExtension
 {
     /**
      * @var VariableApiInterface
@@ -46,25 +49,25 @@ class TwigExtension extends \Twig_Extension
     /**
      * Returns a list of custom Twig functions.
      *
-     * @return \Twig_SimpleFunction[]
+     * @return TwigFunction[]
      */
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames']),
+            new TwigFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames']),
         ];
     }
 
     /**
      * Returns a list of custom Twig filters.
      *
-     * @return \Twig_SimpleFilter[]
+     * @return TwigFilter[]
      */
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('zikulasearchmodule_highlightWords', [$this, 'highlightWords'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('zikulasearchmodule_generateUrl', [$this, 'generateUrl']),
+            new TwigFilter('zikulasearchmodule_highlightWords', [$this, 'highlightWords'], ['is_safe' => ['html']]),
+            new TwigFilter('zikulasearchmodule_generateUrl', [$this, 'generateUrl']),
         ];
     }
 

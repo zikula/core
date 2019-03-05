@@ -11,12 +11,14 @@
 
 namespace Zikula\SecurityCenterModule\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 
 /**
  * Twig extension class.
  */
-class TwigExtension extends \Twig_Extension
+class TwigExtension extends AbstractExtension
 {
     /**
      * @var HtmlFilterApiInterface
@@ -36,7 +38,7 @@ class TwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']])
+            new TwigFilter('safeHtml', [$this, 'safeHtml'], ['is_safe' => ['html']])
         ];
     }
 

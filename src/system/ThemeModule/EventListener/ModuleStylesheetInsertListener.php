@@ -14,6 +14,7 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Twig\Error\LoaderError;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 
@@ -39,7 +40,7 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
     /**
      * Add the module stylesheet to the page assets.
      * @param FilterControllerEvent $event
-     * @throws \Twig_Error_Loader
+     * @throws LoaderError
      */
     public function insertModuleStylesheet(FilterControllerEvent $event)
     {

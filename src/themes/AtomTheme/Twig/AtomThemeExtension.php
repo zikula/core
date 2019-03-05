@@ -13,9 +13,11 @@ namespace Zikula\AtomTheme\Twig;
 
 use Gedmo\Sluggable\Util as Sluggable;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
-class AtomThemeExtension extends \Twig_Extension
+class AtomThemeExtension extends AbstractExtension
 {
     /**
      * @var VariableApiInterface
@@ -40,8 +42,8 @@ class AtomThemeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('atomId', [$this, 'id']),
-            new \Twig_SimpleFunction('atomFeedLastUpdated', [$this, 'atomFeedLastUpdated']),
+            new TwigFunction('atomId', [$this, 'id']),
+            new TwigFunction('atomFeedLastUpdated', [$this, 'atomFeedLastUpdated']),
         ];
     }
 

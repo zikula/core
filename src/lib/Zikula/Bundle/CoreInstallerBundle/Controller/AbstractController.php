@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -41,7 +42,7 @@ abstract class AbstractController
     protected $router;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     protected $twig;
 

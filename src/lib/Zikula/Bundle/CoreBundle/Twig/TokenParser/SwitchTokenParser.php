@@ -11,6 +11,10 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\TokenParser;
 
+use Twig\Error\SyntaxError;
+use Twig\Node\Node;
+use Twig\Token;
+use Twig\TokenParser\AbstractTokenParser;
 use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;
 
 /**
@@ -26,17 +30,17 @@ use Zikula\Bundle\CoreBundle\Twig\Node\SwitchNode;
  *          code for default case
  * {% endswitch %}
  */
-class SwitchTokenParser extends \Twig_TokenParser
+class SwitchTokenParser extends AbstractTokenParser
 {
-    public function parse(\Twig_Token $token)
+    public function parse(Token $token)
     {
         $lineno = $token->getLine();
 
         $expression = $this->parser->getExpressionParser()->parseExpression();
 
-        $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
         $this->parser->subparse([$this, 'decideCaseFork']);
-        $cases = new \Twig_Node();
+        $cases = new Node();
         $default = null;
 
         $end = false;
@@ -46,10 +50,10 @@ class SwitchTokenParser extends \Twig_TokenParser
                 case 'case':
                     $i++;
                     $expr = $this->parser->getExpressionParser()->parseExpression();
-                    $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+                    $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
                     $body = $this->parser->subparse([$this, 'decideCaseFork']);
 
-                    $cases->setNode($i, new \Twig_Node([
+                    $cases->setNode($i, new Node([
                         'expression' => $expr,
                         'body' => $body,
                     ]));
@@ -58,7 +62,7 @@ class SwitchTokenParser extends \Twig_TokenParser
 
                 case 'default':
                     $i = null;
-                    $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+                    $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
                     $body = $this->parser->subparse([$this, 'decideCaseFork']);
 
                     $default = $body;
@@ -66,7 +70,7 @@ class SwitchTokenParser extends \Twig_TokenParser
                     break;
 
                 case 'break':
-                    $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+                    $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
                     $this->parser->subparse([$this, 'decideCaseFork']);
 
                     if ($cases->hasNode($i)) {
@@ -80,16 +84,16 @@ class SwitchTokenParser extends \Twig_TokenParser
                     break;
 
                 default:
-                    throw new \Twig_Error_Syntax(sprintf('Unexpected end of template at line %d' . $tag, $lineno), -1);
+                    throw new SyntaxError(sprintf('Unexpected end of template at line %d' . $tag, $lineno), -1);
             }
         }
 
-        $this->parser->getStream()->expect(\Twig_Token::BLOCK_END_TYPE);
+        $this->parser->getStream()->expect(Token::BLOCK_END_TYPE);
 
         return new SwitchNode($cases, $default, $expression, $lineno, $this->getTag());
     }
 
-    public function decideCaseFork(\Twig_Token $token)
+    public function decideCaseFork(Token $token)
     {
         return $token->test(['case', 'default', 'break', 'endswitch']);
     }

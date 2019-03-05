@@ -12,11 +12,13 @@
 namespace Zikula\UsersModule\Twig\Extension;
 
 use Doctrine\Common\Collections\Criteria;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Zikula\SecurityCenterModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
-class OnlineExtension extends \Twig_Extension
+class OnlineExtension extends AbstractExtension
 {
     /**
      * @var UserSessionRepositoryInterface
@@ -44,7 +46,7 @@ class OnlineExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('onlineSince', [$this, 'onlineSince']),
+            new TwigFilter('onlineSince', [$this, 'onlineSince']),
         ];
     }
 

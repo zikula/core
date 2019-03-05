@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -39,7 +40,7 @@ class SiteOffListener implements EventSubscriberInterface
     private $currentUserApi;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -58,7 +59,7 @@ class SiteOffListener implements EventSubscriberInterface
      * @param VariableApiInterface $variableApi
      * @param PermissionApiInterface $permissionApi
      * @param CurrentUserApiInterface $currentUserApi
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param RouterInterface $router
      * @param boolean $installed
      */
@@ -66,7 +67,7 @@ class SiteOffListener implements EventSubscriberInterface
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
-        \Twig_Environment $twig,
+        Environment $twig,
         RouterInterface $router,
         $installed
     ) {

@@ -30,6 +30,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\MessageSelector;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 use Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension;
@@ -144,7 +145,7 @@ class TwigFileExtractorTest extends KernelTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $env = new \Twig_Environment();
+        $env = new Environment();
         $zikulaTranslator = new ZikulaIdentityTranslator(new MessageSelector());
         $env->addExtension(new SymfonyTranslationExtension($zikulaTranslator));
         $env->addExtension(new TranslationExtension($zikulaTranslator, true));

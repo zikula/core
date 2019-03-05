@@ -11,12 +11,15 @@
 
 namespace Zikula\Bundle\HookBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\FilterHook;
 use Zikula\Core\UrlInterface;
 
-class HookExtension extends \Twig_Extension
+class HookExtension extends AbstractExtension
 {
     /**
      * @var HookDispatcherInterface
@@ -36,14 +39,14 @@ class HookExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']])
+            new TwigFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']])
         ];
     }
 
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('notifyFilters', [$this, 'notifyFilters'], ['is_safe' => ['html']])
+            new TwigFilter('notifyFilters', [$this, 'notifyFilters'], ['is_safe' => ['html']])
         ];
     }
 

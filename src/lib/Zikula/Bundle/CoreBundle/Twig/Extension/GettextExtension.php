@@ -11,13 +11,15 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
  * GettextExtension class.
  */
-class GettextExtension extends \Twig_Extension
+class GettextExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface
@@ -48,10 +50,10 @@ class GettextExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('__', [$this, '__'], ['needs_context' => true]),
-            new \Twig_SimpleFunction('_n', [$this, '_n'], ['needs_context' => true]),
-            new \Twig_SimpleFunction('__f', [$this, '__f'], ['needs_context' => true]),
-            new \Twig_SimpleFunction('_fn', [$this, '_fn'], ['needs_context' => true]),
+            new TwigFunction('__', [$this, '__'], ['needs_context' => true]),
+            new TwigFunction('_n', [$this, '_n'], ['needs_context' => true]),
+            new TwigFunction('__f', [$this, '__f'], ['needs_context' => true]),
+            new TwigFunction('_fn', [$this, '_fn'], ['needs_context' => true]),
         ];
     }
 

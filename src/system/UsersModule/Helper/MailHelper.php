@@ -12,6 +12,8 @@
 namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Twig\Error\LoaderError;
+use Twig\Environment;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
@@ -28,7 +30,7 @@ class MailHelper
     private $translator;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -55,7 +57,7 @@ class MailHelper
     /**
      * MailHelper constructor.
      * @param TranslatorInterface $translator
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param VariableApiInterface $variableApi
      * @param MailerApiInterface $mailerApi
      * @param PermissionApiInterface $permissionApi
@@ -63,7 +65,7 @@ class MailHelper
      */
     public function __construct(
         TranslatorInterface $translator,
-        \Twig_Environment $twig,
+        Environment $twig,
         VariableApiInterface $variableApi,
         MailerApiInterface $mailerApi,
         PermissionApiInterface $permissionApi,
@@ -236,14 +238,14 @@ class MailHelper
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
-        } catch (\Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             $htmlBody = '';
         }
 
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.txt.twig";
         try {
             $textBody = $this->twig->render($templateName, $templateArgs);
-        } catch (\Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             $textBody = '';
         }
 

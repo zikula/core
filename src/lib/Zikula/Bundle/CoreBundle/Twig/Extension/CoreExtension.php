@@ -12,10 +12,14 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\Intl\Intl;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\TokenParser\SwitchTokenParser;
 use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Common\Translator\TranslatorInterface;
 
-class CoreExtension extends \Twig_Extension
+class CoreExtension extends AbstractExtension
 {
     /**
      * @var TranslatorInterface
@@ -37,7 +41,7 @@ class CoreExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return [
-            new Twig\TokenParser\SwitchTokenParser()
+            new SwitchTokenParser()
         ];
     }
 
@@ -47,8 +51,8 @@ class CoreExtension extends \Twig_Extension
     public function getFunctions()
     {
         $functions = [
-            new \Twig_SimpleFunction('array_unset', [$this, 'arrayUnset']),
-            new \Twig_SimpleFunction('callFunc', [$this, 'callFunc']),
+            new TwigFunction('array_unset', [$this, 'arrayUnset']),
+            new TwigFunction('callFunc', [$this, 'callFunc']),
         ];
 
         return $functions;
@@ -60,10 +64,10 @@ class CoreExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('languageName', [$this, 'languageName']),
-            new \Twig_SimpleFilter('yesNo', [$this, 'yesNo']),
-            new \Twig_SimpleFilter('php', [$this, 'applyPhp']),
-            new \Twig_SimpleFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']]),
+            new TwigFilter('languageName', [$this, 'languageName']),
+            new TwigFilter('yesNo', [$this, 'yesNo']),
+            new TwigFilter('php', [$this, 'applyPhp']),
+            new TwigFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']]),
         ];
     }
 

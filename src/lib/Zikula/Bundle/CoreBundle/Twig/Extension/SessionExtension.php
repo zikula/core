@@ -12,9 +12,11 @@
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\Bundle\CoreBundle\Twig;
 
-class SessionExtension extends \Twig_Extension
+class SessionExtension extends AbstractExtension
 {
     /**
      * @var SessionInterface
@@ -38,7 +40,7 @@ class SessionExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']]),
+            new TwigFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']]),
         ];
     }
 

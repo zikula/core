@@ -11,9 +11,13 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Node;
 
-class SwitchNode extends \Twig_Node
+use Twig\Compiler;
+use Twig\Node\Expression\AbstractExpression;
+use Twig\Node\Node;
+
+class SwitchNode extends Node
 {
-    public function __construct(\Twig_Node $cases, \Twig_Node $default = null, \Twig_Node_Expression $expression, $lineno, $tag = null)
+    public function __construct(Node $cases, Node $default = null, AbstractExpression $expression, $lineno, $tag = null)
     {
         $nodes = [
             'cases' => $cases,
@@ -23,7 +27,7 @@ class SwitchNode extends \Twig_Node
         parent::__construct($nodes, [], $lineno, $tag);
     }
 
-    public function compile(\Twig_Compiler $compiler)
+    public function compile(Compiler $compiler)
     {
         $compiler->addDebugInfo($this);
         $compiler
@@ -32,7 +36,7 @@ class SwitchNode extends \Twig_Node
             ->raw(") {\n")
             ->indent();
 
-        /* @var $case \Twig_Node */
+        /* @var $case Node */
         foreach ($this->getNode('cases')->getIterator() as $key => $case) {
             $compiler
                 ->write('case ')

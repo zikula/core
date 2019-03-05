@@ -12,12 +12,14 @@
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHeaderFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleLinksFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleFooterFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHelpFunction;
 
-class UserInterfaceExtension extends \Twig_Extension
+class UserInterfaceExtension extends AbstractExtension
 {
     /**
      * @var FragmentHandler
@@ -41,10 +43,10 @@ class UserInterfaceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new TwigFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new TwigFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new TwigFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new TwigFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => ['html']]),
         ];
     }
 }

@@ -11,13 +11,16 @@
 
 namespace Zikula\BlocksModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\Loader\LoaderInterface;
+use Twig\TwigFunction;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\Engine;
 
-class BlocksExtension extends \Twig_Extension
+class BlocksExtension extends AbstractExtension
 {
     /**
      * @var BlockApiInterface
@@ -40,7 +43,7 @@ class BlocksExtension extends \Twig_Extension
     private $kernel;
 
     /**
-     * @var \Twig_Loader_Filesystem
+     * @var LoaderInterface
      */
     private $loader;
 
@@ -50,14 +53,14 @@ class BlocksExtension extends \Twig_Extension
      * @param BlockFilterApiInterface $blockFilterApi
      * @param Engine $themeEngine
      * @param ZikulaHttpKernelInterface $kernel
-     * @param \Twig_Loader_Filesystem $loader
+     * @param FilesystemLoader $loader
      */
     public function __construct(
         BlockApiInterface $blockApi,
         BlockFilterApiInterface $blockFilterApi,
         Engine $themeEngine,
         ZikulaHttpKernelInterface $kernel,
-        \Twig_Loader_Filesystem $loader
+        LoaderInterface $loader
     ) {
         $this->blockApi = $blockApi;
         $this->blockFilter = $blockFilterApi;
@@ -74,15 +77,10 @@ class BlocksExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('showblockposition', [$this, 'showBlockPosition'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('showblock', [$this, 'showBlock'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('positionavailable', [$this, 'positionAvailable']),
+            new TwigFunction('showblockposition', [$this, 'showBlockPosition'], ['is_safe' => ['html']]),
+            new TwigFunction('showblock', [$this, 'showBlock'], ['is_safe' => ['html']]),
+            new TwigFunction('positionavailable', [$this, 'positionAvailable']),
         ];
-    }
-
-    public function getFilters()
-    {
-        return [];
     }
 
     /**

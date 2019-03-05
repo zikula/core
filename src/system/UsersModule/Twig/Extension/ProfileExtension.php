@@ -11,11 +11,14 @@
 
 namespace Zikula\UsersModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Collector\ProfileModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
-class ProfileExtension extends \Twig_Extension
+class ProfileExtension extends AbstractExtension
 {
     /**
      * @var UserRepositoryInterface
@@ -51,15 +54,15 @@ class ProfileExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('userAvatar', [$this, 'getUserAvatar'], ['is_safe' => ['html']])
+            new TwigFunction('userAvatar', [$this, 'getUserAvatar'], ['is_safe' => ['html']])
         ];
     }
 
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('profileLinkByUserId', [$this, 'profileLinkByUserId'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('profileLinkByUserName', [$this, 'profileLinkByUserName'], ['is_safe' => ['html']])
+            new TwigFilter('profileLinkByUserId', [$this, 'profileLinkByUserId'], ['is_safe' => ['html']]),
+            new TwigFilter('profileLinkByUserName', [$this, 'profileLinkByUserName'], ['is_safe' => ['html']])
         ];
     }
 

@@ -11,6 +11,8 @@
 
 namespace Zikula\ZAuthModule\Helper;
 
+use Twig\Error\LoaderError;
+use Twig\Environment;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
@@ -23,7 +25,7 @@ class MailHelper
     private $translator;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -40,12 +42,16 @@ class MailHelper
     /**
      * MailHelper constructor.
      * @param TranslatorInterface $translator
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param VariableApiInterface $variableApi
      * @param MailerApiInterface $mailerApi
      */
-    public function __construct(TranslatorInterface $translator, \Twig_Environment $twig, VariableApiInterface $variableApi, MailerApiInterface $mailerApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        Environment $twig,
+        VariableApiInterface $variableApi,
+        MailerApiInterface $mailerApi
+    ) {
         $this->translator = $translator;
         $this->twig = $twig;
         $this->variableApi = $variableApi;
@@ -72,14 +78,14 @@ class MailHelper
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
-        } catch (\Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             $htmlBody = '';
         }
 
         $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.txt.twig";
         try {
             $textBody = $this->twig->render($templateName, $templateArgs);
-        } catch (\Twig_Error_Loader $e) {
+        } catch (LoaderError $e) {
             $textBody = '';
         }
 

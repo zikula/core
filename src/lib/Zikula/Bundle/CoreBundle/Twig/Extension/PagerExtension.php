@@ -13,9 +13,11 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
-class PagerExtension extends \Twig_Extension
+class PagerExtension extends AbstractExtension
 {
     /**
      * @var ContainerInterface
@@ -35,8 +37,8 @@ class PagerExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('pager', [$this, 'pager'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('pagerabc', [$this, 'pagerabc'], ['is_safe' => ['html']])
+            new TwigFunction('pager', [$this, 'pager'], ['is_safe' => ['html']]),
+            new TwigFunction('pagerabc', [$this, 'pagerabc'], ['is_safe' => ['html']])
         ];
     }
 

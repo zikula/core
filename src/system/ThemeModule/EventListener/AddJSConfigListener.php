@@ -14,6 +14,7 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
@@ -36,7 +37,7 @@ class AddJSConfigListener implements EventSubscriberInterface
     private $currentUserApi;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -61,7 +62,7 @@ class AddJSConfigListener implements EventSubscriberInterface
      * JSConfig constructor.
      * @param VariableApiInterface $variableApi
      * @param CurrentUserApiInterface $currentUserApi
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param ParameterBag $pageVars
      * @param AssetBag $headers
      * @param string $defaultSessionName
@@ -70,7 +71,7 @@ class AddJSConfigListener implements EventSubscriberInterface
         $installed,
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
-        \Twig_Environment $twig,
+        Environment $twig,
         ParameterBag $pageVars,
         AssetBag $headers,
         $defaultSessionName = '_zsid'

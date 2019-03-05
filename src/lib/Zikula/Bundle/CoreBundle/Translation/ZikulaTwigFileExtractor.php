@@ -15,11 +15,16 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
+use Twig\Node\Expression\FunctionExpression;
+use Twig\Environment;
+use Twig\Node\Node;
+use Twig\NodeTraverser;
+use Twig\NodeVisitor\AbstractNodeVisitor;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 
-class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisitorInterface
+class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitorInterface
 {
     /**
      * @var \SplFileInfo
@@ -32,7 +37,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     private $catalogue;
 
     /**
-     * @var \Twig_NodeTraverser
+     * @var NodeTraverser
      */
     private $traverser;
 
@@ -65,12 +70,12 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
 
     /**
      * ZikulaTwigFileExtractor constructor.
-     * @param \Twig_Environment $env
+     * @param Environment $env
      * @param ZikulaHttpKernelInterface $kernel
      */
-    public function __construct(\Twig_Environment $env, ZikulaHttpKernelInterface $kernel)
+    public function __construct(Environment $env, ZikulaHttpKernelInterface $kernel)
     {
-        $this->traverser = new \Twig_NodeTraverser($env, [$this]);
+        $this->traverser = new NodeTraverser($env, [$this]);
         $this->kernel = $kernel;
         self::$domainCache = [];
     }
@@ -78,11 +83,11 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     /**
      * {@inheritdoc}
      */
-    protected function doEnterNode(\Twig_Node $node, \Twig_Environment $env)
+    protected function doEnterNode(Node $node, Environment $env)
     {
         $this->stack[] = $node;
 
-        if ($node instanceof \Twig_Node_Expression_Function) {
+        if ($node instanceof FunctionExpression) {
             $name = $node->getAttribute('name');
             if (in_array($name, $this->methodNames)) {
                 $args = $node->getNode('arguments');
@@ -137,7 +142,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
         return 0;
     }
 
-    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $ast)
+    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, Node $ast)
     {
         $this->file = $file;
         $this->catalogue = $catalogue;
@@ -150,9 +155,9 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
      * in the same manner as we do the main twig template to ensure all translations are
      * caught.
      *
-     * @param \Twig_Node $node
+     * @param Node $node
      */
-    private function traverseEmbeddedTemplates(\Twig_Node $node)
+    private function traverseEmbeddedTemplates(Node $node)
     {
         $templates = $node->getAttribute('embedded_templates');
 
@@ -167,7 +172,7 @@ class ZikulaTwigFileExtractor extends \Twig_BaseNodeVisitor implements FileVisit
     /**
      * {@inheritdoc}
      */
-    protected function doLeaveNode(\Twig_Node $node, \Twig_Environment $env)
+    protected function doLeaveNode(Node $node, Environment $env)
     {
         array_pop($this->stack);
 

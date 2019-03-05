@@ -11,11 +11,14 @@
 
 namespace Zikula\UsersModule\Twig\Extension;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Collector\MessageModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
-class MessageExtension extends \Twig_Extension
+class MessageExtension extends AbstractExtension
 {
     /**
      * @var UserRepositoryInterface
@@ -51,15 +54,15 @@ class MessageExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('messageSendLink', [$this, 'messageSendLink'], ['is_safe' => ['html']])
+            new TwigFilter('messageSendLink', [$this, 'messageSendLink'], ['is_safe' => ['html']])
         ];
     }
 
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('messageInboxLink', [$this, 'messageInboxLink'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('messageCount', [$this, 'messageCount'])
+            new TwigFunction('messageInboxLink', [$this, 'messageInboxLink'], ['is_safe' => ['html']]),
+            new TwigFunction('messageCount', [$this, 'messageCount'])
         ];
     }
 
