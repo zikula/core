@@ -14,13 +14,13 @@
         "psr-4": { "Zikula\\SettingsModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.2.0"
     },
     "extra": {
         "zikula": {
             "url": "settings",
             "class": "Zikula\\SettingsModule\\ZikulaSettingsModule",
-            "core-compatibility": ">=1.4.2",
+            "core-compatibility": ">=3.0.0",
             "displayname": "General settings",
             "oldnames": [],
             "capabilities": {

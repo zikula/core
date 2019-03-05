@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\ThemeModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.2.0",
         "robloach/component-installer": "*",
         "zikula/jquery-bundle": "2.*",
         "zikula/jquery-ui-bundle": "1.*",
@@ -27,7 +27,7 @@
         "zikula": {
             "url": "theme",
             "class": "Zikula\\ThemeModule\\ZikulaThemeModule",
-            "core-compatibility": ">=1.4.2",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Theme Module",
             "oldnames": [],
             "capabilities": {

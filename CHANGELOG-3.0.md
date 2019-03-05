@@ -6,6 +6,21 @@ CHANGELOG - ZIKULA 3.0.x
 
  - BC Breaks:
     - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
+    - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).
+    - Dropped vendors:
+        - Removed afarkas/html5shiv
+        - Removed afarkas/webshim (#3925)
+        - Removed composer/ca-bundle
+        - Removed ramsey/array_column
+        - Removed sensio/distribution-bundle (in favour of flex)
+        - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
+        - Removed sensiolabs/security-checker
+        - Removed symfony/polyfill-apcu
+        - Removed symfony/polyfill-php56
+        - Removed symfony/polyfill-php70
+        - Removed symfony/polyfill-util
+    - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
+    - The `polyfill` Twig tag has been removed (#3925).
 
  - Deprecated:
 
@@ -26,13 +41,53 @@ CHANGELOG - ZIKULA 3.0.x
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0
     - composer/ca-bundle updated from 1.1.3 to 1.1.4
+    - doctrine/annotations updated from 1.2.7 to 1.6.0
+    - doctrine/cache updated from 1.6.2 to 1.8.0
+    - doctrine/collections updated from 1.3.0 to 1.5.0
+    - doctrine/common updated from 2.6.2 to 2.10.0
+    - doctrine/dbal updated from 2.5.13 to 2.9.2
+    - doctrine/doctrine-bundle updated from 1.6.13 to 1.10.2
+    - doctrine/event-manager installed in 1.0.0
+    - doctrine/inflector updated from 1.1.0 to 1.3.0
+    - doctrine/instantiator updated from 1.0.5 to 1.1.0
+    - doctrine/orm updated from 2.5.14 to 2.6.3
+    - doctrine/persistence installed in 1.1.0
+    - doctrine/reflection installed in 1.0.0
+    - egulias/email-validator installed in 2.1.7
     - elao/web-profiler-extra-bundle updated from 2.3.5 to 2.3.6
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.0
+    - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.2
+    - jms/translation-bundle updated from 1.3.2 to 1.4.3
     - jquery.mmenu updated from 7.2.2 to 7.3.2
-    - paragonie/random_compat updated from 2.0.17 to 2.0.18
+    - justinrainbow/json-schema updated from 4.1.0 to 5.2.8
+    - knplabs/knp-menu updated from 2.2.0 to 2.3.0
+    - knplabs/knp-menu-bundle updated from 2.1.3 to 2.2.1
+    - liip/imagine-bundle updated from 1.9.1 to 2.1.0
+    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.1.0
+    - michelf/php-markdown updated from 1.7.0 to 1.8.0
+    - nikic/php-parser updated from 1.4.1 to 4.2.1
+    - paragonie/random_compat updated from 2.0.17 to 9.99.99
     - sensio/distribution-bundle updated from 5.0.23 to 5.0.24
     - sensiolabs/security-checker updated from 5.0.1 to 5.0.3
-    - symfony/phpunit-bridge installed in 3.4.14 and updated to 3.4.23
-    - symfony/symfony updated from 3.4.20 to 3.4.23
-    - twig/twig updated from 1.35.4 to 1.37.1
-    - zikula/profile-module updated from 3.0.5 to 3.0.6
+    - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
+    - swiftmailer/swiftmailer updated from 5.4.12 to 6.1.3
+    - symfony/contracts installed in 1.0.2
+    - symfony/maker-bundle installed in 1.11.4
+    - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
+    - symfony/phpunit-bridge installed in 4.2.4
+    - symfony/polyfill-php72 installed in 1.10.0
+    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.5
+    - symfony/symfony updated from 3.4.20 to 4.2.4
+    - twig/extensions updated from 1.4.1 to 1.5.4
+    - twig/twig updated from 1.35.4 to 2.6.2
+    - zikula/andreas08-theme updated from 3.0.2 to 3.1.0
+    - zikula/generator-bundle updated from 2.0.1 to 3.0.0
+    - zikula/legal-module updated from 3.1.2 to 3.2.0
+    - zikula/pagelock-module updated from 1.2.3 to 1.3.1
+    - zikula/profile-module updated from 3.0.5 to 3.1.0
+    - zikula/oauth-module updated from 1.0.4 to 1.0.5
+    - zikula/seabreeze-theme updated from 4.0.3 to 4.1.0
+    - zikula/wizard updated from 2.0 to 3.0.0
+
+
 

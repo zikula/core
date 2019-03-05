@@ -12,17 +12,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "symfony/framework-bundle": "~3.0",
-        "afarkas/html5shiv": "3.7.*",
-        "afarkas/webshim": "1.*"
+        "php": ">=7.2.0",
+        "symfony/framework-bundle": "4.*"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/webshim"
-        }
-    ],
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\FormExtensionBundle\\": "" }
     }

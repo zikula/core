@@ -14,12 +14,12 @@
         "psr-4": { "Zikula\\PermissionsModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.2.0"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "capabilities": {
                 "admin": {"route": "zikulapermissionsmodule_permission_list"}
             },

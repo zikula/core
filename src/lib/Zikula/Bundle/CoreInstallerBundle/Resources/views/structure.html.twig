@@ -18,16 +18,10 @@
         {% block stylesheets '' %}
 
         {# always load jquery #}
-        <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('jquery/jquery.min.js') }}"></script>
         {# always load bootstrap #}
-        <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('webshim/js-webshim/minified/polyfiller.js') }}"></script>
-        <script type="text/javascript">
-            $.webshims.setOptions('basePath', '{{ app.request.getBasePath() }}/web/webshim/js-webshim/minified/shims/');
-            $.webshims.activeLang('{{ app.request.locale }}');
-            $.webshims.polyfill('forms');
-        </script>
-        <script type="text/javascript">
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        <script>
             (function($) {
                 $(document).ready(function() {
                     $('label.control-label').removeClass('col-sm-2');
@@ -39,7 +33,6 @@
 
         {# allow child templates to add items to head #}
         {% block head '' %}
-
     </head>
     <body>
         {% block body '' %}

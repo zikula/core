@@ -40,7 +40,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 
     const VERSION_SUB = 'Concerto';
 
-    const PHP_MINIMUM_VERSION = '5.5.9';
+    const PHP_MINIMUM_VERSION = '7.2.0';
 
     /**
      * The parameter name identifying the currently installed version of the core.

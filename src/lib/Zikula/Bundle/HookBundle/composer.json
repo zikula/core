@@ -13,8 +13,8 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "symfony/framework-bundle": "~3.0"
+        "php": ">=7.2.0",
+        "symfony/framework-bundle": "4.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\HookBundle\\": "" }

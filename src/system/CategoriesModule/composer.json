@@ -14,12 +14,12 @@
         "psr-4": { "Zikula\\CategoriesModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.2.0"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\CategoriesModule\\ZikulaCategoriesModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Categories",
             "url": "categories",
             "capabilities": {

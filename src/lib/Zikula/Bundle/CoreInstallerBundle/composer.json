@@ -12,10 +12,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "symfony/framework-bundle": "~3.0",
-        "matthiasnoback/symfony-console-form": "2.*",
-        "zikula/wizard": "2.*"
+        "php": ">=7.2.0",
+        "symfony/framework-bundle": "4.*",
+        "matthiasnoback/symfony-console-form": "3.*",
+        "zikula/wizard": "3.*"
     },
     "autoload": {
         "psr-4": { "Zikula\\Bundle\\CoreInstallerBundle\\": "" }

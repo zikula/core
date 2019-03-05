@@ -16,15 +16,15 @@
         "psr-4": { "Zikula\\RoutesModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
-        "jms/i18n-routing-bundle": "2.0.0",
-        "friendsofsymfony/jsrouting-bundle": "1.6.*"
+        "php": ">=7.2.0",
+        "jms/i18n-routing-bundle": ">=3.0.1",
+        "friendsofsymfony/jsrouting-bundle": ">=2.3.0"
     },
     "suggest": {
     },
     "extra": {
         "zikula": {
-            "core-compatibility": ">=1.5.0 <3.0",
+            "core-compatibility": ">=3.0.0 <4.0.0",
             "class": "Zikula\\RoutesModule\\ZikulaRoutesModule",
             "displayname": "Routes",
             "url": "routes",

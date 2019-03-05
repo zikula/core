@@ -14,13 +14,13 @@
         "psr-4": { "Zikula\\SecurityCenterModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.2.0",
         "phpids/phpids": "dev-master"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\SecurityCenterModule\\ZikulaSecurityCenterModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Security Center",
             "url": "securitycenter",
             "capabilities": {

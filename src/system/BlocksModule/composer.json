@@ -14,15 +14,15 @@
         "psr-4": { "Zikula\\BlocksModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.2.0"
     },
     "suggest": {
-        "Scribite:>=5.0.0": "To allow WYSIWYG HTML block editing."
+        "Scribite:>=6.0.2": "To allow WYSIWYG HTML block editing."
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\BlocksModule\\ZikulaBlocksModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Blocks Module",
             "url": "blocks",
             "oldnames": [],

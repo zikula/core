@@ -18,10 +18,11 @@
         }
     ],
     "require": {
+        "php": ">=7.2.0",
         "wikimedia/composer-merge-plugin": "1.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "3.*"
+        "symfony/phpunit-bridge": "4.*"
     },
     "scripts": {
         "zikula-scripts": [
@@ -43,10 +44,7 @@
     "config": {
         "vendor-dir": "src/vendor",
         "bin-dir": "bin",
-        "component-dir": "src/web",
-        "platform": {
-            "php": "5.5.9"
-        }
+        "component-dir": "src/web"
     },
     "extra": {
         "symfony-app-dir": "src/app",

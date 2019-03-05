@@ -14,15 +14,15 @@
         "psr-4": { "Zikula\\ExtensionsModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.2.0",
         "composer/semver": "1.*",
-        "justinrainbow/json-schema": "4.*"
+        "justinrainbow/json-schema": "5.*"
     },
     "extra": {
         "zikula": {
             "url": "extensions",
             "class": "Zikula\\ExtensionsModule\\ZikulaExtensionsModule",
-            "core-compatibility": ">=1.4.2",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Extensions",
             "oldnames": [],
             "capabilities": {

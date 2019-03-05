@@ -14,13 +14,13 @@
         "psr-4": { "Zikula\\UsersModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.2.0"
     },
     "extra": {
         "zikula": {
             "url": "users",
             "class": "Zikula\\UsersModule\\ZikulaUsersModule",
-            "core-compatibility": ">=1.4.3",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Users Module",
             "oldnames": [],
             "capabilities": {

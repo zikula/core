@@ -14,13 +14,13 @@
         "psr-4": { "Zikula\\MenuModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
-        "knplabs/knp-menu-bundle": "^2.0"
+        "php": ">=7.2.0",
+        "knplabs/knp-menu-bundle": ">=2.2.1"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\MenuModule\\ZikulaMenuModule",
-            "core-compatibility": ">=1.4.4",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Menu Module",
             "capabilities": {
                 "admin": {"route": "zikulamenumodule_menu_list"}

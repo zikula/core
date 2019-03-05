@@ -14,13 +14,13 @@
         "psr-4": { "Zikula\\MailerModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
-        "symfony/swiftmailer-bundle": "2.4.*"
+        "php": ">=7.2.0",
+        "symfony/swiftmailer-bundle": ">=3.2.5"
     },
     "extra": {
         "zikula": {
             "class": "Zikula\\MailerModule\\ZikulaMailerModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Mailer Module",
             "url": "mailer",
             "capabilities": {

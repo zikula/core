@@ -14,7 +14,7 @@
         "psr-4": { "Zikula\\AdminModule\\": "" }
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.2.0",
         "jquery.mmenu": "7.*"
     },
     "repositories": [
@@ -26,7 +26,7 @@
     "extra": {
         "zikula": {
             "class": "Zikula\\AdminModule\\ZikulaAdminModule",
-            "core-compatibility": ">=1.4.1",
+            "core-compatibility": ">=3.0.0",
             "displayname": "Administration panel",
             "url": "adminpanel",
             "capabilities": {
