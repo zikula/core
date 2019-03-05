@@ -16,7 +16,6 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\TokenParser\SwitchTokenParser;
-use Zikula\Bundle\CoreBundle\Twig;
 use Zikula\Common\Translator\TranslatorInterface;
 
 class CoreExtension extends AbstractExtension
