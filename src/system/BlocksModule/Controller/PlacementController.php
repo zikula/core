@@ -14,12 +14,12 @@ namespace Zikula\BlocksModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -74,12 +74,12 @@ class PlacementController extends AbstractController
      *  blockorder array of sorted blocks (value = block id)
      *  position int zone id
      *
-     * @return JsonResponse|ForbiddenResponse true or Ajax error
+     * @return JsonResponse
      */
     public function changeBlockOrderAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('No permission for this action.'));
+            return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
         }
 
         $blockorder = $request->request->get('blockorder', []); // [7, 1]

@@ -13,12 +13,12 @@ namespace Zikula\Bundle\HookBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -253,7 +253,7 @@ class HookController extends Controller
      *  subscriberarea string area to be attached/detached
      *  providerarea   string area to attach/detach
      *
-     * @return AjaxResponse
+     * @return JsonResponse
      *
      * @throws \InvalidArgumentException Thrown if either the subscriber, provider or subscriberArea parameters are empty
      * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
@@ -319,7 +319,7 @@ class HookController extends Controller
             'isSubscriberSelfCapable' => $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($subscriber->getOwner(), HookCollectorInterface::HOOK_SUBSCRIBE_OWN)
         ];
 
-        return new AjaxResponse($response);
+        return $this->json($response);
     }
 
     /**
@@ -332,7 +332,7 @@ class HookController extends Controller
      *  subscriber    string     name of the subscriber
      *  providerorder array      array of sorted provider ids
      *
-     * @return AjaxResponse
+     * @return JsonResponse
      *
      * @throws \InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
      * @throws \RuntimeException Thrown if the subscriber module isn't available
@@ -372,7 +372,7 @@ class HookController extends Controller
 
         $ol_id = $request->request->get('ol_id', '');
 
-        return new AjaxResponse(['result' => true, 'ol_id' => $ol_id]);
+        return $this->json(['result' => true, 'ol_id' => $ol_id]);
     }
 
     /**

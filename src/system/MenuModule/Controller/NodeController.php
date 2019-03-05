@@ -11,12 +11,11 @@
 
 namespace Zikula\MenuModule\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\Core\Response\Ajax\BadDataResponse;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\Type\MenuItemType;
 
@@ -33,15 +32,15 @@ class NodeController extends AbstractController
      * @param Request $request
      * @param string $action
      * @param MenuItemEntity $menuItemEntity
-     * @return AjaxResponse|BadDataResponse|ForbiddenResponse
+     * @return JsonResponse
      */
     public function contextMenuAction(Request $request, $action = 'edit', MenuItemEntity $menuItemEntity = null)
     {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('No permission for this action'));
+            return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
-            return new BadDataResponse($this->__('Data provided was inappropriate.'));
+            return $this->json($this->__('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
         $mode = $request->request->get('mode', 'edit');
@@ -77,7 +76,7 @@ class NodeController extends AbstractController
                     } // no need to persist edited entity
                     $this->get('doctrine')->getManager()->flush();
 
-                    return new AjaxResponse([
+                    return $this->json([
                         'node' => $menuItemEntity->toJson($this->domTreeNodePrefix),
                         'mode' => $mode
                     ]);
@@ -104,19 +103,19 @@ class NodeController extends AbstractController
                 $response = ['result' => true];
         }
 
-        return new AjaxResponse($response);
+        return $this->json($response);
     }
 
     /**
      * Ajax function for use on Drag and Drop of nodes.
      * @Route("/move", options={"expose"=true})
      * @param Request $request
-     * @return AjaxResponse|ForbiddenResponse
+     * @return JsonResponse
      */
     public function moveAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('No permission for this action'));
+            return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         $repo = $this->get('zikula_menu_module.menu_item_repository');
         $node = $request->request->get('node');
@@ -137,6 +136,6 @@ class NodeController extends AbstractController
         }
         $this->get('doctrine')->getManager()->flush();
 
-        return new AjaxResponse(['result' => true]);
+        return $this->json(['result' => true]);
     }
 }

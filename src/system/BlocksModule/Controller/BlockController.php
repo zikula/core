@@ -25,8 +25,6 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Form\Type\BlockType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\Ajax\FatalResponse;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -181,23 +179,23 @@ class BlockController extends AbstractController
      *
      * @Route("/toggle-active", methods = {"POST"}, options={"expose"=true})
      * @param Request $request
-     * @return JsonResponse|FatalResponse|ForbiddenResponse bid or Ajax error
+     * @return JsonResponse bid or Ajax error
      */
     public function toggleblockAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('No permission for this action.'));
+            return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
         }
         $bid = $request->request->get('bid', -1);
         if ($bid == -1) {
-            return new FatalResponse($this->__('No block ID passed.'));
+            return $this->json($this->__('No block ID passed.'), Response::HTTP_BAD_REQUEST);
         }
         $em = $this->getDoctrine()->getManager();
         $block = $em->find('ZikulaBlocksModule:BlockEntity', $bid);
         $block->setActive(BlockApi::BLOCK_ACTIVE == $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
         $em->flush();
 
-        return new JsonResponse(['bid' => $bid]);
+        return $this->json(['bid' => $bid]);
     }
 
     /**

@@ -13,11 +13,11 @@ namespace Zikula\PermissionsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Form\Type\FilterListType;
 use Zikula\PermissionsModule\Form\Type\PermissionCheckType;
@@ -74,7 +74,7 @@ class PermissionController extends AbstractController
      * @Route("/edit/{pid}", options={"expose"=true})
      * @param Request $request
      * @param PermissionEntity $permissionEntity
-     * @return AjaxResponse
+     * @return JsonResponse
      */
     public function editAction(Request $request, PermissionEntity $permissionEntity = null)
     {
@@ -112,7 +112,7 @@ class PermissionController extends AbstractController
                 'adminId' => $this->getVar('adminid', 1)
             ]) : null;
 
-            return new AjaxResponse([
+            return $this->json([
                 'permission' => $permissionEntity->toArray(),
                 'row' => $row
             ]);
@@ -122,7 +122,7 @@ class PermissionController extends AbstractController
         ];
         $view = $this->renderView('@ZikulaPermissionsModule/Permission/permission.html.twig', $templateParameters);
 
-        return new AjaxResponse(['view' => $view]);
+        return $this->json(['view' => $view]);
     }
 
     /**
@@ -132,7 +132,7 @@ class PermissionController extends AbstractController
      *
      * @param Request $request
      *  permorder array of sorted permissions (value = permission id)
-     * @return AjaxResponse ajax response containing true
+     * @return JsonResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function changeOrderAction(Request $request)
@@ -148,7 +148,7 @@ class PermissionController extends AbstractController
         }
         $this->get('doctrine')->getManager()->flush();
 
-        return new AjaxResponse(['result' => true]);
+        return $this->json(['result' => true]);
     }
 
     /**
@@ -157,7 +157,7 @@ class PermissionController extends AbstractController
      * Delete a permission
      *
      * @param PermissionEntity $permissionEntity
-     * @return AjaxResponse Ajax response containing the id of the permission that has been deleted
+     * @return JsonResponse
      * @throws FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
      */
@@ -183,7 +183,7 @@ class PermissionController extends AbstractController
             $this->setVar('lockadmin', false);
         }
 
-        return new AjaxResponse(['pid' => $permissionEntity->getPid()]);
+        return $this->json(['pid' => $permissionEntity->getPid()]);
     }
 
     /**
@@ -192,7 +192,7 @@ class PermissionController extends AbstractController
      * Test a permission rule for a given username
      *
      * @param Request $request
-     * @return AjaxResponse Ajax response containing string with test result for display
+     * @return JsonResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
     public function testAction(Request $request)
@@ -232,6 +232,6 @@ class PermissionController extends AbstractController
             $result .= '</span>';
         }
 
-        return new AjaxResponse(['testresult' => $result]);
+        return $this->json(['testresult' => $result]);
     }
 }

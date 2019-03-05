@@ -11,17 +11,13 @@
 
 namespace Zikula\AdminModule\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\Response\Ajax\AjaxResponse;
-use Zikula\Core\Response\Ajax\BadDataResponse;
-use Zikula\Core\Response\Ajax\FatalResponse;
-use Zikula\Core\Response\Ajax\ForbiddenResponse;
-use Zikula\Core\Response\Ajax\NotFoundResponse;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
@@ -38,12 +34,12 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function changeModuleCategoryAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $moduleId = $request->request->get('modid');
@@ -52,7 +48,7 @@ class AjaxController extends AbstractController
         /** @var ExtensionEntity $module */
         $module = $this->get('zikula_extensions_module.extension_repository')->find($moduleId);
         if (!$module) {
-            return new NotFoundResponse($this->__f('Error! Could not get module name for id %s.', ['%s' => $moduleId]));
+            return $this->json($this->__f('Error! Could not get module name for id %s.', ['%s' => $moduleId]), Response::HTTP_NOT_FOUND);
         }
 
         //get the module name
@@ -81,7 +77,7 @@ class AjaxController extends AbstractController
             'oldCategory' => (null !== $oldCategory ? $oldCategory['cid'] : false),
         ];
 
-        return new AjaxResponse($output);
+        return $this->json($output);
     }
 
     /**
@@ -91,12 +87,12 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function addCategoryAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //get form information
@@ -104,12 +100,12 @@ class AjaxController extends AbstractController
 
         // make sure name is set.
         if ('' == $name) {
-            return new BadDataResponse($this->__('Error! No category name given.'));
+            return $this->json($this->__('Error! No category name given.'), Response::HTTP_BAD_REQUEST);
         }
 
         // Security check
         if (!$this->hasPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $entityManager = $this->get('doctrine')->getManager();
@@ -126,7 +122,7 @@ class AjaxController extends AbstractController
 
         foreach ($categories as $cat) {
             if ($name == $cat['name']) {
-                return new BadDataResponse($this->__('Error! A category by this name already exists.'));
+                return $this->json($this->__('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
             }
         }
 
@@ -150,7 +146,7 @@ class AjaxController extends AbstractController
             'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $item->getCid()]),
         ];
 
-        return new AjaxResponse($output);
+        return $this->json($output);
     }
 
     /**
@@ -160,7 +156,7 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function deleteCategoryAction(Request $request)
     {
@@ -169,7 +165,7 @@ class AjaxController extends AbstractController
 
         //check user has permission to delete this
         if (!$this->hasPermission('ZikulaAdminModule::Category', "::$cid", ACCESS_DELETE)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $entityManager = $this->get('doctrine')->getManager();
@@ -177,11 +173,11 @@ class AjaxController extends AbstractController
         // retrieve the category object
         $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
         if (null === $item) {
-            return new NotFoundResponse($this->__('Error! No such category found.'));
+            return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
         if (!$this->hasPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_DELETE)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $output = [];
@@ -189,13 +185,13 @@ class AjaxController extends AbstractController
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
         if ($cid == $defaultcategory) {
-            return new FatalResponse($this->__('Error! You cannot delete the default module category used in the administration panel.'));
+            return new JsonResponse($this->__('Error! You cannot delete the default module category used in the administration panel.'), Response::HTTP_BAD_REQUEST);
         }
 
         // Avoid deletion of the start category
         $startcategory = $this->getVar('startcategory');
         if ($cid == $startcategory) {
-            return new FatalResponse($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'));
+            return new JsonResponse($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'), Response::HTTP_BAD_REQUEST);
         }
 
         // move all modules from the category to be deleted into the default category.
@@ -207,7 +203,7 @@ class AjaxController extends AbstractController
 
         $output['response'] = $cid;
 
-        return new AjaxResponse($output);
+        return $this->json($output);
     }
 
     /**
@@ -217,12 +213,12 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function editCategoryAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //get form values
@@ -231,12 +227,12 @@ class AjaxController extends AbstractController
 
         //security checks
         if (!$this->hasPermission('ZikulaAdminModule::Category', $name . '::' . $cid, ACCESS_EDIT)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid) || '' == $cid || !isset($name) || '' == $name) {
-            return new BadDataResponse($this->__('No category name or id set.'));
+            return $this->json($this->__('No category name or id set.'), Response::HTTP_BAD_REQUEST);
         }
 
         $output = [];
@@ -262,17 +258,17 @@ class AjaxController extends AbstractController
             if ($cat['cid'] == $cid) {
                 $output['response'] = $name;
 
-                return new AjaxResponse($output);
+                return $this->json($output);
             }
 
             //a different category has the same name, not allowed.
-            return new BadDataResponse($this->__('Error! A category by this name already exists.'));
+            return $this->json($this->__('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
         }
 
         // retrieve the category object
         $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
         if (null === $item) {
-            return new NotFoundResponse($this->__('Error! No such category found.'));
+            return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
         // update the category using the info from the database and from the form.
@@ -284,7 +280,7 @@ class AjaxController extends AbstractController
 
         $output['response'] = $name;
 
-        return new AjaxResponse($output);
+        return $this->json($output);
     }
 
     /**
@@ -294,13 +290,13 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function defaultCategoryAction(Request $request)
     {
         //check user has permission to change the initially selected category
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //get passed cid
@@ -311,7 +307,7 @@ class AjaxController extends AbstractController
         // retrieve the category object
         $item = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findOneBy(['cid' => $cid]);
         if (false === $item) {
-            return new NotFoundResponse($this->__('Error! No such category found.'));
+            return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
         $output = [];
@@ -323,11 +319,11 @@ class AjaxController extends AbstractController
             // Success
             $output['response'] = $this->__f('Category "%s" was successfully made default.', ['%s' => $item['name']]);
 
-            return new AjaxResponse($output);
+            return $this->json($output);
         }
 
         //unknown error
-        return new FatalResponse($this->__('Error! Could not make this category default.'));
+        return $this->json($this->__('Error! Could not make this category default.'), Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -337,12 +333,12 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function sortCategoriesAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $data = $request->request->get('admintabs');
@@ -356,7 +352,7 @@ class AjaxController extends AbstractController
 
         $entityManager->flush();
 
-        return new AjaxResponse([]);
+        return $this->json([]);
     }
 
     /**
@@ -366,12 +362,12 @@ class AjaxController extends AbstractController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return JsonResponse
      */
     public function sortModulesAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return new ForbiddenResponse($this->__('Access forbidden.'));
+            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $data = $request->request->get('modules');
@@ -385,6 +381,6 @@ class AjaxController extends AbstractController
 
         $entityManager->flush();
 
-        return new AjaxResponse([]);
+        return $this->json([]);
     }
 }

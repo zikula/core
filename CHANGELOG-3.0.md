@@ -21,6 +21,7 @@ CHANGELOG - ZIKULA 3.0.x
         - Removed symfony/polyfill-util
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - The `polyfill` Twig tag has been removed (#3925).
+    - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
 
  - Deprecated:
 

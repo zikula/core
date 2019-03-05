@@ -11,14 +11,14 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Zikula\Core\Response\Ajax\AjaxResponse;
 
 class MigrationController extends AbstractController
 {
     /**
      * @param Request $request
-     * @return AjaxResponse
+     * @return JsonResponse
      */
     public function migrateAction(Request $request)
     {
@@ -43,7 +43,7 @@ class MigrationController extends AbstractController
             $percentComplete = ceil(100 * $request->getSession()->get('user_migration_complete') / $request->getSession()->get('user_migration_count'));
         }
 
-        return new AjaxResponse([
+        return $this->json([
             'percentcomplete' => $percentComplete,
         ]);
     }
