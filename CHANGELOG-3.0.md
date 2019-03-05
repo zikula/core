@@ -12,7 +12,7 @@ CHANGELOG - ZIKULA 3.0.x
         - Removed afarkas/webshim (#3925)
         - Removed composer/ca-bundle
         - Removed ramsey/array_column
-        - Removed sensio/distribution-bundle (in favour of flex)
+        - Removed sensio/distribution-bundle (in favour of Flex)
         - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
         - Removed sensiolabs/security-checker
         - Removed symfony/polyfill-apcu
