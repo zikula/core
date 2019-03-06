@@ -23,10 +23,11 @@ $parameters = $kernelConfig['parameters'];
 if (true === $parameters['debug']) {
     Debug::enable();
 }
-if ('prod' == $parameters['env']) {
-    // improves performance for prod env
-    include_once __DIR__ . '/../var/bootstrap.php.cache';
-}
+// TODO remove (not required with PHP 7 anymore
+// if ('prod' == $parameters['env']) {
+//     // improves performance for prod env
+//     include_once __DIR__ . '/../var/bootstrap.php.cache';
+// }
 
 if ((isset($parameters['umask'])) && (!is_null($parameters['umask']))) {
     umask($parameters['umask']);

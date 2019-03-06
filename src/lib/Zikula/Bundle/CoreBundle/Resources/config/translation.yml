@@ -1,9 +1,11 @@
 services:
+    translator.message_formatter:
+        class: Symfony\Component\Translation\Formatter\MessageFormatter
     translator.default:
         class: Zikula\Common\Translator\Translator
         arguments:
           - "@service_container"
-          - "@translator.selector"
+          - "@translator.message_formatter"
           - "%kernel.default_locale%"
           - {}
           - { cache_dir: "%kernel.cache_dir%/translations", debug: "%kernel.debug%" }

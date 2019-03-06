@@ -13,8 +13,8 @@ namespace Zikula\Common\Translator;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
+use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
 use Symfony\Component\Translation\Translator as BaseTranslator;
-use Symfony\Component\Translation\MessageSelector;
 
 /**
  * Translator
@@ -51,20 +51,9 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     private $resourceLocales;
 
     /**
-     * Constructor.
-     * Available options:
-     * * cache_dir: The cache directory (or null to disable caching)
-     * * debug: Whether to enable debugging or not (false by default)
-     * * resource_files: List of translation resources available grouped by locale.
-     *
-     * @param ServiceLocator $serviceLocator
-     * @param MessageSelector $selector
-     * @param string $defaultLocale
-     * @param array $loaderIds
-     * @param array $options
      * @throws \InvalidArgumentException
      */
-    public function __construct(ServiceLocator $serviceLocator, MessageSelector $selector = null, $defaultLocale, $loaderIds = [], array $options = [])
+    public function __construct(ServiceLocator $serviceLocator, MessageFormatterInterface $formatter = null, $defaultLocale, $loaderIds = [], array $options = [])
     {
         $this->serviceLocator = $serviceLocator;
         $this->loaderIds = $loaderIds;
@@ -80,7 +69,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
             $this->loadResources();
         }
 
-        parent::__construct($defaultLocale, $selector, $this->options['cache_dir'], $this->options['debug']);
+        parent::__construct($defaultLocale, $formatter, $this->options['cache_dir'], $this->options['debug']);
     }
 
     /**

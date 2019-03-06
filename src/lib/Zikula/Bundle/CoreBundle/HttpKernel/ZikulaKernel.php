@@ -89,17 +89,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     /**
      * @var array
      */
-    private $moduleMap = [];
-
-    /**
-     * @var array
-     */
     private $themes = [];
-
-    /**
-     * @var array
-     */
-    private $themeMap = [];
 
     /**
      * @var ClassLoader
@@ -131,14 +121,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
                 $this->themes[$name] = $bundle;
             }
         }
-
-        foreach ($this->bundleMap as $name => $bundles) {
-            if ($bundles[0] instanceof AbstractModule) {
-                $this->moduleMap[$name] = $bundles;
-            } elseif ($bundles[0] instanceof AbstractTheme) {
-                $this->themeMap[$name] = $bundles;
-            }
-        }
     }
 
     /**
@@ -148,19 +130,19 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * @param boolean $first
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
-     * @return \Zikula\Core\AbstractModule|\Zikula\Core\AbstractModule[]
+     * @return AbstractModule|AbstractModule[]
      */
     public function getModule($moduleName, $first = true)
     {
-        if (!isset($this->moduleMap[$moduleName])) {
+        if (!isset($this->modules[$moduleName])) {
             throw new \InvalidArgumentException(sprintf('Module "%s" does not exist or it is not enabled.', $moduleName, get_class($this)));
         }
 
         if (true === $first) {
-            return $this->moduleMap[$moduleName][0];
+            return $this->modules[$moduleName][0];
         }
 
-        return $this->moduleMap[$moduleName];
+        return $this->modules[$moduleName];
     }
 
     public function getModules()
@@ -186,19 +168,19 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
      *
-     * @return AbstractTheme|AbstractTheme
+     * @return AbstractTheme|AbstractTheme[]
      */
     public function getTheme($themeName, $first = true)
     {
-        if (!isset($this->themeMap[$themeName])) {
+        if (!isset($this->themes[$themeName])) {
             throw new \InvalidArgumentException(sprintf('Theme "%s" does not exist or it is not enabled.', $themeName, get_class($this)));
         }
 
         if (true === $first) {
-            return $this->themeMap[$themeName][0];
+            return $this->themes[$themeName][0];
         }
 
-        return $this->themeMap[$themeName];
+        return $this->themes[$themeName];
     }
 
     public function getThemes()
@@ -280,70 +262,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
 
         return false;
-    }
-
-    /**
-     * Initializes the data structures related to the bundle management.
-     *
-     *  - the bundles property maps a bundle name to the bundle instance,
-     *  - the bundleMap property maps a bundle name to the bundle inheritance hierarchy (most derived bundle first).
-     *
-     * @throws \LogicException if two bundles share a common name
-     * @throws \LogicException if a bundle tries to extend a non-registered bundle
-     * @throws \LogicException if a bundle tries to extend itself
-     * @throws \LogicException if two bundles extend the same ancestor
-     */
-    protected function initializeBundles()
-    {
-        // init bundles
-        $this->bundles = [];
-        $topMostBundles = [];
-        $directChildren = [];
-
-        foreach ($this->registerBundles() as $bundle) {
-            $name = $bundle->getName();
-            if (isset($this->bundles[$name])) {
-                throw new \LogicException(sprintf('Trying to register two bundles with the same name "%s"', $name));
-            }
-            $this->bundles[$name] = $bundle;
-
-            if ($parentName = $bundle->getParent()) {
-                @trigger_error('Bundle inheritance is deprecated as of 3.4 and will be removed in 4.0.', E_USER_DEPRECATED);
-
-                if (isset($directChildren[$parentName])) {
-                    throw new \LogicException(sprintf('Bundle "%s" is directly extended by two bundles "%s" and "%s".', $parentName, $name, $directChildren[$parentName]));
-                }
-                if ($parentName == $name) {
-                    throw new \LogicException(sprintf('Bundle "%s" can not extend itself.', $name));
-                }
-                $directChildren[$parentName] = $name;
-            } else {
-                $topMostBundles[$name] = $bundle;
-            }
-        }
-
-        // look for orphans
-        if (!empty($directChildren) && count($diff = array_values(array_diff(array_keys($directChildren), array_keys($this->bundles))))) {
-            throw new \LogicException(sprintf('Bundle "%s" extends bundle "%s", which is not registered.', $directChildren[$diff[0]], $diff[0]));
-        }
-
-        // inheritance
-        $this->bundleMap = [];
-        foreach ($topMostBundles as $name => $bundle) {
-            $bundleMap = [$bundle];
-            $hierarchy = [$name];
-
-            while (isset($directChildren[$name])) {
-                $name = $directChildren[$name];
-                array_unshift($bundleMap, $this->bundles[$name]);
-                $hierarchy[] = $name;
-            }
-
-            foreach ($hierarchy as $bundle) {
-                $this->bundleMap[$bundle] = $bundleMap;
-                array_pop($bundleMap);
-            }
-        }
     }
 
     /**

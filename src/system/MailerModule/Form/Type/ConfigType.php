@@ -34,7 +34,6 @@ class ConfigType extends AbstractType
         $translator = $options['translator'];
 
         $transportChoices = [
-            $translator->__('Internal PHP `mail()` function') => 'mail',
             $translator->__('Sendmail message transfer agent') => 'sendmail',
             $translator->__('Google gmail') => 'gmail',
             $translator->__('SMTP mail transfer protocol') => 'smtp',
@@ -45,7 +44,6 @@ class ConfigType extends AbstractType
         // see http://swiftmailer.org/docs/sending.html
         if (!function_exists('proc_open')) {
             $transportChoices = [
-                $translator->__('Internal PHP `mail()` function') => 'mail',
                 $translator->__('Google gmail') => 'gmail',
                 $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
             ];
