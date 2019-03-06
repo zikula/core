@@ -130,7 +130,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * @param boolean $first
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
-     * @return AbstractModule|AbstractModule[]
+     * @return AbstractModule
      */
     public function getModule($moduleName, $first = true)
     {
@@ -167,8 +167,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * @param boolean $first
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
-     *
-     * @return AbstractTheme|AbstractTheme[]
+     * @return AbstractTheme
      */
     public function getTheme($themeName, $first = true)
     {
