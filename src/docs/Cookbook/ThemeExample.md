@@ -54,8 +54,6 @@ class CompanyPaulaTheme extends AbstractCoreTheme
     }
 }
 ```
-* the `theme/Company/Paula/Resources/config/overrides.yml` needs to update the paths. Otherwise the theme 
-would use the overrides of the original ZikulaBootstrapTheme
 * in `home.html.twig`, `master.html.twig` and `admin.html.twig` you have to change all instance of `@ZikulaBoostrapTheme`
 to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/views`
 * Do the same in `header.html.twig` which is located in `theme/Company/Paula/Resources/views/include`
