@@ -14,6 +14,7 @@ namespace Zikula\UsersModule\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 
 /**
@@ -33,7 +34,7 @@ class LiveSearchController extends AbstractController
     public function getUsersAction(Request $request)
     {
         if (!$this->hasPermission('ZikulaUsersModule::LiveSearch', '::', ACCESS_EDIT)) {
-            return true;
+            throw new AccessDeniedException();
         }
 
         $fragment = $request->query->get('fragment', '');
