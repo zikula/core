@@ -108,14 +108,6 @@ class AddJSConfigListener implements EventSubscriberInterface
             'uid' => (int)$this->currentUserApi->get('uid')
         ];
 
-        $polyfill_features = [];
-        // merge in features added via twig
-        $featuresFromTwig = $this->pageVars->get('polyfill_features', []);
-        $polyfill_features = array_unique(array_merge($polyfill_features, $featuresFromTwig));
-
-        if (!empty($polyfill_features)) {
-            $config['polyfillFeatures'] = implode(' ', $polyfill_features);
-        }
         $config = array_map('htmlspecialchars', $config);
         $content = $this->twig->render('@ZikulaThemeModule/Engine/JSConfig.html.twig', [
             'config' => $config
