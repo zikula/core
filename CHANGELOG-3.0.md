@@ -5,8 +5,8 @@ CHANGELOG - ZIKULA 3.0.x
 ------------------
 
  - BC Breaks:
-    - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
     - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).
+    - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Dropped vendors:
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
@@ -21,7 +21,7 @@ CHANGELOG - ZIKULA 3.0.x
         - Removed symfony/polyfill-util
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - The `polyfill` Twig tag has been removed (#3925).
-    - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
+    - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
 
  - Deprecated:
     - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
