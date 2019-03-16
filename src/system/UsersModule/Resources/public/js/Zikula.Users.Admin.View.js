@@ -12,49 +12,47 @@
         var userSearchListTable = $('#user-search-list');
         var userSearchMinChar = $('#user-search-min-char');
 
-        $('#user-search-container').removeClass('hide');
+        $('#user-search-container').removeClass('hidden');
 
-        $('#user-search-discard').click(function(e) {
+        $('#user-search-discard').click(function (event) {
             $('#user-search').val('');
-            userListTable.removeClass('hide');
-            userSearchListTable.addClass('hide');
-            userSearchMinChar.addClass('hide');
+            userListTable.removeClass('hidden');
+            userSearchListTable.addClass('hidden');
+            userSearchMinChar.addClass('hidden');
             $('.pagination .hide-active').removeClass('hide-active').addClass('active');
         });
 
-        $('#user-search').keyup(function(e) {
+        $('#user-search').keyup(function (event) {
             queryId++;
             var currentQueryId = queryId;
 
             // skip if shift was pressed
-            var key = e.keyCode || e.which;
+            var key = event.keyCode || event.which;
             if (key == 16) {
                 return;
             }
 
             var fragment = $(this).val();
 
-            if (fragment === "") {
-                userListTable.removeClass('hide');
-                userSearchListTable.addClass('hide');
-                userSearchMinChar.addClass('hide');
+            if ('' === fragment) {
+                userListTable.removeClass('hidden');
+                userSearchListTable.addClass('hidden');
+                userSearchMinChar.addClass('hidden');
                 $('.pagination .hide-active').removeClass('hide-active').addClass('active');
                 return;
             }
 
-            userListTable.addClass('hide');
+            userListTable.addClass('hidden');
             $('.pagination .active').removeClass('active').addClass('hide-active');
 
             if (fragment.length < 3) {
                 userSearchListTable.find('tbody').empty();
-                userSearchMinChar.removeClass('hide');
+                userSearchMinChar.removeClass('hidden');
                 return;
             }
 
-
-            userSearchListTable.removeClass('hide');
-            userSearchMinChar.addClass('hide');
-
+            userSearchListTable.removeClass('hidden');
+            userSearchMinChar.addClass('hidden');
 
             // take the result from store if it is in the store
             if (resultStore[fragment] != undefined) {
@@ -67,7 +65,6 @@
             // search in the dom table - if the last search string is substring of the current one
             if (lastFragment == fragment.substring(0, fragment.length - 1)) {
                 userSearchListTable.find('tbody tr').each(function() {
-
                     var $this = $(this);
                     var username = $this.children().first().text();
                     if (username.indexOf(fragment) === -1) {
@@ -93,7 +90,7 @@
                 data: {
                     'fragment': fragment
                 },
-                success: function(data) {
+                success: function (data) {
                     userSearchListTable.find('tbody').empty().append(data);
                     resultStore[fragment] = data;
 

@@ -55,19 +55,20 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'help' => null,
             'input_group' => null,
             'alert' => null
         ]);
+
+        $resolver->setAllowedTypes('help', ['string', 'null', 'array']);
     }
 
     /**
-     * Returns the name of the type being extended.
+     * Returns the name of the types being extended.
      *
-     * @return string The name of the type being extended
+     * @return string[] The name of the types being extended
      */
-    public function getExtendedType()
+    public function getExtendedTypes()
     {
-        return FormType::class; // Extend all field types
+        return [FormType::class]; // Extend all field types
     }
 }

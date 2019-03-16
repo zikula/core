@@ -15,16 +15,28 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class FormOptionsArrayType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
-     * @var TranslatorInterface
+     * @param TranslatorInterface $translator
      */
-    protected $translator;
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 
     /**
      * {@inheritdoc}
@@ -35,11 +47,11 @@ class FormOptionsArrayType extends AbstractType
 
         $builder
             ->add('required', CheckboxType::class, [
-                'label' => $this->translator->__('Required'),
+                'label' => $this->__('Required'),
                 'required' => false,
             ])
             ->add('help', TextType::class, [
-                'label' => $this->translator->__('Help text'),
+                'label' => $this->__('Help text'),
                 'required' => false,
             ])
         ;
@@ -51,15 +63,5 @@ class FormOptionsArrayType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulaformextensionbundle_formoptionsarray';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => new IdentityTranslator()
-        ]);
     }
 }

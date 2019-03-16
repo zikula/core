@@ -17,21 +17,25 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Validator\Constraints\ValidUserFields;
 
 class DefaultRegistrationType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    use TranslatorTrait;
 
     /**
-     * DefaultRegistrationType constructor.
-     *
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
@@ -45,12 +49,12 @@ class DefaultRegistrationType extends AbstractType
             ->add('uname', HiddenType::class)
             ->add('email', HiddenType::class)
             ->add('submit', SubmitType::class, [
-                'label' => $this->translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])

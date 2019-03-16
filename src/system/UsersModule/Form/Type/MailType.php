@@ -20,10 +20,29 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class MailType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,31 +51,31 @@ class MailType extends AbstractType
         $builder
             ->add('userIds', HiddenType::class)
             ->add('from', TextType::class, [
-                'label' => $options['translator']->__('Sender name'),
+                'label' => $this->__('Sender name'),
             ])
             ->add('replyto', EmailType::class, [
-                'label' => $options['translator']->__('Replyto email address'),
+                'label' => $this->__('Replyto email address'),
             ])
             ->add('subject', TextType::class, [
-                'label' => $options['translator']->__('Subject'),
+                'label' => $this->__('Subject'),
             ])
             ->add('format', ChoiceType::class, [
                 'choices' => [
-                    $options['translator']->__('Text') => 'text',
-                    $options['translator']->__('Html') => 'html',
+                    $this->__('Text') => 'text',
+                    $this->__('Html') => 'html',
                 ],
-                'label' => $options['translator']->__('Format'),
+                'label' => $this->__('Format'),
             ])
             ->add('message', TextareaType::class, [
-                'label' => $options['translator']->__('Message'),
+                'label' => $this->__('Message'),
             ])
             ->add('batchsize', IntegerType::class, [
-                'label' => $options['translator']->__('Send mail in batches of'),
+                'label' => $this->__('Send mail in batches of'),
             ])
             ->add('send', SubmitType::class, [
-                'label' => $options['translator']->__('Send Mail'),
+                'label' => $this->__('Send Mail'),
                 'icon' => 'fa-angle-double-right',
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => ['class' => 'btn btn-success']
             ])
         ;
     }
@@ -67,15 +86,5 @@ class MailType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_mail';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 
 /**
@@ -111,7 +112,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     protected function printWarnings(OutputInterface $output, $warnings)
     {
         foreach ($warnings as $warning) {
-            $output->writeln("<error>$warning</error>");
+            $output->writeln('<error>' . $warning . '</error>');
         }
     }
 
@@ -137,8 +138,8 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
             'mbstring' => $this->translator->__("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."),
             'pcreUnicodePropertiesEnabled' => $this->translator->__("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
             'json_encode' => $this->translator->__("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."),
-            'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => "config/personal_config.php"]),
-//            'custom_parameters_yml' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml"),
+            'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => "config/personal_config.php"])/*,
+            'custom_parameters_yml' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml")*/
         ];
         if (array_key_exists($key, $messages)) {
             return $messages[$key];
@@ -151,7 +152,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     public function setContainer(ContainerInterface $container = null)
     {
         parent::setContainer($container);
-        $this->translator = $container->get('translator.default');
+        $this->translator = $container->get(Translator::class);
     }
 
     protected function printSettings($givenSettings, SymfonyStyle $io)
@@ -159,7 +160,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         $rows = [];
         foreach ($givenSettings as $name => $givenSetting) {
             if (isset($this->settings[$name]['password']) && $this->settings[$name]['password']) {
-                $givenSetting = str_repeat("*", strlen($givenSetting));
+                $givenSetting = str_repeat('*', strlen($givenSetting));
             }
             $rows[] = [$name, $givenSetting];
         }

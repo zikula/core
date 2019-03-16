@@ -15,6 +15,8 @@ use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Entity\UserAttributeEntity;
+use Zikula\UsersModule\Entity\UserSessionEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
@@ -34,9 +36,9 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
     {
         // create the tables
         $classes = [
-            'Zikula\UsersModule\Entity\UserEntity',
-            'Zikula\UsersModule\Entity\UserAttributeEntity',
-            'Zikula\UsersModule\Entity\UserSessionEntity',
+            UserEntity::class,
+            UserAttributeEntity::class,
+            UserSessionEntity::class
         ];
         try {
             $this->schemaTool->create($classes);
@@ -47,7 +49,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         // Set default values and modvars for module
         $this->defaultdata();
         $this->setVars($this->getDefaultModvars());
-        $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+        $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
 
         // Initialisation successful
         return true;
@@ -73,7 +75,9 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
                 // add new table
-                $this->schemaTool->create(['Zikula\UsersModule\Entity\UserAttributeEntity']);
+                $this->schemaTool->create([
+                    UserAttributeEntity::class
+                ]);
                 $this->migrateAttributes();
             case '2.2.1':
                 $currentModVars = $this->getVars();
@@ -99,7 +103,11 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             case '2.2.3':
                 // Nothing to do.
             case '2.2.4':
-                $sql = "UPDATE users_attributes SET value='gravatar.jpg' WHERE value='gravatar.gif'";
+                $sql = "
+                    UPDATE users_attributes
+                    SET value = 'gravatar.jpg'
+                    WHERE value = 'gravatar.gif'
+                ";
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '2.2.5':
@@ -115,28 +123,43 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 foreach ($modvarsToConvertToBool as $modvarToConvert) {
                     $this->setVar($modvarToConvert, (bool)$this->getVar($modvarToConvert));
                 }
-                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
+                $this->schemaTool->update([
+                    UserEntity::class
+                ]);
                 $this->delVar('login_redirect');
             case '2.2.8':
-                $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
+                $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
             case '2.2.9':
                 // migrate modvar values to ZAuth and remove from Users
                 $this->migrateModVarsToZAuth();
                 // update users table
-                $sql = "UPDATE users SET pass='' WHERE pass='NO_USERS_AUTHENTICATION'";
+                $sql = "
+                    UPDATE users
+                    SET pass = ''
+                    WHERE pass = 'NO_USERS_AUTHENTICATION'
+                ";
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
                 // expire all sessions so everyone has to login again (to force migration)
                 $this->entityManager->createQuery('DELETE FROM Zikula\UsersModule\Entity\UserSessionEntity')->execute();
             case '3.0.0':
-                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserSessionEntity']);
+                $this->schemaTool->update([
+                    UserSessionEntity::class
+                ]);
             case '3.0.1':
-                $sql = "ALTER TABLE users_attributes ADD FOREIGN KEY (user_id) REFERENCES users(uid) ON DELETE CASCADE";
+                $sql = "
+                    ALTER TABLE users_attributes
+                    ADD FOREIGN KEY (user_id)
+                    REFERENCES users(uid)
+                    ON DELETE CASCADE
+                ";
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '3.0.2':
                 // remove password reminder
-                $this->schemaTool->update(['Zikula\UsersModule\Entity\UserEntity']);
+                $this->schemaTool->update([
+                    UserEntity::class
+                ]);
                 $this->delVar('password_reminder_enabled');
                 $this->delVar('password_reminder_mandatory');
             case '3.0.3':
@@ -252,15 +275,19 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         $connection = $this->entityManager->getConnection();
         $sqls = [];
         // copy data from objectdata_attributes to users_attributes
-        $sqls[] = 'INSERT INTO users_attributes
-                    (user_id, name, value)
-                    SELECT object_id, attribute_name, value
-                    FROM objectdata_attributes
-                    WHERE object_type = \'users\'
-                    ORDER BY object_id, attribute_name';
+        $sqls[] = '
+            INSERT INTO users_attributes
+            (user_id, name, value)
+            SELECT object_id, attribute_name, value
+            FROM objectdata_attributes
+            WHERE object_type = \'users\'
+            ORDER BY object_id, attribute_name
+        ';
         // remove old data
-        $sqls[] = 'DELETE FROM objectdata_attributes
-                    WHERE object_type = \'users\'';
+        $sqls[] = '
+            DELETE FROM objectdata_attributes
+            WHERE object_type = \'users\'
+        ';
         foreach ($sqls as $sql) {
             $stmt = $connection->prepare($sql);
             $stmt->execute();
@@ -283,7 +310,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
                 ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED
             ]) ? (bool)$value : $value;
-            $this->container->get('zikula_extensions_module.api.variable')->set('ZikulaZAuthModule', $migratedModVarName, $value);
+            $this->container->get(VariableApi::class)->set('ZikulaZAuthModule', $migratedModVarName, $value);
         }
     }
 

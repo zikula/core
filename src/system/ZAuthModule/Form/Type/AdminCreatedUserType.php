@@ -21,6 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
@@ -29,6 +31,24 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class AdminCreatedUserType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,83 +56,87 @@ class AdminCreatedUserType extends AbstractType
     {
         $builder
             ->add('method', ChoiceType::class, [
-                'label' => $options['translator']->__('Login method'),
+                'label' => $this->__('Login method'),
                 'choices' => [
-                    $options['translator']->__('User name or email') => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
-                    $options['translator']->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
-                    $options['translator']->__('Email') => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
+                    $this->__('User name or email') => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
+                    $this->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
+                    $this->__('Email') => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
                 ]
             ])
             ->add('uname', TextType::class, [
-                'label' => $options['translator']->__('User name'),
-                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
-                'constraints' => [new ValidUname()]
+                'label' => $this->__('User name'),
+                'help' => $this->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'constraints' => [
+                    new ValidUname()
+                ]
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $options['translator']->__('Email'),
-                    'help' => $options['translator']->__('If login method is Email, then this value must be unique for the site.'),
+                    'label' => $this->__('Email'),
+                    'help' => $this->__('If login method is Email, then this value must be unique for the site.'),
                 ],
-                'second_options' => ['label' => $options['translator']->__('Repeat Email')],
-                'invalid_message' => $options['translator']->__('The emails  must match!'),
-                'constraints' => [new ValidEmail()]
+                'second_options' => ['label' => $this->__('Repeat Email')],
+                'invalid_message' => $this->__('The emails  must match!'),
+                'constraints' => [
+                    new ValidEmail()
+                ]
             ])
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $options['translator']->__('Set password now'),
-                'alert' => [$options['translator']->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
+                'label' => $this->__('Set password now'),
+                'alert' => [$this->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => $options['translator']->__('Create new password'),
+                    'label' => $this->__('Create new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
-                    'help' => $options['translator']->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
-                    'label' => $options['translator']->__('Repeat new password'),
+                    'label' => $this->__('Repeat new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],
-                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'invalid_message' => $this->__('The passwords must match!'),
                 'constraints' => [
-                    new ValidPassword(),
+                    new ValidPassword()
                 ]
             ])
             ->add('sendpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $options['translator']->__('Send password via email'),
+                'label' => $this->__('Send password via email'),
                 'alert' => [
-                    $options['translator']->__('Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.') => 'warning',
-                    $options['translator']->__('Even if you choose to not send the user\'s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.') => 'info'
+                    $this->__('Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.') => 'warning',
+                    $this->__('Even if you choose to not send the user\'s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.') => 'info'
                 ]
             ])
             ->add('usernotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $options['translator']->__('Send welcome message to user'),
+                'label' => $this->__('Send welcome message to user'),
             ])
             ->add('adminnotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $options['translator']->__('Notify administrators'),
+                'label' => $this->__('Notify administrators'),
             ])
             ->add('usermustverify', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $options['translator']->__('User must verify email address'),
-                'help' => $options['translator']->__('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
-                'alert' => [$options['translator']->__('It is recommended to force users to verify their email address.') => 'info']
+                'label' => $this->__('User must verify email address'),
+                'help' => $this->__('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
+                'alert' => [$this->__('It is recommended to force users to verify their email address.') => 'info']
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -133,7 +157,6 @@ class AdminCreatedUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'minimumPasswordLength' => 5,
             'constraints' => [
                 new ValidUserFields()

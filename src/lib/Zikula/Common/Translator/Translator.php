@@ -11,7 +11,7 @@
 
 namespace Zikula\Common\Translator;
 
-use Symfony\Component\DependencyInjection\ServiceLocator;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
 use Symfony\Component\Translation\Translator as BaseTranslator;
@@ -22,9 +22,9 @@ use Symfony\Component\Translation\Translator as BaseTranslator;
 class Translator extends BaseTranslator implements WarmableInterface, TranslatorInterface
 {
     /**
-     * @var ServiceLocator
+     * @var ContainerInterface
      */
-    protected $serviceLocator;
+    protected $container;
 
     /**
      * @var string
@@ -53,9 +53,9 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * @throws \InvalidArgumentException
      */
-    public function __construct(ServiceLocator $serviceLocator, MessageFormatterInterface $formatter = null, $defaultLocale, $loaderIds = [], array $options = [])
+    public function __construct(ContainerInterface $container, MessageFormatterInterface $formatter = null, $defaultLocale, $loaderIds = [], array $options = [])
     {
-        $this->serviceLocator = $serviceLocator;
+        $this->container = $container;
         $this->loaderIds = $loaderIds;
         // check option names
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {
@@ -103,11 +103,28 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     protected function initialize()
     {
         $this->loadResources();
+
+        // TODO remove again
+        if (empty($this->loaderIds)) {
+            $this->loaderIds = [
+                'dummy' => [
+                    'po' => 'Symfony\Component\Translation\Loader\PoFileLoader',
+                    'pot' => 'Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader',
+                    'xlf' => 'Symfony\Component\Translation\Loader\XliffFileLoader'
+                ]
+            ];
+        }
         foreach ($this->loaderIds as $id => $aliases) {
-            foreach ($aliases as $alias) {
-                $this->addLoader($alias, $this->serviceLocator->get($id));
+            foreach ($aliases as $alias => $loaderClass) {
+                $this->addLoader($alias, new $loaderClass);
             }
         }
+
+//         foreach ($this->loaderIds as $id => $aliases) {
+//             foreach ($aliases as $alias) {
+//                 $this->addLoader($alias, $this->container->get($id));
+//             }
+//         }
     }
 
     /**

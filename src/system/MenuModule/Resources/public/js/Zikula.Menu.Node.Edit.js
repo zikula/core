@@ -2,8 +2,8 @@
 
 ( function($) {
     $(document).ready(function() {
-        $(document).on("click", "#add-option", function(e) {
-            e.preventDefault();
+        $(document).on('click', '#add-option', function (event) {
+            event.preventDefault();
 
             var optionList = $('ul#options');
 
@@ -16,8 +16,9 @@
             // create a new list element and add it to the list
             $(newWidget).appendTo(optionList);
         });
-        $(document).on("click", ".delete-option", function(e) {
-            e.preventDefault();
+        $(document).on('click', '.delete-option', function (event) {
+            event.preventDefault();
+
             var row = $(this).closest('li');
             row.remove();
         });

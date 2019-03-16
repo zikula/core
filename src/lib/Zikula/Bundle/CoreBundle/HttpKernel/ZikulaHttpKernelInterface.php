@@ -14,6 +14,7 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
+use Zikula\Core\AbstractModule;
 use Zikula\ThemeModule\AbstractTheme;
 
 interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
@@ -26,15 +27,14 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
     public function setDump($flag);
 
     /**
-     * Get named module bundle.
+     * Gets named module bundle.
      *
-     * @param string  $moduleName
-     * @param boolean $first
+     * @param string $moduleName
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
-     * @return \Zikula\Core\AbstractModule|\Zikula\Core\AbstractModule[]
+     * @return AbstractModule
      */
-    public function getModule($moduleName, $first = true);
+    public function getModule($moduleName);
 
     public function getModules();
 
@@ -46,16 +46,15 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
     public static function isCoreModule($moduleName);
 
     /**
-     * Get named theme bundle.
+     * Gets named theme bundle.
      *
-     * @param string  $themeName
-     * @param boolean $first
+     * @param string $themeName
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
      *
-     * @return AbstractTheme|AbstractTheme
+     * @return AbstractTheme
      */
-    public function getTheme($themeName, $first = true);
+    public function getTheme($themeName);
 
     public function getThemes();
 
@@ -65,10 +64,9 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
      * Is this a Bundle?
      *
      * @param $name
-     * @param bool $first
      * @return bool
      */
-    public function isBundle($name, $first = true);
+    public function isBundle($name);
 
     public function setAutoloader(ClassLoader $autoloader);
 

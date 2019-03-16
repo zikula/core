@@ -19,12 +19,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Form\Type\BlockType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -36,16 +38,19 @@ class BlockController extends AbstractController
     /**
      * @Route("/new")
      * @Theme("admin")
+     *
      * @param Request $request
+     * @param BlockApiInterface $blockApi
+     *
      * @return RedirectResponse|Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, BlockApiInterface $blockApi)
     {
         $form = $this->createFormBuilder()
             ->add('bkey', ChoiceType::class, [
                 'placeholder' => 'Choose a block type',
-                'choices' => array_flip($this->get('zikula_blocks_module.api.block')->getAvailableBlockTypes()),
-                'label' => 'Block type'
+                'choices' => array_flip($blockApi->getAvailableBlockTypes()),
+                'label' => $this->__('Block type')
             ])
             ->add('choose', SubmitType::class, [
                 'label' => $this->__('Choose'),
@@ -54,16 +59,17 @@ class BlockController extends AbstractController
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->getForm();
-
-        if ($form->handleRequest($request)->isValid()) {
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             $bkey = json_encode($form->getData()['bkey']);
 
             return $this->redirectToRoute('zikulablocksmodule_block_edit', ['bkey' => $bkey]);
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/new.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -72,12 +78,20 @@ class BlockController extends AbstractController
      *
      * @Route("/edit/{blockEntity}", requirements={"blockEntity" = "^[1-9]\d*$"})
      * @Theme("admin")
+     *
      * @param Request $request
      * @param BlockEntity $blockEntity
+     * @param BlockApiInterface $blockApi
+     * @param ExtensionRepositoryInterface $extensionRepository
+     *
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, BlockEntity $blockEntity = null)
-    {
+    public function editAction(
+        Request $request,
+        BlockEntity $blockEntity = null,
+        BlockApiInterface $blockApi,
+        ExtensionRepositoryInterface $extensionRepository
+    ) {
         $accessLevelRequired = ACCESS_EDIT;
         if (null === $blockEntity) {
             $bKey = json_decode($request->query->get('bkey'));
@@ -94,7 +108,7 @@ class BlockController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $blockInstance = $this->get('zikula_blocks_module.api.block')->createInstanceFromBKey($blockEntity->getBkey());
+        $blockInstance = $blockApi->createInstanceFromBKey($blockEntity->getBkey());
         $blockType = $blockEntity->getBlocktype();
         if (empty($blockType)) {
             $blockEntity->setBlocktype($blockInstance->getType());
@@ -114,7 +128,7 @@ class BlockController extends AbstractController
             $blockEntity->setFilters($filters);
             /** @var \Doctrine\ORM\EntityManager $em */
             $em = $this->getDoctrine()->getManager();
-            $module = $em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $moduleName]);
+            $module = $extensionRepository->findOneBy(['name' => $moduleName]);
             $blockEntity->setModule($module);
             $em->persist($blockEntity);
             $em->flush();
@@ -131,7 +145,7 @@ class BlockController extends AbstractController
         return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
             'moduleName' => $moduleName,
             'propertiesFormTemplate' => ($blockInstance instanceof BlockHandlerInterface) ? $blockInstance->getFormTemplate() : null,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -143,6 +157,7 @@ class BlockController extends AbstractController
      *
      * @param Request $request
      * @param BlockEntity $blockEntity
+     *
      * @return RedirectResponse|Response
      */
     public function deleteAction(Request $request, BlockEntity $blockEntity)
@@ -152,8 +167,8 @@ class BlockController extends AbstractController
         }
 
         $form = $this->createForm(DeletionType::class);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($blockEntity);

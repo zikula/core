@@ -4,31 +4,31 @@ var ZikulaUsersUtilCapsLock = {};
 
 (function($) {
     ZikulaUsersUtilCapsLock.capsLockChecker = function (inputElement, toggleElement) {
-        $(inputElement).keypress(function(e) {
-            function isCapsLockPressed(e) {
+        $(inputElement).keypress(function (event) {
+            function isCapsLockPressed (event) {
                 if (!Boolean(window.chrome) && !Boolean(window.webkit)) {
-                    kc = e.keyCode ? e.keyCode : e.which;
-                    sk = e.shiftKey ? e.shiftKey : ((kc == 16) ? true : false);
+                    kc = event.keyCode ? event.keyCode : event.which;
+                    sk = event.shiftKey ? event.shiftKey : ((kc == 16) ? true : false);
                     if ((((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk))) {
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    e = (e) ? e : window.event;
+                    event = (event) ? event : window.event;
 
                     var charCode = false;
-                    if (e.which) {
-                        charCode = e.which;
-                    } else if (e.keyCode) {
-                        charCode = e.keyCode;
+                    if (event.which) {
+                        charCode = event.which;
+                    } else if (event.keyCode) {
+                        charCode = event.keyCode;
                     }
 
                     var shifton = false;
-                    if (e.shiftKey) {
-                        shifton = e.shiftKey;
-                    } else if (e.modifiers) {
-                        shifton = !!(e.modifiers & 4);
+                    if (event.shiftKey) {
+                        shifton = event.shiftKey;
+                    } else if (event.modifiers) {
+                        shifton = !!(event.modifiers & 4);
                     }
 
                     if (charCode >= 97 && charCode <= 122 && shifton) {
@@ -43,10 +43,10 @@ var ZikulaUsersUtilCapsLock = {};
                 }
             }
 
-            if (isCapsLockPressed(e)) {
-                $(toggleElement).removeClass('hide');
+            if (isCapsLockPressed(event)) {
+                $(toggleElement).removeClass('hidden');
             } else {
-                $(toggleElement).addClass('hide');
+                $(toggleElement).addClass('hidden');
             }
         });
     };

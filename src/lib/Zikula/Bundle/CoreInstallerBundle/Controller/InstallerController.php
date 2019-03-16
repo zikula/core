@@ -26,6 +26,7 @@ class InstallerController extends AbstractController
     /**
      * @param Request $request
      * @param string $stage
+     *
      * @return Response
      */
     public function installAction(Request $request, $stage)

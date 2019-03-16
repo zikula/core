@@ -12,7 +12,9 @@
 namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
@@ -36,7 +38,8 @@ class PositionController extends AbstractController
      *
      * @param Request $request
      * @param BlockPositionEntity $positionEntity
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, BlockPositionEntity $positionEntity = null)
     {
@@ -49,11 +52,9 @@ class PositionController extends AbstractController
             $positionEntity = new BlockPositionEntity(); // sets defaults in constructor
         }
 
-        $form = $this->createForm(BlockPositionType::class, $positionEntity, [
-            'translator' => $this->getTranslator()
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(BlockPositionType::class, $positionEntity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 /** @var \Doctrine\ORM\EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
@@ -82,7 +83,8 @@ class PositionController extends AbstractController
      *
      * @param Request $request
      * @param BlockPositionEntity $positionEntity
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @return RedirectResponse|Response
      */
     public function deleteAction(Request $request, BlockPositionEntity $positionEntity)
     {
@@ -91,8 +93,8 @@ class PositionController extends AbstractController
         }
 
         $form = $this->createForm(DeletionType::class);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($positionEntity);

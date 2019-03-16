@@ -11,9 +11,16 @@
 
 namespace Zikula\GroupsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 
-class GroupApplicationRepository extends EntityRepository
+class GroupApplicationRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, GroupApplicationEntity::class);
+    }
+
     // nothing yet
 }

@@ -17,30 +17,26 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class DefaultLoginType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    use TranslatorTrait;
 
     /**
-     * DefaultLoginType constructor.
-     *
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {
-        $this->translator = $translator;
+        $this->setTranslator($translator);
     }
 
     /**
-     * {@inheritdoc}
+     * @param TranslatorInterface $translator
      */
-    public function getBlockPrefix()
+    public function setTranslator(TranslatorInterface $translator)
     {
-        return 'zikulausersmodule_defaultlogin';
+        $this->translator = $translator;
     }
 
     /**
@@ -52,13 +48,21 @@ class DefaultLoginType extends AbstractType
             ->add('uid', HiddenType::class)
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
-                'label' => $this->translator->__('Remember me'),
+                'label' => $this->__('Remember me'),
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->translator->__('Login'),
+                'label' => $this->__('Login'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'zikulausersmodule_defaultlogin';
     }
 }

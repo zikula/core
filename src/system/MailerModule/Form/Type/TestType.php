@@ -18,33 +18,50 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class TestType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('fromName', TextType::class, [
-                'label' => $translator->__('Sender\'s name'),
+                'label' => $this->__('Sender\'s name'),
                 'disabled' => true
             ])
             ->add('fromAddress', EmailType::class, [
-                'label' => $translator->__('Sender\'s e-mail address'),
+                'label' => $this->__('Sender\'s e-mail address'),
                 'disabled' => true
             ])
             ->add('toName', TextType::class, [
-                'label' => $translator->__('Recipient\'s name'),
+                'label' => $this->__('Recipient\'s name'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -53,7 +70,7 @@ class TestType extends AbstractType
                 ]
             ])
             ->add('toAddress', EmailType::class, [
-                'label' => $translator->__('Recipient\'s e-mail address'),
+                'label' => $this->__('Recipient\'s e-mail address'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -63,7 +80,7 @@ class TestType extends AbstractType
                 ]
             ])
             ->add('subject', TextType::class, [
-                'label' => $translator->__('Subject'),
+                'label' => $this->__('Subject'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -72,7 +89,7 @@ class TestType extends AbstractType
                 ]
             ])
             ->add('messageType', ChoiceType::class, [
-                'label' => $translator->__('Message type'),
+                'label' => $this->__('Message type'),
                 'empty_data' => 'text',
                 'choices' => [
                     'Plain-text message' => 'text',
@@ -82,22 +99,22 @@ class TestType extends AbstractType
                 'expanded' => false
             ])
             ->add('bodyHtml', TextareaType::class, [
-                'label' => $translator->__('HTML-formatted message'),
+                'label' => $this->__('HTML-formatted message'),
                 'required' => false
             ])
             ->add('bodyText', TextareaType::class, [
-                'label' => $translator->__('Plain-text message'),
+                'label' => $this->__('Plain-text message'),
                 'required' => false
             ])
             ->add('test', SubmitType::class, [
-                'label' => $translator->__('Send test email'),
+                'label' => $this->__('Send test email'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -112,15 +129,5 @@ class TestType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulamailermodule_test';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

@@ -19,8 +19,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryRegistryType;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -39,11 +41,18 @@ class RegistryController extends AbstractController
      * Creates or edits a category registry.
      *
      * @param Request $request
+     * @param CapabilityApiInterface $capabilityApi
+     * @param CategoryRegistryRepositoryInterface $registryRepository
      * @param CategoryRegistryEntity $registryEntity
+     *
      * @return array|RedirectResponse
      */
-    public function editAction(Request $request, CategoryRegistryEntity $registryEntity = null)
-    {
+    public function editAction(
+        Request $request,
+        CapabilityApiInterface $capabilityApi,
+        CategoryRegistryRepositoryInterface $registryRepository,
+        CategoryRegistryEntity $registryEntity = null
+    ) {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -52,11 +61,9 @@ class RegistryController extends AbstractController
         }
 
         $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
-            'translator' => $this->getTranslator(),
-            'categorizableModules' => $this->getCategorizableModules(),
+            'categorizableModules' => $this->getCategorizableModules($capabilityApi),
             'entitySelectionBuilder' => new EntitySelectionBuilder($this->get('kernel'))
         ]);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
@@ -73,13 +80,13 @@ class RegistryController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'registries' => $this->get('zikula_categories_module.category_registry_repository')->findAll()
+            'registries' => $registryRepository->findAll()
         ];
     }
 
-    private function getCategorizableModules()
+    private function getCategorizableModules(CapabilityApiInterface $capabilityApi)
     {
-        $modules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
+        $modules = $capabilityApi->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
         $moduleOptions = [];
         foreach ($modules as $module) {
             $moduleOptions[$module->getName()] = $module->getName();
@@ -105,8 +112,8 @@ class RegistryController extends AbstractController
             throw new AccessDeniedException();
         }
         $form = $this->createForm(DeletionType::class);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $entityManager = $this->get('doctrine')->getManager();
                 $entityManager->remove($registry);

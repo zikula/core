@@ -3,9 +3,7 @@ BlockFactoryApi
 
 classname: \Zikula\BlocksModule\Api\BlockFactoryApi
 
-service id = "zikula_blocks_module.api.block_factory"
-
-The BlockFactoryApi helps with the instantiation of Blocks.
+The BlockFactoryApi helps with the instantiation of blocks.
 
 The class makes the following methods available:
 

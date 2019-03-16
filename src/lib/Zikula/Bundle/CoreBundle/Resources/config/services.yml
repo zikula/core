@@ -1,41 +1,136 @@
+parameters:
+    zikula_core.internal.token.max_life: 3600
+
 services:
-    zikula_core.controller.main_controller:
-        class: Zikula\Bundle\CoreBundle\Controller\MainController
-        arguments: ["@kernel", "@zikula_extensions_module.api.variable"]
-
-    data_collector.zikula_version:
-        class: Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector
+    _defaults:
+        autowire: true
+        autoconfigure: true
         public: false
-        arguments: ["@zikula_core.common.theme_engine"]
+        bind:
+            $installed: '%installed%'
+
+    Zikula\Bundle\CoreBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\Bundle\CoreBundle\Controller\:
+        resource: '../../Controller/*Controller.php'
+
+    Zikula\Common\:
+        resource: '../../../../Common/*'
+
+    Zikula\Component\:
+        resource: '../../../../Component/*'
+
+    Zikula\Composer\:
+        resource: '../../../../Composer/*'
+
+    Zikula\Core\:
+        resource: '../../../../Core/*'
+
+    Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
+
+    Zikula\Bundle\CoreBundle\Controller\MainController:
+        public: true
+
+    Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector:
         tags:
-            - { name: data_collector, template: "CoreBundle:Collector:ZikulaVersion.html.twig", id: zikula_version, priority: 300 }
+            - { name: data_collector, template: 'CoreBundle:Collector:ZikulaVersion.html.twig', id: zikula_version, priority: 300 }
 
-    zikula.dynamic_config_dumper:
-        class: Zikula\Bundle\CoreBundle\DynamicConfigDumper
-        arguments: ["@=service('kernel').getRootDir() ~ '/config'"]
-
-    zikula.cache_clearer:
-        class: Zikula\Bundle\CoreBundle\CacheClearer
+    Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         arguments:
-          - "%kernel.cache_dir%"
-          - "%router.cache_class_prefix%"
-          - "%kernel.container_class%"
-          - "@fos_js_routing.extractor"
-          - "%jms_i18n_routing.locales%"
+          $configDir: '%kernel.root_dir%/config'
 
-    zikula.link_container_collector:
-        class: Zikula\Core\LinkContainer\LinkContainerCollector
-        arguments: ["@event_dispatcher"]
+    # public because Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand accesses this using container
+    Zikula\Bundle\CoreBundle\CacheClearer:
+        public: true
+        arguments:
+          $cacheDir: '%kernel.cache_dir%'
+          $cachePrefix: '%router.cache_class_prefix%'
+          $kernelContainerClass: '%kernel.container_class%'
+          $fosJsRoutesExtractor: '@fos_js_routing.extractor'
+          $routingLocales: '%jms_i18n_routing.locales%'
 
-    zikula.content_type.base:
-        abstract: true
+    Zikula\Core\LinkContainer\LinkContainerCollector:
         arguments:
-            - '@translator.default'
-            - '@twig'
-            - '@twig.loader'
-            - '@?zikula_content_module.permission_helper'
-            - '@zikula_core.common.theme.asset_helper'
-    zikula.content_type.form.base:
-        abstract: true
+          $linkContainers: !tagged zikula.link_container
+
+    Zikula\Bundle\CoreBundle\EventListener\BlameListener:
         arguments:
-            - '@translator.default'
+          $blameableListener: '@stof_doctrine_extensions.listener.blameable'
+
+    Zikula\Bundle\CoreBundle\EventListener\ClickjackProtectionListener:
+        arguments:
+          $xFrameOptions: '%security.x_frame_options%'
+
+    Zikula\Bundle\CoreBundle\EventListener\DoctrineListener:
+        arguments:
+          $driver: '@doctrine.orm.default_annotation_metadata_driver'
+
+    Zikula\Bundle\CoreBundle\EventListener\SiteOffVetoLoginListener:
+        lazy: true
+
+    Zikula\Bundle\CoreBundle\EventListener\ExceptionListener:
+        tags:
+            - { name: monolog.logger, channel: request }
+
+    Zikula\Bundle\CoreBundle\EventListener\LoggerListener:
+        arguments:
+          $loggableListener: '@stof_doctrine_extensions.listener.loggable'
+
+    Symfony\Component\HttpKernel\Fragment\FragmentHandler: '@fragment.handler'
+
+    Michelf\:
+        resource: '../../../../../../vendor/michelf/php-markdown/Michelf/*'
+
+    Zikula\Core\Token\Storage: '@Zikula\Core\Token\Storage\SessionStorage'
+
+    Zikula\Core\Token\Generator:
+        arguments:
+            $secret: '_dummy'
+            $maxLifetime: '%zikula_core.internal.token.max_life%'
+
+    # public because AbstractExtensionInstaller accesses this using container
+    Zikula\Core\Doctrine\Helper\SchemaHelper:
+        public: true
+        lazy: true
+
+    #Twig\Extensions\:
+    #    resource: '../../../../../../vendor/twig/extensions/src/*'
+    twig.extension.text:
+        class: Twig\Extensions\TextExtension
+    twig.extension.intl:
+        class: Twig\Extensions\IntlExtension
+    twig.extension.date:
+        class: Twig\Extensions\DateExtension
+    twig.extension.array:
+        class: Twig\Extensions\ArrayExtension
+
+    Zikula\Common\Translator\TranslatorInterface: '@Zikula\Common\Translator\Translator'
+
+    # public because AbstractBundle, AbstractController and AbstractExtensionInstaller access this using container
+    Zikula\Common\Translator\Translator:
+        public: true
+        arguments:
+          $defaultLocale: '%kernel.default_locale%'
+          $loaderIds: {}
+          $options: { cache_dir: "%kernel.cache_dir%/translations", debug: '%kernel.debug%' }
+
+    Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor:
+        arguments:
+            $docParser: '@jms_translation.doc_parser'
+        tags: ['jms_translation.file_visitor']
+
+    Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor:
+        tags: ['jms_translation.file_visitor']
+
+    Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor:
+        tags: ['jms_translation.file_visitor']
+
+    Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper:
+        tags:
+            - { name: jms_translation.dumper, format: pot }
+
+    Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader:
+        tags:
+            - { name: translation.loader, alias: pot }

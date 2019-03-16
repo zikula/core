@@ -14,6 +14,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -40,14 +42,12 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function getFormType()
     {
-        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType';
+        return CreateAdminType::class;
     }
 
     public function getFormOptions()
     {
-        return [
-            'translator' => $this->container->get('translator.default')
-        ];
+        return [];
     }
 
     public function getTemplateName()
@@ -72,6 +72,6 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function handleFormResult(FormInterface $form)
     {
-        $this->container->get('zikula_core_installer.controller.helper')->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+        $this->container->get(ControllerHelper::class)->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
     }
 }

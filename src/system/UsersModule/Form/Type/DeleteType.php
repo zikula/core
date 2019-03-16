@@ -16,9 +16,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class DeleteType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +56,7 @@ class DeleteType extends AbstractType
                 'choice_label' => 'uname'
             ])
             ->add('delete', SubmitType::class, [
-                'label' => $options['translator']->__('Delete selected users'),
+                'label' => $this->__('Delete selected users'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-danger'
@@ -59,7 +79,6 @@ class DeleteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'choices' => [],
             'attr' => ['id' => 'users_searchresults']
         ]);

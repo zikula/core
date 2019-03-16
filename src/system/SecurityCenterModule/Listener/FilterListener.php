@@ -38,7 +38,7 @@ class FilterListener implements EventSubscriberInterface
     /**
      * @var bool
      */
-    private $isInstalled;
+    private $installed;
 
     /**
      * @var bool
@@ -73,7 +73,7 @@ class FilterListener implements EventSubscriberInterface
     /**
      * FilterListener constructor.
      *
-     * @param bool $isInstalled Installed flag
+     * @param bool $installed Installed flag
      * @param $isUpgrading
      * @param VariableApiInterface $variableApi VariableApi service instance
      * @param EntityManagerInterface $em Doctrine entity manager
@@ -82,7 +82,7 @@ class FilterListener implements EventSubscriberInterface
      * @param $cacheDir
      */
     public function __construct(
-        $isInstalled,
+        $installed,
         $isUpgrading,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
@@ -90,7 +90,7 @@ class FilterListener implements EventSubscriberInterface
         TranslatorInterface $translator,
         $cacheDir
     ) {
-        $this->isInstalled = $isInstalled;
+        $this->installed = $installed;
         $this->isUpgrading = $isUpgrading;
         $this->variableApi = $variableApi;
         $this->em = $em;
@@ -111,7 +111,7 @@ class FilterListener implements EventSubscriberInterface
     /**
      * Protects against basic attempts of Cross-Site Scripting (XSS).
      *
-     * @see    http://technicalinfo.net/papers/CSS.html
+     * @see http://technicalinfo.net/papers/CSS.html
      *
      * @param GetResponseEvent $event
      *
@@ -121,7 +121,7 @@ class FilterListener implements EventSubscriberInterface
      */
     public function idsInputFilter(GetResponseEvent $event)
     {
-        if (!$this->isInstalled || $this->isUpgrading) {
+        if (!$this->installed || $this->isUpgrading) {
             return;
         }
 

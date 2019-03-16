@@ -15,11 +15,6 @@ use Symfony\Component\Validator\Constraint;
 
 class AuthenticateAdminLogin extends Constraint
 {
-    public function validatedBy()
-    {
-        return 'zikula.core_installer.authenticate_admin_login.validator';
-    }
-
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

@@ -72,6 +72,7 @@ class DocController
     /**
      * @param Request $request
      * @param string $name
+     *
      * @return Response
      */
     public function displayAction(Request $request, $name = 'INSTALL-2.0.md')
@@ -79,7 +80,7 @@ class DocController
         $this->setBasePath($request);
 
         $content = '';
-        if (!file_exists($this->basePath . "/$name") && 'en' != $request->getLocale()) {
+        if (!file_exists($this->basePath . '/' . $name) && 'en' != $request->getLocale()) {
             // fallback to English docs
             $this->basePath = str_replace('docs/' . $request->getLocale(), 'docs/en', $this->basePath);
         }
@@ -101,7 +102,8 @@ class DocController
     }
 
     /**
-     * set the base path for doc files, computing whether this is a Github clone or CI build.
+     * Set the base path for doc files, computing whether this is a Github clone or CI build.
+     *
      * @param Request $request
      */
     private function setBasePath(Request $request)

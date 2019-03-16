@@ -15,8 +15,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\IdentityTranslator;
-use Zikula\PermissionsModule\PermissionAlways;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
  * Class AmendableModuleSearchType
@@ -26,19 +27,45 @@ use Zikula\PermissionsModule\PermissionAlways;
  */
 class AmendableModuleSearchType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @var PermissionApiInterface
+     */
+    private $permissionApi;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param PermissionApiInterface $permissionApi
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+        PermissionApiInterface $permissionApi
+    ) {
+        $this->setTranslator($translator);
+        $this->permissionApi = $permissionApi;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['permissionApi']->hasPermission($builder->getName() . '::', '::', ACCESS_READ)) {
-            $builder
-                ->add('active', CheckboxType::class, [
-                    'label' => $options['translator']->__('Active'),
-                    'label_attr' => ['class' => 'checkbox-inline'],
-                    'required' => false,
-                    'data' => $options['active']
-                ]);
+        if ($this->permissionApi->hasPermission($builder->getName() . '::', '::', ACCESS_READ)) {
+            $builder->add('active', CheckboxType::class, [
+                'label' => $this->__('Active'),
+                'label_attr' => ['class' => 'checkbox-inline'],
+                'required' => false,
+                'data' => $options['active']
+            ]);
         }
     }
 
@@ -56,9 +83,7 @@ class AmendableModuleSearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => new IdentityTranslator(),
-            'active' => true,
-            'permissionApi' => new PermissionAlways()
+            'active' => true
         ]);
     }
 }

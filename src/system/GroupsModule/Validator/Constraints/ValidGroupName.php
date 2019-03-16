@@ -20,11 +20,6 @@ class ValidGroupName extends Constraint
 {
     public $message = 'The fields are invalid.';
 
-    public function validatedBy()
-    {
-        return 'zikula.groups.group_name.validator';
-    }
-
     /**
      * {@inheritdoc}
      */

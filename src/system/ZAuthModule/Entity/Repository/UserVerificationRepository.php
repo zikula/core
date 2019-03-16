@@ -11,13 +11,19 @@
 
 namespace Zikula\ZAuthModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
-class UserVerificationRepository extends EntityRepository implements UserVerificationRepositoryInterface
+class UserVerificationRepository extends ServiceEntityRepository implements UserVerificationRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserVerificationEntity::class);
+    }
+
     public function persistAndFlush(UserVerificationEntity $entity)
     {
         $this->_em->persist($entity);

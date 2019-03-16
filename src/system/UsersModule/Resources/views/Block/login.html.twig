@@ -1,3 +1,4 @@
+{% if collector.activeKeys is not empty %}
 {% if collector.activeKeys|length > 1 %}
 <div class="dropdown{% if 'nav' in position %} navbar-right{% endif %}">
     <button class="btn btn-default dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -27,4 +28,5 @@
         </ul>
     {% endif %}
 </div>
+{% endif %}
 {% endif %}

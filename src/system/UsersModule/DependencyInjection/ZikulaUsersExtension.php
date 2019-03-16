@@ -15,6 +15,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
+use Zikula\UsersModule\MessageModule\MessageModuleInterface;
+use Zikula\UsersModule\ProfileModule\ProfileModuleInterface;
 
 class ZikulaUsersExtension extends Extension
 {
@@ -24,13 +27,16 @@ class ZikulaUsersExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(realpath(__DIR__ . '/../Resources/config')));
-
         $loader->load('services.yml');
-        $loader->load('doctrine.yml');
-        $loader->load('helpers.yml');
-        $loader->load('validators.yml');
-        $loader->load('authentication.yml');
-        $loader->load('twig.yml');
-        $loader->load('hooks.yml');
+
+        $container->registerForAutoconfiguration(AuthenticationMethodInterface::class)
+            ->addTag('zikula.authentication_method')
+        ;
+        $container->registerForAutoconfiguration(MessageModuleInterface::class)
+            ->addTag('zikula.message_module')
+        ;
+        $container->registerForAutoconfiguration(ProfileModuleInterface::class)
+            ->addTag('zikula.profile_module')
+        ;
     }
 }

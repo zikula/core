@@ -20,7 +20,6 @@ class LocaleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->setTranslator($options['translator']);
         $builder
             ->add('locale', ChoiceType::class, [
                 'label' => $this->__('Select your default language'),
@@ -42,8 +41,7 @@ class LocaleType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => ['English' => 'en'],
-            'choice' => 'en',
-            'translator' => new IdentityTranslator()
+            'choice' => 'en'
         ]);
     }
 }

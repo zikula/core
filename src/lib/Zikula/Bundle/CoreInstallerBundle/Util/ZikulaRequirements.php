@@ -23,17 +23,9 @@ class ZikulaRequirements
 
     public function runSymfonyChecks($parameters = [])
     {
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            // suppress deprecated warnings because create_function() is used in SymfonyRequirements.php but deprecated in PHP 7.2
-            // see https://github.com/symfony/requirements-checker/pull/11
-            // TODO remove as soon as we use Flex
-            $reportingLevel = error_reporting();
-            error_reporting($reportingLevel & ~E_DEPRECATED);
-        }
-
         try {
             $path = realpath(__DIR__ . '/../../../../../var/SymfonyRequirements.php');
-            require $path;
+            require_once $path;
             $symfonyRequirements = new \SymfonyRequirements();
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
@@ -44,11 +36,6 @@ class ZikulaRequirements
             }
         } catch (MethodArgumentValueNotImplementedException $e) {
             // workaround https://github.com/symfony/symfony-installer/issues/163
-        }
-
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            // TODO remove as soon as we use Flex
-            error_reporting($reportingLevel);
         }
     }
 

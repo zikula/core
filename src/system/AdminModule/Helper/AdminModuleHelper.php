@@ -12,21 +12,21 @@
 namespace Zikula\AdminModule\Helper;
 
 use Zikula\AdminModule\Entity\AdminModuleEntity;
-use Zikula\AdminModule\Entity\Repository\AdminModuleRepository;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class AdminModuleHelper
 {
     /**
-     * @var AdminModuleRepository
+     * @var AdminModuleRepositoryInterface
      */
     private $adminModuleRepository;
 
     /**
      * AdminModuleHelper constructor.
-     * @param AdminModuleRepository $adminModuleRepository
+     * @param AdminModuleRepositoryInterface $adminModuleRepository
      */
-    public function __construct(AdminModuleRepository $adminModuleRepository)
+    public function __construct(AdminModuleRepositoryInterface $adminModuleRepository)
     {
         $this->adminModuleRepository = $adminModuleRepository;
     }

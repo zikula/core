@@ -49,6 +49,7 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\MoneyFormOptionsA
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
@@ -58,6 +59,8 @@ use Zikula\ThemeModule\Engine\Asset;
  */
 class DynamicFieldType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -67,11 +70,6 @@ class DynamicFieldType extends AbstractType
      * @var LocaleApiInterface
      */
     private $localeApi;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
     /**
      * @var PageAssetApiInterface
@@ -89,6 +87,7 @@ class DynamicFieldType extends AbstractType
      * @param EventDispatcherInterface $eventDispatcher
      * @param LocaleApiInterface $localeApi
      * @param TranslatorInterface $translator
+     * @param PageAssetApiInterface $pageAssetApi
      * @param Asset $assetHelper
      */
     public function __construct(
@@ -100,9 +99,17 @@ class DynamicFieldType extends AbstractType
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->localeApi = $localeApi;
-        $this->translator = $translator;
+        $this->setTranslator($translator);
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -111,10 +118,9 @@ class DynamicFieldType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('formType', ChoiceType::class, [
-            'label' => $this->translator->__('Field type'),
+            'label' => $this->__('Field type'),
             'choices' => $this->getChoices(),
-            'choices_as_values' => true,
-            'placeholder' => $this->translator->__('Select')
+            'placeholder' => $this->__('Select')
         ]);
 
         $formModifier = function (FormInterface $form, $formType = null) use ($builder) {
@@ -139,8 +145,7 @@ class DynamicFieldType extends AbstractType
                     $optionsType = FormOptionsArrayType::class;
             }
             $formOptions = $builder->create('formOptions', $optionsType, [
-                'label' => $this->translator->__('Field options'),
-                'translator' => $this->translator,
+                'label' => $this->__('Field options'),
                 'auto_initialize' => false
             ]);
             if (ChoiceFormOptionsArrayType::class == $optionsType) {
@@ -184,35 +189,35 @@ class DynamicFieldType extends AbstractType
     private function getChoices()
     {
         $choices = new FormTypesChoices([
-            $this->translator->__('Text Fields') => [
-                $this->translator->__('Text') => TextType::class,
-                $this->translator->__('Textarea') => TextareaType::class,
-                $this->translator->__('Email') => EmailType::class,
-                $this->translator->__('Integer') => IntegerType::class,
-                $this->translator->__('Money') => MoneyType::class,
-                $this->translator->__('Number') => NumberType::class,
-                $this->translator->__('Password') => PasswordType::class,
-                $this->translator->__('Percent') => PercentType::class,
-                $this->translator->__('Url') => UrlType::class,
-                $this->translator->__('Range') => RangeType::class,
+            $this->__('Text Fields') => [
+                $this->__('Text') => TextType::class,
+                $this->__('Textarea') => TextareaType::class,
+                $this->__('Email') => EmailType::class,
+                $this->__('Integer') => IntegerType::class,
+                $this->__('Money') => MoneyType::class,
+                $this->__('Number') => NumberType::class,
+                $this->__('Password') => PasswordType::class,
+                $this->__('Percent') => PercentType::class,
+                $this->__('Url') => UrlType::class,
+                $this->__('Range') => RangeType::class,
             ],
-            $this->translator->__('Choice Fields') => [
-                $this->translator->__('Choice') => ChoiceType::class,
-                $this->translator->__('Country') => CountryType::class,
-                $this->translator->__('Language') => LanguageType::class,
-                $this->translator->__('Locale') => LocaleType::class,
-                $this->translator->__('Timezone') => TimezoneType::class,
-                $this->translator->__('Currency') => CurrencyType::class,
+            $this->__('Choice Fields') => [
+                $this->__('Choice') => ChoiceType::class,
+                $this->__('Country') => CountryType::class,
+                $this->__('Language') => LanguageType::class,
+                $this->__('Locale') => LocaleType::class,
+                $this->__('Timezone') => TimezoneType::class,
+                $this->__('Currency') => CurrencyType::class,
             ],
-            $this->translator->__('Date and Time Fields') => [
-                $this->translator->__('Date') => DateType::class,
-                $this->translator->__('DateTime') => DateTimeType::class,
-                $this->translator->__('Time') => TimeType::class,
-                $this->translator->__('Birthday') => BirthdayType::class,
+            $this->__('Date and Time Fields') => [
+                $this->__('Date') => DateType::class,
+                $this->__('DateTime') => DateTimeType::class,
+                $this->__('Time') => TimeType::class,
+                $this->__('Birthday') => BirthdayType::class,
             ],
-            $this->translator->__('Other Fields') => [
-                $this->translator->__('Checkbox') => CheckboxType::class,
-                $this->translator->__('Radio') => RadioType::class,
+            $this->__('Other Fields') => [
+                $this->__('Checkbox') => CheckboxType::class,
+                $this->__('Radio') => RadioType::class,
             ],
         ]);
 

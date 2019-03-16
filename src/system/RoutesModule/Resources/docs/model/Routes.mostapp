@@ -1,4 +1,4 @@
-application "Routes" {
+application "Routes" targets ZK30 {
     documentation "Routes management"
     vendor "Zikula"
     author "Zikula contributors"

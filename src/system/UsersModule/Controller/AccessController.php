@@ -15,37 +15,53 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodLoginFormException;
 use Zikula\UsersModule\Form\Type\DefaultLoginType;
+use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\HookSubscriber\LoginUiHooksSubscriber;
 
 class AccessController extends AbstractController
 {
     /**
      * @Route("/login", options={"zkNoBundlePrefix"=1})
+     *
      * @param Request $request
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
+     * @param AuthenticationMethodCollector $authenticationMethodCollector
+     * @param AccessHelper $accessHelper
+     *
      * @return Response
      * @throws InvalidAuthenticationMethodLoginFormException
      */
-    public function loginAction(Request $request)
-    {
-        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+    public function loginAction(
+        Request $request,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        AuthenticationMethodCollector $authenticationMethodCollector,
+        AccessHelper $accessHelper,
+        HookDispatcherInterface $hookDispatcher
+    ) {
+        if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
         $returnUrl = $request->query->get('returnUrl', null);
 
-        $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
@@ -89,7 +105,7 @@ class AccessController extends AbstractController
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             $uid = ('POST' == $request->getMethod()) ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
             $hasListeners = $dispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM);
-            $hookBindings = $this->get('hook_dispatcher')->getBindingsFor('subscriber.users.ui_hooks.login_screen');
+            $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
                 $form = $this->createForm(DefaultLoginType::class, ['uid' => $uid]);
                 $loginFormEvent = new UserFormAwareEvent($form);
@@ -112,22 +128,22 @@ class AccessController extends AbstractController
         }
         $user = null;
         if (isset($uid)) {
-            $user = $this->get('zikula_users_module.user_repository')->find($uid);
+            $user = $userRepository->find($uid);
             if (isset($user)) {
                 $hook = new ValidationHook();
-                $this->get('hook_dispatcher')->dispatch(LoginUiHooksSubscriber::LOGIN_VALIDATE, $hook);
+                $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_VALIDATE, $hook);
                 $validators = $hook->getValidators();
-                if (!$validators->hasErrors() && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($user)) {
+                if (!$validators->hasErrors() && $accessHelper->loginAllowed($user)) {
                     if (isset($form)) {
                         $formDataEvent = new UserFormDataEvent($user, $form);
                         $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM_HANDLE, $formDataEvent);
                     }
-                    $this->get('hook_dispatcher')->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
+                    $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
                     $dispatcher->dispatch(AccessEvents::LOGIN_VETO, $event);
                     if (!$event->isPropagationStopped()) {
                         $returnUrlFromSession = urldecode($request->getSession()->get('returnUrl', $returnUrl));
-                        $this->get('zikula_users_module.helper.access_helper')->login($user, $rememberMe);
+                        $accessHelper->login($user, $rememberMe);
                         $returnUrl = $this->dispatchLoginSuccessEvent($user, $selectedMethod, $returnUrlFromSession);
                     } else {
                         if ($event->hasArgument('flash')) {
@@ -192,17 +208,26 @@ class AccessController extends AbstractController
 
     /**
      * @Route("/logout/{returnUrl}", options={"zkNoBundlePrefix"=1})
+     *
      * @param Request $request
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
+     * @param AccessHelper $accessHelper
      * @param null $returnUrl
+     *
      * @return RedirectResponse
      */
-    public function logoutAction(Request $request, $returnUrl = null)
-    {
-        $currentUser = $this->get('zikula_users_module.current_user');
-        if ($currentUser->isLoggedIn()) {
-            $uid = $currentUser->get('uid');
-            $user = $this->get('zikula_users_module.user_repository')->find($uid);
-            if ($this->get('zikula_users_module.helper.access_helper')->logout()) {
+    public function logoutAction(
+        Request $request,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        AccessHelper $accessHelper,
+        $returnUrl = null
+    ) {
+        if ($currentUserApi->isLoggedIn()) {
+            $uid = $currentUserApi->get('uid');
+            $user = $userRepository->find($uid);
+            if ($accessHelper->logout()) {
                 $event = new GenericEvent($user, [
                     'authenticationMethod' => $request->getSession()->get('authenticationMethod'),
                     'uid' => $uid,

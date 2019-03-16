@@ -16,6 +16,7 @@ use Doctrine\DBAL\Schema\Table;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 
 class BootstrapHelper
@@ -26,19 +27,26 @@ class BootstrapHelper
     private $conn;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @var CacheClearer
      */
     private $cacheClearer;
 
-    public function __construct(Connection $conn, CacheClearer $cacheClearer)
+    public function __construct(Connection $conn, TranslatorInterface $translator, CacheClearer $cacheClearer)
     {
         $this->conn = $conn;
+        $this->translator = $translator;
         $this->cacheClearer = $cacheClearer;
     }
 
     public function load()
     {
         $scanner = new Scanner();
+        $scanner->setTranslator($this->translator);
         $scanner->scan(['modules', 'themes']);
         $array = array_merge($scanner->getModulesMetaData(), $scanner->getThemesMetaData());
         $this->sync($array);

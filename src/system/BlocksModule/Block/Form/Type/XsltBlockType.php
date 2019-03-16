@@ -19,26 +19,44 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Class XsltBlockType
  */
 class XsltBlockType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
         $builder
             ->add('docurl', TextType::class, [
                 'constraints' => [
                     new Url()
                 ],
                 'required' => false,
-                'label' => $translator->__('Document URL')
+                'label' => $this->__('Document URL')
             ])
             ->add('doccontents', TextareaType::class, [
-                'label' => $translator->__('Document contents'),
+                'label' => $this->__('Document contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -49,10 +67,10 @@ class XsltBlockType extends AbstractType
                     new Url()
                 ],
                 'required' => false,
-                'label' => $translator->__('Style sheet URL')
+                'label' => $this->__('Style sheet URL')
             ])
             ->add('stylecontents', TextareaType::class, [
-                'label' => $translator->__('Style sheet contents'),
+                'label' => $this->__('Style sheet contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -65,8 +83,7 @@ class XsltBlockType extends AbstractType
     {
         // add a constraint to the entire form
         $resolver->setDefaults([
-            'constraints' => new Callback(['callback' => [$this, 'validateOrFields']]),
-            'translator' => new IdentityTranslator()
+            'constraints' => new Callback(['callback' => [$this, 'validateOrFields']])
         ]);
     }
 

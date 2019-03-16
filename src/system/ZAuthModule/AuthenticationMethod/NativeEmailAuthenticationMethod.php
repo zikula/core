@@ -11,6 +11,7 @@
 
 namespace Zikula\ZAuthModule\AuthenticationMethod;
 
+use Zikula\ZAuthModule\Form\Type\EmailLoginType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
@@ -44,7 +45,7 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getLoginFormClassName()
     {
-        return 'Zikula\ZAuthModule\Form\Type\EmailLoginType';
+        return EmailLoginType::class;
     }
 
     /**

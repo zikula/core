@@ -16,8 +16,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryType;
+use Zikula\CategoriesModule\Helper\CategoryProcessingHelper;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * @Route("/admin/category")
@@ -30,20 +33,30 @@ class NodeController extends AbstractController
 
     /**
      * @Route("/contextMenu/{action}/{id}", options={"expose"=true}, defaults={"id" = null})
+     *
      * @param Request $request
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryProcessingHelper $processingHelper
+     * @param LocaleApiInterface $localeApi
      * @param string $action
      * @param CategoryEntity $category
+     *
      * @return JsonResponse
      */
-    public function contextMenuAction(Request $request, $action = 'edit', CategoryEntity $category = null)
-    {
+    public function contextMenuAction(
+        Request $request,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryProcessingHelper $processingHelper,
+        LocaleApiInterface $localeApi,
+        $action = 'edit',
+        CategoryEntity $category = null
+    ) {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
             return $this->json($this->__('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
-        $repo = $this->get('zikula_categories_module.category_repository');
         $mode = $request->request->get('mode', 'edit');
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -61,34 +74,33 @@ class NodeController extends AbstractController
                 $category = $newCategory;
                 // intentionally no break here
             case 'edit':
-                $localeApi = $this->get('zikula_settings_module.locale_api');
                 if (!isset($category)) {
                     $category = new CategoryEntity($localeApi->getSupportedLocales());
                     $parentId = $request->request->get('parent');
                     $mode = 'new';
                     if (!empty($parentId)) {
-                        $parent = $repo->find($parentId);
+                        $parent = $categoryRepository->find($parentId);
                         $category->setParent($parent);
                         $category->setRoot($parent->getRoot());
                     } elseif (empty($parentId) && $request->request->has('after')) { // sibling of top-level child
-                        $sibling = $repo->find($request->request->get('after'));
+                        $sibling = $categoryRepository->find($request->request->get('after'));
                         $category->setParent($sibling->getParent());
                         $category->setRoot($sibling->getRoot());
                     }
                 }
                 $form = $this->createForm(CategoryType::class, $category, [
-                    'translator' => $this->get('translator.default'),
-                    'locales' => $localeApi->getSupportedLocales(),
+                    'locales' => $localeApi->getSupportedLocales()
                 ]);
                 $form->get('after')->setData($request->request->get('after', null));
-                if ($form->handleRequest($request)->isValid()) {
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
                     $category = $form->getData();
                     $after = $form->get('after')->getData();
                     if (!empty($after)) {
-                        $sibling = $repo->find($after);
-                        $repo->persistAsNextSiblingOf($category, $sibling);
+                        $sibling = $categoryRepository->find($after);
+                        $categoryRepository->persistAsNextSiblingOf($category, $sibling);
                     } elseif ('new' == $mode) {
-                        $repo->persistAsLastChild($category);
+                        $categoryRepository->persistAsLastChild($category);
                     } // no need to persist edited entity
                     $entityManager->flush();
 
@@ -108,14 +120,14 @@ class NodeController extends AbstractController
                 ];
                 break;
             case 'deleteandmovechildren':
-                $newParent = $repo->find($request->request->get('parent', 1));
+                $newParent = $categoryRepository->find($request->request->get('parent', 1));
                 if ($newParent == $category->getParent()) {
                     $response = ['result' => true];
                     break;
                 }
                 // move the children
                 foreach ($category->getChildren() as $child) {
-                    if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($child)) {
+                    if ($processingHelper->mayCategoryBeDeletedOrMoved($child)) {
                         $category->getChildren()->removeElement($child);
                         $newParent->getChildren()->add($child);
                         $child->setParent($newParent);
@@ -125,10 +137,10 @@ class NodeController extends AbstractController
                 // intentionally no break here
             case 'delete':
                 $categoryId = $category->getId();
-                $this->removeRecursive($category);
+                $this->removeRecursive($category, $processingHelper);
                 $categoryRemoved = false;
                 if (0 == $category->getChildren()->count()
-                    && $this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category)) {
+                    && $processingHelper->mayCategoryBeDeletedOrMoved($category)) {
                     $entityManager->remove($category);
                     $categoryRemoved = true;
                 }
@@ -139,7 +151,7 @@ class NodeController extends AbstractController
                     'action' => $action,
                     'parent' => isset($newParent) ? $newParent->getId() : null
                 ];
-                $repo->recover();
+                $categoryRepository->recover();
                 $this->getDoctrine()->getManager()->flush();
                 break;
             case 'activate':
@@ -161,17 +173,19 @@ class NodeController extends AbstractController
     }
 
     /**
-     * Recursive method to remove all generations below parent
+     * Recursive method to remove all generations below parent.
+     *
      * @param CategoryEntity $parent
+     * @param CategoryProcessingHelper $processingHelper
      */
-    private function removeRecursive(CategoryEntity $parent)
+    private function removeRecursive(CategoryEntity $parent, CategoryProcessingHelper $processingHelper)
     {
         $entityManager = $this->getDoctrine()->getManager();
         foreach ($parent->getChildren() as $child) {
             if ($child->getChildren()->count() > 0) {
                 $this->removeRecursive($child);
             }
-            if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($child)) {
+            if ($processingHelper->mayCategoryBeDeletedOrMoved($child)) {
                 $entityManager->remove($child);
             }
         }
@@ -179,20 +193,24 @@ class NodeController extends AbstractController
 
     /**
      * Ajax function for use on Drag and Drop of nodes.
+     *
      * @Route("/move", options={"expose"=true})
+     *
      * @param Request $request
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryProcessingHelper $processingHelper
+     *
      * @return JsonResponse
      */
-    public function moveAction(Request $request)
+    public function moveAction(Request $request, CategoryRepositoryInterface $categoryRepository, CategoryProcessingHelper $processingHelper)
     {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
-        $repo = $this->get('zikula_categories_module.category_repository');
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
-        $category = $repo->find($entityId);
-        if ($this->get('zikula_categories_module.category_processing_helper')->mayCategoryBeDeletedOrMoved($category)) {
+        $category = $categoryRepository->find($entityId);
+        if ($processingHelper->mayCategoryBeDeletedOrMoved($category)) {
             $oldParent = $request->request->get('old_parent');
             $oldPosition = (int)$request->request->get('old_position');
             $parent = $request->request->get('parent');
@@ -200,11 +218,11 @@ class NodeController extends AbstractController
             if ($oldParent == $parent) {
                 $diff = $oldPosition - $position; // if $diff is positive, then node moved up
                 $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
-                $repo->$methodName($category, abs($diff));
+                $categoryRepository->$methodName($category, abs($diff));
             } else {
-                $parentEntity = $repo->find(str_replace($this->domTreeNodePrefix, '', $parent));
-                $children = $repo->children($parentEntity);
-                $repo->persistAsNextSiblingOf($category, $children[$position - 1]);
+                $parentEntity = $categoryRepository->find(str_replace($this->domTreeNodePrefix, '', $parent));
+                $children = $categoryRepository->children($parentEntity);
+                $categoryRepository->persistAsNextSiblingOf($category, $children[$position - 1]);
             }
             $this->getDoctrine()->getManager()->flush();
 

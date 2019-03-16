@@ -16,10 +16,29 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class AuthenticationMethodsType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,12 +50,12 @@ class AuthenticationMethodsType extends AbstractType
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $options['translator']->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -49,15 +68,5 @@ class AuthenticationMethodsType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_authenticationmenthodselector';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

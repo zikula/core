@@ -16,6 +16,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\MenuItem;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -53,7 +54,7 @@ class AbstractItemActionsMenu implements ContainerAwareInterface
             return $menu;
         }
 
-        $this->setTranslator($this->container->get('translator.default'));
+        $this->setTranslator($this->container->get(Translator::class));
 
         $entity = $options['entity'];
         $routeArea = $options['area'];

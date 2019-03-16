@@ -18,12 +18,12 @@
                     bid: bid
                 }
             })
-            .done(function(response) {
+            .done(function(data) {
                 // toggle label
                 a.parent().find('a').toggleClass('hide');
             })
             .fail(function(jqXHR, textStatus) {
-                alert( "error: " + textStatus );
+                alert('Error: ' + textStatus );
             })
             .always(function() {
                 $('#spin' + bid).remove();

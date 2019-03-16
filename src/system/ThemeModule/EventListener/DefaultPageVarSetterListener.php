@@ -50,7 +50,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
     /**
      * @var bool
      */
-    private $isInstalled;
+    private $installed;
 
     /**
      * DefaultPageVarSetterListener constructor.
@@ -58,20 +58,20 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
      * @param RouterInterface $routerInterface
      * @param VariableApiInterface $variableApi
      * @param ZikulaHttpKernelInterface $kernel
-     * @param bool $isInstalled
+     * @param bool $installed
      */
     public function __construct(
         ParameterBag $pageVars,
         RouterInterface $routerInterface,
         VariableApiInterface $variableApi,
         ZikulaHttpKernelInterface $kernel,
-        $isInstalled
+        $installed
     ) {
         $this->pageVars = $pageVars;
         $this->router = $routerInterface;
         $this->variableApi = $variableApi;
         $this->kernel = $kernel;
-        $this->isInstalled = $isInstalled;
+        $this->installed = $installed;
     }
 
     /**
@@ -84,7 +84,7 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         if (!$event->isMasterRequest()) {
             return;
         }
-        if (!$this->isInstalled) {
+        if (!$this->installed) {
             return;
         }
 

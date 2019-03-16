@@ -18,13 +18,16 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Category tree form type class.
  */
 class CategoryTreeType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
      * @var CategoryRepositoryInterface
      */
@@ -33,11 +36,23 @@ class CategoryTreeType extends AbstractType
     /**
      * CategoryTreeType constructor.
      *
+     * @param TranslatorInterface $translator
      * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        CategoryRepositoryInterface $categoryRepository
+    ) {
+        $this->setTranslator($translator);
         $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -62,13 +77,8 @@ class CategoryTreeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired([
-            'translator'
-        ]);
         $resolver->setDefaults([
-            'translator' => new IdentityTranslator(),
             'locale' => 'en',
-            'choices_as_values' => true,
             'recurse' => true,
             'relative' => true,
             'includeRoot' => false,
@@ -81,21 +91,20 @@ class CategoryTreeType extends AbstractType
         $resolver->setAllowedTypes('includeLeaf', 'bool');
         $resolver->setAllowedTypes('all', 'bool');
 
-        $resolver->setNormalizer('label', function(Options $options, $label) {
+        $translator = $this->translator;
+        $resolver->setNormalizer('label', function(TranslatorInterface $translator, Options $options, $label) {
             if (null === $label || empty($label)) {
                 $isMultiple = $options['multiple'];
-                $translator = $options['translator'];
 
                 $label = $isMultiple ? $translator->__('Categories') : $translator->__('Category');
             }
 
             return $label;
         });
-        $resolver->setNormalizer('placeholder', function(Options $options, $placeholder) {
+        $resolver->setNormalizer('placeholder', function(TranslatorInterface $translator, Options $options, $placeholder) {
             if (!$options['required']) {
                 if (null === $placeholder || empty($placeholder)) {
                     $isMultiple = $options['multiple'];
-                    $translator = $options['translator'];
 
                     $placeholder = $isMultiple ? $translator->__('Choose categories') : $translator->__('Choose a category');
                 }

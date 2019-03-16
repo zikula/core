@@ -16,25 +16,43 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * CategoryAttributeType form type class.
  */
 class CategoryAttributeType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('name', TextType::class, [
-                'label' => $translator->__('Name'),
+                'label' => $this->__('Name'),
             ])
             ->add('value', TextType::class, [
-                'label' => $translator->__('Value'),
+                'label' => $this->__('Value'),
                 'required' => false
             ])
         ;
@@ -54,8 +72,7 @@ class CategoryAttributeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CategoryAttributeEntity::class,
-            'translator' => null,
+            'data_class' => CategoryAttributeEntity::class
         ]);
     }
 }

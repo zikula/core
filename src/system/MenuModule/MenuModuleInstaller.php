@@ -23,7 +23,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     private $entities = [
-        'Zikula\MenuModule\Entity\MenuItemEntity'
+        MenuItemEntity::class
     ];
 
     /**

@@ -17,7 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 /**
@@ -25,34 +26,56 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
  */
 class ExtensionModifyType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('id', HiddenType::class)
-            ->add('displayname', TextType::class)
-            ->add('url', TextType::class)
-            ->add('description', TextType::class)
+            ->add('displayname', TextType::class, [
+                'label' => $this->__('Display name')
+            ])
+            ->add('url', TextType::class, [
+                'label' => $this->__('URL')
+            ])
+            ->add('description', TextType::class, [
+                'label' => $this->__('Description')
+            ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('defaults', SubmitType::class, [
-                'label' => $translator->__('Reload Defaults'),
+                'label' => $this->__('Reload Defaults'),
                 'icon' => 'fa-refresh',
                 'attr' => [
                     'class' => 'btn btn-warning'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -75,8 +98,7 @@ class ExtensionModifyType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ExtensionEntity::class,
-            'translator' => new IdentityTranslator()
+            'data_class' => ExtensionEntity::class
         ]);
     }
 }

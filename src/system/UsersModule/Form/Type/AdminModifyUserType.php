@@ -16,11 +16,30 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Constant;
 
 class AdminModifyUserType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,11 +48,11 @@ class AdminModifyUserType extends AbstractType
         $builder
             ->add('activated', ChoiceType::class, [
                 'choices' => [
-                    $options['translator']->__('Active') => Constant::ACTIVATED_ACTIVE,
-                    $options['translator']->__('Inactive') => Constant::ACTIVATED_INACTIVE,
-                    $options['translator']->__('Pending') => Constant::ACTIVATED_PENDING_REG
+                    $this->__('Active') => Constant::ACTIVATED_ACTIVE,
+                    $this->__('Inactive') => Constant::ACTIVATED_INACTIVE,
+                    $this->__('Pending') => Constant::ACTIVATED_PENDING_REG
                 ],
-                'label' => $options['translator']->__('User status')
+                'label' => $this->__('User status')
             ])
             ->add('groups', EntityType::class, [
                 'class' => 'ZikulaGroupsModule:GroupEntity',
@@ -42,12 +61,12 @@ class AdminModifyUserType extends AbstractType
                 'multiple' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -60,15 +79,5 @@ class AdminModifyUserType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_adminmodifyuser';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

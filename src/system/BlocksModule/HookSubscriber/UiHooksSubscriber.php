@@ -47,6 +47,11 @@ class UiHooksSubscriber implements HookSubscriberInterface
         return $this->translator->__('HTML Block content hook');
     }
 
+    public function getAreaName()
+    {
+        return 'subscriber.blocks.ui_hooks.htmlblock.content';
+    }
+
     public function getEvents()
     {
         return [

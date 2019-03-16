@@ -23,6 +23,8 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\GroupsModule\Form\Type\CreateGroupType;
 use Zikula\GroupsModule\Form\Type\EditGroupType;
 use Zikula\GroupsModule\GroupEvents;
@@ -37,11 +39,12 @@ class GroupController extends AbstractController
      *
      * View a list of all groups (user view)
      *
+     * @param GroupRepositoryInterface $groupRepository
      * @param integer $startnum
      * @return array
      * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
      */
-    public function listAction($startnum = 0)
+    public function listAction(GroupRepositoryInterface $groupRepository, $startnum = 0)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
@@ -57,7 +60,7 @@ class GroupController extends AbstractController
             ->where(Criteria::expr()->notIn("gtype", $excludedGroups))
             ->setMaxResults($itemsPerPage)
             ->setFirstResult($startnum);
-        $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->matching($criteria);
+        $groups = $groupRepository->matching($criteria);
 
         return [
             'groups' => $groups,
@@ -78,11 +81,13 @@ class GroupController extends AbstractController
      *
      * View a list of all groups (admin view)
      *
+     * @param GroupRepositoryInterface $groupRepository
+     * @param GroupApplicationRepository $applicationRepository
      * @param integer $startnum
      * @return array
      * @throws AccessDeniedException Thrown if the user hasn't permissions to administer any groups
      */
-    public function adminListAction($startnum = 0)
+    public function adminListAction(GroupRepositoryInterface $groupRepository, GroupApplicationRepository $applicationRepository, $startnum = 0)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -90,13 +95,13 @@ class GroupController extends AbstractController
 
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $groupsCommon = new CommonHelper($this->getTranslator());
-        $groups = $this->get('doctrine')->getManager()->getRepository('ZikulaGroupsModule:GroupEntity')->findBy([], [], $itemsPerPage, $startnum);
+        $groups = $groupRepository->findBy([], [], $itemsPerPage, $startnum);
 
         return [
             'groups' => $groups,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
-            'applications' => $this->get('zikula_groups_module.group_application_repository')->findAll(),
+            'applications' => $applicationRepository->findAll(),
             'defaultGroup' => $this->getVar('defaultgroup', GroupsConstant::GROUP_ID_USERS),
             'pager' => [
                 'amountOfItems' => count($groups),
@@ -121,11 +126,9 @@ class GroupController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(CreateGroupType::class, new GroupEntity(), [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(CreateGroupType::class, new GroupEntity());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $groupEntity = $form->getData();
                 $this->get('doctrine')->getManager()->persist($groupEntity);
@@ -162,11 +165,9 @@ class GroupController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(EditGroupType::class, $groupEntity, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(EditGroupType::class, $groupEntity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $groupEntity = $form->getData();
                 $this->get('doctrine')->getManager()->persist($groupEntity); // this isn't technically required
@@ -219,8 +220,8 @@ class GroupController extends AbstractController
         }
 
         $form = $this->createForm(DeletionType::class, $groupEntity);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
                 $this->get('doctrine')->getManager()->remove($groupEntity);

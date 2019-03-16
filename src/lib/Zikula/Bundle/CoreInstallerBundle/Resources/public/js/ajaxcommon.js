@@ -6,13 +6,13 @@ jQuery( document ).ready(function( $ ) {
     var progressbar = 0;
     var percentage = (1 / stages.length) * 100;
 
-    $("#begininstall").click(function() {
+    $('#begininstall').click(function() {
         route = 'ajaxinstall';
         $(this).addClass('disabled');
         $(this).bind('click', false);
         processStage(getNextStage())
     });
-    $("#beginupgrade").click(function() {
+    $('#beginupgrade').click(function() {
         route = 'ajaxupgrade';
         $(this).addClass('disabled');
         $(this).bind('click', false);
@@ -24,11 +24,11 @@ jQuery( document ).ready(function( $ ) {
             finalizeUI();
             return;
         }
-        var stageitem = $('#'+stagename);
+        var stageitem = $('#' + stagename);
 
         indicateStageStarted(stageitem);
         $.ajax({
-            type: "POST",
+            type: 'POST',
             data: {
                 stage: stagename
             },
@@ -69,13 +69,13 @@ jQuery( document ).ready(function( $ ) {
     }
 
     function indicateStageSuccessful(listitem) {
-        listitem.removeClass("text-primary").addClass("text-success");
+        listitem.removeClass('text-primary').addClass('text-success');
         listitem.children('.success').show();
         listitem.find('i').addClass('fa-check-circle'); // spinner
     }
 
     function indicateStageFailure(listitem) {
-        listitem.removeClass("text-primary").addClass("text-danger");
+        listitem.removeClass('text-primary').addClass('text-danger');
         listitem.children('.fail').show();
         listitem.find('i').addClass('fa-times-circle'); // spinner
     }
@@ -88,7 +88,7 @@ jQuery( document ).ready(function( $ ) {
 
     function updateProgressBar(stagename) {
         progressbar = (stagename == 'finish') ? 100 : progressbar + percentage;
-        $('#progress-bar').css('width', progressbar+'%');
+        $('#progress-bar').css('width', progressbar + '%');
         if (stagename == 'finish') {
             $('#progress-bar').removeClass('progress-bar-striped active');
         }

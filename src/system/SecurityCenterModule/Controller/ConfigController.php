@@ -14,6 +14,7 @@ namespace Zikula\SecurityCenterModule\Controller;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,12 +22,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SecurityCenterModule\Constant;
 use Zikula\SecurityCenterModule\Form\Type\ConfigType;
+use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Helper\AccessHelper;
 
 /**
  * Class ConfigController
@@ -42,76 +47,83 @@ class ConfigController extends AbstractController
      * This is a standard function to modify the configuration parameters of the module.
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
+     * @param DynamicConfigDumper $configDumper
+     * @param CacheClearer $cacheClearer
+     * @param AccessHelper $accessHelper
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
-    public function configAction(Request $request)
-    {
+    public function configAction(
+        Request $request,
+        VariableApiInterface $variableApi,
+        DynamicConfigDumper $configDumper,
+        CacheClearer $cacheClearer,
+        AccessHelper $accessHelper
+    ) {
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
         $modVars = $variableApi->getAll(VariableApi::CONFIG);
 
-        $sessionName = $this->get('service_container')->getParameter('zikula.session.name');
+        $sessionName = $this->container->getParameter('zikula.session.name');
         $modVars['sessionname'] = $sessionName;
         $modVars['idshtmlfields'] = implode(PHP_EOL, $modVars['idshtmlfields']);
         $modVars['idsjsonfields'] = implode(PHP_EOL, $modVars['idsjsonfields']);
         $modVars['idsexceptions'] = implode(PHP_EOL, $modVars['idsexceptions']);
 
-        $form = $this->createForm(ConfigType::class, $modVars, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(ConfigType::class, $modVars);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
 
                 $updateCheck = isset($formData['updatecheck']) ? $formData['updatecheck'] : 1;
-                $this->setSystemVar('updatecheck', $updateCheck);
+                $variableApi->set(VariableApi::CONFIG, 'updatecheck', $updateCheck);
 
                 // if update checks are disabled, reset values to force new update check if re-enabled
                 if (0 == $updateCheck) {
-                    $this->setSystemVar('updateversion', ZikulaKernel::VERSION);
-                    $this->setSystemVar('updatelastchecked', 0);
+                    $variableApi->set(VariableApi::CONFIG, 'updateversion', ZikulaKernel::VERSION);
+                    $variableApi->set(VariableApi::CONFIG, 'updatelastchecked', 0);
                 }
 
                 $updateFrequency = isset($formData['updatefrequency']) ? $formData['updatefrequency'] : 7;
-                $this->setSystemVar('updatefrequency', $updateFrequency);
+                $variableApi->set(VariableApi::CONFIG, 'updatefrequency', $updateFrequency);
 
                 $keyExpiry = isset($formData['keyexpiry']) ? $formData['keyexpiry'] : 0;
                 if ($keyExpiry < 0 || $keyExpiry > 3600) {
                     $keyExpiry = 0;
                 }
-                $this->setSystemVar('keyexpiry', $keyExpiry);
+                $variableApi->set(VariableApi::CONFIG, 'keyexpiry', $keyExpiry);
 
                 $sessionAuthKeyUA = isset($formData['sessionauthkeyua']) ? $formData['sessionauthkeyua'] : 0;
-                $this->setSystemVar('sessionauthkeyua', $sessionAuthKeyUA);
+                $variableApi->set(VariableApi::CONFIG, 'sessionauthkeyua', $sessionAuthKeyUA);
 
                 $secureDomain = isset($formData['secure_domain']) ? $formData['secure_domain'] : '';
-                $this->setSystemVar('secure_domain', $secureDomain);
+                $variableApi->set(VariableApi::CONFIG, 'secure_domain', $secureDomain);
 
                 $signCookies = isset($formData['signcookies']) ? $formData['signcookies'] : 1;
-                $this->setSystemVar('signcookies', $signCookies);
+                $variableApi->set(VariableApi::CONFIG, 'signcookies', $signCookies);
 
                 $signingKey = isset($formData['signingkey']) ? $formData['signingkey'] : '';
-                $this->setSystemVar('signingkey', $signingKey);
+                $variableApi->set(VariableApi::CONFIG, 'signingkey', $signingKey);
 
                 $securityLevel = isset($formData['seclevel']) ? $formData['seclevel'] : 'Medium';
-                $this->setSystemVar('seclevel', $securityLevel);
+                $variableApi->set(VariableApi::CONFIG, 'seclevel', $securityLevel);
 
                 $secMedDays = isset($formData['secmeddays']) ? $formData['secmeddays'] : 7;
                 if ($secMedDays < 1 || $secMedDays > 365) {
                     $secMedDays = 7;
                 }
-                $this->setSystemVar('secmeddays', $secMedDays);
+                $variableApi->set(VariableApi::CONFIG, 'secmeddays', $secMedDays);
 
                 $secInactiveMinutes = isset($formData['secinactivemins']) ? $formData['secinactivemins'] : 20;
                 if ($secInactiveMinutes < 1 || $secInactiveMinutes > 1440) {
                     $secInactiveMinutes = 7;
                 }
-                $this->setSystemVar('secinactivemins', $secInactiveMinutes);
+                $variableApi->set(VariableApi::CONFIG, 'secinactivemins', $secInactiveMinutes);
 
                 $sessionStoreToFile = isset($formData['sessionstoretofile']) ? $formData['sessionstoretofile'] : 0;
                 $sessionSavePath = isset($formData['sessionsavepath']) ? $formData['sessionsavepath'] : '';
@@ -137,11 +149,11 @@ class ConfigController extends AbstractController
                     }
                 }
                 if (true === $storeTypeCanBeWritten) {
-                    $this->setSystemVar('sessionstoretofile', $sessionStoreToFile);
-                    $this->setSystemVar('sessionsavepath', $sessionSavePath);
+                    $variableApi->set(VariableApi::CONFIG, 'sessionstoretofile', $sessionStoreToFile);
+                    $variableApi->set(VariableApi::CONFIG, 'sessionsavepath', $sessionSavePath);
                 }
 
-                if ((bool)$sessionStoreToFile != (bool)$this->get('zikula_extensions_module.api.variable')->getSystemVar('sessionstoretofile')) {
+                if ((bool)$sessionStoreToFile != (bool)$variableApi->getSystemVar('sessionstoretofile')) {
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }
@@ -150,25 +162,25 @@ class ConfigController extends AbstractController
                 if ($gcProbability < 1 || $gcProbability > 10000) {
                     $gcProbability = 7;
                 }
-                $this->setSystemVar('gc_probability', $gcProbability);
+                $variableApi->set(VariableApi::CONFIG, 'gc_probability', $gcProbability);
 
                 $sessionCsrfTokenOneTime = isset($formData['sessioncsrftokenonetime']) ? $formData['sessioncsrftokenonetime'] : 1;
-                $this->setSystemVar('sessioncsrftokenonetime', $sessionCsrfTokenOneTime);
+                $variableApi->set(VariableApi::CONFIG, 'sessioncsrftokenonetime', $sessionCsrfTokenOneTime);
 
                 $sessionRandRegenerate = isset($formData['sessionrandregenerate']) ? $formData['sessionrandregenerate'] : 1;
-                $this->setSystemVar('sessionrandregenerate', $sessionRandRegenerate);
+                $variableApi->set(VariableApi::CONFIG, 'sessionrandregenerate', $sessionRandRegenerate);
 
                 $sessionRegenerate = isset($formData['sessionregenerate']) ? $formData['sessionregenerate'] : 1;
-                $this->setSystemVar('sessionregenerate', $sessionRegenerate);
+                $variableApi->set(VariableApi::CONFIG, 'sessionregenerate', $sessionRegenerate);
 
                 $sessionRegenerateFrequency = isset($formData['sessionregeneratefreq']) ? $formData['sessionregeneratefreq'] : 10;
                 if ($sessionRegenerateFrequency < 1 || $sessionRegenerateFrequency > 100) {
                     $sessionRegenerateFrequency = 10;
                 }
-                $this->setSystemVar('sessionregeneratefreq', $sessionRegenerateFrequency);
+                $variableApi->set(VariableApi::CONFIG, 'sessionregeneratefreq', $sessionRegenerateFrequency);
 
                 $sessionIpCheck = isset($formData['sessionipcheck']) ? $formData['sessionipcheck'] : 0;
-                $this->setSystemVar('sessionipcheck', $sessionIpCheck);
+                $variableApi->set(VariableApi::CONFIG, 'sessionipcheck', $sessionIpCheck);
 
                 $newSessionName = isset($formData['sessionname']) ? $formData['sessionname'] : $sessionName;
                 if (strlen($newSessionName) < 3) {
@@ -181,7 +193,6 @@ class ConfigController extends AbstractController
                 }
 
                 // set the session information in /src/app/config/dynamic/generated.yml
-                $configDumper = $this->get('zikula.dynamic_config_dumper');
                 $configDumper->setParameter('zikula.session.name', $newSessionName);
                 $sessionHandlerId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
                 $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
@@ -190,18 +201,18 @@ class ConfigController extends AbstractController
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
 
-                $this->setSystemVar('sessionname', $newSessionName);
-                $this->setSystemVar('sessionstoretofile', $sessionStoreToFile);
+                $variableApi->set(VariableApi::CONFIG, 'sessionname', $newSessionName);
+                $variableApi->set(VariableApi::CONFIG, 'sessionstoretofile', $sessionStoreToFile);
 
                 $outputFilter = isset($formData['outputfilter']) ? $formData['outputfilter'] : 1;
-                $this->setSystemVar('outputfilter', $outputFilter);
+                $variableApi->set(VariableApi::CONFIG, 'outputfilter', $outputFilter);
 
                 $useIds = isset($formData['useids']) ? $formData['useids'] : 0;
-                $this->setSystemVar('useids', $useIds);
+                $variableApi->set(VariableApi::CONFIG, 'useids', $useIds);
 
                 // create tmp directory for PHPIDS
                 if (1 == $useIds) {
-                    $idsTmpDir = $this->getParameter('kernel.cache_dir') . '/idsTmp';
+                    $idsTmpDir = $this->container->getParameter('kernel.cache_dir') . '/idsTmp';
                     $fs = new Filesystem();
                     if (!$fs->exists($idsTmpDir)) {
                         $fs->mkdir($idsTmpDir);
@@ -209,38 +220,38 @@ class ConfigController extends AbstractController
                 }
 
                 $idsSoftBlock = isset($formData['idssoftblock']) ? $formData['idssoftblock'] : 1;
-                $this->setSystemVar('idssoftblock', $idsSoftBlock);
+                $variableApi->set(VariableApi::CONFIG, 'idssoftblock', $idsSoftBlock);
 
                 $idsMail = isset($formData['idsmail']) ? $formData['idsmail'] : 0;
-                $this->setSystemVar('idsmail', $idsMail);
+                $variableApi->set(VariableApi::CONFIG, 'idsmail', $idsMail);
 
                 $idsFilter = isset($formData['idsfilter']) ? $formData['idsfilter'] : 'xml';
-                $this->setSystemVar('idsfilter', $idsFilter);
+                $variableApi->set(VariableApi::CONFIG, 'idsfilter', $idsFilter);
 
                 $validates = true;
 
                 $idsRulePath = isset($formData['idsrulepath']) ? $formData['idsrulepath'] : 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
                 if (is_readable($idsRulePath)) {
-                    $this->setSystemVar('idsrulepath', $idsRulePath);
+                    $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
                     $this->addFlash('error', $this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', ['%s' => $idsRulePath]));
                     $validates = false;
                 }
 
                 $idsImpactThresholdOne = isset($formData['idsimpactthresholdone']) ? $formData['idsimpactthresholdone'] : 1;
-                $this->setSystemVar('idsimpactthresholdone', $idsImpactThresholdOne);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdone', $idsImpactThresholdOne);
 
                 $idsImpactThresholdTwo = isset($formData['idsimpactthresholdtwo']) ? $formData['idsimpactthresholdtwo'] : 10;
-                $this->setSystemVar('idsimpactthresholdtwo', $idsImpactThresholdTwo);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdtwo', $idsImpactThresholdTwo);
 
                 $idsImpactThresholdThree = isset($formData['idsimpactthresholdthree']) ? $formData['idsimpactthresholdthree'] : 25;
-                $this->setSystemVar('idsimpactthresholdthree', $idsImpactThresholdThree);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdthree', $idsImpactThresholdThree);
 
                 $idsImpactThresholdFour = isset($formData['idsimpactthresholdfour']) ? $formData['idsimpactthresholdfour'] : 75;
-                $this->setSystemVar('idsimpactthresholdfour', $idsImpactThresholdFour);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdfour', $idsImpactThresholdFour);
 
                 $idsImpactMode = isset($formData['idsimpactmode']) ? $formData['idsimpactmode'] : 1;
-                $this->setSystemVar('idsimpactmode', $idsImpactMode);
+                $variableApi->set(VariableApi::CONFIG, 'idsimpactmode', $idsImpactMode);
 
                 $idsHtmlFields = isset($formData['idshtmlfields']) ? $formData['idshtmlfields'] : '';
                 $idsHtmlFields = explode(PHP_EOL, $idsHtmlFields);
@@ -251,7 +262,7 @@ class ConfigController extends AbstractController
                         $idsHtmlArray[] = $idsHtmlField;
                     }
                 }
-                $this->setSystemVar('idshtmlfields', $idsHtmlArray);
+                $variableApi->set(VariableApi::CONFIG, 'idshtmlfields', $idsHtmlArray);
 
                 $idsJsonFields = isset($formData['idsjsonfields']) ? $formData['idsjsonfields'] : '';
                 $idsJsonFields = explode(PHP_EOL, $idsJsonFields);
@@ -262,7 +273,7 @@ class ConfigController extends AbstractController
                         $idsJsonArray[] = $idsJsonField;
                     }
                 }
-                $this->setSystemVar('idsjsonfields', $idsJsonArray);
+                $variableApi->set(VariableApi::CONFIG, 'idsjsonfields', $idsJsonArray);
 
                 $idsExceptions = isset($formData['idsexceptions']) ? $formData['idsexceptions'] : '';
                 $idsExceptions = explode(PHP_EOL, $idsExceptions);
@@ -273,11 +284,11 @@ class ConfigController extends AbstractController
                         $idsExceptionsArray[] = $idsException;
                     }
                 }
-                $this->setSystemVar('idsexceptions', $idsExceptionsArray);
+                $variableApi->set(VariableApi::CONFIG, 'idsexceptions', $idsExceptionsArray);
 
                 // clear all cache and compile directories
-                $this->get('zikula.cache_clearer')->clear('symfony');
-                $this->get('zikula.cache_clearer')->clear('legacy');
+                $cacheClearer->clear('symfony');
+                $cacheClearer->clear('legacy');
 
                 // the module configuration has been updated successfuly
                 if ($validates) {
@@ -286,7 +297,7 @@ class ConfigController extends AbstractController
 
                 // we need to auto logout the user if essential session settings have been changed
                 if (true === $causeLogout) {
-                    $this->get('zikula_users_module.helper.access_helper')->logout();
+                    $accessHelper->logout();
                     $this->addFlash('status', $this->__('Session handling variables have changed. You must log in again.'));
                     $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_config_config'));
 
@@ -313,18 +324,19 @@ class ConfigController extends AbstractController
      * HTMLPurifier configuration.
      *
      * @param Request $request
+     * @param PurifierHelper $purifierHelper
+     * @param CacheClearer $cacheClearer
+     * @param string $reset
      *
      * @return Response
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function purifierconfigAction(Request $request, $reset = null)
+    public function purifierconfigAction(Request $request, PurifierHelper $purifierHelper, CacheClearer $cacheClearer, $reset = null)
     {
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
-        $purifierHelper = $this->get('zikula_security_center_module.helper.purifier_helper');
 
         if ('POST' == $request->getMethod()) {
             // Load HTMLPurifier Classes
@@ -417,8 +429,8 @@ class ConfigController extends AbstractController
             $this->setVar('htmlpurifierConfig', serialize($config));
 
             // clear all cache and compile directories
-            $this->get('cache_clearer')->clear('symfony');
-            $this->get('cache_clearer')->clear('legacy');
+            $cacheClearer->clear('symfony');
+            $cacheClearer->clear('legacy');
 
             // the module configuration has been updated successfuly
             $this->addFlash('status', $this->__('Done! Saved HTMLPurifier configuration.'));
@@ -540,24 +552,24 @@ class ConfigController extends AbstractController
      * Display the allowed html form.
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
+     * @param CacheClearer $cacheClearer
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function allowedhtmlAction(Request $request)
+    public function allowedhtmlAction(Request $request, VariableApiInterface $variableApi, CacheClearer $cacheClearer)
     {
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-
         $htmlTags = $this->getHtmlTags();
 
         if ('POST' == $request->getMethod()) {
             $htmlEntities = $request->request->getDigits('htmlentities', 0);
-            $this->setSystemVar('htmlentities', $htmlEntities);
+            $variableApi->set(VariableApi::CONFIG, 'htmlentities', $htmlEntities);
 
             // update the allowed html settings
             $allowedHtml = [];
@@ -569,11 +581,11 @@ class ConfigController extends AbstractController
                 $allowedHtml[$htmlTag] = $tagVal;
             }
 
-            $this->setSystemVar('AllowableHTML', $allowedHtml);
+            $variableApi->set(VariableApi::CONFIG, 'AllowableHTML', $allowedHtml);
 
             // clear all cache and compile directories
-            $this->get('cache_clearer')->clear('symfony');
-            $this->get('cache_clearer')->clear('legacy');
+            $cacheClearer->clear('symfony');
+            $cacheClearer->clear('legacy');
 
             $this->addFlash('status', $this->__('Done! Module configuration updated.'));
 
@@ -587,18 +599,6 @@ class ConfigController extends AbstractController
             'htmlTags' => $htmlTags,
             'currentHtmlTags' => $variableApi->getSystemVar('AllowableHTML')
         ];
-    }
-
-    /**
-     * Helper function to set a system var.
-     *
-     * @param string $variableName The variable name
-     * @param mixed  $value        The new value
-     */
-    private function setSystemVar($variableName, $value)
-    {
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-        $variableApi->set(VariableApi::CONFIG, $variableName, $value);
     }
 
     /**

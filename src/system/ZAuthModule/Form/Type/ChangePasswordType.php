@@ -19,11 +19,31 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
 
 class ChangePasswordType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,26 +55,31 @@ class ChangePasswordType extends AbstractType
             ->add('authenticationMethod', HiddenType::class)
             ->add('oldpass', PasswordType::class, [
                 'required' => false,
-                'label' => $options['translator']->__('Old password'),
+                'label' => $this->__('Old password'),
                 'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => $options['translator']->__('New password'), 'help' => $options['translator']->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])],
-                'second_options' => ['label' => $options['translator']->__('Repeat new password')],
-                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'first_options' => [
+                    'label' => $this->__('New password'),
+                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                ],
+                'second_options' => [
+                    'label' => $this->__('Repeat new password')
+                ],
+                'invalid_message' => $this->__('The passwords must match!'),
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -75,7 +100,6 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'minimumPasswordLength' => 5,
             'constraints' => [
                 new ValidPasswordChange()

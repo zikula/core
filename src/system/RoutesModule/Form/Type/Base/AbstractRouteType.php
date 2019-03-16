@@ -168,7 +168,6 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => true
@@ -193,7 +192,6 @@ abstract class AbstractRouteType extends AbstractType
             ],
             'required' => true,
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_attr' => $choiceAttributes,
             'multiple' => true,
             'expanded' => true

@@ -17,9 +17,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\SupportStrategy\ClassInstanceSupportStrategy;
 use Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore;
 use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -38,16 +41,23 @@ class EditorController extends Controller
      * @Theme("admin")
      * @Template("ZikulaWorkflowBundle:Editor:index.html.twig")
      *
-     * @param Request $request Current request instance
+     * @param Request $request
+     * @param PermissionApiInterface $permissionApi
+     * @param Registry $workflowRegistry
+     * @param TranslatorInterface $translator
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if the desired workflow could not be found
      */
-    public function indexAction(Request $request)
-    {
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission('ZikulaWorkflowBundle::', '::', ACCESS_ADMIN)) {
+    public function indexAction(
+        Request $request,
+        PermissionApiInterface $permissionApi,
+        Registry $workflowRegistry,
+        TranslatorInterface $translator
+    ) {
+        if (!$permissionApi->hasPermission('ZikulaWorkflowBundle::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -58,7 +68,7 @@ class EditorController extends Controller
             $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
         }
         if (!$this->get('service_container')->has($workflowName)) {
-            throw new NotFoundHttpException($this->get('translator.default')->__f('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
+            throw new NotFoundHttpException($translator->__f('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
         }
 
         $workflow = $this->get($workflowName);
@@ -76,14 +86,13 @@ class EditorController extends Controller
             }
             $markingStoreField = $markingStore->getProperty();
 
-            $registry = $this->get('workflow.registry');
-            $reflection = new \ReflectionClass(get_class($registry));
+            $reflection = new \ReflectionClass(get_class($workflowRegistry));
             $workflowsProperty = $reflection->getProperty('workflows');
             $workflowsProperty->setAccessible(true);
-            $workflows = $workflowsProperty->getValue($registry);
+            $workflows = $workflowsProperty->getValue($workflowRegistry);
             foreach ($workflows as list($aWorkflow, $workflowClass)) {
                 if ($aWorkflow->getName() == $workflow->getName()) {
-                    if ($workflowClass instanceof ClassInstanceSupportStrategy) {
+                    if (method_exists($workflowClass, 'getClassName')) {
                         $workflowClass = $workflowClass->getClassName();
                     }
                     $supportedEntityClassNames[] = $workflowClass;

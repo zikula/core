@@ -43,4 +43,10 @@ interface ProfileModuleInterface
      * @throws \InvalidArgumentException if provided $uid is not null and invalid
      */
     public function getAvatar($uid = null, array $parameters = []);
+
+    /**
+     * Return the name of the providing bundle.
+     * @return string
+     */
+    public function getBundleName();
 }

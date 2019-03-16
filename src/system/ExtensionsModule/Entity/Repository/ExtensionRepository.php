@@ -11,13 +11,19 @@
 
 namespace Zikula\ExtensionsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
-class ExtensionRepository extends EntityRepository implements ExtensionRepositoryInterface
+class ExtensionRepository extends ServiceEntityRepository implements ExtensionRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ExtensionEntity::class);
+    }
+
     /**
      * @param $name
      * @return ExtensionEntity

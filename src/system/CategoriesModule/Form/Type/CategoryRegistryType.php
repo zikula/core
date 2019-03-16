@@ -23,6 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Class CategoryRegistryType
@@ -30,43 +32,60 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
  */
 class CategoryRegistryType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
      * @var EntitySelectionBuilder
      */
     private $entitySelectionBuilder;
 
     /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
         $this->entitySelectionBuilder = $options['entitySelectionBuilder'];
 
         $builder
             ->add('modname', ChoiceType::class, [
-                'label' => $translator->__('Module'),
-                'choices_as_values' => true,
+                'label' => $this->__('Module'),
                 'choices' => $options['categorizableModules'],
-                'placeholder' => $translator->__('Select module')
+                'placeholder' => $this->__('Select module')
             ])
             ->add('property', TextType::class, [
-                'label' => $translator->__('Property name'),
-                'constraints' => [new NotBlank()]
+                'label' => $this->__('Property name'),
+                'constraints' => [
+                    new NotBlank()
+                ]
             ])
             ->add('category', CategoryTreeType::class, [
-                'label' => $translator->__('Category'),
-                'translator' => $translator,
+                'label' => $this->__('Category')
             ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -74,12 +93,12 @@ class CategoryRegistryType extends AbstractType
             ])
         ;
 
-        $formModifier = function(FormInterface $form, $modName = null) use ($options) {
+        $translator = $this->translator;
+        $formModifier = function(FormInterface $form, $modName = null) use ($translator, $options) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
             $form->add('entityname', ChoiceType::class, [
-                'label' => $options['translator']->__('Entity'),
-                'choices' => $entities,
-                'choices_as_values' => true
+                'label' => $translator->__('Entity'),
+                'choices' => $entities
             ]);
         };
 
@@ -115,7 +134,6 @@ class CategoryRegistryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'categorizableModules' => [],
             'entitySelectionBuilder' => null
         ]);

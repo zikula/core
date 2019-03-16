@@ -24,27 +24,30 @@ class SearchableModuleCollector
     private $searchableModules = [];
 
     /**
-     * SearchableModuleCollector constructor.
+     * Constructor.
+     *
+     * @param SearchableInterface[] $searchables
      */
-    public function __construct()
+    public function __construct(iterable $searchables)
     {
+        foreach ($searchables as $searchable) {
+            $this->add($searchable);
+        }
     }
 
     /**
      * Add a service to the collection.
-     * @param string $moduleName
-     * @param SearchableInterface $service
+     *
+     * @param SearchableInterface $searchable
      */
-    public function add($moduleName, SearchableInterface $service)
+    public function add(SearchableInterface $searchable)
     {
-        if (isset($this->searchableModules[$moduleName])) {
-            throw new \InvalidArgumentException('Attempting to register a searchable module with a duplicate module name. (' . $moduleName . ')');
-        }
-        $this->searchableModules[$moduleName] = $service;
+        $this->searchableModules[$searchable->getBundleName()] = $searchable;
     }
 
     /**
      * Get a SearchableInterface from the collection by moduleName.
+     *
      * @param $moduleName
      * @return SearchableInterface|null
      */
@@ -55,6 +58,7 @@ class SearchableModuleCollector
 
     /**
      * Get all the searchableModules in the collection.
+     *
      * @return SearchableInterface[]
      */
     public function getAll()

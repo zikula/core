@@ -3,9 +3,9 @@ services:
     controller_resolver:
         class: Zikula\Bundle\CoreBundle\Controller\ControllerResolver
         arguments:
-            - "@service_container"
-            - "@controller_name_converter"
-            - "@?logger"
+            - '@service_container'
+            - '@controller_name_converter'
+            - '@?logger'
         tags:
             - { name: monolog.logger, channel: request }
 

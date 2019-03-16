@@ -11,7 +11,9 @@
 
 namespace Zikula\MailerModule;
 
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 
 /**
  * Installation and upgrade routines for the mailer module.
@@ -46,6 +48,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldVersion)
     {
+        $configDumper = $this->container->get(DynamicConfigDumper::class);
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.3.1':
@@ -53,7 +56,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
             case '1.3.2':
                 // clear old modvars
                 // use manual method because getVars() is not available during system upgrade
-                $modVarEntities = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => $this->name]);
+                $modVarEntities = $this->container->get(ExtensionVarRepository::class)->findBy(['modname' => $this->name]);
                 $modVars = [];
                 foreach ($modVarEntities as $var) {
                     $modVars[$var['name']] = $var['value'];
@@ -86,11 +89,8 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                     'delivery_addresses' => [],
                     'disable_delivery' => 5 == $modVars['mailertype'],
                 ];
-                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $configDumper->setConfiguration('swiftmailer', $config);
-
             case '1.4.0':
-                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $config = $configDumper->getConfiguration('swiftmailer');
                 // remove spool parameter
                 unset($config['spool']);
@@ -98,7 +98,6 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
             case '1.4.1':
                 // install subscriber hooks
             case '1.4.2':
-                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
                 $config = $configDumper->getConfiguration('swiftmailer');
                 // delivery_address has changed to an array named delivery_addresses
                 $config['delivery_addresses'] = !empty($config['delivery_address']) ? [$config['delivery_address']] : [];

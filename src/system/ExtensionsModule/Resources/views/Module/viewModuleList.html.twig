@@ -39,7 +39,7 @@
             <td class="nowrap">
                 {{ stateLabel(module, upgradedExtensions) }}
             </td>
-            {% set rowActions = knp_menu_get('ZikulaExtensionsModule:ActionsMenu:adminExtensionsMenu', [], {extension: module}) %}
+            {% set rowActions = knp_menu_get('zikulaExtensionsAdminMenu', [], {extension: module}) %}
             <th headers="hActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}</th>
         </tr>
     {% endfor %}

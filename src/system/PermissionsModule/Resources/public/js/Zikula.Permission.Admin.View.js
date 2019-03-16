@@ -51,9 +51,9 @@ var currentDelete;
                 type: 'POST',
                 url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: id}),
                 data: pars
-            }).done(function(result) {
+            }).done(function(data) {
                 var modal = $('#editModal');
-                modal.find('.modal-body').html(result.data.view);
+                modal.find('.modal-body').html(data.view);
                 modal.modal();
             }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);

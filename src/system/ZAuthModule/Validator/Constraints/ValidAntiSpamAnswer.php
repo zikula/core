@@ -19,9 +19,4 @@ use Symfony\Component\Validator\Constraint;
 class ValidAntiSpamAnswer extends Constraint
 {
     public $message = 'The anti-spam answer is incorrect.';
-
-    public function validatedBy()
-    {
-        return 'zikula.zauth.antispam_answer.validator';
-    }
 }

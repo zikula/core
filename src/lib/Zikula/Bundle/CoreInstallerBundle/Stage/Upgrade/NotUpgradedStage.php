@@ -14,11 +14,13 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 class NotUpgradedStage implements StageInterface, InjectContainerInterface
 {
@@ -35,7 +37,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->translator = $this->container->get('translator.default');
+        $this->translator = $this->container->get(Translator::class);
     }
 
     public function getName()
@@ -56,7 +58,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
-        if (!in_array($DBLocale, $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales())) {
+        if (!in_array($DBLocale, $this->container->get(LocaleApi::class)->getSupportedLocales())) {
             $variableApi = $this->container->get('zikula_extensions_module.api.variable');
             $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
             $variableApi->set(VariableApi::CONFIG, 'locale', 'en');

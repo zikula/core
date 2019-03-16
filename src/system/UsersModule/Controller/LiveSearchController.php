@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\UsersModule\Collector\ProfileModuleCollector;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 /**
  * @Route("/livesearch")
@@ -28,20 +30,24 @@ class LiveSearchController extends AbstractController
      * @Route("/getUsers", methods = {"GET"}, options={"expose"=true})
      *
      * @param Request $request Current request instance
+     * @param UserRepositoryInterface $userRepository
+     * @param ProfileModuleCollector $profileModuleCollector
      *
      * @return JsonResponse
      */
-    public function getUsersAction(Request $request)
-    {
+    public function getUsersAction(
+        Request $request,
+        UserRepositoryInterface $userRepository,
+        ProfileModuleCollector $profileModuleCollector
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule::LiveSearch', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
         $fragment = $request->query->get('fragment', '');
-        $userRepository = $this->get('zikula_users_module.user_repository');
         $results = $userRepository->searchActiveUser(['operator' => 'like', 'operand' => '%' . $fragment . '%'], 50);
 
-        $profileModule = $this->get('zikula_users_module.internal.profile_module_collector')->getSelected();
+        $profileModule = $profileModuleCollector->getSelected();
 
         $resultItems = [];
         if (count($results) > 0) {

@@ -12,35 +12,55 @@
 namespace Zikula\ExtensionsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ExtensionsModule\Constant;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-class ActionsMenu implements ContainerAwareInterface
+class MenuBuilder
 {
-    use ContainerAwareTrait;
     use TranslatorTrait;
 
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var PermissionApiInterface
+     */
+    private $permissionApi;
+
+    /**
+     * @var CsrfTokenHandler
+     */
+    private $tokenHandler;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        FactoryInterface $factory,
+        PermissionApiInterface $permissionApi,
+        CsrfTokenHandler $tokenHandler
+    ) {
+        $this->setTranslator($translator);
+        $this->factory = $factory;
+        $this->permissionApi = $permissionApi;
+        $this->tokenHandler = $tokenHandler;
     }
 
-    public function adminExtensionsMenu(FactoryInterface $factory, array $options)
+    public function createAdminMenu(array $options)
     {
-        $this->setTranslator($this->container->get('translator'));
-        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
         $extension = $options['extension'];
-        $menu = $factory->createItem('adminActions');
+        $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
 
-        if (!$permissionApi->hasPermission('ZikulaExtensionsModule::', $extension->getName() . '::' . $extension->getId(), ACCESS_ADMIN)) {
+        if (!$this->permissionApi->hasPermission('ZikulaExtensionsModule::', $extension->getName() . '::' . $extension->getId(), ACCESS_ADMIN)) {
             return $menu;
         }
 
-        $csrfToken = $this->container->get('zikula_core.common.csrf_token_handler')->generate(true);
+        $csrfToken = $this->tokenHandler->generate(true);
 
         switch ($extension->getState()) {
             case Constant::STATE_ACTIVE:
@@ -113,5 +133,10 @@ class ActionsMenu implements ContainerAwareInterface
         }
 
         return $menu;
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 }

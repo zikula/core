@@ -26,7 +26,7 @@ class HtmlBlockType extends AbstractType
         $builder
             ->add('content', TextareaType::class, [
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank()
                 ]
             ])
         ;

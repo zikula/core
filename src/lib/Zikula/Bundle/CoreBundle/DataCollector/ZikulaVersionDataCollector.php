@@ -37,9 +37,9 @@ class ZikulaVersionDataCollector extends DataCollector
     {
         $this->data = [
             'version' => ZikulaKernel::VERSION,
-            'ghZikulaCoreUrl' => 'https://www.github.com/zikula/core',
-            'ghZikulaDocsUrl' => 'https://www.github.com/zikula/zikula-docs',
-            'ghZikulaBootstrapDocsUrl' => 'http://zikula.github.io/bootstrap-docs'
+            'ghZikulaCoreUrl' => 'https://github.com/zikula/core',
+            'ghZikulaDocsUrl' => 'https://github.com/zikula/zikula-docs',
+            'ghZikulaBootstrapDocsUrl' => 'https://zikula.github.io/bootstrap-docs'
             ];
         if (null !== $this->themeEngine->getTheme()) {
             $this->data['themeEngine'] = [
@@ -54,6 +54,11 @@ class ZikulaVersionDataCollector extends DataCollector
                 'annotation' => '',
             ];
         }
+    }
+
+    public function reset()
+    {
+        $this->data = [];
     }
 
     public function getVersion()

@@ -11,15 +11,18 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
-use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Component\Wizard\InjectContainerInterface;
+use Swift_Mailer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Component\Wizard\StageInterface;
-use Zikula\Component\Wizard\WizardCompleteInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Swift_Mailer;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Component\Wizard\InjectContainerInterface;
+use Zikula\Component\Wizard\StageInterface;
+use Zikula\Component\Wizard\WizardCompleteInterface;
+use Zikula\UsersModule\Constant as UserConstant;
+use Zikula\UsersModule\Entity\Repository\UserRepository;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
@@ -30,7 +33,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->setTranslator($container->get('translator.default'));
+        $this->setTranslator($container->get(Translator::class));
     }
 
     public function setTranslator($translator)
@@ -78,7 +81,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     private function sendEmailToAdmin(Request $request)
     {
-        $adminUser = $this->container->get('zikula_users_module.user_repository')->find(2);
+        $adminUser = $this->container->get(UserRepository::class)->find(UserConstant::USER_ID_ADMIN);
         $uName = $adminUser->getUname();
         $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
 

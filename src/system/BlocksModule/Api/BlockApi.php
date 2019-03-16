@@ -55,30 +55,22 @@ class BlockApi implements BlockApiInterface
     private $blockCollector;
 
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
      * BlockApi constructor.
      * @param BlockPositionRepositoryInterface $blockPositionRepository
      * @param BlockFactoryApiInterface $blockFactoryApi
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param BlockCollector $blockCollector
-     * @param KernelInterface $kernel
      */
     public function __construct(
         BlockPositionRepositoryInterface $blockPositionRepository,
         BlockFactoryApiInterface $blockFactoryApi,
         ExtensionRepositoryInterface $extensionRepository,
-        BlockCollector $blockCollector,
-        KernelInterface $kernel
+        BlockCollector $blockCollector
     ) {
         $this->blockPositionRepository = $blockPositionRepository;
         $this->blockFactory = $blockFactoryApi;
         $this->extensionRespository = $extensionRepository;
         $this->blockCollector = $blockCollector;
-        $this->kernel = $kernel;
     }
 
     /**
@@ -97,6 +89,7 @@ class BlockApi implements BlockApiInterface
         if (empty($position)) {
             return $blocks;
         }
+
         foreach ($position->getPlacements() as $placement) {
             $blocks[$placement->getBlock()->getBid()] = $placement->getBlock();
         }
@@ -109,10 +102,9 @@ class BlockApi implements BlockApiInterface
      */
     public function createInstanceFromBKey($bKey)
     {
-        list($moduleName, $blockFqCn) = explode(':', $bKey);
-        $moduleInstance = $this->kernel->getModule($moduleName);
+        list(/*$moduleName*/, $blockFqCn) = explode(':', $bKey);
 
-        return $this->blockFactory->getInstance($blockFqCn, $moduleInstance);
+        return $this->blockFactory->getInstance($blockFqCn);
     }
 
     /**
@@ -120,40 +112,21 @@ class BlockApi implements BlockApiInterface
      */
     public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null)
     {
-        $foundBlocks = [];
+        $modulesByName = [];
         $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionRespository->findBy(['state' => Constant::STATE_ACTIVE]);
         /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
         foreach ($modules as $module) {
-            $moduleInstance = $this->kernel->getModule($module->getName());
-            list($nameSpace, $path) = $this->getModuleBlockPath($moduleInstance, $module->getName());
-            if (!isset($path)) {
-                continue;
-            }
-            $finder = new Finder();
-            $foundFiles = $finder
-                ->files()
-                ->name('*.php')
-                ->in($path)
-                ->depth(0);
-            foreach ($foundFiles as $file) {
-                preg_match("/class (\\w+) (?:extends|implements) \\\\?(\\w+)/", $file->getContents(), $matches);
-                $blockInstance = $this->blockFactory->getInstance($nameSpace . $matches[1], $moduleInstance);
-                $foundBlocks[$module->getName() . ':' . $nameSpace . $matches[1]] = $module->getDisplayname() . '/' . $blockInstance->getType();
-            }
+            $modulesByName[$module->getName()] = $module;
         }
-        // Add service defined blocks.
+
+        $foundBlocks = [];
         foreach ($this->blockCollector->getBlocks() as $id => $blockInstance) {
-            $className = get_class($blockInstance);
-            list($moduleName) = explode(':', $id);
-            if (isset($moduleEntity) && $moduleEntity->getName() != $moduleName) {
+            $bundleName = $blockInstance->getBundle()->getName();
+            if (!in_array($bundleName, array_keys($modulesByName))) {
                 continue;
             }
-            if (isset($foundBlocks["$moduleName:$className"])) {
-                // remove blocks found in file search with same class name
-                unset($foundBlocks["$moduleName:$className"]);
-            }
-            $moduleEntity = $this->extensionRespository->findOneBy(['name' => $moduleName]);
-            $foundBlocks[$id] = $moduleEntity->getDisplayname() . '/' . $blockInstance->getType();
+
+            $foundBlocks[$id] = $modulesByName[$bundleName]->getDisplayname() . '/' . $blockInstance->getType();
         }
         asort($foundBlocks);
 
@@ -176,22 +149,5 @@ class BlockApi implements BlockApiInterface
         asort($modulesContainingBlocks);
 
         return $modulesContainingBlocks;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getModuleBlockPath(AbstractModule $moduleInstance = null)
-    {
-        $path = null;
-        $nameSpace = null;
-        if (isset($moduleInstance)) {
-            if (is_dir($moduleInstance->getPath() . '/Block')) {
-                $path = $moduleInstance->getPath() . '/Block';
-                $nameSpace = $moduleInstance->getNamespace() . '\Block\\';
-            }
-        }
-
-        return [$nameSpace, $path];
     }
 }

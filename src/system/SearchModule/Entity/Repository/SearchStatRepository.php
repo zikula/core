@@ -11,7 +11,8 @@
 
 namespace Zikula\SearchModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 
@@ -20,8 +21,13 @@ use Zikula\SearchModule\Entity\SearchStatEntity;
  *
  * This is the repository class for search statistics.
  */
-class SearchStatRepository extends EntityRepository implements SearchStatRepositoryInterface
+class SearchStatRepository extends ServiceEntityRepository implements SearchStatRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, SearchStatEntity::class);
+    }
+
     /**
      * {@inheritdoc}
      */

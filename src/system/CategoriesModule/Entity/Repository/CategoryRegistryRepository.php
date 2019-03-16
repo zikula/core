@@ -11,10 +11,17 @@
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 
-class CategoryRegistryRepository extends EntityRepository implements CategoryRegistryRepositoryInterface
+class CategoryRegistryRepository extends ServiceEntityRepository implements CategoryRegistryRepositoryInterface
 {
-    // @todo
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, CategoryRegistryEntity::class);
+    }
+
+    // nothing yet
 }

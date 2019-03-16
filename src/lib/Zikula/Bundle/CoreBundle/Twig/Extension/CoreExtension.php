@@ -15,7 +15,7 @@ use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Twig\TokenParser\SwitchTokenParser;
+use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
 use Zikula\Common\Translator\TranslatorInterface;
 
 class CoreExtension extends AbstractExtension

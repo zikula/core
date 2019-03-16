@@ -11,12 +11,14 @@
 
 namespace Zikula\Bundle\HookBundle\Category;
 
+use Zikula\Bundle\HookBundle\Hook\FilterHook;
+
 class FilterHooksCategory implements CategoryInterface
 {
     const NAME = 'filter_hooks';
 
     /**
-     * dispatches \Zikula\Bundle\HookBundle\Hook\FilterHook
+     * Dispatches FilterHook instances.
      */
     const TYPE_FILTER = 'filter';
 

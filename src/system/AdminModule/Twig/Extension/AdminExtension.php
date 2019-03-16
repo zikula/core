@@ -38,7 +38,7 @@ class AdminExtension extends AbstractExtension
     /**
      * Constructor.
      *
-     * @param FragmentHandler $handler       FragmentHandler service instance
+     * @param FragmentHandler $handler FragmentHandler service instance
      * @param PermissionApiInterface $permissionApi PermissionApi service instance
      */
     public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)

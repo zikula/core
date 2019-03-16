@@ -143,6 +143,7 @@ class BundleSyncHelper
         $bundles = [];
 
         $scanner = new Scanner();
+        $scanner->setTranslator($this->translator);
         $scanner->scan($directories, 5);
         foreach ($scanner->getInvalid() as $invalidName) {
             $this->session->getFlashBag()->add('warning', $this->translator->__f('WARNING: %name has an invalid composer.json file which could not be decoded.', ['%name' => $invalidName]));

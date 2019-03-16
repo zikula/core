@@ -13,8 +13,11 @@ namespace Zikula\GroupsModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Constant as GroupsConstant;
+use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\Repository\GroupRepository;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**
@@ -31,8 +34,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
     {
         try {
             $this->schemaTool->create([
-                'Zikula\GroupsModule\Entity\GroupEntity',
-                'Zikula\GroupsModule\Entity\GroupApplicationEntity'
+                GroupEntity::class,
+                GroupApplicationEntity::class
             ]);
         } catch (\Exception $e) {
             return false;
@@ -70,8 +73,8 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $this->setVar('hidePrivate', false);
             case '2.4.1':
                 /** @var UserEntity $anonymousUser */
-                $anonymousUser = $this->container->get('zikula_users_module.user_repository')->find(UsersConstant::USER_ID_ANONYMOUS);
-                $usersGroup = $this->container->get('zikula_groups_module.group_repository')->find(GroupsConstant::GROUP_ID_USERS);
+                $anonymousUser = $this->container->get(UserRepository::class)->find(UsersConstant::USER_ID_ANONYMOUS);
+                $usersGroup = $this->container->get(GroupRepository::class)->find(GroupsConstant::GROUP_ID_USERS);
                 $anonymousUser->getGroups()->removeElement($usersGroup);
                 $this->entityManager->flush($anonymousUser);
                 $this->addFlash('info', $this->__('NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.'));

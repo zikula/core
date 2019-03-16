@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\AccessEvents;
 
@@ -48,20 +49,21 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
 
     /**
      * SiteOffListener constructor.
-     * @param bool $siteOff
+     *
+     * @param VariableApiInterface $variableApi
      * @param PermissionApiInterface $permissionApi
      * @param TranslatorInterface $translator
      * @param RouterInterface $router
      * @param SessionInterface $session
      */
     public function __construct(
-        $siteOff,
+        VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
         TranslatorInterface $translator,
         RouterInterface $router,
         SessionInterface $session
     ) {
-        $this->siteOff = $siteOff;
+        $this->siteOff = $variableApi->getSystemVar('siteoff', false);
         $this->permissionApi = $permissionApi;
         $this->translator = $translator;
         $this->router = $router;

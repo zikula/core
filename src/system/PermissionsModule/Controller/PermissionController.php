@@ -18,12 +18,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Exception\FatalErrorException;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
+use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Form\Type\FilterListType;
 use Zikula\PermissionsModule\Form\Type\PermissionCheckType;
 use Zikula\PermissionsModule\Form\Type\PermissionType;
+use Zikula\PermissionsModule\Helper\SchemaHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Constant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class PermissionController extends AbstractController
 {
@@ -34,50 +39,69 @@ class PermissionController extends AbstractController
      *
      * view permissions
      *
+     * @param GroupRepositoryInterface $groupsRepository
+     * @param PermissionRepositoryInterface $permissionRepository
+     * @param PermissionApiInterface $permissionApi
+     * @param SchemaHelper $schemaHelper
+     *
      * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
-    public function listAction()
-    {
+    public function listAction(
+        GroupRepositoryInterface $groupsRepository,
+        PermissionRepositoryInterface $permissionRepository,
+        PermissionApiInterface $permissionApi,
+        SchemaHelper $schemaHelper
+    ) {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $groups = $this->get('zikula_groups_module.group_repository')->getGroupNamesById();
-        $permissions = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getFilteredPermissions();
-        $permissionLevels = $this->get('zikula_permissions_module.api.permission')->accessLevelNames();
-        $components = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->getAllComponents();
+        $groups = $groupsRepository->getGroupNamesById();
+        $permissions = $permissionRepository->getFilteredPermissions();
+        $components = $permissionRepository->getAllComponents();
         $components = [$this->__('All components') => '-1'] + $components;
+        $permissionLevels = $permissionApi->accessLevelNames();
+
         $filterForm = $this->createForm(FilterListType::class, [], [
             'groupChoices' => $groups,
-            'componentChoices' => $components,
-            'translator' => $this->getTranslator()
+            'componentChoices' => $components
         ]);
-        $templateParameters['filterForm'] = $filterForm->createView();
         $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
-            'translator' => $this->getTranslator(),
             'permissionLevels' => $permissionLevels
         ]);
-        $templateParameters['permissionCheckForm'] = $permissionCheckForm->createView();
-        $templateParameters['permissionLevels'] = $permissionLevels;
-        $templateParameters['permissions'] = $permissions;
-        $templateParameters['groups'] = $groups;
-        $templateParameters['lockadmin'] = $this->getVar('lockadmin', 1) ? 1 : 0;
-        $templateParameters['adminId'] = $this->getVar('adminid', 1);
-        $templateParameters['schema'] = $this->get('zikula_permissions_module.helper.schema_helper')->getAllSchema();
-        $templateParameters['enableFilter'] = (bool)$this->getVar('filter', 1);
 
-        return $templateParameters;
+        return [
+            'filterForm' => $filterForm->createView(),
+            'permissionCheckForm' => $permissionCheckForm->createView(),
+            'permissionLevels' => $permissionLevels,
+            'permissions' => $permissions,
+            'groups' => $groups,
+            'lockadmin' => $this->getVar('lockadmin', 1) ? 1 : 0,
+            'adminId' => $this->getVar('adminid', 1),
+            'schema' => $schemaHelper->getAllSchema(),
+            'enableFilter' => (bool)$this->getVar('filter', 1)
+        ];
     }
 
     /**
      * @Route("/edit/{pid}", options={"expose"=true})
+     *
      * @param Request $request
+     * @param GroupRepositoryInterface $groupsRepository
+     * @param PermissionRepositoryInterface $permissionRepository
+     * @param PermissionApiInterface $permissionApi
      * @param PermissionEntity $permissionEntity
+     *
      * @return JsonResponse
      */
-    public function editAction(Request $request, PermissionEntity $permissionEntity = null)
-    {
+    public function editAction(
+        Request $request,
+        GroupRepositoryInterface $groupsRepository,
+        PermissionRepositoryInterface $permissionRepository,
+        PermissionApiInterface $permissionApi,
+        PermissionEntity $permissionEntity = null
+    ) {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -87,10 +111,13 @@ class PermissionController extends AbstractController
                 $permissionEntity->setSequence($request->request->get('sequence'));
             }
         }
+
+        $groupNames = $groupsRepository->getGroupNamesById();
+        $accessLevelNames = $permissionApi->accessLevelNames();
+
         $form = $this->createForm(PermissionType::class, $permissionEntity, [
-            'translator' => $this->getTranslator(),
-            'groups' => $this->get('zikula_groups_module.group_repository')->getGroupNamesById(),
-            'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames()
+            'groups' => $groupNames,
+            'permissionLevels' => $accessLevelNames
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -98,16 +125,16 @@ class PermissionController extends AbstractController
             $pid = $permissionEntity->getPid();
             if (null === $pid) {
                 if ($permissionEntity->getSequence() == -1) {
-                    $permissionEntity->setSequence($this->get('zikula_permissions_module.permission_repository')->getMaxSequence() + 1); // last
+                    $permissionEntity->setSequence($permissionRepository->getMaxSequence() + 1); // last
                 } else {
-                    $this->get('zikula_permissions_module.permission_repository')->updateSequencesFrom($permissionEntity->getSequence(), 1); // insert
+                    $permissionRepository->updateSequencesFrom($permissionEntity->getSequence(), 1); // insert
                 }
             }
-            $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->persistAndFlush($permissionEntity);
+            $permissionRepository->persistAndFlush($permissionEntity);
             $row = (null === $pid) ? $this->renderView('@ZikulaPermissionsModule/Permission/permissionTableRow.html.twig', [
                 'permission' => $permissionEntity,
-                'groups' => $this->get('zikula_groups_module.group_repository')->getGroupNamesById(),
-                'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames(),
+                'groups' => $groupNames,
+                'permissionLevels' => $accessLevelNames,
                 'lockadmin' => $this->getVar('lockadmin', 1) ? 1 : 0,
                 'adminId' => $this->getVar('adminid', 1)
             ]) : null;
@@ -132,10 +159,12 @@ class PermissionController extends AbstractController
      *
      * @param Request $request
      *  permorder array of sorted permissions (value = permission id)
+     * @param PermissionRepositoryInterface $permissionRepository
+     *
      * @return JsonResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function changeOrderAction(Request $request)
+    public function changeOrderAction(Request $request, PermissionRepositoryInterface $permissionRepository)
     {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -143,7 +172,7 @@ class PermissionController extends AbstractController
         $permOrder = $request->request->get('permorder');
         $amountOfPermOrderValues = count($permOrder);
         for ($cnt = 0; $cnt < $amountOfPermOrderValues; $cnt++) {
-            $permission = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->find($permOrder[$cnt]);
+            $permission = $permissionRepository->find($permOrder[$cnt]);
             $permission['sequence'] = $cnt + 1;
         }
         $this->get('doctrine')->getManager()->flush();
@@ -157,11 +186,13 @@ class PermissionController extends AbstractController
      * Delete a permission
      *
      * @param PermissionEntity $permissionEntity
+     * @param PermissionRepositoryInterface $permissionRepository
+     *
      * @return JsonResponse
      * @throws FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
      */
-    public function deleteAction(PermissionEntity $permissionEntity)
+    public function deleteAction(PermissionEntity $permissionEntity, PermissionRepositoryInterface $permissionRepository)
     {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -177,7 +208,7 @@ class PermissionController extends AbstractController
 
         $this->get('doctrine')->getManager()->remove($permissionEntity);
         $this->get('doctrine')->getManager()->flush();
-        $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->reSequence();
+        $permissionRepository->reSequence();
         if ($permissionEntity->getPid() == $this->getVar('adminid')) {
             $this->setVar('adminid', 0);
             $this->setVar('lockadmin', false);
@@ -192,25 +223,27 @@ class PermissionController extends AbstractController
      * Test a permission rule for a given username
      *
      * @param Request $request
+     * @param PermissionApiInterface $permissionApi
+     * @param UserRepositoryInterface $userRepository
+     *
      * @return JsonResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function testAction(Request $request)
+    public function testAction(Request $request, PermissionApiInterface $permissionApi, UserRepositoryInterface $userRepository)
     {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         $permissionCheckForm = $this->createForm(PermissionCheckType::class, [], [
-            'translator' => $this->getTranslator(),
-            'permissionLevels' => $this->get('zikula_permissions_module.api.permission')->accessLevelNames()
+            'permissionLevels' => $permissionApi->accessLevelNames()
         ]);
         $permissionCheckForm->handleRequest($request);
         $data = $permissionCheckForm->getData();
 
         $result = $this->__('Permission check result:') . ' ';
         if (!empty($data['user'])) {
-            $user = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $data['user']]);
+            $user = $userRepository->findOneBy(['uname' => $data['user']]);
             $uid = isset($user) ? $user->getUid() : Constant::USER_ID_ANONYMOUS;
         } else {
             $uid = Constant::USER_ID_ANONYMOUS;

@@ -13,6 +13,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
@@ -47,7 +48,7 @@ class InitStage implements StageInterface, InjectContainerInterface
             return false;
         }
 
-        $migrationHelper = $this->container->get('zikula_core_installer.helper.migration_helper');
+        $migrationHelper = $this->container->get(MigrationHelper::class);
         $this->count = $migrationHelper->countUnMigratedUsers();
         if ($this->count > 0) {
             $this->container->get('session')->set('user_migration_count', $this->count);

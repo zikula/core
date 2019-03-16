@@ -11,12 +11,18 @@
 
 namespace Zikula\BlocksModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 
-class BlockRepository extends EntityRepository implements BlockRepositoryInterface
+class BlockRepository extends ServiceEntityRepository implements BlockRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, BlockEntity::class);
+    }
+
     public function getFilteredBlocks(array $filters)
     {
         $qb = $this->_em->createQueryBuilder();

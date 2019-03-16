@@ -12,29 +12,42 @@
 namespace Zikula\PermissionsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
-class AdminActionsMenu implements ContainerAwareInterface
+class MenuBuilder
 {
-    use ContainerAwareTrait;
     use TranslatorTrait;
 
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        FactoryInterface $factory,
+        VariableApiInterface $variableApi
+    ) {
+        $this->setTranslator($translator);
+        $this->factory = $factory;
+        $this->variableApi = $variableApi;
     }
 
-    public function menu(FactoryInterface $factory, array $options)
+    public function createAdminActionsMenu(array $options)
     {
-        $this->setTranslator($this->container->get('translator'));
         /** @var PermissionEntity $permission */
         $permission = $options['permission'];
-        $lockAdmin = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaPermissionsModule', 'lockadmin', 1);
-        $adminPermId = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaPermissionsModule', 'adminid', 1);
-        $menu = $factory->createItem('adminActions');
+        $lockAdmin = $this->variableApi->get('ZikulaPermissionsModule', 'lockadmin', 1);
+        $adminPermId = $this->variableApi->get('ZikulaPermissionsModule', 'adminid', 1);
+        $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
         $menu->addChild($this->__f('Insert permission rule before %s', ['%s' => $permission->getPid()]), [
                 'uri' => '#'
@@ -59,5 +72,10 @@ class AdminActionsMenu implements ContainerAwareInterface
             ->setLinkAttributes(['class' => 'test-permission pointer tooltips']);
 
         return $menu;
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 }

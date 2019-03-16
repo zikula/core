@@ -59,6 +59,11 @@ class UserManagementUiHooksSubscriber implements HookSubscriberInterface
         return $this->translator->__('User management hooks');
     }
 
+    public function getAreaName()
+    {
+        return 'subscriber.users.ui_hooks.user';
+    }
+
     public function getEvents()
     {
         return [

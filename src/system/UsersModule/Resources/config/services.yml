@@ -1,63 +1,42 @@
 services:
-    zikula_users_module.user_listener:
-        class: Zikula\UsersModule\Listener\UserEventListener
-        arguments:
-          - "@session"
-          - "@request_stack"
-          - "@router"
-        tags:
-            - { name: kernel.event_subscriber }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\UsersModule\ZikulaUsersModule'
 
-    zikula_users_module.pending_content_listener:
-        class: Zikula\UsersModule\Listener\PendingContentListener
-        arguments:
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_users_module.user_repository"
-          - "@translator.default"
-        tags:
-            - { name: kernel.event_subscriber }
+    Zikula\UsersModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    zikula_users_module.registration_events_listener:
-        class: Zikula\UsersModule\Listener\RegistrationEventsListener
-        arguments:
-          - "@session"
-          - "@zikula_users_module.helper.mail_helper"
-        tags:
-            - { name: kernel.event_subscriber }
+    Zikula\UsersModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
 
-    zikula_users_module.current_user:
-        class: Zikula\UsersModule\Api\CurrentUserApi
-        arguments:
-          - "@session"
-          - "@zikula_users_module.user_repository"
+    Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface: '@Zikula\UsersModule\Api\CurrentUserApi'
+    Zikula\UsersModule\Entity\RepositoryInterface\UserAttributeRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserAttributeRepository'
+    Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserRepository'
+    Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface: '@Zikula\UsersModule\Entity\Repository\UserSessionRepository'
 
-    zikula_users_module.container.link_container:
-        class: Zikula\UsersModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_extensions_module.api.variable"
-          - "@zikula_users_module.current_user"
-          - "@zikula_settings_module.locale_api"
-        tags:
-            - { name: zikula.link_container }
+    # public because installer accesses this using container
+    Zikula\UsersModule\Entity\Repository\UserRepository:
+        public: true
 
-    zikula_users_module.internal.profile_module_collector:
-        class: Zikula\UsersModule\Collector\ProfileModuleCollector
-        arguments:
-          - "@zikula_users_module.user_repository"
-          - "@zikula_users_module.current_user"
-          - "@zikula_extensions_module.api.variable"
+    # public because this is often required as part of Doctrine listeners
+    # which need to access this using container because CurrentUserApi
+    # depends on entities as well
+    Zikula\UsersModule\Api\CurrentUserApi:
+        public: true
 
-    zikula_users_module.internal.message_module_collector:
-        class: Zikula\UsersModule\Collector\MessageModuleCollector
+    Zikula\UsersModule\Collector\AuthenticationMethodCollector:
         arguments:
-          - "@zikula_extensions_module.api.variable"
+          $methods: !tagged zikula.authentication_method
 
-    zikula_users_module.form.type.user_live_search:
-        class: Zikula\UsersModule\Form\Type\UserLiveSearchType
+    Zikula\UsersModule\Collector\MessageModuleCollector:
         arguments:
-          - "@zikula_users_module.user_repository"
-        tags:
-            - { name: form.type }
+          $modules: !tagged zikula.message_module
+
+    Zikula\UsersModule\Collector\ProfileModuleCollector:
+        arguments:
+          $modules: !tagged zikula.profile_module

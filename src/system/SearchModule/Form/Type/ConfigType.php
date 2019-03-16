@@ -18,22 +18,40 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $translator->__('Items per page'),
+                'label' => $this->__('Items per page'),
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 3,
@@ -41,38 +59,37 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add('limitsummary', IntegerType::class, [
-                'label' => $translator->__('Number of characters to display in item summaries'),
+                'label' => $this->__('Number of characters to display in item summaries'),
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 5
                 ]
             ])
             ->add('plugins', ChoiceType::class, [
-                'label' => $translator->__('Disabled plugins'),
+                'label' => $this->__('Disabled plugins'),
                 'label_attr' => ['class' => 'checkbox-inline'],
                 'choices' => $options['plugins'],
-                'choices_as_values' => true,
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false
             ])
             ->add('opensearch_enabled', CheckboxType::class, [
-                'label' => $translator->__('Enable OpenSearch'),
+                'label' => $this->__('Enable OpenSearch'),
                 'required' => false
             ])
             ->add('opensearch_adult_content', CheckboxType::class, [
-                'label' => $translator->__('This page contains adult content'),
+                'label' => $this->__('This page contains adult content'),
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -95,7 +112,6 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'plugins' => []
         ]);
     }

@@ -27,10 +27,10 @@
             {{ form_row(form.toAddress) }}
             {{ form_row(form.subject) }}
             {{ form_row(form.messageType) }}
-            <div class="form-group" data-switch="zikulamailermodule_test[messageType]" data-switch-value="html,multipart">
+            <div data-switch="zikulamailermodule_test[messageType]" data-switch-value="html,multipart">
                 {{ form_row(form.bodyHtml) }}
             </div>
-            <div class="form-group" data-switch="zikulamailermodule_test[messageType]" data-switch-value="text,multipart">
+            <div data-switch="zikulamailermodule_test[messageType]" data-switch-value="text,multipart">
                 {{ form_row(form.bodyText) }}
             </div>
         </fieldset>

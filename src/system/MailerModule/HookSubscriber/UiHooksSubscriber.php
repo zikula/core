@@ -45,6 +45,11 @@ class UiHooksSubscriber implements HookSubscriberInterface
         return $this->translator->__('HTML mail hook');
     }
 
+    public function getAreaName()
+    {
+        return 'mailer.ui_hooks.htmlmail.form_edit';
+    }
+
     public function getEvents()
     {
         return [

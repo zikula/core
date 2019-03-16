@@ -1,27 +1,136 @@
 services:
-    zikula_theme_module.container.link_container:
-        class: Zikula\ThemeModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-        tags:
-            - { name: zikula.link_container }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\ThemeModule\ZikulaThemeModule'
+            $installed: '%installed%'
 
-    zikula_theme_module.theme_entity.repository:
-        class: Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository
-        factory: ["@doctrine", getRepository]
-        arguments: ["ZikulaThemeModule:ThemeEntity"]
-        calls:
-            - [setKernel, ["@kernel"]]
+    Zikula\ThemeModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    zikula_theme_module.helper.bundle_sync_helper:
-        class: Zikula\ThemeModule\Helper\BundleSyncHelper
+    Zikula\ThemeModule\Helper\:
+        resource: '../../Helper/*'
         lazy: true
+
+    Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
+
+    Zikula\ThemeModule\Twig\Extension\PageVarExtension:
         arguments:
-          - "@kernel"
-          - "@zikula_theme_module.theme_entity.repository"
-          - "@zikula_core.internal.bootstrap_helper"
-          - "@translator.default"
-          - "@zikula_extensions_module.composer_validation_helper"
-          - "@session"
+            $pageVars: '@zikula_core.common.theme.pagevars'
+
+    # public because ZikulaKernel accesses this using container
+    Zikula\ThemeModule\Engine\Engine:
+        public: true
+
+    zikula_core.common.theme.assets_js:
+        class: Zikula\ThemeModule\Engine\AssetBag
+    # public because AbstractBundle accesses this using container
+    zikula_core.common.theme.assets_css:
+        class: Zikula\ThemeModule\Engine\AssetBag
+        public: true
+    zikula_core.common.theme.assets_header:
+        class: Zikula\ThemeModule\Engine\AssetBag
+    zikula_core.common.theme.assets_footer:
+        class: Zikula\ThemeModule\Engine\AssetBag
+
+    Zikula\ThemeModule\Api\PageAssetApi:
+        arguments:
+          $styleSheets: '@zikula_core.common.theme.assets_css'
+          $scripts: '@zikula_core.common.theme.assets_js'
+          $headers: '@zikula_core.common.theme.assets_header'
+          $footers: '@zikula_core.common.theme.assets_footer'
+
+    zikula_core.common.theme.pagevars:
+        class: Zikula\ThemeModule\Engine\ParameterBag
+
+    Zikula\ThemeModule\Engine\AssetFilter:
+        arguments:
+          $headers: '@zikula_core.common.theme.assets_header'
+          $footers: '@zikula_core.common.theme.assets_footer'
+          $js: '@Zikula\ThemeModule\Engine\Asset\JsResolver'
+          $css: '@Zikula\ThemeModule\Engine\Asset\CssResolver'
+          $scriptPosition: '%script_position%'
+
+    zikula_core.common.theme.themevars:
+        class: Zikula\ThemeModule\Engine\ParameterBag
+        public: true
+
+    # public because AbstractBundle accesses this using container
+    Zikula\ThemeModule\Engine\Asset:
+        public: true
+
+    Zikula\ThemeModule\Engine\Asset\Merger:
+        arguments:
+          $jsCache: '@doctrine_cache.providers.zikula_js_asset_cache'
+          $cssCache: '@doctrine_cache.providers.zikula_css_asset_cache'
+          $kernelProjectDir: '%kernel.project_dir%'
+          $lifetime: '%zikula_asset_manager.lifetime%'
+          $minify: '%zikula_asset_manager.minify%'
+          $compress: '%zikula_asset_manager.compress%'
+
+    Zikula\ThemeModule\Engine\Asset\JsResolver:
+        arguments:
+          $bag: '@zikula_core.common.theme.assets_js'
+          $env: '%env%'
+          $combine: '%zikula_asset_manager.combine%'
+
+    Zikula\ThemeModule\Engine\Asset\CssResolver:
+        arguments:
+          $bag: '@zikula_core.common.theme.assets_css'
+          $env: '%env%'
+          $combine: '%zikula_asset_manager.combine%'
+
+    Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine:
+        decorates: templating.engine.twig
+        arguments:
+          $parser: '@templating.name_parser'
+          $locator: '@templating.locator'
+
+    Zikula\ThemeModule\EventListener\CreateThemedResponseListener:
+        tags:
+            - { name: monolog.logger, channel: request }
+
+    Zikula\ThemeModule\EventListener\DefaultPageAssetSetterListener:
+        arguments:
+          $jsAssetBag: '@zikula_core.common.theme.assets_js'
+          $cssAssetBag: '@zikula_core.common.theme.assets_css'
+          $env: '%env%'
+          $bootstrapJavascriptPath: '%zikula.javascript.bootstrap.min.path%'
+          $bootstrapFontAwesomeStylesheetPath: '%zikula.stylesheet.bootstrap-font-awesome.path%'
+          $fontAwesomePath: '%zikula.stylesheet.fontawesome.min.path%'
+          $bootstrapStylesheetPath: "@=container.hasParameter('zikula.stylesheet.bootstrap.min.path') ? parameter('zikula.stylesheet.bootstrap.min.path') : ''"
+        tags:
+            - { name: monolog.logger, channel: request }
+
+    Zikula\ThemeModule\EventListener\DefaultPageVarSetterListener:
+        arguments:
+          $pageVars: '@zikula_core.common.theme.pagevars'
+        tags:
+            - { name: monolog.logger, channel: request }
+
+    Zikula\ThemeModule\EventListener\ControllerAnnotationReaderListener:
+        tags:
+            - { name: monolog.logger, channel: request }
+
+    Zikula\ThemeModule\EventListener\TemplatePathOverrideListener:
+        arguments:
+          $loader: '@twig.loader'
+        tags:
+            - { name: monolog.logger, channel: request }
+
+    Zikula\ThemeModule\EventListener\AddJSConfigListener:
+        arguments:
+          $pageVars: '@zikula_core.common.theme.pagevars'
+          $headers: '@zikula_core.common.theme.assets_header'
+          $defaultSessionName: '%zikula.session.name%'
+
+    Zikula\ThemeModule\EventListener\TemplateNameExposeListener:
+        arguments:
+          $env: '%env%'
+
+    Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
+        arguments:
+          $active: '%zikula_asset_manager.combine%'

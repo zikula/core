@@ -29,25 +29,10 @@ Requirements
           tags within your template.
  - The `$properties` parameter in the `display` method is an array from BlockEntity.
 
-###Differences from Core 1.x Block classes 
+### Differences from Core 1.x Block classes 
  - The old "info" array of the block has been eliminated.
     - `module` is inferred from providing module.
     - `text_type` is replaced by `getType()`.
     - `allow_multiple` is always `true`.
     - `form_content` is no longer allowed (blocks MUST implement their own content control).
  - The `init` and `modify` methods have been eliminated.
-
-
-BlockHandler as a Service
--------------------------
-
-Registering your block handler class as a service is optional, but can provide greater flexibility with dependencies.
-If a class simply extends `AbstractBlockHandler`, it is not required to register the class as a service. Additionally,
-if a class implements `BlockHandlerInterface` and requires no construction arguments, registering as a service is
-not required.
-
-If you choose to register your block handler as a service, you must tag your service with the following tag:
-
-    <tag name="zikula.block_handler" module="<CommonModuleName>" />
-
-The 'CommonModuleName' is the 'camel-cased' bundle name.

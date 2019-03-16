@@ -41,13 +41,13 @@
                         blockorder: blockorder
                     }
                 })
-                .done(function(message) {
+                .done(function(data) {
                     $('#feedback').fadeIn(200).fadeOut(3500);
                     //var descriptionDiv = $('#zikulablocksmodule_block_description').parents('.form-group');
-                    //descriptionDiv.after(message.result);
+                    //descriptionDiv.after(data);
                 })
                 .fail(function(jqXHR, textStatus) {
-                    alert('error: ' + textStatus);
+                    alert('Error: ' + textStatus);
                 })
             }
         }).disableSelection();
@@ -65,6 +65,5 @@
                 }
             }
         }).disableSelection();
-
     });
 })(jQuery);

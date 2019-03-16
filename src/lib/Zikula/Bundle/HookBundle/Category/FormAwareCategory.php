@@ -11,31 +11,34 @@
 
 namespace Zikula\Bundle\HookBundle\Category;
 
+use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook;
+use Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse;
+
 class FormAwareCategory implements CategoryInterface
 {
     const NAME = 'form_aware_hook';
 
     /**
-     * Display hook for create/edit forms
-     * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook
+     * Display hook for create/edit forms.
+     * Dispatches FormAwareHook instances.
      */
     const TYPE_EDIT = 'edit';
 
     /**
-     * Display hook for delete forms
-     * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareHook
+     * Display hook for delete forms.
+     * Dispatches FormAwareHook instances.
      */
     const TYPE_DELETE = 'delete';
 
     /**
-     * Process the results of the edit form after the main form is processed
-     * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse
+     * Process the results of the edit form after the main form is processed.
+     * Dispatches FormAwareHook instances.
      */
     const TYPE_PROCESS_EDIT = 'process_edit';
 
     /**
-     * Process the results of the delete form after the main form is processed
-     * dispatches \Zikula\Bundle\HookBundle\FormAwareHook\FormAwareResponse
+     * Process the results of the delete form after the main form is processed.
+     * Dispatches FormAwareResponse instances.
      */
     const TYPE_PROCESS_DELETE = 'process_delete';
 

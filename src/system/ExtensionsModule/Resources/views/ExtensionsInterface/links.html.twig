@@ -1,4 +1,5 @@
 {% macro draw(links, menu_css, current_path) %}
+    {% import _self as menu %}
     {% for link in links %}
         {% if link.links is defined %}
             <li class="dropdown{% if menu_css.menuItemClass is not empty %} {{ menu_css.menuItemClass }}{% endif %}{% if current_path == link.url %} active{% endif %}">
@@ -7,7 +8,7 @@
                     {{ link.text }}
                     <span class="caret"></span></a>
                 <ul id="submenu_{{ menu_css.menuId }}" class="dropdown-menu">
-                    {{ _self.draw(link.links, menu_css, current_path) }}
+                    {{ menu.draw(link.links, menu_css, current_path) }}
                 </ul>
             </li>
         {% else %}

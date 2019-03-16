@@ -19,6 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -36,15 +38,21 @@ class PlacementController extends AbstractController
      * @Template("ZikulaBlocksModule:Placement:edit.html.twig")
      *
      * @param BlockPositionEntity $positionEntity
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param BlockRepositoryInterface $blockRepository
+     * @param BlockPositionRepositoryInterface $positionRepository
+     *
+     * @return Response
      */
-    public function editAction(BlockPositionEntity $positionEntity)
-    {
+    public function editAction(
+        BlockPositionEntity $positionEntity,
+        BlockRepositoryInterface $blockRepository,
+        BlockPositionRepositoryInterface $positionRepository
+    ) {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $allBlocks = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();
+        $allBlocks = $blockRepository->findAll();
         $assignedBlocks = [];
         foreach ($positionEntity->getPlacements() as $blockPlacement) {
             $bid = $blockPlacement->getBlock()->getBid();
@@ -58,7 +66,7 @@ class PlacementController extends AbstractController
 
         return [
             'position' => $positionEntity,
-            'positionChoices' => $this->getDoctrine()->getRepository('ZikulaBlocksModule:BlockPositionEntity')->getPositionChoiceArray(),
+            'positionChoices' => $positionRepository->getPositionChoiceArray(),
             'assignedblocks' => $assignedBlocks,
             'unassignedblocks' => $allBlocks
         ];
@@ -70,7 +78,6 @@ class PlacementController extends AbstractController
      * Change the block order.
      *
      * @param Request $request
-     *
      *  blockorder array of sorted blocks (value = block id)
      *  position int zone id
      *
@@ -105,6 +112,6 @@ class PlacementController extends AbstractController
         }
         $em->flush();
 
-        return new JsonResponse(['result' => true]);
+        return $this->json(['result' => true]);
     }
 }

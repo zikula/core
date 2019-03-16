@@ -11,17 +11,20 @@
 
 namespace Zikula\Core\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-abstract class AbstractController extends Controller
+abstract class AbstractController extends BaseController
 {
     use TranslatorTrait;
     use ExtensionVariablesTrait;
@@ -32,18 +35,31 @@ abstract class AbstractController extends Controller
     protected $name;
 
     /**
+     * @var PermissionApiInterface
+     */
+    protected $permissionApi;
+
+    /**
      * Constructor.
      *
-     * @param AbstractBundle $bundle
-     *            A AbstractBundle instance
+     * @param AbstractBundle $bundle An AbstractBundle instance
+     * @param PermissionApiInterface $permissionApi
+     * @param VariableApiInterface $variableApi
+     * @param TranslatorInterface $translator
+     *
      * @throws \InvalidArgumentException
      */
-    public function __construct(AbstractBundle $bundle)
-    {
+    public function __construct(
+        AbstractBundle $bundle,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        TranslatorInterface $translator
+    ) {
         $this->name = $bundle->getName();
+        $this->permissionApi = $permissionApi;
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
-        $this->variableApi = $bundle->getContainer()->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
-        $this->setTranslator($bundle->getContainer()->get('translator.default'));
+        $this->variableApi = $variableApi; // for ExtensionVariablesTrait
+        $this->setTranslator($translator);
         $this->translator->setDomain($bundle->getTranslationDomain());
         $this->boot($bundle);
     }
@@ -56,7 +72,7 @@ abstract class AbstractController extends Controller
     protected function boot(AbstractBundle $bundle)
     {
         // load optional bootstrap
-        $bootstrap = $bundle->getPath() . "/bootstrap.php";
+        $bootstrap = $bundle->getPath() . '/bootstrap.php';
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
@@ -71,7 +87,7 @@ abstract class AbstractController extends Controller
      *            An array of parameters to pass to the view
      * @return string The rendered view
      */
-    public function renderView($view, array $parameters = [])
+    public function renderView($view, array $parameters = []): string
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -89,7 +105,7 @@ abstract class AbstractController extends Controller
      *            A response instance
      * @return Response A Response instance
      */
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null): Response
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -107,7 +123,7 @@ abstract class AbstractController extends Controller
      *            A response instance
      * @return StreamedResponse A StreamedResponse instance
      */
-    public function stream($view, array $parameters = [], StreamedResponse $response = null)
+    public function stream($view, array $parameters = [], StreamedResponse $response = null): StreamedResponse
     {
         $parameters = $this->decorateTranslator($parameters);
 
@@ -139,7 +155,7 @@ abstract class AbstractController extends Controller
      *            The previous exception
      * @return NotFoundHttpException
      */
-    public function createNotFoundException($message = null, \Exception $previous = null)
+    public function createNotFoundException($message = null, \Exception $previous = null): NotFoundHttpException
     {
         $message = null === $message ? $this->__('Page not found') : $message;
 
@@ -157,7 +173,7 @@ abstract class AbstractController extends Controller
      *            The previous exception
      * @return AccessDeniedException
      */
-    public function createAccessDeniedException($message = null, \Exception $previous = null)
+    public function createAccessDeniedException($message = null, \Exception $previous = null): AccessDeniedException
     {
         //Do not translate Access denied. to ensure that the ExceptionListener is able to catch the message also in other languages.
         $message = null === $message ? 'Access denied.' : $message;
@@ -177,15 +193,17 @@ abstract class AbstractController extends Controller
 
     /**
      * Convenience shortcut to check if user has requested permissions.
+     *
      * @param string $component
      * @param string $instance
      * @param int $level
      * @param int $user
+     *
      * @return bool
      */
     protected function hasPermission($component = null, $instance = null, $level = null, $user = null)
     {
-        return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
+        return $this->permissionApi->hasPermission($component, $instance, $level, $user);
     }
 
     /**
@@ -199,10 +217,11 @@ abstract class AbstractController extends Controller
      *
      * @return Response A Response instance
      */
-    public function forward($controller, array $path = [], array $query = [], array $request = [])
+    protected function forward(string $controller, array $path = [], array $query = [], array $request = []): Response
     {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $path['_controller'] = $controller;
-        $subRequest = $this->container->get('request_stack')->getCurrentRequest()->duplicate($query, $request, $path);
+        $subRequest = $request->duplicate($query, $request, $path);
 
         return $this->container->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }

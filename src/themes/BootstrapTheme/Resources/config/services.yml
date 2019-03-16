@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\BootstrapTheme\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\BootstrapTheme\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaBootstrapThemeAdminMenu }

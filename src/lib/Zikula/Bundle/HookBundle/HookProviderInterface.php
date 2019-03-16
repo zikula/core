@@ -35,18 +35,4 @@ interface HookProviderInterface extends HookInterface
      * @return array The hook types to listen to
      */
     public function getProviderTypes();
-
-    /**
-     * Sets the container service id for this class
-     * @see \Zikula\Bundle\HookBundle\ServiceIdTrait
-     * @param string $serviceId
-     */
-    public function setServiceId($serviceId);
-
-    /**
-     * Gets the container service id for this class
-     * @see \Zikula\Bundle\HookBundle\ServiceIdTrait
-     * @return string
-     */
-    public function getServiceId();
 }

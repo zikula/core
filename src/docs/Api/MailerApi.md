@@ -3,8 +3,6 @@ MailerApi
 
 classname: \Zikula\MailerModule\Api\MailerApi
 
-service id="zikula_mailer_module.api.mailer"
-
 This class is used to send a mail using SwiftMailer configured with settings from the Mailer module configuration.
 
 The class makes the following methods available:
@@ -43,7 +41,7 @@ The fastest way to use this Api:
     $message = Swift_Message::newInstance('my subject', 'the body text');
     $message->setFrom('admin@example.com');
     $message->setTo('foo@bar.com');
-    $this->get('zikula_mailer_module.api.mailer')->sendMessage($message);
+    $this->mailerAPi->sendMessage($message);
 
 Another example for using this service can be found in the `Zikula\MailerModule\Controller\ConfigController#testAction(Request $request)` method:
 
@@ -54,5 +52,4 @@ Another example for using this service can be found in the `Zikula\MailerModule\
     $message->setFrom([$adminMail => $siteName]);
     $message->setTo([$formData['toAddress'] => $formData['toName']]);
 
-    $mailer = $this->get('zikula_mailer_module.api.mailer');
-    $result = $mailer->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
+    $result = $this->mailerApi->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);

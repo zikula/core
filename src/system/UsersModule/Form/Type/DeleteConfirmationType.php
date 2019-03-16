@@ -15,10 +15,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class DeleteConfirmationType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,14 +46,14 @@ class DeleteConfirmationType extends AbstractType
         $builder
             ->add('users', HiddenType::class)
             ->add('delete', SubmitType::class, [
-                'label' => $options['translator']->__('Confirm deletion'),
+                'label' => $this->__('Confirm deletion'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -49,15 +68,5 @@ class DeleteConfirmationType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_deleteconfirmation';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

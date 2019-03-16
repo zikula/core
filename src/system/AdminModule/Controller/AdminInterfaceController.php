@@ -17,7 +17,13 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\AdminModule\Helper\UpdateCheckHelper;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\LinkContainer\LinkContainerCollector;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ThemeModule\Engine\Asset;
 
 /**
  * @Route("/admininterface")
@@ -43,12 +49,14 @@ class AdminInterfaceController extends AbstractController
      *
      * Close the admin container
      *
+     * @param ExtensionRepositoryInterface $extensionRepository
+     *
      * @return Response symfony response object
      */
-    public function footerAction()
+    public function footerAction(ExtensionRepositoryInterface $extensionRepository)
     {
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
-        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
+        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
             'caller' => $caller,
@@ -62,9 +70,11 @@ class AdminInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      *
+     * @param ExtensionRepositoryInterface $extensionRepository
+     *
      * @return Response symfony response object
      */
-    public function breadcrumbsAction()
+    public function breadcrumbsAction(ExtensionRepositoryInterface $extensionRepository)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -72,7 +82,7 @@ class AdminInterfaceController extends AbstractController
 
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $caller = $masterRequest->attributes->all();
-        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
+        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
         $requestedCid = $masterRequest->attributes->get('acid');
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
@@ -96,47 +106,49 @@ class AdminInterfaceController extends AbstractController
      *
      * Add developer notices
      *
+     * @param VariableApiInterface $variableApi
+     *
      * @return Response symfony response object
      */
-    public function developernoticesAction()
+    public function developernoticesAction(VariableApiInterface $variableApi)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $modvars = $this->get('zikula_extensions_module.api.variable')->getAll('ZikulaThemeModule');
+        $modVars = $variableApi->getAll('ZikulaThemeModule');
         $data = [];
         $data['mode'] = $this->get('kernel')->getEnvironment();
         if ('prod' != $data['mode']) {
             $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');
             $data['legacy'] = [
                 'status' => true,
-                'cssjscombine' => $modvars['cssjscombine'],
+                'cssjscombine' => $modVars['cssjscombine'],
                 'render' => [
                     'compile_check' => [
-                        'state' => $modvars['render_compile_check'],
+                        'state' => $modVars['render_compile_check'],
                         'title' => $this->__('Compile check')
                     ],
                     'force_compile' => [
-                        'state' => $modvars['render_force_compile'],
+                        'state' => $modVars['render_force_compile'],
                         'title' => $this->__('Force compile')
                     ],
                     'cache' => [
-                        'state' => $modvars['render_cache'],
+                        'state' => $modVars['render_cache'],
                         'title' => $this->__('Caching')
                     ]
                 ],
                 'theme' => [
                     'compile_check' => [
-                        'state' => $modvars['compile_check'],
+                        'state' => $modVars['compile_check'],
                         'title' => $this->__('Compile check')
                     ],
                     'force_compile' => [
-                        'state' => $modvars['force_compile'],
+                        'state' => $modVars['force_compile'],
                         'title' => $this->__('Force compile')
                     ],
                     'cache' => [
-                        'state' => $modvars['enablecache'],
+                        'state' => $modVars['enablecache'],
                         'title' => $this->__('Caching')
                     ]
                 ]
@@ -154,9 +166,11 @@ class AdminInterfaceController extends AbstractController
      * Add security analyzer
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
+     *
      * @return Response symfony response object
      */
-    public function securityanalyzerAction(Request $request)
+    public function securityanalyzerAction(Request $request, VariableApiInterface $variableApi)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -187,7 +201,6 @@ class AdminInterfaceController extends AbstractController
             $app_htaccess = true;
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
         $hasSecurityCenter = $this->get('kernel')->isBundle('ZikulaSecurityCenterModule');
 
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
@@ -209,7 +222,7 @@ class AdminInterfaceController extends AbstractController
      *
      * @return Response symfony response object
      */
-    public function updatecheckAction()
+    public function updatecheckAction(UpdateCheckHelper $updateCheckHelper)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -222,7 +235,7 @@ class AdminInterfaceController extends AbstractController
                 '_route' => $masterRequest->attributes->get('_route'),
                 '_route_params' => $masterRequest->attributes->get('_route_params')
             ],
-            'updateCheckHelper' => $this->get('zikula_admin_module.update_check_helper')
+            'updateCheckHelper' => $updateCheckHelper
         ]);
     }
 
@@ -231,10 +244,19 @@ class AdminInterfaceController extends AbstractController
      *
      * Admin menu.
      *
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param LinkContainerCollector $linkContainerCollector
+     * @param CapabilityApiInterface $capabilityApi
+     * @param Asset $assetHelper
+     *
      * @return Response symfony response object
      */
-    public function menuAction()
-    {
+    public function menuAction(
+        ExtensionRepositoryInterface $extensionRepository,
+        LinkContainerCollector $linkContainerCollector,
+        CapabilityApiInterface $capabilityApi,
+        Asset $assetHelper
+    ) {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -248,7 +270,7 @@ class AdminInterfaceController extends AbstractController
         $caller['_zkType'] = $masterRequest->attributes->get('_zkType');
         $caller['_zkFunc'] = $masterRequest->attributes->get('_zkFunc');
         $caller['path'] = $masterRequest->getPathInfo();
-        $caller['info'] = !empty($caller['_zkModule']) ? $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']) : [];
+        $caller['info'] = !empty($caller['_zkModule']) ? $extensionRepository->get($caller['_zkModule']) : [];
 
         // category we are in
         $requestedCid = $masterRequest->attributes->get('acid');
@@ -271,7 +293,7 @@ class AdminInterfaceController extends AbstractController
         $template = in_array($template, ['tabs', 'panel']) ? $template : 'tabs';
 
         // get admin capable modules
-        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
 
         // sort modules by displayname
         $moduleNames = [];
@@ -307,12 +329,12 @@ class AdminInterfaceController extends AbstractController
                 $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
             }
 
-            $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
+            $links = $linkContainerCollector->getLinks($adminModule['name'], 'admin');
             try {
-                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
-            } catch (\Exception $e) {
+                $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
+            } catch (\Exception $exception) {
                 // use default icon
-                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('bundles/core/images/admin.png');
+                $adminIconPath = $assetHelper->resolve('bundles/core/images/admin.png');
             }
 
             $module = [

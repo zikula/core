@@ -19,29 +19,28 @@ use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
- * Class MainController
- * This controller is a service defined in `CoreBundle/Resources/config/services.xml`
+ * Main controller.
  */
 class MainController
 {
-    /**
-     * @var VariableApiInterface
-     */
-    private $variableApi;
-
     /**
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
     /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
      * MainController constructor.
-     * @param ZikulaHttpKernelInterface $kernelInterface
+     * @param ZikulaHttpKernelInterface $kernel
      * @param VariableApiInterface $variableApi
      */
-    public function __construct(ZikulaHttpKernelInterface $kernelInterface, VariableApiInterface $variableApi)
+    public function __construct(ZikulaHttpKernelInterface $kernel, VariableApiInterface $variableApi)
     {
-        $this->kernel = $kernelInterface;
+        $this->kernel = $kernel;
         $this->variableApi = $variableApi;
     }
 
@@ -70,7 +69,6 @@ class MainController
         $request->attributes->set('_zkBundle', $moduleName);
         $request->attributes->set('_zkModule', $moduleName);
 
-        return $this->kernel
-            ->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+        return $this->kernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }
 }

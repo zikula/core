@@ -22,10 +22,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class LostPasswordType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,12 +54,12 @@ class LostPasswordType extends AbstractType
             $builder
                 ->add('uname', TextType::class, [
                     'required' => false,
-                    'label' => $options['translator']->__('User name'),
+                    'label' => $this->__('User name'),
                     'input_group' => ['left' => '<i class="fa fa-user"></i>'],
                 ])
                 ->add('email', EmailType::class, [
                     'required' => false,
-                    'label' => $options['translator']->__('Email Address'),
+                    'label' => $this->__('Email Address'),
                     'input_group' => ['left' => '<i class="fa fa-at"></i>'],
                 ])
             ;
@@ -49,14 +68,14 @@ class LostPasswordType extends AbstractType
                 ->add('pass', RepeatedType::class, [
                     'type' => PasswordType::class,
                     'first_options' => [
-                        'label' => $options['translator']->__('Create new password'),
+                        'label' => $this->__('Create new password'),
                         'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                     ],
                     'second_options' => [
-                        'label' => $options['translator']->__('Repeat new password'),
+                        'label' => $this->__('Repeat new password'),
                         'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                     ],
-                    'invalid_message' => $options['translator']->__('The passwords must match!'),
+                    'invalid_message' => $this->__('The passwords must match!'),
                     'constraints' => [
                         new NotNull(),
                         new ValidPassword()
@@ -66,7 +85,7 @@ class LostPasswordType extends AbstractType
         }
         $builder
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Submit'),
+                'label' => $this->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
@@ -87,12 +106,13 @@ class LostPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'includeReset' => false,
             'constraints' => new Callback(['callback' => function($data, ExecutionContextInterface $context) {
                 if (!isset($data['pass']) && empty($data['uname']) && empty($data['email'])) {
-                    $context->buildViolation('Error! You must enter either your username or email address.')
-                        ->addViolation();
+                    $context
+                        ->buildViolation('Error! You must enter either your username or email address.')
+                        ->addViolation()
+                    ;
                 }
             }]),
         ]);

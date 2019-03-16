@@ -17,7 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Common\Translator\Translator;
+use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ThemeModule\AbstractTheme;
+use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractBundle extends Bundle
@@ -29,13 +32,6 @@ abstract class AbstractBundle extends Bundle
     const STATE_MISSING = 6;
 
     protected $state;
-
-    protected $booted = false;
-
-    public function isBooted()
-    {
-        return $this->booted;
-    }
 
     public function setState($state)
     {
@@ -63,7 +59,7 @@ abstract class AbstractBundle extends Bundle
 
     public function getRoutingConfig()
     {
-        return "@{$this->name}/Resources/config/routing.yml";
+        return '@' . $this->name . '/Resources/config/routing.yml';
     }
 
     public function getTranslationDomain()
@@ -175,7 +171,7 @@ abstract class AbstractBundle extends Bundle
     public function addStylesheet($name = 'style.css')
     {
         try {
-            $styleSheet = $this->getContainer()->get('zikula_core.common.theme.asset_helper')->resolve('@' . $this->getName() . ":css/$name");
+            $styleSheet = $this->getContainer()->get(Asset::class)->resolve('@' . $this->getName() . ":css/$name");
         } catch (\InvalidArgumentException $e) {
             $styleSheet = '';
         }
@@ -195,11 +191,11 @@ abstract class AbstractBundle extends Bundle
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
         if (!empty($this->container)) {
-            $metaData->setTranslator($this->container->get('translator'));
+            $metaData->setTranslator($this->container->get(Translator::class));
         }
         if (!empty($this->container) && $this->container->getParameter('installed')) {
             // overwrite composer.json settings with dynamic values from extension repository
-            $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($this->getName());
+            $extensionEntity = $this->container->get(ExtensionRepository::class)->get($this->getName());
             if (!is_null($extensionEntity)) {
                 $metaData->setUrl($extensionEntity->getUrl());
                 $metaData->setDisplayName($extensionEntity->getDisplayname());

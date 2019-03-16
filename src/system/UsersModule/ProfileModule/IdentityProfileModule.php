@@ -64,4 +64,12 @@ class IdentityProfileModule implements ProfileModuleInterface
     {
         return '';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBundleName()
+    {
+        return 'ZikulaUsersModule';
+    }
 }

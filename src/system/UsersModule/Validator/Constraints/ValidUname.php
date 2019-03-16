@@ -22,11 +22,6 @@ class ValidUname extends Constraint
 
     public $excludedUid;
 
-    public function validatedBy()
-    {
-        return 'zikula.users.uname.validator';
-    }
-
     /**
      * {@inheritdoc}
      */

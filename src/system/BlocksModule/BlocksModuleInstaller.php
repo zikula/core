@@ -26,9 +26,9 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     private $entities = [
-        'Zikula\BlocksModule\Entity\BlockEntity',
-        'Zikula\BlocksModule\Entity\BlockPositionEntity',
-        'Zikula\BlocksModule\Entity\BlockPlacementEntity',
+        BlockEntity::class,
+        BlockPositionEntity::class,
+        BlockPlacementEntity::class
     ];
 
     /**
@@ -40,7 +40,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
     {
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return false;
         }
 
@@ -54,14 +54,15 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
     /**
      * upgrade the blocks module
      *
-     * @param string $oldversion version being upgraded
+     * @param string $oldVersion version being upgraded
      *
      * @return bool true if successful, false otherwise
      */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion)
     {
+        $blockRepository = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity');
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '3.8.1':
             case '3.8.2':
             case '3.9.0':
@@ -103,7 +104,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->schemaTool->update($this->entities);
                 $this->entityManager->getConnection()->executeQuery("UPDATE blocks SET properties='a:0:{}'");
 
-                $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findAll();
+                $blocks = $blockRepository->findAll();
                 $installerHelper = new InstallerHelper();
                 /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
                 foreach ($blocks as $block) {
@@ -119,7 +120,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
             case '3.9.2':
                 // convert Text and Html block types so properties is proper array
-                $blocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => ['Html', 'Text']]);
+                $blocks = $blockRepository->findBy(['blocktype' => ['Html', 'Text']]);
                 foreach ($blocks as $block) {
                     $properties = $block->getProperties();
                     if (!is_array($properties)) {
@@ -128,10 +129,12 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '3.9.3':
-                $this->schemaTool->drop(['Zikula\BlocksModule\Entity\UserBlockEntity']);
+                $this->schemaTool->drop([
+                    'Zikula\BlocksModule\Entity\UserBlockEntity'
+                ]);
             case '3.9.4':
                 // convert integer values to boolean for search block settings
-                $searchBlocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => 'Search']);
+                $searchBlocks = $blockRepository->findBy(['blocktype' => 'Search']);
                 foreach ($searchBlocks as $searchBlock) {
                     $properties = $searchBlock->getProperties();
                     $properties['displaySearchBtn'] = (bool)$properties['displaySearchBtn'];
@@ -144,7 +147,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
                 $this->entityManager->flush();
             case '3.9.5':
-                $loginBlocks = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity')->findBy(['blocktype' => 'Login']);
+                $loginBlocks = $blockRepository->findBy(['blocktype' => 'Login']);
                 foreach ($loginBlocks as $loginBlock) {
                     $filters = $loginBlock->getFilters();
                     $filters[] = [
@@ -215,10 +218,10 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         }
         $this->entityManager->flush();
 
-        $hellomessage = $this->__('<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework (CMF) built on top of Symfony.</p><p>With Zikula:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="http://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site\'s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site\'s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
+        $hellomessage = $this->__('<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework (CMF) built on top of Symfony.</p><p>With Zikula:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="https://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site\'s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site\'s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
 
         $blocks = [];
-        $extensionRepo = $this->entityManager->getRepository('\Zikula\ExtensionsModule\Entity\ExtensionEntity');
+        $extensionRepo = $this->entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity');
         $blocksModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaBlocksModule']);
         $searchModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaSearchModule']);
         $usersModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaUsersModule']);

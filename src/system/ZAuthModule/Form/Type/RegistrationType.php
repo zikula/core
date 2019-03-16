@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
@@ -33,10 +34,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    use TranslatorTrait;
 
     /**
      * @var array
@@ -44,15 +42,23 @@ class RegistrationType extends AbstractType
     private $zAuthModVars;
 
     /**
-     * RegistrationType constructor.
-     *
      * @param TranslatorInterface $translator
      * @param VariableApiInterface $variableApi
      */
-    public function __construct(TranslatorInterface $translator, VariableApiInterface $variableApi)
+    public function __construct(
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
+        $this->setTranslator($translator);
+        $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-        $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
     /**
@@ -62,8 +68,8 @@ class RegistrationType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->translator->__('User name'),
-                'help' => $this->translator->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'label' => $this->__('User name'),
+                'help' => $this->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'attr' => [
                     'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
                 ],
@@ -72,35 +78,42 @@ class RegistrationType extends AbstractType
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->translator->__('Email'),
-                    'help' => $this->translator->__('You will use your e-mail address to identify yourself when you log in.'),
+                    'label' => $this->__('Email'),
+                    'help' => $this->__('You will use your e-mail address to identify yourself when you log in.'),
                 ],
-                'second_options' => ['label' => $this->translator->__('Repeat Email')],
-                'invalid_message' => $this->translator->__('The emails  must match!'),
+                'second_options' => [
+                    'label' => $this->__('Repeat Email')
+                ],
+                'invalid_message' => $this->__('The emails  must match!'),
                 'constraints' => [new ValidEmail()]
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => $this->translator->__('Password'), 'help' => $this->translator->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])],
-                'second_options' => ['label' => $this->translator->__('Repeat Password')],
-                'invalid_message' => $this->translator->__('The passwords must match!'),
+                'first_options' => [
+                    'label' => $this->__('Password'),
+                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                ],
+                'second_options' => [
+                    'label' => $this->__('Repeat Password')
+                ],
+                'invalid_message' => $this->__('The passwords must match!'),
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-plus',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', ButtonType::class, [
-                'label' => $this->translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])
             ->add('reset', ResetType::class, [
-                'label' => $this->translator->__('Reset'),
+                'label' => $this->__('Reset'),
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']
             ])
@@ -110,7 +123,7 @@ class RegistrationType extends AbstractType
                 'mapped' => false,
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),
-                'help' => $this->translator->__('Asking this question helps us prevent automated scripts from accessing private areas of the site.'),
+                'help' => $this->__('Asking this question helps us prevent automated scripts from accessing private areas of the site.'),
             ]);
         }
     }

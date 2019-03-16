@@ -166,6 +166,9 @@ class MigrationHelper
         }
         $this->manager->flush();
 
-        return ['lastUid' => $lastUid, 'complete' => $complete];
+        return [
+            'lastUid' => $lastUid,
+            'complete' => $complete
+        ];
     }
 }

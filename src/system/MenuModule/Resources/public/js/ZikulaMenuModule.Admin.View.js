@@ -119,8 +119,8 @@
                 type: 'POST',
                 url: Routing.generate('zikulamenumodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
-            }).done(function(result) {
-                performContextMenuActionCallback(result.data);
+            }).done(function(data) {
+                performContextMenuActionCallback(data);
             }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
@@ -184,9 +184,7 @@
                             type: 'POST',
                             url: Routing.generate('zikulamenumodule_node_contextmenu', {action: data.action, id: entityId}),
                             data: pars
-                        }).done(function(result) {
-                            var data = result.data;
-
+                        }).done(function(data) {
                             if (data.action) {
                                 // validation failed
                                 updateEditForm(data.result);
@@ -254,8 +252,8 @@
                                 data: {
                                     id: $(node).attr('id').replace(id_prefix, '')
                                 }
-                            }).done(function(result) {
-                                var children_move = result.data.result;
+                            }).done(function(data) {
+                                var children_move = data.result;
                                 deleteModal.find('.modal-body').append(children_move);
                                 deleteModal.find('#node_delete_move').hide();
                                 deleteModal.find('#node_delete_move_action').show();
@@ -346,8 +344,8 @@
                     parent: data.parent,
                     position: data.position
                 }
-            }).done(function(result) {
-                console.log(result);
+            }).done(function(data) {
+                console.log(data);
             }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             });

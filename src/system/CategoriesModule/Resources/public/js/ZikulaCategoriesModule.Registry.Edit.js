@@ -4,7 +4,7 @@
     $(document).ready(function() {
         var $moduleName = $('#zikulacategoriesmodule_category_registry_modname');
         $moduleName.change(function () {
-            $("#entity-loading").removeClass('hidden').addClass('show');
+            $('#entity-loading').removeClass('hidden').addClass('show');
             var $form = $(this).closest('form');
             var data = {};
             data[$moduleName.attr('name')] = $moduleName.val();

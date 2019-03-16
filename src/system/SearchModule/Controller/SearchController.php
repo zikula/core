@@ -12,12 +12,20 @@
 namespace Zikula\SearchModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
+use Zikula\SearchModule\Collector\SearchableModuleCollector;
+use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
+use Zikula\SearchModule\Form\Type\AmendableModuleSearchType;
+use Zikula\SearchModule\Form\Type\SearchType;
 
 class SearchController extends AbstractController
 {
@@ -26,11 +34,19 @@ class SearchController extends AbstractController
      * @Template("ZikulaSearchModule:Search:execute.html.twig")
      *
      * @param Request $request
+     * @param SearchableModuleCollector $collector
+     * @param SearchApiInterface $searchApi
+     * @param PermissionApiInterface $permissionApi
      * @param int $page
      * @return array|Response
      */
-    public function executeAction(Request $request, $page = -1)
-    {
+    public function executeAction(
+        Request $request,
+        SearchableModuleCollector $collector,
+        SearchApiInterface $searchApi,
+        PermissionApiInterface $permissionApi,
+        $page = -1
+    ) {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
@@ -44,17 +60,17 @@ class SearchController extends AbstractController
                 $activeModules = [$activeModules];
             }
         }
-        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
-
+        $searchableModules = $collector->getAll();
         if (0 == count($searchableModules)) {
             return $this->render('@ZikulaSearchModule/Search/unsearchable.html.twig');
         }
 
         $moduleFormBuilder = $this->get('form.factory')
-            ->createNamedBuilder('modules', 'Symfony\Component\Form\Extension\Core\Type\FormType', [], [
+            ->createNamedBuilder('modules', FormType::class, [], [
                 'auto_initialize' => false,
                 'required' => false
-            ]);
+            ])
+        ;
         foreach ($searchableModules as $moduleName => $searchableInstance) {
             if ($setActiveDefaults) {
                 $activeModules[$moduleName] = 1;
@@ -65,24 +81,19 @@ class SearchController extends AbstractController
             if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
                 continue;
             }
-            $moduleFormBuilder->add($moduleName, 'Zikula\SearchModule\Form\Type\AmendableModuleSearchType', [
+            $moduleFormBuilder->add($moduleName, AmendableModuleSearchType::class, [
                 'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
-                'translator' => $this->getTranslator(),
-                'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && (1 == $activeModules[$moduleName])),
-                'permissionApi' => $this->get('zikula_permissions_module.api.permission')
+                'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && (1 == $activeModules[$moduleName]))
             ]);
             $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
         }
-        $form = $this->createForm('Zikula\SearchModule\Form\Type\SearchType', [], [
-            'translator' => $this->get('translator.default'),
-        ]);
+        $form = $this->createForm(SearchType::class, []);
         $form->add($moduleFormBuilder->getForm());
 
         $form->handleRequest($request);
         $noResultsFound = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $searchApi = $this->get('zikula_search_module.api.search_api');
             $formData = $form->getData();
             $formData['numlimit'] = $this->getVar('itemsperpage', 25);
             $formData['firstPage'] = $page < 1;
@@ -120,11 +131,14 @@ class SearchController extends AbstractController
      *
      * Display a list of recent searches
      *
+     * @param Request $request
+     * @param SearchStatRepositoryInterface $searchStatRepository
+     *
      * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have read access
      */
-    public function recentAction(Request $request)
+    public function recentAction(Request $request, SearchStatRepositoryInterface $searchStatRepository)
     {
         // security check
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
@@ -133,13 +147,12 @@ class SearchController extends AbstractController
 
         $startnum = $request->query->getInt('startnum', 0);
         $itemsPerPage = $this->getVar('itemsperpage', 25);
-        $statRepo = $this->get('zikula_search_module.search_stat_repository');
-        $items = $statRepo->getStats([], ['date' => 'DESC'], $itemsPerPage, $startnum);
+        $items = $searchStatRepository->getStats([], ['date' => 'DESC'], $itemsPerPage, $startnum);
 
         $templateParameters = [
             'recentSearches' => $items,
             'pager' => [
-                'amountOfItems' => $statRepo->countStats(),
+                'amountOfItems' => $searchStatRepository->countStats(),
                 'itemsPerPage'  => $itemsPerPage
             ]
         ];
@@ -152,15 +165,16 @@ class SearchController extends AbstractController
      *
      * Generate xml for opensearch syndication
      *
+     * @param VariableApiInterface $variableApi
+     *
      * @return PlainResponse Thrown if the user doesn't have read access to the module
      */
-    public function opensearchAction()
+    public function opensearchAction(VariableApiInterface $variableApi)
     {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
         $templateParameters = [
             'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
             'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),

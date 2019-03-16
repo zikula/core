@@ -23,8 +23,11 @@ use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
+use Zikula\UsersModule\Helper\AccessHelper;
 
 /**
  * Class AbstractController
@@ -72,7 +75,7 @@ abstract class AbstractController
         $this->router = $this->container->get('router');
         $this->twig = $this->container->get('twig');
         $this->form = $this->container->get('form.factory');
-        $this->controllerHelper = $this->container->get('zikula_core_installer.controller.helper');
+        $this->controllerHelper = $this->container->get(ControllerHelper::class);
         $this->translator = $container->get('translator.default');
     }
 
@@ -105,15 +108,19 @@ abstract class AbstractController
      */
     protected function reSyncAndActivateModules()
     {
-        $extensionsInFileSystem = $this->container->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
-        $this->container->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem);
+        $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
+        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
+        $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+
+        $doctrine = $this->container->get('doctrine');
 
         /** @var ExtensionEntity[] $extensions */
-        $extensions = $this->container->get('zikula_extensions_module.extension_repository')->findBy(['name' => array_keys(ZikulaKernel::$coreModules)]);
+        $extensions = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+            ->findBy(['name' => array_keys(ZikulaKernel::$coreModules)]);
         foreach ($extensions as $extension) {
             $extension->setState(Constant::STATE_ACTIVE);
         }
-        $this->container->get('doctrine')->getManager()->flush();
+        $doctrine->getManager()->flush();
 
         return true;
     }
@@ -125,22 +132,20 @@ abstract class AbstractController
      */
     protected function setModuleCategory($moduleName, $translatedCategoryName)
     {
-        $modulesCategories = $this->container->get('doctrine')
-            ->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('name');
-        $moduleEntity = $this->container->get('doctrine')
-            ->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $moduleName]);
+        $doctrine = $this->container->get('doctrine');
+        $modulesCategories = $doctrine->getRepository('ZikulaAdminModule:AdminCategoryEntity')
+            ->getIndexedCollection('name');
+        $moduleEntity = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+            ->findOneBy(['name' => $moduleName]);
         if (isset($modulesCategories[$translatedCategoryName])) {
-            $this->container->get('doctrine')
-                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
+            $doctrine->getRepository('ZikulaAdminModule:AdminModuleEntity')
                 ->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
         } else {
-            $defaultCategory = $this->container->get('doctrine')
-                ->getRepository('ZikulaAdminModule:AdminCategoryEntity')
-                ->find($this->container->get('zikula_extensions_module.api.variable')
+            $defaultCategory = $doctrine->getRepository('ZikulaAdminModule:AdminCategoryEntity')
+                ->find($this->container->get(VariableApi::class)
                     ->get('ZikulaSettingsModule', 'defaultcategory', 5)
                 );
-            $this->container->get('doctrine')
-                ->getRepository('ZikulaAdminModule:AdminModuleEntity')
+            $doctrine->getRepository('ZikulaAdminModule:AdminModuleEntity')
                 ->setModuleCategory($moduleEntity, $defaultCategory);
         }
     }
@@ -150,10 +155,11 @@ abstract class AbstractController
      */
     protected function loginAdmin($params)
     {
-        $user = $this->container->get('zikula_users_module.user_repository')->findOneBy(['uname' => $params['username']]);
+        $user = $this->container->get('doctrine')->getRepository('ZikulaUsersModule:UserEntity')
+            ->findOneBy(['uname' => $params['username']]);
         $request = $this->container->get('request_stack')->getCurrentRequest();
         if (isset($request) && $request->hasSession()) {
-            $this->container->get('zikula_users_module.helper.access_helper')->login($user, true);
+            $this->container->get(AccessHelper::class)->login($user, true);
         }
 
         return true;

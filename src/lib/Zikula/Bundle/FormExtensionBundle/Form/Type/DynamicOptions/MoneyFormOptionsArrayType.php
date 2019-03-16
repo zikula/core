@@ -26,9 +26,9 @@ class MoneyFormOptionsArrayType extends FormOptionsArrayType
         $builder
             ->add('currency', TextType::class, [
                 'empty_data' => 'EUR',
-                'label' => $this->translator->__('Currency'),
+                'label' => $this->__('Currency'),
                 'required' => false,
-                'help' => $this->translator->__('Any 3 letter ISO 4217 code. Default: EUR')
+                'help' => $this->__('Any 3 letter ISO 4217 code. Default: EUR')
             ])
         ;
     }

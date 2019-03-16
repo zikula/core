@@ -7,7 +7,7 @@
 Zikula Core - Application Framework
 ===================================
 
-Zikula Core is an Application Framework which extends Symfony 3.x and includes technologies
+Zikula Core is an Application Framework which extends Symfony 4.x and includes technologies
 fostering a dynamic modular development paradigm and Twig-based theming system which allows for rapid
 website and application development. See the [Features](https://github.com/zikula/core/blob/master/src/docs/FEATURES.md)
 document for more information.
@@ -22,9 +22,9 @@ For more information visit https://ziku.la/
 Requirements
 ------------
 
- - Zikula Core requires PHP >= 5.5.9
+ - Zikula Core requires PHP >= 7.2.0
  - Additional server considerations can be found on
-   [the Symfony site](http://symfony.com/doc/current/reference/requirements.html)
+   [the Symfony site](https://symfony.com/doc/current/reference/requirements.html)
  - Zikula requires more memory than typical to install. You should set your memory limit in `php.ini`
    to 128 MB for the installation process.
  - Zikula requires that `date.timezone` be set in the `php.ini` configuration file (or `.htaccess`).
@@ -39,7 +39,7 @@ Requirements
 Documentation
 -------------
 
-Please see our [developer documentation](https://github.com/zikula/core/tree/2.0/src/docs)
+Please see our [developer documentation](https://github.com/zikula/core/tree/master/src/docs)
 
 
 Contributing

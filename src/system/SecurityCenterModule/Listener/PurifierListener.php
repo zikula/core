@@ -27,7 +27,7 @@ class PurifierListener implements EventSubscriberInterface
     /**
      * @var
      */
-    private $upgrading;
+    private $isUpgrading;
 
     /**
      * @var VariableApiInterface
@@ -42,18 +42,18 @@ class PurifierListener implements EventSubscriberInterface
     /**
      * PurifierListener constructor.
      * @param bool $installed
-     * @param $upgrading
+     * @param $isUpgrading
      * @param VariableApiInterface $variableApi
      * @param PurifierHelper $purifierHelper
      */
     public function __construct(
         $installed,
-        $upgrading,
+        $isUpgrading,
         VariableApiInterface $variableApi,
         PurifierHelper $purifierHelper
     ) {
         $this->installed = $installed;
-        $this->upgrading = $upgrading;
+        $this->isUpgrading = $isUpgrading;
         $this->variableApi = $variableApi;
         $this->purifierHelper = $purifierHelper;
     }
@@ -67,7 +67,7 @@ class PurifierListener implements EventSubscriberInterface
 
     public function purify(GenericEvent $event)
     {
-        if (!$this->installed || $this->upgrading) {
+        if (!$this->installed || $this->isUpgrading) {
             return;
         }
 

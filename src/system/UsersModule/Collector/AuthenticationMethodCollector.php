@@ -35,26 +35,29 @@ class AuthenticationMethodCollector
     private $authenticationMethodsStatus;
 
     /**
-     * AuthenticationMethodCollector constructor.
+     * Constructor.
+     *
      * @param VariableApiInterface $variableApi
+     * @param AuthenticationMethodInterface[] $methods
      */
-    public function __construct(VariableApiInterface $variableApi)
+    public function __construct(VariableApiInterface $variableApi, iterable $methods)
     {
         $this->authenticationMethodsStatus = $variableApi->getSystemVar('authenticationMethodsStatus', []);
+        foreach ($methods as $method) {
+            $this->add($method);
+        }
     }
 
     /**
      * Add a method to the collection.
-     * @param string $alias
+     *
      * @param AuthenticationMethodInterface $method
      */
-    public function add($alias, AuthenticationMethodInterface $method)
+    public function add(AuthenticationMethodInterface $method)
     {
+        $alias = $method->getAlias();
         if (isset($this->authenticationMethods[$alias])) {
             throw new \InvalidArgumentException('Attempting to register an authentication method with a duplicate alias. (' . $alias . ')');
-        }
-        if ($alias !== $method->getAlias()) {
-            throw new \InvalidArgumentException('The alias set in the class does not exactly match the alias set in the compiler pass.');
         }
         $this->authenticationMethods[$alias] = $method;
         if (isset($this->authenticationMethodsStatus[$alias]) && $this->authenticationMethodsStatus[$alias]) {

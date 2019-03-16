@@ -11,7 +11,7 @@
 
 namespace Zikula\PermissionsModule\Api;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;

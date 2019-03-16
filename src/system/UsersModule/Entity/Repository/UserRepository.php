@@ -11,8 +11,9 @@
 
 namespace Zikula\UsersModule\Entity\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\Core\Doctrine\WhereFromFilterTrait;
@@ -20,9 +21,14 @@ use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
-class UserRepository extends EntityRepository implements UserRepositoryInterface
+class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
     use WhereFromFilterTrait;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserEntity::class);
+    }
 
     public function findByUids($uids)
     {

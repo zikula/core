@@ -3,10 +3,7 @@ CapabilityApi
 
 classname: \Zikula\ExtensionsModule\Api\CapabilityApi
 
-service id="zikula_extensions_module.api.capability"
-
-This class defines and tests for the capabilities of an extension. This class replaces similar functionality
-from ModUtil::* methods.
+This class defines and tests for the capabilities of an extension.
 
 The class makes the following methods available:
 

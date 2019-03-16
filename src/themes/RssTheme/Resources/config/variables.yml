@@ -11,7 +11,6 @@ rsslevel:
   default_value: rss20
   type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
   options:
-    choices_as_values: true
     label: "RSS Version"
     choices:
       "RSS v0.91": rss091

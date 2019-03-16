@@ -11,11 +11,18 @@
 
 namespace Zikula\BlocksModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 
-class BlockPositionRepository extends EntityRepository implements BlockPositionRepositoryInterface
+class BlockPositionRepository extends ServiceEntityRepository implements BlockPositionRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, BlockPositionEntity::class);
+    }
+
     public function findByName($name)
     {
         return $this->findOneBy(['name' => $name]);

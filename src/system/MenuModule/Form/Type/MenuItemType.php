@@ -19,7 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;
@@ -27,6 +28,24 @@ use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
 
 class MenuItemType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -61,12 +80,13 @@ class MenuItemType extends AbstractType
         $builder->get('options')
             ->addModelTransformer(new KeyValueTransformer())
             ->addEventSubscriber(new KeyValueFixerListener())
-            ->addEventSubscriber(new OptionValidatorListener($options['translator']))
+            ->addEventSubscriber(new OptionValidatorListener($this->translator))
         ;
         if ($options['includeRoot']) {
             $builder->add('root', EntityType::class, [
+                'label' => $this->__('Root'),
                 'class' => MenuItemEntity::class,
-                'choice_label' => 'title',
+                'choice_label' => 'title'
             ]);
         } else {
             $builder->add('root', HiddenMenuItemType::class);
@@ -75,7 +95,7 @@ class MenuItemType extends AbstractType
             $builder->add('parent', EntityType::class, [
                 'class' => MenuItemEntity::class,
                 'choice_label' => 'title',
-                'placeholder' => $options['translator']->__('No parent'),
+                'placeholder' => $this->__('No parent'),
                 'empty_data' => null,
                 'required' => false,
             ]);
@@ -98,7 +118,6 @@ class MenuItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => new IdentityTranslator(),
             'includeRoot' => false,
             'includeParent' => false,
             'data_class' => MenuItemEntity::class,

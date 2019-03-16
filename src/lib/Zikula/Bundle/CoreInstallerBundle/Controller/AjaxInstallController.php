@@ -15,13 +15,18 @@ use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\BlocksModule\BlocksModuleInstaller;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Helper\ExtensionHelper;
+use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -57,57 +62,57 @@ class AjaxInstallController extends AbstractController
     private function executeStage($stageName)
     {
         switch ($stageName) {
-            case "bundles":
+            case 'bundles':
                 return $this->createBundles();
-            case "install_event":
+            case 'install_event':
                 return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
-            case "extensions":
+            case 'extensions':
                 return $this->installModule('ZikulaExtensionsModule');
-            case "settings":
+            case 'settings':
                 return $this->installModule('ZikulaSettingsModule');
-            case "theme":
+            case 'theme':
                 return $this->installModule('ZikulaThemeModule');
-            case "admin":
+            case 'admin':
                 return $this->installModule('ZikulaAdminModule');
-            case "permissions":
+            case 'permissions':
                 return $this->installModule('ZikulaPermissionsModule');
-            case "groups":
+            case 'groups':
                 return $this->installModule('ZikulaGroupsModule');
-            case "blocks":
+            case 'blocks':
                 return $this->installModule('ZikulaBlocksModule');
-            case "users":
+            case 'users':
                 return $this->installModule('ZikulaUsersModule');
-            case "zauth":
+            case 'zauth':
                 return $this->installModule('ZikulaZAuthModule');
-            case "security":
+            case 'security':
                 return $this->installModule('ZikulaSecurityCenterModule');
-            case "categories":
+            case 'categories':
                 return $this->installModule('ZikulaCategoriesModule');
-            case "mailer":
+            case 'mailer':
                 return $this->installModule('ZikulaMailerModule');
-            case "search":
+            case 'search':
                 return $this->installModule('ZikulaSearchModule');
-            case "routes":
+            case 'routes':
                 return $this->installModule('ZikulaRoutesModule');
-            case "menu":
+            case 'menu':
                 return $this->installModule('ZikulaMenuModule');
-            case "updateadmin":
+            case 'updateadmin':
                 return $this->updateAdmin();
-            case "loginadmin":
+            case 'loginadmin':
                 $params = $this->decodeParameters($this->yamlManager->getParameters());
 
                 return $this->loginAdmin($params);
-            case "activatemodules":
+            case 'activatemodules':
                 return $this->reSyncAndActivateModules();
-            case "categorize":
+            case 'categorize':
                 return $this->categorizeModules();
-            case "createblocks":
+            case 'createblocks':
                 return $this->createBlocks();
-            case "finalizeparameters":
+            case 'finalizeparameters':
                 return $this->finalizeParameters();
-            case "installassets":
+            case 'installassets':
                 return $this->installAssets();
-            case "protect":
+            case 'protect':
                 return $this->protectFiles();
         }
 
@@ -118,7 +123,7 @@ class AjaxInstallController extends AbstractController
     {
         $kernel = $this->container->get('kernel');
         $boot = new CoreBundleBootstrap();
-        $helper = $this->container->get('zikula_core.internal.bootstrap_helper');
+        $helper = $this->container->get(BootstrapHelper::class);
         $helper->createSchema();
         $helper->load();
         $bundles = [];
@@ -158,7 +163,7 @@ class AjaxInstallController extends AbstractController
 
     private function createBlocks()
     {
-        $installer = new \Zikula\BlocksModule\BlocksModuleInstaller();
+        $installer = new BlocksModuleInstaller();
         $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
         $installer->setContainer($this->container);
         // create the default blocks.
@@ -189,7 +194,7 @@ class AjaxInstallController extends AbstractController
         $mapping->setUname($userEntity->getUname());
         $mapping->setEmail($userEntity->getEmail());
         $mapping->setVerifiedEmail(true);
-        $mapping->setPass($this->container->get('zikula_zauth_module.api.password')->getHashedPassword($params['password']));
+        $mapping->setPass($this->container->get(PasswordApi::class)->getHashedPassword($params['password']));
         $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_UNAME);
         $entityManager->persist($mapping);
 
@@ -201,7 +206,7 @@ class AjaxInstallController extends AbstractController
     private function finalizeParameters()
     {
         $params = $this->decodeParameters($this->yamlManager->getParameters());
-        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+        $variableApi = $this->container->get(VariableApi::class);
         $variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         $variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
@@ -230,14 +235,14 @@ class AjaxInstallController extends AbstractController
         $this->yamlManager->setParameters($params);
 
         // clear the cache
-        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
+        $this->container->get(CacheClearer::class)->clear('symfony.config');
 
         return true;
     }
 
     private function installAssets()
     {
-        $this->container->get('zikula_extensions_module.extension_helper')->installAssets();
+        $this->container->get(ExtensionHelper::class)->installAssets();
 
         return true;
     }
@@ -265,7 +270,7 @@ class AjaxInstallController extends AbstractController
 
         $this->yamlManager->setParameters($params);
         // clear the cache
-        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
+        $this->container->get(CacheClearer::class)->clear('symfony.config');
 
         return true;
     }
@@ -273,8 +278,9 @@ class AjaxInstallController extends AbstractController
     private function createMainMenuBlock()
     {
         // Create the Main Menu Block
-        $_em = $this->container->get('doctrine')->getManager();
-        $menuModuleEntity = $_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => 'ZikulaMenuModule']);
+        $entityManager = $this->container->get('doctrine')->getManager();
+        $menuModuleEntity = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+            ->findOneBy(['name' => 'ZikulaMenuModule']);
         $blockEntity = new BlockEntity();
         $mainMenuString = $this->translator->__('Main menu');
         $blockEntity->setTitle($mainMenuString);
@@ -286,15 +292,16 @@ class AjaxInstallController extends AbstractController
             'name' => 'mainMenu',
             'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
         ]);
-        $_em->persist($blockEntity);
+        $entityManager->persist($blockEntity);
 
-        $topNavPosition = $_em->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findOneBy(['name' => 'topnav']);
+        $topNavPosition = $entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')
+            ->findOneBy(['name' => 'topnav']);
         $placement = new BlockPlacementEntity();
         $placement->setBlock($blockEntity);
         $placement->setPosition($topNavPosition);
         $placement->setSortorder(0);
-        $_em->persist($placement);
+        $entityManager->persist($placement);
 
-        $_em->flush();
+        $entityManager->flush();
     }
 }

@@ -42,7 +42,7 @@ class NodeController extends AbstractController
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
             return $this->json($this->__('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
-        $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         $mode = $request->request->get('mode', 'edit');
 
         switch ($action) {
@@ -61,11 +61,10 @@ class NodeController extends AbstractController
                         $menuItemEntity->setRoot($sibling->getRoot());
                     }
                 }
-                $form = $this->createForm(MenuItemType::class, $menuItemEntity, [
-                    'translator' => $this->getTranslator(),
-                ]);
+                $form = $this->createForm(MenuItemType::class, $menuItemEntity);
                 $form->get('after')->setData($request->request->get('after', null));
-                if ($form->handleRequest($request)->isValid()) {
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
                     $menuItemEntity = $form->getData();
                     $after = $form->get('after')->getData();
                     if (!empty($after)) {
@@ -82,7 +81,7 @@ class NodeController extends AbstractController
                     ]);
                 }
                 $response = [
-                    'result' => $this->get('templating')->render('@ZikulaMenuModule/Menu/edit.html.twig', [
+                    'result' => $this->get('twig')->render('@ZikulaMenuModule/Menu/edit.html.twig', [
                         'form' => $form->createView()
                     ]),
                     'action' => $action,
@@ -117,7 +116,7 @@ class NodeController extends AbstractController
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
-        $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
         $menuItemEntity = $repo->find($entityId);

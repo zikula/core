@@ -15,10 +15,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class LostUserNameType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,11 +45,11 @@ class LostUserNameType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => $options['translator']->__('Email Address'),
+                'label' => $this->__('Email Address'),
                 'input_group' => ['left' => '<i class="fa fa-at"></i>'],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Submit'),
+                'label' => $this->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
@@ -43,15 +62,5 @@ class LostUserNameType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_account_lostusername';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

@@ -3,8 +3,6 @@ VariableApi
 
 classname: \Zikula\ExtensionsModule\Api\VariableApi
 
-service id="zikula_extensions_module.api.variable"
-
 This class manages the storage and retrieval of extension variables and is the intended replacement
 for ModUtil::* methods (getVar, setVar, etc) as well as similar functionality in System:: and ThemeUtil::
 

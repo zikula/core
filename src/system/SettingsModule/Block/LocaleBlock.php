@@ -11,15 +11,34 @@
 
 namespace Zikula\SettingsModule\Block;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * Block to display locale chooser
  */
 class LocaleBlock extends AbstractBlockHandler
 {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
     /**
      * display block
      *
@@ -32,13 +51,13 @@ class LocaleBlock extends AbstractBlockHandler
         || (!$this->hasPermission('LocaleBlock::bid', "::$properties[bid]", ACCESS_OVERVIEW))) {
             return '';
         }
-        $locales = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames();
+        $locales = $this->localeApi->getSupportedLocaleNames();
         $localeLinks = [];
         /** @var Request $request */
-        $request = $this->get('request_stack')->getMasterRequest();
+        $request = $requestStack->getMasterRequest();
         try {
-            $routeInfo = $this->get('router')->match($request->getPathInfo());
-        } catch (\Exception $e) {
+            $routeInfo = $this->router->match($request->getPathInfo());
+        } catch (\Exception $exception) {
             return '';
         }
         $selectedRoute = false;
@@ -47,19 +66,18 @@ class LocaleBlock extends AbstractBlockHandler
                 $url = $request->getPathInfo();
                 $selectedRoute = $url;
             } else {
-                $url = $this->get('router')->generate($routeInfo['_route'], $this->filterRouteInfo($routeInfo, $code), UrlGeneratorInterface::ABSOLUTE_URL);
+                $url = $this->router->generate($routeInfo['_route'], $this->filterRouteInfo($routeInfo, $code), UrlGeneratorInterface::ABSOLUTE_URL);
             }
             $localeLinks[$displayName] = $url;
         }
-        $form = $this->get('form.factory')->create()->add('locale', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+        $form = $this->formFactory->create()->add('locale', ChoiceType::class, [
             'choices' => $localeLinks,
-            'choices_as_values' => true,
             'data' => $selectedRoute,
             'attr' => ['class' => 'locale-switcher-block']
         ]);
 
         return $this->renderView('@ZikulaSettingsModule/Block/localeBlock.html.twig', [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -74,5 +92,32 @@ class LocaleBlock extends AbstractBlockHandler
         $params['_locale'] = $locale;
 
         return $params;
+    }
+
+    /**
+     * @required
+     * @param RouterInterface $router
+     */
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+
+    /**
+     * @required
+     * @param FormFactoryInterface $formFactory
+     */
+    public function setFormFactory(FormFactoryInterface $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
+
+    /**
+     * @required
+     * @param LocaleApiInterface $localeApi
+     */
+    public function setLocaleApi(LocaleApiInterface $localeApi)
+    {
+        $this->localeApi = $localeApi;
     }
 }

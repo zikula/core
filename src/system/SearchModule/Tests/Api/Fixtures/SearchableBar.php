@@ -53,11 +53,19 @@ class SearchableBar implements SearchableInterface
     {
         $r = new SearchResultEntity();
         $r->setCreated(new \DateTime())
-            ->setModule('ZikulaBarModule')
+            ->setModule($this->getBundleName())
             ->setSesid('test')
             ->setTitle('ZikulaBarModule result')
             ->setUrl(RouteUrl::createFromRoute('zikulabarmodule_user_index'));
 
         return $r;
+    }
+
+    /**
+     * * {@inheritdoc}
+     */
+    public function getBundleName()
+    {
+        return 'ZikulaBarModule';
     }
 }

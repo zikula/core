@@ -1,60 +1,23 @@
 services:
-    zikula_securitycenter_module.container.link_container:
-        class: Zikula\SecurityCenterModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_extensions_module.api.variable"
-        tags:
-            - { name: zikula.link_container }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\SecurityCenterModule\ZikulaSecurityCenterModule'
+            $installed: '%installed%'
+            $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
 
-    zikula_securitycenter_module.intrusion_repository:
-        class: Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["ZikulaSecurityCenterModule:IntrusionEntity"]
+    Zikula\SecurityCenterModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    twig.extension.zikula_securitycenter_module:
-        class: Zikula\SecurityCenterModule\Twig\TwigExtension
-        arguments:
-          - "@zikula_security_center_module.api.html_filter_api"
-        tags:
-            - { name: twig.extension }
+    Zikula\SecurityCenterModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
 
-    zikula_securitycenter_module.filter_listener:
-        class: Zikula\SecurityCenterModule\Listener\FilterListener
-        arguments:
-          - "%installed%"
-          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
-          - "@zikula_extensions_module.api.variable"
-          - "@doctrine.orm.entity_manager"
-          - "@zikula_mailer_module.api.mailer"
-          - "@translator.default"
-          - "%kernel.cache_dir%"
-        tags:
-            - { name: kernel.event_subscriber }
+    Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface: '@Zikula\SecurityCenterModule\Api\HtmlFilterApi'
 
-    zikula_security_center_module.purifier_listener:
-        class: Zikula\SecurityCenterModule\Listener\PurifierListener
+    Zikula\SecurityCenterModule\Listener\FilterListener:
         arguments:
-          - '%installed%'
-          - "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"
-          - '@zikula_extensions_module.api.variable'
-          - '@zikula_security_center_module.helper.purifier_helper'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    zikula_security_center_module.helper.purifier_helper:
-        class: Zikula\SecurityCenterModule\Helper\PurifierHelper
-        arguments:
-          - "@kernel"
-          - "@session"
-          - "@translator.default"
-          - "@zikula_extensions_module.api.variable"
-
-    zikula_security_center_module.api.html_filter_api:
-        class: Zikula\SecurityCenterModule\Api\HtmlFilterApi
-        arguments:
-          - '@zikula_extensions_module.api.variable'
-          - '%installed%'
-          - '@event_dispatcher'
+          $cacheDir: '%kernel.cache_dir%'

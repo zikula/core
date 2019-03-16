@@ -11,13 +11,19 @@
 
 namespace Zikula\PermissionsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\PermissionsModule\Api\PermissionApi;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 
-class PermissionRepository extends EntityRepository implements PermissionRepositoryInterface
+class PermissionRepository extends ServiceEntityRepository implements PermissionRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, PermissionEntity::class);
+    }
+
     public function getPermissionsByGroups(array $groups)
     {
         $qb = $this->createQueryBuilder('p');

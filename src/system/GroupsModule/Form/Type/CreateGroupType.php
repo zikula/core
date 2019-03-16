@@ -23,26 +23,44 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Group creation form type class.
  */
 class CreateGroupType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
-        $groupsCommon = new CommonHelper($translator);
+        $groupsCommon = new CommonHelper($this->translator);
         $typeChoices = array_flip($groupsCommon->gtypeLabels());
         $stateChoices = array_flip($groupsCommon->stateLabels());
 
         $builder
             ->add('name', TextType::class, [
-                'label' => $translator->__('Name'),
+                'label' => $this->__('Name'),
                 'attr' => [
                     'maxlength' => 30
                 ],
@@ -51,37 +69,37 @@ class CreateGroupType extends AbstractType
                 ]
             ])
             ->add('gtype', ChoiceType::class, [
-                'label' => $translator->__('Type'),
+                'label' => $this->__('Type'),
                 'choices' => $typeChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', ChoiceType::class, [
-                'label' => $translator->__('State'),
+                'label' => $this->__('State'),
                 'choices' => $stateChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('nbumax', IntegerType::class, [
-                'label' => $translator->__('Maximum membership'),
+                'label' => $this->__('Maximum membership'),
                 'attr' => [
                     'maxlength' => 10
                 ],
                 'required' => false,
-                'help' => $translator->__('Set as 0 for unlimited.')
+                'help' => $this->__('Set as 0 for unlimited.')
             ])
             ->add('description', TextareaType::class, [
-                'label' => $translator->__('Description'),
+                'label' => $this->__('Description'),
             ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -105,7 +123,6 @@ class CreateGroupType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => GroupEntity::class,
-            'translator' => null,
             'constraints' => new ValidGroupName()
         ]);
     }

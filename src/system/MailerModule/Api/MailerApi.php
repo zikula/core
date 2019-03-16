@@ -45,7 +45,7 @@ class MailerApi implements MailerApiInterface
     /**
      * @var bool
      */
-    private $isInstalled;
+    private $installed;
 
     /**
      * @var EventDispatcherInterface
@@ -70,7 +70,7 @@ class MailerApi implements MailerApiInterface
     /**
      * MailerApi constructor.
      *
-     * @param bool $isInstalled Installed flag
+     * @param bool $installed Installed flag
      * @param ZikulaHttpKernelInterface $kernel Kernel service instance
      * @param TranslatorInterface $translator Translator service instance
      * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
@@ -79,7 +79,7 @@ class MailerApi implements MailerApiInterface
      * @param Swift_Mailer $mailer
      */
     public function __construct(
-        $isInstalled,
+        $installed,
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
@@ -87,13 +87,13 @@ class MailerApi implements MailerApiInterface
         VariableApiInterface $variableApi,
         Swift_Mailer $mailer
     ) {
-        $this->isInstalled = $isInstalled;
+        $this->installed = $installed;
         $this->kernel = $kernel;
         $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
 
-        if (!$this->isInstalled) {
+        if (!$this->installed) {
             return;
         }
 
@@ -117,7 +117,7 @@ class MailerApi implements MailerApiInterface
      */
     public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
     {
-        if (!$this->isInstalled) {
+        if (!$this->installed) {
             return;
         }
 

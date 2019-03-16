@@ -11,22 +11,47 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\Environment;
 use Twig\TwigFunction;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
 class PagerExtension extends AbstractExtension
 {
     /**
-     * @var ContainerInterface
+     * @var RequestStack
      */
-    private $container;
+    private $requestStack;
 
-    public function __construct($container = null)
-    {
-        $this->container = $container;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    public function __construct(
+        RequestStack $requestStack,
+        RouterInterface $router,
+        VariableApiInterface $variableApi,
+        Environment $twig
+    ) {
+        $this->requestStack = $requestStack;
+        $this->router = $router;
+        $this->variableApi = $variableApi;
+        $this->twig = $twig;
     }
 
     /**
@@ -70,7 +95,7 @@ class PagerExtension extends AbstractExtension
     public function pager($params)
     {
         /** @var Request $request */
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->requestStack->getMasterRequest();
 
         if (empty($params['rowcount'])) {
             $params['rowcount'] = 0;
@@ -93,7 +118,7 @@ class PagerExtension extends AbstractExtension
         $templateName = (isset($params['template'])) ? $params['template'] : 'CoreBundle:Pager:pagercss.html.twig';
         $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('CoreBundle:Pager:pagerimage.html.twig' != $templateName);
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
-        $systemVars = $this->container->get('zikula_extensions_module.api.variable')->getAll(VariableApi::CONFIG);
+        $systemVars = $this->variableApi->getAll(VariableApi::CONFIG);
 
         $routeParams = [];
         if ($request->attributes->has('_route_params')) {
@@ -176,17 +201,17 @@ class PagerExtension extends AbstractExtension
 
         $pagerUrl = function($pager) use ($routeName, $systemVars) {
             if ($routeName) {
-                return $this->container->get('router')->generate($routeName, $pager['args']);
+                return $this->router->generate($routeName, $pager['args']);
             }
             // only case where this should be true is if this is the homepage
             parse_str($systemVars['startargs'], $pager['args']);
             if ($systemVars['startController']) {
                 $route = strtolower(str_replace(':', '_', $systemVars['startController']));
 
-                return $this->container->get('router')->generate($route, $pager['args']);
+                return $this->router->generate($route, $pager['args']);
             }
 
-            return $this->container->get('router')->generate('home', $pager['args']);
+            return $this->router->generate('home', $pager['args']);
         };
 
         // build links to items / pages
@@ -276,7 +301,7 @@ class PagerExtension extends AbstractExtension
             'hiddenPageBoxClosed' => 0
         ];
 
-        return $this->container->get('templating')->renderResponse($templateName, $templateParameters)->getContent();
+        return $this->twig->render($templateName, $templateParameters);
     }
 
     /**
@@ -324,7 +349,7 @@ class PagerExtension extends AbstractExtension
             throw new \InvalidArgumentException('route is a required parameter.');
         }
         /** @var Request $request */
-        $request = $this->container->get('request_stack')->getMasterRequest();
+        $request = $this->requestStack->getMasterRequest();
         if (!isset($params['posvar'])) {
             $params['posvar'] = 'letter';
         }
@@ -374,7 +399,7 @@ class PagerExtension extends AbstractExtension
         unset($params['values']);
         unset($params['route']);
         $pagerUrl = function($pager) {
-            return $this->container->get('router')->generate($pager['route'], $pager['args']);
+            return $this->router->generate($pager['route'], $pager['args']);
         };
         $allVars = array_merge($request->request->all(), $request->query->all(), $request->attributes->get('_route_params', []));
         $pager['args'] = [];

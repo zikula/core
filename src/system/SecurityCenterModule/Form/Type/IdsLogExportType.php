@@ -17,51 +17,68 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * IDS Log export form type class.
  */
 class IdsLogExportType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('titles', CheckboxType::class, [
-                'label' => $translator->__('Export Title Row'),
+                'label' => $this->__('Export Title Row'),
                 'empty_data' => 1,
                 'required' => false
             ])
             ->add('file', TextType::class, [
-                'label' => $translator->__('CSV filename'),
+                'label' => $this->__('CSV filename'),
                 'required' => false
             ])
             ->add('delimiter', ChoiceType::class, [
-                'label' => $translator->__('CSV delimiter'),
+                'label' => $this->__('CSV delimiter'),
                 'empty_data' => 1,
                 'choices' => [
-                    $translator->__('Comma') . ' (,)' => 1,
-                    $translator->__('Semicolon') . ' (;)' => 2,
-                    $translator->__('Colon') . ' (:)' => 3,
-                    $translator->__('Tab') => 4
+                    $this->__('Comma') . ' (,)' => 1,
+                    $this->__('Semicolon') . ' (;)' => 2,
+                    $this->__('Colon') . ' (:)' => 3,
+                    $this->__('Tab') => 4
                 ],
                 'multiple' => false,
                 'expanded' => false
             ])
             ->add('export', SubmitType::class, [
-                'label' => $translator->__('Export'),
+                'label' => $this->__('Export'),
                 'icon' => 'fa-download',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -76,15 +93,5 @@ class IdsLogExportType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_idslogexport';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -32,10 +33,12 @@ class ConfigController extends AbstractController
      * @Template("ZikulaSearchModule:Config:config.html.twig")
      *
      * @param Request $request
+     * @param SearchableModuleCollector $collector
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return Response|array
      */
-    public function configAction(Request $request)
+    public function configAction(Request $request, SearchableModuleCollector $collector)
     {
         // Security check
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
@@ -46,7 +49,7 @@ class ConfigController extends AbstractController
         $plugins = [];
 
         // get Core-2.0 type searchable modules and add to array
-        $searchableModules = $this->get('zikula_search_module.internal.searchable_module_collector')->getAll();
+        $searchableModules = $collector->getAll();
         foreach (array_keys($searchableModules) as $searchableModuleName) {
             $displayName = $this->get('kernel')->getModule($searchableModuleName)->getMetaData()->getDisplayName();
             $plugins[$displayName] = $searchableModuleName;
@@ -67,11 +70,10 @@ class ConfigController extends AbstractController
         $modVars['plugins'] = $disabledPlugins;
 
         $form = $this->createForm(ConfigType::class, $modVars, [
-            'translator' => $this->get('translator.default'),
             'plugins' => $plugins
         ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
                 foreach ($plugins as $searchPlugin) {

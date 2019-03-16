@@ -95,7 +95,6 @@ class DoctrineStorage implements StorageInterface
                     $hookRuntimeEntity->setEventname($eventName);
                     $hookRuntimeEntity->setClassname(get_class($providerAreaObject));
                     $hookRuntimeEntity->setMethod($method);
-                    $hookRuntimeEntity->setServiceid($providerAreaObject->getServiceId());
                     $hookRuntimeEntity->setPriority(10);
                     $this->objectManager->persist($hookRuntimeEntity);
                 }

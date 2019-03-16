@@ -29,7 +29,9 @@ class ConfigController extends AbstractController
      * @Route("/config")
      * @Theme("admin")
      * @Template("ZikulaZAuthModule:Config:config.html.twig")
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function configAction(Request $request)
@@ -38,11 +40,9 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(ConfigType::class, $this->getVars(), [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(ConfigType::class, $this->getVars());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 $this->setVars($data);

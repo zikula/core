@@ -31,6 +31,7 @@ class ModuleUninstallListener implements EventSubscriberInterface
 
     /**
      * ModuleUninstallListener constructor.
+     *
      * @param HookBindingRepositoryInterface $hookBindingRepository
      * @param HookRuntimeRepositoryInterface $hookRuntimeRepository
      */
@@ -45,7 +46,7 @@ class ModuleUninstallListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_REMOVE => 'removeHooks',
+            CoreEvents::MODULE_REMOVE => 'removeHooks'
         ];
     }
 

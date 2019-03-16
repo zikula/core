@@ -3,8 +3,6 @@ BlockFilterApi
 
 classname: \Zikula\BlocksModule\Api\BlockFilterApi
 
-service id = "zikula_blocks_module.api.block_filter"
-
 The BlockFilterApi helps determine if Blocks should be displayed or not.
 
 The class makes the following methods available:

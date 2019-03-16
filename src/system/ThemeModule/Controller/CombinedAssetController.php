@@ -28,8 +28,8 @@ class CombinedAssetController extends AbstractController
     {
         $serviceName = in_array($type, ['js', 'css']) ? 'doctrine_cache.providers.zikula_' . $type . '_asset_cache' : null;
         $cachedFile = $this->get($serviceName)->fetch($key);
-        $compress = $this->getParameter('zikula_asset_manager.compress');
-        $lifetime = $this->getParameter('zikula_asset_manager.lifetime');
+        $compress = $this->container->getParameter('zikula_asset_manager.compress');
+        $lifetime = $this->container->getParameter('zikula_asset_manager.lifetime');
         $lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime())->getTimestamp());
         if ($compress && extension_loaded('zlib')) {
             ini_set('zlib.output_handler', '');

@@ -81,13 +81,6 @@ class HookRuntimeEntity extends EntityAccess
     private $method;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="serviceid", type="string", length=120, nullable=true)
-     */
-    private $serviceid;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
@@ -263,29 +256,6 @@ class HookRuntimeEntity extends EntityAccess
     public function getMethod()
     {
         return $this->method;
-    }
-
-    /**
-     * Set serviceid
-     *
-     * @param string $serviceid
-     * @return HookRuntimeEntity
-     */
-    public function setServiceid($serviceid)
-    {
-        $this->serviceid = $serviceid;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceid
-     *
-     * @return string
-     */
-    public function getServiceid()
-    {
-        return $this->serviceid;
     }
 
     /**

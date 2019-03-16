@@ -27,6 +27,7 @@ class EventEnabledTwigEngine extends TwigEngine
     private $eventDispatcher;
 
     /**
+     * @required
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)

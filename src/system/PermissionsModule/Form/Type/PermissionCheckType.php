@@ -17,43 +17,61 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class PermissionCheckType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('user', TextType::class, [
-                'label' => $translator->__('User name'),
+                'label' => $this->__('User name'),
                 'required' => false
             ])
             ->add('component', TextType::class, [
-                'label' => $translator->__('Component to check'),
+                'label' => $this->__('Component to check'),
                 'data' => '.*'
             ])
             ->add('instance', TextType::class, [
-                'label' => $translator->__('Instance to check'),
+                'label' => $this->__('Instance to check'),
                 'data' => '.*'
             ])
             ->add('level', ChoiceType::class, [
-                'label' => $translator->__('Permission level'),
+                'label' => $this->__('Permission level'),
                 'choices' => array_flip($options['permissionLevels']),
                 'data' => ACCESS_READ
             ])
             ->add('check', ButtonType::class, [
-                'label' => $translator->__('Check permission'),
+                'label' => $this->__('Check permission'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
             ->add('reset', ButtonType::class, [
-                'label' => $translator->__('Reset'),
+                'label' => $this->__('Reset'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-danger'
@@ -77,7 +95,6 @@ class PermissionCheckType extends AbstractType
     {
         $resolver->setDefaults([
             'attr' => ['id' => 'testpermform'],
-            'translator' => null,
             'permissionLevels' => []
         ]);
     }

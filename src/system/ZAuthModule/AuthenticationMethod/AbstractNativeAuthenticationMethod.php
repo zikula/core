@@ -19,6 +19,7 @@ use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationM
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Form\Type\RegistrationType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthenticationMethodInterface
@@ -84,7 +85,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     public function getRegistrationFormClassName()
     {
-        return 'Zikula\ZAuthModule\Form\Type\RegistrationType';
+        return RegistrationType::class;
     }
 
     /**

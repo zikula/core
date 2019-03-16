@@ -21,7 +21,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -37,9 +39,13 @@ class ConfigController extends AbstractController
      *
      * Display services available to the module
      *
+     * @param Request $request
+     * @param BundleSyncHelper $bundleSyncHelper
+     * @param CacheClearer $cacheClearer
+     *
      * @return Response
      */
-    public function configAction(Request $request)
+    public function configAction(Request $request, BundleSyncHelper $bundleSyncHelper, CacheClearer $cacheClearer)
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -72,15 +78,16 @@ class ConfigController extends AbstractController
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->getForm();
-
-        if ($form->handleRequest($request)->isValid()) {
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
                 if (true === $form->get('hardreset')->getData()) {
-                    $extensionsInFileSystem = $this->get('zikula_extensions_module.bundle_sync_helper')->scanForBundles();
-                    $this->get('zikula_extensions_module.bundle_sync_helper')->syncExtensions($extensionsInFileSystem, true);
-                    $this->get('zikula.cache_clearer')->clear('symfony.routing');
+                    $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
+                    $bundleSyncHelper->syncExtensions($extensionsInFileSystem, true);
+                    $cacheClearer->clear('symfony.routing');
                 }
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));
             }

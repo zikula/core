@@ -5,7 +5,6 @@ var removeItemBeforeResponse = true;
 var cloneDraggedItem = true;
 
 ( function($) {
-
     /**
      * Sets z-odd / z-even on each li after append, move and delete.
      *
@@ -33,8 +32,7 @@ var cloneDraggedItem = true;
         });
     };
 
-    initHookAccordion = function(containerId)
-    {
+    initHookAccordion = function(containerId) {
         $('#' + containerId + ' h4').addClass('z-panel-header z-pointer');
         $('#' + containerId).accordion({
             header: 'h4',
@@ -45,8 +43,7 @@ var cloneDraggedItem = true;
         });
     };
 
-    initHookSubscriber = function()
-    {
+    initHookSubscriber = function() {
         initAreasSortables();
 
         // init dragging of available provider areas
@@ -84,8 +81,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    initAreasSortables = function()
-    {
+    initAreasSortables = function() {
         // add class 'z-itemsort' to all items with class 'z-sortable'
         $('.z-sortable').addClass('z-itemsort');
 
@@ -101,8 +97,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    createSortable = function(area_id)
-    {
+    createSortable = function(area_id) {
         var listId = area_id + '_list';
 
         $('#' + listId).sortable({
@@ -121,8 +116,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    bindSubscriberAreaToProviderArea = function(sarea, parea)
-    {
+    bindSubscriberAreaToProviderArea = function(sarea, parea) {
         subscriberAreaToggle(sarea, parea);
     };
 
@@ -133,8 +127,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    unbindProviderAreaFromSubscriberArea = function(sarea_id, sarea, parea_id, parea)
-    {
+    unbindProviderAreaFromSubscriberArea = function(sarea_id, sarea, parea_id, parea) {
         if (removeItemBeforeResponse) {
             removeProviderAreaFromSubscriberArea(sarea_id, parea_id);
         }
@@ -149,8 +142,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    subscriberAreaToggle = function(sarea, parea)
-    {
+    subscriberAreaToggle = function(sarea, parea) {
         var pars = {
             subscriberarea: sarea,
             providerarea: parea
@@ -159,9 +151,7 @@ var cloneDraggedItem = true;
         $.ajax({
             url: Routing.generate('zikula_hook_hook_togglesubscribeareastatus'),
             data: pars
-        }).done(function(result) {
-            var data = result.data;
-
+        }).done(function(data) {
             if (data.action == 'bind') {
                 if (!appendItemBeforeResponse) {
                     appendProviderAreaToSubscriberArea(data.subscriberarea_id, data.subscriberarea, data.providerarea_id);
@@ -183,8 +173,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    appendProviderAreaToSubscriberArea = function(sarea_id, sarea_name, parea_id)
-    {
+    appendProviderAreaToSubscriberArea = function(sarea_id, sarea_name, parea_id) {
         var areaToAttach = $('#availablearea_' + parea_id + '-sarea_identifier');
         var areaToAttachTo = $('#sarea_' + sarea_id);
         var areaListToAttachTo = $('#sarea_' + sarea_id + '_list');
@@ -253,8 +242,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    removeProviderAreaFromSubscriberArea = function(sarea_id, parea_id)
-    {
+    removeProviderAreaFromSubscriberArea = function(sarea_id, parea_id) {
         var areaToDetach = $('#attachedarea_' + parea_id + '-' + sarea_id);
         var heightOfDetachedArea = areaToDetach.height();
         areaToDetach.remove();
@@ -285,8 +273,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    changeAttachedAreaOrder = function(event, ui)
-    {
+    changeAttachedAreaOrder = function(event, ui) {
         // this will be the id of the ol
         var listId = ui.item.parent().attr('id');
 
@@ -306,9 +293,7 @@ var cloneDraggedItem = true;
         $.ajax({
             url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
             data: pars
-        }).done(function(result) {
-            var data = result.data;
-
+        }).done(function(data) {
             // update new sort order
             recolorListElements(data.ol_id, $('#' + data.ol_id).down(0).attr('id'));
         }).fail(function(result) {
@@ -322,8 +307,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    initAreasDroppables = function()
-    {
+    initAreasDroppables = function() {
         // loop through module's subscriber areas and create droppables
         for (var i = 0; i < subscriberAreas.length; i++) {
             createDroppable(subscriberAreas[i]);
@@ -336,8 +320,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    createDroppable = function(area_id)
-    {
+    createDroppable = function(area_id) {
         $('#' + area_id).droppable({
             accept: '.z-draggable',
             hoverClass: 'z-hook-droppable-active',

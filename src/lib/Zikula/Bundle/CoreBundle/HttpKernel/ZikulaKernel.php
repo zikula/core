@@ -21,6 +21,7 @@ use Symfony\Component\Yaml\Yaml;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\ThemeModule\AbstractTheme;
+use Zikula\ThemeModule\Engine\Engine as ThemeEngine;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);
@@ -124,22 +125,17 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     }
 
     /**
-     * Get named module bundle.
+     * Gets named module bundle.
      *
-     * @param string  $moduleName
-     * @param boolean $first
+     * @param string $moduleName
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
      * @return AbstractModule
      */
-    public function getModule($moduleName, $first = true)
+    public function getModule($moduleName)
     {
         if (!isset($this->modules[$moduleName])) {
             throw new \InvalidArgumentException(sprintf('Module "%s" does not exist or it is not enabled.', $moduleName, get_class($this)));
-        }
-
-        if (true === $first) {
-            return $this->modules[$moduleName][0];
         }
 
         return $this->modules[$moduleName];
@@ -161,22 +157,17 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     }
 
     /**
-     * Get named theme bundle.
+     * Gets named theme bundle.
      *
-     * @param string  $themeName
-     * @param boolean $first
+     * @param string $themeName
      *
      * @throws \InvalidArgumentException when the bundle is not enabled
      * @return AbstractTheme
      */
-    public function getTheme($themeName, $first = true)
+    public function getTheme($themeName)
     {
         if (!isset($this->themes[$themeName])) {
             throw new \InvalidArgumentException(sprintf('Theme "%s" does not exist or it is not enabled.', $themeName, get_class($this)));
-        }
-
-        if (true === $first) {
-            return $this->themes[$themeName][0];
         }
 
         return $this->themes[$themeName];
@@ -203,13 +194,12 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * Is this a Bundle?
      *
      * @param $name
-     * @param bool $first
      * @return bool
      */
-    public function isBundle($name, $first = true)
+    public function isBundle($name)
     {
         try {
-            $this->getBundle($name, $first);
+            $this->getBundle($name);
 
             return true;
         } catch (\Exception $e) {
@@ -333,7 +323,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
             return $locations[0];
         }
 
-        $themeBundle = $this->container->get('zikula_core.common.theme_engine')->getTheme();
+        $themeBundle = $this->container->get(ThemeEngine::class)->getTheme();
         // add theme path to template locator
         // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
         // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used

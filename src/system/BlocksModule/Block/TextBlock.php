@@ -12,6 +12,7 @@
 namespace Zikula\BlocksModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\BlocksModule\Block\Form\Type\TextBlockType;
 
 /**
  * Block to display simple rendered text
@@ -27,7 +28,7 @@ class TextBlock extends AbstractBlockHandler
     public function display(array $properties)
     {
         $title = (!empty($properties['title'])) ? $properties['title'] : '';
-        if ((!$this->hasPermission('Textblock::', "$title::", ACCESS_OVERVIEW))
+        if (!$this->hasPermission('Textblock::', "$title::", ACCESS_OVERVIEW)
         || (!$this->hasPermission('Textblock::bid', "::$properties[bid]", ACCESS_OVERVIEW))) {
             return '';
         }
@@ -39,6 +40,6 @@ class TextBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\BlocksModule\Block\Form\Type\TextBlockType';
+        return TextBlockType::class;
     }
 }

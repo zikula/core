@@ -23,11 +23,6 @@ $parameters = $kernelConfig['parameters'];
 if (true === $parameters['debug']) {
     Debug::enable();
 }
-// TODO remove (not required with PHP 7 anymore
-// if ('prod' == $parameters['env']) {
-//     // improves performance for prod env
-//     include_once __DIR__ . '/../var/bootstrap.php.cache';
-// }
 
 if ((isset($parameters['umask'])) && (!is_null($parameters['umask']))) {
     umask($parameters['umask']);
@@ -36,22 +31,9 @@ if ((isset($parameters['umask'])) && (!is_null($parameters['umask']))) {
 // set default locale for Intl classes
 \Locale::setDefault($parameters['locale']);
 
-if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-    // suppress deprecated warnings because create_function() is used in SymfonyRequirements.php but deprecated in PHP 7.2
-    // see https://github.com/symfony/requirements-checker/pull/11
-    // TODO remove as soon as we use Flex
-    $reportingLevel = error_reporting();
-    error_reporting($reportingLevel & ~E_DEPRECATED);
-}
-
 // on install or upgrade, check if system requirements are met.
 $requirementChecker = new RequirementChecker();
 $requirementChecker->verify($parameters);
-
-if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-    // TODO remove as soon as we use Flex
-    error_reporting($reportingLevel);
-}
 
 $kernel = new ZikulaKernel($parameters['env'], $parameters['debug']);
 $kernel->boot();

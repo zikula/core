@@ -3,8 +3,6 @@ PermissionApi
 
 classname: \Zikula\PermissionsModule\Api\PermissionApi
 
-service id="zikula_permissions_module.api.permission"
-
 This class is used to determine whether a user has rights (or permissions) to a given component. Rights are granted
 or denied from the Permissions module User Interface. Components/Extensions must declare their Permission structure in
 their `composer.json` file.

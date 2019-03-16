@@ -16,30 +16,38 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 use Zikula\MenuModule\Form\DataTransformer\MenuItemEntityTransformer;
 
 class HiddenMenuItemType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
      * @var MenuItemRepositoryInterface
      */
-    private $repo;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private $repository;
 
     /**
      * HiddenMenuItemType constructor.
      *
-     * @param MenuItemRepositoryInterface $repo
+     * @param TranslatorInterface $translator
+     * @param MenuItemRepositoryInterface $repository
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+        MenuItemRepositoryInterface $repository
+    ) {
+        $this->setTranslator($translator);
+        $this->repository = $repository;
+    }
+
+    /**
      * @param TranslatorInterface $translator
      */
-    public function __construct(MenuItemRepositoryInterface $repo, TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
-        $this->repo = $repo;
         $this->translator = $translator;
     }
 
@@ -48,7 +56,7 @@ class HiddenMenuItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new MenuItemEntityTransformer($this->repo, $this->translator);
+        $transformer = new MenuItemEntityTransformer($this->repository, $this->translator);
         $builder->addViewTransformer($transformer);
     }
 
@@ -58,7 +66,7 @@ class HiddenMenuItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'invalid_message' => $this->translator->__('The selected item does not exist')
+            'invalid_message' => $this->__('The selected item does not exist')
         ]);
     }
 

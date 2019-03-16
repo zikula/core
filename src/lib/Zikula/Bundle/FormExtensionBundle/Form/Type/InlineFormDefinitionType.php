@@ -15,17 +15,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
-use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Form type for embedding dynamic fields.
  */
 class InlineFormDefinitionType extends AbstractType
 {
-    /**
-     * @var Translator
-     */
-    private $translator = null;
+    use TranslatorTrait;
 
     /**
      * @var DynamicFieldsContainerInterface
@@ -33,11 +31,26 @@ class InlineFormDefinitionType extends AbstractType
     private $dynamicFieldsContainer = null;
 
     /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
-        $this->translator = $options['translator'];
         $this->dynamicFieldsContainer = $options['dynamicFieldsContainer'];
 
         if (null === $this->dynamicFieldsContainer || !($this->dynamicFieldsContainer instanceof DynamicFieldsContainerInterface)) {
@@ -69,7 +82,6 @@ class InlineFormDefinitionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'constraints' => [],
             'mapped' => false,
             'dynamicFieldsContainer' => null

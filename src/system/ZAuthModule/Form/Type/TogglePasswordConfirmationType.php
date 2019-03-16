@@ -16,9 +16,29 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class TogglePasswordConfirmationType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,12 +47,12 @@ class TogglePasswordConfirmationType extends AbstractType
         $builder
             ->add('uid', HiddenType::class)
             ->add('toggle', SubmitType::class, [
-                'label' => $options['mustChangePass'] ? $options['translator']->__('Yes, cancel the change of password') : $options['translator']->__('Yes, force the change of password'),
+                'label' => $options['mustChangePass'] ? $this->__('Yes, cancel the change of password') : $this->__('Yes, force the change of password'),
                 'icon' => $options['mustChangePass'] ? 'fa-times' : 'fa-refresh',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -53,7 +73,6 @@ class TogglePasswordConfirmationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'mustChangePass' => true
         ]);
     }

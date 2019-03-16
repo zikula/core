@@ -93,7 +93,7 @@ class BlocksExtension extends AbstractExtension
     {
         $instance = $this->kernel->getModule('ZikulaBlocksModule');
         if (!isset($instance)) {
-            return "Blocks not currently available.";
+            return 'Blocks not currently available.';
         }
         $blocks = $this->blockApi->getBlocksByPosition($positionName);
         foreach ($blocks as $key => $block) {
@@ -114,10 +114,11 @@ class BlocksExtension extends AbstractExtension
     {
         $blocksModuleInstance = $this->kernel->getModule('ZikulaBlocksModule');
         if (!isset($blocksModuleInstance)) {
-            return "Blocks not currently available.";
+            return 'Blocks not currently available.';
         }
         // Check if providing module not available, if block is inactive, if block filter prevents display.
-        $moduleInstance = $this->kernel->getModule($block->getModule()->getName());
+        $bundleName = $block->getModule()->getName();
+        $moduleInstance = $this->kernel->getModule($bundleName);
         if (!isset($moduleInstance) || !$block->getActive() || !$this->blockFilter->isDisplayable($block)) {
             return '';
         }
@@ -126,7 +127,6 @@ class BlocksExtension extends AbstractExtension
         // this duplicates functionality from \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides
         // but because blockHandlers don't call (and are not considered) a controller, that listener doesn't get called.
         $theme = $this->themeEngine->getTheme();
-        $bundleName = $block->getModule()->getName();
         if ($theme) {
             $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
             if (is_readable($overridePath)) {
@@ -139,7 +139,8 @@ class BlocksExtension extends AbstractExtension
 
         try {
             $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException $exception) {
+            //return 'Error during block creation: ' . $exception->getMessage();
             return '';
         }
         $blockProperties = $block->getProperties();

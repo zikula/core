@@ -16,8 +16,7 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
 /**
- * Class CategoryRepository
- * @see https://github.com/Atlantic18/DoctrineExtensions/blob/v2.4.x/doc/tree.md
+ * CategoryRepository.
  */
 class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
 {

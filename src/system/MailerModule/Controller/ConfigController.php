@@ -14,9 +14,13 @@ namespace Zikula\MailerModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\MailerModule\Form\Type\ConfigType;
 use Zikula\MailerModule\Form\Type\TestType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -33,23 +37,25 @@ class ConfigController extends AbstractController
      * @Template("ZikulaMailerModule:Config:config.html.twig")
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
+     * @param DynamicConfigDumper $configDumper
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function configAction(Request $request)
+    public function configAction(Request $request, VariableApiInterface $variableApi, DynamicConfigDumper $configDumper)
     {
         if (!$this->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         $form = $this->createForm(ConfigType::class,
-            $this->getDataValues(), [
-                'translator' => $this->get('translator.default'),
-                'charset' => $this->container->get('kernel')->getCharset()
+            $this->getDataValues($variableApi, $configDumper), [
+                'charset' => $this->get('kernel')->getCharset()
             ]
         );
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
 
@@ -72,7 +78,6 @@ class ConfigController extends AbstractController
 
                 // write the config file
                 // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
-                $configDumper = $this->get('zikula.dynamic_config_dumper');
                 $currentConfig = $configDumper->getConfiguration('swiftmailer');
                 $config = [
                     'transport' => $transport,
@@ -117,27 +122,25 @@ class ConfigController extends AbstractController
      * This function displays a form to sent a test mail.
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
+     * @param DynamicConfigDumper $configDumper
+     * @param MailerApiInterface $mailerApi
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function testAction(Request $request)
+    public function testAction(Request $request, VariableApiInterface $variableApi, DynamicConfigDumper $configDumper, MailerApiInterface $mailerApi)
     {
         if (!$this->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-        $dumper = $this->get('zikula.dynamic_config_dumper');
-        $paramHtml = $dumper->getConfigurationForHtml('swiftmailer');
+        $paramHtml = $configDumper->getConfigurationForHtml('swiftmailer');
         $paramHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $paramHtml);
 
-        $form = $this->createForm(TestType::class,
-            $this->getDataValues(), [
-                'translator' => $this->get('translator.default')
-            ]
-        );
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(TestType::class, $this->getDataValues($variableApi, $configDumper));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('test')->isClicked()) {
                 $formData = $form->getData();
 
@@ -176,8 +179,7 @@ class ConfigController extends AbstractController
                     $message->setFrom([$adminMail => $siteName]);
                     $message->setTo([$formData['toAddress'] => $formData['toName']]);
 
-                    $mailer = $this->get('zikula_mailer_module.api.mailer');
-                    $result = $mailer->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
+                    $result = $mailerApi->sendMessage($message, $formData['subject'], $msgBody, $altBody, $html);
 
                     // check our result and return the correct error code
                     if (true === $result) {
@@ -203,13 +205,13 @@ class ConfigController extends AbstractController
 
     /**
      * Returns required data from module variables and SwiftMailer configuration.
+     *
+     * @param VariableApiInterface $variableApi
+     * @param DynamicConfigDumper $configDumper
      */
-    private function getDataValues()
+    private function getDataValues(VariableApiInterface $variableApi, DynamicConfigDumper $configDumper)
     {
-        $dumper = $this->get('zikula.dynamic_config_dumper');
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-
-        $params = $dumper->getConfiguration('swiftmailer');
+        $params = $configDumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
 
         if (null === $params['transport']) {

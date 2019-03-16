@@ -18,8 +18,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -30,11 +35,6 @@ class HookController extends Controller
 {
     use TranslatorTrait;
 
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * @Route("/{moduleName}", methods = {"GET"}, options={"zkNoBundlePrefix" = 1})
      * @Theme("admin")
@@ -42,38 +42,51 @@ class HookController extends Controller
      *
      * Display hooks user interface
      *
+     * @param TranslatorInterface $translator
+     * @param PermissionApiInterface $permissionApi
+     * @param HookCollectorInterface $collector
+     * @param HookDispatcherInterface $dispatcher
+     * @param ExtensionRepositoryInterface $extensionRepository
      * @param string $moduleName
+     *
      * @return array
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
-    public function editAction($moduleName)
-    {
+    public function editAction(
+        TranslatorInterface $translator,
+        PermissionApiInterface $permissionApi,
+        HookCollectorInterface $collector,
+        HookDispatcherInterface $dispatcher,
+        ExtensionRepositoryInterface $extensionRepository,
+        $moduleName
+    ) {
         $templateParameters = [];
         // get module's name and assign it to template
         $templateParameters['currentmodule'] = $moduleName;
 
         // check if user has admin permission on this module
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($moduleName . '::', '::', ACCESS_ADMIN)) {
+        if (!$permissionApi->hasPermission($moduleName . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // find out the capabilities of the module
-        $isProvider = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, HookCollectorInterface::HOOK_PROVIDER);
+        $isProvider = $collector->isCapable($moduleName, HookCollectorInterface::HOOK_PROVIDER);
         $templateParameters['isProvider'] = $isProvider;
 
-        $isSubscriber = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBER);
+        $isSubscriber = $collector->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBER);
         $templateParameters['isSubscriber'] = $isSubscriber;
 
-        $isSubscriberSelfCapable = $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBE_OWN);
+        $isSubscriberSelfCapable = $collector->isCapable($moduleName, HookCollectorInterface::HOOK_SUBSCRIBE_OWN);
         $templateParameters['isSubscriberSelfCapable'] = $isSubscriberSelfCapable;
         $templateParameters['providerAreas'] = [];
 
-        $nonPersistedProviders = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviders();
-        $nonPersistedSubscribers = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscribers();
+        $nonPersistedProviders = $collector->getProviders();
+        $nonPersistedSubscribers = $collector->getSubscribers();
 
         // get areas of module and bundle titles also
         if ($isProvider) {
-            $providerAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviderAreasByOwner($moduleName);
+            $providerAreas = $collector->getProviderAreasByOwner($moduleName);
             $templateParameters['providerAreas'] = $providerAreas;
 
             $providerAreasToTitles = [];
@@ -88,7 +101,7 @@ class HookController extends Controller
         $templateParameters['hooksubscribers'] = [];
 
         if ($isSubscriber) {
-            $subscriberAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriberAreasByOwner($moduleName);
+            $subscriberAreas = $collector->getSubscriberAreasByOwner($moduleName);
             $templateParameters['subscriberAreas'] = $subscriberAreas;
 
             $subscriberAreasToTitles = [];
@@ -113,7 +126,7 @@ class HookController extends Controller
         // get available subscribers that can attach to provider
         if ($isProvider && !empty($providerAreas)) {
             /** @var ExtensionEntity[] $hooksubscribers */
-            $hooksubscribers = $this->getExtensionsCapableOf(HookCollectorInterface::HOOK_SUBSCRIBER);
+            $hooksubscribers = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_SUBSCRIBER);
             $amountOfHookSubscribers = count($hooksubscribers);
             $amountOfAvailableSubscriberAreas = 0;
             for ($i = 0; $i < $amountOfHookSubscribers; $i++) {
@@ -125,13 +138,13 @@ class HookController extends Controller
                     continue;
                 }
                 // does the user have admin permissions on the subscriber module?
-                if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($hooksubscribers[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
+                if (!$permissionApi->hasPermission($hooksubscribers[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
                     unset($hooksubscribers[$i]);
                     continue;
                 }
 
                 // get the areas of the subscriber
-                $hooksubscriberAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
+                $hooksubscriberAreas = $collector->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
                 $hooksubscribers[$i]['areas'] = $hooksubscriberAreas;
                 $amountOfAvailableSubscriberAreas += count($hooksubscriberAreas);
 
@@ -163,7 +176,7 @@ class HookController extends Controller
             $amountOfAttachedProviderAreas = 0;
             $amountOfSubscriberAreas = count($subscriberAreas);
             for ($i = 0; $i < $amountOfSubscriberAreas; $i++) {
-                $sortsByArea = $this->get('hook_dispatcher')->getBindingsFor($subscriberAreas[$i]);
+                $sortsByArea = $dispatcher->getBindingsFor($subscriberAreas[$i]);
                 foreach ($sortsByArea as $sba) {
                     $areaname = $sba['areaname'];
                     $category = $sba['category'];
@@ -191,7 +204,7 @@ class HookController extends Controller
 
             // get available providers
             /** @var ExtensionEntity[] $hookproviders */
-            $hookproviders = $this->getExtensionsCapableOf(HookCollectorInterface::HOOK_PROVIDER);
+            $hookproviders = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_PROVIDER);
             $amountOfHookProviders = count($hookproviders);
             $amountOfAvailableProviderAreas = 0;
             for ($i = 0; $i < $amountOfHookProviders; $i++) {
@@ -204,13 +217,13 @@ class HookController extends Controller
                 }
 
                 // does the user have admin permissions on the provider module?
-                if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($hookproviders[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
+                if (!$permissionApi->hasPermission($hookproviders[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
                     unset($hookproviders[$i]);
                     continue;
                 }
 
                 // get the areas of the provider
-                $hookproviderAreas = $this->get('zikula_hook_bundle.collector.hook_collector')->getProviderAreasByOwner($hookproviders[$i]['name']);
+                $hookproviderAreas = $collector->getProviderAreasByOwner($hookproviders[$i]['name']);
                 $hookproviders[$i]['areas'] = $hookproviderAreas;
                 $amountOfAvailableProviderAreas += count($hookproviderAreas);
 
@@ -234,7 +247,7 @@ class HookController extends Controller
         } else {
             $templateParameters['hookproviders'] = [];
         }
-        $templateParameters['hookDispatcher'] = $this->get('hook_dispatcher');
+        $templateParameters['hookDispatcher'] = $dispatcher;
         $request = $this->get('request_stack')->getCurrentRequest();
         $request->attributes->set('_zkModule', $moduleName);
         $request->attributes->set('_zkType', 'admin');
@@ -249,9 +262,11 @@ class HookController extends Controller
      * Attach/detach a subscriber area to a provider area
      *
      * @param Request $request
-     *
      *  subscriberarea string area to be attached/detached
      *  providerarea   string area to attach/detach
+     * @param PermissionApiInterface $permissionApi
+     * @param HookCollectorInterface $collector
+     * @param HookDispatcherInterface $dispatcher
      *
      * @return JsonResponse
      *
@@ -259,9 +274,13 @@ class HookController extends Controller
      * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
-    public function toggleSubscribeAreaStatusAction(Request $request)
-    {
-        $this->setTranslator($this->get('translator.default'));
+    public function toggleSubscribeAreaStatusAction(
+        Request $request,
+        PermissionApiInterface $permissionApi,
+        HookCollectorInterface $collector,
+        HookDispatcherInterface $dispatcher
+    ) {
+        $this->setTranslator($translator);
         $this->checkAjaxToken();
 
         // get subscriberarea from POST
@@ -271,14 +290,14 @@ class HookController extends Controller
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriber($subscriberArea);
+        $subscriber = $collector->getSubscriber($subscriberArea);
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
             throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
+        if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -289,7 +308,7 @@ class HookController extends Controller
         }
 
         // get provider module based on area and do some checks
-        $provider = $this->get('zikula_hook_bundle.collector.hook_collector')->getProvider($providerArea);
+        $provider = $collector->getProvider($providerArea);
         if (empty($provider)) {
             throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
         }
@@ -301,11 +320,11 @@ class HookController extends Controller
         }
 
         // check if binding between areas exists
-        $binding = $this->get('hook_dispatcher')->getBindingBetweenAreas($subscriberArea, $providerArea);
+        $binding = $dispatcher->getBindingBetweenAreas($subscriberArea, $providerArea);
         if (!$binding) {
-            $this->get('hook_dispatcher')->bindSubscriber($subscriberArea, $providerArea);
+            $dispatcher->bindSubscriber($subscriberArea, $providerArea);
         } else {
-            $this->get('hook_dispatcher')->unbindSubscriber($subscriberArea, $providerArea);
+            $dispatcher->unbindSubscriber($subscriberArea, $providerArea);
         }
 
         // ajax response
@@ -316,7 +335,7 @@ class HookController extends Controller
             'subscriberarea_id' => md5($subscriberArea),
             'providerarea' => $providerArea,
             'providerarea_id' => md5($providerArea),
-            'isSubscriberSelfCapable' => $this->get('zikula_hook_bundle.collector.hook_collector')->isCapable($subscriber->getOwner(), HookCollectorInterface::HOOK_SUBSCRIBE_OWN)
+            'isSubscriberSelfCapable' => $collector->isCapable($subscriber->getOwner(), HookCollectorInterface::HOOK_SUBSCRIBE_OWN)
         ];
 
         return $this->json($response);
@@ -328,9 +347,10 @@ class HookController extends Controller
      * Changes the order of the providers' areas that are attached to a subscriber.
      *
      * @param Request $request
-     *
      *  subscriber    string     name of the subscriber
      *  providerorder array      array of sorted provider ids
+     * @param PermissionApiInterface $permissionApi
+     * @param HookCollectorInterface $collector
      *
      * @return JsonResponse
      *
@@ -338,8 +358,11 @@ class HookController extends Controller
      * @throws \RuntimeException Thrown if the subscriber module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the subscriber module
      */
-    public function changeProviderAreaOrderAction(Request $request)
-    {
+    public function changeProviderAreaOrderAction(
+        Request $request,
+        PermissionApiInterface $permissionApi,
+        HookCollectorInterface $collector
+    ) {
         $this->setTranslator($this->get('translator.default'));
         $this->checkAjaxToken();
 
@@ -350,14 +373,14 @@ class HookController extends Controller
         }
 
         // get subscriber module based on area and do some checks
-        $subscriber = $this->get('zikula_hook_bundle.collector.hook_collector')->getSubscriber($subscriberarea);
+        $subscriber = $collector->getSubscriber($subscriberarea);
         if (empty($subscriber)) {
             throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
             throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
+        if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -379,12 +402,15 @@ class HookController extends Controller
      * Check the CSRF token.
      * Checks will fall back to $token check if automatic checking fails
      *
+     * @param CsrfTokenHandler $tokenHandler
      * @param string $token Token, default null
+     *
      * @throws AccessDeniedException If the CSFR token fails
      * @throws \Exception if request is not an XmlHttpRequest
+     *
      * @return void
      */
-    private function checkAjaxToken($token = null)
+    private function checkAjaxToken(CsrfTokenHandler $tokenHandler, $token = null)
     {
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
         if (!$currentRequest->isXmlHttpRequest()) {
@@ -398,17 +424,22 @@ class HookController extends Controller
             return;
         }
 
-        $this->get('zikula_core.common.csrf_token_handler')->validate($token);
+        $tokenHandler->validate($token);
     }
 
-    private function getExtensionsCapableOf($type)
+    private function getExtensionsCapableOf(HookCollectorInterface $collector, ExtensionRepositoryInterface $extensionRepository, $type)
     {
-        $owners = $this->get('zikula_hook_bundle.collector.hook_collector')->getOwnersCapableOf($type);
+        $owners = $collector->getOwnersCapableOf($type);
         $extensions = [];
         foreach ($owners as $owner) {
-            $extensions[] = $this->get('zikula_extensions_module.extension_repository')->findOneBy(['name' => $owner]);
+            $extensions[] = $extensionRepository->findOneBy(['name' => $owner]);
         }
 
         return $extensions;
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 }

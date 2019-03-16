@@ -39,4 +39,10 @@ interface SearchableInterface
      * @return array
      */
     public function getErrors();
+
+    /**
+     * Return the name of the providing bundle.
+     * @return string
+     */
+    public function getBundleName();
 }

@@ -20,40 +20,58 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $transportChoices = [
-            $translator->__('Sendmail message transfer agent') => 'sendmail',
-            $translator->__('Google gmail') => 'gmail',
-            $translator->__('SMTP mail transfer protocol') => 'smtp',
-            $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
+            $this->__('Sendmail message transfer agent') => 'sendmail',
+            $this->__('Google gmail') => 'gmail',
+            $this->__('SMTP mail transfer protocol') => 'smtp',
+            $this->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
         ];
         $transportAlert = null;
 
         // see http://swiftmailer.org/docs/sending.html
         if (!function_exists('proc_open')) {
             $transportChoices = [
-                $translator->__('Google gmail') => 'gmail',
-                $translator->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
+                $this->__('Google gmail') => 'gmail',
+                $this->__('Development/debug mode (Do not send any email)') => 'test'/*'null'*/
             ];
             $transportAlert = [
-                $translator->__('Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.') => 'warning'
+                $this->__('Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.') => 'warning'
             ];
         }
 
         $transportOptions = [
-            'label' => $translator->__('Mail transport'),
+            'label' => $this->__('Mail transport'),
             'choices' => $transportChoices,
             'alert' => $transportAlert
         ];
@@ -61,14 +79,14 @@ class ConfigType extends AbstractType
         $builder
             ->add('transport', ChoiceType::class, $transportOptions)
             ->add('charset', TextType::class, [
-                'label' => $translator->__('Character set'),
+                'label' => $this->__('Character set'),
                 'attr' => [
                     'maxlength' => 20
                 ],
-                'help' => $translator->__f("Default: '%s'", ['%s' => $options['charset']])
+                'help' => $this->__f("Default: '%s'", ['%s' => $options['charset']])
             ])
             ->add('encoding', ChoiceType::class, [
-                'label' => $translator->__('Encoding'),
+                'label' => $this->__('Encoding'),
                 'choices' => [
                     '8bit' => '8bit',
                     '7bit' => '7bit',
@@ -76,54 +94,54 @@ class ConfigType extends AbstractType
                     'base64' => 'base64',
                     'quoted-printable' => 'quoted-printable'
                 ],
-                'help' => $translator->__f("Default: '%s'", ['%s' => '8bit'])
+                'help' => $this->__f("Default: '%s'", ['%s' => '8bit'])
             ])
             ->add('html', CheckboxType::class, [
-                'label' => $translator->__('HTML-formatted messages'),
+                'label' => $this->__('HTML-formatted messages'),
                 'required' => false
             ])
             ->add('wordwrap', IntegerType::class, [
-                'label' => $translator->__('Word wrap'),
+                'label' => $this->__('Word wrap'),
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 3
                 ],
-                'help' => $translator->__f("Default: '%s'", ['%s' => '50'])
+                'help' => $this->__f("Default: '%s'", ['%s' => '50'])
             ])
             ->add('enableLogging', CheckboxType::class, [
-                'label' => $translator->__('Enable logging of sent mail'),
+                'label' => $this->__('Enable logging of sent mail'),
                 'required' => false
             ])
             ->add('host', TextType::class, [
-                'label' => $translator->__('SMTP host server'),
+                'label' => $this->__('SMTP host server'),
                 'attr' => [
                     'maxlength' => 255
                 ],
                 'required' => false,
-                'help' => $translator->__f("Default: '%s'", ['%s' => 'localhost'])
+                'help' => $this->__f("Default: '%s'", ['%s' => 'localhost'])
             ])
             ->add('port', IntegerType::class, [
-                'label' => $translator->__('SMTP port'),
+                'label' => $this->__('SMTP port'),
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 5
                 ],
                 'required' => false,
-                'help' => $translator->__f("Default: '%s'", ['%s' => '25'])
+                'help' => $this->__f("Default: '%s'", ['%s' => '25'])
             ])
             ->add('encryption', ChoiceType::class, [
-                'label' => $translator->__('SMTP encryption method'),
+                'label' => $this->__('SMTP encryption method'),
                 'choices' => [
-                    $translator->__('None') => '',
+                    $this->__('None') => '',
                     'SSL' => 'ssl',
                     'TLS' => 'tls'
                 ],
                 'required' => false
             ])
             ->add('auth_mode', ChoiceType::class, [
-                'label' => $translator->__('SMTP authentication type'),
+                'label' => $this->__('SMTP authentication type'),
                 'choices' => [
-                    $translator->__('None') => '',
+                    $this->__('None') => '',
                     'Plain' => 'plain',
                     'Login' => 'login',
                     'Cram-MD5' => 'cram-md5'
@@ -131,14 +149,14 @@ class ConfigType extends AbstractType
                 'required' => false
             ])
             ->add('username', TextType::class, [
-                'label' => $translator->__('SMTP user name'),
+                'label' => $this->__('SMTP user name'),
                 'attr' => [
                     'maxlength' => 50
                 ],
                 'required' => false
             ])
             ->add('password', PasswordType::class, [
-                'label' => $translator->__('SMTP password'),
+                'label' => $this->__('SMTP password'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -146,14 +164,14 @@ class ConfigType extends AbstractType
                 'required' => false
             ])
             ->add('usernameGmail', TextType::class, [
-                'label' => $translator->__('Gmail user name'),
+                'label' => $this->__('Gmail user name'),
                 'attr' => [
                     'maxlength' => 50
                 ],
                 'required' => false
             ])
             ->add('passwordGmail', PasswordType::class, [
-                'label' => $translator->__('Gmail password'),
+                'label' => $this->__('Gmail password'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -161,14 +179,14 @@ class ConfigType extends AbstractType
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -191,7 +209,6 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'charset' => 'utf-8'
         ]);
     }

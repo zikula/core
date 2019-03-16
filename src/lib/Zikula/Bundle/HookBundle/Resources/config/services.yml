@@ -1,43 +1,18 @@
 services:
-    zikula_hook_bundle.installer:
-        class: Zikula\Bundle\HookBundle\HookBundleInstaller
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\Bundle\HookBundle\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\Bundle\HookBundle\Collector\HookCollector:
         arguments:
-            - "@zikula_core.common.doctrine.schema_tool"
-            - "@doctrine.orm.default_entity_manager"
+          $providers: !tagged zikula.hook_provider
+          $subscribers: !tagged zikula.hook_subscriber
 
-    twig.extension.zikula_hook:
-        class: Zikula\Bundle\HookBundle\Twig\Extension\HookExtension
+    Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener:
         arguments:
-            - "@hook_dispatcher"
-        tags:
-            - { name: twig.extension }
-
-    hook_dispatcher.storage:
-        class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\DoctrineStorage
-        arguments:
-            - "@doctrine"
-            - "@zikula_hook_bundle.hook_binding_repository"
-            - "@zikula_hook_bundle.hook_runtime_repository"
-            - "@zikula_hook_bundle.collector.hook_collector"
-
-    hook_dispatcher:
-        class: Zikula\Bundle\HookBundle\Dispatcher\HookDispatcher
-        arguments:
-            - "@hook_dispatcher.storage"
-            - "@event_dispatcher"
-
-    zikula.hookmanager:
-        alias: hook_dispatcher
-
-    zikula_hook_bundle.collector.hook_collector:
-        class: Zikula\Bundle\HookBundle\Collector\HookCollector
-
-    zikula_hook_bundle.hook_binding_repository:
-        class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookBindingRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ['Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity']
-
-    zikula_hook_bundle.hook_runtime_repository:
-        class: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository\HookRuntimeRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ['Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity']
+          $installed: '%installed%'

@@ -11,11 +11,17 @@
 
 namespace Zikula\ExtensionsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 
-class ExtensionDependencyRepository extends EntityRepository
+class ExtensionDependencyRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ExtensionDependencyEntity::class);
+    }
+
     public function reloadExtensionDependencies($extensionsFromFile)
     {
         // truncate the table

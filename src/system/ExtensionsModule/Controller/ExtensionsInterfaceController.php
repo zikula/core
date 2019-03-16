@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\LinkContainer\LinkContainerCollector;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ThemeModule\Engine\Asset;
 
 /**
  * @Route("/extensionsinterface")
@@ -26,14 +29,17 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Module header
      *
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param Asset $assetHelper
+     *
      * @return Response symfony response object
      */
-    public function headerAction()
+    public function headerAction(ExtensionRepositoryInterface $extensionRepository, Asset $assetHelper)
     {
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
-        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
-        $adminImagePath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $caller['_zkModule'] . ':images/admin.png');
+        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
+        $adminImagePath = $assetHelper->resolve('@' . $caller['_zkModule'] . ':images/admin.png');
 
         return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig", [
             'caller' => $caller,
@@ -80,12 +86,14 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      *
+     * @param ExtensionRepositoryInterface $extensionRepository
+     *
      * @return Response symfony response object
      */
-    public function breadcrumbsAction()
+    public function breadcrumbsAction(ExtensionRepositoryInterface $extensionRepository)
     {
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
-        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
+        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
         return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/breadcrumbs.html.twig", [
             'caller' => $caller
@@ -97,25 +105,29 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Open the admin container
      *
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param LinkContainerCollector $linkCollector
+     *
      * @return Response symfony response object
      */
-    public function linksAction()
+    public function linksAction(ExtensionRepositoryInterface $extensionRepository, LinkContainerCollector $linkCollector)
     {
         $masterRequest = $this->get('request_stack')->getMasterRequest();
         $currentRequest = $this->get('request_stack')->getCurrentRequest();
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
-        $caller['info'] = $this->get('zikula_extensions_module.extension_repository')->get($caller['_zkModule']);
+        $caller['info'] = $extensionRepository->get($caller['_zkModule']);
         // your own links array
         $links = ('' !== $currentRequest->attributes->get('links')) ? $currentRequest->attributes->get('links') : '';
         // you can pass module name you want to get links for but
         $modname = ('' !== $currentRequest->attributes->get('modname')) ? $currentRequest->attributes->get('modname') : $caller['_zkModule'];
         // menu css
-        $menu_css = [];
-        $menu_css['menuId'] = ('' !== $currentRequest->attributes->get('menuid')) ? $currentRequest->attributes->get('menuid') : '';
-        $menu_css['menuClass'] = ('' !== $currentRequest->attributes->get('menuclass')) ? $currentRequest->attributes->get('menuclass') : 'navbar-nav';
-        $menu_css['menuItemClass'] = ('' !== $currentRequest->attributes->get('itemclass')) ? $currentRequest->attributes->get('itemclass') : '';
-        $menu_css['menuFirstItemClass'] = ('' !== $currentRequest->attributes->get('last')) ? $currentRequest->attributes->get('first') : '';
-        $menu_css['menuLastItemClass'] = ('' !== $currentRequest->attributes->get('first')) ? $currentRequest->attributes->get('last') : '';
+        $menu_css = [
+            'menuId' => ('' !== $currentRequest->attributes->get('menuid')) ? $currentRequest->attributes->get('menuid') : '',
+            'menuClass' => ('' !== $currentRequest->attributes->get('menuclass')) ? $currentRequest->attributes->get('menuclass') : 'navbar-nav',
+            'menuItemClass' => ('' !== $currentRequest->attributes->get('itemclass')) ? $currentRequest->attributes->get('itemclass') : '',
+            'menuFirstItemClass' => ('' !== $currentRequest->attributes->get('last')) ? $currentRequest->attributes->get('first') : '',
+            'menuLastItemClass' => ('' !== $currentRequest->attributes->get('first')) ? $currentRequest->attributes->get('last') : ''
+        ];
 
         // no own links array
         if (empty($links)) {
@@ -126,15 +138,18 @@ class ExtensionsInterfaceController extends AbstractController
             // passed to currentRequest most important
             $links_type = ('' !== $currentRequest->attributes->get('type')) ? $currentRequest->attributes->get('type') : $links_type;
             //get the menu links
-            $links = $this->get('zikula.link_container_collector')->getLinks($modname, $links_type);
+            $links = $linkCollector->getLinks($modname, $links_type);
         }
 
-        $template = ('' !== $currentRequest->attributes->get('template')) ? $currentRequest->attributes->get('template') : "@ZikulaExtensionsModule/ExtensionsInterface/links.html.twig";
+        $template = '' !== $currentRequest->attributes->get('template')
+            ? $currentRequest->attributes->get('template')
+            : '@ZikulaExtensionsModule/ExtensionsInterface/links.html.twig';
 
         return $this->render($template, [
             'caller' => $caller,
             'menu_css' => $menu_css,
             'links' => $links,
-            'current_path' => $masterRequest->getPathInfo()]);
+            'current_path' => $masterRequest->getPathInfo()
+        ]);
     }
 }

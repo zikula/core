@@ -12,13 +12,25 @@
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 
 /**
  * A block that shows who is currently using the system.
  */
 class OnlineBlock extends AbstractBlockHandler
 {
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var UserSessionRepositoryInterface
+     */
+    private $userSessionRepository;
+
     /**
      * @param array $properties
      * @return string
@@ -29,22 +41,35 @@ class OnlineBlock extends AbstractBlockHandler
             return '';
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-        $sessionRepository = $this->get('zikula_users_module.user_session_repository');
-
-        $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
+        $inactiveLimit = $this->variableApi->getSystemVar('secinactivemins');
         $dateTime = new \DateTime();
         $dateTime->modify('-' . $inactiveLimit . 'minutes');
-        $numusers = $sessionRepository->countUsersSince($dateTime);
-        $numguests = $sessionRepository->countGuestsSince($dateTime);
+        $amountOfUsers = $this->userSessionRepository->countUsersSince($dateTime);
+        $amountOfGuests = $this->userSessionRepository->countGuestsSince($dateTime);
 
-        $templateArgs = [
-            'registerallowed' => $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED),
-            'usercount' => $numusers,
-            'guestcount' => $numguests,
+        return $this->renderView('@ZikulaUsersModule/Block/online.html.twig', [
+            'registerallowed' => $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED),
+            'usercount' => $amountOfUsers,
+            'guestcount' => $amountOfGuests,
             'since' => $dateTime
-        ];
+        ]);
+    }
 
-        return $this->renderView('@ZikulaUsersModule/Block/online.html.twig', $templateArgs);
+    /**
+     * @required
+     * @param VariableApiInterface $variableApi
+     */
+    public function setVariableApi(VariableApiInterface $variableApi)
+    {
+        $this->variableApi = $variableApi;
+    }
+
+    /**
+     * @required
+     * @param UserSessionRepositoryInterface $userSessionRepository
+     */
+    public function setUserSessionRepository(UserSessionRepositoryInterface $userSessionRepository)
+    {
+        $this->userSessionRepository = $userSessionRepository;
     }
 }

@@ -1,36 +1,25 @@
 services:
-    zikula_search_module.container.link_container:
-        class: Zikula\SearchModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_users_module.current_user"
-          - "@zikula_search_module.search_stat_repository"
-        tags:
-            - { name: zikula.link_container }
-
-    zikula_search_module.form.type.block.search:
-        class: Zikula\SearchModule\Block\Form\Type\SearchBlockType
-        arguments: ["@translator.default"]
-        tags:
-            - { name: form.type }
-
-    twig.extension.zikula_search_module:
-        class: Zikula\SearchModule\Twig\TwigExtension
+    _defaults:
+        autowire: true
+        autoconfigure: true
         public: false
-        arguments: ["@zikula_extensions_module.api.variable", "@router"]
-        tags:
-            - { name: twig.extension }
+        bind:
+            $bundle: '@Zikula\SearchModule\ZikulaSearchModule'
 
-    zikula_search_module.internal.searchable_module_collector:
-        class: Zikula\SearchModule\Collector\SearchableModuleCollector
+    Zikula\SearchModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    zikula_search_module.api.search_api:
-        class: Zikula\SearchModule\Api\SearchApi
+    Zikula\SearchModule\Api\ApiInterface\SearchApiInterface: '@Zikula\SearchModule\Api\SearchApi'
+    Zikula\SearchModule\Entity\RepositoryInterface\SearchResultRepositoryInterface: '@Zikula\SearchModule\Entity\Repository\SearchResultRepository'
+    Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface: '@Zikula\SearchModule\Entity\Repository\SearchStatRepository'
+
+    Zikula\SearchModule\Collector\SearchableModuleCollector:
         arguments:
-          - '@zikula_extensions_module.api.variable'
-          - '@zikula_search_module.search_result_repository'
-          - '@zikula_search_module.search_stat_repository'
-          - '@session'
-          - '@zikula_search_module.internal.searchable_module_collector'
+          $searchables: !tagged zikula.searchable_module
+
+    Zikula\SearchModule\Listener\FrontControllerListener:
+        arguments:
+          $headerAssetBag: '@zikula_core.common.theme.assets_header'
+          $installed: '%installed%'
+          $isUpgrading: "@=container.hasParameter('upgrading') ? parameter('upgrading') : false"

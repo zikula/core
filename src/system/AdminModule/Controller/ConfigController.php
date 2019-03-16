@@ -16,8 +16,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\ConfigType;
+use Zikula\AdminModule\Helper\AdminModuleHelper;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
@@ -33,28 +38,41 @@ class ConfigController extends AbstractController
      * @Template("ZikulaAdminModule:Config:config.html.twig")
      *
      * @param Request $request
+     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
+     * @param AdminModuleRepositoryInterface $adminModuleRepository
+     * @param ThemeEntityRepository $themeEntityRepository
+     * @param VariableApiInterface $variableApi
+     * @param CapabilityApiInterface $capabilityApi
+     * @param AdminModuleHelper $adminModuleHelper
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
-    public function configAction(Request $request)
-    {
+    public function configAction(
+        Request $request,
+        AdminCategoryRepositoryInterface $adminCategoryRepository,
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        ThemeEntityRepository $themeEntityRepository,
+        VariableApiInterface $variableApi,
+        CapabilityApiInterface $capabilityApi,
+        AdminModuleHelper $adminModuleHelper
+    ) {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // get admin capable mods
-        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
 
         // Get all categories
         $categories = [];
-        $items = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findBy([], ['sortorder' => 'ASC']);
+        $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
                 $categories[$item['name']] = $item['cid'];
             }
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
         $modVars = $variableApi->getAll('ZikulaAdminModule');
         $dataValues = $modVars;
         $dataValues['ignoreinstallercheck'] = (bool)$dataValues['ignoreinstallercheck'];
@@ -63,7 +81,7 @@ class ConfigController extends AbstractController
         $modules = [];
         foreach ($adminModules as $adminModule) {
             // Get the category assigned to this module
-            $category = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule->getId()]);
+            $category = $adminModuleRepository->findOneBy(['mid' => $adminModule->getId()]);
             // output module category selection
             $modules[] = [
                 'displayname' => $adminModule['displayname'],
@@ -71,18 +89,17 @@ class ConfigController extends AbstractController
             ];
             $dataValues['modulecategory' . $adminModule['name']] = (isset($category)) ? $category->getCid() : $this->getVar('defaultcategory');
         }
-        $themes = $this->get('zikula_theme_module.theme_entity.repository')->get(ThemeEntityRepository::FILTER_ADMIN);
+        $themes = $themeEntityRepository->get(ThemeEntityRepository::FILTER_ADMIN);
 
         $form = $this->createForm(ConfigType::class,
             $dataValues, [
-                'translator' => $this->get('translator.default'),
                 'categories' => $categories,
                 'modules' => $modules,
                 'themes' => $themes
             ]
         );
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
 
@@ -99,7 +116,7 @@ class ConfigController extends AbstractController
                     if (!$category) {
                         continue;
                     }
-                    $this->get('zikula_admin_module.helper.admin_module_helper')->setAdminModuleCategory($adminModule, $category);
+                    $adminModuleHelper->setAdminModuleCategory($adminModule, $category);
                 }
 
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));

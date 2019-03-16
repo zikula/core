@@ -12,7 +12,7 @@
     <td id="permission-instance-{{ permission.pid }}">{{ permission.instance }}</td>
     <td id="permission-level-{{ permission.pid }}" data-id="{{ permission.level }}">{{ permissionLevels[permission.level] }}</td>
     <td class="actions">
-        {% set rowActions = knp_menu_get('ZikulaPermissionsModule:AdminActionsMenu:menu', [], {permission: permission}) %}
+        {% set rowActions = knp_menu_get('zikulaPermissionsAdminActionsMenu', [], {permission: permission}) %}
         {{ knp_menu_render(rowActions, {template: 'ZikulaMenuModule:Override:actions.html.twig'}) }}
     </td>
 </tr>

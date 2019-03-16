@@ -15,23 +15,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * General deletion form type.
  */
 class DeletionType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    use TranslatorTrait;
 
     /**
      * DeletionType constructor.
      *
-     * @param TranslatorInterface $translator Translator service instance
+     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
@@ -43,14 +49,14 @@ class DeletionType extends AbstractType
     {
         $builder
             ->add('delete', SubmitType::class, [
-                'label' => $this->translator->__('Delete'),
+                'label' => $this->__('Delete'),
                 'icon' => 'fa-trash-o',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default',

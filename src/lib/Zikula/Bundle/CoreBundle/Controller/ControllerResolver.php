@@ -22,53 +22,24 @@ class ControllerResolver extends BaseControllerResolver
     protected function createController($controller)
     {
         if (false === strpos($controller, '::')) {
-            $count = substr_count($controller, ':');
-            if (2 == $count) {
-                // controller in the a:b:c notation then
-                $controller = $this->parser->parse($controller);
-            } elseif (1 == $count) {
-                // controller in the service:method notation
-                list($service, $method) = explode(':', $controller, 2);
-
-                return [$this->container->get($service), $method];
-            } else {
-                throw new \LogicException(sprintf('Unable to parse the controller name "%s".', $controller));
-            }
+            return parent::createController($controller);
         }
 
         list($class, $method) = explode('::', $controller, 2);
-
         if (!class_exists($class)) {
             throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
 
         // Own logic
         if (is_subclass_of($class, 'Zikula\Core\Controller\AbstractController')) {
-            $kernel = $this->container->get("kernel");
-            $bundleNamespace = substr($class, 0, strpos($class, '\Controller'));
-            $bundles = $kernel->getBundles();
-
-            $currentBundle = false;
-            foreach ($bundles as $bundle) {
-                if ($bundle->getNamespace() == $bundleNamespace) {
-                    $currentBundle = $bundle;
-                    break;
-                }
+            $controller = $this->container->get($class);
+            if (method_exists($controller, 'setContainer')) {
+                $controller->setContainer($this->container);
             }
-
-            if (false === $currentBundle) {
-                throw new \LogicException(sprintf('Unable to calculate the bundle from controller "%s".', $class));
-            }
-
-            $controller = new $class($currentBundle);
         } else {
-            $controller = new $class();
+            $controller = $this->instantiateController($class);
         }
         // End own logic
-
-        if ($controller instanceof ContainerAwareInterface) {
-            $controller->setContainer($this->container);
-        }
 
         return [$controller, $method];
     }

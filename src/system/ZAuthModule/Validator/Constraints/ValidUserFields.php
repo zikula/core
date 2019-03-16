@@ -20,11 +20,6 @@ class ValidUserFields extends Constraint
 {
     public $message = 'The fields are invalid.';
 
-    public function validatedBy()
-    {
-        return 'zikula.zauth.user_fields.validator';
-    }
-
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

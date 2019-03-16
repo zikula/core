@@ -7,6 +7,21 @@ CHANGELOG - ZIKULA 3.0.x
  - BC Breaks:
     - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
+    - Service definitions have been updated to use Symfony autowire and autoconfigure functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
+    - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` because bundle inheritance is not supported in Symfony 4 anymore (#3377).
+    - Interface extensions and amendments
+        - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
+        - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
+        - `Zikula\Bundle\HookBundle\HookProviderInterface` requires a new method `getAreaName()` to be implemented.
+        - `Zikula\Bundle\HookBundle\HookSubscriberInterface` requires a new method `getAreaName()` to be implemented.
+        - `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
+        - `Zikula\Bundle\HookBundle\Collector\HookCollectorInterface` has changed signature of `addProvider()` and `addSubscriber()` methods.
+        - `Zikula\Common\Content\ContentTypeInterface` requires a new method `getBundleName()` to be implemented.
+        - `Zikula\ŞearchModule\SearchableInterface` requires a new method `getBundleName()` to be implemented.
+        - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
+        - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
+    - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
+    - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
     - Dropped vendors:
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
@@ -65,31 +80,31 @@ CHANGELOG - ZIKULA 3.0.x
     - knplabs/knp-menu updated from 2.2.0 to 2.3.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 2.2.1
     - liip/imagine-bundle updated from 1.9.1 to 2.1.0
-    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.1.0
+    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.3.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
     - nikic/php-parser updated from 1.4.1 to 4.2.1
     - paragonie/random_compat updated from 2.0.17 to 9.99.99
     - sensio/distribution-bundle updated from 5.0.23 to 5.0.24
     - sensiolabs/security-checker updated from 5.0.1 to 5.0.3
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
-    - swiftmailer/swiftmailer updated from 5.4.12 to 6.1.3
+    - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.0
     - symfony/contracts installed in 1.0.2
-    - symfony/maker-bundle installed in 1.11.4
+    - symfony/maker-bundle installed in 1.11.5
     - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
     - symfony/phpunit-bridge installed in 4.2.4
+    - symfony/polyfill-iconv installed in 1.10.0
+    - symfony/polyfill-intl-idn installed in 1.10.0
     - symfony/polyfill-php72 installed in 1.10.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.5
     - symfony/symfony updated from 3.4.20 to 4.2.4
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.35.4 to 2.6.2
+    - twig/twig updated from 1.35.4 to 2.7.2
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.0
     - zikula/generator-bundle updated from 2.0.1 to 3.0.0
-    - zikula/legal-module updated from 3.1.2 to 3.2.0
-    - zikula/pagelock-module updated from 1.2.3 to 1.3.1
-    - zikula/profile-module updated from 3.0.5 to 3.1.0
-    - zikula/oauth-module updated from 1.0.4 to 1.0.5
-    - zikula/seabreeze-theme updated from 4.0.3 to 4.1.0
+    - zikula/legal-module updated from 3.1.2 to 3.2.1
+    - zikula/pagelock-module updated from 1.2.3 to 1.3.2
+    - zikula/profile-module updated from 3.0.5 to 3.1.1
+    - zikula/oauth-module updated from 1.0.4 to 1.0.7
+    - zikula/seabreeze-theme updated from 4.0.3 to 4.1.1
     - zikula/wizard updated from 2.0 to 3.0.0
-
-
 

@@ -60,9 +60,10 @@ class ConfigController extends AbstractController
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->getForm();
-
-        if ($form->handleRequest($request)->isValid()) {
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));

@@ -18,10 +18,29 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class AdminViewFilterType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +52,7 @@ class AdminViewFilterType extends AbstractType
             ->add('position', ChoiceType::class, [
                 'choices' => $options['positionChoices'],
                 'required' => false,
-                'placeholder' => $options['translator']->__('All'),
+                'placeholder' => $this->__('All'),
                 'attr' => [
                     'class' => 'input-sm'
                 ]
@@ -41,7 +60,7 @@ class AdminViewFilterType extends AbstractType
             ->add('module', ChoiceType::class, [
                 'choices' => $options['moduleChoices'],
                 'required' => false,
-                'placeholder' => $options['translator']->__('All'),
+                'placeholder' => $this->__('All'),
                 'attr' => [
                     'class' => 'input-sm'
                 ]
@@ -49,24 +68,24 @@ class AdminViewFilterType extends AbstractType
             ->add('language', ChoiceType::class, [
                 'choices' => $options['localeChoices'],
                 'required' => false,
-                'placeholder' => $options['translator']->__('All'),
+                'placeholder' => $this->__('All'),
                 'attr' => [
                     'class' => 'input-sm'
                 ]
             ])
             ->add('active', ChoiceType::class, [
                 'choices' => [
-                    $options['translator']->__('Active') => BlockApi::BLOCK_ACTIVE,
-                    $options['translator']->__('Inactive') => BlockApi::BLOCK_INACTIVE,
+                    $this->__('Active') => BlockApi::BLOCK_ACTIVE,
+                    $this->__('Inactive') => BlockApi::BLOCK_INACTIVE,
                 ],
                 'required' => false,
-                'placeholder' => $options['translator']->__('All'),
+                'placeholder' => $this->__('All'),
                 'attr' => [
                     'class' => 'input-sm'
                 ]
             ])
             ->add('filterButton', SubmitType::class, [
-                'label' => $options['translator']->__('Filter'),
+                'label' => $this->__('Filter'),
                 'icon' => 'fa-filter fa-lg',
                 'attr' => [
                     'class' => 'btn btn-default btn-sm'
@@ -92,7 +111,6 @@ class AdminViewFilterType extends AbstractType
             'attr' => [
                 'class' => 'form form-inline',
             ],
-            'translator' => new IdentityTranslator(),
             'moduleChoices' => [],
             'positionChoices' => [],
             'localeChoices' => ['English' => 'en']

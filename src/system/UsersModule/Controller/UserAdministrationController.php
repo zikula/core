@@ -13,9 +13,13 @@ namespace Zikula\UsersModule\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
@@ -24,9 +28,12 @@ use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
@@ -36,6 +43,9 @@ use Zikula\UsersModule\Form\Type\DeleteType;
 use Zikula\UsersModule\Form\Type\MailType;
 use Zikula\UsersModule\Form\Type\RegistrationType\ApproveRegistrationConfirmationType;
 use Zikula\UsersModule\Form\Type\SearchUserType;
+use Zikula\UsersModule\Helper\AdministrationActionsHelper;
+use Zikula\UsersModule\Helper\MailHelper;
+use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\UserManagementUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
@@ -50,21 +60,34 @@ class UserAdministrationController extends AbstractController
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
      * @Theme("admin")
      * @Template("ZikulaUsersModule:UserAdministration:list.html.twig")
+     *
      * @param Request $request
+     * @param UserRepositoryInterface $userRepository
+     * @param RouterInterface $router
+     * @param AdministrationActionsHelper $actionsHelper
      * @param string $sort
      * @param string $sortdir
      * @param string $letter
      * @param integer $startnum
+     *
      * @return array
      */
-    public function listAction(Request $request, $sort = 'uid', $sortdir = 'DESC', $letter = 'all', $startnum = 0)
-    {
+    public function listAction(
+        Request $request,
+        UserRepositoryInterface $userRepository,
+        RouterInterface $router,
+        AdministrationActionsHelper $actionsHelper,
+        $sort = 'uid',
+        $sortdir = 'DESC',
+        $letter = 'all',
+        $startnum = 0
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
         $startnum = $startnum > 0 ? $startnum - 1 : 0;
 
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
+        $sortableColumns = new SortableColumns($router, 'zikulausersmodule_useradministration_list', 'sort', 'sortdir');
         $sortableColumns->addColumns([new Column('uname'), new Column('uid'), new Column('user_regdate'), new Column('lastlogin'), new Column('activated')]);
         $sortableColumns->setOrderByFromRequest($request);
         $sortableColumns->setAdditionalUrlParameters([
@@ -77,12 +100,7 @@ class UserAdministrationController extends AbstractController
             $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
         }
         $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
-        $users = $this->get('zikula_users_module.user_repository')->query(
-            $filter,
-            [$sort => $sortdir],
-            $limit,
-            $startnum
-        );
+        $users = $userRepository->query($filter, [$sort => $sortdir], $limit, $startnum);
 
         return [
             'sort' => $sortableColumns->generateSortableColumns(),
@@ -90,7 +108,7 @@ class UserAdministrationController extends AbstractController
                 'count' => $users->count(),
                 'limit' => $limit
             ],
-            'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
+            'actionsHelper' => $actionsHelper,
             'users' => $users
         ];
     }
@@ -100,11 +118,18 @@ class UserAdministrationController extends AbstractController
      * to populate a username search
      *
      * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
+     *
      * @param Request $request
+     * @param UserRepositoryInterface $userRepository
+     * @param AdministrationActionsHelper $actionsHelper
+     *
      * @return PlainResponse
      */
-    public function getUsersByFragmentAsTableAction(Request $request)
-    {
+    public function getUsersByFragmentAsTableAction(
+        Request $request,
+        UserRepositoryInterface $userRepository,
+        AdministrationActionsHelper $actionsHelper
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             return new PlainResponse('');
         }
@@ -116,11 +141,11 @@ class UserAdministrationController extends AbstractController
             ]],
             'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
         ];
-        $users = $this->get('zikula_users_module.user_repository')->query($filter);
+        $users = $userRepository->query($filter);
 
         return $this->render('@ZikulaUsersModule/UserAdministration/userlist.html.twig', [
             'users' => $users,
-            'actionsHelper' => $this->get('zikula_users_module.helper.administration_actions'),
+            'actionsHelper' => $$actionsHelper
         ], new PlainResponse());
     }
 
@@ -128,11 +153,14 @@ class UserAdministrationController extends AbstractController
      * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaUsersModule:UserAdministration:modify.html.twig")
+     *
      * @param Request $request
      * @param UserEntity $user
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @param HookDispatcherInterface $hookDispatcher
+     *
+     * @return array|RedirectResponse
      */
-    public function modifyAction(Request $request, UserEntity $user)
+    public function modifyAction(Request $request, UserEntity $user, HookDispatcherInterface $hookDispatcher)
     {
         if (!$this->hasPermission('ZikulaUsersModule::', $user->getUname() . "::" . $user->getUid(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -142,9 +170,7 @@ class UserAdministrationController extends AbstractController
         }
         $dispatcher = $this->get('event_dispatcher');
 
-        $form = $this->createForm(AdminModifyUserType::class, $user, [
-            'translator' => $this->get('translator.default')
-        ]);
+        $form = $this->createForm(AdminModifyUserType::class, $user);
         $originalUserName = $user->getUname();
         $originalGroups = $user->getGroups()->toArray();
         $formEvent = new UserFormAwareEvent($form);
@@ -152,10 +178,10 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
-        $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
+        $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_VALIDATE, $hook);
         $validators = $hook->getValidators();
 
-        if ($form->isValid() && !$validators->hasErrors()) {
+        if ($form->isSubmitted() && $form->isValid() && !$validators->hasErrors()) {
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
                 $this->checkSelf($user, $originalGroups);
@@ -170,7 +196,7 @@ class UserAdministrationController extends AbstractController
                 $dispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
                 $formDataEvent = new UserFormDataEvent($user, $form);
                 $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
-                $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
+                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
             }
@@ -191,13 +217,22 @@ class UserAdministrationController extends AbstractController
      * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaUsersModule:UserAdministration:approve.html.twig")
+     *
      * @param Request $request
      * @param UserEntity $user
+     * @param RegistrationHelper $registrationHelper
+     * @param MailHelper $mailHelper
      * @param bool $force
+     *
      * @return array
      */
-    public function approveAction(Request $request, UserEntity $user, $force = false)
-    {
+    public function approveAction(
+        Request $request,
+        UserEntity $user,
+        RegistrationHelper $registrationHelper,
+        MailHelper $mailHelper,
+        $force = false
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
@@ -207,7 +242,6 @@ class UserAdministrationController extends AbstractController
             'user' => $user->getUid(),
             'force' => $forceVerification
         ], [
-            'translator' => $this->get('translator.default'),
             'buttonLabel' => $this->__('Approve')
         ]);
         $redirectToRoute = 'zikulausersmodule_useradministration_list';
@@ -228,8 +262,7 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $this->get('zikula_users_module.helper.registration_helper')->approve($user);
-                $mailHelper = $this->get('zikula_users_module.helper.mail_helper');
+                $registrationHelper->approve($user);
                 if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
                     $notificationErrors = $mailHelper->createAndSendRegistrationMail($user, true, false);
                 } else {
@@ -258,21 +291,30 @@ class UserAdministrationController extends AbstractController
      * @Route("/delete/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaUsersModule:UserAdministration:delete.html.twig")
+     *
      * @param Request $request
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
+     * @param HookDispatcherInterface $hookDispatcher
      * @param UserEntity|null $user
+     *
      * @return array
      */
-    public function deleteAction(Request $request, UserEntity $user = null)
-    {
+    public function deleteAction(
+        Request $request,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        HookDispatcherInterface $hookDispatcher,
+        UserEntity $user = null
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
         $users = new ArrayCollection();
         if ('POST' == $request->getMethod()) {
             $deleteForm = $this->createForm(DeleteType::class, [], [
-                'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm(),
-                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
-                'translator' => $this->get('translator.default')
+                'choices' => $userRepository->queryBySearchForm(),
+                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete')
             ]);
             $deleteForm->handleRequest($request);
             if ($deleteForm->isSubmitted() && $deleteForm->isValid()) {
@@ -292,11 +334,9 @@ class UserAdministrationController extends AbstractController
 
         $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class, [
             'users' => $usersImploded
-        ], [
-            'translator' => $this->get('translator.default')
         ]);
         $deleteConfirmationForm->handleRequest($request);
-        if (!$deleteConfirmationForm->isSubmitted() && ($users instanceof ArrayCollection) && $users->isEmpty()) {
+        if (!$deleteConfirmationForm->isSubmitted() && $users instanceof ArrayCollection && $users->isEmpty()) {
             throw new \InvalidArgumentException($this->__('No users selected.'));
         }
         if ($deleteConfirmationForm->isSubmitted()) {
@@ -309,7 +349,7 @@ class UserAdministrationController extends AbstractController
             $userIds = explode(',', $userIdsImploded);
             $valid = true;
             foreach ($userIds as $k => $uid) {
-                if (in_array($uid, [1, 2, $this->get('zikula_users_module.current_user')->get('uid')])) {
+                if (in_array($uid, [UsersConstant::USER_ID_ANONYMOUS, UsersConstant::USER_ID_ADMIN, $currentUserApi->get('uid')])) {
                     unset($userIds[$k]);
                     $this->addFlash('danger', $this->__f('You are not allowed to delete Uid %uid', ['%uid' => $uid]));
                     continue;
@@ -317,7 +357,7 @@ class UserAdministrationController extends AbstractController
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
                 $validators = $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_VALIDATE, $event)->getData();
                 $hook = new ValidationHook($validators);
-                $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook);
+                $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook);
                 $validators = $hook->getValidators();
                 if ($validators->hasErrors()) {
                     $valid = false;
@@ -325,13 +365,13 @@ class UserAdministrationController extends AbstractController
             }
             if ($valid && $deleteConfirmationForm->isValid()) {
                 // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
-                $deletedUsers = $this->get('zikula_users_module.user_repository')->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
+                $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
                     $eventName = UsersConstant::ACTIVATED_ACTIVE == $deletedUser->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
                     $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
-                    $this->get('hook_dispatcher')->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
-                    $this->get('zikula_users_module.user_repository')->removeAndFlush($deletedUser);
+                    $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
+                    $userRepository->removeAndFlush($deletedUser);
                 }
                 $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]));
 
@@ -349,56 +389,69 @@ class UserAdministrationController extends AbstractController
      * @Route("/search")
      * @Theme("admin")
      * @Template("ZikulaUsersModule:UserAdministration:search.html.twig")
+     *
      * @param Request $request
+     * @param UserRepositoryInterface $userRepository
+     * @param VariableApiInterface $variableApi
+     *
      * @return array
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(
+        Request $request,
+        UserRepositoryInterface $userRepository,
+        VariableApiInterface $variableApi
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
-        $form = $this->createForm(SearchUserType::class, [], [
-            'translator' => $this->get('translator.default')
-        ]);
+        $form = $this->createForm(SearchUserType::class, []);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             // the users.search.process_edit event is no longer dispatched with this method. could it be done in a Transformer? #3652
             $deleteForm = $this->createForm(DeleteType::class, [], [
-                'choices' => $this->get('zikula_users_module.user_repository')->queryBySearchForm($form->getData()),
-                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete'),
-                'translator' => $this->get('translator.default')
+                'choices' => $userRepository->queryBySearchForm($form->getData()),
+                'action' => $this->generateUrl('zikulausersmodule_useradministration_delete')
             ]);
 
             return $this->render('@ZikulaUsersModule/UserAdministration/searchResults.html.twig', [
                 'deleteForm' => $deleteForm->createView(),
-                'mailForm' => $this->buildMailForm()->createView()
+                'mailForm' => $this->buildMailForm($variableApi)->createView()
             ]);
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
     /**
      * @Route("/mail")
+     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param UserRepositoryInterface $userRepository
+     * @param VariableApiInterface $variableApi
+     * @param MailHelper $mailHelper
+     *
+     * @return RedirectResponse
      */
-    public function mailUsersAction(Request $request)
-    {
+    public function mailUsersAction(
+        Request $request,
+        UserRepositoryInterface $userRepository,
+        VariableApiInterface $variableApi,
+        MailHelper $mailHelper
+    ) {
         if (!$this->hasPermission('ZikulaUsersModule', '::MailUsers', ACCESS_COMMENT)) {
             throw new AccessDeniedException();
         }
-        $mailForm = $this->buildMailForm();
+        $mailForm = $this->buildMailForm($variableApi);
         $mailForm->handleRequest($request);
         if ($mailForm->isSubmitted() && $mailForm->isValid()) {
             $data = $mailForm->getData();
-            $users = $this->get('zikula_users_module.user_repository')->query(['uid' => ['operator' => 'in', 'operand' => explode(',', $data['userIds'])]]);
+            $users = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => explode(',', $data['userIds'])]]);
             if (empty($users)) {
                 throw new \InvalidArgumentException($this->__('No users found.'));
             }
-            if ($this->get('zikula_users_module.helper.mail_helper')->mailUsers($users, $data)) {
+            if ($mailHelper->mailUsers($users, $data)) {
                 $this->addFlash('success', $this->__('Mail sent!'));
             } else {
                 $this->addFlash('error', $this->__('Could not send mail.'));
@@ -411,36 +464,40 @@ class UserAdministrationController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\Form\Form
+     * @param VariableApiInterface $variableApi
+     *
+     * @return Form
      */
-    private function buildMailForm()
+    private function buildMailForm(VariableApiInterface $variableApi)
     {
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
-
         return $this->createForm(MailType::class, [
             'from' => $variableApi->getSystemVar('sitename'),
             'replyto' => $variableApi->getSystemVar('adminmail'),
             'format' => 'text',
             'batchsize' => 100
         ], [
-            'translator' => $this->get('translator.default'),
             'action' => $this->generateUrl('zikulausersmodule_useradministration_mailusers')
         ]);
     }
 
     /**
      * Prevent user from modifying certain aspects of self.
+     *
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param VariableApiInterface $variableApi
      * @param UserEntity $userBeingModified
      * @param array $originalGroups
      */
-    private function checkSelf(UserEntity $userBeingModified, array $originalGroups)
-    {
-        $currentUserId = $this->get('zikula_users_module.current_user')->get('uid');
+    private function checkSelf(
+        CurrentUserApiInterface $currentUserApi,
+        VariableApiInterface $variableApi,
+        UserEntity $userBeingModified,
+        array $originalGroups
+    ) {
+        $currentUserId = $currentUserApi->get('uid');
         if ($currentUserId != $userBeingModified->getUid()) {
             return;
         }
-
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
 
         // current user not allowed to deactivate self
         if (UsersConstant::ACTIVATED_ACTIVE != $userBeingModified->getActivated()) {

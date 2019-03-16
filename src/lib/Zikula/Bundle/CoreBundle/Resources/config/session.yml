@@ -1,31 +1,28 @@
 services:
-    zikula_core.bridge.http_foundation.doctrine_session_handler:
-        class: Zikula\Bridge\HttpFoundation\DoctrineSessionHandler
+    _defaults:
+        autowire: true
+        autoconfigure: true
         public: false
+
+    Zikula\Bridge\:
+        resource: '../../../../Bridge/*'
+
+    Zikula\Bridge\HttpFoundation\DoctrineSessionHandler:
         arguments:
-            - "@zikula_users_module.user_session_repository"
-            - "@zikula_extensions_module.api.variable"
-            - "@request_stack"
-            - "%installed%"
+          $installed: '%installed%'
         calls:
-            - [setStorage, ["@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine"]]
+            - [setStorage, ['@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine']]
 
     zikula_core.bridge.http_foundation.zikula_session_storage_doctrine:
         class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
         arguments:
-            - "@zikula_extensions_module.api.variable"
-            - "%session.storage.options%"
-            - "@=null"
-            - "@=null"
+          $options: '%session.storage.options%'
         calls:
-            - [setSaveHandler, ["@zikula_core.bridge.http_foundation.doctrine_session_handler"]]
+            - [setSaveHandler, ['@Zikula\Bridge\HttpFoundation\DoctrineSessionHandler']]
 
     zikula_core.bridge.http_foundation.zikula_session_storage_file:
         class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
         arguments:
-            - "@zikula_extensions_module.api.variable"
-            - "%session.storage.options%"
-            - "@=null"
-            - "@=null"
+          $options: '%session.storage.options%'
         calls:
-            - [setSaveHandler, ["@session.handler.native_file"]]
+            - [setSaveHandler, ['@session.handler.native_file']]

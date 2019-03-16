@@ -1,40 +1,22 @@
 services:
-    zikula_settings_module.container.link_container:
-        class: Zikula\SettingsModule\Container\LinkContainer
-        arguments:
-            - "@translator.default"
-            - "@router"
-            - "@zikula_permissions_module.api.permission"
-        tags:
-            - { name: zikula.link_container }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\SettingsModule\ZikulaSettingsModule'
 
-    zikula_settings_module.module_listener:
-        class: Zikula\SettingsModule\Listener\ModuleListener
-        arguments:
-            - "@zikula_extensions_module.api.variable"
-            - "@session"
-            - "@translator.default"
-        tags:
-            - { name: kernel.event_subscriber }
+    Zikula\SettingsModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    zikula_settings_module.locale_api:
-        class: Zikula\SettingsModule\Api\LocaleApi
-        arguments:
-            - "@kernel"
-            - "@request_stack"
+    Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface: '@Zikula\SettingsModule\Api\LocaleApi'
 
-    zikula_settings_module.listener.localized_variable_listener:
-        class: Zikula\SettingsModule\Listener\LocalizedVariableListener
-        arguments:
-            - "@zikula_extensions_module.api.variable"
-        tags:
-            - { name: kernel.event_subscriber }
+    # public because installer accesses this using container
+    Zikula\SettingsModule\Api\LocaleApi:
+        public: true
 
-    zikula_settings_module.locale_listener:
-        class: Zikula\SettingsModule\Listener\LocaleListener
+    Zikula\SettingsModule\Listener\LocaleListener:
         arguments:
-            - '%locale%'
-            - "@zikula_users_module.current_user"
-            - "%installed%"
-        tags:
-            - { name: kernel.event_subscriber }
+            $defaultLocale: '%locale%'
+            $installed: '%installed%'

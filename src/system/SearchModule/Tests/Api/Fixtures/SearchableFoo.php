@@ -53,11 +53,19 @@ class SearchableFoo implements SearchableInterface
     {
         $r = new SearchResultEntity();
         $r->setCreated(new \DateTime())
-            ->setModule('ZikulaFooModule')
+            ->setModule($this->getBundleName())
             ->setSesid('test')
             ->setTitle('ZikulaFooModule result')
             ->setUrl(RouteUrl::createFromRoute('zikulafoomodule_user_index'));
 
         return $r;
+    }
+
+    /**
+     * * {@inheritdoc}
+     */
+    public function getBundleName()
+    {
+        return 'ZikulaFooModule';
     }
 }

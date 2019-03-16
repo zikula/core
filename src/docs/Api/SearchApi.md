@@ -3,8 +3,6 @@ SearchApi
 
 classname: \Zikula\SearchModule\Api\SearchApi
 
-service id="zikula_search_module.api.search_api"
-
 This class is used to perform a global search.
 
 The class makes the following methods available:

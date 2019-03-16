@@ -55,12 +55,12 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
     }
 
     /**
-     * Returns the name of the type being extended.
+     * Returns the name of the types being extended.
      *
-     * @return string The name of the type being extended
+     * @return string[] The name of the types being extended
      */
-    public function getExtendedType()
+    public function getExtendedTypes()
     {
-        return ButtonType::class; // Extend the button field type
+        return [ButtonType::class]; // Extend the button field type
     }
 }

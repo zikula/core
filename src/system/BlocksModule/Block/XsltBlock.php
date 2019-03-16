@@ -14,6 +14,7 @@ namespace Zikula\BlocksModule\Block;
 use DOMDocument;
 use XSLTProcessor;
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\BlocksModule\Block\Form\Type\XsltBlockType;
 
 /**
  * Block to display a parsed xml document
@@ -50,18 +51,11 @@ class XsltBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\BlocksModule\Block\Form\Type\XsltBlockType';
+        return XsltBlockType::class;
     }
 
     public function getFormTemplate()
     {
         return '@ZikulaBlocksModule/Block/xslt_modify.html.twig';
-    }
-
-    public function getFormOptions()
-    {
-        return [
-            'translator' => $this->getTranslator()
-        ];
     }
 }

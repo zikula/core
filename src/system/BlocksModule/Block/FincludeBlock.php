@@ -12,6 +12,7 @@
 namespace Zikula\BlocksModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\BlocksModule\Block\Form\Type\FincludeBlockType;
 
 /**
  * Block to display the contents of a file given a path.
@@ -50,16 +51,11 @@ class FincludeBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\BlocksModule\Block\Form\Type\FincludeBlockType';
-    }
-
-    public function getFormOptions()
-    {
-        return ['translator' => $this->getTranslator()];
+        return FincludeBlockType::class;
     }
 
     public function getType()
     {
-        return $this->__("File Include");
+        return $this->__('File Include');
     }
 }

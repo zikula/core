@@ -11,12 +11,18 @@
 
 namespace Zikula\ExtensionsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface;
 
-class ExtensionVarRepository extends EntityRepository implements ExtensionVarRepositoryInterface
+class ExtensionVarRepository extends ServiceEntityRepository implements ExtensionVarRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ExtensionVarEntity::class);
+    }
+
     public function remove(ExtensionVarEntity $entity)
     {
         $this->_em->remove($entity);

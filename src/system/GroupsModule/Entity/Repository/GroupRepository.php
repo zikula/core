@@ -11,13 +11,20 @@
 
 namespace Zikula\GroupsModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
 
-class GroupRepository extends EntityRepository implements GroupRepositoryInterface
+class GroupRepository extends ServiceEntityRepository implements GroupRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, GroupEntity::class);
+    }
+
     /**
      * @var TranslatorInterface
      */

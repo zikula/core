@@ -1,27 +1,17 @@
 services:
-    zikula_mailer_module.container.link_container:
-        class: Zikula\MailerModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-        tags:
-            - { name: zikula.link_container }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\MailerModule\ZikulaMailerModule'
 
-    zikula_mailer_module.api.mailer:
-        class: Zikula\MailerModule\Api\MailerApi
-        arguments:
-          - "%installed%"
-          - "@kernel"
-          - "@translator.default"
-          - "@event_dispatcher"
-          - "@zikula.dynamic_config_dumper"
-          - "@zikula_extensions_module.api.variable"
-          - "@mailer"
+    Zikula\MailerModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
 
-    zikula_mailer_module.hook_subscriber.ui_hooks_subscriber:
-        class: Zikula\MailerModule\HookSubscriber\UiHooksSubscriber
+    Zikula\MailerModule\Api\ApiInterface\MailerApiInterface: '@Zikula\MailerModule\Api\MailerApi'
+
+    Zikula\MailerModule\Api\MailerApi:
         arguments:
-          - "@translator.default"
-        tags:
-            - { name: zikula.hook_subscriber, areaName: 'mailer.ui_hooks.htmlmail.form_edit' }
+          $installed: '%installed%'

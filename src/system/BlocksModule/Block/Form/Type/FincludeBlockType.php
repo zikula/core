@@ -21,30 +21,34 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\BlocksModule\Block\FincludeBlock;
-use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Class FincludeBlockType
  */
 class FincludeBlockType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    use TranslatorTrait;
 
     /**
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
         $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
         $builder
             ->add('filo', TextType::class, [
                 'constraints' => [
@@ -53,7 +57,7 @@ class FincludeBlockType extends AbstractType
                         'mimeTypes' => ['text/html', 'text/plain'],
                     ])
                 ],
-                'label' => $translator->__('File Path'),
+                'label' => $this->__('File Path'),
                 'attr' => ['placeholder' => '/full/path/to/file.txt']
             ])
             ->add('typo', ChoiceType::class, [
@@ -62,7 +66,7 @@ class FincludeBlockType extends AbstractType
                     'Text' => FincludeBlock::FILETYPE_TEXT,
                     'PHP' => FincludeBlock::FILETYPE_PHP
                 ],
-                'label' => $translator->__('File type')
+                'label' => $this->__('File type')
             ])
         ;
     }
@@ -76,8 +80,7 @@ class FincludeBlockType extends AbstractType
     {
         // add a constraint to the entire form
         $resolver->setDefaults([
-            'constraints' => new Callback(['callback' => [$this, 'validateFileAgainstMimeType']]),
-            'translator' => new IdentityTranslator()
+            'constraints' => new Callback(['callback' => [$this, 'validateFileAgainstMimeType']])
         ]);
     }
 
@@ -89,7 +92,7 @@ class FincludeBlockType extends AbstractType
      */
     public function validateFileAgainstMimeType($data, ExecutionContextInterface $context)
     {
-        if (('text/html' == mime_content_type($data['filo'])) && (0 !== $data['typo'])) {
+        if ('text/html' == mime_content_type($data['filo']) && 0 !== $data['typo']) {
             $context->addViolation($this->translator->__('For Html files please select the Html file type.'));
         }
     }

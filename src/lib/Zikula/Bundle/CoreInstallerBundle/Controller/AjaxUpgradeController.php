@@ -17,11 +17,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
+use Zikula\ThemeModule\Helper\BundleSyncHelper as ThemeSyncHelper;
 
 /**
  * Class AjaxUpgradeController
@@ -75,26 +78,26 @@ class AjaxUpgradeController extends AbstractController
     private function executeStage($stageName)
     {
         switch ($stageName) {
-            case "loginadmin":
+            case 'loginadmin':
                 $params = $this->decodeParameters($this->yamlManager->getParameters());
 
                 return $this->loginAdmin($params);
-            case "upgrade_event":
+            case 'upgrade_event':
                 return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $this->currentVersion]);
-            case "upgrademodules":
+            case 'upgrademodules':
                 $result = $this->upgradeModules();
                 if (0 === count($result)) {
                     return true;
                 }
 
                 return $result;
-            case "regenthemes":
+            case 'regenthemes':
                 return $this->regenerateThemes();
-            case "versionupgrade":
+            case 'versionupgrade':
                 return $this->versionUpgrade();
-            case "finalizeparameters":
+            case 'finalizeparameters':
                 return $this->finalizeParameters();
-            case "clearcaches":
+            case 'clearcaches':
                 return $this->clearCaches();
         }
 
@@ -127,9 +130,9 @@ class AjaxUpgradeController extends AbstractController
         ];
         $result = [];
         foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
-            $extensionEntity = $this->container->get('zikula_extensions_module.extension_repository')->get($moduleName);
+            $extensionEntity = $this->container->get('doctrine')->getRepository('ZikulaExtensionsModule:ExtensionEntity')->get($moduleName);
             if (isset($extensionEntity)) {
-                $result[$moduleName] = $this->container->get('zikula_extensions_module.extension_helper')->upgrade($extensionEntity);
+                $result[$moduleName] = $this->container->get(ExtensionHelper::class)->upgrade($extensionEntity);
             }
         }
 
@@ -139,9 +142,9 @@ class AjaxUpgradeController extends AbstractController
     private function regenerateThemes()
     {
         // regenerate the themes list
-        $this->container->get('zikula_theme_module.helper.bundle_sync_helper')->regenerate();
+        $this->container->get(ThemeSyncHelper::class)->regenerate();
         // set all themes as active @todo this is probably overkill
-        $themes = $this->container->get('zikula_theme_module.theme_entity.repository')->findAll();
+        $themes = $this->container->get('doctrine')->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
         /** @var \Zikula\ThemeModule\Entity\ThemeEntity $theme */
         foreach ($themes as $theme) {
             $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
@@ -188,7 +191,7 @@ class AjaxUpgradeController extends AbstractController
                     $stmt->execute();
                     $stmt->closeCursor();
                 }
-                $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+                $variableApi = $this->container->get(VariableApi::class);
                 $variableApi->del(VariableApi::CONFIG, 'metakeywords');
                 $variableApi->del(VariableApi::CONFIG, 'startpage');
                 $variableApi->del(VariableApi::CONFIG, 'startfunc');
@@ -225,7 +228,7 @@ class AjaxUpgradeController extends AbstractController
 
     private function finalizeParameters()
     {
-        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+        $variableApi = $this->container->get(VariableApi::class);
         $kernel = $this->container->get('kernel');
         // Set the System Identifier as a unique string.
         if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
@@ -294,7 +297,7 @@ class AjaxUpgradeController extends AbstractController
     private function clearCaches()
     {
         // clear cache with zikula's method
-        $cacheClearer = $this->container->get('zikula.cache_clearer');
+        $cacheClearer = $this->container->get(CacheClearer::class);
         $cacheClearer->clear('symfony');
         // use full symfony cache_clearer not zikula's to clear entire cache and set for warmup
         // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.

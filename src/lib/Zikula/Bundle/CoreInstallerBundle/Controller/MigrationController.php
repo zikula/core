@@ -13,6 +13,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 
 class MigrationController extends AbstractController
 {
@@ -20,9 +21,8 @@ class MigrationController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function migrateAction(Request $request)
+    public function migrateAction(Request $request, MigrationHelper $migrationHelper)
     {
-        $migrationHelper = $this->container->get('zikula_core_installer.helper.migration_helper');
         if (!$request->getSession()->has('user_migration_lastuid')) {
             $request->getSession()->set('user_migration_count', $migrationHelper->countUnMigratedUsers());
             $request->getSession()->set('user_migration_complete', 0);

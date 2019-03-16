@@ -11,7 +11,7 @@
 
 namespace Zikula\ZAuthModule\Helper;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -53,7 +53,7 @@ class FileIOHelper
     private $validator;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $entityManager;
 
@@ -83,7 +83,7 @@ class FileIOHelper
      * @param PermissionApiInterface $permissionApi
      * @param TranslatorInterface $translator
      * @param ValidatorInterface $validator
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      * @param MailHelper $mailHelper
      * @param EventDispatcherInterface $eventDispatcher
      * @param CurrentUserApiInterface $currentUserApi
@@ -94,7 +94,7 @@ class FileIOHelper
         PermissionApiInterface $permissionApi,
         TranslatorInterface $translator,
         ValidatorInterface $validator,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,

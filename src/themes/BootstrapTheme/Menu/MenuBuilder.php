@@ -12,41 +12,55 @@
 namespace Zikula\BootstrapTheme\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-class AdminMenu implements ContainerAwareInterface
+class MenuBuilder
 {
-    use ContainerAwareTrait;
     use TranslatorTrait;
 
-    public function menu(FactoryInterface $factory, array $options)
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var PermissionApiInterface
+     */
+    private $permissionApi;
+
+    public function __construct(TranslatorInterface $translator, FactoryInterface $factory, PermissionApiInterface $permissionApi)
     {
-        $this->setTranslator($this->container->get('translator.default'));
-        $permApi = $this->container->get('zikula_permissions_module.api.permission');
-        $menu = $factory->createItem('root');
+        $this->setTranslator($translator);
+        $this->factory = $factory;
+        $this->permissionApi = $permissionApi;
+    }
+
+    public function createAdminMenu(array $options)
+    {
+        $menu = $this->factory->createItem('bootstrapThemeAdminMenu');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
         $menu->addChild($this->__('Home'), ['route' => 'home']);
-        if ($permApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             $menu->addChild($this->__('Settings'), ['route' => 'zikulasettingsmodule_settings_main']);
         }
-        if ($permApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             $menu->addChild($this->__('Extensions'), ['route' => 'zikulaextensionsmodule_module_viewmodulelist']);
         }
-        if ($permApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
+        if ($this->permissionApi->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             $menu->addChild($this->__('Blocks'), ['route' => 'zikulablocksmodule_admin_view']);
         }
-        if ($permApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
+        if ($this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_MODERATE)) {
             $menu->addChild($this->__('Users'), ['route' => 'zikulausersmodule_useradministration_list']);
         }
-        if ($permApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
+        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
             $menu->addChild($this->__('Groups'), ['route' => 'zikulagroupsmodule_group_adminlist']);
         }
-        if ($permApi->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionApi->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             $menu->addChild($this->__('Permissions'), ['route' => 'zikulapermissionsmodule_permission_list']);
         }
-        if ($permApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
+        if ($this->permissionApi->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             $menu->addChild($this->__('Themes'), ['route' => 'zikulathememodule_theme_view']);
         }
 

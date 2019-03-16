@@ -7,8 +7,7 @@ var ZikulaUsersAdminConfig = {};
     /**
      * Initialize the script and form elements.
      */
-    ZikulaUsersAdminConfig.init = function()
-    {
+    ZikulaUsersAdminConfig.init = function() {
         ZikulaUsersAdminConfig.setup();
 
         $('#' + ZikulaUsersAdminConfig.registrationModeratedYesId).click(ZikulaUsersAdminConfig.registrationModerationVerification_switchDisplayState);
@@ -29,8 +28,7 @@ var ZikulaUsersAdminConfig = {};
     /**
      * Handles state changes for moderation and verification related fields.
      */
-    ZikulaUsersAdminConfig.registrationModerationVerification_switchDisplayState = function()
-    {
+    ZikulaUsersAdminConfig.registrationModerationVerification_switchDisplayState = function() {
         var moderationObjGroup = $('#' + ZikulaUsersAdminConfig.registrationModeratedId);
         var verificationObjGroup = $('#' + ZikulaUsersAdminConfig.registrationVerificationModeId);
         var approvalOrderWrap = $('#' + ZikulaUsersAdminConfig.registrationApprovalOrderWrapId);
@@ -58,8 +56,7 @@ var ZikulaUsersAdminConfig = {};
     /**
      * Blur event handler for the reg_question field.
      */
-    ZikulaUsersAdminConfig.registrationAntispamQuestion_onBlur = function()
-    {
+    ZikulaUsersAdminConfig.registrationAntispamQuestion_onBlur = function() {
         var regQuestion = $('#' + ZikulaUsersAdminConfig.registrationAntispamQuestionId);
         var regAnswerMandatory = $('#' + ZikulaUsersAdminConfig.registrationAntispamAnswerMandatoryId);
 
@@ -73,8 +70,7 @@ var ZikulaUsersAdminConfig = {};
     /**
      * Click event handler for the loginviaoption field.
      */
-    ZikulaUsersAdminConfig.loginMethod_onClick = function()
-    {
+    ZikulaUsersAdminConfig.loginMethod_onClick = function() {
         var loginViaOptionGroup = $('#' + ZikulaUsersAdminConfig.loginMethodId);
         var emailOption = loginViaOptionGroup.find('input[type=radio][value="1"]:checked').length > 0;
         var eitherOption = loginViaOptionGroup.find('input[type=radio][value="2"]:checked').length > 0;

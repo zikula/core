@@ -18,10 +18,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Controller\AjaxUpgradeController;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
@@ -78,7 +84,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $this->bootstrap(false);
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
+        $controllerHelper = $this->getContainer()->get(ControllerHelper::class);
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
@@ -93,7 +99,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $migrationHelper = $this->getContainer()->get('zikula_core_installer.helper.migration_helper');
+        $migrationHelper = $this->getContainer()->get(MigrationHelper::class);
         $count = $migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
             $io->text($this->translator->__('Beginning user migration...'));
@@ -121,18 +127,17 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
-            'translator' => $this->translator,
-            'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+        $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
+            'choices' => $this->getContainer()->get(LocaleApi::class)->getSupportedLocaleNames()
         ]);
 
-        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType', $input, $output, ['translator' => $this->translator]);
+        $data = $this->getHelper('form')->interactUsingForm(LoginType::class, $input, $output);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
         $settings = array_merge($settings, $data);
 
-        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
+        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
             $data[$newKey] = $v;
@@ -155,7 +160,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
             $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
-            $status = $this->getContainer()->get('zikula_core_installer.controller.ajaxupgrade')->commandLineAction($stage[AjaxInstallerStage::NAME]);
+            $status = $this->getContainer()->get(AjaxUpgradeController::class)->commandLineAction($stage[AjaxInstallerStage::NAME]);
             if ($status) {
                 $io->success($stage[AjaxInstallerStage::SUCCESS]);
             } else {

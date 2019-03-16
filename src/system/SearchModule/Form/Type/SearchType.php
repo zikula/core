@@ -18,20 +18,38 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class SearchType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->setMethod('GET')
             ->add('q', SearchInputType::class, [
-                'label' => $translator->__('Search keywords'),
+                'label' => $this->__('Search keywords'),
                 'attr' => [
                     'maxlength' => 255,
                     'min' => 1,
@@ -39,28 +57,26 @@ class SearchType extends AbstractType
                     'results' => '10'
                 ],
                 'required' => false,
-                'constraints' => [new NotBlank(['message' => $translator->__('Error! You did not enter any keywords to search for.')])]
+                'constraints' => [new NotBlank(['message' => $this->__('Error! You did not enter any keywords to search for.')])]
             ])
             ->add('searchType', ChoiceType::class, [
-                'label' => $translator->__('Keyword settings'),
+                'label' => $this->__('Keyword settings'),
                 'choices' => [
-                    $translator->__('All Words') => 'AND',
-                    $translator->__('Any Words') => 'OR',
-                    $translator->__('Exact phrase') => 'EXACT',
-                ],
-                'choices_as_values' => true,
+                    $this->__('All Words') => 'AND',
+                    $this->__('Any Words') => 'OR',
+                    $this->__('Exact phrase') => 'EXACT',
+                ]
             ])
             ->add('searchOrder', ChoiceType::class, [
-                'label' => $translator->__('Order of results'),
+                'label' => $this->__('Order of results'),
                 'choices' => [
-                    $translator->__('Newest first') => 'newest',
-                    $translator->__('Oldest first') => 'oldest',
-                    $translator->__('Alphabetical') => 'alphabetical',
-                ],
-                'choices_as_values' => true,
+                    $this->__('Newest first') => 'newest',
+                    $this->__('Oldest first') => 'oldest',
+                    $this->__('Alphabetical') => 'alphabetical',
+                ]
             ])
             ->add('search', SubmitType::class, [
-                'label' => $translator->__('Search now'),
+                'label' => $this->__('Search now'),
                 'icon' => 'fa-search',
                 'attr' => [
                     'class' => 'btn btn-success'
@@ -83,7 +99,6 @@ class SearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'csrf_protection' => false
         ]);
     }

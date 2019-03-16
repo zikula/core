@@ -1,10 +1,23 @@
 services:
-    zikula_categories_module.container.link_container:
-        class: Zikula\CategoriesModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-          - "@zikula_extensions_module.api.variable"
-        tags:
-            - { name: zikula.link_container }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\CategoriesModule\ZikulaCategoriesModule'
+
+    Zikula\CategoriesModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\CategoriesModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\CategoriesModule\Api\ApiInterface\CategoryPermissionApiInterface: '@Zikula\CategoriesModule\Api\CategoryPermissionApi'
+    Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface: '@Zikula\CategoriesModule\Entity\Repository\CategoryRegistryRepository'
+    Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface: '@Zikula\CategoriesModule\Entity\Repository\CategoryRepository'
+
+    Zikula\CategoriesModule\Entity\Repository\CategoryRepository:
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['ZikulaCategoriesModule:CategoryEntity']

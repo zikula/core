@@ -26,7 +26,6 @@ class DbCredsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->setTranslator($options['translator']);
         $builder
             ->add('database_driver', ChoiceType::class, [
                 'label' => $this->__('Database type'),
@@ -121,8 +120,7 @@ class DbCredsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'constraints' => new ValidPdoConnection(),
-            'translator' => new IdentityTranslator()
+            'constraints' => new ValidPdoConnection()
         ]);
     }
 }

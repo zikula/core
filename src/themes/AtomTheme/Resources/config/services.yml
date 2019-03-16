@@ -1,8 +1,9 @@
 services:
-    zikula_atom_theme.twig.atomtheme_extension:
-        class: Zikula\AtomTheme\Twig\AtomThemeExtension
-        arguments:
-          - "@zikula_extensions_module.api.variable"
-          - "@request_stack"
-        tags:
-            - { name: twig.extension }
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\AtomTheme\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'

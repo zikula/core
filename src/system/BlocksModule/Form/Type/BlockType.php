@@ -20,17 +20,16 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class BlockType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    use TranslatorTrait;
 
     /**
      * @var LocaleApiInterface
@@ -39,6 +38,7 @@ class BlockType extends AbstractType
 
     /**
      * BlockType constructor.
+     *
      * @param TranslatorInterface $translator
      * @param LocaleApiInterface $localeApi
      */
@@ -46,8 +46,16 @@ class BlockType extends AbstractType
         TranslatorInterface $translator,
         LocaleApiInterface $localeApi
     ) {
-        $this->translator = $translator;
+        $this->setTranslator($translator);
         $this->localeApi = $localeApi;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
@@ -68,10 +76,10 @@ class BlockType extends AbstractType
             ->add($builder->create('language', ChoiceType::class, [
                 'choices' => $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'required' => false,
-                'placeholder' => $this->translator->__('All')
+                'placeholder' => $this->__('All')
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('positions', EntityType::class, [
-                'class' => 'Zikula\BlocksModule\Entity\BlockPositionEntity',
+                'class' => BlockPositionEntity::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'required' => false,
@@ -80,18 +88,18 @@ class BlockType extends AbstractType
                 'entry_type' => BlockFilterType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Custom filters',
+                'label' => $this->__('Custom filters'),
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

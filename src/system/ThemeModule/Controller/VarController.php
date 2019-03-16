@@ -17,22 +17,27 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 class VarController extends AbstractController
 {
     /**
      * Configure a theme's variables based on provided .yml definitions for each field.
+     *
      * @Route("/admin/var/{themeName}")
      * @Theme("admin")
      * @Template("ZikulaThemeModule:Var:var.html.twig")
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
      * @param string $themeName
+     *
      * @return mixed
+     *
      * @throws \InvalidArgumentException if theme type is not twig-based
      */
-    public function varAction(Request $request, $themeName)
+    public function varAction(Request $request, VariableApiInterface $variableApi, $themeName)
     {
         $themeBundle = $this->get('kernel')->getBundle($themeName);
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
@@ -74,14 +79,14 @@ class VarController extends AbstractController
             ])
         ;
         $form = $formBuilder->getForm();
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 // pseudo-hack to save theme vars in to modvars table
-                $this->get('zikula_extensions_module.api.variable')->setAll($themeName, $form->getData());
+                $variableApi->setAll($themeName, $form->getData());
                 $this->addFlash('status', $this->__('Done! Theme configuration updated.'));
             } elseif ($form->get('toDefault')->isClicked()) {
-                $this->get('zikula_extensions_module.api.variable')->setAll($themeName, $themeBundle->getDefaultThemeVars());
+                $variableApi->setAll($themeName, $themeBundle->getDefaultThemeVars());
                 $this->addFlash('status', $this->__('Done! Theme configuration updated to default values.'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

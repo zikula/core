@@ -11,12 +11,18 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
 
-class HookRuntimeRepository extends EntityRepository implements HookRuntimeRepositoryInterface
+class HookRuntimeRepository extends ServiceEntityRepository implements HookRuntimeRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, HookRuntimeEntity::class);
+    }
+
     public function truncate()
     {
         $this->_em->createQueryBuilder()

@@ -14,7 +14,9 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -45,14 +47,12 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function getFormType()
     {
-        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType';
+        return DbCredsType::class;
     }
 
     public function getFormOptions()
     {
-        return [
-            'translator' => $this->container->get('translator.default')
-        ];
+        return [];
     }
 
     public function getTemplateName()
@@ -99,7 +99,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
             throw new AbortStageException(sprintf('Cannot write parameters to %s file.', 'custom_parameters.yml'));
         }
         // clear the cache
-        $this->container->get('zikula.cache_clearer')->clear('symfony.config');
+        $this->container->get(CacheClearer::class)->clear('symfony.config');
     }
 
     public function testDBConnection($params)
@@ -107,8 +107,8 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $params['database_driver'] = substr($params['database_driver'], 4);
         try {
             new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
-        } catch (\PDOException $e) {
-            return $e->getMessage();
+        } catch (\PDOException $exception) {
+            return $exception->getMessage();
         }
 
         return true;

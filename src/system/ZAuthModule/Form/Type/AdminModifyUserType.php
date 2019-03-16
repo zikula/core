@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
@@ -27,6 +29,24 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
 
 class AdminModifyUserType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,49 +54,55 @@ class AdminModifyUserType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $options['translator']->__('User name'),
-                'help' => $options['translator']->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
-                'constraints' => [new ValidUname()]
+                'label' => $this->__('User name'),
+                'help' => $this->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'constraints' => [
+                    new ValidUname()
+                ]
             ])
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $options['translator']->__('Email'),
+                    'label' => $this->__('Email'),
                 ],
-                'second_options' => ['label' => $options['translator']->__('Repeat Email')],
-                'invalid_message' => $options['translator']->__('The emails  must match!'),
-                'constraints' => [new ValidEmail()]
+                'second_options' => [
+                    'label' => $this->__('Repeat Email')
+                ],
+                'invalid_message' => $this->__('The emails must match!'),
+                'constraints' => [
+                    new ValidEmail()
+                ]
             ])
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $options['translator']->__('Set password now'),
+                'label' => $this->__('Set password now'),
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
                     'required' => false,
-                    'label' => $options['translator']->__('Create new password'),
+                    'label' => $this->__('Create new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
-                    'help' => $options['translator']->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
                     'required' => false,
-                    'label' => $options['translator']->__('Repeat new password'),
+                    'label' => $this->__('Repeat new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],
-                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'invalid_message' => $this->__('The passwords must match!'),
                 'constraints' => [
-                    new ValidPassword(),
+                    new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -97,7 +123,6 @@ class AdminModifyUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'minimumPasswordLength' => 5,
             'constraints' => [
                 new ValidUserFields()

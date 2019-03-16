@@ -15,8 +15,10 @@ use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Component\Wizard\StageInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Component\Wizard\StageInterface;
 
 class LoginStage implements StageInterface, FormHandlerInterface, InjectContainerInterface
 {
@@ -37,14 +39,12 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function getFormType()
     {
-        return 'Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType';
+        return LoginType::class;
     }
 
     public function getFormOptions()
     {
-        return [
-            'translator' => $this->container->get('translator.default')
-        ];
+        return [];
     }
 
     public function getTemplateName()
@@ -54,7 +54,7 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function handleFormResult(FormInterface $form)
     {
-        $this->container->get('zikula_core_installer.controller.helper')->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+        $this->container->get(ControllerHelper::class)->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
     }
 
     public function isNecessary()

@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
+use Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
 class FinishCommand extends AbstractCoreInstallerCommand
@@ -56,7 +57,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
             $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
-            $status = $this->getContainer()->get('zikula_core_installer.controller.ajaxinstall')->commandLineAction($stage[AjaxInstallerStage::NAME]);
+            $status = $this->getContainer()->get(AjaxInstallController::class)->commandLineAction($stage[AjaxInstallerStage::NAME]);
             if ($status) {
                 $io->success($stage[AjaxInstallerStage::SUCCESS]);
             } else {

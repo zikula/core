@@ -11,31 +11,65 @@
 
 namespace Zikula\BlocksModule;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Environment;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
-abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerAwareInterface
+abstract class AbstractBlockHandler implements BlockHandlerInterface
 {
     use TranslatorTrait;
     use ExtensionVariablesTrait;
 
     /**
-     * The container is intentionally hidden from the child class.
-     * Use the get() method to access services from a child class.
-     * @var ContainerInterface
+     * @var AbstractBundle
      */
-    private $container;
+    protected $bundle;
+
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * @var PermissionApiInterface
+     */
+    protected $permissionApi;
+
+    /**
+     * @var Environment
+     */
+    protected $twig;
 
     /**
      * AbstractBlockHandler constructor.
+     *
      * @param AbstractBundle $bundle
+     * @param RequestStack $requestStack
+     * @param TranslatorInterface $translator
+     * @param VariableApiInterface $variableApi
+     * @param PermissionApiInterface $permissionApi
+     * @param Environment $twig
      */
-    public function __construct(AbstractBundle $bundle)
-    {
+    public function __construct(
+        AbstractBundle $bundle,
+        RequestStack $requestStack,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi,
+        PermissionApiInterface $permissionApi,
+        Environment $twig
+    ) {
+        $this->bundle = $bundle;
         $this->extensionName = $bundle->getName(); // for ExtensionVariablesTrait
+        $this->requestStack = $requestStack;
+        $this->setTranslator($translator); // for TranslatorTrait
+        $this->variableApi = $variableApi; // for ExtensionVariablesTrait
+        $this->permissionApi = $permissionApi;
+        $this->twig = $twig;
         $this->boot($bundle);
     }
 
@@ -46,7 +80,7 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
     protected function boot(AbstractBundle $bundle)
     {
         // load optional bootstrap
-        $bootstrap = $bundle->getPath() . "/bootstrap.php";
+        $bootstrap = $bundle->getPath() . '/bootstrap.php';
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
@@ -94,17 +128,6 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
     }
 
     /**
-     * Implement ContainerAwareInterface - setContainer.
-     * @param ContainerInterface|null $container
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-        $this->setTranslator($container->get('translator.default')); // for TranslatorTrait
-        $this->variableApi = $container->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
-    }
-
-    /**
      * @param $translator
      */
     public function setTranslator($translator)
@@ -120,11 +143,11 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      */
     protected function addFlash($type, $message)
     {
-        if (!$this->container->has('session')) {
+        if (!$this->requestStack->getCurrentRequest()->hasSession()) {
             throw new \LogicException('You can not use the addFlash method if sessions are disabled.');
         }
 
-        $this->container->get('session')->getFlashBag()->add($type, $message);
+        $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add($type, $message);
     }
 
     /**
@@ -135,20 +158,14 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      */
     public function renderView($view, array $parameters = [])
     {
-        if ($this->container->has('templating')) {
-            return $this->container->get('templating')->render($view, $parameters);
-        }
-
-        if (!$this->container->has('twig')) {
-            throw new \LogicException('You can not use the "renderView" method if the Templating Component or the Twig Bundle are not available.');
-        }
         $parameters['domain'] = $this->translator->getDomain();
 
-        return $this->container->get('twig')->render($view, $parameters);
+        return $this->twig->render($view, $parameters);
     }
 
     /**
      * Convenience shortcut to check if user has requested permissions.
+     *
      * @param string $component
      * @param string $instance
      * @param integer $level
@@ -157,26 +174,14 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface, ContainerA
      */
     protected function hasPermission($component = null, $instance = null, $level = null, $user = null)
     {
-        return $this->container->get('zikula_permissions_module.api.permission')->hasPermission($component, $instance, $level, $user);
+        return $this->permissionApi->hasPermission($component, $instance, $level, $user);
     }
 
     /**
-     * Shortcut method to fetch services from the container.
-     * @param $serviceName
-     * @return object
+     * @return AbstractBundle
      */
-    protected function get($serviceName)
+    public function getBundle()
     {
-        return $this->container->get($serviceName);
-    }
-
-    /**
-     * Shortcut method to fetch parameters from the container.
-     * @param $name
-     * @return mixed
-     */
-    protected function getParameter($name)
-    {
-        return $this->container->getParameter($name);
+        return $this->bundle;
     }
 }

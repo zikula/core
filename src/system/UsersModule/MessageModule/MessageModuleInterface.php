@@ -43,4 +43,10 @@ interface MessageModuleInterface
      * @throws \InvalidArgumentException if provided $uid is not null and invalid
      */
     public function getSendMessageUrl($uid = null);
+
+    /**
+     * Return the name of the providing bundle.
+     * @return string
+     */
+    public function getBundleName();
 }

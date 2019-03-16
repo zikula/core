@@ -17,12 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\Core\Token\CsrfTokenHandler;
+use Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -41,12 +44,15 @@ class IdsLogController extends AbstractController
      * Function to view ids log events.
      *
      * @param Request $request
+     * @param IntrusionRepository $repository
+     * @param CsrfTokenHandler $tokenHandler
+     * @param RouterInterface $router
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function viewAction(Request $request)
+    public function viewAction(Request $request, IntrusionRepository $repository, CsrfTokenHandler $tokenHandler, RouterInterface $router)
     {
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
@@ -79,8 +85,7 @@ class IdsLogController extends AbstractController
         }
 
         $filterForm = $this->createForm(IdsLogFilterType::class, $filters, [
-            'translator' => $this->get('translator.default'),
-            'repository' => $this->get('zikula_securitycenter_module.intrusion_repository')
+            'repository' => $repository
         ]);
 
         // number of items to show
@@ -90,7 +95,6 @@ class IdsLogController extends AbstractController
         $startOffset = $request->query->getDigits('startnum', 0);
 
         // get data
-        $repository = $this->get('zikula_securitycenter_module.intrusion_repository');
         $items = $repository->getIntrusions($where, $sorting, $pageSize, $startOffset);
         $amountOfItems = $repository->countIntrusions($where);
 
@@ -103,7 +107,7 @@ class IdsLogController extends AbstractController
             $data[] = $dta;
         }
 
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikulasecuritycentermodule_idslog_view', 'sort', 'sortdir');
+        $sortableColumns = new SortableColumns($router, 'zikulasecuritycentermodule_idslog_view', 'sort', 'sortdir');
         $sortableColumns->addColumns([
             new Column('name'),
             new Column('tag'),
@@ -115,8 +119,6 @@ class IdsLogController extends AbstractController
             new Column('date')
         ]);
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sortField), strtoupper($sortDirection));
-
-        $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
 
         $templateParameters = [
             'filterForm' => $filterForm->createView(),
@@ -140,23 +142,22 @@ class IdsLogController extends AbstractController
      * Export ids log.
      *
      * @param Request $request
+     * @param IntrusionRepository $repository
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function exportAction(Request $request)
+    public function exportAction(Request $request, IntrusionRepository $repository)
     {
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(IdsLogExportType::class, [], [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(IdsLogExportType::class, []);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('export')->isClicked()) {
                 $formData = $form->getData();
 
@@ -204,7 +205,6 @@ class IdsLogController extends AbstractController
                 ];
 
                 // get data
-                $repository = $this->get('zikula_securitycenter_module.intrusion_repository');
                 $items = $repository->getIntrusions([], ['date' => 'DESC']);
 
                 $string = $exportTitles ? implode($delimiter, $titles) . PHP_EOL : '';
@@ -258,12 +258,13 @@ class IdsLogController extends AbstractController
      * Purge ids log.
      *
      * @param Request $request
+     * @param IntrusionRepository $repository
      *
      * @return Response
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function purgeAction(Request $request)
+    public function purgeAction(Request $request, IntrusionRepository $repository)
     {
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
@@ -271,11 +272,11 @@ class IdsLogController extends AbstractController
         }
 
         $form = $this->createForm(DeletionType::class);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 // delete all entries
-                $this->get('zikula_securitycenter_module.intrusion_repository')->truncateTable();
+                $repository->truncateTable();
 
                 $this->addFlash('status', $this->__('Done! Purged IDS Log.'));
             } elseif ($form->get('cancel')->isClicked()) {
@@ -296,12 +297,14 @@ class IdsLogController extends AbstractController
      * Delete an ids log entry
      *
      * @param Request $request
+     * @param IntrusionRepository $repository
+     * @param CsrfTokenHandler $tokenHandler
      *
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if the object id is not numeric or if
      */
-    public function deleteentryAction(Request $request)
+    public function deleteentryAction(Request $request, IntrusionRepository $repository, CsrfTokenHandler $tokenHandler)
     {
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
@@ -309,9 +312,7 @@ class IdsLogController extends AbstractController
         }
 
         // verify auth-key
-        $csrftoken = $request->get('csrftoken');
-        $tokenHandler = $this->get('zikula_core.common.csrf_token_handler');
-        $tokenHandler->validate($csrftoken);
+        $tokenHandler->validate($request->get('csrftoken'));
 
         // get parameters
         $id = (int)$request->get('id', 0);
@@ -321,14 +322,12 @@ class IdsLogController extends AbstractController
             throw new \InvalidArgumentException($this->__f("Error! Received a non-numeric object ID '%s'.", ['%s' => $id]));
         }
 
-        $entityManager = $this->get('doctrine.orm.entity_manager');
-        $intrusion = $entityManager->find('ZikulaSecurityCenterModule:IntrusionEntity', $id);
-
-        // check for valid object
+        $intrusion = $repository->find($id);
         if (!$intrusion) {
             $this->addFlash('error', $this->__f('Error! Invalid %s received.', ['%s' => "object ID [$id]"]));
         } else {
             // delete object
+            $entityManager = $this->get('doctrine')->getManager();
             $entityManager->remove($intrusion);
             $entityManager->flush();
         }

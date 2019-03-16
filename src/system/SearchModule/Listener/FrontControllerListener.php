@@ -22,7 +22,7 @@ use Zikula\ThemeModule\Engine\AssetBag;
 class FrontControllerListener implements EventSubscriberInterface
 {
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
+     * @var RouterInterface
      */
     private $router;
 

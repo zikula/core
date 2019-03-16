@@ -11,7 +11,6 @@
 
 namespace Zikula\BlocksModule\Api\ApiInterface;
 
-use Zikula\Core\AbstractModule;
 use Zikula\BlocksModule\BlockHandlerInterface;
 
 /**
@@ -21,12 +20,11 @@ interface BlockFactoryApiInterface
 {
     /**
      * Factory method to create an instance of a block given its name and the providing module instance.
-     *  Supports either Zikula\BlocksModule\BlockHandlerInterface or
-     *  Zikula_Controller_AbstractBlock (to be removed).
+     * Given block class needs to implement Zikula\BlocksModule\BlockHandlerInterface.
      *
-     * @param $blockClassName
-     * @param AbstractModule $moduleBundle
+     * @param string $blockClassName
+     *
      * @return BlockHandlerInterface
      */
-    public function getInstance($blockClassName, AbstractModule $moduleBundle);
+    public function getInstance($blockClassName);
 }

@@ -13,6 +13,7 @@ namespace Zikula\PermissionsModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
+use Zikula\PermissionsModule\Entity\Repository\PermissionRepository;
 
 /**
  * Installation and upgrade routines for the permissions module.
@@ -29,7 +30,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         // create the table
         try {
             $this->schemaTool->create([
-                'Zikula\PermissionsModule\Entity\PermissionEntity'
+                PermissionEntity::class
             ]);
         } catch (\Exception $e) {
             return false;
@@ -54,8 +55,7 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.1.1':
-                $lastPerm = $this->entityManager
-                    ->getRepository('ZikulaPermissionsModule:PermissionEntity')
+                $lastPerm = $this->container->get(PermissionRepository::class)
                     ->findOneBy([], ['sequence' => 'DESC']);
                 // allow access to non-html themes
                 $record = new PermissionEntity();

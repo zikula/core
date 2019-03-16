@@ -15,9 +15,16 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
+use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
@@ -60,7 +67,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             return;
         }
 
-        $controllerHelper = $this->getContainer()->get('zikula_core_installer.controller.helper');
+        $controllerHelper = $this->getContainer()->get(ControllerHelper::class);
 
         $warnings = $controllerHelper->initPhp();
         if (!empty($warnings)) {
@@ -82,28 +89,27 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // get the settings from user input
-        $settings = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType', $input, $output, [
-            'translator' => $this->translator,
-            'choices' => $this->getContainer()->get('zikula_settings_module.locale_api')->getSupportedLocaleNames()
+        $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
+            'choices' => $this->getContainer()->get(LocaleApi::class)->getSupportedLocaleNames()
         ]);
-        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType', $input, $output, ['translator' => $this->translator]);
+        $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
         foreach ($data as $k => $v) {
             $newKey = str_replace(':', '.', $k);
             $data[$newKey] = $v;
             unset($data[$k]);
         }
         $settings = array_merge($settings, $data);
-        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType', $input, $output, ['translator' => $this->translator]);
+        $data = $this->getHelper('form')->interactUsingForm(DbCredsType::class, $input, $output);
         $settings = array_merge($settings, $data);
-        $data = $this->getHelper('form')->interactUsingForm('Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType', $input, $output, ['translator' => $this->translator]);
+        $data = $this->getHelper('form')->interactUsingForm(CreateAdminType::class, $input, $output);
         foreach ($data as $k => $v) {
             $data[$k] = base64_encode($v); // encode so values are 'safe' for json
         }
         $settings = array_merge($settings, $data);
 
         if ($input->isInteractive()) {
-            $io->success($this->translator->__("Configuration successful. Please verify your parameters below:"));
-            $io->comment($this->translator->__("(Admin credentials have been encoded to make them json-safe.)"));
+            $io->success($this->translator->__('Configuration successful. Please verify your parameters below:'));
+            $io->comment($this->translator->__('(Admin credentials have been encoded to make them json-safe.)'));
         }
 
         $this->printSettings($settings, $io);
@@ -126,7 +132,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
         $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         $yamlManager->setParameters($params);
-        $this->getContainer()->get('zikula.cache_clearer')->clear('symfony.config');
+        $this->getContainer()->get(CacheClearer::class)->clear('symfony.config');
 
         $io->success($this->translator->__('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
     }

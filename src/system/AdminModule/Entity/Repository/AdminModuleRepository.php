@@ -11,14 +11,20 @@
 
 namespace Zikula\AdminModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-class AdminModuleRepository extends EntityRepository implements AdminModuleRepositoryInterface
+class AdminModuleRepository extends ServiceEntityRepository implements AdminModuleRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AdminModuleEntity::class);
+    }
+
     public function persistAndFlush($entity)
     {
         $this->_em->persist($entity);

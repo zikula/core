@@ -42,14 +42,28 @@ class HookCollector implements HookCollectorInterface
     private $subscribersByOwner = [];
 
     /**
+     * @param HookProviderInterface[] $providers
+     * @param HookSubscriberInterface[] $subscribers
+     */
+    public function __construct(iterable $providers, iterable $subscribers)
+    {
+        foreach ($providers as $provider) {
+            $this->addProvider($provider);
+        }
+        foreach ($subscribers as $subscriber) {
+            $this->addSubscriber($subscriber);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function addProvider($areaName, $serviceId, HookProviderInterface $service)
+    public function addProvider(HookProviderInterface $service)
     {
+        $areaName = $service->getAreaName();
         if (isset($this->providerHooks[$areaName])) {
             throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
         }
-        $service->setServiceId($serviceId);
         $this->providerHooks[$areaName] = $service;
         $this->providersByOwner[$service->getOwner()][$areaName] = $service;
     }
@@ -97,8 +111,9 @@ class HookCollector implements HookCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function addSubscriber($areaName, HookSubscriberInterface $service)
+    public function addSubscriber(HookSubscriberInterface $service)
     {
+        $areaName = $service->getAreaName();
         if (isset($this->subscriberHooks[$areaName])) {
             throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
         }

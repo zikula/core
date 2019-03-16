@@ -12,40 +12,100 @@
 namespace Zikula\GroupsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Constant;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Helper\CommonHelper;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
-class ActionsMenu implements ContainerAwareInterface
+class MenuBuilder
 {
-    use ContainerAwareTrait;
     use TranslatorTrait;
 
-    public function setTranslator($translator)
-    {
-        $this->translator = $translator;
+    /**
+     * @var FactoryInterface
+     */
+    private $factory;
+
+    /**
+     * @var PermissionApiInterface
+     */
+    private $permissionApi;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var CurrentUserApiInterface
+     */
+    private $currentUserApi;
+
+    /**
+     * @var UserRepositoryInterface
+     */
+    private $userRepository;
+
+    /**
+     * @var GroupApplicationRepository
+     */
+    private $groupApplicationRepository;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        FactoryInterface $factory,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        RequestStack $requestStack,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        GroupApplicationRepository $groupApplicationRepository,
+        RouterInterface $router
+    ) {
+        $this->setTranslator($translator);
+        $this->factory = $factory;
+        $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->requestStack = $requestStack;
+        $this->currentUserApi = $currentUserApi;
+        $this->userRepository = $userRepository;
+        $this->groupApplicationRepository = $groupApplicationRepository;
+        $this->router = $router;
     }
 
-    public function adminMenu(FactoryInterface $factory, array $options)
+    public function createAdminMenu(array $options)
     {
-        $this->setTranslator($this->container->get('translator.default'));
-        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
-        $defaultGroup = $this->container->get('zikula_extensions_module.api.variable')->get('ZikulaGroupsModule', 'defaultgroup');
+        $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
         /** @var GroupEntity $group */
         $group = $options['group'];
         $gid = $group->getGid();
         $routeParams = ['gid' => $gid];
-        $menu = $factory->createItem('adminActions');
+        $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
         $menu->addChild($this->__f('Edit ":name" group', [':name' => $group->getName()]), [
             'route' => 'zikulagroupsmodule_group_edit',
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil');
-        if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
+        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
             && $gid != $defaultGroup && Constant::GROUP_ID_ADMIN != $gid) {
             $menu->addChild($this->__f('Delete ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
@@ -60,22 +120,20 @@ class ActionsMenu implements ContainerAwareInterface
         return $menu;
     }
 
-    public function userMenu(FactoryInterface $factory, array $options)
+    public function createUserMenu(array $options)
     {
-        $this->setTranslator($this->container->get('translator'));
-        $permissionApi = $this->container->get('zikula_permissions_module.api.permission');
         /** @var GroupEntity $group */
         $group = $options['group'];
         $gid = $group->getGid();
-        $menu = $factory->createItem('userActions');
+        $menu = $this->factory->createItem('userActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $requestAttributes = $this->container->get('request_stack')->getCurrentRequest()->attributes->all();
-        $currentUserId = $this->container->get('zikula_users_module.current_user')->get('uid');
+        $requestAttributes = $this->requestStack->getCurrentRequest()->attributes->all();
+        $currentUserId = $this->currentUserApi->get('uid');
         if (null !== $currentUserId) {
-            $currentUser = $this->container->get('zikula_users_module.user_repository')->find($currentUserId);
+            $currentUser = $this->userRepository->find($currentUserId);
         }
 
-        if ($permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
+        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
             && ('zikulagroupsmodule_membership_list' != $requestAttributes['_route'])
             && (CommonHelper::GTYPE_PUBLIC == $group->getGtype()
                 || (CommonHelper::GTYPE_PRIVATE == $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
@@ -92,7 +150,7 @@ class ActionsMenu implements ContainerAwareInterface
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-times text-danger');
             } elseif (CommonHelper::GTYPE_PRIVATE == $group->getGtype()) {
-                $existingApplication = $this->container->get('zikula_groups_module.group_application_repository')->findOneBy(['group' => $group, 'user' => $currentUser]);
+                $existingApplication = $this->groupApplicationRepository->findOneBy(['group' => $group, 'user' => $currentUser]);
                 if ($existingApplication) {
                     $menu->addChild($this->__('Applied!'));
                 } else {
@@ -108,7 +166,7 @@ class ActionsMenu implements ContainerAwareInterface
                 ])->setAttribute('icon', 'fa fa-user-plus text-success');
             }
         } else {
-            $returnUrl = $this->container->get('router')->generate('zikulagroupsmodule_membership_list', ['gid' => $gid], UrlGeneratorInterface::ABSOLUTE_URL);
+            $returnUrl = $this->router->generate('zikulagroupsmodule_membership_list', ['gid' => $gid], UrlGeneratorInterface::ABSOLUTE_URL);
             $menu->addChild($this->__('Log in or register'), [
                 'route' => 'zikulausersmodule_access_login',
                 'routeParameters' => ['returnUrl' => $returnUrl]
@@ -116,5 +174,10 @@ class ActionsMenu implements ContainerAwareInterface
         }
 
         return $menu;
+    }
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 }

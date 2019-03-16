@@ -44,7 +44,7 @@ class MenuController extends AbstractController
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         $rootNodes = $repo->getRootNodes();
 
         return [
@@ -66,7 +66,7 @@ class MenuController extends AbstractController
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN) || null !== $menuItemEntity->getParent()) {
             throw new AccessDeniedException();
         }
-        $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         $htmlTree = $repo->childrenHierarchy(
             $menuItemEntity, /* node to start from */
             false, /* false: load all children, true: only direct */
@@ -100,13 +100,11 @@ class MenuController extends AbstractController
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $repo = $this->get('zikula_menu_module.menu_item_repository');
+        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         if (!isset($menuItemEntity)) {
             $menuItemEntity = new MenuItemEntity();
         }
-        $form = $this->createForm(MenuItemType::class, $menuItemEntity, [
-            'translator' => $this->get('translator.default'),
-        ]);
+        $form = $this->createForm(MenuItemType::class, $menuItemEntity);
         $form->add('save', SubmitType::class, [
             'label' => $this->__('Save'),
             'icon' => 'fa-check',
@@ -121,7 +119,6 @@ class MenuController extends AbstractController
                 'class' => 'btn btn-default'
             ]
         ]);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() && $form->get('save')->isClicked()) {
             $menuItemEntity = $form->getData();
@@ -162,10 +159,7 @@ class MenuController extends AbstractController
         }
         $form = $this->createForm(DeleteMenuItemType::class, [
             'entity' => $menuItemEntity
-        ], [
-            'translator' => $this->get('translator.default'),
         ]);
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->get('delete')->isClicked()) {
             $menuItemEntity = $form->get('entity')->getData();

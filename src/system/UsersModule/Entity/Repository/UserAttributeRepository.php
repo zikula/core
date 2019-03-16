@@ -11,12 +11,19 @@
 
 namespace Zikula\UsersModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserAttributeRepositoryInterface;
+use Zikula\UsersModule\Entity\UserAttributeEntity;
 
-class UserAttributeRepository extends EntityRepository implements UserAttributeRepositoryInterface
+class UserAttributeRepository extends ServiceEntityRepository implements UserAttributeRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserAttributeEntity::class);
+    }
+
     /**
      * @param array $attributeNames
      * @param array $users

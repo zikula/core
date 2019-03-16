@@ -11,17 +11,24 @@
 
 namespace Zikula\SecurityCenterModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use InvalidArgumentException;
+use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 
 /**
  * Repository class used to implement own convenience methods for performing certain DQL queries.
  *
  * This is the repository class for intrusion entities.
  */
-class IntrusionRepository extends EntityRepository
+class IntrusionRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, IntrusionEntity::class);
+    }
+
     /**
      * Returns amount of intrusions for given arguments.
      *

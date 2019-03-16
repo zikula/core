@@ -15,20 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 abstract class AbstractModule extends AbstractBundle
 {
-    private $serviceIds = [];
-
     public function getNameType()
     {
         return 'Module';
-    }
-
-    public function build(ContainerBuilder $container)
-    {
-        // modules have to use DI Extensions
-    }
-
-    public function getServiceIds()
-    {
-        return $this->serviceIds;
     }
 }

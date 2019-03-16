@@ -14,6 +14,7 @@ namespace Zikula\UsersModule\Twig\Extension;
 use Doctrine\Common\Collections\Criteria;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -32,15 +33,16 @@ class OnlineExtension extends AbstractExtension
 
     /**
      * OnlineExtension constructor.
+     *
      * @param UserSessionRepositoryInterface $sessionRepository
-     * @param string $sessionStorage
+     * @param VariableApiInterface $variableApi
      */
     public function __construct(
         UserSessionRepositoryInterface $sessionRepository,
-        $sessionStorage
+        VariableApiInterface $variableApi
     ) {
         $this->sessionRepository = $sessionRepository;
-        $this->sessionStorageInFile = $sessionStorage;
+        $this->sessionStorageInFile = $variableApi->getSystemVar('sessionstoretofile', 1);
     }
 
     public function getFilters()

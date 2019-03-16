@@ -26,10 +26,30 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class ConfigType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,17 +57,17 @@ class ConfigType extends AbstractType
     {
         $builder
             ->add(ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, IntegerType::class, [
-                'label' => $options['translator']->__('Minimum length for user passwords'),
+                'label' => $this->__('Minimum length for user passwords'),
                 'required' => false,
-                'help' => $options['translator']->__('This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'),
+                'help' => $this->__('This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'),
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual(['value' => 5])
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_HASH_METHOD, ChoiceType::class, [
-                'label' => $options['translator']->__('Password hashing method'),
-                'help' => $options['translator']->__('The default hashing method is \'SHA256\'.'), //@todo
+                'label' => $this->__('Password hashing method'),
+                'help' => $this->__('The default hashing method is \'SHA256\'.'), //@todo
                 'choices' => [
                     'SHA1'  => 'sha1',
                     'SHA256' => 'sha256',
@@ -55,15 +75,15 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [
-                'label' => $options['translator']->__('Show password strength meter'),
+                'label' => $this->__('Show password strength meter'),
                 'required' => false,
             ])
             ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, IntegerType::class, [
-                'label' => $options['translator']->__('E-mail address verifications expire in'),
-                'help' => $options['translator']->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
-                'input_group' => ['right' => $options['translator']->__('days')],
+                'label' => $this->__('E-mail address verifications expire in'),
+                'help' => $this->__('Enter the number of days a user\'s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'),
+                'input_group' => ['right' => $this->__('days')],
                 'alert' => [
-                    $options['translator']->__('Changing this setting will affect all requests to change e-mail addresses currently pending verification.') => 'warning'
+                    $this->__('Changing this setting will affect all requests to change e-mail addresses currently pending verification.') => 'warning'
                 ],
                 'constraints' => [
                     new NotBlank(),
@@ -71,11 +91,11 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, IntegerType::class, [
-                'label' => $options['translator']->__('Password reset requests expire in'),
-                'help' => $options['translator']->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
-                'input_group' => ['right' => $options['translator']->__('days')],
+                'label' => $this->__('Password reset requests expire in'),
+                'help' => $this->__('This setting only affects users who have not established security question responses. Enter the number of days a user\'s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'),
+                'input_group' => ['right' => $this->__('days')],
                 'alert' => [
-                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
+                    $this->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
                 ],
                 'constraints' => [
                     new NotBlank(),
@@ -83,12 +103,12 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, IntegerType::class, [
-                'label' => $options['translator']->__('Registrations pending verification expire in'),
-                'help' => $options['translator']->__('Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'),
-                'input_group' => ['right' => $options['translator']->__('days')],
+                'label' => $this->__('Registrations pending verification expire in'),
+                'help' => $this->__('Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'),
+                'input_group' => ['right' => $this->__('days')],
                 'alert' => [
-                    $options['translator']->__('If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.') => 'info',
-                    $options['translator']->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
+                    $this->__('If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.') => 'info',
+                    $this->__('Changing this setting will affect all password change requests currently pending verification.') => 'warning'
                 ],
                 'constraints' => [
                     new NotBlank(),
@@ -96,22 +116,22 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, CheckboxType::class, [
-                'label' => $options['translator']->__('New users must verify their email address on registration.'),
-                'help' => $options['translator']->__('Users created by an admin are automatically considered verified.'),
+                'label' => $this->__('New users must verify their email address on registration.'),
+                'help' => $this->__('Users created by an admin are automatically considered verified.'),
                 'required' => false,
             ])
             ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION, TextType::class, [
-                'label' => $options['translator']->__('Spam protection question'),
+                'label' => $this->__('Spam protection question'),
                 'required' => false,
-                'help' => $options['translator']->__('You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.'),
+                'help' => $this->__('You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.'),
                 'constraints' => [
                     new Type('string')
                 ]
             ])
             ->add(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER, TextType::class, [
-                'label' => $options['translator']->__('Spam protection answer'),
+                'label' => $this->__('Spam protection answer'),
                 'required' => false,
-                'help' => $options['translator']->__('Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.'),
+                'help' => $this->__('Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.'),
                 'constraints' => [
                     new Type('string')
                 ]
@@ -120,12 +140,12 @@ class ConfigType extends AbstractType
              * Buttons
              */
             ->add('save', SubmitType::class, [
-                'label' => $options['translator']->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -157,14 +177,15 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'constraints' => [
                 new Callback([
                     'callback' => function($data, ExecutionContextInterface $context) {
                         if (!empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]) && empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER])) {
-                            $context->buildViolation('If a spam protection question is provided, then a spam protection answer must also be provided.')
+                            $context
+                                ->buildViolation('If a spam protection question is provided, then a spam protection answer must also be provided.')
                                 ->atPath(ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER)
-                                ->addViolation();
+                                ->addViolation()
+                            ;
                         }
                     }
                 ]),

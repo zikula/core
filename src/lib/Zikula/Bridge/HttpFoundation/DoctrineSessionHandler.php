@@ -51,6 +51,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * @param UserSessionRepositoryInterface $userSessionRepository
      * @param VariableApiInterface $variableApi
+     * @param RequestStack $requestStack
      * @param $installed
      */
     public function __construct(

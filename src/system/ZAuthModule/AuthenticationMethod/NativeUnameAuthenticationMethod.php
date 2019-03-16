@@ -11,6 +11,7 @@
 
 namespace Zikula\ZAuthModule\AuthenticationMethod;
 
+use Zikula\ZAuthModule\Form\Type\UnameLoginType;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
@@ -44,7 +45,7 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getLoginFormClassName()
     {
-        return 'Zikula\ZAuthModule\Form\Type\UnameLoginType';
+        return UnameLoginType::class;
     }
 
     /**

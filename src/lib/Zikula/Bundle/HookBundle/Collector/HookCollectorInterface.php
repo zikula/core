@@ -33,15 +33,15 @@ interface HookCollectorInterface
 
     /**
      * Add a HookProviderInterface to the collection.
-     * @param string $areaName
-     * @param $serviceId
+     *
      * @param HookProviderInterface $service
      * @throws \InvalidArgumentException if duplicate areaName
      */
-    public function addProvider($areaName, $serviceId, HookProviderInterface $service);
+    public function addProvider(HookProviderInterface $service);
 
     /**
      * Get a HookProviderInterface from the collection by areaName.
+     *
      * @param $areaName
      * @return HookProviderInterface|null
      */
@@ -49,6 +49,7 @@ interface HookCollectorInterface
 
     /**
      * Has a HookProviderInterface from the collection by areaName?
+     *
      * @param $areaName
      * @return bool
      */
@@ -56,6 +57,7 @@ interface HookCollectorInterface
 
     /**
      * Get all the HookProviderInterface in the collection.
+     *
      * @return HookProviderInterface[]
      */
     public function getProviders();
@@ -73,14 +75,15 @@ interface HookCollectorInterface
 
     /**
      * Add a HookSubscriberInterface to the collection.
-     * @param string $areaName
+     *
      * @param HookSubscriberInterface $service
      * @throws \InvalidArgumentException if duplicate areaName
      */
-    public function addSubscriber($areaName, HookSubscriberInterface $service);
+    public function addSubscriber(HookSubscriberInterface $service);
 
     /**
      * Get a HookSubscriberInterface from the collection by areaName.
+     *
      * @param $areaName
      * @return HookSubscriberInterface|null
      */
@@ -88,6 +91,7 @@ interface HookCollectorInterface
 
     /**
      * Has a HookSubscriberInterface from the collection by areaName?
+     *
      * @param $areaName
      * @return bool
      */
@@ -95,6 +99,7 @@ interface HookCollectorInterface
 
     /**
      * Get all the HookSubscriberInterface in the collection.
+     *
      * @return HookSubscriberInterface[]
      */
     public function getSubscribers();
@@ -112,6 +117,7 @@ interface HookCollectorInterface
 
     /**
      * Is moduleName capable of hook type?
+     *
      * @param $moduleName
      * @param string $type
      * @return bool
@@ -121,6 +127,7 @@ interface HookCollectorInterface
 
     /**
      * Return all owners capable of hook type
+     *
      * @param string $type
      * @return array
      * @throws \InvalidArgumentException if $type is not a hook subscriber or provider

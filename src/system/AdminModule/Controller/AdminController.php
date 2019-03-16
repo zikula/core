@@ -18,12 +18,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\CreateCategoryType;
-use Zikula\AdminModule\Form\Type\DeleteCategoryType;
 use Zikula\AdminModule\Form\Type\EditCategoryType;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\LinkContainer\LinkContainerCollector;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -60,13 +67,14 @@ class AdminController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaAdminModule:Admin:view.html.twig")
      *
+     * @param AdminCategoryRepositoryInterface $repository
      * @param integer $startnum
      *
      * @return array
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission to the module
      */
-    public function viewAction($startnum = 0)
+    public function viewAction(AdminCategoryRepositoryInterface $repository, $startnum = 0)
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -76,7 +84,7 @@ class AdminController extends AbstractController
 
         $categories = [];
         /** @var \Doctrine\ORM\Tools\Pagination\Paginator $items */
-        $items = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getPagedCategories(['sortorder' => 'ASC'], $itemsPerPage, $startnum);
+        $items = $repository->getPagedCategories(['sortorder' => 'ASC'], $itemsPerPage, $startnum);
 
         foreach ($items as $item) {
             if ($this->hasPermission('ZikulaAdminModule::', $item['name'] . '::' . $item['cid'], ACCESS_READ)) {
@@ -114,11 +122,9 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(CreateCategoryType::class, new AdminCategoryEntity(), [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(CreateCategoryType::class, new AdminCategoryEntity());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $adminCategory = $form->getData();
                 $this->get('doctrine')->getManager()->persist($adminCategory);
@@ -148,8 +154,8 @@ class AdminController extends AbstractController
      * @Template("ZikulaAdminModule:Admin:modify.html.twig")
      *
      * @param Request $request
-     *
      * @param AdminCategoryEntity $category
+     *
      * @return array|RedirectResponse
      */
     public function modifyAction(Request $request, AdminCategoryEntity $category)
@@ -158,11 +164,9 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(EditCategoryType::class, $category, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(EditCategoryType::class, $category);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $category = $form->getData();
                 if (!$this->hasPermission('ZikulaAdminModule::Category', $category->getName() . '::' . $category->getCid(), ACCESS_EDIT)) {
@@ -203,11 +207,9 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(DeleteCategoryType::class, $category, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(DeletionType::class, $category);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $category = $form->getData();
                 $this->get('doctrine')->getManager()->remove($category);
@@ -234,11 +236,25 @@ class AdminController extends AbstractController
      * @Template("ZikulaAdminModule:Admin:adminpanel.html.twig")
      *
      * @param Request $request
+     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
+     * @param AdminModuleRepositoryInterface $adminModuleRepository
+     * @param CapabilityApiInterface $capabilityApi
+     * @param RouterInterface $router
+     * @param Asset $assetHelper
+     * @param LinkContainerCollector $linkContainerCollector
      * @param integer $acid
      * @return Response symfony response object
      */
-    public function adminpanelAction(Request $request, $acid = null)
-    {
+    public function adminpanelAction(
+        Request $request,
+        AdminCategoryRepositoryInterface $adminCategoryRepository,
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        CapabilityApiInterface $capabilityApi,
+        RouterInterface $router,
+        Asset $assetHelper,
+        LinkContainerCollector $linkContainerCollector,
+        $acid = null
+    ) {
         if (!$this->hasPermission('::', '::', ACCESS_EDIT)) {
             // suppress admin display - return to index.
             if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
@@ -266,16 +282,21 @@ class AdminController extends AbstractController
 
         $templateParameters = [
             // Add category menu to output
-            'menu' => $this->categorymenuAction($request, $acid)->getContent()
+            'menu' => $this->categorymenuAction(
+                $request,
+                $adminCategoryRepository,
+                $adminModuleRepository,
+                $capabilityApi,
+                $router,
+                $assetHelper,
+                $acid
+            )->getContent()
         ];
 
         // Check to see if we have access to the requested category.
         if (!$this->hasPermission('ZikulaAdminModule::', "::$acid", ACCESS_ADMIN)) {
             $acid = -1;
         }
-
-        $entityManager = $this->get('doctrine')->getManager();
-        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
 
         // Get details for selected category
         $category = null;
@@ -299,12 +320,10 @@ class AdminController extends AbstractController
         $templateParameters['category'] = $category;
 
         $displayNameType = $this->getVar('displaynametype', 1);
-
-        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
         $moduleEntities = $adminModuleRepository->findAll();
 
         // get admin capable modules
-        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
         $adminLinks = [];
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', 'ANY', ACCESS_EDIT)) {
@@ -335,14 +354,14 @@ class AdminController extends AbstractController
                 }
 
                 try {
-                    $menuTextUrl = $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+                    $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
                     $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
                 }
 
-                $links = $this->get('zikula.link_container_collector')->getLinks($adminModule['name'], 'admin');
-                $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
+                $links = $linkContainerCollector->getLinks($adminModule['name'], 'admin');
+                $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,
@@ -369,15 +388,24 @@ class AdminController extends AbstractController
      * @Theme("admin")
      *
      * @param Request $request
+     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
+     * @param AdminModuleRepositoryInterface $adminModuleRepository
+     * @param CapabilityApiInterface $capabilityApi
+     * @param RouterInterface $router
+     * @param Asset $assetHelper
      * @param integer $acid
      * @return Response symfony response object
      */
-    public function categorymenuAction(Request $request, $acid = null)
-    {
+    public function categorymenuAction(
+        Request $request,
+        AdminCategoryRepositoryInterface $adminCategoryRepository,
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        CapabilityApiInterface $capabilityApi,
+        RouterInterface $router,
+        Asset $assetHelper,
+        $acid = null
+    ) {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
-
-        $entityManager = $this->get('doctrine')->getManager();
-        $adminCategoryRepository = $entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity');
 
         // Get all categories
         $categories = [];
@@ -388,11 +416,10 @@ class AdminController extends AbstractController
             }
         }
 
-        $adminModuleRepository = $entityManager->getRepository('ZikulaAdminModule:AdminModuleEntity');
         $moduleEntities = $adminModuleRepository->findAll();
 
         // get admin capable modules
-        $adminModules = $this->get('zikula_extensions_module.api.capability')->getExtensionsCapableOf('admin');
+        $adminModules = $capabilityApi->getExtensionsCapableOf('admin');
         $adminLinks = [];
         foreach ($adminModules as $adminModule) {
             if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
@@ -401,7 +428,7 @@ class AdminController extends AbstractController
 
             $menuText = $adminModule['displayname'];
             try {
-                $menuTextUrl = $this->get('router')->generate($adminModule['capabilities']['admin']['route']);
+                $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
                 $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
@@ -420,7 +447,7 @@ class AdminController extends AbstractController
                 break;
             }
 
-            $adminIconPath = $this->get('zikula_core.common.theme.asset_helper')->resolve('@' . $adminModule['name'] . ':images/admin.png');
+            $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
 
             $adminLinks[$catid][] = [
                 'menuTextUrl' => $menuTextUrl,

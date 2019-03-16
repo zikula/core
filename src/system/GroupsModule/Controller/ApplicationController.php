@@ -20,9 +20,14 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
+use Zikula\GroupsModule\Form\Type\ManageApplicationType;
+use Zikula\GroupsModule\Form\Type\MembershipApplicationType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 /**
  * @Route("/application")
@@ -50,11 +55,9 @@ class ApplicationController extends AbstractController
             'theAction' => $action,
             'application' => $groupApplicationEntity,
         ];
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\ManageApplicationType', $formValues, [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(ManageApplicationType::class, $formValues);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
                 $groupApplicationEntity = $formData['application'];
@@ -79,7 +82,7 @@ class ApplicationController extends AbstractController
         return [
             'form' => $form->createView(),
             'action' => $action,
-            'application' => $groupApplicationEntity,
+            'application' => $groupApplicationEntity
         ];
     }
 
@@ -91,18 +94,25 @@ class ApplicationController extends AbstractController
      *
      * @param Request $request
      * @param GroupEntity $group
+     * @param GroupApplicationRepository $applicationRepository
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
      * @return array|RedirectResponse
      */
-    public function createAction(Request $request, GroupEntity $group)
-    {
+    public function createAction(
+        Request $request,
+        GroupEntity $group,
+        GroupApplicationRepository $applicationRepository,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
-        $currentUserApi = $this->get('zikula_users_module.current_user');
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
-        $userEntity = $this->get('zikula_users_module.user_repository')->find($currentUserApi->get('uid'));
+        $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $groupTypeIsCore = CommonHelper::GTYPE_CORE == $group->getGtype();
         $groupStateIsClosed = CommonHelper::STATE_CLOSED == $group->getState();
         $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
@@ -112,7 +122,7 @@ class ApplicationController extends AbstractController
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
-        $existingApplication = $this->get('zikula_groups_module.group_application_repository')->findOneBy(['group' => $group, 'user' => $userEntity]);
+        $existingApplication = $applicationRepository->findOneBy(['group' => $group, 'user' => $userEntity]);
         if ($existingApplication) {
             $this->addFlash('info', $this->__('You already have a pending application. Please wait until the administrator notifies you.'));
 
@@ -122,11 +132,9 @@ class ApplicationController extends AbstractController
         $groupApplicationEntity = new GroupApplicationEntity();
         $groupApplicationEntity->setGroup($group);
         $groupApplicationEntity->setUser($userEntity);
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\MembershipApplicationType', $groupApplicationEntity, [
-                'translator' => $this->get('translator.default'),
-            ]
-        );
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(MembershipApplicationType::class, $groupApplicationEntity);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('apply')->isClicked()) {
                 $groupApplicationEntity = $form->getData();
                 $this->get('doctrine')->getManager()->persist($groupApplicationEntity);
@@ -165,6 +173,6 @@ class ApplicationController extends AbstractController
             $messages[] = $this->__('You are already a member of this group.');
         }
 
-        return implode('<br>', $messages);
+        return implode('<br />', $messages);
     }
 }

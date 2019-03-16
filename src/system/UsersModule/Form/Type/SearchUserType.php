@@ -18,9 +18,29 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class SearchUserType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,12 +48,12 @@ class SearchUserType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $options['translator']->__('User name'),
+                'label' => $this->__('User name'),
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
             ->add('email', TextType::class, [
-                'label' => $options['translator']->__('Email address'),
+                'label' => $this->__('Email address'),
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
@@ -41,8 +61,8 @@ class SearchUserType extends AbstractType
                 'class' => 'ZikulaGroupsModule:GroupEntity',
                 'choice_label' => 'name',
                 'multiple' => true,
-                'placeholder' => $options['translator']->__('Any group'),
-                'label' => $options['translator']->__('Group membership'),
+                'placeholder' => $this->__('Any group'),
+                'label' => $this->__('Group membership'),
                 'required' => false
             ])
             ->add('registered_after', DateType::class, [
@@ -53,7 +73,7 @@ class SearchUserType extends AbstractType
                 ]
             ])
             ->add('registered_before', DateType::class, [
-                'label' => $options['translator']->__('Registration date before'),
+                'label' => $this->__('Registration date before'),
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => [
@@ -61,14 +81,14 @@ class SearchUserType extends AbstractType
                 ]
             ])
             ->add('search', SubmitType::class, [
-                'label' => $options['translator']->__('Search'),
+                'label' => $this->__('Search'),
                 'icon' => 'fa-search',
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-danger'],
+                'attr' => ['class' => 'btn btn-danger']
             ])
         ;
     }
@@ -79,15 +99,5 @@ class SearchUserType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_searchuser';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

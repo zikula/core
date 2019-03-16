@@ -14,9 +14,12 @@ namespace Zikula\RoutesModule\Helper;
 
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class RouteDumperHelper
 {
@@ -26,13 +29,46 @@ class RouteDumperHelper
     private $container;
 
     /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var DumpCommand
+     */
+    private $dumpCommand;
+
+    /**
      * RouteDumperHelper constructor.
      *
-     * @param $container
+     * @param ContainerInterface $container
+     * @param VariableApiInterface $variableApi
+     * @param LocaleApiInterface $localeApi
+     * @param TranslatorInterface $translator
+     * @param DumpCommand $dumpCommand
      */
-    public function __construct(ContainerInterface $container)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        VariableApiInterface $variableApi,
+        LocaleApiInterface $localeApi,
+        TranslatorInterface $translator,
+        DumpCommand $dumpCommand
+    ) {
         $this->container = $container;
+        $this->variableApi = $variableApi;
+        $this->localeApi = $localeApi;
+        $this->translator = $translator;
+        $this->dumpCommand = $dumpCommand;
     }
 
     /**
@@ -45,19 +81,18 @@ class RouteDumperHelper
     public function dumpJsRoutes($lang = null)
     {
         // determine list of supported languages
-        $variableApi = $this->container->get('zikula_extensions_module.api.variable');
-        $installedLanguages = $this->container->get('zikula_settings_module.locale_api')->getSupportedLocales();
+        $installedLanguages = $this->localeApi->getSupportedLocales();
         if (isset($lang) && in_array($lang, $installedLanguages)) {
             // use provided lang if available
             $langs = [$lang];
         } else {
-            $multilingual = (bool)$variableApi->getSystemVar('multilingual', false);
+            $multilingual = (bool)$this->variableApi->getSystemVar('multilingual', false);
             if ($multilingual) {
                 // get all available locales
                 $langs = $installedLanguages;
             } else {
                 // get only the default locale
-                $langs = [$variableApi->getSystemVar('language_i18n', 'en')]; //$this->container->getParameter('locale');
+                $langs = [$this->variableApi->getSystemVar('language_i18n', 'en')]; //$this->container->getParameter('locale');
             }
         }
 
@@ -68,20 +103,21 @@ class RouteDumperHelper
         if (file_exists($targetPath)) {
             try {
                 unlink($targetPath);
-            } catch (\Exception $e) {
-                $errors .= $this->container->get('translator.default')->__f("Error: Could not delete '%path' because %msg", ['%path' => $targetPath, '%msg' => $e->getMessage()]);
+            } catch (\Exception $exception) {
+                $errors .= $this->translator->__f("Error: Could not delete '%path' because %msg", [
+                    '%path' => $targetPath,
+                    '%msg' => $exception->getMessage()
+                ]);
             }
         }
 
         foreach ($langs as $lang) {
-            $command = new DumpCommand();
-            $command->setContainer($this->container);
             $input = new ArrayInput(['--locale' => $lang . I18nLoader::ROUTING_PREFIX]);
             $output = new NullOutput();
             try {
-                $command->run($input, $output);
-            } catch (\RuntimeException $e) {
-                $errors .= $e->getMessage() . '. ';
+                $this->dumpCommand->run($input, $output);
+            } catch (\RuntimeException $exception) {
+                $errors .= $exception->getMessage() . '. ';
             }
         }
 

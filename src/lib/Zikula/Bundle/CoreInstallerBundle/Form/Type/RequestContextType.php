@@ -14,7 +14,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\Common\Translator\IdentityTranslator;
 
@@ -22,7 +21,6 @@ class RequestContextType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->setTranslator($options['translator']);
         $builder
             ->add('router:request_context:host', TextType::class, [
                 'label' => $this->__('The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
@@ -31,7 +29,7 @@ class RequestContextType extends AbstractType
                 ],
                 'data' => $this->__('localhost'),
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank()
                 ]
             ])
             ->add('router:request_context:scheme', ChoiceType::class, [
@@ -57,12 +55,5 @@ class RequestContextType extends AbstractType
     public function getBlockPrefix()
     {
         return 'router_request_context';
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => new IdentityTranslator()
-        ]);
     }
 }

@@ -15,11 +15,6 @@ use Symfony\Component\Validator\Constraint;
 
 class ValidPdoConnection extends Constraint
 {
-    public function validatedBy()
-    {
-        return 'zikula.core_installer.pdo_connection.validator';
-    }
-
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;

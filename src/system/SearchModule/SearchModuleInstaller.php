@@ -12,6 +12,8 @@
 namespace Zikula\SearchModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\SearchModule\Entity\SearchResultEntity;
+use Zikula\SearchModule\Entity\SearchStatEntity;
 
 /**
  * Installation routines for the search module.
@@ -22,8 +24,8 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     private $entities = [
-        'Zikula\SearchModule\Entity\SearchResultEntity',
-        'Zikula\SearchModule\Entity\SearchStatEntity',
+        SearchResultEntity::class,
+        SearchStatEntity::class
     ];
 
     /**
@@ -74,10 +76,10 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                 // update schema
                 try {
                     $this->schemaTool->update([
-                        'Zikula\SearchModule\Entity\SearchResultEntity',
+                        SearchResultEntity::class
                     ]);
-                } catch (\Exception $e) {
-                    $this->addFlash('error', $e->getMessage());
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $exception->getMessage());
 
                     return false;
                 }
@@ -85,10 +87,10 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                 // update schema
                 try {
                     $this->schemaTool->update([
-                        'Zikula\SearchModule\Entity\SearchResultEntity',
+                        SearchResultEntity::class
                     ]);
-                } catch (\Exception $e) {
-                    $this->addFlash('error', $e->getMessage());
+                } catch (\Exception $exception) {
+                    $this->addFlash('error', $exception->getMessage());
 
                     return false;
                 }

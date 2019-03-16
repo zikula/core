@@ -11,10 +11,13 @@
 
 namespace Zikula\SecurityCenterModule;
 
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
+use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
+use Zikula\SecurityCenterModule\Helper\PurifierHelper;
 
 /**
  * Installation routines for the security center module.
@@ -31,7 +34,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         // create the table
         try {
             $this->schemaTool->create([
-                'Zikula\SecurityCenterModule\Entity\IntrusionEntity'
+                IntrusionEntity::class
             ]);
         } catch (\Exception $e) {
             return false;
@@ -71,7 +74,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->container->get('zikula.cache_clearer')->clear('purifier');
 
         // HTML Purifier default settings
-        $purifierDefaultConfig = $this->container->get('zikula_security_center_module.helper.purifier_helper')->getPurifierConfig(['forcedefault' => true]);
+        $purifierDefaultConfig = $this->container->get(PurifierHelper::class)->getPurifierConfig(['forcedefault' => true]);
         $this->setVar('htmlpurifierConfig', serialize($purifierDefaultConfig));
 
         // create vars for phpids usage
@@ -229,10 +232,10 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
      */
     public function upgrade($oldVersion)
     {
+        $variableApi = $this->container->get(VariableApi::class);
         switch ($oldVersion) {
             case '1.5.0':
                 // avoid storing absolute pathes in module vars
-                $variableApi = $this->container->get('zikula_extensions_module.api.variable');
 
                 // delete obsolete variable
                 $variableApi->del(VariableApi::CONFIG, 'htmlpurifierlocation');
@@ -243,13 +246,13 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 }
             case '1.5.1':
                 // set the session information in /src/app/config/dynamic/generated.yml
-                $configDumper = $this->container->get('zikula.dynamic_config_dumper');
-                $sessionStoreToFile = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
+                $configDumper = $this->container->get(DynamicConfigDumper::class);
+                $sessionStoreToFile = $variableApi->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
                 $sessionHandlerId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
                 $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
                 $sessionStorageId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
                 $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
-                $sessionSavePath = $this->container->get('zikula_extensions_module.api.variable')->getSystemVar('sessionsavepath', '');
+                $sessionSavePath = $variableApi->getSystemVar('sessionsavepath', '');
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
             case '1.5.2':
@@ -276,6 +279,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
      */
     private function setSystemVar($name, $value = '')
     {
-        return $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, $name, $value);
+        return $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
     }
 }

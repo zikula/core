@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -32,27 +34,25 @@ class ConfigController extends AbstractController
      * @Template("ZikulaPermissionsModule:Config:config.html.twig")
      *
      * @param Request $request
+     * @param VariableApiInterface $variableApi
+     * @param PermissionRepositoryInterface $permissionRepository
+     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return Response
      */
-    public function configAction(Request $request)
+    public function configAction(Request $request, VariableApiInterface $variableApi, PermissionRepositoryInterface $permissionRepository)
     {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $variableApi = $this->get('zikula_extensions_module.api.variable');
         $modVars = $variableApi->getAll('ZikulaPermissionsModule');
         $modVars['lockadmin'] = (bool)$modVars['lockadmin'];
         $modVars['filter'] = (bool)$modVars['filter'];
 
-        $form = $this->createForm(ConfigType::class,
-            $modVars, [
-                'translator' => $this->get('translator.default')
-            ]
-        );
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(ConfigType::class, $modVars);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
 
@@ -63,7 +63,7 @@ class ConfigController extends AbstractController
 
                 $adminId = isset($formData['adminid']) ? (int)$formData['adminid'] : 1;
                 if (0 != $adminId) {
-                    $perm = $this->get('doctrine')->getRepository('ZikulaPermissionsModule:PermissionEntity')->find($adminId);
+                    $perm = $permissionRepository->find($adminId);
                     if (!$perm) {
                         $adminId = 0;
                         $error = true;

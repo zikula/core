@@ -11,19 +11,8 @@
 
 namespace Zikula\Bundle\HookBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Zikula\Bundle\HookBundle\DependencyInjection\Compiler\HookCollectorPass;
 
 class ZikulaHookBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        $container->addCompilerPass(new HookCollectorPass());
-    }
 }

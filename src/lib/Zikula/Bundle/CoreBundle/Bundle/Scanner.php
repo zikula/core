@@ -14,12 +14,18 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Common\Translator\TranslatorInterface;
 
 class Scanner
 {
     private $jsons = [];
 
     private $invalid = [];
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * Scans and loads composer.json files.
@@ -110,6 +116,7 @@ class Scanner
             if ($json['type'] === $type) {
                 $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
                 $array[$indexField] = new MetaData($json);
+                $array[$indexField]->setTranslator($this->translator);
             }
         }
 
@@ -119,5 +126,10 @@ class Scanner
     public function getInvalid()
     {
         return $this->invalid;
+    }
+
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 }

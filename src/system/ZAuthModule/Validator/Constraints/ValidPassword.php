@@ -19,9 +19,4 @@ use Symfony\Component\Validator\Constraint;
 class ValidPassword extends Constraint
 {
     public $message = 'The password "%string%" is invalid.';
-
-    public function validatedBy()
-    {
-        return 'zikula.zauth.password.validator';
-    }
 }

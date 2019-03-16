@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\GroupsModule\Form\Type\ConfigType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -34,10 +35,11 @@ class ConfigController extends AbstractController
      * This is a standard function to modify the configuration parameters of the module.
      *
      * @param Request $request
+     * @param GroupRepositoryInterface $groupRepository
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
-    public function configAction(Request $request)
+    public function configAction(Request $request, GroupRepositoryInterface $groupRepository)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -45,18 +47,16 @@ class ConfigController extends AbstractController
 
         // build a groups array suitable for the form choices
         $groupsList = [];
-        $groups = $this->get('zikula_groups_module.group_repository')->findAll();
+        $groups = $groupRepository->findAll();
         foreach ($groups as $group) {
             $groupsList[$group->getName()] = $group->getGid();
         }
 
         $form = $this->createForm(ConfigType::class, $this->getVars(), [
-                'translator' => $this->get('translator.default'),
-                'groups' => $groupsList
-            ]
-        );
-
-        if ($form->handleRequest($request)->isValid()) {
+            'groups' => $groupsList
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
                 $this->addFlash('status', $this->__('Done! Module configuration updated.'));

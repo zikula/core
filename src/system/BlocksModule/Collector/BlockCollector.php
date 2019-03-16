@@ -19,27 +19,38 @@ use Zikula\BlocksModule\BlockHandlerInterface;
 class BlockCollector
 {
     /**
-     * @var array ['service.id' => ServiceObject]
+     * @var array
      */
     private $blocks;
 
-    public function __construct()
+    /**
+     * Constructor.
+     *
+     * @param BlockHandlerInterface[] $blocks
+     */
+    public function __construct(iterable $blocks)
     {
         $this->blocks = [];
+        foreach ($blocks as $block) {
+            $this->add($block);
+        }
     }
 
     /**
      * Add a block to the collection.
-     * @param $id
+     *
      * @param BlockHandlerInterface $block
      */
-    public function add($id, BlockHandlerInterface $block)
+    public function add(BlockHandlerInterface $block)
     {
+        $id = str_replace('\\', '_', get_class($block));
+
         $this->blocks[$id] = $block;
     }
 
     /**
      * Get a block from the collection by service.id.
+     *
      * @param $id
      * @return null
      */
@@ -50,6 +61,7 @@ class BlockCollector
 
     /**
      * Get all the blocks in the collection.
+     *
      * @return array
      */
     public function getBlocks()

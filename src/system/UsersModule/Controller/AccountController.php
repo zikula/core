@@ -21,6 +21,10 @@ use Symfony\Component\Intl\Intl;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Helper\AccountLinksHelper;
 
 /**
  * @Route("/account")
@@ -30,17 +34,20 @@ class AccountController extends AbstractController
     /**
      * @Route("")
      * @Template("ZikulaUsersModule:Account:menu.html.twig")
+     *
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param AccountLinksHelper $accountLinksHelper
+     *
      * @return Response|array
      */
-    public function menuAction()
-    {
-        if ($this->get('zikula_users_module.current_user')->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+    public function menuAction(CurrentUserApiInterface $currentUserApi, AccountLinksHelper $accountLinksHelper) {
+        if ($currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
         $accountLinks = [];
-        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
-            $accountLinks = $this->get('zikula_users_module.helper.account_links_helper')->getAllAccountLinks();
+        if ($currentUserApi->isLoggedIn()) {
+            $accountLinks = $accountLinksHelper->getAllAccountLinks();
         }
 
         return ['accountLinks' => $accountLinks];
@@ -49,22 +56,31 @@ class AccountController extends AbstractController
     /**
      * @Route("/change-language")
      * @Template("ZikulaUsersModule:Account:changeLanguage.html.twig")
+     *
      * @param Request $request
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
+     * @param LocaleApiInterface $localeApi
+     *
      * @return array|RedirectResponse
      */
-    public function changeLanguageAction(Request $request)
-    {
-        if (!$this->get('zikula_users_module.current_user')->isLoggedIn()) {
+    public function changeLanguageAction(
+        Request $request,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        LocaleApiInterface $localeApi
+    ) {
+        if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException();
         }
-        $installedLanguages = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale());
+        $installedLanguages = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
         $form = $this->createFormBuilder()
             ->add('locale', ChoiceType::class, [
                 'label' => $this->__('Choose language'),
                 'choices' => $installedLanguages,
                 'placeholder' => $this->__('Site default'),
                 'required' => false,
-                'data' => $this->get('zikula_users_module.current_user')->get('locale')
+                'data' => $currentUserApi->get('locale')
             ])
             ->add('submit', SubmitType::class, [
                 'label' => $this->__('Save'),
@@ -76,16 +92,17 @@ class AccountController extends AbstractController
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
-            ->getForm();
+            ->getForm()
+        ;
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $locale = $this->getParameter('locale');
+            $locale = $this->container->getParameter('locale');
             if ($form->get('submit')->isClicked()) {
                 $data = $form->getData();
                 $locale = !empty($data['locale']) ? $data['locale'] : $locale;
-                $userEntity = $this->get('zikula_users_module.user_repository')->find($this->get('zikula_users_module.current_user')->get('uid'));
+                $userEntity = $userRepository->find($this->get('zikula_users_module.current_user')->get('uid'));
                 $userEntity->setLocale($locale);
-                $this->get('zikula_users_module.user_repository')->persistAndFlush($userEntity);
+                $userRepository->persistAndFlush($userEntity);
                 $request->getSession()->set('_locale', $locale);
                 \Locale::setDefault($locale);
                 $langText = Intl::getLanguageBundle()->getLanguageName($locale);

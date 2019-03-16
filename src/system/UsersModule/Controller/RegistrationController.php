@@ -17,19 +17,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationProviders;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
+use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
 use Zikula\UsersModule\Event\UserFormDataEvent;
 use Zikula\UsersModule\Exception\InvalidAuthenticationMethodRegistrationFormException;
 use Zikula\UsersModule\Form\Type\RegistrationType\DefaultRegistrationType;
+use Zikula\UsersModule\Helper\AccessHelper;
+use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\HookSubscriber\RegistrationUiHooksSubscriber;
 use Zikula\UsersModule\RegistrationEvents;
 use Zikula\UsersModule\UserEvents;
@@ -44,14 +50,30 @@ class RegistrationController extends AbstractController
      * Display the registration form.
      *
      * @Route("/register", methods = {"GET", "POST"}, options={"zkNoBundlePrefix"=1})
+     *
      * @param Request $request
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
+     * @param AuthenticationMethodCollector $authenticationMethodCollector
+     * @param RegistrationHelper $registrationHelper
+     * @param AccessHelper $accessHelper
+     * @param HookDispatcherInterface $hookDispatcher
+     *
      * @return Response|RedirectResponse
+     *
      * @throws InvalidAuthenticationMethodRegistrationFormException
      * @throws \Exception
      */
-    public function registerAction(Request $request)
-    {
-        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+    public function registerAction(
+        Request $request,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        AuthenticationMethodCollector $authenticationMethodCollector,
+        RegistrationHelper $registrationHelper,
+        AccessHelper $accessHelper,
+        HookDispatcherInterface $hookDispatcher
+    ) {
+        if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
         // Check if registration is enabled
@@ -61,7 +83,6 @@ class RegistrationController extends AbstractController
         $this->throwExceptionForBannedUserAgents($request);
 
         // Display the authentication method selector if required
-        $authenticationMethodCollector = $this->get('zikula_users_module.internal.authentication_method_collector');
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
@@ -95,7 +116,6 @@ class RegistrationController extends AbstractController
             }
         }
         $dispatcher = $this->get('event_dispatcher');
-        $hookDispatcher = $this->get('hook_dispatcher');
 
         $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationFormClassName()
@@ -139,7 +159,7 @@ class RegistrationController extends AbstractController
                         return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
                     }
 
-                    $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
+                    $registrationHelper->registerNewUser($userEntity);
 
                     $formData['id'] = $authenticationMethodId;
                     $formData['uid'] = $userEntity->getUid();
@@ -147,7 +167,7 @@ class RegistrationController extends AbstractController
                     if (true !== $externalRegistrationSuccess) {
                         // revert registration
                         $this->addFlash('error', $this->__('The registration process failed.'));
-                        $this->get('zikula_users_module.user_repository')->removeAndFlush($userEntity);
+                        $userRepository->removeAndFlush($userEntity);
                         $dispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 
                         return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
@@ -165,8 +185,8 @@ class RegistrationController extends AbstractController
                     $event = $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
                     $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
-                    if ($autoLogIn && $this->get('zikula_users_module.helper.access_helper')->loginAllowed($userEntity)) {
-                        $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
+                    if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
+                        $accessHelper->login($userEntity);
 
                         return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
                     }
@@ -202,6 +222,7 @@ class RegistrationController extends AbstractController
      * Throw an exception if the user agent has been banned in the UserModule settings.
      *
      * @param Request $request
+     *
      * @throws AccessDeniedException if User Agent is banned
      */
     private function throwExceptionForBannedUserAgents(Request $request)

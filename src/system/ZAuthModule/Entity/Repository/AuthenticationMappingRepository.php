@@ -11,7 +11,8 @@
 
 namespace Zikula\ZAuthModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\Core\Doctrine\WhereFromFilterTrait;
@@ -19,9 +20,14 @@ use Zikula\OAuthModule\Entity\MappingEntity;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
-class AuthenticationMappingRepository extends EntityRepository implements AuthenticationMappingRepositoryInterface
+class AuthenticationMappingRepository extends ServiceEntityRepository implements AuthenticationMappingRepositoryInterface
 {
     use WhereFromFilterTrait;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AuthenticationMappingEntity::class);
+    }
 
     public function persistAndFlush(AuthenticationMappingEntity $entity)
     {

@@ -15,10 +15,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Helper\AccessHelper;
+use Zikula\UsersModule\Helper\MailHelper;
+use Zikula\UsersModule\Helper\RegistrationHelper;
 use Zikula\UsersModule\RegistrationEvents;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
+use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Form\Type\VerifyRegistrationType;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -32,7 +42,18 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify-registration/{uname}/{verifycode}")
      * @Template("ZikulaZAuthModule:Registration:verify.html.twig")
+     *
      * @param Request $request
+     * @param ValidatorInterface $validator
+     * @param VariableApiInterface $variableApi
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
+     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
+     * @param UserVerificationRepositoryInterface $userVerificationRepository
+     * @param RegistrationHelper $registrationHelper
+     * @param PasswordApiInterface $passwordApi
+     * @param AccessHelper $accessHelper
+     * @param MailHelper $mailHelper
      * @param null|string $uname
      * @param null|string $verifycode
      *
@@ -48,9 +69,22 @@ class RegistrationController extends AbstractController
      *
      * @return array|RedirectResponse
      */
-    public function verifyAction(Request $request, $uname = null, $verifycode = null)
-    {
-        if ($this->get('zikula_users_module.current_user')->isLoggedIn()) {
+    public function verifyAction(
+        Request $request,
+        ValidatorInterface $validator,
+        VariableApiInterface $variableApi,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository,
+        AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        UserVerificationRepositoryInterface $userVerificationRepository,
+        RegistrationHelper $registrationHelper,
+        PasswordApiInterface $passwordApi,
+        AccessHelper $accessHelper,
+        MailHelper $mailHelper,
+        $uname = null,
+        $verifycode = null
+    ) {
+        if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
@@ -58,54 +92,50 @@ class RegistrationController extends AbstractController
         // remove expired registrations
         $regExpireDays = $this->getVar(ZAuthConstant::MODVAR_EXPIRE_DAYS_REGISTRATION, ZAuthConstant::DEFAULT_EXPIRE_DAYS_REGISTRATION);
         if ($regExpireDays > 0) {
-            $deletedUsers = $this->get('zikula_zauth_module.user_verification_repository')->purgeExpiredRecords($regExpireDays);
+            $deletedUsers = $userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
                 $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser->getUid()));
             }
         }
-        $codeValidationErrors = $this->get('validator')->validate(['uname' => $uname, 'verifycode' => $verifycode], new ValidRegistrationVerification());
+        $codeValidationErrors = $validator->validate(['uname' => $uname, 'verifycode' => $verifycode], new ValidRegistrationVerification());
         if (count($codeValidationErrors) > 0) {
             $this->addFlash('warning', $this->__('The code provided is invalid or this user has never registered or has fully completed registration.'));
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
-        $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $uname]);
+        $userEntity = $userRepository->findOneBy(['uname' => $uname]);
         if ($userEntity) {
-            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());
+            $mapping = $authenticationMappingRepository->getByZikulaId($userEntity->getUid());
             if ($mapping) {
                 $setPass = null === $mapping->getPass() || '' == $mapping->getPass();
             }
         }
-        $form = $this->createForm(VerifyRegistrationType::class,
-            [
-                'uname' => $uname,
-                'verifycode' => $verifycode
-            ],
-            [
-                'translator' => $this->getTranslator(),
-                'setpass' => $setPass
-            ]
-        );
+        $form = $this->createForm(VerifyRegistrationType::class, [
+            'uname' => $uname,
+            'verifycode' => $verifycode
+        ], [
+            'setpass' => $setPass
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $userEntity = $this->get('zikula_users_module.user_repository')->findOneBy(['uname' => $data['uname']]);
-            $mapping = $this->get('zikula_zauth_module.authentication_mapping_repository')->getByZikulaId($userEntity->getUid());
+            $userEntity = $userRepository->findOneBy(['uname' => $data['uname']]);
+            $mapping = $authenticationMappingRepository->getByZikulaId($userEntity->getUid());
             if (isset($data['pass'])) {
-                $mapping->setPass($this->get('zikula_zauth_module.api.password')->getHashedPassword($data['pass']));
+                $mapping->setPass($passwordApi->getHashedPassword($data['pass']));
             }
             $mapping->setVerifiedEmail(true);
-            $this->get('zikula_zauth_module.authentication_mapping_repository')->persistAndFlush($mapping);
-            $this->get('zikula_users_module.helper.registration_helper')->registerNewUser($userEntity);
-            $this->get('zikula_zauth_module.user_verification_repository')->resetVerifyChgFor($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL);
-            $adminNotificationEmail = $this->get('zikula_extensions_module.api.variable')->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
+            $authenticationMappingRepository->persistAndFlush($mapping);
+            $registrationHelper->registerNewUser($userEntity);
+            $userVerificationRepository->resetVerifyChgFor($userEntity->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL);
+            $adminNotificationEmail = $variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
 
             switch ($userEntity->getActivated()) {
                 case UsersConstant::ACTIVATED_PENDING_REG:
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendRegistrationMail($userEntity, true, !empty($adminNotificationEmail));
+                    $notificationErrors = $mailHelper->createAndSendRegistrationMail($userEntity, true, !empty($adminNotificationEmail));
                     if (!empty($notificationErrors)) {
-                        $this->addFlash('error', implode('<br>', $notificationErrors));
+                        $this->addFlash('error', implode('<br />', $notificationErrors));
                     }
                     if ('' == $userEntity->getApproved_By()) {
                         $this->addFlash('status', $this->__('Done! Your account has been verified, and is awaiting administrator approval.'));
@@ -114,11 +144,11 @@ class RegistrationController extends AbstractController
                     }
                     break;
                 case UsersConstant::ACTIVATED_ACTIVE:
-                    $notificationErrors = $this->get('zikula_users_module.helper.mail_helper')->createAndSendUserMail($userEntity, true, !empty($adminNotificationEmail));
+                    $notificationErrors = $mailHelper->createAndSendUserMail($userEntity, true, !empty($adminNotificationEmail));
                     if (!empty($notificationErrors)) {
-                        $this->addFlash('error', implode('<br>', $notificationErrors));
+                        $this->addFlash('error', implode('<br />', $notificationErrors));
                     }
-                    $this->get('zikula_users_module.helper.access_helper')->login($userEntity);
+                    $accessHelper->login($userEntity);
                     $this->addFlash('status', $this->__('Done! Your account has been verified. You have been logged in.'));
                     break;
                 default:

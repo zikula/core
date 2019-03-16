@@ -21,13 +21,16 @@ class LinkContainerCollector
 
     private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher, iterable $linkContainers)
     {
         $this->eventDispatcher = $dispatcher;
         $this->linkContainers = [];
+        foreach ($linkContainers as $linkContainer) {
+            $this->addContainer($linkContainer);
+        }
     }
 
-    public function addContainer(LinkContainerInterface $linkContainer)
+    private function addContainer(LinkContainerInterface $linkContainer)
     {
         $this->linkContainers[$linkContainer->getBundleName()] = $linkContainer;
     }

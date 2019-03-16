@@ -11,12 +11,18 @@
 
 namespace Zikula\ThemeModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
-class ThemeEntityRepository extends EntityRepository
+class ThemeEntityRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ThemeEntity::class);
+    }
+
     const STATE_ALL = 0;
 
     const STATE_ACTIVE = 1;
@@ -41,6 +47,7 @@ class ThemeEntityRepository extends EntityRepository
     private $kernel;
 
     /**
+     * @required
      * @param ZikulaHttpKernelInterface $kernel
      */
     public function setKernel(ZikulaHttpKernelInterface $kernel)

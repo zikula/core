@@ -2275,16 +2275,16 @@
         },
         {
             "name": "jQuery.mmenu",
-            "version": "7.3.2",
+            "version": "7.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/jQuery.mmenu.git",
-                "reference": "abef33d0a70a539d2669dd4a94c2c72b18af267a"
+                "reference": "12eb943d3e7e7293c82a4ad74f15890495456dff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/abef33d0a70a539d2669dd4a94c2c72b18af267a",
-                "reference": "abef33d0a70a539d2669dd4a94c2c72b18af267a",
+                "url": "https://api.github.com/repos/FrDH/jQuery.mmenu/zipball/12eb943d3e7e7293c82a4ad74f15890495456dff",
+                "reference": "12eb943d3e7e7293c82a4ad74f15890495456dff",
                 "shasum": ""
             },
             "type": "library",
@@ -2308,10 +2308,10 @@
                 "submenu"
             ],
             "support": {
-                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.3.2",
+                "source": "https://github.com/FrDH/jQuery.mmenu/tree/v7.3.3",
                 "issues": "https://github.com/FrDH/jQuery.mmenu/issues"
             },
-            "time": "2019-02-20T19:14:45+00:00"
+            "time": "2019-03-13T22:14:56+00:00"
         },
         {
             "name": "jakeasmith/http_build_url",
@@ -3188,22 +3188,23 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v3.1.0",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "fad000cb237b0914d1953b4abd8de82d04a5ab5f"
+                "reference": "288356a6bed092a4d8b19173d48874b3036db684"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/fad000cb237b0914d1953b4abd8de82d04a5ab5f",
-                "reference": "fad000cb237b0914d1953b4abd8de82d04a5ab5f",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/288356a6bed092a4d8b19173d48874b3036db684",
+                "reference": "288356a6bed092a4d8b19173d48874b3036db684",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0",
                 "symfony/console": "~3.0|~4.0",
-                "symfony/form": "~3.0|~4.0"
+                "symfony/form": "~3.0|~4.0",
+                "symfony/translation": "~3.0|~4.0"
             },
             "require-dev": {
                 "beberlei/assert": "~2.1",
@@ -3239,7 +3240,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2018-03-18T10:53:59+00:00"
+            "time": "2019-03-11T18:20:31+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -4122,25 +4123,28 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v6.1.3",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "8ddcb66ac10c392d3beb54829eef8ac1438595f4"
+                "reference": "6fa3232ff9d3f8237c0fae4b7ff05e1baa4cd707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/8ddcb66ac10c392d3beb54829eef8ac1438595f4",
-                "reference": "8ddcb66ac10c392d3beb54829eef8ac1438595f4",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/6fa3232ff9d3f8237c0fae4b7ff05e1baa4cd707",
+                "reference": "6fa3232ff9d3f8237c0fae4b7ff05e1baa4cd707",
                 "shasum": ""
             },
             "require": {
                 "egulias/email-validator": "~2.0",
-                "php": ">=7.0.0"
+                "php": ">=7.0.0",
+                "symfony/polyfill-iconv": "^1.0",
+                "symfony/polyfill-intl-idn": "^1.10",
+                "symfony/polyfill-mbstring": "^1.0"
             },
             "require-dev": {
                 "mockery/mockery": "~0.9.1",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/phpunit-bridge": "^3.4.19|^4.1.8"
             },
             "suggest": {
                 "ext-intl": "Needed to support internationalized email addresses",
@@ -4149,7 +4153,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.1-dev"
+                    "dev-master": "6.2-dev"
                 }
             },
             "autoload": {
@@ -4177,7 +4181,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2018-09-11T07:12:52+00:00"
+            "time": "2019-03-10T07:52:41+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -4249,16 +4253,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.11.4",
+            "version": "v1.11.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "540996bfdcc14ca38dfe4865c020d965020ae821"
+                "reference": "186ffc80b8f363e04ea3c2ebf49e1263a84b4e39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/540996bfdcc14ca38dfe4865c020d965020ae821",
-                "reference": "540996bfdcc14ca38dfe4865c020d965020ae821",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/186ffc80b8f363e04ea3c2ebf49e1263a84b4e39",
+                "reference": "186ffc80b8f363e04ea3c2ebf49e1263a84b4e39",
                 "shasum": ""
             },
             "require": {
@@ -4311,7 +4315,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2019-03-01T20:45:16+00:00"
+            "time": "2019-03-11T15:55:09+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -4435,6 +4439,65 @@
             "time": "2018-08-06T14:22:27+00:00"
         },
         {
+            "name": "symfony/polyfill-iconv",
+            "version": "v1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-iconv.git",
+                "reference": "97001cfc283484c9691769f51cdf25259037eba2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/97001cfc283484c9691769f51cdf25259037eba2",
+                "reference": "97001cfc283484c9691769f51cdf25259037eba2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-iconv": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Iconv\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill for the Iconv extension",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "iconv",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2018-09-21T06:26:08+00:00"
+        },
+        {
             "name": "symfony/polyfill-intl-icu",
             "version": "v1.10.0",
             "source": {
@@ -4491,6 +4554,68 @@
                 "shim"
             ],
             "time": "2018-08-06T14:22:27+00:00"
+        },
+        {
+            "name": "symfony/polyfill-intl-idn",
+            "version": "v1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-intl-idn.git",
+                "reference": "89de1d44f2c059b266f22c9cc9124ddc4cd0987a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/89de1d44f2c059b266f22c9cc9124ddc4cd0987a",
+                "reference": "89de1d44f2c059b266f22c9cc9124ddc4cd0987a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/polyfill-mbstring": "^1.3",
+                "symfony/polyfill-php72": "^1.9"
+            },
+            "suggest": {
+                "ext-intl": "For best performance"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Intl\\Idn\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Laurent Bassin",
+                    "email": "laurent@bassin.info"
+                }
+            ],
+            "description": "Symfony polyfill for intl's idn_to_ascii and idn_to_utf8 functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "idn",
+                "intl",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2018-09-30T16:36:12+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -4886,16 +5011,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.6.2",
+            "version": "v2.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7"
+                "reference": "70c59531da43afe598c66135e39cac39475a2f51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
-                "reference": "7d7342c8a4059fefb9b8d07db0cc14007021f9b7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/70c59531da43afe598c66135e39cac39475a2f51",
+                "reference": "70c59531da43afe598c66135e39cac39475a2f51",
                 "shasum": ""
             },
             "require": {
@@ -4911,7 +5036,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -4949,7 +5074,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-01-14T15:00:48+00:00"
+            "time": "2019-03-12T18:48:26+00:00"
         },
         {
             "name": "vakata/jstree",
@@ -5488,16 +5613,16 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "3.2.0",
+            "version": "3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "3a1fd2cdf354d9258948af1beca22d0dc209b993"
+                "reference": "2be38c2f70bc2023af1f32f6e9b68af43534baa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/3a1fd2cdf354d9258948af1beca22d0dc209b993",
-                "reference": "3a1fd2cdf354d9258948af1beca22d0dc209b993",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/2be38c2f70bc2023af1f32f6e9b68af43534baa0",
+                "reference": "2be38c2f70bc2023af1f32f6e9b68af43534baa0",
                 "shasum": ""
             },
             "require": {
@@ -5549,23 +5674,23 @@
             ],
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
-                "source": "https://github.com/zikula-modules/Legal/tree/3.2.0",
+                "source": "https://github.com/zikula-modules/Legal/tree/3.2.1",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2019-03-05T15:40:21+00:00"
+            "time": "2019-03-16T12:11:58+00:00"
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.0.5",
+            "version": "1.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "e8d81ef0d91b16bdc8f6f6794e01c551c951c35e"
+                "reference": "ff750dd3bb4115eba757e2ca793334252681fcf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/e8d81ef0d91b16bdc8f6f6794e01c551c951c35e",
-                "reference": "e8d81ef0d91b16bdc8f6f6794e01c551c951c35e",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/ff750dd3bb4115eba757e2ca793334252681fcf7",
+                "reference": "ff750dd3bb4115eba757e2ca793334252681fcf7",
                 "shasum": ""
             },
             "require": {
@@ -5610,23 +5735,23 @@
             ],
             "description": "Integrates league/oauth2-client and various providers.",
             "support": {
-                "source": "https://github.com/zikula/OAuth/tree/master",
+                "source": "https://github.com/zikula/OAuth/tree/1.0.7",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-03-05T15:28:20+00:00"
+            "time": "2019-03-16T12:15:25+00:00"
         },
         {
             "name": "zikula/pagelock-module",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "4253738965e1173a3b41c13b51ab1d1b72184a4b"
+                "reference": "60638be6838591b9d08c4fba73db25d71f8b13a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/4253738965e1173a3b41c13b51ab1d1b72184a4b",
-                "reference": "4253738965e1173a3b41c13b51ab1d1b72184a4b",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/60638be6838591b9d08c4fba73db25d71f8b13a3",
+                "reference": "60638be6838591b9d08c4fba73db25d71f8b13a3",
                 "shasum": ""
             },
             "require": {
@@ -5660,23 +5785,23 @@
             ],
             "description": "Page locking support",
             "support": {
-                "source": "https://github.com/zikula-modules/PageLock/tree/1.3.1",
+                "source": "https://github.com/zikula-modules/PageLock/tree/1.3.2",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2019-03-05T15:47:17+00:00"
+            "time": "2019-03-16T12:10:35+00:00"
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "b315fab497b25c6e2a73238160d52e8ac92410ed"
+                "reference": "bd663993dddae31bc010183289571ff97f18f32b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/b315fab497b25c6e2a73238160d52e8ac92410ed",
-                "reference": "b315fab497b25c6e2a73238160d52e8ac92410ed",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/bd663993dddae31bc010183289571ff97f18f32b",
+                "reference": "bd663993dddae31bc010183289571ff97f18f32b",
                 "shasum": ""
             },
             "require": {
@@ -5731,23 +5856,23 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.1.0",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.1",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-03-05T15:45:18+00:00"
+            "time": "2019-03-16T12:18:17+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
-            "version": "4.1.0",
+            "version": "4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "6c9df0f17ffeec8c1a57dce1cd4963732757d288"
+                "reference": "057605039434597ef5ae6a58d6006425d0ef9707"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/6c9df0f17ffeec8c1a57dce1cd4963732757d288",
-                "reference": "6c9df0f17ffeec8c1a57dce1cd4963732757d288",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/057605039434597ef5ae6a58d6006425d0ef9707",
+                "reference": "057605039434597ef5ae6a58d6006425d0ef9707",
                 "shasum": ""
             },
             "require": {
@@ -5781,10 +5906,10 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.1.0",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.1.1",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2019-03-05T15:53:15+00:00"
+            "time": "2019-03-16T12:08:57+00:00"
         },
         {
             "name": "zikula/wizard",

@@ -12,6 +12,7 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
@@ -41,7 +42,7 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
 
     public function isNecessary()
     {
-        $this->requirementsMet = $this->container->get('zikula_core_installer.controller.helper')->requirementsMet();
+        $this->requirementsMet = $this->container->get(ControllerHelper::class)->requirementsMet();
 
         return !$this->requirementsMet;
     }

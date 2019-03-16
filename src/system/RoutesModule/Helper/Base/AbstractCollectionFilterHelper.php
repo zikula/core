@@ -15,6 +15,7 @@ namespace Zikula\RoutesModule\Helper\Base;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -44,16 +45,16 @@ abstract class AbstractCollectionFilterHelper
      *
      * @param RequestStack $requestStack RequestStack service instance
      * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param boolean        $showOnlyOwnEntries  Fallback value to determine whether only own entries should be selected or not
+     * @param VariableApiInterface $variableApi VariableApi service instance
      */
     public function __construct(
         RequestStack $requestStack,
         CurrentUserApiInterface $currentUserApi,
-        $showOnlyOwnEntries
+        VariableApiInterface $variableApi
     ) {
         $this->request = $requestStack->getCurrentRequest();
         $this->currentUserApi = $currentUserApi;
-        $this->showOnlyOwnEntries = $showOnlyOwnEntries;
+        $this->showOnlyOwnEntries = $variableApi->get('ZikulaRoutesModule', 'showOnlyOwnEntries', false);
     }
 
     /**

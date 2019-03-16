@@ -14,6 +14,9 @@ namespace Zikula\SettingsModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
+use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 
 /**
  * Installation and upgrade routines for the settings module.
@@ -56,7 +59,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('startargs', '');
         $this->setSystemVar('language_detect', 0);
         // Multilingual support
-        foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $lang) {
+        foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
             $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
             $this->setSystemVar('slogan_' . $lang, $this->__('Site description'));
             $this->setSystemVar('defaultpagetitle_' . $lang, $this->__('Site name'));
@@ -113,11 +116,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 // update certain System vars to multilingual. provide default values for all locales using current value.
                 // must directly manipulate System vars at DB level because using $this->getSystemVar() returns empty values
                 $varsToChange = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription'];
-                $SystemVars = $this->entityManager->getRepository('Zikula\ExtensionsModule\Entity\ExtensionVarEntity')->findBy(['modname' => VariableApi::CONFIG]);
-                /** @var \Zikula\ExtensionsModule\Entity\ExtensionVarEntity $modVar */
-                foreach ($SystemVars as $modVar) {
+                $systemVars = $this->container->get(ExtensionVarRepository::class)->findBy(['modname' => VariableApi::CONFIG]);
+                /** @var ExtensionVarEntity $modVar */
+                foreach ($systemVars as $modVar) {
                     if (in_array($modVar->getName(), $varsToChange)) {
-                        foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $langcode) {
+                        foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $langcode) {
                             $newModVar = clone $modVar;
                             $newModVar->setName($modVar->getName() . '_' . $langcode);
                             $this->entityManager->persist($newModVar);
@@ -137,10 +140,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 // reconfigure TZ settings
                 $this->setGuestTimeZone();
             case '2.9.13':
-                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'entrypoint');
-                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
-                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'shorturls');
-                $this->container->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
+                $variableApi = $this->container->get(VariableApi::class);
+                $variableApi->del(VariableApi::CONFIG, 'entrypoint');
+                $variableApi->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
+                $variableApi->del(VariableApi::CONFIG, 'shorturls');
+                $variableApi->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
             case '2.9.14': // ship with Core-1.5.0
                 // current version
         }
@@ -162,7 +166,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
     private function setSystemVar($name, $value = '')
     {
-        return $this->container->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, $name, $value);
+        return $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
     }
 
     /**
@@ -170,7 +174,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
      */
     private function getSystemVar($name)
     {
-        return $this->container->get('zikula_extensions_module.api.variable')->getSystemVar($name);
+        return $this->container->get(VariableApi::class)->getSystemVar($name);
     }
 
     /**

@@ -44,28 +44,38 @@ class ProfileModuleCollector
     private $currentProfileModuleName;
 
     /**
-     * ProfileModuleCollector constructor.
+     * Constructor.
+     *
      * @param UserRepositoryInterface $userRepository
      * @param CurrentUserApiInterface $currentUserApi
      * @param VariableApiInterface $variableApi
+     * @param ProfileModuleInterface[] $modules
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         CurrentUserApiInterface $currentUserApi,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        iterable $modules
     ) {
         $this->userRepository = $userRepository;
         $this->currentUserApi = $currentUserApi;
         $this->currentProfileModuleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
+        foreach ($modules as $module) {
+            $this->add($module);
+        }
     }
 
     /**
      * Add a service to the collection.
-     * @param string $moduleName
+     *
      * @param ProfileModuleInterface $service
      */
-    public function add($moduleName, ProfileModuleInterface $service)
+    public function add(ProfileModuleInterface $service)
     {
+        $moduleName = $service->getBundleName();
+        if ('ZikulaUsersModule' == $moduleName) {
+            return;
+        }
         if (isset($this->profileModules[$moduleName])) {
             throw new \InvalidArgumentException('Attempting to register a profile module with a duplicate module name. (' . $moduleName . ')');
         }

@@ -13,12 +13,18 @@ namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
+use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\BlocksModule\Form\Type\AdminViewFilterType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -35,13 +41,24 @@ class AdminController extends AbstractController
      * View all blocks.
      *
      * @param Request $request
+     * @param BlockRepositoryInterface $blockRepository
+     * @param BlockPositionRepositoryInterface $positionRepository
+     * @param BlockApiInterface $blockApi
+     * @param LocaleApiInterface $localeApi
+     * @param RouterInterface $router
      *
-     * @return \Symfony\Component\HttpFoundation\Response symfony response object
+     * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
      */
-    public function viewAction(Request $request)
-    {
+    public function viewAction(
+        Request $request,
+        BlockRepositoryInterface $blockRepository,
+        BlockPositionRepositoryInterface $positionRepository,
+        BlockApiInterface $blockApi,
+        LocaleApiInterface $localeApi,
+        RouterInterface $router
+    ) {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -56,10 +73,9 @@ class AdminController extends AbstractController
         $filterForm = $this->createForm(AdminViewFilterType::class, $sessionFilterData, [
             'action' => $this->generateUrl('zikulablocksmodule_admin_view'),
             'method' => 'POST',
-            'translator' => $this->get('translator'),
-            'moduleChoices' => $this->get('zikula_blocks_module.api.block')->getModulesContainingBlocks(),
-            'positionChoices' => $this->getDoctrine()->getRepository('ZikulaBlocksModule:BlockPositionEntity')->getPositionChoiceArray(),
-            'localeChoices' => $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale())
+            'moduleChoices' => $blockApi->getModulesContainingBlocks(),
+            'positionChoices' => $positionRepository->getPositionChoiceArray(),
+            'localeChoices' => $localeApi->getSupportedLocaleNames(null, $request->getLocale())
         ]);
         $filterFormClone = clone $filterForm;
 
@@ -76,7 +92,7 @@ class AdminController extends AbstractController
         $filterData['sort-direction'] = $currentSortDirection;
         $request->getSession()->set('zikulablocksmodule.filter', $filterData); // remember
 
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikulablocksmodule_admin_view');
+        $sortableColumns = new SortableColumns($router, 'zikulablocksmodule_admin_view');
         $sortableColumns->addColumn(new Column('bid')); // first added is automatically the default
         $sortableColumns->addColumn(new Column('title'));
         $sortableColumns->addColumn(new Column('blocktype'));
@@ -90,13 +106,15 @@ class AdminController extends AbstractController
             'status' => isset($filterData['status']) ? $filterData['status'] : null,
         ]);
 
-        $templateParameters = [];
-        $templateParameters['blocks'] = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockEntity')->getFilteredBlocks($filterData);
-        $templateParameters['positions'] = $this->getDoctrine()->getManager()->getRepository('ZikulaBlocksModule:BlockPositionEntity')->findAll();
-        $templateParameters['filter_active'] = !empty($filterData['position']) || !empty($filterData['module']) || !empty($filterData['language']) || (!empty($filterData['active']) && in_array($filterData['active'], [0, 1]));
-        $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
-        $templateParameters['filterForm'] = $filterForm->createView();
+        $filterActive = !empty($filterData['position']) || !empty($filterData['module']) || !empty($filterData['language'])
+            || (!empty($filterData['active']) && in_array($filterData['active'], [0, 1]));
 
-        return $templateParameters;
+        return [
+            'blocks' => $blockRepository->getFilteredBlocks($filterData),
+            'positions' => $positionRepository->findAll(),
+            'filter_active' => $filterActive,
+            'sort' => $sortableColumns->generateSortableColumns(),
+            'filterForm' => $filterForm->createView()
+        ];
     }
 }

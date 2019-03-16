@@ -1,30 +1,35 @@
 services:
-    zikula_extensions_module.container.link_container:
-        class: Zikula\ExtensionsModule\Container\LinkContainer
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+        bind:
+            $bundle: '@Zikula\ExtensionsModule\ZikulaExtensionsModule'
+
+    Zikula\ExtensionsModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\ExtensionsModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface: '@Zikula\ExtensionsModule\Api\CapabilityApi'
+    Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface: '@Zikula\ExtensionsModule\Api\VariableApi'
+    Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository'
+    Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInterface: '@Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository'
+
+    # public because AbstractTheme and AbstractExtensionInstaller access this using container
+    Zikula\ExtensionsModule\Api\VariableApi:
+        public: true
         arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
+          $installed: '%installed%'
+          $multisitesParameters: '%multisites%'
+
+    # public because AbstractBundle accesses this using container
+    Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
+        public: true
+
+    Zikula\ExtensionsModule\Menu\MenuBuilder:
         tags:
-            - { name: zikula.link_container }
-
-    zikula_extensions_module.listener.extension_services_listener:
-        class: Zikula\ExtensionsModule\Listener\ExtensionServicesListener
-        arguments:
-          - "@event_dispatcher"
-          - "@router"
-          - "@translator.default"
-        tags:
-            - { name: kernel.event_subscriber }
-
-    zikula_extensions_module.api.variable:
-        class: Zikula\ExtensionsModule\Api\VariableApi
-        arguments:
-          - "%installed%"
-          - "@zikula_extensions_module.extension_var_repository"
-          - "@kernel"
-          - "%multisites%"
-
-    zikula_extensions_module.api.capability:
-        class: Zikula\ExtensionsModule\Api\CapabilityApi
-        arguments: ["@zikula_extensions_module.extension_repository"]
+            - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaExtensionsAdminMenu }

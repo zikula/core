@@ -5,8 +5,7 @@ var ZikulaZAuthPassCalc = {};
 
 var currentCalculator;
 
-( function($) {
-
+(function($) {
     ZikulaZAuthPassCalc.initialize = function(options) {
         this.score = {};
         this.options = $.extend({
@@ -214,7 +213,7 @@ var currentCalculator;
                 }
             }
             score.messagesStr.join();
-            if (typeof options.onChange === 'function') {
+            if ('function' === typeof options.onChange) {
                 options.onChange(score);
             } else {
                 passindicatorContainer.show();

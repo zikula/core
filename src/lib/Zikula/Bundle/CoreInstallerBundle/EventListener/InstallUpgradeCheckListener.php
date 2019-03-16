@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 
 class InstallUpgradeCheckListener implements EventSubscriberInterface
 {
@@ -63,14 +64,14 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         if (!$installed && !$containsDoc && !$containsInstall && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('install');
-            $this->container->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings();
+            $this->container->get(MultilingualRoutingHelper::class)->reloadMultilingualRoutingSettings();
             $event->setResponse(new RedirectResponse($url));
         }
         // check if Zikula Core requires upgrade
         if ($requiresUpgrade && !$containsLogin && !$containsDoc && !$containsUpgrade && !$doNotRedirect) {
             $this->container->get('router')->getContext()->setBaseUrl($request->getBasePath()); // compensate for sub-directory installs
             $url = $this->container->get('router')->generate('upgrade');
-            $this->container->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings();
+            $this->container->get(MultilingualRoutingHelper::class)->reloadMultilingualRoutingSettings();
             $event->setResponse(new RedirectResponse($url));
         }
     }

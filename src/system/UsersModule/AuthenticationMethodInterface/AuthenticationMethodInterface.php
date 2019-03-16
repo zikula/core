@@ -14,7 +14,7 @@ namespace Zikula\UsersModule\AuthenticationMethodInterface;
 interface AuthenticationMethodInterface
 {
     /**
-     * The alias registered in the compiler pass. Must match exactly.
+     * An unique alias for this authentication method.
      * @return string
      */
     public function getAlias();

@@ -60,6 +60,8 @@ class AddJSConfigListener implements EventSubscriberInterface
 
     /**
      * JSConfig constructor.
+     *
+     * @param boolean $installed
      * @param VariableApiInterface $variableApi
      * @param CurrentUserApiInterface $currentUserApi
      * @param Environment $twig

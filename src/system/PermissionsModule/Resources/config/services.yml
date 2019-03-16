@@ -1,36 +1,22 @@
 services:
-    zikula_permissions_module.container.link_container:
-        class: Zikula\PermissionsModule\Container\LinkContainer
-        arguments:
-          - "@translator.default"
-          - "@router"
-          - "@zikula_permissions_module.api.permission"
-        tags:
-            - { name: zikula.link_container }
-
-    zikula_permissions_module.permission_repository:
-        class: Zikula\PermissionsModule\Entity\Repository\PermissionRepository
-        factory: ["@doctrine.orm.default_entity_manager", getRepository]
-        arguments: ["ZikulaPermissionsModule:PermissionEntity"]
-
-    zikula_permissions_module.api.permission:
-        class: Zikula\PermissionsModule\Api\PermissionApi
-        arguments:
-          - "@zikula_permissions_module.permission_repository"
-          - "@zikula_users_module.user_repository"
-          - "@zikula_users_module.current_user"
-          - "@translator.default"
-
-    zikula_permissions_module.helper.schema_helper:
-        class: Zikula\PermissionsModule\Helper\SchemaHelper
-        arguments:
-          - "@zikula_extensions_module.extension_repository"
-
-    twig.extension.zikula_permissions_module:
-        class: Zikula\PermissionsModule\Twig\Extension\PermissionsExtension
+    _defaults:
+        autowire: true
+        autoconfigure: true
         public: false
-        arguments:
-          - "@translator.default"
-          - "@zikula_permissions_module.api.permission"
+        bind:
+            $bundle: '@Zikula\PermissionsModule\ZikulaPermissionsModule'
+
+    Zikula\PermissionsModule\:
+        resource: '../../*'
+        exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\PermissionsModule\Helper\:
+        resource: '../../Helper/*'
+        lazy: true
+
+    Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface: '@Zikula\PermissionsModule\Api\PermissionApi'
+    Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface: '@Zikula\PermissionsModule\Entity\Repository\PermissionRepository'
+
+    Zikula\PermissionsModule\Menu\MenuBuilder:
         tags:
-            - { name: twig.extension }
+            - { name: knp_menu.menu_builder, method: createAdminActionsMenu, alias: zikulaPermissionsAdminActionsMenu }

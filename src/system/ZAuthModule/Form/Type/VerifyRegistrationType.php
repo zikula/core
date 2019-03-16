@@ -21,11 +21,31 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 
 class VerifyRegistrationType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,21 +53,21 @@ class VerifyRegistrationType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $options['translator']->__('User name'),
+                'label' => $this->__('User name'),
                 'constraints' => [
                     new NotBlank(),
                     new Type(['type' => 'string'])
                 ]
             ])
             ->add('verifycode', TextType::class, [
-                'label' => $options['translator']->__('Verification code'),
+                'label' => $this->__('Verification code'),
                 'constraints' => [
                     new NotBlank(),
                     new Type(['type' => 'string'])
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $options['translator']->__('Submit'),
+                'label' => $this->__('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
@@ -55,9 +75,9 @@ class VerifyRegistrationType extends AbstractType
         if ($options['setpass']) {
             $builder->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => $options['translator']->__('Password')],
-                'second_options' => ['label' => $options['translator']->__('Repeat Password')],
-                'invalid_message' => $options['translator']->__('The passwords must match!'),
+                'first_options' => ['label' => $this->__('Password')],
+                'second_options' => ['label' => $this->__('Repeat Password')],
+                'invalid_message' => $this->__('The passwords must match!'),
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()
@@ -80,7 +100,6 @@ class VerifyRegistrationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'setpass' => true,
             'constraints' => [
                 new ValidRegistrationVerification()

@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Form\Type\ExportUsersType;
 
 /**
@@ -29,20 +30,21 @@ class FileIOController extends AbstractController
      * @Route("/export")
      * @Theme("admin")
      * @Template("ZikulaUsersModule:FileIO:export.html.twig")
+     *
      * @param Request $request
+     * @param UserRepositoryInterface $userRepository
+     *
      * @return array|StreamedResponse
      */
-    public function exportAction(Request $request)
+    public function exportAction(Request $request, UserRepositoryInterface $userRepository)
     {
         if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(ExportUsersType::class, [], [
-            'translator' => $this->get('translator.default')
-        ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form = $this->createForm(ExportUsersType::class, []);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('download')->isClicked()) {
                 $data = $form->getData();
                 $response = new StreamedResponse();
@@ -57,7 +59,7 @@ class FileIOController extends AbstractController
                     if ($data['title']) {
                         fputcsv($handle, $fields, $data['delimiter']);
                     }
-                    $users = $this->get('zikula_users_module.user_repository')->findAllAsIterable();
+                    $users = $userRepository->findAllAsIterable();
                     foreach ($users as $user) {
                         $row = [];
                         foreach ($fields as $field) {
@@ -91,7 +93,7 @@ class FileIOController extends AbstractController
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 }

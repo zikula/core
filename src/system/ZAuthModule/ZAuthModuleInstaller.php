@@ -12,6 +12,8 @@
 namespace Zikula\ZAuthModule;
 
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 
 /**
  * Installation and upgrade routines for the zauth module.
@@ -22,18 +24,20 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     private $entities = [
-        'Zikula\ZAuthModule\Entity\AuthenticationMappingEntity',
-        'Zikula\ZAuthModule\Entity\UserVerificationEntity'
+        AuthenticationMappingEntity::class,
+        UserVerificationEntity::class
     ];
 
     public function install()
     {
         foreach ($this->entities as $entity) {
             try {
-                $this->schemaTool->create([$entity]);
-            } catch (\Exception $e) {
-                if ('Zikula\ZAuthModule\Entity\UserVerificationEntity' != $entity) {
-                    throw $e;
+                $this->schemaTool->create([
+                    $entity
+                ]);
+            } catch (\Exception $exception) {
+                if (UserVerificationEntity::class != $entity) {
+                    throw $exception;
                 }
                 // silently fail. This is because on core upgrade the UserVerificationEntity already exists from the UsersModule.
             }
@@ -48,7 +52,9 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
         switch ($oldversion) {
             case '1.0.0':
                 // remove password reminder
-                $this->schemaTool->update(['Zikula\ZAuthModule\Entity\AuthenticationMappingEntity']);
+                $this->schemaTool->update([
+                    AuthenticationMappingEntity::class
+                ]);
                 $this->delVar('password_reminder_enabled');
                 $this->delVar('password_reminder_mandatory');
             case '1.0.1':

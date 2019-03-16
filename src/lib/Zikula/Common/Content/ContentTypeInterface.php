@@ -150,4 +150,10 @@ interface ContentTypeInterface
      * @return string
      */
     public function getJsEntrypoint($context);
+
+    /**
+     * Return the name of the providing bundle.
+     * @return string
+     */
+    public function getBundleName();
 }

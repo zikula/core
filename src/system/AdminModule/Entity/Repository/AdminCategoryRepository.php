@@ -11,13 +11,20 @@
 
 namespace Zikula\AdminModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 
-class AdminCategoryRepository extends EntityRepository implements AdminCategoryRepositoryInterface
+class AdminCategoryRepository extends ServiceEntityRepository implements AdminCategoryRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AdminCategoryEntity::class);
+    }
+
     public function countCategories()
     {
         $query = $this->createQueryBuilder('c')

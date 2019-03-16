@@ -18,22 +18,40 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $translator->__('Items per page'),
+                'label' => $this->__('Items per page'),
                 'scale' => 0,
                 'attr' => [
                     'maxlength' => 3,
@@ -41,30 +59,30 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add('defaultgroup', ChoiceType::class, [
-                'label' => $translator->__('Initial user group'),
+                'label' => $this->__('Initial user group'),
                 'choices' => $options['groups'],
             ])
             ->add('hideclosed', CheckboxType::class, [
-                'label' => $translator->__('Hide closed groups'),
+                'label' => $this->__('Hide closed groups'),
                 'required' => false
             ])
             ->add('hidePrivate', CheckboxType::class, [
-                'label' => $translator->__('Hide private groups'),
+                'label' => $this->__('Hide private groups'),
                 'required' => false
             ])
             ->add('mailwarning', CheckboxType::class, [
-                'label' => $translator->__('Receive e-mail alert when there are new applicants'),
+                'label' => $this->__('Receive e-mail alert when there are new applicants'),
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -87,7 +105,6 @@ class ConfigType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'groups' => []
         ]);
     }

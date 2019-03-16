@@ -4,7 +4,7 @@
         var id_prefix = 'node_'; // must match NodeController::$domTreeNodePrefix
         var treeElem = $('#tree_container');
         treeElem.jstree({
-            "core" : {
+            'core' : {
                 'multiple': false,
                 'check_callback': function(operation, node, node_parent, node_position, more) {
                     if (operation === 'move_node') {
@@ -28,11 +28,11 @@
                 'key': 'categoryTree'
             },
             'plugins': [ 'contextmenu', 'dnd', 'search', 'state', 'types' ],
-            "types" : {
-                "default" : {
+            'types' : {
+                'default' : {
                     'icon': 'fa fa-folder'
                 },
-                "leaf" : {
+                'leaf' : {
                     'icon': false
                 }
             }
@@ -40,16 +40,16 @@
         // end config
 
         // Tree interaction
-        treeElem.on("move_node.jstree", moveTreeNode);
-        $('#catExpand').on("click", function(event) {
+        treeElem.on('move_node.jstree', moveTreeNode);
+        $('#catExpand').on('click', function(event) {
             event.preventDefault();
             treeElem.jstree(true).open_all(null, 500);
         });
-        $('#catCollapse').on("click", function(event) {
+        $('#catCollapse').on('click', function(event) {
             event.preventDefault();
             treeElem.jstree(true).close_all(null, 500);
         });
-        $("#newCategory").on("click", function (event) {
+        $('#newCategory').on('click', function (event) {
             event.preventDefault();
             performContextMenuAction(null, 'edit');
         });
@@ -67,49 +67,49 @@
         function getContextMenuActions(node) {
             var actions = {
                 editItem: {
-                    label: 'Edit',
+                    label: Translator.__('Edit'),
                     action: function (obj) {
                         performContextMenuAction(node, 'edit');
                     },
                     icon: 'fa fa-edit'
                 },
                 deleteItem: {
-                    label: 'Delete',
+                    label: Translator.__('Delete'),
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
                     icon: 'fa fa-remove'
                 },
                 copyItem: {
-                    label: 'Copy',
+                    label: Translator.__('Copy'),
                     action: function (obj) {
                         performContextMenuAction(node, 'copy');
                     },
                     icon: 'fa fa-copy'
                 },
                 activateItem: {
-                    label: 'Activate',
+                    label: Translator.__('Activate'),
                     action: function (obj) {
                         performContextMenuAction(node, 'activate');
                     },
                     icon: 'fa fa-check-square-o'
                 },
                 deactivateItem: {
-                    label: 'Deactivate',
+                    label: Translator.__('Deactivate'),
                     action: function (obj) {
                         performContextMenuAction(node, 'deactivate');
                     },
                     icon: 'fa fa-square-o'
                 },
                 addItemAfter: {
-                    label: 'Add sibling item (after selected)',
+                    label: Translator.__('Add sibling item (after selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
                     icon: 'fa fa-level-up fa-rotate-90'
                 },
                 addItemInto: {
-                    label: 'Add child item (into selected)',
+                    label: Translator.__('Add child item (into selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },
@@ -121,7 +121,7 @@
             } else {
                 actions.activateItem._disabled = true;
             }
-            if(typeof node.a_attr.class != "undefined" && ~node.a_attr.class.indexOf("leaf")) {
+            if (typeof node.a_attr.class != 'undefined' && node.a_attr.class.indexOf('leaf')) {
                 // jstree.is_leaf() returns true if the node has no children, not if the node is defined as a leaf
                 actions.addItemInto._disabled = true;
             }
@@ -170,8 +170,8 @@
                 type: 'POST',
                 url: Routing.generate('zikulacategoriesmodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
-            }).done(function(result) {
-                performContextMenuActionCallback(result.data);
+            }).done(function(data) {
+                performContextMenuActionCallback(data);
             }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             }).always(function() {
@@ -233,9 +233,7 @@
                             type: 'POST',
                             url: Routing.generate('zikulacategoriesmodule_node_contextmenu', {action: data.action, id: entityId}),
                             data: pars
-                        }).done(function(result) {
-                            var data = result.data;
-
+                        }).done(function(data) {
                             if (data.action) {
                                 // validation failed
                                 updateEditForm(data.result);
@@ -249,7 +247,7 @@
                                 } else {
                                     var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
                                     var parentNode = treeElem.jstree('get_node', id_prefix + nodeData.parent);
-                                    parentNode = (!parentNode) ? "#" : parentNode;
+                                    parentNode = (!parentNode) ? '#' : parentNode;
                                     var nodeId = treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1);
                                     editedNode = treeElem.jstree('get_node', nodeId);
                                 }
@@ -282,7 +280,7 @@
             var deleteModal = $('#deleteModal');
             // hide all buttons
             deleteModal.find('.modal-footer button').hide();
-            $("#node_cancel").show();
+            $('#node_cancel').show();
 
             if (childrenCount > 0) {
                 $('#node_delete_all').show();
@@ -382,8 +380,8 @@
                     parent: data.parent,
                     position: data.position
                 }
-            }).done(function(result) {
-                //console.log(result);
+            }).done(function(data) {
+                //console.log(data);
             }).fail(function(result) {
                 alert(result.status + ': ' + result.statusText);
             });

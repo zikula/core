@@ -16,9 +16,29 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class ApproveRegistrationConfirmationType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,12 +48,12 @@ class ApproveRegistrationConfirmationType extends AbstractType
             ->add('user', HiddenType::class)
             ->add('force', HiddenType::class)
             ->add('confirm', SubmitType::class, [
-                'label' => $options['buttonLabel'],
+                'label' => (!empty($options['buttonLabel']) ? $options['buttonLabel'] : $this->__('Confirm')),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $options['translator']->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -54,7 +74,6 @@ class ApproveRegistrationConfirmationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'translator' => null,
             'buttonLabel' => ''
         ]);
     }

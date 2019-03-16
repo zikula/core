@@ -1,7 +1,7 @@
 Imagine
 =======
 
-Imagine is implemented in Zikula Core-2.0 by the installation and pre-configuration of the [LiipImagineBundle](https://github.com/liip/LiipImagineBundle).
+Imagine is implemented in Zikula Core by the installation and pre-configuration of the [LiipImagineBundle](https://github.com/liip/LiipImagineBundle).
 
 Documentation: http://symfony.com/doc/current/bundles/LiipImagineBundle/index.html
 

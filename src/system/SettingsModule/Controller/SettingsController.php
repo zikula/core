@@ -17,11 +17,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Collector\MessageModuleCollector;
+use Zikula\UsersModule\Collector\ProfileModuleCollector;
 
 /**
  * Class SettingsController
@@ -36,32 +42,45 @@ class SettingsController extends AbstractController
      *
      * Settings for entire site.
      *
+     * @param Request $request
+     * @param LocaleApiInterface $localeApi
+     * @param VariableApiInterface $variableApi
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param MessageModuleCollector $messageModuleCollector
+     * @param ProfileModuleCollector $profileModuleCollector
+     *
      * @return array|RedirectResponse
      */
-    public function mainAction(Request $request)
-    {
+    public function mainAction(
+        Request $request,
+        LocaleApiInterface $localeApi,
+        VariableApiInterface $variableApi,
+        ExtensionRepositoryInterface $extensionRepository,
+        MessageModuleCollector $messageModuleCollector,
+        ProfileModuleCollector $profileModuleCollector
+    ) {
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = $this->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale());
-
-        $profileModules = $this->get('zikula_users_module.internal.profile_module_collector')->getKeys();
-        $messageModules = $this->get('zikula_users_module.internal.message_module_collector')->getKeys();
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
+        $profileModules = $profileModuleCollector->getKeys();
+        $messageModules = $messageModuleCollector->getKeys();
 
         $form = $this->createForm(MainSettingsType::class,
-            $this->getSystemVars(),
-            [
-                'translator' => $this->get('translator.default'),
+            $variableApi->getAll(VariableApi::CONFIG), [
                 'languages' => $installedLanguageNames,
-                'profileModules' => $this->formatModuleArrayForSelect($profileModules),
-                'messageModules' => $this->formatModuleArrayForSelect($messageModules)
+                'profileModules' => $this->formatModuleArrayForSelect($extensionRepository, $profileModules),
+                'messageModules' => $this->formatModuleArrayForSelect($extensionRepository, $messageModules)
             ]
         );
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $this->setSystemVars($form->getData());
+                $data = $form->getData();
+                foreach ($data as $name => $value) {
+                    $variableApi->set(VariableApi::CONFIG, $name, $value);
+                }
                 $this->addFlash('status', $this->__('Done! Configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -85,40 +104,49 @@ class SettingsController extends AbstractController
      *
      * Set locale settings for entire site.
      *
+     * @param Request $request
+     * @param LocaleApiInterface $localeApi
+     * @param VariableApiInterface $variableApi
+     * @param MultilingualRoutingHelper $multilingualRoutingHelper
+     *
      * @return array|RedirectResponse
      */
-    public function localeAction(Request $request)
-    {
+    public function localeAction(
+        Request $request,
+        LocaleApiInterface $localeApi,
+        VariableApiInterface $variableApi,
+        MultilingualRoutingHelper $multilingualRoutingHelper
+    ) {
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         $form = $this->createForm(LocaleSettingsType::class,
             [
-                'multilingual' => (bool)$this->getSystemVar('multilingual'),
-                'languageurl' => $this->getSystemVar('languageurl'),
-                'language_detect' => (bool)$this->getSystemVar('language_detect'),
-                'language_i18n' => $this->getSystemVar('language_i18n'),
-                'timezone' => $this->getSystemVar('timezone'),
-                'idnnames' => (bool)$this->getSystemVar('idnnames'),
-            ],
-            [
-                'translator' => $this->get('translator.default'),
-                'languages' => $this->container->get('zikula_settings_module.locale_api')->getSupportedLocaleNames(null, $request->getLocale()),
+                'multilingual' => (bool)$variableApi->getSystemVar('multilingual'),
+                'languageurl' => $variableApi->getSystemVar('languageurl'),
+                'language_detect' => (bool)$variableApi->getSystemVar('language_detect'),
+                'language_i18n' => $variableApi->getSystemVar('language_i18n'),
+                'timezone' => $variableApi->getSystemVar('timezone'),
+                'idnnames' => (bool)$variableApi->getSystemVar('idnnames'),
+            ], [
+                'languages' => $localeApi->getSupportedLocaleNames(null, $request->getLocale())
             ]
         );
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 if (false === $data['multilingual']) {
                     $data['language_detect'] = false;
-                    $this->get('zikula_extensions_module.api.variable')->del(VariableApi::CONFIG, 'language');
+                    $variableApi->del(VariableApi::CONFIG, 'language');
                 }
-                $this->setSystemVars($data);
-                $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
+                foreach ($data as $name => $value) {
+                    $variableApi->set(VariableApi::CONFIG, $name, $value);
+                }
+                $variableApi->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
-                $this->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
+                $multilingualRoutingHelper->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
                 $request->getSession()->set('_locale', $data['language_i18n']);
                 $this->addFlash('status', $this->__('Done! Localization configuration updated.'));
             }
@@ -164,49 +192,19 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * Get a system variable.
-     * @param $name
-     * @param null $default
-     * @return mixed
-     */
-    private function getSystemVar($name, $default = null)
-    {
-        // service caches values already
-        return $this->get('zikula_extensions_module.api.variable')->getSystemVar($name, $default);
-    }
-
-    /**
-     * Get all the system vars.
-     * @return array
-     */
-    private function getSystemVars()
-    {
-        return $this->get('zikula_extensions_module.api.variable')->getAll(VariableApi::CONFIG);
-    }
-
-    /**
-     * Set system variables from array [<name> => <value>, <name> => <value>, ...]
-     * @param array $data
-     */
-    private function setSystemVars(array $data)
-    {
-        foreach ($data as $name => $value) {
-            $this->get('zikula_extensions_module.api.variable')->set(VariableApi::CONFIG, $name, $value);
-        }
-    }
-
-    /**
-     * Prepare an array of module names and displaynames with choices_as_values
+     * Prepare an array of module names and displaynames for dropdown usage.
+     *
+     * @param ExtensionRepositoryInterface $extensionRepository
      * @param array $modules
+     *
      * @return array
      */
-    private function formatModuleArrayForSelect(array $modules)
+    private function formatModuleArrayForSelect(ExtensionRepositoryInterface $extensionRepository, array $modules)
     {
         $return = [];
-        $extensionRepo = $this->get('zikula_extensions_module.extension_repository');
         foreach ($modules as $module) {
             if (!($module instanceof ExtensionEntity)) {
-                $module = $extensionRepo->get($module);
+                $module = $extensionRepository->get($module);
             }
             $return[$module->getDisplayname()] = $module->getName();
         }

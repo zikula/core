@@ -14,7 +14,7 @@ namespace Zikula\ThemeModule\Engine;
 use Doctrine\Common\Annotations\Reader;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
@@ -71,7 +71,7 @@ class Engine
     private $annotationReader;
 
     /**
-     * @var \Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel
+     * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
@@ -89,14 +89,14 @@ class Engine
      * Engine constructor.
      * @param RequestStack $requestStack
      * @param Reader $annotationReader
-     * @param ZikulaKernel $kernel
+     * @param ZikulaHttpKernelInterface $kernel
      * @param AssetFilter $filter
      * @param VariableApiInterface $variableApi
      */
     public function __construct(
         RequestStack $requestStack,
         Reader $annotationReader,
-        ZikulaKernel $kernel,
+        ZikulaHttpKernelInterface $kernel,
         AssetFilter $filter,
         VariableApiInterface $variableApi
     ) {
@@ -306,17 +306,13 @@ class Engine
      *  2) the default system theme
      * @param string|null $newThemeName
      * @return mixed
-     * kernel::getTheme() @throws \InvalidArgumentException if theme is invalid
      */
     public function setActiveTheme($newThemeName = null)
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme');
-        try {
-            $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
-            $this->activeThemeBundle->loadThemeVars();
-        } catch (\Exception $e) {
-            // fail silently, this is a Core < 1.4 theme.
-        }
+
+        $this->activeThemeBundle = $this->kernel->getTheme($activeTheme);
+        $this->activeThemeBundle->loadThemeVars();
     }
 
     /**

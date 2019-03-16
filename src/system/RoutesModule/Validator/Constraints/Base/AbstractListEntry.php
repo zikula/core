@@ -48,12 +48,4 @@ abstract class AbstractListEntry extends Constraint
      * @var integer
      */
     public $max;
-
-    /**
-     * @inheritDoc
-     */
-    public function validatedBy()
-    {
-        return 'zikula_routes_module.validator.list_entry.validator';
-    }
 }

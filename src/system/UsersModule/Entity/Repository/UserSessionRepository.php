@@ -11,14 +11,20 @@
 
 namespace Zikula\UsersModule\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 
-class UserSessionRepository extends EntityRepository implements UserSessionRepositoryInterface
+class UserSessionRepository extends ServiceEntityRepository implements UserSessionRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, UserSessionEntity::class);
+    }
+
     public function getUsersSince(\DateTime $dateTime)
     {
         $query = $this->createQueryBuilder('s')

@@ -17,23 +17,25 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 class UnameLoginType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    use TranslatorTrait;
 
     /**
-     * UnameLoginType constructor.
-     *
-     * @param $translator
+     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
@@ -45,19 +47,19 @@ class UnameLoginType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->translator->__('User name'),
+                'label' => $this->__('User name'),
                 'input_group' => ['left' => '<i class="fa fa-user fa-fw"></i>']
             ])
             ->add('pass', PasswordType::class, [
-                'label' => $this->translator->__('Password'),
+                'label' => $this->__('Password'),
                 'input_group' => ['left' => '<i class="fa fa-key fa-fw"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
-                'label' => $this->translator->__('Remember me'),
+                'label' => $this->__('Remember me'),
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->translator->__('Login'),
+                'label' => $this->__('Login'),
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success']
             ])
@@ -70,15 +72,5 @@ class UnameLoginType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_authentication_uname';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => new IdentityTranslator()
-        ]);
     }
 }

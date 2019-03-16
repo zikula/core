@@ -22,11 +22,6 @@ class ValidEmail extends Constraint
 
     public $excludedUid;
 
-    public function validatedBy()
-    {
-        return 'zikula.zauth.email.validator';
-    }
-
     /**
      * {@inheritdoc}
      */

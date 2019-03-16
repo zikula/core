@@ -51,6 +51,11 @@ class LoginUiHooksSubscriber implements HookSubscriberInterface
         return $this->translator->__('Login form and block hooks');
     }
 
+    public function getAreaName()
+    {
+        return 'subscriber.users.ui_hooks.login_screen';
+    }
+
     public function getEvents()
     {
         return [

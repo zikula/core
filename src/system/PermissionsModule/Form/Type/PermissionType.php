@@ -17,32 +17,50 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 class PermissionType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $builder
             ->add('pid', HiddenType::class)
             ->add('gid', ChoiceType::class, [
-                'label' => $translator->__('Group'),
+                'label' => $this->__('Group'),
                 'choices' => array_flip($options['groups'])
             ])
             ->add('sequence', HiddenType::class)
             ->add('component', TextType::class, [
-                'label' => $translator->__('Component')
+                'label' => $this->__('Component')
             ])
             ->add('instance', TextType::class, [
-                'label' => $translator->__('Instance')
+                'label' => $this->__('Instance')
             ])
             ->add('level', ChoiceType::class, [
-                'label' => $translator->__('Level'),
+                'label' => $this->__('Level'),
                 'choices' => array_flip($options['permissionLevels'])
             ])
         ;
@@ -63,7 +81,6 @@ class PermissionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PermissionEntity::class,
-            'translator' => null,
             'groups' => [],
             'permissionLevels' => []
         ]);

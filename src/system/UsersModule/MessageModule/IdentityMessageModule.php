@@ -36,4 +36,12 @@ class IdentityMessageModule implements MessageModuleInterface
     {
         return '#';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBundleName()
+    {
+        return 'ZikulaUsersModule';
+    }
 }

@@ -11,13 +11,14 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Component\Wizard\StageInterface;
-use Zikula\Component\Wizard\WizardCompleteInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Common\Translator\Translator;
+use Zikula\Component\Wizard\InjectContainerInterface;
+use Zikula\Component\Wizard\StageInterface;
+use Zikula\Component\Wizard\WizardCompleteInterface;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
@@ -50,7 +51,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 
     public function getResponse(Request $request)
     {
-        $request->getSession()->getFlashBag()->add('success', $this->container->get('translator.default')->__('Congratulations! Upgrade Complete.'));
+        $request->getSession()->getFlashBag()->add('success', $this->container->get(Translator::class)->__('Congratulations! Upgrade Complete.'));
 
         return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
     }

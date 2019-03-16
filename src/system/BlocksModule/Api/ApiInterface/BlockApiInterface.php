@@ -50,12 +50,4 @@ interface BlockApiInterface
      * @return array
      */
     public function getModulesContainingBlocks();
-
-    /**
-     * Get the block directory for a module given an instance of the module
-     *
-     * @param AbstractModule|null $moduleInstance
-     * @return array
-     */
-    public function getModuleBlockPath(AbstractModule $moduleInstance = null);
 }

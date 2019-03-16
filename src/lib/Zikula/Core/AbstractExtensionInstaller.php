@@ -13,7 +13,10 @@ namespace Zikula\Core;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Doctrine\Helper\SchemaHelper;
+use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\ExtensionVariablesTrait;
 
 /**
@@ -30,7 +33,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $name;
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -83,7 +86,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         $this->name = $bundle->getName();
         if ($this->container) {
             // both here and in `setContainer` so either method can be called first.
-            $this->container->get('translator')->setDomain($this->bundle->getTranslationDomain());
+            $this->container->get(Translator::class)->setDomain($this->bundle->getTranslationDomain());
         }
         $this->hookApi = new MockHookApi();
     }
@@ -94,13 +97,13 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-        $this->setTranslator($container->get('translator'));
+        $this->setTranslator($container->get(Translator::class));
         $this->entityManager = $container->get('doctrine')->getManager();
-        $this->schemaTool = $container->get('zikula_core.common.doctrine.schema_tool');
+        $this->schemaTool = $container->get(SchemaHelper::class);
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
-        $this->variableApi = $container->get('zikula_extensions_module.api.variable'); // for ExtensionVariablesTrait
+        $this->variableApi = $container->get(VariableApi::class); // for ExtensionVariablesTrait
         if ($this->bundle) {
-            $container->get('translator')->setDomain($this->bundle->getTranslationDomain());
+            $this->translator->setDomain($this->bundle->getTranslationDomain());
         }
     }
 
@@ -116,10 +119,10 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
      */
     public function addFlash($type, $message)
     {
-        if (!$this->container->has('session')) {
+        if (!$this->container->get('request_stack')->getCurrentRequest()->hasSession()) {
             throw new \LogicException('You can not use the addFlash method if sessions are disabled.');
         }
 
-        $this->container->get('session')->getFlashBag()->add($type, $message);
+        $this->container->get('request_stack')->getCurrentRequest()->getSession()->getFlashBag()->add($type, $message);
     }
 }

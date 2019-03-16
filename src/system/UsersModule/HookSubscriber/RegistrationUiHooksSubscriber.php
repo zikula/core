@@ -59,6 +59,11 @@ class RegistrationUiHooksSubscriber implements HookSubscriberInterface
         return $this->translator->__('Registration management hooks');
     }
 
+    public function getAreaName()
+    {
+        return 'subscriber.users.ui_hooks.registration';
+    }
+
     public function getEvents()
     {
         return [

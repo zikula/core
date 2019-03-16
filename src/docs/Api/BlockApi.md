@@ -3,8 +3,6 @@ BlockApi
 
 classname: \Zikula\BlocksModule\Api\BlockApi
 
-service id = "zikula_blocks_module.api.block"
-
 The BlockApi helps with the management of Blocks.
 
 The class makes the following methods available:

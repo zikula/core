@@ -65,8 +65,7 @@ col-sm-9
 {% endspaceless %}
 {% endblock submit_row %}
 
-{# add help text to input elements & add input groups to simple inputs #}
-
+{# add input groups to simple inputs #}
 {% block form_widget_simple %}
     {% if type is not defined or type not in ['file', 'hidden'] %}
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
@@ -77,32 +76,24 @@ col-sm-9
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
     {% if input_group|default and input_group.right|default %}<div class="input-group-addon">{{ input_group.right|default|raw }}</div>{% endif %}
     {% if input_group|default %}</div>{% endif %}
-
-    {% import _self as macros %}
-    {{ macros.helpBlock(help) }}
-    {{ macros.alertBlock(alert) }}
 {% endblock %}
 
-{% block textarea_widget -%}
-    {{- parent() -}}
+{# add help text and alerts #}
+{% block form_help -%}
+    {#%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block')|trim}) -%}
+        <span id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if translation_domain is same as(false) -%}
+                {{- help -}}
+            {%- else -%}
+                {{- help|trans({}, translation_domain) -}}
+            {%- endif -%}
+        </span>
+    {%- endif -%#}
     {% import _self as macros %}
     {{ macros.helpBlock(help) }}
     {{ macros.alertBlock(alert) }}
-{%- endblock textarea_widget %}
-
-{% block choice_widget_collapsed -%}
-    {{- parent() -}}
-    {% import _self as macros %}
-    {{ macros.helpBlock(help) }}
-    {{ macros.alertBlock(alert) }}
-{%- endblock %}
-
-{% block choice_widget_expanded -%}
-    {{- parent() -}}
-    {% import _self as macros %}
-    {{ macros.helpBlock(help) }}
-    {{ macros.alertBlock(alert) }}
-{%- endblock choice_widget_expanded %}
+{%- endblock form_help %}
 
 {% block form_errors -%}
     {{ parent()|replace({'<span class="glyphicon glyphicon-exclamation-sign"></span>': '<i class="fa fa-warning"></i>'})|raw }}

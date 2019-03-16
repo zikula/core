@@ -36,9 +36,9 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
-        pagevars:     "@zikula_core.common.theme.pagevars"
-        themevars:    "@zikula_core.common.theme.themevars"
-        currentUser:  "@zikula_users_module.current_user"
+        pagevars:     '@zikula_core.common.theme.pagevars'
+        themevars:    '@zikula_core.common.theme.themevars'
+        currentUser:  '@Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface'
         localeApi:    { "language_direction": "auto" }
 
 # Doctrine Configuration

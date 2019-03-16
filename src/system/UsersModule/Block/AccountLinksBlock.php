@@ -12,28 +12,60 @@
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\UsersModule\Helper\AccountLinksHelper;
 
 class AccountLinksBlock extends AbstractBlockHandler
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @var AccountLinksHelper
+     */
+    private $accountLinksHelper;
+
     /**
      * @param array $properties
      * @return string
      */
     public function display(array $properties)
     {
-        $renderedOutput = '';
-
-        if ($this->hasPermission('Accountlinks::', $properties['title'] . "::", ACCESS_READ)) {
-            if ($this->get('kernel')->isBundle('ZikulaUsersModule')) {
-                $accountLinks = $this->get('zikula_users_module.helper.account_links_helper')->getAllAccountLinks();
-                if (!empty($accountLinks)) {
-                    $renderedOutput = $this->renderView('@ZikulaUsersModule/Block/accountLinks.html.twig', [
-                        'accountLinks' => $accountLinks
-                    ]);
-                }
-            }
+        if (!$this->hasPermission('Accountlinks::', $properties['title'] . "::", ACCESS_READ)) {
+            return '';
         }
 
-        return $renderedOutput;
+        if (!$this->kernel->isBundle('ZikulaUsersModule')) {
+            return '';
+        }
+
+        $accountLinks = $this->accountLinksHelper->getAllAccountLinks();
+        if (empty($accountLinks)) {
+            return '';
+        }
+
+        return $this->renderView('@ZikulaUsersModule/Block/accountLinks.html.twig', [
+            'accountLinks' => $accountLinks
+        ]);
+    }
+
+    /**
+     * @required
+     * @param ZikulaHttpKernelInterface $kernel
+     */
+    public function setKernel(ZikulaHttpKernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
+    /**
+     * @required
+     * @param AccountLinksHelper $accountLinksHelper
+     */
+    public function setAccountLinksHelper(AccountLinksHelper $accountLinksHelper)
+    {
+        $this->accountLinksHelper = $accountLinksHelper;
     }
 }

@@ -3,7 +3,7 @@ Features of Zikula
 
 ### Foundation
 
- - Based on Symfony 3.x which provides stability, continuity and extensibility
+ - Based on Symfony 4.x which provides stability, continuity and extensibility
  - Uses Doctrine for persisting data
  - Uses Twig as template engine
  - Uses SwiftMailer for email handling

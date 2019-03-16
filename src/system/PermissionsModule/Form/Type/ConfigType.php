@@ -17,20 +17,37 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $translator = $options['translator'];
-
         $amountChoices = [
             20 => 20,
             25 => 25,
@@ -41,11 +58,11 @@ class ConfigType extends AbstractType
 
         $builder
             ->add('lockadmin', CheckboxType::class, [
-                'label' => $translator->__('Lock main administration permission rule'),
+                'label' => $this->__('Lock main administration permission rule'),
                 'required' => false
             ])
             ->add('adminid', IntegerType::class, [
-                'label' => $translator->__('ID of main administration permission rule'),
+                'label' => $this->__('ID of main administration permission rule'),
                 'empty_data' => 1,
                 'scale' => 0,
                 'attr' => [
@@ -53,28 +70,28 @@ class ConfigType extends AbstractType
                 ]
             ])
             ->add('filter', CheckboxType::class, [
-                'label' => $translator->__('Enable filtering of group permissions'),
+                'label' => $this->__('Enable filtering of group permissions'),
                 'required' => false
             ])
             ->add('rowview', ChoiceType::class, [
-                'label' => $translator->__('Minimum row height for permission rules list view (in pixels)'),
+                'label' => $this->__('Minimum row height for permission rules list view (in pixels)'),
                 'empty_data' => 25,
                 'choices' => $amountChoices
             ])
             ->add('rowedit', ChoiceType::class, [
-                'label' => $translator->__('Minimum row height for rule editing view (in pixels)'),
+                'label' => $this->__('Minimum row height for rule editing view (in pixels)'),
                 'empty_data' => 35,
                 'choices' => $amountChoices
             ])
             ->add('save', SubmitType::class, [
-                'label' => $translator->__('Save'),
+                'label' => $this->__('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $translator->__('Cancel'),
+                'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -89,15 +106,5 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulapermissionsmodule_config';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'translator' => null
-        ]);
     }
 }

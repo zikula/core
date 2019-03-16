@@ -23,7 +23,6 @@ class LoginType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->setTranslator($options['translator']);
         $builder
             ->add('username', TextType::class, [
                 'label' => $this->__('User Name'),
@@ -32,7 +31,7 @@ class LoginType extends AbstractType
                 ],
                 'data' => 'admin',
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank()
                 ]
             ])
             ->add('password', PasswordType::class, [
@@ -41,7 +40,7 @@ class LoginType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'constraints' => [
-                    new NotBlank(),
+                    new NotBlank()
                 ]
             ])
         ;
@@ -55,8 +54,7 @@ class LoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'constraints' => new AuthenticateAdminLogin(),
-            'translator' => new IdentityTranslator()
+            'constraints' => new AuthenticateAdminLogin()
         ]);
     }
 }

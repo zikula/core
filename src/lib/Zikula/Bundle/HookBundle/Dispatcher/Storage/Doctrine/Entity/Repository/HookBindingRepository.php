@@ -11,13 +11,19 @@
 
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 
-class HookBindingRepository extends EntityRepository implements HookBindingRepositoryInterface
+class HookBindingRepository extends ServiceEntityRepository implements HookBindingRepositoryInterface
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, HookBindingEntity::class);
+    }
+
     public function deleteByBothAreas($subscriberArea, $providerArea)
     {
         $qb = $this->_em->createQueryBuilder();

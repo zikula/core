@@ -12,6 +12,7 @@
 namespace Zikula\BlocksModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
+use Zikula\BlocksModule\Block\Form\Type\HtmlBlockType;
 
 /**
  * Block to display html
@@ -39,7 +40,7 @@ class HtmlBlock extends AbstractBlockHandler
 
     public function getFormClassName()
     {
-        return 'Zikula\BlocksModule\Block\Form\Type\HtmlBlockType';
+        return HtmlBlockType::class;
     }
 
     public function getFormTemplate()

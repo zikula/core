@@ -3,8 +3,6 @@ PageAssetApi
 
 classname: \Zikula\ThemeModule\Api\PageAssetApi
 
-service id = "zikula_theme_module.api.page_asset"
-
 The PageAssetApi allows page assets to be added to a page outside of the template.
 Also available is a twig template function that calls this same function.
 

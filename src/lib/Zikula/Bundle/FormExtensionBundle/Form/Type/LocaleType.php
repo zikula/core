@@ -14,13 +14,32 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Locale form type.
  */
 class LocaleType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,8 +50,7 @@ class LocaleType extends AbstractType
             'choices' => ['English' => 'en'],
             'label' => 'Locale',
             'required' => false,
-            'placeholder' => 'All',
-            'translator' => new IdentityTranslator()
+            'placeholder' => $this->__('All')
         ]);
     }
 

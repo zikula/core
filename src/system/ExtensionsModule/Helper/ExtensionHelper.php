@@ -17,14 +17,17 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\Core\ExtensionInstallerInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ExtensionHelper
@@ -44,15 +47,49 @@ class ExtensionHelper
     private $translator;
 
     /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRepository;
+
+    /**
+     * @var ExtensionStateHelper
+     */
+    private $stateHelper;
+
+    /**
+     * @var CacheClearer
+     */
+    private $cacheClearer;
+
+    /**
      * ExtensionHelper constructor.
      *
      * @param ContainerInterface $container
+     * @param TranslatorInterface $translator
+     * @param VariableApiInterface $variableApi
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param ExtensionStateHelper $stateHelper
+     * @param CacheClearer $cacheClearer
      */
-    public function __construct(ContainerInterface $container)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi,
+        ExtensionRepositoryInterface $extensionRepository,
+        ExtensionStateHelper $stateHelper,
+        CacheClearer $cacheClearer
+    ) {
         $this->container = $container;
-        $this->translator = $container->get('translator.default');
-        $this->translator->setLocale('ZikulaExtensionsModule');
+        $this->translator = $translator;
+        $this->variableApi = $variableApi;
+        $this->extensionRepository = $extensionRepository;
+        $this->stateHelper = $stateHelper;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -76,12 +113,9 @@ class ExtensionHelper
         if (!$result) {
             return false;
         }
-        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_ACTIVE);
 
-        // clear the cache before calling events
-        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
-        $cacheClearer = $this->container->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.config');
+        $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
+        $this->cacheClearer->clear('symfony.config');
 
         $event = new ModuleStateEvent($bundle, $extension->toArray());
         $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
@@ -131,9 +165,8 @@ class ExtensionHelper
         $extension->setVersion($newVersion);
         $this->container->get('doctrine')->getManager()->flush();
 
-        $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_ACTIVE);
-
-        $this->container->get('zikula.cache_clearer')->clear('symfony');
+        $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
+        $this->cacheClearer->clear('symfony');
 
         if ($this->container->getParameter('installed')) {
             // Upgrade succeeded, issue event.
@@ -176,15 +209,12 @@ class ExtensionHelper
         }
 
         // remove remaining extension variables
-        $this->container->get('zikula_extensions_module.api.variable')->delAll($extension->getName());
+        $this->variableApi->delAll($extension->getName());
 
         // remove the entry from the modules table
-        $this->container->get('doctrine')->getManager()->getRepository('ZikulaExtensionsModule:ExtensionEntity')->removeAndFlush($extension);
+        $this->extensionRepository->removeAndFlush($extension);
 
-        // clear the cache before calling events
-        /** @var $cacheClearer \Zikula\Bundle\CoreBundle\CacheClearer */
-        $cacheClearer = $this->container->get('zikula.cache_clearer');
-        $cacheClearer->clear('symfony.config');
+        $this->cacheClearer->clear('symfony.config');
 
         $event = new ModuleStateEvent($bundle, $extension->toArray());
         $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);
@@ -227,7 +257,7 @@ class ExtensionHelper
             case Constant::STATE_UPGRADED:
                 return $this->upgrade($extension);
             case Constant::STATE_INACTIVE:
-                return $this->container->get('zikula_extensions_module.extension_state_helper')->updateState($extension->getId(), Constant::STATE_ACTIVE);
+                return $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
             default:
                 return false;
         }
@@ -254,6 +284,7 @@ class ExtensionHelper
      * Get an instance of an extension Installer.
      *
      * @param AbstractBundle $bundle
+     *
      * @return ExtensionInstallerInterface
      */
     private function getExtensionInstallerInstance(AbstractBundle $bundle)

@@ -60,12 +60,12 @@ $(document).on('click', '.admintabs-add .fa-check', function(e) {
         data: {
             name: name
         },
-        success: function(response) {
-            var newtab = '<li class="dropdown droppable nowrap" data-catid='+response.data.id+'>'+
+        success: function (data) {
+            var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
                          '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
                          '">'+
                          '<span class="fa fa-arrows admintabs-unlock"></span> '+
-                         response.data.name+
+                         data.name+
                          ' <span class="fa fa-caret-down"></span>'+
                          '</a>'+
                          '<ul class="admintabs-new dropdown-menu"></ul>'+
@@ -121,7 +121,7 @@ $('.droppable').droppable({
                 modid: ui.draggable.data('modid'),
                 cat: categoryId
             },
-            success: function(response) {
+            success: function(data) {
                 ui.draggable.remove();
             },
             error: function (response) {
@@ -147,7 +147,7 @@ $('#modulelist').sortable({
         });
         $.ajax({
             url: Routing.generate('zikulaadminmodule_ajax_sortmodules'),
-            data: {modules: modules},
+            data: { modules: modules },
             error: function (response) {
                 alert($.parseJSON(response.responseText).core.statusmsg);
             }

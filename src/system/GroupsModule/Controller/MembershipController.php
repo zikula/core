@@ -20,12 +20,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
+use Zikula\Core\Token\CsrfTokenHandler;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
+use Zikula\GroupsModule\Form\Type\RemoveUserType;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 
 /**
  * @Route("/membership")
@@ -41,17 +48,24 @@ class MembershipController extends AbstractController
      * Display all members of a group to a user
      *
      * @param GroupEntity $group
+     * @param VariableApiInterface $variableApi
+     * @param UserSessionRepositoryInterface $userSessionRepository
      * @param string $letter the letter from the alpha filter
      * @param integer $startNum the start item number for the pager
      * @return array
      */
-    public function listAction(GroupEntity $group, $letter = '*', $startNum = 0)
-    {
+    public function listAction(
+        GroupEntity $group,
+        VariableApiInterface $variableApi,
+        UserSessionRepositoryInterface $userSessionRepository,
+        $letter = '*',
+        $startNum = 0
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::memberslist', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
         $groupsCommon = new CommonHelper($this->getTranslator());
-        $inactiveLimit = $this->get('zikula_extensions_module.api.variable')->getSystemVar('secinactivemins');
+        $inactiveLimit = $variableApi->getSystemVar('secinactivemins');
         $dateTime = new \DateTime();
         $dateTime->modify('-' . $inactiveLimit . 'minutes');
 
@@ -59,7 +73,7 @@ class MembershipController extends AbstractController
             'group' => $group,
             'groupTypes' => $groupsCommon->gtypeLabels(),
             'states' => $groupsCommon->stateLabels(),
-            'usersOnline' => $this->get('zikula_users_module.user_session_repository')->getUsersSince($dateTime),
+            'usersOnline' => $userSessionRepository->getUsersSince($dateTime),
             'pager' => [
                 'amountOfItems' => $group->getUsers()->count(),
                 'itemsPerPage' => $this->getVar('itemsperpage', 25)
@@ -75,12 +89,17 @@ class MembershipController extends AbstractController
      * Display all members of a group to an admin
      *
      * @param GroupEntity $group
+     * @param CsrfTokenHandler $tokenHandler
      * @param string $letter the letter from the alpha filter
      * @param integer $startNum the start item number for the pager
      * @return array
      */
-    public function adminListAction(GroupEntity $group, $letter = '*', $startNum = 0)
-    {
+    public function adminListAction(
+        GroupEntity $group,
+        CsrfTokenHandler $tokenHandler,
+        $letter = '*',
+        $startNum = 0
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', $group->getGid() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -91,7 +110,7 @@ class MembershipController extends AbstractController
                 'amountOfItems' => $group->getUsers()->count(),
                 'itemsPerPage' => $this->getVar('itemsperpage', 25)
             ],
-            'csrfToken' => $this->get('zikula_core.common.csrf_token_handler')->generate()
+            'csrfToken' => $tokenHandler->generate()
         ];
     }
 
@@ -102,12 +121,17 @@ class MembershipController extends AbstractController
      *
      * @param UserEntity $userEntity
      * @param GroupEntity $group
-     * @param $csrfToken
+     * @param CsrfTokenHandler $tokenHandler
+     * @param string $csrfToken
      * @return RedirectResponse
      */
-    public function addAction(UserEntity $userEntity, GroupEntity $group, $csrfToken)
-    {
-        $this->get('zikula_core.common.csrf_token_handler')->validate($csrfToken);
+    public function addAction(
+        UserEntity $userEntity,
+        GroupEntity $group,
+        CsrfTokenHandler $tokenHandler,
+        $csrfToken
+    ) {
+        $tokenHandler->validate($csrfToken);
         if (!$this->hasPermission('ZikulaGroupsModule::', $group->getGid() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -130,19 +154,23 @@ class MembershipController extends AbstractController
      * Process request by the current user to join a group
      * @Route("/join/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @param GroupEntity $group
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
      * @return RedirectResponse
      */
-    public function joinAction(GroupEntity $group)
-    {
+    public function joinAction(
+        GroupEntity $group,
+        CurrentUserApiInterface $currentUserApi,
+        UserRepositoryInterface $userRepository
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
-        $currentUserApi = $this->get('zikula_users_module.current_user');
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->__('Sorry! You must register for a user account on this site before you can join a group.'));
         }
         /** @var UserEntity $userEntity */
-        $userEntity = $this->get('zikula_users_module.user_repository')->find($currentUserApi->get('uid'));
+        $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $groupTypeIsPrivate = CommonHelper::GTYPE_PRIVATE == $group->getGtype();
         $groupTypeIsCore = CommonHelper::GTYPE_CORE == $group->getGtype();
         $groupStateIsClosed = CommonHelper::STATE_CLOSED == $group->getState();
@@ -170,12 +198,19 @@ class MembershipController extends AbstractController
      * Remove a user from a group.
      *
      * @param Request $request
+     * @param GroupRepositoryInterface $groupRepository
+     * @param UserRepositoryInterface $userRepository
      * @param int $gid
      * @param int $uid
      * @return mixed Response|void symfony response object if confirmation isn't provided, void otherwise
      */
-    public function removeAction(Request $request, $gid = 0, $uid = 0)
-    {
+    public function removeAction(
+        Request $request,
+        GroupRepositoryInterface $groupRepository,
+        UserRepositoryInterface $userRepository,
+        $gid = 0,
+        $uid = 0
+    ) {
         if ($request->isMethod('POST')) {
             $postVars = $request->request->get('zikulagroupsmodule_removeuser');
             $gid = isset($postVars['gid']) ? $postVars['gid'] : 0;
@@ -187,23 +222,21 @@ class MembershipController extends AbstractController
         if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
-        $group = $this->get('zikula_groups_module.group_repository')->find($gid);
+        $group = $groupRepository->find($gid);
         if (!$group) {
             throw new \InvalidArgumentException($this->__('Invalid Group ID.'));
         }
-        $user = $this->get('zikula_users_module.user_repository')->find($uid);
+        $user = $userRepository->find($uid);
         if (!$user) {
             throw new \InvalidArgumentException($this->__('Invalid User ID.'));
         }
 
-        $form = $this->createForm('Zikula\GroupsModule\Form\Type\RemoveUserType', [
+        $form = $this->createForm(RemoveUserType::class, [
             'gid' => $gid,
             'uid' => $uid
-        ], [
-            'translator' => $this->get('translator.default')
         ]);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('remove')->isClicked()) {
                 $user->removeGroup($group);
                 $this->get('doctrine')->getManager()->flush();
@@ -229,19 +262,20 @@ class MembershipController extends AbstractController
      * Process request by current user to leave a group
      * @Route("/leave/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @param GroupEntity $group
+     * @param CurrentUserApiInterface $currentUserApi
+     * @param UserRepositoryInterface $userRepository
      * @return RedirectResponse
      */
-    public function leaveAction(GroupEntity $group)
+    public function leaveAction(GroupEntity $group, CurrentUserApiInterface $currentUserApi, UserRepositoryInterface $userRepository)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
         }
-        $currentUserApi = $this->get('zikula_users_module.current_user');
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->__('Sorry! You must be logged in before you can leave a group.'));
         }
         /** @var UserEntity $userEntity */
-        $userEntity = $this->get('zikula_users_module.user_repository')->find($currentUserApi->get('uid'));
+        $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $userEntity->removeGroup($group);
         $this->get('doctrine')->getManager()->flush();
         $this->addFlash('success', $this->__f('Left the "%group" group', ['%group' => $group->getName()]));
@@ -258,9 +292,10 @@ class MembershipController extends AbstractController
      *
      * @Route("/admin/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
      * @param Request $request
+     * @param UserRepositoryInterface $userRepository
      * @return Response
      */
-    public function getUsersByFragmentAsTableAction(Request $request)
+    public function getUsersByFragmentAsTableAction(Request $request, UserRepositoryInterface $userRepository)
     {
         if (!$this->hasPermission('ZikulaGroupsodule', '::', ACCESS_EDIT)) {
             return new PlainResponse('');
@@ -273,7 +308,7 @@ class MembershipController extends AbstractController
             ]],
             'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
         ];
-        $users = $this->get('zikula_users_module.user_repository')->query($filter);
+        $users = $userRepository->query($filter);
 
         return $this->render('@ZikulaGroupsModule/Membership/userlist.html.twig', [
             'users' => $users,

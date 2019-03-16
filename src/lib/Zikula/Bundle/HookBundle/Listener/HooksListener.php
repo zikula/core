@@ -47,6 +47,7 @@ class HooksListener implements EventSubscriberInterface
 
     /**
      * ExtensionServicesListener constructor.
+     *
      * @param PermissionApiInterface $permissionApi
      * @param CapabilityApiInterface $capabilityApi
      * @param HookCollectorInterface $hookCollector
@@ -70,7 +71,7 @@ class HooksListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'zikula.link_collector' => 'linkCollectorResponder',
+            'zikula.link_collector' => 'linkCollectorResponder'
         ];
     }
 

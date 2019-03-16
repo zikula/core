@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryTreeType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -36,21 +37,23 @@ class CategoryController extends AbstractController
      *
      * @param Request $request
      * @param CategoryEntity $category
+     * @param CategoryRepositoryInterface $categoryRepository
+     *
      * @return array
+     *
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
      */
-    public function listAction(Request $request, CategoryEntity $category)
+    public function listAction(Request $request, CategoryEntity $category, CategoryRepositoryInterface $categoryRepository)
     {
         if (!$this->hasPermission('ZikulaCategoriesModule::category', 'ID::' . $category->getId(), ACCESS_EDIT)
             || !$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
-        $repo = $this->get('zikula_categories_module.category_repository');
-        $repo->recover();
+        $categoryRepository->recover();
         $this->getDoctrine()->getManager()->flush();
-        $tree = $repo->childrenHierarchy(
+        $tree = $categoryRepository->childrenHierarchy(
             $category, /* node to start from */
             false, /* false: load all children, true: only direct */
             $this->getNodeOptions($request)
@@ -58,7 +61,6 @@ class CategoryController extends AbstractController
         $form = $this->createFormBuilder()
             ->add('category', CategoryTreeType::class, [
                 'label' => $this->__('New Parent'),
-                'translator' => $this->getTranslator(),
                 'includeLeaf' => false,
             ])->getForm();
 

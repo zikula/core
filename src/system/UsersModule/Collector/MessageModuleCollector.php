@@ -32,21 +32,30 @@ class MessageModuleCollector
     private $currentMessageModuleName;
 
     /**
-     * MessageModuleCollector constructor.
+     * Constructor.
+     *
      * @param VariableApiInterface $variableApi
+     * @param MessageModuleInterface[] $modules
      */
-    public function __construct(VariableApiInterface $variableApi)
+    public function __construct(VariableApiInterface $variableApi, iterable $modules)
     {
         $this->currentMessageModuleName = $variableApi->getSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
+        foreach ($modules as $module) {
+            $this->add($module);
+        }
     }
 
     /**
      * Add a service to the collection.
-     * @param string $moduleName
+     *
      * @param MessageModuleInterface $service
      */
-    public function add($moduleName, MessageModuleInterface $service)
+    public function add(MessageModuleInterface $service)
     {
+        $moduleName = $service->getBundleName();
+        if ('ZikulaUsersModule' == $moduleName) {
+            return;
+        }
         if (isset($this->messageModules[$moduleName])) {
             throw new \InvalidArgumentException('Attempting to register a message module with a duplicate module name. (' . $moduleName . ')');
         }

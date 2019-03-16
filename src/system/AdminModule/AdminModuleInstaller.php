@@ -12,6 +12,7 @@
 namespace Zikula\AdminModule;
 
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
@@ -32,8 +33,8 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
         // create tables
         try {
             $this->schemaTool->create([
-                'Zikula\AdminModule\Entity\AdminCategoryEntity',
-                'Zikula\AdminModule\Entity\AdminModuleEntity',
+                AdminCategoryEntity::class,
+                AdminModuleEntity::class
             ]);
         } catch (\Exception $e) {
             return false;
