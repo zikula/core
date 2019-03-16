@@ -18,6 +18,12 @@ services:
     Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface: '@Zikula\CategoriesModule\Entity\Repository\CategoryRegistryRepository'
     Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface: '@Zikula\CategoriesModule\Entity\Repository\CategoryRepository'
 
+    # public for BC as these are accessed in several installers using container
+    Zikula\CategoriesModule\Api\CategoryPermissionApi:
+        public: true
+    Zikula\CategoriesModule\Entity\Repository\CategoryRegistryRepository:
+        public: true
     Zikula\CategoriesModule\Entity\Repository\CategoryRepository:
+        public: true
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['ZikulaCategoriesModule:CategoryEntity']
