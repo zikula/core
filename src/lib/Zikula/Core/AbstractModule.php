@@ -11,8 +11,6 @@
 
 namespace Zikula\Core;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 abstract class AbstractModule extends AbstractBundle
 {
     public function getNameType()

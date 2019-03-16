@@ -116,7 +116,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
         }
         foreach ($this->loaderIds as $id => $aliases) {
             foreach ($aliases as $alias => $loaderClass) {
-                $this->addLoader($alias, new $loaderClass);
+                $this->addLoader($alias, new $loaderClass());
             }
         }
 

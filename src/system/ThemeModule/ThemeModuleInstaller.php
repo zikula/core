@@ -35,6 +35,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
             ]);
         } catch (\Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
+
             return false;
         }
 

@@ -260,7 +260,7 @@ class MetaData implements \ArrayAccess
         return $dependencies;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }

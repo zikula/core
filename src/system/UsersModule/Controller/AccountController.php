@@ -40,7 +40,8 @@ class AccountController extends AbstractController
      *
      * @return Response|array
      */
-    public function menuAction(CurrentUserApiInterface $currentUserApi, AccountLinksHelper $accountLinksHelper) {
+    public function menuAction(CurrentUserApiInterface $currentUserApi, AccountLinksHelper $accountLinksHelper)
+    {
         if ($currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }

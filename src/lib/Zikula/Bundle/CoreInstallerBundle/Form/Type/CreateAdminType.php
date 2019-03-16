@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
-use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class CreateAdminType extends AbstractType

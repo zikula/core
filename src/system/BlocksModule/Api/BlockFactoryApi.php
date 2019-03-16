@@ -12,14 +12,9 @@
 namespace Zikula\BlocksModule\Api;
 
 use Psr\Container\ContainerInterface;
-use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Core\AbstractModule;
-use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\MenuModule\Block\MenuBlock;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
  * Class BlockFactoryApi
@@ -64,7 +59,7 @@ class BlockFactoryApi implements BlockFactoryApiInterface
             throw new \RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
         }
 
-        if (substr($blockClassName, 0, 1) == '\\') {
+        if ('\\' == substr($blockClassName, 0, 1)) {
             $blockClassName = substr($blockClassName, 1);
         }
 

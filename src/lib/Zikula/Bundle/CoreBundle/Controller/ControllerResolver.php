@@ -12,7 +12,6 @@
 namespace Zikula\Bundle\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver as BaseControllerResolver;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Class ControllerResolver.

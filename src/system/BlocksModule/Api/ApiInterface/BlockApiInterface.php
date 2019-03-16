@@ -11,7 +11,6 @@
 
 namespace Zikula\BlocksModule\Api\ApiInterface;
 
-use Zikula\Core\AbstractModule;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
