@@ -30,7 +30,7 @@ class ZikulaBlocksExtension extends Extension
         $container->registerForAutoconfiguration(BlockHandlerInterface::class)
             ->addTag('zikula.block_handler')
             ->setPublic(true)
-            ->setShared(true)
+            ->setShared(false)
         ;
     }
 }
