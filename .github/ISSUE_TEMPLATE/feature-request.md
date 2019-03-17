@@ -2,7 +2,7 @@
 name: Feature Request
 about: tell us about a new capability you want to see
 title: 
-labels: feature
+labels: Feature
 assignees: ''
 
 ---
