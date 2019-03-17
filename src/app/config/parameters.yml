@@ -1,7 +1,7 @@
 parameters:
     installed:        false
     env:              prod
-    debug:            true
+    debug:            false
     script_position:  foot
     # script_position defines the location where javascripts will be placed in the page
     # choices are `head` or `foot`
