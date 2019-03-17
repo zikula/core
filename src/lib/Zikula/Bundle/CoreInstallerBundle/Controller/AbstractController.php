@@ -20,6 +20,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
@@ -76,7 +77,7 @@ abstract class AbstractController
         $this->twig = $this->container->get('twig');
         $this->form = $this->container->get('form.factory');
         $this->controllerHelper = $this->container->get(ControllerHelper::class);
-        $this->translator = $container->get('translator.default');
+        $this->translator = $container->get(Translator::class);
     }
 
     /**

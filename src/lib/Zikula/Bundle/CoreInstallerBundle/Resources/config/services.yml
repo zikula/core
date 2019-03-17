@@ -2,7 +2,7 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: false
+        public: true # default to public because installer still uses container directly
 
     Zikula\Bundle\CoreInstallerBundle\:
         resource: '../../*'

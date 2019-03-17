@@ -262,14 +262,6 @@ class AjaxUpgradeController extends AbstractController
         // disable asset combination on upgrades
         $params['zikula_asset_manager.combine'] = false;
 
-        // always try to update the database_server_version param
-        try {
-            $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
-            $params['database_server_version'] = $dbh->getAttribute(\PDO::ATTR_SERVER_VERSION);
-        } catch (\Exception $e) {
-            // do nothing on fail
-        }
-
         unset($params['upgrading']);
         $this->yamlManager->setParameters($params);
 

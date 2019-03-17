@@ -30,7 +30,9 @@ class ControllerResolver extends BaseControllerResolver
         }
 
         // Own logic
-        if (is_subclass_of($class, 'Zikula\Core\Controller\AbstractController')) {
+        if (is_subclass_of($class, 'Zikula\Bundle\CoreInstallerBundle\Controller\AbstractController')) {
+            $controller = new $class($this->container);
+        } elseif (is_subclass_of($class, 'Zikula\Core\Controller\AbstractController')) {
             $controller = $this->container->get($class);
             if (method_exists($controller, 'setContainer')) {
                 $controller->setContainer($this->container);
