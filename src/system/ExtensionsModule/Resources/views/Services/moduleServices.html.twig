@@ -14,12 +14,12 @@
 <p class="alert alert-info">{{ __('Module Services are functions provided by the core or other modules for this module.') }}</p>
 
 {% if sublinks|length > 0 %}
-<ul class="list-unstyled">
-    {% for sublink in sublinks %}
-    <li><a href="{{ sublink.url }}" class="fa fa-cog">{{ sublink.text }}</a></li>
-    {% endfor %}
-</ul>
+    <ul class="list-unstyled">
+        {% for sublink in sublinks %}
+            <li><a href="{{ sublink.url }}" class="fa fa-cog">{{ sublink.text }}</a></li>
+        {% endfor %}
+    </ul>
 {% else %}
-    <p>{{ __('There arent any modules services available.') }}</p>
+    <p>{{ __('There aren\'t any modules services available.') }}</p>
 {% endif %}
 {{ adminFooter() }}
