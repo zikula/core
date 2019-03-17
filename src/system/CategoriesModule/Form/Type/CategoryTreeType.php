@@ -91,20 +91,22 @@ class CategoryTreeType extends AbstractType
         $resolver->setAllowedTypes('includeLeaf', 'bool');
         $resolver->setAllowedTypes('all', 'bool');
 
-        $translator = $this->translator;
-        $resolver->setNormalizer('label', function(TranslatorInterface $translator, Options $options, $label) {
+        $options['translator'] = $this->translator;
+        $resolver->setNormalizer('label', function(Options $options, $label) {
             if (null === $label || empty($label)) {
                 $isMultiple = $options['multiple'];
+                $translator = $options['translator'];
 
                 $label = $isMultiple ? $translator->__('Categories') : $translator->__('Category');
             }
 
             return $label;
         });
-        $resolver->setNormalizer('placeholder', function(TranslatorInterface $translator, Options $options, $placeholder) {
+        $resolver->setNormalizer('placeholder', function(Options $options, $placeholder) {
             if (!$options['required']) {
                 if (null === $placeholder || empty($placeholder)) {
                     $isMultiple = $options['multiple'];
+                    $translator = $options['translator'];
 
                     $placeholder = $isMultiple ? $translator->__('Choose categories') : $translator->__('Choose a category');
                 }

@@ -7,7 +7,7 @@ CHANGELOG - ZIKULA 3.0.x
  - BC Breaks:
     - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
-    - Service definitions have been updated to use Symfony autowire and autoconfigure functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
+    - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` because bundle inheritance is not supported in Symfony 4 anymore (#3377).
     - Interface extensions and amendments
         - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
@@ -57,8 +57,10 @@ CHANGELOG - ZIKULA 3.0.x
     - Made Blocks module's JavaScript functionality more robust (#3911).
 
  - Features:
+    - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
     - Allow zasset syntax for relative assets also for normal bundles.
+    - Added support for separators in dropdown menus of extensions interface / module links (#3904).
 
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0
