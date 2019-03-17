@@ -2,8 +2,8 @@
 
 ( function($) {
     $(document).ready(function() {
-        $('#add-filter').click(function(e) {
-            e.preventDefault();
+        $('#add-filter').click(function (event) {
+            event.preventDefault();
 
             var filterList = $('ul#filters');
 
@@ -16,15 +16,15 @@
             // create a new list element and add it to the list
             $(newWidget).appendTo(filterList);
         });
-        $('.delete-filter').click(function(e) {
-            e.preventDefault();
+        $('.delete-filter').click(function (event) {
+            event.preventDefault();
             var row = $(this).closest('li');
             row.remove();
         });
         $('#filters').on('change', '.attribute-selector', function() {
             var value = $(this).val();
-            var queryParamInput = $(this).parent('li').find(".queryParameter");
-            if (value == 'query param' || value == '_route_params') {
+            var queryParamInput = $(this).parent('li').find('.queryParameter');
+            if ('query param' == value || '_route_params' == value) {
                 queryParamInput.prop('disabled', false);
             } else {
                 queryParamInput.prop('disabled', true);

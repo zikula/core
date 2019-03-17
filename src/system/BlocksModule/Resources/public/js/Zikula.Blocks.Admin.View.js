@@ -3,8 +3,8 @@
 ( function($) {
     $(document).ready(function() {
         $('#zikulablocksmodule-block-view-modal')
-            .on('show.bs.modal', function (e) {
-                var link = $(e.relatedTarget);
+            .on('show.bs.modal', function (event) {
+                var link = $(event.relatedTarget);
                 $(this).find('.modal-body').load(link.attr('href'));
             })
             .on('hidden.bs.modal', function () {

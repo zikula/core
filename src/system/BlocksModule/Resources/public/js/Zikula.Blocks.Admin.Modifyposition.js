@@ -26,11 +26,11 @@
                     $('#assignedblocklist .sortable-placeholder').fadeOut();
                 }
 
-                var blockorder = new Array();
+                var blockOrder = [];
                 $('#assignedblocklist > tbody > tr').each( function() {
                     var bid = $(this).data('bid');
                     if (bid !== undefined) {
-                        blockorder.push(bid);
+                        blockOrder.push(bid);
                     }
                 });
 
@@ -38,7 +38,7 @@
                     url: Routing.generate('zikulablocksmodule_placement_changeblockorder'),
                     data: {
                         position: $('#position').data('position'),
-                        blockorder: blockorder
+                        blockorder: blockOrder
                     }
                 })
                 .done(function(data) {

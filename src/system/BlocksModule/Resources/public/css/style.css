@@ -1,28 +1,3 @@
-/* styles for extmenu block */
-.imagebutton, .imagebutton-nofloat {
-    padding: 0;
-    margin: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-}
-
-.imagebutton {
-    float: left;
-}
-
-button {
-    cursor: pointer;
-}
-
-button .deletebutton {
-    /* don't remove this */
-}
-
-#empty_li_repository {
-    display: none;
-}
-
 ul.errorlist, ul#filters {
     padding: 0;
     margin: 0;
@@ -37,8 +12,4 @@ ul.errorlist li {
     padding: 0;
     margin: 0;
     list-style-image: url('../images/error.png');
-}
-
-.activationbutton {
-    display: none;
 }

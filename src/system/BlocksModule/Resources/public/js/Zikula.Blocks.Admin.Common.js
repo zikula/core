@@ -5,8 +5,8 @@
  *******************************************************************************/
 ( function($) {
     $(document).ready(function() {
-        $('.z-admin-content .label[data-bid]').click( function(e) {
-            e.preventDefault();
+        $('.block-state-switch').click(function (event) {
+            event.preventDefault();
             var a = $(this);
             var bid = a.data('bid');
 
@@ -19,11 +19,22 @@
                 }
             })
             .done(function(data) {
-                // toggle label
-                a.parent().find('a').toggleClass('hide');
+                if (a.hasClass('label-success')) {
+                    a.removeClass('label-success')
+                        .addClass('label-danger')
+                        .text(Translator.__('Inactive'))
+                        .attr('title', Translator.__('Click to activate block'));
+                    ;
+                } else {
+                    a.removeClass('label-danger')
+                        .addClass('label-success')
+                        .text(Translator.__('Active'))
+                        .attr('title', Translator.__('Click to deactivate block'));
+                    ; 
+                }
             })
             .fail(function(jqXHR, textStatus) {
-                alert('Error: ' + textStatus );
+                alert('Error: ' + textStatus);
             })
             .always(function() {
                 $('#spin' + bid).remove();

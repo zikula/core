@@ -54,6 +54,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Properly consider "user must verify" flag during user creation in ZAuth module (#3964).
     - Removed workaround for older DBAL versions (#2185).
     - Properly handle deleted user groups in permissions module (#3963).
+    - Made Blocks module's JavaScript functionality more robust (#3911).
 
  - Features:
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
