@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\TwigFilter;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Twig\Base\AbstractTwigExtension;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
  * Twig extension implementation class.
@@ -51,6 +52,7 @@ class TwigExtension extends AbstractTwigExtension
     /**
      * Sets the service container.
      *
+     * @required
      * @param ContainerInterface $container
      */
     public function setContainer(ContainerInterface $container)
@@ -93,8 +95,7 @@ class TwigExtension extends AbstractTwigExtension
         $container = $this->container;
 
         if ($route->getTranslatable()) {
-            $localeApi = $container->get('zikula_settings_module.locale_api');
-            $languages = $localeApi->getSupportedLocales();
+            $languages = $container->get(LocaleApi::class)->getSupportedLocales();
             // TODO migrate this legacy call
             $isRequiredLangParam = true;//ZLanguage::isRequiredLangParam();
             if (!$isRequiredLangParam) {

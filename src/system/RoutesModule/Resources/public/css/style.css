@@ -2,27 +2,13 @@
 div#z-maincontent.z-module-routes table tbody tr td {
     vertical-align: top;
 }
-.table-responsive > .fixed-columns {
-    position: absolute;
-    display: inline-block;
-    width: auto;
-    border-right: 1px solid #ddd;
-    background-color: #fff;
-}
 .ui-state-highlight {
     height: 40px;
 }
 
 /* display pages */
-.zikularoutesmodule-display div.col-sm-3 h3 {
-    color: #333;
-    font-weight: 400;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 8px;
-}
-
-.zikularoutesmodule-display div.col-sm-3 p.managelink {
-    margin-left: 18px;
+.zikularoutesmodule-display p.managelink {
+    margin: 18px 0 0 18px;
 }
 
 
@@ -65,11 +51,6 @@ div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset h3 {
 
 div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset label {
     margin-right: 5px;
-}
-
-div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset #num {
-    width: 50px;
-    text-align: right;
 }
 
 div.zikularoutesmodule-view .avatar img {

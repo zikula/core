@@ -1,5 +1,5 @@
 {# purpose of this template: routes view filter form #}
-{% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
+{% if permissionHelper.hasComponentPermission('route', constant('ACCESS_EDIT')) %}
     {% form_theme quickNavForm with [
         'bootstrap_3_layout.html.twig'
     ] %}

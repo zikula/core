@@ -75,13 +75,13 @@ class RouteLoader extends Loader
     /**
      * RouteLoader constructor.
      *
-     * @param ZikulaHttpKernelInterface $kernel                   Zikula kernel
-     * @param TranslatorInterface       $translator               Translator
-     * @param EntityFactory             $entityFactory            Entity factory
-     * @param ExtractTranslationHelper  $extractTranslationHelper Extract translation helper
-     * @param PathBuilderHelper         $pathBuilderHelper        Path builder helper
-     * @param SanitizeHelper            $sanitizeHelper           Sanitize helper
-     * @param string                    $locale                   The current locale
+     * @param ZikulaHttpKernelInterface
+     * @param TranslatorInterface
+     * @param EntityFactory
+     * @param ExtractTranslationHelper
+     * @param PathBuilderHelper
+     * @param SanitizeHelper
+     * @param string $locale
      */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,

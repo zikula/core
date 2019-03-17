@@ -26,7 +26,7 @@ class PathBuilderHelper
     /**
      * PathBuilderHelper constructor.
      *
-     * @param ZikulaHttpKernelInterface $kernel Zikula kernel
+     * @param ZikulaHttpKernelInterface $kernel
      */
     public function __construct(ZikulaHttpKernelInterface $kernel)
     {

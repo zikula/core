@@ -49,7 +49,8 @@ class EditHandler extends AbstractEditHandler
     /**
      * Sets the path builder helper.
      *
-     * @param PathBuilderHelper $pathBuilderHelper Path builder helper
+     * @required
+     * @param PathBuilderHelper $pathBuilderHelper
      */
     public function setPathBuilderHelper(PathBuilderHelper $pathBuilderHelper)
     {
@@ -59,7 +60,8 @@ class EditHandler extends AbstractEditHandler
     /**
      * Sets the route dumper helper.
      *
-     * @param RouteDumperHelper $routeDumperHelper Route dumper helper
+     * @required
+     * @param RouteDumperHelper $routeDumperHelper
      */
     public function setRouteDumperHelper(RouteDumperHelper $routeDumperHelper)
     {
@@ -69,7 +71,8 @@ class EditHandler extends AbstractEditHandler
     /**
      * Sets the sanitize helper.
      *
-     * @param SanitizeHelper $sanitizeHelper Sanitize helper
+     * @required
+     * @param SanitizeHelper $sanitizeHelper
      */
     public function setSanitizeHelper(SanitizeHelper $sanitizeHelper)
     {
@@ -79,7 +82,8 @@ class EditHandler extends AbstractEditHandler
     /**
      * Sets the cache clearer.
      *
-     * @param CacheClearer $cacheClearer Cache clearer
+     * @required
+     * @param CacheClearer $cacheClearer
      */
     public function setCacheClearer(CacheClearer $cacheClearer)
     {

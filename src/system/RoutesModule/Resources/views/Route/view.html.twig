@@ -24,7 +24,7 @@
     <form action="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="routesViewForm" class="form-horizontal" role="form">
         <div>
     {% endif %}
-        {% set activateSortable = routeArea == 'admin' and sort.sort.class == 'z-order-asc' %}
+        {% set activateSortable = routeArea == 'admin' and sort.sort.class == 'sorted-asc' %}
         <div class="table-responsive">
         <table{% if activateSortable and items|length > 1 %} id="sortableTable" data-object-type="route" data-min="{{ items|first.sort }}" data-max="{{ items|last.sort }}"{% endif %} class="table table-striped table-bordered table-hover table-condensed">
             <colgroup>
@@ -52,9 +52,9 @@
                         <input type="checkbox" class="zikularoutes-mass-toggle" />
                     </th>
                 {% endif %}
-                <th id="hItemActionsStart" scope="col" class="z-order-unsorted">{{ __('Actions') }}</th>
+                <th id="hItemActionsStart" scope="col" class="z-w02">{{ __('Actions') }}</th>
                 {% if activateSortable %}
-                    <th id="hSortable" scope="col" class="z-order-unsorted z-w02">{{ __('Sorting') }}</th>
+                    <th id="hSortable" scope="col" class="z-w02">{{ __('Sorting') }}</th>
                 {% endif %}
                 <th id="hBundle" scope="col" class="text-left">
                     <a href="{{ sort.bundle.url }}" title="{{ __f('Sort by %s', {'%s': 'bundle'}) }}" class="{{ sort.bundle.class }}">{{ __('Bundle') }}</a>
@@ -90,15 +90,15 @@
         {% for route in items %}
             <tr{% if activateSortable %} data-item-id="{{ route.getKey() }}" class="sort-item"{% endif %}>
                 {% if routeArea == 'admin' %}
-                    <td headers="hSelect" class="text-center">
+                    <td headers="hSelect" class="text-center z-w02">
                         <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
                     </td>
                 {% endif %}
-                <td id="itemActions{{ route.id }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
-                    {% set itemActions = knp_menu_get('ZikulaRoutesModule:ItemActionsMenu:menu', [], { entity: route, area: routeArea, context: 'view' }) %}
+                <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'view'}) %}
                     <div class="dropdown">
-                        <a id="itemActions{{ route.id }}DropDownToggleStart" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
-                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig' }) }}
+                        <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
                     </div>
                 </td>
                 {% if activateSortable %}
@@ -144,7 +144,7 @@
             </tr>
         {% else %}
             <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
-                <td class="text-left" colspan="{% if routeArea == 'admin' %}11{% else %}10{% endif %}">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}12{% else %}11{% endif %}">
             {{ __('No custom routes found.') }}
               </td>
             </tr>
@@ -155,7 +155,7 @@
         </div>
 
         {% if all != 1 and pager|default %}
-            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
+            {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
         {% endif %}
     {% if routeArea == 'admin' %}
             <fieldset>
@@ -178,16 +178,28 @@
 {% block page_nav_links %}
     <p>
         {% if canBeCreated %}
-            {% if hasPermission('ZikulaRoutesModule:Route:', '::', 'ACCESS_EDIT') %}
-                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ __('Add an additional route to the system')|e('html_attr') }}"><i class="fa fa-plus"></i> {{ __('Create a custom route') }}</a>
+            {% if permissionHelper.hasComponentPermission('route', constant('ACCESS_EDIT')) %}
+                {% set createTitle = __('Create route') %}
+                <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}"><i class="fa fa-plus"></i> {{ createTitle }}</a>
             {% endif %}
         {% endif %}
         {% if all == 1 %}
             {% set linkTitle = __('Back to paginated view') %}
-            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
+            {% set routeArgs = own ? {own: 1} : {} %}
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
         {% else %}
             {% set linkTitle = __('Show all entries') %}
-            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
+            {% set routeArgs = own ? {all: 1, own: 1} : {all: 1} %}
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-table"></i> {{ linkTitle }}</a>
+        {% endif %}
+        {% if own == 1 %}
+            {% set linkTitle = __('Show also entries from other users') %}
+            {% set routeArgs = all ? {all: 1} : {} %}
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-users"></i> {{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show only own entries') %}
+            {% set routeArgs = all ? {all: 1, own: 1} : {own: 1} %}
+            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-user"></i> {{ linkTitle }}</a>
         {% endif %}
     </p>
 {% endblock %}

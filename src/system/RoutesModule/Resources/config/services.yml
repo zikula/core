@@ -20,239 +20,37 @@ services:
         resource: '../../Helper/*'
         lazy: true
 
-    #zikula_routes_module.app_settings:
-        #class: Zikula\RoutesModule\AppSettings
-        #arguments:
-            #- "@zikula_extensions_module.api.variable"
+    # public because EntityLifecycleListener accesses this using container
+    Zikula\RoutesModule\Entity\Factory\EntityFactory:
+        public: true
 
-    ## Entity factory
-    #zikula_routes_module.entity_factory:
-        #class: Zikula\RoutesModule\Entity\Factory\EntityFactory
-        #arguments:
-            #- "@doctrine.orm.default_entity_manager"
-            #- "@zikula_routes_module.entity_initialiser"
-            #- "@zikula_routes_module.collection_filter_helper"
-    
-    ## Entity initialiser
-    #zikula_routes_module.entity_initialiser:
-        #class: Zikula\RoutesModule\Entity\Factory\EntityInitialiser
-        #arguments:
-        #- "@zikula_routes_module.listentries_helper"
-
-    ## Event subscriber and listener classes
-    #zikula_routes_module.entity_lifecycle_listener:
-        #class: Zikula\RoutesModule\Listener\EntityLifecycleListener
-        #arguments:
-            #- "@service_container"
-            #- "@event_dispatcher"
-            #- "@logger"
-        #tags:
-            #- { name: doctrine.event_subscriber }
-    
-##    zikula_routes_module.user_listener:
-##        class: Zikula\RoutesModule\Listener\UserListener
-##        arguments:
-##            - "@translator.default"
-##            - "@zikula_routes_module.entity_factory"
-##            - "@zikula_users_module.current_user"
-##            - "@logger"
-
-    #zikula_routes_module.form.type.field.multilist:
-        #class: Zikula\RoutesModule\Form\Type\Field\MultiListType
-        #arguments:
-            #- "@zikula_routes_module.listentries_helper"
-
-    #zikula_routes_module.form.type.routequicknav:
-        #class: Zikula\RoutesModule\Form\Type\QuickNavigation\RouteQuickNavType
-        #arguments:
-            #- "@translator.default"
-            #- "@zikula_routes_module.listentries_helper"
-    
-    #zikula_routes_module.form.handler.route:
-        #class: Zikula\RoutesModule\Form\Handler\Route\EditHandler
-        #arguments:
-            #- "@kernel"
-            #- "@translator.default"
-            #- "@form.factory"
-            #- "@request_stack"
-            #- "@router"
-            #- "@logger"
-            #- "@zikula_permissions_module.api.permission"
-            #- "@zikula_users_module.current_user"
-            #- "@zikula_routes_module.entity_factory"
-            #- "@zikula_routes_module.controller_helper"
-            #- "@zikula_routes_module.model_helper"
-            #- "@zikula_routes_module.workflow_helper"
-        #calls:
-            #- [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
-            #- [setPathBuilderHelper, ["@zikula_routes_module.path_builder_helper"]]
-            #- [setRouteDumperHelper, ["@zikula_routes_module.route_dumper_helper"]]
-            #- [setSanitizeHelper, ["@zikula_routes_module.sanitize_helper"]]
-            #- [setCacheClearer, ["@zikula.cache_clearer"]]
-    
-    #zikula_routes_module.form.type.route:
-        #class: Zikula\RoutesModule\Form\Type\RouteType
-        #arguments:
-            #- "@translator.default"
-            #- "@zikula_routes_module.entity_factory"
-            #- "@zikula_routes_module.listentries_helper"
-        #calls:
-            #- [setExtensionRepository, ["@zikula_extensions_module.extension_repository"]]
-    
-    #zikula_routes_module.form.type.config:
-        #class: Zikula\RoutesModule\Form\Type\ConfigType
-        #arguments:
-            #- "@translator.default"
-            #- "@=service('zikula_extensions_module.api.variable').getAll('ZikulaRoutesModule')"
-
-    Zikula\RoutesModule\Helper\CollectionFilterHelper:
-        arguments:
-            #- "@request_stack"
-            #- "@zikula_users_module.current_user"
-          #$showOnlyOwnEntries: "@=service('Zikula\\ExtensionsModule\\Api\\ApiInterface\\VariableApiInterface').get('ZikulaRoutesModule', 'showOnlyOwnEntries', false)"
-
-    #zikula_routes_module.controller_helper:
-        #class: Zikula\RoutesModule\Helper\ControllerHelper
-        #arguments:
-            #- "@translator.default"
-            #- "@request_stack"
-            #- "@form.factory"
-            #- "@zikula_extensions_module.api.variable"
-            #- "@zikula_routes_module.entity_factory"
-            #- "@zikula_routes_module.collection_filter_helper"
-            #- "@zikula_routes_module.model_helper"
-
-    #zikula_routes_module.entity_display_helper:
-        #class: Zikula\RoutesModule\Helper\EntityDisplayHelper
-        #arguments:
-            #- "@translator.default"
-            #- "@zikula_routes_module.listentries_helper"
-
-    #zikula_routes_module.listentries_helper:
-        #class: Zikula\RoutesModule\Helper\ListEntriesHelper
-        #arguments:
-            #- "@translator.default"
-
-    #zikula_routes_module.model_helper:
-        #class: Zikula\RoutesModule\Helper\ModelHelper
-        #arguments:
-            #- "@zikula_routes_module.entity_factory"
-
-    #zikula_routes_module.view_helper:
-        #class: Zikula\RoutesModule\Helper\ViewHelper
-        #arguments:
-            #- "@twig"
-            #- "@twig.loader"
-            #- "@request_stack"
-            #- "@zikula_permissions_module.api.permission"
-            #- "@zikula_extensions_module.api.variable"
-            #- "@zikula_core.common.theme.pagevars"
-            #- "@zikula_routes_module.controller_helper"
-        #calls:
-            #- method: setAdditionalDependencies
-              #arguments:
-                #- "@zikula.dynamic_config_dumper"
-                #- "@zikula_extensions_module.extension_repository"
-
-    #zikula_routes_module.workflow_helper:
-        #class: Zikula\RoutesModule\Helper\WorkflowHelper
-        #arguments:
-            #- "@translator.default"
-            #- "@workflow.registry"
-            #- "@logger"
-            #- "@zikula_permissions_module.api.permission"
-            #- "@zikula_users_module.current_user"
-            #- "@zikula_routes_module.entity_factory"
-            #- "@zikula_routes_module.listentries_helper"
-
-    #zikula_routes_module.link_container:
-        #class: Zikula\RoutesModule\Container\LinkContainer
-        #arguments:
-            #- "@translator.default"
-            #- "@router"
-            #- "@zikula_permissions_module.api.permission"
-            #- "@zikula_routes_module.controller_helper"
-        #tags:
-            #- { name: zikula.link_container }
-
-    #zikula_routes_module.log.processor:
-        #class: Monolog\Processor\PsrLogMessageProcessor
-        #tags:
-            #- { name: monolog.processor }
-
-    #zikula_routes_module.twig_extension:
-        #class: Zikula\RoutesModule\Twig\TwigExtension
-        #arguments:
-            #- "@translator.default"
-            #- "@zikula_extensions_module.api.variable"
-            #- "@zikula_routes_module.entity_display_helper"
-            #- "@zikula_routes_module.workflow_helper"
-            #- "@zikula_routes_module.listentries_helper"
-        #public: false
-        #calls:
-            #- method: setContainer
-              #arguments:
-                #- "@service_container"
-
-    #zikula_routes_module.validator.list_entry.validator:
-        #class: Zikula\RoutesModule\Validator\Constraints\ListEntryValidator
-        #arguments:
-            #- "@translator.default"
-            #- "@zikula_routes_module.listentries_helper"
-
-    jms_i18n_routing.route_exclusion_strategy:
-        class: '%jms_i18n_routing.route_exclusion_strategy.class%'
-        #arguments:
-        #    - "@zikula_routes_module.extract_translation_helper"
-
-    #zikula_routes_module.extract_translation_helper:
-        #class: Zikula\RoutesModule\Helper\ExtractTranslationHelper
+    Zikula\RoutesModule\Form\Handler\:
+        resource: '../../Form/Handler'
+        calls:
+            - [setLockingApi, ['@?Zikula\PageLockModule\Api\LockingApi']]
 
     # public because installer accesses this using container
     Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
         public: true
         arguments:
-            #- "@zikula_extensions_module.api.variable"
-            #- "@zikula.dynamic_config_dumper"
-            #- "@zikula.cache_clearer"
-            #- "@zikula_settings_module.locale_api"
-            #- "@kernel"
           $locale: '%locale%'
           $installed: '%installed%'
-
-    #zikula_routes_module.path_builder_helper:
-        #class: Zikula\RoutesModule\Helper\PathBuilderHelper
-        #arguments:
-            #- "@kernel"
 
     Zikula\RoutesModule\Helper\RouteDumperHelper:
         arguments:
             $dumpCommand: '@fos_js_routing.dump_command'
 
-    #zikula_routes_module.sanitize_helper:
-        #class: Zikula\RoutesModule\Helper\SanitizeHelper
+    Zikula\RoutesModule\Listener\EntityLifecycleListener:
+        tags: ['doctrine.event_subscriber']
 
-    #zikula_routes_module.installer_listener:
-        #class: Zikula\RoutesModule\Listener\InstallerListener
-        #arguments:
-            #- "@zikula.cache_clearer"
-            #- "@zikula_routes_module.route_dumper_helper"
-            #- "@zikula_routes_module.multilingual_routing_helper"
-            #- "@zikula_routes_module.entity_factory"
-            #- "@request_stack"
+    Zikula\RoutesModule\Menu\MenuBuilder:
+        tags:
+            - { name: knp_menu.menu_builder, method: createItemActionsMenu, alias: zikulaRoutesMenuItemActions }
+
+    jms_i18n_routing.route_exclusion_strategy:
+        class: '%jms_i18n_routing.route_exclusion_strategy.class%'
 
     Zikula\RoutesModule\Routing\RouteLoader:
         arguments:
-            #- "@kernel"
-            #- "@translator"
-            #- "@zikula_routes_module.entity_factory"
-            #- "@zikula_routes_module.extract_translation_helper"
-            #- "@zikula_routes_module.path_builder_helper"
-            #- "@zikula_routes_module.sanitize_helper"
             $locale: '%locale%'
         tags: ['routing.loader']
-
-    #zikula_routes_module.console_command_listener:
-        #class: Zikula\RoutesModule\Translation\ConsoleCommandListener
-        #arguments:
-            #- "@zikula_routes_module.extract_translation_helper"

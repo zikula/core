@@ -34,6 +34,7 @@ class ViewHelper extends AbstractViewHelper
     private $extensionRepository;
 
     /**
+     * @required
      * @param DynamicConfigDumper $configDumper
      * @param ExtensionRepositoryInterface $extensionRepository
      */

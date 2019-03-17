@@ -30,7 +30,7 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
             return;
         }
 
-        if (php_sapi_name() == 'cli') {
+        if ('cli' == php_sapi_name()) {
             return;
         }
 

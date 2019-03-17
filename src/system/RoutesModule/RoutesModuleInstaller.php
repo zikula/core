@@ -74,7 +74,9 @@ class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
                 ';
                 $this->entityManager->getConnection()->exec($sql);
             case '1.1.2':
-                // current version
+                // nothing
+            case '1.2.0':
+                // future updates
         }
 
         return true;

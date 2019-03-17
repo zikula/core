@@ -9,13 +9,14 @@
 {% block titleArea %}
     <h2>{% block title %}{% endblock %}</h2>
 {% endblock %}
-{{ pageSetVar('title', block('pageTitle')|default(block('title'))) }}
+{{ pageSetVar('title', block('pageTitle') is defined ? block('pageTitle') : block('title')) }}
 
 {{ showflashes() }}
 
 {% block content %}{% endblock %}
 
 {% block footer %}
+    {{ pageAddAsset('stylesheet', zasset('@ZikulaRoutesModule:css/custom.css'), 120) }}
     {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
     {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
     {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.js')) }}

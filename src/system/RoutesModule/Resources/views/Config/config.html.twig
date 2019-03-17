@@ -11,14 +11,18 @@
         {{ form_start(form) }}
         <div class="zikula-bootstrap-tab-container">
             <ul class="nav nav-tabs">
-            {% set tabTitle = __('List views') %}
-            <li role="presentation" class="active">
-                <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>
-            {#% set tabTitle = __('Workflows') %}
-            <li role="presentation">
-                <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-            </li>#}
+                {% set tabTitle = __('List views') %}
+                <li role="presentation" class="active">
+                    <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {% set tabTitle = __('Moderation') %}
+                <li role="presentation">
+                    <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>
+                {#{% set tabTitle = __('Workflows') %}
+                <li role="presentation">
+                    <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                </li>#}
             </ul>
 
             {{ form_errors(form) }}
@@ -31,6 +35,18 @@
                         <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
                     
                         {{ form_row(form.routeEntriesPerPage) }}
+                        {{ form_row(form.showOnlyOwnEntries) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
+                    {% set tabTitle = __('Moderation') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can define moderation-related settings.')|nl2br }}</p>
+                    
+                        {{ form_row(form.allowModerationSpecificCreatorForRoute) }}
+                        {{ form_row(form.allowModerationSpecificCreationDateForRoute) }}
                     </fieldset>
                 </div>
                 {#<div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
@@ -41,7 +57,7 @@
                         <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
                 
                         <h4>{{ __('Routes') }}</h4>
-                        <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'zikularoutesmodule_none' }) }}" title="{{ __('Edit workflow for routes') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit routes workflow') }}</a>
+                        <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'zikularoutesmodule_none'}) }}" title="{{ __('Edit workflow for routes') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit routes workflow') }}</a>
                     </fieldset>
                 </div>#}
             </div>
@@ -50,6 +66,7 @@
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.save) }}
+                {{ form_widget(form.reset) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>

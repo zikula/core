@@ -4,68 +4,60 @@ application "Routes" targets ZK30 {
     author "Zikula contributors"
     email "info@ziku.la"
     url "https://ziku.la"
-    version "1.1.2"
+    version "1.2.0"
     prefix "routes"
-    generatorSettings {
-        settingsContainer "Settings"
-        targetCoreVersion ZK15DEV
-        isSystemModule true
-        generateAccountApi false
-        generateSearchApi false
-        generateMailzApi false
-        generateListBlock false
-        generateDetailBlock false
-        generateModerationBlock false
-        generateListContentType false
-        generateDetailContentType false
-        generateNewsletterPlugin false
-        generateModerationPanel false
-        generatePendingContentSupport false
-        generateExternalControllerAndFinder false
-        generateScribitePlugins false
-        generateTagSupport false
-        generateMultiHookNeedles false
-        generateRssTemplates false
-        generateAtomTemplates false
-        generateCsvTemplates false
-        generateXmlTemplates false
-        generateJsonTemplates false
-        generateKmlTemplates false
-        generateIcsTemplates false
-        generatePoweredByBacklinksIntoFooterTemplates false
-        writeModelToDocs true
-        generateTechnicalDocumentation false
-        skipFiles "
-            .travis.yml,
-            CHANGELOG.md,
-            Container/LinkContainer.php,
-            Entity/Factory/EntityInitialiser.php,
-            Entity/Repository/RouteRepository.php,
-            Form/Handler/Route/EditHandler.php,
-            Form/Type/RouteType.php,
-            Helper/ViewHelper.php,
-            Listener/EntityLifecycleListener.php,
-            Listener/InstallerListener.php,
-            README.md,
-            Resources/config/routing.yml,
-            Resources/public/css/style.css,
-            Resources/workflows/none.yml,
-            RoutesModuleInstaller.php,
-            Twig/TwigExtension.php
-        "
-        markFiles "
-            composer.json,
-            Resources/config/eventSubscriber.yml,
-            Resources/config/forms.yml,
-            Resources/config/helpers.yml,
-            Resources/config/services.yml,
-            Resources/config/twig.yml,
-            Resources/views/Config/config.html.twig,
-            Resources/views/Route/display.html.twig,
-            Resources/views/Route/edit.html.twig,
-            Resources/views/Route/view.html.twig
-        "
-    }
+    isSystemModule true
+    generateAccountApi false
+    generateSearchApi false
+    generateMailzApi false
+    generateListBlock false
+    generateDetailBlock false
+    generateModerationBlock false
+    generateListContentType false
+    generateDetailContentType false
+    generateNewsletterPlugin false
+    generateModerationPanel false
+    generatePendingContentSupport false
+    generateExternalControllerAndFinder false
+    generateScribitePlugins false
+    generateTagSupport false
+    generateMultiHookNeedles false
+    generateRssTemplates false
+    generateAtomTemplates false
+    generateCsvTemplates false
+    generateXmlTemplates false
+    generateJsonTemplates false
+    generateKmlTemplates false
+    generateIcsTemplates false
+    generatePoweredByBacklinksIntoFooterTemplates false
+    writeModelToDocs true
+    generateTechnicalDocumentation false
+    skipFiles "
+        .styleci.yml,
+        .travis.yml,
+        CHANGELOG.md,
+        Container/LinkContainer.php,
+        Entity/Factory/EntityInitialiser.php,
+        Entity/Repository/RouteRepository.php,
+        Form/Handler/Route/EditHandler.php,
+        Form/Type/RouteType.php,
+        Helper/ViewHelper.php,
+        Listener/EntityLifecycleListener.php,
+        Listener/InstallerListener.php,
+        README.md,
+        Resources/config/routing.yml,
+        Resources/workflows/none.yml,
+        RoutesModuleInstaller.php,
+        Twig/TwigExtension.php
+    "
+    markFiles "
+        composer.json,
+        Resources/config/services.yml,
+        Resources/views/Config/config.html.twig,
+        Resources/views/Route/display.html.twig,
+        Resources/views/Route/edit.html.twig,
+        Resources/views/Route/view.html.twig
+    "
     entities {
         entity "route" leading {
             nameMultiple "routes"

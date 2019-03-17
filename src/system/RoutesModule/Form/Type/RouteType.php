@@ -31,6 +31,7 @@ class RouteType extends AbstractRouteType
     private $extensionRepository;
 
     /**
+     * @required
      * @param ExtensionRepositoryInterface $extensionRepository
      */
     public function setExtensionRepository(ExtensionRepositoryInterface $extensionRepository)

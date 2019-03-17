@@ -31,7 +31,7 @@ class LinkContainer extends AbstractLinkContainer
             return $links;
         }
 
-        if (!$this->permissionApi->hasPermission($this->getBundleName() . ':Route:', '::', ACCESS_ADMIN)) {
+        if (!$this->permissionHelper->hasComponentPermission('route', ACCESS_ADMIN)) {
             return $links;
         }
 
@@ -55,7 +55,7 @@ class LinkContainer extends AbstractLinkContainer
             'text' => $this->__('Dump exposed js routes to file'),
             'title' => $this->__('Dump exposed js routes to file')
         ];
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+        if ($this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikularoutesmodule_config_config'),
                 'text' => $this->__('Configuration'),

@@ -60,13 +60,13 @@ class MultilingualRoutingHelper
     /**
      * MultilingualRoutingHelper constructor.
      *
-     * @param VariableApiInterface      $variableApi
-     * @param DynamicConfigDumper       $configDumper
-     * @param CacheClearer              $cacheClearer
-     * @param LocaleApiInterface        $localeApi
+     * @param VariableApiInterface $variableApi
+     * @param DynamicConfigDumper $configDumper
+     * @param CacheClearer $cacheClearer
+     * @param LocaleApiInterface $localeApi
      * @param ZikulaHttpKernelInterface $kernel
-     * @param string                    $locale
-     * @param bool                      $installed
+     * @param string $locale
+     * @param bool $installed
      */
     public function __construct(
         VariableApiInterface $variableApi,
