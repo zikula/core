@@ -128,8 +128,9 @@ class StartCommand extends AbstractCoreInstallerCommand
         // write the parameters to personal_config.php and custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml', 'parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
-        $dbh = new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
-        $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
+        if ('pdo_' != substr($params['database_driver'], 0, 4)) {
+            $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
+        }
         $yamlManager->setParameters($params);
         $this->getContainer()->get(CacheClearer::class)->clear('symfony.config');
 

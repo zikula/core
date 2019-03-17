@@ -46,8 +46,7 @@ class RouteController extends AbstractRouteController
         Request $request,
         PermissionHelper $permissionHelper
     ) {
-        return $this->indexInternal($request, true
-        );
+        return $this->indexInternal($request, $permissionHelper, true);
     }
     
     /**
@@ -61,8 +60,7 @@ class RouteController extends AbstractRouteController
         Request $request,
         PermissionHelper $permissionHelper
     ) {
-        return $this->indexInternal($request, false
-        );
+        return $this->indexInternal($request, $permissionHelper, false);
     }
     
     /**
@@ -85,8 +83,7 @@ class RouteController extends AbstractRouteController
         $pos,
         $num
     ) {
-        return $this->viewInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $sort, $sortdir, $pos, $num, true
-        );
+        return $this->viewInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $sort, $sortdir, $pos, $num, true);
     }
     
     /**
@@ -108,8 +105,7 @@ class RouteController extends AbstractRouteController
         $pos,
         $num
     ) {
-        return $this->viewInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $sort, $sortdir, $pos, $num, false
-        );
+        return $this->viewInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $sort, $sortdir, $pos, $num, false);
     }
     
     /**
@@ -130,8 +126,7 @@ class RouteController extends AbstractRouteController
         EntityFactory $entityFactory,
         $id
     ) {
-        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $id, true
-        );
+        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $id, true);
     }
     
     /**
@@ -151,8 +146,7 @@ class RouteController extends AbstractRouteController
         EntityFactory $entityFactory,
         $id
     ) {
-        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $id, false
-        );
+        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $id, false);
     }
     
     /**
@@ -172,8 +166,7 @@ class RouteController extends AbstractRouteController
         ViewHelper $viewHelper,
         EditHandler $formHandler
     ) {
-        return $this->editInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $formHandler, true
-        );
+        return $this->editInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $formHandler, true);
     }
     
     /**
@@ -192,8 +185,7 @@ class RouteController extends AbstractRouteController
         ViewHelper $viewHelper,
         EditHandler $formHandler
     ) {
-        return $this->editInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $formHandler, false
-        );
+        return $this->editInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $formHandler, false);
     }
     
     /**
@@ -216,8 +208,7 @@ class RouteController extends AbstractRouteController
         WorkflowHelper $workflowHelper,
         $id
     ) {
-        return $this->deleteInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $currentUserApi, $workflowHelper, $id, true
-        );
+        return $this->deleteInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $currentUserApi, $workflowHelper, $id, true);
     }
     
     /**
@@ -239,8 +230,7 @@ class RouteController extends AbstractRouteController
         WorkflowHelper $workflowHelper,
         $id
     ) {
-        return $this->deleteInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $currentUserApi, $workflowHelper, $id, false
-        );
+        return $this->deleteInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $currentUserApi, $workflowHelper, $id, false);
     }
     
     /**
