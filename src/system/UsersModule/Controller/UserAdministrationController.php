@@ -408,13 +408,13 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             // the users.search.process_edit event is no longer dispatched with this method. could it be done in a Transformer? #3652
-            $deleteForm = $this->createForm(DeleteType::class, [], [
+            $resultsForm = $this->createForm(DeleteType::class, [], [
                 'choices' => $userRepository->queryBySearchForm($form->getData()),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete')
             ]);
 
             return $this->render('@ZikulaUsersModule/UserAdministration/searchResults.html.twig', [
-                'deleteForm' => $deleteForm->createView(),
+                'resultsForm' => $resultsForm->createView(),
                 'mailForm' => $this->buildMailForm($variableApi)->createView()
             ]);
         }

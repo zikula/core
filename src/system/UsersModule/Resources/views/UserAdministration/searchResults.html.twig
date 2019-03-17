@@ -9,14 +9,13 @@
     {{ pageSetVar('title', __('Search results')) }}
 </h3>
 
-{% form_theme deleteForm with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+{% form_theme resultsForm with [
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-
 <div>
-    {{ form_start(deleteForm) }}
-    {{ form_errors(deleteForm) }}
+    {{ form_start(resultsForm) }}
+    {{ form_errors(resultsForm) }}
     <table class="table table-bordered table-striped">
         <colgroup>
             {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
@@ -37,7 +36,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for user in deleteForm.users %}
+            {% for user in resultsForm.users %}
                 {% set excluded = user.vars.name <= 2 ? true : false %}
                 <tr{% if excluded %} class="warning"{% endif %}>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
@@ -72,20 +71,20 @@
         <div class="col-sm-offset-3 col-sm-9">
             <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"><i class="fa fa-envelope"></i> {{ __('Mail selected users') }}</button>
             {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-                {{ form_widget(deleteForm.delete) }}
+                {{ form_widget(resultsForm.delete) }}
             {% endif %}
             <a class="btn btn-default" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fa fa-refresh"></i> {{ __('Return to User Administration') }}</a>
         </div>
     </div>
-    {{ form_end(deleteForm) }}
+    {{ form_end(resultsForm) }}
 </div>
 
 {% form_theme mailForm with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 <div class="collapse" id="email-users-form">
-    <hr>
+    <hr />
     {{ form_start(mailForm) }}
     {{ form_errors(mailForm) }}
     <div class="container-fluid">
