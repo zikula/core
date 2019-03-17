@@ -1,12 +1,19 @@
 build:
-    environment:
-        php: '7.1.6'
-        apache2:
-            modules: ['rewrite']
-    tests:
-        override:
-            # disable test executions for now because system module test suites are broken
-            - true
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+
+    tests-and-coverage:
+        environment:
+            php: '7.2.0'
+            apache2:
+                modules: ['rewrite']
+        tests:
+            override:
+                # disable test executions for now because system module test suites are broken
+                - true
 filter:
     excluded_paths:
         - 'src/lib/Zikula/Bundle/WorkflowBundle/Resources/public/js/jsPlumb/*'
