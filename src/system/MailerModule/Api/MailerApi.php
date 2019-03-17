@@ -115,8 +115,17 @@ class MailerApi implements MailerApiInterface
     /**
      * {@inheritdoc}
      */
-    public function sendMessage(Swift_Message $message, $subject = null, $body = null, $altBody = '', $html = false, array $headers = [], array $attachments = [], array $stringAttachments = [], array $embeddedImages = [])
-    {
+    public function sendMessage(
+        Swift_Message $message,
+        $subject = null,
+        $body = null,
+        $altBody = '',
+        $html = false,
+        array $headers = [],
+        array $attachments = [],
+        array $stringAttachments = [],
+        array $embeddedImages = []
+    ) {
         if (!$this->installed) {
             return;
         }

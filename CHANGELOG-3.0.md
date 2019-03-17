@@ -50,6 +50,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Clear cache after changing active authentication methods (#3936).
     - Cosmetical corrections for account link graphics.
     - Prevent exception caused by modification of uninitialised extensions.
+    - Properly consider "user must verify" flag during user creation in ZAuth module (#3964).
 
  - Features:
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).

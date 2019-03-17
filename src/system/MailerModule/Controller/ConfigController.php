@@ -173,8 +173,7 @@ class ConfigController extends AbstractController
                     $adminMail = $variableApi->getSystemVar('adminmail');
 
                     // create new message instance
-                    /** @var Swift_Message */
-                    $message = Swift_Message::newInstance();
+                    $message = new Swift_Message();
 
                     $message->setFrom([$adminMail => $siteName]);
                     $message->setTo([$formData['toAddress'] => $formData['toName']]);

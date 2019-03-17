@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
@@ -34,11 +35,20 @@ class AdminCreatedUserType extends AbstractType
     use TranslatorTrait;
 
     /**
-     * @param TranslatorInterface $translator
+     * @var VariableApiInterface
      */
-    public function __construct(TranslatorInterface $translator)
-    {
+    private $variableApi;
+
+    /**
+     * @param TranslatorInterface $translator
+     * @param VariableApiInterface $variableApi
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
         $this->setTranslator($translator);
+        $this->variableApi = $variableApi;
     }
 
     /**
@@ -126,6 +136,7 @@ class AdminCreatedUserType extends AbstractType
             ->add('usermustverify', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
+                'data' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED),
                 'label' => $this->__('User must verify email address'),
                 'help' => $this->__('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
                 'alert' => [$this->__('It is recommended to force users to verify their email address.') => 'info']

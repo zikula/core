@@ -11,7 +11,7 @@
 
 namespace Zikula\ZAuthModule\AuthenticationMethod;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -30,9 +30,9 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     private $mappingRepository;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var TranslatorInterface
@@ -58,7 +58,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      * AbstractNativeAuthenticationMethod constructor.
      *
      * @param AuthenticationMappingRepositoryInterface $mappingRepository
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      * @param TranslatorInterface $translator
      * @param VariableApiInterface $variableApi
      * @param ValidatorInterface $validator
@@ -66,14 +66,14 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     public function __construct(
         AuthenticationMappingRepositoryInterface $mappingRepository,
-        SessionInterface $session,
+        RequestStack $requestStack,
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
         ValidatorInterface $validator,
         PasswordApiInterface $passwordApi
     ) {
         $this->mappingRepository = $mappingRepository;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
         $this->variableApi = $variableApi;
         $this->validator = $validator;
@@ -101,21 +101,20 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
      */
     protected function authenticateByField(array $data, $field = 'uname')
     {
-        if (isset($data[$field])) {
-            $mapping = $this->getMapping($field, $data[$field]);
-            if ($mapping) {
-                if ($this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
-                    // is this the place to update the hash method? #2842
-                    return $mapping->getUid();
-                } else {
-                    $this->session->getFlashBag()->add('error', $this->translator->__('Login failed.'));
-                }
-            } else {
-                $this->session->getFlashBag()->add('error', $this->translator->__('Login failed.'));
+        if (!isset($data[$field])) {
+            return null;
+        }
+
+        $mapping = $this->getMapping($field, $data[$field]);
+        if ($mapping) {
+            if ($this->passwordApi->passwordsMatch($data['pass'], $mapping->getPass())) {
+                // is this the place to update the hash method? #2842
+                return $mapping->getUid();
             }
         }
 
-        return null;
+        $session = $this->requestStack->getCurrentRequest()->getSession();
+        $session->getFlashBag()->add('error', $this->translator->__('Login failed.'));
     }
 
     /**
@@ -138,7 +137,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
             $errors = $this->validator->validate($mapping);
             if (count($errors) > 0) {
                 // the error is probably only because of duplicate email... so....
-                $this->session->getFlashBag()->add('error', $this->translator->__('The email you are trying to authenticate with is in use by another user. You can only login by username.'));
+                $session = $this->requestStack->getCurrentRequest()->getSession();
+                $session->getFlashBag()->add('error', $this->translator->__('The email you are trying to authenticate with is in use by another user. You can only login by username.'));
                 $mapping = null;
             } else {
                 $this->mappingRepository->persistAndFlush($mapping);
@@ -165,12 +165,18 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
 
         $mapping->setMethod($this->getAlias());
-        $requireVerifiedEmail = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
-        $mapping->setVerifiedEmail(!$requireVerifiedEmail);
+
+        $session = $this->requestStack->getCurrentRequest()->getSession();
+        $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+            ? 'Y' == $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+            : $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED)
+        ;
+
+        $mapping->setVerifiedEmail(!$userMustVerify);
         $errors = $this->validator->validate($mapping);
         if (count($errors) > 0) {
             foreach ($errors as $error) {
-                $this->session->getFlashBag()->add('error', $error->getMessage());
+                $session->getFlashBag()->add('error', $error->getMessage());
             }
 
             return false;

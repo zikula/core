@@ -11,6 +11,7 @@
 
 namespace Zikula\ZAuthModule\Helper;
 
+use Swift_Message;
 use Twig\Error\LoaderError;
 use Twig\Environment;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -95,13 +96,13 @@ class MailHelper
 
         $sitename = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
 
-        $message = \Swift_Message::newInstance();
+        $message = new Swift_Message($subject);
         $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);
         $message->setTo([$toAddress]);
         $body = $html ? $htmlBody : $textBody;
         $altBody = $html ? $textBody : '';
 
-        return $this->mailerApi->sendMessage($message, $subject, $body, $altBody, $html);
+        return $this->mailerApi->sendMessage($message, null, $body, $altBody, $html);
     }
 
     /**

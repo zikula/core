@@ -12,6 +12,7 @@
 namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -24,6 +25,11 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationListener implements EventSubscriberInterface
 {
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
     /**
      * @var CurrentUserApiInterface
      */
@@ -66,6 +72,8 @@ class RegistrationListener implements EventSubscriberInterface
 
     /**
      * RegistrationListener constructor.
+     *
+     * @param RequestStack $requestStack
      * @param CurrentUserApiInterface $currentUserApi
      * @param PermissionApiInterface $permissionApi
      * @param VariableApiInterface $variableApi
@@ -73,12 +81,14 @@ class RegistrationListener implements EventSubscriberInterface
      * @param RegistrationVerificationHelper $registrationVerificationHelper
      */
     public function __construct(
+        RequestStack $requestStack,
         CurrentUserApiInterface $currentUserApi,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         AuthenticationMappingRepositoryInterface $mappingRepository,
         RegistrationVerificationHelper $registrationVerificationHelper
     ) {
+        $this->requestStack = $requestStack;
         $this->currentUserApi = $currentUserApi;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
@@ -104,7 +114,11 @@ class RegistrationListener implements EventSubscriberInterface
         }
         // user doesn't exist or email is not verified
         $isAdmin = $this->currentUserApi->isLoggedIn() && $this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_EDIT);
-        $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
+        $session = $this->requestStack->getCurrentRequest()->getSession();
+        $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+            ? 'Y' == $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+            : $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED)
+        ;
         if ($userMustVerify && !$isAdmin) {
             $event->stopPropagation();
         }

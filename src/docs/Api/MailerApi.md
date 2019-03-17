@@ -38,7 +38,7 @@ The class is fully tested.
 
 The fastest way to use this Api:
 
-    $message = Swift_Message::newInstance('my subject', 'the body text');
+    $message = new Swift_Message('my subject', 'the body text');
     $message->setFrom('admin@example.com');
     $message->setTo('foo@bar.com');
     $this->mailerAPi->sendMessage($message);
@@ -46,8 +46,7 @@ The fastest way to use this Api:
 Another example for using this service can be found in the `Zikula\MailerModule\Controller\ConfigController#testAction(Request $request)` method:
 
     // create new message instance
-    /** @var Swift_Message */
-    $message = Swift_Message::newInstance();
+    $message = new Swift_Message();
 
     $message->setFrom([$adminMail => $siteName]);
     $message->setTo([$formData['toAddress'] => $formData['toName']]);

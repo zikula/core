@@ -391,8 +391,7 @@ class FilterListener implements EventSubscriberInterface
             $adminMail = $this->getSystemVar('adminmail');
 
             // create new message instance
-            /** @var Swift_Message */
-            $message = Swift_Message::newInstance();
+            $message = new Swift_Message();
 
             $message->setFrom([$adminMail => $siteName]);
             $message->setTo([$adminMail => $this->translator->__('Site Administrator')]);

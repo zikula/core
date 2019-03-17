@@ -11,6 +11,7 @@
 
 namespace Zikula\GroupsModule\Listener;
 
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -75,8 +76,7 @@ class GroupEventListener implements EventSubscriberInterface
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
 
-        /** @var \Swift_Message */
-        $message = \Swift_Message::newInstance();
+        $message = new Swift_Message();
         $message->setFrom([$adminMail => $siteName]);
         $user = $applicationEntity->getUser();
         $message->setTo([$user->getEmail() => $user->getUname()]);

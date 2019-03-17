@@ -11,6 +11,7 @@
 
 namespace Zikula\UsersModule\Helper;
 
+use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Error\LoaderError;
 use Twig\Environment;
@@ -194,15 +195,13 @@ class MailHelper
     public function mailUsers(array $users, array $messageData)
     {
         $mailSent = true;
-        $message = \Swift_Message::newInstance();
+        $message = new Swift_Message($messageData['subject'], $messageData['message']);
         $message->setFrom([$messageData['replyto'] => $messageData['from']]);
         if (1 == count($users)) {
             $message->setTo([$users[0]->getEmail() => $users[0]->getUname()]);
         } else {
             $message->setTo([$messageData['replyto'] => $messageData['from']]);
         }
-        $message->setSubject($messageData['subject']);
-        $message->setBody($messageData['message']);
         if (count($users) > 1) {
             $bcc = [];
             foreach ($users as $user) {
@@ -255,10 +254,9 @@ class MailHelper
 
         $sitename = $this->variableApi->getSystemVar('sitename', $this->variableApi->getSystemVar('sitename_en'));
 
-        $message = \Swift_Message::newInstance();
+        $message = new Swift_Message($subject);
         $message->setFrom([$this->variableApi->getSystemVar('adminmail') => $sitename]);
         $message->setTo([$toAddress]);
-        $message->setSubject($subject);
         $message->setBody($html ? $htmlBody : $textBody);
 
         return $this->mailerApi->sendMessage($message, null, null, $textBody, $html);
