@@ -52,7 +52,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
                 ->setParameter('gid', $group);
         }
         if (isset($component)) {
-            $qb->andWhere("p.component LIKE :permgrpparts")
+            $qb->andWhere('p.component LIKE :permgrpparts')
                 ->setParameter('permgrpparts', $component . '%');
         }
 

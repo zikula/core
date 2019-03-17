@@ -52,6 +52,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Prevent exception caused by modification of uninitialised extensions.
     - Properly consider "user must verify" flag during user creation in ZAuth module (#3964).
     - Removed workaround for older DBAL versions (#2185).
+    - Properly handle deleted user groups in permissions module (#3963).
 
  - Features:
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).

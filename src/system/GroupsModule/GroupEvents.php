@@ -26,6 +26,12 @@ class GroupEvents
     const GROUP_UPDATE = 'group.update';
 
     /**
+     * Occurs before a group is deleted from the system. All handlers are notified. The full group record
+     * to be deleted is available as the subject.
+     */
+    const GROUP_PRE_DELETE = 'group.pre_delete';
+
+    /**
      * Occurs after a group is deleted from the system. All handlers are notified. The full group record
      * deleted is available as the subject.
      */

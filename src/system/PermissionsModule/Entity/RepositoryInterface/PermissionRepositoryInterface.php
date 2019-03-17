@@ -29,4 +29,6 @@ interface PermissionRepositoryInterface
     public function updateSequencesFrom($value, $amount = 1);
 
     public function reSequence();
+
+    public function deleteGroupPermissions($groupId = 0);
 }

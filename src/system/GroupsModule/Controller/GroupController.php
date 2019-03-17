@@ -224,6 +224,7 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
+                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_PRE_DELETE, new GenericEvent($groupEntity));
                 $this->get('doctrine')->getManager()->remove($groupEntity);
                 $this->get('doctrine')->getManager()->flush();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_DELETE, new GenericEvent($groupEntity));

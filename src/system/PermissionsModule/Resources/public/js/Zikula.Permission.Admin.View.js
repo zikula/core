@@ -84,8 +84,7 @@ var currentDelete;
                     pid: pid
                 }),
                 data: pars
-            }).done(function(result) {
-                var data = result.data;
+            }).done(function(data) {
                 if (data.view) {
                     // validation failed
                     updateEditForm(data.view);
