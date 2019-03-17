@@ -23,7 +23,7 @@ class RedirectingController extends Controller
     /**
      * Remove trailing slash.
      *
-     * @param Request $request Current request instance
+     * @param Request $request
      *
      * @return RedirectResponse
      */

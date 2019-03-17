@@ -13,9 +13,14 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
+use Zikula\RoutesModule\Helper\PermissionHelper;
+use Zikula\RoutesModule\Helper\RouteDumperHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
@@ -31,25 +36,31 @@ class UpdateController extends AbstractController
      * )
      * @Theme("admin")
      *
-     * @param Request $request Current request instance
+     * @param Request $request
+     * @param PermissionHelper $permissionHelper
+     * @param CacheClearer $cacheClearer
+     * @param RouteDumperHelper $routeDumperHelper
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function reloadAction(Request $request)
-    {
-        $objectType = 'route';
-        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
+    public function reloadAction(
+        Request $request,
+        PermissionHelper $permissionHelper,
+        CacheClearer $cacheClearer,
+        RouteDumperHelper $routeDumperHelper
+    ) {
+        if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $this->get('zikula.cache_clearer')->clear('symfony.routing');
+        $cacheClearer->clear('symfony.routing');
 
         $this->addFlash('status', $this->__('Done! Routes reloaded.'));
 
         // reload **all** JS routes
-        $this->dumpJsRoutes();
+        $this->dumpJsRoutes($routeDumperHelper);
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }
@@ -62,21 +73,25 @@ class UpdateController extends AbstractController
      * )
      * @Theme("admin")
      *
-     * @param Request $request Current request instance
+     * @param Request $request
+     * @param PermissionHelper $permissionHelper
+     * @param MultilingualRoutingHelper $multilingualRoutingHelper
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function renewAction(Request $request)
-    {
-        $objectType = 'route';
-        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
+    public function renewAction(
+        Request $request,
+        PermissionHelper $permissionHelper,
+        MultilingualRoutingHelper $multilingualRoutingHelper
+    ) {
+        if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // Renew the routing settings.
-        $this->get('zikula_routes_module.multilingual_routing_helper')->reloadMultilingualRoutingSettings();
+        $multilingualRoutingHelper->reloadMultilingualRoutingSettings();
 
         $this->addFlash('status', $this->__('Done! Routing settings renewed.'));
 
@@ -92,20 +107,25 @@ class UpdateController extends AbstractController
      * )
      * @Theme("admin")
      *
-     * @param Request $request Current request instance
+     * @param Request $request
+     * @param PermissionHelper $permissionHelper
+     * @param RouteDumperHelper $routeDumperHelper
      *
      * @return Response Output
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
-    public function dumpJsRoutesAction(Request $request, $lang = null)
-    {
-        $objectType = 'route';
-        if (!$this->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', ACCESS_ADMIN)) {
+    public function dumpJsRoutesAction(
+        Request $request,
+        PermissionHelper $permissionHelper,
+        RouteDumperHelper $routeDumperHelper,
+        $lang = null
+    ) {
+        if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $this->dumpJsRoutes($lang);
+        $this->dumpJsRoutes($routeDumperHelper, $lang);
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }
@@ -113,9 +133,8 @@ class UpdateController extends AbstractController
     /**
      * Dumps exposed JS routes to '/web/js/fos_js_routes.js'.
      */
-    private function dumpJsRoutes($lang = null)
+    private function dumpJsRoutes(RouteDumperHelper $routeDumperHelper, $lang = null)
     {
-        $routeDumperHelper = $this->get('zikula_routes_module.route_dumper_helper');
         $result = $routeDumperHelper->dumpJsRoutes($lang);
 
         if ($result == '') {
