@@ -17,6 +17,7 @@ CHANGELOG - ZIKULA 3.0.x
         - `Zikula\Bundle\HookBundle\HookProviderInterface` has dropped `setServiceId` and `getServiceId` methods.
         - `Zikula\Bundle\HookBundle\Collector\HookCollectorInterface` has changed signature of `addProvider()` and `addSubscriber()` methods.
         - `Zikula\Common\Content\ContentTypeInterface` requires a new method `getBundleName()` to be implemented.
+        - `Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface` requires a new method `deleteGroupPermissions` to be implemented.
         - `Zikula\ŞearchModule\SearchableInterface` requires a new method `getBundleName()` to be implemented.
         - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
         - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
