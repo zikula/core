@@ -64,24 +64,31 @@ class AccessController extends AbstractController
 
         $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
+            // there are multiple authentication methods available and none selected yet, so let the user choose one
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
                 'collector' => $authenticationMethodCollector,
                 'path' => 'zikulausersmodule_access_login'
             ]);
-        } else {
-            if (empty($selectedMethod) && 1 == count($authenticationMethodCollector->getActiveKeys())) {
-                $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
-            }
-            $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
-            if (!empty($returnUrl)) {
-                $request->getSession()->set('returnUrl', $returnUrl);
-            } // save returnUrl to session for reEntrant needs
         }
+        if (empty($selectedMethod) && 1 == count($authenticationMethodCollector->getActiveKeys())) {
+            // there is only one authentication method available, so use this
+            $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
+        }
+        // save method to session for reEntrant needs
+        $request->getSession()->set('authenticationMethod', $selectedMethod);
+        if (!empty($returnUrl)) {
+            // save returnUrl to session for reEntrant needs
+            $request->getSession()->set('returnUrl', $returnUrl);
+        }
+
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
         $dispatcher = $this->get('event_dispatcher');
 
         $dispatcher->dispatch(AccessEvents::LOGIN_STARTED, new GenericEvent());
+
+        $loginHeader = $this->renderView('@ZikulaUsersModule/Access/loginHeader.html.twig');
+        $loginFooter = $this->renderView('@ZikulaUsersModule/Access/loginFooter.html.twig');
 
         $form = null;
         if ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface) {
@@ -98,12 +105,15 @@ class AccessController extends AbstractController
                 $uid = $authenticationMethod->authenticate($data);
             } else {
                 return $this->render($authenticationMethod->getLoginTemplateName(), [
+                    'loginHeader' => $loginHeader,
+                    'loginFooter' => $loginFooter,
                     'form' => $form->createView(),
                     'additional_templates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
                 ]);
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
-            $uid = ('POST' == $request->getMethod()) ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate(); // provide temp value for uid until form gives real value.
+            // provide temp value for uid until form gives real value.
+            $uid = ('POST' == $request->getMethod()) ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
             $hasListeners = $dispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM);
             $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
@@ -112,11 +122,13 @@ class AccessController extends AbstractController
                 $dispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM, $loginFormEvent);
                 if ($form->count() > 3) { // count > 3 means that the AUTHENTICATION_FORM event added some form children
                     $form->handleRequest($request);
-                    if ($form->isValid() && $form->isSubmitted()) {
+                    if ($form->isSubmitted() && $form->isValid()) {
                         $uid = $form->get('uid')->getData();
                         $rememberMe = $form->get('rememberme')->getData();
                     } else {
                         return $this->render('@ZikulaUsersModule/Access/defaultLogin.html.twig', [
+                            'loginHeader' => $loginHeader,
+                            'loginFooter' => $loginFooter,
                             'form' => $form->createView(),
                             'additional_templates' => isset($loginFormEvent) ? $loginFormEvent->getTemplates() : []
                         ]);

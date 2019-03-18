@@ -1,12 +1,11 @@
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ moduleHeader('user', __('Login'), '', true) }}
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
-
+    {{ loginHeader|raw }}
     {{ form_row(form.rememberme) }}
     {% for additional_template in additional_templates %}
         {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
@@ -20,4 +19,5 @@
             <a class="btn btn-default" role="button" href="{{ path('home') }}">{{ __('Cancel') }}</a>
         </div>
     </div>
+    {{ loginFooter|raw }}
 {{ form_end(form) }}

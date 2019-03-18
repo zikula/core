@@ -1,14 +1,17 @@
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
-
 <div class="well">
+    {{ loginHeader|raw }}
     {{ form_start(form) }}
     {{ form_errors(form) }}
+
     <p>{{ form_widget(form.either) }}</p>
     <p>{{ form_widget(form.pass) }}</p>
     <p>{{ form_widget(form.rememberme) }} {{ __('Remember me') }}</p>
     {{ form_row(form.submit) }}
+
     {{ form_end(form) }}
+    {{ loginFooter|raw }}
 </div>

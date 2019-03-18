@@ -1,12 +1,13 @@
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ moduleHeader('user', __('User login'), '', true, true) }}
-
 <div class="well">
+    {{ loginHeader|raw }}
     {{ form_start(form) }}
     {{ form_errors(form) }}
+
     {{ form_row(form.uname) }}
     {{ form_row(form.pass) }}
     {{ form_row(form.rememberme) }}
@@ -19,5 +20,7 @@
     </div>
 
     {{ form_row(form.submit) }}
+
     {{ form_end(form) }}
+    {{ loginFooter|raw }}
 </div>

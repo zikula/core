@@ -61,6 +61,8 @@ CHANGELOG - ZIKULA 3.0.x
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
     - Allow zasset syntax for relative assets also for normal bundles.
     - Added support for separators in dropdown menus of extensions interface / module links (#3904).
+    - Added common header/footer templates for login templates (#3937).
+    - Added common header/footer templates for user registration and login related email templates (#3937).
 
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0

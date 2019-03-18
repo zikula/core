@@ -1,11 +1,11 @@
 {% form_theme form with [
-'ZikulaZAuthModule:Authentication:input_group_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaZAuthModule:Authentication:input_group_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {% if linkOnly %}
     <a href="{{ path('zikulausersmodule_access_login') }}" class="btn btn-default navbar-btn">{{ __('Login') }}</a>
 {% else %}
-    {{ form_start(form, { 'attr': {'class': 'navbar-form navbar-right'} }) }}
+    {{ form_start(form, {attr: {class: 'navbar-form navbar-right'} }) }}
     {{ form_errors(form) }}
     {{ form_widget(form.uname) }}
     {{ form_widget(form.pass) }}
@@ -18,7 +18,7 @@
         {{ form_widget(form.submit) }}
         <ul class="dropdown-menu">
             {% if getModVar('ZConfig', 'seclevel') == 'high' %}
-                {{ form_row(form.rememberme, { 'attr': {'class': 'hidden-row'} }) }}
+                {{ form_row(form.rememberme, {attr: {class: 'hidden-row'} }) }}
             {% else %}
                 <li style="padding-left: 20px;">{{ form_row(form.rememberme) }}</li>
             {% endif %}

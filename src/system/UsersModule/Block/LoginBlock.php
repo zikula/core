@@ -100,6 +100,8 @@ class LoginBlock extends AbstractBlockHandler
                 ]);
                 $templateParams['form'] = $form->createView();
                 $template = $authenticationMethod->getLoginTemplateName('block', $properties['position']);
+                $templateParams['loginHeader'] = $this->renderView('@ZikulaUsersModule/Access/loginHeader.html.twig');
+                $templateParams['loginFooter'] = $this->renderView('@ZikulaUsersModule/Access/loginFooter.html.twig');
             }
         }
 
