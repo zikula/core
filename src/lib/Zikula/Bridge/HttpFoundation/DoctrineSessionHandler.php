@@ -12,6 +12,7 @@
 namespace Zikula\Bridge\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
@@ -21,7 +22,7 @@ use Zikula\UsersModule\Entity\UserSessionEntity;
 /**
  * Class DoctrineSessionHandler
  */
-class DoctrineSessionHandler implements \SessionHandlerInterface
+class DoctrineSessionHandler extends AbstractSessionHandler
 {
     /**
      * @var SessionStorageInterface
@@ -49,6 +50,11 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     private $installed;
 
     /**
+     * @var bool Whether gc() has been called
+     */
+    private $gcCalled = false;
+
+    /**
      * @param UserSessionRepositoryInterface $userSessionRepository
      * @param VariableApiInterface $variableApi
      * @param RequestStack $requestStack
@@ -74,23 +80,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function close()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function read($sessionId)
+    protected function doRead($sessionId)
     {
         if (!$this->installed) {
             return '';
@@ -107,23 +97,14 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $vars)
+    protected function doWrite($sessionId, $data)
     {
         if (!$this->installed) {
             return true;
         }
 
-        $sessionEntity = $this->userSessionRepository->find($sessionId);
-        if (!$sessionEntity) {
-            $sessionEntity = new UserSessionEntity();
-        }
-        $sessionEntity->setSessid($sessionId);
-        $sessionEntity->setIpaddr($this->getCurrentIp());
-        $sessionEntity->setLastused(date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed()));
-        $attributesBag = $this->storage->getBag('attributes')->getBag();
-        $sessionEntity->setUid($attributesBag->get('uid', Constant::USER_ID_ANONYMOUS));
-        $sessionEntity->setRemember($attributesBag->get('rememberme', 0));
-        $sessionEntity->setVars($vars);
+        $sessionEntity = $this->getSessionEntity($sessionId);
+        $sessionEntity->setVars($data);
         $this->userSessionRepository->persistAndFlush($sessionEntity);
 
         return true;
@@ -132,7 +113,23 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId)
+    public function gc($maxlifetime)
+    {
+        if (!$this->installed) {
+            return true;
+        }
+
+        // We delay gc() to close() so that it is executed outside the transactional and blocking read-write process.
+        // This way, pruning expired sessions does not block them from being started while the current session is used.
+        $this->gcCalled = true;
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doDestroy($sessionId)
     {
         // expire the cookie
         if ('cli' != php_sapi_name()) {
@@ -146,17 +143,58 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function gc($lifetime)
+    public function close()
     {
+        $result = true;
         if (!$this->installed) {
-            return true;
+            return $result;
         }
 
-        return $this->userSessionRepository->gc(
-            $this->variableApi->getSystemVar('seclevel', 'Medium'),
-            $this->variableApi->getSystemVar('secinactivemins', 20),
-            $this->variableApi->getSystemVar('secmeddays', 7)
-        );
+        if ($this->gcCalled) {
+            $this->gcCalled = false;
+
+            $result = $this->userSessionRepository->gc(
+                $this->variableApi->getSystemVar('seclevel', 'Medium'),
+                $this->variableApi->getSystemVar('secinactivemins', 20),
+                $this->variableApi->getSystemVar('secmeddays', 7)
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateTimestamp($sessionId, $data)
+    {
+        $sessionEntity = $this->getSessionEntity($sessionId);
+        $sessionEntity->setVars($data);
+        $this->userSessionRepository->persistAndFlush($sessionEntity);
+    }
+
+    /**
+     * Returns the session entity.
+     *
+     * @param string $sessionId
+     *
+     * @return UserSessionEntity
+     */
+    private function getSessionEntity($sessionId)
+    {
+        $sessionEntity = $this->userSessionRepository->find($sessionId);
+        if (!$sessionEntity) {
+            $sessionEntity = new UserSessionEntity();
+        }
+        $sessionEntity->setSessid($sessionId);
+        $sessionEntity->setIpaddr($this->getCurrentIp());
+        $sessionEntity->setLastused(date('Y-m-d H:i:s', $this->storage->getMetadataBag()->getLastUsed()));
+
+        $attributesBag = $this->storage->getBag('attributes')->getBag();
+        $sessionEntity->setUid($attributesBag->get('uid', Constant::USER_ID_ANONYMOUS));
+        $sessionEntity->setRemember($attributesBag->get('rememberme', 0));
+
+        return $sessionEntity;
     }
 
     /**
