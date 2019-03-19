@@ -121,25 +121,29 @@ class BlockController extends AbstractController
         $form->handleRequest($request);
 
         list($moduleName) = explode(':', $blockEntity->getBkey());
-        if ($form->isSubmitted() && $form->get('save')->isClicked() && $form->isValid()) {
-            // sort Filter array so keys are always sequential.
-            $filters = $blockEntity->getFilters();
-            sort($filters);
-            $blockEntity->setFilters($filters);
-            /** @var \Doctrine\ORM\EntityManager $em */
-            $em = $this->getDoctrine()->getManager();
-            $module = $extensionRepository->findOneBy(['name' => $moduleName]);
-            $blockEntity->setModule($module);
-            $em->persist($blockEntity);
-            $em->flush();
-            $this->addFlash('status', $this->__('Block saved!'));
+        if ($form->isSubmitted()) {
+            if ($form->get('save')->isClicked() && $form->isValid()) {
+                // sort filter array so keys are always sequential.
+                $filters = $blockEntity->getFilters();
+                sort($filters);
+                $blockEntity->setFilters($filters);
 
-            return $this->redirectToRoute('zikulablocksmodule_admin_view');
-        }
-        if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
-            $this->addFlash('status', $this->__('Operation cancelled.'));
+                /** @var \Doctrine\ORM\EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $module = $extensionRepository->findOneBy(['name' => $moduleName]);
+                $blockEntity->setModule($module);
 
-            return $this->redirectToRoute('zikulablocksmodule_admin_view');
+                $em->persist($blockEntity);
+                $em->flush();
+                $this->addFlash('status', $this->__('Block saved!'));
+
+                return $this->redirectToRoute('zikulablocksmodule_admin_view');
+            }
+            if ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', $this->__('Operation cancelled.'));
+
+                return $this->redirectToRoute('zikulablocksmodule_admin_view');
+            }
         }
 
         return $this->render('@ZikulaBlocksModule/Admin/edit.html.twig', [
