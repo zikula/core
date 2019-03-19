@@ -81,10 +81,21 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             case '3.7.12':
                 $this->setVar('itemsperpage', 40);
             case '3.7.13':
-                $this->schemaTool->update([ExtensionEntity::class]);
             case '3.7.14':
                 $this->schemaTool->update([ExtensionEntity::class]);
             case '3.7.15':
+                // Load DB connection
+                $connection = $this->entityManager->getConnection();
+
+                // increase length of some hook table fields from 20 to 60
+                $commands = [];
+                $commands[] = "ALTER TABLE `modules` CHANGE `core_min` `coreCompatibility` VARCHAR(64) NOT NULL";
+                $commands[] = "ALTER TABLE `modules` DROP COLUMN `core_max`";
+
+                foreach ($commands as $sql) {
+                    $connection->executeQuery($sql);
+                }
+            case '3.7.16':
                 // future upgrade routines
         }
 

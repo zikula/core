@@ -301,9 +301,7 @@ class BundleSyncHelper
             }
 
             // check extension core requirement is compatible with current core
-            $coreCompatibility = isset($extensionFromFile['corecompatibility'])
-                ? $extensionFromFile['corecompatibility']
-                : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
+            $coreCompatibility = $extensionFromFile['coreCompatibility'];
             if (isset($extensionsFromDB[$name])) {
                 if (!Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                     // extension is incompatible with current core
@@ -375,9 +373,7 @@ class BundleSyncHelper
                     // set state to invalid if we can't determine a version
                     $extensionFromFile['state'] = Constant::STATE_INVALID;
                 } else {
-                    $coreCompatibility = isset($extensionFromFile['corecompatibility'])
-                        ? $extensionFromFile['corecompatibility']
-                        : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
+                    $coreCompatibility = $extensionFromFile['coreCompatibility'];
                     // shift state if module is incompatible with core version
                     $extensionFromFile['state'] = Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)
                         ? $extensionFromFile['state']
@@ -409,9 +405,7 @@ class BundleSyncHelper
                 } elseif ((($extensionsFromDB[$name]['state'] == Constant::STATE_INVALID)
                         || ($extensionsFromDB[$name]['state'] == Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT))
                     && $extensionFromFile['version']) {
-                    $coreCompatibility = isset($extensionFromFile['corecompatibility'])
-                        ? $extensionFromFile['corecompatibility']
-                        : $this->formatCoreCompatibilityString($extensionFromFile['core_min'], $extensionFromFile['core_max']);
+                    $coreCompatibility = $extensionFromFile['coreCompatibility'];
                     if (Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                         // extension was invalid, now it is valid
                         $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_UNINITIALISED);
@@ -429,20 +423,5 @@ class BundleSyncHelper
         }
 
         return $upgradedExtensions;
-    }
-
-    /**
-     * Format a compatibility string suitable for semver comparison using vierbergenlars/php-semver
-     *
-     * @param null $coreMin
-     * @param null $coreMax
-     * @return string
-     */
-    private function formatCoreCompatibilityString($coreMin = null, $coreMax = null)
-    {
-        $coreMin = !empty($coreMin) ? $coreMin : '1.4.0';
-        $coreMax = !empty($coreMax) ? $coreMax : '2.9.99';
-
-        return $coreMin . ' - ' . $coreMax;
     }
 }

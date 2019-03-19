@@ -88,13 +88,7 @@ class ExtensionEntity extends EntityAccess
      * @ORM\Column(type="string", length=64)
      * @var string
      */
-    private $core_min;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     * @var string
-     */
-    private $core_max;
+    private $coreCompatibility;
 
     public function getId()
     {
@@ -196,29 +190,13 @@ class ExtensionEntity extends EntityAccess
         $this->securityschema = $securityschema;
     }
 
-    public function getCore_min()
+    public function getCoreCompatibility()
     {
-        return $this->core_min;
+        return $this->coreCompatibility;
     }
 
-    public function setCore_min($core_min)
+    public function setCoreCompatibility($coreCompatibility)
     {
-        $this->core_min = $core_min;
-    }
-
-    public function getCore_max()
-    {
-        return $this->core_max;
-    }
-
-    public function setCore_max($core_max)
-    {
-        $this->core_max = $core_max;
-    }
-
-    public function setCorecompatibility($coreCompatibility)
-    {
-        // temporarily use core_min to store the string - rename and remove core_max refs #3649
-        $this->core_min = $coreCompatibility;
+        $this->coreCompatibility = $coreCompatibility;
     }
 }

@@ -86,7 +86,7 @@ class MetaData implements \ArrayAccess
         $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
         $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
         $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : self::TYPE_MODULE;
-        $this->coreCompatibility = $json['extra']['zikula']['core-compatibility'];
+        $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : null;
     }
 
     public function getName()
@@ -314,8 +314,7 @@ class MetaData implements \ArrayAccess
             'capabilities' => $this->getCapabilities(),
             'securityschema' => $this->getSecuritySchema(),
             'dependencies' => $this->getDependencies(),
-            'corecompatibility' => $this->getCoreCompatibility(),
-            'core_max' => '' // core_min is set from corecompatibility
+            'coreCompatibility' => $this->getCoreCompatibility()
         ];
     }
 

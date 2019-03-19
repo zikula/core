@@ -22,6 +22,7 @@ CHANGELOG - ZIKULA 3.0.x
         - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
         - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
+    - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
     - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
     - Dropped vendors:
         - Removed afarkas/html5shiv
