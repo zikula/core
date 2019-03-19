@@ -221,7 +221,7 @@ abstract class AbstractController extends BaseController
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $path['_controller'] = $controller;
-        $subRequest = $request->duplicate($query, $request, $path);
+        $subRequest = $request->duplicate($query, null, $path);
 
         return $this->container->get('http_kernel')->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
     }

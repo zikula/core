@@ -55,6 +55,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Removed workaround for older DBAL versions (#2185).
     - Properly handle deleted user groups in permissions module (#3963).
     - Made Blocks module's JavaScript functionality more robust (#3911).
+    - Removed ancient workaround in printer theme (#3653).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).

@@ -90,7 +90,7 @@ class ThemeController extends AbstractController
     public function previewAction(Engine $engine, $themeName)
     {
         $engine->setActiveTheme($themeName);
-        $this->addFlash('warning', $this->__('Please note that blocks may appear out of place or even missing in a theme prview because position names are not consistent from theme to theme.'));
+        $this->addFlash('warning', $this->__('Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.'));
 
         return $this->forward('Zikula\Bundle\CoreBundle\Controller\MainController::homeAction');
     }

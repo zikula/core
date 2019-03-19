@@ -13,6 +13,7 @@ namespace Zikula\PrinterTheme;
 
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
+use Zikula\Common\Translator\Translator;
 
 class ZikulaPrinterTheme extends AbstractCoreTheme
 {
@@ -43,9 +44,8 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
     {
         $text = preg_replace_callback(
             '/<a [^>]*href\s*=\s*\"?([^>\"]*)\"?[^>]*>(.*?)<\/a.*?>/i',
-            function($matches) {
-                // work out why some links need decoding twice (&amp;amp;....) #3653
-                $this->links[] = html_entity_decode(html_entity_decode($matches[1]));
+            function ($matches) {
+                $this->links[] = html_entity_decode($matches[1]);
                 // return the replaced link
                 return '<strong><em>' . $matches[2] . '</em></strong> <small>[' . count($this->links) . ']</small>';
             },
@@ -60,7 +60,7 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
      */
     private function renderFootnotes()
     {
-        $translator = $this->getContainer()->get('translator.default');
+        $translator = $this->getContainer()->get(Translator::class);
         $text = '';
         if (!empty($this->links)) {
             $text .= '<div><strong>' . $translator->__('Links') . '</strong>';
