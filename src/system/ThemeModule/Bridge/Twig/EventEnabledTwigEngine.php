@@ -49,7 +49,7 @@ class EventEnabledTwigEngine extends TwigEngine
         $preEvent = new TwigPreRenderEvent($name, $parameters);
         $this->eventDispatcher->dispatch(ThemeEvents::PRE_RENDER, $preEvent);
 
-        $content = $this->load($preEvent->getTemplateName())->render($preEvent->getParameters());
+        $content = parent::render($preEvent->getTemplateName(), $preEvent->getParameters());
 
         $postEvent = new TwigPostRenderEvent($content, $preEvent->getTemplateName(), $preEvent->getParameters());
         $this->eventDispatcher->dispatch(ThemeEvents::POST_RENDER, $postEvent);

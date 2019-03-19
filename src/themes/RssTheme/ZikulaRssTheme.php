@@ -17,7 +17,8 @@ use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 class ZikulaRssTheme extends AbstractCoreTheme
 {
     /**
-     * Override parent method in order to add Content-type header to Response
+     * Override parent method in order to add Content-type header to Response.
+     *
      * @param string $realm
      * @param Response $response
      * @param null $moduleName
@@ -25,9 +26,10 @@ class ZikulaRssTheme extends AbstractCoreTheme
      */
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
-        $newResponse = new Response();
+        $output = $this->getContainer()->get('twig')->render('ZikulaRssTheme::master.html.twig', ['maincontent' => $response->getContent()]);
+        $newResponse = new Response($output);
         $newResponse->headers->add(['Content-type' => 'application/rss+xml']);
 
-        return $this->getContainer()->get('templating')->renderResponse('ZikulaAtomTheme::master.html.twig', ['maincontent' => $response->getContent()], $newResponse);
+        return $newResponse;
     }
 }

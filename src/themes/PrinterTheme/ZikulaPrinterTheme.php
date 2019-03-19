@@ -20,7 +20,8 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
     private $links = [];
 
     /**
-     * Override parent method in order to add Content-type header to Response
+     * Override parent method in order to put content into the printer page.
+     *
      * @param string $realm
      * @param Response $response
      * @param null $moduleName
@@ -32,11 +33,15 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
         $mainContent = $this->createFootnotes($mainContent);
         $mainContent .= $this->renderFootnotes();
 
-        return $this->getContainer()->get('templating')->renderResponse('ZikulaPrinterTheme::master.html.twig', ['maincontent' => $mainContent]);
+        $output = $this->getContainer()->get('twig')->render('ZikulaPrinterTheme::master.html.twig', ['maincontent' => $mainContent]);
+        $newResponse = new Response($output);
+
+        return $newResponse;
     }
 
     /**
-     * filter the content and replace links with footnotes. store the links.
+     * Filter the content and replace links with footnotes; store the links.
+     *
      * @param $string
      * @return mixed
      */
@@ -56,6 +61,7 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
 
     /**
      * Render the links into a list and return html.
+     *
      * @return string
      */
     private function renderFootnotes()

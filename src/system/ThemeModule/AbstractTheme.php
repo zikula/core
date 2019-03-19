@@ -61,12 +61,18 @@ abstract class AbstractTheme extends AbstractBundle
         $template = $this->config[$realm]['page'];
         $classes = 'home' == $realm ? 'z-homepage' : '';
         $classes .= (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
-        $content = $this->getContainer()->get('twig')->render('ZikulaThemeModule:Default:maincontent.html.twig', [
+
+        /* @var Twig\Environment */
+        $twig = $this->getContainer()->get('twig');
+
+        $content = $twig->render('ZikulaThemeModule:Default:maincontent.html.twig', [
             'classes' => $classes,
             'maincontent' => $response->getContent()
         ]);
 
-        return $this->getContainer()->get('templating')->renderResponse($this->name . ':' . $template, ['maincontent' => $content]);
+        $content = $twig->render($this->name . ':' . $template, ['maincontent' => $content]);
+
+        return new Response($content);
     }
 
     /**
