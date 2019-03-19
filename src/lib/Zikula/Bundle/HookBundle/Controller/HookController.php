@@ -21,7 +21,6 @@ use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -281,7 +280,9 @@ class HookController extends Controller
         HookDispatcherInterface $dispatcher
     ) {
         $this->setTranslator($translator);
-        $this->checkAjaxToken();
+        if (!$this->checkAjaxToken($request)) {
+            throw new AccessDeniedException();
+        }
 
         // get subscriberarea from POST
         $subscriberArea = $request->request->get('subscriberarea', '');
@@ -364,7 +365,9 @@ class HookController extends Controller
         HookCollectorInterface $collector
     ) {
         $this->setTranslator($this->get('translator.default'));
-        $this->checkAjaxToken();
+        if (!$this->checkAjaxToken($request)) {
+            throw new AccessDeniedException();
+        }
 
         // get subscriberarea from POST
         $subscriberarea = $request->request->get('subscriberarea', '');
@@ -393,38 +396,32 @@ class HookController extends Controller
         // set sorting
         $this->get('hook_dispatcher')->setBindOrder($subscriberarea, $providerarea);
 
-        $ol_id = $request->request->get('ol_id', '');
-
-        return $this->json(['result' => true, 'ol_id' => $ol_id]);
+        return $this->json(['result' => true]);
     }
 
     /**
      * Check the CSRF token.
-     * Checks will fall back to $token check if automatic checking fails
      *
-     * @param CsrfTokenHandler $tokenHandler
-     * @param string $token Token, default null
+     * @param Request $request
      *
-     * @throws AccessDeniedException If the CSFR token fails
-     * @throws \Exception if request is not an XmlHttpRequest
-     *
-     * @return void
+     * @return boolean
      */
-    private function checkAjaxToken(CsrfTokenHandler $tokenHandler, $token = null)
+    private function checkAjaxToken(Request $request)
     {
-        $currentRequest = $this->get('request_stack')->getCurrentRequest();
-        if (!$currentRequest->isXmlHttpRequest()) {
-            throw new \Exception();
+        if (!$request->isXmlHttpRequest()) {
+            return false;
         }
 
         $sessionName = $this->container->getParameter('zikula.session.name');
-        $sessionId = $currentRequest->cookies->get($sessionName, null);
+        $sessionId = $request->cookies->get($sessionName, null);
 
-        if ($sessionId == $currentRequest->getSession()->getId()) {
-            return;
+        if ($sessionId != $request->getSession()->getId()) {
+            return false;
         }
 
-        $tokenHandler->validate($token);
+        if (!$this->isCsrfTokenValid('hook-ui', $request->request->get('token'))) {
+            return false;
+        }
     }
 
     private function getExtensionsCapableOf(HookCollectorInterface $collector, ExtensionRepositoryInterface $extensionRepository, $type)

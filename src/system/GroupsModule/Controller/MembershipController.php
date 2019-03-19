@@ -20,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
@@ -89,14 +88,12 @@ class MembershipController extends AbstractController
      * Display all members of a group to an admin
      *
      * @param GroupEntity $group
-     * @param CsrfTokenHandler $tokenHandler
      * @param string $letter the letter from the alpha filter
      * @param integer $startNum the start item number for the pager
      * @return array
      */
     public function adminListAction(
         GroupEntity $group,
-        CsrfTokenHandler $tokenHandler,
         $letter = '*',
         $startNum = 0
     ) {
@@ -109,30 +106,29 @@ class MembershipController extends AbstractController
             'pager' => [
                 'amountOfItems' => $group->getUsers()->count(),
                 'itemsPerPage' => $this->getVar('itemsperpage', 25)
-            ],
-            'csrfToken' => $tokenHandler->generate()
+            ]
         ];
     }
 
     /**
-     * @Route("/admin/add/{uid}/{gid}/{csrfToken}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
+     * @Route("/admin/add/{uid}/{gid}/{token}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      *
      * Add user to a group.
      *
      * @param UserEntity $userEntity
      * @param GroupEntity $group
-     * @param CsrfTokenHandler $tokenHandler
-     * @param string $csrfToken
+     * @param string $token
      * @return RedirectResponse
      */
     public function addAction(
         UserEntity $userEntity,
         GroupEntity $group,
-        CsrfTokenHandler $tokenHandler,
-        $csrfToken
+        $token
     ) {
-        $tokenHandler->validate($csrfToken);
         if (!$this->hasPermission('ZikulaGroupsModule::', $group->getGid() . '::', ACCESS_EDIT)) {
+            throw new AccessDeniedException();
+        }
+        if (!$this->isCsrfTokenValid('membership-add', $token)) {
             throw new AccessDeniedException();
         }
 
@@ -312,8 +308,7 @@ class MembershipController extends AbstractController
 
         return $this->render('@ZikulaGroupsModule/Membership/userlist.html.twig', [
             'users' => $users,
-            'gid' => $request->get('gid'),
-            'csrfToken' => $request->get('csrfToken')
+            'gid' => $request->request->get('gid')
         ], new PlainResponse());
     }
 

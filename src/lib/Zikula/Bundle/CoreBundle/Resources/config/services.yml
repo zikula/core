@@ -1,6 +1,3 @@
-parameters:
-    zikula_core.internal.token.max_life: 3600
-
 services:
     _defaults:
         autowire: true
@@ -83,13 +80,6 @@ services:
 
     Michelf\:
         resource: '../../../../../../vendor/michelf/php-markdown/Michelf/*'
-
-    Zikula\Core\Token\Storage: '@Zikula\Core\Token\Storage\SessionStorage'
-
-    Zikula\Core\Token\Generator:
-        arguments:
-            $secret: '_dummy'
-            $maxLifetime: '%zikula_core.internal.token.max_life%'
 
     # public because BootstrapBundlesCommand accesses this using container
     Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper:

@@ -23,6 +23,7 @@ CHANGELOG - ZIKULA 3.0.x
         - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
+    - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom csrf tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
     - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
     - Dropped vendors:
         - Removed afarkas/html5shiv

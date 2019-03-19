@@ -88,6 +88,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% set csrfToken = csrf_token('delete-idsentry') %}
                     {% for event in logEntries %}
                         <tr>
                             <td headers="hName">{{ event.name }}</td>
@@ -109,7 +110,7 @@
                             </td>
                             <td headers="hDate">{{ event.date|localizeddate('medium', 'none') }}</td>
                             <td headers="hActions" class="text-right">
-                                <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', { id: event.id, csrftoken: csrftoken }) }}"><i class="fa fa-times"></i></a>
+                                <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', { id: event.id, token: csrfToken }) }}"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

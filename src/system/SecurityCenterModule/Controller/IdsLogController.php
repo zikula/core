@@ -24,7 +24,6 @@ use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
-use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\SecurityCenterModule\Entity\Repository\IntrusionRepository;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogExportType;
 use Zikula\SecurityCenterModule\Form\Type\IdsLogFilterType;
@@ -45,14 +44,13 @@ class IdsLogController extends AbstractController
      *
      * @param Request $request
      * @param IntrusionRepository $repository
-     * @param CsrfTokenHandler $tokenHandler
      * @param RouterInterface $router
      *
      * @return Response symfony response object
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function viewAction(Request $request, IntrusionRepository $repository, CsrfTokenHandler $tokenHandler, RouterInterface $router)
+    public function viewAction(Request $request, IntrusionRepository $repository, RouterInterface $router)
     {
         // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_EDIT)) {
@@ -127,8 +125,7 @@ class IdsLogController extends AbstractController
             'pager' => [
                 'amountOfItems' => $amountOfItems,
                 'itemsPerPage' => $pageSize
-            ],
-            'csrftoken' => $tokenHandler->generate(true)
+            ]
         ];
 
         return $templateParameters;
@@ -298,24 +295,23 @@ class IdsLogController extends AbstractController
      *
      * @param Request $request
      * @param IntrusionRepository $repository
-     * @param CsrfTokenHandler $tokenHandler
      *
      * @return RedirectResponse
      *
      * @throws \InvalidArgumentException Thrown if the object id is not numeric or if
      */
-    public function deleteentryAction(Request $request, IntrusionRepository $repository, CsrfTokenHandler $tokenHandler)
+    public function deleteentryAction(Request $request, IntrusionRepository $repository)
     {
-        // Security check
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
-        // verify auth-key
-        $tokenHandler->validate($request->get('csrftoken'));
+        if (!$this->isCsrfTokenValid('delete-idsentry', $request->query->get('token'))) {
+            throw new AccessDeniedException();
+        }
 
         // get parameters
-        $id = (int)$request->get('id', 0);
+        $id = (int)$request->query->get('id', 0);
 
         // sanity check
         if (!is_numeric($id)) {

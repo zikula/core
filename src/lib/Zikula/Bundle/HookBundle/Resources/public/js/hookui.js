@@ -143,14 +143,13 @@ var cloneDraggedItem = true;
      * @return none;
      */
     subscriberAreaToggle = function(sarea, parea) {
-        var pars = {
-            subscriberarea: sarea,
-            providerarea: parea
-        };
-
         $.ajax({
             url: Routing.generate('zikula_hook_hook_togglesubscribeareastatus'),
-            data: pars
+            data: {
+                token: $('#csrfToken').data('token'),
+                subscriberarea: sarea,
+                providerarea: parea
+            }
         }).done(function(data) {
             if (data.action == 'bind') {
                 if (!appendItemBeforeResponse) {
@@ -286,16 +285,15 @@ var cloneDraggedItem = true;
             providersAreas += '&providerarea[]=' + $($(this).attr('id') + '_a').val();
         });
 
-        var pars = 'ol_id=' + listId +
-                '&subscriberarea=' + subscriberArea +
-                providersAreas;
+        var parameters = 'subscriberarea=' + subscriberArea + providersAreas;
+        parameters += '&token=' + $('#csrfToken').data('token');
 
         $.ajax({
             url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
-            data: pars
+            data: parameters
         }).done(function(data) {
             // update new sort order
-            recolorListElements(data.ol_id, $('#' + data.ol_id).down(0).attr('id'));
+            recolorListElements(listId, $('#' + listId).down(0).attr('id'));
         }).fail(function(result) {
             alert(result.status + ': ' + result.statusText);
         });

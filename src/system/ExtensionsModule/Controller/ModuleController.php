@@ -31,7 +31,6 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
-use Zikula\Core\Token\CsrfTokenHandler;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -137,13 +136,12 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/modules/activate/{id}/{csrftoken}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
+     * @Route("/modules/activate/{id}/{token}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      *
      * Activate an extension
      *
      * @param integer $id
-     * @param CsrfTokenHandler $tokenHandler
-     * @param string $csrftoken
+     * @param string $token
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param ExtensionStateHelper $extensionStateHelper
      * @param CacheClearer $cacheClearer
@@ -152,8 +150,7 @@ class ModuleController extends AbstractController
      */
     public function activateAction(
         $id,
-        CsrfTokenHandler $tokenHandler,
-        $csrftoken,
+        $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
         CacheClearer $cacheClearer
@@ -162,7 +159,9 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $tokenHandler->validate($csrftoken);
+        if (!$this->isCsrfTokenValid('activate-extension', $token)) {
+            throw new AccessDeniedException();
+        }
 
         $extension = $extensionRepository->find($id);
         if (Constant::STATE_NOTALLOWED == $extension->getState()) {
@@ -178,13 +177,12 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/modules/deactivate/{id}/{csrftoken}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
+     * @Route("/modules/deactivate/{id}/{token}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      *
      * Deactivate an extension
      *
      * @param integer $id
-     * @param CsrfTokenHandler $tokenHandler
-     * @param string $csrftoken
+     * @param string $token
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param ExtensionStateHelper $extensionStateHelper
      * @param CacheClearer $cacheClearer
@@ -193,8 +191,7 @@ class ModuleController extends AbstractController
      */
     public function deactivateAction(
         $id,
-        CsrfTokenHandler $tokenHandler,
-        $csrftoken,
+        $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
         CacheClearer $cacheClearer
@@ -203,7 +200,9 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $tokenHandler->validate($csrftoken);
+        if (!$this->isCsrfTokenValid('deactivate-extension', $token)) {
+            throw new AccessDeniedException();
+        }
 
         $extension = $extensionRepository->find($id);
         if (ZikulaKernel::isCoreModule($extension->getName())) {
@@ -301,14 +300,15 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/install/{id}", requirements={"id" = "^[1-9]\d*$"})
+     * @Route("/install/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaExtensionsModule:Module:install.html.twig")
      *
-     * Initialise an extension.
+     * Install and initialise an extension.
      *
      * @param Request $request
      * @param ExtensionEntity $extension
+     * @param string $token
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param ExtensionHelper $extensionHelper
      * @param ExtensionStateHelper $extensionStateHelper
@@ -320,6 +320,7 @@ class ModuleController extends AbstractController
     public function installAction(
         Request $request,
         ExtensionEntity $extension,
+        $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
@@ -329,11 +330,17 @@ class ModuleController extends AbstractController
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
+
+        $id = $extension->getId();
+        if (!$this->isCsrfTokenValid('install-extension', $token)) {
+            throw new AccessDeniedException();
+        }
+
         if (!$this->get('kernel')->isBundle($extension->getName())) {
-            $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
+            $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
             $cacheClearer->clear('symfony');
 
-            return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $extension->getId()]);
+            return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $id]);
         }
         $unsatisfiedDependencies = $dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [
@@ -363,17 +370,17 @@ class ModuleController extends AbstractController
                 }
                 if ($extensionHelper->install($extension)) {
                     $this->addFlash('status', $this->__f('Done! Installed %s.', ['%s' => $extension->getName()]));
-                    $extensionsInstalled[] = $extension->getId();
+                    $extensionsInstalled[] = $id;
                     $cacheClearer->clear('symfony');
 
                     return $this->redirectToRoute('zikulaextensionsmodule_module_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
                 } else {
-                    $extensionStateHelper->updateState($extension->getId(), Constant::STATE_UNINITIALISED);
+                    $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
                     $this->addFlash('error', $this->__f('Initialization of %s failed!', ['%s' => $extension->getName()]));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $extensionStateHelper->updateState($extension->getId(), Constant::STATE_UNINITIALISED);
+                $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
 
@@ -383,7 +390,7 @@ class ModuleController extends AbstractController
         return [
             'dependencies' => $unsatisfiedDependencies,
             'extension' => $extension,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -438,24 +445,25 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/upgrade/{id}/{csrftoken}", requirements={"id" = "^[1-9]\d*$"})
+     * @Route("/upgrade/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
      *
      * Upgrade an extension.
      *
      * @param ExtensionEntity $extension
-     * @param CsrfTokenHandler $tokenHandler
-     * @param string $csrftoken
+     * @param string $token
      * @param ExtensionHelper $extensionHelper
      *
      * @return RedirectResponse
      */
-    public function upgradeAction(ExtensionEntity $extension, CsrfTokenHandler $tokenHandler, $csrftoken, ExtensionHelper $extensionHelper)
+    public function upgradeAction(ExtensionEntity $extension, $token, ExtensionHelper $extensionHelper)
     {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $tokenHandler->validate($csrftoken);
+        if (!$this->isCsrfTokenValid('upgrade-extension', $token)) {
+            throw new AccessDeniedException();
+        }
 
         $result = $extensionHelper->upgrade($extension);
         if ($result) {
@@ -468,7 +476,7 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * @Route("/uninstall/{id}", requirements={"id" = "^[1-9]\d*$"})
+     * @Route("/uninstall/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaExtensionsModule:Module:uninstall.html.twig")
      *
@@ -476,6 +484,7 @@ class ModuleController extends AbstractController
      *
      * @param Request $request
      * @param ExtensionEntity $extension
+     * @param string $token
      * @param BlockRepositoryInterface $blockRepository
      * @param ExtensionHelper $extensionHelper
      * @param ExtensionStateHelper $extensionStateHelper
@@ -487,6 +496,7 @@ class ModuleController extends AbstractController
     public function uninstallAction(
         Request $request,
         ExtensionEntity $extension,
+        $token,
         BlockRepositoryInterface $blockRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
@@ -496,8 +506,13 @@ class ModuleController extends AbstractController
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
+
+        if (!$this->isCsrfTokenValid('uninstall-extension', $token)) {
+            throw new AccessDeniedException();
+        }
+
         if (Constant::STATE_MISSING == $extension->getState()) {
-            throw new \RuntimeException($this->__("Error! The requested extension cannot be uninstalled because its files are missing!"));
+            throw new \RuntimeException($this->__('Error! The requested extension cannot be uninstalled because its files are missing!'));
         }
         if (!$this->get('kernel')->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
