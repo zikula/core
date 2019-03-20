@@ -1,0 +1,7 @@
+version: 2
+dependencies:
+- type: php
+  path: /
+  settings:
+    # options for composer install/update/require
+    composer_options: "--ignore-platform-reqs"
