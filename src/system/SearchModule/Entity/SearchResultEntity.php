@@ -65,9 +65,9 @@ class SearchResultEntity
      *
      * @var string
      *
-     * @ORM\Column(name="extra", type="string", length=1000, nullable=true)
+     * @ORM\Column(name="extra", type="array")
      */
-    private $extra;
+    private $extra = [];
 
     /**
      * creation timestamp of this search hit
@@ -187,12 +187,17 @@ class SearchResultEntity
     /**
      * Set extra
      *
-     * @param string $extra
+     * @param array|string $extra
+     *
      * @return SearchResultEntity
      */
     public function setExtra($extra)
     {
-        $this->extra = $extra;
+        if (!is_array($extra)) {
+            $this->extra = [$extra];
+        } else {
+            $this->extra = $extra;
+        }
 
         return $this;
     }

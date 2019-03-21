@@ -25,6 +25,7 @@ CHANGELOG - ZIKULA 3.0.x
     - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
     - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
     - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
+    - The `extra` field in `Zikula\SearchModule\Entity\SearchResultEntity` has changed from `text` to `array`. The `setExtra()` method takes care of that though.
     - Dropped vendors:
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
@@ -68,6 +69,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Added common header/footer templates for login templates (#3937).
     - Added common header/footer templates for user registration and login related email templates (#3937).
     - Reworked `Zikula\Bridge\HttpFoundation\DoctrineSessionHandler` to extend `Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler` (#3870).
+    - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
 
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0

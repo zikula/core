@@ -120,4 +120,16 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
     {
         $this->_em->flush($entity);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function truncateTable()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->delete('Zikula\SearchModule\Entity\SearchResultEntity', 'tbl');
+        $query = $qb->getQuery();
+
+        $query->execute();
+    }
 }

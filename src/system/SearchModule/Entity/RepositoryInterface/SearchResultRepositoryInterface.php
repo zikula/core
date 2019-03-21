@@ -59,4 +59,9 @@ interface SearchResultRepositoryInterface extends ObjectRepository, Selectable
      * @return mixed
      */
     public function flush(SearchResultEntity $entity = null);
+
+    /**
+     * Truncates the table.
+     */
+    public function truncateTable();
 }
