@@ -74,6 +74,7 @@ CHANGELOG - ZIKULA 3.0.x
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0
     - composer/ca-bundle updated from 1.1.3 to 1.1.4
+    - composer/semver updated from 1.4.2 to 1.5.0
     - doctrine/annotations updated from 1.2.7 to 1.6.0
     - doctrine/cache updated from 1.6.2 to 1.8.0
     - doctrine/collections updated from 1.3.0 to 1.5.0
@@ -114,7 +115,7 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.5
     - symfony/symfony updated from 3.4.20 to 4.2.4
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.35.4 to 2.7.2
+    - twig/twig updated from 1.35.4 to 2.7.3
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.0
     - zikula/generator-bundle updated from 2.0.1 to 3.0.0
     - zikula/legal-module updated from 3.1.2 to 3.2.1
