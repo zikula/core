@@ -58,6 +58,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Properly handle deleted user groups in permissions module (#3963).
     - Made Blocks module's JavaScript functionality more robust (#3911).
     - Removed ancient workaround in printer theme (#3653).
+    - Added Twig function for creating a `RouteUrl` instance (#3802).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).

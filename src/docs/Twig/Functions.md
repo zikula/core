@@ -17,7 +17,7 @@ Functions
 
  * array_unset(array, key)
  * callFunc(callable, params = [])
- * defaultPath(extensionName, type = "user")
+ * defaultPath(extensionName, type = 'user')
  * dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
  * getModVar(module, name, default = null)
  * getSystemVar(name, default = null)
@@ -34,6 +34,7 @@ Functions
 ### Hooks
 
  * notifyDisplayHooks(eventName, id = null, urlObject = null)
+ * routeUrl(routeName, routeParameters = [], fragment = null)
 
 ### Translation/Language
 

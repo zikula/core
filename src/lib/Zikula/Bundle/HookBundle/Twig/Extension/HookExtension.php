@@ -11,23 +11,33 @@
 
 namespace Zikula\Bundle\HookBundle\Twig\Extension;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\DisplayHook;
 use Zikula\Bundle\HookBundle\Hook\FilterHook;
+use Zikula\Core\RouteUrl;
 use Zikula\Core\UrlInterface;
 
 class HookExtension extends AbstractExtension
 {
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
      * @var HookDispatcherInterface
      */
     private $hookDispatcher;
 
-    public function __construct(HookDispatcherInterface $hookDispatcher)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        HookDispatcherInterface $hookDispatcher
+    ) {
+        $this->requestStack = $requestStack;
         $this->hookDispatcher = $hookDispatcher;
     }
 
@@ -39,7 +49,8 @@ class HookExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']])
+            new TwigFunction('notifyDisplayHooks', [$this, 'notifyDisplayHooks'], ['is_safe' => ['html']]),
+            new TwigFunction('routeUrl', [$this, 'createRouteUrl'])
         ];
     }
 
@@ -51,7 +62,7 @@ class HookExtension extends AbstractExtension
     }
 
     /**
-     * @param $eventName
+     * @param string $eventName
      * @param integer $id The object id
      * @param UrlInterface $urlObject
      * @param bool $outputAsArray set to true to output results as array (requires additional handling in template)
@@ -87,8 +98,27 @@ class HookExtension extends AbstractExtension
     }
 
     /**
-     * @param $content
-     * @param $filterEventName
+     * @param string $routeName
+     * @param array $routeParameters
+     * @param string $fragment
+     *
+     * @return UrlInterface
+     */
+    public function createRouteUrl($routeName, array $routeParameters = [], $fragment = null)
+    {
+        $url = new RouteUrl($routeName, $routeParameters, $fragment);
+
+        if (!isset($routeParameters['_locale']) && null !== $this->requestStack->getCurrentRequest()) {
+            $url->setLanguage($this->requestStack->getCurrentRequest()->getLocale());
+        }
+
+        return $url;
+    }
+
+    /**
+     * @param string $content
+     * @param string $filterEventName
+     *
      * @return mixed
      */
     public function notifyFilters($content, $filterEventName)
