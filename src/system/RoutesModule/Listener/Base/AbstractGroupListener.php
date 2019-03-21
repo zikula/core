@@ -28,6 +28,7 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
         return [
             GroupEvents::GROUP_CREATE                => ['create', 5],
             GroupEvents::GROUP_UPDATE                => ['update', 5],
+            GroupEvents::GROUP_PRE_DELETE            => ['preDelete', 5],
             GroupEvents::GROUP_DELETE                => ['delete', 5],
             GroupEvents::GROUP_ADD_USER              => ['addUser', 5],
             GroupEvents::GROUP_REMOVE_USER           => ['removeUser', 5],
@@ -67,6 +68,23 @@ abstract class AbstractGroupListener implements EventSubscriberInterface
      * @param GenericEvent $event The event instance
      */
     public function update(GenericEvent $event)
+    {
+    }
+    
+    /**
+     * Listener for the `group.pre_delete` event.
+     *
+     * Occurs before a group is deleted from the system. All handlers are notified.
+     * The full group record to be deleted is available as the subject.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * @param GenericEvent $event The event instance
+     */
+    public function preDelete(GenericEvent $event)
     {
     }
     

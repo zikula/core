@@ -24,8 +24,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
      * @var array
      */
     protected $entities = [
-        RouteEntity::class
-        ,
+        RouteEntity::class,
     ];
 
     /**
