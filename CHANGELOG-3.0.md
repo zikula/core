@@ -71,6 +71,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Added common header/footer templates for user registration and login related email templates (#3937).
     - Reworked `Zikula\Bridge\HttpFoundation\DoctrineSessionHandler` to extend `Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler` (#3870).
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
+    - More user-friendly response messages during account information recovery (#3723).
 
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0

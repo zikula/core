@@ -51,6 +51,7 @@ class AccountController extends AbstractController
      * @param Request $request
      * @param CurrentUserApiInterface $currentUserApi
      * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
+     * @param VariableApiInterface $variableApi
      * @param MailHelper $mailHelper
      *
      * @return array|RedirectResponse
@@ -59,6 +60,7 @@ class AccountController extends AbstractController
         Request $request,
         CurrentUserApiInterface $currentUserApi,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        VariableApiInterface $variableApi,
         MailHelper $mailHelper
     ) {
         if ($currentUserApi->isLoggedIn()) {
@@ -79,12 +81,17 @@ class AccountController extends AbstractController
                 if ($sent) {
                     $this->addFlash('status', $this->__f('Done! The account information for %s has been sent via e-mail.', ['%s' => $data['email']]));
                 } else {
-                    $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
+                    $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact a site administrator for assistance.'));
                 }
             } elseif (1 < count($mapping)) {
-                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
+                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact a site administrator for assistance.'));
             } else {
-                $this->addFlash('error', $this->__('Unable to send email to the requested address. Please contact the system administrator for assistance.'));
+                $hasRegistration = $variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED);
+                if ($hasRegistration) {
+                    $this->addFlash('error', $this->__('A user with this address does not exist at this site.') . ' ' . $this->__f('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $this->get('router')->generate('zikulausersmodule_registration_register')]));
+                } else {
+                    $this->addFlash('error', $this->__('A user with this address does not exist at this site.'));
+                }
             }
         }
 
@@ -102,6 +109,7 @@ class AccountController extends AbstractController
      * @param UserRepositoryInterface $userRepository
      * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
      * @param LostPasswordVerificationHelper $lostPasswordVerificationHelper
+     * @param VariableApiInterface $variableApi
      * @param MailHelper $mailHelper
      *
      * @return array|RedirectResponse
@@ -112,6 +120,7 @@ class AccountController extends AbstractController
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         LostPasswordVerificationHelper $lostPasswordVerificationHelper,
+        VariableApiInterface $variableApi,
         MailHelper $mailHelper
     ) {
         $redirectToRoute = 'zikulausersmodule_account_menu';
@@ -145,7 +154,7 @@ class AccountController extends AbstractController
                         if ($sent) {
                             $this->addFlash('status', $this->__f('Done! The confirmation link for %s has been sent via e-mail.', ['%s' => $data[$field]]));
                         } else {
-                            $this->addFlash('error', $this->__f('Unable to send email to the requested %s. Please try your %o or contact the system administrator for assistance.', ['%s' => $map[$field], '%o' => $map[$inverse]]));
+                            $this->addFlash('error', $this->__f('Unable to send email to the requested %s. Please try your %o or contact a site administrator for assistance.', ['%s' => $map[$field], '%o' => $map[$inverse]]));
                         }
                         break;
                     case UsersConstant::ACTIVATED_INACTIVE:
@@ -159,16 +168,21 @@ class AccountController extends AbstractController
                         if ($displayPendingApproval || $displayPendingVerification) {
                             $this->addFlash('error', $this->__('Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'));
                         } else {
-                            $this->addFlash('error', $this->__('Sorry! An account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
+                            $this->addFlash('error', $this->__('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
                         }
                         break;
                     default:
                         $this->addFlash('error', $this->__('Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'));
                 }
             } elseif (1 < count($mapping)) {
-                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact the system administrator for assistance.'));
+                $this->addFlash('error', $this->__('There are too many users registered with that address. Please contact a site administrator for assistance.'));
             } else {
-                $this->addFlash('error', $this->__f('%s not found. Please contact the system administrator for assistance.', ['%s' => ucwords($map[$field])]));
+                $hasRegistration = $variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED);
+                if ($hasRegistration) {
+                    $this->addFlash('error', $this->__f('A user with this %s does not exist at this site.', ['%s' => $map[$field]]) . ' ' . $this->__f('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $this->get('router')->generate('zikulausersmodule_registration_register')]));
+                } else {
+                    $this->addFlash('error', $this->__f('A user with this %s does not exist at this site.', ['%s' => $map[$field]]));
+                }
             }
             if (!empty($redirectToRoute)) {
                 return $this->redirectToRoute($redirectToRoute);
@@ -234,7 +248,7 @@ class AccountController extends AbstractController
         /** @var UserEntity $user */
         $user = $userRepository->find($requestDetails['userId']);
         if (null === $user) {
-            $this->addFlash('error', $this->__('User not found. Please contact the system administrator for assistance.'));
+            $this->addFlash('error', $this->__('User not found. Please contact a site administrator for assistance.'));
 
             return $this->redirectToRoute($redirectToRoute);
         }
