@@ -59,7 +59,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      * @param VariableApiInterface $variableApi
      * @param ExtensionRepositoryInterface $extensionRepository
      * @param array $parameters
-     * @param $string $namespaceChar
+     * @param string $namespaceChar
      */
     public function __construct(
         RequestStack $requestStack,

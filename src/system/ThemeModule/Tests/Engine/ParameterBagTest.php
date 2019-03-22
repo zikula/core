@@ -11,6 +11,9 @@
 
 namespace Zikula\ThemeModule\Tests\Engine;
 
+use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 class ParameterBagTest extends \PHPUnit_Framework_TestCase
@@ -22,7 +25,23 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->bag = new ParameterBag(['foo' => 10]);
+        $requestStack = $this
+            ->getMockBuilder(RequestStack::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $variableApi = $this
+            ->getMockBuilder(VariableApiInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+        $extensionRepository = $this
+            ->getMockBuilder(ExtensionRepositoryInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
+
+        $this->bag = new ParameterBag($requestStack, $variableApi, $extensionRepository, ['foo' => 10]);
     }
 
     /**
@@ -40,7 +59,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     public function testHasSimpleValue()
     {
         $this->assertTrue($this->bag->has('foo'));
-        $this->assertFalse($this->bag->has('axel'));
+        $this->assertFalse($this->bag->has('bar'));
     }
 
     /**
@@ -49,10 +68,10 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
     public function testGetSimpleValue()
     {
         $this->assertEquals(10, $this->bag->get('foo'));
-        $this->assertNotNull($this->bag->get('axel'));
-        $this->assertEquals('default', $this->bag->get('axel', 'default'));
-        $this->assertEquals('', $this->bag->get('axel'));
-        $this->assertNull($this->bag->get('axel', null));
+        $this->assertNotNull($this->bag->get('bar'));
+        $this->assertEquals('default', $this->bag->get('bar', 'default'));
+        $this->assertEquals('', $this->bag->get('bar'));
+        $this->assertNull($this->bag->get('bar', null));
     }
 
     /**
