@@ -11,6 +11,10 @@
 
 namespace Zikula\ThemeModule\Engine;
 
+use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+
 /**
  * Class ParameterBag
  *
@@ -24,6 +28,21 @@ namespace Zikula\ThemeModule\Engine;
 class ParameterBag implements \IteratorAggregate, \Countable
 {
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var ExtensionRepositoryInterface
+     */
+    private $extensionRepository;
+
+    /**
      * @var array
      */
     private $parameters;
@@ -35,10 +54,25 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     private $ns;
 
-    public function __construct(array $array = [], $ns = '.')
-    {
-        $this->parameters = $array;
-        $this->ns = $ns;
+    /**
+     * @param RequestStack $requestStack
+     * @param VariableApiInterface $variableApi
+     * @param ExtensionRepositoryInterface $extensionRepository
+     * @param array $parameters
+     * @param $string $namespaceChar
+     */
+    public function __construct(
+        RequestStack $requestStack,
+        VariableApiInterface $variableApi,
+        ExtensionRepositoryInterface $extensionRepository,
+        array $parameters = [],
+        $namespaceChar = '.'
+    ) {
+        $this->requestStack = $requestStack;
+        $this->variableApi = $variableApi;
+        $this->extensionRepository = $extensionRepository;
+        $this->parameters = $parameters;
+        $this->ns = $namespaceChar;
     }
 
     /**
@@ -48,8 +82,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
      * check if property field exists, so it's not possible
      * to get using default values, ie, empty.
      *
-     * @param $key
-     * @param $args
+     * @param string $key
+     * @param string $args
      *
      * @return string
      */
@@ -58,6 +92,11 @@ class ParameterBag implements \IteratorAggregate, \Countable
         return $this->get($key);
     }
 
+    /**
+     * @param string $key
+     *
+     * @return boolean
+     */
     public function has($key)
     {
         $parameters = $this->resolvePath($key);
@@ -79,7 +118,9 @@ class ParameterBag implements \IteratorAggregate, \Countable
         $parameters = $this->resolvePath($key);
         $key = $this->resolveKey($key);
 
-        return array_key_exists($key, $parameters) ? $parameters[$key] : $default;
+        $value = array_key_exists($key, $parameters) ? $parameters[$key] : $default;
+
+        return 'title' == $key ? $this->prepareTitle($value) : $value;
     }
 
     /**
@@ -89,8 +130,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
      *   'key.subkey' = value
      *   'key.subkey2' = value2
      *
-     * @param $key
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      */
     public function set($key, $value)
     {
@@ -102,7 +143,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     /**
      * Removes value
      *
-     * @param $key
+     * @param string $key
      *
      * @return null
      */
@@ -180,7 +221,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
      *
      * This method allows structured namespacing of parameters.
      *
-     * @param string  $key         Key name
+     * @param string $key Key name
      * @param boolean $writeContext Write context, default false
      *
      * @return array
@@ -239,5 +280,41 @@ class ParameterBag implements \IteratorAggregate, \Countable
         }
 
         return $key;
+    }
+
+    /**
+     * Applies amendments to a title value before returning it.
+     *
+     * @param mixed $title
+     *
+     * @return string
+     */
+    private function prepareTitle($title)
+    {
+        if (!is_string($title)) {
+            return $title;
+        }
+
+        $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
+        if (!empty($titleScheme) && '%pagetitle%' != $titleScheme) {
+            $title = str_replace('%pagetitle%', $title, $titleScheme);
+            $title = str_replace('%sitename%', $this->variableApi->getSystemVar('sitename', ''), $title);
+
+            $moduleDisplayName = '';
+            $request = $this->requestStack->getCurrentRequest();
+            if (null !== $request) {
+                $controllerNameParts = explode('\\', $request->attributes->get('_controller'));
+                $bundleName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
+                if ('Module' == substr($bundleName, -6)) {
+                    $module = $this->extensionRepository->get($bundleName);
+                    if (null !== $module) {
+                        $moduleDisplayName = $module->getDisplayName();
+                    }
+                }
+            }
+            $title = str_replace('%modulename%', $moduleDisplayName, $title);
+        }
+
+        return $title;
     }
 }

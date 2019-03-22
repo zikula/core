@@ -60,6 +60,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Made Blocks module's JavaScript functionality more robust (#3911).
     - Removed ancient workaround in printer theme (#3653).
     - Added Twig function for creating a `RouteUrl` instance (#3802).
+    - Readded missing functionality for configurable page title schemes (#3921).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
