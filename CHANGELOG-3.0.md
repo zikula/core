@@ -85,7 +85,7 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/doctrine-bundle updated from 1.6.13 to 1.10.2
     - doctrine/event-manager installed in 1.0.0
     - doctrine/inflector updated from 1.1.0 to 1.3.0
-    - doctrine/instantiator updated from 1.0.5 to 1.1.0
+    - doctrine/instantiator updated from 1.0.5 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.6.3
     - doctrine/persistence installed in 1.1.0
     - doctrine/reflection installed in 1.0.0
@@ -111,13 +111,16 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/maker-bundle installed in 1.11.5
     - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
     - symfony/phpunit-bridge installed in 4.2.4
-    - symfony/polyfill-iconv installed in 1.10.0
-    - symfony/polyfill-intl-idn installed in 1.10.0
-    - symfony/polyfill-php72 installed in 1.10.0
+    - symfony/polyfill-ctype installed in 1.11.0
+    - symfony/polyfill-iconv installed in 1.11.0
+    - symfony/polyfill-intl-icu installed in 1.11.0
+    - symfony/polyfill-intl-idn installed in 1.11.0
+    - symfony/polyfill-mbstring installed in 1.11.0
+    - symfony/polyfill-php72 installed in 1.11.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.5
     - symfony/symfony updated from 3.4.20 to 4.2.4
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.35.4 to 2.7.3
+    - twig/twig updated from 1.35.4 to 2.7.4
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.0
     - zikula/generator-bundle updated from 2.0.1 to 3.0.0
     - zikula/legal-module updated from 3.1.2 to 3.2.1
