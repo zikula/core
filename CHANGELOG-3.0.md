@@ -61,6 +61,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Removed ancient workaround in printer theme (#3653).
     - Added Twig function for creating a `RouteUrl` instance (#3802).
     - Readded missing functionality for configurable page title schemes (#3921).
+    - Readded missing permission checks for specific admin area categories.
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).

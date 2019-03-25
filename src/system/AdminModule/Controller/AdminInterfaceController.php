@@ -349,20 +349,29 @@ class AdminInterfaceController extends AbstractController
             ];
 
             $menuModules[$adminModule['name']] = $module;
+
             // category menu
-            $menuCategories[$moduleCategories[$catid]['sortorder']]['title'] = $moduleCategories[$catid]['name'];
-            $menuCategories[$moduleCategories[$catid]['sortorder']]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
+            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategories[$catid]['name'] . '::' . $moduleCategories[$catid]['cid'])) {
+                continue;
+            }
+
+            $categorySortOrder = $moduleCategories[$catid]['sortorder'];
+            $menuCategories[$categorySortOrder]['title'] = $moduleCategories[$catid]['name'];
+            $menuCategories[$categorySortOrder]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
                 'acid' => $moduleCategories[$catid]['cid']
             ]);
-            $menuCategories[$moduleCategories[$catid]['sortorder']]['description'] = $moduleCategories[$catid]['description'];
-            $menuCategories[$moduleCategories[$catid]['sortorder']]['cid'] = $moduleCategories[$catid]['cid'];
-            $menuCategories[$moduleCategories[$catid]['sortorder']]['modules'][$adminModule['name']] = $module;
+            $menuCategories[$categorySortOrder]['description'] = $moduleCategories[$catid]['description'];
+            $menuCategories[$categorySortOrder]['cid'] = $moduleCategories[$catid]['cid'];
+            $menuCategories[$categorySortOrder]['modules'][$adminModule['name']] = $module;
         }
 
         // add empty categories
         /** @var \Zikula\AdminModule\Entity\AdminCategoryEntity[] $moduleCategories */
         foreach ($moduleCategories as $moduleCategory) {
             if (array_key_exists($moduleCategory->getSortorder(), $menuCategories)) {
+                continue;
+            }
+            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategory->getName() . '::' . $moduleCategory->getCid())) {
                 continue;
             }
 
