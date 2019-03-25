@@ -47,14 +47,14 @@ class LocaleBlock extends AbstractBlockHandler
      */
     public function display(array $properties)
     {
-        if ((!$this->hasPermission('LocaleBlock::', "::", ACCESS_OVERVIEW))
-        || (!$this->hasPermission('LocaleBlock::bid', "::$properties[bid]", ACCESS_OVERVIEW))) {
+        if (!$this->hasPermission('LocaleBlock::', '::', ACCESS_OVERVIEW)
+        || (!$this->hasPermission('LocaleBlock::bid', '::' . $properties['bid'], ACCESS_OVERVIEW))) {
             return '';
         }
         $locales = $this->localeApi->getSupportedLocaleNames();
         $localeLinks = [];
         /** @var Request $request */
-        $request = $requestStack->getMasterRequest();
+        $request = $this->requestStack->getMasterRequest();
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
         } catch (\Exception $exception) {
@@ -62,7 +62,7 @@ class LocaleBlock extends AbstractBlockHandler
         }
         $selectedRoute = false;
         foreach ($locales as $displayName => $code) {
-            if ($request->getLocale() == $code) {
+            if ($request->getLocale() === $code) {
                 $url = $request->getPathInfo();
                 $selectedRoute = $url;
             } else {
