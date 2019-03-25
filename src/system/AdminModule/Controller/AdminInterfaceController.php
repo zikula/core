@@ -351,7 +351,7 @@ class AdminInterfaceController extends AbstractController
             $menuModules[$adminModule['name']] = $module;
 
             // category menu
-            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategories[$catid]['name'] . '::' . $moduleCategories[$catid]['cid'])) {
+            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategories[$catid]['name'] . '::' . $moduleCategories[$catid]['cid'], ACCESS_ADMIN)) {
                 continue;
             }
 
@@ -371,7 +371,7 @@ class AdminInterfaceController extends AbstractController
             if (array_key_exists($moduleCategory->getSortorder(), $menuCategories)) {
                 continue;
             }
-            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategory->getName() . '::' . $moduleCategory->getCid())) {
+            if (!$this->hasPermission('ZikulaAdminModule:Category:', $moduleCategory->getName() . '::' . $moduleCategory->getCid(), ACCESS_ADMIN)) {
                 continue;
             }
 
