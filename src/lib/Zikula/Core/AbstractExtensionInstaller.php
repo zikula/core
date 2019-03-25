@@ -67,11 +67,11 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     /**
      * upgrade the extension
      *
-     * @param string $oldversion version being upgraded
+     * @param string $oldVersion version being upgraded
      *
      * @return bool true if successful, false otherwise
      */
-    abstract public function upgrade($oldversion);
+    abstract public function upgrade($oldVersion);
 
     /**
      * delete the extension

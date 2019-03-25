@@ -9,4 +9,4 @@
             $('body .mm-slideout').css('position', 'relative');
         });
     });
-})(jQuery)
+})(jQuery);

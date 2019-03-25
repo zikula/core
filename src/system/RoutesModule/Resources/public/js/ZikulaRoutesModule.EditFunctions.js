@@ -76,7 +76,7 @@ function zikulaRoutesInitEditForm(mode, entityId) {
     });
     editForm.submit(zikulaRoutesHandleFormSubmit);
 
-    if (mode != 'create') {
+    if ('create' !== mode) {
         zikulaRoutesTriggerFormValidation();
     }
 }

@@ -23,13 +23,13 @@
                     a.removeClass('label-success')
                         .addClass('label-danger')
                         .text(Translator.__('Inactive'))
-                        .attr('title', Translator.__('Click to activate block'));
+                        .attr('title', Translator.__('Click to activate block'))
                     ;
                 } else {
                     a.removeClass('label-danger')
                         .addClass('label-success')
                         .text(Translator.__('Active'))
-                        .attr('title', Translator.__('Click to deactivate block'));
+                        .attr('title', Translator.__('Click to deactivate block'))
                     ; 
                 }
             })

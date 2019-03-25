@@ -20,7 +20,7 @@ jQuery( document ).ready(function( $ ) {
     });
 
     function processStage(stagename) {
-        if (stagename == 'finish') {
+        if ('finish' === stagename) {
             finalizeUI();
             return;
         }
@@ -34,7 +34,7 @@ jQuery( document ).ready(function( $ ) {
             },
             url: Routing.generate(route),
             success: function(data, textStatus, jqXHR) {
-                if (data.status == 1) {
+                if (1 === data.status) {
                     indicateStageSuccessful(stageitem);
                 } else {
                     indicateStageFailure(stageitem);
@@ -83,13 +83,13 @@ jQuery( document ).ready(function( $ ) {
     function getNextStage(stagename) {
         if (typeof stagename == 'undefined') return stages[0];
         var key = stages.indexOf(stagename);
-        return (key == -1) ? stages[0] : stages[++key];
+        return (-1 === key) ? stages[0] : stages[++key];
     }
 
     function updateProgressBar(stagename) {
-        progressbar = (stagename == 'finish') ? 100 : progressbar + percentage;
+        progressbar = ('finish' === stagename) ? 100 : progressbar + percentage;
         $('#progress-bar').css('width', progressbar + '%');
-        if (stagename == 'finish') {
+        if ('finish' === stagename) {
             $('#progress-bar').removeClass('progress-bar-striped active');
         }
     }
@@ -107,5 +107,7 @@ jQuery( document ).ready(function( $ ) {
             table += '<tr><td>'+resultArray[index][0]+'</td><td>'+resultArray[index][1]+'</td></tr>';
         }
         table += '</tbody></table>';
+
+        return table;
     }
 });

@@ -60,8 +60,8 @@
 {{ adminFooter() }}
 {% if isSubscriber %}
     {% set hookinit %}
-    <script type="text/javascript">
-        var subscriberAreas = new Array();
+    <script>
+        var subscriberAreas = [];
         {% if isSubscriber and subscriberAreas is not empty %}
         {% for sarea in subscriberAreas %}
             {% set sarea_md5 = sarea|php('md5') %}

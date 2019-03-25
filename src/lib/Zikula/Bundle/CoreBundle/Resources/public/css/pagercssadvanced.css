@@ -2,7 +2,6 @@ div.z-pager {
     color: #000;
     font: normal 82% "Trebuchet MS", "Myriad Web", Tahoma, Geneva, Arial, Helvetica, sans-serif;
     margin: 0 auto;
-    /*        padding: 4em 10px 0; */
     font-size: .9em;
     text-align: right;
     line-height: 180%;
@@ -14,23 +13,18 @@ div.z-pager a {
     font-weight: 700;
     color: #039;
     padding-left: 0;
-    background: none;
-    background-color: transparent;
+    background-image: none;
     background-color: #F1F6F5;
-    /*color: inherit;*/
     border-color: #c8d6d6 #9EADAD #9EADAD #c8d6d6;
 }
 
 div.z-pager a:visited {
     color: #5F7BB3;
-    background-color: transparent;
     background-color: #F1F6F5;
-    /*color: inherit;*/
     text-decoration: none;
 }
 
 div.z-pager a:hover, div.z-pager a:active, div.z-pager a:focus {
-    /*padding: 2px 4px;*/
     color: #036;
     background-color: transparent;
     text-decoration: none;
@@ -117,7 +111,8 @@ div.z-pager span.select {
     color: inherit;
     margin-right: 2px;
     padding: 0;
-    border: 1px solid #c8d6d6;
+    border-width: 1px;
+    border-style: solid;
     border-color: #c8d6d6 #9EADAD #9EADAD #c8d6d6;
     min-width: 1.8em;
     /*min-height: 1.6em;*/

@@ -49,7 +49,7 @@ $(document).on('click', '.admintabs-add .fa-times', function(e) {
 });
 
 $(document).on('click', '.admintabs-add .fa-check', function(e) {
-    $('.admintabs-add a').popover('hide')
+    $('.admintabs-add a').popover('hide');
     var name = $('#admintabs-add-name').val();
     if (name === '') {
         alert(('You must enter a name for the new category'));

@@ -437,12 +437,12 @@ class PagerExtension extends AbstractExtension
             if (!empty($params['class_numon'])) {
                 if (!isset($allVars[$pager['posvar']])) {
                     $style = ' class="' . $params['class_numon'] . '"';
-                    $active = 'class="active"';
+                    $active = ' class="active"';
                 } elseif (!empty($params['class_num'])) {
                     $style = ' class="' . $params['class_num'] . '"';
                 }
             }
-            $output .= '<li ' . $active . '><a ' . $style . ' href="' . $pagerUrl($pager) . '"> -' . "\n</a></li>";
+            $output .= '<li' . $active . '><a href="' . $pagerUrl($pager) . '"' . $style . '> -' . "\n</a></li>";
         }
 
         $style = '';
@@ -451,7 +451,7 @@ class PagerExtension extends AbstractExtension
             if (!empty($params['class_numon'])) {
                 if (isset($allVars[$pager['posvar']]) && $pager['values'][$i] == $allVars[$pager['posvar']]) {
                     $style = ' class="' . $params['class_numon'] . '"';
-                    $active = 'class="active"';
+                    $active = ' class="active"';
                 } elseif (!empty($params['class_num'])) {
                     $style = ' class="' . $params['class_num'] . '"';
                 } else {
@@ -459,7 +459,7 @@ class PagerExtension extends AbstractExtension
                 }
             }
             $pager['args'][$pager['posvar']] = $pager['values'][$i];
-            $output .= '<li ' . $active . '><a ' . $style . ' href="' . $pagerUrl($pager) . '">' . $pager['names'][$i] . "</a></li>\n";
+            $output .= '<li' . $active . '><a href="' . $pagerUrl($pager) . '"' . $style . '>' . $pager['names'][$i] . "</a></li>\n";
         }
         $output .= "</ul>\n";
 

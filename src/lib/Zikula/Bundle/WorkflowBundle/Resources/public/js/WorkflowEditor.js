@@ -186,7 +186,7 @@ var addNodeTools = function(node) {
 
 var cleanName = function (name) {
     return name.replace(/[^\w\s]/gi, '').replace(/ /g, '_').toLowerCase();
-}
+};
 
 var addNode = function () {
     jQuery('#nodeModalLabel').text(Translator.trans('Add node'));
@@ -381,14 +381,14 @@ jsPlumb.ready(function () {
     jQuery('#addNode').click(addNode);
 
     jQuery('#workflowName').on('change keypress', function (event) {
-        if (jQuery(this).val() == '') {
+        if ('' === jQuery(this).val()) {
             jQuery(this).val('my_workflow');
         }
         jQuery(this).val(cleanName(jQuery(this).val()));
         regenerateOutput();
     });
     jQuery('#workflowType').change(function (event) {
-        if (jQuery(this).val() === 'workflow') {
+        if ('workflow' === jQuery(this).val()) {
             jQuery('#markingStoreType').prop('disabled', false);
         } else if (jQuery(this).val() === 'state_machine') {
             jQuery('#markingStoreType').val('single_state').prop('disabled', true);
@@ -396,16 +396,16 @@ jsPlumb.ready(function () {
         regenerateOutput();
     });
     jQuery('#markingStoreType').change(function (event) {
-        if (jQuery(this).val() === 'multiple_state') {
+        if ('multiple_state' === jQuery(this).val()) {
             jQuery('#markingStoreFieldType').text(Translator.trans('array'));
-        } else if (jQuery(this).val() === 'single_state') {
+        } else if ('single_state' === jQuery(this).val()) {
             jQuery('#markingStoreFieldType').text(Translator.trans('string'));
         }
         regenerateOutput();
     });
     jQuery('#markingStoreType').trigger('change');
     jQuery('#markingStoreField').on('change keypress', function (event) {
-        if (jQuery(this).val() === '') {
+        if ('' === jQuery(this).val()) {
             jQuery(this).val('state');
         }
         jQuery(this).val(cleanName(jQuery(this).val()));

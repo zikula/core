@@ -69,7 +69,7 @@
         
         var value = $('#dbcreds_database_driver').val();
         
-        if (value == 'mysql') {
+        if ('mysql' === value) {
             $('#dbcreds_dbtabletype').parent().parent().show();
         } else {
             $('#dbcreds_dbtabletype').parent().parent().hide();
@@ -77,8 +77,8 @@
             
         $('#dbcreds_database_driver').on('change', function() {
             var value = $(this).val();
-            
-            if (value == 'mysql') {
+
+            if ('mysql' === value) {
                 $('#dbcreds_dbtabletype').parent().parent().slideDown('slow');
             } else {
                 $('#dbcreds_dbtabletype').parent().parent().slideUp('slow');

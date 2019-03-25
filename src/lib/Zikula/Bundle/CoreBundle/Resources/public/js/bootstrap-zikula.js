@@ -3,8 +3,7 @@
 ( function($) {
 
     // use bootstrap noConflict. See http://getbootstrap.com/javascript/#js-noconflict
-    var bootstrapButton = $.fn.button.noConflict()
-    $.fn.bootstrapBtn = bootstrapButton
+    $.fn.bootstrapBtn = $.fn.button.noConflict();
 
     /**
      * Confirmation modal
@@ -35,28 +34,28 @@
     /**
      * Return a value of input.
      *
-     * @param element e The input element
+     * @param element The input element
      *
      * @return string Value
      */
-    function getValueOfElement(e) {
-        if ($(e).is(':checkbox')) {
-            return $(e).is(':checked') ? '1' : '0';
-        } else if ($(e).is(':radio')) {
-            var name = $(e).attr('name');
-            return $('input[name="' + name + '"]:checked').val();
-        } else {
-            return $(e).val();
+    function getValueOfElement(element) {
+        if ($(element).is(':checkbox')) {
+            return $(element).is(':checked') ? '1' : '0';
         }
+        if ($(element).is(':radio')) {
+            var name = $(element).attr('name');
+
+            return $('input[name="' + name + '"]:checked').val();
+        }
+
+        return $(element).val();
     }
     
     $(document).ready(function() {
-        
-        
         // remove class hide because bootstrap is using important, that is not
         // working with jQuery.show();
         // $('.hide').hide().removeClass('hide');
-        
+
         /**
         * Input switch container. 
         * 

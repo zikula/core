@@ -80,7 +80,7 @@
         function performContextMenuAction(node, action, extrainfo) {
             var allowedActions = ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
             var parentId;
-            if (!$.inArray(action, allowedActions) == -1) {
+            if (-1 === $.inArray(action, allowedActions)) {
                 return false;
             }
             var nodeId = $(node).attr('id');
@@ -167,7 +167,7 @@
                         var buttonValue = $(this).val();
                         var entityId;
 
-                        if (buttonValue == 'Cancel') {
+                        if ('Cancel' === buttonValue) {
                             closeEditForm();
                             return false;
                         }
@@ -176,7 +176,7 @@
                         $.each($(':input, :hidden').serializeArray(), function(i, field) {
                             pars[field.name] = field.value;
                         });
-                        if ((typeof data.id !== 'undefined') && data.id) {
+                        if ('undefined' !== typeof data.id && data.id) {
                             entityId = data.id;
                         }
 
@@ -190,14 +190,14 @@
                                 updateEditForm(data.result);
                             } else {
                                 var nodeData = $.parseJSON(data.node);
-                                if (data.mode == 'edit') {
+                                if ('edit' === data.mode) {
                                     // rename the existing node
                                     var editedNode = treeElem.jstree('get_node', nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.title);
                                 } else {
                                     var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
                                     var parentNode = treeElem.jstree('get_node', id_prefix + nodeData.parent);
-                                    parentNode = (!parentNode) ? "#" : parentNode;
+                                    parentNode = !parentNode ? '#' : parentNode;
                                     treeElem.jstree(true).create_node(parentNode, nodeData, selectedNodeIndex + 1);
                                 }
                                 closeEditForm();

@@ -131,7 +131,7 @@
         function performContextMenuAction(node, action, extrainfo) {
             var allowedActions = ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate', 'addafter', 'addchild'];
             var parentId, entityId;
-            if (!$.inArray(action, allowedActions) == -1) {
+            if (-1 === $.inArray(action, allowedActions)) {
                 return false;
             }
             if (node) {

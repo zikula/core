@@ -13,7 +13,7 @@ var cloneDraggedItem = true;
      *
      * @return  void
      */
-    recolorListElements = function(listclass, headerclass) {
+    var recolorListElements = function(listclass, headerclass) {
         var odd = true;
 
         $('.' + listclass).children().each(function(index) {
@@ -22,7 +22,7 @@ var cloneDraggedItem = true;
                 elem.removeClass('z-odd');
                 elem.removeClass('z-even');
 
-                if (odd == true) {
+                if (true === odd) {
                     elem.addClass('z-odd');
                 } else {
                     elem.addClass('z-even');
@@ -32,7 +32,7 @@ var cloneDraggedItem = true;
         });
     };
 
-    initHookAccordion = function(containerId) {
+    var initHookAccordion = function(containerId) {
         $('#' + containerId + ' h4').addClass('z-panel-header z-pointer');
         $('#' + containerId).accordion({
             header: 'h4',
@@ -43,7 +43,7 @@ var cloneDraggedItem = true;
         });
     };
 
-    initHookSubscriber = function() {
+    var initHookSubscriber = function() {
         initAreasSortables();
 
         // init dragging of available provider areas
@@ -81,7 +81,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    initAreasSortables = function() {
+    var initAreasSortables = function() {
         // add class 'z-itemsort' to all items with class 'z-sortable'
         $('.z-sortable').addClass('z-itemsort');
 
@@ -97,7 +97,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    createSortable = function(area_id) {
+    var createSortable = function(area_id) {
         var listId = area_id + '_list';
 
         $('#' + listId).sortable({
@@ -116,7 +116,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    bindSubscriberAreaToProviderArea = function(sarea, parea) {
+    var bindSubscriberAreaToProviderArea = function(sarea, parea) {
         subscriberAreaToggle(sarea, parea);
     };
 
@@ -127,7 +127,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    unbindProviderAreaFromSubscriberArea = function(sarea_id, sarea, parea_id, parea) {
+    var unbindProviderAreaFromSubscriberArea = function(sarea_id, sarea, parea_id, parea) {
         if (removeItemBeforeResponse) {
             removeProviderAreaFromSubscriberArea(sarea_id, parea_id);
         }
@@ -142,7 +142,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    subscriberAreaToggle = function(sarea, parea) {
+    var subscriberAreaToggle = function(sarea, parea) {
         $.ajax({
             url: Routing.generate('zikula_hook_hook_togglesubscribeareastatus'),
             data: {
@@ -151,11 +151,11 @@ var cloneDraggedItem = true;
                 providerarea: parea
             }
         }).done(function(data) {
-            if (data.action == 'bind') {
+            if ('bind' === data.action) {
                 if (!appendItemBeforeResponse) {
                     appendProviderAreaToSubscriberArea(data.subscriberarea_id, data.subscriberarea, data.providerarea_id);
                 }
-            } else if (data.action == 'unbind') {
+            } else if ('unbind' === data.action) {
                 if (!removeItemBeforeResponse) {
                     removeProviderAreaFromSubscriberArea(data.subscriberarea_id, data.providerarea_id)
                 }
@@ -172,7 +172,7 @@ var cloneDraggedItem = true;
      * @params providerarea;
      * @return none;
      */
-    appendProviderAreaToSubscriberArea = function(sarea_id, sarea_name, parea_id) {
+    var appendProviderAreaToSubscriberArea = function(sarea_id, sarea_name, parea_id) {
         var areaToAttach = $('#availablearea_' + parea_id + '-sarea_identifier');
         var areaToAttachTo = $('#sarea_' + sarea_id);
         var areaListToAttachTo = $('#sarea_' + sarea_id + '_list');
@@ -241,7 +241,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    removeProviderAreaFromSubscriberArea = function(sarea_id, parea_id) {
+    var removeProviderAreaFromSubscriberArea = function(sarea_id, parea_id) {
         var areaToDetach = $('#attachedarea_' + parea_id + '-' + sarea_id);
         var heightOfDetachedArea = areaToDetach.height();
         areaToDetach.remove();
@@ -255,7 +255,7 @@ var cloneDraggedItem = true;
         });
 
         // if there no more areas attached, show empty_area
-        if (amountOfAttachedAreas == 0) {
+        if (1 > amountOfAttachedAreas {
             $('#sarea_empty_' + sarea_id).removeClass('hide');
         } else {
             areaToDetachFrom.css('height', (areaToDetachFrom.height() - heightOfDetachedArea) + 'px');
@@ -272,7 +272,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    changeAttachedAreaOrder = function(event, ui) {
+    var changeAttachedAreaOrder = function(event, ui) {
         // this will be the id of the ol
         var listId = ui.item.parent().attr('id');
 
@@ -305,7 +305,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    initAreasDroppables = function() {
+    var initAreasDroppables = function() {
         // loop through module's subscriber areas and create droppables
         for (var i = 0; i < subscriberAreas.length; i++) {
             createDroppable(subscriberAreas[i]);
@@ -318,7 +318,7 @@ var cloneDraggedItem = true;
      * @params none;
      * @return none;
      */
-    createDroppable = function(area_id) {
+    var createDroppable = function(area_id) {
         $('#' + area_id).droppable({
             accept: '.z-draggable',
             hoverClass: 'z-hook-droppable-active',
@@ -349,7 +349,7 @@ var cloneDraggedItem = true;
                 };
 
                 // allow connections of the same category only
-                if (provider.category != subscriber.category) {
+                if (provider.category !== subscriber.category) {
                     return;
                 }
 
@@ -357,7 +357,7 @@ var cloneDraggedItem = true;
                 // loop though all attached areas of the subscriber area to find out
                 var alreadyAttached = false;
                 $('#' + subscriberId + ' li.z-sortable').each(function(index) {
-                    if ($(this).attr('id').split('_')[1].split('-')[0] == provider.identifier) {
+                    if ($(this).attr('id').split('_')[1].split('-')[0] === provider.identifier) {
                         alreadyAttached = true;
 
                         // break the loop

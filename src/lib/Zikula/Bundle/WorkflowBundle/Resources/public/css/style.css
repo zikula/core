@@ -39,14 +39,11 @@
     line-height: 70px;
     background-color: white;
     text-align: center;
-    cursor: pointer;
     -o-box-shadow: 2px 2px 19px #aaa;
     -webkit-box-shadow: 2px 2px 19px #aaa;
     -moz-box-shadow: 2px 2px 19px #aaa;
     -moz-border-radius: 5px;
-    -khtml-border-radius: 5px;
     -webkit-border-radius: 5px;
-    -o-border-radius: 5px;
     box-shadow: 2px 2px 19px #aaa;
     border-radius: 5px;
     position: absolute;
@@ -75,9 +72,7 @@
 }
 .jtk-canvas .node.transition {
     -moz-border-radius: 40px;
-    -khtml-border-radius: 40px;
     -webkit-border-radius: 40px;
-    -o-border-radius: 40px;
     border-radius: 40px;
     background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #FFFFFF), color-stop(1, #E1F2EB));
     background-image: -o-linear-gradient(right bottom, #FFFFFF 0%, #E1F2EB 100%);
@@ -181,7 +176,6 @@
 .jtk-drag-select * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;    

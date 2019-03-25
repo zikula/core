@@ -16,11 +16,11 @@
 
         {% for currentItem, currentPage in pagerPluginArray.pages %}
             {% if currentPage.isVisible == 0 and hiddenPageBoxOpened == 0 %}
-                <a href="javascript:void(0);" onclick="javascript:CheckPageLink('{{ currentPage.pagenr }}')" onkeypress="javascript:CheckPageLink('{{ currentPage.pagenr }}')">
+                <a href="#" class="pager-link" data-pagenr="{{ currentPage.pagenr }}')">
                     <span id="showlink{{ currentPage.pagenr }}one">... +</span>
-                    <span id="showlink{{ currentPage.pagenr }}two" class="hide">... -</span>
+                    <span id="showlink{{ currentPage.pagenr }}two" class="hidden">... -</span>
                 </a>
-                <span id="showpages{{ currentPage.pagenr }}" class="hide">
+                <span id="showpages{{ currentPage.pagenr }}" class="hidden">
                 {% set hiddenPageBoxOpened=1 %}
                 {% set hiddenPageBoxClosed=0 %}
             {% endif %}
@@ -51,7 +51,7 @@
 {% set customScript %}
 <script>
     (function($) {
-        PagerChangeClass = function(id, class1, class2) {
+        var pagerChangeClass = function(id, class1, class2) {
             var myobj = $('#' + id);
             if (myobj.hasClass(class1)) {
                 myobj.removeClass(class1);
@@ -60,12 +60,14 @@
                 myobj.removeClass(class2);
                 myobj.addClass(class1);
             }
-        }
-
-        CheckPageLink = function(linkid) {
-            PagerChangeClass('showlink' + linkid + 'one', 'hide', 'show');
-            PagerChangeClass('showlink' + linkid + 'two', 'hide', 'show');
-            PagerChangeClass('showpages' + linkid, 'hide', 'show');
+        };
+        $(document).ready(function() {
+            $('a.pager-link').on('click keypress', function(event) {
+                var linkId = $(this).data('pagenr');
+                pagerChangeClass('showlink' + linkId + 'one', 'hidden', 'show');
+                pagerChangeClass('showlink' + linkId + 'two', 'hidden', 'show');
+                pagerChangeClass('showpages' + linkId, 'hidden', 'show');
+            });
         }
     })(jQuery);
 </script>

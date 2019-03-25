@@ -24,7 +24,7 @@
         $('#filters').on('change', '.attribute-selector', function() {
             var value = $(this).val();
             var queryParamInput = $(this).parent('li').find('.queryParameter');
-            if ('query param' == value || '_route_params' == value) {
+            if ('query param' === value || '_route_params' === value) {
                 queryParamInput.prop('disabled', false);
             } else {
                 queryParamInput.prop('disabled', true);
