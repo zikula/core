@@ -183,8 +183,6 @@ class FilterListener implements EventSubscriberInterface
                 // process the IdsReport object
                 $session = $request->hasSession() ? $request->getSession() : null;
                 $this->processIdsResult($init, $result, $session, $request);
-            } else {
-                // no attack detected
             }
         } catch (\Exception $e) {
             // sth went wrong - maybe the filter rules weren't found

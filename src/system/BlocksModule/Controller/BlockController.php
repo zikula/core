@@ -80,17 +80,17 @@ class BlockController extends AbstractController
      * @Theme("admin")
      *
      * @param Request $request
-     * @param BlockEntity $blockEntity
      * @param BlockApiInterface $blockApi
      * @param ExtensionRepositoryInterface $extensionRepository
+     * @param BlockEntity $blockEntity
      *
      * @return RedirectResponse|Response
      */
     public function editAction(
         Request $request,
-        BlockEntity $blockEntity = null,
         BlockApiInterface $blockApi,
-        ExtensionRepositoryInterface $extensionRepository
+        ExtensionRepositoryInterface $extensionRepository,
+        BlockEntity $blockEntity = null
     ) {
         $accessLevelRequired = ACCESS_EDIT;
         if (null === $blockEntity) {

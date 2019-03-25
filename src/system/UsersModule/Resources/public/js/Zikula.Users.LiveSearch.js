@@ -33,7 +33,7 @@ function initUserLiveSearch(fieldName)
             jQuery('#' + fieldName + 'LiveSearch .empty-message').remove();
             if (ui.content.length === 0) {
                 jQuery('#' + fieldName + 'LiveSearch').append(
-                    jQuery('<div />', { class: 'empty-message' }).text(Translator.__('No results found!'))
+                    jQuery('<div>', { class: 'empty-message' }).text(Translator.__('No results found!'))
                 );
             }
         },
@@ -50,7 +50,7 @@ function initUserLiveSearch(fieldName)
         }
     })
     .autocomplete('instance')._renderItem = function(ul, item) {
-        return jQuery('<div />', { class: 'suggestion' })
+        return jQuery('<div>', { class: 'suggestion' })
             .append('<div class="media"><div class="media-left"><a href="javascript:void(0)">' + item.avatar + '</a></div><div class="media-body"><p class="media-heading">' + item.uname + '</p></div></div>')
             .appendTo(ul);
     };

@@ -172,7 +172,7 @@ class AccessController extends AbstractController
         // implement auto-register setting here. If true, do so and proceed. #2915
         $this->addFlash('error', $this->__('Login failed.'));
         $request->getSession()->remove('authenticationMethod');
-        $returnUrl = $this->dispatchLoginFailedEvent($user, $returnUrl, $authenticationMethod);
+        $returnUrl = $this->dispatchLoginFailedEvent($authenticationMethod, $returnUrl, $user);
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
     }
@@ -201,12 +201,12 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @param UserEntity|null $user
-     * @param $returnUrl
      * @param $authenticationMethod
+     * @param $returnUrl
+     * @param UserEntity|null $user
      * @return mixed
      */
-    private function dispatchLoginFailedEvent(UserEntity $user = null, $returnUrl, $authenticationMethod)
+    private function dispatchLoginFailedEvent($authenticationMethod, $returnUrl, UserEntity $user = null)
     {
         $eventArgs = [
             'authenticationMethod' => $authenticationMethod,

@@ -25,7 +25,7 @@ var currentCalculator;
             test: function(word) {
                 return word.length === 0 || word.length >= this.options.minLength;
             },
-            msg: 'Password is too short'
+            msg: Translator.__('Password is too short')
         }
     };
     ZikulaZAuthPassCalc.ruleScores = {
@@ -84,10 +84,10 @@ var currentCalculator;
             return word.match(/(.*\d.*\d.*\d)/) && score;
         },
         one_special_char: function (word, score) {
-            return word.match(/.[!,@,#,$,%,\^,&,*,?,_,~]/) && score;
+            return word.match(/.[!,@,#,$,%,^,&,*,?,_,~]/) && score;
         },
         two_special_char: function (word, score) {
-            return word.match(/(.*[!,@,#,$,%,\^,&,*,?,_,~].*[!,@,#,$,%,\^,&,*,?,_,~])/) && score;
+            return word.match(/(.*[!,@,#,$,%,^,&,*,?,_,~].*[!,@,#,$,%,^,&,*,?,_,~])/) && score;
         },
         upper_lower_combo: function (word, score) {
             return word != word.toLocaleUpperCase() && word != word.toLocaleLowerCase() && score;
@@ -96,7 +96,7 @@ var currentCalculator;
             return word.match(/([a-zA-Z])/) && word.match(/([0-9])/) && score;
         },
         letter_number_char_combo : function (word, score) {
-            return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,\^,&,*,?,_,~])|([!,@,#,$,%,\^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
+            return word.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~])|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z0-9])/) && score;
         }
     };
     ZikulaZAuthPassCalc.calculate = function (word) {
@@ -162,7 +162,7 @@ var currentCalculator;
             username: false,
             onChange: false,
             messages: {},
-            colors:  ['#ff0000', '#FFCC33', '#00FF00', '#008000'],
+            colors:  ['#f00', '#FC3', '#0F0', '#008000'],
             scores: [20, 40, 60],
             verdicts: [Translator.__('Weak'), Translator.__('Normal'), Translator.__('Strong'), Translator.__('Very Strong')]
         }, options || { });
@@ -173,7 +173,7 @@ var currentCalculator;
         if ($('#' + options.username).length > 0) {
             ZikulaZAuthPassCalc.restrictions.username = {
                 test: function(word) {
-                    return word ==='' || word != $('#' + options.username).val();
+                    return '' === word || word != $('#' + options.username).val();
                 },
                 msg: Translator.__('Password can not match the username, choose a different password.')
             };
