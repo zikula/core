@@ -27,7 +27,6 @@ enabled:
   - php_unit_namespaced
   - php_unit_set_up_tear_down_visibility
   - random_api_migration
-  - return_type_declaration
   - short_array_syntax
   - short_list_syntax
   - standardize_increment
