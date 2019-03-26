@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -17,7 +19,7 @@ use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 use Zikula\SecurityCenterModule\Api\HtmlFilterApi;
 use Zikula\SecurityCenterModule\Tests\Api\Fixtures\FilterTestSubscriber;
 
-class HtmlFilterApiTest extends \PHPUnit_Framework_TestCase
+class HtmlFilterApiTest extends \PHPUnit\Framework\TestCase
 {
     private $allowableHTML = [];
 

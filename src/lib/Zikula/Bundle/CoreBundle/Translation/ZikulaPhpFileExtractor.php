@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -22,11 +24,11 @@ use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use PhpParser\Node;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitor;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Namespace_;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Twig\Node\Node as TwigNode;
@@ -139,17 +141,16 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
                 }
 
                 return;
-            } else {
-                foreach ($node->stmts as $node) {
-                    $this->enterNode($node);
-                }
-
-                return;
             }
+            foreach ($node->stmts as $node) {
+                $this->enterNode($node);
+            }
+
+            return;
         }
         if (!$node instanceof MethodCall
             || !is_string($node->name)
-            || !in_array(strtolower($node->name), $this->methodNames)
+            || !in_array(mb_strtolower($node->name), $this->methodNames)
         ) {
             $this->previousNode = $node;
 
@@ -187,13 +188,13 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         }
 
         $id = $node->args[0]->value->value;
-        if (in_array(strtolower($node->name), ['_n', '_fn'], true)) {
+        if (in_array(mb_strtolower($node->name), ['_n', '_fn'], true)) {
             // concatenate pluralized strings from zikula functions
             $id = $node->args[0]->value->value . '|' . $node->args[1]->value->value;
         }
 
         // determine location of domain
-        $domainIndex = array_search(strtolower($node->name), $this->methodNames);
+        $domainIndex = array_search(mb_strtolower($node->name), $this->methodNames);
 
         if (isset($node->args[$domainIndex])) {
             if (!$node->args[$domainIndex]->value instanceof String_) {
@@ -283,7 +284,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private function getBundleFromNodeNamespace($nodeNamespace)
     {
         foreach ($this->bundles as $namespace => $bundleName) {
-            if (false !== strpos($nodeNamespace, $namespace)) {
+            if (false !== mb_strpos($nodeNamespace, $namespace)) {
                 if ($this->kernel->isBundle($bundleName)) {
                     return $this->kernel->getBundle($bundleName);
                 }

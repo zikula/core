@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,9 +16,9 @@ namespace Zikula\SettingsModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
+use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
  * Installation and upgrade routines for the settings module.
@@ -183,12 +185,12 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
     private function setGuestTimeZone()
     {
         $existingOffset = $this->getSystemVar('timezone_offset');
-        $actualOffset = floatval($existingOffset) * 60; // express in minutes
+        $actualOffset = (float) $existingOffset * 60; // express in minutes
         $timezoneAbbreviations = \DateTimeZone::listAbbreviations();
         $timeZone = date_default_timezone_get();
         foreach ($timezoneAbbreviations as $abbreviation => $zones) {
             foreach ($zones as $zone) {
-                if ($zone['offset'] == $actualOffset) {
+                if ($zone['offset'] === $actualOffset) {
                     $timeZone = $zone['timezone_id'];
                     break 2;
                 }

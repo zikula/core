@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -245,7 +247,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     {
         /* @var BundleInterface $bundle */
         foreach ($this->getBundles() as $bundle) {
-            if (0 === strpos($class, $bundle->getNamespace())) {
+            if (0 === mb_strpos($class, $bundle->getNamespace())) {
                 return $bundle instanceof AbstractBundle;
             }
         }
@@ -280,7 +282,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     {
         $extensions = [];
         foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE != $bundle->getState()) {
+            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
                 continue;
             }
             if ($extension = $bundle->getContainerExtension()) {
@@ -294,7 +296,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
 
         foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE != $bundle->getState()) {
+            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
                 continue;
             }
             $bundle->build($container);
@@ -318,7 +320,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     public function locateResource($name, $dir = null, $first = true)
     {
         $locations = parent::locateResource($name, $dir, false);
-        if ($locations && (false !== strpos($locations[0], $dir))) {
+        if ($locations && (false !== mb_strpos($locations[0], $dir))) {
             // if found in $dir (typically app/Resources) return it immediately.
             return $locations[0];
         }
@@ -328,7 +330,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
         // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
         // the \Zikula\Bundle\CoreBundle\EventListener\Theme\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
-        if ($themeBundle && (false === strpos($name, $themeBundle->getName()))) {
+        if ($themeBundle && (false === mb_strpos($name, $themeBundle->getName()))) {
             // do not add theme override path to theme files
             $customThemePath = $themeBundle->getPath() . '/Resources';
 

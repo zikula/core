@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -18,7 +20,7 @@ namespace Zikula\Bundle\CoreBundle\Tests\Functional;
  */
 class ServiceInstantiationTest extends BaseTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         static::createClient();
     }

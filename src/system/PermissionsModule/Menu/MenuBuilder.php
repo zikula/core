@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -54,7 +56,7 @@ class MenuBuilder
             ])->setAttribute('icon', 'fa fa-plus')
             ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips']);
 
-        if (!$lockAdmin || $adminPermId != $permission->getPid()) {
+        if (!$lockAdmin || $adminPermId !== $permission->getPid()) {
             $menu->addChild($this->__f('Edit permission %s', ['%s' => $permission->getPid()]), [
                 'uri' => '#'
             ])->setAttribute('icon', 'fa fa-pencil')

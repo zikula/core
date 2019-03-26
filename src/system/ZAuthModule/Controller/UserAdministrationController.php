@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -28,8 +30,8 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
+use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Event\UserFormAwareEvent;
@@ -98,8 +100,8 @@ class UserAdministrationController extends AbstractController
         ]);
 
         $filter = [];
-        if (!empty($letter) && 'all' != $letter) {
-            $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
+        if (!empty($letter) && 'all' !== $letter) {
+            $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
         $limit = 25;
 
@@ -138,7 +140,7 @@ class UserAdministrationController extends AbstractController
         }
         $fragment = $request->request->get('fragment');
         $filter = [
-            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
+            'uname' => ['operator' => 'like', 'operand' => "${fragment}%"]
         ];
         $mappings = $authenticationMappingRepository->query($filter);
 
@@ -193,7 +195,7 @@ class UserAdministrationController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 $mapping = $form->getData();
                 $passToSend = $form['sendpass']->getData() ? $mapping->getPass() : '';
-                $authMethodName = (ZAuthConstant::AUTHENTICATION_METHOD_EITHER == $mapping->getMethod()) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->getMethod();
+                $authMethodName = (ZAuthConstant::AUTHENTICATION_METHOD_EITHER === $mapping->getMethod()) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->getMethod();
                 $authMethod = $authenticationMethodCollector->get($authMethodName);
 
                 $request->getSession()->set(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ($form['usermustverify']->getData() ? 'Y' : 'N'));
@@ -202,7 +204,7 @@ class UserAdministrationController extends AbstractController
                 $user->merge($mapping->getUserEntityData());
                 $user->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $mapping->getMethod());
                 $registrationHelper->registerNewUser($user);
-                if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
+                if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $notificationErrors = $mailHelper->createAndSendRegistrationMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
                 } else {
                     $notificationErrors = $mailHelper->createAndSendUserMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
@@ -225,7 +227,7 @@ class UserAdministrationController extends AbstractController
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
                 $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
 
-                if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
+                if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $this->addFlash('status', $this->__('Done! Created new registration application.'));
                 } elseif (null !== $user->getActivated()) {
                     $this->addFlash('status', $this->__('Done! Created new user account.'));

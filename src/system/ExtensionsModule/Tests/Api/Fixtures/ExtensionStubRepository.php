@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,8 +15,8 @@ namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class ExtensionStubRepository implements ExtensionRepositoryInterface
 {
@@ -72,7 +74,7 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
         foreach ($this->entities as $entity) {
             $ret = true;
             foreach ($criteria as $prop => $value) {
-                $ret = $ret && ($entity[$prop] == $value);
+                $ret = $ret && ($entity[$prop] === $value);
             }
             if ($ret) {
                 return $entity;

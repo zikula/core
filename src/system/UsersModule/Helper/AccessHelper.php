@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -107,7 +109,7 @@ class AccessHelper
         $user->setLastlogin(new \DateTime());
         $this->userRepository->persistAndFlush($user);
         $lifetime = 0;
-        if ($rememberMe && ZikulaSessionStorage::SECURITY_LEVEL_HIGH != $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM)) {
+        if ($rememberMe && ZikulaSessionStorage::SECURITY_LEVEL_HIGH !== $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM)) {
             $lifetime = 2 * 365 * 24 * 60 * 60; // two years
         }
         $this->session->migrate(true, $lifetime);

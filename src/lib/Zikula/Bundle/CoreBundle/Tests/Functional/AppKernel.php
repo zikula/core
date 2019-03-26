@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -12,8 +14,8 @@
 namespace Zikula\Bundle\CoreBundle\Tests\Functional;
 
 use JMS\TranslationBundle\Exception\RuntimeException;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Kernel;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 

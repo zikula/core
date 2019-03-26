@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -40,13 +42,13 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
         $i = 1;
         foreach ($criteria as $field => $value) {
             $comparator = is_array($value) ? 'IN' : '=';
-            $qb->andWhere("e.$field $comparator param$i")
-                ->setParameter("param$i", $value);
+            $qb->andWhere("e.${field} ${comparator} param${i}")
+                ->setParameter("param${i}", $value);
             $i++;
         }
         if (isset($orderBy)) {
             foreach ($orderBy as $field => $direction) {
-                $qb->orderBy("e.$field", $direction);
+                $qb->orderBy("e.${field}", $direction);
             }
         }
         $query = $qb->getQuery();

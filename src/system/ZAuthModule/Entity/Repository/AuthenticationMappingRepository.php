@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -89,9 +91,9 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
             $paginator = new Paginator($query);
 
             return $paginator;
-        } else {
-            return $query->getResult();
         }
+
+        return $query->getResult();
     }
 
     /**
@@ -104,7 +106,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
     {
         $orderBy = new OrderBy();
         foreach ($sort as $field => $direction) {
-            $orderBy->add("m.$field", $direction);
+            $orderBy->add("m.${field}", $direction);
         }
 
         return $orderBy;

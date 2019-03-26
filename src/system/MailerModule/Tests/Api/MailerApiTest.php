@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -24,7 +26,7 @@ use Zikula\MailerModule\Tests\Api\Fixtures\CountableMemorySpool;
  * Class MailerApiTest
  * @see https://www.pmg.com/blog/integration-testing-swift-mailer/
  */
-class MailerApiTest extends \PHPUnit_Framework_TestCase
+class MailerApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MailerApiInterface
@@ -39,7 +41,7 @@ class MailerApiTest extends \PHPUnit_Framework_TestCase
     /**
      * MailerApiTest setUp.
      */
-    public function setUp()
+    protected function setUp()
     {
         $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
         $kernel->method('getLogDir')->willReturn('');

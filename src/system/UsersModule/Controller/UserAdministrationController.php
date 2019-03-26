@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -96,8 +98,8 @@ class UserAdministrationController extends AbstractController
         ]);
 
         $filter = [];
-        if (!empty($letter) && 'all' != $letter) {
-            $filter['uname'] = ['operator' => 'like', 'operand' => "$letter%"];
+        if (!empty($letter) && 'all' !== $letter) {
+            $filter['uname'] = ['operator' => 'like', 'operand' => "${letter}%"];
         }
         $limit = $this->getVar(UsersConstant::MODVAR_ITEMS_PER_PAGE, UsersConstant::DEFAULT_ITEMS_PER_PAGE);
         $users = $userRepository->query($filter, [$sort => $sortdir], $limit, $startnum);
@@ -139,13 +141,13 @@ class UserAdministrationController extends AbstractController
                 UsersConstant::ACTIVATED_PENDING_REG,
                 UsersConstant::ACTIVATED_PENDING_DELETE
             ]],
-            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
+            'uname' => ['operator' => 'like', 'operand' => "${fragment}%"]
         ];
         $users = $userRepository->query($filter);
 
         return $this->render('@ZikulaUsersModule/UserAdministration/userlist.html.twig', [
             'users' => $users,
-            'actionsHelper' => $$actionsHelper
+            'actionsHelper' => ${$actionsHelper}
         ], new PlainResponse());
     }
 
@@ -263,7 +265,7 @@ class UserAdministrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
                 $registrationHelper->approve($user);
-                if (UsersConstant::ACTIVATED_PENDING_REG == $user->getActivated()) {
+                if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $notificationErrors = $mailHelper->createAndSendRegistrationMail($user, true, false);
                 } else {
                     $notificationErrors = $mailHelper->createAndSendUserMail($user, true, false);
@@ -311,7 +313,7 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
         $users = new ArrayCollection();
-        if ('POST' == $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             $deleteForm = $this->createForm(DeleteType::class, [], [
                 'choices' => $userRepository->queryBySearchForm(),
                 'action' => $this->generateUrl('zikulausersmodule_useradministration_delete')
@@ -367,7 +369,7 @@ class UserAdministrationController extends AbstractController
                 // send email to 'denied' registrations. see MailHelper::sendNotification (regdeny) #2915
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
-                    $eventName = UsersConstant::ACTIVATED_ACTIVE == $deletedUser->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
+                    $eventName = UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
                     $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
                     $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
@@ -494,12 +496,12 @@ class UserAdministrationController extends AbstractController
         array $originalGroups
     ) {
         $currentUserId = $currentUserApi->get('uid');
-        if ($currentUserId != $userBeingModified->getUid()) {
+        if ($currentUserId !== $userBeingModified->getUid()) {
             return;
         }
 
         // current user not allowed to deactivate self
-        if (UsersConstant::ACTIVATED_ACTIVE != $userBeingModified->getActivated()) {
+        if (UsersConstant::ACTIVATED_ACTIVE !== $userBeingModified->getActivated()) {
             $this->addFlash('info', $this->__('You are not allowed to alter your own active state.'));
             $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         }

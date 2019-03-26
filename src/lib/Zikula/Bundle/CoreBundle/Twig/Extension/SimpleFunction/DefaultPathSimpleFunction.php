@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,8 +13,8 @@
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension\SimpleFunction;
 
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
+use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class DefaultPathSimpleFunction
 {

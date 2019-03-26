@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -35,7 +37,7 @@ class PendingContentBlock extends AbstractBlockHandler
 
     public function display(array $properties)
     {
-        if (!$this->hasPermission('PendingContent::', "$properties[title]::", ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission('PendingContent::', "{$properties[title]}::", ACCESS_OVERVIEW)) {
             return '';
         }
 

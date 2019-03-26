@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,8 +17,8 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
-use Twig\Node\Expression\FunctionExpression;
 use Twig\Environment;
+use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Node;
 use Twig\NodeTraverser;
 use Twig\NodeVisitor\AbstractNodeVisitor;
@@ -115,9 +117,9 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
                     if (isset($domains[0])) {
                         if ($this->kernel->isBundle($domains[0])) {
                             $bundle = $this->kernel->getBundle($domains[0]);
-                            $domain = ($bundle instanceof AbstractBundle) ? $bundle->getTranslationDomain() : strtolower($bundle->getName());
+                            $domain = ($bundle instanceof AbstractBundle) ? $bundle->getTranslationDomain() : mb_strtolower($bundle->getName());
                         } else {
-                            $domain = strtolower($domains[0]);
+                            $domain = mb_strtolower($domains[0]);
                         }
                         // cache result of file lookup
                         self::$domainCache[$composerPath] = $domain;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -117,19 +119,19 @@ class HtmlFilterApi implements HtmlFilterApiInterface
         $allowableHTML = $this->variableApi->getSystemVar('AllowableHTML');
         if (is_array($allowableHTML)) {
             foreach ($allowableHTML as $k => $v) {
-                if ('!--' == $k) {
-                    if (self::TAG_NOT_ALLOWED != $v) {
-                        $allowedHTML[] = "$k.*?--";
+                if ('!--' === $k) {
+                    if (self::TAG_NOT_ALLOWED !== $v) {
+                        $allowedHTML[] = "${k}.*?--";
                     }
                 } else {
                     switch ($v) {
                         case self::TAG_NOT_ALLOWED:
                             break;
                         case self::TAG_ALLOWED_PLAIN:
-                            $allowedHTML[] = "/?$k\s*/?";
+                            $allowedHTML[] = "/?${k}\\s*/?";
                             break;
                         case self::TAG_ALLOWED_WITH_ATTRIBUTES:
-                            $allowedHTML[] = "/?\s*$k" . "(\s+[\w\-:]+\s*=\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
+                            $allowedHTML[] = "/?\\s*${k}" . "(\\s+[\\w\\-:]+\\s*=\\s*(\"[^\"]*\"|'[^']*'))*" . '\s*/?';
                             break;
                     }
                 }

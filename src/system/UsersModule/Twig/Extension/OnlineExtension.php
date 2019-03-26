@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -62,12 +64,12 @@ class OnlineExtension extends AbstractExtension
         if (empty($userEntity)) {
             return;
         }
-        if (Constant::SESSION_STORAGE_FILE == $this->sessionStorageInFile) {
+        if (Constant::SESSION_STORAGE_FILE === $this->sessionStorageInFile) {
             return;
         }
 
         $since = new \DateTime();
-        $since->modify("-$minutes minutes");
+        $since->modify("-${minutes} minutes");
         $c = Criteria::create()
             ->where(Criteria::expr()->eq('uid', $userEntity->getUid()))
             ->andWhere(Criteria::expr()->gt('lastused', $since));

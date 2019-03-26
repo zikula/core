@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,7 +15,7 @@ namespace Zikula\ThemeModule\Tests\Engine;
 
 use Zikula\ThemeModule\Engine\AssetBag;
 
-class AssetBagTest extends \PHPUnit_Framework_TestCase
+class AssetBagTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers AssetBag::count()

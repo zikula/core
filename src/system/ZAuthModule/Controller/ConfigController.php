@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -17,8 +19,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\ZAuthModule\ZAuthConstant;
 use Zikula\ZAuthModule\Form\Type\ConfigType;
+use Zikula\ZAuthModule\ZAuthConstant;
 
 /**
  * @Route("/admin")

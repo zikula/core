@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -59,8 +61,8 @@ class BlockFactoryApi implements BlockFactoryApiInterface
             throw new \RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
         }
 
-        if ('\\' == substr($blockClassName, 0, 1)) {
-            $blockClassName = substr($blockClassName, 1);
+        if ('\\' === mb_substr($blockClassName, 0, 1)) {
+            $blockClassName = mb_substr($blockClassName, 1);
         }
 
         if (!$this->container->has($blockClassName)) {

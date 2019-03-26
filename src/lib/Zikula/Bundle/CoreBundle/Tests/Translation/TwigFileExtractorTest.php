@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -136,7 +138,7 @@ class TwigFileExtractorTest extends KernelTestCase
                     ->getMock();
                 $bundle
                     ->method('getTranslationDomain')
-                    ->willReturn(strtolower($bundleName));
+                    ->willReturn(mb_strtolower($bundleName));
 
                 return $bundle;
             }));

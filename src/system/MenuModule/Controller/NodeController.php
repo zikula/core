@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -70,7 +72,7 @@ class NodeController extends AbstractController
                     if (!empty($after)) {
                         $sibling = $repo->find($after);
                         $repo->persistAsNextSiblingOf($menuItemEntity, $sibling);
-                    } elseif ('new' == $mode) {
+                    } elseif ('new' === $mode) {
                         $repo->persistAsLastChild($menuItemEntity);
                     } // no need to persist edited entity
                     $this->get('doctrine')->getManager()->flush();
@@ -124,10 +126,10 @@ class NodeController extends AbstractController
         $oldPosition = (int)$request->request->get('old_position');
         $parent = $request->request->get('parent');
         $position = (int)$request->request->get('position');
-        if ($oldParent == $parent) {
+        if ($oldParent === $parent) {
             $diff = $oldPosition - $position; // if $diff is positive, then node moved up
             $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
-            $repo->$methodName($menuItemEntity, abs($diff));
+            $repo->{$methodName}($menuItemEntity, abs($diff));
         } else {
             $parentEntity = $repo->find(str_replace($this->domTreeNodePrefix, '', $parent));
             $children = $repo->children($parentEntity);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -66,10 +68,10 @@ class UserEventListener implements EventSubscriberInterface
         $locale = $userEntity->getLocale();
         if (!empty($locale)) {
             $url = $event->getArgument('returnUrl');
-            if ('' != $url) {
+            if ('' !== $url) {
                 $request = $this->requestStack->getCurrentRequest();
                 $httpRoot = $request->getSchemeAndHttpHost() . $request->getBaseUrl();
-                if (0 === strpos($url, $httpRoot)) {
+                if (0 === mb_strpos($url, $httpRoot)) {
                     $url = str_replace($httpRoot, '', $url);
                 }
                 $pathInfo = $this->router->match($url);
@@ -96,10 +98,10 @@ class UserEventListener implements EventSubscriberInterface
     public function clearUsersNamespace($event, $eventName)
     {
         $doClear = false;
-        if (KernelEvents::EXCEPTION == $eventName) {
+        if (KernelEvents::EXCEPTION === $eventName) {
             $request = $this->requestStack->getCurrentRequest();
             if (!is_null($request)) {
-                $doClear = $request->attributes->has('_zkModule') && UsersConstant::MODNAME == $request->attributes->get('_zkModule');
+                $doClear = $request->attributes->has('_zkModule') && UsersConstant::MODNAME === $request->attributes->get('_zkModule');
             }
         } else {
             // Logout

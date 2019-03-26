@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -47,7 +49,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         $qb = $this->createQueryBuilder('p')
             ->select('p')
             ->orderBy('p.sequence', 'ASC');
-        if (PermissionApi::ALL_GROUPS != $group) {
+        if (PermissionApi::ALL_GROUPS !== $group) {
             $qb->where('p.gid = :gid')
                 ->setParameter('gid', $group);
         }

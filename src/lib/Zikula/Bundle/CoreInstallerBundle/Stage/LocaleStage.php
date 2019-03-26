@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -79,7 +81,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function isNecessary()
     {
-        if (1 == count($this->installedLocales)) {
+        if (1 === count($this->installedLocales)) {
             $defaultLocale = array_values($this->installedLocales)[0];
             $this->writeParams(['locale' => $defaultLocale]);
 

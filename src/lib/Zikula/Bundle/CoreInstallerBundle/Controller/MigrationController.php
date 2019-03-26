@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -32,7 +34,7 @@ class MigrationController extends AbstractController
         $result = $migrationHelper->migrateUsers($request->getSession()->get('user_migration_lastuid'));
         $request->getSession()->set('user_migration_complete', $request->getSession()->get('user_migration_complete') + $result['complete']);
         $request->getSession()->set('user_migration_lastuid', $result['lastUid']);
-        if ($request->getSession()->get('user_migration_lastuid') == $request->getSession()->get('user_migration_maxuid')) {
+        if ($request->getSession()->get('user_migration_lastuid') === $request->getSession()->get('user_migration_maxuid')) {
             $percentComplete = 100;
             // clean up
             $request->getSession()->remove('user_migration_count');

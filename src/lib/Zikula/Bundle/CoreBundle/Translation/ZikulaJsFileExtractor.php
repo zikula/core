@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -41,7 +43,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
 
     public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue)
     {
-        if ('.js' !== substr($file, -3)) {
+        if ('.js' !== mb_substr($file, -3)) {
             return;
         }
 

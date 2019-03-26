@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -74,7 +76,7 @@ class BlockEntity extends EntityAccess
      *
      * @ORM\ManyToOne(targetEntity="Zikula\ExtensionsModule\Entity\ExtensionEntity")
      * @ORM\JoinColumn(name="mid", referencedColumnName="id")
-     **/
+     */
     private $module;
 
     /**

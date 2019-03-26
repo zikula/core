@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -102,10 +104,9 @@ class RegistrationVerificationHelper
         $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $mapping->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
             return $userVerificationEntity->getCreated_Dt();
-        } else {
-            $this->userVerificationRepository->removeAndFlush($userVerificationEntity);
-
-            return false;
         }
+        $this->userVerificationRepository->removeAndFlush($userVerificationEntity);
+
+        return false;
     }
 }

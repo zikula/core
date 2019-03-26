@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -47,7 +49,7 @@ class FixAutoloaderCommand extends Command
             'autoload_static.php'
         ];
         foreach ($composerFiles as $file) {
-            $file = "$dir/composer/$file";
+            $file = "${dir}/composer/${file}";
             $content = file_get_contents($file);
             $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
             $content = str_replace('dirname(dirname($vendorDir))', 'dirname($vendorDir)', $content);

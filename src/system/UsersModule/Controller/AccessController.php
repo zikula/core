@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -70,7 +72,7 @@ class AccessController extends AbstractController
                 'path' => 'zikulausersmodule_access_login'
             ]);
         }
-        if (empty($selectedMethod) && 1 == count($authenticationMethodCollector->getActiveKeys())) {
+        if (empty($selectedMethod) && 1 === count($authenticationMethodCollector->getActiveKeys())) {
             // there is only one authentication method available, so use this
             $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
         }
@@ -113,7 +115,7 @@ class AccessController extends AbstractController
             }
         } elseif ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
             // provide temp value for uid until form gives real value.
-            $uid = ('POST' == $request->getMethod()) ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
+            $uid = ('POST' === $request->getMethod()) ? Constant::USER_ID_ANONYMOUS : $authenticationMethod->authenticate();
             $hasListeners = $dispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM);
             $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
             if ($hasListeners || count($hookBindings) > 0) {
@@ -191,7 +193,7 @@ class AccessController extends AbstractController
         ];
         $defaultLastLogin = new \DateTime("1970-01-01 00:00:00");
         $actualLastLogin = $user->getLastlogin();
-        if (empty($actualLastLogin) || $actualLastLogin == $defaultLastLogin) {
+        if (empty($actualLastLogin) || $actualLastLogin === $defaultLastLogin) {
             $eventArgs['isFirstLogin'] = true;
         }
         $event = new GenericEvent($user, $eventArgs);

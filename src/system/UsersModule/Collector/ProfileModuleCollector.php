@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -73,7 +75,7 @@ class ProfileModuleCollector
     public function add(ProfileModuleInterface $service)
     {
         $moduleName = $service->getBundleName();
-        if ('ZikulaUsersModule' == $moduleName) {
+        if ('ZikulaUsersModule' === $moduleName) {
             return;
         }
         if (isset($this->profileModules[$moduleName])) {

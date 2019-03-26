@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -28,8 +30,8 @@ class HtmlBlock extends AbstractBlockHandler
     public function display(array $properties)
     {
         $title = (!empty($properties['title'])) ? $properties['title'] : '';
-        if ((!$this->hasPermission('HTMLblock::', "$title::", ACCESS_OVERVIEW))
-        || (!$this->hasPermission('HTMLblock::bid', "::$properties[bid]", ACCESS_OVERVIEW))) {
+        if ((!$this->hasPermission('HTMLblock::', "${title}::", ACCESS_OVERVIEW))
+        || (!$this->hasPermission('HTMLblock::bid', "::{$properties[bid]}", ACCESS_OVERVIEW))) {
             return '';
         }
 

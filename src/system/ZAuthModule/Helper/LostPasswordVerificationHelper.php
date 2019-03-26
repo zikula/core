@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -69,7 +71,7 @@ class LostPasswordVerificationHelper
     public function createLostPasswordId(AuthenticationMappingEntity $mapping)
     {
         $confirmationCode = $this->delimiter;
-        while (false !== strpos($confirmationCode, $this->delimiter)) {
+        while (false !== mb_strpos($confirmationCode, $this->delimiter)) {
             $confirmationCode = $this->passwordApi->generatePassword();
         }
         $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_PWD, $this->passwordApi->getHashedPassword($confirmationCode));
@@ -109,7 +111,7 @@ class LostPasswordVerificationHelper
         }
 
         $params = explode($this->delimiter, $id);
-        if (4 != count($params)) {
+        if (4 !== count($params)) {
             throw new \Exception('Unexpected extraction results in lost password verification helper.');
         }
 

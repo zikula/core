@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -50,12 +52,12 @@ class GenerateVendorDocCommand extends Command
         $currentType = '';
         $authors = [];
         foreach ($packages as $package) {
-            if ($currentType != $package['type']) {
-                if ('' != $currentType) {
+            if ($currentType !== $package['type']) {
+                if ('' !== $currentType) {
                     $content .= "\n";
                 }
                 $content .= $typeOrder[$package['type']] . "\n";
-                $content .= str_repeat('-', strlen($typeOrder[$package['type']])) . "\n";
+                $content .= str_repeat('-', mb_strlen($typeOrder[$package['type']])) . "\n";
                 $currentType = $package['type'];
             }
             $content .= "- **" . $package['name'] . "** `" . $package['version'] . "`";

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -57,7 +59,7 @@ class PlacementController extends AbstractController
         foreach ($positionEntity->getPlacements() as $blockPlacement) {
             $bid = $blockPlacement->getBlock()->getBid();
             foreach ($allBlocks as $key => $allblock) {
-                if ($allblock->getBid() == $bid) {
+                if ($allblock->getBid() === $bid) {
                     unset($allBlocks[$key]);
                 }
             }

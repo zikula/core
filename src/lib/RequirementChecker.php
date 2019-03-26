@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -32,7 +34,7 @@ class RequirementChecker
             }
 
             // formatting for both HTML and CLI display
-            if ('cli' != php_sapi_name()) {
+            if ('cli' !== php_sapi_name()) {
                 echo '<html><body><pre>';
             }
             echo 'The following errors were discovered when checking the' . PHP_EOL . 'Zikula Core system/environment requirements:' . PHP_EOL;
@@ -40,7 +42,7 @@ class RequirementChecker
             foreach ($versionChecker->requirementsErrors as $error) {
                 echo $error . PHP_EOL;
             }
-            if ('cli' != php_sapi_name()) {
+            if ('cli' !== php_sapi_name()) {
                 echo '</pre></body></html>';
             }
             die();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -68,7 +70,7 @@ class ValidEmailValidator extends ConstraintValidator
         $replace = ['', '|', ''];
         $illegalDomains = preg_replace($pattern, $replace, preg_quote($illegalDomains, '/'));
         if (!empty($illegalDomains)) {
-            $emailDomain = strstr($value, '@');
+            $emailDomain = mb_strstr($value, '@');
             if (preg_match("/@({$illegalDomains})/iD", $emailDomain)) {
                 $this->context->buildViolation($this->translator->__('Sorry! The domain of the e-mail address you specified is banned.'))
                     ->setParameter('%string%', $value)

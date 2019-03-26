@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -16,7 +18,7 @@ use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository;
 use Zikula\ExtensionsModule\Tests\Fixtures\BaseBundle\BaseBundle;
 
-class VariableApiTest extends \PHPUnit_Framework_TestCase
+class VariableApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var VariableApi
@@ -26,7 +28,7 @@ class VariableApiTest extends \PHPUnit_Framework_TestCase
     /**
      * VariableApiTest constructor.
      */
-    public function setUp()
+    protected function setUp()
     {
         $kernel = $this
             ->getMockBuilder(ZikulaHttpKernelInterface::class)

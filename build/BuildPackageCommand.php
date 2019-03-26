@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -44,23 +46,23 @@ class BuildPackageCommand extends Command
 
         $pwd = getcwd();
         if (is_dir($buildDir)) {
-            system("rm -rf $buildDir");
+            system("rm -rf ${buildDir}");
         }
 
         // build env
         $filesystem->mkdir($buildDir, 0755);
         $progress->advance();
 
-        $filesystem->mirror($sourceDir, "$buildDir/$name");
+        $filesystem->mirror($sourceDir, "${buildDir}/${name}");
         $progress->advance();
 
-        PurgeVendorsCommand::cleanVendors("$buildDir/$name/vendor", $progress);
-        FixAutoloaderCommand::fix("$buildDir/$name/vendor", $progress);
+        PurgeVendorsCommand::cleanVendors("${buildDir}/${name}/vendor", $progress);
+        FixAutoloaderCommand::fix("${buildDir}/${name}/vendor", $progress);
 
         $writableArray = [
-            "$buildDir/$name/var/cache",
-            "$buildDir/$name/var/logs",
-            "$buildDir/$name/web/uploads",
+            "${buildDir}/${name}/var/cache",
+            "${buildDir}/${name}/var/logs",
+            "${buildDir}/${name}/web/uploads",
         ];
         $filesystem->chmod($writableArray, 0777);
         $progress->advance();
@@ -81,13 +83,13 @@ class BuildPackageCommand extends Command
 
         // build zip
         $zip = new \ZipArchive();
-        $fileName = "$name.zip";
+        $fileName = "${name}.zip";
         if (true !== $zip->open($fileName, \ZipArchive::CREATE)) {
-            $output->writeln("<error>Error creating $fileName</error>");
+            $output->writeln("<error>Error creating ${fileName}</error>");
         }
 
         foreach ($allFiles as $file) {
-            $zip->addFile("$name/$file");
+            $zip->addFile("${name}/${file}");
         }
         $progress->advance();
 
@@ -95,35 +97,35 @@ class BuildPackageCommand extends Command
         $progress->advance();
 
         // build tar
-        $fileName = "$name.tar";
-        system("tar cp $name > $fileName");
+        $fileName = "${name}.tar";
+        system("tar cp ${name} > ${fileName}");
         $progress->advance();
-        system("gzip $fileName");
+        system("gzip ${fileName}");
         $progress->advance();
 
         // checksums
-        $zipMd5 = md5_file("$name.zip");
-        $tarMd5 = md5_file("$name.tar.gz");
-        $zipSha1 = sha1_file("$name.zip");
-        $tarSha1 = sha1_file("$name.tar.gz");
+        $zipMd5 = md5_file("${name}.zip");
+        $tarMd5 = md5_file("${name}.tar.gz");
+        $zipSha1 = sha1_file("${name}.zip");
+        $tarSha1 = sha1_file("${name}.tar.gz");
 
         $checksum = <<<CHECKSUM
 -----------------md5sums-----------------
-$zipMd5  $name.zip
-$tarMd5  $name.tar.gz
+${zipMd5}  ${name}.zip
+${tarMd5}  ${name}.tar.gz
 -----------------sha1sums-----------------
-$zipSha1  $name.zip
-$tarSha1  $name.tar.gz
+${zipSha1}  ${name}.zip
+${tarSha1}  ${name}.tar.gz
 CHECKSUM;
-        file_put_contents("$name-checksum.txt", $checksum);
+        file_put_contents("${name}-checksum.txt", $checksum);
         $progress->advance();
 
         // cleanup
-        system("rm -rf $buildDir $name");
+        system("rm -rf ${buildDir} ${name}");
         chdir($pwd);
         $progress->advance();
         $progress->finish();
 
-        $output->writeln("<info>Artifacts built in $buildDir/ folder</info>");
+        $output->writeln("<info>Artifacts built in ${buildDir}/ folder</info>");
     }
 }

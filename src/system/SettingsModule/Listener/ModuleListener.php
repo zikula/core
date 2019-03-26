@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -70,7 +72,7 @@ class ModuleListener implements EventSubscriberInterface
         $startController = $this->variableApi->getSystemVar('startController');
         list($startModule) = explode(':', $startController);
 
-        if ($moduleName == $startModule) {
+        if ($moduleName === $startModule) {
             // since the start module has been removed, set all related variables to ''
             $this->variableApi->set(VariableApi::CONFIG, 'startController', '');
             $this->variableApi->set(VariableApi::CONFIG, 'startargs', '');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -70,23 +72,23 @@ class MetaData implements \ArrayAccess
     public function __construct($json)
     {
         $this->name = $json['name'];
-        $this->version = isset($json['version']) ? $json['version'] : '';
-        $this->description = isset($json['description']) ? $json['description'] : '';
+        $this->version = $json['version'] ?? '';
+        $this->description = $json['description'] ?? '';
         $this->type = $json['type'];
         $this->dependencies = $this->formatDependencies($json);
         $this->shortName = $json['extra']['zikula']['short-name'];
         $this->class = $json['extra']['zikula']['class'];
-        $this->namespace = substr($this->class, 0, strrpos($this->class, '\\') + 1);
+        $this->namespace = mb_substr($this->class, 0, mb_strrpos($this->class, '\\') + 1);
         $this->basePath = $json['extra']['zikula']['base-path'];
         $this->rootPath = $json['extra']['zikula']['root-path'];
         $this->autoload = $json['autoload'];
-        $this->displayName = isset($json['extra']['zikula']['displayname']) ? $json['extra']['zikula']['displayname'] : '';
-        $this->url = isset($json['extra']['zikula']['url']) ? $json['extra']['zikula']['url'] : '';
-        $this->oldNames = isset($json['extra']['zikula']['oldnames']) ? $json['extra']['zikula']['oldnames'] : [];
-        $this->capabilities = isset($json['extra']['zikula']['capabilities']) ? $json['extra']['zikula']['capabilities'] : [];
-        $this->securitySchema = isset($json['extra']['zikula']['securityschema']) ? $json['extra']['zikula']['securityschema'] : [];
-        $this->extensionType = isset($json['extensionType']) ? $json['extensionType'] : self::TYPE_MODULE;
-        $this->coreCompatibility = isset($json['extra']['zikula']['core-compatibility']) ? $json['extra']['zikula']['core-compatibility'] : null;
+        $this->displayName = $json['extra']['zikula']['displayname'] ?? '';
+        $this->url = $json['extra']['zikula']['url'] ?? '';
+        $this->oldNames = $json['extra']['zikula']['oldnames'] ?? [];
+        $this->capabilities = $json['extra']['zikula']['capabilities'] ?? [];
+        $this->securitySchema = $json['extra']['zikula']['securityschema'] ?? [];
+        $this->extensionType = $json['extensionType'] ?? self::TYPE_MODULE;
+        $this->coreCompatibility = $json['extra']['zikula']['core-compatibility'] ?? null;
     }
 
     public function getName()
@@ -241,7 +243,7 @@ class MetaData implements \ArrayAccess
         }
         if (!empty($json['suggest'])) {
             foreach ($json['suggest'] as $package => $reason) {
-                if (strpos($package, ':')) {
+                if (mb_strpos($package, ':')) {
                     list($name, $version) = explode(':', $package, 2);
                 } else {
                     $name = $package;
@@ -289,10 +291,10 @@ class MetaData implements \ArrayAccess
             'version' => $this->getVersion(),
 //            'capabilities' => $this->getCapabilities(),
             // It would be better to add capabilities to DB and move to inverse in legacy code and refactor later checks. refs #3644
-            'user' => isset($capabilities['user']) ? $capabilities['user'] : true,
-            'admin' => isset($capabilities['admin']) ? $capabilities['admin'] : true,
-            'system' => isset($capabilities['system']) ? $capabilities['system'] : false,
-            'xhtml' => isset($capabilities['xhtml']) ? $capabilities['xhtml'] : true, // this is not truly valid in 2.0
+            'user' => $capabilities['user'] ?? true,
+            'admin' => $capabilities['admin'] ?? true,
+            'system' => $capabilities['system'] ?? false,
+            'xhtml' => $capabilities['xhtml'] ?? true, // this is not truly valid in 2.0
         ];
     }
 
@@ -320,14 +322,14 @@ class MetaData implements \ArrayAccess
 
     public function offsetExists($offset)
     {
-        return isset($this->$offset);
+        return isset($this->{$offset});
     }
 
     public function offsetGet($offset)
     {
         $method = "get" . ucwords($offset);
 
-        return $this->$method();
+        return $this->{$method}();
     }
 
     public function offsetSet($offset, $value)

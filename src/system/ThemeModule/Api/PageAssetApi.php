@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -72,13 +74,13 @@ class PageAssetApi implements PageAssetApiInterface
         $type = (string)$type;
         $weight = (int)$weight;
 
-        if ('stylesheet' == $type) {
+        if ('stylesheet' === $type) {
             $this->styleSheets->add([$value => $weight]);
-        } elseif ('javascript' == $type) {
+        } elseif ('javascript' === $type) {
             $this->scripts->add([$value => $weight]);
-        } elseif ('header' == $type) {
+        } elseif ('header' === $type) {
             $this->headers->add([$value => $weight]);
-        } elseif ('footer' == $type) {
+        } elseif ('footer' === $type) {
             $this->footers->add([$value => $weight]);
         }
     }

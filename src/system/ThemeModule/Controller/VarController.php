@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -12,8 +14,8 @@
 namespace Zikula\ThemeModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Core\Controller\AbstractController;
@@ -50,7 +52,7 @@ class VarController extends AbstractController
         /** @var \Symfony\Component\Form\FormBuilder $formBuilder */
         $formBuilder = $this->createFormBuilder($themeBundle->getThemeVars());
         foreach ($variableDefinitions as $fieldName => $definitions) {
-            $options = isset($definitions['options']) ? $definitions['options'] : [];
+            $options = $definitions['options'] ?? [];
             if (isset($definitions['type'])) {
                 $formBuilder->add($fieldName, $definitions['type'], $options);
             }

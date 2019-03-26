@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -241,16 +243,16 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $variableApi->del(VariableApi::CONFIG, 'htmlpurifierlocation');
 
                 // only update this value if it has not been customised
-                if (false !== strpos($variableApi->get(VariableApi::CONFIG, 'idsrulepath'), 'phpids_zikula_default')) {
+                if (false !== mb_strpos($variableApi->get(VariableApi::CONFIG, 'idsrulepath'), 'phpids_zikula_default')) {
                     $this->setSystemVar('idsrulepath', 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml');
                 }
             case '1.5.1':
                 // set the session information in /src/app/config/dynamic/generated.yml
                 $configDumper = $this->container->get(DynamicConfigDumper::class);
                 $sessionStoreToFile = $variableApi->getSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_DATABASE);
-                $sessionHandlerId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
                 $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
-                $sessionStorageId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
                 $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
                 $sessionSavePath = $variableApi->getSystemVar('sessionsavepath', '');
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;

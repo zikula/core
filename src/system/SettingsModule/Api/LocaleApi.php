@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -62,7 +64,7 @@ class LocaleApi implements LocaleApiInterface
                     ->notName('*.template.*');
                 foreach ($files as $file) {
                     $fileName = $file->getBasename('.po');
-                    if (false === strpos($fileName, '.')) {
+                    if (false === mb_strpos($fileName, '.')) {
                         continue;
                     }
                     list(, $locale) = explode('.', $fileName);
@@ -98,10 +100,10 @@ class LocaleApi implements LocaleApiInterface
         $request = null !== $this->requestStack ? $this->requestStack->getCurrentRequest() : null;
 
         // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
-        if (null === $request || !$request->server->has('HTTP_ACCEPT_LANGUAGE') || 'cli' == php_sapi_name()) {
+        if (null === $request || !$request->server->has('HTTP_ACCEPT_LANGUAGE') || 'cli' === php_sapi_name()) {
             return $default;
         }
-        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
+        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', mb_strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
         $availableLanguages = [];
         foreach ($matches as $match) {
             list($languageCode) = explode('-', $match[1]) + ['', ''];
@@ -120,6 +122,6 @@ class LocaleApi implements LocaleApiInterface
             }
         }
 
-        return '' != $matchedLanguage ? $matchedLanguage : $default;
+        return '' !== $matchedLanguage ? $matchedLanguage : $default;
     }
 }

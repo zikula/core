@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -29,8 +31,8 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
-use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
+use Zikula\ThemeModule\Engine\Asset;
 
 /**
  * NOTE: intentionally no class level route setting here
@@ -261,7 +263,7 @@ class AdminController extends AbstractController
             }
         }
 
-        if (!$this->getVar('ignoreinstallercheck') && 'dev' == $this->get('kernel')->getEnvironment()) {
+        if (!$this->getVar('ignoreinstallercheck') && 'dev' === $this->get('kernel')->getEnvironment()) {
             // check if the Zikula Recovery Console exists
             $zrcExists = file_exists('zrc.php');
             // check if upgrade scripts exist
@@ -293,7 +295,7 @@ class AdminController extends AbstractController
         ];
 
         // Check to see if we have access to the requested category.
-        if (!$this->hasPermission('ZikulaAdminModule::', "::$acid", ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaAdminModule::', "::${acid}", ACCESS_ADMIN)) {
             $acid = -1;
         }
 
@@ -308,7 +310,7 @@ class AdminController extends AbstractController
             $acid = $this->getVar('startcategory');
 
             // Check to see if we have access to the requested category.
-            if (!$this->hasPermission('ZikulaAdminModule::', "::$acid", ACCESS_ADMIN)) {
+            if (!$this->hasPermission('ZikulaAdminModule::', "::${acid}", ACCESS_ADMIN)) {
                 throw new AccessDeniedException();
             }
 
@@ -334,7 +336,7 @@ class AdminController extends AbstractController
 
             $sortOrder = -1;
             foreach ($moduleEntities as $association) {
-                if ($association['mid'] != $adminModule['id']) {
+                if ($association['mid'] !== $adminModule['id']) {
                     continue;
                 }
 
@@ -342,13 +344,13 @@ class AdminController extends AbstractController
                 break;
             }
 
-            if ($catid == $acid || (false === $catid && $acid == $this->getVar('defaultcategory'))) {
+            if ($catid === $acid || (false === $catid && $acid === $this->getVar('defaultcategory'))) {
                 $menuText = '';
-                if (1 == $displayNameType) {
+                if (1 === $displayNameType) {
                     $menuText = $adminModule['displayname'];
-                } elseif (2 == $displayNameType) {
+                } elseif (2 === $displayNameType) {
                     $menuText = $adminModule['name'];
-                } elseif (3 == $displayNameType) {
+                } elseif (3 === $displayNameType) {
                     $menuText = $adminModule['displayname'] . ' (' . $adminModule['name'] . ')';
                 }
 
@@ -410,7 +412,7 @@ class AdminController extends AbstractController
         $categories = [];
         $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $item) {
-            if ($this->hasPermission('ZikulaAdminModule::', "$item[name]::$item[cid]", ACCESS_READ)) {
+            if ($this->hasPermission('ZikulaAdminModule::', "{$item[name]}::{$item[cid]}", ACCESS_READ)) {
                 $categories[] = $item;
             }
         }
@@ -438,7 +440,7 @@ class AdminController extends AbstractController
 
             $sortOrder = -1;
             foreach ($moduleEntities as $association) {
-                if ($association['mid'] != $adminModule['id']) {
+                if ($association['mid'] !== $adminModule['id']) {
                     continue;
                 }
 
@@ -479,13 +481,13 @@ class AdminController extends AbstractController
                         'title' => $category['name'],
                         'description' => $category['description'],
                         'cid' => $category['cid'],
-                        'items' => isset($adminLinks[$category['cid']]) ? $adminLinks[$category['cid']] : []
+                        'items' => $adminLinks[$category['cid']] ?? []
                     ];
 
                     $menuOptions[$category['cid']] = $menuOption;
                     $possibleCategoryIds[] = $category['cid'];
 
-                    if ($acid == $category['cid']) {
+                    if ($acid === $category['cid']) {
                         $permission = true;
                     }
                 }
@@ -561,7 +563,7 @@ class AdminController extends AbstractController
      */
     private static function sortAdminModsByOrder($a, $b)
     {
-        if ((int)$a['order'] == (int)$b['order']) {
+        if ((int)$a['order'] === (int)$b['order']) {
             return strcmp($a['moduleName'], $b['moduleName']);
         }
         if ((int)$a['order'] > (int)$b['order']) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,7 +15,7 @@ namespace Zikula\Bundle\CoreBundle\Tests\Bundle;
 
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 
-class MetaDataTest extends \PHPUnit_Framework_TestCase
+class MetaDataTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MetaData

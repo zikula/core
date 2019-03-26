@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,10 +13,10 @@
 
 namespace Zikula\Bundle\HookBundle\Listener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\HookBundle\HookBundleInstaller;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class CoreInstallerListener

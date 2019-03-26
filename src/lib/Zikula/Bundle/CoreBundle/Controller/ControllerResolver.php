@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -20,7 +22,7 @@ class ControllerResolver extends BaseControllerResolver
 {
     protected function createController($controller)
     {
-        if (false === strpos($controller, '::')) {
+        if (false === mb_strpos($controller, '::')) {
             return parent::createController($controller);
         }
 

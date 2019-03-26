@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -62,7 +64,7 @@ class ConfigController extends AbstractController
                 $variableApi->set('ZikulaPermissionsModule', 'lockadmin', $lockadmin);
 
                 $adminId = isset($formData['adminid']) ? (int)$formData['adminid'] : 1;
-                if (0 != $adminId) {
+                if (0 !== $adminId) {
                     $perm = $permissionRepository->find($adminId);
                     if (!$perm) {
                         $adminId = 0;

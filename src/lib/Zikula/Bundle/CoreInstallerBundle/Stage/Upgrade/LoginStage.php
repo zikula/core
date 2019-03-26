@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,13 +13,13 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
-use Zikula\Component\Wizard\FormHandlerInterface;
-use Zikula\Component\Wizard\InjectContainerInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
+use Zikula\Component\Wizard\FormHandlerInterface;
+use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
 class LoginStage implements StageInterface, FormHandlerInterface, InjectContainerInterface

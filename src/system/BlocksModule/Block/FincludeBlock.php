@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -27,7 +29,7 @@ class FincludeBlock extends AbstractBlockHandler
 
     public function display(array $properties)
     {
-        if (!$this->hasPermission('fincludeblock::', "$properties[title]::", ACCESS_READ)) {
+        if (!$this->hasPermission('fincludeblock::', "{$properties[title]}::", ACCESS_READ)) {
             return '';
         }
 

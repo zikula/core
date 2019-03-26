@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -71,7 +73,7 @@ class SearchHelper implements SearchableInterface
 
         $results = [];
         foreach ($users as $user) {
-            if (1 != $user->getUid() && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
+            if (1 !== $user->getUid() && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
                 $result = new SearchResultEntity();
                 $result->setTitle($user->getUname())
                     ->setModule($this->getBundleName())

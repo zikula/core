@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,7 +17,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
 
-class LocaleApiTest extends \PHPUnit_Framework_TestCase
+class LocaleApiTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetSupportedLocales()
     {

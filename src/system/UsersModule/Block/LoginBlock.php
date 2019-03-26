@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -84,7 +86,7 @@ class LoginBlock extends AbstractBlockHandler
         // if form is too complicated for a simple block display, display only a link to main form
         $templateParams['linkOnly'] = ($addedContent || count($hookBindings) > 0);
 
-        if (!$addedContent && 0 == count($hookBindings) && 1 == count($this->authenticationMethodCollector->getActiveKeys())) {
+        if (!$addedContent && 0 === count($hookBindings) && 1 === count($this->authenticationMethodCollector->getActiveKeys())) {
             $request = $this->requestStack->getCurrentRequest();
             $selectedMethod = $this->authenticationMethodCollector->getActiveKeys()[0];
             if ($request->hasSession()) {

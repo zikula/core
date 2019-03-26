@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,7 +16,6 @@ namespace Zikula\SecurityCenterModule\Controller;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use HTMLPurifier_VarParser;
-use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -80,58 +82,58 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
 
-                $updateCheck = isset($formData['updatecheck']) ? $formData['updatecheck'] : 1;
+                $updateCheck = $formData['updatecheck'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'updatecheck', $updateCheck);
 
                 // if update checks are disabled, reset values to force new update check if re-enabled
-                if (0 == $updateCheck) {
+                if (0 === $updateCheck) {
                     $variableApi->set(VariableApi::CONFIG, 'updateversion', ZikulaKernel::VERSION);
                     $variableApi->set(VariableApi::CONFIG, 'updatelastchecked', 0);
                 }
 
-                $updateFrequency = isset($formData['updatefrequency']) ? $formData['updatefrequency'] : 7;
+                $updateFrequency = $formData['updatefrequency'] ?? 7;
                 $variableApi->set(VariableApi::CONFIG, 'updatefrequency', $updateFrequency);
 
-                $keyExpiry = isset($formData['keyexpiry']) ? $formData['keyexpiry'] : 0;
+                $keyExpiry = $formData['keyexpiry'] ?? 0;
                 if ($keyExpiry < 0 || $keyExpiry > 3600) {
                     $keyExpiry = 0;
                 }
                 $variableApi->set(VariableApi::CONFIG, 'keyexpiry', $keyExpiry);
 
-                $sessionAuthKeyUA = isset($formData['sessionauthkeyua']) ? $formData['sessionauthkeyua'] : 0;
+                $sessionAuthKeyUA = $formData['sessionauthkeyua'] ?? 0;
                 $variableApi->set(VariableApi::CONFIG, 'sessionauthkeyua', $sessionAuthKeyUA);
 
-                $secureDomain = isset($formData['secure_domain']) ? $formData['secure_domain'] : '';
+                $secureDomain = $formData['secure_domain'] ?? '';
                 $variableApi->set(VariableApi::CONFIG, 'secure_domain', $secureDomain);
 
-                $signCookies = isset($formData['signcookies']) ? $formData['signcookies'] : 1;
+                $signCookies = $formData['signcookies'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'signcookies', $signCookies);
 
-                $signingKey = isset($formData['signingkey']) ? $formData['signingkey'] : '';
+                $signingKey = $formData['signingkey'] ?? '';
                 $variableApi->set(VariableApi::CONFIG, 'signingkey', $signingKey);
 
-                $securityLevel = isset($formData['seclevel']) ? $formData['seclevel'] : 'Medium';
+                $securityLevel = $formData['seclevel'] ?? 'Medium';
                 $variableApi->set(VariableApi::CONFIG, 'seclevel', $securityLevel);
 
-                $secMedDays = isset($formData['secmeddays']) ? $formData['secmeddays'] : 7;
+                $secMedDays = $formData['secmeddays'] ?? 7;
                 if ($secMedDays < 1 || $secMedDays > 365) {
                     $secMedDays = 7;
                 }
                 $variableApi->set(VariableApi::CONFIG, 'secmeddays', $secMedDays);
 
-                $secInactiveMinutes = isset($formData['secinactivemins']) ? $formData['secinactivemins'] : 20;
+                $secInactiveMinutes = $formData['secinactivemins'] ?? 20;
                 if ($secInactiveMinutes < 1 || $secInactiveMinutes > 1440) {
                     $secInactiveMinutes = 7;
                 }
                 $variableApi->set(VariableApi::CONFIG, 'secinactivemins', $secInactiveMinutes);
 
-                $sessionStoreToFile = isset($formData['sessionstoretofile']) ? $formData['sessionstoretofile'] : 0;
-                $sessionSavePath = isset($formData['sessionsavepath']) ? $formData['sessionsavepath'] : '';
+                $sessionStoreToFile = $formData['sessionstoretofile'] ?? 0;
+                $sessionSavePath = $formData['sessionsavepath'] ?? '';
 
                 // check session path config is writable (if method is being changed to session file storage)
                 $causeLogout = false;
                 $storeTypeCanBeWritten = true;
-                if (1 == $sessionStoreToFile && !empty($sessionSavePath)) {
+                if (1 === $sessionStoreToFile && !empty($sessionSavePath)) {
                     // fix path on windows systems
                     $sessionSavePath = str_replace('\\', '/', $sessionSavePath);
                     // sanitize the path
@@ -153,50 +155,50 @@ class ConfigController extends AbstractController
                     $variableApi->set(VariableApi::CONFIG, 'sessionsavepath', $sessionSavePath);
                 }
 
-                if ((bool)$sessionStoreToFile != (bool)$variableApi->getSystemVar('sessionstoretofile')) {
+                if ((bool)$sessionStoreToFile !== (bool)$variableApi->getSystemVar('sessionstoretofile')) {
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }
 
-                $gcProbability = isset($formData['gc_probability']) ? $formData['gc_probability'] : 100;
+                $gcProbability = $formData['gc_probability'] ?? 100;
                 if ($gcProbability < 1 || $gcProbability > 10000) {
                     $gcProbability = 7;
                 }
                 $variableApi->set(VariableApi::CONFIG, 'gc_probability', $gcProbability);
 
-                $sessionCsrfTokenOneTime = isset($formData['sessioncsrftokenonetime']) ? $formData['sessioncsrftokenonetime'] : 1;
+                $sessionCsrfTokenOneTime = $formData['sessioncsrftokenonetime'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'sessioncsrftokenonetime', $sessionCsrfTokenOneTime);
 
-                $sessionRandRegenerate = isset($formData['sessionrandregenerate']) ? $formData['sessionrandregenerate'] : 1;
+                $sessionRandRegenerate = $formData['sessionrandregenerate'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'sessionrandregenerate', $sessionRandRegenerate);
 
-                $sessionRegenerate = isset($formData['sessionregenerate']) ? $formData['sessionregenerate'] : 1;
+                $sessionRegenerate = $formData['sessionregenerate'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'sessionregenerate', $sessionRegenerate);
 
-                $sessionRegenerateFrequency = isset($formData['sessionregeneratefreq']) ? $formData['sessionregeneratefreq'] : 10;
+                $sessionRegenerateFrequency = $formData['sessionregeneratefreq'] ?? 10;
                 if ($sessionRegenerateFrequency < 1 || $sessionRegenerateFrequency > 100) {
                     $sessionRegenerateFrequency = 10;
                 }
                 $variableApi->set(VariableApi::CONFIG, 'sessionregeneratefreq', $sessionRegenerateFrequency);
 
-                $sessionIpCheck = isset($formData['sessionipcheck']) ? $formData['sessionipcheck'] : 0;
+                $sessionIpCheck = $formData['sessionipcheck'] ?? 0;
                 $variableApi->set(VariableApi::CONFIG, 'sessionipcheck', $sessionIpCheck);
 
-                $newSessionName = isset($formData['sessionname']) ? $formData['sessionname'] : $sessionName;
-                if (strlen($newSessionName) < 3) {
+                $newSessionName = $formData['sessionname'] ?? $sessionName;
+                if (mb_strlen($newSessionName) < 3) {
                     $newSessionName = $sessionName;
                 }
 
                 // cause logout if we changed session name
-                if ($newSessionName != $modVars['sessionname']) {
+                if ($newSessionName !== $modVars['sessionname']) {
                     $causeLogout = true;
                 }
 
                 // set the session information in /src/app/config/dynamic/generated.yml
                 $configDumper->setParameter('zikula.session.name', $newSessionName);
-                $sessionHandlerId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
+                $sessionHandlerId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'session.handler.native_file' : 'zikula_core.bridge.http_foundation.doctrine_session_handler';
                 $configDumper->setParameter('zikula.session.handler_id', $sessionHandlerId);
-                $sessionStorageId = Constant::SESSION_STORAGE_FILE == $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
+                $sessionStorageId = Constant::SESSION_STORAGE_FILE === $sessionStoreToFile ? 'zikula_core.bridge.http_foundation.zikula_session_storage_file' : 'zikula_core.bridge.http_foundation.zikula_session_storage_doctrine';
                 $configDumper->setParameter('zikula.session.storage_id', $sessionStorageId); // Symfony default is 'session.storage.native'
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
@@ -204,14 +206,14 @@ class ConfigController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'sessionname', $newSessionName);
                 $variableApi->set(VariableApi::CONFIG, 'sessionstoretofile', $sessionStoreToFile);
 
-                $outputFilter = isset($formData['outputfilter']) ? $formData['outputfilter'] : 1;
+                $outputFilter = $formData['outputfilter'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'outputfilter', $outputFilter);
 
-                $useIds = isset($formData['useids']) ? $formData['useids'] : 0;
+                $useIds = $formData['useids'] ?? 0;
                 $variableApi->set(VariableApi::CONFIG, 'useids', $useIds);
 
                 // create tmp directory for PHPIDS
-                if (1 == $useIds) {
+                if (1 === $useIds) {
                     $idsTmpDir = $this->container->getParameter('kernel.cache_dir') . '/idsTmp';
                     $fs = new Filesystem();
                     if (!$fs->exists($idsTmpDir)) {
@@ -219,18 +221,18 @@ class ConfigController extends AbstractController
                     }
                 }
 
-                $idsSoftBlock = isset($formData['idssoftblock']) ? $formData['idssoftblock'] : 1;
+                $idsSoftBlock = $formData['idssoftblock'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'idssoftblock', $idsSoftBlock);
 
-                $idsMail = isset($formData['idsmail']) ? $formData['idsmail'] : 0;
+                $idsMail = $formData['idsmail'] ?? 0;
                 $variableApi->set(VariableApi::CONFIG, 'idsmail', $idsMail);
 
-                $idsFilter = isset($formData['idsfilter']) ? $formData['idsfilter'] : 'xml';
+                $idsFilter = $formData['idsfilter'] ?? 'xml';
                 $variableApi->set(VariableApi::CONFIG, 'idsfilter', $idsFilter);
 
                 $validates = true;
 
-                $idsRulePath = isset($formData['idsrulepath']) ? $formData['idsrulepath'] : 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
+                $idsRulePath = $formData['idsrulepath'] ?? 'system/SecurityCenterModule/Resources/config/phpids_zikula_default.xml';
                 if (is_readable($idsRulePath)) {
                     $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
@@ -238,22 +240,22 @@ class ConfigController extends AbstractController
                     $validates = false;
                 }
 
-                $idsImpactThresholdOne = isset($formData['idsimpactthresholdone']) ? $formData['idsimpactthresholdone'] : 1;
+                $idsImpactThresholdOne = $formData['idsimpactthresholdone'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdone', $idsImpactThresholdOne);
 
-                $idsImpactThresholdTwo = isset($formData['idsimpactthresholdtwo']) ? $formData['idsimpactthresholdtwo'] : 10;
+                $idsImpactThresholdTwo = $formData['idsimpactthresholdtwo'] ?? 10;
                 $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdtwo', $idsImpactThresholdTwo);
 
-                $idsImpactThresholdThree = isset($formData['idsimpactthresholdthree']) ? $formData['idsimpactthresholdthree'] : 25;
+                $idsImpactThresholdThree = $formData['idsimpactthresholdthree'] ?? 25;
                 $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdthree', $idsImpactThresholdThree);
 
-                $idsImpactThresholdFour = isset($formData['idsimpactthresholdfour']) ? $formData['idsimpactthresholdfour'] : 75;
+                $idsImpactThresholdFour = $formData['idsimpactthresholdfour'] ?? 75;
                 $variableApi->set(VariableApi::CONFIG, 'idsimpactthresholdfour', $idsImpactThresholdFour);
 
-                $idsImpactMode = isset($formData['idsimpactmode']) ? $formData['idsimpactmode'] : 1;
+                $idsImpactMode = $formData['idsimpactmode'] ?? 1;
                 $variableApi->set(VariableApi::CONFIG, 'idsimpactmode', $idsImpactMode);
 
-                $idsHtmlFields = isset($formData['idshtmlfields']) ? $formData['idshtmlfields'] : '';
+                $idsHtmlFields = $formData['idshtmlfields'] ?? '';
                 $idsHtmlFields = explode(PHP_EOL, $idsHtmlFields);
                 $idsHtmlArray = [];
                 foreach ($idsHtmlFields as $idsHtmlField) {
@@ -264,7 +266,7 @@ class ConfigController extends AbstractController
                 }
                 $variableApi->set(VariableApi::CONFIG, 'idshtmlfields', $idsHtmlArray);
 
-                $idsJsonFields = isset($formData['idsjsonfields']) ? $formData['idsjsonfields'] : '';
+                $idsJsonFields = $formData['idsjsonfields'] ?? '';
                 $idsJsonFields = explode(PHP_EOL, $idsJsonFields);
                 $idsJsonArray = [];
                 foreach ($idsJsonFields as $idsJsonField) {
@@ -275,7 +277,7 @@ class ConfigController extends AbstractController
                 }
                 $variableApi->set(VariableApi::CONFIG, 'idsjsonfields', $idsJsonArray);
 
-                $idsExceptions = isset($formData['idsexceptions']) ? $formData['idsexceptions'] : '';
+                $idsExceptions = $formData['idsexceptions'] ?? '';
                 $idsExceptions = explode(PHP_EOL, $idsExceptions);
                 $idsExceptionsArray = [];
                 foreach ($idsExceptions as $idsException) {
@@ -338,7 +340,7 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if ('POST' == $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             // Load HTMLPurifier Classes
             $purifier = $purifierHelper->getPurifier();
 
@@ -363,7 +365,7 @@ class ConfigController extends AbstractController
                     }
                 }
 
-                if (isset($config[$namespace]) && isset($config[$namespace][$directive])) {
+                if (isset($config[$namespace], $config[$namespace][$directive])) {
                     if (is_int($def)) {
                         $directiveType = abs($def);
                     } else {
@@ -440,7 +442,7 @@ class ConfigController extends AbstractController
 
         // load the configuration page
 
-        if (isset($reset) && 'default' == $reset) {
+        if (isset($reset) && 'default' === $reset) {
             $purifierConfig = $purifierHelper->getPurifierConfig(['forcedefault' => true]);
             $this->addFlash('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
@@ -482,14 +484,14 @@ class ConfigController extends AbstractController
                 continue;
             }
 
-            if ('Filter' == $namespace) {
+            if ('Filter' === $namespace) {
                 if (
                 // Do not allow Filter.Custom for now. Causing errors.
                 // TODO research why Filter.Custom is causing exceptions and correct.
-                        ('Custom' == $directive)
+                        ('Custom' === $directive)
                         // Do not allow Filter.ExtractStyleBlock* for now. Causing errors.
                         // TODO Filter.ExtractStyleBlock* requires CSSTidy
-                        || (false !== stripos($directive, 'ExtractStyleBlock'))
+                        || (false !== mb_stripos($directive, 'ExtractStyleBlock'))
                 ) {
                     continue;
                 }
@@ -567,7 +569,7 @@ class ConfigController extends AbstractController
 
         $htmlTags = $this->getHtmlTags();
 
-        if ('POST' == $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             $htmlEntities = $request->request->getDigits('htmlentities', 0);
             $variableApi->set(VariableApi::CONFIG, 'htmlentities', $htmlEntities);
 
@@ -575,7 +577,7 @@ class ConfigController extends AbstractController
             $allowedHtml = [];
             foreach ($htmlTags as $htmlTag => $usageTag) {
                 $tagVal = (int)$request->request->getDigits('htmlallow' . $htmlTag . 'tag', 0);
-                if (1 != $tagVal && 2 != $tagVal) {
+                if (1 !== $tagVal && 2 !== $tagVal) {
                     $tagVal = 0;
                 }
                 $allowedHtml[$htmlTag] = $tagVal;
@@ -594,7 +596,7 @@ class ConfigController extends AbstractController
 
         return [
             'htmlEntities' => $variableApi->getSystemVar('htmlentities'),
-            'htmlPurifier' => (bool)(1 == $variableApi->getSystemVar('outputfilter')),
+            'htmlPurifier' => (bool)(1 === $variableApi->getSystemVar('outputfilter')),
             'configUrl' => $this->get('router')->generate('zikulasecuritycentermodule_config_config'),
             'htmlTags' => $htmlTags,
             'currentHtmlTags' => $variableApi->getSystemVar('AllowableHTML')

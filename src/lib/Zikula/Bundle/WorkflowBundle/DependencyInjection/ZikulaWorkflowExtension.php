@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -43,7 +45,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
         // modules may define their workflows in: <bundlePath>/Resources/workflows/
         $bundleMetaData = $container->getParameter('kernel.bundles_metadata');
         foreach ($bundleMetaData as $bundleName => $metaData) {
-            if ('Module' != substr($bundleName, -6)) {
+            if ('Module' !== mb_substr($bundleName, -6)) {
                 continue;
             }
 

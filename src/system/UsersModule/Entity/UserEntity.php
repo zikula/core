@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -158,7 +160,7 @@ class UserEntity extends EntityAccess
      *      joinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid")}
      *      )
-     **/
+     */
     private $groups;
 
     /**
@@ -320,7 +322,7 @@ class UserEntity extends EntityAccess
      */
     public function isApproved()
     {
-        return 0 != $this->approved_by;
+        return 0 !== $this->approved_by;
     }
 
     /**

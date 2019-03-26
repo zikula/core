@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,7 +17,7 @@ use Twig\Parser;
 use Twig\Token;
 use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
 
-class SwitchTokenParserTest extends \PHPUnit_Framework_TestCase
+class SwitchTokenParserTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var SwitchTokenParser

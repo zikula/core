@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -25,6 +27,6 @@ class IntegrationTest extends IntegrationTestCase
 
     public function getFixturesDir()
     {
-        return dirname(__FILE__) . '/Fixtures/';
+        return __DIR__ . '/Fixtures/';
     }
 }

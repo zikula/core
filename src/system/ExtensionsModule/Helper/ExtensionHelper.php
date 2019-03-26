@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,9 +17,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\CoreEvents;
@@ -100,7 +102,7 @@ class ExtensionHelper
      */
     public function install(ExtensionEntity $extension)
     {
-        if (Constant::STATE_NOTALLOWED == $extension->getState()) {
+        if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to install %s.', ['%s' => $extension->getName()]));
         } elseif ($extension->getState() > 10) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
@@ -148,7 +150,7 @@ class ExtensionHelper
         $installer = $this->getExtensionInstallerInstance($bundle);
         $result = $installer->upgrade($extension->getVersion());
         if (is_string($result)) {
-            if ($result != $extension->getVersion()) {
+            if ($result !== $extension->getVersion()) {
                 // persist the last successful updated version
                 $extension->setVersion($result);
                 $this->container->get('doctrine')->getManager()->flush();
@@ -185,11 +187,11 @@ class ExtensionHelper
      */
     public function uninstall(ExtensionEntity $extension)
     {
-        if (Constant::STATE_NOTALLOWED == $extension->getState()
+        if (Constant::STATE_NOTALLOWED === $extension->getState()
             || (ZikulaKernel::isCoreModule($extension->getName()))) {
             throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
-        if (Constant::STATE_UNINITIALISED == $extension->getState()) {
+        if (Constant::STATE_UNINITIALISED === $extension->getState()) {
             throw new \RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
         }
 

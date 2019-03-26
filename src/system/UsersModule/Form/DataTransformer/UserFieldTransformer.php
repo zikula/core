@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -54,7 +56,7 @@ class UserFieldTransformer implements DataTransformerInterface
             return $value->getUid();
         }
 
-        return intval($value);
+        return (int) $value;
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,14 +17,14 @@ use Symfony\Component\Finder\SplFileInfo;
 use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 
-class ComposerValidationHelperTest extends \PHPUnit_Framework_TestCase
+class ComposerValidationHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ComposerValidationHelper
      */
     protected $validationHelper;
 
-    public function setUp()
+    protected function setUp()
     {
         $extModule = $this
             ->getMockBuilder('\Zikula\ExtensionsModule\ZikulaExtensionsModule')

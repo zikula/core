@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -179,13 +181,13 @@ class UpdateCheckHelper
         $ref = $this->requestStack
             ->getMasterRequest()
             ->getBaseURL();
-        $port = ('https' == $urlArray['scheme']) ? 443 : 80;
+        $port = ('https' === $urlArray['scheme']) ? 443 : 80;
 
         if (function_exists('curl_init')) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_URL, "$url?");
+            curl_setopt($ch, CURLOPT_URL, "${url}?");
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
             curl_setopt($ch, CURLOPT_REFERER, $ref);
@@ -196,10 +198,10 @@ class UpdateCheckHelper
             }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
             $data = curl_exec($ch);
-            if (!$data && 443 == $port) {
+            if (!$data && 443 === $port) {
                 // retry non ssl
                 $url = str_replace('https://', 'http://', $url);
-                curl_setopt($ch, CURLOPT_URL, "$url?");
+                curl_setopt($ch, CURLOPT_URL, "${url}?");
                 $data = curl_exec($ch);
             }
             curl_close($ch);
@@ -210,16 +212,16 @@ class UpdateCheckHelper
         if (ini_get('allow_url_fopen')) {
             // handle SSL connections
             $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
-            $host = (443 == $port ? "ssl://$urlArray[host]" : $urlArray['host']);
+            $host = (443 === $port ? "ssl://{$urlArray[host]}" : $urlArray['host']);
             $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
             if (!$fp) {
                 return false;
             }
 
-            $out = "GET $path_query? HTTP/1.1\r\n";
-            $out .= "User-Agent: $userAgent\r\n";
-            $out .= "Referer: $ref\r\n";
-            $out .= "Host: $urlArray[host]\r\n";
+            $out = "GET ${path_query}? HTTP/1.1\r\n";
+            $out .= "User-Agent: ${userAgent}\r\n";
+            $out .= "Referer: ${ref}\r\n";
+            $out .= "Host: {$urlArray[host]}\r\n";
             $out .= "Connection: Close\r\n\r\n";
             fwrite($fp, $out);
             while (!feof($fp)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -134,7 +136,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     {
         foreach ($this->options['resource_files'] as $locale => $files) {
             foreach ($files as $key => $file) {
-                $c = substr_count($file, ".");
+                $c = mb_substr_count($file, ".");
 
                 if ($c < 2) {
                     // filename is domain.format
@@ -292,10 +294,10 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     private function chooseMessage($m1, $m2, $n, $domain = null)
     {
         $message = $m2;
-        if (('en' == $this->getLocale()) || ('en' == $domain)) {
+        if (('en' === $this->getLocale()) || ('en' === $domain)) {
             $domains = $this->getCatalogue($this->getLocale())->getDomains();
             if (!in_array($this->domain, $domains)) {
-                $message = (1 == $n) ? $m1 : $m2;
+                $message = (1 === $n) ? $m1 : $m2;
             }
         }
 

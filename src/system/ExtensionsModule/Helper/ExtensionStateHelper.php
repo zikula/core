@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -12,9 +14,9 @@
 namespace Zikula\ExtensionsModule\Helper;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
@@ -99,7 +101,7 @@ class ExtensionStateHelper
                 }
                 break;
             case Constant::STATE_UPGRADED:
-                if (Constant::STATE_UNINITIALISED == $extension->getState()) {
+                if (Constant::STATE_UNINITIALISED === $extension->getState()) {
                     throw new \RuntimeException($this->translator->__('Error! Invalid module state transition.'));
                 }
                 break;

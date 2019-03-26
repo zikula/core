@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -89,7 +91,7 @@ class ModuleController extends AbstractController
         $upgradedExtensions = [];
         $vetoEvent = new GenericEvent();
         $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
-        if (!$vetoEvent->isPropagationStopped() && 1 == $pos) {
+        if (!$vetoEvent->isPropagationStopped() && 1 === $pos) {
             // regenerate the extension list only when viewing the first page
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
             $upgradedExtensions = $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
@@ -102,7 +104,7 @@ class ModuleController extends AbstractController
         $adminRoutes = [];
 
         foreach ($pagedResult as $module) {
-            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || Constant::STATE_ACTIVE != $module['state']) {
+            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || Constant::STATE_ACTIVE !== $module['state']) {
                 continue;
             }
 
@@ -164,7 +166,7 @@ class ModuleController extends AbstractController
         }
 
         $extension = $extensionRepository->find($id);
-        if (Constant::STATE_NOTALLOWED == $extension->getState()) {
+        if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             $this->addFlash('error', $this->__f('Error! Activation of module %s not allowed.', ['%s' => $extension->getName()]));
         } else {
             // Update state
@@ -352,7 +354,7 @@ class ModuleController extends AbstractController
                 $extensionsInstalled = [];
                 $data = $form->getData();
                 foreach ($data['dependencies'] as $dependencyId => $installSelected) {
-                    if (!$installSelected && MetaData::DEPENDENCY_REQUIRED != $unsatisfiedDependencies[$dependencyId]->getStatus()) {
+                    if (!$installSelected && MetaData::DEPENDENCY_REQUIRED !== $unsatisfiedDependencies[$dependencyId]->getStatus()) {
                         continue;
                     }
                     $dependencyExtensionEntity = $extensionRepository->get($unsatisfiedDependencies[$dependencyId]->getModname());
@@ -374,10 +376,9 @@ class ModuleController extends AbstractController
                     $cacheClearer->clear('symfony');
 
                     return $this->redirectToRoute('zikulaextensionsmodule_module_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
-                } else {
-                    $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
-                    $this->addFlash('error', $this->__f('Initialization of %s failed!', ['%s' => $extension->getName()]));
                 }
+                $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
+                $this->addFlash('error', $this->__f('Initialization of %s failed!', ['%s' => $extension->getName()]));
             }
             if ($form->get('cancel')->isClicked()) {
                 $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
@@ -511,7 +512,7 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if (Constant::STATE_MISSING == $extension->getState()) {
+        if (Constant::STATE_MISSING === $extension->getState()) {
             throw new \RuntimeException($this->__('Error! The requested extension cannot be uninstalled because its files are missing!'));
         }
         if (!$this->get('kernel')->isBundle($extension->getName())) {

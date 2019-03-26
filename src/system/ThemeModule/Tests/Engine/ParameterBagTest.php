@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -16,14 +18,14 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
-class ParameterBagTest extends \PHPUnit_Framework_TestCase
+class ParameterBagTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ParameterBag
      */
     private $bag;
 
-    public function setUp()
+    protected function setUp()
     {
         $requestStack = $this
             ->getMockBuilder(RequestStack::class)
@@ -95,7 +97,7 @@ class ParameterBagTest extends \PHPUnit_Framework_TestCase
      */
     public function testExpectedFailureToRecastToNamespace()
     {
-        $this->setExpectedException(\PHPUnit_Framework_Error::class);
+        $this->setExpectedException(\PHPUnit\Framework\Error::class);
         $this->bag->set('foo.bang', 6);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -16,14 +18,14 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\Core\Tests\LinkContainer\Fixtures\BarLinkContainer;
 use Zikula\Core\Tests\LinkContainer\Fixtures\FooLinkContainer;
 
-class LinkContainerCollectorTest extends \PHPUnit_Framework_TestCase
+class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var LinkContainerCollector
      */
     private $collector;
 
-    public function setUp()
+    protected function setUp()
     {
         $dispatcher = $this
             ->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')

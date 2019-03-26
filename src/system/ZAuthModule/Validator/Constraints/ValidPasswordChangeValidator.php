@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -59,7 +61,7 @@ class ValidPasswordChangeValidator extends ConstraintValidator
                     ->addViolation();
             }
             // oldpass == newpass??
-            if (isset($data['pass']) && $data['oldpass'] == $data['pass']) {
+            if (isset($data['pass']) && $data['oldpass'] === $data['pass']) {
                 $this->context->buildViolation($this->translator->__('Your new password cannot match your current password.'))
                     ->atPath('pass')
                     ->addViolation();

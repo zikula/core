@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -92,8 +94,8 @@ class SiteOffListener implements EventSubscriberInterface
         } catch (\Exception $e) {
             return;
         }
-        if ('zikulausersmodule_access_login' == $routeInfo['_route']
-        || 'zikulathememodule_combinedasset_asset' == $routeInfo['_route']) {
+        if ('zikulausersmodule_access_login' === $routeInfo['_route']
+        || 'zikulathememodule_combinedasset_asset' === $routeInfo['_route']) {
             return;
         }
         if ($response instanceof PlainResponse

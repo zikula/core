@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,7 +17,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionStubRepository;
 
-class CapabilityApiTest extends \PHPUnit_Framework_TestCase
+class CapabilityApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CapabilityApi
@@ -25,7 +27,7 @@ class CapabilityApiTest extends \PHPUnit_Framework_TestCase
     /**
      * CapabilityApiTest constructor.
      */
-    public function setUp()
+    protected function setUp()
     {
         $repo = new ExtensionStubRepository();
         $this->api = new CapabilityApi($repo);

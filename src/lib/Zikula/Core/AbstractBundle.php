@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,8 +17,8 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Common\Translator\Translator;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ThemeModule\AbstractTheme;
@@ -52,7 +54,7 @@ abstract class AbstractBundle extends Bundle
     public function getInstallerClass()
     {
         $ns = $this->getNamespace();
-        $class = $ns . '\\' . substr($ns, strrpos($ns, '\\') + 1, strlen($ns)) . 'Installer';
+        $class = $ns . '\\' . mb_substr($ns, mb_strrpos($ns, '\\') + 1, mb_strlen($ns)) . 'Installer';
 
         return $class;
     }
@@ -64,7 +66,7 @@ abstract class AbstractBundle extends Bundle
 
     public function getTranslationDomain()
     {
-        return strtolower($this->getName());
+        return mb_strtolower($this->getName());
     }
 
     /**
@@ -103,7 +105,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function getRelativeAssetPath()
     {
-        return strtolower($this->getNameType() . 's/' . substr($this->getName(), 0, -strlen($this->getNameType())));
+        return mb_strtolower($this->getNameType() . 's/' . mb_substr($this->getName(), 0, -mb_strlen($this->getNameType())));
     }
 
     public function getNameType()
@@ -119,7 +121,7 @@ abstract class AbstractBundle extends Bundle
     public function getContainerExtension()
     {
         $type = $this->getNameType();
-        $typeLower = strtolower($type);
+        $typeLower = mb_strtolower($type);
         if (null === $this->extension) {
             $basename = preg_replace('/' . $type . '/', '', $this->getName());
 
@@ -129,7 +131,7 @@ abstract class AbstractBundle extends Bundle
 
                 // check naming convention
                 $expectedAlias = Container::underscore($basename);
-                if ($expectedAlias != $extension->getAlias()) {
+                if ($expectedAlias !== $extension->getAlias()) {
                     throw new \LogicException(sprintf(
                         'The extension alias for the default extension of a %s must be the underscored version of the %s name ("%s" instead of "%s")',
                         $typeLower, $typeLower, $expectedAlias, $extension->getAlias()
@@ -171,7 +173,7 @@ abstract class AbstractBundle extends Bundle
     public function addStylesheet($name = 'style.css')
     {
         try {
-            $styleSheet = $this->getContainer()->get(Asset::class)->resolve('@' . $this->getName() . ":css/$name");
+            $styleSheet = $this->getContainer()->get(Asset::class)->resolve('@' . $this->getName() . ":css/${name}");
         } catch (\InvalidArgumentException $e) {
             $styleSheet = '';
         }

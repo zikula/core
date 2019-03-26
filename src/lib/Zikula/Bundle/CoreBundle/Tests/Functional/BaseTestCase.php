@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -18,7 +20,7 @@ class BaseTestCase extends WebTestCase
     protected static function createKernel(array $options = [])
     {
         return new AppKernel(
-            isset($options['config']) ? $options['config'] : 'default.yml'
+            $options['config'] ?? 'default.yml'
         );
     }
 

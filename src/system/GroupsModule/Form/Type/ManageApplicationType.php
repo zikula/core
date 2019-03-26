@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -48,7 +50,7 @@ class ManageApplicationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $reason = $options['data']['theAction'] == 'accept'
+        $reason = $options['data']['theAction'] === 'accept'
             ? $this->__('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
             : $this->__('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.');
         $builder
@@ -70,8 +72,8 @@ class ManageApplicationType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => $options['data']['theAction'] == 'deny' ? $this->__('Deny') : $this->__('Accept'),
-                'icon' => $options['data']['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
+                'label' => $options['data']['theAction'] === 'deny' ? $this->__('Deny') : $this->__('Accept'),
+                'icon' => $options['data']['theAction'] === 'deny' ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]

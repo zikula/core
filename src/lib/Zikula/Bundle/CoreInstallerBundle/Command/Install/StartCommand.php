@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,8 +13,8 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -128,7 +130,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         // write the parameters to personal_config.php and custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml', 'parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
-        if ('pdo_' != substr($params['database_driver'], 0, 4)) {
+        if ('pdo_' !== mb_substr($params['database_driver'], 0, 4)) {
             $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         }
         $yamlManager->setParameters($params);

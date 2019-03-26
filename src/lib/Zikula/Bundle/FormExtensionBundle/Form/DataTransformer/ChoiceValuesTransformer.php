@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -29,7 +31,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
         $strings = [];
         if (is_array($value)) {
             foreach ($value as $k => $v) {
-                $strings[] = $k == $v ? $v : $v . ':' . $k;
+                $strings[] = $k === $v ? $v : $v . ':' . $k;
             }
         }
 
@@ -50,7 +52,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
         $array = explode(',', $value);
         $newArray = [];
         foreach ($array as $v) {
-            if (strpos($v, ':')) {
+            if (mb_strpos($v, ':')) {
                 list($k, $v) = explode(':', $v);
             } else {
                 $k = $v;

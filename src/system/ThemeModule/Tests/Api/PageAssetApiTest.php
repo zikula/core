@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,7 +16,7 @@ namespace Zikula\ThemeModule\Tests\Api;
 use Zikula\ThemeModule\Api\PageAssetApi;
 use Zikula\ThemeModule\Engine\AssetBag;
 
-class PageAssetApiTest extends \PHPUnit_Framework_TestCase
+class PageAssetApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var AssetBag
@@ -26,7 +28,7 @@ class PageAssetApiTest extends \PHPUnit_Framework_TestCase
      */
     private $api;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->stylesheets = new AssetBag();
         $this->api = new PageAssetApi($this->stylesheets, new AssetBag(), new AssetBag(), new AssetBag());

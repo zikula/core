@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -18,7 +20,7 @@ use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\UserAttributeEntity;
 use Zikula\UsersModule\Tests\Api\Fixtures\MockUserRepository;
 
-class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
+class CurrentUserApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_Builder_InvocationMocker
@@ -33,7 +35,7 @@ class CurrentUserApiTest extends \PHPUnit_Framework_TestCase
     /**
      * CurrentUserApiTest setUp.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->userRepo = new MockUserRepository();
         $this->session = $this

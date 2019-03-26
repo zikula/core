@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,7 +15,7 @@ namespace Zikula\ZAuthModule\Tests\Api;
 
 use Zikula\ZAuthModule\Api\PasswordApi;
 
-class PasswordApiTest extends \PHPUnit_Framework_TestCase
+class PasswordApiTest extends \PHPUnit\Framework\TestCase
 {
     const ALLOWED_CHARS_REGEXP = ';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];';
 
@@ -25,7 +27,7 @@ class PasswordApiTest extends \PHPUnit_Framework_TestCase
     /**
      * CapabilityApiTest constructor.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->api = new PasswordApi();
     }
@@ -36,19 +38,19 @@ class PasswordApiTest extends \PHPUnit_Framework_TestCase
     public function testGetHashedPassword()
     {
         $hashedPass = $this->api->getHashedPassword('12345678'); // default = 8 = sha256
-        $this->assertEquals(72, strlen($hashedPass));
+        $this->assertEquals(72, mb_strlen($hashedPass));
         $this->assertRegExp(self::ALLOWED_CHARS_REGEXP, $hashedPass);
-        $this->assertEquals(2, substr_count($hashedPass, '$'));
+        $this->assertEquals(2, mb_substr_count($hashedPass, '$'));
 
         $hashedPass = $this->api->getHashedPassword('H4ppy81rthd$y', 1); // 1 = md5
-        $this->assertEquals(40, strlen($hashedPass));
+        $this->assertEquals(40, mb_strlen($hashedPass));
         $this->assertRegExp(self::ALLOWED_CHARS_REGEXP, $hashedPass);
-        $this->assertEquals(2, substr_count($hashedPass, '$'));
+        $this->assertEquals(2, mb_substr_count($hashedPass, '$'));
 
         $hashedPass = $this->api->getHashedPassword('mybirthdayplusabunchofchanracters%&*&^53', 5); // 5 = sha1
-        $this->assertEquals(48, strlen($hashedPass));
+        $this->assertEquals(48, mb_strlen($hashedPass));
         $this->assertRegExp(self::ALLOWED_CHARS_REGEXP, $hashedPass);
-        $this->assertEquals(2, substr_count($hashedPass, '$'));
+        $this->assertEquals(2, mb_substr_count($hashedPass, '$'));
     }
 
     /**
@@ -83,7 +85,7 @@ class PasswordApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetHashedPasswordOnUndefined()
     {
-        $this->setExpectedException(\PHPUnit_Framework_Error::class);
+        $this->setExpectedException(\PHPUnit\Framework\Error::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 
@@ -93,7 +95,7 @@ class PasswordApiTest extends \PHPUnit_Framework_TestCase
     public function testGeneratePassword()
     {
         $password = $this->api->generatePassword();
-        $this->assertEquals(5, strlen($password));
+        $this->assertEquals(5, mb_strlen($password));
         $this->assertNotRegExp('/[0oOl1iIj!|]/', $password);
     }
 

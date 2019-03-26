@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -69,8 +71,8 @@ class Scanner
     public function decode($file)
     {
         $base = str_replace('\\', '/', dirname($file));
-        $zkRoot = realpath(dirname(__FILE__) . '/../../../../../');
-        $base = substr($base, strlen($zkRoot) + 1);
+        $zkRoot = realpath(__DIR__ . '/../../../../../');
+        $base = mb_substr($base, mb_strlen($zkRoot) + 1);
 
         $json = json_decode($this->getFileContents($file), true);
         if (\JSON_ERROR_NONE === json_last_error()) {
@@ -79,13 +81,13 @@ class Scanner
 
             // calculate PSR-4 autoloading path for this namespace
             $class = $json['extra']['zikula']['class'];
-            $ns = substr($class, 0, strrpos($class, '\\') + 1);
+            $ns = mb_substr($class, 0, mb_strrpos($class, '\\') + 1);
             if (false === isset($json['autoload']['psr-4'][$ns])) {
                 return false;
             }
             $path = $json['extra']['zikula']['root-path'] = $base;
             $json['autoload']['psr-4'][$ns] = $path;
-            $json['extra']['zikula']['short-name'] = substr($class, strrpos($class, '\\') + 1, strlen($class));
+            $json['extra']['zikula']['short-name'] = mb_substr($class, mb_strrpos($class, '\\') + 1, mb_strlen($class));
             $json['extensionType'] = ZikulaKernel::isCoreModule($json['extra']['zikula']['short-name']) ? MetaData::TYPE_SYSTEM : MetaData::TYPE_MODULE;
 
             return $json;

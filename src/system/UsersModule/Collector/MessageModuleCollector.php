@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -53,7 +55,7 @@ class MessageModuleCollector
     public function add(MessageModuleInterface $service)
     {
         $moduleName = $service->getBundleName();
-        if ('ZikulaUsersModule' == $moduleName) {
+        if ('ZikulaUsersModule' === $moduleName) {
             return;
         }
         if (isset($this->messageModules[$moduleName])) {

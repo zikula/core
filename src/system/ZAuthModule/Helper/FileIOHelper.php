@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,8 +16,8 @@ namespace Zikula\ZAuthModule\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -145,7 +147,7 @@ class FileIOHelper
         $expectedFields = ['uname', 'pass', 'email', 'activated', 'sendmail', 'groups'];
         $firstLineArray = explode($delimiter, str_replace('"', '', trim($lines[0])));
         foreach ($firstLineArray as $field) {
-            if (!in_array(trim(strtolower($field)), $expectedFields)) {
+            if (!in_array(trim(mb_strtolower($field)), $expectedFields)) {
                 return $this->__f("Error! The import file does not have the expected field %s in the first row. Please check your import file.", ['%s' => $field]);
             }
         }
@@ -160,7 +162,7 @@ class FileIOHelper
             $lineArray = explode($delimiter, $line);
 
             // check if the line has all the needed values
-            if (count($lineArray) != count($firstLineArray)) {
+            if (count($lineArray) !== count($firstLineArray)) {
                 return $this->__f('Error! The number of parameters in line %s is not correct. Please check your import file.', ['%s' => $counter]);
             }
             $importValues[] = array_combine($firstLineArray, $lineArray);
@@ -189,7 +191,7 @@ class FileIOHelper
             // validate activation value
             $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : UsersConstant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
-            if ((UsersConstant::ACTIVATED_INACTIVE != $activated) && (UsersConstant::ACTIVATED_ACTIVE != $activated)) {
+            if ((UsersConstant::ACTIVATED_INACTIVE !== $activated) && (UsersConstant::ACTIVATED_ACTIVE !== $activated)) {
                 return $this->locateErrors($this->__('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.'), 'activated', $counter);
             }
 

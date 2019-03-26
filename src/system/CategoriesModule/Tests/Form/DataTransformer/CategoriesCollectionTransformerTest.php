@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -17,7 +19,7 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 
-class CategoriesCollectionTransformerTest extends \PHPUnit_Framework_TestCase
+class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
 {
     public function testTransform()
     {

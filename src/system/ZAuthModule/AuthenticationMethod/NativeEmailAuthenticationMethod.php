@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -53,8 +55,8 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
      */
     public function getLoginTemplateName($type = 'page', $position = 'left')
     {
-        if ('block' == $type) {
-            if ('topnav' == $position) {
+        if ('block' === $type) {
+            if ('topnav' === $position) {
                 return 'ZikulaZAuthModule:Authentication:EmailLoginBlock.topnav.html.twig';
             }
 

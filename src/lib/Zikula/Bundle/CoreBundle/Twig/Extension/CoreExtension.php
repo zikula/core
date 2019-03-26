@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -100,7 +102,7 @@ class CoreExtension extends AbstractExtension
      */
     public function yesNo($string)
     {
-        if ('0' != $string && '1' != $string) {
+        if ('0' !== $string && '1' !== $string) {
             return $string;
         }
 

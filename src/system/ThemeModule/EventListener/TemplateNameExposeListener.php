@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -30,9 +32,9 @@ class TemplateNameExposeListener implements EventSubscriberInterface
      */
     public function exposeTemplateNames(TwigPostRenderEvent $event)
     {
-        if ('dev' == $this->env) {
+        if ('dev' === $this->env) {
             $name = $event->getTemplateName();
-            if (false !== strpos($name, '.js.')) {
+            if (false !== mb_strpos($name, '.js.')) {
                 $content = '/* ' . $name . ' */' . $event->getContent() . '/* end ' . $name . ' */';
             } else {
                 $content = '<!-- ' . $name . ' -->' . $event->getContent() . '<!-- /' . $name . ' -->';

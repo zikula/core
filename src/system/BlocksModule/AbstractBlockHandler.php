@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -122,9 +124,9 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
         $fqCn = get_class($this);
-        $pos = strrpos($fqCn, '\\');
+        $pos = mb_strrpos($fqCn, '\\');
 
-        return substr($fqCn, $pos + 1, -5);
+        return mb_substr($fqCn, $pos + 1, -5);
     }
 
     /**

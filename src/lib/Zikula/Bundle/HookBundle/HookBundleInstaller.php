@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -73,7 +75,7 @@ class HookBundleInstaller implements InstallerInterface
         if (version_compare($currentCoreVersion, '2.0.0', '<')) {
             // remove undefined entities
             foreach (['hook_area', 'hook_provider', 'hook_subscriber'] as $table) {
-                $sql = "DROP TABLE $table;";
+                $sql = "DROP TABLE ${table};";
                 $connection = $this->em->getConnection();
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();

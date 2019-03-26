@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,7 +15,7 @@ namespace Zikula\BlocksModule\Tests\Helper;
 
 use Zikula\BlocksModule\Helper\InstallerHelper;
 
-class InstallerHelperTest extends \PHPUnit_Framework_TestCase
+class InstallerHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var InstallerHelper
@@ -23,7 +25,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * InstallerHelperTest setup.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->helper = new InstallerHelper();
     }
@@ -55,7 +57,7 @@ class InstallerHelperTest extends \PHPUnit_Framework_TestCase
         $kernel
             ->method('getModule')
             ->will($this->returnCallback(function($moduleName) {
-                if ('ExceptionModule' == $moduleName) {
+                if ('ExceptionModule' === $moduleName) {
                     // mocks situation where module is not namespaced.
                     throw new \Exception();
                 }

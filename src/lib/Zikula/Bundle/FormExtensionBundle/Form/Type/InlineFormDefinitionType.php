@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -28,7 +30,7 @@ class InlineFormDefinitionType extends AbstractType
     /**
      * @var DynamicFieldsContainerInterface
      */
-    private $dynamicFieldsContainer = null;
+    private $dynamicFieldsContainer;
 
     /**
      * @param TranslatorInterface $translator
@@ -59,10 +61,10 @@ class InlineFormDefinitionType extends AbstractType
 
         foreach ($this->dynamicFieldsContainer->getDynamicFieldsSpecification() as $fieldSpecification) {
             $fieldOptions = $fieldSpecification->getFormOptions();
-            $fieldOptions['label'] = isset($fieldOptions['label']) ? $fieldOptions['label'] : $fieldSpecification->getLabel($this->translator->getLocale());
+            $fieldOptions['label'] = $fieldOptions['label'] ?? $fieldSpecification->getLabel($this->translator->getLocale());
 
             $prefix = $fieldSpecification->getPrefix();
-            $prefix = null !== $prefix && '' != $prefix ? $prefix . ':' : '';
+            $prefix = null !== $prefix && '' !== $prefix ? $prefix . ':' : '';
 
             $builder->add($prefix . $fieldSpecification->getName(), $fieldSpecification->getFormType(), $fieldOptions);
         }

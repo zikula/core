@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,9 +13,9 @@
 
 namespace Zikula\SettingsModule\Listener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 class LocaleListener implements EventSubscriberInterface

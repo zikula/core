@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -87,7 +89,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                     'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
                     'spool' => ['type' => 'memory'],
                     'delivery_addresses' => [],
-                    'disable_delivery' => 5 == $modVars['mailertype'],
+                    'disable_delivery' => 5 === $modVars['mailertype'],
                 ];
                 $configDumper->setConfiguration('swiftmailer', $config);
             case '1.4.0':

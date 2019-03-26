@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -60,7 +62,7 @@ class PurifierHelper
      * Retrieves configuration array for HTML Purifier.
      *
      * @param bool[] $args {
-     *      @type bool $forcedefault true to force return of default config / false to auto detect
+     *      @var bool $forcedefault true to force return of default config / false to auto detect
      *                    }
      *
      * @return \HTMLPurifier_Config HTML Purifier configuration settings
@@ -103,7 +105,7 @@ class PurifierHelper
      * that has been cached in a static variable.
      *
      * @param bool[] $args {
-     *      @type bool $force If true, the HTMLPurifier instance will be generated anew, rather than using an
+     *      @var bool $force If true, the HTMLPurifier instance will be generated anew, rather than using an
      *                        existing instance from the static variable.
      *                     }
      *
@@ -113,7 +115,7 @@ class PurifierHelper
      */
     public function getPurifier($args = null)
     {
-        $force = isset($args['force']) ? $args['force'] : false;
+        $force = $args['force'] ?? false;
 
         // prepare htmlpurifier class
         static $purifier;
@@ -137,7 +139,7 @@ class PurifierHelper
         $config = \HTMLPurifier_Config::createDefault();
 
         $charset = $this->kernel->getCharset();
-        if ('utf-8' != strtolower($charset)) {
+        if ('utf-8' !== mb_strtolower($charset)) {
             // set a different character encoding with iconv
             $config->set('Core.Encoding', $charset);
             // Note that HTML Purifier's support for non-Unicode encodings is crippled by the

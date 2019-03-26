@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -168,14 +170,14 @@ class ProfileExtension extends AbstractExtension
             $show = '<img src="' . htmlspecialchars($imagePath, ENT_QUOTES) . '" alt="' . htmlspecialchars($userDisplayName, ENT_QUOTES) . '" />';
         } elseif ($maxLength > 0) {
             // truncate the user name to $maxLength chars
-            $length = strlen($userDisplayName);
+            $length = mb_strlen($userDisplayName);
             $truncEnd = ($maxLength > $length) ? $length : $maxLength;
-            $show = htmlspecialchars(substr($userDisplayName, 0, $truncEnd), ENT_QUOTES);
+            $show = htmlspecialchars(mb_substr($userDisplayName, 0, $truncEnd), ENT_QUOTES);
         } else {
             $show = htmlspecialchars($userDisplayName, ENT_QUOTES);
         }
         $href = $this->profileModuleCollector->getSelected()->getProfileUrl($user->getUid());
-        if ('#' == $href) {
+        if ('#' === $href) {
             return $userDisplayName;
         }
 

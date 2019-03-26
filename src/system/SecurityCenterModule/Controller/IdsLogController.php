@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -61,7 +63,7 @@ class IdsLogController extends AbstractController
         $sort = $request->query->get('sort', 'date DESC');
         $sort_exp = explode(' ', $sort);
         $sortField = $sort_exp[0];
-        $sortDirection = isset($sort_exp[1]) ? $sort_exp[1] : 'ASC';
+        $sortDirection = $sort_exp[1] ?? 'ASC';
         $sorting = [$sortField => $sortDirection];
 
         // filtering
@@ -116,7 +118,7 @@ class IdsLogController extends AbstractController
             new Column('impact'),
             new Column('date')
         ]);
-        $sortableColumns->setOrderBy($sortableColumns->getColumn($sortField), strtoupper($sortDirection));
+        $sortableColumns->setOrderBy($sortableColumns->getColumn($sortField), mb_strtoupper($sortDirection));
 
         $templateParameters = [
             'filterForm' => $filterForm->createView(),
@@ -159,20 +161,20 @@ class IdsLogController extends AbstractController
                 $formData = $form->getData();
 
                 // export the titles ?
-                $exportTitles = isset($formData['titles']) && 1 == $formData['titles'] ? true : false;
+                $exportTitles = isset($formData['titles']) && 1 === $formData['titles'] ? true : false;
 
                 // name of the exported file
-                $exportFile = isset($formData['file']) ? $formData['file'] : null;
-                if (is_null($exportFile) || '' == $exportFile) {
+                $exportFile = $formData['file'] ?? null;
+                if (is_null($exportFile) || '' === $exportFile) {
                     $exportFile = 'idslog.csv';
                 }
-                if (!strrpos($exportFile, '.csv')) {
+                if (!mb_strrpos($exportFile, '.csv')) {
                     $exportFile .= '.csv';
                 }
 
                 // delimeter
-                $delimiter = isset($formData['delimiter']) ? $formData['delimiter'] : null;
-                if (is_null($delimiter) || '' == $delimiter) {
+                $delimiter = $formData['delimiter'] ?? null;
+                if (is_null($delimiter) || '' === $delimiter) {
                     $delimiter = 1;
                 }
                 switch ($delimiter) {
@@ -320,7 +322,7 @@ class IdsLogController extends AbstractController
 
         $intrusion = $repository->find($id);
         if (!$intrusion) {
-            $this->addFlash('error', $this->__f('Error! Invalid %s received.', ['%s' => "object ID [$id]"]));
+            $this->addFlash('error', $this->__f('Error! Invalid %s received.', ['%s' => "object ID [${id}]"]));
         } else {
             // delete object
             $entityManager = $this->get('doctrine')->getManager();

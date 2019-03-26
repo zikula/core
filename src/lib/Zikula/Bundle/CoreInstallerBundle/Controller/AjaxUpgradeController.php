@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -185,7 +187,7 @@ class AjaxUpgradeController extends AbstractController
             case '1.9.99':
                 // upgrades required for 2.0.0
                 foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows'] as $table) {
-                    $sql = "DROP TABLE $table;";
+                    $sql = "DROP TABLE ${table};";
                     $connection = $doctrine->getConnection();
                     $stmt = $connection->prepare($sql);
                     $stmt->execute();
@@ -196,7 +198,7 @@ class AjaxUpgradeController extends AbstractController
                 $variableApi->del(VariableApi::CONFIG, 'startpage');
                 $variableApi->del(VariableApi::CONFIG, 'startfunc');
                 $variableApi->del(VariableApi::CONFIG, 'starttype');
-                if ('userdata' == $this->container->getParameter('datadir')) {
+                if ('userdata' === $this->container->getParameter('datadir')) {
                     $this->yamlManager->setParameter('datadir', 'web/uploads');
                     $fs = $this->container->get('filesystem');
                     $src = realpath(__DIR__ . '/../../../../../');
@@ -232,7 +234,7 @@ class AjaxUpgradeController extends AbstractController
         $kernel = $this->container->get('kernel');
         // Set the System Identifier as a unique string.
         if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
-            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
+            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(mt_rand(1000000000, 9999999999), true)));
         }
 
         // add new configuration parameters
@@ -241,7 +243,7 @@ class AjaxUpgradeController extends AbstractController
         $RandomLibFactory = new Factory();
         $generator = $RandomLibFactory->getMediumStrengthGenerator();
 
-        if (!isset($params['secret']) || ('ThisTokenIsNotSoSecretChangeIt' == $params['secret'])) {
+        if (!isset($params['secret']) || ('ThisTokenIsNotSoSecretChangeIt' === $params['secret'])) {
             $params['secret'] = $generator->generateString(50);
         }
         if (!isset($params['url_secret'])) {
@@ -252,9 +254,9 @@ class AjaxUpgradeController extends AbstractController
         $request = $this->container->get('request_stack')->getMasterRequest();
         $hostFromRequest = isset($request) ? $request->getHost() : null;
         $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
-        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $hostFromRequest;
-        $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
-        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $basePathFromRequest;
+        $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
+        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? 'http';
+        $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
 
         // set currently installed version into parameters
         $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;

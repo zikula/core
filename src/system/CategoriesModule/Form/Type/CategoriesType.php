@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -75,7 +77,7 @@ class CategoriesType extends AbstractType
             $choiceLabelClosure = function(CategoryEntity $category) use ($baseCategory, $locale) {
                 $indent = str_repeat('--', $category->getLvl() - $baseCategory->getLvl() - 1);
 
-                $categoryName = isset($category['display_name'][$locale]) ? $category['display_name'][$locale] : $category['display_name']['en'];
+                $categoryName = $category['display_name'][$locale] ?? $category['display_name']['en'];
 
                 return (!empty($indent) ? '|' : '') . $indent . $categoryName;
             };
@@ -92,7 +94,7 @@ class CategoriesType extends AbstractType
             ];
 
             if ($options['showRegistryLabels']) {
-                $registryOptions['label'] = isset($baseCategory['display_name'][$locale]) ? $baseCategory['display_name'][$locale] : $baseCategory['display_name']['en'];
+                $registryOptions['label'] = $baseCategory['display_name'][$locale] ?? $baseCategory['display_name']['en'];
             } else {
                 $registryOptions['label_attr'] = !$options['expanded'] ? ['class' => 'hidden'] : [];
             }

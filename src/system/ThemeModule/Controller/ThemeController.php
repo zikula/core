@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -204,7 +206,7 @@ class ThemeController extends AbstractController
         CacheClearer $cacheClearer,
         $themeName
     ) {
-        if (!$this->hasPermission('ZikulaThemeModule::', "$themeName::", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', "${themeName}::", ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
@@ -290,7 +292,7 @@ class ThemeController extends AbstractController
      */
     public function creditsAction(ThemeEntityRepository $themeRepository, $themeName)
     {
-        if (!$this->hasPermission('ZikulaThemeModule::', "$themeName::credits", ACCESS_EDIT)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', "${themeName}::credits", ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         $themeInfo = $themeRepository->findOneBy(['name' => $themeName]);

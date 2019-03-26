@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -50,7 +52,7 @@ class PasswordApi implements PasswordApiInterface
      */
     public function getHashedPassword($unhashedPassword, $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE)
     {
-        if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode != $hashMethodCode)) {
+        if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode !== $hashMethodCode)) {
             throw new \InvalidArgumentException();
         }
         $hashMethodNamesByCode = array_flip($this->methods);
@@ -64,7 +66,7 @@ class PasswordApi implements PasswordApiInterface
      */
     public function generatePassword($length = self::MIN_LENGTH)
     {
-        if (!is_numeric($length) || ((int)$length != $length) || ($length < self::MIN_LENGTH)) {
+        if (!is_numeric($length) || ((int)$length !== $length) || ($length < self::MIN_LENGTH)) {
             $length = self::MIN_LENGTH;
         }
         $factory = new RandomLibFactory();
@@ -82,7 +84,7 @@ class PasswordApi implements PasswordApiInterface
         if (empty($unhashedPassword) || !is_string($unhashedPassword)) {
             throw new \InvalidArgumentException();
         }
-        if (empty($hashedPassword) || !is_string($hashedPassword) || (false === strpos($hashedPassword, self::SALT_DELIM)) || (2 != substr_count($hashedPassword, self::SALT_DELIM))) {
+        if (empty($hashedPassword) || !is_string($hashedPassword) || (false === mb_strpos($hashedPassword, self::SALT_DELIM)) || (2 !== mb_substr_count($hashedPassword, self::SALT_DELIM))) {
             throw new \InvalidArgumentException();
         }
 
@@ -132,7 +134,7 @@ class PasswordApi implements PasswordApiInterface
         $saltedHash = false;
         $algoList = hash_algos();
 
-        if ((false !== array_search($hashMethodName, $algoList)) && is_string($saltStr) && is_string($saltDelimiter) && (1 == strlen($saltDelimiter))) {
+        if ((false !== array_search($hashMethodName, $algoList)) && is_string($saltStr) && is_string($saltDelimiter) && (1 === mb_strlen($saltDelimiter))) {
             $hashedData = hash($hashMethodName, $saltStr . $unhashedData);
             if (!empty($hashMethodNameToCode)) {
                 if (isset($hashMethodNameToCode[$hashMethodName])) {
@@ -163,11 +165,11 @@ class PasswordApi implements PasswordApiInterface
         $algoList = hash_algos();
         $hashMethodCodeToName = array_flip($this->methods);
 
-        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimiter) && (1 == strlen($saltDelimiter))
-            && (false !== strpos($saltedHash, $saltDelimiter))) {
+        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimiter) && (1 === mb_strlen($saltDelimiter))
+            && (false !== mb_strpos($saltedHash, $saltDelimiter))) {
             list($hashMethod, $saltStr, $correctHash) = explode($saltDelimiter, $saltedHash);
 
-            if (is_numeric($hashMethod) && ((int)$hashMethod == $hashMethod)) {
+            if (is_numeric($hashMethod) && ((int)$hashMethod === $hashMethod)) {
                 $hashMethod = (int)$hashMethod;
             }
             if (isset($hashMethodCodeToName[$hashMethod])) {
@@ -178,7 +180,7 @@ class PasswordApi implements PasswordApiInterface
 
             if (false !== array_search($hashMethodName, $algoList)) {
                 $dataHash = hash($hashMethodName, $saltStr . $unhashedData); // throws ContextErrorException if $hashMethodName is unknown algorithm
-                $dataMatches = $dataHash == $correctHash;
+                $dataMatches = $dataHash === $correctHash;
             }
         }
 

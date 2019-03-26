@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,9 +13,9 @@
 
 namespace Zikula\GroupsModule\Entity;
 
-use Zikula\Core\Doctrine\EntityAccess;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**
@@ -75,7 +77,7 @@ class GroupEntity extends EntityAccess
      *      inverseJoinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")}
      *      )
      * @ORM\OrderBy({"uname" = "ASC"})
-     **/
+     */
     private $users;
 
     /**
