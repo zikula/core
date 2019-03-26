@@ -28,7 +28,6 @@ enabled:
   - php_unit_set_up_tear_down_visibility
   - random_api_migration
   - short_array_syntax
-  - short_list_syntax
   - standardize_increment
   - strict_comparison
   - ternary_to_null_coalescing
