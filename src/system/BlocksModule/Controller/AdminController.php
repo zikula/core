@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -68,8 +70,8 @@ class AdminController extends AbstractController
             $request->getSession()->set('zikulablocksmodule.filter', []);
         }
         $sessionFilterData = $request->getSession()->get('zikulablocksmodule.filter', []);
-        $sortField = $request->query->get('sort-field', isset($sessionFilterData['sort-field']) ? $sessionFilterData['sort-field'] : 'bid');
-        $currentSortDirection = $request->query->get('sort-direction', isset($sessionFilterData['sort-direction']) ? $sessionFilterData['sort-direction'] : Column::DIRECTION_ASCENDING);
+        $sortField = $request->query->get('sort-field', $sessionFilterData['sort-field'] ?? 'bid');
+        $currentSortDirection = $request->query->get('sort-direction', $sessionFilterData['sort-direction'] ?? Column::DIRECTION_ASCENDING);
         $filterForm = $this->createForm(AdminViewFilterType::class, $sessionFilterData, [
             'action' => $this->generateUrl('zikulablocksmodule_admin_view'),
             'method' => 'POST',
@@ -100,10 +102,10 @@ class AdminController extends AbstractController
         $sortableColumns->addColumn(new Column('state'));
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sortField), $currentSortDirection);
         $sortableColumns->setAdditionalUrlParameters([
-            'position' => isset($filterData['position']) ? $filterData['position'] : null,
-            'module' => isset($filterData['module']) ? $filterData['module'] : null,
-            'language' => isset($filterData['language']) ? $filterData['language'] : null,
-            'status' => isset($filterData['status']) ? $filterData['status'] : null,
+            'position' => $filterData['position'] ?? null,
+            'module' => $filterData['module'] ?? null,
+            'language' => $filterData['language'] ?? null,
+            'status' => $filterData['status'] ?? null,
         ]);
 
         $filterActive = !empty($filterData['position']) || !empty($filterData['module']) || !empty($filterData['language'])

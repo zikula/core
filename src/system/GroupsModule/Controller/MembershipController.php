@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,12 +13,12 @@
 
 namespace Zikula\GroupsModule\Controller;
 
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
@@ -29,9 +31,9 @@ use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * @Route("/membership")
@@ -167,9 +169,9 @@ class MembershipController extends AbstractController
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
-        $groupTypeIsPrivate = CommonHelper::GTYPE_PRIVATE == $group->getGtype();
-        $groupTypeIsCore = CommonHelper::GTYPE_CORE == $group->getGtype();
-        $groupStateIsClosed = CommonHelper::STATE_CLOSED == $group->getState();
+        $groupTypeIsPrivate = CommonHelper::GTYPE_PRIVATE === $group->getGtype();
+        $groupTypeIsCore = CommonHelper::GTYPE_CORE === $group->getGtype();
+        $groupStateIsClosed = CommonHelper::STATE_CLOSED === $group->getState();
         $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
         $alreadyGroupMember = $group->getUsers()->contains($userEntity);
         if ($groupTypeIsPrivate || $groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {
@@ -209,8 +211,8 @@ class MembershipController extends AbstractController
     ) {
         if ($request->isMethod('POST')) {
             $postVars = $request->request->get('zikulagroupsmodule_removeuser');
-            $gid = isset($postVars['gid']) ? $postVars['gid'] : 0;
-            $uid = isset($postVars['uid']) ? $postVars['uid'] : 0;
+            $gid = $postVars['gid'] ?? 0;
+            $uid = $postVars['uid'] ?? 0;
         }
         if ($gid < 1 || $uid < 1) {
             throw new \InvalidArgumentException($this->__('Invalid Group ID or User ID.'));
@@ -302,7 +304,7 @@ class MembershipController extends AbstractController
                 UsersConstant::ACTIVATED_PENDING_REG,
                 UsersConstant::ACTIVATED_PENDING_DELETE
             ]],
-            'uname' => ['operator' => 'like', 'operand' => "$fragment%"]
+            'uname' => ['operator' => 'like', 'operand' => "${fragment}%"]
         ];
         $users = $userRepository->query($filter);
 

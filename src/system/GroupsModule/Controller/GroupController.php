@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -12,16 +14,16 @@
 namespace Zikula\GroupsModule\Controller;
 
 use Doctrine\Common\Collections\Criteria;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Constant;
+use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
@@ -206,14 +208,14 @@ class GroupController extends AbstractController
 
         // get the user default group - we do not allow its deletion
         $defaultGroup = $this->getVar('defaultgroup', 1);
-        if ($groupEntity->getGid() == $defaultGroup) {
+        if ($groupEntity->getGid() === $defaultGroup) {
             $this->addFlash('error', $this->__('Error! You cannot delete the default user group.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         // get the primary admin group - we do not allow its deletion
-        if (Constant::GROUP_ID_ADMIN == $groupEntity->getGid()) {
+        if (Constant::GROUP_ID_ADMIN === $groupEntity->getGid()) {
             $this->addFlash('error', $this->__('Error! You cannot delete the primary administration group.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');

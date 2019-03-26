@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -29,7 +31,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     {
         $count = 0;
         foreach ($this->results as $k => $result) {
-            if ($sessionId == $result->getSesid()) {
+            if ($sessionId === $result->getSesid()) {
                 $count++;
             }
         }
@@ -51,7 +53,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
     public function clearOldResults($sessionId = '')
     {
         foreach ($this->results as $k => $result) {
-            if ($sessionId == $result->getSesid()) {
+            if ($sessionId === $result->getSesid()) {
                 unset($this->results[$k]);
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -106,7 +108,7 @@ class MenuBuilder
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil');
         if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
-            && $gid != $defaultGroup && Constant::GROUP_ID_ADMIN != $gid) {
+            && $gid !== $defaultGroup && Constant::GROUP_ID_ADMIN !== $gid) {
             $menu->addChild($this->__f('Delete ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
@@ -134,9 +136,9 @@ class MenuBuilder
         }
 
         if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
-            && ('zikulagroupsmodule_membership_list' != $requestAttributes['_route'])
-            && (CommonHelper::GTYPE_PUBLIC == $group->getGtype()
-                || (CommonHelper::GTYPE_PRIVATE == $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
+            && ('zikulagroupsmodule_membership_list' !== $requestAttributes['_route'])
+            && (CommonHelper::GTYPE_PUBLIC === $group->getGtype()
+                || (CommonHelper::GTYPE_PRIVATE === $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
         ) {
             $menu->addChild($this->__f('View membership of ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_membership_list',
@@ -149,7 +151,7 @@ class MenuBuilder
                     'route' => 'zikulagroupsmodule_membership_leave',
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-times text-danger');
-            } elseif (CommonHelper::GTYPE_PRIVATE == $group->getGtype()) {
+            } elseif (CommonHelper::GTYPE_PRIVATE === $group->getGtype()) {
                 $existingApplication = $this->groupApplicationRepository->findOneBy(['group' => $group, 'user' => $currentUser]);
                 if ($existingApplication) {
                     $menu->addChild($this->__('Applied!'));

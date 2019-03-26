@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -24,13 +26,13 @@ class BarLinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        if ('bar' == $type) {
+        if ('bar' === $type) {
             return $this->getBar();
         }
-        if (LinkContainerInterface::TYPE_USER == $type) {
+        if (LinkContainerInterface::TYPE_USER === $type) {
             return $this->getUser();
         }
-        if (LinkContainerInterface::TYPE_ACCOUNT == $type) {
+        if (LinkContainerInterface::TYPE_ACCOUNT === $type) {
             return $this->getAccount();
         }
 

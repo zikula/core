@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -9,9 +11,9 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
-use Symfony\Component\Config\Loader\LoaderInterface;
 
 class ZikulaKernel extends Kernel
 {

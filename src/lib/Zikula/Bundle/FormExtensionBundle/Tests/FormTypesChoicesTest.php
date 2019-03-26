@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,7 +15,7 @@ namespace Zikula\Bundle\FormExtensionBundle\Tests;
 
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
-class FormTypesChoicesTest extends \PHPUnit_Framework_TestCase
+class FormTypesChoicesTest extends \PHPUnit\Framework\TestCase
 {
     public function testEmptyInstantiation()
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -87,9 +89,9 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
     public function gc($level, $inactiveMinutes, $days)
     {
         $inactive = new \DateTime();
-        $inactive->modify("-$inactiveMinutes minutes");
+        $inactive->modify("-${inactiveMinutes} minutes");
         $daysOld = new \DateTime();
-        $daysOld->modify("-$days days");
+        $daysOld->modify("-${days} days");
 
         $qb = $this->createQueryBuilder('s')
             ->delete();

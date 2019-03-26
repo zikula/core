@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,8 +13,8 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -160,7 +162,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         $rows = [];
         foreach ($givenSettings as $name => $givenSetting) {
             if (isset($this->settings[$name]['password']) && $this->settings[$name]['password']) {
-                $givenSetting = str_repeat('*', strlen($givenSetting));
+                $givenSetting = str_repeat('*', mb_strlen($givenSetting));
             }
             $rows[] = [$name, $givenSetting];
         }

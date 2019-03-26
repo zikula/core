@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -63,7 +65,7 @@ class FileIOController extends AbstractController
                     foreach ($users as $user) {
                         $row = [];
                         foreach ($fields as $field) {
-                            if ('groups' == $field) {
+                            if ('groups' === $field) {
                                 $gids = [];
                                 foreach ($user[0]->getGroups() as $group) {
                                     $gids[] = $group->getGid();
@@ -71,7 +73,7 @@ class FileIOController extends AbstractController
                                 $row[] = implode('|', $gids);
                             } else {
                                 $method = 'get' . ucwords($field);
-                                $value = $user[0]->$method();
+                                $value = $user[0]->{$method}();
                                 $row[] = $value instanceof \DateTime ? $value->format('c') : $value;
                             }
                         }

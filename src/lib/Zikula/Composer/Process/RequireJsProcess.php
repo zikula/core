@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -96,8 +98,8 @@ class RequireJsProcess extends Process
         // Construct the packages configuration.
         foreach ($packages as $package) {
             // Retrieve information from the extra options.
-            $extra = isset($package['extra']) ? $package['extra'] : [];
-            $options = isset($extra['component']) ? $extra['component'] : [];
+            $extra = $package['extra'] ?? [];
+            $options = $extra['component'] ?? [];
 
             // Construct the base details.
             $name = $this->getComponentName($package['name'], $extra);
@@ -106,7 +108,7 @@ class RequireJsProcess extends Process
             ];
 
             // Build the "main" directive.
-            $scripts = isset($options['scripts']) ? $options['scripts'] : [];
+            $scripts = $options['scripts'] ?? [];
             if (!empty($scripts)) {
                 // Put all scripts into a build.js file.
                 $result = $this->aggregateScripts($package, $scripts, $name . DIRECTORY_SEPARATOR . $name . '-built.js');
@@ -121,13 +123,13 @@ class RequireJsProcess extends Process
             }
 
             // Add the shim definition for the package.
-            $shim = isset($options['shim']) ? $options['shim'] : [];
+            $shim = $options['shim'] ?? [];
             if (!empty($shim)) {
                 $json['shim'][$name] = $shim;
             }
 
             // Add the config definition for the package.
-            $packageConfig = isset($options['config']) ? $options['config'] : [];
+            $packageConfig = $options['config'] ?? [];
             if (!empty($packageConfig)) {
                 $json['config'][$name] = $packageConfig;
             }
@@ -197,7 +199,7 @@ class RequireJsProcess extends Process
 
         // Construct the JavaScript output.
         $output = <<<EOT
-var components = $js;
+var components = ${js};
 components.baseUrl = Zikula.Config.baseURL + "web";                
 if (typeof require !== "undefined" && require.config) {
     require.config(components);

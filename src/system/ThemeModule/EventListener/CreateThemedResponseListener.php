@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -63,10 +65,10 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         if (!($response instanceof Response)
             || is_subclass_of($response, '\Symfony\Component\HttpFoundation\Response')
             || $event->getRequest()->isXmlHttpRequest()
-            || 'html' != $format
-            || false === strpos($response->headers->get('Content-Type'), 'text/html')
+            || 'html' !== $format
+            || false === mb_strpos($response->headers->get('Content-Type'), 'text/html')
             || '_' === $route[0] // the profiler and other symfony routes begin with '_' @todo this is still too permissive
-            || 500 == $response->getStatusCode() // Internal Server Error
+            || 500 === $response->getStatusCode() // Internal Server Error
         ) {
             return;
         }
@@ -123,10 +125,10 @@ class CreateThemedResponseListener implements EventSubscriberInterface
      */
     private function readdUntrimmedBlocks($search, $replace, &$subject)
     {
-        $len = strlen($search);
+        $len = mb_strlen($search);
         $pos = 0;
         for ($i = 0, $count = count($replace); $i < $count; $i++) {
-            if (false !== ($pos = strpos($subject, $search, $pos))) {
+            if (false !== ($pos = mb_strpos($subject, $search, $pos))) {
                 $subject = substr_replace($subject, $replace[$i], $pos, $len);
             } else {
                 break;

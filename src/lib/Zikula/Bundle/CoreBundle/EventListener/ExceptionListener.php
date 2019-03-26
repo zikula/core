@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -103,14 +105,14 @@ class ExceptionListener implements EventSubscriberInterface
     private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
     {
         if (!$userLoggedIn) {
-            $message = ('Access Denied.' == $message) ? $this->translator->__('You do not have permission. You must login first.') : $message;
+            $message = ('Access Denied.' === $message) ? $this->translator->__('You do not have permission. You must login first.') : $message;
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
             $params = ['returnUrl' => urlencode($event->getRequest()->getRequestUri())];
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_access_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
-            $message = ('Access Denied.' == $message) ? $this->translator->__('You do not have permission for that action.') : $message;
+            $message = ('Access Denied.' === $message) ? $this->translator->__('You do not have permission for that action.') : $message;
             $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
 
             // redirect to previous page

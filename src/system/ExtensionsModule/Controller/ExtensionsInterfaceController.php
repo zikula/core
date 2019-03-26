@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -43,12 +45,12 @@ class ExtensionsInterfaceController extends AbstractController
 
         return $this->render("@ZikulaExtensionsModule/ExtensionsInterface/header.html.twig", [
             'caller' => $caller,
-            'title' => ('' != $currentRequest->attributes->get('title')) ? $currentRequest->attributes->get('title') : $caller['info']['displayname'],
-            'titlelink' => ('' != $currentRequest->attributes->get('titlelink')) ? $currentRequest->attributes->get('titlelink') : false,
+            'title' => ('' !== $currentRequest->attributes->get('title')) ? $currentRequest->attributes->get('title') : $caller['info']['displayname'],
+            'titlelink' => ('' !== $currentRequest->attributes->get('titlelink')) ? $currentRequest->attributes->get('titlelink') : false,
             'setpagetitle' => (true === $currentRequest->attributes->get('setpagetitle')) ? $currentRequest->attributes->get('setpagetitle') : false,
             'insertflashes' => (true === $currentRequest->attributes->get('insertflashes')) ? $currentRequest->attributes->get('insertflashes') : false,
             'menufirst' => (true === $currentRequest->attributes->get('menufirst')) ? $currentRequest->attributes->get('menufirst') : false,
-            'type' => ('admin' == $currentRequest->attributes->get('type')) ? $currentRequest->attributes->get('type') : 'user',
+            'type' => ('admin' === $currentRequest->attributes->get('type')) ? $currentRequest->attributes->get('type') : 'user',
             'image' => (true === $currentRequest->attributes->get('image')) ? $adminImagePath : false,
         ]);
     }

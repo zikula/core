@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -302,12 +304,12 @@ class SearchResultEntity
 
     public function merge(array $result)
     {
-        $this->title = isset($result['title']) ? $result['title'] : 'unknown';
-        $this->text = isset($result['text']) ? $result['text'] : null;
-        $this->extra = isset($result['extra']) ? $result['extra'] : null;
-        $this->module = isset($result['module']) ? $result['module'] : null;
+        $this->title = $result['title'] ?? 'unknown';
+        $this->text = $result['text'] ?? null;
+        $this->extra = $result['extra'] ?? null;
+        $this->module = $result['module'] ?? null;
         $this->created = (isset($result['created']) && ($result['created'] instanceof \DateTime)) ? $result['created'] : new \DateTime('now', new \DateTimeZone('UTC'));
-        $this->sesid = isset($result['sesid']) ? $result['sesid'] : null;
+        $this->sesid = $result['sesid'] ?? null;
         $this->url = (isset($result['url']) && ($result['url'] instanceof UrlInterface)) ? $result['url'] : null;
     }
 }

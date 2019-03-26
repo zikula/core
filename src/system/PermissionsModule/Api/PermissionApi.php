@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -106,7 +108,7 @@ class PermissionApi implements PermissionApiInterface
             $this->setGroupPermsForUser($user);
         }
 
-        return (0 == count($this->groupPermsByUser[$user]))
+        return (0 === count($this->groupPermsByUser[$user]))
             ? false
             : $this->getSecurityLevel($this->groupPermsByUser[$user], $component, $instance) >= $level;
     }
@@ -132,7 +134,7 @@ class PermissionApi implements PermissionApiInterface
         }
 
         $defaultGids = [self::ALL_GROUPS];
-        if (Constant::USER_ID_ANONYMOUS == $user) {
+        if (Constant::USER_ID_ANONYMOUS === $user) {
             $defaultGids[] = self::UNREGISTERED_USER_GROUP; // Unregistered GID
         }
         $allGroups = array_merge_recursive($defaultGids, $foundGids);
@@ -166,10 +168,10 @@ class PermissionApi implements PermissionApiInterface
 
         // If we get a test component or instance purely consisting of ':' signs
         // then it counts as blank
-        if ($component == str_repeat(':', strlen($component))) {
+        if ($component === str_repeat(':', mb_strlen($component))) {
             $component = '';
         }
-        if ($instance == str_repeat(':', strlen($instance))) {
+        if ($instance === str_repeat(':', mb_strlen($instance))) {
             $instance = '';
         }
 
@@ -186,11 +188,11 @@ class PermissionApi implements PermissionApiInterface
         }
 
         // Test if user has ANY access to given component, without determining exact instance
-        if ('ANY' == $instance) {
+        if ('ANY' === $instance) {
             $levels = [$level];
             foreach ($perms as $perm) {
                 // component check
-                if (!preg_match("=^$perm[component]$=", $component)) {
+                if (!preg_match("=^{$perm[component]}$=", $component)) {
                     continue; // component doestn't match.
                 }
 
@@ -198,7 +200,7 @@ class PermissionApi implements PermissionApiInterface
                 $levels[] = $perm['level'];
 
                 // check that the instance matches :: or '' (nothing)
-                if ((preg_match("=^$perm[instance]$=", '::') || preg_match("=^$perm[instance]$=", ''))) {
+                if ((preg_match("=^{$perm[instance]}$=", '::') || preg_match("=^{$perm[instance]}$=", ''))) {
                     break; // instance matches - stop searching
                 }
             }
@@ -218,12 +220,12 @@ class PermissionApi implements PermissionApiInterface
             // Looking for best permission
             foreach ($perms as $perm) {
                 // component check
-                if (!preg_match("=^$perm[component]$=", $component)) {
+                if (!preg_match("=^{$perm[component]}$=", $component)) {
                     continue; // component doestn't match.
                 }
 
                 // check that the instance matches :: or '' (nothing)
-                if (!(preg_match("=^$perm[instance]$=", '::') || preg_match("=^$perm[instance]$=", ''))) {
+                if (!(preg_match("=^{$perm[instance]}$=", '::') || preg_match("=^{$perm[instance]}$=", ''))) {
                     continue; // instance does not match
                 }
 
@@ -239,13 +241,13 @@ class PermissionApi implements PermissionApiInterface
         // there *is* a $instance at this point.
         foreach ($perms as $perm) {
             // if there is a component, check that it matches
-            if (('' != $component) && (!preg_match("=^$perm[component]$=", $component))) {
+            if (('' !== $component) && (!preg_match("=^{$perm[component]}$=", $component))) {
                 // component exists, and does not match.
                 continue;
             }
 
             // Confirm that instance matches
-            if (!preg_match("=^$perm[instance]$=", $instance)) {
+            if (!preg_match("=^{$perm[instance]}$=", $instance)) {
                 // instance does not match
                 continue;
             }
@@ -270,11 +272,11 @@ class PermissionApi implements PermissionApiInterface
         if (empty($string)) {
             $string = '.*';
         }
-        if (0 === strpos($string, ':')) {
+        if (0 === mb_strpos($string, ':')) {
             $string = '.*' . $string;
         }
         $string = str_replace('::', ':.*:', $string);
-        if (strrpos($string, ':') === strlen($string) - 1) {
+        if (mb_strrpos($string, ':') === mb_strlen($string) - 1) {
             $string = $string . '.*';
         }
 
@@ -289,7 +291,7 @@ class PermissionApi implements PermissionApiInterface
         if (isset($level) && !is_numeric($level)) {
             throw new \InvalidArgumentException();
         } elseif (isset($level)) {
-            $level = intval($level);
+            $level = (int) $level;
         }
 
         $accessNames = [

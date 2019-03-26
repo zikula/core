@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -85,7 +87,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     {
         $data = $form->getData();
         $params = array_merge($this->yamlManager->getParameters(), $data);
-        if ('pdo_' != substr($params['database_driver'], 0, 4)) {
+        if ('pdo_' !== mb_substr($params['database_driver'], 0, 4)) {
             $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         }
         $this->writeParams($params);
@@ -104,9 +106,9 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function testDBConnection($params)
     {
-        $params['database_driver'] = substr($params['database_driver'], 4);
+        $params['database_driver'] = mb_substr($params['database_driver'], 4);
         try {
-            new \PDO("$params[database_driver]:host=$params[database_host];dbname=$params[database_name]", $params['database_user'], $params['database_password']);
+            new \PDO("{$params[database_driver]}:host={$params[database_host]};dbname={$params[database_name]}", $params['database_user'], $params['database_password']);
         } catch (\PDOException $exception) {
             return $exception->getMessage();
         }

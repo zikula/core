@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -18,7 +20,7 @@ use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
 
-class PermissionApiTest extends \PHPUnit_Framework_TestCase
+class PermissionApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * for testing purposes only.
@@ -41,7 +43,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
     /**
      * VariableApiTest setUp.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->permRepo = new StubPermissionRepository();
         $this->user = $this
@@ -126,7 +128,7 @@ class PermissionApiTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->equalTo('uid'))
             ->will($this->returnCallback(function() use ($uid) {
-                return isset($uid) ? $uid : Constant::USER_ID_ANONYMOUS;
+                return $uid ?? Constant::USER_ID_ANONYMOUS;
             }));
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $this->assertEquals($result, $api->hasPermission($component, $instance, $level, $uid));

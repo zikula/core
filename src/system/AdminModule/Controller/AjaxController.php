@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -67,9 +69,8 @@ class AjaxController extends AbstractController
 
         // get the module name
         $displayname = $module->getDisplayName();
-        $url = isset($module['capabilities']['admin']['url'])
-            ? $module['capabilities']['admin']['url']
-            : $router->generate($module['capabilities']['admin']['route']);
+        $url = $module['capabilities']['admin']['url']
+            ?? $router->generate($module['capabilities']['admin']['route']);
         $oldCategory = $adminCategoryRepository->getModuleCategory($moduleId);
         $sortOrder = $adminModuleRepository->countModulesByCategory($newParentCat);
 
@@ -118,12 +119,12 @@ class AjaxController extends AbstractController
         $name = trim($request->request->get('name'));
 
         // make sure name is set.
-        if ('' == $name) {
+        if ('' === $name) {
             return $this->json($this->__('Error! No category name given.'), Response::HTTP_BAD_REQUEST);
         }
 
         // Security check
-        if (!$this->hasPermission('ZikulaAdminModule::Category', "$name::", ACCESS_ADD)) {
+        if (!$this->hasPermission('ZikulaAdminModule::Category', "${name}::", ACCESS_ADD)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
@@ -131,7 +132,7 @@ class AjaxController extends AbstractController
         $categories = [];
         $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $cat) {
-            if ($name == $cat['name']) {
+            if ($name === $cat['name']) {
                 return $this->json($this->__('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
             }
         }
@@ -174,7 +175,7 @@ class AjaxController extends AbstractController
         $cid = trim($request->request->getDigits('cid'));
 
         //check user has permission to delete this
-        if (!$this->hasPermission('ZikulaAdminModule::Category', "::$cid", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaAdminModule::Category', "::${cid}", ACCESS_DELETE)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
@@ -184,7 +185,7 @@ class AjaxController extends AbstractController
             return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
-        if (!$this->hasPermission('ZikulaAdminModule::Category', "$item[name]::$item[cid]", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaAdminModule::Category', "{$item[name]}::{$item[cid]}", ACCESS_DELETE)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
@@ -192,13 +193,13 @@ class AjaxController extends AbstractController
 
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
-        if ($cid == $defaultcategory) {
+        if ($cid === $defaultcategory) {
             return new JsonResponse($this->__('Error! You cannot delete the default module category used in the administration panel.'), Response::HTTP_BAD_REQUEST);
         }
 
         // Avoid deletion of the start category
         $startcategory = $this->getVar('startcategory');
-        if ($cid == $startcategory) {
+        if ($cid === $startcategory) {
             return new JsonResponse($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'), Response::HTTP_BAD_REQUEST);
         }
 
@@ -241,7 +242,7 @@ class AjaxController extends AbstractController
         }
 
         //make sure cid and category name (cat) are both set
-        if (!isset($cid) || '' == $cid || !isset($name) || '' == $name) {
+        if (!isset($cid) || '' === $cid || !isset($name) || '' === $name) {
             return $this->json($this->__('No category name or id set.'), Response::HTTP_BAD_REQUEST);
         }
 
@@ -257,12 +258,12 @@ class AjaxController extends AbstractController
         }
 
         foreach ($categories as $cat) {
-            if ($name != $cat['name']) {
+            if ($name !== $cat['name']) {
                 continue;
             }
 
             //check to see if the category with same name is the same category.
-            if ($cat['cid'] == $cid) {
+            if ($cat['cid'] === $cid) {
                 $output['response'] = $name;
 
                 return $this->json($output);

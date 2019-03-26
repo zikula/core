@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -139,17 +141,17 @@ class CategoryTreeType extends AbstractType
     private function getCategoryChoices($options)
     {
         $locale = $options['locale'];
-        $recurse = isset($options['recurse']) ? $options['recurse'] : true;
-        $includeRoot = isset($options['includeRoot']) ? $options['includeRoot'] : false;
-        $includeLeaf = isset($options['includeLeaf']) ? $options['includeLeaf'] : false;
-        $all = isset($options['all']) ? $options['all'] : false;
+        $recurse = $options['recurse'] ?? true;
+        $includeRoot = $options['includeRoot'] ?? false;
+        $includeLeaf = $options['includeLeaf'] ?? false;
+        $all = $options['all'] ?? false;
 
         $rootCategory = $this->categoryRepository->find(1);
         $children = $this->categoryRepository->getChildren($rootCategory, !$recurse, null, 'ASC', $includeRoot);
 
         $choices = [];
         foreach ($children as $child) {
-            if (($child['is_leaf'] && !$includeLeaf) || ('I' == $child['status'] && $all)) {
+            if (($child['is_leaf'] && !$includeLeaf) || ('I' === $child['status'] && $all)) {
                 continue;
             }
             $indent = $child['lvl'] > 0 ? str_repeat('--', $child['lvl']) : '';

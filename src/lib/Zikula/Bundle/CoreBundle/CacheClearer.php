@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -82,7 +84,7 @@ class CacheClearer
     public function clear($type)
     {
         foreach ($this->cacheTypes as $cacheType => $files) {
-            if (substr($cacheType, 0, strlen($type)) === $type) {
+            if (mb_substr($cacheType, 0, mb_strlen($type)) === $type) {
                 foreach ($files as $file) {
                     if (is_dir($file)) {
                         // Do not delete the folder itself, but all files in it.

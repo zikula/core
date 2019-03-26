@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -42,8 +44,8 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
             unset($filters['position']);
         }
         $paramIndex = 2;
-        $sortField = isset($filters['sort-field']) ? $filters['sort-field'] : 'bid';
-        $sortDirection = isset($filters['sort-direction']) ? $filters['sort-direction'] : 'ASC';
+        $sortField = $filters['sort-field'] ?? 'bid';
+        $sortDirection = $filters['sort-direction'] ?? 'ASC';
         unset($filters['sort-field'], $filters['sort-direction']);
         foreach ($filters as $key => $value) {
             if (!isset($value)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -16,7 +18,7 @@ use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper;
 
-class PotDumperTest extends \PHPUnit_Framework_TestCase
+class PotDumperTest extends \PHPUnit\Framework\TestCase
 {
     public function testDumpStructureWithoutPrettyPrint()
     {

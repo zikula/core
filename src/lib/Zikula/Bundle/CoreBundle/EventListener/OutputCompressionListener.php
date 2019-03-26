@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -48,7 +50,7 @@ class OutputCompressionListener implements EventSubscriberInterface
         }
 
         // Check if compression is desired
-        if (1 != $this->variableApi->getSystemVar('UseCompression')) {
+        if (1 !== $this->variableApi->getSystemVar('UseCompression')) {
             return;
         }
 

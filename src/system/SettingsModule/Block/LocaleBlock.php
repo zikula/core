@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -85,7 +87,7 @@ class LocaleBlock extends AbstractBlockHandler
     {
         $params = [];
         foreach ($routeInfo as $param => $value) {
-            if (0 !== strpos($param, '_')) {
+            if (0 !== mb_strpos($param, '_')) {
                 $params[$param] = $value;
             }
         }

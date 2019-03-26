@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -210,7 +212,7 @@ class AjaxInstallController extends AbstractController
         $variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         $variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
-        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(rand(1000000000, 9999999999), true)));
+        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(mt_rand(1000000000, 9999999999), true)));
         // add admin email as site email
         $variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
         // regenerate the theme list
@@ -228,10 +230,10 @@ class AjaxInstallController extends AbstractController
         $request = $this->container->get('request_stack')->getMasterRequest();
         $hostFromRequest = isset($request) ? $request->getHost() : null;
         $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
-        $params['router.request_context.host'] = isset($params['router.request_context.host']) ? $params['router.request_context.host'] : $hostFromRequest;
-        $params['router.request_context.scheme'] = isset($params['router.request_context.scheme']) ? $params['router.request_context.scheme'] : 'http';
-        $params['router.request_context.base_url'] = isset($params['router.request_context.base_url']) ? $params['router.request_context.base_url'] : $basePathFromRequest;
-        $params['umask'] = isset($params['umask']) ? $params['umask'] : null;
+        $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
+        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? 'http';
+        $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
+        $params['umask'] = $params['umask'] ?? null;
         $this->yamlManager->setParameters($params);
 
         // clear the cache

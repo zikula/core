@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,11 +13,11 @@
 
 namespace Zikula\Bundle\HookBundle\Listener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -89,7 +91,7 @@ class HooksListener implements EventSubscriberInterface
         $event->setArgument('api', true);
 
         // return if not collection admin links
-        if (LinkContainerInterface::TYPE_ADMIN != $event->getArgument('type')) {
+        if (LinkContainerInterface::TYPE_ADMIN !== $event->getArgument('type')) {
             return;
         }
         if (!$this->permissionsApi->hasPermission($event['modname'] . '::Hooks', '::', ACCESS_ADMIN)) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,8 +15,8 @@ namespace Zikula\UsersModule\Helper;
 
 use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Twig\Error\LoaderError;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
@@ -197,7 +199,7 @@ class MailHelper
         $mailSent = true;
         $message = new Swift_Message($messageData['subject'], $messageData['message']);
         $message->setFrom([$messageData['replyto'] => $messageData['from']]);
-        if (1 == count($users)) {
+        if (1 === count($users)) {
             $message->setTo([$users[0]->getEmail() => $users[0]->getUname()]);
         } else {
             $message->setTo([$messageData['replyto'] => $messageData['from']]);
@@ -206,15 +208,15 @@ class MailHelper
             $bcc = [];
             foreach ($users as $user) {
                 $bcc[] = $user->getEmail();
-                if (count($bcc) == $messageData['batchsize']) {
+                if (count($bcc) === $messageData['batchsize']) {
                     $message->setBcc($bcc);
-                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' == $messageData['format']);
+                    $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' === $messageData['format']);
                     $bcc = [];
                 }
             }
             $message->setBcc($bcc);
         }
-        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' == $messageData['format']);
+        $mailSent = $mailSent && $this->mailerApi->sendMessage($message, null, null, '', 'html' === $messageData['format']);
 
         return $mailSent;
     }

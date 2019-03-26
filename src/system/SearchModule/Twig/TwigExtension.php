@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -84,7 +86,7 @@ class TwigExtension extends AbstractExtension
      */
     public function searchVarToFieldNames($data = '', $prefix = 'modvar', $isRecursiveCall = false)
     {
-        $dataValues = '' != $data && $isRecursiveCall ? $data : $this->variableApi->getAll('ZikulaSearchModule');
+        $dataValues = '' !== $data && $isRecursiveCall ? $data : $this->variableApi->getAll('ZikulaSearchModule');
 
         $fields = [];
         if (empty($dataValues)) {

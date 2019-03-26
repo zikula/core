@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -48,7 +50,7 @@ class RequestVoter implements VoterInterface
             return true;
         }
         if ($item->getUri() !== $request->getBaseUrl() . '/'
-            && substr($request->getRequestUri(), 0, strlen($item->getUri())) === $item->getUri()) {
+            && mb_substr($request->getRequestUri(), 0, mb_strlen($item->getUri())) === $item->getUri()) {
             // URL isn't just "/" and the first part of the URL match
             return true;
         }

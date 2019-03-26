@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -41,7 +43,7 @@ class CategoryPermissionApi implements CategoryPermissionApiInterface
     public function hasCategoryAccess(array $categoryAssignments, $permLevel = ACCESS_OVERVIEW, $requireAccessForAll = false)
     {
         // Always allow access to content with no categories associated
-        if (0 == count($categoryAssignments)) {
+        if (0 === count($categoryAssignments)) {
             return true;
         }
 
@@ -53,7 +55,7 @@ class CategoryPermissionApi implements CategoryPermissionApiInterface
             }
             $regId = $categoryAssignment->getCategoryRegistryId();
             $catId = $categoryAssignment->getCategory()->getId();
-            $hasAccess = $this->permissionApi->hasPermission("ZikulaCategoriesModule:PropertyId:CategoryId", "$regId::$catId", $permLevel);
+            $hasAccess = $this->permissionApi->hasPermission("ZikulaCategoriesModule:PropertyId:CategoryId", "${regId}::${catId}", $permLevel);
             if ($requireAccessForAll && !$hasAccess) {
                 return false;
             }

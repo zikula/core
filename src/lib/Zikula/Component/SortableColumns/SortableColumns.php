@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -188,9 +190,9 @@ class SortableColumns
     {
         if (isset($this->sortColumn)) {
             return $this->sortColumn;
-        } else {
-            return $this->getDefaultColumn();
         }
+
+        return $this->getDefaultColumn();
     }
 
     /**

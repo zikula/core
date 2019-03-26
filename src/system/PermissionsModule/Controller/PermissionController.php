@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -124,7 +126,7 @@ class PermissionController extends AbstractController
             $permissionEntity = $form->getData();
             $pid = $permissionEntity->getPid();
             if (null === $pid) {
-                if ($permissionEntity->getSequence() == -1) {
+                if ($permissionEntity->getSequence() === -1) {
                     $permissionEntity->setSequence($permissionRepository->getMaxSequence() + 1); // last
                 } else {
                     $permissionRepository->updateSequencesFrom($permissionEntity->getSequence(), 1); // insert
@@ -198,10 +200,10 @@ class PermissionController extends AbstractController
             throw new AccessDeniedException();
         }
         // check if this is the overall admin permission and return if this shall be deleted
-        if (1 == $permissionEntity->getPid()
-            && ACCESS_ADMIN == $permissionEntity->getLevel()
-            && '.*' == $permissionEntity->getComponent()
-            && '.*' == $permissionEntity->getInstance()
+        if (1 === $permissionEntity->getPid()
+            && ACCESS_ADMIN === $permissionEntity->getLevel()
+            && '.*' === $permissionEntity->getComponent()
+            && '.*' === $permissionEntity->getInstance()
         ) {
             throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
@@ -209,7 +211,7 @@ class PermissionController extends AbstractController
         $this->get('doctrine')->getManager()->remove($permissionEntity);
         $this->get('doctrine')->getManager()->flush();
         $permissionRepository->reSequence();
-        if ($permissionEntity->getPid() == $this->getVar('adminid')) {
+        if ($permissionEntity->getPid() === $this->getVar('adminid')) {
             $this->setVar('adminid', 0);
             $this->setVar('lockadmin', false);
         }
@@ -255,7 +257,7 @@ class PermissionController extends AbstractController
             $granted = $this->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
 
             $result .= '<span id="' . ($granted ? 'permissiontestinfogreen' : 'permissiontestinfored') . '">';
-            $result .= (0 == $uid) ? $this->__('unregistered user') : $data['user'];
+            $result .= (0 === $uid) ? $this->__('unregistered user') : $data['user'];
             $result .= ': ';
             if ($granted) {
                 $result .= $this->__('permission granted.');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -24,7 +26,7 @@ use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\WrongInterfaceBlock;
 use Zikula\Common\Translator\IdentityTranslator;
 
-class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
+class BlockFactoryApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var BlockFactoryApiInterface
@@ -39,7 +41,7 @@ class BlockFactoryApiTest extends \PHPUnit_Framework_TestCase
     /**
      * BlockApiTest setup.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->container = new Container();
         $this->container->set('translator.default', new IdentityTranslator());

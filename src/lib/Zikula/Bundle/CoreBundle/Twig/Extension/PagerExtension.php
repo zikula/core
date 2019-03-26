@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,8 +16,8 @@ namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Extension\AbstractExtension;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -106,17 +108,17 @@ class PagerExtension extends AbstractExtension
         // set default values - $pager is sent to template
         $pager = [];
         $pager['total'] = $params['rowcount'];
-        $pager['perpage'] = isset($params['limit']) ? $params['limit'] : 20;
-        $pager['class'] = isset($params['class']) ? $params['class'] : 'z-pager';
-        $pager['optimize'] = isset($params['optimize']) ? $params['optimize'] : true;
-        $pager['posvar'] = isset($params['posvar']) ? $params['posvar'] : 'pos';
-        $pager['maxPages'] = isset($params['maxpages']) ? $params['maxpages'] : 15;
-        $pager['includeStylesheet'] = isset($params['includeStylesheet']) ? $params['includeStylesheet'] : true;
-        $displayType = isset($params['display']) ? $params['display'] : 'startnum';
-        $includePostVars = isset($params['includePostVars']) ? $params['includePostVars'] : true;
-        $routeName = isset($params['route']) ? $params['route'] : false;
+        $pager['perpage'] = $params['limit'] ?? 20;
+        $pager['class'] = $params['class'] ?? 'z-pager';
+        $pager['optimize'] = $params['optimize'] ?? true;
+        $pager['posvar'] = $params['posvar'] ?? 'pos';
+        $pager['maxPages'] = $params['maxpages'] ?? 15;
+        $pager['includeStylesheet'] = $params['includeStylesheet'] ?? true;
+        $displayType = $params['display'] ?? 'startnum';
+        $includePostVars = $params['includePostVars'] ?? true;
+        $routeName = $params['route'] ?? false;
         $templateName = (isset($params['template'])) ? $params['template'] : 'CoreBundle:Pager:pagercss.html.twig';
-        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('CoreBundle:Pager:pagerimage.html.twig' != $templateName);
+        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('CoreBundle:Pager:pagerimage.html.twig' !== $templateName);
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
         $systemVars = $this->variableApi->getAll(VariableApi::CONFIG);
 
@@ -131,7 +133,7 @@ class PagerExtension extends AbstractExtension
         } else {
             $pager['pos'] = (int)$request->query->get($pager['posvar'], '');
         }
-        if ('page' == $displayType) {
+        if ('page' === $displayType) {
             $pager['pos'] = $pager['pos'] * $pager['perpage'];
             $pager['increment'] = 1;
         } else {
@@ -155,7 +157,7 @@ class PagerExtension extends AbstractExtension
         // Include POST vars as requested, i.e. for search results
         $allVars = $includePostVars ? array_merge($request->request->all(), $request->query->all(), $routeParams) : array_merge($request->query->all(), $routeParams);
         foreach ($allVars as $k => $v) {
-            if ($k != $pager['posvar'] && !is_null($v)) {
+            if ($k !== $pager['posvar'] && !is_null($v)) {
                 switch ($k) {
                     case 'route':
                         if (!isset($routeName)) {
@@ -164,7 +166,7 @@ class PagerExtension extends AbstractExtension
                         break;
                     case 'lang':
                         $addcurrentlang2url = $systemVars['languageurl'];
-                        if (0 == $addcurrentlang2url) {
+                        if (0 === $addcurrentlang2url) {
                             $pager['args'][$k] = $v;
                         }
                         break;
@@ -175,23 +177,23 @@ class PagerExtension extends AbstractExtension
                                     foreach ($vv as $kkk => $vvv) {
                                         if (is_array($vvv)) {
                                             foreach ($vvv as $kkkk => $vvvv) {
-                                                if (strlen($vvvv)) {
+                                                if (mb_strlen($vvvv)) {
                                                     $tkey = $k . '[' . $kk . '][' . $kkk . '][' . $kkkk . ']';
                                                     $pager['args'][$tkey] = $vvvv;
                                                 }
                                             }
-                                        } elseif (strlen($vvv)) {
+                                        } elseif (mb_strlen($vvv)) {
                                             $tkey = $k . '[' . $kk . '][' . $kkk . ']';
                                             $pager['args'][$tkey] = $vvv;
                                         }
                                     }
-                                } elseif (strlen($vv)) {
+                                } elseif (mb_strlen($vv)) {
                                     $tkey = $k . '[' . $kk . ']';
                                     $pager['args'][$tkey] = $vv;
                                 }
                             }
                         } else {
-                            if (strlen($v)) {
+                            if (mb_strlen($v)) {
                                 $pager['args'][$k] = $v;
                             }
                         }
@@ -206,7 +208,7 @@ class PagerExtension extends AbstractExtension
             // only case where this should be true is if this is the homepage
             parse_str($systemVars['startargs'], $pager['args']);
             if ($systemVars['startController']) {
-                $route = strtolower(str_replace(':', '_', $systemVars['startController']));
+                $route = mb_strtolower(str_replace(':', '_', $systemVars['startController']));
 
                 return $this->router->generate($route, $pager['args']);
             }
@@ -241,19 +243,18 @@ class PagerExtension extends AbstractExtension
                     (($currItem < $leftMargin) || ($currItem > $rightMargin))) {
                     if ($pager['optimize']) {
                         continue;
-                    } else {
-                        $currItemVisible = false;
                     }
+                    $currItemVisible = false;
                 }
 
-                if ('page' == $displayType) {
+                if ('page' === $displayType) {
                     $pager['args'][$pager['posvar']] = $currItem;
                 } else {
                     $pager['args'][$pager['posvar']] = (($currItem - 1) * $pager['perpage']) + 1;
                 }
 
                 $pager['pages'][$currItem]['pagenr'] = $currItem;
-                $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] == $pager['currentPage']);
+                $pager['pages'][$currItem]['isCurrentPage'] = ($pager['pages'][$currItem]['pagenr'] === $pager['currentPage']);
                 $pager['pages'][$currItem]['isVisible'] = $currItemVisible;
                 $pager['pages'][$currItem]['url'] = $pagerUrl($pager) . $anchorText;
             }
@@ -264,7 +265,7 @@ class PagerExtension extends AbstractExtension
         $pager['args'][$pager['posvar']] = $pager['first'] = '1';
         $pager['firstUrl'] = $pagerUrl($pager) . $anchorText;
 
-        if ('page' == $displayType) {
+        if ('page' === $displayType) {
             $pager['prev'] = ($pager['currentPage'] - 1);
         } else {
             $pager['prev'] = ($leftMargin - 1) * $pager['perpage'] - $pager['perpage'] + $pager['first'];
@@ -273,7 +274,7 @@ class PagerExtension extends AbstractExtension
         $pager['prevUrl'] = $pagerUrl($pager) . $anchorText;
 
         // link to next & last page
-        if ('page' == $displayType) {
+        if ('page' === $displayType) {
             $pager['next'] = $pager['currentPage'] + 1;
         } else {
             $pager['next'] = $rightMargin * $pager['perpage'] + 1;
@@ -281,7 +282,7 @@ class PagerExtension extends AbstractExtension
         $pager['args'][$pager['posvar']] = ($pager['next'] < $pager['total']) ? $pager['next'] : $pager['next'] - $pager['perpage'];
         $pager['nextUrl'] = $pagerUrl($pager) . $anchorText;
 
-        if ('page' == $displayType) {
+        if ('page' === $displayType) {
             $pager['last'] = $pager['countPages'];
         } else {
             $pager['last'] = $pager['countPages'] * $pager['perpage'] - $pager['perpage'] + 1;
@@ -382,7 +383,7 @@ class PagerExtension extends AbstractExtension
                 } else {
                     $pager['values'] = $params['values'];
                 }
-                if (count($pager['values']) != count($pager['names'])) {
+                if (count($pager['values']) !== count($pager['names'])) {
                     $pager['values'] = $pager['names'];
                 }
             } else {
@@ -394,10 +395,8 @@ class PagerExtension extends AbstractExtension
         }
         $pager['posvar'] = $params['posvar'];
         $pager['route'] = $params['route'];
-        unset($params['posvar']);
-        unset($params['names']);
-        unset($params['values']);
-        unset($params['route']);
+        unset($params['posvar'], $params['names'], $params['values'], $params['route']);
+
         $pagerUrl = function($pager) {
             return $this->router->generate($pager['route'], $pager['args']);
         };
@@ -449,7 +448,7 @@ class PagerExtension extends AbstractExtension
         foreach (array_keys($pager['names']) as $i) {
             $active = '';
             if (!empty($params['class_numon'])) {
-                if (isset($allVars[$pager['posvar']]) && $pager['values'][$i] == $allVars[$pager['posvar']]) {
+                if (isset($allVars[$pager['posvar']]) && $pager['values'][$i] === $allVars[$pager['posvar']]) {
                     $style = ' class="' . $params['class_numon'] . '"';
                     $active = ' class="active"';
                 } elseif (!empty($params['class_num'])) {

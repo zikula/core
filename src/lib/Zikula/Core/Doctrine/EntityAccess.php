@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -54,13 +56,13 @@ class EntityAccess implements \ArrayAccess
             return null;
         }
 
-        return $this->$method();
+        return $this->{$method}();
     }
 
     public function offsetSet($key, $value)
     {
         $method = $this->getSetterForProperty($key);
-        $this->$method($value);
+        $this->{$method}($value);
     }
 
     public function offsetUnset($key)
@@ -98,7 +100,7 @@ class EntityAccess implements \ArrayAccess
 
                 $method = $this->getGetterForProperty($property->name);
                 if (!empty($method)) {
-                    $array[$property->name] = $this->$method();
+                    $array[$property->name] = $this->{$method}();
                 }
             }
         }
@@ -110,7 +112,7 @@ class EntityAccess implements \ArrayAccess
     {
         foreach ($array as $key => $value) {
             $method = $this->getSetterForProperty($key);
-            $this->$method($value);
+            $this->{$method}($value);
         }
     }
 
@@ -145,6 +147,6 @@ class EntityAccess implements \ArrayAccess
         }
 
         $class = get_class($this);
-        throw new \RuntimeException("Entity \"$class\" does not have a setter for property \"$name\". Please add $setMethod().");
+        throw new \RuntimeException("Entity \"${class}\" does not have a setter for property \"${name}\". Please add ${setMethod}().");
     }
 }

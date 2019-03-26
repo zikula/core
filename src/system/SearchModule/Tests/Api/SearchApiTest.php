@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -21,12 +23,12 @@ use Zikula\SearchModule\Api\SearchApi;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
 use Zikula\SearchModule\Entity\SearchStatEntity;
+use Zikula\SearchModule\Tests\Api\Fixtures\MockSearchResultRepository;
 use Zikula\SearchModule\Tests\Api\Fixtures\MockSearchStatRepository;
 use Zikula\SearchModule\Tests\Api\Fixtures\SearchableBar;
 use Zikula\SearchModule\Tests\Api\Fixtures\SearchableFoo;
-use Zikula\SearchModule\Tests\Api\Fixtures\MockSearchResultRepository;
 
-class SearchApiTest extends \PHPUnit_Framework_TestCase
+class SearchApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var SearchStatRepositoryInterface
@@ -36,7 +38,7 @@ class SearchApiTest extends \PHPUnit_Framework_TestCase
     /**
      * SearchApiTest setUp.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->searchStatRepo = new MockSearchStatRepository();
     }

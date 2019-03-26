@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -17,9 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Workflow\Registry;
 use Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore;
 use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
+use Symfony\Component\Workflow\Registry;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -90,7 +92,7 @@ class EditorController extends Controller
             $workflowsProperty->setAccessible(true);
             $workflows = $workflowsProperty->getValue($workflowRegistry);
             foreach ($workflows as list($aWorkflow, $workflowClass)) {
-                if ($aWorkflow->getName() == $workflow->getName()) {
+                if ($aWorkflow->getName() === $workflow->getName()) {
                     if (method_exists($workflowClass, 'getClassName')) {
                         $workflowClass = $workflowClass->getClassName();
                     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -36,7 +38,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
         $qb = $this->createQueryBuilder('tbl')
             ->select('COUNT(tbl.sesid)');
 
-        if ('' != $sessionId) {
+        if ('' !== $sessionId) {
             $qb->where('tbl.sesid = :sid')
                ->setParameter('sid', $sessionId);
         }
@@ -95,7 +97,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
             ->delete('Zikula\SearchModule\Entity\SearchResultEntity', 'tbl')
             ->where('DATE_ADD(tbl.found, 1, \'DAY\') < CURRENT_TIMESTAMP()');
 
-        if ('' != $sessionId) {
+        if ('' !== $sessionId) {
             $qb->orWhere('tbl.sesid = :sid')
                ->setParameter('sid', $sessionId);
         }

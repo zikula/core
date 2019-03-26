@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -74,11 +76,11 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                         $content = unserialize($content);
                         foreach ($content as $k => $item) {
                             if (is_string($item)) {
-                                if (false !== strpos($item, 'blocks_block_extmenu_topnav.tpl')) {
+                                if (false !== mb_strpos($item, 'blocks_block_extmenu_topnav.tpl')) {
                                     $content[$k] = str_replace('blocks_block_extmenu_topnav.tpl', 'Block/Extmenu/topnav.tpl', $item);
-                                } elseif (false !== strpos($item, 'blocks_block_extmenu.tpl')) {
+                                } elseif (false !== mb_strpos($item, 'blocks_block_extmenu.tpl')) {
                                     $content[$k] = str_replace('blocks_block_extmenu.tpl', 'Block/Extmenu/extmenu.tpl', $item);
-                                } elseif (false !== strpos($item, 'menutree/blocks_block_menutree_')) {
+                                } elseif (false !== mb_strpos($item, 'menutree/blocks_block_menutree_')) {
                                     $content[$k] = str_replace('menutree/blocks_block_menutree_', 'Block/Menutree/', $item);
                                 }
                             }
@@ -110,7 +112,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 foreach ($blocks as $block) {
                     $block->setProperties($oldContent[$block->getBid()]);
                     $block->setFilters($installerHelper->upgradeFilterArray($block->getFilters()));
-                    $block->setBlocktype(preg_match('/.*Block$/', $block->getBkey()) ? substr($block->getBkey(), 0, -5) : $block->getBkey());
+                    $block->setBlocktype(preg_match('/.*Block$/', $block->getBkey()) ? mb_substr($block->getBkey(), 0, -5) : $block->getBkey());
                     $block->setBkey($installerHelper->upgradeBkeyToFqClassname($this->container->get('kernel'), $block));
                 }
                 $this->entityManager->flush();

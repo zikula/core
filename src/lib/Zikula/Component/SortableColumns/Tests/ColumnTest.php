@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,14 +15,14 @@ namespace Zikula\Component\SortableColumns\Tests;
 
 use Zikula\Component\SortableColumns\Column;
 
-class ColumnTest extends \PHPUnit_Framework_TestCase
+class ColumnTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Column
      */
     private $column;
 
-    public function setup()
+    protected function setup()
     {
         $this->column = new Column('foo');
     }

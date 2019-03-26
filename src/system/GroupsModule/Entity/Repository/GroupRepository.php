@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -158,7 +160,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
      */
     public function getGroupByName($name = '', $excludedGroupId = 0)
     {
-        if ('' == $name) {
+        if ('' === $name) {
             return null;
         }
 

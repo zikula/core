@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -72,11 +74,10 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
             ));
 
             return new RedirectResponse($router->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
-        } else {
-            $request->getSession()->getFlashBag()->add('warning', $this->__('Email settings are not yet configured. Please configure them below.'));
-
-            return new RedirectResponse($router->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
         }
+        $request->getSession()->getFlashBag()->add('warning', $this->__('Email settings are not yet configured. Please configure them below.'));
+
+        return new RedirectResponse($router->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
     }
 
     private function sendEmailToAdmin(Request $request)
@@ -89,8 +90,8 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
 <html>
 <head></head>
 <body>
-<h1>Hi $uName!</h1>
-<p>Zikula has been successfully installed at <a href="$url">$url</a>. If you have further questions,
+<h1>Hi ${uName}!</h1>
+<p>Zikula has been successfully installed at <a href="${url}">${url}</a>. If you have further questions,
 visit <a href="https://ziku.la">ziku.la</a></p>
 </body>
 EOF;

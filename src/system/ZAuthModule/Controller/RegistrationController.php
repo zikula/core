@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -108,7 +110,7 @@ class RegistrationController extends AbstractController
         if ($userEntity) {
             $mapping = $authenticationMappingRepository->getByZikulaId($userEntity->getUid());
             if ($mapping) {
-                $setPass = null === $mapping->getPass() || '' == $mapping->getPass();
+                $setPass = null === $mapping->getPass() || '' === $mapping->getPass();
             }
         }
         $form = $this->createForm(VerifyRegistrationType::class, [
@@ -137,7 +139,7 @@ class RegistrationController extends AbstractController
                     if (!empty($notificationErrors)) {
                         $this->addFlash('error', implode('<br />', $notificationErrors));
                     }
-                    if ('' == $userEntity->getApproved_By()) {
+                    if ('' === $userEntity->getApproved_By()) {
                         $this->addFlash('status', $this->__('Done! Your account has been verified, and is awaiting administrator approval.'));
                     } else {
                         $this->addFlash('status', $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.'));

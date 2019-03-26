@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -42,15 +44,15 @@ class RequireJsConfigGenerator
         // Initialize and execute each process in sequence.
         foreach ($processes as $class) {
             if (!class_exists($class)) {
-                $io->write("<warning>Process class '$class' not found, skipping this process</warning>");
+                $io->write("<warning>Process class '${class}' not found, skipping this process</warning>");
                 continue;
             }
-            $io->write("<info>Running '$class' </info>");
+            $io->write("<info>Running '${class}' </info>");
             /** @var \ComponentInstaller\Process\Process $process */
             $process = new $class($composer, $io);
             // When an error occurs during initialization, end the process.
             if (!$process->init()) {
-                $io->write("<warning>An error occurred while initializing the '$class' process.</warning>");
+                $io->write("<warning>An error occurred while initializing the '${class}' process.</warning>");
                 break;
             }
             $process->process();

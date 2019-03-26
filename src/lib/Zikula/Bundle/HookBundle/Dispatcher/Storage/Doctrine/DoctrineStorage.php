@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,9 +17,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
-use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 
 /**
  * Doctrine class.
@@ -227,7 +229,7 @@ class DoctrineStorage implements StorageInterface
             $providerTypes = $this->hookCollector->getProvider($providerArea)->getProviderTypes();
             $providerCategory = $this->hookCollector->getProvider($providerArea)->getCategory();
             foreach (array_keys($providerTypes) as $providerType) {
-                if ($subscriberCategory == $providerCategory && $subscriberType == $providerType) {
+                if ($subscriberCategory === $providerCategory && $subscriberType === $providerType) {
                     return true;
                 }
             }

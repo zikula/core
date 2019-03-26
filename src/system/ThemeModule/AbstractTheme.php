@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -59,7 +61,7 @@ abstract class AbstractTheme extends AbstractBundle
     public function generateThemedResponse($realm, Response $response, $moduleName = null)
     {
         $template = $this->config[$realm]['page'];
-        $classes = 'home' == $realm ? 'z-homepage' : '';
+        $classes = 'home' === $realm ? 'z-homepage' : '';
         $classes .= (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
 
         /* @var Twig\Environment */
@@ -148,7 +150,7 @@ abstract class AbstractTheme extends AbstractBundle
         }
         $defaultVars = $this->getDefaultThemeVars();
         $combinedVars = array_merge($defaultVars, $dbVars);
-        if (array_keys($dbVars) != array_keys($combinedVars)) {
+        if (array_keys($dbVars) !== array_keys($combinedVars)) {
             // First load of file or vars have been added to the .yml file.
             $variableApi->setAll($this->name, $combinedVars);
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -67,7 +69,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null)
     {
         $user->setApproved_Date($approvedOn);
-        $approvedBy = isset($approvedBy) ? $approvedBy : $user->getUid();
+        $approvedBy = $approvedBy ?? $user->getUid();
         $user->setApproved_By($approvedBy);
         $this->_em->flush($user);
     }
@@ -94,7 +96,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
                         }
                         break;
                     default:
-                        $filter[$k] = ['operator' => 'like', 'operand' => "%$v%"];
+                        $filter[$k] = ['operator' => 'like', 'operand' => "%${v}%"];
                 }
             }
         }
@@ -114,7 +116,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $i = 1;
         foreach ($words as $word) {
             $subWhere = $qb->expr()->orX();
-            $expr = $qb->expr()->like('u.uname', "?$i");
+            $expr = $qb->expr()->like('u.uname', "?${i}");
             $subWhere->add($expr);
             $qb->setParameter($i, '%' . $word . '%');
             $i++;
@@ -150,9 +152,9 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
             $paginator = new Paginator($query);
 
             return $paginator;
-        } else {
-            return $query->getResult();
         }
+
+        return $query->getResult();
     }
 
     public function count(array $filter = [], $exprType = 'and')
@@ -178,7 +180,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     {
         $orderBy = new Expr\OrderBy();
         foreach ($sort as $field => $direction) {
-            $orderBy->add("u.$field", $direction);
+            $orderBy->add("u.${field}", $direction);
         }
 
         return $orderBy;

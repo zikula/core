@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -75,7 +77,7 @@ class Asset
         // for straight asset paths
         if ('@' !== $path[0]) {
             if ('/' === $path[0]) {
-                $path = substr($path, 1);
+                $path = mb_substr($path, 1);
             }
 
             return $this->assetPackages->getUrl($path);
@@ -91,13 +93,13 @@ class Asset
         }
 
         // if file exists in /web, then use it first
-        $bundle = $this->kernel->getBundle(substr($parts[0], 1));
+        $bundle = $this->kernel->getBundle(mb_substr($parts[0], 1));
         if ($bundle instanceof AbstractBundle || $bundle instanceof Bundle) {
             $relativeAssetPath = '/' . $parts[1];
             if ($bundle instanceof AbstractBundle) {
                 $relativeAssetPath = $bundle->getRelativeAssetPath() . $relativeAssetPath;
             } else {
-                $relativeAssetPath = strtolower('Bundles/' . substr($bundle->getName(), 0, -strlen('Bundle'))) . $relativeAssetPath;
+                $relativeAssetPath = mb_strtolower('Bundles/' . mb_substr($bundle->getName(), 0, -mb_strlen('Bundle'))) . $relativeAssetPath;
             }
 
             $webPath = $this->assetPackages->getUrl($relativeAssetPath);
@@ -109,7 +111,7 @@ class Asset
 
         $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources', true);
         $root = $this->getSiteRoot();
-        $path = (false !== strpos($fullPath, $root)) ? substr($fullPath, strlen($root) + 1) : $fullPath;
+        $path = (false !== mb_strpos($fullPath, $root)) ? mb_substr($fullPath, mb_strlen($root) + 1) : $fullPath;
         $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
 
         return $this->assetPackages->getUrl($path, 'zikula_default');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -141,10 +143,10 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addJquery()
     {
-        $jquery = 'dev' != $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
+        $jquery = 'dev' !== $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
         $this->jsAssetBag->add(
             [
-                $this->assetHelper->resolve("jquery/$jquery") => AssetBag::WEIGHT_JQUERY,
+                $this->assetHelper->resolve("jquery/${jquery}") => AssetBag::WEIGHT_JQUERY,
                 $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1
             ]
         );

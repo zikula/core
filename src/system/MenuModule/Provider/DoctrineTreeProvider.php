@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,8 +17,8 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zikula\MenuModule\Event\ConfigureMenuEvent;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
+use Zikula\MenuModule\Event\ConfigureMenuEvent;
 use Zikula\MenuModule\Loader\PermissionAwareNodeLoader;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
@@ -25,7 +27,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     /**
      * @var FactoryInterface
      */
-    protected $factory = null;
+    protected $factory;
 
     /**
      * @var PermissionAwareNodeLoader

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -155,7 +157,7 @@ class Column
      */
     private function reverse($direction)
     {
-        return (self::DIRECTION_ASCENDING == $direction) ? self::DIRECTION_DESCENDING : self::DIRECTION_ASCENDING;
+        return (self::DIRECTION_ASCENDING === $direction) ? self::DIRECTION_DESCENDING : self::DIRECTION_ASCENDING;
     }
 
     /**
@@ -165,6 +167,6 @@ class Column
      */
     private function cssFromDirection($direction)
     {
-        return (self::DIRECTION_ASCENDING == $direction) ? self::CSS_CLASS_ASCENDING : self::CSS_CLASS_DESCENDING;
+        return (self::DIRECTION_ASCENDING === $direction) ? self::CSS_CLASS_ASCENDING : self::CSS_CLASS_DESCENDING;
     }
 }

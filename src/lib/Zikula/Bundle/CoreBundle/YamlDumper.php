@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -194,7 +196,7 @@ class YamlDumper
             }
         }
 
-        return "<ul>\n$html</ul>\n";
+        return "<ul>\n${html}</ul>\n";
     }
 
     /**
@@ -232,12 +234,11 @@ class YamlDumper
      */
     protected function validateName($name, $isParameter)
     {
-        if (!is_string($name) || strlen($name) <= 0 || (!$isParameter && 'parameters' == $name)) {
+        if (!is_string($name) || mb_strlen($name) <= 0 || (!$isParameter && 'parameters' === $name)) {
             if ($isParameter) {
                 throw new \InvalidArgumentException('The parameter name must be a string');
-            } else {
-                throw new \InvalidArgumentException('The configuration name must not be "parameters" and must be a string');
             }
+            throw new \InvalidArgumentException('The configuration name must not be "parameters" and must be a string');
         }
     }
 }

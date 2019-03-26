@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -84,14 +86,14 @@ class CategoryController extends AbstractController
             'html' => true,
             'childOpen' => function($node) {
                 $jsTreeData = [];
-                $jsTreeData['disabled'] = 'A' != $node['status'];
+                $jsTreeData['disabled'] = 'A' !== $node['status'];
                 $jsTreeData['type'] = $node['is_leaf'] ? 'leaf' : 'default';
                 $jsTreeData = 'data-jstree="' . htmlentities(json_encode($jsTreeData)) . '" ';
 
                 return '<li ' . $jsTreeData . 'class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
             },
             'nodeDecorator' => function($node) use ($locale) {
-                $displayName = isset($node['display_name'][$locale]) ? $node['display_name'][$locale] : $node['name'];
+                $displayName = $node['display_name'][$locale] ?? $node['name'];
                 $title = ' title="' . $this->createTitleAttribute($node, $displayName, $locale) . '"';
                 $classes = [];
                 if ($node['is_locked']) {
@@ -119,9 +121,9 @@ class CategoryController extends AbstractController
         $title[] = $this->__('ID') . ': ' . $node['id'];
         $title[] = $this->__('Name') . ': ' . $node['name'];
         $title[] = $this->__('Display name') . ': ' . $displayName;
-        $title[] = $this->__('Description') . ': ' . (isset($node['display_desc'][$locale]) ? $node['display_desc'][$locale] : '');
+        $title[] = $this->__('Description') . ': ' . ($node['display_desc'][$locale] ?? '');
         $title[] = $this->__('Value') . ': ' . $node['value'];
-        $title[] = $this->__('Active') . ': ' . ('A' == $node['status'] ? 'Yes' : 'No');
+        $title[] = $this->__('Active') . ': ' . ('A' === $node['status'] ? 'Yes' : 'No');
         $title[] = $this->__('Leaf') . ': ' . ($node['is_leaf'] ? 'Yes' : 'No');
         $title[] = $this->__('Locked') . ': ' . ($node['is_locked'] ? 'Yes' : 'No');
 

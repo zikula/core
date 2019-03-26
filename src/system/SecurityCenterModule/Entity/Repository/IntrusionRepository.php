@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -149,7 +151,7 @@ class IntrusionRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('tbl');
 
-        if ('uid' == $fieldName) {
+        if ('uid' === $fieldName) {
             $qb->select('DISTINCT(u.' . $fieldName . ')')
                ->from('ZikulaUsersModule:UserEntity', 'u')
                ->where($qb->expr()->eq('tbl.user', 'u.uid'))

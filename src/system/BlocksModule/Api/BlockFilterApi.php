@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -46,7 +48,7 @@ class BlockFilterApi implements BlockFilterApiInterface
 
         // filter for language/locale
         $language = $blockEntity->getLanguage();
-        if (!empty($language) && ($language != $request->getLocale())) {
+        if (!empty($language) && ($language !== $request->getLocale())) {
             return false;
         }
 
@@ -59,7 +61,7 @@ class BlockFilterApi implements BlockFilterApiInterface
                     break;
                 case '_route_params':
                     $params = $request->attributes->get('_route_params');
-                    $name = isset($params[$filter['queryParameter']]) ? $params[$filter['queryParameter']] : 'kjashdhk11111'; // random characters to prevent match
+                    $name = $params[$filter['queryParameter']] ?? 'kjashdhk11111'; // random characters to prevent match
                     break;
                 default:
                     $name = $request->attributes->get($filter['attribute']);
@@ -82,9 +84,9 @@ class BlockFilterApi implements BlockFilterApiInterface
     {
         switch ($comparator) {
             case "==":
-                return $var1 == $var2;
+                return $var1 === $var2;
             case "!=":
-                return $var1 != $var2;
+                return $var1 !== $var2;
             case ">=":
                 return $var1 >= $var2;
             case "<=":

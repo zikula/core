@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -72,7 +74,7 @@ class AccountController extends AbstractController
         if ($form->isSubmitted()) {
             $data = $form->getData();
             $mapping = $authenticationMappingRepository->findBy(['email' => $data['email']]);
-            if (1 == count($mapping)) {
+            if (1 === count($mapping)) {
                 // send email
                 $sent = $mailHelper->sendNotification($mapping[0]->getEmail(), 'lostuname', [
                     'uname' => $mapping[0]->getUname(),
@@ -136,9 +138,9 @@ class AccountController extends AbstractController
             $map = ['uname' => $this->__('username'), 'email' => $this->__('email address')];
             $data = $form->getData();
             $field = empty($data['uname']) ? 'email' : 'uname';
-            $inverse = 'uname' == $field ? 'email' : 'uname';
+            $inverse = 'uname' === $field ? 'email' : 'uname';
             $mapping = $authenticationMappingRepository->findBy([$field => $data[$field]]);
-            if (1 == count($mapping)) {
+            if (1 === count($mapping)) {
                 $mapping = $mapping[0];
                 $user = $userRepository->find($mapping->getUid());
                 switch ($user->getActivated()) {
@@ -239,7 +241,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute($redirectToRoute);
         }
 
-        if ('' == $requestDetails['userId'] || '' == $requestDetails['userName'] || '' == $requestDetails['emailAddress']) {
+        if ('' === $requestDetails['userId'] || '' === $requestDetails['userName'] || '' === $requestDetails['emailAddress']) {
             $this->addFlash('error', $this->__('Your request could not be processed due to invalid arguments.'));
 
             return $this->redirectToRoute($redirectToRoute);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -55,12 +57,12 @@ class SearchBlock extends AbstractBlockHandler
     public function display(array $properties)
     {
         $title = !empty($properties['title']) ? $properties['title'] : '';
-        if (!$this->hasPermission('Searchblock::', "$title::", ACCESS_READ)) {
+        if (!$this->hasPermission('Searchblock::', "${title}::", ACCESS_READ)) {
             return '';
         }
         // set defaults
-        $properties['displaySearchBtn'] = isset($properties['displaySearchBtn']) ? $properties['displaySearchBtn'] : false;
-        $properties['active'] = isset($properties['active']) ? $properties['active'] : [];
+        $properties['displaySearchBtn'] = $properties['displaySearchBtn'] ?? false;
+        $properties['active'] = $properties['active'] ?? [];
 
         // get Core-2.0 searchable modules
         $searchableModules = $this->searchableCollector->getAll();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -55,7 +57,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
     {
         // Validate uname and pass are not the same.
         /** @var AuthenticationMappingEntity $authenticationMappingEntity */
-        if ($authenticationMappingEntity->getUname() == $authenticationMappingEntity->getPass()) {
+        if ($authenticationMappingEntity->getUname() === $authenticationMappingEntity->getPass()) {
             $this->context->buildViolation($this->translator->__('The password cannot be the same as the user name. Please choose a different password.'))
                 ->atPath('pass')
                 ->addViolation();

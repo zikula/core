@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -193,12 +195,12 @@ class VariableApi implements VariableApiInterface
         if (!$this->isInitialized) {
             $this->initialize();
         }
-        if (self::CONFIG == $extensionName && in_array($variableName, $this->protectedSystemVars)) {
+        if (self::CONFIG === $extensionName && in_array($variableName, $this->protectedSystemVars)) {
             return false;
         }
 
         $entities = $this->repository->findBy(['modname' => $extensionName, 'name' => $variableName]);
-        if (count($entities) > 1 || 0 == count($entities)) {
+        if (count($entities) > 1 || 0 === count($entities)) {
             foreach ($entities as $entity) {
                 // possible duplicates exist. remove all (refs #2385)
                 $this->repository->remove($entity);

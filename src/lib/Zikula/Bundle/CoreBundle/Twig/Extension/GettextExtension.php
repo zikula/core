@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -62,7 +64,7 @@ class GettextExtension extends AbstractExtension
      */
     public function __(array $context, $message, $domain = null, $locale = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = $domain ?? $this->determineTranslationDomainFromContext($context);
 
         return $this->translator->__(/** @Ignore */$message, $domain, $locale);
     }
@@ -72,7 +74,7 @@ class GettextExtension extends AbstractExtension
      */
     public function __f(array $context, $message, $params, $domain = null, $locale = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = $domain ?? $this->determineTranslationDomainFromContext($context);
 
         return $this->translator->__f(/** @Ignore */$message, $params, $domain, $locale);
     }
@@ -82,7 +84,7 @@ class GettextExtension extends AbstractExtension
      */
     public function _n(array $context, $singular, $plural, $count, $domain = null, $locale = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = $domain ?? $this->determineTranslationDomainFromContext($context);
 
         return $this->translator->_n(/** @Ignore */$singular, $plural, $count, $domain, $locale);
     }
@@ -92,7 +94,7 @@ class GettextExtension extends AbstractExtension
      */
     public function _fn(array $context, $singular, $plural, $count, $params, $domain = null, $locale = null)
     {
-        $domain = isset($domain) ? $domain : $this->determineTranslationDomainFromContext($context);
+        $domain = $domain ?? $this->determineTranslationDomainFromContext($context);
 
         return $this->translator->_fn(/** @Ignore */$singular, $plural, $count, $params, $domain, $locale);
     }

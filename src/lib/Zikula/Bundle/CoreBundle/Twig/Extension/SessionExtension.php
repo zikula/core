@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -72,10 +74,10 @@ class SessionExtension extends AbstractExtension
             $messages = $this->session->getFlashBag()->get($messageType);
             if (count($messages) > 0) {
                 // Set class for the messages.
-                $class = (!empty($params['class'])) ? $params['class'] : "alert alert-$bootstrapClass";
+                $class = (!empty($params['class'])) ? $params['class'] : "alert alert-${bootstrapClass}";
                 $total_messages = $total_messages + $messages;
                 // Build output of the messages.
-                if (empty($params['tag']) || ('span' != $params['tag'])) {
+                if (empty($params['tag']) || ('span' !== $params['tag'])) {
                     $params['tag'] = 'div';
                 }
                 $result .= '<' . $params['tag'] . ' class="' . $class . '"';

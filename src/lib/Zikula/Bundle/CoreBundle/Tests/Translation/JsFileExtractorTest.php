@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -17,7 +19,7 @@ use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use JMS\TranslationBundle\Translation\FileSourceFactory;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor;
 
-class JsFileExtractorTest extends \PHPUnit_Framework_TestCase
+class JsFileExtractorTest extends \PHPUnit\Framework\TestCase
 {
     public function testExtractController()
     {

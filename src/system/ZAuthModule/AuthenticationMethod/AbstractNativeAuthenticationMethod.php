@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -129,8 +131,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
     {
         $mapping = $this->mappingRepository->findOneBy([$field => $value]);
         if (isset($mapping) && (
-            ('email' == $field && ZAuthConstant::AUTHENTICATION_METHOD_UNAME == $mapping->getMethod())
-            || ('uname' == $field && ZAuthConstant::AUTHENTICATION_METHOD_EMAIL == $mapping->getMethod()))
+            ('email' === $field && ZAuthConstant::AUTHENTICATION_METHOD_UNAME === $mapping->getMethod())
+            || ('uname' === $field && ZAuthConstant::AUTHENTICATION_METHOD_EMAIL === $mapping->getMethod()))
         ) {
             // mapping exists but method is set to opposite. allow either if possible.
             $mapping->setMethod(ZAuthConstant::AUTHENTICATION_METHOD_EITHER);
@@ -168,7 +170,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
 
         $session = $this->requestStack->getCurrentRequest()->getSession();
         $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
-            ? 'Y' == $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+            ? 'Y' === $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
             : $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED)
         ;
 

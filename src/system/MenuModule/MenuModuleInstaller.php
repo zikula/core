@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -57,7 +59,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
             case '1.0.0':
                 $menuItems = $this->entityManager->getRepository(MenuItemEntity::class)->findAll();
                 foreach ($menuItems as $menuItem) {
-                    if ('zikulasearchmodule_user_form' == $menuItem->getOption('route')) {
+                    if ('zikulasearchmodule_user_form' === $menuItem->getOption('route')) {
                         $menuItem->setOption('route', 'zikulasearchmodule_search_execute');
                     }
                 }

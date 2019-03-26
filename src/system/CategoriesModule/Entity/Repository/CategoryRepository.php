@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -27,7 +29,7 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
     {
         $qb = $this->createQueryBuilder('c')
             ->select('COUNT(c.id)');
-        if ('' != $name) {
+        if ('' !== $name) {
             $qb->where('c.name = :name')
                 ->setParameter('name', $name);
         }

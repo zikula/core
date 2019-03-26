@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -36,7 +38,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
                     $entity
                 ]);
             } catch (\Exception $exception) {
-                if (UserVerificationEntity::class != $entity) {
+                if (UserVerificationEntity::class !== $entity) {
                     throw $exception;
                 }
                 // silently fail. This is because on core upgrade the UserVerificationEntity already exists from the UsersModule.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,8 +16,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 
@@ -51,13 +53,13 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         } catch (\Exception $e) {
             return;
         }
-        $containsInstall = 'install' == $routeInfo['_route'];
-        $containsUpgrade = 'upgrade' == $routeInfo['_route'];
-        $containsLogin = 'Zikula\\UsersModule\\Controller\\AccessController::loginAction' == $routeInfo['_controller'];
-        $containsDoc = 'doc' == $routeInfo['_route'];
-        $containsWdt =  '_wdt' == $routeInfo['_route'];
-        $containsProfiler = false !== strpos($routeInfo['_route'], '_profiler');
-        $containsRouter = 'fos_js_routing_js' == $routeInfo['_route'];
+        $containsInstall = 'install' === $routeInfo['_route'];
+        $containsUpgrade = 'upgrade' === $routeInfo['_route'];
+        $containsLogin = 'Zikula\\UsersModule\\Controller\\AccessController::loginAction' === $routeInfo['_controller'];
+        $containsDoc = 'doc' === $routeInfo['_route'];
+        $containsWdt =  '_wdt' === $routeInfo['_route'];
+        $containsProfiler = false !== mb_strpos($routeInfo['_route'], '_profiler');
+        $containsRouter = 'fos_js_routing_js' === $routeInfo['_route'];
         $doNotRedirect = $containsProfiler || $containsWdt || $containsRouter || $request->isXmlHttpRequest();
 
         // check if Zikula Core is not installed

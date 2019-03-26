@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -155,7 +157,7 @@ class MailerApi implements MailerApiInterface
         if (isset($subject)) {
             $this->message->setSubject($subject);
         } else {
-            if ('' == $message->getSubject() || null === $message->getSubject()) {
+            if ('' === $message->getSubject() || null === $message->getSubject()) {
                 throw new \RuntimeException('There is no subject set.');
             }
         }
@@ -168,7 +170,7 @@ class MailerApi implements MailerApiInterface
         if (isset($body)) {
             $this->message->setBody($body);
         } else {
-            if ('' == $message->getBody() || null === $message->getBody()) {
+            if ('' === $message->getBody() || null === $message->getBody()) {
                 throw new \RuntimeException('There is no message body set.');
             }
         }
@@ -227,7 +229,7 @@ class MailerApi implements MailerApiInterface
     {
         foreach ($attachments as $attachment) {
             if (is_array($attachment)) {
-                if (4 != count($attachment)) {
+                if (4 !== count($attachment)) {
                     // skip invalid arrays
                     continue;
                 }
@@ -246,7 +248,7 @@ class MailerApi implements MailerApiInterface
     private function addStringAttachments(array $attachments)
     {
         foreach ($attachments as $attachment) {
-            if (is_array($attachment) && 4 == count($attachment)) {
+            if (is_array($attachment) && 4 === count($attachment)) {
                 $this->message->attach(Swift_Attachment::fromPath($attachment[0], $attachment[3])->setFilename($attachment[1]));
             }
         }
@@ -284,7 +286,7 @@ class MailerApi implements MailerApiInterface
                 // access the logging channel
                 $logger = new Logger('mailer');
                 $logger->pushHandler(new StreamHandler($logFile, Logger::INFO));
-                $logger->addError("Could not send message to: $emailList :: " . $this->message->toString());
+                $logger->addError("Could not send message to: ${emailList} :: " . $this->message->toString());
             }
 
             $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_FAILURE, $event);

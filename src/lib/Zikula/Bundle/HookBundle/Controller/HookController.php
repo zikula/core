@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -132,7 +134,7 @@ class HookController extends Controller
                 $hooksubscribers[$i] = $hooksubscribers[$i]->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
-                if ($hooksubscribers[$i]['name'] == $moduleName) {
+                if ($hooksubscribers[$i]['name'] === $moduleName) {
                     unset($hooksubscribers[$i]);
                     continue;
                 }
@@ -210,7 +212,7 @@ class HookController extends Controller
                 $hookproviders[$i] = $hookproviders[$i]->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
-                if ($hookproviders[$i]['name'] == $moduleName && !$isSubscriberSelfCapable) {
+                if ($hookproviders[$i]['name'] === $moduleName && !$isSubscriberSelfCapable) {
                     unset($hookproviders[$i]);
                     continue;
                 }
@@ -415,7 +417,7 @@ class HookController extends Controller
         $sessionName = $this->container->getParameter('zikula.session.name');
         $sessionId = $request->cookies->get($sessionName, null);
 
-        if ($sessionId != $request->getSession()->getId()) {
+        if ($sessionId !== $request->getSession()->getId()) {
             return false;
         }
 

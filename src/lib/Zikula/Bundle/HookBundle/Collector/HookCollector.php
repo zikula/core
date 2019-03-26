@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -169,11 +171,11 @@ class HookCollector implements HookCollectorInterface
         if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER, self::HOOK_SUBSCRIBE_OWN])) {
             throw new \InvalidArgumentException('Only hook_provider, hook_subscriber and subscriber_own are valid values.');
         }
-        if (self::HOOK_SUBSCRIBE_OWN == $type) {
+        if (self::HOOK_SUBSCRIBE_OWN === $type) {
             return $this->containsSelfAllowedProvider($moduleName);
         }
-        $variable = substr($type, 5) . 'sByOwner';
-        $array = $this->$variable;
+        $variable = mb_substr($type, 5) . 'sByOwner';
+        $array = $this->{$variable};
 
         return isset($array[$moduleName]);
     }
@@ -186,8 +188,8 @@ class HookCollector implements HookCollectorInterface
         if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER])) {
             throw new \InvalidArgumentException('Only hook_provider and hook_subscriber are valid values.');
         }
-        $variable = substr($type, 5) . 'sByOwner';
-        $array = $this->$variable;
+        $variable = mb_substr($type, 5) . 'sByOwner';
+        $array = $this->{$variable};
 
         return array_keys($array);
     }

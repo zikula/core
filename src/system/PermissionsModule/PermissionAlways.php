@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -39,7 +41,7 @@ class PermissionAlways implements PermissionApiInterface
         if (isset($level) && !is_numeric($level)) {
             throw new \InvalidArgumentException();
         } elseif (isset($level)) {
-            $level = intval($level);
+            $level = (int) $level;
         }
 
         $accessNames = [

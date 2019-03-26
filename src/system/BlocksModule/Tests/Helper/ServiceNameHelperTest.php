@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,7 +15,7 @@ namespace Zikula\BlocksModule\Tests\Helper;
 
 use Zikula\BlocksModule\Helper\ServiceNameHelper;
 
-class ServiceNameHelperTest extends \PHPUnit_Framework_TestCase
+class ServiceNameHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ServiceNameHelper
@@ -23,7 +25,7 @@ class ServiceNameHelperTest extends \PHPUnit_Framework_TestCase
     /**
      * ServiceNameHelperTest setup.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->helper = new ServiceNameHelper();
     }

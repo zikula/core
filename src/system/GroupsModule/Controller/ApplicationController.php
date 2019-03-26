@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -62,7 +64,7 @@ class ApplicationController extends AbstractController
                 $formData = $form->getData();
                 $groupApplicationEntity = $formData['application'];
                 $this->get('doctrine')->getManager()->remove($groupApplicationEntity);
-                if ('accept' == $action) {
+                if ('accept' === $action) {
                     $groupApplicationEntity->getUser()->addGroup($groupApplicationEntity->getGroup());
                     $addUserEvent = new GenericEvent(['gid' => $groupApplicationEntity->getGroup()->getGid(), 'uid' => $groupApplicationEntity->getUser()->getUid()]);
                     $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_ADD_USER, $addUserEvent);
@@ -113,8 +115,8 @@ class ApplicationController extends AbstractController
             throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
-        $groupTypeIsCore = CommonHelper::GTYPE_CORE == $group->getGtype();
-        $groupStateIsClosed = CommonHelper::STATE_CLOSED == $group->getState();
+        $groupTypeIsCore = CommonHelper::GTYPE_CORE === $group->getGtype();
+        $groupStateIsClosed = CommonHelper::STATE_CLOSED === $group->getState();
         $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
         $alreadyGroupMember = $group->getUsers()->contains($userEntity);
         if ($groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {

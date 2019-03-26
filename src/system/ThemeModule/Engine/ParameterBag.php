@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -120,7 +122,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
         $value = array_key_exists($key, $parameters) ? $parameters[$key] : $default;
 
-        return 'title' == $key ? $this->prepareTitle($value) : $value;
+        return 'title' === $key ? $this->prepareTitle($value) : $value;
     }
 
     /**
@@ -229,7 +231,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
     private function &resolvePath($key, $writeContext = false)
     {
         $array = &$this->parameters;
-        $key = (0 === strpos($key, $this->ns)) ? substr($key, 1) : $key;
+        $key = (0 === mb_strpos($key, $this->ns)) ? mb_substr($key, 1) : $key;
 
         // Check if there is anything to do, else return
         if (!$key) {
@@ -275,8 +277,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     private function resolveKey($key)
     {
-        if (false !== strpos($key, $this->ns)) {
-            $key = substr($key, strrpos($key, $this->ns) + 1, strlen($key));
+        if (false !== mb_strpos($key, $this->ns)) {
+            $key = mb_substr($key, mb_strrpos($key, $this->ns) + 1, mb_strlen($key));
         }
 
         return $key;
@@ -296,7 +298,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
         }
 
         $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
-        if (!empty($titleScheme) && '%pagetitle%' != $titleScheme) {
+        if (!empty($titleScheme) && '%pagetitle%' !== $titleScheme) {
             $title = str_replace('%pagetitle%', $title, $titleScheme);
             $title = str_replace('%sitename%', $this->variableApi->getSystemVar('sitename', ''), $title);
 
@@ -305,7 +307,7 @@ class ParameterBag implements \IteratorAggregate, \Countable
             if (null !== $request) {
                 $controllerNameParts = explode('\\', $request->attributes->get('_controller'));
                 $bundleName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
-                if ('Module' == substr($bundleName, -6)) {
+                if ('Module' === mb_substr($bundleName, -6)) {
                     $module = $this->extensionRepository->get($bundleName);
                     if (null !== $module) {
                         $moduleDisplayName = $module->getDisplayName();

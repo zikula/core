@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,14 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 
-class SortableColumnsTest extends \PHPUnit_Framework_TestCase
+class SortableColumnsTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var SortableColumns
      */
     private $sortableColumns;
 
-    public function setUp()
+    protected function setUp()
     {
         $router = $this
             ->getMockBuilder('Symfony\Component\Routing\RouterInterface')

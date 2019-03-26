@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -79,7 +81,7 @@ abstract class AbstractContentType implements ContentTypeInterface
      *
      * @var \Zikula\ContentModule\Entity\ContentItemEntity
      */
-    protected $entity = null;
+    protected $entity;
 
     /**
      * Reference to the data fields loaded from either default values or the entity.
@@ -111,7 +113,7 @@ abstract class AbstractContentType implements ContentTypeInterface
         $nameAndType = $nsParts[1];
 
         $this->bundleName = $vendor . $nameAndType;
-        $this->domain = strtolower($this->bundleName);
+        $this->domain = mb_strtolower($this->bundleName);
         $this->name = str_replace('Type', '', array_pop($nsParts));
 
         $this->twig = $twig;

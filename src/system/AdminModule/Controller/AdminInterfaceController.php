@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -88,7 +90,7 @@ class AdminInterfaceController extends AbstractController
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $categoryId = $defaultCid;
-        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' != $caller['_zkModule']) {
+        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' !== $caller['_zkModule']) {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
                 $categoryId = $moduleRelation->getCid();
@@ -119,7 +121,7 @@ class AdminInterfaceController extends AbstractController
         $modVars = $variableApi->getAll('ZikulaThemeModule');
         $data = [];
         $data['mode'] = $this->get('kernel')->getEnvironment();
-        if ('prod' != $data['mode']) {
+        if ('prod' !== $data['mode']) {
             $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');
             $data['legacy'] = [
                 'status' => true,
@@ -182,14 +184,14 @@ class AdminInterfaceController extends AbstractController
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if ('/' == mb_substr($appDir, 0, 1) && false === strpos($appDir, $docRoot)) {
+            if ('/' === mb_substr($appDir, 0, 1) && false === mb_strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
             } else {
-                if (false === strpos($appDir, $docRoot)) {
-                    $ldir = dirname(__FILE__);
-                    $p = strpos($ldir, DIRECTORY_SEPARATOR . 'system'); // we are in system/AdminModule
-                    $b = substr($ldir, 0, $p);
+                if (false === mb_strpos($appDir, $docRoot)) {
+                    $ldir = __DIR__;
+                    $p = mb_strpos($ldir, DIRECTORY_SEPARATOR . 'system'); // we are in system/AdminModule
+                    $b = mb_substr($ldir, 0, $p);
                     $filePath = $b . '/' . $appDir . '/.htaccess';
                 } else {
                     $filePath = $appDir . '/.htaccess';
@@ -209,7 +211,7 @@ class AdminInterfaceController extends AbstractController
                 'updatecheck' => $variableApi->getSystemVar('updatecheck'),
                 'scactive' => $hasSecurityCenter,
                 // check for outputfilter
-                'useids' => $hasSecurityCenter && 1 == $variableApi->getSystemVar('useids'),
+                'useids' => $hasSecurityCenter && 1 === $variableApi->getSystemVar('useids'),
                 'idssoftblock' => $variableApi->getSystemVar('idssoftblock')
             ]
         ]);
@@ -277,7 +279,7 @@ class AdminInterfaceController extends AbstractController
         $defaultCid = empty($requestedCid) ? $this->getVar('startcategory') : $requestedCid;
 
         $categoryId = $defaultCid;
-        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' != $caller['_zkModule']) {
+        if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' !== $caller['_zkModule']) {
             $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
                 $categoryId = $moduleRelation->getCid();
@@ -306,7 +308,7 @@ class AdminInterfaceController extends AbstractController
         $menuModules = [];
         $menuCategories = [];
         foreach ($adminModules as $adminModule) {
-            if (!$this->hasPermission("$adminModule[name]::", '::', ACCESS_EDIT)) {
+            if (!$this->hasPermission("{$adminModule[name]}::", '::', ACCESS_EDIT)) {
                 continue;
             }
 
@@ -388,8 +390,8 @@ class AdminInterfaceController extends AbstractController
         ksort($menuCategories);
         $fullTemplateName = $mode . '.' . $template;
 
-        return $this->render("@ZikulaAdminModule/AdminInterface/$fullTemplateName.html.twig", [
-            'adminMenu' => ('categories' == $mode) ? $menuCategories : $menuModules,
+        return $this->render("@ZikulaAdminModule/AdminInterface/${fullTemplateName}.html.twig", [
+            'adminMenu' => ('categories' === $mode) ? $menuCategories : $menuModules,
             'mode' => $mode,
             'caller' => $caller
         ]);

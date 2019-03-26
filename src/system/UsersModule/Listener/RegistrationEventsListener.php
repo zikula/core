@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -54,7 +56,7 @@ class RegistrationEventsListener implements EventSubscriberInterface
     public function sendRegistrationEmail(GenericEvent $event)
     {
         $userEntity = $event->getSubject();
-        if (UsersConstant::ACTIVATED_PENDING_REG != $userEntity->getActivated()) {
+        if (UsersConstant::ACTIVATED_PENDING_REG !== $userEntity->getActivated()) {
             $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
         }
         if (!empty($notificationErrors)) {

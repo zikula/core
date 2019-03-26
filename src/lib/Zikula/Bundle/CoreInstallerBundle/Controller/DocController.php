@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,9 +13,9 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Michelf\MarkdownExtra;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -80,14 +82,14 @@ class DocController
         $this->setBasePath($request);
 
         $content = '';
-        if (!file_exists($this->basePath . '/' . $name) && 'en' != $request->getLocale()) {
+        if (!file_exists($this->basePath . '/' . $name) && 'en' !== $request->getLocale()) {
             // fallback to English docs
             $this->basePath = str_replace('docs/' . $request->getLocale(), 'docs/en', $this->basePath);
         }
-        if (file_exists($this->basePath . "/$name")) {
-            $content = file_get_contents($this->basePath . "/$name");
+        if (file_exists($this->basePath . "/${name}")) {
+            $content = file_get_contents($this->basePath . "/${name}");
         } else {
-            $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => "$name"]);
+            $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => "${name}"]);
         }
         $content = $this->parser->defaultTransform($content);
         $templateParams = [

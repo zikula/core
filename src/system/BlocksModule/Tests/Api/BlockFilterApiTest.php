@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -16,14 +18,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
 
-class BlockFilterApiTest extends \PHPUnit_Framework_TestCase
+class BlockFilterApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var BlockFilterApi
      */
     private $api;
 
-    public function setUp()
+    protected function setUp()
     {
         $request = new Request([
             // query params

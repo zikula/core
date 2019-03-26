@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,8 +16,8 @@ namespace Zikula\UsersModule;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\UserAttributeEntity;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
@@ -97,7 +99,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                     }
                 }
             case '2.2.2':
-                if ('gravatar.gif' == $this->getVar('gravatarimage', null)) {
+                if ('gravatar.gif' === $this->getVar('gravatarimage', null)) {
                     $this->setVar('gravatarimage', 'gravatar.jpg');
                 }
             case '2.2.3':
@@ -305,7 +307,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         foreach ($migratedModVarNames as $migratedModVarName) {
             $value = $this->getVar($migratedModVarName);
             $this->delVar($migratedModVarName); // removes from UsersModule
-            $migratedModVarName = ('reg_verifyemail' == $migratedModVarName) ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
+            $migratedModVarName = ('reg_verifyemail' === $migratedModVarName) ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
             $value = in_array($migratedModVarName, [
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
                 ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -31,7 +33,7 @@ class InstallerHelper
         if (count($filters) <= 1) {
             foreach ($filters as $filter) {
                 foreach ($filter as $parameter => $value) {
-                    if ('fargs' == $parameter) {
+                    if ('fargs' === $parameter) {
                         parse_str($value, $queryVars);
                         foreach ($queryVars as $queryVarName => $queryVarValue) {
                             $newFilter[] = [$queryVarName, '==', $queryVarValue];
@@ -52,7 +54,7 @@ class InstallerHelper
                 }
             }
             foreach ($parameterValues as $parameter => $valueArray) {
-                if ('fargs' == $parameter) {
+                if ('fargs' === $parameter) {
                     $queryVarValues = [];
                     foreach ($valueArray as $value) {
                         parse_str($value, $queryVars);
@@ -87,6 +89,6 @@ class InstallerHelper
             $blockClassName = class_exists($blockClassName) ? $blockClassName : $blockClassNameOld;
         }
 
-        return "$moduleName:$blockClassName";
+        return "${moduleName}:${blockClassName}";
     }
 }

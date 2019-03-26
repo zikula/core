@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -88,7 +90,7 @@ EOT
             foreach ($bundles as $bundle) {
                 if (is_dir($originDir = $bundle->getPath() . '/Resources/public')) {
                     $bundlesDir = $targetArg . '/' . $type . 's/';
-                    $targetDir = $bundlesDir . preg_replace('/' . $type . '$/', '', strtolower($bundle->getName()));
+                    $targetDir = $bundlesDir . preg_replace('/' . $type . '$/', '', mb_strtolower($bundle->getName()));
                     $output->writeln(sprintf('Installing assets for <comment>%s</comment> into <comment>%s</comment>', $bundle->getNamespace(), $targetDir));
                     $filesystem->remove($targetDir);
                     if ($input->getOption('symlink')) {

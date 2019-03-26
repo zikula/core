@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,9 +13,9 @@
 
 namespace Zikula\Bundle\CoreBundle\Tests\Translation;
 
+use Doctrine\Common\Annotations\DocParser;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
-use Doctrine\Common\Annotations\DocParser;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use JMS\TranslationBundle\Translation\FileSourceFactory;
 use PhpParser\Lexer;
@@ -21,7 +23,7 @@ use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor;
 
-class PhpFileExtractorTest extends \PHPUnit_Framework_TestCase
+class PhpFileExtractorTest extends \PHPUnit\Framework\TestCase
 {
     public function testExtractController()
     {

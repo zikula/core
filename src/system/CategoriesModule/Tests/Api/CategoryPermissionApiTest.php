@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -18,7 +20,7 @@ use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\PermissionAlways;
 
-class CategoryPermissionApiTest extends \PHPUnit_Framework_TestCase
+class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
 {
     public function testEmpty()
     {
@@ -107,7 +109,7 @@ class CategoryPermissionApiTest extends \PHPUnit_Framework_TestCase
             function($component = null, $instance = null, $level = ACCESS_NONE, $user = null) {
                 list($regId, $catId) = explode('::', $instance);
 
-                return 0 == $catId % 2;
+                return 0 === $catId % 2;
             }
         ));
 

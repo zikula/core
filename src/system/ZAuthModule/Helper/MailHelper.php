@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -12,8 +14,8 @@
 namespace Zikula\ZAuthModule\Helper;
 
 use Swift_Message;
-use Twig\Error\LoaderError;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;

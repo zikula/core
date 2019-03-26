@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -142,7 +144,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         foreach ($categoryData as $data) {
             $data['parent'] = $data['parent_id'] > 0 && isset($categoryObjectMap[$data['parent_id']]) ? $categoryObjectMap[$data['parent_id']] : null;
             unset($data['parent_id']);
-            $attributes = isset($data['attributes']) ? $data['attributes'] : [];
+            $attributes = $data['attributes'] ?? [];
             unset($data['attributes']);
 
             $category = new CategoryEntity();

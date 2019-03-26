@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -119,7 +121,7 @@ class ControllerHelper
         $results = [];
 
         $x = explode('.', str_replace('-', '.', phpversion()));
-        $phpVersion = "$x[0].$x[1].$x[2]";
+        $phpVersion = "{$x[0]}.{$x[1]}.{$x[2]}";
         $results['phpsatisfied'] = version_compare($phpVersion, ZikulaKernel::PHP_MINIMUM_VERSION, ">=");
         $results['pdo'] = extension_loaded('pdo');
         $supportsUnicode = preg_match('/^\p{L}+$/u', 'TheseAreLetters');

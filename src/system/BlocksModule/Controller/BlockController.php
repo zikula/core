@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -206,12 +208,12 @@ class BlockController extends AbstractController
             return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
         }
         $bid = $request->request->get('bid', -1);
-        if ($bid == -1) {
+        if ($bid === -1) {
             return $this->json($this->__('No block ID passed.'), Response::HTTP_BAD_REQUEST);
         }
         $em = $this->getDoctrine()->getManager();
         $block = $em->find('ZikulaBlocksModule:BlockEntity', $bid);
-        $block->setActive(BlockApi::BLOCK_ACTIVE == $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
+        $block->setActive(BlockApi::BLOCK_ACTIVE === $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
         $em->flush();
 
         return $this->json(['bid' => $bid]);

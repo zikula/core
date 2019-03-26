@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -77,11 +79,11 @@ class ThemeEntityRepository extends ServiceEntityRepository
             ->select('t')
             ->from('ZikulaThemeModule:ThemeEntity', 't');
 
-        if (self::STATE_ALL != $state) {
+        if (self::STATE_ALL !== $state) {
             $qb->andWhere('t.state = :state')
                 ->setParameter('state', $state);
         }
-        if (self::TYPE_ALL != $type) {
+        if (self::TYPE_ALL !== $type) {
             $qb->andWhere('t.type = :type')
                 ->setParameter('type', $type);
         }

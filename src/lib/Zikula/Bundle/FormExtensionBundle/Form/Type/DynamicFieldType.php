@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -40,8 +42,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
-use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
+use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\ChoiceFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\DateTimeFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayType;
@@ -148,11 +150,11 @@ class DynamicFieldType extends AbstractType
                 'label' => $this->__('Field options'),
                 'auto_initialize' => false
             ]);
-            if (ChoiceFormOptionsArrayType::class == $optionsType) {
+            if (ChoiceFormOptionsArrayType::class === $optionsType) {
                 $formOptions->get('choices')->addModelTransformer(
                     new ChoiceValuesTransformer()
                 );
-            } elseif (RegexibleFormOptionsArrayType::class == $optionsType) {
+            } elseif (RegexibleFormOptionsArrayType::class === $optionsType) {
                 $formOptions->get('constraints')->addModelTransformer(
                     new RegexConstraintTransformer()
                 );

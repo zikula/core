@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -134,8 +136,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         }
         $meta = $metaData->getFilteredVersionInfoArray();
         $meta['state'] = Constant::STATE_ACTIVE;
-        unset($meta['dependencies']);
-        unset($meta['oldnames']);
+        unset($meta['dependencies'], $meta['oldnames']);
 
         $entity = new ExtensionEntity();
         $entity->merge($meta);

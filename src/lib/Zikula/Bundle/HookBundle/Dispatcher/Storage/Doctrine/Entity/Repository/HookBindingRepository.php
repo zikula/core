@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -42,7 +44,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
         $order->add('t.sareaid', 'ASC');
 
         return $this->createQueryBuilder('t')
-            ->where("t.$type = ?1")
+            ->where("t.${type} = ?1")
             ->orderBy($order)
             ->setParameter(1, $areaName)
             ->getQuery()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -81,7 +83,7 @@ class AdminnavBlock extends AbstractBlockHandler
             /** @var ExtensionEntity[] $adminModules */
             foreach ($adminModules as $adminModule) {
                 $category = $this->adminCategoryRepository->getModuleCategory($adminModule->getId());
-                if ($category['cid'] == $item['cid'] || (false === $category['cid'] && $item['cid'] == $defaultCategory)) {
+                if ($category['cid'] === $item['cid'] || (false === $category['cid'] && $item['cid'] === $defaultCategory)) {
                     $menuText = $adminModule->getDisplayname();
                     // url
                     try {

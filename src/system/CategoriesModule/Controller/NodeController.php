@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -99,7 +101,7 @@ class NodeController extends AbstractController
                     if (!empty($after)) {
                         $sibling = $categoryRepository->find($after);
                         $categoryRepository->persistAsNextSiblingOf($category, $sibling);
-                    } elseif ('new' == $mode) {
+                    } elseif ('new' === $mode) {
                         $categoryRepository->persistAsLastChild($category);
                     } // no need to persist edited entity
                     $entityManager->flush();
@@ -121,7 +123,7 @@ class NodeController extends AbstractController
                 break;
             case 'deleteandmovechildren':
                 $newParent = $categoryRepository->find($request->request->get('parent', 1));
-                if ($newParent == $category->getParent()) {
+                if ($newParent === $category->getParent()) {
                     $response = ['result' => true];
                     break;
                 }
@@ -139,7 +141,7 @@ class NodeController extends AbstractController
                 $categoryId = $category->getId();
                 $this->removeRecursive($category, $processingHelper);
                 $categoryRemoved = false;
-                if (0 == $category->getChildren()->count()
+                if (0 === $category->getChildren()->count()
                     && $processingHelper->mayCategoryBeDeletedOrMoved($category)) {
                     $entityManager->remove($category);
                     $categoryRemoved = true;
@@ -156,7 +158,7 @@ class NodeController extends AbstractController
                 break;
             case 'activate':
             case 'deactivate':
-                $category->setStatus('A' == $category->getStatus() ? 'I' : 'A');
+                $category->setStatus('A' === $category->getStatus() ? 'I' : 'A');
                 $entityManager->flush();
                 $response = [
                     'id' => $category->getId(),
@@ -215,10 +217,10 @@ class NodeController extends AbstractController
             $oldPosition = (int)$request->request->get('old_position');
             $parent = $request->request->get('parent');
             $position = (int)$request->request->get('position');
-            if ($oldParent == $parent) {
+            if ($oldParent === $parent) {
                 $diff = $oldPosition - $position; // if $diff is positive, then node moved up
                 $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
-                $categoryRepository->$methodName($category, abs($diff));
+                $categoryRepository->{$methodName}($category, abs($diff));
             } else {
                 $parentEntity = $categoryRepository->find(str_replace($this->domTreeNodePrefix, '', $parent));
                 $children = $categoryRepository->children($parentEntity);

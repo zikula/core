@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -37,7 +39,7 @@ class KeyValueTransformer implements DataTransformerInterface
     {
         $return = [];
         foreach ($array as $optionDef) {
-            $return[$optionDef['key']] = $optionDef['value'][0] == '{' ? json_decode($optionDef['value'], true) : $optionDef['value'];
+            $return[$optionDef['key']] = $optionDef['value'][0] === '{' ? json_decode($optionDef['value'], true) : $optionDef['value'];
         }
 
         return $return;

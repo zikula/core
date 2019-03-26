@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -55,7 +57,7 @@ class EventDispatcherExtension extends AbstractExtension
      */
     public function dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
     {
-        $event = isset($providedEvent) ? $providedEvent : new GenericEvent($subject, $arguments, $data);
+        $event = $providedEvent ?? new GenericEvent($subject, $arguments, $data);
         $this->dispatcher->dispatch($name, $event);
 
         return $event->getData();

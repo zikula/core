@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -44,7 +46,7 @@ class Engine
      * The instance of the currently active theme.
      * @var \Zikula\ThemeModule\AbstractTheme
      */
-    private $activeThemeBundle = null;
+    private $activeThemeBundle;
 
     /**
      * Realm is a present value in the theme config determining which page templates to utilize.
@@ -56,7 +58,7 @@ class Engine
      * AnnotationValue is the value of the active method Theme annotation.
      * @var null|string
      */
-    private $annotationValue = null;
+    private $annotationValue;
 
     /**
      * The requestStack.
@@ -139,7 +141,7 @@ class Engine
         $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
 
         $themeConfig = $this->getTheme()->getConfig();
-        $wrap = isset($themeConfig['blockWrapping']) ? $themeConfig['blockWrapping'] : true;
+        $wrap = $themeConfig['blockWrapping'] ?? true;
 
         return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid) : $content;
     }
@@ -257,7 +259,7 @@ class Engine
     {
         $themeConfig = $this->getTheme()->getConfig();
         // defining an admin realm overrides all other options for 'admin' annotated methods
-        if ('admin' == $this->annotationValue && isset($themeConfig['admin'])) {
+        if ('admin' === $this->annotationValue && isset($themeConfig['admin'])) {
             $this->realm = 'admin';
 
             return;
@@ -265,7 +267,7 @@ class Engine
         $request = $this->requestStack->getMasterRequest();
         $requestAttributes = $request->attributes->all();
         // match `/` for home realm
-        if (isset($requestAttributes['_route']) && 'home' == $requestAttributes['_route']) {
+        if (isset($requestAttributes['_route']) && 'home' === $requestAttributes['_route']) {
             $this->realm = 'home';
 
             return;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -23,7 +25,7 @@ use Zikula\BlocksModule\Tests\Api\Fixture\AcmeFooModule;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
-class BlockApiTest extends \PHPUnit_Framework_TestCase
+class BlockApiTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var BlockApi
@@ -43,7 +45,7 @@ class BlockApiTest extends \PHPUnit_Framework_TestCase
     /**
      * BlockApiTest setup.
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->setUpBlockPlacements();
         $this->fooBlock = new FooBlock();

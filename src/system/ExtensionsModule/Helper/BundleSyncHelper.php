@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -174,7 +176,7 @@ class BundleSyncHelper
                 $this->composerValidationHelper->check($splFileInfo);
                 if ($this->composerValidationHelper->isValid()) {
                     $bundles[$bundle->getName()] = $bundleVersionArray;
-                    $bundles[$bundle->getName()]['oldnames'] = isset($bundleVersionArray['oldnames']) ? $bundleVersionArray['oldnames'] : '';
+                    $bundles[$bundle->getName()]['oldnames'] = $bundleVersionArray['oldnames'] ?? '';
                 } else {
                     $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
                     foreach ($this->composerValidationHelper->getErrors() as $error) {
@@ -207,12 +209,12 @@ class BundleSyncHelper
         // check for duplicate name, displayname or url
         foreach ($extensions as $dir => $modInfo) {
             foreach ($fieldNames as $fieldName) {
-                $key = strtolower($modInfo[$fieldName]);
+                $key = mb_strtolower($modInfo[$fieldName]);
                 if (isset($moduleValues[$fieldName][$key])) {
                     throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same %field. [%ext1%] and [%ext2%]', [
                         '%field' => $fieldName,
                         '%ext1%' => $modInfo['name'],
-                        '%ext2%' => $moduleValues['name'][strtolower($modInfo['name'])]
+                        '%ext2%' => $moduleValues['name'][mb_strtolower($modInfo['name'])]
                     ]));
                 }
                 $moduleValues[$fieldName][$key] = $dir;
@@ -282,17 +284,15 @@ class BundleSyncHelper
             // update the DB information for this extension to reflect user settings (e.g. url)
             if (isset($extensionsFromDB[$name]['id'])) {
                 $extensionFromFile['id'] = $extensionsFromDB[$name]['id'];
-                if ($extensionsFromDB[$name]['state'] != Constant::STATE_UNINITIALISED && $extensionsFromDB[$name]['state'] != Constant::STATE_INVALID) {
+                if ($extensionsFromDB[$name]['state'] !== Constant::STATE_UNINITIALISED && $extensionsFromDB[$name]['state'] !== Constant::STATE_INVALID) {
                     unset($extensionFromFile['version']);
                 }
                 if (!$forceDefaults) {
-                    unset($extensionFromFile['displayname']);
-                    unset($extensionFromFile['description']);
-                    unset($extensionFromFile['url']);
+                    unset($extensionFromFile['displayname'], $extensionFromFile['description'], $extensionFromFile['url']);
                 }
 
-                unset($extensionFromFile['oldnames']);
-                unset($extensionFromFile['dependencies']);
+                unset($extensionFromFile['oldnames'], $extensionFromFile['dependencies']);
+
                 $extensionFromFile['capabilities'] = unserialize($extensionFromFile['capabilities']);
                 $extensionFromFile['securityschema'] = unserialize($extensionFromFile['securityschema']);
                 $extension = $this->extensionRepository->find($extensionFromFile['id']);
@@ -333,13 +333,13 @@ class BundleSyncHelper
                 throw new \RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
             }
             $lostModuleState = $lostModule->getState();
-            if ((Constant::STATE_INVALID == $lostModuleState)
-                || ($lostModuleState == Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT)) {
+            if ((Constant::STATE_INVALID === $lostModuleState)
+                || ($lostModuleState === Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was invalid and subsequently removed from file system,
                 // or extension was incompatible with core and subsequently removed, delete it
                 $this->extensionRepository->removeAndFlush($lostModule);
-            } elseif ((Constant::STATE_UNINITIALISED == $lostModuleState)
-                || ($lostModuleState == Constant::STATE_UNINITIALISED + Constant::INCOMPATIBLE_CORE_SHIFT)) {
+            } elseif ((Constant::STATE_UNINITIALISED === $lostModuleState)
+                || ($lostModuleState === Constant::STATE_UNINITIALISED + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                 // extension was uninitialised and subsequently removed from file system, delete it
                 $this->extensionRepository->removeAndFlush($lostModule);
             } else {
@@ -381,8 +381,7 @@ class BundleSyncHelper
                 }
 
                 // unset vars that don't matter
-                unset($extensionFromFile['oldnames']);
-                unset($extensionFromFile['dependencies']);
+                unset($extensionFromFile['oldnames'], $extensionFromFile['dependencies']);
 
                 // unserialize vars
                 $extensionFromFile['capabilities'] = unserialize($extensionFromFile['capabilities']);
@@ -398,12 +397,12 @@ class BundleSyncHelper
                 }
             } else {
                 // extension is in the db already
-                if (($extensionsFromDB[$name]['state'] == Constant::STATE_MISSING)
-                    || ($extensionsFromDB[$name]['state'] == Constant::STATE_MISSING + Constant::INCOMPATIBLE_CORE_SHIFT)) {
+                if (($extensionsFromDB[$name]['state'] === Constant::STATE_MISSING)
+                    || ($extensionsFromDB[$name]['state'] === Constant::STATE_MISSING + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                     // extension was lost, now it is here again
                     $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_INACTIVE);
-                } elseif ((($extensionsFromDB[$name]['state'] == Constant::STATE_INVALID)
-                        || ($extensionsFromDB[$name]['state'] == Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT))
+                } elseif ((($extensionsFromDB[$name]['state'] === Constant::STATE_INVALID)
+                        || ($extensionsFromDB[$name]['state'] === Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT))
                     && $extensionFromFile['version']) {
                     $coreCompatibility = $extensionFromFile['coreCompatibility'];
                     if (Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
@@ -412,9 +411,9 @@ class BundleSyncHelper
                     }
                 }
 
-                if ($extensionsFromDB[$name]['version'] != $extensionFromFile['version']) {
-                    if ($extensionsFromDB[$name]['state'] != Constant::STATE_UNINITIALISED &&
-                        $extensionsFromDB[$name]['state'] != Constant::STATE_INVALID) {
+                if ($extensionsFromDB[$name]['version'] !== $extensionFromFile['version']) {
+                    if ($extensionsFromDB[$name]['state'] !== Constant::STATE_UNINITIALISED &&
+                        $extensionsFromDB[$name]['state'] !== Constant::STATE_INVALID) {
                         $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_UPGRADED);
                         $upgradedExtensions[$name] = $extensionFromFile['version'];
                     }

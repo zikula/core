@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -92,7 +94,7 @@ class CurrentUserApi implements CurrentUserApiInterface
         }
         $method = "get" . ucwords($key);
         if (method_exists($this->user, $method)) {
-            return $this->user->$method();
+            return $this->user->{$method}();
         }
 
         return null;

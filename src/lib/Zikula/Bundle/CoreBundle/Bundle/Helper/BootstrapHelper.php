@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -77,7 +79,7 @@ class BootstrapHelper
             if (!$row) {
                 // bundle doesn't exist
                 $this->insert($metadata);
-            } elseif (($metadata->getClass() != $row['bundleclass']) || (serialize($metadata->getAutoload()) != $row['autoload'])) {
+            } elseif (($metadata->getClass() !== $row['bundleclass']) || (serialize($metadata->getAutoload()) !== $row['autoload'])) {
                 // bundle json has been updated
                 $updatedMeta = [
                     'bundleclass' => $metadata->getClass(),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,14 +15,14 @@ namespace Zikula\BlocksModule\Tests\Collector;
 
 use Zikula\BlocksModule\Collector\BlockCollector;
 
-class BlockCollectorTest extends \PHPUnit_Framework_TestCase
+class BlockCollectorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var BlockCollector
      */
     private $collector;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->collector = new BlockCollector();
     }

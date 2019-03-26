@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -32,12 +34,12 @@ class InstallerController extends AbstractController
     public function installAction(Request $request, $stage)
     {
         // already installed?
-        if (true === $this->container->getParameter('installed') && 'complete' != $stage) {
+        if (true === $this->container->getParameter('installed') && 'complete' !== $stage) {
             $stage = 'installed';
         }
 
         // not installed but requesting installed stage?
-        if (false === $this->container->getParameter('installed') && 'installed' == $stage) {
+        if (false === $this->container->getParameter('installed') && 'installed' === $stage) {
             $stage = 'notinstalled';
         }
 

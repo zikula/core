@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -13,10 +15,10 @@ namespace Zikula\ThemeModule\Helper;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
@@ -169,14 +171,14 @@ class BundleSyncHelper
         // see if any themes have changed
         foreach ($bundleThemes as $name => $themeinfo) {
             if (isset($dbthemes[$name])) {
-                if (($dbthemes[$name]['type'] != $themeinfo['type']) ||
-                    ($dbthemes[$name]['description'] != $themeinfo['description']) ||
-                        ($dbthemes[$name]['version'] != $themeinfo['version']) ||
-                        ($dbthemes[$name]['admin'] != $themeinfo['admin']) ||
-                        ($dbthemes[$name]['user'] != $themeinfo['user']) ||
-                        ($dbthemes[$name]['system'] != $themeinfo['system']) ||
-                        ($dbthemes[$name]['contact'] != $themeinfo['contact']) ||
-                        ($dbthemes[$name]['xhtml'] != $themeinfo['xhtml'])) {
+                if (($dbthemes[$name]['type'] !== $themeinfo['type']) ||
+                    ($dbthemes[$name]['description'] !== $themeinfo['description']) ||
+                        ($dbthemes[$name]['version'] !== $themeinfo['version']) ||
+                        ($dbthemes[$name]['admin'] !== $themeinfo['admin']) ||
+                        ($dbthemes[$name]['user'] !== $themeinfo['user']) ||
+                        ($dbthemes[$name]['system'] !== $themeinfo['system']) ||
+                        ($dbthemes[$name]['contact'] !== $themeinfo['contact']) ||
+                        ($dbthemes[$name]['xhtml'] !== $themeinfo['xhtml'])) {
                     $themeinfo['id'] = $dbthemes[$name]['id'];
                     // update item
                     /** @var $item ThemeEntity */

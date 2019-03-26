@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -46,7 +48,7 @@ class JsResolver implements ResolverInterface
     {
         $this->bag = $bag;
         $this->merger = $merger;
-        $this->combine = 'prod' == $env && $combine;
+        $this->combine = 'prod' === $env && $combine;
     }
 
     public function compile()

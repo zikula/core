@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -61,7 +63,7 @@ class SearchController extends AbstractController
             }
         }
         $searchableModules = $collector->getAll();
-        if (0 == count($searchableModules)) {
+        if (0 === count($searchableModules)) {
             return $this->render('@ZikulaSearchModule/Search/unsearchable.html.twig');
         }
 
@@ -83,7 +85,7 @@ class SearchController extends AbstractController
             }
             $moduleFormBuilder->add($moduleName, AmendableModuleSearchType::class, [
                 'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
-                'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && (1 == $activeModules[$moduleName]))
+                'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && (1 === $activeModules[$moduleName]))
             ]);
             $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
         }
@@ -106,7 +108,7 @@ class SearchController extends AbstractController
                     'results' => $result['sqlResult'],
                     'router' => $this->get('router'),
                     'limitSummary' => $this->getVar('limitsummary', 200),
-                    'errors' => isset($searchApiErrors) ? $searchApiErrors : []
+                    'errors' => $searchApiErrors ?? []
                 ]);
                 // log the search if on first page
                 if ($formData['firstPage']) {
@@ -114,9 +116,8 @@ class SearchController extends AbstractController
                 }
 
                 return $this->render('@ZikulaSearchModule/Search/results.html.twig', $templateParameters);
-            } else {
-                $noResultsFound = true;
             }
+            $noResultsFound = true;
         }
 
         return [

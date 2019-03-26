@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -14,10 +16,10 @@ namespace Zikula\ExtensionsModule\Twig\Extension;
 use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHeaderFunction;
-use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleLinksFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleFooterFunction;
+use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHeaderFunction;
 use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleHelpFunction;
+use Zikula\ExtensionsModule\Twig\Extension\SimpleFunction\ModuleLinksFunction;
 
 class UserInterfaceExtension extends AbstractExtension
 {

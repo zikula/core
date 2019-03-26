@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -77,10 +79,10 @@ class LinkContainer implements LinkContainerInterface
      */
     public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
     {
-        if (LinkContainerInterface::TYPE_ADMIN == $type) {
+        if (LinkContainerInterface::TYPE_ADMIN === $type) {
             return $this->getAdmin();
         }
-        if (LinkContainerInterface::TYPE_USER == $type) {
+        if (LinkContainerInterface::TYPE_USER === $type) {
             return $this->getUser();
         }
 

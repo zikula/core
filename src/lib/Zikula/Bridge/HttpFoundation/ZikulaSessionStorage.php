@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -108,7 +110,7 @@ class ZikulaSessionStorage extends NativeSessionStorage
                 case self::SECURITY_LEVEL_LOW:
                     break;
                 case self::SECURITY_LEVEL_MEDIUM:
-                    if ((!$rememberMe && $cookieExpired) || $cookieAgedOut || (Constant::USER_ID_ANONYMOUS == $uid && $cookieExpired)) {
+                    if ((!$rememberMe && $cookieExpired) || $cookieAgedOut || (Constant::USER_ID_ANONYMOUS === $uid && $cookieExpired)) {
                         parent::regenerate(true, 2 * 365 * 24 * 60 * 60); // two years
                     }
                     break;

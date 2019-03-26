@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,8 +13,8 @@
 
 namespace Zikula\Core\Doctrine;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Composite;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Class WhereFromFilterTrait
@@ -33,12 +35,12 @@ trait WhereFromFilterTrait
     private function whereFromFilter(QueryBuilder $qb, array $filter, $exprType = 'and', $alias = 'u')
     {
         $exprType = in_array($exprType, ['and', 'or']) ? $exprType : 'and';
-        $exprMethod = strtolower($exprType) . "X";
+        $exprMethod = mb_strtolower($exprType) . "X";
         /** @var \Doctrine\ORM\Query\Expr\Composite $expr */
-        $expr = $qb->expr()->$exprMethod();
+        $expr = $qb->expr()->{$exprMethod}();
         $i = 1; // parameter counter
         foreach ($filter as $field => $value) {
-            if ('groups' == $field) {
+            if ('groups' === $field) {
                 $field = 'gid';
                 $alias = 'g';
             }
@@ -50,7 +52,7 @@ trait WhereFromFilterTrait
             }
             if (preg_match('/^IS (NOT )?NULL/i', $value['operator'], $matches)) {
                 $method = isset($matches[1]) ? 'isNotNull' : 'isNull';
-                $expr->add($qb->expr()->$method($alias . '.' . $field));
+                $expr->add($qb->expr()->{$method}($alias . '.' . $field));
             } else {
                 if (is_bool($value['operand'])) {
                     $dbValue = $value['operand'] ? '1' : '0';
@@ -74,7 +76,7 @@ trait WhereFromFilterTrait
                 ];
                 $method = $methodMap[$value['operator']];
 
-                $expr->add($qb->expr()->$method($alias . '.' . $field, '?' . $i));
+                $expr->add($qb->expr()->{$method}($alias . '.' . $field, '?' . $i));
                 $qb->setParameter($i, $dbValue);
             }
             $i++;

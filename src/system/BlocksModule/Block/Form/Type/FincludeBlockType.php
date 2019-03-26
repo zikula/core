@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -92,7 +94,7 @@ class FincludeBlockType extends AbstractType
      */
     public function validateFileAgainstMimeType($data, ExecutionContextInterface $context)
     {
-        if ('text/html' == mime_content_type($data['filo']) && 0 !== $data['typo']) {
+        if ('text/html' === mime_content_type($data['filo']) && 0 !== $data['typo']) {
             $context->addViolation($this->translator->__('For Html files please select the Html file type.'));
         }
     }

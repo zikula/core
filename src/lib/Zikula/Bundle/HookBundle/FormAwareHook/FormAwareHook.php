@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -53,10 +55,10 @@ class FormAwareHook extends Hook
     {
         if (($child instanceof FormInterface) && ($child->getConfig()->getMapped() || $child->getConfig()->getAutoInitialize())) {
             throw new InvalidConfigurationException('Hooked child forms must disable `mapped` and `auto_initialize` options.');
-        } else {
-            $options['mapped'] = false;
-            $options['auto_initialize'] = false;
         }
+        $options['mapped'] = false;
+        $options['auto_initialize'] = false;
+
         $this->form->add($child, $type, $options);
 
         return $this;
