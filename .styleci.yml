@@ -53,7 +53,6 @@ disabled:
   - phpdoc_separation
   - phpdoc_summary
   - phpdoc_to_comment
-  - phpdoc_var_to_type
   - pre_increment
   - self_accessor
   - single_quote
