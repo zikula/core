@@ -13,17 +13,25 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Tests\Functional;
 
-use JMS\TranslationBundle\Exception\RuntimeException;
+use JMS\I18nRoutingBundle\JMSI18nRoutingBundle;
+use JMS\TranslationBundle\JMSTranslationBundle;
+use RuntimeException;
+use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpKernel\Kernel;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreBundle\Tests\Functional\Fixture\TestBundle\TestBundle;
 
 class AppKernel extends ZikulaKernel
 {
+    /**
+     * @var string
+     */
     private $config;
 
-    public function __construct($config)
+    public function __construct(string $config)
     {
         parent::__construct('test', true);
 
@@ -42,35 +50,34 @@ class AppKernel extends ZikulaKernel
     public function registerBundles()
     {
         return [
-            new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
-            new \JMS\TranslationBundle\JMSTranslationBundle(),
-            new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new \Zikula\Bundle\CoreBundle\Tests\Functional\Fixture\TestBundle\TestBundle(), // contains translation.xml config definitions
+            new FrameworkBundle(),
+            new TwigBundle(),
+            new JMSI18nRoutingBundle(),
+            new JMSTranslationBundle(),
+            new SensioFrameworkExtraBundle(),
+            new TestBundle(), // contains translation.xml config definitions
         ];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load($this->config);
     }
 
-    public function serialize()
+    public function serialize(): string
     {
         return $this->config;
     }
 
-    public function unserialize($config)
+    public function unserialize($config): void
     {
         $this->__construct($config);
     }
 
     /**
      * This needs to be set to the 'normal' kernel cache dir
-     * @return string
      */
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return __DIR__ . '/../../../../../../var/cache/test';
     }
@@ -78,18 +85,8 @@ class AppKernel extends ZikulaKernel
     /*
      * This needs to be set to the 'normal' kernel logs dir
      */
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return __DIR__ . '/../../../../../../var/logs';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
-     */
-    public function locateResource($name, $dir = null, $first = true)
-    {
-        return Kernel::locateResource($name, $dir, $first);
     }
 }

@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Tests\Api;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
 
-class PasswordApiTest extends \PHPUnit\Framework\TestCase
+class PasswordApiTest extends TestCase
 {
-    const ALLOWED_CHARS_REGEXP = ';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];';
+    private const ALLOWED_CHARS_REGEXP = ';[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|\][];';
 
     /**
-     * @var PasswordApi
+     * @var PasswordApiInterface
      */
     private $api;
 
-    /**
-     * CapabilityApiTest constructor.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->api = new PasswordApi();
     }
@@ -35,7 +35,7 @@ class PasswordApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers PasswordApi::getHashedPassword()
      */
-    public function testGetHashedPassword()
+    public function testGetHashedPassword(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678'); // default = 8 = sha256
         $this->assertEquals(72, mb_strlen($hashedPass));
@@ -55,44 +55,44 @@ class PasswordApiTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testGetHashedPasswordOnEmpty()
+    public function testGetHashedPasswordOnEmpty(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678', '');
     }
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testGetHashedPasswordOnNull()
+    public function testGetHashedPasswordOnNull(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678', null);
     }
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testGetHashedPasswordOnString()
+    public function testGetHashedPasswordOnString(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678', 'a');
     }
 
     /**
      * @covers PasswordApi::getHashedPassword()
+     * @expectedException InvalidArgumentException
      */
-    public function testGetHashedPasswordOnUndefined()
+    public function testGetHashedPasswordOnUndefined(): void
     {
-        $this->setExpectedException(\PHPUnit\Framework\Error::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 
     /**
      * @covers PasswordApi::generatePassword()
      */
-    public function testGeneratePassword()
+    public function testGeneratePassword(): void
     {
         $password = $this->api->generatePassword();
         $this->assertEquals(5, mb_strlen($password));
@@ -102,7 +102,7 @@ class PasswordApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers PasswordApi::passwordsMatch()
      */
-    public function testPasswordsMatch()
+    public function testPasswordsMatch(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678');
         $this->assertTrue($this->api->passwordsMatch('12345678', $hashedPass));
@@ -110,9 +110,9 @@ class PasswordApiTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers PasswordApi::passwordsMatch()
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testPasswordsMatchExceptionOnEmpty()
+    public function testPasswordsMatchExceptionOnEmpty(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678');
         $this->api->passwordsMatch('', $hashedPass);
@@ -120,9 +120,9 @@ class PasswordApiTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers PasswordApi::passwordsMatch()
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testPasswordsMatchExceptionOnNull()
+    public function testPasswordsMatchExceptionOnNull(): void
     {
         $hashedPass = $this->api->getHashedPassword('12345678');
         $this->api->passwordsMatch(null, $hashedPass);

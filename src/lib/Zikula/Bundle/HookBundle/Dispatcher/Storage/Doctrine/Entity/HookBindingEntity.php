@@ -25,7 +25,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 class HookBindingEntity extends EntityAccess
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -48,14 +48,14 @@ class HookBindingEntity extends EntityAccess
     private $powner;
 
     /**
-     * @var integer
+     * @var string
      *
      * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
      */
     private $sareaid;
 
     /**
-     * @var integer
+     * @var string
      *
      * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
      */
@@ -69,156 +69,85 @@ class HookBindingEntity extends EntityAccess
     private $category;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="sortorder", type="smallint", nullable=false)
      */
     private $sortorder;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set sowner
-     *
-     * @param string $sowner
-     * @return HookBindingEntity
-     */
-    public function setSowner($sowner)
+    public function setSowner(string $sowner): self
     {
         $this->sowner = $sowner;
 
         return $this;
     }
 
-    /**
-     * Get sowner
-     *
-     * @return string
-     */
-    public function getSowner()
+    public function getSowner(): string
     {
         return $this->sowner;
     }
 
-    /**
-     * Set powner
-     *
-     * @param string $powner
-     * @return HookBindingEntity
-     */
-    public function setPowner($powner)
+    public function setPowner(string $powner): self
     {
         $this->powner = $powner;
 
         return $this;
     }
 
-    /**
-     * Get powner
-     *
-     * @return string
-     */
-    public function getPowner()
+    public function getPowner(): string
     {
         return $this->powner;
     }
 
-    /**
-     * Set sareaid
-     *
-     * @param integer $sareaid
-     * @return HookBindingEntity
-     */
-    public function setSareaid($sareaid)
+    public function setSareaid(string $subscriberAreaId): self
     {
-        $this->sareaid = $sareaid;
+        $this->sareaid = $subscriberAreaId;
 
         return $this;
     }
 
-    /**
-     * Get sareaid
-     *
-     * @return integer
-     */
-    public function getSareaid()
+    public function getSareaid(): string
     {
         return $this->sareaid;
     }
 
-    /**
-     * Set pareaid
-     *
-     * @param integer $pareaid
-     * @return HookBindingEntity
-     */
-    public function setPareaid($pareaid)
+    public function setPareaid(string $providerAreaId): self
     {
-        $this->pareaid = $pareaid;
+        $this->pareaid = $providerAreaId;
 
         return $this;
     }
 
-    /**
-     * Get pareaid
-     *
-     * @return integer
-     */
-    public function getPareaid()
+    public function getPareaid(): string
     {
         return $this->pareaid;
     }
 
-    /**
-     * Set category
-     *
-     * @param string $category
-     * @return HookBindingEntity
-     */
-    public function setCategory($category)
+    public function setCategory(string $category): self
     {
         $this->category = $category;
 
         return $this;
     }
 
-    /**
-     * Get category
-     *
-     * @return string
-     */
-    public function getCategory()
+    public function getCategory(): string
     {
         return $this->category;
     }
 
-    /**
-     * Set sortorder
-     *
-     * @param integer $sortorder
-     * @return HookBindingEntity
-     */
-    public function setSortorder($sortorder)
+    public function setSortorder(int $sortorder): self
     {
         $this->sortorder = $sortorder;
 
         return $this;
     }
 
-    /**
-     * Get sortorder
-     *
-     * @return integer
-     */
-    public function getSortorder()
+    public function getSortorder(): int
     {
         return $this->sortorder;
     }

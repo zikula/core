@@ -28,29 +28,25 @@ class RequestVoter implements VoterInterface
      */
     private $requestStack;
 
-    /**
-     * RequestVoter constructor.
-     * @param RequestStack $requestStack
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param ItemInterface $item
-     * @return bool|null
-     */
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return null;
+        }
 
-        if ($item->getUri() === $request->getRequestUri()) {
+        $itemUri = $item->getUri();
+        if ($itemUri === $request->getRequestUri()) {
             // URL's completely match
             return true;
         }
-        if ($item->getUri() !== $request->getBaseUrl() . '/'
-            && mb_substr($request->getRequestUri(), 0, mb_strlen($item->getUri())) === $item->getUri()) {
+        if ($itemUri !== $request->getBaseUrl() . '/'
+            && 0 === mb_strpos($request->getRequestUri(), $itemUri)) {
             // URL isn't just "/" and the first part of the URL match
             return true;
         }

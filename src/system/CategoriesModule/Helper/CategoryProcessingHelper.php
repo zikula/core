@@ -16,8 +16,10 @@ namespace Zikula\CategoriesModule\Helper;
 use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
 /**
  * Category processing helper functions for the categories module.
@@ -35,24 +37,24 @@ class CategoryProcessingHelper
     private $kernel;
 
     /**
+     * @var CategoryRegistryRepositoryInterface
+     */
+    private $categoryRegistryRepository;
+
+    /**
      * @var CapabilityApiInterface
      */
     private $capabilityApi;
 
-    /**
-     * CategoryProcessingHelper constructor.
-     *
-     * @param EntityManagerInterface $entityManager EntityManager service instance
-     * @param ZikulaHttpKernelInterface $kernel KernelInterface service instance
-     * @param CapabilityApiInterface $capabilityApi
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ZikulaHttpKernelInterface $kernel,
+        CategoryRegistryRepositoryInterface $categoryRegistryRepository,
         CapabilityApiInterface $capabilityApi
     ) {
         $this->entityManager = $entityManager;
         $this->kernel = $kernel;
+        $this->categoryRegistryRepository = $categoryRegistryRepository;
         $this->capabilityApi = $capabilityApi;
     }
 
@@ -60,12 +62,8 @@ class CategoryProcessingHelper
      * Checks whether a category may be deleted or moved.
      * For this all registries are checked to see if the given category is contained in the corresponding subtree.
      * If yes, the mapping table of the corresponding module is checked to see if it contains the given category.
-     *
-     * @param CategoryEntity $category The category to process
-     *
-     * @return boolean true if category may be deleted or moved, false otherwise
      */
-    public function mayCategoryBeDeletedOrMoved(CategoryEntity $category)
+    public function mayCategoryBeDeletedOrMoved(CategoryEntity $category): bool
     {
         // TODO #3920
         return true;
@@ -84,13 +82,12 @@ class CategoryProcessingHelper
         }
 
         // fetch registries
-        $registries = $this->entityManager->getRepository('ZikulaCategoriesModule:CategoryRegistryEntity')
-            ->findAll();
+        $registries = $this->categoryRegistryRepository->findAll();
 
         // iterate over all registries
         foreach ($registries as $registry) {
             // check if the registry subtree contains our category
-            if (!in_array($registry->getCategory()->getId(), $parentIds)) {
+            if (!in_array($registry->getCategory()->getId(), $parentIds, true)) {
                 continue;
             }
 
@@ -101,7 +98,7 @@ class CategoryProcessingHelper
 
             $capabilities = $this->capabilityApi->getCapabilitiesOf($registry->getModname());
             foreach ($capabilities[CapabilityApi::CATEGORIZABLE] as $entityClass) {
-                if (!is_subclass_of($entityClass, 'Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment')) {
+                if (!is_subclass_of($entityClass, AbstractCategoryAssignment::class)) {
                     continue;
                 }
                 // check if this mapping table contains a reference to the given category

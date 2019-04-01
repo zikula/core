@@ -47,39 +47,39 @@ abstract class AbstractEntityAttribute extends EntityAccess
 
     abstract public function setEntity($entity);
 
-    public function __construct($name, $value, $entity)
+    public function __construct(string $name, string $value, $entity)
     {
         $this->name = $name;
         $this->value = $value;
         $this->setEntity($entity);
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    public function setValue($value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }

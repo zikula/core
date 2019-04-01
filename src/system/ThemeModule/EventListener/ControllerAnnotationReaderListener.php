@@ -20,8 +20,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeModule\Engine\Engine;
 
 /**
- * Class ControllerAnnotationReaderListener
- *
  * This class reads annotations from a controller and submits them to the theme engine to
  * potentially change the theme based on that annotation.
  * @see \Zikula\ThemeModule\Engine\Annotation\Theme
@@ -35,23 +33,6 @@ class ControllerAnnotationReaderListener implements EventSubscriberInterface
         $this->themeEngine = $themeEngine;
     }
 
-    /**
-     * Read the controller annotations and change theme if the annotation indicate that need
-     * @param FilterControllerEvent $event
-     */
-    public function readControllerAnnotations(FilterControllerEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            // prevents calling this for controller usage within a template or elsewhere
-            return;
-        }
-        $controller = $event->getController();
-        list($controller, $method) = $controller;
-        // the controller could be a proxy, e.g. when using the JMSSecuriyExtraBundle or JMSDiExtraBundle
-        $controllerClassName = ClassUtils::getClass($controller);
-        $this->themeEngine->changeThemeByAnnotation($controllerClassName, $method);
-    }
-
     public static function getSubscribedEvents()
     {
         return [
@@ -59,5 +40,21 @@ class ControllerAnnotationReaderListener implements EventSubscriberInterface
                 ['readControllerAnnotations']
             ]
         ];
+    }
+
+    /**
+     * Read the controller annotations and change theme if the annotation indicate that need
+     */
+    public function readControllerAnnotations(FilterControllerEvent $event): void
+    {
+        if (!$event->isMasterRequest()) {
+            // prevents calling this for controller usage within a template or elsewhere
+            return;
+        }
+        $controller = $event->getController();
+        list($controller, $method) = $controller;
+        // the controller could be a proxy, e.g. when using the JMSSecurityExtraBundle or JMSDiExtraBundle
+        $controllerClassName = ClassUtils::getClass($controller);
+        $this->themeEngine->changeThemeByAnnotation($controllerClassName, $method);
     }
 }

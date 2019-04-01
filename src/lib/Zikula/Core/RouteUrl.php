@@ -13,61 +13,65 @@ declare(strict_types=1);
 
 namespace Zikula\Core;
 
+use InvalidArgumentException;
+
 /**
  * RouteUrl class.
  */
 class RouteUrl implements UrlInterface
 {
+    /**
+     * @var string
+     */
     private $route;
 
+    /**
+     * @var array
+     */
     private $args;
 
+    /**
+     * @var string
+     */
     private $fragment;
 
-    public function __construct($route, array $args = [], $fragment = null)
+    public function __construct(string $route, array $args = [], string $fragment = null)
     {
         $this->route = $route;
         $this->args = $args;
         $this->fragment = $fragment;
     }
 
-    public function getLanguage()
+    public function getLanguage(): ?string
     {
-        return isset($this->args['_locale']) ? $this->args['_locale'] : null;
+        return $this->args['_locale'] ?? null;
     }
 
-    public function setLanguage($lang)
+    public function setLanguage(string $lang): void
     {
         $this->args['_locale'] = $lang;
     }
 
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
 
     /**
-     * Factory method to create instance and set Route simultaneously
+     * Factory method to create instance and set Route simultaneously.
      *
-     * @param string $route
-     * @param array $args
-     * @param string $fragment
-     *
-     * @return RouteUrl
-     *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public static function createFromRoute($route, $args = [], $fragment = '')
+    public static function createFromRoute(string $route, array $args = [], string $fragment = ''): self
     {
         if (empty($route)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException('No route given in RouteUrl.');
         }
-        $routeUrl = new self($route, $args, $fragment);
 
-        return $routeUrl;
+        return new self($route, $args, $fragment);
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'route' => $this->route,
@@ -76,17 +80,17 @@ class RouteUrl implements UrlInterface
         ];
     }
 
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->args;
     }
 
-    public function serialize()
+    public function serialize(): string
     {
         return serialize($this->toArray());
     }
 
-    public function getFragment()
+    public function getFragment(): ?string
     {
         return $this->fragment;
     }

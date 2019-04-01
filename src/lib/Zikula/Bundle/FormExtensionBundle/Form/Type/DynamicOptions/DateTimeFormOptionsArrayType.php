@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class DateTimeFormOptionsArrayType extends FormOptionsArrayType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
@@ -31,14 +28,14 @@ class DateTimeFormOptionsArrayType extends FormOptionsArrayType
         $builder
             ->add('html5', CheckboxType::class, [
                 'label' => $this->__('Html5'),
-                'required' => false,
+                'required' => false
             ])
             ->add('widget', ChoiceType::class, [
                 'label' => $this->__('Widget'),
                 'choices' => [
                     $this->__('Choice') => 'choice',
                     $this->__('Text') => 'text',
-                    $this->__('Single Text') => 'single_text',
+                    $this->__('Single Text') => 'single_text'
                 ]
             ])
             ->add('input', ChoiceType::class, [
@@ -47,13 +44,13 @@ class DateTimeFormOptionsArrayType extends FormOptionsArrayType
                     $this->__('String') => 'string',
                     $this->__('DateTime Object') => 'datetime',
                     $this->__('Array') => 'array',
-                    $this->__('Timestamp') => 'timestamp',
+                    $this->__('Timestamp') => 'timestamp'
                 ]
             ])
             ->add('format', TextType::class, [
                 'label' => $this->__('Format'),
                 'help' => $this->__('e.g. yyyy-MM-dd'),
-                'required' => false,
+                'required' => false
             ])
             ->add('model_timezone', TimezoneType::class)
         ;

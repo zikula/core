@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,9 +17,6 @@ use JMS\I18nRoutingBundle\Router\DefaultRouteExclusionStrategy as BaseDefaultRou
 use Symfony\Component\Routing\Route;
 use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 
-/**
- * Class DefaultRouteExclusionStrategy.
- */
 class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
 {
     /**
@@ -25,19 +24,11 @@ class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
      */
     private $extractTranslationHelper;
 
-    /**
-     * DefaultRouteExclusionStrategy constructor.
-     *
-     * @param ExtractTranslationHelper $extractTranslationHelper Extract translation helper
-     */
     public function __construct(ExtractTranslationHelper $extractTranslationHelper)
     {
         $this->extractTranslationHelper = $extractTranslationHelper;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function shouldExcludeRoute($routeName, Route $route)
     {
         $exclude = parent::shouldExcludeRoute($routeName, $route);

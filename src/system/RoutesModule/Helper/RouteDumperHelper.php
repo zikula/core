@@ -12,9 +12,11 @@
 
 namespace Zikula\RoutesModule\Helper;
 
+use Exception;
 use FOS\JsRoutingBundle\Command\DumpCommand;
 use JMS\I18nRoutingBundle\Router\I18nLoader;
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -48,15 +50,6 @@ class RouteDumperHelper
      */
     private $dumpCommand;
 
-    /**
-     * RouteDumperHelper constructor.
-     *
-     * @param ContainerInterface $container
-     * @param VariableApiInterface $variableApi
-     * @param LocaleApiInterface $localeApi
-     * @param TranslatorInterface $translator
-     * @param DumpCommand $dumpCommand
-     */
     public function __construct(
         ContainerInterface $container,
         VariableApiInterface $variableApi,
@@ -74,19 +67,17 @@ class RouteDumperHelper
     /**
      * Dump the routes exposed to javascript to '/web/js/fos_js_routes.js'
      *
-     * @param null $lang
-     * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    public function dumpJsRoutes($lang = null)
+    public function dumpJsRoutes(string $lang = null): string
     {
         // determine list of supported languages
         $installedLanguages = $this->localeApi->getSupportedLocales();
-        if (isset($lang) && in_array($lang, $installedLanguages)) {
+        if (isset($lang) && in_array($lang, $installedLanguages, true)) {
             // use provided lang if available
             $langs = [$lang];
         } else {
-            $multilingual = (bool)$this->variableApi->getSystemVar('multilingual', false);
+            $multilingual = (bool)$this->variableApi->getSystemVar('multilingual');
             if ($multilingual) {
                 // get all available locales
                 $langs = $installedLanguages;
@@ -103,7 +94,7 @@ class RouteDumperHelper
         if (file_exists($targetPath)) {
             try {
                 unlink($targetPath);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $errors .= $this->translator->__f("Error: Could not delete '%path' because %msg", [
                     '%path' => $targetPath,
                     '%msg' => $exception->getMessage()
@@ -111,12 +102,12 @@ class RouteDumperHelper
             }
         }
 
-        foreach ($langs as $lang) {
-            $input = new ArrayInput(['--locale' => $lang . I18nLoader::ROUTING_PREFIX]);
+        foreach ($langs as $locale) {
+            $input = new ArrayInput(['--locale' => $locale . I18nLoader::ROUTING_PREFIX]);
             $output = new NullOutput();
             try {
                 $this->dumpCommand->run($input, $output);
-            } catch (\RuntimeException $exception) {
+            } catch (RuntimeException $exception) {
                 $errors .= $exception->getMessage() . '. ';
             }
         }

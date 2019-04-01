@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormFactory;
@@ -67,11 +68,6 @@ abstract class AbstractController
      */
     protected $translator;
 
-    /**
-     * Constructor.
-     *
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -82,16 +78,12 @@ abstract class AbstractController
         $this->translator = $container->get(Translator::class);
     }
 
-    /**
-     * @param string $moduleName
-     * @return bool
-     */
-    protected function installModule($moduleName)
+    protected function installModule(string $moduleName): bool
     {
         $module = $this->container->get('kernel')->getModule($moduleName);
         /** @var AbstractCoreModule $module */
         $className = $module->getInstallerClass();
-        $reflectionInstaller = new \ReflectionClass($className);
+        $reflectionInstaller = new ReflectionClass($className);
         $installer = $reflectionInstaller->newInstance();
         $installer->setBundle($module);
         if ($installer instanceof ContainerAwareInterface) {
@@ -106,10 +98,9 @@ abstract class AbstractController
     }
 
     /**
-     * Scan the filesystem and sync the modules table. Set all core modules to active state
-     * @return bool
+     * Scan the filesystem and sync the modules table. Set all core modules to active state.
      */
-    protected function reSyncAndActivateModules()
+    protected function reSyncAndActivateModules(): bool
     {
         $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
         $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
@@ -129,34 +120,29 @@ abstract class AbstractController
     }
 
     /**
-     * Set an admin category for a module or set to default
-     * @param $moduleName
-     * @param string $translatedCategoryName
+     * Set an admin category for a module or set to default.
      */
-    protected function setModuleCategory($moduleName, $translatedCategoryName)
+    protected function setModuleCategory(string $moduleName, string $translatedCategoryName): bool
     {
         $doctrine = $this->container->get('doctrine');
-        $modulesCategories = $doctrine->getRepository('ZikulaAdminModule:AdminCategoryEntity')
-            ->getIndexedCollection('name');
+        $categoryRepository = $doctrine->getRepository('ZikulaAdminModule:AdminCategoryEntity');
+        $modulesCategories = $categoryRepository->getIndexedCollection('name');
         $moduleEntity = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->findOneBy(['name' => $moduleName]);
+
+        $moduleRepository = $doctrine->getRepository('ZikulaAdminModule:AdminModuleEntity');
         if (isset($modulesCategories[$translatedCategoryName])) {
-            $doctrine->getRepository('ZikulaAdminModule:AdminModuleEntity')
-                ->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
+            $moduleRepository->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
         } else {
-            $defaultCategory = $doctrine->getRepository('ZikulaAdminModule:AdminCategoryEntity')
-                ->find($this->container->get(VariableApi::class)
-                    ->get('ZikulaSettingsModule', 'defaultcategory', 5)
-                );
-            $doctrine->getRepository('ZikulaAdminModule:AdminModuleEntity')
-                ->setModuleCategory($moduleEntity, $defaultCategory);
+            $defaultCategoryId = $this->container->get(VariableApi::class)->get('ZikulaSettingsModule', 'defaultcategory', 5);
+            $defaultCategory = $categoryRepository->find($defaultCategoryId);
+            $moduleRepository->setModuleCategory($moduleEntity, $defaultCategory);
         }
+
+        return true;
     }
 
-    /**
-     * @return bool
-     */
-    protected function loginAdmin($params)
+    protected function loginAdmin($params): bool
     {
         $user = $this->container->get('doctrine')->getRepository('ZikulaUsersModule:UserEntity')
             ->findOneBy(['uname' => $params['username']]);
@@ -169,12 +155,9 @@ abstract class AbstractController
     }
 
     /**
-     * remove base64 encoding for admin params
-     *
-     * @param $params
-     * @return mixed
+     * Remove base64 encoding for admin parameters.
      */
-    protected function decodeParameters($params)
+    protected function decodeParameters(array $params = []): array
     {
         if (!empty($params['password'])) {
             $params['password'] = base64_decode($params['password']);
@@ -189,13 +172,7 @@ abstract class AbstractController
         return $params;
     }
 
-    /**
-     * @param string $view
-     * @param array $parameters
-     * @param Response|null $response
-     * @return Response
-     */
-    protected function renderResponse($view, array $parameters = [], Response $response = null)
+    protected function renderResponse(string $view, array $parameters = [], Response $response = null): Response
     {
         if (null === $response) {
             $response = new PlainResponse();
@@ -206,12 +183,7 @@ abstract class AbstractController
         return $response;
     }
 
-    /**
-     * @param $eventName
-     * @param array $args
-     * @return bool
-     */
-    protected function fireEvent($eventName, array $args = [])
+    protected function fireEvent(string $eventName, array $args = []): bool
     {
         $event = new GenericEvent();
         $event->setArguments($args);

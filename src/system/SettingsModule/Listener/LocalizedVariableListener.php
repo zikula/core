@@ -25,25 +25,9 @@ class LocalizedVariableListener implements EventSubscriberInterface
      */
     private $variableApi;
 
-    /**
-     * LocaleListener constructor.
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(VariableApiInterface $variableApi)
     {
         $this->variableApi = $variableApi;
-    }
-
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-        $locale = $event->getRequest()->getLocale();
-        if (!isset($locale)) {
-            $locale = $event->getRequest()->getDefaultLocale();
-        }
-        $this->variableApi->localizeVariables($locale);
     }
 
     public static function getSubscribedEvents()
@@ -54,5 +38,17 @@ class LocalizedVariableListener implements EventSubscriberInterface
                 ['onKernelRequest', 14]
             ]
         ];
+    }
+
+    public function onKernelRequest(GetResponseEvent $event): void
+    {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        $locale = $event->getRequest()->getLocale();
+        if (!isset($locale)) {
+            $locale = $event->getRequest()->getDefaultLocale();
+        }
+        $this->variableApi->localizeVariables($locale);
     }
 }

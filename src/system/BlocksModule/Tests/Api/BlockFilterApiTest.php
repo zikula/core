@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\BlocksModule\Api\ApiInterface\BlockFilterApiInterface;
 use Zikula\BlocksModule\Api\BlockFilterApi;
 use Zikula\BlocksModule\Entity\BlockEntity;
 
-class BlockFilterApiTest extends \PHPUnit\Framework\TestCase
+class BlockFilterApiTest extends TestCase
 {
     /**
-     * @var BlockFilterApi
+     * @var BlockFilterApiInterface
      */
     private $api;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $request = new Request([
             // query params
@@ -54,7 +56,7 @@ class BlockFilterApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers BlockFilterApi::getFilterAttributeChoices
      */
-    public function testGetFilterAttributeChoices()
+    public function testGetFilterAttributeChoices(): void
     {
         $expected = [
             'foo' => 'foo',
@@ -70,10 +72,8 @@ class BlockFilterApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers BlockFilterApi::isDisplayable
      * @dataProvider filterProvider
-     * @param array $filter
-     * @param bool $expected
      */
-    public function testIsDisplayable($filter, $expected)
+    public function testIsDisplayable(array $filter, bool $expected): void
     {
         $blockEntity = $this->getMockBuilder(BlockEntity::class)
             ->getMock();
@@ -86,7 +86,7 @@ class BlockFilterApiTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $this->api->isDisplayable($blockEntity));
     }
 
-    public function filterProvider()
+    public function filterProvider(): array
     {
         return [
             [[], true],
@@ -133,17 +133,17 @@ class BlockFilterApiTest extends \PHPUnit\Framework\TestCase
             [[[
                 'attribute' => 'int',
                 'comparator' => 'in_array',
-                'value' => "8,9,10"
+                'value' => '8,9,10'
             ]], true],
             [[[
                 'attribute' => 'int',
                 'comparator' => '!in_array',
-                'value' => "10,11,12"
+                'value' => '10,11,12'
             ]], true],
             [[[
                 'attribute' => 'int',
                 'comparator' => 'in_array',
-                'value' => " 8,9     ,     10   "
+                'value' => ' 8,9     ,     10   '
             ]], true],
             [[
                 [

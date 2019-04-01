@@ -18,20 +18,14 @@ use Zikula\MenuModule\Block\Form\Type\MenuType;
 
 class MenuBlock extends AbstractBlockHandler
 {
-    /**
-     * display block
-     *
-     * @param array $properties
-     * @return string the rendered block
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
         $properties['options'] = json_decode($properties['options'], true);
 
         return $this->renderView('@ZikulaMenuModule/Block/menu.html.twig', $properties);
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
         return MenuType::class;
     }

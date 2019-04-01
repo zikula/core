@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule;
 
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
@@ -23,19 +24,13 @@ use Zikula\ThemeModule\Helper\BundleSyncHelper;
  */
 class ThemeModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the theme module.
-     *
-     * @return boolean true if initialisation successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
-        // create the table
         try {
             $this->schemaTool->create([
                 ThemeEntity::class
             ]);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('error', $exception->getMessage());
 
             return false;
@@ -53,7 +48,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
         $this->entityManager->flush();
 
         // define defaults for module vars
-        $this->setVar('modulesnocache', '');
+        $this->setVar('modulesnocache');
         $this->setVar('enablecache', false);
         $this->setVar('compile_check', true);
         $this->setVar('cache_lifetime', 1800);
@@ -79,16 +74,9 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * @param  string $oldversion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldversion)
+    public function upgrade(string $oldVersion): bool
     {
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '3.4.2':
                 $this->delVar('enable_mobile_theme');
             case '3.4.3':
@@ -103,12 +91,7 @@ class ThemeModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the Admin module
-     *
-     * @return bool true if deletion successful, false otherwise
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Deletion not allowed
         return false;

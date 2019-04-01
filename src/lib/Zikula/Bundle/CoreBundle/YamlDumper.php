@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle;
 
+use InvalidArgumentException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -21,29 +22,30 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YamlDumper
 {
+    /**
+     * @var Filesystem
+     */
     protected $fs;
 
+    /**
+     * @var string
+     */
     protected $fullPath;
 
-    public function __construct($configDir, $filePath = 'custom_parameters.yml', $initCopy = null)
+    public function __construct(string $configDir, string $filePath = 'custom_parameters.yml', string $initCopy = null)
     {
         $this->fullPath = $configDir . DIRECTORY_SEPARATOR . $filePath;
         $this->fs = new Filesystem();
-        if (!empty($initCopy)) {
-            if (!$this->fs->exists($this->fullPath)) {
-                // initialize file from a copy of original
-                $this->fs->copy($configDir . DIRECTORY_SEPARATOR . $initCopy, $this->fullPath);
-            }
+        if (!empty($initCopy) && !$this->fs->exists($this->fullPath)) {
+            // initialize file from a copy of original
+            $this->fs->copy($configDir . DIRECTORY_SEPARATOR . $initCopy, $this->fullPath);
         }
     }
 
     /**
      * Sets a parameter.
-     *
-     * @param string $name  The parameter's name
-     * @param bool   $value The parameter's value
      */
-    public function setParameter($name, $value)
+    public function setParameter(string $name, $value): void
     {
         $this->validateName($name, true);
         $configuration = $this->parseFile();
@@ -53,10 +55,8 @@ class YamlDumper
 
     /**
      * Set all the parameters.
-     *
-     * @param $params
      */
-    public function setParameters($params)
+    public function setParameters(array $params = []): void
     {
         foreach ($params as $name => $value) {
             $this->validateName($name, true);
@@ -69,56 +69,43 @@ class YamlDumper
     /**
      * Returns a parameter.
      *
-     * @param string $name The requested parameter's name
-     *
      * @return mixed The parameter value
      */
-    public function getParameter($name)
+    public function getParameter(string $name)
     {
         $this->validateName($name, true);
         $configuration = $this->parseFile();
-        if (isset($configuration['parameters'][$name])) {
-            return $configuration['parameters'][$name];
-        }
 
-        return null;
+        return $configuration['parameters'][$name] ?? null;
     }
 
     /**
      * Return all the parameters.
-     *
-     * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         $configuration = $this->parseFile();
-        if (isset($configuration['parameters'])) {
-            return $configuration['parameters'];
-        }
 
-        return [];
+        return $configuration['parameters'] ?? [];
     }
 
     /**
      * Deletes a parameter.
-     *
-     * @param string $name The parameter's name
      */
-    public function delParameter($name)
+    public function delParameter(string $name): void
     {
         $this->validateName($name, true);
         $configuration = $this->parseFile();
-        unset($configuration['parameters'][$name]);
-        $this->dumpFile($configuration);
+        if (isset($configuration['parameters'][$name])) {
+            unset($configuration['parameters'][$name]);
+            $this->dumpFile($configuration);
+        }
     }
 
     /**
      * Sets a configuration.
-     *
-     * @param string $name  The configuration's name
-     * @param mixed $value The configuration's value
      */
-    public function setConfiguration($name, $value)
+    public function setConfiguration(string $name, $value): void
     {
         $this->validateName($name, false);
         $configuration = $this->parseFile();
@@ -129,70 +116,59 @@ class YamlDumper
     /**
      * Returns a configuration.
      *
-     * @param string $name The requested configuration's name
-     *
      * @return mixed The configuration value
      */
-    public function getConfiguration($name)
+    public function getConfiguration(string $name)
     {
         $this->validateName($name, true);
         $configuration = $this->parseFile();
-        if (isset($configuration[$name])) {
-            return $configuration[$name];
-        }
 
-        return null;
+        return $configuration[$name] ?? null;
     }
 
     /**
      * Deletes a configuration.
-     *
-     * @param string $name The configuration's name
      */
-    public function delConfiguration($name)
+    public function delConfiguration(string $name): void
     {
         $this->validateName($name, false);
         $configuration = $this->parseFile();
-        unset($configuration[$name]);
-        $this->dumpFile($configuration);
+        if (isset($configuration[$name])) {
+            unset($configuration[$name]);
+            $this->dumpFile($configuration);
+        }
     }
 
     /**
      * Returns configuration in html format.
-     *
-     * @param string $name The requested configuration's name
-     * @return string
      */
-    public function getConfigurationForHtml($name)
+    public function getConfigurationForHtml(string $name): string
     {
         $config = $this->getConfiguration($name);
-        $html = $this->formatValue($config);
 
-        return $html;
+        return $this->formatValue($config);
     }
 
     /**
      * Formats a value for html (recursive array safe).
      *
-     * @param $value
-     *
-     * @return string
+     * @param mixed $value
      */
-    protected function formatValue($value)
+    protected function formatValue($value): string
     {
         if (null === $value) {
-            return '<i>null</i>';
+            return '<em>null</em>';
         }
 
         $html = '';
 
         foreach ($value as $key => $val) {
-            $html .= '<li><strong>' . htmlspecialchars($key, ENT_QUOTES) . ':</strong>';
+            $html .= '<li><strong>' . htmlspecialchars((string)$key, ENT_QUOTES) . ':</strong>';
             if (is_array($val)) {
                 $html .= $this->formatValue($val) . "</li>\n";
             } else {
-                $val = !empty($val) ? htmlspecialchars($val, ENT_QUOTES) : '<em>null</em>';
-                $html .= " " . $val . "</li>\n";
+                $val = !empty($val) ? htmlspecialchars((string)$val, ENT_QUOTES) : '<em>null</em>';
+                $html .= ' ' . $val . "</li>\n";
             }
         }
 
@@ -201,10 +177,8 @@ class YamlDumper
 
     /**
      * Parses a Yaml file and return a configuration array.
-     *
-     * @return array The configuration array
      */
-    protected function parseFile()
+    protected function parseFile(): array
     {
         if (!$this->fs->exists($this->fullPath)) {
             return [];
@@ -215,10 +189,8 @@ class YamlDumper
 
     /**
      * Dump configuration into dynamic configuration file.
-     *
-     * @param array $configuration The configuration array to dump
      */
-    protected function dumpFile($configuration)
+    protected function dumpFile(array $configuration = []): void
     {
         $yaml = Yaml::dump($configuration);
         $this->fs->dumpFile($this->fullPath, $yaml);
@@ -227,18 +199,15 @@ class YamlDumper
     /**
      * Validates that the configuration / parameter name is correct.
      *
-     * @param string $name        The requested configuration / parameter name
-     * @param bool   $isParameter Whether or not a parameter is requested
-     *
-     * @throws \InvalidArgumentException Thrown if the configuration / parameter is invalid
+     * @throws InvalidArgumentException Thrown if the configuration / parameter is invalid
      */
-    protected function validateName($name, $isParameter)
+    protected function validateName(string $name, bool $isParameter): void
     {
-        if (!is_string($name) || mb_strlen($name) <= 0 || (!$isParameter && 'parameters' === $name)) {
+        if (!is_string($name) || (!$isParameter && 'parameters' === $name) || mb_strlen($name) <= 0) {
             if ($isParameter) {
-                throw new \InvalidArgumentException('The parameter name must be a string');
+                throw new InvalidArgumentException('The parameter name must be a string');
             }
-            throw new \InvalidArgumentException('The configuration name must not be "parameters" and must be a string');
+            throw new InvalidArgumentException('The configuration name must not be "parameters" and must be a string');
         }
     }
 }

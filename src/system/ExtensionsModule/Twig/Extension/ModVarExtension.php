@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
+use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -30,11 +31,6 @@ class ModVarExtension extends AbstractExtension
      */
     private $variableApi;
 
-    /**
-     * ExtensionsExtension constructor.
-     * @param TranslatorInterface $translator
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
@@ -43,43 +39,35 @@ class ModVarExtension extends AbstractExtension
         $this->variableApi = $variableApi;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
             new TwigFunction('getModVar', [$this, 'getModVar']),
-            new TwigFunction('getSystemVar', [$this, 'getSystemVar']),
+            new TwigFunction('getSystemVar', [$this, 'getSystemVar'])
         ];
     }
 
     /**
-     * @param $module
-     * @param $name
-     * @param null $default
+     * @param mixed $default
      * @return mixed
      */
-    public function getModVar($module, $name, $default = null)
+    public function getModVar(string $module, string $name, $default = null)
     {
         if (empty($module) || empty($name)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->variableApi->get($module, $name, $default);
     }
 
     /**
-     * @param $name
-     * @param null $default
+     * @param mixed $default
      * @return mixed
      */
-    public function getSystemVar($name, $default = null)
+    public function getSystemVar(string $name, $default = null)
     {
         if (empty($name)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->variableApi->getSystemVar($name, $default);

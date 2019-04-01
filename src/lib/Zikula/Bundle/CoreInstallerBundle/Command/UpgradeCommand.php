@@ -48,9 +48,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     {
         $this
             ->setDescription('Upgrade Zikula from the command line.')
-            ->setName('zikula:upgrade');
+            ->setName('zikula:upgrade')
+        ;
         foreach ($this->settings as $name => $setting) {
-            if (!in_array($name, $this->selectedSettings)) {
+            if (!in_array($name, $this->selectedSettings, true)) {
                 // only use selected settings for upgrade
                 continue;
             }
@@ -64,11 +65,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $currentVersion = $this->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
@@ -92,13 +88,13 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
-            return;
+            return false;
         }
         $checks = $controllerHelper->requirementsMet();
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
-            return;
+            return false;
         }
 
         $migrationHelper = $this->getContainer()->get(MigrationHelper::class);
@@ -106,7 +102,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         if ($count > 0) {
             $io->text($this->translator->__('Beginning user migration...'));
             $userMigrationMaxuid = (int)$migrationHelper->getMaxUnMigratedUid();
-            $progressBar = new ProgressBar($output, ceil($count / MigrationHelper::BATCH_LIMIT));
+            $progressBar = new ProgressBar($output, (int)ceil($count / MigrationHelper::BATCH_LIMIT));
             $progressBar->start();
             $lastUid = 0;
             do {
@@ -120,13 +116,11 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             $io->text($this->translator->__('There was no need to migrate any users.'));
         }
 
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-            // session before regeneration happens (e.g. by an event listener executed before a login)
-            // see issue #3898 for the details
-            $reportingLevel = error_reporting();
-            error_reporting($reportingLevel & ~E_WARNING);
-        }
+        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+        // session before regeneration happens (e.g. by an event listener executed before a login)
+        // see issue #3898 for the details
+        $reportingLevel = error_reporting();
+        error_reporting($reportingLevel & ~E_WARNING);
 
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
@@ -161,7 +155,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
-            $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
+            $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
             $status = $this->getContainer()->get(AjaxUpgradeController::class)->commandLineAction($stage[AjaxInstallerStage::NAME]);
             if ($status) {
                 $io->success($stage[AjaxInstallerStage::SUCCESS]);
@@ -170,10 +164,10 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             }
         }
 
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            error_reporting($reportingLevel);
-        }
+        error_reporting($reportingLevel);
 
         $io->success($this->translator->__('UPGRADE COMPLETE!'));
+
+        return true;
     }
 }

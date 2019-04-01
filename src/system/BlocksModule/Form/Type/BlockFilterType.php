@@ -26,19 +26,11 @@ class BlockFilterType extends AbstractType
      */
     private $blockFilterApi;
 
-    /**
-     * BlockFilterType constructor.
-     *
-     * @param BlockFilterApiInterface $blockFilterApi
-     */
     public function __construct(BlockFilterApiInterface $blockFilterApi)
     {
         $this->blockFilterApi = $blockFilterApi;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -66,9 +58,6 @@ class BlockFilterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulablocksmodule_blockfilter';

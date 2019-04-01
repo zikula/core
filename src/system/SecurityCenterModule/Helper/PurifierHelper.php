@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Helper;
 
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -42,16 +44,12 @@ class PurifierHelper
      */
     private $variableApi;
 
-    /**
-     * PurifierHelper constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel Kernel service instance
-     * @param SessionInterface $session Session service instance
-     * @param TranslatorInterface $translator Translator service instance
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     */
-    public function __construct(ZikulaHttpKernelInterface $kernel, SessionInterface $session, TranslatorInterface $translator, VariableApiInterface $variableApi)
-    {
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        SessionInterface $session,
+        TranslatorInterface $translator,
+        VariableApiInterface $variableApi
+    ) {
         $this->kernel = $kernel;
         $this->session = $session;
         $this->translator = $translator;
@@ -60,26 +58,20 @@ class PurifierHelper
 
     /**
      * Retrieves configuration array for HTML Purifier.
-     *
-     * @param bool[] $args {
-     *      @var bool $forcedefault true to force return of default config / false to auto detect
-     *                    }
-     *
-     * @return \HTMLPurifier_Config HTML Purifier configuration settings
      */
-    public function getPurifierConfig($args)
+    public function getPurifierConfig(array $args = []): HTMLPurifier_Config
     {
         $config = $this->getPurifierDefaultConfig();
         if (!isset($args['forcedefault']) || true !== $args['forcedefault']) {
             $savedConfigSerialised = $this->variableApi->get('ZikulaSecurityCenterModule', 'htmlpurifierConfig');
-            if (!is_null($savedConfigSerialised) && false !== $savedConfigSerialised) {
+            if (null !== $savedConfigSerialised && false !== $savedConfigSerialised) {
                 $savedConfigArray = [];
-                /** @var \HTMLPurifier_Config $savedConfig */
+                /** @var HTMLPurifier_Config $savedConfig */
                 $savedConfig = unserialize($savedConfigSerialised);
                 if (!is_object($savedConfig) && is_array($savedConfig)) {
                     // this case may happen for old installations
                     $savedConfigArray = $savedConfig;
-                } elseif (is_object($savedConfig) && $savedConfig instanceof \HTMLPurifier_Config) {
+                } elseif (is_object($savedConfig) && $savedConfig instanceof HTMLPurifier_Config) {
                     // this is the normal case for newer installations
                     $savedConfigArray = $savedConfig->getAll();
                 }
@@ -103,17 +95,8 @@ class PurifierHelper
      *
      * The instance returned is either a newly created instance, or previously created instance
      * that has been cached in a static variable.
-     *
-     * @param bool[] $args {
-     *      @var bool $force If true, the HTMLPurifier instance will be generated anew, rather than using an
-     *                        existing instance from the static variable.
-     *                     }
-     *
-     * @staticvar array $purifier The HTMLPurifier instance.
-     *
-     * @return \HTMLPurifier The HTMLPurifier instance, returned by reference
      */
-    public function getPurifier($args = null)
+    public function getPurifier(array $args = []): HTMLPurifier
     {
         $force = $args['force'] ?? false;
 
@@ -123,7 +106,7 @@ class PurifierHelper
         if (!isset($purifier) || $force) {
             $config = $this->getPurifierConfig(['forcedefault' => false]);
 
-            $purifier = new \HTMLPurifier($config);
+            $purifier = new HTMLPurifier($config);
         }
 
         return $purifier;
@@ -131,12 +114,10 @@ class PurifierHelper
 
     /**
      * Retrieves default configuration array for HTML Purifier.
-     *
-     * @return \HTMLPurifier_Config HTML Purifier default configuration settings
      */
-    private function getPurifierDefaultConfig()
+    private function getPurifierDefaultConfig(): HTMLPurifier_Config
     {
-        $config = \HTMLPurifier_Config::createDefault();
+        $config = HTMLPurifier_Config::createDefault();
 
         $charset = $this->kernel->getCharset();
         if ('utf-8' !== mb_strtolower($charset)) {

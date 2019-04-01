@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Common\Content;
 
-use Symfony\Component\Form\AbstractType as AbstractType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -25,17 +25,11 @@ abstract class AbstractContentFormType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikula_contenttype_abstract';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
@@ -47,12 +41,7 @@ abstract class AbstractContentFormType extends AbstractType
         ;
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator Translator service instance
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

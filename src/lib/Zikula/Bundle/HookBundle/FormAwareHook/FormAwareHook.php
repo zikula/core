@@ -29,9 +29,6 @@ class FormAwareHook extends Hook
      */
     private $templates = [];
 
-    /**
-     * @param FormInterface $form
-     */
     public function __construct(FormInterface $form)
     {
         $this->form = $form;
@@ -47,11 +44,8 @@ class FormAwareHook extends Hook
 
     /**
      * @param FormInterface|string|int $child
-     * @param string|null $type
-     * @param array $options
-     * @return self
      */
-    public function formAdd($child, $type = null, array $options = [])
+    public function formAdd($child, string $type = null, array $options = []): self
     {
         if (($child instanceof FormInterface) && ($child->getConfig()->getMapped() || $child->getConfig()->getAutoInitialize())) {
             throw new InvalidConfigurationException('Hooked child forms must disable `mapped` and `auto_initialize` options.');
@@ -64,24 +58,16 @@ class FormAwareHook extends Hook
         return $this;
     }
 
-    /**
-     * @param string $template
-     * @param array $templateVars
-     * @return self
-     */
-    public function addTemplate($template, $templateVars = [])
+    public function addTemplate(string $template, array $templateVars = []): self
     {
-        if (!in_array($template, $this->templates)) {
+        if (!in_array($template, $this->templates, true)) {
             $this->templates[] = [$template, $templateVars];
         }
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getTemplates()
+    public function getTemplates(): array
     {
         return $this->templates;
     }

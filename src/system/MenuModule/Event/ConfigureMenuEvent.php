@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ConfigureMenuEvent extends Event
 {
-    const POST_CONFIGURE = 'zikulamenumodule.menu_post_configure';
+    public const POST_CONFIGURE = 'zikulamenumodule.menu_post_configure';
 
     /**
      * @var FactoryInterface
@@ -39,46 +39,27 @@ class ConfigureMenuEvent extends Event
      */
     protected $options;
 
-    /**
-     * ConfigureMenuEvent constructor.
-     *
-     * @param FactoryInterface $factory
-     * @param ItemInterface    $menu
-     * @param array            $options
-     */
-    public function __construct(FactoryInterface $factory, ItemInterface $menu, array $options = [])
-    {
+    public function __construct(
+        FactoryInterface $factory,
+        ItemInterface $menu,
+        array $options = []
+    ) {
         $this->factory = $factory;
         $this->menu = $menu;
         $this->options = $options;
     }
 
-    /**
-     * Returns the factory.
-     *
-     * @return FactoryInterface
-     */
-    public function getFactory()
+    public function getFactory(): FactoryInterface
     {
         return $this->factory;
     }
 
-    /**
-     * Returns the menu.
-     *
-     * @return ItemInterface
-     */
-    public function getMenu()
+    public function getMenu(): ItemInterface
     {
         return $this->menu;
     }
 
-    /**
-     * Returns the options.
-     *
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }

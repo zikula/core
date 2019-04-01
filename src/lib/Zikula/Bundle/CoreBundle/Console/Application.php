@@ -21,24 +21,19 @@ class Application extends BaseApplication
 {
     /**
      * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
+     * /
+    private $kernel;*/
 
-    /**
-     * Constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel)
     {
-        $this->kernel = $kernel;
+        //$this->kernel = $kernel;
 
         parent::__construct($kernel);
 
         $this->setName('Zikula');
-        $this->setVersion(ZikulaKernel::VERSION . ' - ' . $kernel->getName() . '/' . $kernel->getEnvironment() . ($kernel->isDebug() ? '/debug' : ''));
+        $this->setVersion(ZikulaKernel::VERSION . /*' - ' . $kernel->getName() . */'/' . $kernel->getEnvironment() . ($kernel->isDebug() ? '/debug' : ''));
     }
-
+/*
     protected function registerCommands()
     {
         if (true !== $this->kernel->getContainer()->getParameter('installed')) {
@@ -48,4 +43,5 @@ class Application extends BaseApplication
 
         return parent::registerCommands();
     }
+*/
 }

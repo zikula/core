@@ -67,111 +67,72 @@ class AuthenticationMappingEntity extends EntityAccess
      */
     private $pass;
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getMethod()
+    public function getMethod(): ?string
     {
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     */
-    public function setMethod($method)
+    public function setMethod(string $method): void
     {
         $this->method = $method;
     }
 
-    /**
-     * @return integer
-     */
-    public function getUid()
+    public function getUid(): ?int
     {
         return $this->uid;
     }
 
-    /**
-     * @param integer $uid
-     */
-    public function setUid($uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
 
-    /**
-     * @return string
-     */
-    public function getUname()
+    public function getUname(): ?string
     {
         return $this->uname;
     }
 
-    /**
-     * @param string $uname
-     */
-    public function setUname($uname)
+    public function setUname(string $uname): void
     {
         $this->uname = $uname;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function isVerifiedEmail()
+    public function isVerifiedEmail(): bool
     {
         return $this->verifiedEmail;
     }
 
-    /**
-     * @param mixed $verifiedEmail
-     */
-    public function setVerifiedEmail($verifiedEmail)
+    public function setVerifiedEmail(bool $verifiedEmail): void
     {
         $this->verifiedEmail = $verifiedEmail;
     }
 
-    /**
-     * @return string
-     */
-    public function getPass()
+    public function getPass(): ?string
     {
         return $this->pass;
     }
 
-    /**
-     * @param string $pass
-     */
-    public function setPass($pass)
+    public function setPass(string $pass): void
     {
         $this->pass = $pass;
     }
 
-    public function getUserEntityData()
+    public function getUserEntityData(): array
     {
         return [
             'uid' => $this->getUid(),

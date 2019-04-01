@@ -13,21 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionStubRepository;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-class CapabilityApiTest extends \PHPUnit\Framework\TestCase
+class CapabilityApiTest extends TestCase
 {
     /**
-     * @var CapabilityApi
+     * @var CapabilityApiInterface
      */
     private $api;
 
-    /**
-     * CapabilityApiTest constructor.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $repo = new ExtensionStubRepository();
         $this->api = new CapabilityApi($repo);
@@ -35,17 +34,14 @@ class CapabilityApiTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider getExtensionsCapableOfProvider
-     * @covers  CapabilityApi::getExtensionsCapableOf
-     * @param $type
-     * @param $count
-     * @param $names
+     * @covers CapabilityApi::getExtensionsCapableOf
      */
-    public function testGetExtensionsCapableOf($type, $count, $names)
+    public function testGetExtensionsCapableOf(string $type, int $count, array $names): void
     {
         $extensions = $this->api->getExtensionsCapableOf($type);
         $this->assertCount($count, $extensions);
         foreach ($extensions as $extension) {
-            $this->assertInstanceOf('Zikula\ExtensionsModule\Entity\ExtensionEntity', $extension);
+            $this->assertInstanceOf(ExtensionEntity::class, $extension);
             $this->assertContains($extension->getName(), $names);
         }
     }
@@ -53,7 +49,7 @@ class CapabilityApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers CapabilityApi::isCapable
      */
-    public function testIsCapable()
+    public function testIsCapable(): void
     {
         $this->assertNotFalse($this->api->isCapable('FooExtension', CapabilityApiInterface::ADMIN));
         $this->assertFalse($this->api->isCapable('FooExtension', CapabilityApiInterface::USER));
@@ -63,21 +59,20 @@ class CapabilityApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers CapabilityApi::getCapabilitiesOf
      */
-    public function testGetCapabilitiesOf()
+    public function testGetCapabilitiesOf(): void
     {
-        $e = $this->api->getCapabilitiesOf('BarExtension');
-        $this->assertTrue(is_array($e));
-        $this->assertCount(2, $e);
+        $capabilities = $this->api->getCapabilitiesOf('BarExtension');
+        $this->assertCount(2, $capabilities);
         $this->assertEquals([
             CapabilityApiInterface::ADMIN => ['route' => 'bar_admin_route'],
             CapabilityApiInterface::USER => ['route' => 'bar_user_route'],
-        ], $e);
-        $e = $this->api->getCapabilitiesOf('NoneExtension');
-        $this->assertTrue(is_array($e));
-        $this->assertCount(0, $e);
+        ], $capabilities);
+
+        $capabilities = $this->api->getCapabilitiesOf('NoneExtension');
+        $this->assertCount(0, $capabilities);
     }
 
-    public function getExtensionsCapableOfProvider()
+    public function getExtensionsCapableOfProvider(): array
     {
         return [
             [CapabilityApiInterface::ADMIN, 3, ['FooExtension', 'BarExtension', 'BazExtension']],

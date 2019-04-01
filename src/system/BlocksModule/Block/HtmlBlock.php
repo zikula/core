@@ -17,21 +17,15 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\HtmlBlockType;
 
 /**
- * Block to display html
+ * Block to display html.
  */
 class HtmlBlock extends AbstractBlockHandler
 {
-    /**
-     * display block
-     *
-     * @param array $properties
-     * @return string the rendered bock
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        $title = (!empty($properties['title'])) ? $properties['title'] : '';
-        if ((!$this->hasPermission('HTMLblock::', "${title}::", ACCESS_OVERVIEW))
-        || (!$this->hasPermission('HTMLblock::bid', "::{$properties[bid]}", ACCESS_OVERVIEW))) {
+        $title = !empty($properties['title']) ? $properties['title'] : '';
+        if ((!$this->hasPermission('HTMLblock::', $title . '::', ACCESS_OVERVIEW))
+        || (!$this->hasPermission('HTMLblock::bid', '::' . $properties['bid'], ACCESS_OVERVIEW))) {
             return '';
         }
 
@@ -40,12 +34,12 @@ class HtmlBlock extends AbstractBlockHandler
         ]);
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
         return HtmlBlockType::class;
     }
 
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@ZikulaBlocksModule/Block/html_modify.html.twig';
     }

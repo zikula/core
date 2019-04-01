@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Form\Type\ExportUsersType;
 
 /**
@@ -33,10 +36,8 @@ class FileIOController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaUsersModule:FileIO:export.html.twig")
      *
-     * @param Request $request
-     * @param UserRepositoryInterface $userRepository
-     *
      * @return array|StreamedResponse
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function exportAction(Request $request, UserRepositoryInterface $userRepository)
     {
@@ -50,23 +51,25 @@ class FileIOController extends AbstractController
             if ($form->get('download')->isClicked()) {
                 $data = $form->getData();
                 $response = new StreamedResponse();
-                $response->setCallback(function() use ($data) {
+                $response->setCallback(function() use ($data, $userRepository) {
                     $fields = ['uid', 'uname', 'activated', 'email', 'user_regdate', 'lastlogin', 'groups'];
                     foreach ($fields as $k => $field) {
                         if (isset($data[$field]) && !$data[$field]) {
                             unset($fields[$k]); // remove unwanted fields
                         }
                     }
-                    $handle = fopen('php://output', 'w+');
+                    $handle = fopen('php://output', 'wb+');
                     if ($data['title']) {
                         fputcsv($handle, $fields, $data['delimiter']);
                     }
                     $users = $userRepository->findAllAsIterable();
+                    /** @var UserEntity $user */
                     foreach ($users as $user) {
                         $row = [];
                         foreach ($fields as $field) {
                             if ('groups' === $field) {
                                 $gids = [];
+                                /** @var GroupEntity $group */
                                 foreach ($user[0]->getGroups() as $group) {
                                     $gids[] = $group->getGid();
                                 }
@@ -74,10 +77,10 @@ class FileIOController extends AbstractController
                             } else {
                                 $method = 'get' . ucwords($field);
                                 $value = $user[0]->{$method}();
-                                $row[] = $value instanceof \DateTime ? $value->format('c') : $value;
+                                $row[] = $value instanceof DateTime ? $value->format('c') : $value;
                             }
                         }
-                        $this->get('doctrine')->getManager()->detach($user[0]);
+                        $this->getDoctrine()->getManager()->detach($user[0]);
                         fputcsv($handle, $row, $data['delimiter']);
                     }
                     fclose($handle);

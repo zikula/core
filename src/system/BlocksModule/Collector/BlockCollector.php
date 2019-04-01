@@ -26,11 +26,9 @@ class BlockCollector
     private $blocks;
 
     /**
-     * Constructor.
-     *
      * @param BlockHandlerInterface[] $blocks
      */
-    public function __construct(iterable $blocks)
+    public function __construct(iterable $blocks = [])
     {
         $this->blocks = [];
         foreach ($blocks as $block) {
@@ -40,10 +38,8 @@ class BlockCollector
 
     /**
      * Add a block to the collection.
-     *
-     * @param BlockHandlerInterface $block
      */
-    public function add(BlockHandlerInterface $block)
+    public function add(BlockHandlerInterface $block): void
     {
         $id = str_replace('\\', '_', get_class($block));
 
@@ -52,21 +48,16 @@ class BlockCollector
 
     /**
      * Get a block from the collection by service.id.
-     *
-     * @param $id
-     * @return null
      */
-    public function get($id)
+    public function get(string $id): ?BlockHandlerInterface
     {
-        return isset($this->blocks[$id]) ? $this->blocks[$id] : null;
+        return $this->blocks[$id] ?? null;
     }
 
     /**
      * Get all the blocks in the collection.
-     *
-     * @return array
      */
-    public function getBlocks()
+    public function getBlocks(): array
     {
         return $this->blocks;
     }

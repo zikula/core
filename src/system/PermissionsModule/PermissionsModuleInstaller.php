@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule;
 
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\PermissionsModule\Entity\PermissionEntity;
 use Zikula\PermissionsModule\Entity\Repository\PermissionRepository;
@@ -22,37 +23,24 @@ use Zikula\PermissionsModule\Entity\Repository\PermissionRepository;
  */
 class PermissionsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the permissions module.
-     *
-     * @return boolean True on success, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         // create the table
         try {
             $this->schemaTool->create([
                 PermissionEntity::class
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
-        // Create any default for this module
-        $this->defaultdata();
+        $this->createDefaultData();
 
         // Initialisation successful
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool|string true on success, false otherwise
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
@@ -81,28 +69,16 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the permissions module
-     *
-     * Since the permissions module should never be deleted we'all always return false here
-     *
-     * @return bool false
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Deletion not allowed
         return false;
     }
 
     /**
-     * create the default data for the permissions module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return void
+     * Create the default data for the Permissions module.
      */
-    public function defaultdata()
+    public function createDefaultData(): void
     {
         // give administrator group full access to everything as top priority
         $record = new PermissionEntity();

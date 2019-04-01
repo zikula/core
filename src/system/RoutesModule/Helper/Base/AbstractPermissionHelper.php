@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -12,6 +15,8 @@
 namespace Zikula\RoutesModule\Helper\Base;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
@@ -42,14 +47,6 @@ abstract class AbstractPermissionHelper
      */
     protected $userRepository;
     
-    /**
-     * PermissionHelper constructor.
-     *
-     * @param RequestStack $requestStack
-     * @param PermissionApiInterface $permissionApi
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(
         RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
@@ -64,53 +61,32 @@ abstract class AbstractPermissionHelper
     
     /**
      * Checks if the given entity instance may be read.
-     *
-     * @param object  $entity
-     * @param integer $userId
-     *
-     * @return boolean
      */
-    public function mayRead($entity, $userId = null)
+    public function mayRead(EntityAccess $entity, int $userId = null): bool
     {
         return $this->hasEntityPermission($entity, ACCESS_READ, $userId);
     }
     
     /**
      * Checks if the given entity instance may be edited.
-     *
-     * @param object  $entity
-     * @param integer $userId
-     *
-     * @return boolean
      */
-    public function mayEdit($entity, $userId = null)
+    public function mayEdit(EntityAccess $entity, int $userId = null): bool
     {
         return $this->hasEntityPermission($entity, ACCESS_EDIT, $userId);
     }
     
     /**
      * Checks if the given entity instance may be deleted.
-     *
-     * @param object  $entity
-     * @param integer $userId
-     *
-     * @return boolean
      */
-    public function mayDelete($entity, $userId = null)
+    public function mayDelete(EntityAccess $entity, int $userId = null): bool
     {
         return $this->hasEntityPermission($entity, ACCESS_DELETE, $userId);
     }
     
     /**
      * Checks if a certain permission level is granted for the given entity instance.
-     *
-     * @param object  $entity
-     * @param integer $permissionLevel
-     * @param integer $userId
-     *
-     * @return boolean
      */
-    public function hasEntityPermission($entity, $permissionLevel, $userId = null)
+    public function hasEntityPermission(EntityAccess $entity, int $permissionLevel, int $userId = null): bool
     {
         $objectType = $entity->get_objectType();
         $instance = $entity->getKey() . '::';
@@ -120,27 +96,24 @@ abstract class AbstractPermissionHelper
     
     /**
      * Checks if a certain permission level is granted for the given object type.
-     *
-     * @param string  $objectType
-     * @param integer $permissionLevel
-     * @param integer $userId
-     *
-     * @return boolean
      */
-    public function hasComponentPermission($objectType, $permissionLevel, $userId = null)
+    public function hasComponentPermission(string $objectType, int $permissionLevel, int $userId = null): bool
     {
         return $this->permissionApi->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', '::', $permissionLevel, $userId);
     }
     
     /**
-     * Checks if a certain permission level is granted for the application in general.
-     *
-     * @param integer $permissionLevel
-     * @param integer $userId
-     *
-     * @return boolean
+     * Checks if the quick navigation form for the given object type may be used or not.
      */
-    public function hasPermission($permissionLevel, $userId = null)
+    public function mayUseQuickNav(string $objectType, int $userId = null): bool
+    {
+        return $this->hasComponentPermission($objectType, ACCESS_READ, $userId);
+    }
+    
+    /**
+     * Checks if a certain permission level is granted for the application in general.
+     */
+    public function hasPermission(int $permissionLevel, int $userId = null): bool
     {
         return $this->permissionApi->hasPermission('ZikulaRoutesModule::', '::', $permissionLevel, $userId);
     }
@@ -148,9 +121,9 @@ abstract class AbstractPermissionHelper
     /**
      * Returns the list of user group ids of the current user.
      *
-     * @return array List of group ids
+     * @return int[] List of group ids
      */
-    public function getUserGroupIds()
+    public function getUserGroupIds(): array
     {
         $isLoggedIn = $this->currentUserApi->isLoggedIn();
         if (!$isLoggedIn) {
@@ -159,30 +132,26 @@ abstract class AbstractPermissionHelper
     
         $groupIds = [];
         $groups = $this->currentUserApi->get('groups');
+        /** @var GroupEntity $group */
         foreach ($groups as $group) {
             $groupIds[] = $group->getGid();
         }
-    
     
         return $groupIds;
     }
     
     /**
      * Returns the the current user's id.
-     *
-     * @return integer
      */
-    public function getUserId()
+    public function getUserId(): int
     {
-        return $this->currentUserApi->get('uid');
+        return (int)$this->currentUserApi->get('uid');
     }
     
     /**
      * Returns the the current user's entity.
-     *
-     * @return UserEntity
      */
-    public function getUser()
+    public function getUser(): UserEntity
     {
         return $this->userRepository->find($this->getUserId());
     }

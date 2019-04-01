@@ -31,12 +31,12 @@ class KeyValueFixerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => ['onPreSetData', 1],
             // priority of 1 ensures listener is triggered BEFORE ResizeFormListener and therefore only effects reverse transform.
+            FormEvents::PRE_SET_DATA => ['onPreSetData', 1]
         ];
     }
 
-    public function onPreSetData(FormEvent $event)
+    public function onPreSetData(FormEvent $event): void
     {
         $data = $event->getData();
         $result = [];

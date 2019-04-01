@@ -36,10 +36,6 @@ class ValidUnameValidator extends ConstraintValidator
      */
     private $validator;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param ValidatorInterface $validator
-     */
     public function __construct(TranslatorInterface $translator, ValidatorInterface $validator)
     {
         $this->translator = $translator;

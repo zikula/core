@@ -42,17 +42,17 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         $this->translator = $this->container->get(Translator::class);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'notupgraded';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Upgrade:notupgraded.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
@@ -60,7 +60,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
-        if (!in_array($DBLocale, $this->container->get(LocaleApi::class)->getSupportedLocales())) {
+        if (!in_array($DBLocale, $this->container->get(LocaleApi::class)->getSupportedLocales(), true)) {
             $variableApi = $this->container->get('zikula_extensions_module.api.variable');
             $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
             $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
@@ -69,7 +69,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }
@@ -78,7 +78,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
      * @return string Locale code (e.g. `en`)
      * @throws AbortStageException
      */
-    private function fetchDBLocale()
+    private function fetchDBLocale(): string
     {
         $conn = $this->container->get('doctrine')->getConnection();
         $serializedValue = $conn->fetchColumn("

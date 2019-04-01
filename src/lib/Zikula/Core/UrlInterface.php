@@ -18,13 +18,13 @@ namespace Zikula\Core;
  */
 interface UrlInterface
 {
-    public function getLanguage();
+    public function getLanguage(): ?string;
 
-    public function getFragment();
+    public function getFragment(): ?string;
 
-    public function getArgs();
+    public function getArgs(): array;
 
-    public function serialize();
+    public function serialize(): string;
 
-    public function toArray();
+    public function toArray(): array;
 }

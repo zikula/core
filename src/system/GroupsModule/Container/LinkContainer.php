@@ -47,15 +47,6 @@ class LinkContainer implements LinkContainerInterface
      */
     private $groupApplicationRepository;
 
-    /**
-     * LinkContainer constructor.
-     *
-     * @param TranslatorInterface $translator TranslatorInterface service instance
-     * @param RouterInterface $router RouterInterface service instance
-     * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     * @param GroupRepositoryInterface $groupRepository
-     * @param GroupApplicationRepository $groupApplicationRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
@@ -70,14 +61,7 @@ class LinkContainer implements LinkContainerInterface
         $this->groupApplicationRepository = $groupApplicationRepository;
     }
 
-    /**
-     * get Links of any type for this extension
-     * required by the interface
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         if (LinkContainerInterface::TYPE_ADMIN === $type) {
             return $this->getAdmin();
@@ -93,11 +77,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Admin links for this extension
-     *
-     * @return array
+     * Get the admin links for this extension.
      */
-    private function getAdmin()
+    private function getAdmin(): array
     {
         $links = [];
 
@@ -126,7 +108,7 @@ class LinkContainer implements LinkContainerInterface
         $appCount = count($apps);
         if (($appCount > 0) && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
-                'url' => $this->router->generate('zikulagroupsmodule_group_adminlist') . "#applications",
+                'url' => $this->router->generate('zikulagroupsmodule_group_adminlist') . '#applications',
                 'text' => $this->translator->__f('%n Pending applications', ['%n' => $appCount]),
                 'icon' => 'exclamation-triangle'
             ];
@@ -136,11 +118,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Account links for this extension
-     *
-     * @return array
+     * Get the account links for this extension.
      */
-    private function getUser()
+    private function getUser(): array
     {
         $links = [];
         $links[] = [
@@ -160,11 +140,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Account links for this extension
-     *
-     * @return array
+     * Get the account links for this extension.
      */
-    private function getAccount()
+    private function getAccount(): array
     {
         $links = [];
 
@@ -181,12 +159,7 @@ class LinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * set the BundleName as required by the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaGroupsModule';
     }

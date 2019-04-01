@@ -30,25 +30,16 @@ class ConfigType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -137,17 +128,11 @@ class ConfigType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulaadminmodule_config';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -159,12 +144,8 @@ class ConfigType extends AbstractType
 
     /**
      * Returns a list of choices for the admin theme selection.
-     *
-     * @param array $themes
-     *
-     * @return array Choices list
      */
-    private function formatThemeSelector(array $themes)
+    private function formatThemeSelector(array $themes = []): array
     {
         $choices = [];
         $themeList = [];

@@ -36,8 +36,11 @@ class HookListenerBuilderListener implements EventSubscriberInterface
      */
     private $installed;
 
-    public function __construct(ContainerInterface $container, HookRuntimeRepositoryInterface $hookRuntimeRepository, $installed)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        HookRuntimeRepositoryInterface $hookRuntimeRepository,
+        bool $installed
+    ) {
         $this->container = $container;
         $this->hookRuntimeRepository = $hookRuntimeRepository;
         $this->installed = $installed;
@@ -56,7 +59,7 @@ class HookListenerBuilderListener implements EventSubscriberInterface
      * Add dynamically assigned listeners to hookable events at runtime.
      * @param GetResponseEvent $event
      */
-    public function addListeners(GetResponseEvent $event)
+    public function addListeners(GetResponseEvent $event): void
     {
         if (!$this->installed || !$event->isMasterRequest()) {
             return;

@@ -15,32 +15,32 @@ namespace Zikula\CategoriesModule;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Exception;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 
 /**
  * Installation and upgrade routines for the categories module.
  */
 class CategoriesModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the categories module.
-     *
-     * @return bool true if successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         $entities = [
-            'Zikula\CategoriesModule\Entity\CategoryEntity',
-            'Zikula\CategoriesModule\Entity\CategoryAttributeEntity',
-            'Zikula\CategoriesModule\Entity\CategoryRegistryEntity'
+            CategoryEntity::class,
+            CategoryAttributeEntity::class,
+            CategoryRegistryEntity::class
         ];
 
         try {
             $this->schemaTool->create($entities);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
@@ -48,6 +48,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
          * explicitly set admin as user to be set as `lu_uid` and `cr_uid` fields. Normally this would be taken care of
          * by the BlameListener but during installation from the CLI this listener is not available
          */
+        /** @var UserEntity $adminUserEntity */
         $adminUserEntity = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', 2);
 
         // insert default data
@@ -67,30 +68,20 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param string $oldversion version number string to upgrade from
-     *
-     * @return bool|int true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion): bool
     {
         $connection = $this->entityManager->getConnection();
         $this->schemaTool->update([
             CategoryEntity::class
         ]);
 
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.1':
             case '1.2':
             case '1.2.1':
                 try {
-                    $this->schemaTool->create(['Zikula\CategoriesModule\Entity\CategoryAttributeEntity']);
-                } catch (\Exception $e) {
+                    $this->schemaTool->create([CategoryAttributeEntity::class]);
+                } catch (Exception $exception) {
                 }
                 // rename old tablename column for Core 1.4.0
                 $sql = 'ALTER TABLE categories_registry CHANGE `tablename` `entityname` varchar (60) NOT NULL DEFAULT \'\'';
@@ -101,7 +92,11 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.3':
             case '1.3.0':
                 $this->delVars();
-                $helper = new TreeMapHelper($this->container->get('doctrine'));
+                /** @var RegistryInterface $doctrine */
+                $doctrine = $this->container->get('doctrine');
+                /** @var CategoryRepositoryInterface $categoryRepositoryInterface */
+                $categoryRepositoryInterface = $doctrine->getManager()->getRepository('ZikulaCategoriesModule:CategoryRepositoryEntity');
+                $helper = new TreeMapHelper($doctrine, $categoryRepositoryInterface);
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
 
@@ -112,25 +107,13 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete module
-     *
-     * @return bool false as this module cannot be deleted
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Not allowed to delete
         return false;
     }
 
-    /**
-     * insert default data
-     *
-     * @param UserEntity $adminUserEntity
-     *
-     * @return void
-     */
-    private function insertDefaultData(UserEntity $adminUserEntity)
+    private function insertDefaultData(UserEntity $adminUserEntity): void
     {
         $categoryData = $this->getDefaultCategoryData();
         $categoryObjectMap = [];
@@ -169,10 +152,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         $categoryMetaData->setIdGeneratorType(ClassMetadataInfo::GENERATOR_TYPE_AUTO);
     }
 
-    /**
-     * @return array list of data arrays for default categories
-     */
-    private function getDefaultCategoryData()
+    private function getDefaultCategoryData(): array
     {
         $categoryData = [];
         $categoryData[] = [
@@ -463,11 +443,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         return $categoryData;
     }
 
-    /**
-     * @param string $value
-     * @return array the localised array
-     */
-    public function localize($value = '')
+    public function localize(string $value = ''): array
     {
         $values = [];
         foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $code) {
@@ -478,18 +454,16 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     }
 
     /**
-     * migrates all attributes belonging to categories to the new `categories_attributes` table
+     * Migrates all attributes belonging to categories to the new `categories_attributes` table
      * regardless of the module they are attached to.
      *
      * It does _not_ remove the data from the `objectdata_attributes` table.
-     *
-     * @return void
      */
-    private function migrateAttributesFromObjectData()
+    private function migrateAttributesFromObjectData(): void
     {
         $attributes = $this->entityManager->getConnection()->fetchAll("SELECT * FROM objectdata_attributes WHERE object_type = 'categories_category'");
         foreach ($attributes as $attribute) {
-            $category = $this->entityManager->getRepository('Zikula\CategoriesModule\Entity\CategoryEntity')
+            $category = $this->entityManager->getRepository(CategoryEntity::class)
                 ->findOneBy(['id' => $attribute['object_id']]);
             if (isset($category) && is_object($category)) {
                 $category->setAttribute($attribute['attribute_name'], $attribute['value']);

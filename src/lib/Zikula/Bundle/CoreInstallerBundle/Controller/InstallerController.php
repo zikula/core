@@ -25,21 +25,15 @@ use Zikula\Component\Wizard\WizardCompleteInterface;
  */
 class InstallerController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param string $stage
-     *
-     * @return Response
-     */
-    public function installAction(Request $request, $stage)
+    public function installAction(Request $request, string $stage): Response
     {
         // already installed?
-        if (true === $this->container->getParameter('installed') && 'complete' !== $stage) {
+        if ('complete' !== $stage && true === $this->container->getParameter('installed')) {
             $stage = 'installed';
         }
 
         // not installed but requesting installed stage?
-        if (false === $this->container->getParameter('installed') && 'installed' === $stage) {
+        if ('installed' === $stage && false === $this->container->getParameter('installed')) {
             $stage = 'notinstalled';
         }
 
@@ -51,7 +45,7 @@ class InstallerController extends AbstractController
 
         $request->setLocale($this->container->getParameter('locale'));
         // begin the wizard
-        $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/install_stages.yml'));
+        $wizard = new Wizard($this->container, dirname(__DIR__) . '/Resources/config/install_stages.yml');
         $currentStage = $wizard->getCurrentStage($stage);
         if ($currentStage instanceof WizardCompleteInterface) {
             return $currentStage->getResponse($request);

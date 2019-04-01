@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -15,7 +18,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\AppSettings;
@@ -42,7 +44,7 @@ class ConfigController extends AbstractConfigController
         AppSettings $appSettings,
         LoggerInterface $logger,
         CurrentUserApiInterface $currentUserApi
-    ) {
+    ): Response {
         return parent::configAction($request, $permissionHelper, $appSettings, $logger, $currentUserApi);
     }
 

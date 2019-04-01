@@ -20,11 +20,11 @@ use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInte
 
 class StubPermissionRepository implements PermissionRepositoryInterface
 {
+    /**
+     * @var array
+     */
     private $entities;
 
-    /**
-     * StubRepository constructor.
-     */
     public function __construct()
     {
         $datas = [
@@ -81,11 +81,11 @@ class StubPermissionRepository implements PermissionRepositoryInterface
         }
     }
 
-    public function getPermissionsByGroups(array $groups)
+    public function getPermissionsByGroups(array $groups): array
     {
         $result = [];
         foreach ($this->entities as $entity) {
-            if (in_array($entity['gid'], $groups)) {
+            if (in_array($entity['gid'], $groups, true)) {
                 $result[] = $entity;
             }
         }
@@ -93,33 +93,41 @@ class StubPermissionRepository implements PermissionRepositoryInterface
         return $result;
     }
 
-    public function getFilteredPermissions($group = PermissionApi::ALL_GROUPS, $component = null)
+    public function getFilteredPermissions(int $group = PermissionApi::ALL_GROUPS, string $component = null): array
     {
         // TODO: Implement getFilteredPermissions() method.
+        return [];
     }
 
-    public function getAllComponents()
+    public function getAllComponents(): array
     {
         // TODO: Implement getAllComponents() method.
+        return [];
     }
 
-    public function persistAndFlush(PermissionEntity $entity)
+    public function persistAndFlush(PermissionEntity $entity): void
     {
         // TODO: Implement persistAndFlush() method.
     }
 
-    public function getMaxSequence()
+    public function getMaxSequence(): int
     {
         // TODO: Implement getMaxSequence() method.
+        return 999;
     }
 
-    public function updateSequencesFrom($value, $amount = 1)
+    public function updateSequencesFrom(int $value, int $amount = 1): void
     {
         // TODO: Implement updateSequencesFrom() method.
     }
 
-    public function reSequence()
+    public function reSequence(): void
     {
         // TODO: Implement reSequence() method.
+    }
+
+    public function deleteGroupPermissions(int $groupId = 0): void
+    {
+        // TODO: Implement deleteGroupPermissions() method.
     }
 }

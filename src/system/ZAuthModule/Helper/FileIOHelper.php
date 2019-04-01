@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Helper;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -24,6 +26,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -80,17 +83,10 @@ class FileIOHelper
     private $passwordApi;
 
     /**
-     * RegistrationHelper constructor.
-     * @param VariableApiInterface $variableApi
-     * @param PermissionApiInterface $permissionApi
-     * @param TranslatorInterface $translator
-     * @param ValidatorInterface $validator
-     * @param EntityManagerInterface $entityManager
-     * @param MailHelper $mailHelper
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param PasswordApiInterface $passwordApi
+     * @var GroupRepositoryInterface
      */
+    private $groupRepository;
+
     public function __construct(
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
@@ -100,7 +96,8 @@ class FileIOHelper
         MailHelper $mailHelper,
         EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
-        PasswordApiInterface $passwordApi
+        PasswordApiInterface $passwordApi,
+        GroupRepositoryInterface $groupRepository
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -111,26 +108,19 @@ class FileIOHelper
         $this->eventDispatcher = $eventDispatcher;
         $this->currentUser = $currentUserApi;
         $this->passwordApi = $passwordApi;
+        $this->groupRepository = $groupRepository;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator($translator)
+    public function setTranslator($translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @param UploadedFile $file
-     * @param string $delimiter
-     * @return string
-     */
-    public function importUsersFromFile(UploadedFile $file, $delimiter = ',')
+    public function importUsersFromFile(UploadedFile $file, string $delimiter = ','): string
     {
         $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
         // get available groups
-        $allGroups = $this->entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->findAllAndIndexBy('gid');
+        $allGroups = $this->groupRepository->findAllAndIndexBy('gid');
         // create an array with the groups identities where the user can add other users
         $allGroupsArray = [];
         foreach ($allGroups as $gid => $group) {
@@ -140,15 +130,15 @@ class FileIOHelper
         }
 
         // read the choosen file
-        ini_set("auto_detect_line_endings", true); // allows for macintosh line endings ("/r")
+        ini_set('auto_detect_line_endings', true); // allows for macintosh line endings ("/r")
         if (!$lines = file($file->getPathname())) {
-            return $this->__("Error! It has not been possible to read the import file.");
+            return $this->__('Error! It has not been possible to read the import file.');
         }
         $expectedFields = ['uname', 'pass', 'email', 'activated', 'sendmail', 'groups'];
         $firstLineArray = explode($delimiter, str_replace('"', '', trim($lines[0])));
         foreach ($firstLineArray as $field) {
-            if (!in_array(trim(mb_strtolower($field)), $expectedFields)) {
-                return $this->__f("Error! The import file does not have the expected field %s in the first row. Please check your import file.", ['%s' => $field]);
+            if (!in_array(mb_strtolower(trim($field)), $expectedFields, true)) {
+                return $this->__f('Error! The import file does not have the expected field %s in the first row. Please check your import file.', ['%s' => $field]);
             }
         }
         unset($lines[0]);
@@ -205,7 +195,7 @@ class FileIOHelper
             $importValues[$counter - 1]['groups'] = !empty($importValues[$counter - 1]['groups']) ? $importValues[$counter - 1]['groups'] : $defaultGroup;
             $groupsArray = explode('|', $importValues[$counter - 1]['groups']);
             foreach ($groupsArray as $group) {
-                if (!in_array($group, $allGroupsArray)) {
+                if (!in_array($group, $allGroupsArray, true)) {
                     return $this->locateErrors($this->__f('Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.', ['%gid%' => $group]), 'groups', $counter);
                 }
             }
@@ -214,12 +204,12 @@ class FileIOHelper
         }
 
         if (empty($importValues)) {
-            return $this->__("Error! The import file does not have values.");
+            return $this->__('Error! The import file does not have values.');
         }
 
         // The values in import file are ready. Proceed creating users
         if (!$this->createUsers($importValues)) {
-            return $this->__("Error! The creation of users has failed.");
+            return $this->__('Error! The creation of users has failed.');
         }
         // send email if indicated
         foreach ($importValues as $importValue) {
@@ -234,21 +224,18 @@ class FileIOHelper
         return '';
     }
 
-    /**
-     * @param array $importValues
-     * @return bool
-     */
-    private function createUsers(array &$importValues)
+    private function createUsers(array &$importValues): bool
     {
         if (empty($importValues)) {
             return false;
         }
 
         /** @var GroupEntity[] $groups */
-        $groups = $this->entityManager->getRepository('ZikulaGroupsModule:GroupEntity')->findAllAndIndexBy('gid');
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+        $groups = $this->groupRepository->findAllAndIndexBy('gid');
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         // create users
         foreach ($importValues as $k => $importValue) {
+
             $unHashedPass = $importValue['pass'];
             $importValue['pass'] = $this->passwordApi->getHashedPassword($importValue['pass']);
             if (!$importValue['activated']) {
@@ -284,20 +271,16 @@ class FileIOHelper
 
     /**
      * Convert errors to string and add current line.
-     * @param $errors
-     * @param string $type
-     * @param integer $line
-     * @return string
      */
-    private function locateErrors($errors, $type, $line)
+    private function locateErrors($errors, string $type, int $line): string
     {
         $errorString = '';
         if ($errors instanceof ConstraintViolationListInterface) {
             foreach ($errors as $error) {
-                $errorString .= $error->getMessage() . '<br>';
+                $errorString .= $error->getMessage() . '<br />';
             }
         } elseif (is_array($errors)) {
-            $errorString .= implode('<br>', $errors);
+            $errorString .= implode('<br />', $errors);
         } else {
             $errorString .= $errors;
         }

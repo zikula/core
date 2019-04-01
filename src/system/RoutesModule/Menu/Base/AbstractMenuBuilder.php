@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -62,17 +65,6 @@ class AbstractMenuBuilder
      */
     protected $currentUserApi;
 
-    /**
-     * MenuBuilder constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param FactoryInterface $factory
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param RequestStack $requestStack
-     * @param PermissionHelper $permissionHelper
-     * @param EntityDisplayHelper $entityDisplayHelper
-     * @param CurrentUserApiInterface $currentUserApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         FactoryInterface $factory,
@@ -91,27 +83,18 @@ class AbstractMenuBuilder
         $this->currentUserApi = $currentUserApi;
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
     /**
      * Builds the item actions menu.
-     *
-     * @param array $options List of additional options
-     *
-     * @return ItemInterface The assembled menu
      */
-    public function createItemActionsMenu(array $options = [])
+    public function createItemActionsMenu(array $options = []): ItemInterface
     {
         $menu = $this->factory->createItem('itemActions');
-        if (!isset($options['entity']) || !isset($options['area']) || !isset($options['context'])) {
+        if (!isset($options['entity'], $options['area'], $options['context'])) {
             return $menu;
         }
 
@@ -122,11 +105,10 @@ class AbstractMenuBuilder
 
         $this->eventDispatcher->dispatch(RoutesEvents::MENU_ITEMACTIONS_PRE_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
 
-        $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : UsersConstant::USER_ID_ANONYMOUS;
         if ($entity instanceof RouteEntity) {
             $routePrefix = 'zikularoutesmodule_route_';
         
-            if ($routeArea == 'admin') {
+            if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'zikularoutesmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
                 $previewRouteParameters['preview'] = 1;
@@ -138,7 +120,7 @@ class AbstractMenuBuilder
                 $menu[$title]->setLinkAttribute('title', $this->__('Open preview page', 'zikularoutesmodule'));
                 $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
-            if ($context != 'display') {
+            if ('display' !== $context) {
                 $title = $this->__('Details', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
@@ -163,16 +145,7 @@ class AbstractMenuBuilder
                 $menu[$title]->setLinkAttribute('title', $this->__('Reuse for new route', 'zikularoutesmodule'));
                 $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
-            if ($this->permissionHelper->mayDelete($entity)) {
-                $title = $this->__('Delete', 'zikularoutesmodule');
-                $menu->addChild($title, [
-                    'route' => $routePrefix . $routeArea . 'delete',
-                    'routeParameters' => $entity->createUrlArgs()
-                ]);
-                $menu[$title]->setLinkAttribute('title', $this->__('Delete this route', 'zikularoutesmodule'));
-                $menu[$title]->setAttribute('icon', 'fa fa-trash-o');
-            }
-            if ($context == 'display') {
+            if ('display' === $context) {
                 $title = $this->__('Routes list', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'

@@ -38,12 +38,6 @@ class BlockType extends AbstractType
      */
     private $localeApi;
 
-    /**
-     * BlockType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param LocaleApiInterface $localeApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         LocaleApiInterface $localeApi
@@ -52,17 +46,11 @@ class BlockType extends AbstractType
         $this->localeApi = $localeApi;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -110,17 +98,11 @@ class BlockType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulablocksmodule_block';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

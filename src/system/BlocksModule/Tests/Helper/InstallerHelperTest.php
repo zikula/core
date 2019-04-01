@@ -13,73 +13,70 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Helper;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Zikula\BlocksModule\Helper\InstallerHelper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\Core\AbstractModule;
 
-class InstallerHelperTest extends \PHPUnit\Framework\TestCase
+class InstallerHelperTest extends TestCase
 {
     /**
      * @var InstallerHelper
      */
     private $helper;
 
-    /**
-     * InstallerHelperTest setup.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->helper = new InstallerHelper();
     }
 
     /**
-     * @covers       InstallerHelper::upgradeFilterArray
+     * @covers InstallerHelper::upgradeFilterArray
      * @dataProvider filterProvider
-     * @param $initialFilter
-     * @param $expected
      */
-    public function testUpgradeFilterArray($initialFilter, $expected)
+    public function testUpgradeFilterArray(array $initialFilter, array $expected): void
     {
         $this->assertEquals($expected, $this->helper->upgradeFilterArray($initialFilter));
     }
 
     /**
-     * @covers       InstallerHelper::upgradeBkeyToFqClassname
+     * @covers InstallerHelper::upgradeBkeyToFqClassname
      * @dataProvider bKeyProvider
-     * @param $moduleName
-     * @param $oldBkey
-     * @param $expected
      */
-    public function testUpgradeBkeyToFqClassname($moduleName, $oldBkey, $expected)
+    public function testUpgradeBkeyToFqClassname(string $moduleName, string $oldBkey, string $expected): void
     {
         $kernel = $this
-            ->getMockBuilder('\Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel')
+            ->getMockBuilder(ZikulaHttpKernelInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $kernel
             ->method('getModule')
-            ->will($this->returnCallback(function($moduleName) {
+            ->willReturnCallback(function ($moduleName) {
                 if ('ExceptionModule' === $moduleName) {
                     // mocks situation where module is not namespaced.
-                    throw new \Exception();
+                    throw new Exception();
                 }
                 $module = $this
-                    ->getMockBuilder('Zikula\Core\AbstractModule')
-                    ->disableOriginalConstructor()
-                    ->getMock();
+                    ->getMockForAbstractClass(AbstractModule::class);
                 $module
                     ->method('getNamespace')
                     ->willReturn('Zikula\BlocksModule\Tests\Helper\\' . $moduleName);
 
                 return $module;
-            }));
+            })
+        ;
         $moduleEntity = $this
-            ->getMockBuilder('\Zikula\ExtensionsModule\Entity\ExtensionEntity')
+            ->getMockBuilder(ExtensionEntity::class)
             ->disableOriginalConstructor()
             ->getMock();
         $moduleEntity
             ->method('getName')
             ->willReturn($moduleName);
         $blockEntity = $this
-            ->getMockBuilder('\Zikula\BlocksModule\Entity\BlockEntity')
+            ->getMockBuilder(BlockEntity::class)
             ->disableOriginalConstructor()
             ->getMock();
         $blockEntity
@@ -93,7 +90,7 @@ class InstallerHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $FqClassName);
     }
 
-    public function bKeyProvider()
+    public function bKeyProvider(): array
     {
         return [
             ['MockModule', 'ShortNameBlock', 'MockModule:Zikula\BlocksModule\Tests\Helper\MockModule\Block\ShortNameBlock'],
@@ -104,10 +101,7 @@ class InstallerHelperTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function filterProvider()
+    public function filterProvider(): array
     {
         return [
             [[], []],
@@ -126,7 +120,7 @@ class InstallerHelperTest extends \PHPUnit\Framework\TestCase
                 [
                     ['_zkModule', '==', 'FooModule'],
                     ['_zkType', '==', 'user'],
-                    ['_zkFunc', '==', 'bar'],
+                    ['_zkFunc', '==', 'bar']
                 ]
             ],
             [
@@ -139,17 +133,17 @@ class InstallerHelperTest extends \PHPUnit\Framework\TestCase
                     ['_zkFunc', '==', 'bar'],
                     ['a', '==', 'b'],
                     ['c', '==', 'd'],
-                    ['e', '==', 'f'],
+                    ['e', '==', 'f']
                 ]
             ],
             [
                 [
                     ['module' => 'FooModule'],
                     ['module' => 'BarModule'],
-                    ['module' => 'BazModule'],
+                    ['module' => 'BazModule']
                 ],
                 [
-                    ['_zkModule', 'in_array', ['FooModule', 'BarModule', 'BazModule']],
+                    ['_zkModule', 'in_array', ['FooModule', 'BarModule', 'BazModule']]
                 ]
             ],
             [
@@ -160,7 +154,7 @@ class InstallerHelperTest extends \PHPUnit\Framework\TestCase
                 [
                     ['_zkModule', 'in_array', ['FooModule', 'BarModule']],
                     ['_zkType', 'in_array', ['user']],
-                    ['_zkFunc', 'in_array', ['bar', 'baz']],
+                    ['_zkFunc', 'in_array', ['bar', 'baz']]
                 ]
             ],
             [
@@ -176,9 +170,9 @@ class InstallerHelperTest extends \PHPUnit\Framework\TestCase
                     ['c', 'in_array', ['d']],
                     ['e', 'in_array', ['f']],
                     ['g', 'in_array', ['h']],
-                    ['i', 'in_array', ['j']],
+                    ['i', 'in_array', ['j']]
                 ]
-            ],
+            ]
         ];
     }
 }

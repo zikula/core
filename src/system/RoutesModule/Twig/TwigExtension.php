@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -28,17 +31,11 @@ class TwigExtension extends AbstractTwigExtension
      */
     private $container;
 
-    /**
-     * @inheritDoc
-     */
     public function getFunctions()
     {
         return [];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getFilters()
     {
         return [
@@ -50,26 +47,11 @@ class TwigExtension extends AbstractTwigExtension
     }
 
     /**
-     * Sets the service container.
-     *
-     * @required
-     * @param ContainerInterface $container
-     */
-    public function setContainer(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
-    /**
      * The zikularoutesmodule_arrayToString filter displays the content of a given array.
      * Example:
      *    {{ route.defaults|zikularoutesmodule_arrayToString }}
-     *
-     * @param array $array The input array.
-     *
-     * @return string Output string for display.
      */
-    public function displayArrayAsString(array $input = [])
+    public function displayArrayAsString(array $input = []): string
     {
         return '<pre>' . print_r($input, true) . '</pre>';
     }
@@ -78,13 +60,8 @@ class TwigExtension extends AbstractTwigExtension
      * The zikularoutesmodule_pathToString filter displays a route's path.
      * Example:
      *    {{ route.path|zikularoutesmodule_pathToString(route) }}
-     *
-     * @param string      $path  The route path.
-     * @param RouteEntity $route The route object.
-     *
-     * @return string Output string for display.
      */
-    public function displayPathAsString($path, $route)
+    public function displayPathAsString(string $path, RouteEntity $route): string
     {
         $prefix = '';
         $translationPrefix = $route->getTranslationPrefix();
@@ -100,7 +77,7 @@ class TwigExtension extends AbstractTwigExtension
             $isRequiredLangParam = true;//ZLanguage::isRequiredLangParam();
             if (!$isRequiredLangParam) {
                 $defaultLanguage = $this->variableApi->getSystemVar('language_i18n');
-                unset($languages[array_search($defaultLanguage, $languages)]);
+                unset($languages[array_search($defaultLanguage, $languages, true)]);
             }
             if (count($languages) > 0) {
                 $prefix = ($isRequiredLangParam ? '/' : '{/') . implode('|', $languages) . ($isRequiredLangParam ? '' : '}');
@@ -110,7 +87,7 @@ class TwigExtension extends AbstractTwigExtension
         $prefix = htmlspecialchars($prefix);
         $path = htmlspecialchars($container->get('zikula_routes_module.path_builder_helper')->getPathWithBundlePrefix($route));
 
-        $path = preg_replace_callback('#%(.*?)%#', function($matches) use ($container) {
+        $path = preg_replace_callback('#%(.*?)%#', static function($matches) use ($container) {
             return '<abbr title="' . htmlspecialchars($matches[0]) . '">' . htmlspecialchars($container->getParameter($matches[1])) . '</abbr>';
         }, $path);
 
@@ -122,12 +99,12 @@ class TwigExtension extends AbstractTwigExtension
                 $title .= $this->__f('Default: %s', ['%s' => htmlspecialchars($defaults[$matches[1]])]);
             }
             if (isset($requirements[$matches[1]])) {
-                if ($title != '') {
+                if ('' !== $title) {
                     $title .= ' | ';
                 }
                 $title .= $this->__f('Requirement: %s', ['%s' => htmlspecialchars($requirements[$matches[1]])]);
             }
-            if ($title == '') {
+            if ('' === $title) {
                 return $matches[0];
             }
 
@@ -135,5 +112,13 @@ class TwigExtension extends AbstractTwigExtension
         }, $path);
 
         return $prefix . '<strong>' . $path . '</strong>';
+    }
+
+    /**
+     * @required
+     */
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
     }
 }

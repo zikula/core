@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Controller;
 
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -49,21 +50,14 @@ class ThemeController extends AbstractController
      *
      * View all themes.
      *
-     * @param Request $request
-     * @param BundleSyncHelper $syncHelper
-     * @param ThemeEntityRepository $themeRepository
-     * @param VariableApiInterface $variableApi
-     *
-     * @return array
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
+     * @throws Exception
      */
     public function viewAction(
-        Request $request,
         BundleSyncHelper $syncHelper,
         ThemeEntityRepository $themeRepository,
         VariableApiInterface $variableApi
-    ) {
+    ): array {
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -83,13 +77,8 @@ class ThemeController extends AbstractController
 
     /**
      * @Route("/preview/{themeName}")
-     *
-     * @param Engine $engine
-     * @param string $themeName
-     *
-     * @return Response
      */
-    public function previewAction(Engine $engine, $themeName)
+    public function previewAction(Engine $engine, string $themeName): Response
     {
         $engine->setActiveTheme($themeName);
         $this->addFlash('warning', $this->__('Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.'));
@@ -99,16 +88,17 @@ class ThemeController extends AbstractController
 
     /**
      * @Route("/activate/{themeName}")
-     *
-     * @param ThemeEntityRepository $themeRepository
-     * @param CacheClearer $cacheClearer
-     * @param string $themeName
      */
-    public function activateAction(ThemeEntityRepository $themeRepository, CacheClearer $cacheClearer, $themeName)
-    {
+    public function activateAction(
+        ThemeEntityRepository $themeRepository,
+        CacheClearer $cacheClearer,
+        string $themeName
+    ): RedirectResponse {
         $theme = $themeRepository->findOneBy(['name' => $themeName]);
-        $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
-        $this->getDoctrine()->getManager()->flush();
+        if (null !== $theme) {
+            $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
+            $this->getDoctrine()->getManager()->flush();
+        }
         $cacheClearer->clear('symfony.config');
 
         return $this->redirectToRoute('zikulathememodule_theme_view');
@@ -121,11 +111,6 @@ class ThemeController extends AbstractController
      *
      * Set theme as default for site.
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param CacheClearer $cacheClearer
-     * @param string $themeName
-     *
      * @return array|RedirectResponse
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
@@ -134,7 +119,7 @@ class ThemeController extends AbstractController
         Request $request,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,
-        $themeName
+        string $themeName
     ) {
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -186,13 +171,7 @@ class ThemeController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaThemeModule:Theme:delete.html.twig")
      *
-     * delete a theme
-     *
-     * @param Request $request
-     * @param ThemeEntityRepository $themeRepository
-     * @param VariableApiInterface $variableApi
-     * @param CacheClearer $cacheClearer
-     * @param string $themeName
+     * Delete a theme.
      *
      * @return array|RedirectResponse
      *
@@ -204,9 +183,9 @@ class ThemeController extends AbstractController
         ThemeEntityRepository $themeRepository,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,
-        $themeName
+        string $themeName
     ) {
-        if (!$this->hasPermission('ZikulaThemeModule::', "${themeName}::", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaThemeModule::', $themeName . '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
 
@@ -283,14 +262,9 @@ class ThemeController extends AbstractController
      *
      * Display the theme credits.
      *
-     * @param ThemeEntityRepository $themeRepository
-     * @param string $themeName
-     *
-     * @return array
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have edit permissions over the theme
      */
-    public function creditsAction(ThemeEntityRepository $themeRepository, $themeName)
+    public function creditsAction(ThemeEntityRepository $themeRepository, string $themeName): array
     {
         if (!$this->hasPermission('ZikulaThemeModule::', "${themeName}::credits", ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -298,7 +272,7 @@ class ThemeController extends AbstractController
         $themeInfo = $themeRepository->findOneBy(['name' => $themeName]);
 
         return [
-            'themeinfo' => $themeInfo->toArray()
+            'themeinfo' => $themeInfo->toArray() ?? []
         ];
     }
 }

@@ -69,13 +69,13 @@ function zikulaRoutesInitItemActions(context) {
     var containers;
     
     containerSelector = '';
-    if (context == 'view') {
+    if ('view' === context) {
         containerSelector = '.zikularoutesmodule-view';
-    } else if (context == 'display') {
+    } else if ('display' === context) {
         containerSelector = 'h2, h3';
     }
     
-    if (containerSelector == '') {
+    if ('' === containerSelector) {
         return;
     }
     

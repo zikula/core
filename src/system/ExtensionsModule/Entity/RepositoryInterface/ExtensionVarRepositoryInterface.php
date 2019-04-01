@@ -19,35 +19,13 @@ use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 
 interface ExtensionVarRepositoryInterface extends ObjectRepository, Selectable
 {
-    /**
-     * @param ExtensionVarEntity $entity
-     * @return void
-     */
-    public function remove(ExtensionVarEntity $entity);
+    public function remove(ExtensionVarEntity $entity): void;
 
-    /**
-     * @param ExtensionVarEntity $entity
-     * @return void
-     */
-    public function persistAndFlush(ExtensionVarEntity $entity);
+    public function persistAndFlush(ExtensionVarEntity $entity): void;
 
-    /**
-     * @param $extensionName
-     * @param $variableName
-     * @return bool
-     */
-    public function deleteByExtensionAndName($extensionName, $variableName);
+    public function deleteByExtensionAndName(string $extensionName, string $variableName): bool;
 
-    /**
-     * @param $extensionName
-     * @return bool
-     */
-    public function deleteByExtension($extensionName);
+    public function deleteByExtension(string $extensionName): bool;
 
-    /**
-     * @param $oldName
-     * @param $newName
-     * @return mixed
-     */
-    public function updateName($oldName, $newName);
+    public function updateName(string $oldName, string $newName): bool;
 }

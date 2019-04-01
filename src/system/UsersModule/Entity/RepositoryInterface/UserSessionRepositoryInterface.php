@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
+use DateTime;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\UsersModule\Entity\UserSessionEntity;
@@ -20,19 +21,17 @@ use Zikula\UsersModule\Entity\UserSessionEntity;
 interface UserSessionRepositoryInterface extends ObjectRepository, Selectable
 {
     /**
-     * Return an array of UID's that have logged in since the provided datetime
-     * @param \DateTime $dateTime
-     * @return mixed
+     * Return an array of UID's that have logged in since the provided datetime.
      */
-    public function getUsersSince(\DateTime $dateTime);
+    public function getUsersSince(DateTime $dateTime): array;
 
-    public function countUsersSince(\DateTime $dateTime);
+    public function countUsersSince(DateTime $dateTime): int;
 
-    public function countGuestsSince(\DateTime $dateTime);
+    public function countGuestsSince(DateTime $dateTime): int;
 
-    public function persistAndFlush(UserSessionEntity $entity);
+    public function persistAndFlush(UserSessionEntity $entity): void;
 
-    public function removeAndFlush($id);
+    public function removeAndFlush(string $id): void;
 
-    public function gc($level, $inactiveMinutes, $days);
+    public function gc(string $level, int $inactiveMinutes, int $days): void;
 }

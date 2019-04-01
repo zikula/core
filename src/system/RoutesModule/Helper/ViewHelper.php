@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -12,6 +15,7 @@
 
 namespace Zikula\RoutesModule\Helper;
 
+use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\ExtensionsModule\Constant as ExtensionConstant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -33,38 +37,39 @@ class ViewHelper extends AbstractViewHelper
      */
     private $extensionRepository;
 
+    public function processTemplate(
+        string $type,
+        string $func,
+        array $templateParameters = [],
+        string $template = ''
+    ): Response {
+        $enrichedTemplateParameters = $templateParameters;
+
+        if ('route' === $type) {
+            if ('view' === $func) {
+                $enrichedTemplateParameters['jms_i18n_routing'] = $this->configDumper->getConfigurationForHtml('jms_i18n_routing');
+            } elseif ('edit' === $func) {
+                $urlNames = [];
+                /** @var ExtensionEntity[] $modules */
+                $modules = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
+                foreach ($modules as $module) {
+                    $urlNames[$module->getName()] = $module->getUrl();
+                }
+                $enrichedTemplateParameters['moduleUrlNames'] = $urlNames;
+            }
+        }
+
+        return parent::processTemplate($type, $func, $enrichedTemplateParameters, $template);
+    }
+
     /**
      * @required
-     * @param DynamicConfigDumper $configDumper
-     * @param ExtensionRepositoryInterface $extensionRepository
      */
     public function setAdditionalDependencies(
         DynamicConfigDumper $configDumper,
         ExtensionRepositoryInterface $extensionRepository
-    ) {
+    ): void {
         $this->configDumper = $configDumper;
         $this->extensionRepository = $extensionRepository;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function processTemplate($type, $func, array $templateParameters = [], $template = '')
-    {
-        $enrichedTemplateParameters = $templateParameters;
-
-        if ($type == 'route' && $func == 'view') {
-            $enrichedTemplateParameters['jms_i18n_routing'] = $this->configDumper->getConfigurationForHtml('jms_i18n_routing');
-        } elseif ($type == 'route' && $func == 'edit') {
-            $urlNames = [];
-            /** @var ExtensionEntity[] $modules */
-            $modules = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
-            foreach ($modules as $module) {
-                $urlNames[$module->getName()] = $module->getUrl();
-            }
-            $enrichedTemplateParameters['moduleUrlNames'] = $urlNames;
-        }
-
-        return parent::processTemplate($type, $func, $enrichedTemplateParameters, $template);
     }
 }

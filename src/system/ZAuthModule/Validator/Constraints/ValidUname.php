@@ -20,13 +20,16 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidUname extends Constraint
 {
+    /**
+     * @var string
+     */
     public $message = 'The uname "%string%" is invalid.';
 
+    /**
+     * @var int
+     */
     public $excludedUid;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultOption()
     {
         return 'excludedUid';

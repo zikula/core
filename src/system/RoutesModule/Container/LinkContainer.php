@@ -20,14 +20,11 @@ use Zikula\RoutesModule\Container\Base\AbstractLinkContainer;
  */
 class LinkContainer extends AbstractLinkContainer
 {
-    /**
-     * @inheritDoc
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         $links = [];
 
-        if (LinkContainerInterface::TYPE_ADMIN != $type) {
+        if (LinkContainerInterface::TYPE_ADMIN !== $type) {
             return $links;
         }
 

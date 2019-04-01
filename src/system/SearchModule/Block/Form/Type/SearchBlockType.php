@@ -28,29 +28,16 @@ class SearchBlockType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * SearchBlockType constructor.
-     *
-     * @param TranslatorInterface $translator Translator service instance
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator Translator service instance
-     */
-    public function setTranslator(/*TranslatorInterface */$translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -63,22 +50,16 @@ class SearchBlockType extends AbstractType
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => $options['activeModules'],
+                'choices' => $options['activeModules']
             ])
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasearchmodule_searchblock';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

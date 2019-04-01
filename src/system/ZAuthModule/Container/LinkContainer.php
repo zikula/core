@@ -54,16 +54,6 @@ class LinkContainer implements LinkContainerInterface
      */
     private $mappingRepository;
 
-    /**
-     * constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RouterInterface $router
-     * @param PermissionApiInterface $permissionApi
-     * @param VariableApiInterface $variableApi
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param AuthenticationMappingRepositoryInterface $mappingRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
@@ -80,14 +70,7 @@ class LinkContainer implements LinkContainerInterface
         $this->mappingRepository = $mappingRepository;
     }
 
-    /**
-     * get Links of any type for this extension
-     * required by the interface
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         if (LinkContainerInterface::TYPE_ADMIN === $type) {
             return $this->getAdmin();
@@ -103,11 +86,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Admin links for this extension
-     *
-     * @return array
+     * Get the admin links for this extension.
      */
-    private function getAdmin()
+    private function getAdmin(): array
     {
         $links = [];
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
@@ -117,7 +98,7 @@ class LinkContainer implements LinkContainerInterface
                 'icon' => 'list'
             ];
         }
-        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED, false)) {
+        if ($this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
             $createUserAccessLevel = ACCESS_ADD;
         } else {
             $createUserAccessLevel = ACCESS_ADMIN;
@@ -149,7 +130,10 @@ class LinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    private function getUser()
+    /**
+     * Get the user links for this extension.
+     */
+    private function getUser(): array
     {
         $links = $this->getAccount();
         array_unshift($links, [
@@ -176,7 +160,10 @@ class LinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    private function getAccount()
+    /**
+     * Get the account links for this extension.
+     */
+    private function getAccount(): array
     {
         $links = [];
         if (!$this->currentUser->isLoggedIn()) {
@@ -200,12 +187,7 @@ class LinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * set the BundleName as required by the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaZAuthModule';
     }

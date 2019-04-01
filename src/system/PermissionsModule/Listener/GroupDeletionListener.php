@@ -26,19 +26,11 @@ class GroupDeletionListener implements EventSubscriberInterface
      */
     private $permissionRepository;
 
-    /**
-     * GroupDeletionListener constructor.
-     *
-     * @param PermissionRepositoryInterface $permissionRepository
-     */
     public function __construct(PermissionRepositoryInterface $permissionRepository)
     {
         $this->permissionRepository = $permissionRepository;
     }
 
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -59,7 +51,7 @@ class GroupDeletionListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event The event instance
      */
-    public function preDelete(GenericEvent $event)
+    public function preDelete(GenericEvent $event): void
     {
         $group = $event->getSubject();
 

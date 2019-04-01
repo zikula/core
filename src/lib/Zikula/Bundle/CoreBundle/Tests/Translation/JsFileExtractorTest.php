@@ -17,14 +17,17 @@ use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use JMS\TranslationBundle\Translation\FileSourceFactory;
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use SplFileInfo;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor;
 
-class JsFileExtractorTest extends \PHPUnit\Framework\TestCase
+class JsFileExtractorTest extends TestCase
 {
-    public function testExtractController()
+    public function testExtractController(): void
     {
         $fileSourceFactory = $this->getFileSourceFactory();
-        $fixtureSplInfo = new \SplFileInfo('/' . __DIR__ . '/Fixture/Test.js');
+        $fixtureSplInfo = new SplFileInfo('/' . __DIR__ . '/Fixture/Test.js');
         $expected = new MessageCatalogue();
 
         $message = new Message('My name is %n%', 'zikula_javascript');
@@ -66,24 +69,24 @@ class JsFileExtractorTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $this->extract('Test.js'));
     }
 
-    protected function extract($file, FileVisitorInterface $extractor = null)
+    protected function extract(string $file, FileVisitorInterface $extractor = null): MessageCatalogue
     {
         if (!is_file($file = __DIR__ . '/Fixture/' . $file)) {
-            throw new \RuntimeException(sprintf('The file "%s" does not exist.', $file));
+            throw new RuntimeException(sprintf('The file "%s" does not exist.', $file));
         }
-        $file = new \SplFileInfo($file);
+        $fileInfo = new SplFileInfo($file);
 
         if (null === $extractor) {
             $extractor = new ZikulaJsFileExtractor();
         }
 
         $catalogue = new MessageCatalogue();
-        $extractor->visitFile($file, $catalogue);
+        $extractor->visitFile($fileInfo, $catalogue);
 
         return $catalogue;
     }
 
-    protected function getFileSourceFactory()
+    protected function getFileSourceFactory(): FileSourceFactory
     {
         return new FileSourceFactory('/');
     }

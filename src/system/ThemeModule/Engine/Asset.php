@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine;
 
+use InvalidArgumentException;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -46,11 +47,6 @@ class Asset
      */
     private $assetPackages;
 
-    /**
-     * Asset constructor.
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param Packages $assetPackages
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel, Packages $assetPackages)
     {
         $this->kernel = $kernel;
@@ -59,24 +55,20 @@ class Asset
 
     /**
      * Get the path to the site root.
-     * @return string
      */
-    public function getSiteRoot()
+    public function getSiteRoot(): string
     {
-        return realpath($this->kernel->getRootDir() . "/../");
+        return dirname($this->kernel->getProjectDir());
     }
 
     /**
      * Returns path for asset.
-     *
-     * @param string $path
-     * @return string
      */
-    public function resolve($path)
+    public function resolve(string $path): string
     {
         // for straight asset paths
         if ('@' !== $path[0]) {
-            if ('/' === $path[0]) {
+            if (0 === strpos($path, '/')) {
                 $path = mb_substr($path, 1);
             }
 
@@ -89,12 +81,12 @@ class Asset
         // @AcmeBundle:images/foo.png
         $parts = explode(':', $path);
         if (2 !== count($parts)) {
-            throw new \InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
+            throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
         }
 
         // if file exists in /web, then use it first
         $bundle = $this->kernel->getBundle(mb_substr($parts[0], 1));
-        if ($bundle instanceof AbstractBundle || $bundle instanceof Bundle) {
+        if ($bundle instanceof Bundle) {
             $relativeAssetPath = '/' . $parts[1];
             if ($bundle instanceof AbstractBundle) {
                 $relativeAssetPath = $bundle->getRelativeAssetPath() . $relativeAssetPath;
@@ -103,17 +95,18 @@ class Asset
             }
 
             $webPath = $this->assetPackages->getUrl($relativeAssetPath);
-            $filePath = realpath($this->kernel->getRootDir() . '/../../../' . $webPath);
+            $filePath = /*realpath(*/$this->kernel->getProjectDir() . $webPath/*)*/;
             if (is_file($filePath)) {
                 return $webPath;
             }
         }
 
-        $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources', true);
+        $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources');
         $root = $this->getSiteRoot();
-        $path = (false !== mb_strpos($fullPath, $root)) ? mb_substr($fullPath, mb_strlen($root) + 1) : $fullPath;
-        $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
 
-        return $this->assetPackages->getUrl($path, 'zikula_default');
+        $resultPath = false !== mb_strpos($fullPath, $root) ? str_replace($root, '', $fullPath) : $fullPath;
+        $resultPath = str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
+
+        return $this->assetPackages->getUrl($resultPath, 'zikula_default');
     }
 }

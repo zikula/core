@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -61,19 +64,6 @@ abstract class AbstractViewHelper
      */
     protected $permissionHelper;
     
-    /**
-     * ViewHelper constructor.
-     *
-     * @param Environment $twig
-     * @param FilesystemLoader $twigLoader
-     * @param RequestStack $requestStack
-     * @param VariableApiInterface $variableApi
-     * @param AssetFilter $assetFilter
-     * @param ControllerHelper $controllerHelper
-     * @param PermissionHelper $permissionHelper
-     *
-     * @return void
-     */
     public function __construct(
         Environment $twig,
         FilesystemLoader $twigLoader,
@@ -94,13 +84,8 @@ abstract class AbstractViewHelper
     
     /**
      * Determines the view template for a certain method with given parameters.
-     *
-     * @param string $type Current controller (name of currently treated entity)
-     * @param string $func Current function (index, view, ...)
-     *
-     * @return string name of template file
      */
-    public function getViewTemplate($type, $func)
+    public function getViewTemplate(string $type, string $func): string
     {
         // create the base template name
         $template = '@ZikulaRoutesModule/' . ucfirst($type) . '/' . $func;
@@ -109,7 +94,8 @@ abstract class AbstractViewHelper
         $templateExtension = '.' . $this->determineExtension($type, $func);
     
         // check whether a special template is used
-        $tpl = $this->requestStack->getCurrentRequest()->query->getAlnum('tpl', '');
+        $request = $this->requestStack->getCurrentRequest();
+        $tpl = null !== $request ? $request->query->getAlnum('tpl') : '';
         if (!empty($tpl)) {
             // check if custom template exists
             $customTemplate = $template . ucfirst($tpl);
@@ -125,24 +111,22 @@ abstract class AbstractViewHelper
     
     /**
      * Helper method for managing view templates.
-     *
-     * @param string $type               Current controller (name of currently treated entity)
-     * @param string $func               Current function (index, view, ...)
-     * @param array  $templateParameters Template data
-     * @param string $template           Optional assignment of precalculated template file
-     *
-     * @return mixed Output
      */
-    public function processTemplate($type, $func, array $templateParameters = [], $template = '')
-    {
+    public function processTemplate(
+        string $type,
+        string $func,
+        array $templateParameters = [],
+        string $template = ''
+    ): Response {
         $templateExtension = $this->determineExtension($type, $func);
         if (empty($template)) {
             $template = $this->getViewTemplate($type, $func);
         }
     
         // look whether we need output with or without the theme
-        $raw = $this->requestStack->getCurrentRequest()->query->getBoolean('raw', false);
-        if (!$raw && $templateExtension != 'html.twig') {
+        $request = $this->requestStack->getCurrentRequest();
+        $raw = null !== $request ? $request->query->getBoolean('raw') : false;
+        if (!$raw && 'html.twig' !== $templateExtension) {
             $raw = true;
         }
     
@@ -163,25 +147,16 @@ abstract class AbstractViewHelper
     
     /**
      * Adds assets to a raw page which is not processed by the Theme engine.
-     *
-     * @param string $output The output to be enhanced
-     *
-     * @return string Output including additional assets
      */
-    protected function injectAssetsIntoRawOutput($output = '')
+    protected function injectAssetsIntoRawOutput(string $output = ''): string
     {
         return $this->assetFilter->filter($output);
     }
     
     /**
      * Get extension of the currently treated template.
-     *
-     * @param string $type Current controller (name of currently treated entity)
-     * @param string $func Current function (index, view, ...)
-     *
-     * @return string Template extension
      */
-    protected function determineExtension($type, $func)
+    protected function determineExtension(string $type, string $func): string
     {
         $templateExtension = 'html.twig';
         if (!in_array($func, ['view', 'display'])) {
@@ -189,8 +164,13 @@ abstract class AbstractViewHelper
         }
     
         $extensions = $this->availableExtensions($type, $func);
-        $format = $this->requestStack->getCurrentRequest()->getRequestFormat();
-        if ($format != 'html' && in_array($format, $extensions)) {
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return $templateExtension;
+        }
+    
+        $format = $request->getRequestFormat();
+        if ('html' !== $format && in_array($format, $extensions, true)) {
             $templateExtension = $format . '.twig';
         }
     
@@ -200,22 +180,19 @@ abstract class AbstractViewHelper
     /**
      * Get list of available template extensions.
      *
-     * @param string $type Current controller (name of currently treated entity)
-     * @param string $func Current function (index, view, ...)
-     *
      * @return string[] List of allowed template extensions
      */
-    protected function availableExtensions($type, $func)
+    protected function availableExtensions(string $type,  string$func): array
     {
         $extensions = [];
         $hasAdminAccess = $this->permissionHelper->hasComponentPermission($type, ACCESS_ADMIN);
-        if ($func == 'view') {
+        if ('view' === $func) {
             if ($hasAdminAccess) {
                 $extensions = [];
             } else {
                 $extensions = [];
             }
-        } elseif ($func == 'display') {
+        } elseif ('display' === $func) {
             if ($hasAdminAccess) {
                 $extensions = [];
             } else {

@@ -20,9 +20,6 @@ use Zikula\Common\Collection\Collectible\PendingContentCollectible;
 use Zikula\Common\Collection\Container;
 use Zikula\Core\Event\GenericEvent;
 
-/**
- * Class PendingContentBlock
- */
 class PendingContentBlock extends AbstractBlockHandler
 {
     /**
@@ -35,9 +32,9 @@ class PendingContentBlock extends AbstractBlockHandler
      */
     private $eventDispatcher;
 
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        if (!$this->hasPermission('PendingContent::', "{$properties[title]}::", ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission('PendingContent::', $properties['title'] . '::', ACCESS_OVERVIEW)) {
             return '';
         }
 
@@ -47,7 +44,7 @@ class PendingContentBlock extends AbstractBlockHandler
 
         $content = [];
         foreach ($pendingCollection as $collection) {
-            /** @var \Zikula\Common\Collection\Container $collection */
+            /** @var Container $collection */
             foreach ($collection as $item) {
                 $link = '';
                 if ($item instanceof PendingContentCollectible) {
@@ -66,25 +63,23 @@ class PendingContentBlock extends AbstractBlockHandler
         ]);
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->__('Pending Content');
     }
 
     /**
      * @required
-     * @param RouterInterface $router
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
     /**
      * @required
-     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }

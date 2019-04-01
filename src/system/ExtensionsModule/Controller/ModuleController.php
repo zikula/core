@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Controller;
 
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
@@ -25,16 +26,17 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\Core\AbstractBundle;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Constant;
-use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ExtensionsModule\ExtensionEvents;
@@ -52,46 +54,40 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class ModuleController extends AbstractController
 {
-    const NEW_ROUTES_AVAIL = 'new.routes.avail';
+    private const NEW_ROUTES_AVAIL = 'new.routes.avail';
 
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
      * @Template("ZikulaExtensionsModule:Module:viewModuleList.html.twig")
      *
-     * @param Request $request
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param BundleSyncHelper $bundleSyncHelper
-     * @param RouterInterface $router
-     * @param int $pos
-     *
-     * @return array
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function viewModuleListAction(
         Request $request,
         ExtensionRepositoryInterface $extensionRepository,
         BundleSyncHelper $bundleSyncHelper,
         RouterInterface $router,
-        $pos = 1
-    ) {
+        int $pos = 1
+    ): array {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $modulesJustInstalled = $request->query->get('justinstalled', null);
+        $modulesJustInstalled = $request->query->get('justinstalled');
         if (!empty($modulesJustInstalled)) {
             // notify the event dispatcher that new routes are available (ids of modules just installed avail as args)
             $event = new GenericEvent(null, json_decode($modulesJustInstalled));
             $this->get('event_dispatcher')->dispatch(self::NEW_ROUTES_AVAIL, $event);
         }
 
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikulaextensionsmodule_module_viewmodulelist');
+        $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_module_viewmodulelist');
         $sortableColumns->addColumns([new Column('displayname'), new Column('state')]);
         $sortableColumns->setOrderByFromRequest($request);
 
         $upgradedExtensions = [];
         $vetoEvent = new GenericEvent();
         $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
-        if (!$vetoEvent->isPropagationStopped() && 1 === $pos) {
+        if (1 === $pos && !$vetoEvent->isPropagationStopped()) {
             // regenerate the extension list only when viewing the first page
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
             $upgradedExtensions = $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
@@ -104,7 +100,7 @@ class ModuleController extends AbstractController
         $adminRoutes = [];
 
         foreach ($pagedResult as $module) {
-            if (!isset($module['capabilities']['admin']) || empty($module['capabilities']['admin']) || Constant::STATE_ACTIVE !== $module['state']) {
+            if (Constant::STATE_ACTIVE !== $module['state'] || !isset($module['capabilities']['admin']) || empty($module['capabilities']['admin'])) {
                 continue;
             }
 
@@ -140,23 +136,17 @@ class ModuleController extends AbstractController
     /**
      * @Route("/modules/activate/{id}/{token}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      *
-     * Activate an extension
+     * Activate an extension.
      *
-     * @param integer $id
-     * @param string $token
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param ExtensionStateHelper $extensionStateHelper
-     * @param CacheClearer $cacheClearer
-     *
-     * @return RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function activateAction(
-        $id,
-        $token,
+        int $id,
+        string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
         CacheClearer $cacheClearer
-    ) {
+    ): RedirectResponse {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -165,6 +155,7 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
             $this->addFlash('error', $this->__f('Error! Activation of module %s not allowed.', ['%s' => $extension->getName()]));
@@ -183,21 +174,15 @@ class ModuleController extends AbstractController
      *
      * Deactivate an extension
      *
-     * @param integer $id
-     * @param string $token
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param ExtensionStateHelper $extensionStateHelper
-     * @param CacheClearer $cacheClearer
-     *
-     * @return RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function deactivateAction(
-        $id,
-        $token,
+        int $id,
+        string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $extensionStateHelper,
         CacheClearer $cacheClearer
-    ) {
+    ): RedirectResponse {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -206,14 +191,17 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
-        if (ZikulaKernel::isCoreModule($extension->getName())) {
-            $this->addFlash('error', $this->__f('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
-        } else {
-            // Update state
-            $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
-            $cacheClearer->clear('symfony.routing');
-            $this->addFlash('status', $this->__('Done! Deactivated module.'));
+        if (null !== $extension) {
+            if (ZikulaKernel::isCoreModule($extension->getName())) {
+                $this->addFlash('error', $this->__f('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
+            } else {
+                // Update state
+                $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
+                $cacheClearer->clear('symfony.routing');
+                $this->addFlash('status', $this->__('Done! Deactivated module.'));
+            }
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
@@ -226,19 +214,20 @@ class ModuleController extends AbstractController
      *
      * Modify a module.
      *
-     * @param Request $request
-     * @param ExtensionEntity $extension
-     * @param CacheClearer $cacheClearer
-     * @param bool $forceDefaults
-     *
-     * @return array|RedirectResponse|Response
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for modifying the extension
      */
-    public function modifyAction(Request $request, ExtensionEntity $extension, CacheClearer $cacheClearer, $forceDefaults = false)
-    {
+    public function modifyAction(
+        Request $request,
+        ExtensionEntity $extension,
+        CacheClearer $cacheClearer,
+        bool $forceDefaults = false
+    ) {
         if (!$this->hasPermission('ZikulaExtensionsModule::modify', $extension->getName() . '::' . $extension->getId(), ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
+        /** @var AbstractBundle $bundle */
         $bundle = $this->get('kernel')->getModule($extension->getName());
         $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
 
@@ -272,7 +261,7 @@ class ModuleController extends AbstractController
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -283,16 +272,11 @@ class ModuleController extends AbstractController
      *
      * Display information of a module compatibility with the version of the core
      *
-     * @param ExtensionEntity $extension
-     *
-     * @return array|Response
-     *
-     * @throws NotFoundHttpException Thrown if the requested module id doesn't exist
      * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the requested module
      */
-    public function compatibilityAction(ExtensionEntity $extension)
+    public function compatibilityAction(ExtensionEntity $extension): array
     {
-        if (!$this->hasPermission('ZikulaExtensionsModule::', $extension->getName() . "::" . $extension->getId(), ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaExtensionsModule::', $extension->getName() . '::' . $extension->getId(), ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -308,21 +292,13 @@ class ModuleController extends AbstractController
      *
      * Install and initialise an extension.
      *
-     * @param Request $request
-     * @param ExtensionEntity $extension
-     * @param string $token
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param ExtensionHelper $extensionHelper
-     * @param ExtensionStateHelper $extensionStateHelper
-     * @param ExtensionDependencyHelper $dependencyHelper
-     * @param CacheClearer $cacheClearer
-     *
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function installAction(
         Request $request,
         ExtensionEntity $extension,
-        $token,
+        string $token,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
@@ -348,9 +324,10 @@ class ModuleController extends AbstractController
         $form = $this->createForm(ExtensionInstallType::class, [
             'dependencies' => $this->formatDependencyCheckboxArray($extensionRepository, $unsatisfiedDependencies)
         ]);
+        $hasNoUnsatisfiedDependencies = empty($unsatisfiedDependencies);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid() || empty($unsatisfiedDependencies)) {
-            if ($form->get('install')->isClicked() || empty($unsatisfiedDependencies)) {
+        if ($hasNoUnsatisfiedDependencies || ($form->isSubmitted() && $form->isValid())) {
+            if ($hasNoUnsatisfiedDependencies || $form->get('install')->isClicked()) {
                 $extensionsInstalled = [];
                 $data = $form->getData();
                 foreach ($data['dependencies'] as $dependencyId => $installSelected) {
@@ -400,23 +377,27 @@ class ModuleController extends AbstractController
      * The additional Action is required because this event must occur AFTER the rebuild of the cache which occurs on Request.
      *
      * @Route("/postinstall/{extensions}", methods = {"GET"})
-     *
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param string $extensions
-     *
-     * @return RedirectResponse
      */
-    public function postInstallAction(ExtensionRepositoryInterface $extensionRepository, $extensions = null)
-    {
+    public function postInstallAction(
+        ExtensionRepositoryInterface $extensionRepository,
+        ZikulaHttpKernelInterface $kernel,
+        EventDispatcherInterface $eventDispatcher,
+        string $extensions = null
+    ): RedirectResponse {
         if (!empty($extensions)) {
             $extensions = json_decode($extensions);
             foreach ($extensions as $extensionId) {
+                /** @var ExtensionEntity $extensionEntity */
                 $extensionEntity = $extensionRepository->find($extensionId);
-                $bundle = $this->get('kernel')->getModule($extensionEntity->getName());
-                if (!empty($bundle)) {
-                    $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
-                    $this->get('event_dispatcher')->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+                if (null === $extensionRepository) {
+                    continue;
                 }
+                $bundle = $kernel->getModule($extensionEntity->getName());
+                if (null === $bundle) {
+                    continue;
+                }
+                $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
+                $eventDispatcher->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
             }
             // currently commented out because it takes a long time.
             //$extensionHelper->installAssets();
@@ -426,20 +407,17 @@ class ModuleController extends AbstractController
     }
 
     /**
-     * Create array suitable for checkbox FormType [[ID => bool][ID => bool]]
-     *
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param array $dependencies
-     *
-     * @return array
+     * Create array suitable for checkbox FormType [[ID => bool][ID => bool]].
      */
-    private function formatDependencyCheckboxArray(ExtensionRepositoryInterface $extensionRepository, array $dependencies)
-    {
+    private function formatDependencyCheckboxArray(
+        ExtensionRepositoryInterface $extensionRepository,
+        array $dependencies
+    ): array {
         $return = [];
-        /** @var ExtensionDependencyEntity[] $dependencies */
         foreach ($dependencies as $dependency) {
+            /** @var ExtensionEntity $dependencyExtension */
             $dependencyExtension = $extensionRepository->get($dependency->getModname());
-            $return[$dependency->getId()] = empty($dependencyExtension) ? false : true;
+            $return[$dependency->getId()] = null !== $dependencyExtension;
         }
 
         return $return;
@@ -450,14 +428,13 @@ class ModuleController extends AbstractController
      *
      * Upgrade an extension.
      *
-     * @param ExtensionEntity $extension
-     * @param string $token
-     * @param ExtensionHelper $extensionHelper
-     *
-     * @return RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
-    public function upgradeAction(ExtensionEntity $extension, $token, ExtensionHelper $extensionHelper)
-    {
+    public function upgradeAction(
+        ExtensionEntity $extension,
+        $token,
+        ExtensionHelper $extensionHelper
+    ): RedirectResponse {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -483,21 +460,13 @@ class ModuleController extends AbstractController
      *
      * Uninstall an extension.
      *
-     * @param Request $request
-     * @param ExtensionEntity $extension
-     * @param string $token
-     * @param BlockRepositoryInterface $blockRepository
-     * @param ExtensionHelper $extensionHelper
-     * @param ExtensionStateHelper $extensionStateHelper
-     * @param ExtensionDependencyHelper $dependencyHelper
-     * @param CacheClearer $cacheClearer
-     *
      * @return array|Response|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function uninstallAction(
         Request $request,
         ExtensionEntity $extension,
-        $token,
+        string $token,
         BlockRepositoryInterface $blockRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
@@ -513,7 +482,7 @@ class ModuleController extends AbstractController
         }
 
         if (Constant::STATE_MISSING === $extension->getState()) {
-            throw new \RuntimeException($this->__('Error! The requested extension cannot be uninstalled because its files are missing!'));
+            throw new RuntimeException($this->__('Error! The requested extension cannot be uninstalled because its files are missing!'));
         }
         if (!$this->get('kernel')->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);

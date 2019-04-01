@@ -95,12 +95,12 @@ class SwitchTokenParser extends AbstractTokenParser
         return new SwitchNode($cases, $default, $expression, $lineno, $this->getTag());
     }
 
-    public function decideCaseFork(Token $token)
+    public function decideCaseFork(Token $token): bool
     {
         return $token->test(['case', 'default', 'break', 'endswitch']);
     }
 
-    public function getTag()
+    public function getTag(): string
     {
         return 'switch';
     }

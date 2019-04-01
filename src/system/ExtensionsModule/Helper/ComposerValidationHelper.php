@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Helper;
 
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
+use stdClass;
 use Symfony\Component\Finder\SplFileInfo;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -64,7 +65,7 @@ class ComposerValidationHelper
 
     /**
      * The decoded content
-     * @var \stdClass
+     * @var stdClass
      */
     private $content;
 
@@ -74,12 +75,6 @@ class ComposerValidationHelper
      */
     private $errors = [];
 
-    /**
-     * ComposerValidationHelper constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param TranslatorInterface $translator
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel, TranslatorInterface $translator)
     {
         $this->kernel = $kernel;
@@ -88,10 +83,8 @@ class ComposerValidationHelper
 
     /**
      * Checks a composer file.
-     *
-     * @param SplFileInfo $file The composer file
      */
-    public function check(SplFileInfo $file)
+    public function check(SplFileInfo $file): void
     {
         // reset errors to clear results from previous calls
         $this->errors = [];
@@ -111,11 +104,9 @@ class ComposerValidationHelper
     }
 
     /**
-     * Decodes the content of the file.
-     *
-     * @return boolean
+     * Decodes the content of the current file.
      */
-    private function decodeContent()
+    private function decodeContent(): bool
     {
         $this->content = json_decode($this->rawContent); // returns null on failure
         if (empty($this->content)) {
@@ -135,7 +126,7 @@ class ComposerValidationHelper
     /**
      * Validates the composer file against the schema file.
      */
-    private function validateAgainstSchema()
+    private function validateAgainstSchema(): void
     {
         $schemaPath = $this->kernel->getModule('ZikulaExtensionsModule')->getPath() . '/Schema/schema.composer.json';
 
@@ -159,18 +150,13 @@ class ComposerValidationHelper
         }
     }
 
-    /**
-     * @return bool
-     */
-    public function isValid()
+    public function isValid(): bool
     {
-        return count($this->getErrors()) < 1;
+        //return 1 < count($this->getErrors());
+        return empty($this->getErrors());
     }
 
-    /**
-     * @return array
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }

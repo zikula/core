@@ -19,6 +19,9 @@ use Zikula\UsersModule\Constant;
 
 interface UserAttributeRepositoryInterface extends ObjectRepository, Selectable
 {
+    /**
+     * @return mixed
+     */
     public function setEmptyValueWhereAttributeNameIn(
         array $attributeNames,
         array $users = [],

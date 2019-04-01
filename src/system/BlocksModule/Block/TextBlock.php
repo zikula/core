@@ -17,21 +17,15 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\TextBlockType;
 
 /**
- * Block to display simple rendered text
+ * Block to display simple rendered text.
  */
 class TextBlock extends AbstractBlockHandler
 {
-    /**
-     * display block
-     *
-     * @param array $properties
-     * @return string the rendered block
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        $title = (!empty($properties['title'])) ? $properties['title'] : '';
-        if (!$this->hasPermission('Textblock::', "${title}::", ACCESS_OVERVIEW)
-        || (!$this->hasPermission('Textblock::bid', "::{$properties[bid]}", ACCESS_OVERVIEW))) {
+        $title = !empty($properties['title']) ? $properties['title'] : '';
+        if (!$this->hasPermission('Textblock::', $title . '::', ACCESS_OVERVIEW)
+        || (!$this->hasPermission('Textblock::bid', '::' . $properties['bid'], ACCESS_OVERVIEW))) {
             return '';
         }
 
@@ -40,7 +34,7 @@ class TextBlock extends AbstractBlockHandler
         ]);
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
         return TextBlockType::class;
     }

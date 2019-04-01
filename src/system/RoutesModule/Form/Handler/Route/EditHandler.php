@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -14,7 +17,6 @@ namespace Zikula\RoutesModule\Form\Handler\Route;
 
 use Symfony\Component\Routing\RouteCollection;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Form\Handler\Route\Base\AbstractEditHandler;
 use Zikula\RoutesModule\Helper\PathBuilderHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;
@@ -46,54 +48,7 @@ class EditHandler extends AbstractEditHandler
      */
     private $cacheClearer;
 
-    /**
-     * Sets the path builder helper.
-     *
-     * @required
-     * @param PathBuilderHelper $pathBuilderHelper
-     */
-    public function setPathBuilderHelper(PathBuilderHelper $pathBuilderHelper)
-    {
-        $this->pathBuilderHelper = $pathBuilderHelper;
-    }
-
-    /**
-     * Sets the route dumper helper.
-     *
-     * @required
-     * @param RouteDumperHelper $routeDumperHelper
-     */
-    public function setRouteDumperHelper(RouteDumperHelper $routeDumperHelper)
-    {
-        $this->routeDumperHelper = $routeDumperHelper;
-    }
-
-    /**
-     * Sets the sanitize helper.
-     *
-     * @required
-     * @param SanitizeHelper $sanitizeHelper
-     */
-    public function setSanitizeHelper(SanitizeHelper $sanitizeHelper)
-    {
-        $this->sanitizeHelper = $sanitizeHelper;
-    }
-
-    /**
-     * Sets the cache clearer.
-     *
-     * @required
-     * @param CacheClearer $cacheClearer
-     */
-    public function setCacheClearer(CacheClearer $cacheClearer)
-    {
-        $this->cacheClearer = $cacheClearer;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function applyAction(array $args = [])
+    public function applyAction(array $args = []): bool
     {
         $this->sanitizeInput();
         if ($this->hasConflicts()) {
@@ -105,7 +60,7 @@ class EditHandler extends AbstractEditHandler
         $this->cacheClearer->clear('symfony.routing');
 
         // reload **all** JS routes
-        $this->routeDumperHelper->dumpJsRoutes(null);
+        $this->routeDumperHelper->dumpJsRoutes();
 
         return $return;
     }
@@ -113,12 +68,12 @@ class EditHandler extends AbstractEditHandler
     /**
      * Ensures validity of input data.
      */
-    private function sanitizeInput()
+    private function sanitizeInput(): void
     {
         $entity = $this->entityRef;
 
-        list($controller,) = $this->sanitizeHelper->sanitizeController($entity['controller']);
-        list($action,) = $this->sanitizeHelper->sanitizeAction($entity['action']);
+        list($controller,) = $this->sanitizeHelper->sanitizeController((string)$entity['controller']);
+        list($action,) = $this->sanitizeHelper->sanitizeAction((string)$entity['action']);
 
         $entity['controller'] = $controller;
         $entity['action'] = $action;
@@ -129,10 +84,8 @@ class EditHandler extends AbstractEditHandler
 
     /**
      * Checks for potential conflict.
-     *
-     * @return boolean True if a critical error occured, else false.
      */
-    private function hasConflicts()
+    private function hasConflicts(): bool
     {
         $newPath = $this->pathBuilderHelper->getPathWithBundlePrefix($this->entityRef);
 
@@ -154,8 +107,8 @@ class EditHandler extends AbstractEditHandler
                 continue;
             }
 
-            $pathRegExp = preg_quote(preg_replace("/{(.+)}/", "____DUMMY____", $path), '/');
-            $pathRegExp = "#^" . str_replace('____DUMMY____', '(.+)', $pathRegExp) . "$#";
+            $pathRegExp = preg_quote(preg_replace('/{(.+)}/', '____DUMMY____', $path), '/');
+            $pathRegExp = '#^' . str_replace('____DUMMY____', '(.+)', $pathRegExp) . '$#';
 
             $matches = [];
             preg_match($pathRegExp, $newPath, $matches);
@@ -170,15 +123,50 @@ class EditHandler extends AbstractEditHandler
         $hasCriticalErrors = false;
 
         foreach ($errors as $error) {
-            if ($error['type'] == 'SAME') {
+            if ('SAME' === $error['type']) {
                 $message = $this->__('It looks like you created or updated a route with a path which already exists. This is an error in most cases.');
                 $hasCriticalErrors = true;
             } else {
                 $message = $this->__f('The path of the route you created or updated looks similar to the following already existing path: %s Are you sure you haven\'t just introduced a conflict?', ['%s' => $error['path']]);
             }
-            $this->request->getSession()->getFlashBag()->add('error', $message);
+            $request = $this->requestStack->getCurrentRequest();
+            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+                $request->getSession()->getFlashBag()->add('error', $message);
+            }
         }
 
         return $hasCriticalErrors;
+    }
+
+    /**
+     * @required
+     */
+    public function setPathBuilderHelper(PathBuilderHelper $pathBuilderHelper): void
+    {
+        $this->pathBuilderHelper = $pathBuilderHelper;
+    }
+
+    /**
+     * @required
+     */
+    public function setRouteDumperHelper(RouteDumperHelper $routeDumperHelper): void
+    {
+        $this->routeDumperHelper = $routeDumperHelper;
+    }
+
+    /**
+     * @required
+     */
+    public function setSanitizeHelper(SanitizeHelper $sanitizeHelper): void
+    {
+        $this->sanitizeHelper = $sanitizeHelper;
+    }
+
+    /**
+     * @required
+     */
+    public function setCacheClearer(CacheClearer $cacheClearer): void
+    {
+        $this->cacheClearer = $cacheClearer;
     }
 }

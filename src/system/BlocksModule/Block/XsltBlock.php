@@ -19,13 +19,13 @@ use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Block\Form\Type\XsltBlockType;
 
 /**
- * Block to display a parsed xml document
+ * Block to display a parsed xml document.
  */
 class XsltBlock extends AbstractBlockHandler
 {
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        if (!$this->hasPermission('xsltblock::', "{$properties[title]}::", ACCESS_OVERVIEW)) {
+        if (!$this->hasPermission('xsltblock::', $properties['title'] . '::', ACCESS_OVERVIEW)) {
             return '';
         }
 
@@ -51,12 +51,12 @@ class XsltBlock extends AbstractBlockHandler
         return $xsl->transformToXML($doc);
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
         return XsltBlockType::class;
     }
 
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@ZikulaBlocksModule/Block/xslt_modify.html.twig';
     }

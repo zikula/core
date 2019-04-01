@@ -22,7 +22,7 @@ class RegistrationEvents
     /**
      * Occurs at the beginning of the registration process, before the registration form is displayed to the user.
      */
-    const REGISTRATION_STARTED = 'module.users.ui.registration.started';
+    public const REGISTRATION_STARTED = 'module.users.ui.registration.started';
 
     /**
      * Occurs when the Registration process is determining whether to create a 'registration' or a 'full user'.
@@ -43,7 +43,7 @@ class RegistrationEvents
      * Because this event will not necessarily notify ALL listeners (if propagation is stopped) it CANNOT be relied upon
      * to effect change of any kind with regard to the entity.
      */
-    const FULL_USER_CREATE_VETO = 'full.user.create.veto';
+    public const FULL_USER_CREATE_VETO = 'full.user.create.veto';
 
     /**
      * Occurs after a user has successfully registered a new account in the system. It will follow either a
@@ -96,7 +96,7 @@ class RegistrationEvents
      * be expecting to return to the log-in screen . Being redirected to a different page might be disorienting to the user. Second,
      * an event handler that was notified prior to the current handler may already have changed the `'redirectUrl'`.
      */
-    const REGISTRATION_SUCCEEDED = 'module.users.ui.registration.succeeded';
+    public const REGISTRATION_SUCCEEDED = 'module.users.ui.registration.succeeded';
 
     /**
      * Occurs after a user attempts to submit a registration request, but the request is not saved successfully.
@@ -116,7 +116,7 @@ class RegistrationEvents
      * Being redirected to a different page might be disorienting to the user. Second, an event handler that was notified
      * prior to the current handler may already have changed the `'redirectUrl'`.
      */
-    const REGISTRATION_FAILED = 'module.users.ui.registration.failed';
+    public const REGISTRATION_FAILED = 'module.users.ui.registration.failed';
 
     /**
      * Occurs after a registration record is created, either through the normal user registration process, or through
@@ -126,7 +126,7 @@ class RegistrationEvents
      * The subject of the event is set to the UserEntity that was created.
      * This event occurs before the $authenticationMethod->register() method is called.
      */
-    const CREATE_REGISTRATION = 'user.registration.create';
+    public const CREATE_REGISTRATION = 'user.registration.create';
 
     /**
      * Occurs after a registration record is updated (likely through the admin panel, but not guaranteed).
@@ -134,7 +134,7 @@ class RegistrationEvents
      * The subject of the event is set to the UserEntity, with the updated values. The event data contains the
      * original UserEntity in an array `['oldValue' => $originalUser]`.
      */
-    const UPDATE_REGISTRATION = 'user.registration.update';
+    public const UPDATE_REGISTRATION = 'user.registration.update';
 
     /**
      * Occurs after a registration record is deleted. This could occur as a result of the administrator deleting the
@@ -144,10 +144,10 @@ class RegistrationEvents
      * UI-level actions such as redirects.
      * The subject of the event is set to the Uid being deleted.
      */
-    const DELETE_REGISTRATION = 'user.registration.delete';
+    public const DELETE_REGISTRATION = 'user.registration.delete';
 
     /**
      * Occurs when an administrator approves a registration. The UserEntity is the subject.
      */
-    const FORCE_REGISTRATION_APPROVAL = 'force.registration.approval';
+    public const FORCE_REGISTRATION_APPROVAL = 'force.registration.approval';
 }

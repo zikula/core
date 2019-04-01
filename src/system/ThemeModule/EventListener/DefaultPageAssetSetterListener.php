@@ -22,8 +22,6 @@ use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ThemeModule\Engine\Engine;
 
 /**
- * Class DefaultPageAssetSetterListener
- *
  * This class adds default assets (javascripts and stylesheets) to every page, regardless of the selected theme.
  * In some cases, the actual asset is configurable or able to be overridden.
  */
@@ -59,32 +57,18 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
      */
     private $params;
 
-    /**
-     * DefaultPageAssetSetterListener constructor.
-     * @param AssetBag $jsAssetBag
-     * @param AssetBag $cssAssetBag
-     * @param RouterInterface $router
-     * @param Asset $assetHelper
-     * @param Engine $themeEngine
-     * @param string $env
-     * @param bool $installed
-     * @param string $bootstrapJavascriptPath
-     * @param string $bootstrapFontAwesomeStylesheetPath
-     * @param string $fontAwesomePath
-     * @param string $bootstrapStylesheetPath
-     */
     public function __construct(
         AssetBag $jsAssetBag,
         AssetBag $cssAssetBag,
         RouterInterface $router,
         Asset $assetHelper,
         Engine $themeEngine,
-        $env,
-        $installed,
-        $bootstrapJavascriptPath,
-        $bootstrapFontAwesomeStylesheetPath,
-        $fontAwesomePath,
-        $bootstrapStylesheetPath
+        string $env,
+        bool $installed,
+        string $bootstrapJavascriptPath,
+        string $bootstrapFontAwesomeStylesheetPath,
+        string $fontAwesomePath,
+        string $bootstrapStylesheetPath
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
@@ -101,37 +85,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * Add all default assets to every page (scripts and stylesheets)
-     * @param GetResponseEvent $event
-     */
-    public function setDefaultPageAssets(GetResponseEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-
-        // add default javascripts to jsAssetBag
-        $this->addJquery();
-        $this->jsAssetBag->add(
-            [
-                $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
-                $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
-                $this->assetHelper->resolve('html5shiv/dist/html5shiv.js') => AssetBag::WEIGHT_HTML5SHIV,
-            ]
-        );
-        $this->addFosJsRouting();
-        $this->addJsTranslation();
-
-        // add default stylesheets to cssAssetBag
-        $this->addBootstrapCss();
-        $this->cssAssetBag->add(
-            [
-                $this->assetHelper->resolve('bundles/core/css/core.css') => 1,
-            ]
-        );
-    }
-
     public static function getSubscribedEvents()
     {
         return [
@@ -141,18 +94,42 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ];
     }
 
-    private function addJquery()
+    /**
+     * Add all default assets to every page (scripts and stylesheets).
+     */
+    public function setDefaultPageAssets(GetResponseEvent $event): void
     {
-        $jquery = 'dev' !== $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
-        $this->jsAssetBag->add(
-            [
-                $this->assetHelper->resolve("jquery/${jquery}") => AssetBag::WEIGHT_JQUERY,
-                $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1
-            ]
-        );
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        // add default javascripts to jsAssetBag
+        $this->addJquery();
+        $this->jsAssetBag->add([
+            $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
+            $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
+            $this->assetHelper->resolve('html5shiv/dist/html5shiv.js') => AssetBag::WEIGHT_HTML5SHIV,
+        ]);
+        $this->addFosJsRouting();
+        $this->addJsTranslation();
+
+        // add default stylesheets to cssAssetBag
+        $this->addBootstrapCss();
+        $this->cssAssetBag->add([
+            $this->assetHelper->resolve('bundles/core/css/core.css') => 1,
+        ]);
     }
 
-    private function addFosJsRouting()
+    private function addJquery(): void
+    {
+        $jquery = 'dev' !== $this->params['env'] ? 'jquery.min.js' : 'jquery.js';
+        $this->jsAssetBag->add([
+            $this->assetHelper->resolve("jquery/${jquery}") => AssetBag::WEIGHT_JQUERY,
+            $this->assetHelper->resolve('bundles/core/js/jquery_config.js') => AssetBag::WEIGHT_JQUERY + 1
+        ]);
+    }
+
+    private function addFosJsRouting(): void
     {
         // commented out as a workaround for #3807 until #3804 is solved
         /*if ($this->params['env'] != 'dev' && file_exists(realpath('web/js/fos_js_routes.js'))) {
@@ -169,7 +146,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         /*}*/
     }
 
-    private function addJsTranslation()
+    private function addJsTranslation(): void
     {
         // consider option of dumping the translations to /web
         // add bundle translations? need domain name e.g. zikulapagesmodule
@@ -182,7 +159,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ]);
     }
 
-    private function addBootstrapCss()
+    private function addBootstrapCss(): void
     {
         $overrideBootstrapPath = '';
         if ($this->params['installed']) {

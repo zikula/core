@@ -16,6 +16,10 @@
 {% block content %}{% endblock %}
 
 {% block footer %}
+    {{ moduleFooter() }}
+{% endblock %}
+
+{% block assets %}
     {{ pageAddAsset('stylesheet', zasset('@ZikulaRoutesModule:css/custom.css'), 120) }}
     {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
     {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}

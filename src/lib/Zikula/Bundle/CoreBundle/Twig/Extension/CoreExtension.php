@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
+use InvalidArgumentException;
 use Symfony\Component\Intl\Intl;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -27,18 +28,11 @@ class CoreExtension extends AbstractExtension
      */
     private $translator;
 
-    /**
-     * CoreExtension constructor.
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTokenParsers()
     {
         return [
@@ -46,61 +40,40 @@ class CoreExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
-        $functions = [
+        return [
             new TwigFunction('array_unset', [$this, 'arrayUnset']),
-            new TwigFunction('callFunc', [$this, 'callFunc']),
+            new TwigFunction('callFunc', [$this, 'callFunc'])
         ];
-
-        return $functions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters()
     {
         return [
             new TwigFilter('languageName', [$this, 'languageName']),
             new TwigFilter('yesNo', [$this, 'yesNo']),
             new TwigFilter('php', [$this, 'applyPhp']),
-            new TwigFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']]),
+            new TwigFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']])
         ];
     }
 
     /**
-     * Delete a key of an array
-     *
-     * @param array  $array Source array
-     * @param string $key   The key to remove
-     *
-     * @return array
+     * Delete a key of an array.
      */
-    public function arrayUnset($array, $key)
+    public function arrayUnset(array $array, string $key): array
     {
         unset($array[$key]);
 
         return $array;
     }
 
-    /**
-     * @param string $code
-     * @return string
-     */
-    public function languageName($code)
+    public function languageName(string $code): string
     {
         return Intl::getLanguageBundle()->getLanguageName($code);
     }
 
-    /**
-     * @param $string
-     * @return string
-     */
-    public function yesNo($string)
+    public function yesNo(string $string): string
     {
         if ('0' !== $string && '1' !== $string) {
             return $string;
@@ -112,32 +85,28 @@ class CoreExtension extends AbstractExtension
     /**
      * Apply an existing function (e.g. php's `md5`) to a string.
      *
-     * @param $string
-     * @param $func
+     * @param string|object $subject
      * @return mixed
      */
-    public function applyPhp($string, $func)
+    public function applyPhp($subject, string $func)
     {
         if (function_exists($func)) {
-            return $func($string);
+            return $func($subject);
         }
 
-        return $string;
+        return $subject;
     }
 
     /**
      * Protect a given mail address by finding the text 'x@y' and replacing
      * it with HTML entities. This provides protection against email harvesters.
-     *
-     * @param string
-     * @return string
      */
-    public function protectMailAddress($string)
+    public function protectMailAddress(string $string): string
     {
         $string = preg_replace_callback(
             '/(.)@(.)/s',
-            function($m) {
-                return "&#" . sprintf("%03d", ord($m[1])) . ";&#064;&#" . sprintf("%03d", ord($m[2])) . ";";
+            static function($m) {
+                return '&#' . sprintf('%03d', ord($m[1])) . ';&#064;&#' . sprintf('%03d', ord($m[2])) . ';';
             },
             $string
         );
@@ -147,15 +116,14 @@ class CoreExtension extends AbstractExtension
 
     /**
      * Call a php callable with parameters.
-     * @param callable $callable
-     * @param array $params
+     *
      * @return mixed
      */
-    public function callFunc(callable $callable, array $params = [])
+    public function callFunc(callable $callable, array $parameters = [])
     {
         if (function_exists($callable)) {
-            return call_user_func_array($callable, $params);
+            return call_user_func_array($callable, $parameters);
         }
-        throw new \InvalidArgumentException($this->translator->__('Function does not exist or is not callable.'));
+        throw new InvalidArgumentException($this->translator->__('Function does not exist or is not callable.'));
     }
 }

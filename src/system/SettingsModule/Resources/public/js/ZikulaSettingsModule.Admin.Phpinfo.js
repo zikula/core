@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         $(function() {
             $('#phpinfo table').addClass('table table-striped table-bordered');

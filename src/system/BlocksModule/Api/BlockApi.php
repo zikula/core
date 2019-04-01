@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Api;
 
+use InvalidArgumentException;
+use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
+use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\BlocksModule\Collector\BlockCollector;
+use Zikula\BlocksModule\Entity\BlockEntity;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -29,9 +34,9 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
  */
 class BlockApi implements BlockApiInterface
 {
-    const BLOCK_ACTIVE = 1;
+    public const BLOCK_ACTIVE = 1;
 
-    const BLOCK_INACTIVE = 0;
+    public const BLOCK_INACTIVE = 0;
 
     /**
      * @var BlockPositionRepositoryInterface
@@ -53,13 +58,6 @@ class BlockApi implements BlockApiInterface
      */
     private $blockCollector;
 
-    /**
-     * BlockApi constructor.
-     * @param BlockPositionRepositoryInterface $blockPositionRepository
-     * @param BlockFactoryApiInterface $blockFactoryApi
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param BlockCollector $blockCollector
-     */
     public function __construct(
         BlockPositionRepositoryInterface $blockPositionRepository,
         BlockFactoryApiInterface $blockFactoryApi,
@@ -72,56 +70,49 @@ class BlockApi implements BlockApiInterface
         $this->blockCollector = $blockCollector;
     }
 
-    /**
-     * {@inheritdoc}
-     * @param string $positionName
-     */
-    public function getBlocksByPosition($positionName)
+    public function getBlocksByPosition(string $positionName): array
     {
         if (empty($positionName)) {
-            throw new \InvalidArgumentException('Name must not be empty.');
+            throw new InvalidArgumentException('Name must not be empty.');
         }
 
-        /** @var \Zikula\BlocksModule\Entity\BlockPositionEntity $position */
+        /** @var BlockPositionEntity $position */
         $position = $this->blockPositionRepository->findByName($positionName);
         $blocks = [];
-        if (empty($position)) {
+        if (null === $position) {
             return $blocks;
         }
 
         foreach ($position->getPlacements() as $placement) {
-            $blocks[$placement->getBlock()->getBid()] = $placement->getBlock();
+            /** @var BlockEntity $block */
+            $block = $placement->getBlock();
+            $blocks[$block->getBid()] = $block;
         }
 
         return $blocks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function createInstanceFromBKey($bKey)
+    public function createInstanceFromBKey(string $bKey): BlockHandlerInterface
     {
         list(/*$moduleName*/, $blockFqCn) = explode(':', $bKey);
 
         return $this->blockFactory->getInstance($blockFqCn);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null)
+    public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null): array
     {
         $modulesByName = [];
         $modules = isset($moduleEntity) ? [$moduleEntity] : $this->extensionRespository->findBy(['state' => Constant::STATE_ACTIVE]);
-        /** @var \Zikula\ExtensionsModule\Entity\ExtensionEntity $module */
+        /** @var ExtensionEntity $module */
         foreach ($modules as $module) {
             $modulesByName[$module->getName()] = $module;
         }
 
         $foundBlocks = [];
         foreach ($this->blockCollector->getBlocks() as $id => $blockInstance) {
+            /** @var AbstractBlockHandler $blockInstance */
             $bundleName = $blockInstance->getBundle()->getName();
-            if (!in_array($bundleName, array_keys($modulesByName))) {
+            if (!array_key_exists($bundleName, $modulesByName)) {
                 continue;
             }
 
@@ -132,14 +123,12 @@ class BlockApi implements BlockApiInterface
         return $foundBlocks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getModulesContainingBlocks()
+    public function getModulesContainingBlocks(): array
     {
         $modules = $this->extensionRespository->findBy(['state' => Constant::STATE_ACTIVE]);
         $modulesContainingBlocks = [];
         foreach ($modules as $module) {
+            /** @var ExtensionEntity $module */
             $blocks = $this->getAvailableBlockTypes($module);
             if (!empty($blocks)) {
                 $modulesContainingBlocks[$module->getId()] = $module->getName();

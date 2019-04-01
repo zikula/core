@@ -34,8 +34,8 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaBlocksModule:Config:config.html.twig")
      *
-     * @param Request $request
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function configAction(Request $request)
     {
@@ -78,7 +78,7 @@ class ConfigController extends AbstractController
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 }

@@ -25,24 +25,15 @@ class SessionExtension extends AbstractExtension
      */
     private $session;
 
-    /**
-     * CoreExtension constructor.
-     * @param SessionInterface $session
-     */
     public function __construct(SessionInterface $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
-            new TwigFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']]),
+            new TwigFunction('showflashes', [$this, 'showFlashes'], ['is_safe' => ['html']])
         ];
     }
 
@@ -53,11 +44,8 @@ class SessionExtension extends AbstractExtension
      *  {{ showflashes() }}
      *  {{ showflashes({'class': 'custom-class', 'tag': 'span'}) }}
      * </pre>
-     *
-     * @param array $params
-     * @return string
      */
-    public function showFlashes(array $params = [])
+    public function showFlashes(array $params = []): string
     {
         $result = '';
         $total_messages = [];
@@ -74,8 +62,8 @@ class SessionExtension extends AbstractExtension
             $messages = $this->session->getFlashBag()->get($messageType);
             if (count($messages) > 0) {
                 // Set class for the messages.
-                $class = (!empty($params['class'])) ? $params['class'] : "alert alert-${bootstrapClass}";
-                $total_messages = $total_messages + $messages;
+                $class = !empty($params['class']) ? $params['class'] : "alert alert-${bootstrapClass}";
+                $total_messages += $messages;
                 // Build output of the messages.
                 if (empty($params['tag']) || ('span' !== $params['tag'])) {
                     $params['tag'] = 'div';

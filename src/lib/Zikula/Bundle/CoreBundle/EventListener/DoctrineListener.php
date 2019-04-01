@@ -40,14 +40,6 @@ class DoctrineListener implements EventSubscriberInterface
         $this->annotationDriver = $driver;
     }
 
-    public function setDefaultDriver(GetResponseEvent $event)
-    {
-        /** @var $ORMConfig Configuration */
-        $ORMConfig = $this->entityManager->getConfiguration();
-        $chain = $ORMConfig->getMetadataDriverImpl(); // driver chain
-        $chain->setDefaultDriver($this->annotationDriver);
-    }
-
     public static function getSubscribedEvents()
     {
         return [
@@ -55,5 +47,15 @@ class DoctrineListener implements EventSubscriberInterface
                 ['setDefaultDriver', 100]
             ]
         ];
+    }
+
+    public function setDefaultDriver(GetResponseEvent $event): void
+    {
+        /** @var $ORMConfig Configuration */
+        $ORMConfig = $this->entityManager->getConfiguration();
+        $chain = $ORMConfig->getMetadataDriverImpl(); // driver chain
+        if (null !== $chain) {
+            $chain->setDefaultDriver($this->annotationDriver);
+        }
     }
 }

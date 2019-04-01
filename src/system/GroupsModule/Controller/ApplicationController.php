@@ -30,6 +30,7 @@ use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * @Route("/application")
@@ -41,14 +42,12 @@ class ApplicationController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaGroupsModule:Application:admin.html.twig")
      *
-     * display a list of group applications
+     * Display a list of group applications.
      *
-     * @param Request $request
-     * @param string $action Name of desired action
-     * @param GroupApplicationEntity $groupApplicationEntity
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
-    public function adminAction(Request $request, $action, GroupApplicationEntity $groupApplicationEntity)
+    public function adminAction(Request $request, string $action, GroupApplicationEntity $groupApplicationEntity)
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -62,14 +61,15 @@ class ApplicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $formData = $form->getData();
+                /** @var GroupApplicationEntity $groupApplicationEntity */
                 $groupApplicationEntity = $formData['application'];
-                $this->get('doctrine')->getManager()->remove($groupApplicationEntity);
+                $this->getDoctrine()->getManager()->remove($groupApplicationEntity);
                 if ('accept' === $action) {
                     $groupApplicationEntity->getUser()->addGroup($groupApplicationEntity->getGroup());
                     $addUserEvent = new GenericEvent(['gid' => $groupApplicationEntity->getGroup()->getGid(), 'uid' => $groupApplicationEntity->getUser()->getUid()]);
                     $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_ADD_USER, $addUserEvent);
                 }
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->flush();
                 $applicationProcessedEvent = new GenericEvent($groupApplicationEntity, $formData);
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_APPLICATION_PROCESSED, $applicationProcessedEvent);
                 $this->addFlash('success', $this->__f('Application processed (%action %user)', ['%action' => $action, '%user' => $groupApplicationEntity->getUser()->getUname()]));
@@ -92,14 +92,10 @@ class ApplicationController extends AbstractController
      * @Route("/create/{gid}", requirements={"gid" = "^[1-9]\d*$"})
      * @Template("ZikulaGroupsModule:Application:create.html.twig")
      *
-     * Create an application to a group
+     * Create an application to a group.
      *
-     * @param Request $request
-     * @param GroupEntity $group
-     * @param GroupApplicationRepository $applicationRepository
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
      */
     public function createAction(
         Request $request,
@@ -114,6 +110,7 @@ class ApplicationController extends AbstractController
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
+        /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $groupTypeIsCore = CommonHelper::GTYPE_CORE === $group->getGtype();
         $groupStateIsClosed = CommonHelper::STATE_CLOSED === $group->getState();
@@ -139,8 +136,8 @@ class ApplicationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('apply')->isClicked()) {
                 $groupApplicationEntity = $form->getData();
-                $this->get('doctrine')->getManager()->persist($groupApplicationEntity);
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->persist($groupApplicationEntity);
+                $this->getDoctrine()->getManager()->flush();
                 $newApplicationEvent = new GenericEvent($groupApplicationEntity);
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_NEW_APPLICATION, $newApplicationEvent);
                 $this->addFlash('status', $this->__('Done! The application has been sent. You will be notified by email when the application is processed.'));
@@ -154,12 +151,16 @@ class ApplicationController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'group' => $group,
+            'group' => $group
         ];
     }
 
-    private function getSpecificGroupMessage($groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember)
-    {
+    private function getSpecificGroupMessage(
+        bool $groupTypeIsCore,
+        bool $groupStateIsClosed,
+        bool $groupCountIsLimit,
+        bool $alreadyGroupMember
+    ) {
         $messages = [];
         $messages[] = $this->__('Sorry!, You cannot apply to join the requested group');
         if ($groupTypeIsCore) {

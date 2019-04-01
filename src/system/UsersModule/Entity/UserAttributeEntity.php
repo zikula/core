@@ -58,107 +58,67 @@ class UserAttributeEntity extends EntityAccess
     private $extra;
 
     /**
-     * constructor
-     *
-     * @param int    $user  user id
-     * @param string $name  name of the attribute
-     * @param string $value value of the attribute
+     * @param mixed $value
      */
-    public function __construct($user, $name, $value)
+    public function __construct(UserEntity $user, string $name, $value)
     {
         $this->setUser($user);
         $this->setAttribute($name, $value);
     }
 
-    /**
-     * get the user item
-     *
-     * @return User the user item
-     */
-    public function getUser()
+    public function getUser(): UserEntity
     {
         return $this->user;
     }
 
-    /**
-     * set the user item
-     *
-     * @param User $user the user item
-     */
-    public function setUser($user)
+    public function setUser(UserEntity $user): void
     {
         $this->user = $user;
     }
 
-    /**
-     * get the name of the attribute
-     *
-     * @return string the attribute's name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * set the name for the attribute
-     *
-     * @param string $name the attribute's name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * get the value of the attribute
-     *
-     * @return string the attribute's value
-     */
     public function getValue()
     {
         return $this->value;
     }
 
     /**
-     * set the value for the attribute
-     *
-     * @param string $value the attribute's value
+     * @param mixed $value
      */
-    public function setValue($value)
+    public function setValue($value): void
     {
         $this->value = $value;
     }
 
     /**
-     * set the attribute
-     *
-     * @param string $name the attribute's name
-     * @param string $value the attribute's value
+     * @param mixed $value
      */
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, $value): void
     {
         $this->setName($name);
         $this->setValue($value);
     }
 
-    /**
-     * @return string
-     */
-    public function getExtra()
+    public function getExtra(): string
     {
         return $this->extra;
     }
 
-    /**
-     * @param string $extra
-     */
-    public function setExtra($extra)
+    public function setExtra(string $extra): void
     {
         $this->extra = $extra;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getValue();
     }

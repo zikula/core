@@ -15,7 +15,6 @@ namespace Zikula\SearchModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -34,13 +33,9 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaSearchModule:Config:config.html.twig")
      *
-     * @param Request $request
-     * @param SearchableModuleCollector $collector
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response|array
      */
-    public function configAction(Request $request, SearchableModuleCollector $collector)
+    public function configAction(Request $request, SearchableModuleCollector $collector): array
     {
         // Security check
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
@@ -80,7 +75,7 @@ class ConfigController extends AbstractController
                 $formData = $form->getData();
                 foreach ($plugins as $searchPlugin) {
                     // set the disabled flag
-                    $disabledFlag = in_array($searchPlugin, $formData['plugins']);
+                    $disabledFlag = in_array($searchPlugin, $formData['plugins'], true);
                     $this->setVar('disable_' . $searchPlugin, $disabledFlag);
                 }
                 unset($formData['plugins']);

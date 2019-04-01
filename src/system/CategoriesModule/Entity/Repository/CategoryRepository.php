@@ -13,19 +13,39 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use LogicException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
 /**
  * CategoryRepository.
  */
-class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface
+class CategoryRepository extends NestedTreeRepository implements CategoryRepositoryInterface, ServiceEntityRepositoryInterface
 {
     /**
-     * {@inheritdoc}
+     * Code from Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository
      */
-    public function countForContext($name = '', $parentId = 0, $excludedId = 0)
+    public function __construct(ManagerRegistry $registry)
+    {
+        $entityClass = CategoryEntity::class;
+
+        /** @var EntityManagerInterface $manager */
+        $manager = $registry->getManagerForClass($entityClass);
+        if (null === $manager) {
+            throw new LogicException(sprintf(
+                'Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.',
+                $entityClass
+            ));
+        }
+
+        parent::__construct($manager, $manager->getClassMetadata($entityClass));
+    }
+
+    public function countForContext(string $name = '', int $parentId = 0, int $excludedId = 0): int
     {
         $qb = $this->createQueryBuilder('c')
             ->select('COUNT(c.id)');
@@ -49,12 +69,9 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
         return (int)$query->getSingleScalarResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLastByParent($parentId = 0)
+    public function getLastByParent(int $parentId = 0): ?CategoryEntity
     {
-        if (!is_numeric($parentId) || $parentId < 1) {
+        if ($parentId < 1) {
             return null;
         }
 
@@ -68,18 +85,21 @@ class CategoryRepository extends NestedTreeRepository implements CategoryReposit
         return $qb->getQuery()->getSingleResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateParent($oldParentId = 0, $newParentId = 0, $includeRoot = true)
+    public function updateParent(int $oldParentId = 0, int $newParentId = 0, bool $includeRoot = true): void
     {
-        if (!is_numeric($oldParentId) || $oldParentId < 1 || !is_numeric($newParentId) || $newParentId < 1 || !is_bool($includeRoot)) {
+        if ($oldParentId < 1 || $newParentId < 1) {
             return;
         }
-        $searchBy = $includeRoot ? 'id' : 'parent';
-        $entities = $this->findBy([$searchBy => $oldParentId]);
+
+        /** @var CategoryEntity $newParent */
         $newParent = $this->find($newParentId);
+        if (null === $newParent) {
+            return;
+        }
+
+        $searchBy = $includeRoot ? 'id' : 'parent';
         /** @var CategoryEntity[] $entities */
+        $entities = $this->findBy([$searchBy => $oldParentId]);
         foreach ($entities as $entity) {
             $entity->setParent($newParent);
         }

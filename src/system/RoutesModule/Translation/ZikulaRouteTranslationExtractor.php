@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -24,10 +26,19 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class ZikulaRouteTranslationExtractor implements ExtractorInterface
 {
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
+    /**
+     * @var RouteExclusionStrategyInterface
+     */
     private $routeExclusionStrategy;
 
+    /**
+     * @var string
+     */
     private $domain = 'routes';
 
     public function __construct(RouterInterface $router, RouteExclusionStrategyInterface $routeExclusionStrategy)
@@ -36,7 +47,7 @@ class ZikulaRouteTranslationExtractor implements ExtractorInterface
         $this->routeExclusionStrategy = $routeExclusionStrategy;
     }
 
-    public function setDomain($domain)
+    public function setDomain($domain): void
     {
         $this->domain = $domain;
     }

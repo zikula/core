@@ -69,83 +69,83 @@ class ExtensionDependencyEntity extends EntityAccess
      */
     private $reason = false;
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getModid()
+    public function getModid(): int
     {
         return $this->modid;
     }
 
-    public function setModid($modid)
+    public function setModid(int $modid): void
     {
         $this->modid = $modid;
     }
 
-    public function getModname()
+    public function getModname(): string
     {
         return $this->modname;
     }
 
-    public function setModname($modname)
+    public function setModname(string $modname): void
     {
         $this->modname = $modname;
     }
 
-    public function getMinversion()
+    public function getMinversion(): string
     {
         return $this->minversion;
     }
 
-    public function setMinversion($minversion)
+    public function setMinversion(string $minVersion): void
     {
-        $this->minversion = $minversion;
+        $this->minversion = $minVersion;
     }
 
-    public function getMaxversion()
+    public function getMaxversion(): string
     {
         return $this->maxversion;
     }
 
-    public function setMaxversion($maxversion)
+    public function setMaxversion(string $maxVersion): void
     {
-        $this->maxversion = $maxversion;
+        $this->maxversion = $maxVersion;
     }
 
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
-    public function setStatus($status)
+    public function setStatus(int $status): void
     {
         $this->status = $status;
     }
 
     /**
-     * Non-persisted data.
+     * Get the reason for a dependency.
      *
-     * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
+     * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded during sync.
      */
-    public function setReason($reason)
+    public function getReason(): string
     {
-        $this->reason = $reason;
+        return $this->reason;
     }
 
     /**
-     * Get the reason for a dependency.
+     * Non-persisted data.
      *
-     * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
+     * Note: The reason of a dependency is not saved into the database to avoid multilingual problems but loaded during sync.
      */
-    public function getReason()
+    public function setReason(string $reason): void
     {
-        return $this->reason;
+        $this->reason = $reason;
     }
 }

@@ -12,7 +12,6 @@
 
 namespace Zikula\RoutesModule\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -36,21 +35,13 @@ class UpdateController extends AbstractController
      * )
      * @Theme("admin")
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param CacheClearer $cacheClearer
-     * @param RouteDumperHelper $routeDumperHelper
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function reloadAction(
-        Request $request,
         PermissionHelper $permissionHelper,
         CacheClearer $cacheClearer,
         RouteDumperHelper $routeDumperHelper
-    ) {
+    ): Response {
         if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -73,19 +64,12 @@ class UpdateController extends AbstractController
      * )
      * @Theme("admin")
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param MultilingualRoutingHelper $multilingualRoutingHelper
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function renewAction(
-        Request $request,
         PermissionHelper $permissionHelper,
         MultilingualRoutingHelper $multilingualRoutingHelper
-    ) {
+    ): Response {
         if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -107,20 +91,13 @@ class UpdateController extends AbstractController
      * )
      * @Theme("admin")
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param RouteDumperHelper $routeDumperHelper
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function dumpJsRoutesAction(
-        Request $request,
         PermissionHelper $permissionHelper,
         RouteDumperHelper $routeDumperHelper,
-        $lang = null
-    ) {
+        string $lang = null
+    ): Response {
         if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -133,11 +110,11 @@ class UpdateController extends AbstractController
     /**
      * Dumps exposed JS routes to '/web/js/fos_js_routes.js'.
      */
-    private function dumpJsRoutes(RouteDumperHelper $routeDumperHelper, $lang = null)
+    private function dumpJsRoutes(RouteDumperHelper $routeDumperHelper, string $lang = null): void
     {
         $result = $routeDumperHelper->dumpJsRoutes($lang);
 
-        if ($result == '') {
+        if ('' === $result) {
             $this->addFlash('status', $this->__f('Done! Exposed JS Routes dumped to %s.', ['%s' => 'web/js/fos_js_routes.js']));
         } else {
             $this->addFlash('error', $this->__f('Error! There was an error dumping exposed JS Routes: %s', ['%s' => $result]));

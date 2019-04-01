@@ -23,10 +23,6 @@ class ModuleLinksFunction
      */
     private $handler;
 
-    /**
-     * ModuleLinksFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -35,12 +31,10 @@ class ModuleLinksFunction
     /**
      * Inserts module links.
      *
-     * Examples:
-     *
-     * <samp>{( moduleLinks() }}</samp>
+     * Example: {( moduleLinks() }}
      *
      * @param string $type Links type admin or user
-     * @param string $links Array with menulinks (text, url, title, id, class, disabled) (optional)
+     * @param array $links Array with menu links (text, url, title, id, class, disabled) (optional)
      * @param string $modName Module name to display links for (optional)
      * @param string $menuId ID for the unordered list (optional)
      * @param string $menuClass Class for the unordered list (optional)
@@ -50,8 +44,17 @@ class ModuleLinksFunction
      * @param string $template Template name to use instead of default (optional)
      * @return string
      */
-    public function display($type = 'user', $links = '', $modName = '', $menuId = '', $menuClass = '', $itemClass = '', $first = '', $last = '', $template = '')
-    {
+    public function display(
+        string $type = 'user',
+        array $links = [],
+        string $modName = '',
+        string $menuId = '',
+        string $menuClass = '',
+        string $itemClass = '',
+        string $first = '',
+        string $last = '',
+        string $template = ''
+    ): string {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:links', [
             'type' => $type,
             'links' => $links,
@@ -64,6 +67,6 @@ class ModuleLinksFunction
             'template' => $template
         ]);
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

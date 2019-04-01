@@ -43,6 +43,18 @@ class ModuleEventListener implements EventSubscriberInterface
      */
     private $installed;
 
+    public function __construct(
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        ExtensionRepositoryInterface $extensionRepository,
+        VariableApiInterface $variableApi,
+        bool $installed
+    ) {
+        $this->adminModuleRepository = $adminModuleRepository;
+        $this->extensionRepository = $extensionRepository;
+        $this->variableApi = $variableApi;
+        $this->installed = $installed;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -51,33 +63,9 @@ class ModuleEventListener implements EventSubscriberInterface
     }
 
     /**
-     * UpdateCheckHelper constructor.
-     *
-     * @param AdminModuleRepositoryInterface $adminModuleRepository
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param bool $installed
-     */
-    public function __construct(
-        AdminModuleRepositoryInterface $adminModuleRepository,
-        ExtensionRepositoryInterface $extensionRepository,
-        VariableApiInterface $variableApi,
-        $installed
-    ) {
-        $this->adminModuleRepository = $adminModuleRepository;
-        $this->extensionRepository = $extensionRepository;
-        $this->variableApi = $variableApi;
-        $this->installed = $installed;
-    }
-
-    /**
      * Handle module install event.
-     *
-     * @param ModuleStateEvent $event
-     *
-     * @return void
      */
-    public function moduleInstall(ModuleStateEvent $event)
+    public function moduleInstall(ModuleStateEvent $event): void
     {
         if (!$this->installed) {
             return;
@@ -87,7 +75,7 @@ class ModuleEventListener implements EventSubscriberInterface
         $module = $this->extensionRepository->findOneBy(['name' => $module->getName()]);
         $sortOrder = $this->adminModuleRepository->countModulesByCategory($category);
 
-        //move the module
+        // move the module
         $adminModuleEntity = $this->adminModuleRepository->findOneBy(['mid' => $module->getId()]);
         if (!$adminModuleEntity) {
             $adminModuleEntity = new AdminModuleEntity();

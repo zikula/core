@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -171,10 +172,10 @@ class UserEntity extends EntityAccess
         $this->uname = '';
         $this->email = '';
         $this->activated = 0;
-        $this->approved_date = new \DateTime("1970-01-01 00:00:00");
+        $this->approved_date = new DateTime('1970-01-01 00:00:00');
         $this->approved_by = 0;
-        $this->user_regdate = new \DateTime("1970-01-01 00:00:00");
-        $this->lastlogin = new \DateTime("1970-01-01 00:00:00");
+        $this->user_regdate = new DateTime('1970-01-01 00:00:00');
+        $this->lastlogin = new DateTime('1970-01-01 00:00:00');
         $this->tz = '';
         $this->locale = '';
 
@@ -182,271 +183,156 @@ class UserEntity extends EntityAccess
         $this->groups = new ArrayCollection();
     }
 
-    /**
-     * get the uid of the user
-     *
-     * @return integer the user's uid
-     */
-    public function getUid()
+    public function getUid(): int
     {
         return $this->uid;
     }
 
-    /**
-     * set the uid for the user
-     *
-     * @param integer $uid the user's uid
-     */
-    public function setUid($uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
 
-    /**
-     * get the uname of the user
-     *
-     * @return string the user's uname
-     */
-    public function getUname()
+    public function getUname(): string
     {
         return $this->uname;
     }
 
-    /**
-     * get the username of the user
-     *
-     * @return string the user's name
-     */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getUname();
     }
 
-    /**
-     * set the uname for the user
-     *
-     * @param string $uname the user's uname
-     */
-    public function setUname($uname)
+    public function setUname(string $uname): void
     {
         $this->uname = $uname;
     }
 
-    /**
-     * get the email of the user
-     *
-     * @return string the user's email
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * set the email for the user
-     *
-     * @param string $email the user's email
-     */
-    public function setEmail($email)
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * get the activation status of the user
-     *
-     * @return integer the user's activation status
-     */
-    public function getActivated()
+    public function getActivated(): int
     {
         return $this->activated;
     }
 
-    /**
-     * set the activation status for the user
-     *
-     * @param integer $activated the user's activation status
-     */
-    public function setActivated($activated)
+    public function setActivated(int $activated): void
     {
         $this->activated = $activated;
     }
 
-    /**
-     * get the approved date of the user
-     *
-     * @return \DateTime the user's approved date
-     */
-    public function getApproved_Date()
+    public function getApproved_Date(): DateTime
     {
         return $this->approved_date;
     }
 
     /**
-     * set the approved date for the user
-     *
-     * @param \DateTime $approved_date the user's approved date
+     * @param string|DateTime $approved_date the user's approved date
      */
-    public function setApproved_Date($approved_date)
+    public function setApproved_Date($approved_date): void
     {
-        if ($approved_date instanceof \DateTime) {
+        if ($approved_date instanceof DateTime) {
             $this->approved_date = $approved_date;
         } else {
-            // assume $approved_date is a string.
-            $this->approved_date = new \DateTime($approved_date);
+            $this->approved_date = new DateTime($approved_date);
         }
     }
 
-    /**
-     * get the user id who approved the user
-     *
-     * @return integer the user's id who approved the user
-     */
-    public function getApproved_By()
+    public function getApproved_By(): int
     {
         return $this->approved_by;
     }
 
-    /**
-     * set the user id who approved the user
-     *
-     * @param integer $approved_by the user's id who approved the user
-     */
-    public function setApproved_By($approved_by)
+    public function setApproved_By(int $approved_by): void
     {
         $this->approved_by = $approved_by;
     }
 
-    /**
-     * @return bool
-     */
-    public function isApproved()
+    public function isApproved(): bool
     {
         return 0 !== $this->approved_by;
     }
 
-    /**
-     * get the regdate of the user
-     *
-     * @return \DateTime the user's regdate
-     */
-    public function getUser_Regdate()
+    public function getUser_Regdate(): DateTime
     {
         return $this->user_regdate;
     }
 
     /**
-     * set the regdate for the user
-     *
-     * @param \DateTime $user_regdate the user's regdate
+     * @param string|DateTime $user_regdate the user's regdate
      */
-    public function setUser_Regdate($user_regdate)
+    public function setUser_Regdate($user_regdate): void
     {
-        if ($user_regdate instanceof \DateTime) {
+        if ($user_regdate instanceof DateTime) {
             $this->user_regdate = $user_regdate;
         } else {
-            // assume $user_regdate is a string
-            $this->user_regdate = new \DateTime($user_regdate);
+            $this->user_regdate = new DateTime($user_regdate);
         }
     }
 
-    /**
-     * get the last login of the user
-     *
-     * @return \DateTime the user's last login
-     */
-    public function getLastlogin()
+    public function getLastlogin(): DateTime
     {
         return $this->lastlogin;
     }
 
     /**
-     * set the last login for the user
-     *
-     * @param \DateTime $lastlogin the user's last login
+     * @param string DateTime $lastlogin the user's last login
      */
-    public function setLastlogin($lastlogin)
+    public function setLastlogin($lastlogin): void
     {
-        if ($lastlogin instanceof \DateTime) {
+        if ($lastlogin instanceof DateTime) {
             $this->lastlogin = $lastlogin;
         } else {
-            // assume $lastlogin is a string
-            $this->lastlogin = new \DateTime($lastlogin);
+            $this->lastlogin = new DateTime($lastlogin);
         }
     }
 
-    /**
-     * get the tz of the user
-     *
-     * @return string the user's tz
-     */
-    public function getTz()
+    public function getTz(): string
     {
         return $this->tz;
     }
 
-    /**
-     * set the tz for the user
-     *
-     * @param string $tz the user's tz
-     */
-    public function setTz($tz)
+    public function setTz(string $tz): void
     {
         $this->tz = $tz;
     }
 
-    /**
-     * get the locale of the user
-     *
-     * @return string the user's locale
-     */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * set the locale for the user
-     *
-     * @param string $locale the user's locale
-     */
-    public function setLocale($locale)
+    public function setLocale(string $locale): void
     {
         $this->locale = $locale;
     }
 
-    /**
-     * get the attributes of the user
-     *
-     * @return PersistentCollection|ArrayCollection UserAttributeEntity[] of the user's attributes
-     */
-    public function getAttributes()
+    public function getAttributes(): Collection
     {
         return $this->attributes;
     }
 
-    public function getAttributeValue($name)
+    public function getAttributeValue(string $name): string
     {
         return $this->getAttributes()->offsetExists($name) ? $this->getAttributes()->get($name)->getValue() : '';
     }
 
-    /**
-     * set the attributes for the user
-     *
-     * @param ArrayCollection $attributes the attributes for the user
-     */
-    public function setAttributes(ArrayCollection $attributes)
+    public function setAttributes(ArrayCollection $attributes): void
     {
         $this->attributes = $attributes;
     }
 
     /**
-     * set a single attribute for the user
-     *
-     * @param $name string attribute name
-     * @param $value string attribute value
+     * @param mixed $value
      */
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, $value): void
     {
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
@@ -455,63 +341,45 @@ class UserEntity extends EntityAccess
         }
     }
 
-    /**
-     * delete a single attribute of the user
-     *
-     * @param $name string attribute name
-     */
-    public function delAttribute($name)
+    public function delAttribute(string $name): void
     {
         if (isset($this->attributes[$name])) {
             $this->attributes->remove($name);
         }
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function hasAttribute($name)
+    public function hasAttribute(string $name): bool
     {
         return $this->attributes->containsKey($name);
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getGroups()
+    public function getGroups(): Collection
     {
         return $this->groups;
     }
 
-    /**
-     * set the groups for the user
-     *
-     * @param ArrayCollection $groups the groups for the user
-     */
-    public function setGroups(ArrayCollection $groups)
+    public function setGroups(ArrayCollection $groups): void
     {
         $this->groups = $groups;
     }
 
     /**
      * UserEntity is the 'Owning side'
-     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
-     * @param GroupEntity $group
+     * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
      */
-    public function addGroup(GroupEntity $group)
+    public function addGroup(GroupEntity $group): void
     {
         $group->addUser($this);
         $this->groups[] = $group;
     }
 
-    public function removeGroup(GroupEntity $group)
+    public function removeGroup(GroupEntity $group): void
     {
         $group->removeUser($this);
         $this->groups->removeElement($group);
     }
 
-    public function removeGroups()
+    public function removeGroups(): void
     {
         /** @var GroupEntity $group */
         foreach ($this->groups as $group) {
@@ -521,10 +389,9 @@ class UserEntity extends EntityAccess
     }
 
     /**
-     * Callback function used to validate the activated value
-     * @return array
+     * Callback function used to validate the activated value.
      */
-    public static function getActivatedValues()
+    public static function getActivatedValues(): array
     {
         return [
             UsersConstant::ACTIVATED_ACTIVE,

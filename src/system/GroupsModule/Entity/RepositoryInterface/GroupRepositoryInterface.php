@@ -19,9 +19,24 @@ use Zikula\Common\Translator\TranslatorInterface;
 
 interface GroupRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function setTranslator(TranslatorInterface $translator);
+    public function setTranslator(TranslatorInterface $translator): void;
 
-    public function findAllAndIndexBy($indexField);
+    /**
+     * Returns the amount of groups.
+     */
+    public function countGroups(int $groupType = null, int $excludedState = null): int;
 
-    public function getGroupNamesById($includeAll = true, $includeUnregistered = true);
+    /**
+     * Returns groups for given arguments.
+     */
+    public function getGroups(
+        array $filters = [], array $exclusions = [], array $sorting = [],
+        int $limit = 0, int $offset = 0
+    ): array;
+
+    public function findAllAndIndexBy(string $indexField): array;
+
+    public function getGroupNamesById(bool $includeAll = true, bool $includeUnregistered = true): array;
+
+    public function getGroupByName(string $name = '', int $excludedGroupId = 0): array;
 }

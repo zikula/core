@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Helper;
 
+use Exception;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -38,20 +39,6 @@ class LostPasswordVerificationHelper
     private $passwordApi;
 
     /**
-     * LostPasswordVerificationHelper constructor.
-     *
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param VariableApiInterface $variableApi
-     * @param PasswordApiInterface $passwordApi
-     */
-    public function __construct(UserVerificationRepositoryInterface $userVerificationRepository, VariableApiInterface $variableApi, PasswordApiInterface $passwordApi)
-    {
-        $this->userVerificationRepository = $userVerificationRepository;
-        $this->variableApi = $variableApi;
-        $this->passwordApi = $passwordApi;
-    }
-
-    /**
      * Concatenation delimiter
      */
     private $delimiter = '#';
@@ -61,14 +48,21 @@ class LostPasswordVerificationHelper
      */
     private $iterations = 3;
 
+    public function __construct(
+        UserVerificationRepositoryInterface $userVerificationRepository,
+        VariableApiInterface $variableApi,
+        PasswordApiInterface $passwordApi
+    ) {
+        $this->userVerificationRepository = $userVerificationRepository;
+        $this->variableApi = $variableApi;
+        $this->passwordApi = $passwordApi;
+    }
+
     /**
      * Creates an identifier for the lost password link.
      * This link carries the user's id, name and email address as well as the actual confirmation code.
-     *
-     * @param AuthenticationMappingEntity $mapping
-     * @return string The created identifier
      */
-    public function createLostPasswordId(AuthenticationMappingEntity $mapping)
+    public function createLostPasswordId(AuthenticationMappingEntity $mapping): string
     {
         $confirmationCode = $this->delimiter;
         while (false !== mb_strpos($confirmationCode, $this->delimiter)) {
@@ -95,14 +89,12 @@ class LostPasswordVerificationHelper
     /**
      * Decodes a given link identifier.
      *
-     * @param string $identifier
-     * @return array The extracted values
-     * @throws \Exception
+     * @throws Exception
      */
-    public function decodeLostPasswordId($identifier = '')
+    public function decodeLostPasswordId(string $identifier = ''): array
     {
         if (empty($identifier)) {
-            throw new \Exception('Invalid id in lost password verification helper.');
+            throw new Exception('Invalid id in lost password verification helper.');
         }
 
         $id = $identifier;
@@ -112,7 +104,7 @@ class LostPasswordVerificationHelper
 
         $params = explode($this->delimiter, $id);
         if (4 !== count($params)) {
-            throw new \Exception('Unexpected extraction results in lost password verification helper.');
+            throw new Exception('Unexpected extraction results in lost password verification helper.');
         }
 
         return [
@@ -125,12 +117,8 @@ class LostPasswordVerificationHelper
 
     /**
      * Check if confirmation code is neither expired nor invalid.
-     *
-     * @param integer $userId
-     * @param string  $code
-     * @return bool True if code is valid, false otherwise
      */
-    public function checkConfirmationCode($userId, $code)
+    public function checkConfirmationCode(int $userId, string $code): bool
     {
         $changePasswordExpireDays = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD, ZAuthConstant::DEFAULT_EXPIRE_DAYS_CHANGE_PASSWORD);
         $this->userVerificationRepository->purgeExpiredRecords($changePasswordExpireDays);
@@ -141,10 +129,6 @@ class LostPasswordVerificationHelper
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_PWD
         ]);
 
-        if (!isset($userVerificationEntity) || (!$this->passwordApi->passwordsMatch($code, $userVerificationEntity->getVerifycode()))) {
-            return false;
-        }
-
-        return true;
+        return !(!isset($userVerificationEntity) || (!$this->passwordApi->passwordsMatch($code, $userVerificationEntity->getVerifycode())));
     }
 }

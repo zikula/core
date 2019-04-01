@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Helper;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use DateTime;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -25,9 +26,9 @@ use Zikula\UsersModule\Entity\UserEntity;
 class AccessHelper
 {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var UserRepositoryInterface
@@ -49,80 +50,84 @@ class AccessHelper
      */
     private $translator;
 
-    /**
-     * AccessHelper constructor.
-     *
-     * @param SessionInterface $session
-     * @param UserRepositoryInterface $userRepository
-     * @param PermissionApiInterface $permissionApi
-     * @param VariableApiInterface $variableApi
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
-        SessionInterface $session,
+        RequestStack $requestStack,
         UserRepositoryInterface $userRepository,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->userRepository = $userRepository;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->translator = $translator;
     }
 
-    /**
-     * @param UserEntity $user
-     * @return bool
-     */
-    public function loginAllowed(UserEntity $user)
+    public function loginAllowed(UserEntity $user): bool
     {
+        $flashBag = null;
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+            $flashBag = $request->getSession()->getFlashBag();
+        }
+
         switch ($user->getActivated()) {
             case UsersConstant::ACTIVATED_ACTIVE:
                 return true;
             case UsersConstant::ACTIVATED_INACTIVE:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied: Your account has been disabled. Please contact a site administrator for more information.'));
+                if (null !== $flashBag) {
+                    $flashBag->add('error', $this->translator->__('Login Denied: Your account has been disabled. Please contact a site administrator for more information.'));
+                }
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_DELETE:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.'));
+                if (null !== $flashBag) {
+                    $flashBag->add('error', $this->translator->__('Login Denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.'));
+                }
 
                 return false;
             case UsersConstant::ACTIVATED_PENDING_REG:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied: Your request to register with this site is pending or awaiting verification.'));
+                if (null !== $flashBag) {
+                    $flashBag->add('error', $this->translator->__('Login Denied: Your request to register with this site is pending or awaiting verification.'));
+                }
 
                 return false;
             default:
-                $this->session->getFlashBag()->add('error', $this->translator->__('Login Denied!'));
+                if (null !== $flashBag) {
+                    $flashBag->add('error', $this->translator->__('Login Denied!'));
+                }
 
-                return false;
         }
+
+        return false;
     }
 
-    /**
-     * @param UserEntity $user
-     * @param bool $rememberMe
-     */
-    public function login(UserEntity $user, $rememberMe = false)
+    public function login(UserEntity $user, bool $rememberMe = false): void
     {
-        $user->setLastlogin(new \DateTime());
+        $user->setLastlogin(new DateTime());
         $this->userRepository->persistAndFlush($user);
         $lifetime = 0;
         if ($rememberMe && ZikulaSessionStorage::SECURITY_LEVEL_HIGH !== $this->variableApi->getSystemVar('seclevel', ZikulaSessionStorage::SECURITY_LEVEL_MEDIUM)) {
             $lifetime = 2 * 365 * 24 * 60 * 60; // two years
         }
-        $this->session->migrate(true, $lifetime);
-        $this->session->set('uid', $user->getUid());
-        if ($rememberMe) {
-            $this->session->set('rememberme', 1);
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+            $request->getSession()->migrate(true, $lifetime);
+            $request->getSession()->set('uid', $user->getUid());
+            if ($rememberMe) {
+                $request->getSession()->set('rememberme', 1);
+            }
         }
         $this->permissionApi->resetPermissionsForUser($user->getUid());
     }
 
-    public function logout()
+    public function logout(): bool
     {
-        $this->session->invalidate();
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+            $request->getSession()->invalidate();
+        }
 
         return true;
     }

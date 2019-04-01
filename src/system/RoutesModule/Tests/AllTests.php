@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -13,23 +16,21 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
     define('PHPUnit_MAIN_METHOD', 'AllTests::main');
 }
 
-require_once dirname(__FILE__) . '/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 
 class AllTests
 {
-    public static function main()
+    public static function main(): void
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
 
-    public static function suite()
+    public static function suite(): PHPUnit_Framework_TestSuite
     {
-        $suite = new PHPUnit_Framework_TestSuite('ZikulaRoutesModule - All Tests');
-
-        return $suite;
+        return new PHPUnit_Framework_TestSuite('ZikulaRoutesModule - All Tests');
     }
 }
 
-if (PHPUnit_MAIN_METHOD == 'AllTests::main') {
+if (PHPUnit_MAIN_METHOD === 'AllTests::main') {
     AllTests::main();
 }

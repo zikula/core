@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -35,23 +38,14 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      */
     protected $permissionHelper;
     
-    /**
-     * WorkflowEventsListener constructor.
-     *
-     * @param EntityFactory $entityFactory
-     * @param PermissionHelper $permissionHelper
-     */
     public function __construct(
         EntityFactory $entityFactory,
-        PermissionHelper $permissionHelper)
-    {
+        PermissionHelper $permissionHelper
+    ) {
         $this->entityFactory = $entityFactory;
         $this->permissionHelper = $permissionHelper;
     }
     
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -89,11 +83,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *     `if (!$event->isBlocked()) {
      *         $event->setBlocked(true);
      *     }`
-     *
-     * @param GuardEvent $event The event instance
      */
-    public function onGuard(GuardEvent $event)
+    public function onGuard(GuardEvent $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -157,11 +150,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
-    public function onLeave(Event $event)
+    public function onLeave(Event $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -189,11 +181,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
-    public function onEntered(Event $event)
+    public function onEntered(Event $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -220,11 +211,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
-    public function onTransition(Event $event)
+    public function onTransition(Event $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -251,11 +241,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
-    public function onEnter(Event $event)
+    public function onEnter(Event $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -281,11 +270,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
-    public function onCompleted(Event $event)
+    public function onCompleted(Event $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -311,11 +299,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Access the marking: `$marking = $event->getMarking();`
      * Access the transition: `$transition = $event->getTransition();`
      * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     *
-     * @param Event $event The event instance
      */
-    public function onAnnounce(Event $event)
+    public function onAnnounce(Event $event): void
     {
+        /** @var EntityAccess $entity */
         $entity = $event->getSubject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -326,10 +313,8 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      * Checks whether this listener is responsible for the given entity or not.
      *
      * @param EntityAccess $entity The given entity
-     *
-     * @return boolean True if entity is managed by this listener, false otherwise
      */
-    protected function isEntityManagedByThisBundle($entity)
+    protected function isEntityManagedByThisBundle($entity): bool
     {
         if (!($entity instanceof EntityAccess)) {
             return false;
@@ -337,11 +322,11 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     
         $entityClassParts = explode('\\', get_class($entity));
     
-        if ('DoctrineProxy' == $entityClassParts[0] && '__CG__' == $entityClassParts[1]) {
+        if ('DoctrineProxy' === $entityClassParts[0] && '__CG__' === $entityClassParts[1]) {
             array_shift($entityClassParts);
             array_shift($entityClassParts);
         }
     
-        return ('Zikula' == $entityClassParts[0] && 'RoutesModule' == $entityClassParts[1]);
+        return 'Zikula' === $entityClassParts[0] && 'RoutesModule' === $entityClassParts[1];
     }
 }

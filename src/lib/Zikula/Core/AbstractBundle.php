@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Core;
 
+use InvalidArgumentException;
+use LogicException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,18 +29,21 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractBundle extends Bundle
 {
-    const STATE_DISABLED = 2;
+    public const STATE_DISABLED = 2;
 
-    const STATE_ACTIVE = 3;
+    public const STATE_ACTIVE = 3;
 
-    const STATE_MISSING = 6;
+    public const STATE_MISSING = 6;
 
+    /**
+     * @var int
+     */
     protected $state;
 
-    public function setState($state)
+    public function setState(int $state): self
     {
-        if (!in_array($state, [self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING])) {
-            throw new \InvalidArgumentException(sprintf('Invalid state %s', $state));
+        if (!in_array($state, [self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING], true)) {
+            throw new InvalidArgumentException(sprintf('Invalid state %s', $state));
         }
 
         $this->state = $state;
@@ -46,12 +51,12 @@ abstract class AbstractBundle extends Bundle
         return $this;
     }
 
-    public function getState()
+    public function getState(): int
     {
         return $this->state;
     }
 
-    public function getInstallerClass()
+    public function getInstallerClass(): string
     {
         $ns = $this->getNamespace();
         $class = $ns . '\\' . mb_substr($ns, mb_strrpos($ns, '\\') + 1, mb_strlen($ns)) . 'Installer';
@@ -59,70 +64,57 @@ abstract class AbstractBundle extends Bundle
         return $class;
     }
 
-    public function getRoutingConfig()
+    public function getRoutingConfig(): string
     {
         return '@' . $this->name . '/Resources/config/routing.yml';
     }
 
-    public function getTranslationDomain()
+    public function getTranslationDomain(): string
     {
         return mb_strtolower($this->getName());
     }
 
     /**
-     * Gets the translation domain path
-     *
-     * @return string
+     * Gets the translation path.
      */
-    public function getLocalePath()
+    public function getLocalePath(): string
     {
         return $this->getPath() . '/Resources/locale';
     }
 
-    /**
-     * Gets the views path
-     *
-     * @return string
-     */
-    public function getViewsPath()
+    public function getViewsPath(): string
     {
         return $this->getPath() . '/Resources/views';
     }
 
-    /**
-     * Gets the config path.
-     *
-     * @return string
-     */
-    public function getConfigPath()
+    public function getConfigPath(): string
     {
         return $this->getPath() . '/Resources/config';
     }
 
     /**
-     * Get the assetpath relative to /web e.g. /modules/acmefoo
-     * @return string
+     * Get the asset path relative to /web e.g. /modules/acmefoo.
      */
-    public function getRelativeAssetPath()
+    public function getRelativeAssetPath(): string
     {
         return mb_strtolower($this->getNameType() . 's/' . mb_substr($this->getName(), 0, -mb_strlen($this->getNameType())));
     }
 
-    public function getNameType()
+    public function getNameType(): string
     {
         return 'Bundle';
     }
 
-    protected function hasCommands()
+    protected function hasCommands(): bool
     {
         return false;
     }
 
     public function getContainerExtension()
     {
-        $type = $this->getNameType();
-        $typeLower = mb_strtolower($type);
         if (null === $this->extension) {
+            $type = $this->getNameType();
+            $typeLower = mb_strtolower($type);
             $basename = preg_replace('/' . $type . '/', '', $this->getName());
 
             $class = $this->getNamespace() . '\\DependencyInjection\\' . $basename . 'Extension';
@@ -132,7 +124,7 @@ abstract class AbstractBundle extends Bundle
                 // check naming convention
                 $expectedAlias = Container::underscore($basename);
                 if ($expectedAlias !== $extension->getAlias()) {
-                    throw new \LogicException(sprintf(
+                    throw new LogicException(sprintf(
                         'The extension alias for the default extension of a %s must be the underscored version of the %s name ("%s" instead of "%s")',
                         $typeLower, $typeLower, $expectedAlias, $extension->getAlias()
                     ));
@@ -149,32 +141,26 @@ abstract class AbstractBundle extends Bundle
         }
     }
 
-    public function registerCommands(Application $application)
+    public function registerCommands(Application $application): void
     {
         if ($this->hasCommands()) {
             parent::registerCommands($application);
         }
     }
 
-    /**
-     * Get container.
-     *
-     * @return ContainerInterface
-     */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
 
     /**
-     * Add the bundle's stylesheet to the page assets
-     * @param string $name
+     * Add the bundle's stylesheet to the page assets.
      */
-    public function addStylesheet($name = 'style.css')
+    public function addStylesheet(string $name = 'style.css'): void
     {
         try {
             $styleSheet = $this->getContainer()->get(Asset::class)->resolve('@' . $this->getName() . ":css/${name}");
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $exception) {
             $styleSheet = '';
         }
         if (!empty($styleSheet)) {
@@ -183,10 +169,7 @@ abstract class AbstractBundle extends Bundle
         }
     }
 
-    /**
-     * @return MetaData
-     */
-    public function getMetaData()
+    public function getMetaData(): MetaData
     {
         $scanner = new Scanner();
         $jsonPath = $this->getPath() . '/composer.json';
@@ -198,7 +181,7 @@ abstract class AbstractBundle extends Bundle
         if (!empty($this->container) && $this->container->getParameter('installed')) {
             // overwrite composer.json settings with dynamic values from extension repository
             $extensionEntity = $this->container->get(ExtensionRepository::class)->get($this->getName());
-            if (!is_null($extensionEntity)) {
+            if (null !== $extensionEntity) {
                 $metaData->setUrl($extensionEntity->getUrl());
                 $metaData->setDisplayName($extensionEntity->getDisplayname());
                 $metaData->setDescription($extensionEntity->getDescription());

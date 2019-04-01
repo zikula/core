@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -15,7 +17,8 @@ use JMS\I18nRoutingBundle\Router\PatternGenerationStrategyInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use ZikulaKernel;
 
 /**
  * This strategy duplicates \JMS\I18nRoutingBundle\Router\DefaultPatternGenerationStrategy
@@ -23,26 +26,55 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterface
 {
-    const STRATEGY_PREFIX = 'prefix';
-    const STRATEGY_PREFIX_EXCEPT_DEFAULT = 'prefix_except_default';
-    const STRATEGY_CUSTOM = 'custom';
+    public const STRATEGY_PREFIX = 'prefix';
 
+    public const STRATEGY_PREFIX_EXCEPT_DEFAULT = 'prefix_except_default';
+
+    public const STRATEGY_CUSTOM = 'custom';
+
+    /**
+     * @var string
+     */
     private $strategy;
 
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
 
+    /**
+     * @var string
+     */
     private $translationDomain;
 
+    /**
+     * @var array
+     */
     private $locales;
 
+    /**
+     * @var string
+     */
     private $cacheDir;
 
+    /**
+     * @var string
+     */
     private $defaultLocale;
 
+    /**
+     * @var array
+     */
     private $modUrlMap = [];
 
-    public function __construct($strategy, TranslatorInterface $translator, array $locales, $cacheDir, $translationDomain = 'routes', $defaultLocale = 'en')
-    {
+    public function __construct(
+        string $strategy,
+        TranslatorInterface $translator,
+        array $locales,
+        string $cacheDir,
+        string $translationDomain = 'routes',
+        string $defaultLocale = 'en'
+    ) {
         $this->strategy = $strategy;
         $this->translator = $translator;
         $this->translationDomain = $translationDomain;
@@ -51,9 +83,6 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
         $this->defaultLocale = $defaultLocale;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function generateI18nPatterns($routeName, Route $route)
     {
         $patterns = [];
@@ -111,30 +140,26 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
         return $patterns;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function addResources(RouteCollection $i18nCollection)
     {
         foreach ($this->locales as $locale) {
-            if (file_exists($metadata = $this->cacheDir . '/translations/catalogue.' . $locale . '.php.meta')) {
-                foreach (unserialize(file_get_contents($metadata)) as $resource) {
-                    $i18nCollection->addResource($resource);
-                }
+            $metadata = $this->cacheDir . '/translations/catalogue.' . $locale . '.php.meta';
+            if (!file_exists($metadata)) {
+                continue;
+            }
+            foreach (unserialize(file_get_contents($metadata)) as $resource) {
+                $i18nCollection->addResource($resource);
             }
         }
     }
 
     /**
      * Customized method to cache the url string for modules.
-     *
-     * @param $moduleName
-     * @return string
      */
-    private function getModUrlString($moduleName)
+    private function getModUrlString(string $moduleName): string
     {
         if (!isset($this->modUrlMap[$moduleName])) {
-            /** @var \ZikulaKernel $kernel */
+            /** @var ZikulaKernel $kernel */
             $kernel = $GLOBALS['kernel'];
             $module = $kernel->getModule($moduleName);
             // get untranslated url from metaData.

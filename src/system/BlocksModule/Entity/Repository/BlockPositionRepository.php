@@ -25,22 +25,19 @@ class BlockPositionRepository extends ServiceEntityRepository implements BlockPo
         parent::__construct($registry, BlockPositionEntity::class);
     }
 
-    public function findByName($name)
+    public function findByName(string $name)
     {
         return $this->findOneBy(['name' => $name]);
     }
 
-    /**
-     * Get an array of position names indexed by the id
-     * @return array
-     */
-    public function getPositionChoiceArray()
+    public function getPositionChoiceArray(): array
     {
         $positions = $this->getEntityManager()->createQueryBuilder()
             ->select('p.pid, p.name')
             ->from('ZikulaBlocksModule:BlockPositionEntity', 'p', 'p.pid')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
         foreach ($positions as $id => $row) {
             $positions[$id] = $row['name'];
         }

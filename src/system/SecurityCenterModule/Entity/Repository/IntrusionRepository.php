@@ -33,12 +33,8 @@ class IntrusionRepository extends ServiceEntityRepository
 
     /**
      * Returns amount of intrusions for given arguments.
-     *
-     * @param array $filters Optional array with filters
-     *
-     * @return integer
      */
-    public function countIntrusions($filters = [])
+    public function countIntrusions(array $filters = []): int
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('COUNT(tbl.id)');
@@ -47,27 +43,18 @@ class IntrusionRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        $count = (int)$query->getSingleScalarResult();
-
-        return $count;
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
      * Returns intrusions for given arguments.
-     *
-     * @param array   $filters Optional array with filters
-     * @param array   $sorting Optional array with sorting criteria
-     * @param integer $limit   Optional limitation for amount of retrieved objects
-     * @param integer $offset  Optional start offset of retrieved objects
-     *
-     * @return array
      */
-    public function getIntrusions($filters = [], $sorting = [], $limit = 0, $offset = 0)
+    public function getIntrusions(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
 
-        $qb = $this->addCommonFilters($qb, $filters, $sorting);
+        $qb = $this->addCommonFilters($qb, $filters);
 
         // add clause for ordering
         if (isset($sorting['username'])) {
@@ -100,13 +87,8 @@ class IntrusionRepository extends ServiceEntityRepository
 
     /**
      * Adds common filters to the given query builder.
-     *
-     * @param QueryBuilder $qb      The current query builder instance
-     * @param array        $filters Optional array with filters
-     *
-     * @return QueryBuilder The enriched query builder
      */
-    private function addCommonFilters(QueryBuilder $qb, $filters = [])
+    private function addCommonFilters(QueryBuilder $qb, array $filters = []): QueryBuilder
     {
         // add clause for user
         if (isset($filters['uid'])) {
@@ -137,13 +119,9 @@ class IntrusionRepository extends ServiceEntityRepository
     /**
      * Selects a list of distinct values for a given field.
      *
-     * @param string $fieldName Name of field to select
-     *
-     * @return array
-     *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function getDistinctFieldValues($fieldName)
+    public function getDistinctFieldValues(string $fieldName): array
     {
         if (!in_array($fieldName, ['uid', 'name', 'tag', 'value', 'page', 'ip', 'impact'])) {
             throw new InvalidArgumentException('Invalid field name received for distinct values selection!');
@@ -168,13 +146,11 @@ class IntrusionRepository extends ServiceEntityRepository
 
     /**
      * Helper method for truncating the table.
-     *
-     * @return void
      */
-    public function truncateTable()
+    public function truncateTable(): void
     {
         $qb = $this->_em->createQueryBuilder('tbl')
-            ->delete('Zikula\SecurityCenterModule\Entity\IntrusionEntity', 'tbl');
+            ->delete(IntrusionEntity::class, 'tbl');
         $query = $qb->getQuery();
 
         $query->execute();

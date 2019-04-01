@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class BaseTestCase extends WebTestCase
 {
-    protected static function createKernel(array $options = [])
+    protected static function createKernel(array $options = []): ZikulaHttpKernelInterface
     {
         return new AppKernel(
             $options['config'] ?? 'default.yml'
@@ -26,6 +27,6 @@ class BaseTestCase extends WebTestCase
 
     protected static function getKernelClass()
     {
-        return 'Zikula\Bundle\CoreBundle\Tests\Functional\AppKernel';
+        return AppKernel::class;
     }
 }

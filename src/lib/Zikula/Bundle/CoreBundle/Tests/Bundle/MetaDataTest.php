@@ -13,85 +13,90 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Tests\Bundle;
 
+use PHPUnit\Framework\TestCase;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
+use Zikula\AdminModule\ZikulaAdminModule;
 
-class MetaDataTest extends \PHPUnit\Framework\TestCase
+class MetaDataTest extends TestCase
 {
     /**
      * @var MetaData
      */
     protected $metaData;
 
+    /**
+     * @var array
+     */
     protected $json;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->json = $this->getJson();
         $this->metaData = new MetaData($this->json);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->metaData = null;
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getName
+     * @covers MetaData::getName
      */
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertEquals('zikula/admin-module', $this->metaData->getName());
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getShortName
+     * @covers MetaData::getShortName
      */
-    public function testShortName()
+    public function testShortName(): void
     {
         $this->assertEmpty($this->metaData->getShortName());
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getPsr0
+     * @covers MetaData::getPsr0
      */
-    public function testGetPsr0()
+    public function testGetPsr0(): void
     {
         $this->assertEquals($this->json['autoload']['psr-0'], $this->metaData->getPsr0());
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getBasePath
+     * @covers MetaData::getBasePath
      */
-    public function testGetBasePath()
+    public function testGetBasePath(): void
     {
         $this->assertEmpty($this->metaData->getBasePath());
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getRootPath
+     * @covers MetaData::getRootPath
      */
-    public function testGetRootPath()
+    public function testGetRootPath(): void
     {
         $this->assertEmpty($this->metaData->getRootPath());
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getClass
+     * @covers MetaData::getClass
      */
-    public function testGetClass()
+    public function testGetClass(): void
     {
-        $this->assertEquals('Zikula\\AdminModule\\ZikulaAdminModule', $this->metaData->getClass());
+        $this->assertEquals(ZikulaAdminModule::class, $this->metaData->getClass());
     }
 
     /**
-     * @covers \Zikula\Bundle\CoreBundle\Bundle\MetaData::getNamespace
+     * @covers MetaData::getNamespace
      */
-    public function testGetNamespace()
+    public function testGetNamespace(): void
     {
         $this->assertEquals('Zikula\\AdminModule\\', $this->metaData->getNamespace());
     }
 
-    private function getJson()
+    private function getJson(): array
     {
         $json = <<<'EOF'
 {

@@ -24,18 +24,22 @@ use Zikula\CategoriesModule\Entity\CategoryEntity;
  */
 class CategoriesCollectionTransformer implements DataTransformerInterface
 {
+    /**
+     * @var string
+     */
     private $entityCategoryClass;
 
+    /** @var bool */
     private $multiple;
 
     public function __construct(array $options)
     {
         $classParents = class_parents($options['entityCategoryClass']);
-        if (!in_array(AbstractCategoryAssignment::class, $classParents)) {
+        if (!in_array(AbstractCategoryAssignment::class, $classParents, true)) {
             throw new InvalidConfigurationException("Option 'entityCategoryClass' must extend Zikula\\CategoriesModule\\Entity\\AbstractCategoryAssignment");
         }
-        $this->entityCategoryClass = $options['entityCategoryClass'];
-        $this->multiple = $options['multiple'] ?? false;
+        $this->entityCategoryClass = (string)$options['entityCategoryClass'];
+        $this->multiple = (bool)($options['multiple'] ?? false);
     }
 
     public function reverseTransform($value)

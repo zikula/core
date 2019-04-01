@@ -18,19 +18,35 @@ use Zikula\PermissionsModule\Entity\PermissionEntity;
 
 interface PermissionRepositoryInterface
 {
-    public function getPermissionsByGroups(array $groups);
+    public function getPermissionsByGroups(array $groups): array;
 
-    public function getFilteredPermissions($group = PermissionApi::ALL_GROUPS, $component = null);
+    /**
+     * Optionally filter a selection of permissions by group or component or both.
+     */
+    public function getFilteredPermissions(int $group = PermissionApi::ALL_GROUPS, string $component = null): array;
 
-    public function getAllComponents();
+    public function getAllComponents(): array;
 
-    public function persistAndFlush(PermissionEntity $entity);
+    public function persistAndFlush(PermissionEntity $entity): void;
 
-    public function getMaxSequence();
+    /**
+     * Get the highest sequential number.
+     */
+    public function getMaxSequence(): int;
 
-    public function updateSequencesFrom($value, $amount = 1);
+    /**
+     * Update all sequence values >= the provided $value by the provided $amount
+     *   to increment, amount = 1; to decrement, amount = -1
+     */
+    public function updateSequencesFrom(int $value, int $amount = 1): void;
 
-    public function reSequence();
+    /**
+     * ReSequence all permissions.
+     */
+    public function reSequence(): void;
 
-    public function deleteGroupPermissions($groupId = 0);
+    /**
+     * Deletes all permissions for a given group.
+     */
+    public function deleteGroupPermissions(int $groupId = 0): void;
 }

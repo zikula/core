@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule;
 
+use DateTime;
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -26,15 +28,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
  */
 class UsersModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the users module.
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance. This function MUST exist in the pninit file for a module.
-     *
-     * @return bool True on success, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         // create the tables
         $classes = [
@@ -44,12 +38,12 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         ];
         try {
             $this->schemaTool->create($classes);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
         // Set default values and modvars for module
-        $this->defaultdata();
+        $this->createDefaultData();
         $this->setVars($this->getDefaultModvars());
         $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, 'authenticationMethodsStatus', ['native_uname' => true]);
 
@@ -57,23 +51,13 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * Upgrade the users module from an older version.
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param string $oldVersion Version number string to upgrade from
-     *
-     * @return bool|string True on success, last valid version string or false if fails
-     */
-    public function upgrade($oldVersion)
+    public function upgrade($oldVersion): bool
     {
         $connection = $this->entityManager->getConnection();
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '2.2.0': // version shipped with Core 1.3.5 -> current 1.3.x
-                $sql = "ALTER TABLE users ENGINE = InnoDB";
+                $sql = 'ALTER TABLE users ENGINE = InnoDB';
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
                 // add new table
@@ -149,12 +133,12 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                     UserSessionEntity::class
                 ]);
             case '3.0.1':
-                $sql = "
+                $sql = '
                     ALTER TABLE users_attributes
                     ADD FOREIGN KEY (user_id)
                     REFERENCES users(uid)
                     ON DELETE CASCADE
-                ";
+                ';
                 $stmt = $connection->prepare($sql);
                 $stmt->execute();
             case '3.0.2':
@@ -171,23 +155,11 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
                 // current version
         }
 
-        /**
-         * Update successful.
-         */
+        // Update successful
         return true;
     }
 
-    /**
-     * Delete the users module.
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance. This function MUST exist in the pninit file for a module.
-     *
-     * Since the users module should never be deleted we'all always return false here.
-     *
-     * @return bool false
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Deletion not allowed
         return false;
@@ -195,10 +167,8 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
 
     /**
      * Build and return an array of all current module variables, with their default values.
-     *
-     * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}
      */
-    private function getDefaultModvars()
+    private function getDefaultModvars(): array
     {
         return [
             UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS              => UsersConstant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS,
@@ -227,13 +197,11 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
      *
      * This function is only ever called once during the lifetime of a particular
      * module instance.
-     *
-     * @return void
      */
-    private function defaultdata()
+    private function createDefaultData(): void
     {
-        $now = new \DateTime();
-        $then = new \DateTime('1970-01-01 00:00:00');
+        $now = new DateTime();
+        $then = new DateTime('1970-01-01 00:00:00');
 
         // Anonymous
         $record = [
@@ -269,10 +237,10 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
     }
 
     /**
-     * migrate all data from the objectdata_attributes table to the users_attributes
+     * Migrate all data from the objectdata_attributes table to the users_attributes
      * where object_type = 'users'
      */
-    private function migrateAttributes()
+    private function migrateAttributes(): void
     {
         $connection = $this->entityManager->getConnection();
         $sqls = [];
@@ -301,26 +269,27 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
      * move select modvar values to ZAuthModule.
      * change to boolean where required.
      */
-    private function migrateModVarsToZAuth()
+    private function migrateModVarsToZAuth(): void
     {
         $migratedModVarNames = $this->getMigratedModVarNames();
         foreach ($migratedModVarNames as $migratedModVarName) {
             $value = $this->getVar($migratedModVarName);
             $this->delVar($migratedModVarName); // removes from UsersModule
-            $migratedModVarName = ('reg_verifyemail' === $migratedModVarName) ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
+            $migratedModVarName = 'reg_verifyemail' === $migratedModVarName ? ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED : $migratedModVarName;
             $value = in_array($migratedModVarName, [
                 ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED,
                 ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED
-            ]) ? (bool)$value : $value;
+            ], true) ? (bool)$value : $value;
             $this->container->get(VariableApi::class)->set('ZikulaZAuthModule', $migratedModVarName, $value);
         }
     }
 
     /**
      * These modvar names used to have UsersConstant values, but have been moved to ZAuthConstant and maintain their actual values.
+     *
      * @return string[]
      */
-    private function getMigratedModVarNames()
+    private function getMigratedModVarNames(): array
     {
         return [
             ZAuthConstant::MODVAR_HASH_METHOD,

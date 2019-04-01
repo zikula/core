@@ -17,7 +17,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
@@ -42,30 +41,19 @@ class LinkContainer implements LinkContainerInterface
      */
     private $variableApi;
 
-    /**
-     * LinkContainer constructor.
-     *
-     * @param TranslatorInterface $translator    TranslatorInterface service instance
-     * @param RouterInterface     $router        RouterInterface service instance
-     * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     * @param VariableApiInterface $variableApi   VariableApi service instance
-     */
-    public function __construct(TranslatorInterface $translator, RouterInterface $router, PermissionApiInterface $permissionApi, VariableApiInterface $variableApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RouterInterface $router,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi
+    ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
     }
 
-    /**
-     * get Links of any type for this extension
-     * required by the interface
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         if (LinkContainerInterface::TYPE_ADMIN === $type) {
             return $this->getAdmin();
@@ -75,11 +63,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Admin links for this extension
-     *
-     * @return array
+     * Get the admin links for this extension.
      */
-    private function getAdmin()
+    private function getAdmin(): array
     {
         $links = [];
 
@@ -129,12 +115,7 @@ class LinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * set the BundleName as required by the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaSecurityCenterModule';
     }

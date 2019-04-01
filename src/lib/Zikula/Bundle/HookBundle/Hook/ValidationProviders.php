@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Hook;
 
+use ArrayObject;
+use InvalidArgumentException;
 use Zikula\Common\Collection\Container;
 
 /**
@@ -20,13 +22,7 @@ use Zikula\Common\Collection\Container;
  */
 class ValidationProviders extends Container
 {
-    /**
-     * Constructor.
-     *
-     * @param string       $name       The name of the collection
-     * @param \ArrayObject $collection The collection (optional)
-     */
-    public function __construct($name = 'validation', \ArrayObject $collection = null)
+    public function __construct(string $name = 'validation', ArrayObject $collection = null)
     {
         parent::__construct($name, $collection);
     }
@@ -34,25 +30,21 @@ class ValidationProviders extends Container
     /**
      * Set response.
      *
-     * @param string             $name     Name
+     * @param string $name Name
      * @param ValidationResponse $response Validation response
-     *
-     * @return void
      */
-    public function set($name, $response)
+    public function set($name, $response): void
     {
         if (!$response instanceof ValidationResponse) {
-            throw new \InvalidArgumentException('$response must be an instance of ValidationResponse');
+            throw new InvalidArgumentException('$response must be an instance of ValidationResponse');
         }
         $this->collection[$name] = $response;
     }
 
     /**
      * Check if there are any errors in any of the validation responses.
-     *
-     * @return boolean
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         foreach ($this->collection as $response) {
             /** @var $response ValidationResponse */
@@ -66,10 +58,8 @@ class ValidationProviders extends Container
 
     /**
      * Fetch all the errors thrown in the validation check
-     *
-     * @return array
      */
-    public function getErrors()
+    public function getErrors(): array
     {
         $errors = [];
         /** @var $response ValidationResponse */

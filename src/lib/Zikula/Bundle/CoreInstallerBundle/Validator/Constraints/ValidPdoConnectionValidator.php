@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Validator\Constraints;
 
+use PDO;
+use PDOException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -27,7 +29,7 @@ class ValidPdoConnectionValidator extends ConstraintValidator
         $this->setTranslator($translator);
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
@@ -43,11 +45,14 @@ class ValidPdoConnectionValidator extends ConstraintValidator
             return;
         }
 
+        $dbName = $object['database_name'];
+        $dsn = $object['database_driver'] . ':host=' . $object['database_host'] . ';dbname=' . $dbName;
         try {
-            $dbh = new \PDO("{$object[database_driver]}:host={$object[database_host]};dbname={$object[database_name]}", $object['database_user'], $object['database_password']);
-            $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            $sql = ('mysql' === $object['database_driver'] || 'mysqli' === $object['database_driver']) ?
-                "SHOW TABLES FROM `{$object[database_name]}` LIKE '%'" : "SHOW TABLES FROM {$object[database_name]} LIKE '%'";
+            $dbh = new PDO($dsn, $object['database_user'], $object['database_password']);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = in_array($object['database_driver'], ['mysql', 'mysqli'])
+                ? 'SHOW TABLES FROM `' . $dbName . "` LIKE '%'"
+                : 'SHOW TABLES FROM ' . $dbName . " LIKE '%'";
             $tables = $dbh->query($sql);
             if (!is_object($tables)) {
                 $this->context
@@ -60,7 +65,7 @@ class ValidPdoConnectionValidator extends ConstraintValidator
                     ->addViolation()
                 ;
             }
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             $this->context
                 ->buildViolation($this->__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ') . $exception->getMessage())
                 ->addViolation()

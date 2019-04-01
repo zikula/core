@@ -19,9 +19,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * Class TextBlockType
- */
 class TextBlockType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -35,10 +32,10 @@ class TextBlockType extends AbstractType
         ;
         $builder->get('content')
             ->addModelTransformer(new CallbackTransformer(
-                function($originalDescription) {
+                static function($originalDescription) {
                     return $originalDescription;
                 },
-                function($submittedDescription) {
+                static function($submittedDescription) {
                     // remove all HTML tags
                     return strip_tags($submittedDescription);
                 }

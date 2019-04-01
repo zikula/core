@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
@@ -26,9 +26,9 @@ use Zikula\ZAuthModule\ZAuthConstant;
 class UserEventListener implements EventSubscriberInterface
 {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var RouterInterface
@@ -40,24 +40,18 @@ class UserEventListener implements EventSubscriberInterface
      */
     private $translator;
 
+    public function __construct(RequestStack $requestStack, RouterInterface $router, TranslatorInterface $translator)
+    {
+        $this->requestStack = $requestStack;
+        $this->router = $router;
+        $this->translator = $translator;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
-            AccessEvents::LOGIN_VETO => ['forcedPasswordChange'],
+            AccessEvents::LOGIN_VETO => ['forcedPasswordChange']
         ];
-    }
-
-    /**
-     * UserEventListener constructor.
-     * @param SessionInterface $session
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(SessionInterface $session, RouterInterface $router, TranslatorInterface $translator)
-    {
-        $this->session = $session;
-        $this->router = $router;
-        $this->translator = $translator;
     }
 
     /**
@@ -73,17 +67,21 @@ class UserEventListener implements EventSubscriberInterface
      *
      * @see \Zikula\ZAuthModule\Controller\AccountController::changePasswordAction
      */
-    public function forcedPasswordChange(GenericEvent $event)
+    public function forcedPasswordChange(GenericEvent $event): void
     {
         /** @var UserEntity $user */
         $user = $event->getSubject();
         if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && $user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
             $event->stopPropagation();
             $event->setArgument('returnUrl', $this->router->generate('zikulazauthmodule_account_changepassword'));
-            $this->session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
-            $this->session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
 
-            $this->session->getFlashBag()->add('error', $this->translator->__("Your log-in request was not completed. You must change your web site account's password first."));
+            $request = $this->requestStack->getCurrentRequest();
+            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+                $request->getSession()->set('authenticationMethod', $event->getArgument('authenticationMethod'));
+                $request->getSession()->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
+
+                $request->getSession()->getFlashBag()->add('error', $this->translator->__("Your log-in request was not completed. You must change your web site account's password first."));
+            }
         }
     }
 }

@@ -16,11 +16,13 @@ namespace Zikula\Bundle\CoreBundle\Tests\Translation\Dumper;
 use JMS\TranslationBundle\Exception\InvalidArgumentException;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
+use JMS\TranslationBundle\Translation\Dumper\DumperInterface;
+use PHPUnit\Framework\TestCase;
 use Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper;
 
-class PotDumperTest extends \PHPUnit\Framework\TestCase
+class PotDumperTest extends TestCase
 {
-    public function testDumpStructureWithoutPrettyPrint()
+    public function testDumpStructureWithoutPrettyPrint(): void
     {
         $catalogue = new MessageCatalogue();
         $catalogue->setLocale('fr');
@@ -29,17 +31,17 @@ class PotDumperTest extends \PHPUnit\Framework\TestCase
         $dumper = $this->getDumper();
         $dumper->setPrettyPrint(false);
         $expected = preg_split('/\r\n|\r|\n/', $this->getOutput('messages'));
-        $dump = preg_split('/\r\n|\r|\n/', $dumper->dump($catalogue, 'messages'));
+        $dump = preg_split('/\r\n|\r|\n/', $dumper->dump($catalogue));
 
         $this->assertEquals($expected, $dump);
     }
 
-    protected function getDumper()
+    protected function getDumper(): DumperInterface
     {
         return new PotDumper(false);
     }
 
-    protected function getOutput($key)
+    protected function getOutput(string $key): string
     {
         if (!is_file($file = __DIR__ . '/pot/' . $key . '.pot')) {
             throw new InvalidArgumentException(sprintf('There is no output for key "%s".', $key));

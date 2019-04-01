@@ -29,11 +29,6 @@ class AdminMenuFunction
      */
     private $permissionApi;
 
-    /**
-     * AdminMenuFunction constructor.
-     * @param FragmentHandler $handler
-     * @param PermissionApiInterface $permissionApi
-     */
     public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)
     {
         $this->handler = $handler;
@@ -43,15 +38,12 @@ class AdminMenuFunction
     /**
      * Inserts admin menu based on mode.
      *
-     * Examples:
-     *
-     * <samp>{( adminMenu() }}</samp>
+     * Example: {( adminMenu() }}
      *
      * @param string $mode 'modules'|'categories' - gets menu organized by modules or it's admin categories
      * @param string $template 'tabs'|'panel'
-     * @return string
      */
-    public function display($mode = 'categories', $template = 'tabs')
+    public function display(string $mode = 'categories', string $template = 'tabs'): string
     {
         if (!$this->permissionApi->hasPermission('ZikulaAdminModule::', '::', ACCESS_EDIT)) {
             return ''; // Since no permission, return empty
@@ -62,6 +54,6 @@ class AdminMenuFunction
             'template' => $template
         ]);
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

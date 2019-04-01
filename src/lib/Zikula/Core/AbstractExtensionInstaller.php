@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\Core;
 
+use Doctrine\ORM\EntityManagerInterface;
+use LogicException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\Helper\SchemaHelper;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -45,12 +48,12 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $bundle;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManagerInterface
      */
     protected $entityManager;
 
     /**
-     * @var \Zikula\Core\Doctrine\Helper\SchemaHelper
+     * @var SchemaHelper
      */
     protected $schemaTool;
 
@@ -60,29 +63,21 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     protected $hookApi;
 
     /**
-     * initialise the extension
-     *
-     * @return bool true on success, false otherwise
+     * Initialise the extension
      */
-    abstract public function install();
+    abstract public function install(): bool;
 
     /**
-     * upgrade the extension
-     *
-     * @param string $oldVersion version being upgraded
-     *
-     * @return bool true if successful, false otherwise
+     * Upgrade the extension.
      */
-    abstract public function upgrade($oldVersion);
+    abstract public function upgrade(string $oldVersion): bool;
 
     /**
-     * delete the extension
-     *
-     * @return bool true if successful, false otherwise
+     * Delete the extension.
      */
-    abstract public function uninstall();
+    abstract public function uninstall(): bool;
 
-    public function setBundle(AbstractBundle $bundle)
+    public function setBundle(AbstractBundle $bundle): void
     {
         $this->bundle = $bundle;
         $this->name = $bundle->getName();
@@ -93,38 +88,37 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         $this->hookApi = new MockHookApi();
     }
 
-    /**
-     * @param ContainerInterface|null $container
-     */
     public function setContainer(ContainerInterface $container = null)
     {
+        $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->container = $container;
+        if (null === $container) {
+            return;
+        }
         $this->setTranslator($container->get(Translator::class));
         $this->entityManager = $container->get('doctrine')->getManager();
         $this->schemaTool = $container->get(SchemaHelper::class);
-        $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $container->get(VariableApi::class); // for ExtensionVariablesTrait
         if ($this->bundle) {
             $this->translator->setDomain($this->bundle->getTranslationDomain());
         }
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
     /**
      * Convenience shortcut to add a session flash message.
-     * @param string $type
-     * @param string $message
      */
-    public function addFlash($type, $message)
+    public function addFlash(string $type, string $message): void
     {
-        if (!$this->container->get('request_stack')->getCurrentRequest()->hasSession()) {
-            throw new \LogicException('You can not use the addFlash method if sessions are disabled.');
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        if (!$request->hasSession()) {
+            throw new LogicException('You can not use the addFlash method if sessions are disabled.');
         }
 
-        $this->container->get('request_stack')->getCurrentRequest()->getSession()->getFlashBag()->add($type, $message);
+        $request->getSession()->getFlashBag()->add($type, $message);
     }
 }

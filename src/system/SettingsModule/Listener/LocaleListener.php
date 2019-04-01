@@ -25,34 +25,14 @@ class LocaleListener implements EventSubscriberInterface
      */
     private $defaultLocale;
 
-    /**
-     * LocaleListener constructor.
-     *
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param string $defaultLocale
-     * @param boolean $installed
-     */
-    public function __construct(CurrentUserApiInterface $currentUserApi, $defaultLocale = 'en', $installed = false)
-    {
+    public function __construct(
+        CurrentUserApiInterface $currentUserApi,
+        string $defaultLocale = 'en',
+        bool $installed = false
+    ) {
         // compute default locale considering user preference
         $userSelectedLocale = $installed ? $currentUserApi->get('locale') : '';
         $this->defaultLocale = !empty($userSelectedLocale) ? $userSelectedLocale : $defaultLocale;
-    }
-
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        $request = $event->getRequest();
-        if (!$request->hasPreviousSession()) {
-            return;
-        }
-
-        // try to see if the locale has been set as a _locale routing parameter
-        if ($locale = $request->attributes->get('_locale')) {
-            $request->getSession()->set('_locale', $locale);
-        } else {
-            // if no explicit locale has been set on this request, use one from the session or default
-            $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
-        }
     }
 
     public static function getSubscribedEvents()
@@ -63,5 +43,22 @@ class LocaleListener implements EventSubscriberInterface
                 ['onKernelRequest', 15]
             ]
         ];
+    }
+
+    public function onKernelRequest(GetResponseEvent $event): void
+    {
+        $request = $event->getRequest();
+        $session = $request->getSession();
+        if (null === $session || !$request->hasPreviousSession()) {
+            return;
+        }
+
+        // try to see if the locale has been set as a _locale routing parameter
+        if ($locale = $request->attributes->get('_locale')) {
+            $session->set('_locale', $locale);
+        } else {
+            // if no explicit locale has been set on this request, use one from the session or default
+            $request->setLocale($session->get('_locale', $this->defaultLocale));
+        }
     }
 }

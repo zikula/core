@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\MenuModule\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
@@ -33,14 +34,17 @@ class MenuBuilder
      */
     private $capabilityApi;
 
-    public function __construct(TranslatorInterface $translator, FactoryInterface $factory, CapabilityApiInterface $capabilityApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        FactoryInterface $factory,
+        CapabilityApiInterface $capabilityApi
+    ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->capabilityApi = $capabilityApi;
     }
 
-    public function createAdminMenu(array $options)
+    public function createAdminMenu(array $options): ItemInterface
     {
         // @see https://gist.github.com/nateevans/9958390
         $menu = $this->factory->createItem('menuModuleAdminMenu');
@@ -65,7 +69,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function createAdminActionsMenu(array $options)
+    public function createAdminActionsMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('menuModuleAdminActionsMenu');
         $menu->setChildrenAttribute('class', 'list-inline');
@@ -85,7 +89,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

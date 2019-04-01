@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         var $moduleName = $('#zikulacategoriesmodule_category_registry_modname');
         $moduleName.change(function () {

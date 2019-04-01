@@ -15,17 +15,18 @@ namespace Zikula\Bundle\CoreBundle\Tests\Twig;
 
 use Twig\Test\IntegrationTestCase;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
+use Zikula\Common\Translator\TranslatorInterface;
 
 class IntegrationTest extends IntegrationTestCase
 {
-    public function getExtensions()
+    public function getExtensions(): array
     {
         return [
-            new CoreExtension()
+            new CoreExtension($this->getMockBuilder(TranslatorInterface::class))
         ];
     }
 
-    public function getFixturesDir()
+    public function getFixturesDir(): string
     {
         return __DIR__ . '/Fixtures/';
     }

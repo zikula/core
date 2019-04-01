@@ -24,6 +24,4 @@ class CategoryRegistryRepository extends ServiceEntityRepository implements Cate
     {
         parent::__construct($registry, CategoryRegistryEntity::class);
     }
-
-    // nothing yet
 }

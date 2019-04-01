@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Tests\Api;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Zikula\CategoriesModule\Api\CategoryPermissionApi;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity;
@@ -20,9 +22,9 @@ use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\PermissionAlways;
 
-class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
+class CategoryPermissionApiTest extends TestCase
 {
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
@@ -30,9 +32,9 @@ class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testInvalidDataThrowsException()
+    public function testInvalidDataThrowsException(): void
     {
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
@@ -41,7 +43,7 @@ class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
         $api->hasCategoryAccess([['foo' => 'bar']]);
     }
 
-    public function testValidDataAlwaysWorks()
+    public function testValidDataAlwaysWorks(): void
     {
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
@@ -49,7 +51,7 @@ class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($api->hasCategoryAccess([$catAssignment]));
     }
 
-    public function testSingleData()
+    public function testSingleData(): void
     {
         $permissionApi = $this->createEvenPermissionApi();
         $api = new CategoryPermissionApi($permissionApi);
@@ -65,7 +67,7 @@ class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($api->hasCategoryAccess([$catAssignment]));
     }
 
-    public function testMultipleData()
+    public function testMultipleData(): void
     {
         $permissionApi = $this->createEvenPermissionApi();
         $api = new CategoryPermissionApi($permissionApi);
@@ -80,7 +82,7 @@ class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($api->hasCategoryAccess([$catAssignment, $catAssignment2]));
     }
 
-    public function testMultipleDataRequireAll()
+    public function testMultipleDataRequireAll(): void
     {
         $permissionApi = $this->createEvenPermissionApi();
         $api = new CategoryPermissionApi($permissionApi);
@@ -98,20 +100,17 @@ class CategoryPermissionApiTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Instances where final number is even will have permission (e.g. '1::2' is true, but '1::3' is false)
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * Instances where final number is even will have permission (e.g. '1::2' is true, but '1::3' is false).
      */
-    private function createEvenPermissionApi()
+    private function createEvenPermissionApi(): PermissionApiInterface
     {
         $api = $this->getMockBuilder(PermissionApiInterface::class)
             ->getMock();
-        $api->method('hasPermission')->will($this->returnCallback(
-            function($component = null, $instance = null, $level = ACCESS_NONE, $user = null) {
-                list($regId, $catId) = explode('::', $instance);
+        $api->method('hasPermission')->willReturnCallback(static function ($component = null, $instance = null, $level = ACCESS_NONE, $user = null) {
+            list(/*$regId*/, $catId) = explode('::', $instance);
 
-                return 0 === $catId % 2;
-            }
-        ));
+            return 0 === $catId % 2;
+        });
 
         return $api;
     }

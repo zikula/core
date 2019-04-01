@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -14,9 +17,11 @@ namespace Zikula\RoutesModule\Form\Handler\Route\Base;
 use Zikula\RoutesModule\Form\Handler\Common\EditHandler;
 use Zikula\RoutesModule\Form\Type\RouteType;
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Exception;
 use RuntimeException;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**
  * This handler class handles the page events of editing forms.
@@ -24,9 +29,6 @@ use RuntimeException;
  */
 abstract class AbstractEditHandler extends EditHandler
 {
-    /**
-     * @inheritDoc
-     */
     public function processForm(array $templateParameters = [])
     {
         $this->objectType = 'route';
@@ -40,14 +42,12 @@ abstract class AbstractEditHandler extends EditHandler
             return $result;
         }
     
-        if ('create' == $this->templateParameters['mode']) {
-            if (!$this->modelHelper->canBeCreated($this->objectType)) {
-                $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add('error', $this->__('Sorry, but you can not create the route yet as other items are required which must be created before!'));
-                $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType];
-                $this->logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', $logArgs);
+        if ('create' === $this->templateParameters['mode'] && !$this->modelHelper->canBeCreated($this->objectType)) {
+            $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add('error', $this->__('Sorry, but you can not create the route yet as other items are required which must be created before!'));
+            $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => $this->objectType];
+            $this->logger->notice('{app}: User {user} tried to create a new {entity}, but failed as it other items are required which must be created before.', $logArgs);
     
-                return new RedirectResponse($this->getRedirectUrl(['commandName' => '']), 302);
-            }
+            return new RedirectResponse($this->getRedirectUrl(['commandName' => '']), 302);
         }
     
         $entityData = $this->entityRef->toArray();
@@ -58,34 +58,25 @@ abstract class AbstractEditHandler extends EditHandler
         return $result;
     }
     
-    /**
-     * @inheritDoc
-     */
-    protected function createForm()
+    protected function createForm(): ?FormInterface
     {
         return $this->formFactory->create(RouteType::class, $this->entityRef, $this->getFormOptions());
     }
     
-    /**
-     * @inheritDoc
-     */
-    protected function getFormOptions()
+    protected function getFormOptions(): array
     {
         $options = [
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionHelper->hasEntityPermission($this->entityRef, ACCESS_ADMIN),
-            'allow_moderation_specific_creator' => $this->variableApi->get('ZikulaRoutesModule', 'allowModerationSpecificCreatorFor' . $this->objectTypeCapital, false),
-            'allow_moderation_specific_creation_date' => $this->variableApi->get('ZikulaRoutesModule', 'allowModerationSpecificCreationDateFor' . $this->objectTypeCapital, false),
+            'allow_moderation_specific_creator' => (bool)$this->variableApi->get('ZikulaRoutesModule', 'allowModerationSpecificCreatorFor' . $this->objectTypeCapital),
+            'allow_moderation_specific_creation_date' => (bool)$this->variableApi->get('ZikulaRoutesModule', 'allowModerationSpecificCreationDateFor' . $this->objectTypeCapital),
         ];
     
         return $options;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function getRedirectCodes()
+    protected function getRedirectCodes(): array
     {
         $codes = parent::getRedirectCodes();
     
@@ -113,14 +104,10 @@ abstract class AbstractEditHandler extends EditHandler
     /**
      * Get the default redirect url. Required if no returnTo parameter has been supplied.
      * This method is called in handleCommand so we know which command has been performed.
-     *
-     * @param array $args List of arguments
-     *
-     * @return string The default redirect url
      */
-    protected function getDefaultReturnUrl(array $args = [])
+    protected function getDefaultReturnUrl(array $args = []): string
     {
-        $objectIsPersisted = $args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel');
+        $objectIsPersisted = 'delete' !== $args['commandName'] && !('create' === $this->templateParameters['mode'] && 'cancel' === $args['commandName']);
         if (null !== $this->returnTo && $objectIsPersisted) {
             // return to referer
             return $this->returnTo;
@@ -140,9 +127,6 @@ abstract class AbstractEditHandler extends EditHandler
         return $url;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function handleCommand(array $args = [])
     {
         $result = parent::handleCommand($args);
@@ -156,7 +140,7 @@ abstract class AbstractEditHandler extends EditHandler
                 $args['commandName'] = $action['id'];
             }
         }
-        if ('create' == $this->templateParameters['mode'] && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
+        if ('create' === $this->templateParameters['mode'] && $this->form->has('submitrepeat') && $this->form->get('submitrepeat')->isClicked()) {
             $args['commandName'] = 'submit';
             $this->repeatCreateAction = true;
         }
@@ -164,19 +148,15 @@ abstract class AbstractEditHandler extends EditHandler
         return new RedirectResponse($this->getRedirectUrl($args), 302);
     }
     
-    /**
-     * @inheritDoc
-     */
-    protected function getDefaultMessage(array $args = [], $success = false)
+    protected function getDefaultMessage(array $args = [], bool $success = false): string
     {
         if (false === $success) {
             return parent::getDefaultMessage($args, $success);
         }
     
-        $message = '';
         switch ($args['commandName']) {
             case 'submit':
-                if ('create' == $this->templateParameters['mode']) {
+                if ('create' === $this->templateParameters['mode']) {
                     $message = $this->__('Done! Route created.');
                 } else {
                     $message = $this->__('Done! Route updated.');
@@ -197,9 +177,10 @@ abstract class AbstractEditHandler extends EditHandler
      * @inheritDoc
      * @throws RuntimeException Thrown if concurrent editing is recognised or another error occurs
      */
-    public function applyAction(array $args = [])
+    public function applyAction(array $args = []): bool
     {
         // get treated entity reference from persisted member var
+        /** @var RouteEntity $entity */
         $entity = $this->entityRef;
     
         $action = $args['commandName'];
@@ -209,7 +190,7 @@ abstract class AbstractEditHandler extends EditHandler
         try {
             // execute the workflow action
             $success = $this->workflowHelper->executeAction($entity, $action);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $flashBag->add('error', $this->__f('Sorry, but an error occured during the %action% action. Please apply the changes again!', ['%action%' => $action]) . ' ' . $exception->getMessage());
             $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname'), 'entity' => 'route', 'id' => $entity->getKey(), 'errorMessage' => $exception->getMessage()];
             $this->logger->error('{app}: User {user} tried to edit the {entity} with id {id}, but failed. Error details: {errorMessage}.', $logArgs);
@@ -217,7 +198,7 @@ abstract class AbstractEditHandler extends EditHandler
     
         $this->addDefaultMessage($args, $success);
     
-        if ($success && 'create' == $this->templateParameters['mode']) {
+        if ($success && 'create' === $this->templateParameters['mode']) {
             // store new identifier
             $this->idValue = $entity->getKey();
         }
@@ -227,12 +208,8 @@ abstract class AbstractEditHandler extends EditHandler
 
     /**
      * Get URL to redirect to.
-     *
-     * @param array $args List of arguments
-     *
-     * @return string The redirect url
      */
-    protected function getRedirectUrl(array $args = [])
+    protected function getRedirectUrl(array $args = []): string
     {
         if ($this->repeatCreateAction) {
             return $this->repeatReturnUrl;
@@ -245,12 +222,12 @@ abstract class AbstractEditHandler extends EditHandler
         }
     
         // normal usage, compute return url from given redirect code
-        if (!in_array($this->returnTo, $this->getRedirectCodes())) {
+        if (!in_array($this->returnTo, $this->getRedirectCodes(), true)) {
             // invalid return code, so return the default url
             return $this->getDefaultReturnUrl($args);
         }
     
-        $routeArea = substr($this->returnTo, 0, 5) == 'admin' ? 'admin' : '';
+        $routeArea = 0 === strpos($this->returnTo, 'admin') ? 'admin' : '';
         $routePrefix = 'zikularoutesmodule_' . $this->objectTypeLower . '_' . $routeArea;
     
         // parse given redirect code and return corresponding url
@@ -266,7 +243,7 @@ abstract class AbstractEditHandler extends EditHandler
                 return $this->router->generate($routePrefix . 'view', [ 'own' => 1 ]);
             case 'userDisplay':
             case 'adminDisplay':
-                if ($args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel')) {
+                if ('delete' !== $args['commandName'] && !('create' === $this->templateParameters['mode'] && 'cancel' === $args['commandName'])) {
                     return $this->router->generate($routePrefix . 'display', $this->entityRef->createUrlArgs());
                 }
     

@@ -48,14 +48,12 @@ class ValidUnameValidator extends ConstraintValidator
      */
     private $permissionApi;
 
-    /**
-     * @param VariableApiInterface $variableApi
-     * @param TranslatorInterface $translator
-     * @param ValidatorInterface $validator
-     * @param PermissionApiInterface $permissionApi
-     */
-    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, ValidatorInterface $validator, PermissionApiInterface $permissionApi)
-    {
+    public function __construct(
+        VariableApiInterface $variableApi,
+        TranslatorInterface $translator,
+        ValidatorInterface $validator,
+        PermissionApiInterface $permissionApi
+    ) {
         $this->variableApi = $variableApi;
         $this->translator = $translator;
         $this->validator = $validator;

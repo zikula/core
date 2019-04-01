@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule\Api;
 
+use DateTime;
+use DateTimeZone;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
@@ -48,14 +50,6 @@ class SearchApi implements SearchApiInterface
      */
     protected $searchableModuleCollector;
 
-    /**
-     * SearchApi constructor.
-     * @param VariableApiInterface $variableApi
-     * @param SearchResultRepositoryInterface $searchResultRepository
-     * @param SearchStatRepositoryInterface $searchStatRepository
-     * @param SessionInterface $session
-     * @param SearchableModuleCollector $searchableModuleCollector
-     */
     public function __construct(
         VariableApiInterface $variableApi,
         SearchResultRepositoryInterface $searchResultRepository,
@@ -70,11 +64,15 @@ class SearchApi implements SearchApiInterface
         $this->searchableModuleCollector = $searchableModuleCollector;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function search($q, $firstPage = false, $searchType = 'AND', $searchOrder = 'newest', $limit = -1, $page = 1, array $moduleData = [])
-    {
+    public function search(
+        string $q,
+        bool $firstPage = false,
+        string $searchType = 'AND',
+        string $searchOrder = 'newest',
+        int $limit = -1,
+        int $page = 1,
+        array $moduleData = []
+    ): array {
         $limit = isset($limit) && !empty($limit) ? $limit : $this->variableApi->get('ZikulaSearchModule', 'itemsperpage', 25);
         $offset = $limit > 0 ? (($page - 1) * $limit) : 0;
 
@@ -84,10 +82,10 @@ class SearchApi implements SearchApiInterface
             // Clear also older searches from other users.
             $this->searchResultRepository->clearOldResults($this->session->getId());
             // convert query string to an *array* of words
-            $words = ('EXACT' === $searchType) ? [trim($q)] : preg_split('/ /', $q, -1, PREG_SPLIT_NO_EMPTY);
+            $words = 'EXACT' === $searchType ? [trim($q)] : preg_split('/ /', $q, -1, PREG_SPLIT_NO_EMPTY);
             $searchableModules = $this->searchableModuleCollector->getAll();
             foreach ($searchableModules as $moduleName => $searchableInstance) {
-                if ((isset($moduleData[$moduleName]['active']) && !$moduleData[$moduleName]['active']) || ($this->variableApi->get('ZikulaSearchModule', 'disable_' . $moduleName, false))) {
+                if ((isset($moduleData[$moduleName]['active']) && !$moduleData[$moduleName]['active']) || $this->variableApi->get('ZikulaSearchModule', 'disable_' . $moduleName)) {
                     continue;
                 }
                 $moduleFormData = $moduleData[$moduleName] ?? null;
@@ -106,19 +104,14 @@ class SearchApi implements SearchApiInterface
 
         $results = $this->searchResultRepository->getResults(['sesid' => $this->session->getId()], $this->computeSort($searchOrder), $limit, $offset);
 
-        $result = [
+        return [
             'resultCount' => $resultCount,
             'sqlResult' => $results,
+            'errors' => isset($searchableInstance) ? $searchableInstance->getErrors() : []
         ];
-        $result['errors'] = isset($searchableInstance) ? $searchableInstance->getErrors() : [];
-
-        return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function log($q = null)
+    public function log(string $q = null): void
     {
         if (!isset($q)) {
             return;
@@ -130,11 +123,11 @@ class SearchApi implements SearchApiInterface
         }
         $obj->incrementCount();
         $obj->setSearch($q);
-        $obj->setDate(new \DateTime('now', new \DateTimeZone('UTC')));
+        $obj->setDate(new DateTime('now', new DateTimeZone('UTC')));
         $this->searchStatRepository->persistAndFlush($obj);
     }
 
-    private function computeSort($searchOrder)
+    private function computeSort(string $searchOrder): array
     {
         switch ($searchOrder) {
             case 'oldest':

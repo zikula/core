@@ -17,28 +17,28 @@ use Zikula\BlocksModule\BlockHandlerInterface;
 
 class FooBlock implements BlockHandlerInterface
 {
-    public function getType()
+    public function getType(): string
     {
         return 'FooType';
     }
 
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        // display() method.
+        return '';
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
-        // getFormClassName() method.
+        return '';
     }
 
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
-        // getFormOptions() method.
+        return [];
     }
 
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
-        // getFormTemplate() method.
+        return '';
     }
 }

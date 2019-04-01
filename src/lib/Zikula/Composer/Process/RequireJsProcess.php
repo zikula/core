@@ -16,8 +16,10 @@ namespace Zikula\Composer\Process;
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\Asset\StringAsset;
+use Assetic\Filter\FilterInterface;
 use ComponentInstaller\Process\Process;
 use Composer\Json\JsonFile;
+use ReflectionClass;
 
 /**
  * Builds the require.js configuration.
@@ -29,9 +31,6 @@ class RequireJsProcess extends Process
      */
     protected $baseUrl = 'components';
 
-    /**
-     * {@inheritdoc}
-     */
     public function init()
     {
         $output = parent::init();
@@ -42,15 +41,12 @@ class RequireJsProcess extends Process
         return $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process()
     {
         // Construct the require.js and stick it in the destination.
-        $json = $this->requireJson($this->packages, $this->config);
+        $json = $this->requireJson($this->packages);
         $requireConfig = $this->requireJs($json);
-        $vendorPath = str_replace("lib/Zikula/Composer", "vendor/robloach/component-installer/src/ComponentInstaller", dirname(__DIR__));
+        $vendorPath = str_replace('lib/Zikula/Composer', 'vendor/robloach/component-installer/src/ComponentInstaller', dirname(__DIR__));
 
         // Attempt to write the require.config.js file.
         $destination = $this->componentDir . '/require.config.js';
@@ -79,19 +75,13 @@ class RequireJsProcess extends Process
             return false;
         }
 
-        return null;
+        return true;
     }
 
     /**
-     * Creates a require.js configuration from an array of packages.
-     *
-     * @param $packages
-     *   An array of packages from the composer.lock file
-     *
-     * @return array
-     *   The built JSON array
+     * Creates a require.js configuration (JSON array) based on an array of packages from the composer.lock file.
      */
-    public function requireJson(array $packages)
+    public function requireJson(array $packages = []): array
     {
         $json = [];
 
@@ -152,13 +142,8 @@ class RequireJsProcess extends Process
 
     /**
      * Concatenate all scripts together into one destination file.
-     *
-     * @param array $package
-     * @param array $scripts
-     * @param string $file
-     * @return bool
      */
-    public function aggregateScripts($package, array $scripts, $file)
+    public function aggregateScripts(array $package, array $scripts, string $file): bool
     {
         $assets = $this->newAssetCollection();
 
@@ -185,14 +170,8 @@ class RequireJsProcess extends Process
 
     /**
      * Constructs the require.js file from the provided require.js JSON array.
-     *
-     * @param $json
-     *   The require.js JSON configuration
-     *
-     * @return string
-     *   The RequireJS JavaScript configuration
      */
-    public function requireJs(array $json = [])
+    public function requireJs(array $json = []): string
     {
         // Encode the array to a JSON array.
         $js = JsonFile::encode($json);
@@ -219,34 +198,25 @@ EOT;
      *
      * @see array_merge()
      * @see array_merge_recursive()
-     *
-     * @param array $array1
-     * @param array $array2
-     * @return array
      */
-    protected function arrayMergeRecursiveDistinct(array &$array1, array &$array2)
+    protected function arrayMergeRecursiveDistinct(array &$array1, array &$array2): array
     {
         $merged = $array1;
 
         foreach ($array2 as $key => &$value) {
             if (is_numeric($key)) {
                 $merged[] = $value;
+            } else if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+                $merged[$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
             } else {
-                if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
-                    $merged[$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
-                } else {
-                    $merged[$key] = $value;
-                }
+                $merged[$key] = $value;
             }
         }
 
         return $merged;
     }
 
-    /**
-     * @return AssetCollection
-     */
-    protected function newAssetCollection()
+    protected function newAssetCollection(): AssetCollection
     {
         // Aggregate all the assets into one file.
         $assets = new AssetCollection();
@@ -254,8 +224,8 @@ EOT;
             $filters = $this->config->get('component-scriptFilters');
             if (isset($filters) && is_array($filters)) {
                 foreach ($filters as $filter => $filterParams) {
-                    $reflection = new \ReflectionClass($filter);
-                    /** @var \Assetic\Filter\FilterInterface $filter */
+                    $reflection = new ReflectionClass($filter);
+                    /** @var FilterInterface $filter */
                     $filter = $reflection->newInstanceArgs($filterParams);
                     $assets->ensureFilter($filter);
                 }

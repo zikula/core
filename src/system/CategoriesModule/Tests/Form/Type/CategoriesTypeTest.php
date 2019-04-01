@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Tests\Form\Type;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Exception;
 use Gedmo\Tree\TreeListener;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;
 use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
@@ -24,16 +27,18 @@ use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
+use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoriesType;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableEntity;
 use Zikula\CategoriesModule\Tests\Fixtures\CategorizableType;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 
 /**
- * Class CategoriesTypeTest
- * @see http://symfony.com/doc/2.8/form/unit_testing.html
+ * @see https://symfony.com/doc/current/form/unit_testing.html
  */
 class CategoriesTypeTest extends TypeTestCase
 {
@@ -43,11 +48,11 @@ class CategoriesTypeTest extends TypeTestCase
     private $em;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ManagerRegistry
+     * @var ManagerRegistry
      */
     private $emRegistry;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->em = DoctrineTestHelper::createTestEntityManager();
         $this->emRegistry = $this->createRegistryMock('default', $this->em);
@@ -65,19 +70,19 @@ class CategoriesTypeTest extends TypeTestCase
 
         try {
             $schemaTool->dropSchema($classes);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
         }
 
         try {
             $schemaTool->createSchema($classes);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
         }
-        $now = new \DateTime();
+        $now = new DateTime();
         $this->generateCategories($now);
         $this->generateCategoryRegistry($now);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -85,8 +90,11 @@ class CategoriesTypeTest extends TypeTestCase
         $this->emRegistry = null;
     }
 
-    protected function getExtensions()
+    protected function getExtensions(): array
     {
+        /** @var CategoryRegistryRepositoryInterface $repository */
+        $repository = $this->em->getRepository(CategoryRegistryEntity::class);
+
         $request = new Request([], [], [], [], [], [], json_encode([
             'foo' => 'bar'
         ]));
@@ -94,7 +102,7 @@ class CategoriesTypeTest extends TypeTestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $type = new CategoriesType($this->em->getRepository(CategoryRegistryEntity::class), $requestStack);
+        $type = new CategoriesType($repository, $requestStack);
 
         return [
             new PreloadedExtension([$type], []),
@@ -103,14 +111,14 @@ class CategoriesTypeTest extends TypeTestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\InvalidOptionsException
+     * @expectedException InvalidOptionsException
      */
-    public function testClassOptionIsRequired()
+    public function testClassOptionIsRequired(): void
     {
         $this->factory->createNamed('name', CategoriesType::class);
     }
 
-    public function testSubmitValidData()
+    public function testSubmitValidData(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => '2'],
@@ -138,7 +146,7 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    public function testSubmitMultipleValidData()
+    public function testSubmitMultipleValidData(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => ['2', '3']],
@@ -162,7 +170,7 @@ class CategoriesTypeTest extends TypeTestCase
         $this->assertEquals($expectedObject, $form->getData());
     }
 
-    public function testSubmitWithExistingData()
+    public function testSubmitWithExistingData(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => '2'],
@@ -195,7 +203,7 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    public function testSubmitMultipleWithExistingData()
+    public function testSubmitMultipleWithExistingData(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => ['2', '3']],
@@ -233,7 +241,7 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    public function testSubmitSingleWithMultipleExistingData()
+    public function testSubmitSingleWithMultipleExistingData(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => '2'],
@@ -268,7 +276,7 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    public function testSubmitEmptyWithExistingData()
+    public function testSubmitEmptyWithExistingData(): void
     {
         $formData = [
             'categoryAssignments' => [],
@@ -299,7 +307,7 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    public function testSubmitEmptyMultipleWithExistingData()
+    public function testSubmitEmptyMultipleWithExistingData(): void
     {
         $formData = [
             'categoryAssignments' => [],
@@ -333,7 +341,7 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    public function testSubmitValidDataWithAllChildren()
+    public function testSubmitValidDataWithAllChildren(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => '4'],
@@ -365,10 +373,10 @@ class CategoriesTypeTest extends TypeTestCase
     }
 
     /**
-     * submitting invalid selection results in NO assignments
+     * Submitting invalid selection results in NO assignments
      * The child of child selection should not be available with direct = true (default)
      */
-    public function testSubmitInvalidDataWithNoChildren()
+    public function testSubmitInvalidDataWithNoChildren(): void
     {
         $formData = [
             'categoryAssignments' => ['registry_1' => '4'], // child of child
@@ -396,24 +404,18 @@ class CategoriesTypeTest extends TypeTestCase
         }
     }
 
-    /**
-     * @param string $name
-     */
-    protected function createRegistryMock($name, $em)
+    protected function createRegistryMock(string $name, EntityManagerInterface $em): ManagerRegistry
     {
         $registry = $this->getMockBuilder(ManagerRegistry::class)->getMock();
-        $registry->expects($this->any())
+        $registry
             ->method('getManager')
             ->with($this->equalTo($name))
-            ->will($this->returnValue($em));
+            ->willReturn($em);
 
         return $registry;
     }
 
-    /**
-     * @param \DateTime $now
-     */
-    protected function generateCategoryRegistry($now)
+    protected function generateCategoryRegistry(DateTime $now): void
     {
         $registry = new CategoryRegistryEntity();
         $registry->setId(1);
@@ -422,17 +424,18 @@ class CategoriesTypeTest extends TypeTestCase
         $registry->setProperty('Main');
         $registry->setCr_date($now);
         $registry->setLu_date($now);
+        /** @var CategoryEntity $rootCategory */
         $rootCategory = $this->em->getRepository(CategoryEntity::class)->find(1);
         $registry->setCategory($rootCategory);
         $this->em->persist($registry);
         $this->em->flush();
     }
 
-    /**
-     * @param \DateTime $now
-     */
-    protected function generateCategories($now)
+    protected function generateCategories(DateTime $now): void
     {
+        /** @var CategoryRepository $repository */
+        $repository = $this->em->getRepository(CategoryEntity::class);
+
         // root
         $root = new CategoryEntity();
         $root->setId(1);
@@ -440,7 +443,7 @@ class CategoriesTypeTest extends TypeTestCase
         $root->setDisplay_name(['en' => 'root']);
         $root->setCr_date($now);
         $root->setLu_date($now);
-        $this->em->getRepository(CategoryEntity::class)->persistAsFirstChild($root);
+        $repository->persistAsFirstChild($root);
 
         // first child
         $a = new CategoryEntity();
@@ -450,7 +453,7 @@ class CategoriesTypeTest extends TypeTestCase
         $a->setDisplay_name(['en' => 'a']);
         $a->setCr_date($now);
         $a->setLu_date($now);
-        $this->em->getRepository(CategoryEntity::class)->persistAsFirstChildOf($a, $root);
+        $repository->persistAsFirstChildOf($a, $root);
 
         // second child
         $b = new CategoryEntity();
@@ -460,7 +463,7 @@ class CategoriesTypeTest extends TypeTestCase
         $b->setDisplay_name(['en' => 'b']);
         $b->setCr_date($now);
         $b->setLu_date($now);
-        $this->em->getRepository(CategoryEntity::class)->persistAsLastChildOf($b, $root);
+        $repository->persistAsLastChildOf($b, $root);
 
         // child of first child (grand child)
         $aa = new CategoryEntity();
@@ -470,7 +473,7 @@ class CategoriesTypeTest extends TypeTestCase
         $aa->setDisplay_name(['en' => 'aa']);
         $aa->setCr_date($now);
         $aa->setLu_date($now);
-        $this->em->getRepository(CategoryEntity::class)->persistAsFirstChildOf($aa, $a);
+        $repository->persistAsFirstChildOf($aa, $a);
 
         $this->em->flush();
     }

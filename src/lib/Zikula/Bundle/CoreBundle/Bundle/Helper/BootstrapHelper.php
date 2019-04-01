@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreBundle\Bundle\Helper;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
+use InvalidArgumentException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -45,7 +46,7 @@ class BootstrapHelper
         $this->cacheClearer = $cacheClearer;
     }
 
-    public function load()
+    public function load(): void
     {
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
@@ -55,20 +56,15 @@ class BootstrapHelper
     }
 
     /**
-     * Sync the filesystem scan and the Bundles table
-     * This is a 'dumb' scan - there is no state management here
-     *      state management occurs in the module and theme management
-     *      and is checked in Bundle/Bootstrap
-     *
-     * @param $array array of extensions
-     *          obtained from filesystem scan
-     *          key is bundle name and value an instance of \Zikula\Bundle\CoreBundle\Bundle\MetaData
+     * Sync the filesystem scan and the bundles table.
+     * This is a 'dumb' scan - there is no state management here.
+     * State management occurs in the module and theme management and is checked in Bundle/Bootstrap.
      */
-    private function sync($array)
+    private function sync(array $fileExtensions = []): void
     {
         // add what is in array but missing from db
         /** @var $metadata MetaData */
-        foreach ($array as $name => $metadata) {
+        foreach ($fileExtensions as $name => $metadata) {
             $qb = $this->conn->createQueryBuilder();
             $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
                 ->from('bundles', 'b')
@@ -95,7 +91,7 @@ class BootstrapHelper
             ->from('bundles', 'b');
         $res = $qb->execute();
         foreach ($res->fetchAll() as $row) {
-            if (!in_array($row['bundlename'], array_keys($array))) {
+            if (!array_key_exists($row['bundlename'], $fileExtensions)) {
                 $this->removeById($row['id']);
             }
         }
@@ -104,12 +100,12 @@ class BootstrapHelper
         $this->cacheClearer->clear('symfony.config');
     }
 
-    private function removeById($id)
+    private function removeById(int $id): void
     {
         $this->conn->delete('bundles', ['id' => $id]);
     }
 
-    private function insert(MetaData $metadata)
+    private function insert(MetaData $metadata): void
     {
         $name = $metadata->getName();
         $autoload = serialize($metadata->getAutoload());
@@ -122,7 +118,7 @@ class BootstrapHelper
                 $type = 'T';
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Unknown type %s', $metadata->getType()));
+                throw new InvalidArgumentException(sprintf('Unknown type %s', $metadata->getType()));
         }
 
         $this->conn->insert('bundles', [
@@ -134,7 +130,7 @@ class BootstrapHelper
         ]);
     }
 
-    public function createSchema()
+    public function createSchema(): void
     {
         $schema = $this->conn->getSchemaManager();
         $table = new Table('bundles');

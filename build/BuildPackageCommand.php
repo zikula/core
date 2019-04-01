@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use ZipArchive;
 
 class BuildPackageCommand extends Command
 {
@@ -82,9 +83,9 @@ class BuildPackageCommand extends Command
         $progress->advance();
 
         // build zip
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
         $fileName = "${name}.zip";
-        if (true !== $zip->open($fileName, \ZipArchive::CREATE)) {
+        if (true !== $zip->open($fileName, ZipArchive::CREATE)) {
             $output->writeln("<error>Error creating ${fileName}</error>");
         }
 

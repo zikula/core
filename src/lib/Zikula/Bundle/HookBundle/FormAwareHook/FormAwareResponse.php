@@ -35,9 +35,7 @@ class FormAwareResponse extends Hook
     private $subjectUrl;
 
     /**
-     * @param FormInterface $form
      * @param mixed|null $formSubject This may be the object, an array, the subject id, null
-     * @param null|UrlInterface $subjectUrl
      */
     public function __construct(FormInterface $form, $formSubject = null, UrlInterface $subjectUrl = null)
     {
@@ -46,11 +44,7 @@ class FormAwareResponse extends Hook
         $this->subjectUrl = $subjectUrl;
     }
 
-    /**
-     * @param null $name
-     * @return array
-     */
-    public function getFormData($name = null)
+    public function getFormData(string $name = null): array
     {
         if (isset($name)) {
             return $this->form->get($name)->getData();
@@ -67,10 +61,7 @@ class FormAwareResponse extends Hook
         return $this->formSubject;
     }
 
-    /**
-     * @return null|UrlInterface
-     */
-    public function getSubjectUrl()
+    public function getSubjectUrl(): ?UrlInterface
     {
         return $this->subjectUrl;
     }

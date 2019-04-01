@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Helper;
 
 use Composer\Semver\Semver;
+use Exception;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -23,6 +25,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Core\AbstractModule;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Exception\FatalErrorException;
 use Zikula\ExtensionsModule\Constant;
@@ -87,20 +90,6 @@ class BundleSyncHelper
      */
     protected $session;
 
-    /**
-     * BundleSyncHelper constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param ExtensionVarRepositoryInterface $extensionVarRepository
-     * @param ExtensionDependencyRepository $extensionDependencyRepository
-     * @param TranslatorInterface $translator
-     * @param EventDispatcherInterface $dispatcher
-     * @param ExtensionStateHelper $extensionStateHelper
-     * @param BootstrapHelper $bootstrapHelper
-     * @param ComposerValidationHelper $composerValidationHelper
-     * @param SessionInterface $session
-     */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         ExtensionRepositoryInterface $extensionRepository,
@@ -126,15 +115,11 @@ class BundleSyncHelper
     }
 
     /**
-     * Scan the file system for bundles.
+     * Scan the file system for bundles and returns an array with all (potential) bundles found.
      *
-     * This function scans the file system for bundles and returns an array with all (potential) bundles found.
-     *
-     * @param array $directories
-     * @return array Thrown if the user doesn't have admin permissions over the bundle
-     * @throws \Exception
+     * @throws Exception Thrown if the user doesn't have admin permissions over the bundle
      */
-    public function scanForBundles(array $directories = [])
+    public function scanForBundles(array $directories = []): array
     {
         $directories = empty($directories) ? ['system', 'modules'] : $directories;
 
@@ -161,7 +146,7 @@ class BundleSyncHelper
 
             $bundleClass = $bundleMetaData->getClass();
 
-            /** @var $bundle \Zikula\Core\AbstractModule */
+            /** @var $bundle AbstractModule */
             $bundle = new $bundleClass();
             $bundleMetaData->setTranslator($this->translator);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
@@ -192,12 +177,11 @@ class BundleSyncHelper
     }
 
     /**
-     * Validate the extensions and ensure there are no duplicate names, displaynames or urls.
+     * Validate the extensions and ensure there are no duplicate names, display names or urls.
      *
-     * @param array $extensions
      * @throws FatalErrorException
      */
-    private function validate(array $extensions)
+    private function validate(array $extensions = []): void
     {
         $fieldNames = ['name', 'displayname', 'url'];
         $moduleValues = [
@@ -206,7 +190,7 @@ class BundleSyncHelper
             'url' => []
         ];
 
-        // check for duplicate name, displayname or url
+        // check for duplicate name, display name or url
         foreach ($extensions as $dir => $modInfo) {
             foreach ($fieldNames as $fieldName) {
                 $key = mb_strtolower($modInfo[$fieldName]);
@@ -224,11 +208,10 @@ class BundleSyncHelper
 
     /**
      * Sync extensions in the filesystem and the database.
-     * @param array $extensionsFromFile
-     * @param bool $forceDefaults
+     *
      * @return array $upgradedExtensions[<name>] = <version>
      */
-    public function syncExtensions(array $extensionsFromFile, $forceDefaults = false)
+    public function syncExtensions(array $extensionsFromFile, bool $forceDefaults = false): array
     {
         // Get all extensions in DB, indexed by name
         $extensionsFromDB = $this->extensionRepository->getIndexedArrayCollection('name');
@@ -255,16 +238,15 @@ class BundleSyncHelper
      *  - update compatibility
      *  - update user settings (or reset to defaults)
      *  - ensure current core compatibility
-     *
-     * @param array $extensionsFromFile
-     * @param array $extensionsFromDB
-     * @param bool $forceDefaults
      */
-    private function syncUpdatedExtensions(array $extensionsFromFile, array &$extensionsFromDB, $forceDefaults = false)
-    {
+    private function syncUpdatedExtensions(
+        array $extensionsFromFile,
+        array &$extensionsFromDB,
+        bool $forceDefaults = false
+    ): void {
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
             foreach ($extensionsFromDB as $dbname => $extensionFromDB) {
-                if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'])) {
+                if (isset($extensionFromDB['name']) && in_array($extensionFromDB['name'], (array)$extensionFromFile['oldnames'], true)) {
                     // migrate its modvars
                     $this->extensionVarRepository->updateName($dbname, $name);
                     // rename the module register
@@ -277,7 +259,7 @@ class BundleSyncHelper
 
             // If extension was previously determined to be incompatible with the core. return to original state
             if (isset($extensionsFromDB[$name]) && $extensionsFromDB[$name]['state'] > 10) {
-                $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] - Constant::INCOMPATIBLE_CORE_SHIFT;
+                $extensionsFromDB[$name]['state'] -= Constant::INCOMPATIBLE_CORE_SHIFT;
                 $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], $extensionsFromDB[$name]['state']);
             }
 
@@ -295,6 +277,7 @@ class BundleSyncHelper
 
                 $extensionFromFile['capabilities'] = unserialize($extensionFromFile['capabilities']);
                 $extensionFromFile['securityschema'] = unserialize($extensionFromFile['securityschema']);
+                /** @var ExtensionEntity $extension */
                 $extension = $this->extensionRepository->find($extensionFromFile['id']);
                 $extension->merge($extensionFromFile);
                 $this->extensionRepository->persistAndFlush($extension);
@@ -305,7 +288,7 @@ class BundleSyncHelper
             if (isset($extensionsFromDB[$name])) {
                 if (!Semver::satisfies(ZikulaKernel::VERSION, $coreCompatibility)) {
                     // extension is incompatible with current core
-                    $extensionsFromDB[$name]['state'] = $extensionsFromDB[$name]['state'] + Constant::INCOMPATIBLE_CORE_SHIFT;
+                    $extensionsFromDB[$name]['state'] += Constant::INCOMPATIBLE_CORE_SHIFT;
                     $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], $extensionsFromDB[$name]['state']);
                 }
                 if (isset($extensionsFromDB[$name]['state'])) {
@@ -317,11 +300,8 @@ class BundleSyncHelper
 
     /**
      * Remove extensions from the DB that have been removed from the filesystem.
-     *
-     * @param array $extensionsFromFile
-     * @param array $extensionsFromDB
      */
-    private function syncLostExtensions(array $extensionsFromFile, array &$extensionsFromDB)
+    private function syncLostExtensions(array $extensionsFromFile, array &$extensionsFromDB): void
     {
         foreach ($extensionsFromDB as $name => $unusedVariable) {
             if (array_key_exists($name, $extensionsFromFile)) {
@@ -330,7 +310,7 @@ class BundleSyncHelper
 
             $lostModule = $this->extensionRepository->get($name); // must obtain Entity because value from $extensionsFromDB is only an array
             if (!$lostModule) {
-                throw new \RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
+                throw new RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
             }
             $lostModuleState = $lostModule->getState();
             if ((Constant::STATE_INVALID === $lostModuleState)
@@ -358,11 +338,9 @@ class BundleSyncHelper
      *  - add uninitialized extensions
      *  - update missing or invalid extensions
      *
-     * @param array $extensionsFromFile
-     * @param array $extensionsFromDB
      * @return array $upgradedExtensions[<name>] => <version>
      */
-    private function syncAddedExtensions(array $extensionsFromFile, array $extensionsFromDB)
+    private function syncAddedExtensions(array $extensionsFromFile, array $extensionsFromDB): array
     {
         $upgradedExtensions = [];
 

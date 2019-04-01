@@ -32,25 +32,16 @@ class InlineFormDefinitionType extends AbstractType
      */
     private $dynamicFieldsContainer;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {
         $this->dynamicFieldsContainer = $options['dynamicFieldsContainer'];
@@ -70,17 +61,11 @@ class InlineFormDefinitionType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulaformextensionbundle_inlineformdefinition';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

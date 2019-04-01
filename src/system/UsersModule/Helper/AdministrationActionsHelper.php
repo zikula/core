@@ -42,13 +42,6 @@ class AdministrationActionsHelper
      */
     private $currentUser;
 
-    /**
-     * UserAdministrationActionsFunction constructor.
-     * @param PermissionApiInterface $permissionsApi
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     * @param CurrentUserApiInterface $currentUserApi
-     */
     public function __construct(
         PermissionApiInterface $permissionsApi,
         RouterInterface $router,
@@ -61,11 +54,7 @@ class AdministrationActionsHelper
         $this->currentUser = $currentUserApi;
     }
 
-    /**
-     * @param UserEntity $user
-     * @return array
-     */
-    public function user(UserEntity $user)
+    public function user(UserEntity $user): array
     {
         $actions = [];
         if (!$this->permissionsApi->hasPermission('ZikulaUsersModule::', 'ANY', ACCESS_MODERATE)) {
@@ -74,24 +63,24 @@ class AdministrationActionsHelper
         if (UsersConstant::ACTIVATED_ACTIVE !== $user->getActivated() && $this->permissionsApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             $actions['approveForce'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_approve', ['user' => $user->getUid(), 'force' => true]),
-                'text' => $this->translator->__f('Approve %sub%', ["%sub%" => $user->getUname()]),
+                'text' => $this->translator->__f('Approve %sub%', ['%sub%' => $user->getUname()]),
                 'icon' => 'check text-success',
             ];
         }
         $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_EDIT);
         $hasDeletePermissionToUser = $this->permissionsApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_DELETE);
-        if ($user->getUid() > UsersConstant::USER_ID_ANONYMOUS && $hasEditPermissionToUser) {
+        if ($hasEditPermissionToUser && $user->getUid() > UsersConstant::USER_ID_ANONYMOUS) {
             $actions['modify'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_modify', ['user' => $user->getUid()]),
-                'text' => $this->translator->__f('Edit %sub%', ["%sub%" => $user->getUname()]),
+                'text' => $this->translator->__f('Edit %sub%', ['%sub%' => $user->getUname()]),
                 'icon' => 'pencil',
             ];
         }
         $isCurrentUser = $this->currentUser->get('uid') === $user->getUid();
-        if ($user->getUid() > UsersConstant::USER_ID_ADMIN && !$isCurrentUser && $hasDeletePermissionToUser) {
+        if (!$isCurrentUser && $hasDeletePermissionToUser && $user->getUid() > UsersConstant::USER_ID_ADMIN) {
             $actions['delete'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]),
-                'text' => $this->translator->__f('Delete %sub%', ["%sub%" => $user->getUname()]),
+                'text' => $this->translator->__f('Delete %sub%', ['%sub%' => $user->getUname()]),
                 'icon' => 'trash-o',
             ];
         }

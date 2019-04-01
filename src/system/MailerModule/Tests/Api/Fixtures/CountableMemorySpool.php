@@ -13,20 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\MailerModule\Tests\Api\Fixtures;
 
-final class CountableMemorySpool extends \Swift_MemorySpool implements \Countable
+use Countable;
+use Swift_MemorySpool;
+use Swift_Message;
+
+final class CountableMemorySpool extends Swift_MemorySpool implements Countable
 {
-    /**
-     * @return int
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->messages);
     }
 
     /**
-     * @return \Swift_Message[]
+     * @return Swift_Message[]
      */
-    public function getMessages()
+    public function getMessages(): iterable
     {
         return $this->messages;
     }

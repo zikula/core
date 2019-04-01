@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity\Repository;
 
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\Core\Doctrine\WhereFromFilterTrait;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Entity\UserAttributeEntity;
 
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
@@ -32,26 +35,22 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         parent::__construct($registry, UserEntity::class);
     }
 
-    public function findByUids($uids)
+    public function findByUids(array $userIds = []): array
     {
-        if (!is_array($uids)) {
-            $uids = [$uids];
-        }
-
-        return $this->findBy(['uid' => $uids]);
+        return $this->findBy(['uid' => $userIds]);
     }
 
-    public function persistAndFlush(UserEntity $user)
+    public function persistAndFlush(UserEntity $user): void
     {
         $this->_em->persist($user);
         $this->_em->flush($user);
     }
 
-    public function removeAndFlush(UserEntity $user)
+    public function removeAndFlush(UserEntity $user): void
     {
         // the following process should be unnecessary because cascade = all but MySQL 5.7 not working with that (#3726)
         $qb = $this->_em->createQueryBuilder();
-        $qb->delete('Zikula\UsersModule\Entity\UserAttributeEntity', 'a')
+        $qb->delete(UserAttributeEntity::class, 'a')
            ->where('a.user = :userId')
            ->setParameter('userId', $user->getUid());
         $query = $qb->getQuery();
@@ -63,20 +62,13 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         $this->_em->flush($user);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null)
+    public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void
     {
         $user->setApproved_Date($approvedOn);
-        $approvedBy = $approvedBy ?? $user->getUid();
-        $user->setApproved_By($approvedBy);
+        $user->setApproved_By($approvedBy ?? $user->getUid());
         $this->_em->flush($user);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function queryBySearchForm(array $formData = [])
     {
         $filter = ['activated' => ['operator' => '!=', 'operand' => UsersConstant::ACTIVATED_PENDING_REG]];
@@ -104,13 +96,10 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $this->query($filter);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSearchResults(array $words)
+    public function getSearchResults(array $words = [])
     {
         $qb = $this->createQueryBuilder('u')
-            ->andWhere('u.activated <> :activated')
+            ->andWhere('u.activated != :activated')
             ->setParameter('activated', UsersConstant::ACTIVATED_PENDING_REG);
         $where = $qb->expr()->orX();
         $i = 1;
@@ -127,11 +116,13 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
-    {
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        int $limit = 0,
+        int $offset = 0,
+        string $exprType = 'and'
+    ) {
         $qb = $this->createQueryBuilder('u')
             ->select('u');
         if (!empty($filter['groups'])) {
@@ -149,15 +140,14 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         if ($limit > 0) {
             $query->setMaxResults($limit);
             $query->setFirstResult($offset);
-            $paginator = new Paginator($query);
 
-            return $paginator;
+            return new Paginator($query);
         }
 
         return $query->getResult();
     }
 
-    public function count(array $filter = [], $exprType = 'and')
+    public function count(array $filter = [], string $exprType = 'and'): int
     {
         $qb = $this->createQueryBuilder('u')
             ->select('count(u.uid)');
@@ -167,43 +157,31 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
         }
         $query = $qb->getQuery();
 
-        return $query->getSingleScalarResult();
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
      * Construct a QueryBuilder Expr\OrderBy object suitable for use in QueryBuilder->orderBy() from an array.
      * sort = [field => dir, field => dir, ...]
-     * @param array $sort
-     * @return Expr\OrderBy
      */
-    private function orderByFromArray(array $sort)
+    private function orderByFromArray(array $sort = []): OrderBy
     {
-        $orderBy = new Expr\OrderBy();
+        $orderBy = new OrderBy();
         foreach ($sort as $field => $direction) {
-            $orderBy->add("u.${field}", $direction);
+            $orderBy->add('u.' . $field, $direction);
         }
 
         return $orderBy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllAsIterable()
+    public function findAllAsIterable(): IterableResult
     {
         $qb = $this->createQueryBuilder('u');
 
         return $qb->getQuery()->iterate();
     }
 
-    /**
-     * Searches for a user name excluding pending and deleted users.
-     *
-     * @param array $unameFilter
-     * @param int $limit
-     * @return UserEntity[]
-     */
-    public function searchActiveUser(array $unameFilter = [], $limit = 50)
+    public function searchActiveUser(array $unameFilter = [], int $limit = 50)
     {
         if (!count($unameFilter)) {
             return [];

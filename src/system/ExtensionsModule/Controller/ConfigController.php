@@ -39,16 +39,14 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaExtensionsModule:Config:config.html.twig")
      *
-     * Display services available to the module
-     *
-     * @param Request $request
-     * @param BundleSyncHelper $bundleSyncHelper
-     * @param CacheClearer $cacheClearer
-     *
-     * @return Response
+     * @return array|Response
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function configAction(Request $request, BundleSyncHelper $bundleSyncHelper, CacheClearer $cacheClearer)
-    {
+    public function configAction(
+        Request $request,
+        BundleSyncHelper $bundleSyncHelper,
+        CacheClearer $cacheClearer
+    ) {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }

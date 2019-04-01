@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -26,6 +29,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Form\Type\Field\ArrayType;
 use Zikula\RoutesModule\Form\Type\Field\MultiListType;
+use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 use Zikula\RoutesModule\Traits\ModerationFormFieldsTrait;
 
@@ -47,13 +51,6 @@ abstract class AbstractRouteType extends AbstractType
      */
     protected $listHelper;
 
-    /**
-     * RouteType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param EntityFactory $entityFactory
-     * @param ListEntriesHelper $listHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
@@ -64,19 +61,11 @@ abstract class AbstractRouteType extends AbstractType
         $this->listHelper = $listHelper;
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder, $options);
@@ -86,11 +75,8 @@ abstract class AbstractRouteType extends AbstractType
 
     /**
      * Adds basic entity fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
-    public function addEntityFields(FormBuilderInterface $builder, array $options = [])
+    public function addEntityFields(FormBuilderInterface $builder, array $options = []): void
     {
         
         $builder->add('bundle', TextType::class, [
@@ -295,21 +281,18 @@ abstract class AbstractRouteType extends AbstractType
 
     /**
      * Adds submit buttons.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
-    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = []): void
     {
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [
                 'label' => $action['title'],
-                'icon' => ($action['id'] == 'delete' ? 'fa-trash-o' : ''),
+                'icon' => 'delete' === $action['id'] ? 'fa-trash-o' : '',
                 'attr' => [
                     'class' => $action['buttonClass']
                 ]
             ]);
-            if ($options['mode'] == 'create' && $action['id'] == 'submit') {
+            if ('create' === $options['mode'] && 'submit' === $action['id']) {
                 // add additional button to submit item and return to create form
                 $builder->add('submitrepeat', SubmitType::class, [
                     'label' => $this->__('Submit and repeat'),
@@ -338,23 +321,17 @@ abstract class AbstractRouteType extends AbstractType
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'zikularoutesmodule_route';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults([
                 // define class for underlying data (required for embedding forms)
-                'data_class' => 'Zikula\RoutesModule\Entity\RouteEntity',
+                'data_class' => RouteEntity::class,
                 'empty_data' => function (FormInterface $form) {
                     return $this->entityFactory->createRoute();
                 },

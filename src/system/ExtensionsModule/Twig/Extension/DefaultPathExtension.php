@@ -29,11 +29,6 @@ class DefaultPathExtension extends AbstractExtension
      */
     private $router;
 
-    /**
-     * DefaultPathExtension constructor.
-     * @param CapabilityApiInterface $capabilityApi
-     * @param RouterInterface $router
-     */
     public function __construct(
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router
@@ -42,7 +37,7 @@ class DefaultPathExtension extends AbstractExtension
         $this->router = $router;
     }
 
-    public function getDefaultPath($extensionName, $type = CapabilityApiInterface::USER)
+    public function getDefaultPath($extensionName, $type = CapabilityApiInterface::USER): string
     {
         $capability = $this->capabilityApi->isCapable($extensionName, $type);
         if (!$capability) {

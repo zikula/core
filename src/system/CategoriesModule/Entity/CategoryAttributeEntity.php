@@ -51,73 +51,37 @@ class CategoryAttributeEntity extends EntityAccess
      */
     private $value;
 
-    /**
-     * get the category item
-     *
-     * @return CategoryEntity the category item
-     */
-    public function getCategory()
+    public function getCategory(): CategoryEntity
     {
         return $this->category;
     }
 
-    /**
-     * set the category item
-     *
-     * @param CategoryEntity $category the category item
-     */
-    public function setCategory(CategoryEntity $category)
+    public function setCategory(CategoryEntity $category): void
     {
         $this->category = $category;
     }
 
-    /**
-     * get the name of the attribute
-     *
-     * @return string the attribute's name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * set the name for the attribute
-     *
-     * @param string $name the attribute's name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * get the value of the attribute
-     *
-     * @return string the attribute's value
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * set the value for the attribute
-     *
-     * @param string $value the attribute's value
-     */
-    public function setValue($value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }
 
-    /**
-     * set the attribute
-     *
-     * @param string $name the attribute's name
-     * @param string $value the attribute's value
-     */
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, string $value): void
     {
         $this->setName($name);
         $this->setValue($value);

@@ -36,10 +36,6 @@ class AmendableModuleSearchType extends AbstractType
      */
     private $permissionApi;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param PermissionApiInterface $permissionApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         PermissionApiInterface $permissionApi
@@ -48,40 +44,30 @@ class AmendableModuleSearchType extends AbstractType
         $this->permissionApi = $permissionApi;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($this->permissionApi->hasPermission($builder->getName() . '::', '::', ACCESS_READ)) {
-            $builder->add('active', CheckboxType::class, [
-                'label' => $this->__('Active'),
-                'label_attr' => ['class' => 'checkbox-inline'],
-                'required' => false,
-                'data' => $options['active']
-            ]);
+        if (!$this->permissionApi->hasPermission($builder->getName() . '::', '::', ACCESS_READ)) {
+            return;
         }
+
+        $builder->add('active', CheckboxType::class, [
+            'label' => $this->__('Active'),
+            'label_attr' => ['class' => 'checkbox-inline'],
+            'required' => false,
+            'data' => $options['active']
+        ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasearchmodule_amendable_module_search';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

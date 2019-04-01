@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Controller;
 
+use InvalidArgumentException;
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,7 +34,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  * Class HookController
  * @Route("/hooks")
  */
-class HookController extends Controller
+class HookController extends AbstractController
 {
     use TranslatorTrait;
 
@@ -43,25 +45,15 @@ class HookController extends Controller
      *
      * Display hooks user interface
      *
-     * @param TranslatorInterface $translator
-     * @param PermissionApiInterface $permissionApi
-     * @param HookCollectorInterface $collector
-     * @param HookDispatcherInterface $dispatcher
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param string $moduleName
-     *
-     * @return array
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function editAction(
-        TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
         HookDispatcherInterface $dispatcher,
         ExtensionRepositoryInterface $extensionRepository,
-        $moduleName
-    ) {
+        string $moduleName
+    ): array {
         $templateParameters = [];
         // get module's name and assign it to template
         $templateParameters['currentmodule'] = $moduleName;
@@ -126,27 +118,26 @@ class HookController extends Controller
 
         // get available subscribers that can attach to provider
         if ($isProvider && !empty($providerAreas)) {
-            /** @var ExtensionEntity[] $hooksubscribers */
-            $hooksubscribers = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_SUBSCRIBER);
-            $amountOfHookSubscribers = count($hooksubscribers);
+            /** @var ExtensionEntity[] $hookSubscribers */
+            $hookSubscribers = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_SUBSCRIBER);
             $amountOfAvailableSubscriberAreas = 0;
-            for ($i = 0; $i < $amountOfHookSubscribers; $i++) {
-                $hooksubscribers[$i] = $hooksubscribers[$i]->toArray();
+            foreach ($hookSubscribers as $i => $hookSubscriber) {
+                $hookSubscribers[$i] = $hookSubscriber->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
-                if ($hooksubscribers[$i]['name'] === $moduleName) {
-                    unset($hooksubscribers[$i]);
+                if ($moduleName === $hookSubscriber->getName()) {
+                    unset($hookSubscribers[$i]);
                     continue;
                 }
                 // does the user have admin permissions on the subscriber module?
-                if (!$permissionApi->hasPermission($hooksubscribers[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
-                    unset($hooksubscribers[$i]);
+                if (!$permissionApi->hasPermission($hookSubscriber->getName() . '::', '::', ACCESS_ADMIN)) {
+                    unset($hookSubscribers[$i]);
                     continue;
                 }
 
                 // get the areas of the subscriber
-                $hooksubscriberAreas = $collector->getSubscriberAreasByOwner($hooksubscribers[$i]['name']);
-                $hooksubscribers[$i]['areas'] = $hooksubscriberAreas;
+                $hooksubscriberAreas = $collector->getSubscriberAreasByOwner($hookSubscriber->getName());
+                $hookSubscribers[$i]['areas'] = $hooksubscriberAreas;
                 $amountOfAvailableSubscriberAreas += count($hooksubscriberAreas);
 
                 $hooksubscriberAreasToTitles = []; // and get the titles
@@ -159,10 +150,10 @@ class HookController extends Controller
                     }
                     $hooksubscriberAreasToCategories[$hooksubscriberArea] = $category;
                 }
-                $hooksubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
-                $hooksubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
+                $hookSubscribers[$i]['areasToTitles'] = $hooksubscriberAreasToTitles;
+                $hookSubscribers[$i]['areasToCategories'] = $hooksubscriberAreasToCategories;
             }
-            $templateParameters['hooksubscribers'] = $hooksubscribers;
+            $templateParameters['hooksubscribers'] = $hookSubscribers;
             $templateParameters['total_available_subscriber_areas'] = $amountOfAvailableSubscriberAreas;
         } else {
             $templateParameters['total_available_subscriber_areas'] = 0;
@@ -175,9 +166,8 @@ class HookController extends Controller
             $currentSortingTitles = [];
             $currentSorting = [];
             $amountOfAttachedProviderAreas = 0;
-            $amountOfSubscriberAreas = count($subscriberAreas);
-            for ($i = 0; $i < $amountOfSubscriberAreas; $i++) {
-                $sortsByArea = $dispatcher->getBindingsFor($subscriberAreas[$i]);
+            foreach ($subscriberAreas as $hookSubscriber) {
+                $sortsByArea = $dispatcher->getBindingsFor($hookSubscriber);
                 foreach ($sortsByArea as $sba) {
                     $areaname = $sba['areaname'];
                     $category = $sba['category'];
@@ -186,11 +176,11 @@ class HookController extends Controller
                         $currentSorting[$category] = [];
                     }
 
-                    if (!isset($currentSorting[$category][$subscriberAreas[$i]])) {
-                        $currentSorting[$category][$subscriberAreas[$i]] = [];
+                    if (!isset($currentSorting[$category][$hookSubscriber])) {
+                        $currentSorting[$category][$hookSubscriber] = [];
                     }
 
-                    array_push($currentSorting[$category][$subscriberAreas[$i]], $areaname);
+                    $currentSorting[$category][$hookSubscriber][] = $areaname;
                     $amountOfAttachedProviderAreas++;
 
                     // get the bundle title
@@ -204,34 +194,34 @@ class HookController extends Controller
             $templateParameters['total_attached_provider_areas'] = $amountOfAttachedProviderAreas;
 
             // get available providers
-            /** @var ExtensionEntity[] $hookproviders */
-            $hookproviders = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_PROVIDER);
-            $amountOfHookProviders = count($hookproviders);
+            /** @var ExtensionEntity[] $hookProviders */
+            $hookProviders = $this->getExtensionsCapableOf($collector, $extensionRepository, HookCollectorInterface::HOOK_PROVIDER);
             $amountOfAvailableProviderAreas = 0;
-            for ($i = 0; $i < $amountOfHookProviders; $i++) {
-                $hookproviders[$i] = $hookproviders[$i]->toArray();
+            foreach ($hookProviders as $i => $hookProvider) {
+                $hookProviders[$i] = $hookProvider->toArray();
                 // don't allow subscriber and provider to be the same
                 // unless subscriber has the ability to connect to it's own providers
-                if ($hookproviders[$i]['name'] === $moduleName && !$isSubscriberSelfCapable) {
-                    unset($hookproviders[$i]);
+                if (!$isSubscriberSelfCapable && $moduleName === $hookProvider->getName()) {
+                    unset($hookProviders[$i]);
                     continue;
                 }
 
                 // does the user have admin permissions on the provider module?
-                if (!$permissionApi->hasPermission($hookproviders[$i]['name'] . "::", '::', ACCESS_ADMIN)) {
-                    unset($hookproviders[$i]);
+                if (!$permissionApi->hasPermission($hookProvider->getName() . '::', '::', ACCESS_ADMIN)) {
+                    unset($hookProviders[$i]);
                     continue;
                 }
 
                 // get the areas of the provider
-                $hookproviderAreas = $collector->getProviderAreasByOwner($hookproviders[$i]['name']);
-                $hookproviders[$i]['areas'] = $hookproviderAreas;
+                $hookproviderAreas = $collector->getProviderAreasByOwner($hookProvider->getName());
+                $hookProviders[$i]['areas'] = $hookproviderAreas;
                 $amountOfAvailableProviderAreas += count($hookproviderAreas);
 
                 $hookproviderAreasToTitles = []; // and get the titles
                 $hookproviderAreasToCategories = []; // and get the categories
                 $hookproviderAreasAndCategories = []; // and build array with category => areas
                 foreach ($hookproviderAreas as $hookproviderArea) {
+                    $category = null;
                     if (isset($nonPersistedProviders[$hookproviderArea])) {
                         $hookproviderAreasToTitles[$hookproviderArea] = $nonPersistedProviders[$hookproviderArea]->getTitle();
                         $category = $nonPersistedProviders[$hookproviderArea]->getCategory();
@@ -239,11 +229,11 @@ class HookController extends Controller
                     $hookproviderAreasToCategories[$hookproviderArea] = $category;
                     $hookproviderAreasAndCategories[$category][] = $hookproviderArea;
                 }
-                $hookproviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
-                $hookproviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
-                $hookproviders[$i]['areasAndCategories'] = $hookproviderAreasAndCategories;
+                $hookProviders[$i]['areasToTitles'] = $hookproviderAreasToTitles;
+                $hookProviders[$i]['areasToCategories'] = $hookproviderAreasToCategories;
+                $hookProviders[$i]['areasAndCategories'] = $hookproviderAreasAndCategories;
             }
-            $templateParameters['hookproviders'] = $hookproviders;
+            $templateParameters['hookproviders'] = $hookProviders;
             $templateParameters['total_available_provider_areas'] = $amountOfAvailableProviderAreas;
         } else {
             $templateParameters['hookproviders'] = [];
@@ -262,25 +252,17 @@ class HookController extends Controller
      *
      * Attach/detach a subscriber area to a provider area
      *
-     * @param Request $request
-     *  subscriberarea string area to be attached/detached
-     *  providerarea   string area to attach/detach
-     * @param PermissionApiInterface $permissionApi
-     * @param HookCollectorInterface $collector
-     * @param HookDispatcherInterface $dispatcher
-     *
-     * @return JsonResponse
-     *
-     * @throws \InvalidArgumentException Thrown if either the subscriber, provider or subscriberArea parameters are empty
-     * @throws \RuntimeException Thrown if either the subscriber or provider module isn't available
+     * @throws InvalidArgumentException Thrown if either the subscriber, provider or subscriberArea parameters are empty
+     * @throws RuntimeException Thrown if either the subscriber or provider module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
     public function toggleSubscribeAreaStatusAction(
+        TranslatorInterface $translator,
         Request $request,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
         HookDispatcherInterface $dispatcher
-    ) {
+    ): JsonResponse {
         $this->setTranslator($translator);
         if (!$this->checkAjaxToken($request)) {
             throw new AccessDeniedException();
@@ -289,16 +271,16 @@ class HookController extends Controller
         // get subscriberarea from POST
         $subscriberArea = $request->request->get('subscriberarea', '');
         if (empty($subscriberArea)) {
-            throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
+            throw new InvalidArgumentException($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
         $subscriber = $collector->getSubscriber($subscriberArea);
-        if (empty($subscriber)) {
-            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
+        if (null === $subscriber) {
+            throw new InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
-            throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
+            throw new RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -307,16 +289,16 @@ class HookController extends Controller
         // get providerarea from POST
         $providerArea = $request->request->get('providerarea', '');
         if (empty($providerArea)) {
-            throw new \InvalidArgumentException($this->__('No provider area passed.'));
+            throw new InvalidArgumentException($this->__('No provider area passed.'));
         }
 
         // get provider module based on area and do some checks
         $provider = $collector->getProvider($providerArea);
-        if (empty($provider)) {
-            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
+        if (null === $provider) {
+            throw new InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
         }
         if (!$this->get('kernel')->isBundle($provider->getOwner())) {
-            throw new \RuntimeException($this->__f('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
+            throw new RuntimeException($this->__f('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
         }
         if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($provider->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -349,24 +331,17 @@ class HookController extends Controller
      *
      * Changes the order of the providers' areas that are attached to a subscriber.
      *
-     * @param Request $request
-     *  subscriber    string     name of the subscriber
-     *  providerorder array      array of sorted provider ids
-     * @param PermissionApiInterface $permissionApi
-     * @param HookCollectorInterface $collector
-     *
-     * @return JsonResponse
-     *
-     * @throws \InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
-     * @throws \RuntimeException Thrown if the subscriber module isn't available
+     * @throws InvalidArgumentException Thrown if the subscriber or subscriberarea parameters aren't valid
+     * @throws RuntimeException Thrown if the subscriber module isn't available
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the subscriber module
      */
     public function changeProviderAreaOrderAction(
         Request $request,
+        TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector
-    ) {
-        $this->setTranslator($this->get('translator.default'));
+    ): JsonResponse {
+        $this->setTranslator($translator);
         if (!$this->checkAjaxToken($request)) {
             throw new AccessDeniedException();
         }
@@ -374,16 +349,16 @@ class HookController extends Controller
         // get subscriberarea from POST
         $subscriberarea = $request->request->get('subscriberarea', '');
         if (empty($subscriberarea)) {
-            throw new \InvalidArgumentException($this->__('No subscriber area passed.'));
+            throw new InvalidArgumentException($this->__('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
         $subscriber = $collector->getSubscriber($subscriberarea);
-        if (empty($subscriber)) {
-            throw new \InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
+        if (null === $subscriber) {
+            throw new InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
-            throw new \RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
+            throw new RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -391,8 +366,8 @@ class HookController extends Controller
 
         // get providers' areas from POST
         $providerarea = $request->request->get('providerarea', '');
-        if (!(is_array($providerarea) && count($providerarea) > 0)) {
-            throw new \InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
+        if (!is_array($providerarea) || count($providerarea) < 1) {
+            throw new InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
         }
 
         // set sorting
@@ -403,19 +378,19 @@ class HookController extends Controller
 
     /**
      * Check the CSRF token.
-     *
-     * @param Request $request
-     *
-     * @return boolean
      */
-    private function checkAjaxToken(Request $request)
+    private function checkAjaxToken(Request $request): bool
     {
         if (!$request->isXmlHttpRequest()) {
             return false;
         }
 
+        if (null === $request->getSession()) {
+            return false;
+        }
+
         $sessionName = $this->container->getParameter('zikula.session.name');
-        $sessionId = $request->cookies->get($sessionName, null);
+        $sessionId = $request->cookies->get($sessionName);
 
         if ($sessionId !== $request->getSession()->getId()) {
             return false;
@@ -424,10 +399,15 @@ class HookController extends Controller
         if (!$this->isCsrfTokenValid('hook-ui', $request->request->get('token'))) {
             return false;
         }
+
+        return true;
     }
 
-    private function getExtensionsCapableOf(HookCollectorInterface $collector, ExtensionRepositoryInterface $extensionRepository, $type)
-    {
+    private function getExtensionsCapableOf(
+        HookCollectorInterface $collector,
+        ExtensionRepositoryInterface $extensionRepository,
+        string $type
+    ): array {
         $owners = $collector->getOwnersCapableOf($type);
         $extensions = [];
         foreach ($owners as $owner) {
@@ -437,7 +417,7 @@ class HookController extends Controller
         return $extensions;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

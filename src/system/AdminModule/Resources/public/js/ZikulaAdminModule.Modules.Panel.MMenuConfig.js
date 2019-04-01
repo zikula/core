@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         $('#zikula-admin-hiddenpanel-menu').mmenu({
             extensions: ['hiddenpanel-customwidth'],

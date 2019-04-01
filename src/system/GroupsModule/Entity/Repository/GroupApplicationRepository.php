@@ -23,6 +23,4 @@ class GroupApplicationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, GroupApplicationEntity::class);
     }
-
-    // nothing yet
 }

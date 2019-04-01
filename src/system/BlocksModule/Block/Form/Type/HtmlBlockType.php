@@ -18,9 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-/**
- * Class HtmlBlockType
- */
 class HtmlBlockType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

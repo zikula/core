@@ -17,13 +17,12 @@ interface CategoryInterface
 {
     /**
      * The name of a hook category defines a contract of types which both subscriber and provider implement
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Hook category types are events that are contracted to be called by the provider.
-     * @return array
+     * @return string[]
      */
-    public function getTypes();
+    public function getTypes(): array;
 }

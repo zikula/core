@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
+use Zikula\ZAuthModule\Entity\Repository\AuthenticationMappingRepository;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -38,14 +39,9 @@ class ValidUserFieldsValidator extends ConstraintValidator
      */
     private $userVerificationRepository;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param AuthenticationMappingRepositoryInterface $mappingRepository
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
-        AuthenticationMappingRepositoryInterface $mappingRepository,
+        AuthenticationMappingRepository $mappingRepository,
         UserVerificationRepositoryInterface $userVerificationRepository
     ) {
         $this->translator = $translator;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -16,9 +18,6 @@ use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 
-/**
- * Class ConsoleCommandListener.
- */
 class ConsoleCommandListener implements EventSubscriberInterface
 {
     /**
@@ -26,19 +25,11 @@ class ConsoleCommandListener implements EventSubscriberInterface
      */
     private $extractTranslationHelper;
 
-    /**
-     * ConsoleCommandListener constructor.
-     *
-     * @param ExtractTranslationHelper $extractTranslationHelper
-     */
     public function __construct(ExtractTranslationHelper $extractTranslationHelper)
     {
         $this->extractTranslationHelper = $extractTranslationHelper;
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -49,12 +40,10 @@ class ConsoleCommandListener implements EventSubscriberInterface
     /**
      * This function saves the bundle whose routes shall be translated in a global variable to be used in
      * Zikula\RoutesModule\Translation\DefaultRouteExclusionStrategy later on.
-     *
-     * @param ConsoleCommandEvent $event
      */
-    public function checkBundleForTranslatingRoutes(ConsoleCommandEvent $event)
+    public function checkBundleForTranslatingRoutes(ConsoleCommandEvent $event): void
     {
-        if ($event->getCommand()->getName() !== 'translation:extract') {
+        if ('translation:extract' !== $event->getCommand()->getName()) {
             return;
         }
 

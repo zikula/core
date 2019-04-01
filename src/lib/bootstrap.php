@@ -26,12 +26,12 @@ if (true === $parameters['debug']) {
     Debug::enable();
 }
 
-if ((isset($parameters['umask'])) && (!is_null($parameters['umask']))) {
+if (isset($parameters['umask']) && null !== $parameters['umask']) {
     umask($parameters['umask']);
 }
 
 // set default locale for Intl classes
-\Locale::setDefault($parameters['locale']);
+Locale::setDefault($parameters['locale']);
 
 // on install or upgrade, check if system requirements are met.
 $requirementChecker = new RequirementChecker();

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -13,6 +16,7 @@
 namespace Zikula\RoutesModule\Listener;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
 
 /**
@@ -20,17 +24,15 @@ use Zikula\RoutesModule\Listener\Base\AbstractEntityLifecycleListener;
  */
 class EntityLifecycleListener extends AbstractEntityLifecycleListener
 {
-    /**
-     * @inheritDoc
-     */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
 
-        if ('cli' == php_sapi_name()) {
+        if ('cli' === PHP_SAPI) {
             return;
         }
 
@@ -38,6 +40,6 @@ class EntityLifecycleListener extends AbstractEntityLifecycleListener
             return;
         }
 
-        return parent::postLoad($args);
+        parent::postLoad($args);
     }
 }

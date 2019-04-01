@@ -13,34 +13,39 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\FormExtensionBundle\Tests;
 
+use ArrayAccess;
+use Exception;
+use Iterator;
+use PHPUnit\Framework\TestCase;
+use Traversable;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
-class FormTypesChoicesTest extends \PHPUnit\Framework\TestCase
+class FormTypesChoicesTest extends TestCase
 {
-    public function testEmptyInstantiation()
+    public function testEmptyInstantiation(): void
     {
         $foo = new FormTypesChoices();
-        $this->assertInstanceOf(\ArrayAccess::class, $foo);
-        $this->assertInstanceOf(\Iterator::class, $foo);
-        $this->assertInstanceOf(\Traversable::class, $foo);
+        $this->assertInstanceOf(ArrayAccess::class, $foo);
+        $this->assertInstanceOf(Iterator::class, $foo);
+        $this->assertInstanceOf(Traversable::class, $foo);
     }
 
-    public function testInstantiationWithArg()
+    public function testInstantiationWithArg(): void
     {
         $foo = new FormTypesChoices([
             'foo' => 'bar',
             'three' => 'nine',
             1 => 17
         ]);
-        $this->assertInstanceOf(\ArrayAccess::class, $foo);
-        $this->assertInstanceOf(\Iterator::class, $foo);
-        $this->assertInstanceOf(\Traversable::class, $foo);
+        $this->assertInstanceOf(ArrayAccess::class, $foo);
+        $this->assertInstanceOf(Iterator::class, $foo);
+        $this->assertInstanceOf(Traversable::class, $foo);
         $this->assertArrayHasKey('foo', $foo);
         $this->assertArrayHasKey('three', $foo);
         $this->assertArrayHasKey(1, $foo);
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $foo = new FormTypesChoices([
             'foo' => 'bar',
@@ -54,9 +59,9 @@ class FormTypesChoicesTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \Exception
+     * @expectedException Exception
      */
-    public function testExceptionOnUnset()
+    public function testExceptionOnUnset(): void
     {
         $foo = new FormTypesChoices([
             'foo' => 'bar',

@@ -19,9 +19,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
-/**
- * Class CapabilityApi
- */
 class CapabilityApi implements CapabilityApiInterface
 {
     /**
@@ -39,10 +36,6 @@ class CapabilityApi implements CapabilityApiInterface
      */
     private $extensionsByName = [];
 
-    /**
-     * Capability constructor.
-     * @param ExtensionRepositoryInterface $extensionRepository
-     */
     public function __construct(ExtensionRepositoryInterface $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
@@ -51,7 +44,7 @@ class CapabilityApi implements CapabilityApiInterface
     /**
      * Load extensions into private property cache.
      */
-    private function load()
+    private function load(): void
     {
         $extensions = $this->extensionRepository->findBy(['state' => Constant::STATE_ACTIVE]);
         /** @var ExtensionEntity $extension */
@@ -63,22 +56,16 @@ class CapabilityApi implements CapabilityApiInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtensionsCapableOf($capability)
+    public function getExtensionsCapableOf(string $capability): iterable
     {
-        if (empty($this->extensionsByCapability[$capability])) {
+        if (!isset($this->extensionsByCapability[$capability]) || empty($this->extensionsByCapability[$capability])) {
             $this->load();
         }
 
         return !empty($this->extensionsByCapability[$capability]) ? $this->extensionsByCapability[$capability] : [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCapable($extensionName, $requestedCapability)
+    public function isCapable(string $extensionName, string $requestedCapability)
     {
         if (empty($this->extensionsByName[$extensionName])) {
             $this->extensionsByName[$extensionName] = $this->extensionRepository->findOneBy(['name' => $extensionName]);
@@ -89,11 +76,7 @@ class CapabilityApi implements CapabilityApiInterface
             ? $capabilities[$requestedCapability]
             : false;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCapabilitiesOf($extensionName)
+    public function getCapabilitiesOf(string $extensionName): array
     {
         if (empty($this->extensionsByName[$extensionName])) {
             $this->extensionsByName[$extensionName] = $this->extensionRepository->findOneBy(['name' => $extensionName]);

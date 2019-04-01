@@ -19,51 +19,48 @@ use Zikula\Common\Translator\TranslatorInterface;
 
 class LoginUiHooksSubscriber implements HookSubscriberInterface
 {
-    const LOGIN_FORM = 'users.ui_hooks.login_screen.form_edit';
+    public const LOGIN_FORM = 'users.ui_hooks.login_screen.form_edit';
 
-    const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
+    public const LOGIN_VALIDATE = 'users.ui_hooks.login_screen.validate_edit';
 
-    const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
+    public const LOGIN_PROCESS = 'users.ui_hooks.login_screen.process_edit';
 
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getOwner()
+    public function getOwner(): string
     {
         return 'ZikulaUsersModule';
     }
 
-    public function getCategory()
+    public function getCategory(): string
     {
         return UiHooksCategory::NAME;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->translator->__('Login form and block hooks');
     }
 
-    public function getAreaName()
+    public function getAreaName(): string
     {
         return 'subscriber.users.ui_hooks.login_screen';
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         return [
             UiHooksCategory::TYPE_FORM_EDIT => self::LOGIN_FORM,
             UiHooksCategory::TYPE_VALIDATE_EDIT => self::LOGIN_VALIDATE,
-            UiHooksCategory::TYPE_PROCESS_EDIT => self::LOGIN_PROCESS,
+            UiHooksCategory::TYPE_PROCESS_EDIT => self::LOGIN_PROCESS
         ];
     }
 }

@@ -18,5 +18,5 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface CategoryRegistryRepositoryInterface extends ObjectRepository, Selectable
 {
-    // @todo
+    // nothing yet
 }

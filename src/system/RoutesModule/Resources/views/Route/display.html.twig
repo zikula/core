@@ -1,10 +1,10 @@
 {# purpose of this template: routes display view #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends 'ZikulaRoutesModule::' ~ baseTemplate ~ '.html.twig' %}
-{% block pageTitle %}{{ route.getTitleFromDisplayPattern()|default(__('Route')) }}{% endblock %}
+{% block pageTitle %}{{ route|zikularoutesmodule_formattedTitle|default(__('Route')) }}{% endblock %}
 {% block title %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
-    {% set templateTitle = route.getTitleFromDisplayPattern()|default(__('Route')) %}
+    {% set templateTitle = route|zikularoutesmodule_formattedTitle|default(__('Route')) %}
     {{ templateTitle }}
     {% if not isQuickView %}
         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'display'}) %}
@@ -44,24 +44,20 @@
             <dt>{{ __('Sort') }}</dt>
             <dd>{{ route.sort }}</dd>
         {% endif %#}
-        {% if route.prependBundlePrefix is not empty %}
-            <dt>{{ __('Prepend bundle prefix') }}</dt>
-            <dd>{% if route.prependBundlePrefix %}
-                <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-            {% else %}
-                <i class="fa fa-times" title="{{ __('No') }}"></i>
-            {% endif %}
-            </dd>
+        <dt>{{ __('Prepend bundle prefix') }}</dt>
+        <dd>{% if route.prependBundlePrefix %}
+            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+        {% else %}
+            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
         {% endif %}
-        {% if route.translatable is not empty %}
-            <dt>{{ __('Translatable') }}</dt>
-            <dd>{% if route.translatable %}
-                <i class="fa fa-check" title="{{ __('Yes') }}"></i>
-            {% else %}
-                <i class="fa fa-times" title="{{ __('No') }}"></i>
-            {% endif %}
-            </dd>
+        </dd>
+        <dt>{{ __('Translatable') }}</dt>
+        <dd>{% if route.translatable %}
+            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+        {% else %}
+            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
         {% endif %}
+        </dd>
         {% if route.translationPrefix is not empty %}
             <dt>{{ __('Translation prefix') }}</dt>
             <dd>{{ route.translationPrefix }}</dd>

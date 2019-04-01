@@ -14,5 +14,4 @@
     {% if not app.request.query.getBoolean('raw', false) %}
         {{ adminFooter() }}
     {% endif %}
-    {{ parent() }}
 {% endblock %}

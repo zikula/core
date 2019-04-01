@@ -22,24 +22,17 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @var bool
+     */
     private $debug;
 
-    /**
-     * Constructor
-     *
-     * @param boolean $debug Whether to use the debug mode
-     */
-    public function __construct($debug)
+    public function __construct(bool $debug)
     {
-        $this->debug = (bool)$debug;
+        $this->debug = $debug;
     }
 
-    /**
-     * Generates the configuration tree builder.
-     *
-     * @return TreeBuilder The tree builder
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('framework');
@@ -48,26 +41,26 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    protected function addTranslatorSection(ArrayNodeDefinition $rootNode)
+    protected function addTranslatorSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
-        ->children()
-        ->arrayNode('translator')
-        ->info('translator configuration')
-        ->canBeEnabled()
-        ->fixXmlConfig('fallback')
-        ->children()
-        ->arrayNode('fallbacks')
-        ->beforeNormalization()->ifString()->then(function($v) {
-            return [$v];
-        })->end()
-        ->prototype('scalar')->end()
-        ->defaultValue(['en'])
-        ->end()
-        ->booleanNode('logging')->defaultValue($this->debug)->end()
-        ->end()
-        ->end()
-        ->end()
+            ->children()
+            ->arrayNode('translator')
+            ->info('translator configuration')
+            ->canBeEnabled()
+            ->fixXmlConfig('fallback')
+            ->children()
+            ->arrayNode('fallbacks')
+            ->beforeNormalization()->ifString()->then(static function($v) {
+                return [$v];
+            })->end()
+            ->prototype('scalar')->end()
+            ->defaultValue(['en'])
+            ->end()
+            ->booleanNode('logging')->defaultValue($this->debug)->end()
+            ->end()
+            ->end()
+            ->end()
         ;
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\ProfileModule;
 
+use InvalidArgumentException;
+
 /**
  * Interface ProfileModuleInterface
  */
@@ -21,34 +23,32 @@ interface ProfileModuleInterface
     /**
      * Display a module-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
-     * @param int|string $uid The user's id or name
-     * @return string
-     * @throws \InvalidArgumentException if provided $uid is not null and invalid
+     *
+     * @param int|string $userId The user's id or name
+     * @throws InvalidArgumentException if provided $userId is not null and invalid
      */
-    public function getDisplayName($uid = null);
+    public function getDisplayName($userId = null): string;
 
     /**
      * Get the url to a user's profile.
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
-     * @param int|string $uid The user's id or name
-     * @return string
-     * @throws \InvalidArgumentException if provided $uid is not null and invalid
+     *
+     * @param int|string $userId The user's id or name
+     * @throws InvalidArgumentException if provided $userId is not null and invalid
      */
-    public function getProfileUrl($uid = null);
+    public function getProfileUrl($userId = null): string;
 
     /**
      * Get the avatar image for a given user.
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
-     * @param int|string $uid The user's id or name
-     * @param array $parameters
-     * @return string
-     * @throws \InvalidArgumentException if provided $uid is not null and invalid
+     *
+     * @param int|string $userId The user's id or name
+     * @throws InvalidArgumentException if provided $userId is not null and invalid
      */
-    public function getAvatar($uid = null, array $parameters = []);
+    public function getAvatar($userId = null, array $parameters = []): string;
 
     /**
      * Return the name of the providing bundle.
-     * @return string
      */
-    public function getBundleName();
+    public function getBundleName(): string;
 }

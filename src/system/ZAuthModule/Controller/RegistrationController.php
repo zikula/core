@@ -24,6 +24,7 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccessHelper;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\Helper\RegistrationHelper;
@@ -44,20 +45,6 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/verify-registration/{uname}/{verifycode}")
      * @Template("ZikulaZAuthModule:Registration:verify.html.twig")
-     *
-     * @param Request $request
-     * @param ValidatorInterface $validator
-     * @param VariableApiInterface $variableApi
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
-     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param RegistrationHelper $registrationHelper
-     * @param PasswordApiInterface $passwordApi
-     * @param AccessHelper $accessHelper
-     * @param MailHelper $mailHelper
-     * @param null|string $uname
-     * @param null|string $verifycode
      *
      * Render and process a registration e-mail verification code.
      *
@@ -83,8 +70,8 @@ class RegistrationController extends AbstractController
         PasswordApiInterface $passwordApi,
         AccessHelper $accessHelper,
         MailHelper $mailHelper,
-        $uname = null,
-        $verifycode = null
+        string $uname = null,
+        string $verifycode = null
     ) {
         if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
@@ -106,6 +93,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
+        /** @var UserEntity $userEntity */
         $userEntity = $userRepository->findOneBy(['uname' => $uname]);
         if ($userEntity) {
             $mapping = $authenticationMappingRepository->getByZikulaId($userEntity->getUid());

@@ -16,10 +16,7 @@ namespace Zikula\ThemeModule\Engine\Asset;
 interface MergerInterface
 {
     /**
-     * Merge the assets and publish.
-     * @param array $assets
-     * @param string $type
-     * @return array List of output files
+     * Merge the assets, publish them and return list of output files.
      */
-    public function merge(array $assets, $type = 'js');
+    public function merge(array $assets, $type = 'js'): array;
 }

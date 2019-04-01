@@ -22,9 +22,6 @@ class ValidGroupName extends Constraint
 {
     public $message = 'The fields are invalid.';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultOption()
     {
         return 'excludedGid';

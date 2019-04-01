@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Twig\Extension;
 
+use RuntimeException;
 use Twig\Extension\AbstractExtension;
+use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use Twig\TwigFunction;
 use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
@@ -49,20 +51,12 @@ class BlocksExtension extends AbstractExtension
      */
     private $loader;
 
-    /**
-     * BlocksExtension constructor.
-     * @param BlockApiInterface $blockApi
-     * @param BlockFilterApiInterface $blockFilterApi
-     * @param Engine $themeEngine
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param FilesystemLoader $loader
-     */
     public function __construct(
         BlockApiInterface $blockApi,
         BlockFilterApiInterface $blockFilterApi,
         Engine $themeEngine,
         ZikulaHttpKernelInterface $kernel,
-        LoaderInterface $loader
+        FilesystemLoader $loader
     ) {
         $this->blockApi = $blockApi;
         $this->blockFilter = $blockFilterApi;
@@ -71,27 +65,21 @@ class BlocksExtension extends AbstractExtension
         $this->loader = $loader;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
             new TwigFunction('showblockposition', [$this, 'showBlockPosition'], ['is_safe' => ['html']]),
             new TwigFunction('showblock', [$this, 'showBlock'], ['is_safe' => ['html']]),
-            new TwigFunction('positionavailable', [$this, 'positionAvailable']),
+            new TwigFunction('positionavailable', [$this, 'isPositionAvailable'])
         ];
     }
 
     /**
      * Show all the blocks in a position by name.
-     * @param string $positionName
-     * @param bool|true $implode
+     *
      * @return array|string
      */
-    public function showBlockPosition($positionName, $implode = true)
+    public function showBlockPosition(string $positionName, bool $implode = true)
     {
         $instance = $this->kernel->getModule('ZikulaBlocksModule');
         if (!isset($instance)) {
@@ -107,12 +95,8 @@ class BlocksExtension extends AbstractExtension
 
     /**
      * Display one block.
-     *
-     * @param BlockEntity $block
-     * @param string $positionName
-     * @return string
      */
-    public function showBlock(BlockEntity $block, $positionName = '')
+    public function showBlock(BlockEntity $block, string $positionName = ''): string
     {
         $blocksModuleInstance = $this->kernel->getModule('ZikulaBlocksModule');
         if (!isset($blocksModuleInstance)) {
@@ -141,7 +125,7 @@ class BlocksExtension extends AbstractExtension
 
         try {
             $blockInstance = $this->blockApi->createInstanceFromBKey($block->getBkey());
-        } catch (\RuntimeException $exception) {
+        } catch (RuntimeException $exception) {
             //return 'Error during block creation: ' . $exception->getMessage();
             return '';
         }
@@ -158,11 +142,7 @@ class BlocksExtension extends AbstractExtension
         return $this->themeEngine->wrapBlockContentInTheme($content, $block->getTitle(), $block->getBlocktype(), $block->getBid(), $positionName);
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function positionAvailable($name)
+    public function isPositionAvailable(string $name): bool
     {
         return $this->themeEngine->positionIsAvailableInTheme($name);
     }

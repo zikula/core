@@ -19,51 +19,30 @@ use Zikula\SearchModule\Entity\SearchResultEntity;
 
 interface SearchResultRepositoryInterface extends ObjectRepository, Selectable
 {
-    /**
-     * Returns amount of results.
-     *
-     * @param string $sessionId Session id to filter results
-     *
-     * @return integer
-     */
-    public function countResults($sessionId = '');
+    public function countResults(string $sessionId = ''): int;
 
     /**
      * Returns results for given arguments.
-     *
-     * @param array   $filters Optional array with filters
-     * @param array   $sorting Optional array with sorting criteria
-     * @param integer $limit   Optional limitation for amount of retrieved objects
-     * @param integer $offset  Optional start offset of retrieved objects
-     *
-     * @return array
      */
-    public function getResults($filters = [], $sorting = [], $limit = 0, $offset = 0);
+    public function getResults(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array;
 
     /**
      * Deletes all results for the current session.
-     *
-     * @param string $sessionId Session id of current user
-     *
-     * @return void
      */
-    public function clearOldResults($sessionId = '');
+    public function clearOldResults(string $sessionId = ''): void;
 
     /**
-     * Persist an entity.
-     * @param SearchResultEntity $entity
-     * @return mixed
+     * Persist a search result entity.
      */
-    public function persist(SearchResultEntity $entity);
+    public function persist(SearchResultEntity $entity): void;
 
     /**
-     * @param SearchResultEntity|null $entity
-     * @return mixed
+     * Save a search result entity.
      */
-    public function flush(SearchResultEntity $entity = null);
+    public function flush(SearchResultEntity $entity = null): void;
 
     /**
      * Truncates the table.
      */
-    public function truncateTable();
+    public function truncateTable(): void;
 }

@@ -20,37 +20,37 @@ dl.search_results div.search_created {
 
 dl.search_results strong.highlight1 {
     color: #000;
-    background-color: #FFFF00;
+    background-color: #FF0;
 }
 
 dl.search_results strong.highlight2 {
     color: #000;
-    background-color: #00FFFF;
+    background-color: #0FF;
 }
 
 dl.search_results strong.highlight3 {
     color: #000;
-    background-color: #99FF99;
+    background-color: #9F9;
 }
 
 dl.search_results strong.highlight4 {
     color: #000;
-    background-color: #FF9999;
+    background-color: #F99;
 }
 
 dl.search_results strong.highlight5 {
     color: #000;
-    background-color: #FF66FF;
+    background-color: #F6F;
 }
 
 dl.search_results strong.highlight6 {
     color: #FFF;
-    background-color: #880000;
+    background-color: #800;
 }
 
 dl.search_results strong.highlight7 {
     color: #FFF;
-    background-color: #00AA00;
+    background-color: #0A0;
 }
 
 dl.search_results strong.highlight8 {
@@ -65,5 +65,5 @@ dl.search_results strong.highlight9 {
 
 dl.search_results strong.highlight0 {
     color: #FFF;
-    background-color: #990099;
+    background-color: #909;
 }

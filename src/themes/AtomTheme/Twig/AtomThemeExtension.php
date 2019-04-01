@@ -37,10 +37,6 @@ class AtomThemeExtension extends AbstractExtension
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * Register provided functions.
-     * @return array
-     */
     public function getFunctions()
     {
         return [
@@ -49,9 +45,9 @@ class AtomThemeExtension extends AbstractExtension
         ];
     }
 
-    public function id()
+    public function id(): string
     {
-        $host = $this->requestStack->getMasterRequest()->getSchemeAndHttpHost();
+        $host = null !== $this->requestStack->getMasterRequest() ? $this->requestStack->getMasterRequest()->getSchemeAndHttpHost() : '';
         $startDate = $this->variableApi->getSystemVar('startdate');
         $starttimestamp = strtotime($startDate);
         $startdate = strftime('%Y-%m-%d', $starttimestamp);
@@ -60,7 +56,7 @@ class AtomThemeExtension extends AbstractExtension
         return "tag:{$host},{$startdate}:{$sitename}";
     }
 
-    public function atomFeedLastUpdated()
+    public function atomFeedLastUpdated(): string
     {
         if (!$this->variableApi->has('ZikulaAtomTheme', 'atom_feed_lastupdated')) {
             $this->variableApi->set('ZikulaAtomTheme', 'atom_feed_lastupdated', time());

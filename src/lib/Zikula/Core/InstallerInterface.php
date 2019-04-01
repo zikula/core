@@ -18,9 +18,9 @@ namespace Zikula\Core;
  */
 interface InstallerInterface
 {
-    public function install();
+    public function install(): bool;
 
-    public function upgrade($oldVersion);
+    public function upgrade(string $oldVersion): bool;
 
-    public function uninstall();
+    public function uninstall(): bool;
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
+use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -30,11 +31,6 @@ class PageVarExtension extends AbstractExtension
      */
     private $pageVars;
 
-    /**
-     * PageVarExtension constructor.
-     * @param TranslatorInterface $translator
-     * @param ParameterBag $pageVars
-     */
     public function __construct(
         TranslatorInterface $translator,
         ParameterBag $pageVars
@@ -43,16 +39,11 @@ class PageVarExtension extends AbstractExtension
         $this->pageVars = $pageVars;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
             new TwigFunction('pageSetVar', [$this, 'pageSetVar']),
-            new TwigFunction('pageGetVar', [$this, 'pageGetVar']),
+            new TwigFunction('pageGetVar', [$this, 'pageGetVar'])
         ];
     }
 
@@ -60,27 +51,20 @@ class PageVarExtension extends AbstractExtension
      * Zikula imposes no restriction on page variable names.
      * Typical usage is to set `title` `meta.charset` `lang` etc.
      * array values are set using `.` in the `$name` string (e.g. `meta.charset`)
-     * @param string $name
-     * @param string $value
      */
-    public function pageSetVar($name, $value)
+    public function pageSetVar(string $name, string $value): void
     {
         if (empty($name) || empty($value)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $this->pageVars->set($name, $value);
     }
 
-    /**
-     * @param $name
-     * @param string $default
-     * @return mixed
-     */
-    public function pageGetVar($name, $default = '')
+    public function pageGetVar(string $name, string $default = '')
     {
         if (empty($name)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->pageVars->get($name, $default);

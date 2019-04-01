@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -65,27 +67,18 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaZAuthModule:UserAdministration:list.html.twig")
      *
-     * @param Request $request
-     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
-     * @param RouterInterface $router
-     * @param AdministrationActionsHelper $actionsHelper
-     * @param string $sort
-     * @param string $sortdir
-     * @param string $letter
-     * @param integer $startnum
-     *
-     * @return array
+     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function listAction(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         RouterInterface $router,
         AdministrationActionsHelper $actionsHelper,
-        $sort = 'uid',
-        $sortdir = 'DESC',
-        $letter = 'all',
-        $startnum = 0
-    ) {
+        string $sort = 'uid',
+        string $sortdir = 'DESC',
+        string $letter = 'all',
+        int $startnum = 0
+    ): array {
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
@@ -123,24 +116,19 @@ class UserAdministrationController extends AbstractController
      * to populate a username search
      *
      * @Route("/getusersbyfragmentastable", methods = {"POST"}, options={"expose"=true})
-     *
-     * @param Request $request
-     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
-     * @param AdministrationActionsHelper $actionsHelper
-     *
-     * @return PlainResponse
      */
     public function getUsersByFragmentAsTableAction(
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         AdministrationActionsHelper $actionsHelper
-    ) {
+    ): Response
+    {
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
             return new PlainResponse('');
         }
         $fragment = $request->request->get('fragment');
         $filter = [
-            'uname' => ['operator' => 'like', 'operand' => "${fragment}%"]
+            'uname' => ['operator' => 'like', 'operand' => $fragment . '%']
         ];
         $mappings = $authenticationMappingRepository->query($filter);
 
@@ -155,15 +143,8 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaZAuthModule:UserAdministration:create.html.twig")
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param AuthenticationMethodCollector $authenticationMethodCollector
-     * @param UserRepositoryInterface $userRepository
-     * @param RegistrationHelper $registrationHelper
-     * @param UsersMailHelper $mailHelper
-     * @param HookDispatcherInterface $hookDispatcher
-     *
-     * @return array
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function createAction(
         Request $request,
@@ -172,19 +153,19 @@ class UserAdministrationController extends AbstractController
         UserRepositoryInterface $userRepository,
         RegistrationHelper $registrationHelper,
         UsersMailHelper $mailHelper,
+        EventDispatcherInterface $eventDispatcher,
         HookDispatcherInterface $hookDispatcher
     ) {
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $dispatcher = $this->get('event_dispatcher');
 
         $mapping = new AuthenticationMappingEntity();
         $form = $this->createForm(AdminCreatedUserType::class, $mapping, [
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
         ]);
         $formEvent = new UserFormAwareEvent($form);
-        $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+        $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -217,15 +198,15 @@ class UserAdministrationController extends AbstractController
                 if (!$authMethod->register($mapping->toArray())) {
                     $this->addFlash('error', $this->__('The create process failed for an unknown reason.'));
                     $userRepository->removeAndFlush($user);
-                    $dispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
+                    $eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
                 $formDataEvent = new UserFormDataEvent($user, $form);
-                $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
                 $hook = new ProcessHook($user->getUid());
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
-                $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
+                $eventDispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
 
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -253,15 +234,8 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaZAuthModule:UserAdministration:modify.html.twig")
      *
-     * @param Request $request
-     * @param AuthenticationMappingEntity $mapping
-     * @param VariableApiInterface $variableApi
-     * @param PasswordApiInterface $passwordApi
-     * @param UserRepositoryInterface $userRepository
-     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
-     * @param HookDispatcherInterface $hookDispatcher
-     *
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the mapping record
      */
     public function modifyAction(
         Request $request,
@@ -270,6 +244,7 @@ class UserAdministrationController extends AbstractController
         PasswordApiInterface $passwordApi,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
+        EventDispatcherInterface $eventDispatcher,
         HookDispatcherInterface $hookDispatcher
     ) {
         if (!$this->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_EDIT)) {
@@ -278,14 +253,13 @@ class UserAdministrationController extends AbstractController
         if (1 === $mapping->getUid()) {
             throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
         }
-        $dispatcher = $this->get('event_dispatcher');
 
         $form = $this->createForm(AdminModifyUserType::class, $mapping, [
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
         ]);
         $originalMapping = clone $mapping;
         $formEvent = new UserFormAwareEvent($form);
-        $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+        $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -302,20 +276,21 @@ class UserAdministrationController extends AbstractController
                     $mapping->setPass($originalMapping->getPass());
                 }
                 $authenticationMappingRepository->persistAndFlush($mapping);
-                $userEntity = $userRepository->find($mapping->getUid());
-                $userEntity->merge($mapping->getUserEntityData());
-                $userRepository->persistAndFlush($userEntity);
+                /** @var UserEntity $user */
+                $user = $userRepository->find($mapping->getUid());
+                $user->merge($mapping->getUserEntityData());
+                $userRepository->persistAndFlush($user);
                 $eventArgs = [
                     'action'    => 'setVar',
                     'field'     => 'uname',
                     'attribute' => null,
                 ];
                 $eventData = ['old_value' => $originalMapping->getUname()];
-                $updateEvent = new GenericEvent($userEntity, $eventArgs, $eventData);
-                $dispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+                $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
+                $eventDispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
 
-                $formDataEvent = new UserFormDataEvent($userEntity, $form);
-                $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $formDataEvent = new UserFormDataEvent($user, $form);
+                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
@@ -338,12 +313,8 @@ class UserAdministrationController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaZAuthModule:UserAdministration:verify.html.twig")
      *
-     * @param Request $request
-     * @param AuthenticationMappingEntity $mapping
-     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
-     * @param RegistrationVerificationHelper $registrationVerificationHelper
-     *
-     * @return array
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
     public function verifyAction(
         Request $request,
@@ -361,12 +332,13 @@ class UserAdministrationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('confirm')->isClicked()) {
-                $mapping = $authenticationMappingRepository->find($form->get('mapping')->getData());
-                $verificationSent = $registrationVerificationHelper->sendVerificationCode($mapping);
+                /** @var AuthenticationMappingEntity $modifiedMapping */
+                $modifiedMapping = $authenticationMappingRepository->find($form->get('mapping')->getData());
+                $verificationSent = $registrationVerificationHelper->sendVerificationCode($modifiedMapping);
                 if (!$verificationSent) {
-                    $this->addFlash('error', $this->__f('Sorry! There was a problem sending a verification code to %sub%.', ['%sub%' => $mapping->getUname()]));
+                    $this->addFlash('error', $this->__f('Sorry! There was a problem sending a verification code to %sub%.', ['%sub%' => $modifiedMapping->getUname()]));
                 } else {
-                    $this->addFlash('status', $this->__f('Done! Verification code sent to %sub%.', ['%sub%' => $mapping->getUname()]));
+                    $this->addFlash('status', $this->__f('Done! Verification code sent to %sub%.', ['%sub%' => $modifiedMapping->getUname()]));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
@@ -385,19 +357,13 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/send-confirmation/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      *
-     * @param Request $request
-     * @param AuthenticationMappingEntity $mapping
-     * @param LostPasswordVerificationHelper $lostPasswordVerificationHelper
-     * @param MailHelper $mailHelper
-     *
-     * @return RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the mapping record
      */
     public function sendConfirmationAction(
-        Request $request,
         AuthenticationMappingEntity $mapping,
         LostPasswordVerificationHelper $lostPasswordVerificationHelper,
         MailHelper $mailHelper
-    ) {
+    ): RedirectResponse {
         if (!$this->hasPermission('ZikulaZAuthModule', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
@@ -419,17 +385,12 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/send-username/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      *
-     * @param Request $request
-     * @param AuthenticationMappingEntity $mapping
-     * @param MailHelper $mailHelper
-     *
-     * @return RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the mapping record
      */
     public function sendUserNameAction(
-        Request $request,
         AuthenticationMappingEntity $mapping,
         MailHelper $mailHelper
-    ) {
+    ): RedirectResponse {
         if (!$this->hasPermission('ZikulaZAuthModule', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE)) {
             throw new AccessDeniedException();
         }
@@ -454,6 +415,7 @@ class UserAdministrationController extends AbstractController
      * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes
      *
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the user record
      */
     public function togglePasswordChangeAction(Request $request, UserEntity $user)
     {
@@ -480,7 +442,7 @@ class UserAdministrationController extends AbstractController
                     $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
                     $this->addFlash('success', $this->__f('Done! A password change will be required the next time %uname logs in.', ['%uname' => $user->getUname()]));
                 }
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->flush();
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('info', $this->__('Operation cancelled.'));

@@ -26,10 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FormTypeHelpExtension extends AbstractTypeExtension
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -39,11 +35,6 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         ;
     }
 
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['help'] = $options['help'];
@@ -51,9 +42,6 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         $view->vars['alert'] = $options['alert'];
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -64,11 +52,6 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('help', ['string', 'null', 'array']);
     }
 
-    /**
-     * Returns the name of the types being extended.
-     *
-     * @return string[] The name of the types being extended
-     */
     public function getExtendedTypes()
     {
         return [FormType::class]; // Extend all field types

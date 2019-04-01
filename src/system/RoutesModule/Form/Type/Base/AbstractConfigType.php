@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -29,30 +32,17 @@ abstract class AbstractConfigType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * ConfigType constructor.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         TranslatorInterface $translator
     ) {
         $this->setTranslator($translator);
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addListViewsFields($builder, $options);
@@ -63,11 +53,8 @@ abstract class AbstractConfigType extends AbstractType
 
     /**
      * Adds fields for list views fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
-    public function addListViewsFields(FormBuilderInterface $builder, array $options = [])
+    public function addListViewsFields(FormBuilderInterface $builder, array $options = []): void
     {
         
         $builder->add('routeEntriesPerPage', IntegerType::class, [
@@ -104,11 +91,8 @@ abstract class AbstractConfigType extends AbstractType
 
     /**
      * Adds fields for moderation fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
+    public function addModerationFields(FormBuilderInterface $builder, array $options = []): void
     {
         
         $builder->add('allowModerationSpecificCreatorForRoute', CheckboxType::class, [
@@ -142,11 +126,8 @@ abstract class AbstractConfigType extends AbstractType
 
     /**
      * Adds submit buttons.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
-    public function addSubmitButtons(FormBuilderInterface $builder, array $options = [])
+    public function addSubmitButtons(FormBuilderInterface $builder, array $options = []): void
     {
         $builder->add('save', SubmitType::class, [
             'label' => $this->__('Update configuration'),
@@ -173,17 +154,11 @@ abstract class AbstractConfigType extends AbstractType
         ]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'zikularoutesmodule_config';
     }
 
-    /**
-     * @inheritDoc
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver

@@ -25,7 +25,7 @@ class HookRuntimeRepository extends ServiceEntityRepository implements HookRunti
         parent::__construct($registry, HookRuntimeEntity::class);
     }
 
-    public function truncate()
+    public function truncate(): void
     {
         $this->_em->createQueryBuilder()
             ->delete(HookRuntimeEntity::class)
@@ -33,7 +33,7 @@ class HookRuntimeRepository extends ServiceEntityRepository implements HookRunti
             ->execute();
     }
 
-    public function getOneOrNullByEventName($eventName)
+    public function getOneOrNullByEventName(string $eventName)
     {
         $result = $this->createQueryBuilder('t')
             ->where('t.eventname = :name')
@@ -44,7 +44,7 @@ class HookRuntimeRepository extends ServiceEntityRepository implements HookRunti
         return count($result) > 0 ? array_shift($result) : $result;
     }
 
-    public function deleteAllByOwner($owner)
+    public function deleteAllByOwner(string $owner): void
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->delete(HookRuntimeEntity::class, 't')

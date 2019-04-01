@@ -30,10 +30,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
         parent::__construct($registry, SearchResultEntity::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function countResults($sessionId = '')
+    public function countResults(string $sessionId = ''): int
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('COUNT(tbl.sesid)');
@@ -45,15 +42,10 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
 
         $query = $qb->getQuery();
 
-        $count = (int)$query->getSingleScalarResult();
-
-        return $count;
+        return (int)$query->getSingleScalarResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getResults($filters = [], $sorting = [], $limit = 0, $offset = 0)
+    public function getResults(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
@@ -88,13 +80,10 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
         return $query->getArrayResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clearOldResults($sessionId = '')
+    public function clearOldResults(string $sessionId = ''): void
     {
         $qb = $this->_em->createQueryBuilder()
-            ->delete('Zikula\SearchModule\Entity\SearchResultEntity', 'tbl')
+            ->delete(SearchResultEntity::class, 'tbl')
             ->where('DATE_ADD(tbl.found, 1, \'DAY\') < CURRENT_TIMESTAMP()');
 
         if ('' !== $sessionId) {
@@ -107,29 +96,20 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
         $query->execute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persist(SearchResultEntity $entity)
+    public function persist(SearchResultEntity $entity): void
     {
         $this->_em->persist($entity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function flush(SearchResultEntity $entity = null)
+    public function flush(SearchResultEntity $entity = null): void
     {
         $this->_em->flush($entity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function truncateTable()
+    public function truncateTable(): void
     {
         $qb = $this->_em->createQueryBuilder()
-            ->delete('Zikula\SearchModule\Entity\SearchResultEntity', 'tbl');
+            ->delete(SearchResultEntity::class, 'tbl');
         $query = $qb->getQuery();
 
         $query->execute();

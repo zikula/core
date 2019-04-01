@@ -43,10 +43,6 @@ class RegistrationType extends AbstractType
      */
     private $zAuthModVars;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
@@ -55,17 +51,11 @@ class RegistrationType extends AbstractType
         $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -125,22 +115,16 @@ class RegistrationType extends AbstractType
                 'mapped' => false,
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),
-                'help' => $this->__('Asking this question helps us prevent automated scripts from accessing private areas of the site.'),
+                'help' => $this->__('Asking this question helps us prevent automated scripts from accessing private areas of the site.')
             ]);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_registration';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

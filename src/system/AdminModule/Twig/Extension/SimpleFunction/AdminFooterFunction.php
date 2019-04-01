@@ -23,10 +23,6 @@ class AdminFooterFunction
      */
     private $handler;
 
-    /**
-     * AdminFooterFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -34,19 +30,14 @@ class AdminFooterFunction
 
     /**
      * Inserts admin footer.
-     *
      * This has NO configuration options.
      *
-     * Examples:
-     *
-     * <samp>{{ adminFooterFunction() }}</samp>
-     *
-     * @return string
+     * Example: {{ adminFooterFunction() }}
      */
-    public function display()
+    public function display(): string
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:footer');
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

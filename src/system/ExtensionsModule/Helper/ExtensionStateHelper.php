@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -52,15 +53,6 @@ class ExtensionStateHelper
      */
     private $kernel;
 
-    /**
-     * ExtensionStateHelper constructor.
-     *
-     * @param EventDispatcherInterface $dispatcher
-     * @param CacheClearer $cacheClearer
-     * @param ExtensionRepository $extensionRepository
-     * @param TranslatorInterface $translator
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(
         EventDispatcherInterface $dispatcher,
         CacheClearer $cacheClearer,
@@ -77,13 +69,8 @@ class ExtensionStateHelper
 
     /**
      * Set the state of a module.
-     *
-     * @param integer $id
-     * @param integer $state
-     *
-     * @return boolean True if successful, false otherwise
      */
-    public function updateState($id, $state)
+    public function updateState(int $id, int $state): bool
     {
         /** @var ExtensionEntity $extension */
         $extension = $this->extensionRepository->find($id);
@@ -102,7 +89,7 @@ class ExtensionStateHelper
                 break;
             case Constant::STATE_UPGRADED:
                 if (Constant::STATE_UNINITIALISED === $extension->getState()) {
-                    throw new \RuntimeException($this->translator->__('Error! Invalid module state transition.'));
+                    throw new RuntimeException($this->translator->__('Error! Invalid module state transition.'));
                 }
                 break;
         }

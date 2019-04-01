@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Helper;
 
 use Composer\Semver\Semver;
+use InvalidArgumentException;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Constant;
@@ -46,13 +47,6 @@ class ExtensionDependencyHelper
     private $installedPackages = [];
      */
 
-    /**
-     * ExtensionDependencyHelper constructor.
-     *
-     * @param ExtensionDependencyRepository $extensionDependencyRepo
-     * @param ExtensionRepositoryInterface $extensionEntityRepo
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(
         ExtensionDependencyRepository $extensionDependencyRepo,
         ExtensionRepositoryInterface $extensionEntityRepo,
@@ -64,12 +58,11 @@ class ExtensionDependencyHelper
     }
 
     /**
-     * Get an array of ExtensionEntities that are dependent on the $extension.
+     * Get an array of extension entities that are dependent on the $extension.
      *
-     * @param ExtensionEntity $extension
      * @return ExtensionEntity[]
      */
-    public function getDependentExtensions(ExtensionEntity $extension)
+    public function getDependentExtensions(ExtensionEntity $extension): array
     {
         $requiredDependents = [];
         /** @var ExtensionDependencyEntity[] $dependents */
@@ -82,7 +75,7 @@ class ExtensionDependencyHelper
                 'id' => $dependent->getModid(),
                 'state' => Constant::STATE_ACTIVE
             ]);
-            if (!is_null($foundExtension)) {
+            if (null !== $foundExtension) {
                 $requiredDependents[] = $foundExtension;
             }
         }
@@ -93,10 +86,10 @@ class ExtensionDependencyHelper
     /**
      * Get an array of dependencies that are not currently met by the system and active extensions.
      *
-     * @param ExtensionEntity $extension
      * @return ExtensionDependencyEntity[]
+     * @throws ExtensionDependencyException
      */
-    public function getUnsatisfiedExtensionDependencies(ExtensionEntity $extension)
+    public function getUnsatisfiedExtensionDependencies(ExtensionEntity $extension): array
     {
         $unsatisfiedDependencies = [];
         $dependencies = $this->extensionDependencyRepo->findBy(['modid' => $extension->getId()]);
@@ -106,7 +99,7 @@ class ExtensionDependencyHelper
                 continue;
             }
             $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
-            if (!is_null($foundExtension)
+            if (null !== $foundExtension
                 && Constant::STATE_ACTIVE === $foundExtension->getState()
                 && $this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())) {
                 continue;
@@ -135,21 +128,22 @@ class ExtensionDependencyHelper
     /**
      * Check for 'fatal' dependency.
      *
-     * @param ExtensionDependencyEntity $dependency
      * @throws ExtensionDependencyException
      */
-    private function checkForFatalDependency(ExtensionDependencyEntity $dependency)
+    private function checkForFatalDependency(ExtensionDependencyEntity $dependency): void
     {
         $foundExtension = $this->extensionEntityRepo->get($dependency->getModname());
         if (MetaData::DEPENDENCY_REQUIRED === $dependency->getStatus()
-            && (is_null($foundExtension) // never in the filesystem
+            && (null === $foundExtension // never in the filesystem
                 || Constant::STATE_MISSING === $foundExtension->getState()
                 || Constant::STATE_INVALID === $foundExtension->getState()
                 || $foundExtension->getState() > 10 // not compatible with current core
             )) {
             throw new ExtensionDependencyException(sprintf('Could not find a core-compatible, required dependency: %s.', $dependency->getModname()));
         }
-        if (!is_null($foundExtension) && !$this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())) {
+        if (null !== $foundExtension
+            && !$this->meetsVersionRequirements($dependency->getMinversion(), $dependency->getMaxversion(), $foundExtension->getVersion())
+        ) {
             $versionString = ($dependency->getMinversion() === $dependency->getMaxversion()) ? $dependency->getMinversion() : $dependency->getMinversion() . ' - ' . $dependency->getMaxversion();
             throw new ExtensionDependencyException(sprintf('A required dependency is found, but does not meet version requirements: %s (%s)', $dependency->getModname(), $versionString));
         }
@@ -157,17 +151,14 @@ class ExtensionDependencyHelper
 
     /**
      * Compute if bundle requirements are met.
-     *
-     * @param ExtensionDependencyEntity $dependency
-     * @return bool
      */
-    private function bundleDependencySatisfied(ExtensionDependencyEntity &$dependency)
+    private function bundleDependencySatisfied(ExtensionDependencyEntity $dependency): bool
     {
         if ('php' === $dependency->getModname()) {
             // Do not use PHP_VERSION constant, because it might throw off the semver parser.
-            $phpVersion = PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "." . PHP_RELEASE_VERSION;
+            $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
             if (!Semver::satisfies($phpVersion, $dependency->getMinversion())) {
-                throw new \InvalidArgumentException('This module requires a higher version of PHP than you currently have installed.');
+                throw new InvalidArgumentException('This module requires a higher version of PHP than you currently have installed.');
             }
 
             return true;
@@ -180,7 +171,7 @@ class ExtensionDependencyHelper
         return true;
         // The section below is disabled because it doesn't work with dependencies that are in the module's own vendor directory.
         /*
-        if (strpos($dependency->getModname(), '/') !== false) {
+        if (false !== strpos($dependency->getModname(), '/')) {
             if ($this->kernel->isBundle($dependency->getModname())) {
                 if (empty($this->installedPackages)) {
                     // create and cache installed packages from composer.lock file
@@ -196,7 +187,7 @@ class ExtensionDependencyHelper
                 }
             }
 
-            throw new \InvalidArgumentException(sprintf('This dependency can only be resolved by adding %s to the core\'s composer.json file and running `composer update`.', $dependency->getModname()));
+            throw new InvalidArgumentException(sprintf('This dependency can only be resolved by adding %s to the core\'s composer.json file and running `composer update`.', $dependency->getModname()));
         }
 
         return false;*/
@@ -204,18 +195,13 @@ class ExtensionDependencyHelper
 
     /**
      * Determine if a $currentVersion value is between $requiredMin and $requiredMax.
-     *
-     * @param string $requiredMin
-     * @param string $requiredMax
-     * @param string $currentVersion
-     * @return bool
      */
-    private function meetsVersionRequirements($requiredMin, $requiredMax, $currentVersion)
+    private function meetsVersionRequirements(string $requiredMin, string $requiredMax, string $currentVersion): bool
     {
         if (($requiredMin === $requiredMax) || empty($requiredMax)) {
-            $compatibilityString = (preg_match("/>|=|</", $requiredMin)) ? $requiredMin : ">=${requiredMin}";
+            $compatibilityString = preg_match('/>|=|</', $requiredMin) ? $requiredMin : '>=' . $requiredMin;
         } else {
-            $compatibilityString = "${requiredMin} - ${requiredMax}";
+            $compatibilityString = $requiredMin . ' - ' . $requiredMax;
         }
 
         return Semver::satisfies($currentVersion, $compatibilityString);

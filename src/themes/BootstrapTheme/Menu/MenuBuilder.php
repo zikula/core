@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BootstrapTheme\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -32,14 +33,17 @@ class MenuBuilder
      */
     private $permissionApi;
 
-    public function __construct(TranslatorInterface $translator, FactoryInterface $factory, PermissionApiInterface $permissionApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        FactoryInterface $factory,
+        PermissionApiInterface $permissionApi
+    ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
     }
 
-    public function createAdminMenu(array $options)
+    public function createAdminMenu(array $options = []): ItemInterface
     {
         $menu = $this->factory->createItem('bootstrapThemeAdminMenu');
         $menu->setChildrenAttribute('class', 'nav navbar-nav');
@@ -69,7 +73,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

@@ -18,42 +18,27 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class NativeEitherAuthenticationMethod extends AbstractNativeAuthenticationMethod
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
+    public function getAlias(): string
     {
         return ZAuthConstant::AUTHENTICATION_METHOD_EITHER;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->translator->__('Native Uname or Email');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their username or email address.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLoginFormClassName()
+    public function getLoginFormClassName(): string
     {
         return EitherLoginType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLoginTemplateName($type = 'page', $position = 'left')
+    public function getLoginTemplateName(string $type = 'page', string $position = 'left'): string
     {
         if ('block' === $type) {
             if ('topnav' === $position) {
@@ -66,10 +51,7 @@ class NativeEitherAuthenticationMethod extends AbstractNativeAuthenticationMetho
         return 'ZikulaZAuthModule:Authentication:EitherLogin.html.twig';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function authenticate(array $data = [])
+    public function authenticate(array $data = []): ?int
     {
         $field = 'email'; // default
         if (isset($data['either'])) {

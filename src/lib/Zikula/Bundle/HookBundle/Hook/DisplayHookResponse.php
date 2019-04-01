@@ -21,7 +21,7 @@ namespace Zikula\Bundle\HookBundle\Hook;
 class DisplayHookResponse
 {
     /**
-     * @var string the area name
+     * @var string The area name
      */
     protected $area;
 
@@ -30,34 +30,18 @@ class DisplayHookResponse
      */
     protected $content;
 
-    /**
-     * Constructor.
-     *
-     * @param string $area Name of this response
-     * @param string $content Response content
-     */
-    public function __construct($area, $content)
+    public function __construct(string $area, string $content)
     {
         $this->content = $content;
         $this->area = $area;
     }
 
-    /**
-     * Get area property.
-     *
-     * @return string
-     */
-    public function getArea()
+    public function getArea(): string
     {
         return $this->area;
     }
 
-    /**
-     * Get the response content.
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->content;
     }

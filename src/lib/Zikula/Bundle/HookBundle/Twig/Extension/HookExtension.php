@@ -43,11 +43,6 @@ class HookExtension extends AbstractExtension
         $this->hookDispatcher = $hookDispatcher;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
@@ -64,14 +59,9 @@ class HookExtension extends AbstractExtension
     }
 
     /**
-     * @param string $eventName
-     * @param integer $id The object id
-     * @param UrlInterface $urlObject
-     * @param bool $outputAsArray set to true to output results as array (requires additional handling in template)
-     *
      * @return bool|string|array
      */
-    public function notifyDisplayHooks($eventName, $id = null, $urlObject = null, $outputAsArray = false)
+    public function notifyDisplayHooks(string $eventName, int $id = null, UrlInterface $urlObject = null, bool $outputAsArray = false)
     {
         if (empty($eventName)) {
             return trigger_error('Error! "eventname" must be set in notifydisplayhooks');
@@ -91,22 +81,16 @@ class HookExtension extends AbstractExtension
 
         $output = '';
         foreach ($responses as $result) {
-            if (!empty($result)) {
-                $output .= '<div class="z-displayhook">' . $result . '</div>' . "\n";
+            if (null === $result) {
+                continue;
             }
+            $output .= '<div class="z-displayhook">' . $result . '</div>' . "\n";
         }
 
         return $output;
     }
 
-    /**
-     * @param string $routeName
-     * @param array $routeParameters
-     * @param string $fragment
-     *
-     * @return UrlInterface
-     */
-    public function createRouteUrl($routeName, array $routeParameters = [], $fragment = null)
+    public function createRouteUrl(string $routeName, array $routeParameters = [], string $fragment = null): UrlInterface
     {
         $url = new RouteUrl($routeName, $routeParameters, $fragment);
 
@@ -118,12 +102,9 @@ class HookExtension extends AbstractExtension
     }
 
     /**
-     * @param string $content
-     * @param string $filterEventName
-     *
      * @return mixed
      */
-    public function notifyFilters($content, $filterEventName)
+    public function notifyFilters(string $content, string $filterEventName)
     {
         $hook = new FilterHook($content);
 

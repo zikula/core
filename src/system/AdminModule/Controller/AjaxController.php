@@ -38,14 +38,6 @@ class AjaxController extends AbstractController
      * @Route("/assigncategory", options={"expose"=true})
      *
      * Change the category a module belongs to by ajax.
-     *
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     * @param AdminModuleRepositoryInterface $adminModuleRepository
-     *
-     * @return JsonResponse
      */
     public function changeModuleCategoryAction(
         Request $request,
@@ -53,13 +45,13 @@ class AjaxController extends AbstractController
         ExtensionRepositoryInterface $extensionRepository,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository
-    ) {
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $moduleId = $request->request->get('modid');
-        $newParentCat = $request->request->getDigits('cat');
+        $newParentCat = $request->request->getInt('cat');
 
         /** @var ExtensionEntity $module */
         $module = $extensionRepository->find($moduleId);
@@ -84,33 +76,25 @@ class AjaxController extends AbstractController
         $adminModuleEntity->setSortorder($sortOrder);
         $adminModuleRepository->persistAndFlush($adminModuleEntity);
 
-        $output = [
+        return $this->json([
             'id' => $moduleId,
             'name' => $displayname,
             'url' => $url,
             'parentCategory' => $newParentCat,
-            'oldCategory' => (null !== $oldCategory ? $oldCategory['cid'] : false),
-        ];
-
-        return $this->json($output);
+            'oldCategory' => null !== $oldCategory ? $oldCategory['cid'] : false
+        ]);
     }
 
     /**
      * @Route("/newcategory", options={"expose"=true})
      *
      * Add a new admin category by ajax.
-     *
-     * @param Request $request
-     * @param RouterInterface $router
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     *
-     * @return JsonResponse
      */
     public function addCategoryAction(
         Request $request,
         RouterInterface $router,
         AdminCategoryRepositoryInterface $adminCategoryRepository
-    ) {
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
@@ -129,7 +113,6 @@ class AjaxController extends AbstractController
         }
 
         // check if category with same name exists
-        $categories = [];
         $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $cat) {
             if ($name === $cat['name']) {
@@ -142,37 +125,28 @@ class AjaxController extends AbstractController
         $item->setDescription('');
         $item->setSortorder($adminCategoryRepository->countCategories());
 
-        $entityManager = $this->get('doctrine')->getManager();
-        $entityManager->persist($item);
-        $entityManager->flush();
+        $this->getDoctrine()->getManager()->persist($item);
+        $this->getDoctrine()->getManager()->flush();
 
-        $output = [
+        return $this->json([
             'id' => $item->getCid(),
             'name' => $name,
-            'url' => $router->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $item->getCid()]),
-        ];
-
-        return $this->json($output);
+            'url' => $router->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $item->getCid()])
+        ]);
     }
 
     /**
      * @Route("/deletecategory", options={"expose"=true})
      *
      * Delete an admin category by ajax.
-     *
-     * @param Request $request
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     * @param AdminModuleRepositoryInterface $adminModuleRepository
-     *
-     * @return JsonResponse
      */
     public function deleteCategoryAction(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository
-    ) {
+    ): JsonResponse {
         //get passed cid to delete
-        $cid = trim($request->request->getDigits('cid'));
+        $cid = $request->request->getInt('cid');
 
         //check user has permission to delete this
         if (!$this->hasPermission('ZikulaAdminModule::Category', "::${cid}", ACCESS_DELETE)) {
@@ -185,11 +159,9 @@ class AjaxController extends AbstractController
             return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
-        if (!$this->hasPermission('ZikulaAdminModule::Category', "{$item[name]}::{$item[cid]}", ACCESS_DELETE)) {
+        if (!$this->hasPermission('ZikulaAdminModule::Category', $item['name'] . '::' . $item['cid'], ACCESS_DELETE)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
-
-        $output = [];
 
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
@@ -207,27 +179,24 @@ class AjaxController extends AbstractController
         $adminModuleRepository->changeCategory($cid, $defaultcategory);
 
         // delete the category
-        $entityManager = $this->get('doctrine')->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($item);
         $entityManager->flush();
 
-        $output['response'] = $cid;
-
-        return $this->json($output);
+        return $this->json([
+            'response' => $cid
+        ]);
     }
 
     /**
      * @Route("/editcategory", options={"expose"=true})
      *
      * Edit an admin category by ajax.
-     *
-     * @param Request $request
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     *
-     * @return JsonResponse
      */
-    public function editCategoryAction(Request $request, AdminCategoryRepositoryInterface $adminCategoryRepository)
-    {
+    public function editCategoryAction(
+        Request $request,
+        AdminCategoryRepositoryInterface $adminCategoryRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
@@ -242,11 +211,9 @@ class AjaxController extends AbstractController
         }
 
         //make sure cid and category name (cat) are both set
-        if (!isset($cid) || '' === $cid || !isset($name) || '' === $name) {
+        if (!isset($cid, $name) || '' === $cid || '' === $name) {
             return $this->json($this->__('No category name or id set.'), Response::HTTP_BAD_REQUEST);
         }
-
-        $output = [];
 
         //check if category with same name exists
         $categories = [];
@@ -264,9 +231,9 @@ class AjaxController extends AbstractController
 
             //check to see if the category with same name is the same category.
             if ($cat['cid'] === $cid) {
-                $output['response'] = $name;
-
-                return $this->json($output);
+                return $this->json([
+                    'response' => $name
+                ]);
             }
 
             //a different category has the same name, not allowed.
@@ -284,29 +251,23 @@ class AjaxController extends AbstractController
             'name' => $name,
             'description' => $item['description']
         ]);
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
-        $output['response'] = $name;
-
-        return $this->json($output);
+        return $this->json([
+            'response' => $name
+        ]);
     }
 
     /**
      * @Route("/makedefault", options={"expose"=true})
      *
      * Make a category the initially selected one (by ajax).
-     *
-     * @param Request $request
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     * @param VariableApiInterface $variableApi
-     *
-     * @return JsonResponse
      */
     public function defaultCategoryAction(
         Request $request,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         VariableApiInterface $variableApi
-    ) {
+    ): JsonResponse {
         //check user has permission to change the initially selected category
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
@@ -321,15 +282,13 @@ class AjaxController extends AbstractController
             return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
-        $output = [];
-
         // make category the initially selected one
         $makeDefault = $variableApi->set('ZikulaAdminModule', 'startcategory', $cid);
         if ($makeDefault) {
             // Success
-            $output['response'] = $this->__f('Category "%s" was successfully made default.', ['%s' => $item['name']]);
-
-            return $this->json($output);
+            return $this->json([
+                'response' => $this->__f('Category "%s" was successfully made default.', ['%s' => $item['name']])
+            ]);
         }
 
         //unknown error
@@ -339,15 +298,12 @@ class AjaxController extends AbstractController
     /**
      * @Route("/sortcategories", options={"expose"=true})
      *
-     * Sort the admin categories
-     *
-     * @param Request $request
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     *
-     * @return JsonResponse
+     * Sort the admin categories.
      */
-    public function sortCategoriesAction(Request $request, AdminCategoryRepositoryInterface $adminCategoryRepository)
-    {
+    public function sortCategoriesAction(
+        Request $request,
+        AdminCategoryRepositoryInterface $adminCategoryRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
@@ -356,10 +312,12 @@ class AjaxController extends AbstractController
 
         foreach ($data as $order => $cid) {
             $item = $adminCategoryRepository->findOneBy(['cid' => $cid]);
-            $item->setSortorder($order);
+            if (null !== $item) {
+                $item->setSortorder($order);
+            }
         }
 
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->json([]);
     }
@@ -367,15 +325,12 @@ class AjaxController extends AbstractController
     /**
      * @Route("/sortmodules", options={"expose"=true})
      *
-     * Sort the modules
-     *
-     * @param Request $request
-     * @param AdminModuleRepositoryInterface $adminModuleRepository
-     *
-     * @return JsonResponse
+     * Sort the modules.
      */
-    public function sortModulesAction(Request $request, AdminModuleRepositoryInterface $adminModuleRepository)
-    {
+    public function sortModulesAction(
+        Request $request,
+        AdminModuleRepositoryInterface $adminModuleRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
@@ -384,10 +339,12 @@ class AjaxController extends AbstractController
 
         foreach ($data as $order => $mid) {
             $item = $adminModuleRepository->findOneBy(['mid' => $mid]);
-            $item->setSortorder($order);
+            if (null !== $item) {
+                $item->setSortorder($order);
+            }
         }
 
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->json([]);
     }

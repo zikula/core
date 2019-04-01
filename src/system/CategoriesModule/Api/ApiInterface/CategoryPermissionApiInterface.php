@@ -15,9 +15,6 @@ namespace Zikula\CategoriesModule\Api\ApiInterface;
 
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
-/**
- * CategoryPermissionApiInterface
- */
 interface CategoryPermissionApiInterface
 {
     /**
@@ -27,9 +24,10 @@ interface CategoryPermissionApiInterface
      * Check is done as "ZikulaCategoriesModule:PropertyId:CategoryId", "$regId::$catId"
      *
      * @param AbstractCategoryAssignment[] $categoryAssignments
-     * @param int $permLevel
-     * @param bool $requireAccessForAll
-     * @return bool True if access is allowed to at least one of the categories
      */
-    public function hasCategoryAccess(array $categoryAssignments, $permLevel = ACCESS_OVERVIEW, $requireAccessForAll = false);
+    public function hasCategoryAccess(
+        array $categoryAssignments,
+        int $permLevel = ACCESS_OVERVIEW,
+        bool $requireAccessForAll = false
+    ): bool;
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Api;
 
 use Psr\Container\ContainerInterface;
+use RuntimeException;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\BlockHandlerInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -35,12 +36,6 @@ class BlockFactoryApi implements BlockFactoryApiInterface
      */
     private $translator;
 
-    /**
-     * BlockFactoryApi constructor.
-     *
-     * @param ContainerInterface $container
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         ContainerInterface $container,
         TranslatorInterface $translator
@@ -49,24 +44,21 @@ class BlockFactoryApi implements BlockFactoryApiInterface
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getInstance($blockClassName)
+    public function getInstance(string $blockClassName): BlockHandlerInterface
     {
         if (!class_exists($blockClassName)) {
-            throw new \RuntimeException($this->translator->__f('Block class %c does not exist.', ['%c' => $blockClassName]));
+            throw new RuntimeException($this->translator->__f('Block class %c does not exist.', ['%c' => $blockClassName]));
         }
         if (!is_subclass_of($blockClassName, BlockHandlerInterface::class)) {
-            throw new \RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
+            throw new RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
         }
 
-        if ('\\' === mb_substr($blockClassName, 0, 1)) {
+        if (0 === mb_strpos($blockClassName, '\\')) {
             $blockClassName = mb_substr($blockClassName, 1);
         }
 
         if (!$this->container->has($blockClassName)) {
-            throw new \RuntimeException($this->translator->__f('Block class %c not found in container.', ['%c' => $blockClassName]));
+            throw new RuntimeException($this->translator->__f('Block class %c not found in container.', ['%c' => $blockClassName]));
         }
 
         return $this->container->get($blockClassName);

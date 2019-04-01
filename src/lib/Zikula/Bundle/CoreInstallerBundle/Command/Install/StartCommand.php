@@ -30,9 +30,6 @@ use Zikula\SettingsModule\Api\LocaleApi;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -51,11 +48,6 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -130,7 +122,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         // write the parameters to personal_config.php and custom_parameters.yml
         $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml', 'parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
-        if ('pdo_' !== mb_substr($params['database_driver'], 0, 4)) {
+        if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
             $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         }
         $yamlManager->setParameters($params);

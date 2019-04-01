@@ -23,23 +23,19 @@ class AccountLinksHelper
      */
     private $collector;
 
-    /**
-     * AccountLinksHelper constructor.
-     * @param LinkContainerCollector $collector
-     */
     public function __construct(LinkContainerCollector $collector)
     {
         $this->collector = $collector;
     }
 
-    public function getAllAccountLinks()
+    public function getAllAccountLinks(): array
     {
-        // get the menu links for modules
-        $accountLinks = $this->collector->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
-        $legacyAccountLinksFromNew = [];
-        foreach ($accountLinks as $moduleName => $links) {
+        // get the account links provided by any modules
+        $accountLinksPerModule = $this->collector->getAllLinksByType(LinkContainerInterface::TYPE_ACCOUNT);
+        $accountLinks = [];
+        foreach ($accountLinksPerModule as $moduleName => $links) {
             foreach ($links as $link) {
-                $legacyAccountLinksFromNew[] = [
+                $accountLinks[] = [
                     'module' => $moduleName,
                     'url' => $link['url'],
                     'text' => $link['text'],
@@ -48,6 +44,6 @@ class AccountLinksHelper
             }
         }
 
-        return $legacyAccountLinksFromNew;
+        return $accountLinks;
     }
 }

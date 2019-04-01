@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
 
     var lastFragment = null;
     var ajax = null;

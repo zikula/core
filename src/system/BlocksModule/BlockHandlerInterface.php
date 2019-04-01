@@ -18,33 +18,27 @@ interface BlockHandlerInterface
     /**
      * Get the type of the block handler (e.g. the 'name').
      * This is displayed to the admin during creation, not to site users.
-     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Display the block content.
-     * @param array $properties
-     * @return string
      */
-    public function display(array $properties);
+    public function display(array $properties): string;
 
     /**
      * Get the Fully Qualified Class Name of the block's form class.
-     * @return string
      */
-    public function getFormClassName();
+    public function getFormClassName(): string;
 
     /**
      * Get an array of form options.
-     * @return array
      */
-    public function getFormOptions();
+    public function getFormOptions(): array;
 
     /**
      * Get the full name of the form's template in 'namespaced' name-style.
      *   e.g. `return '@AcmeMyBundle/Block/foo_modify.html.twig';`
-     * @return string
      */
-    public function getFormTemplate();
+    public function getFormTemplate(): string;
 }

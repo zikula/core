@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -11,7 +14,7 @@
 
 namespace Zikula\RoutesModule\Base;
 
-use RuntimeException;
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
@@ -21,27 +24,20 @@ use Zikula\RoutesModule\Entity\RouteEntity;
 abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected $entities = [
         RouteEntity::class,
     ];
 
-    /**
-     * Install the ZikulaRoutesModule application.
-     *
-     * @return boolean True on success, or false
-     *
-     * @throws RuntimeException Thrown if database tables can not be created or another error occurs
-     */
-    public function install()
+    public function install(): bool
     {
         $logger = $this->container->get('logger');
     
         // create all tables from according entity definitions
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
             $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
     
@@ -58,18 +54,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
     
-    /**
-     * Upgrade the ZikulaRoutesModule application from an older version.
-     *
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param integer $oldVersion Version to upgrade from
-     *
-     * @return boolean True on success, false otherwise
-     *
-     * @throws RuntimeException Thrown if database tables can not be updated
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
     /*
         $logger = $this->container->get('logger');
@@ -82,7 +67,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
                 // update the database schema
                 try {
                     $this->schemaTool->update($this->entities);
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
                     $logger->error('{app}: Could not update the database tables during the upgrade. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
     
@@ -95,20 +80,13 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
     
-    /**
-     * Uninstall ZikulaRoutesModule.
-     *
-     * @return boolean True on success, false otherwise
-     *
-     * @throws RuntimeException Thrown if database tables or stored workflows can not be removed
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         $logger = $this->container->get('logger');
     
         try {
             $this->schemaTool->drop($this->entities);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
             $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
     

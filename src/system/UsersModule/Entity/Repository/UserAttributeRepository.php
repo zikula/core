@@ -26,12 +26,6 @@ class UserAttributeRepository extends ServiceEntityRepository implements UserAtt
         parent::__construct($registry, UserAttributeEntity::class);
     }
 
-    /**
-     * @param array $attributeNames
-     * @param array $users
-     * @param array $forbiddenUsers
-     * @return mixed
-     */
     public function setEmptyValueWhereAttributeNameIn(
         array $attributeNames,
         array $users = [],
@@ -46,9 +40,10 @@ class UserAttributeRepository extends ServiceEntityRepository implements UserAtt
             $qb->andWhere('a.user IN (:users)')
                 ->setParameter('users', $users);
         }
-        $qb->andWhere('a.user NOT IN (:forbidden_users)')
-            ->setParameter('forbidden_users', $forbiddenUsers);
-
+        if (!empty($forbiddenUsers)) {
+            $qb->andWhere('a.user NOT IN (:forbidden_users)')
+                ->setParameter('forbidden_users', $forbiddenUsers);
+        }
         return $qb->getQuery()->execute();
     }
 }

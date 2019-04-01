@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -43,7 +44,7 @@ class MenuBuilder
         $this->variableApi = $variableApi;
     }
 
-    public function createAdminActionsMenu(array $options)
+    public function createAdminActionsMenu(array $options): ItemInterface
     {
         /** @var PermissionEntity $permission */
         $permission = $options['permission'];
@@ -76,7 +77,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,6 +28,7 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Form\Type\BlockType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -41,12 +42,9 @@ class BlockController extends AbstractController
      * @Route("/new")
      * @Theme("admin")
      *
-     * @param Request $request
-     * @param BlockApiInterface $blockApi
-     *
-     * @return RedirectResponse|Response
+     * Choose type for creating a new block.
      */
-    public function newAction(Request $request, BlockApiInterface $blockApi)
+    public function newAction(Request $request, BlockApiInterface $blockApi): Response
     {
         $form = $this->createFormBuilder()
             ->add('bkey', ChoiceType::class, [
@@ -76,24 +74,19 @@ class BlockController extends AbstractController
     }
 
     /**
-     * Create a new block or edit an existing block.
-     *
      * @Route("/edit/{blockEntity}", requirements={"blockEntity" = "^[1-9]\d*$"})
      * @Theme("admin")
      *
-     * @param Request $request
-     * @param BlockApiInterface $blockApi
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param BlockEntity $blockEntity
+     * Create a new block or edit an existing block.
      *
-     * @return RedirectResponse|Response
+     * @throws AccessDeniedException Thrown if the user doesn't have permissions for creating new blocks or editing a given one
      */
     public function editAction(
         Request $request,
         BlockApiInterface $blockApi,
         ExtensionRepositoryInterface $extensionRepository,
         BlockEntity $blockEntity = null
-    ) {
+    ): Response {
         $accessLevelRequired = ACCESS_EDIT;
         if (null === $blockEntity) {
             $bKey = json_decode($request->query->get('bkey'));
@@ -124,14 +117,15 @@ class BlockController extends AbstractController
 
         list($moduleName) = explode(':', $blockEntity->getBkey());
         if ($form->isSubmitted()) {
-            if ($form->get('save')->isClicked() && $form->isValid()) {
+            if ($form->isValid() && $form->get('save')->isClicked()) {
                 // sort filter array so keys are always sequential.
                 $filters = $blockEntity->getFilters();
                 sort($filters);
                 $blockEntity->setFilters($filters);
 
-                /** @var \Doctrine\ORM\EntityManager $em */
+                /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
+                /** @var ExtensionEntity $module */
                 $module = $extensionRepository->findOneBy(['name' => $moduleName]);
                 $blockEntity->setModule($module);
 
@@ -161,12 +155,9 @@ class BlockController extends AbstractController
      *
      * Delete a block.
      *
-     * @param Request $request
-     * @param BlockEntity $blockEntity
-     *
-     * @return RedirectResponse|Response
+     * @throws AccessDeniedException Thrown if the user doesn't have delete permissions for the block
      */
-    public function deleteAction(Request $request, BlockEntity $blockEntity)
+    public function deleteAction(Request $request, BlockEntity $blockEntity): Response
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', $blockEntity->getBkey() . ':' . $blockEntity->getTitle() . ':' . $blockEntity->getBid(), ACCESS_DELETE)) {
             throw new AccessDeniedException();
@@ -194,15 +185,13 @@ class BlockController extends AbstractController
     }
 
     /**
+     * @Route("/toggle-active", methods = {"POST"}, options={"expose"=true})
+     *
      * Ajax method to toggle the active status of a block.
      *
-     *  bid int id of block to toggle.
-     *
-     * @Route("/toggle-active", methods = {"POST"}, options={"expose"=true})
-     * @param Request $request
-     * @return JsonResponse bid or Ajax error
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function toggleblockAction(Request $request)
+    public function toggleblockAction(Request $request): JsonResponse
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
@@ -213,8 +202,10 @@ class BlockController extends AbstractController
         }
         $em = $this->getDoctrine()->getManager();
         $block = $em->find('ZikulaBlocksModule:BlockEntity', $bid);
-        $block->setActive(BlockApi::BLOCK_ACTIVE === $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
-        $em->flush();
+        if (null !== $block) {
+            $block->setActive(BlockApi::BLOCK_ACTIVE === $block->getActive() ? BlockApi::BLOCK_INACTIVE : BlockApi::BLOCK_ACTIVE);
+            $em->flush();
+        }
 
         return $this->json(['bid' => $bid]);
     }
@@ -223,11 +214,8 @@ class BlockController extends AbstractController
      * @Route("/view/{bid}", requirements={"bid" = "^[1-9]\d*$"}, options={"expose"=true})
      *
      * Display a block.
-     *
-     * @param BlockEntity $blockEntity
-     * @return Response symfony response object
      */
-    public function viewAction(BlockEntity $blockEntity = null)
+    public function viewAction(BlockEntity $blockEntity = null): response
     {
         return $this->render('@ZikulaBlocksModule/Admin/blockview.html.twig', [
             'block' => $blockEntity,

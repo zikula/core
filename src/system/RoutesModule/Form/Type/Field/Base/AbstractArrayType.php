@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -21,26 +24,17 @@ use Zikula\RoutesModule\Form\DataTransformer\ArrayFieldTransformer;
  */
 abstract class AbstractArrayType extends AbstractType
 {
-    /**
-     * @inheritDoc
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new ArrayFieldTransformer();
         $builder->addModelTransformer($transformer);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getParent()
     {
         return TextareaType::class;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getBlockPrefix()
     {
         return 'zikularoutesmodule_field_array';

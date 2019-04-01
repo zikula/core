@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine;
 
+use Countable;
+use IteratorAggregate;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 /**
- * Class ParameterBag
- *
  * This class provides an abstracted method of collecting, managing and retrieving variables.
  * values can be stored in a namespaced array structure. i.e.
  *   'key' = ['subkey' => value, 'subkey2' => value2]
@@ -27,7 +27,7 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterf
  *   'key.subkey' = value
  *   'key.subkey2' = value2
  */
-class ParameterBag implements \IteratorAggregate, \Countable
+class ParameterBag implements IteratorAggregate, Countable
 {
     /**
      * @var RequestStack
@@ -56,13 +56,6 @@ class ParameterBag implements \IteratorAggregate, \Countable
      */
     private $ns;
 
-    /**
-     * @param RequestStack $requestStack
-     * @param VariableApiInterface $variableApi
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param array $parameters
-     * @param string $namespaceChar
-     */
     public function __construct(
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
@@ -84,22 +77,15 @@ class ParameterBag implements \IteratorAggregate, \Countable
      * check if property field exists, so it's not possible
      * to get using default values, ie, empty.
      *
-     * @param string $key
-     * @param string $args
-     *
-     * @return string
+     * @param mixed $args
+     * @return mixed
      */
-    public function __call($key, $args)
+    public function __call(string $key, $args)
     {
         return $this->get($key);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return boolean
-     */
-    public function has($key)
+    public function has(string $key): bool
     {
         $parameters = $this->resolvePath($key);
         $key = $this->resolveKey($key);
@@ -108,14 +94,12 @@ class ParameterBag implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Gets key
+     * Gets key.
      *
-     * @param string $key
-     * @param string $default ''
-     *
+     * @param mixed $default
      * @return mixed
      */
-    public function get($key, $default = '')
+    public function get(string $key, $default = '')
     {
         $parameters = $this->resolvePath($key);
         $key = $this->resolveKey($key);
@@ -132,10 +116,9 @@ class ParameterBag implements \IteratorAggregate, \Countable
      *   'key.subkey' = value
      *   'key.subkey2' = value2
      *
-     * @param string $key
      * @param mixed $value
      */
-    public function set($key, $value)
+    public function set(string $key, $value)
     {
         $parameters = &$this->resolvePath($key, true);
         $key = $this->resolveKey($key);
@@ -143,13 +126,11 @@ class ParameterBag implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Removes value
+     * Removes and returns value.
      *
-     * @param string $key
-     *
-     * @return null
+     * @return mixed
      */
-    public function remove($key)
+    public function remove(string $key)
     {
         $retval = null;
         $parameters = &$this->resolvePath($key);
@@ -163,21 +144,17 @@ class ParameterBag implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Retrieve all parameters
-     *
-     * @return array
+     * Retrieve all parameters.
      */
-    public function all()
+    public function all(): array
     {
         return $this->parameters;
     }
 
     /**
-     * Switch out array
-     *
-     * @param array $parameters
+     * Switch out array.
      */
-    public function replace(array $parameters)
+    public function replace(array $parameters = []): void
     {
         $this->parameters = [];
         foreach ($parameters as $key => $value) {
@@ -186,11 +163,9 @@ class ParameterBag implements \IteratorAggregate, \Countable
     }
 
     /**
-     * Clears params.
-     *
-     * @return array
+     * Clears and return all parameters.
      */
-    public function clear()
+    public function clear(): array
     {
         $return = $this->parameters;
         $this->parameters = [];
@@ -200,20 +175,16 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Returns an iterator for parameters.
-     *
-     * @return \ArrayIterator An \ArrayIterator instance
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->parameters);
+        return new ArrayIterator($this->parameters);
     }
 
     /**
      * Returns the number of parameters.
-     *
-     * @return int The number of parameters
      */
-    public function count()
+    public function count(): int
     {
         return count($this->parameters);
     }
@@ -222,13 +193,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
      * Resolves a path in parameters property and returns it as a reference.
      *
      * This method allows structured namespacing of parameters.
-     *
-     * @param string $key Key name
-     * @param boolean $writeContext Write context, default false
-     *
-     * @return array
      */
-    private function &resolvePath($key, $writeContext = false)
+    private function &resolvePath(string $key, bool $writeContext = false): array
     {
         $array = &$this->parameters;
         $key = (0 === mb_strpos($key, $this->ns)) ? mb_substr($key, 1) : $key;
@@ -268,14 +234,9 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Resolves the key from the name.
-     *
      * This is the last part in a dot separated string.
-     *
-     * @param string $key
-     *
-     * @return string
      */
-    private function resolveKey($key)
+    private function resolveKey(string $key): string
     {
         if (false !== mb_strpos($key, $this->ns)) {
             $key = mb_substr($key, mb_strrpos($key, $this->ns) + 1, mb_strlen($key));
@@ -286,12 +247,8 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
     /**
      * Applies amendments to a title value before returning it.
-     *
-     * @param mixed $title
-     *
-     * @return string
      */
-    private function prepareTitle($title)
+    private function prepareTitle(string $title): string
     {
         if (!is_string($title)) {
             return $title;
@@ -299,8 +256,11 @@ class ParameterBag implements \IteratorAggregate, \Countable
 
         $titleScheme = $this->variableApi->getSystemVar('pagetitle', '');
         if (!empty($titleScheme) && '%pagetitle%' !== $titleScheme) {
-            $title = str_replace('%pagetitle%', $title, $titleScheme);
-            $title = str_replace('%sitename%', $this->variableApi->getSystemVar('sitename', ''), $title);
+            $title = str_replace(
+                ['%pagetitle%', '%sitename%'],
+                [$title, $this->variableApi->getSystemVar('sitename', '')],
+                $titleScheme
+            );
 
             $moduleDisplayName = '';
             $request = $this->requestStack->getCurrentRequest();

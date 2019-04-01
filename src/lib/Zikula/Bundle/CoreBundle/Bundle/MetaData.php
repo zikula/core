@@ -13,25 +13,27 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use ArrayAccess;
+use Exception;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
-class MetaData implements \ArrayAccess
+class MetaData implements ArrayAccess
 {
     use TranslatorTrait;
 
-    const TYPE_MODULE = 2;
+    public const TYPE_MODULE = 2;
 
-    const TYPE_SYSTEM = 3;
+    public const TYPE_SYSTEM = 3;
 
-    const TYPE_CORE = 4;
+    public const TYPE_CORE = 4;
 
-    const DEPENDENCY_REQUIRED = 1;
+    public const DEPENDENCY_REQUIRED = 1;
 
-    const DEPENDENCY_RECOMMENDED = 2;
+    public const DEPENDENCY_RECOMMENDED = 2;
 
-    const DEPENDENCY_CONFLICTS = 3;
+    public const DEPENDENCY_CONFLICTS = 3;
 
     private $name;
 
@@ -69,7 +71,7 @@ class MetaData implements \ArrayAccess
 
     private $coreCompatibility;
 
-    public function __construct($json)
+    public function __construct(array $json = [])
     {
         $this->name = $json['name'];
         $this->version = $json['version'] ?? '';
@@ -91,62 +93,62 @@ class MetaData implements \ArrayAccess
         $this->coreCompatibility = $json['extra']['zikula']['core-compatibility'] ?? null;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
-    public function getShortName()
+    public function getShortName(): string
     {
         return $this->shortName;
     }
 
-    public function getPsr0()
+    public function getPsr0(): array
     {
-        return isset($this->autoload['psr-0']) ? $this->autoload['psr-0'] : [];
+        return $this->autoload['psr-0'] ?? [];
     }
 
-    public function getPsr4()
+    public function getPsr4(): array
     {
-        return isset($this->autoload['psr-4']) ? $this->autoload['psr-4'] : [];
+        return $this->autoload['psr-4'] ?? [];
     }
 
-    public function getAutoload()
+    public function getAutoload(): array
     {
         return $this->autoload;
     }
 
-    public function getBasePath()
+    public function getBasePath(): string
     {
         return $this->basePath;
     }
 
-    public function getRootPath()
+    public function getRootPath(): string
     {
         return $this->rootPath;
     }
 
-    public function getClass()
+    public function getClass(): string
     {
         return $this->class;
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         $this->confirmTranslator();
 
@@ -155,17 +157,17 @@ class MetaData implements \ArrayAccess
         return empty($description) ? $this->description : $description;
     }
 
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return $this->dependencies;
     }
 
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         $this->confirmTranslator();
 
@@ -174,12 +176,12 @@ class MetaData implements \ArrayAccess
         return empty($display_name) ? $this->displayName : $display_name;
     }
 
-    public function setDisplayName($name)
+    public function setDisplayName(string $name): void
     {
         $this->displayName = $name;
     }
 
-    public function getUrl($translated = true)
+    public function getUrl(bool $translated = true): string
     {
         if ($translated) {
             $this->confirmTranslator();
@@ -191,37 +193,37 @@ class MetaData implements \ArrayAccess
         return $this->url;
     }
 
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
 
-    public function getOldNames()
+    public function getOldNames(): array
     {
         return $this->oldNames;
     }
 
-    public function getCapabilities()
+    public function getCapabilities(): array
     {
         return $this->capabilities;
     }
 
-    public function getSecuritySchema()
+    public function getSecuritySchema(): array
     {
         return $this->securitySchema;
     }
 
-    public function getExtensionType()
+    public function getExtensionType(): int
     {
         return $this->extensionType;
     }
 
-    public function getCoreCompatibility()
+    public function getCoreCompatibility(): ?string
     {
         return $this->coreCompatibility;
     }
 
-    private function formatDependencies(array $json)
+    private function formatDependencies(array $json = []): array
     {
         $dependencies = [];
         if (!empty($json['require'])) {
@@ -262,24 +264,22 @@ class MetaData implements \ArrayAccess
         return $dependencies;
     }
 
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    private function confirmTranslator()
+    private function confirmTranslator(): void
     {
         if (!isset($this->translator)) {
-            throw new PreconditionRequiredHttpException(sprintf("The translator property is not set correctly in %s", __CLASS__));
+            throw new PreconditionRequiredHttpException(sprintf('The translator property is not set correctly in %s', __CLASS__));
         }
     }
 
     /**
      * Theme MetaData as array
-     *
-     * @return array
      */
-    public function getThemeFilteredVersionInfoArray()
+    public function getThemeFilteredVersionInfoArray(): array
     {
         $capabilities = $this->getCapabilities();
 
@@ -300,10 +300,8 @@ class MetaData implements \ArrayAccess
 
     /**
      * Module MetaData as array
-     *
-     * @return array
      */
-    public function getFilteredVersionInfoArray()
+    public function getFilteredVersionInfoArray(): array
     {
         return [
             'name' => $this->getShortName(),
@@ -327,20 +325,18 @@ class MetaData implements \ArrayAccess
 
     public function offsetGet($offset)
     {
-        $method = "get" . ucwords($offset);
+        $method = 'get' . ucwords($offset);
 
         return $this->{$method}();
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
-        // not allowed
-        throw new \Exception('Setting values by array access is not allowed.');
+        throw new Exception('Setting values by array access is not allowed.');
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
-        // not allowed
-        throw new \Exception('Unsetting values by array access is not allowed.');
+        throw new Exception('Unsetting values by array access is not allowed.');
     }
 }

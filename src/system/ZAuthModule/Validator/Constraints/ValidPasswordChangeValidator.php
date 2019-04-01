@@ -36,12 +36,6 @@ class ValidPasswordChangeValidator extends ConstraintValidator
      */
     private $passwordApi;
 
-    /**
-     * ValidPasswordChangeValidator constructor.
-     * @param AuthenticationMappingRepositoryInterface $repository
-     * @param TranslatorInterface $translator
-     * @param PasswordApiInterface $passwordApi
-     */
     public function __construct(AuthenticationMappingRepositoryInterface $repository, TranslatorInterface $translator, PasswordApiInterface $passwordApi)
     {
         $this->repository = $repository;
@@ -60,7 +54,7 @@ class ValidPasswordChangeValidator extends ConstraintValidator
                     ->atPath('oldpass')
                     ->addViolation();
             }
-            // oldpass == newpass??
+            // oldpass == newpass?
             if (isset($data['pass']) && $data['oldpass'] === $data['pass']) {
                 $this->context->buildViolation($this->translator->__('Your new password cannot match your current password.'))
                     ->atPath('pass')

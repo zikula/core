@@ -22,35 +22,33 @@ class EntitySelectionBuilder
      */
     private $kernel;
 
-    /**
-     * EntitySelectionBuilder constructor.
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
     /**
-     * build an array suitable for a select input
-     * @param $moduleName
-     * @return array
+     * Build an array suitable for a select input.
      */
-    public function buildFor($moduleName)
+    public function buildFor(string $moduleName): array
     {
         $data = [];
-        if ($this->kernel->isBundle($moduleName)) {
-            $module = $this->kernel->getModule($moduleName);
-            $capabilities = $module->getMetaData()->getCapabilities();
-            if (isset($capabilities['categorizable'])) {
-                $keys = array_keys($capabilities['categorizable']);
-                $entityList = is_int($keys[0]) ? $capabilities['categorizable'] : $capabilities['categorizable'][$keys[0]];
-                foreach ($entityList as $fullyQualifiedEntityName) {
-                    $nameParts = explode('\\', $fullyQualifiedEntityName);
-                    $entityName = array_pop($nameParts);
-                    $data[$entityName] = $entityName;
-                }
-            }
+        if (!$this->kernel->isBundle($moduleName)) {
+            return $data;
+        }
+
+        $module = $this->kernel->getModule($moduleName);
+        $capabilities = $module->getMetaData()->getCapabilities();
+        if (!isset($capabilities['categorizable'])) {
+            return $data;
+        }
+
+        $keys = array_keys($capabilities['categorizable']);
+        $entityList = is_int($keys[0]) ? $capabilities['categorizable'] : $capabilities['categorizable'][$keys[0]];
+        foreach ($entityList as $fullyQualifiedEntityName) {
+            $nameParts = explode('\\', $fullyQualifiedEntityName);
+            $entityName = array_pop($nameParts);
+            $data[$entityName] = $entityName;
         }
 
         return $data;

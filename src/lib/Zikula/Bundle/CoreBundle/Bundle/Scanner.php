@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use const JSON_ERROR_NONE;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -20,8 +21,14 @@ use Zikula\Common\Translator\TranslatorInterface;
 
 class Scanner
 {
+    /**
+     * @var array
+     */
     private $jsons = [];
 
+    /**
+     * @var array
+     */
     private $invalid = [];
 
     /**
@@ -31,15 +38,10 @@ class Scanner
 
     /**
      * Scans and loads composer.json files.
-     *
-     * @param array $paths
-     * @param int $depth
-     * @param Finder $finder
      */
-    public function scan(array $paths, $depth = 3, Finder $finder = null)
+    public function scan(array $paths = [], int $depth = 3, Finder $finder = null): void
     {
-        $paths = (array)$paths;
-        $finder = null === $finder ? new Finder() : $finder;
+        $finder = $finder ?? new Finder();
         $finder->files()
             ->in($paths)
             ->notPath('docs')
@@ -48,7 +50,8 @@ class Scanner
             ->ignoreDotFiles(true)
             ->ignoreVCS(true)
             ->depth('<' . $depth)
-            ->name('composer.json');
+            ->name('composer.json')
+        ;
 
         /** @var $file SplFileInfo */
         foreach ($finder as $file) {
@@ -64,18 +67,16 @@ class Scanner
     /**
      * Decodes a json string.
      *
-     * @param string $file Path to json file
-     *
      * @return bool|mixed
      */
-    public function decode($file)
+    public function decode(string $jsonFilePath)
     {
-        $base = str_replace('\\', '/', dirname($file));
-        $zkRoot = realpath(__DIR__ . '/../../../../../');
-        $base = mb_substr($base, mb_strlen($zkRoot) + 1);
+        $base = str_replace('\\', '/', dirname($jsonFilePath));
+        $zkRoot = dirname(__DIR__, 5) . '/';
+        $base = mb_substr($base, mb_strlen($zkRoot));
 
-        $json = json_decode($this->getFileContents($file), true);
-        if (\JSON_ERROR_NONE === json_last_error()) {
+        $json = json_decode($this->getFileContents($jsonFilePath), true);
+        if (JSON_ERROR_NONE === json_last_error()) {
             // add base-path for future use
             $json['extra']['zikula']['base-path'] = $base;
 
@@ -96,41 +97,42 @@ class Scanner
         return false;
     }
 
-    public function getFileContents($file)
+    public function getFileContents(string $file): string
     {
         return file_get_contents($file);
     }
 
-    public function getModulesMetaData($indexByShortName = false)
+    public function getModulesMetaData(bool $indexByShortName = false): array
     {
         return $this->getMetaData('zikula-module', $indexByShortName);
     }
 
-    public function getThemesMetaData($indexByShortName = false)
+    public function getThemesMetaData(bool $indexByShortName = false): array
     {
         return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
-    private function getMetaData($type, $indexByShortName)
+    private function getMetaData(string $type, bool $indexByShortName): array
     {
         $array = [];
         foreach ($this->jsons as $json) {
-            if ($json['type'] === $type) {
-                $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
-                $array[$indexField] = new MetaData($json);
-                $array[$indexField]->setTranslator($this->translator);
+            if ($json['type'] !== $type) {
+                continue;
             }
+            $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];
+            $array[$indexField] = new MetaData($json);
+            $array[$indexField]->setTranslator($this->translator);
         }
 
         return $array;
     }
 
-    public function getInvalid()
+    public function getInvalid(): array
     {
         return $this->invalid;
     }
 
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

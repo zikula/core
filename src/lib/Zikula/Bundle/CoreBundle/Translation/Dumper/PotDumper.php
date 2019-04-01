@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Translation\Dumper;
 
+use DateTime;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Translation\Dumper\ArrayStructureDumper;
 use JMS\TranslationBundle\Util\Writer;
@@ -25,7 +26,7 @@ class PotDumper extends ArrayStructureDumper
     private $writer;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $enableHeader;
 
@@ -37,7 +38,7 @@ class PotDumper extends ArrayStructureDumper
 
     protected function dumpStructure(array $structure)
     {
-        $currentDateTime = new \DateTime();
+        $currentDateTime = new DateTime();
         if ($this->enableHeader) {
             $this->writer
                 ->reset()
@@ -60,7 +61,7 @@ class PotDumper extends ArrayStructureDumper
         return $this->writer->getContent();
     }
 
-    private function dumpStructureRecursively(array $structure)
+    private function dumpStructureRecursively(array $structure): void
     {
         $isFirst = true;
         foreach ($structure as $k => $v) {

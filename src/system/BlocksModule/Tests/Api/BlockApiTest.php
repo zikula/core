@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Tests\Api;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
+use Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\BlocksModule\Collector\BlockCollector;
@@ -21,14 +23,13 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockPositionRepositoryInterface;
-use Zikula\BlocksModule\Tests\Api\Fixture\AcmeFooModule;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
-class BlockApiTest extends \PHPUnit\Framework\TestCase
+class BlockApiTest extends TestCase
 {
     /**
-     * @var BlockApi
+     * @var BlockApiInterface
      */
     private $api;
 
@@ -42,10 +43,7 @@ class BlockApiTest extends \PHPUnit\Framework\TestCase
      */
     private $fooBlock;
 
-    /**
-     * BlockApiTest setup.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->setUpBlockPlacements();
         $this->fooBlock = new FooBlock();
@@ -74,21 +72,14 @@ class BlockApiTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $blockCollector = new BlockCollector();
-        $kernel = $this
-            ->getMockBuilder('ZikulaKernel')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $kernel
-            ->method('getModule')
-            ->willReturn(new AcmeFooModule());
 
-        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionRepo, $blockCollector, $kernel);
+        $this->api = new BlockApi($blockPosRepo, $blockFactory, $extensionRepo, $blockCollector);
     }
 
     /**
      * @covers BlockApi::getBlocksByPosition
      */
-    public function testGetBlocksByPosition()
+    public function testGetBlocksByPosition(): void
     {
         $this->assertCount(3, $this->api->getBlocksByPosition('left'));
     }
@@ -96,12 +87,12 @@ class BlockApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers BlockApi::createInstanceFromBKey
      */
-    public function testCreateInstanceFromBKey()
+    public function testCreateInstanceFromBKey(): void
     {
         $this->assertEquals($this->fooBlock, $this->api->createInstanceFromBKey('AcmeFooModule:Zikula\BlocksModule\Tests\Api\Fixture\FooBlock'));
     }
 
-    private function setUpBlockPlacements()
+    private function setUpBlockPlacements(): void
     {
         $this->blockPlacements = new ArrayCollection();
         $block = new BlockEntity();

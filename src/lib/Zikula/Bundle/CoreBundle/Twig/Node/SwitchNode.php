@@ -19,7 +19,7 @@ use Twig\Node\Node;
 
 class SwitchNode extends Node
 {
-    public function __construct(Node $cases, Node $default = null, AbstractExpression $expression, $lineno, $tag = null)
+    public function __construct(Node $cases, Node $default = null, AbstractExpression $expression, int $lineno = 0, $tag = null)
     {
         $nodes = [
             'cases' => $cases,

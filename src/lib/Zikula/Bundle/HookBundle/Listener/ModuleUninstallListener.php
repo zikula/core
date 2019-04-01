@@ -31,12 +31,6 @@ class ModuleUninstallListener implements EventSubscriberInterface
      */
     private $hookRuntimeRepository;
 
-    /**
-     * ModuleUninstallListener constructor.
-     *
-     * @param HookBindingRepositoryInterface $hookBindingRepository
-     * @param HookRuntimeRepositoryInterface $hookRuntimeRepository
-     */
     public function __construct(
         HookBindingRepositoryInterface $hookBindingRepository,
         HookRuntimeRepositoryInterface $hookRuntimeRepository
@@ -52,7 +46,7 @@ class ModuleUninstallListener implements EventSubscriberInterface
         ];
     }
 
-    public function removeHooks(ModuleStateEvent $event)
+    public function removeHooks(ModuleStateEvent $event): void
     {
         $moduleName = $event->getModInfo()['name'];
         $this->hookBindingRepository->deleteAllByOwner($moduleName);

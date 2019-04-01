@@ -13,36 +13,35 @@ declare(strict_types=1);
 
 namespace Zikula\Core\Doctrine;
 
-class EntityAccess implements \ArrayAccess
+use ArrayAccess;
+use ReflectionObject;
+use RuntimeException;
+
+class EntityAccess implements ArrayAccess
 {
     /**
-     * @var \ReflectionObject
+     * @var ReflectionObject
      */
     protected $reflection;
 
-    /**
-     * Get this reflection.
-     *
-     * @return \ReflectionObject
-     */
-    public function getReflection()
+    public function getReflection(): ReflectionObject
     {
-        if (!is_null($this->reflection)) {
+        if (null !== $this->reflection) {
             return $this->reflection;
         }
 
-        $this->reflection = new \ReflectionObject($this);
+        $this->reflection = new ReflectionObject($this);
 
         return $this->reflection;
     }
 
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         try {
             $this->getGetterForProperty($key);
 
             return true;
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $exception) {
             return false;
         }
     }
@@ -59,23 +58,21 @@ class EntityAccess implements \ArrayAccess
         return $this->{$method}();
     }
 
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $method = $this->getSetterForProperty($key);
         $this->{$method}($value);
     }
 
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->offsetSet($key, null);
     }
 
     /**
      * Returns an array representation of this entity.
-     *
-     * @return array An array containing properties of this entity
      */
-    public function toArray()
+    public function toArray(): array
     {
         $r = $this->getReflection();
         $array = [];
@@ -94,7 +91,7 @@ class EntityAccess implements \ArrayAccess
             $r = $r->getParentClass();
 
             foreach ($properties as $property) {
-                if (in_array($property->name, $excluded)) {
+                if (in_array($property->name, $excluded, true)) {
                     continue;
                 }
 
@@ -108,7 +105,7 @@ class EntityAccess implements \ArrayAccess
         return $array;
     }
 
-    public function merge(array $array)
+    public function merge(array $array = []): void
     {
         foreach ($array as $key => $value) {
             $method = $this->getSetterForProperty($key);
@@ -118,12 +115,8 @@ class EntityAccess implements \ArrayAccess
 
     /**
      * Returns the accessor's method name for retrieving a certain property.
-     *
-     * @param string $name Name of property to be retrieved
-     *
-     * @return string Name of method to be used as accessor for the given property
      */
-    private function getGetterForProperty($name)
+    private function getGetterForProperty(string $name): string
     {
         $getMethod = 'get' . ucfirst($name);
         if (method_exists($this, $getMethod)) {
@@ -139,7 +132,7 @@ class EntityAccess implements \ArrayAccess
         return '';
     }
 
-    private function getSetterForProperty($name)
+    private function getSetterForProperty(string $name): string
     {
         $setMethod = 'set' . ucfirst($name);
         if (method_exists($this, $setMethod)) {
@@ -147,6 +140,6 @@ class EntityAccess implements \ArrayAccess
         }
 
         $class = get_class($this);
-        throw new \RuntimeException("Entity \"${class}\" does not have a setter for property \"${name}\". Please add ${setMethod}().");
+        throw new RuntimeException("Entity \"${class}\" does not have a setter for property \"${name}\". Please add ${setMethod}().");
     }
 }

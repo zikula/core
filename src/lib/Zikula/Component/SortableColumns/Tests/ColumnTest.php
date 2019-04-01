@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\Component\SortableColumns\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Zikula\Component\SortableColumns\Column;
 
-class ColumnTest extends \PHPUnit\Framework\TestCase
+class ColumnTest extends TestCase
 {
     /**
      * @var Column
      */
     private $column;
 
-    protected function setup()
+    protected function setup(): void
     {
         $this->column = new Column('foo');
     }
@@ -30,7 +31,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::getName
      */
-    public function testGetName()
+    public function testGetName(): void
     {
         $this->assertEquals('foo', $this->column->getName());
     }
@@ -38,7 +39,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::setName
      */
-    public function testSetName()
+    public function testSetName(): void
     {
         $this->column->setName('bar');
         $this->assertEquals('bar', $this->column->getName());
@@ -47,7 +48,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::getDefaultSortDirection
      */
-    public function testGetDefaultSortDirection()
+    public function testGetDefaultSortDirection(): void
     {
         $this->assertEquals(Column::DIRECTION_ASCENDING, $this->column->getDefaultSortDirection());
     }
@@ -55,7 +56,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::setDefaultSortDirection
      */
-    public function getSetDefaultSortDirection()
+    public function getSetDefaultSortDirection(): void
     {
         $this->column->setDefaultSortDirection(Column::DIRECTION_DESCENDING);
         $this->assertEquals(Column::DIRECTION_DESCENDING, $this->column->getDefaultSortDirection());
@@ -64,7 +65,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::getCurrentSortDirection
      */
-    public function testGetCurrentSortDirection()
+    public function testGetCurrentSortDirection(): void
     {
         $this->assertEquals(Column::DIRECTION_ASCENDING, $this->column->getCurrentSortDirection());
     }
@@ -72,7 +73,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::setCurrentSortDirection
      */
-    public function testSetCurrentSortDirection()
+    public function testSetCurrentSortDirection(): void
     {
         $this->column->setCurrentSortDirection(Column::DIRECTION_DESCENDING);
         $this->assertEquals(Column::DIRECTION_DESCENDING, $this->column->getCurrentSortDirection());
@@ -83,7 +84,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::getReverseSortDirection
      */
-    public function testGetReverseSortDirection()
+    public function testGetReverseSortDirection(): void
     {
         $this->assertEquals(Column::DIRECTION_DESCENDING, $this->column->getReverseSortDirection());
     }
@@ -91,7 +92,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::getCssClassString
      */
-    public function testGetCssClassString()
+    public function testGetCssClassString(): void
     {
         $this->assertEquals(Column::CSS_CLASS_UNSORTED, $this->column->getCssClassString());
     }
@@ -99,7 +100,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::setCssClassString
      */
-    public function testSetCssClassString()
+    public function testSetCssClassString(): void
     {
         $this->column->setCssClassString(Column::CSS_CLASS_ASCENDING);
         $this->assertEquals(Column::CSS_CLASS_ASCENDING, $this->column->getCssClassString());
@@ -110,7 +111,7 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::isSortColumn
      */
-    public function testIsSortColumn()
+    public function testIsSortColumn(): void
     {
         $this->assertFalse($this->column->isSortColumn());
     }
@@ -118,9 +119,9 @@ class ColumnTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Column::setSortColumn
      */
-    public function testSetSortColumn()
+    public function testSetSortColumn(): void
     {
         $this->column->setSortColumn(true);
-        $this->assertTrue(true, $this->column->isSortColumn());
+        $this->assertTrue($this->column->isSortColumn());
     }
 }

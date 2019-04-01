@@ -29,10 +29,6 @@ class UserFormDataEvent extends Event
      */
     private $userEntity;
 
-    /**
-     * @param UserEntity $userEntity
-     * @param FormInterface $form
-     */
     public function __construct(UserEntity $userEntity, FormInterface $form)
     {
         $this->userEntity = $userEntity;
@@ -40,10 +36,9 @@ class UserFormDataEvent extends Event
     }
 
     /**
-     * @param null $prefix
-     * @return array
+     * @return mixed
      */
-    public function getFormData($prefix = null)
+    public function getFormData(string $prefix = null)
     {
         if (isset($prefix)) {
             return $this->form->get($prefix)->getData();
@@ -52,10 +47,7 @@ class UserFormDataEvent extends Event
         return $this->form->getData();
     }
 
-    /**
-     * @return UserEntity
-     */
-    public function getUserEntity()
+    public function getUserEntity(): UserEntity
     {
         return $this->userEntity;
     }

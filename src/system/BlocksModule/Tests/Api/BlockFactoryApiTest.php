@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use stdClass;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockFactoryApi;
-use Zikula\BlocksModule\BlockHandlerInterface;
-use Zikula\BlocksModule\Helper\ServiceNameHelper;
-use Zikula\BlocksModule\Tests\Api\Fixture\AcmeFooModule;
 use Zikula\BlocksModule\Tests\Api\Fixture\BarBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\WrongInterfaceBlock;
 use Zikula\Common\Translator\IdentityTranslator;
 
-class BlockFactoryApiTest extends \PHPUnit\Framework\TestCase
+class BlockFactoryApiTest extends TestCase
 {
     /**
      * @var BlockFactoryApiInterface
@@ -38,71 +38,50 @@ class BlockFactoryApiTest extends \PHPUnit\Framework\TestCase
      */
     private $container;
 
-    /**
-     * BlockApiTest setup.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = new Container();
-        $this->container->set('translator.default', new IdentityTranslator());
         $this->container->set('foo.block', new FooBlock());
-        $this->container->set('zikula_extensions_module.api.variable', new \stdClass());
-        $this->api = new BlockFactoryApi($this->container);
+        $this->container->set('zikula_extensions_module.api.variable', new stdClass());
+        $this->api = new BlockFactoryApi($this->container, new IdentityTranslator());
     }
 
     /**
      * @covers BlockFactoryApiInterface::getInstance()
      */
-    public function testGetBlockDefinedAsService()
+    public function testGetBlockDefinedAsService(): void
     {
-        $this->assertEquals($this->container->get('foo.block'), $this->api->getInstance('foo.block', new AcmeFooModule()));
+        $this->assertEquals($this->container->get('foo.block'), $this->api->getInstance('foo.block'));
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
-    public function testDoesNotExistException()
+    public function testDoesNotExistException(): void
     {
-        $this->api->getInstance('BarModule\ZedBlock', new AcmeFooModule());
+        $this->api->getInstance('BarModule\ZedBlock');
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
-    public function testWrongInterfaceException()
+    public function testWrongInterfaceException(): void
     {
-        $this->api->getInstance(WrongInterfaceBlock::class, new AcmeFooModule());
+        $this->api->getInstance(WrongInterfaceBlock::class);
     }
 
     /**
      * @covers BlockFactoryApiInterface::getInstance()
      */
-    public function testGetInstanceOfAbstractExtensionBlock()
+    public function testGetInstance(): void
     {
-        $blockInstance = $this->api->getInstance(BarBlock::class, new AcmeFooModule());
+        $blockInstance = $this->api->getInstance(FooBlock::class);
+        $this->assertNotEmpty($blockInstance);
+        $this->assertEquals('FooType', $blockInstance->getType());
+
+        $blockInstance = $this->api->getInstance(BarBlock::class);
         $this->assertNotEmpty($blockInstance);
         $this->assertInstanceOf(AbstractBlockHandler::class, $blockInstance);
         $this->assertEquals('Bar', $blockInstance->getType());
-        $serviceNameHelper = new ServiceNameHelper();
-        $blockServiceName = $serviceNameHelper->generateServiceNameFromClassName(BarBlock::class);
-        $this->assertTrue($this->container->has($blockServiceName));
-        $retrievedBlockService = $this->container->get($blockServiceName);
-        $this->assertInstanceOf(BlockHandlerInterface::class, $retrievedBlockService);
-    }
-
-    /**
-     * @covers BlockFactoryApiInterface::getInstance()
-     */
-    public function testGetInstanceOfInterfaceExtensionBlock()
-    {
-        $blockInstance = $this->api->getInstance(FooBlock::class, new AcmeFooModule());
-        $this->assertNotEmpty($blockInstance);
-        $this->assertInstanceOf(BlockHandlerInterface::class, $blockInstance);
-        $this->assertEquals('FooType', $blockInstance->getType());
-        $serviceNameHelper = new ServiceNameHelper();
-        $blockServiceName = $serviceNameHelper->generateServiceNameFromClassName(FooBlock::class);
-        $this->assertTrue($this->container->has($blockServiceName));
-        $retrievedBlockService = $this->container->get($blockServiceName);
-        $this->assertInstanceOf(BlockHandlerInterface::class, $retrievedBlockService);
     }
 }

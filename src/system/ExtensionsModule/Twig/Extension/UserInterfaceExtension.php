@@ -28,27 +28,18 @@ class UserInterfaceExtension extends AbstractExtension
      */
     private $handler;
 
-    /**
-     * constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
             new TwigFunction('moduleHeader', [new ModuleHeaderFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('moduleLinks', [new ModuleLinksFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('moduleHelp', [new ModuleHelpFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new TwigFunction('moduleFooter', [new ModuleFooterFunction($this->handler), 'display'], ['is_safe' => ['html']])
         ];
     }
 }

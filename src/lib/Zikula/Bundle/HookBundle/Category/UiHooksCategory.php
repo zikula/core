@@ -13,62 +13,58 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Category;
 
-use Zikula\Bundle\HookBundle\Hook\DisplayHook;
-use Zikula\Bundle\HookBundle\Hook\ProcessHook;
-use Zikula\Bundle\HookBundle\Hook\ValidationHook;
-
 class UiHooksCategory implements CategoryInterface
 {
-    const NAME = 'ui_hooks';
+    public const NAME = 'ui_hooks';
 
     /**
      * Display hook for view/display templates.
      * Dispatches DisplayHook instances.
      */
-    const TYPE_DISPLAY_VIEW = 'display_view';
+    public const TYPE_DISPLAY_VIEW = 'display_view';
 
     /**
      * Display hook for create/edit forms.
      * Dispatches DisplayHook instances.
      */
-    const TYPE_FORM_EDIT = 'form_edit';
+    public const TYPE_FORM_EDIT = 'form_edit';
 
     /**
      * Display hook for delete dialogues.
      * Dispatches DisplayHook instances.
      */
-    const TYPE_FORM_DELETE = 'form_delete';
+    public const TYPE_FORM_DELETE = 'form_delete';
 
     /**
      * Used to validate input from a create/edit form.
      * Dispatches ValidationHook instances.
      */
-    const TYPE_VALIDATE_EDIT = 'validate_edit';
+    public const TYPE_VALIDATE_EDIT = 'validate_edit';
 
     /**
      * Used to validate input from a delete form.
      * Dispatches ValidationHook instances.
      */
-    const TYPE_VALIDATE_DELETE = 'validate_delete';
+    public const TYPE_VALIDATE_DELETE = 'validate_delete';
 
     /**
      * Perform the final update actions for a create/edit form.
      * Dispatches ProcessHook instances.
      */
-    const TYPE_PROCESS_EDIT = 'process_edit';
+    public const TYPE_PROCESS_EDIT = 'process_edit';
 
     /**
      * Perform the final delete actions for a delete form.
      * Dispatches ProcessHook instances.
      */
-    const TYPE_PROCESS_DELETE = 'process_delete';
+    public const TYPE_PROCESS_DELETE = 'process_delete';
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
 
-    public function getTypes()
+    public function getTypes(): array
     {
         return [
             self::TYPE_DISPLAY_VIEW,
@@ -77,7 +73,7 @@ class UiHooksCategory implements CategoryInterface
             self::TYPE_PROCESS_EDIT,
             self::TYPE_FORM_DELETE,
             self::TYPE_VALIDATE_DELETE,
-            self::TYPE_PROCESS_DELETE,
+            self::TYPE_PROCESS_DELETE
         ];
     }
 }

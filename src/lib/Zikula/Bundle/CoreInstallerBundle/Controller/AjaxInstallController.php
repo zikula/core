@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,14 +22,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Zikula\BlocksModule\BlocksModuleInstaller;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -48,7 +54,7 @@ class AjaxInstallController extends AbstractController
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
     }
 
-    public function ajaxAction(Request $request)
+    public function ajaxAction(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
         $status = $this->executeStage($stage);
@@ -56,12 +62,12 @@ class AjaxInstallController extends AbstractController
         return new JsonResponse(['status' => $status]);
     }
 
-    public function commandLineAction($stage)
+    public function commandLineAction($stage): bool
     {
         return $this->executeStage($stage);
     }
 
-    private function executeStage($stageName)
+    private function executeStage($stageName): bool
     {
         switch ($stageName) {
             case 'bundles':
@@ -121,8 +127,9 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function createBundles()
+    private function createBundles(): bool
     {
+        /** @var ZikulaHttpKernelInterface $kernel */
         $kernel = $this->container->get('kernel');
         $boot = new CoreBundleBootstrap();
         $helper = $this->container->get(BootstrapHelper::class);
@@ -135,7 +142,7 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function categorizeModules()
+    private function categorizeModules(): bool
     {
         reset(ZikulaKernel::$coreModules);
         $systemModulesCategories = [
@@ -163,13 +170,13 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function createBlocks()
+    private function createBlocks(): bool
     {
         $installer = new BlocksModuleInstaller();
         $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
         $installer->setContainer($this->container);
         // create the default blocks.
-        $installer->defaultdata();
+        $installer->createDefaultData();
         $this->createMainMenuBlock();
 
         return true;
@@ -178,17 +185,17 @@ class AjaxInstallController extends AbstractController
     /**
      * This function inserts the admin's user data
      */
-    private function updateAdmin()
+    private function updateAdmin(): bool
     {
         $entityManager = $this->container->get('doctrine')->getManager();
         $params = $this->decodeParameters($this->yamlManager->getParameters());
-        /** @var \Zikula\UsersModule\Entity\UserEntity $userEntity */
+        /** @var UserEntity $userEntity */
         $userEntity = $entityManager->find('ZikulaUsersModule:UserEntity', 2);
         $userEntity->setUname($params['username']);
         $userEntity->setEmail($params['email']);
         $userEntity->setActivated(1);
-        $userEntity->setUser_Regdate(new \DateTime());
-        $userEntity->setLastlogin(new \DateTime());
+        $userEntity->setUser_Regdate(new DateTime());
+        $userEntity->setLastlogin(new DateTime());
         $entityManager->persist($userEntity);
 
         $mapping = new AuthenticationMappingEntity();
@@ -205,14 +212,14 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function finalizeParameters()
+    private function finalizeParameters(): bool
     {
         $params = $this->decodeParameters($this->yamlManager->getParameters());
         $variableApi = $this->container->get(VariableApi::class);
         $variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         $variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
-        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(mt_rand(1000000000, 9999999999), true)));
+        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(random_int(1000000000, 9999999999), true)));
         // add admin email as site email
         $variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
         // regenerate the theme list
@@ -242,18 +249,18 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function installAssets()
+    private function installAssets(): bool
     {
         $this->container->get(ExtensionHelper::class)->installAssets();
 
         return true;
     }
 
-    private function protectFiles()
+    private function protectFiles(): bool
     {
         // protect config.php and parameters.yml files
         foreach ([
-            realpath($this->container->get('kernel')->getRootDir() . '/../app/config/parameters.yml')
+             dirname($this->container->get('kernel')->getRootDir()) . '/app/config/parameters.yml'
         ] as $file) {
             @chmod($file, 0400);
             if (!is_readable($file)) {
@@ -277,10 +284,15 @@ class AjaxInstallController extends AbstractController
         return true;
     }
 
-    private function createMainMenuBlock()
+    /**
+     * Create the main menu block.
+     */
+    private function createMainMenuBlock(): void
     {
-        // Create the Main Menu Block
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->container->get('doctrine')->getManager();
+
+        /** @var ExtensionEntity $menuModuleEntity */
         $menuModuleEntity = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->findOneBy(['name' => 'ZikulaMenuModule']);
         $blockEntity = new BlockEntity();
@@ -296,6 +308,7 @@ class AjaxInstallController extends AbstractController
         ]);
         $entityManager->persist($blockEntity);
 
+        /** @var BlockPositionEntity $topNavPosition */
         $topNavPosition = $entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')
             ->findOneBy(['name' => 'topnav']);
         $placement = new BlockPlacementEntity();

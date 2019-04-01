@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine;
 
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
+
 /**
  * Class AssetBag
  *
@@ -26,50 +30,45 @@ namespace Zikula\ThemeModule\Engine;
  * @see \Zikula\ThemeModule\EventListener\DefaultPageAssetSetterListener::setDefaultPageAssets()
  * @see \Zikula\ThemeModule\Twig\Extension\AssetExtension::pageAddAsset()
  */
-class AssetBag implements \IteratorAggregate, \Countable
+class AssetBag implements IteratorAggregate, Countable
 {
-    const WEIGHT_JQUERY = 19;
+    public const WEIGHT_JQUERY = 19;
 
-    const WEIGHT_JQUERY_UI = 20;
+    public const WEIGHT_JQUERY_UI = 20;
 
-    const WEIGHT_BOOTSTRAP_JS = 21;
+    public const WEIGHT_BOOTSTRAP_JS = 21;
 
-    const WEIGHT_BOOTSTRAP_ZIKULA = 22;
+    public const WEIGHT_BOOTSTRAP_ZIKULA = 22;
 
-    const WEIGHT_HTML5SHIV = 23;
+    public const WEIGHT_HTML5SHIV = 23;
 
-    const WEIGHT_ROUTER_JS = 24;
+    public const WEIGHT_ROUTER_JS = 24;
 
-    const WEIGHT_ROUTES_JS = 25;
+    public const WEIGHT_ROUTES_JS = 25;
 
-    const WEIGHT_JS_TRANSLATOR = 26;
+    public const WEIGHT_JS_TRANSLATOR = 26;
 
-    const WEIGHT_ZIKULA_JS_TRANSLATOR = 27;
+    public const WEIGHT_ZIKULA_JS_TRANSLATOR = 27;
 
-    const WEIGHT_JS_TRANSLATIONS = 28;
+    public const WEIGHT_JS_TRANSLATIONS = 28;
 
-    const WEIGHT_DEFAULT = 100;
+    public const WEIGHT_DEFAULT = 100;
 
-    const WEIGHT_THEME_STYLESHEET = 120;
+    public const WEIGHT_THEME_STYLESHEET = 120;
 
     /**
-     * array format:
+     * Array format:
      * $assets = [value => weight, value => weight, value => weight]
      * @var array
      */
     private $assets = [];
 
-    public function __construct()
-    {
-    }
-
     /**
-     * Add an array of assets to the Bag
-     * A string value is allowed also
+     * Add an array of assets or a single asset (string) to the bag.
      *
      * @param string|array $asset
      */
-    public function add($asset)
+    public function add($asset): void
     {
         // ensure value is an array
         if (!is_array($asset)) {
@@ -84,7 +83,7 @@ class AssetBag implements \IteratorAggregate, \Countable
                 $weight = self::WEIGHT_JQUERY_UI;
             }
 
-            if ((isset($this->assets[$source]) && $this->assets[$source] > $weight) || !isset($this->assets[$source])) {
+            if (!isset($this->assets[$source]) || (isset($this->assets[$source]) && $this->assets[$source] > $weight)) {
                 // keep original weight if lighter. set if not set already.
                 $this->assets[$source] = $weight;
             }
@@ -92,38 +91,33 @@ class AssetBag implements \IteratorAggregate, \Countable
         asort($this->assets); // put array in order by weight
     }
 
-    public function remove($var)
+    public function remove($var): void
     {
         unset($this->assets[$var]);
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->assets = [];
     }
 
-    public function all()
+    public function all(): array
     {
-        // returns sorted asset
         return array_keys($this->assets);
     }
 
     /**
      * Returns an iterator for parameters.
-     *
-     * @return \ArrayIterator An \ArrayIterator instance
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->assets);
+        return new ArrayIterator($this->assets);
     }
 
     /**
      * Returns the number of parameters.
-     *
-     * @return int The number of parameters
      */
-    public function count()
+    public function count(): int
     {
         return count($this->assets);
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule;
 
+use DateTimeZone;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -21,28 +22,14 @@ use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 use Zikula\SettingsModule\Api\LocaleApi;
 
 /**
- * Installation and upgrade routines for the settings module.
- *
- * PLEASE NOTE CAREFULLY.  The use of System::get/set/delVar() is deliberate
- * we cannot use $this->get/set/delVar() because the keys will be incorrectly
- * generated (System instead of ZConfig).
+ * Installation and upgrade routines for the Settings module.
  */
 class SettingsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the settings module.
-     *
-     * @return boolean
-     */
-    public function install()
+    public function install(): bool
     {
-        // Set up an initial value for a module variable. Note that all module
-        // variables should be initialised with some value in this way rather
-        // than just left blank, this helps the user-side code and means that
-        // there doesn't need to be a check to see if the variable is set in
-        // the rest of the code as it always will be.
         $this->setSystemVar('debug', '0');
-        $this->setSystemVar('startdate', date('m/Y', time()));
+        $this->setSystemVar('startdate', date('m/Y'));
         $this->setSystemVar('adminmail', 'example@example.com');
         $this->setSystemVar('Default_Theme', 'ZikulaBootstrapTheme');
         $this->setSystemVar('timezone', date_default_timezone_get());
@@ -56,10 +43,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('theme_change', '0');
         $this->setSystemVar('UseCompression', '0');
         $this->setSystemVar('siteoff', 0);
-        $this->setSystemVar('siteoffreason', '');
-        $this->setSystemVar('startController', '');
-        $this->setSystemVar('startargs', '');
+        $this->setSystemVar('siteoffreason');
+        $this->setSystemVar('startController');
+        $this->setSystemVar('startargs');
         $this->setSystemVar('language_detect', 0);
+
         // Multilingual support
         foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
             $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
@@ -68,8 +56,8 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             $this->setSystemVar('defaultmetadescription_' . $lang, $this->__('Site description'));
         }
 
-        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE, '');
-        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE, '');
+        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE);
+        $this->setSystemVar(SettingsConstant::SYSTEM_VAR_MESSAGE_MODULE);
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks
@@ -87,18 +75,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * @param  string $oldversion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldversion)
+    public function upgrade(string $oldVersion): bool
     {
         $request = $this->container->get('request_stack')->getMasterRequest();
         // Upgrade dependent on old version number
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '2.9.7':
             case '2.9.8':
                 $permasearch = $this->getSystemVar('permasearch');
@@ -121,7 +102,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $systemVars = $this->container->get(ExtensionVarRepository::class)->findBy(['modname' => VariableApi::CONFIG]);
                 /** @var ExtensionVarEntity $modVar */
                 foreach ($systemVars as $modVar) {
-                    if (in_array($modVar->getName(), $varsToChange)) {
+                    if (in_array($modVar->getName(), $varsToChange, true)) {
                         foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $langcode) {
                             $newModVar = clone $modVar;
                             $newModVar->setName($modVar->getName() . '_' . $langcode);
@@ -133,7 +114,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->flush();
 
             case '2.9.10':
-                $this->setSystemVar('startController', '');
+                $this->setSystemVar('startController');
                 $newStargArgs = str_replace(',', '&', $this->getSystemVar('startargs')); // replace comma with `&`
                 $this->setSystemVar('startargs', $newStargArgs);
             case '2.9.11':
@@ -155,38 +136,27 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * Delete the settings module.
-     *
-     * @return boolean false
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // This module cannot be uninstalled.
         return false;
     }
 
-    private function setSystemVar($name, $value = '')
+    private function setSystemVar(string $name, $value = ''): void
     {
-        return $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
+        $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
     }
 
-    /**
-     * @param string $name
-     */
-    private function getSystemVar($name)
+    private function getSystemVar(string $name)
     {
         return $this->container->get(VariableApi::class)->getSystemVar($name);
     }
 
-    /**
-     * upgrade helper method
-     */
-    private function setGuestTimeZone()
+    private function setGuestTimeZone(): void
     {
         $existingOffset = $this->getSystemVar('timezone_offset');
         $actualOffset = (float) $existingOffset * 60; // express in minutes
-        $timezoneAbbreviations = \DateTimeZone::listAbbreviations();
+        $timezoneAbbreviations = DateTimeZone::listAbbreviations();
         $timeZone = date_default_timezone_get();
         foreach ($timezoneAbbreviations as $abbreviation => $zones) {
             foreach ($zones as $zone) {

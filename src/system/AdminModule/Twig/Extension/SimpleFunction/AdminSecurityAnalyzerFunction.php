@@ -23,30 +23,21 @@ class AdminSecurityAnalyzerFunction
      */
     private $handler;
 
-    /**
-     * AdminSecurityAnalyzerFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
     }
 
     /**
-     * Inserts security analyzer informations.
-     *
+     * Inserts security analyzer information.
      * This has NO configuration options.
      *
-     * Examples:
-     *
-     * <samp>{{ adminSecurityAnalyzer() }}</samp>
-     *
-     * @return string
+     * Example: {{ adminSecurityAnalyzer() }}
      */
-    public function display()
+    public function display(): string
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:securityanalyzer');
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

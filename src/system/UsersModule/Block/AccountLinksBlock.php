@@ -14,32 +14,18 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\UsersModule\Helper\AccountLinksHelper;
 
 class AccountLinksBlock extends AbstractBlockHandler
 {
     /**
-     * @var ZikulaHttpKernelInterface
-     */
-    private $kernel;
-
-    /**
      * @var AccountLinksHelper
      */
     private $accountLinksHelper;
 
-    /**
-     * @param array $properties
-     * @return string
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        if (!$this->hasPermission('Accountlinks::', $properties['title'] . "::", ACCESS_READ)) {
-            return '';
-        }
-
-        if (!$this->kernel->isBundle('ZikulaUsersModule')) {
+        if (!$this->hasPermission('Accountlinks::', $properties['title'] . '::', ACCESS_READ)) {
             return '';
         }
 
@@ -55,18 +41,8 @@ class AccountLinksBlock extends AbstractBlockHandler
 
     /**
      * @required
-     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function setKernel(ZikulaHttpKernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
-    /**
-     * @required
-     * @param AccountLinksHelper $accountLinksHelper
-     */
-    public function setAccountLinksHelper(AccountLinksHelper $accountLinksHelper)
+    public function setAccountLinksHelper(AccountLinksHelper $accountLinksHelper): void
     {
         $this->accountLinksHelper = $accountLinksHelper;
     }

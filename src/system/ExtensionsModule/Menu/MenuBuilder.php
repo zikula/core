@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -52,7 +53,7 @@ class MenuBuilder
         $this->csrfTokenManager = $csrfTokenManager;
     }
 
-    public function createAdminMenu(array $options)
+    public function createAdminMenu(array $options): ItemInterface
     {
         $extension = $options['extension'];
         $menu = $this->factory->createItem('adminActions');
@@ -132,7 +133,7 @@ class MenuBuilder
                 break;
         }
 
-        if (!in_array($extension->getState(), [Constant::STATE_UNINITIALISED, Constant::STATE_INVALID])) {
+        if (!in_array($extension->getState(), [Constant::STATE_UNINITIALISED, Constant::STATE_INVALID], true)) {
             $menu->addChild($this->__f('Edit %s', ['%s' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $id]
@@ -148,7 +149,7 @@ class MenuBuilder
         return $this->csrfTokenManager->getToken($tokenId)->getValue();
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

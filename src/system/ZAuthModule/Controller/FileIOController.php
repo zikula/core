@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -34,12 +35,8 @@ class FileIOController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaZAuthModule:FileIO:import.html.twig")
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param GroupRepositoryInterface $groupRepository
-     * @param FileIOHelper $ioHelper
-     *
-     * @return array
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function importAction(
         Request $request,
@@ -75,7 +72,7 @@ class FileIOController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'defaultGroupName' => $groupEntity->getName()
+            'defaultGroupName' => null !== $groupEntity ? $groupEntity->getName() : ''
         ];
     }
 }

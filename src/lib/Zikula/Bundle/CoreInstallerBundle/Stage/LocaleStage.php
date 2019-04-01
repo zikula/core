@@ -56,17 +56,17 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         $this->matchedLocale = $container->get(LocaleApi::class)->getBrowserLocale();
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'locale';
     }
 
-    public function getFormType()
+    public function getFormType(): string
     {
         return LocaleType::class;
     }
 
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         return [
             'choices' => $this->container->get(LocaleApi::class)->getSupportedLocaleNames(),
@@ -74,12 +74,12 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         ];
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Install:locale.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         if (1 === count($this->installedLocales)) {
             $defaultLocale = array_values($this->installedLocales)[0];
@@ -91,18 +91,20 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }
 
-    public function handleFormResult(FormInterface $form)
+    public function handleFormResult(FormInterface $form): bool
     {
         $data = $form->getData();
         $this->writeParams($data);
+
+        return true;
     }
 
-    private function writeParams($data = [])
+    private function writeParams($data = []): void
     {
         $params = array_merge($this->yamlManager->getParameters(), $data);
         try {

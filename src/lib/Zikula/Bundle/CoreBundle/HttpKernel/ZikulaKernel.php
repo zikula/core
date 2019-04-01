@@ -14,16 +14,34 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Composer\Autoload\ClassLoader;
+use Exception;
+use InvalidArgumentException;
 use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\AdminModule\ZikulaAdminModule;
+use Zikula\BlocksModule\ZikulaBlocksModule;
+use Zikula\CategoriesModule\ZikulaCategoriesModule;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
+use Zikula\ExtensionsModule\ZikulaExtensionsModule;
+use Zikula\GroupsModule\ZikulaGroupsModule;
+use Zikula\MailerModule\ZikulaMailerModule;
+use Zikula\MenuModule\ZikulaMenuModule;
+use Zikula\PermissionsModule\ZikulaPermissionsModule;
+use Zikula\RoutesModule\ZikulaRoutesModule;
+use Zikula\SearchModule\ZikulaSearchModule;
+use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
+use Zikula\SettingsModule\ZikulaSettingsModule;
 use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Engine\Engine as ThemeEngine;
+use Zikula\ThemeModule\EventListener\AddJSConfigListener;
+use Zikula\ThemeModule\ZikulaThemeModule;
+use Zikula\UsersModule\ZikulaUsersModule;
+use Zikula\ZAuthModule\ZikulaZAuthModule;
 
 // Defines for access levels
 define('ACCESS_INVALID', -1);
@@ -39,44 +57,44 @@ define('ACCESS_ADMIN', 800);
 
 abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 {
-    const VERSION = '3.0.0';
+    public const VERSION = '3.0.0';
 
-    const VERSION_SUB = 'Concerto';
+    public const VERSION_SUB = 'Concerto';
 
-    const PHP_MINIMUM_VERSION = '7.2.0';
+    public const PHP_MINIMUM_VERSION = '7.2.0';
 
     /**
      * The parameter name identifying the currently installed version of the core.
      */
-    const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
+    public const CORE_INSTALLED_VERSION_PARAM = 'core_installed_version';
 
     /**
      * The controller at the front of the application (the first file loaded as controlled by the server & .htaccess)
      * @see src/.htaccess
-     * @see \Zikula\ThemeModule\EventListener\AddJSConfigListener::addJSConfig
+     * @see AddJSConfigListener::addJSConfig
      */
-    const FRONT_CONTROLLER = 'index.php';
+    public const FRONT_CONTROLLER = 'index.php';
 
     /**
      * Public list of core modules and their bundle class.
      * @var array
      */
     public static $coreModules = [
-        'ZikulaAdminModule' => 'Zikula\AdminModule\ZikulaAdminModule',
-        'ZikulaBlocksModule' => 'Zikula\BlocksModule\ZikulaBlocksModule',
-        'ZikulaCategoriesModule' => 'Zikula\CategoriesModule\ZikulaCategoriesModule',
-        'ZikulaExtensionsModule' => 'Zikula\ExtensionsModule\ZikulaExtensionsModule',
-        'ZikulaGroupsModule' => 'Zikula\GroupsModule\ZikulaGroupsModule',
-        'ZikulaMailerModule' => 'Zikula\MailerModule\ZikulaMailerModule',
-        'ZikulaPermissionsModule' => 'Zikula\PermissionsModule\ZikulaPermissionsModule',
-        'ZikulaRoutesModule' => 'Zikula\RoutesModule\ZikulaRoutesModule',
-        'ZikulaSearchModule' => 'Zikula\SearchModule\ZikulaSearchModule',
-        'ZikulaSecurityCenterModule' => 'Zikula\SecurityCenterModule\ZikulaSecurityCenterModule',
-        'ZikulaSettingsModule' => 'Zikula\SettingsModule\ZikulaSettingsModule',
-        'ZikulaThemeModule' => 'Zikula\ThemeModule\ZikulaThemeModule',
-        'ZikulaUsersModule' => 'Zikula\UsersModule\ZikulaUsersModule',
-        'ZikulaZAuthModule' => 'Zikula\ZAuthModule\ZikulaZAuthModule',
-        'ZikulaMenuModule' => 'Zikula\MenuModule\ZikulaMenuModule',
+        'ZikulaAdminModule' => ZikulaAdminModule::class,
+        'ZikulaBlocksModule' => ZikulaBlocksModule::class,
+        'ZikulaCategoriesModule' => ZikulaCategoriesModule::class,
+        'ZikulaExtensionsModule' => ZikulaExtensionsModule::class,
+        'ZikulaGroupsModule' => ZikulaGroupsModule::class,
+        'ZikulaMailerModule' => ZikulaMailerModule::class,
+        'ZikulaMenuModule' => ZikulaMenuModule::class,
+        'ZikulaPermissionsModule' => ZikulaPermissionsModule::class,
+        'ZikulaRoutesModule' => ZikulaRoutesModule::class,
+        'ZikulaSearchModule' => ZikulaSearchModule::class,
+        'ZikulaSecurityCenterModule' => ZikulaSecurityCenterModule::class,
+        'ZikulaSettingsModule' => ZikulaSettingsModule::class,
+        'ZikulaThemeModule' => ZikulaThemeModule::class,
+        'ZikulaUsersModule' => ZikulaUsersModule::class,
+        'ZikulaZAuthModule' => ZikulaZAuthModule::class
     ];
 
     /**
@@ -99,12 +117,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      */
     private $autoloader;
 
-    /**
-     * Flag determines if container is dumped or not
-     *
-     * @param $flag
-     */
-    public function setDump($flag)
+    public function setDump(bool $flag): void
     {
         $this->dump = $flag;
     }
@@ -126,61 +139,40 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
     }
 
-    /**
-     * Gets named module bundle.
-     *
-     * @param string $moduleName
-     *
-     * @throws \InvalidArgumentException when the bundle is not enabled
-     * @return AbstractModule
-     */
-    public function getModule($moduleName)
+    public function getModule(string $moduleName): AbstractModule
     {
         if (!isset($this->modules[$moduleName])) {
-            throw new \InvalidArgumentException(sprintf('Module "%s" does not exist or it is not enabled.', $moduleName, get_class($this)));
+            throw new InvalidArgumentException(sprintf('Module "%s" does not exist or it is not enabled.', $moduleName));
         }
 
         return $this->modules[$moduleName];
     }
 
-    public function getModules()
+    public function getModules(): array
     {
         return $this->modules;
     }
 
-    /**
-     * Checks if name is is the list of core modules.
-     * @param $moduleName
-     * @return bool
-     */
-    public static function isCoreModule($moduleName)
+    public static function isCoreModule(string $moduleName): bool
     {
         return array_key_exists($moduleName, self::$coreModules);
     }
 
-    /**
-     * Gets named theme bundle.
-     *
-     * @param string $themeName
-     *
-     * @throws \InvalidArgumentException when the bundle is not enabled
-     * @return AbstractTheme
-     */
-    public function getTheme($themeName)
+    public function getTheme(string $themeName): AbstractTheme
     {
         if (!isset($this->themes[$themeName])) {
-            throw new \InvalidArgumentException(sprintf('Theme "%s" does not exist or it is not enabled.', $themeName, get_class($this)));
+            throw new InvalidArgumentException(sprintf('Theme "%s" does not exist or it is not enabled.', $themeName));
         }
 
         return $this->themes[$themeName];
     }
 
-    public function getThemes()
+    public function getThemes(): array
     {
         return $this->themes;
     }
 
-    public function getJustBundles()
+    public function getJustBundles(): array
     {
         $bundles = [];
         foreach ($this->bundles as $bundle) {
@@ -192,29 +184,23 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         return $bundles;
     }
 
-    /**
-     * Is this a Bundle?
-     *
-     * @param $name
-     * @return bool
-     */
-    public function isBundle($name)
+    public function isBundle(string $name): bool
     {
         try {
             $this->getBundle($name);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
     }
 
-    public function setAutoloader(ClassLoader $autoloader)
+    public function setAutoloader(ClassLoader $autoloader): void
     {
         $this->autoloader = $autoloader;
     }
 
-    public function getAutoloader()
+    public function getAutoloader(): ClassLoader
     {
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
@@ -233,17 +219,17 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         return $this->autoloader;
     }
 
-    public function getConnectionConfig()
+    public function getConnectionConfig(): array
     {
-        $config = Yaml::parse(file_get_contents($this->rootDir . '/config/parameters.yml'));
-        if (is_readable($file = $this->rootDir . '/config/custom_parameters.yml')) {
+        $config = Yaml::parse(file_get_contents($this->getProjectDir() . '/app/config/parameters.yml'));
+        if (is_readable($file = $this->getProjectDir() . '/app/config/custom_parameters.yml')) {
             $config = array_merge($config, Yaml::parse(file_get_contents($file)));
         }
 
         return $config;
     }
 
-    public function isClassInBundle($class)
+    public function isClassInBundle(string $class): bool
     {
         /* @var BundleInterface $bundle */
         foreach ($this->getBundles() as $bundle) {
@@ -275,8 +261,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 
     /**
      * Prepares the ContainerBuilder before it is compiled.
-     *
-     * @param ContainerBuilder $container A ContainerBuilder instance
      */
     protected function prepareContainer(ContainerBuilder $container)
     {
@@ -312,15 +296,10 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
-     */
     public function locateResource($name, $dir = null, $first = true)
     {
         $locations = parent::locateResource($name, $dir, false);
-        if ($locations && (false !== mb_strpos($locations[0], $dir))) {
+        if ($locations && null !== $dir && false !== mb_strpos($locations[0], $dir)) {
             // if found in $dir (typically app/Resources) return it immediately.
             return $locations[0];
         }
@@ -330,11 +309,11 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
         // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
         // the \Zikula\Bundle\CoreBundle\EventListener\Theme\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
-        if ($themeBundle && (false === mb_strpos($name, $themeBundle->getName()))) {
+        if ($themeBundle && false === mb_strpos($name, $themeBundle->getName())) {
             // do not add theme override path to theme files
             $customThemePath = $themeBundle->getPath() . '/Resources';
 
-            return parent::locateResource($name, $customThemePath, true);
+            return parent::locateResource($name, $customThemePath);
         }
 
         return $locations[0];

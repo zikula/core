@@ -36,7 +36,7 @@ class ManuallyInstallAssets extends ScriptHandler
         '/dimsemenov/magnific-popup/dist/magnific-popup.css' => '/magnific-popup/magnific-popup.css',
     ];
 
-    public static function install(Event $event)
+    public static function install(Event $event): void
     {
         $options = static::getOptions($event);
         $webDir = $options['symfony-web-dir'];

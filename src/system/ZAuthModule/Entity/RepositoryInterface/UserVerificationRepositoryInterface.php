@@ -15,28 +15,47 @@ namespace Zikula\ZAuthModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 interface UserVerificationRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function persistAndFlush(UserVerificationEntity $entity);
+    public function persistAndFlush(UserVerificationEntity $entity): void;
 
-    public function removeAndFlush(UserVerificationEntity $entity);
+    public function removeAndFlush(UserVerificationEntity $entity): void;
 
-    public function removeByZikulaId($uid);
+    public function removeByZikulaId(int $userId): void;
 
     /**
-     * @param integer $daysOld
-     * @param int $changeType
-     * @param bool $deleteUserEntities
-     * @return array UserEntity[] records deleted
+     * @return UserEntity[] records deleted
      */
-    public function purgeExpiredRecords($daysOld, $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true);
+    public function purgeExpiredRecords(
+        int $daysOld,
+        int $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL,
+        bool $deleteUserEntities = true
+    ): array;
 
-    public function resetVerifyChgFor($uid, $types = null);
+    /**
+     * Removes a record from the users_verifychg table for a specified user id and change type.
+     *
+     * @param int $userId The uid of the verifychg record to remove. Required
+     * @param int|array $types The changetype(s) of the verifychg record to remove. If more
+     *                         than one type is to be removed, use an array. Optional. If
+     *                         not specifed, all verifychg records for the user will be
+     *                         removed. Note: specifying an empty array will remove none
+     */
+    public function resetVerifyChgFor(int $userId, $types = null): array;
 
-    public function isVerificationEmailSent($uid);
+    public function isVerificationEmailSent(int $userId): bool;
 
-    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $hashedConfirmationCode = null, $email = null);
+    /**
+     * Set a confirmation code.
+     */
+    public function setVerificationCode(
+        int $userId,
+        int $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD,
+        string $hashedConfirmationCode = null,
+        string $email = null
+    ): void;
 }

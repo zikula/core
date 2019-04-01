@@ -24,7 +24,7 @@ class ExtensionDependencyRepository extends ServiceEntityRepository
         parent::__construct($registry, ExtensionDependencyEntity::class);
     }
 
-    public function reloadExtensionDependencies($extensionsFromFile)
+    public function reloadExtensionDependencies(array $extensionsFromFile = []): void
     {
         // truncate the table
         $connection = $this->_em->getConnection();
@@ -35,14 +35,15 @@ class ExtensionDependencyRepository extends ServiceEntityRepository
 
         foreach ($extensionsFromFile as $name => $extensionFromFile) {
             $extension = $this->_em->getRepository('ZikulaExtensionsModule:ExtensionEntity')->findOneBy(['name' => $name]);
-            if (isset($extensionFromFile['dependencies']) && !empty($extensionFromFile['dependencies'])) {
-                $dependencies = unserialize($extensionFromFile['dependencies']);
-                foreach ($dependencies as $dependency) {
-                    $entity = new ExtensionDependencyEntity();
-                    $entity->merge($dependency);
-                    $entity->setModid($extension->getId());
-                    $this->_em->persist($entity);
-                }
+            if (!isset($extensionFromFile['dependencies']) || empty($extensionFromFile['dependencies'])) {
+                continue;
+            }
+            $dependencies = unserialize($extensionFromFile['dependencies']);
+            foreach ($dependencies as $dependency) {
+                $entity = new ExtensionDependencyEntity();
+                $entity->merge($dependency);
+                $entity->setModid($extension->getId());
+                $this->_em->persist($entity);
             }
         }
         $this->_em->flush();

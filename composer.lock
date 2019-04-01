@@ -540,16 +540,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.6.0",
+            "version": "v1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5"
+                "reference": "53120e0eb10355388d6ccbe462f1fea34ddadb24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
-                "reference": "c7f2050c68a9ab0bdb0f98567ec08d80ea7d24d5",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/53120e0eb10355388d6ccbe462f1fea34ddadb24",
+                "reference": "53120e0eb10355388d6ccbe462f1fea34ddadb24",
                 "shasum": ""
             },
             "require": {
@@ -604,7 +604,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-12-06T07:11:42+00:00"
+            "time": "2019-03-25T19:12:02+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -683,34 +683,36 @@
         },
         {
             "name": "doctrine/collections",
-            "version": "v1.5.0",
+            "version": "v1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/collections.git",
-                "reference": "a01ee38fcd999f34d9bfbcee59dbda5105449cbf"
+                "reference": "d2ae4ef05e25197343b6a39bae1d3c427a2f6956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/collections/zipball/a01ee38fcd999f34d9bfbcee59dbda5105449cbf",
-                "reference": "a01ee38fcd999f34d9bfbcee59dbda5105449cbf",
+                "url": "https://api.github.com/repos/doctrine/collections/zipball/d2ae4ef05e25197343b6a39bae1d3c427a2f6956",
+                "reference": "d2ae4ef05e25197343b6a39bae1d3c427a2f6956",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1"
+                "php": "^7.1.3"
             },
             "require-dev": {
-                "doctrine/coding-standard": "~0.1@dev",
-                "phpunit/phpunit": "^5.7"
+                "doctrine/coding-standard": "^6.0",
+                "phpstan/phpstan-shim": "^0.9.2",
+                "phpunit/phpunit": "^7.0",
+                "vimeo/psalm": "^3.2.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\Collections\\": "lib/"
+                "psr-4": {
+                    "Doctrine\\Common\\Collections\\": "lib/Doctrine/Common/Collections"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -739,14 +741,15 @@
                     "email": "schmittjoh@gmail.com"
                 }
             ],
-            "description": "Collections Abstraction library",
-            "homepage": "http://www.doctrine-project.org",
+            "description": "PHP Doctrine Collections library that adds additional functionality on top of PHP arrays.",
+            "homepage": "https://www.doctrine-project.org/projects/collections.html",
             "keywords": [
                 "array",
                 "collections",
-                "iterator"
+                "iterators",
+                "php"
             ],
-            "time": "2017-07-22T10:37:32+00:00"
+            "time": "2019-03-25T19:03:48+00:00"
         },
         {
             "name": "doctrine/common",
@@ -1854,16 +1857,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.36",
+            "version": "v2.4.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "87c78ff9fd4b90460386f753d95622f6fbbfcb27"
+                "reference": "5dd471f656e46d815f063bf3f12c667649ec7ffb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/87c78ff9fd4b90460386f753d95622f6fbbfcb27",
-                "reference": "87c78ff9fd4b90460386f753d95622f6fbbfcb27",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/5dd471f656e46d815f063bf3f12c667649ec7ffb",
+                "reference": "5dd471f656e46d815f063bf3f12c667649ec7ffb",
                 "shasum": ""
             },
             "require": {
@@ -1931,7 +1934,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2018-07-26T12:16:35+00:00"
+            "time": "2019-03-17T18:16:12+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3947,12 +3950,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "1fdf591c4b388e62dbb2579de89c1560b33f865d"
+                "reference": "ce81fe559550fab76dc961ede9b02ee2452639ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/1fdf591c4b388e62dbb2579de89c1560b33f865d",
-                "reference": "1fdf591c4b388e62dbb2579de89c1560b33f865d",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/ce81fe559550fab76dc961ede9b02ee2452639ff",
+                "reference": "ce81fe559550fab76dc961ede9b02ee2452639ff",
                 "shasum": ""
             },
             "require": {
@@ -4010,7 +4013,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2018-12-11T16:59:23+00:00"
+            "time": "2019-03-26T07:03:00+00:00"
         },
         {
             "name": "sensiolabs/security-checker",
@@ -5288,16 +5291,16 @@
         },
         {
             "name": "zikula/andreas08-theme",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "1b5c798770ae06348cb6af787064c4cbdc42e53a"
+                "reference": "cfdc47bedce99b29127717733afedd273bff6658"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/1b5c798770ae06348cb6af787064c4cbdc42e53a",
-                "reference": "1b5c798770ae06348cb6af787064c4cbdc42e53a",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/cfdc47bedce99b29127717733afedd273bff6658",
+                "reference": "cfdc47bedce99b29127717733afedd273bff6658",
                 "shasum": ""
             },
             "require": {
@@ -5331,10 +5334,10 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.1.0",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.1.1",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2019-03-05T15:54:42+00:00"
+            "time": "2019-03-26T07:03:25+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -5472,20 +5475,21 @@
         },
         {
             "name": "zikula/generator-bundle",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "target-dir": "Zikula/Bundle/GeneratorBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/GeneratorBundle.git",
-                "reference": "308189c6cb0eb4f127e4c81ea9c031e2191af4b0"
+                "reference": "fc41df15e91860d5dc41001e2980078612a3c6b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/308189c6cb0eb4f127e4c81ea9c031e2191af4b0",
-                "reference": "308189c6cb0eb4f127e4c81ea9c031e2191af4b0",
+                "url": "https://api.github.com/repos/zikula/GeneratorBundle/zipball/fc41df15e91860d5dc41001e2980078612a3c6b9",
+                "reference": "fc41df15e91860d5dc41001e2980078612a3c6b9",
                 "shasum": ""
             },
             "require": {
+                "php": ">=7.2.0",
                 "symfony/console": "4.*",
                 "symfony/finder": "4.*",
                 "symfony/framework-bundle": "4.*"
@@ -5521,10 +5525,10 @@
             ],
             "description": "This module generates code for you",
             "support": {
-                "source": "https://github.com/zikula/GeneratorBundle/tree/3.0.0",
+                "source": "https://github.com/zikula/GeneratorBundle/tree/3.0.1",
                 "issues": "https://github.com/zikula/GeneratorBundle/issues"
             },
-            "time": "2019-03-05T15:35:36+00:00"
+            "time": "2019-03-26T15:15:16+00:00"
         },
         {
             "name": "zikula/jquery-bundle",
@@ -5615,16 +5619,16 @@
         },
         {
             "name": "zikula/legal-module",
-            "version": "3.2.1",
+            "version": "3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "2be38c2f70bc2023af1f32f6e9b68af43534baa0"
+                "reference": "71e13b0b544057f80637c97468d02933ae00c473"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/2be38c2f70bc2023af1f32f6e9b68af43534baa0",
-                "reference": "2be38c2f70bc2023af1f32f6e9b68af43534baa0",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/71e13b0b544057f80637c97468d02933ae00c473",
+                "reference": "71e13b0b544057f80637c97468d02933ae00c473",
                 "shasum": ""
             },
             "require": {
@@ -5676,23 +5680,23 @@
             ],
             "description": "Provides an interface for managing the site's legal documents.",
             "support": {
-                "source": "https://github.com/zikula-modules/Legal/tree/3.2.1",
+                "source": "https://github.com/zikula-modules/Legal/tree/3.2.5",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2019-03-16T12:11:58+00:00"
+            "time": "2019-04-01T15:40:44+00:00"
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.0.7",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "ff750dd3bb4115eba757e2ca793334252681fcf7"
+                "reference": "1be45589b36f1f13d82ffabcf5036ad2ac6a8ca2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/ff750dd3bb4115eba757e2ca793334252681fcf7",
-                "reference": "ff750dd3bb4115eba757e2ca793334252681fcf7",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/1be45589b36f1f13d82ffabcf5036ad2ac6a8ca2",
+                "reference": "1be45589b36f1f13d82ffabcf5036ad2ac6a8ca2",
                 "shasum": ""
             },
             "require": {
@@ -5737,23 +5741,23 @@
             ],
             "description": "Integrates league/oauth2-client and various providers.",
             "support": {
-                "source": "https://github.com/zikula/OAuth/tree/1.0.7",
+                "source": "https://github.com/zikula/OAuth/tree/1.1.0",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-03-16T12:15:25+00:00"
+            "time": "2019-04-01T14:09:12+00:00"
         },
         {
             "name": "zikula/pagelock-module",
-            "version": "1.3.2",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "60638be6838591b9d08c4fba73db25d71f8b13a3"
+                "reference": "f47fdf7b64805420469e4d1f0dc3274bc49c9c53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/60638be6838591b9d08c4fba73db25d71f8b13a3",
-                "reference": "60638be6838591b9d08c4fba73db25d71f8b13a3",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/f47fdf7b64805420469e4d1f0dc3274bc49c9c53",
+                "reference": "f47fdf7b64805420469e4d1f0dc3274bc49c9c53",
                 "shasum": ""
             },
             "require": {
@@ -5787,23 +5791,23 @@
             ],
             "description": "Page locking support",
             "support": {
-                "source": "https://github.com/zikula-modules/PageLock/tree/1.3.2",
+                "source": "https://github.com/zikula-modules/PageLock/tree/1.3.5",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2019-03-16T12:10:35+00:00"
+            "time": "2019-04-01T14:11:03+00:00"
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.1",
+            "version": "3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "bd663993dddae31bc010183289571ff97f18f32b"
+                "reference": "2dfc4e66b38534bde9c6d5c1c4f2fa7a3f0330e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/bd663993dddae31bc010183289571ff97f18f32b",
-                "reference": "bd663993dddae31bc010183289571ff97f18f32b",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/2dfc4e66b38534bde9c6d5c1c4f2fa7a3f0330e9",
+                "reference": "2dfc4e66b38534bde9c6d5c1c4f2fa7a3f0330e9",
                 "shasum": ""
             },
             "require": {
@@ -5858,23 +5862,23 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.1.1",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.5",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-03-16T12:18:17+00:00"
+            "time": "2019-04-01T16:59:38+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
-            "version": "4.1.1",
+            "version": "4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "057605039434597ef5ae6a58d6006425d0ef9707"
+                "reference": "7b9b3f53643c3a9cd25eba8a563656f61565a364"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/057605039434597ef5ae6a58d6006425d0ef9707",
-                "reference": "057605039434597ef5ae6a58d6006425d0ef9707",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/7b9b3f53643c3a9cd25eba8a563656f61565a364",
+                "reference": "7b9b3f53643c3a9cd25eba8a563656f61565a364",
                 "shasum": ""
             },
             "require": {
@@ -5908,23 +5912,23 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.1.1",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.1.2",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2019-03-16T12:08:57+00:00"
+            "time": "2019-03-26T07:03:24+00:00"
         },
         {
             "name": "zikula/wizard",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "f271de260a20304f301abb878201defccb5bc14a"
+                "reference": "1d19a5c14da3f17e1962be96a24c85fa733dc136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/f271de260a20304f301abb878201defccb5bc14a",
-                "reference": "f271de260a20304f301abb878201defccb5bc14a",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/1d19a5c14da3f17e1962be96a24c85fa733dc136",
+                "reference": "1d19a5c14da3f17e1962be96a24c85fa733dc136",
                 "shasum": ""
             },
             "require": {
@@ -5956,10 +5960,10 @@
                 "wizard"
             ],
             "support": {
-                "source": "https://github.com/zikula/Wizard/tree/3.0.0",
+                "source": "https://github.com/zikula/Wizard/tree/3.0.1",
                 "issues": "https://github.com/zikula/Wizard/issues"
             },
-            "time": "2019-03-05T15:37:06+00:00"
+            "time": "2019-03-26T06:56:29+00:00"
         }
     ],
     "packages-dev": [

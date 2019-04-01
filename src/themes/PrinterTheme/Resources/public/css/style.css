@@ -4,7 +4,7 @@ body {
     color: #000000;
     font-family: Tahoma, Verdana, sans-serif;
     font-size: 12px;
-    margin: 0px;
+    margin: 0;
     padding: 10px;
 }
 
@@ -16,7 +16,7 @@ td, th, div, select, textarea, input {
 
 /* remove border from linked images */
 a img {
-    border: 0px;
+    border: 0;
 }
 
 /* link classes
@@ -94,7 +94,7 @@ a.z-logo {
 ul {
     margin-left: 1em;
     padding-left: 1em;
-    text-indent: 0em;
+    text-indent: 0;
 }
 
 /**************** generic clearfix solution ****************/

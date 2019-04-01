@@ -15,66 +15,48 @@ namespace Zikula\ThemeModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
 class ThemeEntityRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, ThemeEntity::class);
-    }
+    public const STATE_ALL = 0;
 
-    const STATE_ALL = 0;
+    public const STATE_ACTIVE = 1;
 
-    const STATE_ACTIVE = 1;
+    public const STATE_INACTIVE = 2;
 
-    const STATE_INACTIVE = 2;
+    public const TYPE_ALL = 0;
 
-    const TYPE_ALL = 0;
+    public const TYPE_XANTHIA3 = 3;
 
-    const TYPE_XANTHIA3 = 3;
+    public const FILTER_ALL = 0;
 
-    const FILTER_ALL = 0;
+    public const FILTER_USER = 1;
 
-    const FILTER_USER = 1;
+    public const FILTER_SYSTEM = 2;
 
-    const FILTER_SYSTEM = 2;
-
-    const FILTER_ADMIN = 3;
+    public const FILTER_ADMIN = 3;
 
     /**
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
 
-    /**
-     * @required
-     * @param ZikulaHttpKernelInterface $kernel
-     */
-    public function setKernel(ZikulaHttpKernelInterface $kernel)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->kernel = $kernel;
+        parent::__construct($registry, ThemeEntity::class);
     }
 
     /**
-     * @return ZikulaHttpKernelInterface
+     * @return array|bool
      */
-    private function getKernel()
-    {
-        if (!$this->kernel instanceof ZikulaHttpKernelInterface) {
-            // no need to translate this message as it will only be seen by developers.
-            $message = 'The "kernel" attribute is NULL. '
-                . 'Did you retrieved this repository using `$doctrine->getRepository()`? '
-                . 'If so, retrieve it instead directly from the container';
-            throw new \LogicException($message);
-        }
-
-        return $this->kernel;
-    }
-
-    public function get($filter = self::FILTER_ALL, $state = self::STATE_ACTIVE, $type = self::TYPE_ALL)
-    {
+    public function get(
+        int $filter = self::FILTER_ALL,
+        int $state = self::STATE_ACTIVE,
+        int $type = self::TYPE_ALL
+    ) {
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('t')
             ->from('ZikulaThemeModule:ThemeEntity', 't');
@@ -109,8 +91,9 @@ class ThemeEntityRepository extends ServiceEntityRepository
             $themesArray[$theme->getName()] = $theme->toArray();
             $kernel = $this->getKernel(); // allow to throw exception outside the try/catch block
             try {
-                $themeBundle = $kernel->getTheme($theme['name']);
-            } catch (\Exception $e) {
+                $themeName = (string)$theme['name'];
+                $themeBundle = $kernel->getTheme($themeName);
+            } catch (Exception $exception) {
                 $themeBundle = null;
             }
             $themesArray[$theme['name']]['vars'] = isset($themeBundle) ? $themeBundle->getThemeVars() : false;
@@ -119,15 +102,28 @@ class ThemeEntityRepository extends ServiceEntityRepository
         return !empty($themesArray) ? $themesArray : false;
     }
 
-    public function removeAndFlush($entity)
+    public function removeAndFlush(ThemeEntity $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();
     }
 
-    public function persistAndFlush($entity)
+    public function persistAndFlush(ThemeEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
+    }
+
+    /**
+     * @required
+     */
+    public function setKernel(ZikulaHttpKernelInterface $kernel): void
+    {
+        $this->kernel = $kernel;
+    }
+
+    private function getKernel(): ZikulaHttpKernelInterface
+    {
+        return $this->kernel;
     }
 }

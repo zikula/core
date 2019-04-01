@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
+use DateTime;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
@@ -21,56 +22,53 @@ use Zikula\UsersModule\Entity\UserEntity;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function findByUids($uids);
+    public function findByUids(array $userIds = []): array;
 
-    public function persistAndFlush(UserEntity $user);
+    public function persistAndFlush(UserEntity $user): void;
 
-    public function removeAndFlush(UserEntity $user);
+    public function removeAndFlush(UserEntity $user): void;
 
     /**
-     * @param UserEntity $user
-     * @param \DateTime $approvedOn
-     * @param string $approvedBy if null, user is 'self-approved'
+     * If $approvedBy is null, user will be considered as 'self-approved'.
      */
-    public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null);
+    public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void;
 
     /**
-     * @param array $formData
      * @return Paginator|UserEntity[]
      */
-    public function queryBySearchForm(array $formData);
+    public function queryBySearchForm(array $formData = []);
 
     /**
      * Find users for a search result
-     * @param array $words
+     *
      * @return UserEntity[]
      */
-    public function getSearchResults(array $words);
+    public function getSearchResults(array $words = []);
 
     /**
      * Fetch a collection of users. Optionally filter, sort, limit, offset results.
      *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
      *   when value is not an array, operator is assumed to be '='
      *
-     * @param array $filter
-     * @param array $sort
-     * @param int $limit
-     * @param int $offset
-     * @param string $exprType expression type to use in the filter (and|or)
      * @return Paginator|UserEntity[]
      */
-    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and');
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        int $limit = 0,
+        int $offset = 0,
+        string $exprType = 'and'
+    );
 
-    /**
-     * @param array $filter
-     * @param string (and|or) $exprType expression type to use in the filter
-     * @return integer
-     */
-    public function count(array $filter = [], $exprType = 'and');
+    public function count(array $filter = [], string $exprType = 'and'): int;
 
     /**
      * Return all users as memory-saving iterable result.
-     * @return IterableResult
      */
-    public function findAllAsIterable();
+    public function findAllAsIterable(): IterableResult;
+
+    /**
+     * @return Paginator|UserEntity[]
+     */
+    public function searchActiveUser(array $unameFilter = [], int $limit = 50);
 }

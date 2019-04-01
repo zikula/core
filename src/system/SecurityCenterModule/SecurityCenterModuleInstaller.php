@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule;
 
+use Exception;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
@@ -26,19 +27,14 @@ use Zikula\SecurityCenterModule\Helper\PurifierHelper;
  */
 class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the security center module.
-     *
-     * @return bool true on success, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         // create the table
         try {
             $this->schemaTool->create([
                 IntrusionEntity::class
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
@@ -52,14 +48,14 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('updateversion', ZikulaKernel::VERSION);
         $this->setSystemVar('keyexpiry', 0);
         $this->setSystemVar('sessionauthkeyua', 0);
-        $this->setSystemVar('secure_domain', '');
+        $this->setSystemVar('secure_domain');
         $this->setSystemVar('signcookies', 1);
-        $this->setSystemVar('signingkey', sha1(mt_rand(0, time())));
+        $this->setSystemVar('signingkey', sha1(random_int(0, time())));
         $this->setSystemVar('seclevel', 'Medium');
         $this->setSystemVar('secmeddays', 7);
         $this->setSystemVar('secinactivemins', 20);
         $this->setSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_FILE);
-        $this->setSystemVar('sessionsavepath', '');
+        $this->setSystemVar('sessionsavepath');
         $this->setSystemVar('gc_probability', 100);
         $this->setSystemVar('sessioncsrftokenonetime', 1); // 1 means use same token for entire session
         $this->setSystemVar('sessionrandregenerate', 1);
@@ -225,14 +221,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the SecurityCenter module from an old version
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldVersion)
+    public function upgrade($oldVersion): bool
     {
         $variableApi = $this->container->get(VariableApi::class);
         switch ($oldVersion) {
@@ -265,21 +254,13 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the SecurityCenter module
-     *
-     * @return bool true on success, false otherwise
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // this module can't be uninstalled
         return false;
     }
 
-    /**
-     * @param string $name
-     */
-    private function setSystemVar($name, $value = '')
+    private function setSystemVar(string $name, $value = ''): bool
     {
         return $this->container->get(VariableApi::class)->set(VariableApi::CONFIG, $name, $value);
     }

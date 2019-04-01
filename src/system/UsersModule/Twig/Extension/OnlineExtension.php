@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Twig\Extension;
 
+use DateTime;
 use Doctrine\Common\Collections\Criteria;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -33,12 +34,6 @@ class OnlineExtension extends AbstractExtension
      */
     private $sessionStorageInFile;
 
-    /**
-     * OnlineExtension constructor.
-     *
-     * @param UserSessionRepositoryInterface $sessionRepository
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         UserSessionRepositoryInterface $sessionRepository,
         VariableApiInterface $variableApi
@@ -50,25 +45,23 @@ class OnlineExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('onlineSince', [$this, 'onlineSince']),
+            new TwigFilter('onlineSince', [$this, 'onlineSince'])
         ];
     }
 
     /**
-     * @param UserEntity|null $userEntity
-     * @param int $minutes
      * @return bool|void
      */
-    public function onlineSince(UserEntity $userEntity = null, $minutes = 10)
+    public function onlineSince(UserEntity $userEntity = null, int $minutes = 10)
     {
-        if (empty($userEntity)) {
+        if (null === $userEntity) {
             return;
         }
         if (Constant::SESSION_STORAGE_FILE === $this->sessionStorageInFile) {
             return;
         }
 
-        $since = new \DateTime();
+        $since = new DateTime();
         $since->modify("-${minutes} minutes");
         $c = Criteria::create()
             ->where(Criteria::expr()->eq('uid', $userEntity->getUid()))

@@ -38,48 +38,43 @@ class MainSettingsType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $spaceReplaceCallbackTransformer = new CallbackTransformer(
-            function($originalDescription) {
+            static function($originalDescription) {
                 return $originalDescription;
             },
-            function($submittedDescription) {
+            static function($submittedDescription) {
                 return mb_ereg_replace(' ', '', $submittedDescription);
             }
         );
         $pageTitleLocalizationTransformer = new CallbackTransformer(
             function($originalPageTitle) {
                 $originalPageTitle = empty($originalPageTitle) ? '%pagetitle%' : $originalPageTitle;
-                $originalPageTitle = str_replace('%pagetitle%', $this->__('%pagetitle%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%sitename%', $this->__('%sitename%'), $originalPageTitle);
-                $originalPageTitle = str_replace('%modulename%', $this->__('%modulename%'), $originalPageTitle);
+                $originalPageTitle = str_replace(
+                    ['%pagetitle%', '%sitename%', '%modulename%'],
+                    [$this->__('%pagetitle%'), $this->__('%sitename%'), $this->__('%modulename%')],
+                    $originalPageTitle
+                );
 
                 return $originalPageTitle;
             },
             function($submittedPageTitle) {
-                $submittedPageTitle = str_replace($this->__('%pagetitle%'), '%pagetitle%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($this->__('%sitename%'), '%sitename%', $submittedPageTitle);
-                $submittedPageTitle = str_replace($this->__('%modulename%'), '%modulename%', $submittedPageTitle);
+                $submittedPageTitle = str_replace(
+                    [$this->__('%pagetitle%'), $this->__('%sitename%'), $this->__('%modulename%')],#
+                    ['%pagetitle%', '%sitename%', '%modulename%'],
+                    $submittedPageTitle
+                );
 
                 return $submittedPageTitle;
             }
@@ -140,7 +135,8 @@ class MainSettingsType extends AbstractType
                 'required' => false
             ])
             ->add('ajaxtimeout', IntegerType::class, [
-                'label' => $this->__('Time-out for Ajax connections')
+                'label' => $this->__('Time-out for Ajax connections'),
+                'input_group' => ['right' => $this->__('seconds')]
             ])
             ->add(
                 $builder->create('permasearch', TextType::class, [
@@ -194,17 +190,11 @@ class MainSettingsType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasettingsmodule_mainsettings';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -217,24 +207,18 @@ class MainSettingsType extends AbstractType
         ]);
     }
 
-    /**
-     * Validate permalink settings.
-     *
-     * @param $data
-     * @param ExecutionContextInterface $context
-     */
-    public function validatePermalinkSettings($data, ExecutionContextInterface $context)
+    public function validatePermalinkSettings(array $data, ExecutionContextInterface $context): void
     {
-        if (0 === mb_strlen($data['permasearch'])) {
+        if ('' === $data['permasearch']) {
             $permasearchCount = 0;
         } else {
-            $permasearchCount = (!mb_ereg(',', $data['permasearch']) && mb_strlen($data['permasearch']) > 0) ? 1 : count(explode(',', $data['permasearch']));
+            $permasearchCount = (!mb_ereg(',', $data['permasearch']) && '' !== $data['permasearch']) ? 1 : substr_count($data['permasearch'], ',') + 1;
         }
 
-        if (0 === mb_strlen($data['permareplace'])) {
+        if ('' === $data['permareplace']) {
             $permareplaceCount = 0;
         } else {
-            $permareplaceCount = (!mb_ereg(',', $data['permareplace']) && mb_strlen($data['permareplace']) > 0) ? 1 : count(explode(',', $data['permareplace']));
+            $permareplaceCount = (!mb_ereg(',', $data['permareplace']) && '' !== $data['permareplace']) ? 1 : substr_count($data['permareplace'], ',') + 1;
         }
 
         if ($permareplaceCount !== $permasearchCount) {

@@ -24,10 +24,7 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
      */
     private $results = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function countResults($sessionId = '')
+    public function countResults(string $sessionId = ''): int
     {
         $count = 0;
         foreach ($this->results as $k => $result) {
@@ -39,18 +36,12 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
         return $count;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getResults($filters = [], $sorting = [], $limit = 0, $offset = 0)
+    public function getResults(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
     {
         return $this->results;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function clearOldResults($sessionId = '')
+    public function clearOldResults(string $sessionId = ''): void
     {
         foreach ($this->results as $k => $result) {
             if ($sessionId === $result->getSesid()) {
@@ -59,65 +50,46 @@ class MockSearchResultRepository implements SearchResultRepositoryInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persist(SearchResultEntity $entity)
+    public function persist(SearchResultEntity $entity): void
     {
         $this->results[] = $entity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function flush(SearchResultEntity $entity = null)
+    public function flush(SearchResultEntity $entity = null): void
     {
         // nothing
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function truncateTable(): void
+    {
+        // nothing
+    }
+
     public function find($id)
     {
         // TODO: Implement find() method.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAll()
     {
         // TODO: Implement findAll() method.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         // TODO: Implement findBy() method.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneBy(array $criteria)
     {
         // TODO: Implement findOneBy() method.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName()
     {
         // TODO: Implement getClassName() method.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function matching(Criteria $criteria)
     {
         // TODO: Implement matching() method.

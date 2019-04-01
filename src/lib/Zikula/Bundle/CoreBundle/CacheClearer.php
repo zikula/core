@@ -13,38 +13,54 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle;
 
+use FilesystemIterator;
 use FOS\JsRoutingBundle\Extractor\ExposedRoutesExtractorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CacheClearer
 {
+    /**
+     * @var string
+     */
     private $cacheDir;
 
+    /**
+     * @var string
+     */
     private $cachePrefix;
 
+    /**
+     * @var array
+     */
     private $cacheTypes;
 
+    /**
+     * @var Filesystem
+     */
     private $fs;
 
-    /**
-     * @param string $cacheDir
-     * @param string $cachePrefix
-     * @param string $kernelContainerClass
-     * @param ExposedRoutesExtractorInterface $fosJsRoutesExtractor
-     * @param array $routingLocales
-     */
-    public function __construct($cacheDir, $cachePrefix, $kernelContainerClass, ExposedRoutesExtractorInterface $fosJsRoutesExtractor, $routingLocales)
-    {
+    public function __construct(
+        string $cacheDir,
+        string $cachePrefix,
+        string $kernelContainerClass,
+        ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
+        array $routingLocales = []
+    ) {
         $this->cacheDir = $cacheDir;
         $this->cachePrefix = $cachePrefix;
         $this->fs = new Filesystem();
-
-        $cacheFolder = $this->cacheDir . DIRECTORY_SEPARATOR;
 
         $fosJsRoutingFiles = [];
         foreach ($routingLocales as $locale) {
             $fosJsRoutingFiles[] = $fosJsRoutesExtractor->getCachePath($locale);
         }
+
+        $this->initialiseCacheTypeMap($kernelContainerClass, $fosJsRoutingFiles);
+    }
+
+    private function initialiseCacheTypeMap(string $kernelContainerClass, array $fosJsRoutingFiles = [])
+    {
+        $cacheFolder = $this->cacheDir . DIRECTORY_SEPARATOR;
 
         $this->cacheTypes = [
             'symfony.annotations' => [
@@ -81,19 +97,20 @@ class CacheClearer
         ];
     }
 
-    public function clear($type)
+    public function clear(string $type): void
     {
         foreach ($this->cacheTypes as $cacheType => $files) {
-            if (mb_substr($cacheType, 0, mb_strlen($type)) === $type) {
-                foreach ($files as $file) {
-                    if (is_dir($file)) {
-                        // Do not delete the folder itself, but all files in it.
-                        // Otherwise Symfony somehow can't create the folder anymore.
-                        $file = new \FilesystemIterator($file);
-                    }
-                    // This silently ignores non existing files.
-                    $this->fs->remove($file);
+            if (0 !== mb_strpos($cacheType, $type)) {
+                continue;
+            }
+            foreach ($files as $file) {
+                if (is_dir($file)) {
+                    // Do not delete the folder itself, but all files in it.
+                    // Otherwise Symfony somehow can't create the folder anymore.
+                    $file = new FilesystemIterator($file);
                 }
+                // This silently ignores non existing files.
+                $this->fs->remove($file);
             }
         }
     }

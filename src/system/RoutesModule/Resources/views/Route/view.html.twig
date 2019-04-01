@@ -91,7 +91,7 @@
             <tr{% if activateSortable %} data-item-id="{{ route.getKey() }}" class="sort-item"{% endif %}>
                 {% if routeArea == 'admin' %}
                     <td headers="hSelect" class="text-center z-w02">
-                        <input type="checkbox" name="items[]" value="{{ route.id }}" class="zikularoutes-toggle-checkbox" />
+                        <input type="checkbox" name="items[]" value="{{ route.getKey() }}" class="zikularoutes-toggle-checkbox" />
                     </td>
                 {% endif %}
                 <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
@@ -123,16 +123,16 @@
                 </td>
                 <td headers="hPrependBundlePrefix" class="text-center">
                     {% if route.prependBundlePrefix %}
-                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                        <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
                     {% else %}
-                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                        <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
                     {% endif %}
                 </td>
                 <td headers="hTranslatable" class="text-center">
                     {% if route.translatable %}
-                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                        <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
                     {% else %}
-                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                        <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
                     {% endif %}
                 </td>
                 <td headers="hTranslationPrefix" class="text-left">

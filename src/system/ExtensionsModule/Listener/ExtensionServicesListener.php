@@ -19,9 +19,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 
-/**
- * Class ExtensionServicesListener
- */
 class ExtensionServicesListener implements EventSubscriberInterface
 {
     /**
@@ -39,14 +36,11 @@ class ExtensionServicesListener implements EventSubscriberInterface
      */
     private $translator;
 
-    /**
-     * ExtensionServicesListener constructor.
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(EventDispatcherInterface $eventDispatcher, RouterInterface $router, TranslatorInterface $translator)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        RouterInterface $router,
+        TranslatorInterface $translator
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->router = $router;
         $this->translator = $translator;
@@ -55,7 +49,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'zikula.link_collector' => 'linkCollectorResponder',
+            'zikula.link_collector' => 'linkCollectorResponder'
         ];
     }
 
@@ -63,10 +57,8 @@ class ExtensionServicesListener implements EventSubscriberInterface
      * Respond to zikula.link_collector events.
      *
      * Create a BC Layer for the zikula.link_collector event to gather Hook-related links.
-     *
-     * @param GenericEvent $event
      */
-    public function linkCollectorResponder(GenericEvent $event)
+    public function linkCollectorResponder(GenericEvent $event): void
     {
         $event->setArgument('modname', $event->getSubject());
         $event->setArgument('modfunc', [1 => 'getLinks']);

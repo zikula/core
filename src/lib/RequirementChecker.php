@@ -19,9 +19,8 @@ class RequirementChecker
     /**
      * If not installed, or if currentVersion != installedVersion run requirement checks.
      * Die on failure.
-     * @param array $parameters
      */
-    public function verify($parameters)
+    public function verify(array $parameters = []): void
     {
         // on install or upgrade, check if system requirements are met.
         if ((false === $parameters['installed'])
@@ -34,7 +33,7 @@ class RequirementChecker
             }
 
             // formatting for both HTML and CLI display
-            if ('cli' !== php_sapi_name()) {
+            if (PHP_SAPI !== 'cli') {
                 echo '<html><body><pre>';
             }
             echo 'The following errors were discovered when checking the' . PHP_EOL . 'Zikula Core system/environment requirements:' . PHP_EOL;
@@ -42,7 +41,7 @@ class RequirementChecker
             foreach ($versionChecker->requirementsErrors as $error) {
                 echo $error . PHP_EOL;
             }
-            if ('cli' !== php_sapi_name()) {
+            if (PHP_SAPI !== 'cli') {
                 echo '</pre></body></html>';
             }
             die();

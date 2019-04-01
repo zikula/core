@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         $(document).on('click', '#add-option', function (event) {
             event.preventDefault();

@@ -18,17 +18,13 @@ use Zikula\ThemeModule\Engine\AssetBag;
 interface PageAssetApiInterface
 {
     /**
-     * Zikula allows only the following asset types
+     * Zikula allows only the following asset types:
      * <ul>
      *  <li>stylesheet</li>
      *  <li>javascript</li>
      *  <li>header</li>
      *  <li>footer</li>
      * </ul>
-     *
-     * @param string $type
-     * @param string $value
-     * @param int $weight
      */
-    public function add($type, $value, $weight = AssetBag::WEIGHT_DEFAULT);
+    public function add(string $type, string $value, int $weight = AssetBag::WEIGHT_DEFAULT): void;
 }

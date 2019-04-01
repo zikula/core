@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -31,7 +34,7 @@ abstract class AbstractAppSettings
      * @Assert\NotBlank()
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
-     * @var integer $routeEntriesPerPage
+     * @var int $routeEntriesPerPage
      */
     protected $routeEntriesPerPage = 10;
     
@@ -40,7 +43,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $showOnlyOwnEntries
+     * @var bool $showOnlyOwnEntries
      */
     protected $showOnlyOwnEntries = false;
     
@@ -49,7 +52,7 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $allowModerationSpecificCreatorForRoute
+     * @var bool $allowModerationSpecificCreatorForRoute
      */
     protected $allowModerationSpecificCreatorForRoute = false;
     
@@ -58,16 +61,11 @@ abstract class AbstractAppSettings
      *
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $allowModerationSpecificCreationDateForRoute
+     * @var bool $allowModerationSpecificCreationDateForRoute
      */
     protected $allowModerationSpecificCreationDateForRoute = false;
     
     
-    /**
-     * AppSettings constructor.
-     *
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         VariableApiInterface $variableApi
     ) {
@@ -76,99 +74,51 @@ abstract class AbstractAppSettings
         $this->load();
     }
     
-    /**
-     * Returns the route entries per page.
-     *
-     * @return integer
-     */
-    public function getRouteEntriesPerPage()
+    public function getRouteEntriesPerPage(): int
     {
         return $this->routeEntriesPerPage;
     }
     
-    /**
-     * Sets the route entries per page.
-     *
-     * @param integer $routeEntriesPerPage
-     *
-     * @return void
-     */
-    public function setRouteEntriesPerPage($routeEntriesPerPage)
+    public function setRouteEntriesPerPage(int $routeEntriesPerPage): void
     {
-        if (intval($this->routeEntriesPerPage) !== intval($routeEntriesPerPage)) {
-            $this->routeEntriesPerPage = intval($routeEntriesPerPage);
+        if ((int)$this->routeEntriesPerPage !== $routeEntriesPerPage) {
+            $this->routeEntriesPerPage = $routeEntriesPerPage;
         }
     }
     
-    /**
-     * Returns the show only own entries.
-     *
-     * @return boolean
-     */
-    public function getShowOnlyOwnEntries()
+    public function getShowOnlyOwnEntries(): bool
     {
         return $this->showOnlyOwnEntries;
     }
     
-    /**
-     * Sets the show only own entries.
-     *
-     * @param boolean $showOnlyOwnEntries
-     *
-     * @return void
-     */
-    public function setShowOnlyOwnEntries($showOnlyOwnEntries)
+    public function setShowOnlyOwnEntries(bool $showOnlyOwnEntries): void
     {
-        if (boolval($this->showOnlyOwnEntries) !== boolval($showOnlyOwnEntries)) {
-            $this->showOnlyOwnEntries = boolval($showOnlyOwnEntries);
+        if ((bool)$this->showOnlyOwnEntries !== $showOnlyOwnEntries) {
+            $this->showOnlyOwnEntries = $showOnlyOwnEntries;
         }
     }
     
-    /**
-     * Returns the allow moderation specific creator for route.
-     *
-     * @return boolean
-     */
-    public function getAllowModerationSpecificCreatorForRoute()
+    public function getAllowModerationSpecificCreatorForRoute(): bool
     {
         return $this->allowModerationSpecificCreatorForRoute;
     }
     
-    /**
-     * Sets the allow moderation specific creator for route.
-     *
-     * @param boolean $allowModerationSpecificCreatorForRoute
-     *
-     * @return void
-     */
-    public function setAllowModerationSpecificCreatorForRoute($allowModerationSpecificCreatorForRoute)
+    public function setAllowModerationSpecificCreatorForRoute(bool $allowModerationSpecificCreatorForRoute): void
     {
-        if (boolval($this->allowModerationSpecificCreatorForRoute) !== boolval($allowModerationSpecificCreatorForRoute)) {
-            $this->allowModerationSpecificCreatorForRoute = boolval($allowModerationSpecificCreatorForRoute);
+        if ((bool)$this->allowModerationSpecificCreatorForRoute !== $allowModerationSpecificCreatorForRoute) {
+            $this->allowModerationSpecificCreatorForRoute = $allowModerationSpecificCreatorForRoute;
         }
     }
     
-    /**
-     * Returns the allow moderation specific creation date for route.
-     *
-     * @return boolean
-     */
-    public function getAllowModerationSpecificCreationDateForRoute()
+    public function getAllowModerationSpecificCreationDateForRoute(): bool
     {
         return $this->allowModerationSpecificCreationDateForRoute;
     }
     
-    /**
-     * Sets the allow moderation specific creation date for route.
-     *
-     * @param boolean $allowModerationSpecificCreationDateForRoute
-     *
-     * @return void
-     */
-    public function setAllowModerationSpecificCreationDateForRoute($allowModerationSpecificCreationDateForRoute)
+    public function setAllowModerationSpecificCreationDateForRoute(bool $allowModerationSpecificCreationDateForRoute): void
     {
-        if (boolval($this->allowModerationSpecificCreationDateForRoute) !== boolval($allowModerationSpecificCreationDateForRoute)) {
-            $this->allowModerationSpecificCreationDateForRoute = boolval($allowModerationSpecificCreationDateForRoute);
+        if ((bool)$this->allowModerationSpecificCreationDateForRoute !== $allowModerationSpecificCreationDateForRoute) {
+            $this->allowModerationSpecificCreationDateForRoute = $allowModerationSpecificCreationDateForRoute;
         }
     }
     
@@ -176,7 +126,7 @@ abstract class AbstractAppSettings
     /**
      * Loads module variables from the database.
      */
-    protected function load()
+    protected function load(): void
     {
         $moduleVars = $this->variableApi->getAll('ZikulaRoutesModule');
     
@@ -197,7 +147,7 @@ abstract class AbstractAppSettings
     /**
      * Saves module variables into the database.
      */
-    public function save()
+    public function save(): void
     {
         $this->variableApi->set('ZikulaRoutesModule', 'routeEntriesPerPage', $this->getRouteEntriesPerPage());
         $this->variableApi->set('ZikulaRoutesModule', 'showOnlyOwnEntries', $this->getShowOnlyOwnEntries());

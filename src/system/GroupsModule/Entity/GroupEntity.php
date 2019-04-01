@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
@@ -99,246 +100,92 @@ class GroupEntity extends EntityAccess
         $this->applications = new ArrayCollection();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getApplications()
+    public function getApplications(): Collection
     {
         return $this->applications;
     }
 
-    /**
-     * @param mixed $applications
-     */
-    public function setApplications($applications)
+    public function setApplications(Collection $applications): void
     {
         $this->applications = $applications;
     }
 
-    /**
-     * get the gid of the group
-     *
-     * @return integer the group's gid
-     */
-    public function getGid()
+    public function getGid(): int
     {
         return $this->gid;
     }
 
-    /**
-     * set the gid for the group
-     *
-     * @param integer $gid the group's gid
-     */
-    public function setGid($gid)
+    public function setGid(int $gid): void
     {
         $this->gid = $gid;
     }
 
-    /**
-     * get the name of the group
-     *
-     * @return string the group's name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * set the name for the group
-     *
-     * @param string $name the group's name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * get the gtype of the group
-     *
-     * @return integer the group's gtype
-     */
-    public function getGtype()
+    public function getGtype(): int
     {
         return $this->gtype;
     }
 
-    /**
-     * set the gtype for the group
-     *
-     * @param integer $gtype the group's gtype
-     */
-    public function setGtype($gtype)
+    public function setGtype(int $gtype): void
     {
         $this->gtype = $gtype;
     }
 
-    /**
-     * get the description of the group
-     *
-     * @return string the group's description
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * set the description for the group
-     *
-     * @param string $description the group's description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * get the prefix of the group
-     *
-     * @return string the group's prefix
-     */
-    public function getPrefix()
-    {
-        return $this->prefix;
-    }
-
-    /**
-     * set the prefix for the group
-     *
-     * @param string $prefix the group's prefix
-     */
-    public function setPrefix($prefix)
-    {
-        $this->prefix = $prefix;
-    }
-
-    /**
-     * get the state of the group
-     *
-     * @return integer the group's state
-     */
-    public function getState()
+    public function getState(): int
     {
         return $this->state;
     }
 
-    /**
-     * set the state for the group
-     *
-     * @param integer $state the group's state
-     */
-    public function setState($state)
+    public function setState(int $state): void
     {
         $this->state = $state;
     }
 
-    /**
-     * get the nbuser of the group
-     *
-     * @return integer the group's nbuser
-     */
-    public function getNbuser()
-    {
-        return $this->nbuser;
-    }
-
-    /**
-     * set the nbuser for the group
-     *
-     * @param integer $nbuser the group's nbuser
-     */
-    public function setNbuser($nbuser)
-    {
-        $this->nbuser = $nbuser;
-    }
-
-    /**
-     * get the nbumax of the group
-     *
-     * @return integer the group's nbumax
-     */
-    public function getNbumax()
+    public function getNbumax(): int
     {
         return $this->nbumax;
     }
 
-    /**
-     * set the nbumax for the group
-     *
-     * @param integer $nbumax the group's nbumax
-     */
-    public function setNbumax($nbumax)
+    public function setNbumax(int $nbumax): void
     {
         $this->nbumax = $nbumax;
     }
 
-    /**
-     * get the link of the group
-     *
-     * @return integer the group's link
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * set the link for the group
-     *
-     * @param integer $link the group's link
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-    }
-
-    /**
-     * get the uidmaster of the group
-     *
-     * @return integer the group's uidmaster
-     */
-    public function getUidmaster()
-    {
-        return $this->uidmaster;
-    }
-
-    /**
-     * set the uidmaster for the group
-     *
-     * @param integer $uidmaster the group's uidmaster
-     */
-    public function setUidmaster($uidmaster)
-    {
-        $this->uidmaster = $uidmaster;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getUsers()
+    public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    /**
-     * GroupEntity is the 'Inverse side'
-     * @see http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/association-mapping.html#owning-and-inverse-side-on-a-manytomany-association
-     * @param UserEntity $user
-     */
-    public function addUser(UserEntity $user)
+    public function addUser(UserEntity $user): void
     {
         $this->users[] = $user;
     }
 
-    public function removeUser(UserEntity $user)
+    public function removeUser(UserEntity $user): void
     {
         $this->users->removeElement($user);
     }
 
-    public function removeAllUsers()
+    public function removeAllUsers(): void
     {
         $this->users->clear();
     }

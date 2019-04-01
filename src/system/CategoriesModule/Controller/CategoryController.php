@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
+use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Form\Type\CategoryTreeType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -37,19 +37,17 @@ class CategoryController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaCategoriesModule:Category:list.html.twig")
      *
-     * @param Request $request
-     * @param CategoryEntity $category
-     * @param CategoryRepositoryInterface $categoryRepository
-     *
-     * @return array
-     *
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
-    public function listAction(Request $request, CategoryEntity $category, CategoryRepositoryInterface $categoryRepository)
-    {
-        if (!$this->hasPermission('ZikulaCategoriesModule::category', 'ID::' . $category->getId(), ACCESS_EDIT)
-            || !$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)) {
+    public function listAction(
+        Request $request,
+        CategoryEntity $category,
+        CategoryRepository $categoryRepository
+    ): array {
+        if (!$this->hasPermission('ZikulaCategoriesModule::category', '::', ACCESS_EDIT)
+            || !$this->hasPermission('ZikulaCategoriesModule::category', 'ID::' . $category->getId(), ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -73,11 +71,7 @@ class CategoryController extends AbstractController
         ];
     }
 
-    /**
-     * @param Request $request
-     * @return array
-     */
-    private function getNodeOptions(Request $request)
+    private function getNodeOptions(Request $request): array
     {
         $locale = $request->getLocale();
 
@@ -109,13 +103,7 @@ class CategoryController extends AbstractController
         ];
     }
 
-    /**
-     * @param $node
-     * @param $displayName
-     * @param $locale
-     * @return string
-     */
-    private function createTitleAttribute($node, $displayName, $locale)
+    private function createTitleAttribute(array $node, string $displayName, string $locale): string
     {
         $title = [];
         $title[] = $this->__('ID') . ': ' . $node['id'];

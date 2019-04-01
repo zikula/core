@@ -123,7 +123,6 @@ services:
 
     Zikula\ThemeModule\EventListener\AddJSConfigListener:
         arguments:
-          $pageVars: '@zikula_core.common.theme.pagevars'
           $headers: '@zikula_core.common.theme.assets_header'
           $defaultSessionName: '%zikula.session.name%'
 

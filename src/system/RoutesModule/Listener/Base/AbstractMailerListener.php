@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -20,9 +23,6 @@ use Zikula\MailerModule\MailerEvents;
  */
 abstract class AbstractMailerListener implements EventSubscriberInterface
 {
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -47,9 +47,8 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function sendMessageStart(GenericEvent $event)
+    public function sendMessageStart(GenericEvent $event): void
     {
     }
     
@@ -67,9 +66,8 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function sendMessagePerform(GenericEvent $event)
+    public function sendMessagePerform(GenericEvent $event): void
     {
     }
     
@@ -84,9 +82,8 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function sendMessageSuccess(GenericEvent $event)
+    public function sendMessageSuccess(GenericEvent $event): void
     {
     }
     
@@ -101,9 +98,8 @@ abstract class AbstractMailerListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function sendMessageFailure(GenericEvent $event)
+    public function sendMessageFailure(GenericEvent $event): void
     {
     }
 }

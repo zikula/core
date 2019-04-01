@@ -32,25 +32,27 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
         $this->container = $container;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'requirements';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Install:requirements.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         $this->requirementsMet = $this->container->get(ControllerHelper::class)->requirementsMet();
 
         return !$this->requirementsMet;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
-        return ['checks' => $this->requirementsMet];
+        return [
+            'checks' => $this->requirementsMet
+        ];
     }
 }

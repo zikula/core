@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Tests\Engine;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
-class ParameterBagTest extends \PHPUnit\Framework\TestCase
+class ParameterBagTest extends TestCase
 {
     /**
      * @var ParameterBag
      */
     private $bag;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $requestStack = $this
             ->getMockBuilder(RequestStack::class)
@@ -49,7 +51,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ParameterBag::clear()
      */
-    public function testClear()
+    public function testClear(): void
     {
         $this->bag->clear();
         $this->assertEquals('', $this->bag->get('foo'));
@@ -58,7 +60,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ParameterBag::has()
      */
-    public function testHasSimpleValue()
+    public function testHasSimpleValue(): void
     {
         $this->assertTrue($this->bag->has('foo'));
         $this->assertFalse($this->bag->has('bar'));
@@ -67,7 +69,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ParameterBag::get()
      */
-    public function testGetSimpleValue()
+    public function testGetSimpleValue(): void
     {
         $this->assertEquals(10, $this->bag->get('foo'));
         $this->assertNotNull($this->bag->get('bar'));
@@ -80,7 +82,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
      * @covers ParameterBag::set()
      * @covers ParameterBag::get()
      */
-    public function testSetSimpleValue()
+    public function testSetSimpleValue(): void
     {
         $this->bag->set('bar', 1);
         $this->assertEquals(1, $this->bag->get('bar'));
@@ -95,9 +97,9 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
      * work as expected (see `testSetAndGetArrayValue()` below)
      * Warning: Cannot use a scalar value as an array
      */
-    public function testExpectedFailureToRecastToNamespace()
+    public function testExpectedFailureToRecastToNamespace(): void
     {
-        $this->setExpectedException(\PHPUnit\Framework\Error::class);
+        $this->expectException(Exception::class);
         $this->bag->set('foo.bang', 6);
     }
 
@@ -105,7 +107,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
      * @covers ParameterBag::set()
      * @covers ParameterBag::get()
      */
-    public function testSetAndGetArrayValue()
+    public function testSetAndGetArrayValue(): void
     {
         $foo = ['bar' => 1, 'baz' => 2];
         $this->bag->set('foo', $foo);
@@ -116,7 +118,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
      * @covers ParameterBag::set()
      * @covers ParameterBag::get()
      */
-    public function testSetAndGetNameSpacedValue()
+    public function testSetAndGetNameSpacedValue(): void
     {
         $this->bag->set('fum.bar', 1);
         $this->bag->set('fum.baz', 2);
@@ -129,7 +131,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ParameterBag::remove()
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $bar = [
             'foo' => 1,
@@ -148,7 +150,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ParameterBag::count()
      */
-    public function testCount()
+    public function testCount(): void
     {
         $bar = [
             'foo' => 1,
@@ -162,7 +164,7 @@ class ParameterBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers ParameterBag::all()
      */
-    public function testAll()
+    public function testAll(): void
     {
         $bar = [
             'foo' => 1,

@@ -22,8 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
+use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
-use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Form\EventListener\CategoriesMergeCollectionListener;
 
@@ -42,12 +42,6 @@ class CategoriesType extends AbstractType
      */
     private $requestStack;
 
-    /**
-     * CategoriesType constructor.
-     *
-     * @param CategoryRegistryRepositoryInterface $categoryRegistryRepository
-     * @param RequestStack $requestStack
-     */
     public function __construct(
         CategoryRegistryRepositoryInterface $categoryRegistryRepository,
         RequestStack $requestStack
@@ -56,9 +50,6 @@ class CategoriesType extends AbstractType
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $registries = $this->categoryRegistryRepository->findBy([
@@ -66,15 +57,16 @@ class CategoriesType extends AbstractType
             'entityname' => $options['entity']
         ]);
 
-        $locale = $this->requestStack->getMasterRequest()->getLocale();
+        $request = $this->requestStack->getMasterRequest();
+        $locale = null !== $request ? $request->getLocale() : 'en';
 
         /** @var CategoryRegistryEntity[] $registries */
         foreach ($registries as $registry) {
             $baseCategory = $registry->getCategory();
-            $queryBuilderClosure = function(CategoryRepositoryInterface $repo) use ($baseCategory, $options) {
+            $queryBuilderClosure = static function(CategoryRepository $repo) use ($baseCategory, $options) {
                 return $repo->getChildrenQueryBuilder($baseCategory, $options['direct']);
             };
-            $choiceLabelClosure = function(CategoryEntity $category) use ($baseCategory, $locale) {
+            $choiceLabelClosure = static function(CategoryEntity $category) use ($baseCategory, $locale) {
                 $indent = str_repeat('--', $category->getLvl() - $baseCategory->getLvl() - 1);
 
                 $categoryName = $category['display_name'][$locale] ?? $category['display_name']['en'];
@@ -106,17 +98,11 @@ class CategoriesType extends AbstractType
         $builder->addEventSubscriber(new CategoriesMergeCollectionListener());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulacategoriesmodule_categories';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['entityCategoryClass', 'module', 'entity']);
@@ -144,7 +130,7 @@ class CategoriesType extends AbstractType
         $resolver->setAllowedTypes('em', [ObjectManager::class, 'null']);
         $resolver->setAllowedTypes('showRegistryLabels', 'bool');
 
-        $resolver->addAllowedValues('entityCategoryClass', function($value) {
+        $resolver->addAllowedValues('entityCategoryClass', static function($value) {
             return is_subclass_of($value, AbstractCategoryAssignment::class);
         });
     }

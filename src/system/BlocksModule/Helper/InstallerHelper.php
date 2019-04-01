@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Helper;
 
+use Exception;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class InstallerHelper
 {
-    public function upgradeFilterArray(array $filters)
+    public function upgradeFilterArray(array $filters = []): array
     {
         $newFilter = [];
         $legacyFieldMap = [
@@ -75,20 +76,20 @@ class InstallerHelper
         return $newFilter;
     }
 
-    public function upgradeBkeyToFqClassname(ZikulaHttpKernelInterface $kernel, BlockEntity $blockEntity)
+    public function upgradeBkeyToFqClassname(ZikulaHttpKernelInterface $kernel, BlockEntity $blockEntity): string
     {
         $moduleName = $blockEntity->getModule()->getName();
         try {
             $moduleBundle = $kernel->getModule($moduleName);
             $blockClassName = $moduleBundle->getNamespace() . '\Block\\' . ucwords($blockEntity->getBkey());
-            $blockClassName = preg_match('/.*Block$/', $blockClassName) ? $blockClassName : $blockClassName . 'Block';
-        } catch (\Exception $e) {
+            $blockClassName = preg_match('/Block$/', $blockClassName) ? $blockClassName : $blockClassName . 'Block';
+        } catch (Exception $exception) {
             $blockClassName = '\\' . ucwords($moduleName) . '\\' . 'Block\\' . ucwords($blockEntity->getBkey());
-            $blockClassName = preg_match('/.*Block$/', $blockClassName) ? $blockClassName : $blockClassName . 'Block';
+            $blockClassName = preg_match('/Block$/', $blockClassName) ? $blockClassName : $blockClassName . 'Block';
             $blockClassNameOld = '\\' . ucwords($moduleName) . '_' . 'Block_' . ucwords($blockEntity->getBkey());
             $blockClassName = class_exists($blockClassName) ? $blockClassName : $blockClassNameOld;
         }
 
-        return "${moduleName}:${blockClassName}";
+        return $moduleName . ':' . $blockClassName;
     }
 }

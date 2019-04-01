@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group form-buttons">
             <div class="col-sm-offset-3 col-sm-9">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.reset) }}
@@ -72,4 +72,21 @@
         </div>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+{% block footer %}
+    {{ parent() }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js'), 98) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js'), 99) }}
+    {% set formInitScript %}
+        <script>
+        /* <![CDATA[ */
+            ( function($) {
+                $(document).ready(function() {
+                    zikulaRoutesInitEditForm('edit', '1');
+                });
+            })(jQuery);
+        /* ]]> */
+        </script>
+    {% endset %}
+    {{ pageAddAsset('footer', formInitScript) }}
 {% endblock %}

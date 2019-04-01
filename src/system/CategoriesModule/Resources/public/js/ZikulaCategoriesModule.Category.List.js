@@ -1,4 +1,6 @@
-( function($) {
+// Copyright Zikula Foundation, licensed MIT.
+
+(function($) {
     $(document).ready(function() {
         // config items
         var id_prefix = 'node_'; // must match NodeController::$domTreeNodePrefix
@@ -8,7 +10,7 @@
                 'multiple': false,
                 'check_callback': function(operation, node, node_parent, node_position, more) {
                     if (operation === 'move_node') {
-                        return ($.inArray($(node).attr('id'), nodesDisabledForDrop) == -1);
+                        return ($.inArray($(node).attr('id'), nodesDisabledForDrop) === -1);
                     }
                     return true; // allow all other operations
                 }
@@ -20,7 +22,7 @@
                 'copy': false,
                 'is_draggable': function(node) {
                     // disable drag and drop for root category
-                    return ($(node).attr('id') != 'node_1');
+                    return ($(node).attr('id') !== 'node_1');
                 },
                 'inside_pos': 'last'
             },
@@ -216,7 +218,7 @@
                         var buttonValue = $(this).val();
                         var entityId;
 
-                        if (buttonValue == 'Cancel') {
+                        if (buttonValue === 'Cancel') {
                             closeEditForm();
                             return false;
                         }
@@ -240,7 +242,7 @@
                             } else {
                                 var nodeData = $.parseJSON(data.node);
                                 var editedNode;
-                                if (data.mode == 'edit') {
+                                if (data.mode === 'edit') {
                                     // rename the existing node
                                     editedNode = treeElem.jstree('get_node', nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.display_name[Translator.locale]);

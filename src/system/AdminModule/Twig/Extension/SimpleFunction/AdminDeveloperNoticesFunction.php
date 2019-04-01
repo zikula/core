@@ -23,9 +23,6 @@ class AdminDeveloperNoticesFunction
      */
     private $handler;
 
-    /**
-     * AdminDeveloperNoticesFunction constructor.
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -33,19 +30,14 @@ class AdminDeveloperNoticesFunction
 
     /**
      * Inserts developer notices.
-     *
      * This has NO configuration options.
      *
-     * Examples:
-     *
-     * <samp>{{ adminDeveloperNotices() }}</samp>
-     *
-     * @return string
+     * Example: {{ adminDeveloperNotices() }}
      */
-    public function display()
+    public function display(): string
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:developernotices');
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

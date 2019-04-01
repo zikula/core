@@ -23,20 +23,20 @@ class MailerEvents
     /**
      * Occurs when a new message should be sent.
      */
-    const SEND_MESSAGE_START = 'module.mailer.api.sendmessage';
+    public const SEND_MESSAGE_START = 'module.mailer.api.sendmessage';
 
     /**
      * Occurs right before a message is sent.
      */
-    const SEND_MESSAGE_PERFORM = 'module.mailer.api.perform';
+    public const SEND_MESSAGE_PERFORM = 'module.mailer.api.perform';
 
     /**
      * Occurs after a message has been sent successfully.
      */
-    const SEND_MESSAGE_SUCCESS = 'module.mailer.api.success';
+    public const SEND_MESSAGE_SUCCESS = 'module.mailer.api.success';
 
     /**
      * Occurs when a message could not be sent.
      */
-    const SEND_MESSAGE_FAILURE = 'module.mailer.api.failure';
+    public const SEND_MESSAGE_FAILURE = 'module.mailer.api.failure';
 }

@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Tests\Engine;
 
+use PHPUnit\Framework\TestCase;
 use Zikula\ThemeModule\Engine\AssetBag;
 
-class AssetBagTest extends \PHPUnit\Framework\TestCase
+class AssetBagTest extends TestCase
 {
     /**
      * @covers AssetBag::count()
      */
-    public function testCount()
+    public function testCount(): void
     {
         $bag = new AssetBag();
         $bag->add('A');
@@ -32,7 +33,7 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers AssetBag::clear()
      */
-    public function testClear()
+    public function testClear(): void
     {
         $bag = new AssetBag();
         $bag->add('A');
@@ -44,7 +45,7 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers AssetBag::remove()
      */
-    public function testRemove()
+    public function testRemove(): void
     {
         $bag = new AssetBag();
         $bag->add('A');
@@ -56,7 +57,7 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers AssetBag::add()
      */
-    public function testAddWeighted()
+    public function testAddWeighted(): void
     {
         $bag = new AssetBag();
         $bag->add(['A' => 3]);
@@ -69,9 +70,9 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
      * @covers AssetBag::add()
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.sort-order
      */
-    public function testAddSameWeighted()
+    public function testAddSameWeighted(): void
     {
-        $this->markTestSkipped('Currently skipped due to different behaviour in PHP 5 and 7.');
+        $this->markTestSkipped('Currently skipped due to indeterminate behaviour in PHP 7.');
 
         $bag = new AssetBag();
         $bag->add(['A' => 3]);
@@ -83,7 +84,7 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers AssetBag::getIterator()
      */
-    public function testIterator()
+    public function testIterator(): void
     {
         $bag = new AssetBag();
         $bag->add(['A' => 3]);
@@ -101,7 +102,7 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers AssetBag::add()
      */
-    public function testAddDuplicates()
+    public function testAddDuplicates(): void
     {
         $bag = new AssetBag();
         $bag->add(['A' => 6]);
@@ -117,7 +118,7 @@ class AssetBagTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers AssetBag::add()
      */
-    public function testKeepLowestWeightedSubmission()
+    public function testKeepLowestWeightedSubmission(): void
     {
         $bag = new AssetBag();
         $bag->add(['A' => 6]);

@@ -13,29 +13,32 @@ declare(strict_types=1);
 
 namespace Zikula\Core\Tests\LinkContainer;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\Core\Tests\LinkContainer\Fixtures\BarLinkContainer;
 use Zikula\Core\Tests\LinkContainer\Fixtures\FooLinkContainer;
 
-class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
+class LinkContainerCollectorTest extends TestCase
 {
     /**
      * @var LinkContainerCollector
      */
     private $collector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $dispatcher = $this
-            ->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
+            ->getMockBuilder(EventDispatcherInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $dispatcher
             ->method('dispatch')
-            ->with($this->anything(), $this->isInstanceOf('Zikula\Core\Event\GenericEvent'))
+            ->with($this->anything(), $this->isInstanceOf(GenericEvent::class))
             ->will($this->returnArgument(1));
-        $this->collector = new LinkContainerCollector($dispatcher);
+        $this->collector = new LinkContainerCollector($dispatcher, []);
         $this->collector->addContainer(new FooLinkContainer());
         $this->collector->addContainer(new BarLinkContainer());
     }
@@ -43,10 +46,10 @@ class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers LinkContainerCollector::addContainer
      */
-    public function testAddContainer()
+    public function testAddContainer(): void
     {
         $container = $this
-            ->getMockBuilder('Zikula\Core\LinkContainer\LinkContainerInterface')
+            ->getMockBuilder(LinkContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $container
@@ -59,7 +62,7 @@ class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers LinkContainerCollector::hasContainer
      */
-    public function testHasContainer()
+    public function testHasContainer(): void
     {
         $this->assertTrue($this->collector->hasContainer('ZikulaFooExtension'));
         $this->assertTrue($this->collector->hasContainer('ZikulaBarExtension'));
@@ -70,11 +73,8 @@ class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers LinkContainerCollector::getLinks
      * @dataProvider linksProvider
-     * @param string $extension
-     * @param string $type
-     * @param array $expected
      */
-    public function testGetLinks($extension, $type, array $expected)
+    public function testGetLinks(string $extension, string $type, array $expected = []): void
     {
         $this->assertEquals($expected, $this->collector->getLinks($extension, $type));
     }
@@ -82,15 +82,13 @@ class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers LinkContainerCollector::getAllLinksByType
      * @dataProvider allLinksProvider
-     * @param string $type
-     * @param array $expected
      */
-    public function testGetAllLinksByType($type, $expected)
+    public function testGetAllLinksByType(string $type, array $expected = []): void
     {
         $this->assertEquals($expected, $this->collector->getAllLinksByType($type));
     }
 
-    public function linksProvider()
+    public function linksProvider(): array
     {
         return [
             ['Unknown Extension', 'admin', []],
@@ -120,7 +118,7 @@ class LinkContainerCollectorTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function allLinksProvider()
+    public function allLinksProvider(): array
     {
         return [
             [LinkContainerInterface::TYPE_ACCOUNT, [

@@ -19,42 +19,39 @@ use Zikula\Common\Translator\TranslatorInterface;
 
 class UiHooksSubscriber implements HookSubscriberInterface
 {
-    const HTMLBLOCK_EDIT_FORM = 'blocks.ui_hooks.htmlblock.content.form_edit';
+    public const HTMLBLOCK_EDIT_FORM = 'blocks.ui_hooks.htmlblock.content.form_edit';
 
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getOwner()
+    public function getOwner(): string
     {
         return 'ZikulaBlocksModule';
     }
 
-    public function getCategory()
+    public function getCategory(): string
     {
         return UiHooksCategory::NAME;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->translator->__('HTML Block content hook');
     }
 
-    public function getAreaName()
+    public function getAreaName(): string
     {
         return 'subscriber.blocks.ui_hooks.htmlblock.content';
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         return [
             UiHooksCategory::TYPE_FORM_EDIT => 'blocks.ui_hooks.htmlblock.content.form_edit'

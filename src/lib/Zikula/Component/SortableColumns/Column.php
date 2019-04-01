@@ -21,29 +21,47 @@ namespace Zikula\Component\SortableColumns;
  */
 class Column
 {
-    const DIRECTION_ASCENDING = 'ASC';
+    public const DIRECTION_ASCENDING = 'ASC';
 
-    const DIRECTION_DESCENDING = 'DESC';
+    public const DIRECTION_DESCENDING = 'DESC';
 
-    const CSS_CLASS_UNSORTED = 'unsorted';
+    public const CSS_CLASS_UNSORTED = 'unsorted';
 
-    const CSS_CLASS_ASCENDING = 'sorted-asc';
+    public const CSS_CLASS_ASCENDING = 'sorted-asc';
 
-    const CSS_CLASS_DESCENDING = 'sorted-desc';
+    public const CSS_CLASS_DESCENDING = 'sorted-desc';
 
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var string
+     */
     private $defaultSortDirection;
 
+    /**
+     * @var string
+     */
     private $currentSortDirection;
 
+    /**
+     * @var string
+     */
     private $reverseSortDirection;
 
+    /**
+     * @var string
+     */
     private $cssClassString;
 
+    /**
+     * @var bool
+     */
     private $isSortColumn = false;
 
-    public function __construct($name, $currentSortDirection = null, $defaultSortDirection = null)
+    public function __construct(string $name, string $currentSortDirection = null, string $defaultSortDirection = null)
     {
         $this->name = $name;
         $this->currentSortDirection = !empty($currentSortDirection) ? $currentSortDirection : self::DIRECTION_ASCENDING;
@@ -52,120 +70,80 @@ class Column
         $this->cssClassString = self::CSS_CLASS_UNSORTED;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultSortDirection()
+    public function getDefaultSortDirection(): string
     {
         return $this->defaultSortDirection;
     }
 
-    /**
-     * @param string $defaultSortDirection
-     */
-    public function setDefaultSortDirection($defaultSortDirection)
+    public function setDefaultSortDirection(string $defaultSortDirection): void
     {
         $this->defaultSortDirection = $defaultSortDirection;
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrentSortDirection()
+    public function getCurrentSortDirection(): string
     {
         return $this->currentSortDirection;
     }
 
-    /**
-     * @param string $currentSortDirection
-     */
-    public function setCurrentSortDirection($currentSortDirection)
+    public function setCurrentSortDirection(string $currentSortDirection): void
     {
         $this->currentSortDirection = $currentSortDirection;
         $this->setCssClassString($this->cssFromDirection($currentSortDirection));
         $this->reverseSortDirection = $this->reverse($currentSortDirection);
     }
 
-    /**
-     * @return string
-     */
-    public function getReverseSortDirection()
+    public function getReverseSortDirection(): string
     {
         return $this->reverseSortDirection;
     }
 
-    /**
-     * @param string $reverseSortDirection
-     */
-    public function setReverseSortDirection($reverseSortDirection)
+    public function setReverseSortDirection(string $reverseSortDirection): void
     {
         $this->reverseSortDirection = $reverseSortDirection;
     }
 
-    /**
-     * @return string
-     */
-    public function getCssClassString()
+    public function getCssClassString(): string
     {
         return $this->cssClassString;
     }
 
-    /**
-     * @param string $cssClassString
-     */
-    public function setCssClassString($cssClassString)
+    public function setCssClassString(string $cssClassString): void
     {
         $this->cssClassString = $cssClassString;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isSortColumn()
+    public function isSortColumn(): bool
     {
         return $this->isSortColumn;
     }
 
-    /**
-     * @param boolean $isSortColumn
-     */
-    public function setSortColumn($isSortColumn)
+    public function setSortColumn(bool $isSortColumn): void
     {
         $this->isSortColumn = $isSortColumn;
     }
 
     /**
-     * reverse the direction constants
-     * @param $direction
-     * @return string
+     * Reverse the direction constants.
      */
-    private function reverse($direction)
+    private function reverse(string $direction): string
     {
         return (self::DIRECTION_ASCENDING === $direction) ? self::DIRECTION_DESCENDING : self::DIRECTION_ASCENDING;
     }
 
     /**
-     * determine a css class based on the direction
-     * @param $direction
-     * @return string
+     * Determine a css class based on the direction.
      */
-    private function cssFromDirection($direction)
+    private function cssFromDirection(string $direction): string
     {
         return (self::DIRECTION_ASCENDING === $direction) ? self::CSS_CLASS_ASCENDING : self::CSS_CLASS_DESCENDING;
     }

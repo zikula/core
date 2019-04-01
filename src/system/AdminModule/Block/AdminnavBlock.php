@@ -46,18 +46,10 @@ class AdminnavBlock extends AbstractBlockHandler
      */
     private $capabilityApi;
 
-    /**
-     * display block
-     *
-     * @param array $properties
-     *
-     * @return string html of the rendered blcok
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        // Security check
         if (!$this->hasPermission('ZikulaAdminModule:adminnavblock', $properties['title'] . '::' . $properties['bid'], ACCESS_ADMIN)) {
-            return;
+            return '';
         }
 
         // Get all categories
@@ -83,6 +75,9 @@ class AdminnavBlock extends AbstractBlockHandler
             /** @var ExtensionEntity[] $adminModules */
             foreach ($adminModules as $adminModule) {
                 $category = $this->adminCategoryRepository->getModuleCategory($adminModule->getId());
+                if (null === $category) {
+                    continue;
+                }
                 if ($category['cid'] === $item['cid'] || (false === $category['cid'] && $item['cid'] === $defaultCategory)) {
                     $menuText = $adminModule->getDisplayname();
                     // url
@@ -114,36 +109,32 @@ class AdminnavBlock extends AbstractBlockHandler
 
     /**
      * @required
-     * @param RouterInterface $router
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
     /**
      * @required
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
      */
-    public function setAdminCategoryRepository(AdminCategoryRepositoryInterface $adminCategoryRepository)
+    public function setAdminCategoryRepository(AdminCategoryRepositoryInterface $adminCategoryRepository): void
     {
         $this->adminCategoryRepository = $adminCategoryRepository;
     }
 
     /**
      * @required
-     * @param VariableApiInterface $variableApi
      */
-    public function setVariableApi(VariableApiInterface $variableApi)
+    public function setVariableApi(VariableApiInterface $variableApi): void
     {
         $this->variableApi = $variableApi;
     }
 
     /**
      * @required
-     * @param CapabilityApiInterface $capabilityApi
      */
-    public function setCapabilityApi(CapabilityApiInterface $capabilityApi)
+    public function setCapabilityApi(CapabilityApiInterface $capabilityApi): void
     {
         $this->capabilityApi = $capabilityApi;
     }

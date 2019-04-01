@@ -20,27 +20,14 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class SessionExpireListener implements EventSubscriberInterface
 {
+    /**
+     * @var bool
+     */
     private $installed;
 
-    /**
-     * SessionExpireListener constructor.
-     * @param $installed
-     */
-    public function __construct($installed)
+    public function __construct(bool $installed)
     {
         $this->installed = $installed;
-    }
-
-    public function onKernelRequestSessionExpire(GetResponseEvent $event)
-    {
-        if (!$this->installed) {
-            return;
-        }
-        if ($event->getRequest()->hasSession() && $event->getRequest()->getSession()->get('session_expired', false)) {
-            // Session has expired, display warning
-            $response = new Response("Session expired.", 403);
-            $event->setResponse($response);
-        }
     }
 
     public static function getSubscribedEvents()
@@ -50,5 +37,19 @@ class SessionExpireListener implements EventSubscriberInterface
                 ['onKernelRequestSessionExpire', 31]
             ]
         ];
+    }
+
+    public function onKernelRequestSessionExpire(GetResponseEvent $event): void
+    {
+        if (!$this->installed) {
+            return;
+        }
+        $session = null !== $event->getRequest() && $event->getRequest()->hasSession()
+            && null !== $event->getRequest()->getSession() ? $event->getRequest()->getSession() : null;
+        if (null !== $session && $session->get('session_expired', false)) {
+            // Session has expired, display warning
+            $response = new Response('Session expired.', 403);
+            $event->setResponse($response);
+        }
     }
 }

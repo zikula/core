@@ -23,8 +23,6 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\ParameterBag;
 
 /**
- * Class DefaultPageVarSetterListener
- *
  * This class sets default pagevars that are available in all Twig templates in a global scope.
  */
 class DefaultPageVarSetterListener implements EventSubscriberInterface
@@ -54,20 +52,12 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
      */
     private $installed;
 
-    /**
-     * DefaultPageVarSetterListener constructor.
-     * @param ParameterBag $pageVars
-     * @param RouterInterface $routerInterface
-     * @param VariableApiInterface $variableApi
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param bool $installed
-     */
     public function __construct(
         ParameterBag $pageVars,
         RouterInterface $routerInterface,
         VariableApiInterface $variableApi,
         ZikulaHttpKernelInterface $kernel,
-        $installed
+        bool $installed
     ) {
         $this->pageVars = $pageVars;
         $this->router = $routerInterface;
@@ -76,12 +66,19 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         $this->installed = $installed;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => [
+                ['setDefaultPageVars', 1]
+            ]
+        ];
+    }
+
     /**
-     * Add default pagevar settings to every page
-     *
-     * @param GetResponseEvent $event
+     * Add default pagevar settings to every page.
      */
-    public function setDefaultPageVars(GetResponseEvent $event)
+    public function setDefaultPageVars(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -100,14 +97,5 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
             'subVersion' => ZikulaKernel::VERSION_SUB,
             'minimumPhpVersion' => ZikulaKernel::PHP_MINIMUM_VERSION
         ]);
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => [
-                ['setDefaultPageVars', 1]
-            ]
-        ];
     }
 }

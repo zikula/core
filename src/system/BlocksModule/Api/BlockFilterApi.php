@@ -27,19 +27,12 @@ class BlockFilterApi implements BlockFilterApiInterface
      */
     private $requestStack;
 
-    /**
-     * BlockApi constructor.
-     * @param RequestStack $requestStack
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isDisplayable(BlockEntity $blockEntity)
+    public function isDisplayable(BlockEntity $blockEntity): bool
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
@@ -48,7 +41,7 @@ class BlockFilterApi implements BlockFilterApiInterface
 
         // filter for language/locale
         $language = $blockEntity->getLanguage();
-        if (!empty($language) && ($language !== $request->getLocale())) {
+        if (!empty($language) && $language !== $request->getLocale()) {
             return false;
         }
 
@@ -74,44 +67,36 @@ class BlockFilterApi implements BlockFilterApiInterface
 
     /**
      * Compare variables according to a dynamic comparator.
-     *
-     * @param $var1
-     * @param $comparator
-     * @param $var2
-     * @return bool
      */
-    private function compare($var1, $comparator, $var2)
+    private function compare(string $var1, string $comparator, string $var2): bool
     {
         switch ($comparator) {
-            case "==":
+            case '==':
                 return $var1 === $var2;
-            case "!=":
+            case '!=':
                 return $var1 !== $var2;
-            case ">=":
+            case '>=':
                 return $var1 >= $var2;
-            case "<=":
+            case '<=':
                 return $var1 <= $var2;
-            case ">":
+            case '>':
                 return $var1 > $var2;
-            case "<":
+            case '<':
                 return $var1 < $var2;
-            case "in_array":
-                $var2 = array_map('trim', explode(',', $var2));
+            case 'in_array':
+                $var2Array = array_map('trim', explode(',', $var2));
 
-                return in_array($var1, $var2);
-            case "!in_array":
-                $var2 = array_map('trim', explode(',', $var2));
+                return in_array($var1, $var2Array, true);
+            case '!in_array':
+                $var2Array = array_map('trim', explode(',', $var2));
 
-                return !in_array($var1, $var2);
+                return !in_array($var1, $var2Array, true);
             default:
                 return true;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilterAttributeChoices()
+    public function getFilterAttributeChoices(): array
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {

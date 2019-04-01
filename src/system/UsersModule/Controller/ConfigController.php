@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -39,11 +40,9 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaUsersModule:Config:config.html.twig")
      *
-     * @param Request $request
-     *
-     * @return array
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
-    public function configAction(Request $request)
+    public function configAction(Request $request): array
     {
         if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -74,12 +73,8 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaUsersModule:Config:authenticationMethods.html.twig")
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param AuthenticationMethodCollector $authenticationMethodCollector
-     * @param CacheClearer $cacheClearer
-     *
-     * @return array
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
     public function authenticationMethodsAction(
         Request $request,
@@ -112,7 +107,7 @@ class ConfigController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
-                if (!in_array(true, $data['authenticationMethodsStatus'])) {
+                if (!in_array(true, $data['authenticationMethodsStatus'], true)) {
                     // do not allow all methods to be inactive.
                     $data['authenticationMethodsStatus']['native_uname'] = true;
                     $this->addFlash('info', $this->__f('All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).', ['%m' => $allMethods['native_uname']->getDisplayName()]));

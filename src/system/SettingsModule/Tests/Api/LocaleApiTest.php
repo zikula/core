@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
 
-class LocaleApiTest extends \PHPUnit\Framework\TestCase
+class LocaleApiTest extends TestCase
 {
-    public function testGetSupportedLocales()
+    public function testGetSupportedLocales(): void
     {
         $api = $this->getApi();
-        $this->assertEquals(['en', 'de', 'ru'], $api->getSupportedLocales(false));
+        $this->assertEquals(['en', 'de', 'ru'], $api->getSupportedLocales());
     }
 
-    public function testGetSupportedLocaleNames()
+    public function testGetSupportedLocaleNames(): void
     {
         $api = $this->getApi();
         $expected = [
@@ -33,28 +35,28 @@ class LocaleApiTest extends \PHPUnit\Framework\TestCase
             'German' => 'de',
             'Russian' => 'ru'
         ];
-        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'en', false));
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'en'));
         $expected = [
             'Englisch' => 'en',
             'Deutsch' => 'de',
             'Russisch' => 'ru'
         ];
-        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'de', false));
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'de'));
         $expected = [
             'inglese' => 'en',
             'tedesco' => 'de',
             'russo' => 'ru'
         ];
-        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'it', false));
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'it'));
     }
 
-    public function testEmpty()
+    public function testEmpty(): void
     {
         $api = $this->getApi('');
-        $this->assertEquals(['en'], $api->getSupportedLocales(false));
+        $this->assertEquals(['en'], $api->getSupportedLocales());
     }
 
-    private function getApi($dir = '/Fixtures')
+    private function getApi(string $dir = '/Fixtures'): LocaleApiInterface
     {
         $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
         $kernel->method('getRootDir')->willReturn(__DIR__ . $dir);

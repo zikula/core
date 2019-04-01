@@ -12,10 +12,6 @@ services:
 
     Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface: '@Zikula\MenuModule\Entity\Repository\MenuItemRepository'
 
-    Zikula\MenuModule\Entity\Repository\MenuItemRepository:
-        factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['ZikulaMenuModule:MenuItemEntity']
-
     Zikula\MenuModule\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createAdminMenu, alias: zikulaMenuAdminMenu }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -29,14 +32,6 @@ abstract class AbstractConfigController extends AbstractController
     /**
      * This method takes care of the application configuration.
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param AppSettings $appSettings
-     * @param LoggerInterface $logger
-     * @param CurrentUserApiInterface $currentUserApi
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function configAction(
@@ -45,7 +40,7 @@ abstract class AbstractConfigController extends AbstractController
         AppSettings $appSettings,
         LoggerInterface $logger,
         CurrentUserApiInterface $currentUserApi
-    ) {
+    ): Response {
         if (!$permissionHelper->hasPermission(ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }

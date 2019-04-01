@@ -39,14 +39,11 @@ class GroupController extends AbstractController
      * @Route("/list/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
      * @Template("ZikulaGroupsModule:Group:list.html.twig")
      *
-     * View a list of all groups (user view)
+     * View a list of all groups (user view).
      *
-     * @param GroupRepositoryInterface $groupRepository
-     * @param integer $startnum
-     * @return array
      * @throws AccessDeniedException Thrown if the user hasn't permissions to view any groups
      */
-    public function listAction(GroupRepositoryInterface $groupRepository, $startnum = 0)
+    public function listAction(GroupRepositoryInterface $groupRepository, int $startnum = 0): array
     {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_OVERVIEW)) {
             throw new AccessDeniedException();
@@ -59,7 +56,7 @@ class GroupController extends AbstractController
             $excludedGroups[] = CommonHelper::GTYPE_PRIVATE;
         }
         $criteria = Criteria::create()
-            ->where(Criteria::expr()->notIn("gtype", $excludedGroups))
+            ->where(Criteria::expr()->notIn('gtype', $excludedGroups))
             ->setMaxResults($itemsPerPage)
             ->setFirstResult($startnum);
         $groups = $groupRepository->matching($criteria);
@@ -81,16 +78,15 @@ class GroupController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaGroupsModule:Group:adminList.html.twig")
      *
-     * View a list of all groups (admin view)
+     * View a list of all groups (admin view).
      *
-     * @param GroupRepositoryInterface $groupRepository
-     * @param GroupApplicationRepository $applicationRepository
-     * @param integer $startnum
-     * @return array
-     * @throws AccessDeniedException Thrown if the user hasn't permissions to administer any groups
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
-    public function adminListAction(GroupRepositoryInterface $groupRepository, GroupApplicationRepository $applicationRepository, $startnum = 0)
-    {
+    public function adminListAction(
+        GroupRepositoryInterface $groupRepository,
+        GroupApplicationRepository $applicationRepository,
+        int $startnum = 0
+    ): array {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -119,8 +115,8 @@ class GroupController extends AbstractController
      *
      * Display a form to add a new group.
      *
-     * @param Request $request
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to add any groups
      */
     public function createAction(Request $request)
     {
@@ -133,8 +129,8 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $groupEntity = $form->getData();
-                $this->get('doctrine')->getManager()->persist($groupEntity);
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->persist($groupEntity);
+                $this->getDoctrine()->getManager()->flush();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_CREATE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Created the group.'));
             }
@@ -157,9 +153,8 @@ class GroupController extends AbstractController
      *
      * Modify a group.
      *
-     * @param Request $request
-     * @param GroupEntity $groupEntity
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
     public function editAction(Request $request, GroupEntity $groupEntity)
     {
@@ -172,8 +167,8 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $groupEntity = $form->getData();
-                $this->get('doctrine')->getManager()->persist($groupEntity); // this isn't technically required
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->persist($groupEntity); // this isn't technically required
+                $this->getDoctrine()->getManager()->flush();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_UPDATE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Updated the group.'));
             }
@@ -196,9 +191,8 @@ class GroupController extends AbstractController
      *
      * Deletes a group.
      *
-     * @param Request $request
-     * @param GroupEntity $groupEntity
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user hasn't permissions to delete any groups
      */
     public function removeAction(Request $request, GroupEntity $groupEntity)
     {
@@ -227,8 +221,8 @@ class GroupController extends AbstractController
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_PRE_DELETE, new GenericEvent($groupEntity));
-                $this->get('doctrine')->getManager()->remove($groupEntity);
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->remove($groupEntity);
+                $this->getDoctrine()->getManager()->flush();
                 $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_DELETE, new GenericEvent($groupEntity));
                 $this->addFlash('status', $this->__('Done! Group deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {

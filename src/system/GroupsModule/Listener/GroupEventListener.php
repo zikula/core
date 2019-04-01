@@ -44,6 +44,18 @@ class GroupEventListener implements EventSubscriberInterface
      */
     protected $router;
 
+    public function __construct(
+        VariableApiInterface $variableApi,
+        TranslatorInterface $translator,
+        MailerApiInterface $mailerApi,
+        RouterInterface $router
+    ) {
+        $this->variableApi = $variableApi;
+        $this->translator = $translator;
+        $this->mailer = $mailerApi;
+        $this->router = $router;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -53,24 +65,9 @@ class GroupEventListener implements EventSubscriberInterface
     }
 
     /**
-     * @param VariableApiInterface $variableApi
-     * @param TranslatorInterface $translator
-     * @param MailerApiInterface $mailerApi
-     * @param RouterInterface $router
+     * Send an email to the user with results when a group application is processed.
      */
-    public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, MailerApiInterface $mailerApi, RouterInterface $router)
-    {
-        $this->variableApi = $variableApi;
-        $this->translator = $translator;
-        $this->mailer = $mailerApi;
-        $this->router = $router;
-    }
-
-    /**
-     * Send an email to the user with results when a group application is processed
-     * @param GenericEvent $event
-     */
-    public function applicationProcessed(GenericEvent $event)
+    public function applicationProcessed(GenericEvent $event): void
     {
         $applicationEntity = $event->getSubject();
         $formData = $event->getArguments();
@@ -86,12 +83,11 @@ class GroupEventListener implements EventSubscriberInterface
     }
 
     /**
-     * Send an email to the admin when a new group application is created
-     * @param GenericEvent $event
+     * Send an email to the admin when a new group application is created.
      */
-    public function newApplication(GenericEvent $event)
+    public function newApplication(GenericEvent $event): void
     {
-        if (!$this->variableApi->get('ZikulaGroupsModule', 'mailwarning', false)) {
+        if (!$this->variableApi->get('ZikulaGroupsModule', 'mailwarning')) {
             return;
         }
         $applicationEntity = $event->getSubject();
@@ -102,8 +98,8 @@ class GroupEventListener implements EventSubscriberInterface
         ]);
         $adminMail = $this->variableApi->getSystemVar('adminmail');
         $siteName = $this->variableApi->getSystemVar('sitename');
-        /** @var \Swift_Message */
-        $message = \Swift_Message::newInstance();
+
+        $message = new Swift_Message();
         $message->setFrom([$adminMail => $siteName]);
         $message->setTo([$adminMail => $siteName]);
         $this->mailer->sendMessage($message, $this->translator->__('New group application'), $body);

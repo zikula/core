@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Tests\Twig\TokenParser;
 
+use PHPUnit\Framework\TestCase;
 use Twig\Parser;
 use Twig\Token;
 use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
 
-class SwitchTokenParserTest extends \PHPUnit\Framework\TestCase
+class SwitchTokenParserTest extends TestCase
 {
     /**
      * @var SwitchTokenParser
@@ -29,16 +30,16 @@ class SwitchTokenParserTest extends \PHPUnit\Framework\TestCase
      */
     protected $twigParser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tokenParser = new SwitchTokenParser();
         $this->twigParser = $this->getMockBuilder(Parser::class)
-                                 ->disableOriginalConstructor()
-                                 ->getMock();
+             ->disableOriginalConstructor()
+             ->getMock();
         $this->tokenParser->setParser($this->twigParser);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->twigParser = null;
         $this->tokenParser = null;
@@ -47,12 +48,12 @@ class SwitchTokenParserTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider getDecideCaseFork
      */
-    public function testDecideCaseFork($type, $value, $lineno)
+    public function testDecideCaseFork(int $type, string $value, int $lineno): void
     {
         $this->assertTrue($this->tokenParser->decideCaseFork(new Token($type, $value, $lineno)));
     }
 
-    public function getDecideCaseFork()
+    public function getDecideCaseFork(): array
     {
         return [
             [Token::NAME_TYPE, 'case', 1],
@@ -62,7 +63,7 @@ class SwitchTokenParserTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testGetTag()
+    public function testGetTag(): void
     {
         $this->assertEquals('switch', $this->tokenParser->getTag());
     }

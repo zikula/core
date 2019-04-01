@@ -39,12 +39,6 @@ class PendingContentListener implements EventSubscriberInterface
      */
     private $translator;
 
-    /**
-     * PendingContentListener constructor.
-     * @param PermissionApiInterface $permissionApi
-     * @param UserRepositoryInterface $userRepository
-     * @param TranslatorInterface $translator
-     */
     public function __construct(PermissionApiInterface $permissionApi, UserRepositoryInterface $userRepository, TranslatorInterface $translator)
     {
         $this->permissionApi = $permissionApi;
@@ -55,7 +49,7 @@ class PendingContentListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'get.pending_content' => ['pendingContent'],
+            'get.pending_content' => ['pendingContent']
         ];
     }
 
@@ -67,24 +61,22 @@ class PendingContentListener implements EventSubscriberInterface
      * registrations, along with information necessary to access the detailed list, is
      * assumed as a {@link PendingContentCollectible} and added to the event
      * subject's collection.
-     *
-     * @param GenericEvent $event The event that was fired, a 'get_pending_content' event
-     *
-     * @return void
      */
-    public function pendingContent(GenericEvent $event)
+    public function pendingContent(GenericEvent $event): void
     {
-        if ($this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_MODERATE)) {
-            $numPendingApproval = $this->userRepository->count([
-                'approved_by' => 0,
-                'activated' => UsersConstant::ACTIVATED_PENDING_REG
-            ]);
+        if (!$this->permissionApi->hasPermission(UsersConstant::MODNAME . '::', '::', ACCESS_MODERATE)) {
+            return;
+        }
 
-            if (!empty($numPendingApproval)) {
-                $collection = new Container(UsersConstant::MODNAME);
-                $collection->add(new PendingContentCollectible('user_registrations', $this->translator->__('Users pending approval'), $numPendingApproval, 'zikulausersmodule_useradministration_list'));
-                $event->getSubject()->add($collection);
-            }
+        $numPendingApproval = $this->userRepository->count([
+            'approved_by' => 0,
+            'activated' => UsersConstant::ACTIVATED_PENDING_REG
+        ]);
+
+        if (!empty($numPendingApproval)) {
+            $collection = new Container(UsersConstant::MODNAME);
+            $collection->add(new PendingContentCollectible('user_registrations', $this->translator->__('Users pending approval'), $numPendingApproval, 'zikulausersmodule_useradministration_list'));
+            $event->getSubject()->add($collection);
         }
     }
 }

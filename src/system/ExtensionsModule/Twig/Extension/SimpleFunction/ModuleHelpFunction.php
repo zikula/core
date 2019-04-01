@@ -23,10 +23,6 @@ class ModuleHelpFunction
      */
     private $handler;
 
-    /**
-     * ModuleHelpFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -34,19 +30,14 @@ class ModuleHelpFunction
 
     /**
      * Inserts module help.
-     *
      * This has NO configuration options.
      *
-     * Examples:
-     *
-     * <samp>{( moduleHelp() }}</samp>
-     *
-     * @return string
+     * Example: {( moduleHelp() }}
      */
-    public function display()
+    public function display(): string
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:help');
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

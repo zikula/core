@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Collector;
 
+use InvalidArgumentException;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\SettingsConstant;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
@@ -45,14 +46,6 @@ class ProfileModuleCollector
      */
     private $currentProfileModuleName;
 
-    /**
-     * Constructor.
-     *
-     * @param UserRepositoryInterface $userRepository
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param VariableApiInterface $variableApi
-     * @param ProfileModuleInterface[] $modules
-     */
     public function __construct(
         UserRepositoryInterface $userRepository,
         CurrentUserApiInterface $currentUserApi,
@@ -69,52 +62,46 @@ class ProfileModuleCollector
 
     /**
      * Add a service to the collection.
-     *
-     * @param ProfileModuleInterface $service
      */
-    public function add(ProfileModuleInterface $service)
+    public function add(ProfileModuleInterface $service): void
     {
         $moduleName = $service->getBundleName();
         if ('ZikulaUsersModule' === $moduleName) {
             return;
         }
         if (isset($this->profileModules[$moduleName])) {
-            throw new \InvalidArgumentException('Attempting to register a profile module with a duplicate module name. (' . $moduleName . ')');
+            throw new InvalidArgumentException('Attempting to register a profile module with a duplicate module name. (' . $moduleName . ')');
         }
         $this->profileModules[$moduleName] = $service;
     }
 
     /**
      * Get a ProfileModuleInterface from the collection by moduleName.
-     * @param $moduleName
-     * @return ProfileModuleInterface|null
      */
-    public function get($moduleName)
+    public function get(string $moduleName): ?ProfileModuleInterface
     {
-        return isset($this->profileModules[$moduleName]) ? $this->profileModules[$moduleName] : null;
+        return $this->profileModules[$moduleName] ?? null;
     }
 
     /**
-     * Get all the profileModules in the collection.
+     * Get all the modules in the collection.
+     *
      * @return ProfileModuleInterface[]
      */
-    public function getAll()
+    public function getAll(): iterable
     {
         return $this->profileModules;
     }
 
     /**
-     * @return array of service aliases
+     * Get an array of service aliases.
      */
-    public function getKeys()
+    public function getKeys(): array
     {
         return array_keys($this->profileModules);
     }
 
-    /**
-     * @return ProfileModuleInterface
-     */
-    public function getSelected()
+    public function getSelected(): ProfileModuleInterface
     {
         if (!empty($this->currentProfileModuleName) && isset($this->profileModules[$this->currentProfileModuleName])) {
             return $this->profileModules[$this->currentProfileModuleName];

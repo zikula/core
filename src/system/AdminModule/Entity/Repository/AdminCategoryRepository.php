@@ -15,7 +15,6 @@ namespace Zikula\AdminModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
@@ -27,7 +26,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
         parent::__construct($registry, AdminCategoryEntity::class);
     }
 
-    public function countCategories()
+    public function countCategories(): int
     {
         $query = $this->createQueryBuilder('c')
             ->select('COUNT(c.cid)')
@@ -36,7 +35,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
         return (int)$query->getSingleScalarResult();
     }
 
-    public function getModuleCategory($moduleId)
+    public function getModuleCategory(int $moduleId): ?AdminCategoryEntity
     {
         $query = $this->_em->createQueryBuilder('m')
             ->select('m.cid')
@@ -45,11 +44,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
             ->setParameter('mid', $moduleId)
             ->getQuery();
 
-        try {
-            $categoryId = (int)$query->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            return null;
-        }
+        $categoryId = (int)$query->getSingleScalarResult();
         if (!$categoryId) {
             return null;
         }
@@ -62,7 +57,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
         return $query->getOneOrNullResult();
     }
 
-    public function getIndexedCollection($indexBy)
+    public function getIndexedCollection(string $indexBy)
     {
         $collection = $this->createQueryBuilder('c')
             ->indexBy('c', 'c.' . $indexBy)
@@ -72,7 +67,7 @@ class AdminCategoryRepository extends ServiceEntityRepository implements AdminCa
         return $collection;
     }
 
-    public function getPagedCategories($orderBy = [], $offset = 0, $limit = 0)
+    public function getPagedCategories(array $orderBy = [], int $offset = 0, int $limit = 0): Paginator
     {
         $qb = $this->createQueryBuilder('c');
 

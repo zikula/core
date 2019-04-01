@@ -27,25 +27,16 @@ class SearchType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -59,14 +50,18 @@ class SearchType extends AbstractType
                     'results' => '10'
                 ],
                 'required' => false,
-                'constraints' => [new NotBlank(['message' => $this->__('Error! You did not enter any keywords to search for.')])]
+                'constraints' => [
+                    new NotBlank([
+                        'message' => $this->__('Error! You did not enter any keywords to search for.')
+                    ])
+                ]
             ])
             ->add('searchType', ChoiceType::class, [
                 'label' => $this->__('Keyword settings'),
                 'choices' => [
                     $this->__('All Words') => 'AND',
                     $this->__('Any Words') => 'OR',
-                    $this->__('Exact phrase') => 'EXACT',
+                    $this->__('Exact phrase') => 'EXACT'
                 ]
             ])
             ->add('searchOrder', ChoiceType::class, [
@@ -74,7 +69,7 @@ class SearchType extends AbstractType
                 'choices' => [
                     $this->__('Newest first') => 'newest',
                     $this->__('Oldest first') => 'oldest',
-                    $this->__('Alphabetical') => 'alphabetical',
+                    $this->__('Alphabetical') => 'alphabetical'
                 ]
             ])
             ->add('search', SubmitType::class, [
@@ -87,17 +82,11 @@ class SearchType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasearchmodule_search';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

@@ -34,10 +34,6 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaGroupsModule:Config:config.html.twig")
      *
-     * This is a standard function to modify the configuration parameters of the module.
-     *
-     * @param Request $request
-     * @param GroupRepositoryInterface $groupRepository
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */

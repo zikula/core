@@ -29,6 +29,7 @@ class BlockPlacementEntity extends EntityAccess
     /**
      * The id of the block postion
      *
+     * @var BlockPositionEntity
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Zikula\BlocksModule\Entity\BlockPositionEntity", inversedBy="placements")
      * @ORM\JoinColumn(name="pid", referencedColumnName="pid", nullable=false)
@@ -38,7 +39,7 @@ class BlockPlacementEntity extends EntityAccess
     /**
      * The id of the block
      *
-     * @var \Zikula\BlocksModule\Entity\BlockEntity
+     * @var BlockEntity
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="Zikula\BlocksModule\Entity\BlockEntity", inversedBy="placements")
      * @ORM\JoinColumn(name="bid", referencedColumnName="bid", nullable=false)
@@ -52,23 +53,17 @@ class BlockPlacementEntity extends EntityAccess
      */
     private $sortorder;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->sortorder = 0;
     }
 
-    /**
-     * @return BlockPositionEntity
-     */
-    public function getPosition()
+    public function getPosition(): BlockPositionEntity
     {
         return $this->position;
     }
 
-    public function setPosition(BlockPositionEntity $position = null)
+    public function setPosition(BlockPositionEntity $position = null): self
     {
         if (null !== $this->position) {
             $this->position->removePlacement($this);
@@ -83,15 +78,12 @@ class BlockPlacementEntity extends EntityAccess
         return $this;
     }
 
-    /**
-     * @return BlockEntity
-     */
-    public function getBlock()
+    public function getBlock(): BlockEntity
     {
         return $this->block;
     }
 
-    public function setBlock(BlockEntity $block = null)
+    public function setBlock(BlockEntity $block = null): self
     {
         if (null !== $this->block) {
             $this->block->removePlacement($this);
@@ -106,22 +98,12 @@ class BlockPlacementEntity extends EntityAccess
         return $this;
     }
 
-    /**
-     * get the sortorder of the placement
-     *
-     * @return integer the placement
-     */
-    public function getSortorder()
+    public function getSortorder(): int
     {
         return $this->sortorder;
     }
 
-    /**
-     * set the sortorder for the placement
-     *
-     * @param integer $sortorder the placement
-     */
-    public function setSortorder($sortorder)
+    public function setSortorder(int $sortorder): void
     {
         $this->sortorder = $sortorder;
     }
@@ -129,9 +111,9 @@ class BlockPlacementEntity extends EntityAccess
     /**
      * @ORM\PreRemove
      */
-    public function preRemoveCallback()
+    public function preRemoveCallback(): void
     {
-        $this->setPosition(null);
-        $this->setBlock(null);
+        $this->setPosition();
+        $this->setBlock();
     }
 }

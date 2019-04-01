@@ -18,32 +18,20 @@ interface PermissionApiInterface
     /**
      * Check permissions
      * @api Core-2.0
-     *
-     * @param string $component Component
-     * @param string $instance Instance
-     * @param integer $level Level
-     * @param integer $user User Id
-     *
-     * @return boolean
      */
-    public function hasPermission($component = null, $instance = null, $level = ACCESS_NONE, $user = null);
+    public function hasPermission(string $component = null, string $instance = null, int $level = ACCESS_NONE, int $user = null): bool;
 
     /**
      * Translation functions
      * Translate level -> name
      * @api Core-2.0
-     *
-     * @param integer $level Access level
-     *
-     * @return string Translated access level name
+     * @return string|array
      */
-    public function accessLevelNames($level = null);
+    public function accessLevelNames(int $level = null);
 
     /**
      * Set permissions for user to false, forcing a reload if called upon again.
      * @api Core-2.0
-     *
-     * @param $uid
      */
-    public function resetPermissionsForUser($uid);
+    public function resetPermissionsForUser(int $userId): void;
 }

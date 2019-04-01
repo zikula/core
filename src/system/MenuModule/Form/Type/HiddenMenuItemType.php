@@ -31,12 +31,6 @@ class HiddenMenuItemType extends AbstractType
      */
     private $repository;
 
-    /**
-     * HiddenMenuItemType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param MenuItemRepositoryInterface $repository
-     */
     public function __construct(
         TranslatorInterface $translator,
         MenuItemRepositoryInterface $repository
@@ -45,26 +39,17 @@ class HiddenMenuItemType extends AbstractType
         $this->repository = $repository;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new MenuItemEntityTransformer($this->repository, $this->translator);
         $builder->addViewTransformer($transformer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -72,9 +57,6 @@ class HiddenMenuItemType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return HiddenType::class;

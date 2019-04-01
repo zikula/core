@@ -18,15 +18,15 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface HookBindingRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function deleteByBothAreas($subscriberArea, $providerArea);
+    public function deleteByBothAreas(string $subscriberArea, string $providerArea): void;
 
-    public function selectByAreaName($areaName, $type = 'sareaid');
+    public function selectByAreaName(string $areaName, string $type = 'sareaid'): array;
 
-    public function setSortOrder($order, $subscriberAreaName, $providerAreaName);
+    public function setSortOrder(int $order, string $subscriberAreaName, string $providerAreaName): void;
 
-    public function findOneOrNullByAreas($subscriberArea, $providerArea);
+    public function findOneOrNullByAreas(string $subscriberArea, string $providerArea);
 
-    public function findByOwners($subscriberOwner, $providerOwner);
+    public function findByOwners(string $subscriberOwner, string $providerOwner): array;
 
-    public function deleteAllByOwner($owner);
+    public function deleteAllByOwner(string $ownerstring): void;
 }

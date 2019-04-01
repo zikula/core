@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule;
 
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
@@ -30,20 +31,12 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
         SearchStatEntity::class
     ];
 
-    /**
-     * Initialise the search module.
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return boolean True if initialisation successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         // create schema
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
@@ -57,17 +50,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
@@ -80,7 +63,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                     $this->schemaTool->update([
                         SearchResultEntity::class
                     ]);
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     $this->addFlash('error', $exception->getMessage());
 
                     return false;
@@ -89,7 +72,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                 // update schema
                 try {
                     $this->schemaTool->update([SearchResultEntity::class]);
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     $this->addFlash('error', $exception->getMessage());
 
                     return false;
@@ -101,7 +84,7 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->getRepository('ZikulaSearchModule:SearchResultEntity')->truncateTable();
                 try {
                     $this->schemaTool->update([SearchResultEntity::class]);
-                } catch (\Exception $exception) {
+                } catch (Exception $exception) {
                     $this->addFlash('error', $exception->getMessage());
 
                     return false;
@@ -114,19 +97,11 @@ class SearchModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * Delete the Search module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return bool true if deletion successful, false otherwise
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         try {
             $this->schemaTool->drop($this->entities);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 

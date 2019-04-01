@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule\Entity;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
 
@@ -54,107 +56,63 @@ class SearchStatEntity extends EntityAccess
     private $scount;
 
     /**
-     * timestamp of last time this search was run
+     * Timestamp of last time this search was run
      *
-     * @var \Datetime
+     * @var DateTime
      *
      * @ORM\Column(name="date", type="date", nullable=true)
      */
     private $date;
 
-    /**
-     * SearchStatEntity constructor.
-     */
     public function __construct()
     {
         $this->search = '';
         $this->scount = 0;
-        $this->date = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->date = new DateTime('now', new DateTimeZone('UTC'));
     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set search
-     *
-     * @param string $search
-     * @return SearchStatEntity
-     */
-    public function setSearch($search)
+    public function setSearch(string $search): self
     {
         $this->search = $search;
 
         return $this;
     }
 
-    /**
-     * Get search
-     *
-     * @return string
-     */
-    public function getSearch()
+    public function getSearch(): string
     {
         return $this->search;
     }
 
-    /**
-     * Set scount
-     *
-     * @param integer $scount
-     * @return SearchStatEntity
-     */
-    public function setCount($scount)
+    public function setCount(int $scount): self
     {
         $this->scount = $scount;
 
         return $this;
     }
 
-    /**
-     * Increment the count
-     */
-    public function incrementCount()
+    public function incrementCount(): void
     {
         $this->scount++;
     }
 
-    /**
-     * Get scount
-     *
-     * @return integer
-     */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->scount;
     }
 
-    /**
-     * Set date
-     *
-     * @param \Datetime $date
-     * @return SearchStatEntity
-     */
-    public function setDate(\DateTime $date)
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    /**
-     * Get date
-     *
-     * @return \Datetime
-     */
-    public function getDate()
+    public function getDate(): DateTime
     {
         return $this->date;
     }

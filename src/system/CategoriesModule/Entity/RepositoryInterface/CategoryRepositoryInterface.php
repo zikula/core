@@ -22,23 +22,13 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
 {
     /**
      * Returns amount of categories for specified filters.
-     *
-     * @param string $name       Name filter
-     * @param int    $parentId   Optional parent category id filter
-     * @param int    $excludedId Optional category id filter for exclusion
-     *
-     * @return integer
      */
-    public function countForContext($name = '', $parentId = 0, $excludedId = 0);
+    public function countForContext(string $name = '', int $parentId = 0, int $excludedId = 0): int;
 
     /**
      * Returns the last added category within a given parent category.
-     *
-     * @param int $parentId Parent category id
-     *
-     * @return CategoryEntity|null
      */
-    public function getLastByParent($parentId = 0);
+    public function getLastByParent(int $parentId = 0): ?CategoryEntity;
 
     /**
      * Updates the parent id of one or multiple categories.
@@ -47,5 +37,5 @@ interface CategoryRepositoryInterface extends ObjectRepository, Selectable, Repo
      * @param integer $newParentId The categoryID of the new parent category
      * @param boolean $includeRoot Whether or not to also move the root folder (optional) (default=true)
      */
-    public function updateParent($oldParentId = 0, $newParentId = 0, $includeRoot = true);
+    public function updateParent(int $oldParentId = 0, int $newParentId = 0, bool $includeRoot = true): void;
 }

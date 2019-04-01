@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -28,28 +29,19 @@ use Zikula\SearchModule\Tests\Api\Fixtures\MockSearchStatRepository;
 use Zikula\SearchModule\Tests\Api\Fixtures\SearchableBar;
 use Zikula\SearchModule\Tests\Api\Fixtures\SearchableFoo;
 
-class SearchApiTest extends \PHPUnit\Framework\TestCase
+class SearchApiTest extends TestCase
 {
     /**
      * @var SearchStatRepositoryInterface
      */
     private $searchStatRepo;
 
-    /**
-     * SearchApiTest setUp.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->searchStatRepo = new MockSearchStatRepository();
     }
 
-    public function testInstance()
-    {
-        $api = $this->getApi();
-        $this->assertInstanceOf(SearchApiInterface::class, $api);
-    }
-
-    public function testSearch()
+    public function testSearch(): void
     {
         $api = $this->getApi();
         $searchResult = $api->search('bar', true);
@@ -84,7 +76,7 @@ class SearchApiTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(0, $searchResult['resultCount']);
     }
 
-    public function testLog()
+    public function testLog(): void
     {
         $api = $this->getApi();
         $api->log('foo');
@@ -106,14 +98,13 @@ class SearchApiTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(2, $this->searchStatRepo->countStats());
     }
 
-    private function getApi()
+    private function getApi(): SearchApiInterface
     {
         $variableApi = $this->getMockBuilder(VariableApiInterface::class)->getMock();
         $variableApi->method('get')->willReturnArgument(2);
         $searchResultRepo = new MockSearchResultRepository();
-        $searchableModuleCollector = new SearchableModuleCollector();
-        $searchableModuleCollector->add('ZikulaFooModule', new SearchableFoo());
-        $searchableModuleCollector->add('ZikulaBarModule', new SearchableBar());
+        $searchableModuleCollector = new SearchableModuleCollector([new SearchableFoo()]);
+        $searchableModuleCollector->add(new SearchableBar());
         $storage = new MockArraySessionStorage();
         $session = new Session($storage, new AttributeBag(), new FlashBag());
         $session->setId('test');

@@ -25,37 +25,20 @@ class EventDispatcherExtension extends AbstractExtension
      */
     private $dispatcher;
 
-    /**
-     * EventDispatcherExtension constructor.
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->dispatcher = $eventDispatcher;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
-            new TwigFunction('dispatchEvent', [$this, 'dispatchEvent']),
+            new TwigFunction('dispatchEvent', [$this, 'dispatchEvent'])
         ];
     }
 
-    /**
-     * @param string $name
-     * @param GenericEvent|null $providedEvent
-     * @param null $subject
-     * @param array $arguments
-     * @param null $data
-     * @return mixed
-     */
-    public function dispatchEvent($name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
+    public function dispatchEvent(string $name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
     {
         $event = $providedEvent ?? new GenericEvent($subject, $arguments, $data);
         $this->dispatcher->dispatch($name, $event);

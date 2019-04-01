@@ -55,7 +55,7 @@ class AssetFilter
         AssetBag $footers,
         ResolverInterface $js,
         ResolverInterface $css,
-        $scriptPosition
+        string $scriptPosition
     ) {
         $this->headers = $headers;
         $this->footers = $footers;
@@ -65,15 +65,10 @@ class AssetFilter
     }
 
     /**
-     * Inject header assets into the head of the raw source of a page (before </head>)
-     * Inject footer assets into the foot of the raw source of a page (before </body>)
-     *
-     * @param string $source
-     * @param array $js
-     * @param array $css
-     * @return string
+     * Inject header assets into the head of the raw source of a page (before </head>).
+     * Inject footer assets into the foot of the raw source of a page (before </body>).
      */
-    public function filter($source, $js = [], $css = [])
+    public function filter(string $source, array $js = [], array $css = []): string
     {
         if (!empty($css)) {
             $this->cssResolver->getBag()->add($css);

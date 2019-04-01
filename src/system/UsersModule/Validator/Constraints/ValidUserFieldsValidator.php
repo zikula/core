@@ -16,6 +16,7 @@ namespace Zikula\UsersModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 
 class ValidUserFieldsValidator extends ConstraintValidator
@@ -26,14 +27,10 @@ class ValidUserFieldsValidator extends ConstraintValidator
     private $translator;
 
     /**
-     * @var UserRepositoryInterface
+     * @var UserRepository
      */
     private $userRepository;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         UserRepositoryInterface $userRepository

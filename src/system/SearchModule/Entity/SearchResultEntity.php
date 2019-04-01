@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule\Entity;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\UrlInterface;
 
@@ -65,7 +67,7 @@ class SearchResultEntity
     /**
      * additional information about this search result
      *
-     * @var string
+     * @var array
      *
      * @ORM\Column(name="extra", type="array")
      */
@@ -74,7 +76,7 @@ class SearchResultEntity
     /**
      * creation timestamp of this search hit
      *
-     * @var \Datetime
+     * @var DateTime
      *
      * @ORM\Column(name="created", type="datetime", nullable=true)
      */
@@ -83,7 +85,7 @@ class SearchResultEntity
     /**
      * Last found timestamp of this search hit
      *
-     * @var \Datetime
+     * @var DateTime
      *
      * @ORM\Column(name="found", type="datetime", nullable=true)
      */
@@ -107,93 +109,51 @@ class SearchResultEntity
      */
     private $url;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return SearchResultEntity
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * Set text
-     *
-     * @param string $text
-     * @return SearchResultEntity
-     */
-    public function setText($text)
+    public function setText(string $text): self
     {
         $this->text = $text;
 
         return $this;
     }
 
-    /**
-     * Get text
-     *
-     * @return string
-     */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * Set module
-     *
-     * @param string $module
-     * @return SearchResultEntity
-     */
-    public function setModule($module)
+    public function setModule(string $module): self
     {
         $this->module = $module;
 
         return $this;
     }
 
-    /**
-     * Get module
-     *
-     * @return string
-     */
-    public function getModule()
+    public function getModule(): string
     {
         return $this->module;
     }
 
     /**
-     * Set extra
-     *
-     * @param array|string $extra
-     *
-     * @return SearchResultEntity
+     * @param string|array $extra
      */
-    public function setExtra($extra)
+    public function setExtra($extra): self
     {
         if (!is_array($extra)) {
             $this->extra = [$extra];
@@ -204,112 +164,67 @@ class SearchResultEntity
         return $this;
     }
 
-    /**
-     * Get extra
-     *
-     * @return string
-     */
-    public function getExtra()
+    public function getExtra(): array
     {
         return $this->extra;
     }
 
-    /**
-     * Set created
-     *
-     * @param \Datetime $created
-     * @return SearchResultEntity
-     */
-    public function setCreated($created)
+    public function setCreated(DateTime $created): self
     {
         $this->created = $created;
 
         return $this;
     }
 
-    /**
-     * Get created
-     *
-     * @return \Datetime
-     */
-    public function getCreated()
+    public function getCreated(): DateTime
     {
         return $this->created;
     }
 
-    /**
-     * Set found
-     *
-     * @param \Datetime $found
-     * @return SearchResultEntity
-     */
-    public function setFound($found)
+    public function setFound(DateTime $found): self
     {
         $this->found = $found;
 
         return $this;
     }
 
-    /**
-     * Get found
-     *
-     * @return \Datetime
-     */
-    public function getFound()
+    public function getFound(): DateTime
     {
         return $this->found;
     }
 
-    /**
-     * Set sesid
-     *
-     * @param string $sesid
-     * @return SearchResultEntity
-     */
-    public function setSesid($sesid)
+    public function setSesid(string $sesid): self
     {
         $this->sesid = $sesid;
 
         return $this;
     }
 
-    /**
-     * Get sesid
-     *
-     * @return string
-     */
-    public function getSesid()
+    public function getSesid(): string
     {
         return $this->sesid;
     }
 
-    /**
-     * @param UrlInterface $url
-     * @return SearchResultEntity
-     */
-    public function setUrl(UrlInterface $url)
+    public function setUrl(UrlInterface $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    /**
-     * @return UrlInterface
-     */
-    public function getUrl()
+    public function getUrl(): UrlInterface
     {
         return $this->url;
     }
 
-    public function merge(array $result)
+    public function merge(array $result = []): void
     {
         $this->title = $result['title'] ?? 'unknown';
         $this->text = $result['text'] ?? null;
         $this->extra = $result['extra'] ?? null;
         $this->module = $result['module'] ?? null;
-        $this->created = (isset($result['created']) && ($result['created'] instanceof \DateTime)) ? $result['created'] : new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->created = (isset($result['created']) && $result['created'] instanceof DateTime) ? $result['created'] : new DateTime('now', new DateTimeZone('UTC'));
         $this->sesid = $result['sesid'] ?? null;
-        $this->url = (isset($result['url']) && ($result['url'] instanceof UrlInterface)) ? $result['url'] : null;
+        $this->url = (isset($result['url']) && $result['url'] instanceof UrlInterface) ? $result['url'] : null;
     }
 }

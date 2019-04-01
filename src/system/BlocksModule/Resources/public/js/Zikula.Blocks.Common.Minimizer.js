@@ -8,14 +8,14 @@
             if (!nextElement.hasClass('nonCollapsible') && nextElement.length > 0) {
                 var titleText = $(this).text();
                 var nextId, classes, icon;
-                if (typeof nextElement.attr('id') === 'undefined') {
+                if ('undefined' === typeof nextElement.attr('id')) {
                     // create an id
                     nextId = titleText.replace(/([|!&;$%@"<>()+,])|(^\s*)|(\s*$)|( )/g, '').toLowerCase(); // strip all bad chars, spaces, make lowercase
                     nextElement.attr('id', nextId); // set the new id
                 } else {
                     nextId = nextElement.attr('id');
                 }
-                if (nextId && localStorage.getItem(nextId) === 'true' ) {
+                if (nextId && 'true' === localStorage.getItem(nextId)) {
                     classes = 'collapse';
                     icon = 'expand';
                 } else {

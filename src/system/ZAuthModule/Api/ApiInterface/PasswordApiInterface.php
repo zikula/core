@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Api\ApiInterface;
 
+use InvalidArgumentException;
+
 interface PasswordApiInterface
 {
-    const SALT_DELIM = '$';
+    public const SALT_DELIM = '$';
 
-    const SALT_LENGTH = 5;
+    public const SALT_LENGTH = 5;
 
-    const DEFAULT_HASH_METHOD_CODE = 8;
+    public const DEFAULT_HASH_METHOD_CODE = 8;
 
-    const MIN_LENGTH = 5;
+    public const MIN_LENGTH = 5;
 
-    const MAX_LENGTH = 25;
+    public const MAX_LENGTH = 25;
 
     /**
      * Given a string return it's hash.
@@ -33,9 +35,12 @@ interface PasswordApiInterface
      * @param int $hashMethodCode An internal code identifying one of the valid user password hashing methods; optional
      *
      * @return string A hashed password
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function getHashedPassword($unhashedPassword, $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE);
+    public function getHashedPassword(
+        string $unhashedPassword,
+        int $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE
+    ): string;
 
     /**
      * Create a system-generated password or password-like code, meeting the configured constraints for a password.
@@ -43,7 +48,7 @@ interface PasswordApiInterface
      * @param int $length
      * @return string The generated (unhashed) password-like string
      */
-    public function generatePassword($length = self::MIN_LENGTH);
+    public function generatePassword(int $length = self::MIN_LENGTH): string;
 
     /**
      * Compare a code to a hashed value, to determine if they match.
@@ -53,7 +58,7 @@ interface PasswordApiInterface
      *
      * @return bool True if the $unhashedPassword matches the $hashedPassword with the given hashing method;
      *                  false if they do not match
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function passwordsMatch($unhashedPassword, $hashedPassword);
+    public function passwordsMatch(string $unhashedPassword, string $hashedPassword): bool;
 }

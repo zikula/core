@@ -20,13 +20,8 @@ class ZikulaAtomTheme extends AbstractCoreTheme
 {
     /**
      * Override parent method in order to add Content-type header to Response.
-     *
-     * @param string $realm
-     * @param Response $response
-     * @param null $moduleName
-     * @return mixed
      */
-    public function generateThemedResponse($realm, Response $response, $moduleName = null)
+    public function generateThemedResponse(string $realm, Response $response, string $moduleName = null): Response
     {
         $output = $this->getContainer()->get('twig')->render('ZikulaAtomTheme::master.html.twig', ['maincontent' => $response->getContent()]);
         $newResponse = new Response($output);

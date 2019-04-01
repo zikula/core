@@ -18,9 +18,9 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface HookRuntimeRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function truncate();
+    public function truncate(): void;
 
-    public function getOneOrNullByEventName($eventName);
+    public function getOneOrNullByEventName(string $eventName);
 
-    public function deleteAllByOwner($owner);
+    public function deleteAllByOwner(string $owner): void;
 }

@@ -14,10 +14,14 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Engine;
 
 use Doctrine\Common\Annotations\Reader;
+use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ThemeModule\AbstractTheme;
+use Zikula\ThemeModule\Engine\Annotation\Theme;
 
 /**
  * Class Engine
@@ -44,7 +48,7 @@ class Engine
 {
     /**
      * The instance of the currently active theme.
-     * @var \Zikula\ThemeModule\AbstractTheme
+     * @var AbstractTheme
      */
     private $activeThemeBundle;
 
@@ -87,14 +91,6 @@ class Engine
      */
     private $variableApi;
 
-    /**
-     * Engine constructor.
-     * @param RequestStack $requestStack
-     * @param Reader $annotationReader
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param AssetFilter $filter
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         RequestStack $requestStack,
         Reader $annotationReader,
@@ -112,45 +108,40 @@ class Engine
     /**
      * Wrap the response in the theme.
      * @api Core-2.0
-     * @param Response $response
-     * @return Response
      */
-    public function wrapResponseInTheme(Response $response)
+    public function wrapResponseInTheme(Response $response): Response
     {
         $activeTheme = $this->getTheme();
         $activeTheme->addStylesheet();
         $moduleName = $this->requestStack->getMasterRequest()->attributes->get('_zkModule');
         $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
-        $filteredResponse = $this->filter($themedResponse);
 
-        return $filteredResponse;
+        return $this->filter($themedResponse);
     }
 
     /**
      * Wrap the block content in the theme block template and wrap that with a unique div if required.
      * @api Core-2.0
-     * @param string $content
-     * @param string $title
-     * @param string $blockType
-     * @param integer $bid
-     * @param string $positionName
-     * @return string
      */
-    public function wrapBlockContentInTheme($content, $title, $blockType, $bid, $positionName)
-    {
+    public function wrapBlockContentInTheme(
+        string $content,
+        string $title,
+        string $blockType,
+        int $blockId,
+        string $positionName
+    ): string {
         $content = $this->getTheme()->generateThemedBlockContent($this->getRealm(), $positionName, $content, $title);
 
         $themeConfig = $this->getTheme()->getConfig();
         $wrap = $themeConfig['blockWrapping'] ?? true;
 
-        return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid) : $content;
+        return $wrap ? $this->getTheme()->wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $blockId) : $content;
     }
 
     /**
      * @api Core-2.0
-     * @return \Zikula\ThemeModule\AbstractTheme
      */
-    public function getTheme()
+    public function getTheme(): AbstractTheme
     {
         if (!isset($this->activeThemeBundle) && $this->kernel->getContainer()->getParameter('installed')) {
             $this->setActiveTheme();
@@ -162,9 +153,8 @@ class Engine
     /**
      * Get the template realm.
      * @api Core-2.0
-     * @return string
      */
-    public function getRealm()
+    public function getRealm(): string
     {
         if (!isset($this->realm)) {
             $this->setMatchingRealm();
@@ -175,25 +165,23 @@ class Engine
 
     /**
      * @api Core-2.0
-     * @return null|string
      */
-    public function getAnnotationValue()
+    public function getAnnotationValue(): ?string
     {
         return $this->annotationValue;
     }
 
     /**
      * Change a theme based on the annotationValue.
-     * @api Core-2.0
-     * @param string $controllerClassName
-     * @param string $method
      * @return bool|string
+     * @throws ReflectionException
+     * @api Core-2.0
      */
-    public function changeThemeByAnnotation($controllerClassName, $method)
+    public function changeThemeByAnnotation(string $controllerClassName, string $method)
     {
-        $reflectionClass = new \ReflectionClass($controllerClassName);
+        $reflectionClass = new ReflectionClass($controllerClassName);
         $reflectionMethod = $reflectionClass->getMethod($method);
-        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, 'Zikula\ThemeModule\Engine\Annotation\Theme');
+        $themeAnnotation = $this->annotationReader->getMethodAnnotation($reflectionMethod, Theme::class);
         if (isset($themeAnnotation)) {
             // method annotations contain `@Theme` so set theme based on value
             $this->annotationValue = $themeAnnotation->value;
@@ -223,11 +211,7 @@ class Engine
         return false;
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function positionIsAvailableInTheme($name)
+    public function positionIsAvailableInTheme(string $name): bool
     {
         $config = $this->getTheme()->getConfig();
         if (empty($config)) {
@@ -252,10 +236,8 @@ class Engine
      *  1) path   e.g. /pages/display/welcome-to-pages-content-manager
      *  2) route  e.g. zikulapagesmodule_user_display
      *  3) module e.g. zikulapagesmodule (case insensitive)
-     *
-     * @return int|string
      */
-    private function setMatchingRealm()
+    private function setMatchingRealm(): void
     {
         $themeConfig = $this->getTheme()->getConfig();
         // defining an admin realm overrides all other options for 'admin' annotated methods
@@ -264,17 +246,21 @@ class Engine
 
             return;
         }
+        $pathInfo = null;
+        $requestAttributes = [];
         $request = $this->requestStack->getMasterRequest();
-        $requestAttributes = $request->attributes->all();
-        // match `/` for home realm
-        if (isset($requestAttributes['_route']) && 'home' === $requestAttributes['_route']) {
-            $this->realm = 'home';
+        if (null !== $request) {
+            $requestAttributes = $request->attributes->all();
+            // match `/` for home realm
+            if (isset($requestAttributes['_route']) && 'home' === $requestAttributes['_route']) {
+                $this->realm = 'home';
 
-            return;
+                return;
+            }
+            $pathInfo = $request->getPathInfo();
         }
 
         unset($themeConfig['admin'], $themeConfig['home'], $themeConfig['master']); // remove to avoid scanning/matching in loop
-        $pathInfo = $request->getPathInfo();
         foreach ($themeConfig as $realm => $config) {
             if (!empty($config['pattern'])) {
                 $pattern = ';' . str_replace('/', '\\/', $config['pattern']) . ';i'; // delimiters are ; and i means case-insensitive
@@ -306,10 +292,8 @@ class Engine
      * Set the theme based on:
      *  1) manual setting
      *  2) the default system theme
-     * @param string|null $newThemeName
-     * @return mixed
      */
-    public function setActiveTheme($newThemeName = null)
+    public function setActiveTheme(string $newThemeName = null): void
     {
         $activeTheme = !empty($newThemeName) ? $newThemeName : $this->variableApi->getSystemVar('Default_Theme');
 
@@ -319,10 +303,8 @@ class Engine
 
     /**
      * Filter the Response to add page assets and vars and return.
-     * @param Response $response
-     * @return Response
      */
-    private function filter(Response $response)
+    private function filter(Response $response): Response
     {
         $jsAssets = [];
         $cssAssets = [];

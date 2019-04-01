@@ -17,17 +17,16 @@ interface ReEntrantAuthenticationMethodInterface extends AuthenticationMethodInt
 {
     /**
      * Return the ID of the user sent by the provider.
-     * @return string
      */
-    public function getId();
+    public function getId(): string;
 
     /**
-     * After authentication, this method is used to update the Entity.
+     * After authentication, this method is used to update the user entity.
      */
-    public function getEmail();
+    public function getEmail(): string;
 
     /**
-     * After authentication, this method is used to update the Entity.
+     * After authentication, this method is used to update the user entity.
      */
-    public function getUname();
+    public function getUname(): string;
 }

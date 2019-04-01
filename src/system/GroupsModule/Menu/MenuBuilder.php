@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -94,7 +95,7 @@ class MenuBuilder
         $this->router = $router;
     }
 
-    public function createAdminMenu(array $options)
+    public function createAdminMenu(array $options): ItemInterface
     {
         $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
         /** @var GroupEntity $group */
@@ -107,8 +108,9 @@ class MenuBuilder
             'route' => 'zikulagroupsmodule_group_edit',
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil');
-        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)
-            && $gid !== $defaultGroup && Constant::GROUP_ID_ADMIN !== $gid) {
+        if (Constant::GROUP_ID_ADMIN !== $gid
+            && $defaultGroup !== $gid
+            && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
             $menu->addChild($this->__f('Delete ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
@@ -122,7 +124,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function createUserMenu(array $options)
+    public function createUserMenu(array $options): ItemInterface
     {
         /** @var GroupEntity $group */
         $group = $options['group'];
@@ -135,8 +137,8 @@ class MenuBuilder
             $currentUser = $this->userRepository->find($currentUserId);
         }
 
-        if ($this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
-            && ('zikulagroupsmodule_membership_list' !== $requestAttributes['_route'])
+        if ('zikulagroupsmodule_membership_list' !== $requestAttributes['_route']
+            && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_READ)
             && (CommonHelper::GTYPE_PUBLIC === $group->getGtype()
                 || (CommonHelper::GTYPE_PRIVATE === $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
         ) {
@@ -178,7 +180,7 @@ class MenuBuilder
         return $menu;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }

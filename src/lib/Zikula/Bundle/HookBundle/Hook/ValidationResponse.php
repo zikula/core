@@ -42,28 +42,20 @@ class ValidationResponse
     /**
      * Constructor.
      *
-     * @param string       $key    Key
      * @param array|object $object Object to be validated
      */
-    public function __construct($key, $object)
+    public function __construct(string $key, $object)
     {
         $this->key = $key;
         $this->object = $object;
     }
 
-    /**
-     * Get key property.
-     *
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
     /**
-     * Get object property.
-     *
      * @return array|object
      */
     public function getObject()
@@ -71,35 +63,17 @@ class ValidationResponse
         return $this->object;
     }
 
-    /**
-     * Get errors property.
-     *
-     * @return array
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    /**
-     * Add error.
-     *
-     * @param string $field   Field/property name of validation object
-     * @param string $message Error message
-     *
-     * @return void
-     */
-    public function addError($field, $message)
+    public function addError(string $field, string $message): void
     {
         $this->errors[$field] = $message;
     }
 
-    /**
-     * Has errors.
-     *
-     * @return boolean
-     */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return (bool)$this->errors;
     }

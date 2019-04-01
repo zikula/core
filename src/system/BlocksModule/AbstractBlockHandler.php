@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
+use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -47,16 +48,6 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
      */
     protected $twig;
 
-    /**
-     * AbstractBlockHandler constructor.
-     *
-     * @param AbstractBundle $bundle
-     * @param RequestStack $requestStack
-     * @param TranslatorInterface $translator
-     * @param VariableApiInterface $variableApi
-     * @param PermissionApiInterface $permissionApi
-     * @param Environment $twig
-     */
     public function __construct(
         AbstractBundle $bundle,
         RequestStack $requestStack,
@@ -76,10 +67,9 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
     }
 
     /**
-     * boot the handler
-     * @param AbstractBundle $bundle
+     * Boot the handler.
      */
-    protected function boot(AbstractBundle $bundle)
+    protected function boot(AbstractBundle $bundle): void
     {
         // load optional bootstrap
         $bootstrap = $bundle->getPath() . '/bootstrap.php';
@@ -88,38 +78,27 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         }
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
-        return null;
+        return '';
     }
 
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         return [];
     }
 
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@ZikulaBlocksModule/Block/default_modify.html.twig';
     }
 
-    /**
-     * Display the block content.
-     * @param array $properties
-     * @return string
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        $content = nl2br(implode("\n", $properties));
-
-        return $content;
+        return nl2br(implode("\n", $properties));
     }
 
-    /**
-     * Get the type of the block (e.g. the 'name').
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         // default to the ClassName without the `Block` suffix
         // note: This string is intentionally left untranslated.
@@ -129,36 +108,33 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         return mb_substr($fqCn, $pos + 1, -5);
     }
 
-    /**
-     * @param $translator
-     */
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
     /**
      * Adds a flash message to the current session for type.
-     * @param string $type The type
-     * @param string $message The message
-     * @throws \LogicException
+     *
+     * @throws LogicException
      */
-    protected function addFlash($type, $message)
+    protected function addFlash(string $type, string $message): void
     {
-        if (!$this->requestStack->getCurrentRequest()->hasSession()) {
-            throw new \LogicException('You can not use the addFlash method if sessions are disabled.');
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return;
+        }
+        if (!$request->hasSession()) {
+            throw new LogicException('You can not use the addFlash method if sessions are disabled.');
         }
 
-        $this->requestStack->getCurrentRequest()->getSession()->getFlashBag()->add($type, $message);
+        $request->getSession()->getFlashBag()->add($type, $message);
     }
 
     /**
      * Returns a rendered view.
-     * @param string $view The view name
-     * @param array $parameters An array of parameters to pass to the view
-     * @return string The rendered view
      */
-    public function renderView($view, array $parameters = [])
+    public function renderView(string $view, array $parameters = []): string
     {
         $parameters['domain'] = $this->translator->getDomain();
 
@@ -167,22 +143,17 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
 
     /**
      * Convenience shortcut to check if user has requested permissions.
-     *
-     * @param string $component
-     * @param string $instance
-     * @param integer $level
-     * @param integer $user
-     * @return bool
      */
-    protected function hasPermission($component = null, $instance = null, $level = null, $user = null)
-    {
+    protected function hasPermission(
+        string $component = null,
+        string $instance = null,
+        int $level = null,
+        int $user = null
+    ): bool {
         return $this->permissionApi->hasPermission($component, $instance, $level, $user);
     }
 
-    /**
-     * @return AbstractBundle
-     */
-    public function getBundle()
+    public function getBundle(): AbstractBundle
     {
         return $this->bundle;
     }

@@ -30,17 +30,22 @@ class OutputCompressionListener implements EventSubscriberInterface
      */
     private $installed;
 
-    /**
-     * OutputCompressionListener constructor.
-     * @param $variableApi
-     */
     public function __construct(VariableApiInterface $variableApi, $installed)
     {
         $this->variableApi = $variableApi;
         $this->installed = $installed;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => [
+                ['onKernelRequest', 1023]
+            ]
+        ];
+    }
+
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -63,14 +68,5 @@ class OutputCompressionListener implements EventSubscriberInterface
         ini_set('zlib.output_handler', '');
         ini_set('zlib.output_compression', 'On');
         ini_set('zlib.output_compression_level', 6);
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequest', 1023]
-            ]
-        ];
     }
 }

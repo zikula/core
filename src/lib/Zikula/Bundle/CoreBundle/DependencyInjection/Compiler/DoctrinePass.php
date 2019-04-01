@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\DependencyInjection\Compiler;
 
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -22,7 +23,7 @@ class DoctrinePass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', [new Reference('annotation_reader')]);
+        $definition = new Definition(AnnotationDriver::class, [new Reference('annotation_reader')]);
         $container->setDefinition('doctrine.annotation_driver', $definition);
     }
 }

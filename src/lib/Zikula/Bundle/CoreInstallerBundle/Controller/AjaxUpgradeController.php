@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use Exception;
 use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,6 +27,7 @@ use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
+use Zikula\ThemeModule\Entity\ThemeEntity;
 use Zikula\ThemeModule\Helper\BundleSyncHelper as ThemeSyncHelper;
 
 /**
@@ -43,10 +45,6 @@ class AjaxUpgradeController extends AbstractController
      */
     private $currentVersion;
 
-    /**
-     * AjaxUpgradeController constructor.
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
@@ -57,12 +55,12 @@ class AjaxUpgradeController extends AbstractController
         $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
-    public function ajaxAction(Request $request)
+    public function ajaxAction(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
         $this->yamlManager->setParameter('upgrading', true);
         $status = $this->executeStage($stage);
-        $response = ['status' => (bool)$status];
+        $response = ['status' => $status];
         if (is_array($status)) {
             $response['results'] = $status;
         }
@@ -70,14 +68,14 @@ class AjaxUpgradeController extends AbstractController
         return new JsonResponse($response);
     }
 
-    public function commandLineAction($stage)
+    public function commandLineAction($stage): bool
     {
         $this->yamlManager->setParameter('upgrading', true);
 
         return $this->executeStage($stage);
     }
 
-    private function executeStage($stageName)
+    private function executeStage($stageName): bool
     {
         switch ($stageName) {
             case 'loginadmin':
@@ -92,7 +90,7 @@ class AjaxUpgradeController extends AbstractController
                     return true;
                 }
 
-                return $result;
+                return true;//$result;
             case 'regenthemes':
                 return $this->regenerateThemes();
             case 'versionupgrade':
@@ -109,9 +107,8 @@ class AjaxUpgradeController extends AbstractController
     /**
      * Attempt to upgrade ALL the core modules. Some will need it, some will not.
      * Modules that do not need upgrading return TRUE as a result of the upgrade anyway.
-     * @return array
      */
-    private function upgradeModules()
+    private function upgradeModules(): array
     {
         $coreModulesInPriorityUpgradeOrder = [
             'ZikulaExtensionsModule',
@@ -141,13 +138,13 @@ class AjaxUpgradeController extends AbstractController
         return $result;
     }
 
-    private function regenerateThemes()
+    private function regenerateThemes(): bool
     {
         // regenerate the themes list
         $this->container->get(ThemeSyncHelper::class)->regenerate();
         // set all themes as active @todo this is probably overkill
         $themes = $this->container->get('doctrine')->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
-        /** @var \Zikula\ThemeModule\Entity\ThemeEntity $theme */
+        /** @var ThemeEntity $theme */
         foreach ($themes as $theme) {
             $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
         }
@@ -156,7 +153,7 @@ class AjaxUpgradeController extends AbstractController
         return true;
     }
 
-    private function versionUpgrade()
+    private function versionUpgrade(): bool
     {
         $doctrine = $this->container->get('doctrine');
         /**
@@ -201,12 +198,12 @@ class AjaxUpgradeController extends AbstractController
                 if ('userdata' === $this->container->getParameter('datadir')) {
                     $this->yamlManager->setParameter('datadir', 'web/uploads');
                     $fs = $this->container->get('filesystem');
-                    $src = realpath(__DIR__ . '/../../../../../');
+                    $src = dirname(__DIR__, 5) . '/';
                     try {
                         if ($fs->exists($src . '/userdata')) {
                             $fs->mirror($src . '/userdata', $src . '/web/uploads');
                         }
-                    } catch (\Exception $e) {
+                    } catch (Exception $exception) {
                         $this->container->get('session')->getFlashBag()->add('info', $this->translator->__('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
                     }
                 }
@@ -228,13 +225,13 @@ class AjaxUpgradeController extends AbstractController
         return true;
     }
 
-    private function finalizeParameters()
+    private function finalizeParameters(): bool
     {
         $variableApi = $this->container->get(VariableApi::class);
         $kernel = $this->container->get('kernel');
         // Set the System Identifier as a unique string.
         if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
-            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(mt_rand(1000000000, 9999999999), true)));
+            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(random_int(1000000000, 9999999999), true)));
         }
 
         // add new configuration parameters
@@ -288,7 +285,7 @@ class AjaxUpgradeController extends AbstractController
         return true;
     }
 
-    private function clearCaches()
+    private function clearCaches(): bool
     {
         // clear cache with zikula's method
         $cacheClearer = $this->container->get(CacheClearer::class);

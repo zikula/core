@@ -17,16 +17,13 @@ interface CurrentUserApiInterface
 {
     /**
      * Check if current user is logged in.
-     * @return boolean
      */
-    public function isLoggedIn();
+    public function isLoggedIn(): bool;
 
     /**
-     * Gets key
+     * Gets a property for the given key.
      *
-     * @param string $key
-     *
-     * @return string
+     * @return mixed
      */
-    public function get($key);
+    public function get(string $key);
 }

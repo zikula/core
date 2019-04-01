@@ -13,26 +13,24 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Category;
 
-use Zikula\Bundle\HookBundle\Hook\FilterHook;
-
 class FilterHooksCategory implements CategoryInterface
 {
-    const NAME = 'filter_hooks';
+    public const NAME = 'filter_hooks';
 
     /**
      * Dispatches FilterHook instances.
      */
-    const TYPE_FILTER = 'filter';
+    public const TYPE_FILTER = 'filter';
 
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }
 
-    public function getTypes()
+    public function getTypes(): array
     {
         return [
-            self::TYPE_FILTER,
+            self::TYPE_FILTER
         ];
     }
 }

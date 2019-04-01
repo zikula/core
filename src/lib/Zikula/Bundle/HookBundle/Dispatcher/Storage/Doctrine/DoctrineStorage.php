@@ -17,6 +17,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
+use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
+use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
@@ -27,7 +29,7 @@ use Zikula\Bundle\HookBundle\Dispatcher\StorageInterface;
 class DoctrineStorage implements StorageInterface
 {
     /**
-     * @var Entity\HookRuntimeEntity[]
+     * @var HookRuntimeEntity[]
      */
     private $runtimeHandlers = [];
 
@@ -63,7 +65,7 @@ class DoctrineStorage implements StorageInterface
         $this->hookCollector = $hookCollector;
     }
 
-    private function generateRuntimeHandlers()
+    private function generateRuntimeHandlers(): void
     {
         // truncate runtime
         $this->hookRuntimeRepository->truncate();
@@ -74,12 +76,18 @@ class DoctrineStorage implements StorageInterface
         }
     }
 
-    private function addRuntimeHandlers($subscriberArea, $providerArea)
+    private function addRuntimeHandlers(string $subscriberArea, string $providerArea): bool
     {
         $subscriberAreaObject = $this->hookCollector->getSubscriber($subscriberArea);
         $providerAreaObject = $this->hookCollector->getProvider($providerArea);
-        $subscribers = $subscriberAreaObject->getEvents();
+        if (null === $subscriberAreaObject) {
+            throw new InvalidArgumentException('Invalid subscriber.');
+        }
+        if (null === $providerAreaObject) {
+            throw new InvalidArgumentException('Invalid provider.');
+        }
 
+        $subscribers = $subscriberAreaObject->getEvents();
         if (!$subscribers) {
             return false;
         }
@@ -107,17 +115,23 @@ class DoctrineStorage implements StorageInterface
         return true;
     }
 
-    public function bindSubscriber($subscriberArea, $providerArea)
+    public function bindSubscriber(string $subscriberArea, string $providerArea): void
     {
-        $sa = $this->hookCollector->getSubscriber($subscriberArea);
-        $pa = $this->hookCollector->getProvider($providerArea);
+        $subscriberAreaObject = $this->hookCollector->getSubscriber($subscriberArea);
+        $providerAreaObject = $this->hookCollector->getProvider($providerArea);
+        if (null === $subscriberAreaObject) {
+            throw new InvalidArgumentException('Invalid subscriber.');
+        }
+        if (null === $providerAreaObject) {
+            throw new InvalidArgumentException('Invalid provider.');
+        }
 
         $binding = new Entity\HookBindingEntity();
-        $binding->setSowner($sa->getOwner());
-        $binding->setPowner($pa->getOwner());
+        $binding->setSowner($subscriberAreaObject->getOwner());
+        $binding->setPowner($providerAreaObject->getOwner());
         $binding->setSareaid($subscriberArea);
         $binding->setPareaid($providerArea);
-        $binding->setCategory($sa->getCategory());
+        $binding->setCategory($subscriberAreaObject->getCategory());
         $binding->setSortorder(999);
         $this->objectManager->persist($binding);
         $this->objectManager->flush();
@@ -125,18 +139,13 @@ class DoctrineStorage implements StorageInterface
         $this->generateRuntimeHandlers();
     }
 
-    public function unbindSubscriber($subscriberArea, $providerArea)
+    public function unbindSubscriber(string $subscriberArea, string $providerArea): void
     {
         $this->hookBindingRepository->deleteByBothAreas($subscriberArea, $providerArea);
         $this->generateRuntimeHandlers();
     }
 
-    /**
-     * @param $areaName
-     * @param string $type
-     * @return array
-     */
-    public function getBindingsFor($areaName, $type = 'subscriber')
+    public function getBindingsFor(string $areaName, string $type = 'subscriber'): array
     {
         $type = in_array($type, ['subscriber', 'provider']) ? $type : 'subscriber'; // validate field
         $area = $this->hookCollector->getSubscriber($areaName);
@@ -164,11 +173,9 @@ class DoctrineStorage implements StorageInterface
     }
 
     /**
-     * sort bindings in order of appearance from $providerAreaIds
-     * @param string $subscriberAreaName
-     * @param array $providerAreaNames
+     * Sort bindings in order of appearance from $providerAreaIds.
      */
-    public function setBindOrder($subscriberAreaName, array $providerAreaNames)
+    public function setBindOrder(string $subscriberAreaName, array $providerAreaNames): void
     {
         $counter = 1;
         foreach ($providerAreaNames as $providerAreaName) {
@@ -179,7 +186,7 @@ class DoctrineStorage implements StorageInterface
         $this->generateRuntimeHandlers();
     }
 
-    public function getRuntimeMetaByEventName($eventName)
+    public function getRuntimeMetaByEventName(string $eventName)
     {
         if (!isset($this->runtimeHandlers[$eventName])) {
             $this->runtimeHandlers[$eventName] = $this->hookRuntimeRepository->getOneOrNullByEventName($eventName);
@@ -194,27 +201,27 @@ class DoctrineStorage implements StorageInterface
         return false;
     }
 
-    public function getBindingBetweenAreas($subscriberArea, $providerArea)
+    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea)
     {
         return $this->hookBindingRepository->findOneOrNullByAreas($subscriberArea, $providerArea);
     }
 
     /**
-     * binding between hook areas should be allowed if:
+     * Binding between hook areas should be allowed if:
      *   1. *Category* is the same for both
      *   2. the provider and subscriber have implemented at least one of same *hookType*
-     * @param $subscriberArea
-     * @param $providerArea
-     * @return bool
      */
-    public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea)
+    public function isAllowedBindingBetweenAreas(string $subscriberArea, string $providerArea): bool
     {
         $subscriberTypes = [];
         $subscriberCategory = '';
         if ($this->hookCollector->hasSubscriber($subscriberArea)) {
-            $subscriberTypes = $this->hookCollector->getSubscriber($subscriberArea)->getEvents(); // array('hookType' => 'eventName')
-            $subscriberTypes = array_keys($subscriberTypes);
-            $subscriberCategory = $this->hookCollector->getSubscriber($subscriberArea)->getCategory();
+            $subscriberAreaObject = $this->hookCollector->getSubscriber($subscriberArea);
+            if (null !== $subscriberAreaObject) {
+                $subscriberTypes = $subscriberAreaObject->getEvents(); // array('hookType' => 'eventName')
+                $subscriberTypes = array_keys($subscriberTypes);
+                $subscriberCategory = $subscriberAreaObject->getCategory();
+            }
         }
 
         if (empty($subscriberTypes)) {
@@ -225,9 +232,13 @@ class DoctrineStorage implements StorageInterface
             if (!$this->hookCollector->hasProvider($providerArea)) {
                 continue;
             }
+            $providerAreaObject = $this->hookCollector->getProvider($providerArea);
+            if (null === $providerAreaObject) {
+                continue;
+            }
 
-            $providerTypes = $this->hookCollector->getProvider($providerArea)->getProviderTypes();
-            $providerCategory = $this->hookCollector->getProvider($providerArea)->getCategory();
+            $providerTypes = $providerAreaObject->getProviderTypes();
+            $providerCategory = $providerAreaObject->getCategory();
             foreach (array_keys($providerTypes) as $providerType) {
                 if ($subscriberCategory === $providerCategory && $subscriberType === $providerType) {
                     return true;
@@ -238,7 +249,7 @@ class DoctrineStorage implements StorageInterface
         return false;
     }
 
-    public function getBindingsBetweenOwners($subscriberOwner, $providerOwner)
+    public function getBindingsBetweenOwners(string $subscriberOwner, string $providerOwner): array
     {
         return $this->hookBindingRepository->findByOwners($subscriberOwner, $providerOwner);
     }

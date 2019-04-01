@@ -249,13 +249,10 @@ var cloneDraggedItem = true;
         var areaToDetachFrom = $('#sarea_' + sarea_id);
 
         // is area now empty?
-        var amountOfAttachedAreas = 0;
-        areaToDetachFrom.find('li.z-sortable').each(function(element) {
-            amountOfAttachedAreas++;
-        });
+        var amountOfAttachedAreas = areaToDetachFrom.find('li.z-sortable').length;
 
         // if there no more areas attached, show empty_area
-        if (1 > amountOfAttachedAreas {
+        if (1 > amountOfAttachedAreas) {
             $('#sarea_empty_' + sarea_id).removeClass('hide');
         } else {
             areaToDetachFrom.css('height', (areaToDetachFrom.height() - heightOfDetachedArea) + 'px');

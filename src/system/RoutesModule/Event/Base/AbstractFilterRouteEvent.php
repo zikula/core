@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -29,12 +32,6 @@ class AbstractFilterRouteEvent extends Event
      */
     protected $entityChangeSet = [];
 
-    /**
-     * FilterRouteEvent constructor.
-     *
-     * @param RouteEntity $route Processed entity
-     * @param array $entityChangeSet Change set for preUpdate events
-     */
     public function __construct(RouteEntity $route, array $entityChangeSet = [])
     {
         $this->route = $route;
@@ -42,21 +39,17 @@ class AbstractFilterRouteEvent extends Event
     }
 
     /**
-     * Returns the entity.
-     *
      * @return RouteEntity
      */
-    public function getRoute()
+    public function getRoute(): RouteEntity
     {
         return $this->route;
     }
 
     /**
-     * Returns the change set.
-     *
      * @return array Entity change set
      */
-    public function getEntityChangeSet()
+    public function getEntityChangeSet(): array
     {
         return $this->entityChangeSet;
     }

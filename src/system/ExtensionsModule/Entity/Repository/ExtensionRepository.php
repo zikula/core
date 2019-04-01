@@ -26,17 +26,17 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
         parent::__construct($registry, ExtensionEntity::class);
     }
 
-    /**
-     * @param $name
-     * @return ExtensionEntity
-     */
-    public function get($name)
+    public function get(string $name)
     {
         return $this->findOneBy(['name' => $name]);
     }
 
-    public function getPagedCollectionBy(array $criteria, array $orderBy = null, $limit = 0, $offset = 1)
-    {
+    public function getPagedCollectionBy(
+        array $criteria,
+        array $orderBy = null,
+        int $limit = 0,
+        int $offset = 1
+    ): Paginator {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('e')->from($this->_entityName, 'e');
         $i = 1;
@@ -56,19 +56,18 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
             $query->setMaxResults($limit)
                 ->setFirstResult($offset - 1);
         }
-        $paginator = new Paginator($query);
 
-        return $paginator;
+        return new Paginator($query);
     }
 
-    public function getIndexedArrayCollection($indexBy)
+    public function getIndexedArrayCollection(string $indexBy): array
     {
         $qb = $this->createQueryBuilder('e')->indexBy('e', 'e.' . $indexBy);
 
         return $qb->getQuery()->getArrayResult();
     }
 
-    public function updateName($oldName, $newName)
+    public function updateName(string $oldName, string $newName): void
     {
         $query = $this->_em->createQueryBuilder()
             ->update($this->_entityName, 'e')
@@ -80,13 +79,13 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
         $query->execute();
     }
 
-    public function persistAndFlush($entity)
+    public function persistAndFlush(ExtensionEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
 
-    public function removeAndFlush($entity)
+    public function removeAndFlush(ExtensionEntity $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush();

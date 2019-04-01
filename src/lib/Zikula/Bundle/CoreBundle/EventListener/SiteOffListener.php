@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
+use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -56,22 +57,13 @@ class SiteOffListener implements EventSubscriberInterface
      */
     private $installed;
 
-    /**
-     * SiteOffListener constructor.
-     * @param VariableApiInterface $variableApi
-     * @param PermissionApiInterface $permissionApi
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param Environment $twig
-     * @param RouterInterface $router
-     * @param boolean $installed
-     */
     public function __construct(
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
         CurrentUserApiInterface $currentUserApi,
         Environment $twig,
         RouterInterface $router,
-        $installed
+        bool $installed
     ) {
         $this->variableApi = $variableApi;
         $this->permissionApi = $permissionApi;
@@ -81,17 +73,30 @@ class SiteOffListener implements EventSubscriberInterface
         $this->installed = $installed;
     }
 
-    public function onKernelRequestSiteOff(GetResponseEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => [
+                ['onKernelRequestSiteOff', 110] // priority set high to catch request before other subscribers
+            ],
+        ];
+    }
+
+    public function onKernelRequestSiteOff(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
         }
+        if (!$this->installed) {
+            return;
+        }
+
         $response = $event->getResponse();
         $request = $event->getRequest();
         $this->router->getContext()->setBaseUrl($request->getBaseUrl());
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return;
         }
         if ('zikulausersmodule_access_login' === $routeInfo['_route']
@@ -103,9 +108,6 @@ class SiteOffListener implements EventSubscriberInterface
             || $request->isXmlHttpRequest()) {
             return;
         }
-        if (!$this->installed) {
-            return;
-        }
 
         $siteOff = (bool)$this->variableApi->getSystemVar('siteoff');
         $hasAdminPerms = $this->permissionApi->hasPermission('ZikulaSettingsModule::', 'SiteOff::', ACCESS_ADMIN);
@@ -113,7 +115,7 @@ class SiteOffListener implements EventSubscriberInterface
         // Check for site closed
         if ($siteOff && !$hasAdminPerms) {
             $hasOnlyOverviewAccess = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_OVERVIEW);
-            if ($hasOnlyOverviewAccess && $request->hasSession() && $this->currentUserApi->isLoggedIn()) {
+            if ($hasOnlyOverviewAccess && $request->hasSession() && null !== $request->getSession() && $this->currentUserApi->isLoggedIn()) {
                 $request->getSession()->invalidate(); // logout
             }
             $response = new PlainResponse();
@@ -124,14 +126,5 @@ class SiteOffListener implements EventSubscriberInterface
             $event->setResponse($response);
             $event->stopPropagation();
         }
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => [
-                ['onKernelRequestSiteOff', 110] // priority set high to catch request before other subscribers
-            ],
-        ];
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity\Repository;
 
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
@@ -27,7 +28,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         parent::__construct($registry, UserSessionEntity::class);
     }
 
-    public function getUsersSince(\DateTime $dateTime)
+    public function getUsersSince(DateTime $dateTime): array
     {
         $query = $this->createQueryBuilder('s')
             ->select('DISTINCT s.uid')
@@ -45,7 +46,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         return $result;
     }
 
-    public function countUsersSince(\DateTime $dateTime)
+    public function countUsersSince(DateTime $dateTime): int
     {
         $query = $this->createQueryBuilder('s')
             ->select('COUNT(s.uid)')
@@ -58,7 +59,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         return (int)$query->getSingleScalarResult();
     }
 
-    public function countGuestsSince(\DateTime $dateTime)
+    public function countGuestsSince(DateTime $dateTime): int
     {
         $query = $this->createQueryBuilder('s')
             ->select('COUNT(s.uid)')
@@ -71,14 +72,15 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         return (int)$query->getSingleScalarResult();
     }
 
-    public function persistAndFlush(UserSessionEntity $entity)
+    public function persistAndFlush(UserSessionEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
 
-    public function removeAndFlush($id)
+    public function removeAndFlush(string $id): void
     {
+        /** @var UserSessionEntity $entity */
         $entity = $this->find($id);
         if ($entity) {
             $this->_em->remove($entity);
@@ -86,11 +88,11 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         }
     }
 
-    public function gc($level, $inactiveMinutes, $days)
+    public function gc(string $level, int $inactiveMinutes, int $days): void
     {
-        $inactive = new \DateTime();
+        $inactive = new DateTime();
         $inactive->modify("-${inactiveMinutes} minutes");
-        $daysOld = new \DateTime();
+        $daysOld = new DateTime();
         $daysOld->modify("-${days} days");
 
         $qb = $this->createQueryBuilder('s')
@@ -120,7 +122,5 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
                 break;
         }
         $qb->getQuery()->execute();
-
-        return true;
     }
 }

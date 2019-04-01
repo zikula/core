@@ -35,15 +35,14 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaPermissionsModule:Config:config.html.twig")
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param PermissionRepositoryInterface $permissionRepository
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response
+     * @return array|Response
      */
-    public function configAction(Request $request, VariableApiInterface $variableApi, PermissionRepositoryInterface $permissionRepository)
-    {
+    public function configAction(
+        Request $request,
+        VariableApiInterface $variableApi,
+        PermissionRepositoryInterface $permissionRepository
+    ) {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }

@@ -16,7 +16,6 @@ namespace Zikula\ThemeModule\Bridge\Twig;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Twig\Error\Error as TwigError;
-use Twig\Template as TwigTemplate;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 use Zikula\ThemeModule\ThemeEvents;
@@ -27,15 +26,6 @@ class EventEnabledTwigEngine extends TwigEngine
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-
-    /**
-     * @required
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
 
     /**
      * {@inheritdoc}
@@ -57,5 +47,13 @@ class EventEnabledTwigEngine extends TwigEngine
         $this->eventDispatcher->dispatch(ThemeEvents::POST_RENDER, $postEvent);
 
         return $postEvent->getContent();
+    }
+
+    /**
+     * @required
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

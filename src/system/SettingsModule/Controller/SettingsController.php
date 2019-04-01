@@ -44,12 +44,7 @@ class SettingsController extends AbstractController
      *
      * Settings for entire site.
      *
-     * @param Request $request
-     * @param LocaleApiInterface $localeApi
-     * @param VariableApiInterface $variableApi
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param MessageModuleCollector $messageModuleCollector
-     * @param ProfileModuleCollector $profileModuleCollector
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      *
      * @return array|RedirectResponse
      */
@@ -95,7 +90,7 @@ class SettingsController extends AbstractController
         return [
             'languages' => $installedLanguageNames,
             'zlibEnabled' => extension_loaded('zlib'),
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -104,12 +99,9 @@ class SettingsController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaSettingsModule:Settings:locale.html.twig")
      *
-     * Set locale settings for entire site.
+     * Locale settings for entire site.
      *
-     * @param Request $request
-     * @param LocaleApiInterface $localeApi
-     * @param VariableApiInterface $variableApi
-     * @param MultilingualRoutingHelper $multilingualRoutingHelper
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      *
      * @return array|RedirectResponse
      */
@@ -149,7 +141,9 @@ class SettingsController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
                 $multilingualRoutingHelper->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
-                $request->getSession()->set('_locale', $data['language_i18n']);
+                if (null !== $request->getSession()) {
+                    $request->getSession()->set('_locale', $data['language_i18n']);
+                }
                 $this->addFlash('status', $this->__('Done! Localization configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -161,7 +155,7 @@ class SettingsController extends AbstractController
 
         return [
             'intl_installed' => extension_loaded('intl'),
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -172,11 +166,9 @@ class SettingsController extends AbstractController
      *
      * Displays the content of {@see phpinfo()}.
      *
-     * @return array
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function phpinfoAction()
+    public function phpinfoAction(): array
     {
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -184,8 +176,7 @@ class SettingsController extends AbstractController
 
         ob_start();
         phpinfo();
-        $phpinfo = ob_get_contents();
-        ob_end_clean();
+        $phpinfo = ob_get_clean();
         $phpinfo = str_replace('module_Zend Optimizer', 'module_Zend_Optimizer', preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
 
         return [
@@ -195,14 +186,11 @@ class SettingsController extends AbstractController
 
     /**
      * Prepare an array of module names and displaynames for dropdown usage.
-     *
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param array $modules
-     *
-     * @return array
      */
-    private function formatModuleArrayForSelect(ExtensionRepositoryInterface $extensionRepository, array $modules)
-    {
+    private function formatModuleArrayForSelect(
+        ExtensionRepositoryInterface $extensionRepository,
+        array $modules = []
+    ): array {
         $return = [];
         foreach ($modules as $module) {
             if (!($module instanceof ExtensionEntity)) {

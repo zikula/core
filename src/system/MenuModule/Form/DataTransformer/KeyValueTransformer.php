@@ -20,7 +20,7 @@ class KeyValueTransformer implements DataTransformerInterface
     /**
      * Does nothing. This is handled by the Event Listener instead (a quirk of Symfony).
      *
-     * @param  array $array
+     * @param array $array
      * @return array
      */
     public function transform($array)
@@ -32,7 +32,7 @@ class KeyValueTransformer implements DataTransformerInterface
      * Transforms an array with keys of 'key' and 'value' to key-value pairs.
      * Where the value is a json_encoded array, string, it decodes the string first.
      *
-     * @param  array $array
+     * @param array $array
      * @return array
      */
     public function reverseTransform($array)

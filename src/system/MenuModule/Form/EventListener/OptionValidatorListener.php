@@ -26,9 +26,6 @@ class OptionValidatorListener implements EventSubscriberInterface
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -37,11 +34,11 @@ class OptionValidatorListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::POST_SUBMIT => ['onPostSubmit'],
+            FormEvents::POST_SUBMIT => ['onPostSubmit']
         ];
     }
 
-    public function onPostSubmit(FormEvent $event)
+    public function onPostSubmit(FormEvent $event): void
     {
         $options = $event->getData();
         $form = $event->getForm();
@@ -90,10 +87,6 @@ class OptionValidatorListener implements EventSubscriberInterface
             'displayChildren' => 'boolean',
         ];
 
-        if (isset($requirements[$option])) {
-            return $requirements[$option];
-        }
-
-        return false;
+        return $requirements[$option] ?? false;
     }
 }

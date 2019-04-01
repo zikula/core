@@ -15,8 +15,8 @@ namespace Zikula\Bridge\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Session\SessionStorageInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant;
 
@@ -30,50 +30,44 @@ class ZikulaSessionStorage extends NativeSessionStorage
      * remember themself and inactivity timeout
      * Users stay logged in permanently
      */
-    const SECURITY_LEVEL_LOW = 'Low';
+    public const SECURITY_LEVEL_LOW = 'Low';
 
     /**
      * Medium security - delete session info if session cookie has
      * expired or user decided not to remember themself and inactivity timeout
      * OR max number of days have elapsed without logging back in
      */
-    const SECURITY_LEVEL_MEDIUM = 'Medium';
+    public const SECURITY_LEVEL_MEDIUM = 'Medium';
 
     /**
      * High security - delete session info if user is inactive
      */
-    const SECURITY_LEVEL_HIGH = 'High';
+    public const SECURITY_LEVEL_HIGH = 'High';
 
     /**
      * @var string
      */
-    private $securityLevel = self::SECURITY_LEVEL_MEDIUM;
+    private $securityLevel;
 
     /**
      * @var int
      */
-    private $inactiveSeconds = 1200;
+    private $inactiveSeconds;
 
     /**
      * @var int
      */
-    private $autoLogoutAfterSeconds = 604800;
+    private $autoLogoutAfterSeconds;
 
     /**
      * @var int
      */
     private $cookieLifeTime = 604800;
 
-    /**
-     * @param VariableApiInterface $variableApi
-     * @param array $options
-     * @param AbstractProxy|NativeSessionHandler|\SessionHandlerInterface|null $handler
-     * @param SessionStorageInterface $metaBag
-     */
     public function __construct(
         VariableApiInterface $variableApi,
         array $options = [],
-        $handler = null,
+        SessionHandlerInterface $handler = null,
         MetadataBag $metaBag = null
     ) {
         $this->securityLevel = $variableApi->getSystemVar('seclevel', self::SECURITY_LEVEL_MEDIUM);
@@ -83,19 +77,16 @@ class ZikulaSessionStorage extends NativeSessionStorage
         parent::__construct($options, $handler, $metaBag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function start()
     {
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-            // session before regeneration happens (e.g. by an event listener executed before a login)
-            // see issue #3898 for the details
-            $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
-        }
+        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+        // session before regeneration happens (e.g. by an event listener executed before a login)
+        // see issue #3898 for the details
+        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
 
-        if (parent::start()) {
+        $result = parent::start();
+
+        if (true === $result) {
             // check if session has expired or not
             $now = time();
             $inactiveTime = $now - $this->inactiveSeconds;
@@ -123,30 +114,21 @@ class ZikulaSessionStorage extends NativeSessionStorage
             }
         }
 
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            error_reporting($reportingLevel);
-        }
+        error_reporting($reportingLevel);
 
-        return true;
+        return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function regenerate($destroy = false, $lifetime = null)
     {
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
-            // session before regeneration happens (e.g. by an event listener executed before a login)
-            // see issue #3898 for the details
-            $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
-        }
+        // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
+        // session before regeneration happens (e.g. by an event listener executed before a login)
+        // see issue #3898 for the details
+        $reportingLevel = error_reporting(E_ALL & ~E_WARNING);
 
         $result = parent::regenerate($destroy, $lifetime);
 
-        if (version_compare(PHP_VERSION, '7.2.0') >= 0) {
-            error_reporting($reportingLevel);
-        }
+        error_reporting($reportingLevel);
 
         return $result;
     }

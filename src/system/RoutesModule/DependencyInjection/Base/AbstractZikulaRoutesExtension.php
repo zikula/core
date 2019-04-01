@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -17,13 +20,10 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Base class for service definition loader using the DependencyInjection extension.
+ * DependencyInjection extension base class.
  */
 abstract class AbstractZikulaRoutesExtension extends Extension
 {
-    /**
-     * @inheritDoc
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources/config'));

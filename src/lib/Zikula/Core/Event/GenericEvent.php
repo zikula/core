@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Core\Event;
 
+use Exception;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\GenericEvent as SymfonyGenericEvent;
 
 /**
@@ -30,16 +32,16 @@ class GenericEvent extends SymfonyGenericEvent
     /**
      * Exception.
      *
-     * @var \Exception
+     * @var Exception
      */
     protected $exception;
 
     /**
      * Encapsulate an event with $subject, $args, and $data.
      *
-     * @param mixed  $subject Usually an object or other PHP callable
-     * @param array  $args    Arguments to store in the event
-     * @param mixed  $data    Convenience argument of data for optional processing
+     * @param mixed $subject Usually an object or other PHP callable
+     * @param array $args Arguments to store in the event
+     * @param mixed $data Convenience argument of data for optional processing
      */
     public function __construct($subject = null, array $args = [], $data = null)
     {
@@ -50,11 +52,9 @@ class GenericEvent extends SymfonyGenericEvent
     /**
      * Sets the data
      *
-     * @param $data
-     *
-     * @return GenericEvent
+     * @param mixed $data
      */
-    public function setData($data)
+    public function setData($data): self
     {
         $this->data = $data;
 
@@ -74,14 +74,12 @@ class GenericEvent extends SymfonyGenericEvent
     /**
      * Get exception.
      *
-     * @throws \RuntimeException If no exeception was set
-     *
-     * @return \Exception
+     * @throws RuntimeException If no exception was set
      */
-    public function getException()
+    public function getException(): Exception
     {
         if (!$this->hasException()) {
-            throw new \RuntimeException('No exception was set during this event notification.');
+            throw new RuntimeException('No exception was set during this event notification.');
         }
 
         return $this->exception;
@@ -93,22 +91,13 @@ class GenericEvent extends SymfonyGenericEvent
      * Rather than throw an exception within an event handler,
      * instead you can store it here then stop() execution.
      * This can then be rethrown or handled politely.
-     *
-     * @param \Exception $exception Exception
-     *
-     * @return void
      */
-    public function setException($exception)
+    public function setException(Exception $exception): void
     {
         $this->exception = $exception;
     }
 
-    /**
-     * Has exception.
-     *
-     * @return bool
-     */
-    public function hasException()
+    public function hasException(): bool
     {
         return (bool)$this->exception;
     }

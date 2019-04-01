@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Validator\Constraints;
 
 use Doctrine\DBAL\Connection;
+use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -40,14 +41,6 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
      */
     private $passwordApi;
 
-    /**
-     * AuthenticateAdminLoginValidator constructor.
-     *
-     * @param PermissionApiInterface $permissionApi
-     * @param Connection $connection
-     * @param TranslatorInterface $translator
-     * @param PasswordApiInterface $passwordApi
-     */
     public function __construct(
         PermissionApiInterface $permissionApi,
         Connection $connection,
@@ -60,7 +53,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
         $this->passwordApi = $passwordApi;
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
@@ -71,15 +64,15 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
             $user = $this->databaseConnection->fetchAssoc('
                 SELECT uid, pass
                 FROM zauth_authentication_mapping
-                WHERE uname= ?
+                WHERE uname = ?
             ', [$object['username']]);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->context->buildViolation($this->__('Error! There was a problem with the database connection.'))
                 ->addViolation()
             ;
         }
 
-        if (empty($user) || ($user['uid'] <= 1) || (!$this->passwordApi->passwordsMatch($object['password'], $user['pass']))) {
+        if (empty($user) || $user['uid'] <= 1 || !$this->passwordApi->passwordsMatch($object['password'], $user['pass'])) {
             $this->context
                 ->buildViolation($this->__('Error! Could not login with provided credentials. Please try again.'))
                 ->addViolation()

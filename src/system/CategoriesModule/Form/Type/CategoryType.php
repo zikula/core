@@ -38,25 +38,16 @@ class CategoryType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $this->translator;
@@ -114,7 +105,7 @@ class CategoryType extends AbstractType
                 'mapped' => false,
                 'required' => false
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($translator, $options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($translator, $options) {
                 // ensure all display name and description exist for all locales
                 /** @var CategoryEntity $category */
                 $category = $event->getData();
@@ -138,7 +129,7 @@ class CategoryType extends AbstractType
 
                 $event->setData($category);
             })
-            ->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($translator, $options) {
+            ->addEventListener(FormEvents::SUBMIT, static function (FormEvent $event) use ($translator, $options) {
                 // ensure all locales have a display name
                 /** @var CategoryEntity $category */
                 $category = $event->getData();
@@ -159,27 +150,21 @@ class CategoryType extends AbstractType
         $builder->get('name')
             ->addModelTransformer(new CallbackTransformer(
                 // remove slash from name before persistence to prevent issues with path
-                function($string) {
+                static function($string) {
                     return $string;
                 },
-                function($string) {
+                static function($string) {
                     return str_replace('/', '&#47;', $string);
                 }
             ))
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulacategoriesmodule_category';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

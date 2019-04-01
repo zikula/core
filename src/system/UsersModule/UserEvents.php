@@ -24,20 +24,20 @@ class UserEvents
      * not a UI event. It should not be used for UI-level actions such as redirects.
      * The subject of the event is set to the user record that was created.
      */
-    const CREATE_ACCOUNT = 'user.account.create';
+    public const CREATE_ACCOUNT = 'user.account.create';
 
     /**
      * Occurs after a user is updated. All handlers are notified. The full updated user record is available
      * as the subject. This is a storage-level event, not a UI event. It should not be used for UI-level
      * actions such as redirects.
      */
-    const UPDATE_ACCOUNT = 'user.account.update';
+    public const UPDATE_ACCOUNT = 'user.account.update';
 
     /**
      * Occurs after the deletion of a user account. Subject is $uid.
      * This is a storage-level event, not a UI event. It should not be used for UI-level actions such as redirects.
      */
-    const DELETE_ACCOUNT = 'user.account.delete';
+    public const DELETE_ACCOUNT = 'user.account.delete';
 
     /**
      * A hook-like UI event that is triggered when a user's account detail is viewed. This allows another module
@@ -47,7 +47,7 @@ class UserEvents
      * The subject contains the user's account record.
      * The `'id'` argument contain's the user's uid.
      */
-    const DISPLAY_VIEW = 'module.users.ui.display_view';
+    public const DISPLAY_VIEW = 'module.users.ui.display_view';
 
     /**
      * Event called on user registration or admin user creation.
@@ -57,7 +57,7 @@ class UserEvents
      * Has a `templates` property that can be added to via `$event->addTemplate('@FooBundle/Area/foo.html.twig')`
      *   templates will be included/rendered within the user form output
      */
-    const EDIT_FORM = 'module.users.edit.form';
+    public const EDIT_FORM = 'module.users.edit.form';
 
     /**
      * Event called on user registration of admin user creation to handle form submission.
@@ -66,7 +66,7 @@ class UserEvents
      * Contains instance of \Zikula\UsersModule\Entity\UserEntity
      * Has a `formData` property to access data from form after it has handled the Request.
      */
-    const EDIT_FORM_HANDLE = 'module.users.edit.form.handle';
+    public const EDIT_FORM_HANDLE = 'module.users.edit.form.handle';
 
     /**
      * A hook-like event process that is triggered when the delete confirmation form is displayed. It allows other modules
@@ -74,11 +74,11 @@ class UserEvents
      * The subject of the event is not set.
      * The the argument `'id'` is the uid of the user who will be deleted if confirmed.
      */
-    const DELETE_FORM = 'module.users.ui.form_delete';
+    public const DELETE_FORM = 'module.users.ui.form_delete';
 
-    const DELETE_VALIDATE = 'module.users.ui.validate_delete';
+    public const DELETE_VALIDATE = 'module.users.ui.validate_delete';
 
-    const DELETE_PROCESS = 'module.users.ui.process_delete';
+    public const DELETE_PROCESS = 'module.users.ui.process_delete';
 
     /**
      * A hook-like UI event triggered when the users search form is displayed. Allows other
@@ -87,16 +87,16 @@ class UserEvents
      * data array.
      * This event does not have a subject or arguments.
      */
-    const FORM_SEARCH = 'module.users.ui.form_edit.search';
+    public const FORM_SEARCH = 'module.users.ui.form_edit.search';
 
     /**
      * currently no longer used...
      */
-    const FORM_SEARCH_PROCESS = 'users.search.process_edit';
+    public const FORM_SEARCH_PROCESS = 'users.search.process_edit';
 
     /**
      * Occurs after the Users module configuration has been updated via the administration interface.
      * Event data is populated by the new values.
      */
-    const CONFIG_UPDATED = 'module.users.config.updated';
+    public const CONFIG_UPDATED = 'module.users.config.updated';
 }

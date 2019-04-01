@@ -32,22 +32,12 @@ class UserDeleteListener implements EventSubscriberInterface
      */
     private $verificationRepository;
 
-    /**
-     * UserDeleteListener constructor.
-     * @param AuthenticationMappingRepositoryInterface $mappingRepository
-     * @param UserVerificationRepositoryInterface $verificationRepository
-     */
-    public function __construct(AuthenticationMappingRepositoryInterface $mappingRepository, UserVerificationRepositoryInterface $verificationRepository)
-    {
+    public function __construct(
+        AuthenticationMappingRepositoryInterface $mappingRepository,
+        UserVerificationRepositoryInterface $verificationRepository
+    ) {
         $this->mappingRepository = $mappingRepository;
         $this->verificationRepository = $verificationRepository;
-    }
-
-    public function deleteUsers(GenericEvent $event)
-    {
-        $deletedUid = $event->getSubject();
-        $this->mappingRepository->removeByZikulaId($deletedUid);
-        $this->verificationRepository->removeByZikulaId($deletedUid);
     }
 
     public static function getSubscribedEvents()
@@ -60,5 +50,12 @@ class UserDeleteListener implements EventSubscriberInterface
                 'deleteUsers'
             ]
         ];
+    }
+
+    public function deleteUsers(GenericEvent $event): void
+    {
+        $deletedUid = $event->getSubject();
+        $this->mappingRepository->removeByZikulaId($deletedUid);
+        $this->verificationRepository->removeByZikulaId($deletedUid);
     }
 }

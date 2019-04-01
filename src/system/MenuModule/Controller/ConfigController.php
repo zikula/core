@@ -23,7 +23,7 @@ use Zikula\Core\Controller\AbstractController;
  */
 class ConfigController extends AbstractController
 {
-    public function configAction(Request $request)
+    public function configAction(Request $request): void
     {
         // do nothing
     }

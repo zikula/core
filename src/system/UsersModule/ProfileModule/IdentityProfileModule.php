@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\ProfileModule;
 
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class IdentityProfileModule implements ProfileModuleInterface
 {
@@ -28,49 +29,35 @@ class IdentityProfileModule implements ProfileModuleInterface
      */
     private $currentUserApi;
 
-    /**
-     * IdentityProfileModule constructor.
-     * @param UserRepositoryInterface $userRepository
-     * @param CurrentUserApiInterface $currentUserApi
-     */
     public function __construct(UserRepositoryInterface $userRepository, CurrentUserApiInterface $currentUserApi)
     {
         $this->userRepository = $userRepository;
         $this->currentUserApi = $currentUserApi;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDisplayName($uid = null)
+    public function getDisplayName($userId = null): string
     {
-        if (!isset($uid)) {
+        if (!isset($userId)) {
             return $this->currentUserApi->get('uname');
         }
 
-        return $this->userRepository->find($uid)->getUname();
+        /** @var UserEntity $user */
+        $user = $this->userRepository->find($userId);
+
+        return null !== $user ? $user->getUname() : '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProfileUrl($uid = null)
+    public function getProfileUrl($userId = null): string
     {
         return '#';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvatar($uid = null, array $parameters = [])
+    public function getAvatar($userId = null, array $parameters = []): string
     {
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaUsersModule';
     }

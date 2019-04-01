@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Block;
 
+use DateTime;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -33,18 +34,14 @@ class OnlineBlock extends AbstractBlockHandler
      */
     private $userSessionRepository;
 
-    /**
-     * @param array $properties
-     * @return string
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
         if (!$this->hasPermission('Onlineblock::', $properties['bid'] . '::', ACCESS_READ)) {
             return '';
         }
 
         $inactiveLimit = $this->variableApi->getSystemVar('secinactivemins');
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
         $dateTime->modify('-' . $inactiveLimit . 'minutes');
         $amountOfUsers = $this->userSessionRepository->countUsersSince($dateTime);
         $amountOfGuests = $this->userSessionRepository->countGuestsSince($dateTime);
@@ -59,18 +56,16 @@ class OnlineBlock extends AbstractBlockHandler
 
     /**
      * @required
-     * @param VariableApiInterface $variableApi
      */
-    public function setVariableApi(VariableApiInterface $variableApi)
+    public function setVariableApi(VariableApiInterface $variableApi): void
     {
         $this->variableApi = $variableApi;
     }
 
     /**
      * @required
-     * @param UserSessionRepositoryInterface $userSessionRepository
      */
-    public function setUserSessionRepository(UserSessionRepositoryInterface $userSessionRepository)
+    public function setUserSessionRepository(UserSessionRepositoryInterface $userSessionRepository): void
     {
         $this->userSessionRepository = $userSessionRepository;
     }

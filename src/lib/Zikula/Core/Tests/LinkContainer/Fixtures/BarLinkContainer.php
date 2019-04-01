@@ -17,14 +17,7 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
 
 class BarLinkContainer implements LinkContainerInterface
 {
-    /**
-     * get Links of any type for this extension
-     * required by the interface
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         if ('bar' === $type) {
             return $this->getBar();
@@ -39,12 +32,7 @@ class BarLinkContainer implements LinkContainerInterface
         return [];
     }
 
-    /**
-     * get the Admin links for this extension
-     *
-     * @return array
-     */
-    private function getBar()
+    private function getBar(): array
     {
         $links = [];
         $links[] = [
@@ -56,12 +44,7 @@ class BarLinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * get the User Links for this extension
-     *
-     * @return array
-     */
-    private function getUser()
+    private function getUser(): array
     {
         $links = [];
         $links[] = [
@@ -78,12 +61,7 @@ class BarLinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * get the Account links for this extension
-     *
-     * @return array
-     */
-    private function getAccount()
+    private function getAccount(): array
     {
         $links = [];
         $links[] = [
@@ -95,12 +73,7 @@ class BarLinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * set the BundleName as required buy the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaBarExtension';
     }

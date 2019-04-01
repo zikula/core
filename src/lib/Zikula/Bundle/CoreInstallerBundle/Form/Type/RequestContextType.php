@@ -42,13 +42,13 @@ class RequestContextType extends AbstractType
                     'http' => 'http',
                     'https' => 'https'
                 ],
-                'data' => 'http',
+                'data' => 'http'
             ])
             ->add('router:request_context:base_url', TextType::class, [
                 'label' => $this->__('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
                 'label_attr' => [
                     'class' => 'col-sm-3'
-                ],
+                ]
             ])
         ;
     }

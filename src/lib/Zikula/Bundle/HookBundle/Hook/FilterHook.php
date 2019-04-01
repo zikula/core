@@ -30,7 +30,7 @@ class FilterHook extends Hook
         return $this->data;
     }
 
-    public function setData($data)
+    public function setData($data): void
     {
         $this->data = $data;
     }

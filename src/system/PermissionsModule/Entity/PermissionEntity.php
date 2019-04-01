@@ -82,9 +82,6 @@ class PermissionEntity extends EntityAccess
      */
     private $bond;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->gid = 0;
@@ -96,162 +93,82 @@ class PermissionEntity extends EntityAccess
         $this->bond = 0;
     }
 
-    /**
-     * get the pid of the permission
-     *
-     * @return integer the permission's pid
-     */
-    public function getPid()
+    public function getPid(): int
     {
         return $this->pid;
     }
 
-    /**
-     * set the pid for the permission
-     *
-     * @param integer $pid the permission's pid
-     */
-    public function setPid($pid)
+    public function setPid(int $pid): void
     {
         $this->pid = $pid;
     }
 
-    /**
-     * get the gid of the permission
-     *
-     * @return integer the permission's gid
-     */
-    public function getGid()
+    public function getGid(): int
     {
         return $this->gid;
     }
 
-    /**
-     * set the gid for the permission
-     *
-     * @param integer $gid the permission's gid
-     */
-    public function setGid($gid)
+    public function setGid(int $gid): void
     {
         $this->gid = $gid;
     }
 
-    /**
-     * get the sequence of the permission
-     *
-     * @return integer the permission's sequence
-     */
-    public function getSequence()
+    public function getSequence(): int
     {
         return $this->sequence;
     }
 
-    /**
-     * set the sequence for the permission
-     *
-     * @param integer $sequence the permission's sequence
-     */
-    public function setSequence($sequence)
+    public function setSequence(int $sequence): void
     {
         $this->sequence = $sequence;
     }
 
-    /**
-     * get the realm of the permission
-     *
-     * @return integer the permission's realm
-     */
-    public function getRealm()
+    public function getRealm(): int
     {
         return $this->realm;
     }
 
-    /**
-     * set the realm for the permission
-     *
-     * @param integer $realm the permission's realm
-     */
-    public function setRealm($realm)
+    public function setRealm(int $realm): void
     {
         $this->realm = $realm;
     }
 
-    /**
-     * get the component of the permission
-     *
-     * @return string the permission's component
-     */
-    public function getComponent()
+    public function getComponent(): string
     {
         return $this->component;
     }
 
-    /**
-     * set the component for the permission
-     *
-     * @param string $component the permission's component
-     */
-    public function setComponent($component)
+    public function setComponent(string $component): void
     {
         $this->component = $component;
     }
 
-    /**
-     * get the instance of the permission
-     *
-     * @return string the permission's instance
-     */
-    public function getInstance()
+    public function getInstance(): string
     {
         return $this->instance;
     }
 
-    /**
-     * set the instance for the permission
-     *
-     * @param string $instance the permission's instance
-     */
-    public function setInstance($instance)
+    public function setInstance(string $instance): void
     {
         $this->instance = $instance;
     }
 
-    /**
-     * get the level of the permission
-     *
-     * @return integer the permission's level
-     */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
 
-    /**
-     * set the level for the permission
-     *
-     * @param integer $level the permission's level
-     */
-    public function setLevel($level)
+    public function setLevel(int $level): void
     {
         $this->level = $level;
     }
 
-    /**
-     * get the bond of the permission
-     *
-     * @return integer the permission's bond
-     */
-    public function getBond()
+    public function getBond(): int
     {
         return $this->bond;
     }
 
-    /**
-     * set the bond for the permission
-     *
-     * @param integer $bond the permission's bond
-     */
-    public function setBond($bond)
+    public function setBond(int $bond): void
     {
         $this->bond = $bond;
     }

@@ -15,14 +15,16 @@ namespace Zikula\AdminModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 
 interface AdminCategoryRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function countCategories();
+    public function countCategories(): int;
 
-    public function getModuleCategory($moduleId);
+    public function getModuleCategory(int $moduleId): ?AdminCategoryEntity;
 
-    public function getIndexedCollection($indexBy);
+    public function getIndexedCollection(string $indexBy);
 
-    public function getPagedCategories($orderBy = [], $offset = 0, $limit = 0);
+    public function getPagedCategories(array $orderBy = [], int $offset = 0, int $limit = 0): Paginator;
 }

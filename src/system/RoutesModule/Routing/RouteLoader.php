@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -11,15 +13,18 @@
 
 namespace Zikula\RoutesModule\Routing;
 
-use Doctrine\DBAL\DBALException;
+use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\Core\AbstractModule;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
+use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ExtractTranslationHelper;
 use Zikula\RoutesModule\Helper\PathBuilderHelper;
 use Zikula\RoutesModule\Helper\SanitizeHelper;
@@ -72,17 +77,6 @@ class RouteLoader extends Loader
      */
     private $locale;
 
-    /**
-     * RouteLoader constructor.
-     *
-     * @param ZikulaHttpKernelInterface
-     * @param TranslatorInterface
-     * @param EntityFactory
-     * @param ExtractTranslationHelper
-     * @param PathBuilderHelper
-     * @param SanitizeHelper
-     * @param string $locale
-     */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
@@ -90,7 +84,7 @@ class RouteLoader extends Loader
         ExtractTranslationHelper $extractTranslationHelper,
         PathBuilderHelper $pathBuilderHelper,
         SanitizeHelper $sanitizeHelper,
-        $locale)
+        string $locale)
     {
         $this->kernel = $kernel;
         $this->translator = $translator;
@@ -104,9 +98,8 @@ class RouteLoader extends Loader
     public function load($resource, $type = null)
     {
         if (true === $this->loaded) {
-            throw new \RuntimeException('Do not add the "zikularoutesmodule" loader twice');
+            throw new RuntimeException('Do not add the "zikularoutesmodule" loader twice');
         }
-        unset($type);
 
         $routeCollection = new RouteCollection();
 
@@ -116,7 +109,7 @@ class RouteLoader extends Loader
 
         try {
             $customRoutes = $this->entityFactory->getRepository('route')->findBy([], ['sort' => 'ASC']);
-        } catch (DBALException $e) {
+        } catch (Exception $exception) {
             $routeCollection->addCollection($middleRoutes);
             $routeCollection->addCollection($bottomRoutes);
 
@@ -141,7 +134,7 @@ class RouteLoader extends Loader
      *
      * @return RouteCollection[]
      */
-    private function findAll()
+    private function findAll(): array
     {
         $modules = $this->kernel->getModules();
         $themes = $this->kernel->getThemes();
@@ -163,15 +156,13 @@ class RouteLoader extends Loader
     /**
      * Load routes of the specified module from the module's configuration file.
      *
-     * @param AbstractBundle $bundle
-     *
      * @return RouteCollection[]
      */
-    private function find(AbstractBundle $bundle)
+    private function find(AbstractBundle $bundle): array
     {
         try {
             $path = $this->kernel->locateResource($bundle->getRoutingConfig());
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $exception) {
             // Routing file does not exist (e.g. because the bundle could not be located).
             return [new RouteCollection(), new RouteCollection(), new RouteCollection()];
         }
@@ -222,15 +213,10 @@ class RouteLoader extends Loader
 
     /**
      * Adds custom routes from database to the given route collection.
-     *
-     * @param RouteCollection $routeCollection The route collection
-     * @param array           $customRoutes    List of custom routes to add
      */
-    private function addCustomRoutes(RouteCollection $routeCollection, $customRoutes = [])
+    private function addCustomRoutes(RouteCollection $routeCollection, array $customRoutes = []): void
     {
-        /**
-         * @var \Zikula\RoutesModule\Entity\RouteEntity $dbRoute
-         */
+        /** @var RouteEntity $dbRoute */
         foreach ($customRoutes as $dbRoute) {
             // Add modname, type and func to the route's default values.
             $defaults = $dbRoute->getDefaults();
@@ -272,13 +258,9 @@ class RouteLoader extends Loader
     /**
      * Sets some Zikula-specific defaults for the routes.
      *
-     * @param Route          $route The route instance
-     * @param AbstractBundle $bundle The bundle
-     * @param string         $bundleName The bundle's name
-     *
      * @return array The legacy $type and $func parameters
      */
-    private function setZikulaDefaults(Route $route, AbstractBundle $bundle, $bundleName)
+    private function setZikulaDefaults(Route $route, AbstractBundle $bundle, string $bundleName): array
     {
         $defaults = $route->getDefaults();
 
@@ -302,9 +284,6 @@ class RouteLoader extends Loader
 
     /**
      * Prepends the bundle prefix to the route.
-     *
-     * @param Route          $route
-     * @param AbstractBundle $bundle
      *
      * We have to prepend the bundle prefix if
      * - routes are _not_ currently extracted via the command line and
@@ -340,12 +319,9 @@ class RouteLoader extends Loader
     /**
      * Converts the controller identifier into a unified form.
      *
-     * @param string $bundleName The name of the bundle
-     * @param string $controllerString The given controller identifier
-     *
      * @return string The controller identifier in a Bundle:Type:func form
      */
-    private function sanitizeController($bundleName, $controllerString)
+    private function sanitizeController(string $bundleName, string $controllerString): string
     {
         if (0 === preg_match('#^(.*?\\\\Controller\\\\(.+)Controller)::(.+)Action$#', $controllerString, $match)) {
             return $controllerString;
@@ -357,22 +333,18 @@ class RouteLoader extends Loader
 
     /**
      * Generates the route's new name.
-     *
-     * @param string $oldRouteName The old route name
-     * @param string $bundleName   The bundle name
-     * @param string $type         The legacy type
-     * @param string $func         The legacy func
-     *
-     * @return string The route's new name
      */
-    private function getRouteName($oldRouteName, $bundleName, $type, $func)
+    private function getRouteName(string $oldRouteName, string $bundleName, string $type, string $func): string
     {
         $suffix = '';
-        $lastPart = substr($oldRouteName, strrpos($oldRouteName, '_'));
-        if (is_numeric($lastPart)) {
-            // If the last part of the old route name is numeric, also append it to the new route name.
-            // This allows multiple routes for the same action.
-            $suffix = '_' . $lastPart;
+        $lastHit = strrpos($oldRouteName, '_');
+        if (false !== $lastHit) {
+            $lastPart = substr($oldRouteName, $lastHit);
+            if (is_numeric($lastPart)) {
+                // If the last part of the old route name is numeric, also append it to the new route name.
+                // This allows multiple routes for the same action.
+                $suffix = '_' . $lastPart;
+            }
         }
 
         return strtolower($bundleName . '_' . $type . '_' . $func) . $suffix;

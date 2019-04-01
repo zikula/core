@@ -13,58 +13,32 @@ declare(strict_types=1);
 
 namespace Zikula\Common\Translator;
 
-use Symfony\Component\Translation\TranslatorInterface as SymfonyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface as SymfonyTranslatorInterface;
 
 /**
- * reference the "translator.default" service id and typehint against this interface.
- *
- * Interface TranslatorInterface
+ * Typehint against this interface.
  */
 interface TranslatorInterface extends SymfonyTranslatorInterface
 {
     /**
-     * singular translation for modules.
-     *
-     * @param string $msg Message
-     * @param null $domain
-     * @param null $locale
-     * @return string
+     * Singular translation for modules.
      */
-    public function __($msg, $domain = null, $locale = null);
+    public function __(string $msg, string $domain = null, string $locale = null): string;
 
     /**
      * Plural translations for modules.
-     *
-     * @param string $m1 Singular
-     * @param string $m2 Plural
-     * @param integer $n Count
-     * @param null $domain
-     * @param null $locale
-     * @return string
      */
-    public function _n($m1, $m2, $n, $domain = null, $locale = null);
+    public function _n(string $m1, string $m2, int $number, string $domain = null, string $locale = null): string;
 
     /**
      * Format translations for modules.
-     *
-     * @param string $msg Message
-     * @param array $param Format parameters
-     * @param null $domain
-     * @param null $locale
-     * @return string
      */
-    public function __f($msg, array $param, $domain = null, $locale = null);
+    public function __f(string $msg, array $parameters = [], string $domain = null, string $locale = null): string;
 
     /**
      * Format plural translations for modules.
-     *
-     * @param string $m1 Singular
-     * @param string $m2 Plural
-     * @param integer $n Count
-     * @param array $param Format parameters
-     * @param null $domain
-     * @param null $locale
-     * @return string
      */
-    public function _fn($m1, $m2, $n, array $param, $domain = null, $locale = null);
+    public function _fn(string $m1, string $m2, int $number, array $parameters = [], string $domain = null, string $locale = null): string;
+
+    public function getDomain(): string;
 }

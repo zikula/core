@@ -37,43 +37,42 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'createadmin';
     }
 
-    public function getFormType()
+    public function getFormType(): string
     {
         return CreateAdminType::class;
     }
 
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         return [];
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
-        return "ZikulaCoreInstallerBundle:Install:createadmin.html.twig";
+        return 'ZikulaCoreInstallerBundle:Install:createadmin.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         $params = $this->yamlManager->getParameters();
-        if (!empty($params['username']) && !empty($params['password']) && !empty($params['email'])) {
-            return false;
-        }
 
-        return true;
+        return !(!empty($params['username']) && !empty($params['password']) && !empty($params['email']));
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }
 
-    public function handleFormResult(FormInterface $form)
+    public function handleFormResult(FormInterface $form): bool
     {
         $this->container->get(ControllerHelper::class)->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+
+        return true;
     }
 }

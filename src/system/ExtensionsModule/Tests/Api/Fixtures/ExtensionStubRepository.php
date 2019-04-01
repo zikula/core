@@ -14,17 +14,18 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Tests\Api\Fixtures;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 
 class ExtensionStubRepository implements ExtensionRepositoryInterface
 {
+    /**
+     * @var array
+     */
     private $entities = [];
 
-    /**
-     * ExtensionStubRepository constructor.
-     */
     public function __construct()
     {
         $datas = [
@@ -64,7 +65,7 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
         }
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         return $this->entities;
     }
@@ -94,25 +95,30 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
         return null;
     }
 
-    public function getPagedCollectionBy(array $criteria, array $orderBy = null, $limit = 0, $offset = 1)
+    public function getPagedCollectionBy(
+        array $criteria,
+        array $orderBy = null,
+        int $limit = 0,
+        int $offset = 1
+    ): Paginator
+    {
+        return null;
+    }
+
+    public function getIndexedArrayCollection(string $indexBy): array
     {
         return [];
     }
 
-    public function getIndexedArrayCollection($indexBy)
-    {
-        return [];
-    }
-
-    public function updateName($oldName, $newName)
+    public function updateName(string $oldName, string $newName): void
     {
     }
 
-    public function persistAndFlush($entity)
+    public function persistAndFlush(ExtensionEntity $entity): void
     {
     }
 
-    public function removeAndFlush($entity)
+    public function removeAndFlush(ExtensionEntity $entity): void
     {
     }
 

@@ -41,29 +41,19 @@ class CategoryRegistryType extends AbstractType
      */
     private $entitySelectionBuilder;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, EntitySelectionBuilder $entitySelectionBuilder)
     {
         $this->setTranslator($translator);
+        $this->entitySelectionBuilder = $entitySelectionBuilder;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->entitySelectionBuilder = $options['entitySelectionBuilder'];
-
         $builder
             ->add('modname', ChoiceType::class, [
                 'label' => $this->__('Module'),
@@ -96,7 +86,7 @@ class CategoryRegistryType extends AbstractType
         ;
 
         $translator = $this->translator;
-        $formModifier = function(FormInterface $form, $modName = null) use ($translator, $options) {
+        $formModifier = function(FormInterface $form, string $modName = null) use ($translator) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
             $form->add('entityname', ChoiceType::class, [
                 'label' => $translator->__('Entity'),
@@ -106,7 +96,7 @@ class CategoryRegistryType extends AbstractType
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function(FormEvent $event) use ($formModifier) {
+            static function(FormEvent $event) use ($formModifier) {
                 /** @var CategoryRegistryEntity $data */
                 $data = $event->getData();
                 $formModifier($event->getForm(), $data->getModname());
@@ -115,29 +105,22 @@ class CategoryRegistryType extends AbstractType
 
         $builder->get('modname')->addEventListener(
             FormEvents::POST_SUBMIT,
-            function(FormEvent $event) use ($formModifier) {
+            static function(FormEvent $event) use ($formModifier) {
                 $modName = $event->getForm()->getData();
                 $formModifier($event->getForm()->getParent(), $modName);
             }
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulacategoriesmodule_category_registry';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'categorizableModules' => [],
-            'entitySelectionBuilder' => null
+            'categorizableModules' => []
         ]);
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -34,11 +33,9 @@ class ServicesController extends AbstractController
      *
      * Display services available to the module
      *
-     * @param $moduleName
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
-     * @return Response
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function moduleServicesAction($moduleName)
+    public function moduleServicesAction(string $moduleName): array
     {
         if (!$this->hasPermission($moduleName . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -49,11 +46,9 @@ class ServicesController extends AbstractController
         $this->get('event_dispatcher')->dispatch('module_dispatch.service_links', $event);
         $sublinks = $event->getData();
 
-        $templateParameters = [
+        return [
             'sublinks' => $sublinks,
             'currentmodule' => $moduleName
         ];
-
-        return $templateParameters;
     }
 }

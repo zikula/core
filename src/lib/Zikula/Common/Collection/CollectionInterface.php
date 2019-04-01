@@ -19,20 +19,16 @@ interface CollectionInterface
      * Add an item to the collection without a key.
      *
      * @param mixed $value The value to add
-     *
-     * @return mixed
      */
-    public function add($value);
+    public function add($value): void;
 
     /**
      * Add an item to the collection with a key.
      *
-     * @param mixed $key   The key to the item within the collection
+     * @param mixed $key The key to the item within the collection
      * @param mixed $value The value of the item
-     *
-     * @return mixed
      */
-    public function set($key, $value);
+    public function set($key, $value): void;
 
     /**
      * Retrieve an item from the collection by its key.
@@ -47,26 +43,20 @@ interface CollectionInterface
      * Remove an item from the collection.
      *
      * @param mixed $key The key to the item within the collection
-     *
-     * @return mixed
      */
-    public function del($key);
+    public function del($key): void;
 
     /**
      * Indicates whether the specified key is set within the collection.
      *
      * @param mixed $key The key to the item within the collection
-     *
-     * @return boolean True if the item with the specified key is set, otherwise false
      */
-    public function has($key);
+    public function has($key): bool;
 
     /**
      * Indicates whether the collection is set.
-     *
-     * @return boolean True if set, otherwise false
      */
-    public function hasCollection();
+    public function hasCollection(): bool;
 
     /**
      * Retrieve the internal collection container.

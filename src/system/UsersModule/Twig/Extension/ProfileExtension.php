@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Twig\Extension;
 
+use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Collector\ProfileModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class ProfileExtension extends AbstractExtension
 {
@@ -37,12 +39,6 @@ class ProfileExtension extends AbstractExtension
      */
     private $translator;
 
-    /**
-     * ProfileExtension constructor.
-     * @param UserRepositoryInterface $userRepository
-     * @param ProfileModuleCollector $profileModuleCollector
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         UserRepositoryInterface $userRepository,
         ProfileModuleCollector $profileModuleCollector,
@@ -71,14 +67,11 @@ class ProfileExtension extends AbstractExtension
     /**
      * Displays the avatar of a given user.
      *
-     * @param int|string $uid        The user's id or name
-     * @param array      $parameters Any additional arguments (e.g. width, height, size, rating)
-     *
-     * @return string
+     * @param int|string $userId The user's id or name
      */
-    public function getUserAvatar($uid = 0, array $parameters = [])
+    public function getUserAvatar($userId = 0, array $parameters = []): string
     {
-        return $this->profileModuleCollector->getSelected()->getAvatar($uid, $parameters);
+        return $this->profileModuleCollector->getSelected()->getAvatar($userId, $parameters);
     }
 
     /**
@@ -92,20 +85,19 @@ class ProfileExtension extends AbstractExtension
      *   {{ uid|profileLinkByUserId(class='classname') }}
      *   Using profile.gif instead of username, no class
      *   {{ uid|profileLinkByUserId(image='images/profile.gif') }}
-     *
-     * @param integer $userId    The users uid
-     * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional)
-     * @param integer $maxLength If set then user names are truncated to x chars
-     * @return string The output
      */
-    public function profileLinkByUserId($userId, $class = '', $image = '', $maxLength = 0, $title = '')
-    {
-        if (empty($userId) || (int)$userId < 1) {
-            return $userId;
+    public function profileLinkByUserId(
+        int $userId,
+        string $class = '',
+        string $image = '',
+        int $maxLength = 0,
+        string $title = ''
+    ): string {
+        if (empty($userId) || $userId < 1) {
+            return (string)$userId;
         }
 
-        return $this->determineProfileLink((int)$userId, null, $class, $image, $maxLength, $title);
+        return $this->determineProfileLink($userId, null, $class, $image, $maxLength, $title);
     }
 
     /**
@@ -119,15 +111,14 @@ class ProfileExtension extends AbstractExtension
      *   {{ username|profileLinkByUserName(class='classname') }}
      *   Using profile.gif instead of username, no class
      *   {{ username|profileLinkByUserName('image'='images/profile.gif') }}
-     *
-     * @param string  $userName  The users name
-     * @param string  $class     The class name for the link (optional)
-     * @param string  $image     Path to the image to show instead of the username (optional)
-     * @param integer $maxLength If set then user names are truncated to x chars
-     * @return string The output
      */
-    public function profileLinkByUserName($userName, $class = '', $image = '', $maxLength = 0, $title = '')
-    {
+    public function profileLinkByUserName(
+        string $userName,
+        string $class = '',
+        string $image = '',
+        int $maxLength = 0,
+        string $title = ''
+    ): string {
         if (empty($userName)) {
             return $userName;
         }
@@ -137,19 +128,19 @@ class ProfileExtension extends AbstractExtension
 
     /**
      * Internal function used by profileLinkByUserId() and profileLinkByUserName().
-     *
-     * @param integer $userId    The users uid
-     * @param string  $userName  The users name
-     * @param string  $class     The class name for the link (optional)
-     * @param string  $imagePath Path to the image to show instead of the username (optional)
-     * @param integer $maxLength If set then user names are truncated to x chars
-     * @return string The output
      */
-    private function determineProfileLink($userId = null, $userName = null, $class = '', $imagePath = '', $maxLength = 0, $title = '')
-    {
+    private function determineProfileLink(
+        int $userId = null,
+        string $userName = null,
+        string $class = '',
+        string $imagePath = '',
+        int $maxLength = 0,
+        string $title = ''
+    ): string {
         if (!isset($userId) && !isset($userName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
+        /** @var UserEntity $user */
         if (null !== $userId) {
             $user = $this->userRepository->find($userId);
         } else {

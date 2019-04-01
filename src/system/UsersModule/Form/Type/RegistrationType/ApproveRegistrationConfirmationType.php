@@ -25,32 +25,23 @@ class ApproveRegistrationConfirmationType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('user', HiddenType::class)
             ->add('force', HiddenType::class)
             ->add('confirm', SubmitType::class, [
-                'label' => (!empty($options['buttonLabel']) ? $options['buttonLabel'] : $this->__('Confirm')),
+                'label' => !empty($options['buttonLabel']) ? $options['buttonLabel'] : $this->__('Confirm'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
@@ -62,17 +53,11 @@ class ApproveRegistrationConfirmationType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_approveregistrationconfirmation';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

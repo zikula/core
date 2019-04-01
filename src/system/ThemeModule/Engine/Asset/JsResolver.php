@@ -37,35 +37,32 @@ class JsResolver implements ResolverInterface
      */
     private $combine;
 
-    /**
-     * JsResolver constructor.
-     * @param AssetBag $bag
-     * @param MergerInterface $merger
-     * @param string $env
-     * @param bool $combine
-     */
-    public function __construct(AssetBag $bag, MergerInterface $merger, $env = 'prod', $combine = false)
-    {
+    public function __construct(
+        AssetBag $bag,
+        MergerInterface $merger,
+        string $env = 'prod',
+        bool $combine = false
+    ) {
         $this->bag = $bag;
         $this->merger = $merger;
         $this->combine = 'prod' === $env && $combine;
     }
 
-    public function compile()
+    public function compile(): string
     {
         $assets = $this->bag->all();
         if ($this->combine) {
-            $assets = $this->merger->merge($assets, 'js');
+            $assets = $this->merger->merge($assets);
         }
         $headers = '';
         foreach ($assets as $asset) {
-            $headers .= '<script type="text/javascript" src="' . $asset . '"></script>' . "\n";
+            $headers .= '<script src="' . $asset . '"></script>' . "\n";
         }
 
         return $headers;
     }
 
-    public function getBag()
+    public function getBag(): AssetBag
     {
         return $this->bag;
     }

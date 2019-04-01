@@ -36,25 +36,16 @@ class ConfigType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -138,9 +129,6 @@ class ConfigType extends AbstractType
                     new Type('string')
                 ]
             ])
-            /**
-             * Buttons
-             */
             ->add('save', SubmitType::class, [
                 'label' => $this->__('Save'),
                 'icon' => 'fa-check',
@@ -154,7 +142,7 @@ class ConfigType extends AbstractType
             /**
              * Form Listeners
              */
-            ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, static function(FormEvent $event) {
                 $data = $event->getData();
                 // clear anti-spam answer if there is no question
                 if (empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION])) {
@@ -165,23 +153,17 @@ class ConfigType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_config';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'constraints' => [
                 new Callback([
-                    'callback' => function($data, ExecutionContextInterface $context) {
+                    'callback' => static function($data, ExecutionContextInterface $context) {
                         if (!empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION]) && empty($data[ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_ANSWER])) {
                             $context
                                 ->buildViolation('If a spam protection question is provided, then a spam protection answer must also be provided.')

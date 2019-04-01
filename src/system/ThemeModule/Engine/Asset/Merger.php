@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Engine\Asset;
 
+use DateTime;
 use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -53,37 +54,31 @@ class Merger implements MergerInterface
      */
     private $compress;
 
-    /**
-     * Merger constructor.
-     * @param RouterInterface $router
-     * @param CacheProvider $jsCache
-     * @param CacheProvider $cssCache
-     * @param string $kernelProjectDir
-     * @param string $lifetime
-     * @param bool $minify
-     * @param bool $compress
-     */
     public function __construct(
         RouterInterface $router,
         CacheProvider $jsCache,
         CacheProvider $cssCache,
-        $kernelProjectDir,
-        $lifetime = "1 day",
-        $minify = false,
-        $compress = false
+        string $kernelProjectDir,
+        string $lifetime = '1 day',
+        bool $minify = false,
+        bool $compress = false
     ) {
         $this->router = $router;
         $this->jsCache = $jsCache;
         $this->cssCache = $cssCache;
         $projectDir = realpath($kernelProjectDir . '/');
         $this->rootDir = str_replace($router->getContext()->getBaseUrl(), '', $projectDir);
-        $this->lifetime = abs((new \DateTime($lifetime))->getTimestamp() - (new \DateTime())->getTimestamp());
+        $this->lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         $this->minify = $minify;
         $this->compress = $compress;
     }
 
-    public function merge(array $assets, $type = 'js')
+    public function merge(array $assets, $type = 'js'): array
     {
+        if (!in_array($type, ['js', 'css'])) {
+            return [];
+        }
+
         $preCachedFiles = [];
         $cachedFiles = [];
         $outputFiles = [];
@@ -92,17 +87,20 @@ class Merger implements MergerInterface
             $path = realpath($this->rootDir . $asset);
             if (is_file($path)) {
                 $cachedFiles[] = $path;
+            } elseif ($weight < 0) {
+                $preCachedFiles[] = $asset;
             } else {
-                if ($weight < 0) {
-                    $preCachedFiles[] = $asset;
-                } else {
-                    $outputFiles[] = $asset;
-                }
+                $outputFiles[] = $asset;
             }
         }
-        $cacheName = in_array($type, ['js', 'css']) ? "{$type}Cache" : null;
-        /** @var CacheProvider $cacheService */
-        $cacheService = $this->{$cacheName};
+        if ('js' === $type) {
+            $cacheService = $this->jsCache;
+        } elseif ('css' === $type) {
+            $cacheService = $this->cssCache;
+        }
+        if (!isset($cacheService)) {
+            return [];
+        }
         $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.' . $type;
         $data = $cacheService->fetch($key);
         if (false === $data) {
@@ -113,7 +111,7 @@ class Merger implements MergerInterface
                 $pathParts = explode($this->rootDir, $file);
                 $cachedFiles[$k] = end($pathParts);
             }
-            $now = new \DateTime();
+            $now = new DateTime();
             array_unshift($data, sprintf("/* --- Combined file written: %s */\n\n", $now->format('c')));
             array_unshift($data, sprintf("/* --- Combined files:\n%s\n*/\n\n", implode("\n", $cachedFiles)));
             $data = implode('', $data);
@@ -132,17 +130,13 @@ class Merger implements MergerInterface
     /**
      * Read a file and add its contents to the $contents array.
      * This function includes the content of all "@import" statements (recursive).
-     *
-     * @param array &$contents Array to save content to
-     * @param string $file Path to file
-     * @param string $ext Can be 'css' or 'js'
      */
-    private function readFile(&$contents, $file, $ext)
+    private function readFile(array &$contents, string $file, string $ext): void
     {
         if (!file_exists($file)) {
             return;
         }
-        $source = fopen($file, 'r');
+        $source = fopen($file, 'rb');
         if (!$source) {
             return;
         }
@@ -183,7 +177,7 @@ class Merger implements MergerInterface
                     } elseif ($importsAllowd && '@' === $char && '@import' === mb_substr($lineParse, $i, 7)) {
                         // an @import starts here
                         $lineParseRest = trim(mb_substr($lineParse, $i + 7));
-                        if ('url' === mb_strtolower(mb_substr($lineParseRest, 0, 3))) {
+                        if (mb_stripos($lineParseRest, 'url') === 0) {
                             // the @import uses url to specify the path
                             $posEnd = mb_strpos($lineParse, ';', $i);
                             $charsEnd = mb_substr($lineParse, $posEnd - 1, 2);
@@ -192,8 +186,8 @@ class Merger implements MergerInterface
                                 $start = mb_strpos($lineParseRest, '(') + 1;
                                 $end = mb_strpos($lineParseRest, ')');
                                 $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if ('"' === $url[0] | "'" === $url[0]) {
-                                    $url = mb_substr($url, 1, mb_strlen($url) - 2);
+                                if (strpos($url, '"') === 0 | strpos($url, "'") === 0) {
+                                    $url = mb_substr($url, 1, -1);
                                 }
                                 // fix url
                                 $url = dirname($file) . '/' . $url;
@@ -214,8 +208,8 @@ class Merger implements MergerInterface
                                 $start = mb_strpos($lineParseRest, '(') + 1;
                                 $end = mb_strpos($lineParseRest, ')');
                                 $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if ('"' === $url[0] | "'" === $url[0]) {
-                                    $url = mb_substr($url, 1, mb_strlen($url) - 2);
+                                if (strpos($url, '"') === 0 | strpos($url, "'") === 0) {
+                                    $url = mb_substr($url, 1, -1);
                                 }
                                 // fix url
                                 $url = dirname($file) . '/' . $url;
@@ -224,7 +218,7 @@ class Merger implements MergerInterface
                                 // skip @import statement
                                 $i += $posEnd - $i;
                             }
-                        } elseif ('"' === mb_substr($lineParseRest, 0, 1) || '\'' === mb_substr($lineParseRest, 0, 1)) {
+                        } elseif (mb_strpos($lineParseRest, '"') === 0 || 0 === mb_strpos($lineParseRest, '\'')) {
                             // the @import uses an normal string to specify the path
                             $posEnd = mb_strpos($lineParseRest, ';');
                             $url = mb_substr($lineParseRest, 1, $posEnd - 2);
@@ -254,7 +248,7 @@ class Merger implements MergerInterface
                 // fix other paths after @import processing
                 if (!$importsAllowd) {
                     $relativePath = str_replace(realpath($this->rootDir), '', $file);
-                    $newLine = self::cssFixPath($newLine, explode('/', dirname($relativePath)));
+                    $newLine = $this->cssFixPath($newLine, explode('/', dirname($relativePath)));
                 }
                 $contents[] = $newLine;
             } else {
@@ -271,11 +265,8 @@ class Merger implements MergerInterface
 
     /**
      * Fix paths in CSS files.
-     * @param string $line CSS file line
-     * @param array $filePathSegments segments of relative path to original file
-     * @return string
      */
-    private function cssFixPath($line, $filePathSegments = [])
+    private function cssFixPath(string $line, array $filePathSegments = []): string
     {
         $regexpurl = '/url\([\'"]?([\.\/]*)(.*?)[\'"]?\)/i';
         if (false === mb_strpos($line, 'url')) {
@@ -284,7 +275,7 @@ class Merger implements MergerInterface
 
         preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
-            if (0 !== mb_strpos($match[1], '/') && 'http://' !== mb_substr($match[2], 0, 7) && 'https://' !== mb_substr($match[2], 0, 8)) {
+            if (0 !== mb_strpos($match[1], '/') && mb_strpos($match[2], 'http://') !== 0 && mb_strpos($match[2], 'https://') !== 0) {
                 $depth = mb_substr_count($match[1], '../') * -1;
                 $pathSegments = $depth < 0 ? array_slice($filePathSegments, 0, $depth) : $filePathSegments;
                 $path = implode('/', $pathSegments) . '/';
@@ -296,19 +287,17 @@ class Merger implements MergerInterface
     }
 
     /**
-     * Remove comments, whitespace and spaces from css files
-     * @param string $contents
-     * @return string
+     * Remove comments, whitespace and spaces from css files.
      */
-    private function minify($contents)
+    private function minify(string $input): string
     {
         // Remove comments.
-        $contents = trim(preg_replace('/\/\*.*?\*\//s', '', $contents));
+        $content = trim(preg_replace('/\/\*.*?\*\//s', '', $input));
         // Compress whitespace.
-        $contents = preg_replace('/\s+/', ' ', $contents);
+        $content = preg_replace('/\s+/', ' ', $content);
         // Additional whitespace optimisation -- spaces around certain tokens is not required by CSS
-        $contents = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $contents);
+        $content = preg_replace('/\s*(;|\{|\}|:|,)\s*/', '\1', $content);
 
-        return $contents;
+        return $content;
     }
 }

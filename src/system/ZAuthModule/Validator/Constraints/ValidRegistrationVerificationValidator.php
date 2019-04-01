@@ -43,12 +43,6 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
      */
     private $passwordApi;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param UserRepositoryInterface $userRepository
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param PasswordApiInterface $passwordApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         UserRepositoryInterface $userRepository,

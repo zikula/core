@@ -24,11 +24,8 @@ class AppleController
     /**
      * @Route("/view/{d}")
      * @Template
-     *
-     * @param null $d
-     * @return array
      */
-    public function viewAction($d = null)
+    public function viewAction(string $d = null): array
     {
         $templateParameters = ['nbApples' => 5];
         if (isset($d)) {
@@ -41,10 +38,8 @@ class AppleController
     /**
      * @Route("/t")
      * @Template
-     *
-     * @return array
      */
-    public function translatedAction()
+    public function translatedAction(): array
     {
         return [];
     }

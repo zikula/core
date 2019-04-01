@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule;
 
+use Exception;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
+use Zikula\Common\Translator\Translator;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -25,12 +27,7 @@ use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
  */
 class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Install the Extensions module.
-     *
-     * @return boolean true if installation is successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         $entities = [
             ExtensionEntity::class,
@@ -40,29 +37,19 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 
         try {
             $this->schemaTool->create($entities);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
         // populate default data
-        $this->defaultData();
+        $this->createDefaultData();
         $this->setVar('itemsperpage', 40);
 
         // Initialisation successful
         return true;
     }
 
-    /**
-     * Upgrade the module from an old version.
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param string $oldVersion Version number string to upgrade from
-     *
-     * @return  boolean|string True on success, last valid version string or false if fails
-     */
-    public function upgrade($oldVersion)
+    public function upgrade($oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
@@ -72,8 +59,8 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 
                 // increase length of some hook table fields from 20 to 60
                 $commands = [];
-                $commands[] = "ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL";
-                $commands[] = "ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL";
+                $commands[] = 'ALTER TABLE `hook_provider` CHANGE `method` `method` VARCHAR(60) NOT NULL';
+                $commands[] = 'ALTER TABLE `hook_runtime` CHANGE `method` `method` VARCHAR(60) NOT NULL';
 
                 foreach ($commands as $sql) {
                     $connection->executeQuery($sql);
@@ -91,8 +78,8 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
 
                 // increase length of some hook table fields from 20 to 60
                 $commands = [];
-                $commands[] = "ALTER TABLE `modules` CHANGE `core_min` `coreCompatibility` VARCHAR(64) NOT NULL";
-                $commands[] = "ALTER TABLE `modules` DROP COLUMN `core_max`";
+                $commands[] = 'ALTER TABLE `modules` CHANGE `core_min` `coreCompatibility` VARCHAR(64) NOT NULL';
+                $commands[] = 'ALTER TABLE `modules` DROP COLUMN `core_max`';
 
                 foreach ($commands as $sql) {
                     $connection->executeQuery($sql);
@@ -105,34 +92,23 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the modules module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance.
-     *
-     * Since the modules module should never be deleted we'all always return false here
-     * @return boolean false this module cannot be deleted
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Deletion not allowed
         return false;
     }
 
     /**
-     * Create the default data for the Extensions module.
-     *
-     * @return void
+     * Create the default data for the extensions module.
      */
-    public function defaultData()
+    private function createDefaultData(): void
     {
         $scanner = new Scanner();
         $jsonPath = realpath(__DIR__ . '/composer.json');
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
         if (!empty($this->container)) {
-            $metaData->setTranslator($this->container->get('translator'));
+            $metaData->setTranslator($this->container->get(Translator::class));
         }
         $meta = $metaData->getFilteredVersionInfoArray();
         $meta['state'] = Constant::STATE_ACTIVE;

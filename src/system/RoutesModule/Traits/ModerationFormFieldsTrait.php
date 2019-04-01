@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -22,11 +25,8 @@ trait ModerationFormFieldsTrait
 {
     /**
      * Adds special fields for moderators.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
      */
-    public function addModerationFields(FormBuilderInterface $builder, array $options = [])
+    public function addModerationFields(FormBuilderInterface $builder, array $options = []): void
     {
         if (!$options['has_moderate_permission']) {
             return;

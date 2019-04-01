@@ -13,15 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Helper;
 
+use Exception;
+use InvalidArgumentException;
+use ReflectionClass;
+use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Console\Application;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
+use Zikula\Core\AbstractModule;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
@@ -34,9 +40,9 @@ use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ExtensionHelper
 {
-    const TYPE_SYSTEM = 3;
+    public const TYPE_SYSTEM = 3;
 
-    const TYPE_MODULE = 2;
+    public const TYPE_MODULE = 2;
 
     /**
      * @var ContainerInterface
@@ -68,16 +74,6 @@ class ExtensionHelper
      */
     private $cacheClearer;
 
-    /**
-     * ExtensionHelper constructor.
-     *
-     * @param ContainerInterface $container
-     * @param TranslatorInterface $translator
-     * @param VariableApiInterface $variableApi
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param ExtensionStateHelper $stateHelper
-     * @param CacheClearer $cacheClearer
-     */
     public function __construct(
         ContainerInterface $container,
         TranslatorInterface $translator,
@@ -96,16 +92,14 @@ class ExtensionHelper
 
     /**
      * Install an extension.
-     *
-     * @param ExtensionEntity $extension
-     * @return bool
      */
-    public function install(ExtensionEntity $extension)
+    public function install(ExtensionEntity $extension): bool
     {
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
-            throw new \RuntimeException($this->translator->__f('Error! No permission to install %s.', ['%s' => $extension->getName()]));
-        } elseif ($extension->getState() > 10) {
-            throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
+            throw new RuntimeException($this->translator->__f('Error! Not allowed to install %s.', ['%s' => $extension->getName()]));
+        }
+        if (10 < $extension->getState()) {
+            throw new RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
         }
 
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
@@ -127,22 +121,17 @@ class ExtensionHelper
 
     /**
      * Upgrade an extension.
-     *
-     * @param ExtensionEntity $extension
-     * @return bool
      */
-    public function upgrade(ExtensionEntity $extension)
+    public function upgrade(ExtensionEntity $extension): bool
     {
-        switch ($extension->getState()) {
-            case Constant::STATE_NOTALLOWED:
-                throw new \RuntimeException($this->translator->__f('Error! Not allowed to upgrade %s.', ['%s' => $extension->getDisplayname()]));
-
-            default:
-                if ($extension->getState() > 10) {
-                    throw new \RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getDisplayname()]));
-                }
+        if (Constant::STATE_NOTALLOWED === $extension->getState()) {
+            throw new RuntimeException($this->translator->__f('Error! Not allowed to upgrade %s.', ['%s' => $extension->getDisplayname()]));
+        }
+        if (10 < $extension->getState()) {
+            throw new RuntimeException($this->translator->__f('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getDisplayname()]));
         }
 
+        /** @var AbstractModule $bundle */
         $bundle = $this->container->get('kernel')->getModule($extension->getName());
 
         // Check status of Dependencies here to be sure they are met for upgraded extension. #3647
@@ -181,18 +170,15 @@ class ExtensionHelper
 
     /**
      * Uninstall an extension.
-     *
-     * @param ExtensionEntity $extension
-     * @return bool
      */
-    public function uninstall(ExtensionEntity $extension)
+    public function uninstall(ExtensionEntity $extension): bool
     {
         if (Constant::STATE_NOTALLOWED === $extension->getState()
-            || (ZikulaKernel::isCoreModule($extension->getName()))) {
-            throw new \RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
+            || ZikulaKernel::isCoreModule($extension->getName())) {
+            throw new RuntimeException($this->translator->__f('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
         }
         if (Constant::STATE_UNINITIALISED === $extension->getState()) {
-            throw new \RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
+            throw new RuntimeException($this->translator->__f('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
         }
 
         // allow event to prevent extension removal
@@ -228,13 +214,12 @@ class ExtensionHelper
      * Uninstall an array of extensions.
      *
      * @param ExtensionEntity[] $extensions
-     * @return bool
      */
-    public function uninstallArray(array $extensions)
+    public function uninstallArray(array $extensions): bool
     {
         foreach ($extensions as $extension) {
             if (!$extension instanceof ExtensionEntity) {
-                throw new \InvalidArgumentException();
+                throw new InvalidArgumentException();
             }
             $result = $this->uninstall($extension);
             if (!$result) {
@@ -247,11 +232,8 @@ class ExtensionHelper
 
     /**
      * Based on the state of the extension, either install, upgrade or activate the extension.
-     *
-     * @param ExtensionEntity $extension
-     * @return bool
      */
-    public function enableExtension(ExtensionEntity $extension)
+    public function enableExtension(ExtensionEntity $extension): bool
     {
         switch ($extension->getState()) {
             case Constant::STATE_UNINITIALISED:
@@ -266,12 +248,13 @@ class ExtensionHelper
     }
 
     /**
-     * Run the console command assets:install
+     * Run the console command assets:install.
      *
-     * @throws \Exception
+     * @throws Exception
      */
-    public function installAssets()
+    public function installAssets(): void
     {
+        /** @var ZikulaHttpKernelInterface $kernel */
         $kernel = $this->container->get('kernel');
         $application = new Application($kernel);
         $application->setAutoExit(false);
@@ -284,18 +267,15 @@ class ExtensionHelper
 
     /**
      * Get an instance of an extension Installer.
-     *
-     * @param AbstractBundle $bundle
-     *
-     * @return ExtensionInstallerInterface
      */
-    private function getExtensionInstallerInstance(AbstractBundle $bundle)
+    private function getExtensionInstallerInstance(AbstractBundle $bundle): ExtensionInstallerInterface
     {
         $className = $bundle->getInstallerClass();
-        $reflectionInstaller = new \ReflectionClass($className);
-        if (!$reflectionInstaller->isSubclassOf('\Zikula\Core\ExtensionInstallerInterface')) {
-            throw new \RuntimeException($this->translator->__f("%s must implement ExtensionInstallerInterface", ['%s' => $className]));
+        $reflectionInstaller = new ReflectionClass($className);
+        if (!$reflectionInstaller->isSubclassOf(ExtensionInstallerInterface::class)) {
+            throw new RuntimeException($this->translator->__f('%s must implement ExtensionInstallerInterface', ['%s' => $className]));
         }
+        /** @var ExtensionInstallerInterface $installer */
         $installer = $reflectionInstaller->newInstance();
         $installer->setBundle($bundle);
         if ($installer instanceof ContainerAwareInterface) {

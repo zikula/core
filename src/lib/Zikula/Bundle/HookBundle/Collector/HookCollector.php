@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Collector;
 
+use InvalidArgumentException;
 use Zikula\Bundle\HookBundle\HookProviderInterface;
 use Zikula\Bundle\HookBundle\HookSelfAllowedProviderInterface;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
@@ -47,7 +48,7 @@ class HookCollector implements HookCollectorInterface
      * @param HookProviderInterface[] $providers
      * @param HookSubscriberInterface[] $subscribers
      */
-    public function __construct(iterable $providers, iterable $subscribers)
+    public function __construct(iterable $providers = [], iterable $subscribers = [])
     {
         foreach ($providers as $provider) {
             $this->addProvider($provider);
@@ -57,119 +58,80 @@ class HookCollector implements HookCollectorInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addProvider(HookProviderInterface $service)
+    public function addProvider(HookProviderInterface $service): void
     {
         $areaName = $service->getAreaName();
         if (isset($this->providerHooks[$areaName])) {
-            throw new \InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
+            throw new InvalidArgumentException('Attempting to register a hook provider with a duplicate area name. (' . $areaName . ')');
         }
         $this->providerHooks[$areaName] = $service;
         $this->providersByOwner[$service->getOwner()][$areaName] = $service;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProvider($areaName)
+    public function getProvider(string $areaName): ?HookProviderInterface
     {
-        return isset($this->providerHooks[$areaName]) ? $this->providerHooks[$areaName] : null;
+        return $this->providerHooks[$areaName] ?? null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasProvider($areaName)
+    public function hasProvider(string $areaName): bool
     {
         return isset($this->providerHooks[$areaName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProviders()
+    public function getProviders(): iterable
     {
         return $this->providerHooks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProviderAreas()
+    public function getProviderAreas(): array
     {
         return array_keys($this->providerHooks);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProviderAreasByOwner($owner)
+    public function getProviderAreasByOwner(string $owner): array
     {
         return isset($this->providersByOwner[$owner]) ? array_keys($this->providersByOwner[$owner]) : [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addSubscriber(HookSubscriberInterface $service)
+    public function addSubscriber(HookSubscriberInterface $service): void
     {
         $areaName = $service->getAreaName();
         if (isset($this->subscriberHooks[$areaName])) {
-            throw new \InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
+            throw new InvalidArgumentException('Attempting to register a hook subscriber with a duplicate area name. (' . $areaName . ')');
         }
         $this->subscriberHooks[$areaName] = $service;
         $this->subscribersByOwner[$service->getOwner()][$areaName] = $service;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscriber($areaName)
+    public function getSubscriber(string $areaName): ?HookSubscriberInterface
     {
-        return isset($this->subscriberHooks[$areaName]) ? $this->subscriberHooks[$areaName] : null;
+        return $this->subscriberHooks[$areaName] ?? null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasSubscriber($areaName)
+    public function hasSubscriber(string $areaName): bool
     {
         return isset($this->subscriberHooks[$areaName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscribers()
+    public function getSubscribers(): iterable
     {
         return $this->subscriberHooks;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscriberAreas()
+    public function getSubscriberAreas(): array
     {
         return array_keys($this->subscriberHooks);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubscriberAreasByOwner($owner)
+    public function getSubscriberAreasByOwner(string $owner): array
     {
         return isset($this->subscribersByOwner[$owner]) ? array_keys($this->subscribersByOwner[$owner]) : [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isCapable($moduleName, $type = self::HOOK_SUBSCRIBER)
+    public function isCapable(string $moduleName, string $type = self::HOOK_SUBSCRIBER): bool
     {
-        if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER, self::HOOK_SUBSCRIBE_OWN])) {
-            throw new \InvalidArgumentException('Only hook_provider, hook_subscriber and subscriber_own are valid values.');
+        if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER, self::HOOK_SUBSCRIBE_OWN], true)) {
+            throw new InvalidArgumentException('Only hook_provider, hook_subscriber and subscriber_own are valid values.');
         }
         if (self::HOOK_SUBSCRIBE_OWN === $type) {
             return $this->containsSelfAllowedProvider($moduleName);
@@ -180,13 +142,10 @@ class HookCollector implements HookCollectorInterface
         return isset($array[$moduleName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOwnersCapableOf($type = self::HOOK_SUBSCRIBER)
+    public function getOwnersCapableOf(string $type = self::HOOK_SUBSCRIBER): array
     {
-        if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER])) {
-            throw new \InvalidArgumentException('Only hook_provider and hook_subscriber are valid values.');
+        if (!in_array($type, [self::HOOK_SUBSCRIBER, self::HOOK_PROVIDER], true)) {
+            throw new InvalidArgumentException('Only hook_provider and hook_subscriber are valid values.');
         }
         $variable = mb_substr($type, 5) . 'sByOwner';
         $array = $this->{$variable};
@@ -196,10 +155,8 @@ class HookCollector implements HookCollectorInterface
 
     /**
      * Does $moduleName contain at least one SelfAllowedProvider?
-     * @param $moduleName
-     * @return bool
      */
-    private function containsSelfAllowedProvider($moduleName)
+    private function containsSelfAllowedProvider(string $moduleName): bool
     {
         if (isset($this->providersByOwner[$moduleName])) {
             foreach ($this->providersByOwner[$moduleName] as $provider) {

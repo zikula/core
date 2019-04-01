@@ -22,9 +22,6 @@ use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
 class FinishCommand extends AbstractCoreInstallerCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -33,11 +30,6 @@ class FinishCommand extends AbstractCoreInstallerCommand
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -58,7 +50,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
-            $io->text("<fg=blue;options=bold>" . $stage[AjaxInstallerStage::DURING] . "</fg=blue;options=bold>");
+            $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
             $status = $this->getContainer()->get(AjaxInstallController::class)->commandLineAction($stage[AjaxInstallerStage::NAME]);
             if ($status) {
                 $io->success($stage[AjaxInstallerStage::SUCCESS]);

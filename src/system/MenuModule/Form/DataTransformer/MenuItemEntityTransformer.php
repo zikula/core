@@ -30,20 +30,12 @@ class MenuItemEntityTransformer implements DataTransformerInterface
      */
     private $translator;
 
-    /**
-     * MenuItemEntityTransformer constructor.
-     * @param MenuItemRepositoryInterface $repo
-     * @param TranslatorInterface $translator
-     */
     public function __construct(MenuItemRepositoryInterface $repo, TranslatorInterface $translator)
     {
         $this->repo = $repo;
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         if (empty($value)) {
@@ -58,9 +50,6 @@ class MenuItemEntityTransformer implements DataTransformerInterface
         return $entity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         if (null === $value) {

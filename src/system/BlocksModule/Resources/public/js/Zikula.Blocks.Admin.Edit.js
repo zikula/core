@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         $('#add-filter').click(function (event) {
             event.preventDefault();
@@ -30,5 +30,5 @@
                 queryParamInput.prop('disabled', true);
             }
         });
-    })
+    });
 })(jQuery);

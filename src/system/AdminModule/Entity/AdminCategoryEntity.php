@@ -64,82 +64,42 @@ class AdminCategoryEntity extends EntityAccess
         $this->sortorder = 99;
     }
 
-    /**
-     * get the id of the category
-     *
-     * @return integer the category id
-     */
-    public function getCid()
+    public function getCid(): int
     {
         return $this->cid;
     }
 
-    /**
-     * set the id for the category
-     *
-     * @param integer $cid the category id
-     */
-    public function setCid($cid)
+    public function setCid(int $cid): void
     {
         $this->cid = $cid;
     }
 
-    /**
-     * get the name of the category
-     *
-     * @return string the category name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * set the name for the category
-     *
-     * @param string $name the category name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * get the description of the category
-     *
-     * @return string the category description
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * set the description for the category
-     *
-     * @param string $description the category description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
-        $this->description = null !== $description ? $description : '';
+        $this->description = $description ?? '';
     }
 
-    /**
-     * get the sortorder of the category
-     *
-     * @return integer the category sortorder
-     */
-    public function getSortorder()
+    public function getSortorder(): int
     {
         return $this->sortorder;
     }
 
-    /**
-     * set the sortorder for the category
-     *
-     * @param integer $sortorder the category sortorder
-     */
-    public function setSortorder($sortorder)
+    public function setSortorder(int $sortorder): void
     {
         $this->sortorder = $sortorder;
     }

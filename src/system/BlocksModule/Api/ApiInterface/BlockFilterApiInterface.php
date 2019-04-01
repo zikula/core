@@ -22,16 +22,11 @@ interface BlockFilterApiInterface
 {
     /**
      * Determine if the block is displayable based on the filter criteria.
-     *
-     * @param BlockEntity $blockEntity
-     * @return boolean
      */
-    public function isDisplayable(BlockEntity $blockEntity);
+    public function isDisplayable(BlockEntity $blockEntity): bool;
 
     /**
      * Get all the attributes of the request + 'query param'.
-     *
-     * @return array
      */
-    public function getFilterAttributeChoices();
+    public function getFilterAttributeChoices(): array;
 }

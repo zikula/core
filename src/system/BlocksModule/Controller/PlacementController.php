@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,23 +34,19 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class PlacementController extends AbstractController
 {
     /**
-     * Create a new position or edit an existing position.
-     *
      * @Route("/edit/{pid}", requirements={"pid" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaBlocksModule:Placement:edit.html.twig")
      *
-     * @param BlockPositionEntity $positionEntity
-     * @param BlockRepositoryInterface $blockRepository
-     * @param BlockPositionRepositoryInterface $positionRepository
+     * Create a new placement or edit an existing placement.
      *
-     * @return Response
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function editAction(
         BlockPositionEntity $positionEntity,
         BlockRepositoryInterface $blockRepository,
         BlockPositionRepositoryInterface $positionRepository
-    ) {
+    ): array {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -79,13 +76,9 @@ class PlacementController extends AbstractController
      *
      * Change the block order.
      *
-     * @param Request $request
-     *  blockorder array of sorted blocks (value = block id)
-     *  position int zone id
-     *
-     * @return JsonResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function changeBlockOrderAction(Request $request)
+    public function changeBlockOrderAction(Request $request): JsonResponse
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
@@ -93,6 +86,7 @@ class PlacementController extends AbstractController
 
         $blockorder = $request->request->get('blockorder', []); // [7, 1]
         $position = $request->request->get('position'); // 1
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
         // remove all block placements from this position

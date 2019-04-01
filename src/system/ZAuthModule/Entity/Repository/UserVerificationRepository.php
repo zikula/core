@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Entity\Repository;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use InvalidArgumentException;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
@@ -26,36 +31,37 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         parent::__construct($registry, UserVerificationEntity::class);
     }
 
-    public function persistAndFlush(UserVerificationEntity $entity)
+    public function persistAndFlush(UserVerificationEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
 
-    public function removeAndFlush(UserVerificationEntity $entity)
+    public function removeAndFlush(UserVerificationEntity $entity): void
     {
         $this->_em->remove($entity);
         $this->_em->flush($entity);
     }
 
-    public function removeByZikulaId($uid)
+    public function removeByZikulaId(int $userId): void
     {
-        $entity = $this->findOneBy(['uid' => $uid]);
+        /** @var UserVerificationEntity $entity */
+        $entity = $this->findOneBy(['uid' => $userId]);
         if ($entity) {
             $this->removeAndFlush($entity);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function purgeExpiredRecords($daysOld, $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $deleteUserEntities = true)
-    {
+    public function purgeExpiredRecords(
+        int $daysOld,
+        int $changeType = ZAuthConstant::VERIFYCHGTYPE_REGEMAIL,
+        bool $deleteUserEntities = true
+    ): array {
         if ($daysOld < 1) {
             return [];
         }
         // Expiration date/times, as with all date/times in the Users module, are stored as UTC.
-        $staleRecordUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+        $staleRecordUTC = new DateTime(null, new DateTimeZone('UTC'));
         $staleRecordUTC->modify("-{$daysOld} days");
 
         $qb = $this->createQueryBuilder('v');
@@ -75,8 +81,10 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         if (!empty($staleVerificationRecords)) {
             foreach ($staleVerificationRecords as $staleVerificationRecord) {
                 // delete user record
+                /** @var UserRepositoryInterface $userRepo */
                 $userRepo = $this->_em->getRepository('ZikulaUsersModule:UserEntity');
                 if ($deleteUserEntities) {
+                    /** @var UserEntity $user */
                     $user = $userRepo->find($staleVerificationRecord['uid']);
                     $deletedUsers[] = $user;
                     $userRepo->removeAndFlush($user);
@@ -91,22 +99,12 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         return $deletedUsers;
     }
 
-    /**
-     * Removes a record from the users_verifychg table for a specified uid and changetype.
-     *
-     * @param integer $uid The uid of the verifychg record to remove. Required
-     * @param int|array $types The changetype(s) of the verifychg record to remove. If more
-     *                         than one type is to be removed, use an array. Optional. If
-     *                         not specifed, all verifychg records for the user will be
-     *                         removed. Note: specifying an empty array will remove none
-     * @return array
-     */
-    public function resetVerifyChgFor($uid, $types = null)
+    public function resetVerifyChgFor(int $userId, $types = null): array
     {
         $qb = $this->createQueryBuilder('v')
             ->delete()
             ->where('v.uid = :uid')
-            ->setParameter('uid', $uid);
+            ->setParameter('uid', $userId);
         if (isset($types)) {
             $qb->andWhere($qb->expr()->in('v.changetype', ':changeType'))
                 ->setParameter('changeType', $types);
@@ -116,43 +114,37 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
         return $query->getResult();
     }
 
-    public function isVerificationEmailSent($uid)
+    public function isVerificationEmailSent(int $userId): bool
     {
         /** @var UserVerificationEntity $userVerification */
-        $userVerification = $this->findOneBy(['uid' => $uid]);
-        if (empty($userVerification)) {
-            return false;
-        }
+        $userVerification = $this->findOneBy(['uid' => $userId]);
 
-        return null !== $userVerification->getCreated_Dt();
+        return null !== $userVerification && null !== $userVerification->getCreated_Dt();
     }
 
-    /**
-     * Set a confirmation code.
-     * @param integer $uid
-     * @param int $changeType
-     * @param string $hashedConfirmationCode
-     * @param string $email
-     */
-    public function setVerificationCode($uid, $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD, $hashedConfirmationCode = null, $email = null)
-    {
+    public function setVerificationCode(
+        int $userId,
+        int $changeType = ZAuthConstant::VERIFYCHGTYPE_PWD,
+        string $hashedConfirmationCode = null,
+        string $email = null
+    ): void {
         if (empty($hashedConfirmationCode)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
-        $nowUTC = new \DateTime(null, new \DateTimeZone('UTC'));
+        $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
 
         $query = $this->createQueryBuilder('v')
             ->delete()
             ->where('v.uid = :uid')
             ->andWhere('v.changetype = :changeType')
-            ->setParameter('uid', $uid)
+            ->setParameter('uid', $userId)
             ->setParameter('changeType', $changeType)
             ->getQuery();
         $query->execute();
 
         $entity = new UserVerificationEntity();
         $entity->setChangetype($changeType);
-        $entity->setUid($uid);
+        $entity->setUid($userId);
         $entity->setVerifycode($hashedConfirmationCode);
         $entity->setCreated_Dt($nowUTC);
         if (!empty($email)) {

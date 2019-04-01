@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -11,7 +14,9 @@
 
 namespace Zikula\RoutesModule\Helper\Base;
 
+use Exception;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Symfony\Component\Workflow\Registry;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
@@ -60,19 +65,6 @@ abstract class AbstractWorkflowHelper
      */
     protected $permissionHelper;
     
-    /**
-     * WorkflowHelper constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param Registry $registry
-     * @param LoggerInterface $logger
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param EntityFactory $entityFactory
-     * @param ListEntriesHelper $listEntriesHelper
-     * @param PermissionHelper $permissionHelper
-     *
-     * @return void
-     */
     public function __construct(
         TranslatorInterface $translator,
         Registry $registry,
@@ -93,10 +85,8 @@ abstract class AbstractWorkflowHelper
     
     /**
      * This method returns a list of possible object states.
-     *
-     * @return array List of collected state information
      */
-    public function getObjectStates()
+    public function getObjectStates(): array
     {
         $states = [];
         $states[] = [
@@ -125,17 +115,13 @@ abstract class AbstractWorkflowHelper
     
     /**
      * This method returns information about a certain state.
-     *
-     * @param string $state The given state value
-     *
-     * @return array|null The corresponding state information
      */
-    public function getStateInfo($state = 'initial')
+    public function getStateInfo(string $state = 'initial'): ?array
     {
         $result = null;
         $stateList = $this->getObjectStates();
         foreach ($stateList as $singleState) {
-            if ($singleState['value'] != $state) {
+            if ($singleState['value'] !== $state) {
                 continue;
             }
             $result = $singleState;
@@ -147,12 +133,8 @@ abstract class AbstractWorkflowHelper
     
     /**
      * Retrieve the available actions for a given entity object.
-     *
-     * @param EntityAccess $entity The given entity instance
-     *
-     * @return array List of available workflow actions
      */
-    public function getActionsForObject(EntityAccess $entity)
+    public function getActionsForObject(EntityAccess $entity): array
     {
         $workflow = $this->workflowRegistry->get($entity);
         $wfActions = $workflow->getEnabledTransitions($entity);
@@ -173,13 +155,8 @@ abstract class AbstractWorkflowHelper
     
     /**
      * Returns a translatable title for a certain action.
-     *
-     * @param string $currentState Current state of the entity
-     * @param string $actionId     Id of the treated action
-     *
-     * @return string The action title
      */
-    protected function getTitleForAction($currentState, $actionId)
+    protected function getTitleForAction(string $currentState, string $actionId): string
     {
         $title = '';
         switch ($actionId) {
@@ -197,12 +174,12 @@ abstract class AbstractWorkflowHelper
                 break;
         }
     
-        if ($title == '') {
-            if ($actionId == 'update') {
+        if ('' === $title) {
+            if ('update' === $actionId) {
                 $title = $this->translator->__('Update');
-            } elseif ($actionId == 'trash') {
+            } elseif ('trash' === $actionId) {
                 $title = $this->translator->__('Trash');
-            } elseif ($actionId == 'recover') {
+            } elseif ('recover' === $actionId) {
                 $title = $this->translator->__('Recover');
             }
         }
@@ -212,12 +189,8 @@ abstract class AbstractWorkflowHelper
     
     /**
      * Returns a button class for a certain action.
-     *
-     * @param string $actionId Id of the treated action
-     *
-     * @return string The button class
      */
-    protected function getButtonClassForAction($actionId)
+    protected function getButtonClassForAction(string $actionId): string
     {
         $buttonClass = '';
         switch ($actionId) {
@@ -235,7 +208,7 @@ abstract class AbstractWorkflowHelper
                 break;
         }
     
-        if ($buttonClass == '' && $actionId == 'update') {
+        if ('' === $buttonClass && 'update' === $actionId) {
             $buttonClass = 'success';
         }
     
@@ -248,14 +221,8 @@ abstract class AbstractWorkflowHelper
     
     /**
      * Executes a certain workflow action for a given entity object.
-     *
-     * @param EntityAccess $entity    The given entity instance
-     * @param string       $actionId  Name of action to be executed
-     * @param boolean      $recursive True if the function called itself
-     *
-     * @return boolean Whether everything worked well or not
      */
-    public function executeAction(EntityAccess $entity, $actionId = '', $recursive = false)
+    public function executeAction(EntityAccess $entity, string $actionId = '', bool $recursive = false): bool
     {
         $workflow = $this->workflowRegistry->get($entity);
         if (!$workflow->can($entity, $actionId)) {
@@ -272,38 +239,39 @@ abstract class AbstractWorkflowHelper
         }
     
         try {
-            if ('delete' == $actionId) {
+            if ('delete' === $actionId) {
                 $entityManager->remove($entity);
             } else {
                 $entityManager->persist($entity);
             }
+            $entityManager->flush();
             $workflow->apply($entity, $actionId);
             $entityManager->flush();
     
             $result = true;
-            if ('delete' == $actionId) {
+            if ('delete' === $actionId) {
                 $this->logger->notice('{app}: User {user} deleted an entity.', $logArgs);
             } else {
                 $this->logger->notice('{app}: User {user} updated an entity.', $logArgs);
             }
-        } catch (\Exception $exception) {
-            if ('delete' == $actionId) {
+        } catch (Exception $exception) {
+            if ('delete' === $actionId) {
                 $this->logger->error('{app}: User {user} tried to delete an entity, but failed.', $logArgs);
             } else {
                 $this->logger->error('{app}: User {user} tried to update an entity, but failed.', $logArgs);
             }
-            throw new \RuntimeException($exception->getMessage());
+            throw new RuntimeException($exception->getMessage());
         }
     
         if (false !== $result && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();
             foreach ($entities as $rel) {
-                if ($rel->getWorkflowState() == 'initial') {
+                if ('initial' === $rel->getWorkflowState()) {
                     $this->executeAction($rel, $actionId, true);
                 }
             }
         }
     
-        return (false !== $result);
+        return false !== $result;
     }
 }

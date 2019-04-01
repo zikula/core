@@ -17,24 +17,20 @@ class ExtractTranslationHelper
     /**
      * @var string
      */
-    private $extractedBundle = null;
+    private $extractedBundle = '';
 
     /**
      * Returns the currently extracted bundle.
-     *
-     * @return string Bundle name
      */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return $this->extractedBundle;
     }
 
     /**
      * Sets the currently extracted bundle.
-     *
-     * @param string $bundle Bundle name
      */
-    public function setBundleName($bundle)
+    public function setBundleName(string $bundle): void
     {
         $this->extractedBundle = $bundle;
     }

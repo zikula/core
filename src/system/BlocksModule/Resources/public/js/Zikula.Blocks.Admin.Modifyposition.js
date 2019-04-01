@@ -3,7 +3,7 @@
 /*******************************************************************************
  * Sort blocks in a block position
  *******************************************************************************/
-( function($) {
+(function($) {
     $(document).ready(function() {
 
         // Return a helper with preserved width of cells

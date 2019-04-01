@@ -27,11 +27,6 @@ class TwigExtension extends AbstractExtension
      */
     private $htmlFilterApi;
 
-    /**
-     * TwigExtension constructor.
-     *
-     * @param HtmlFilterApiInterface $htmlFilterApi
-     */
     public function __construct(HtmlFilterApiInterface $htmlFilterApi)
     {
         $this->htmlFilterApi = $htmlFilterApi;
@@ -44,11 +39,7 @@ class TwigExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param $string
-     * @return string
-     */
-    public function safeHtml($string)
+    public function safeHtml(string $string): string
     {
         return $this->htmlFilterApi->filter($string);
     }

@@ -18,42 +18,27 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getAlias()
+    public function getAlias(): string
     {
         return ZAuthConstant::AUTHENTICATION_METHOD_UNAME;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDisplayName()
+    public function getDisplayName(): string
     {
         return $this->translator->__('Native Uname');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their username.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLoginFormClassName()
+    public function getLoginFormClassName(): string
     {
         return UnameLoginType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLoginTemplateName($type = 'page', $position = 'left')
+    public function getLoginTemplateName(string $type = 'page', string $position = 'left'): string
     {
         if ('block' === $type) {
             if ('topnav' === $position) {
@@ -66,11 +51,8 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
         return 'ZikulaZAuthModule:Authentication:UnameLogin.html.twig';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function authenticate(array $data = [])
+    public function authenticate(array $data = []): ?int
     {
-        return $this->authenticateByField($data, 'uname');
+        return $this->authenticateByField($data);
     }
 }

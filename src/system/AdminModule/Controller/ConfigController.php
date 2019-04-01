@@ -39,14 +39,6 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaAdminModule:Config:config.html.twig")
      *
-     * @param Request $request
-     * @param AdminCategoryRepositoryInterface $adminCategoryRepository
-     * @param AdminModuleRepositoryInterface $adminModuleRepository
-     * @param ThemeEntityRepository $themeEntityRepository
-     * @param VariableApiInterface $variableApi
-     * @param CapabilityApiInterface $capabilityApi
-     * @param AdminModuleHelper $adminModuleHelper
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
      */
@@ -89,7 +81,7 @@ class ConfigController extends AbstractController
                 'displayname' => $adminModule['displayname'],
                 'name' => $adminModule['name']
             ];
-            $dataValues['modulecategory' . $adminModule['name']] = (isset($category)) ? $category->getCid() : $this->getVar('defaultcategory');
+            $dataValues['modulecategory' . $adminModule['name']] = isset($category) ? $category->getCid() : $this->getVar('defaultcategory');
         }
         $themes = $themeEntityRepository->get(ThemeEntityRepository::FILTER_ADMIN);
 

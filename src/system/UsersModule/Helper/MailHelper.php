@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Helper;
 
+use InvalidArgumentException;
+use RuntimeException;
 use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
@@ -57,15 +59,6 @@ class MailHelper
      */
     private $authenticationMappingRepository;
 
-    /**
-     * MailHelper constructor.
-     * @param TranslatorInterface $translator
-     * @param Environment $twig
-     * @param VariableApiInterface $variableApi
-     * @param MailerApiInterface $mailerApi
-     * @param PermissionApiInterface $permissionApi
-     * @param AuthenticationMappingRepositoryInterface $authenticationMappingRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
@@ -96,18 +89,22 @@ class MailHelper
      *
      * @return array of errors created from the mail process
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received
-     * @throws \RuntimeException Thrown if the registration couldn't be saved
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
+     * @throws RuntimeException Thrown if the registration couldn't be saved
      */
-    public function createAndSendRegistrationMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
-    {
+    public function createAndSendRegistrationMail(
+        UserEntity $userEntity,
+        bool $userNotification = true,
+        bool $adminNotification = true,
+        string $passwordCreatedForUser = ''
+    ): array {
         $mailErrors = [];
         $rendererArgs = [];
         $rendererArgs['reginfo'] = $userEntity;
         $rendererArgs['createdpassword'] = $passwordCreatedForUser;
         $rendererArgs['createdByAdmin'] = $this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_EDIT);
 
-        if (($userNotification && $userEntity->isApproved()) || !empty($passwordCreatedForUser)) {
+        if (!empty($passwordCreatedForUser) || ($userNotification && $userEntity->isApproved())) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
             if (!$mailSent) {
                 $mailErrors[] = $this->translator->__('Warning! The welcoming email for the new registration could not be sent.');
@@ -144,13 +141,17 @@ class MailHelper
      *
      * @return array of mail errors
      *
-     * @throws \InvalidArgumentException Thrown if invalid parameters are received
+     * @throws InvalidArgumentException Thrown if invalid parameters are received
      * @throws AccessDeniedException Thrown if the current user does not have overview access
-     * @throws \RuntimeException Thrown if the user couldn't be added to the relevant user groups or
+     * @throws RuntimeException Thrown if the user couldn't be added to the relevant user groups or
      *                                  if the registration couldn't be saved
      */
-    public function createAndSendUserMail(UserEntity $userEntity, $userNotification = true, $adminNotification = true, $passwordCreatedForUser = '')
-    {
+    public function createAndSendUserMail(
+        UserEntity $userEntity,
+        bool $userNotification = true,
+        bool $adminNotification = true,
+        string $passwordCreatedForUser = ''
+    ): array {
         $mailErrors = [];
         $rendererArgs = [];
         $rendererArgs['reginfo'] = $userEntity;
@@ -182,7 +183,8 @@ class MailHelper
     }
 
     /**
-     * Send same mail to selected user(s). If more than one user, BCC and batchsize used.
+     * Send same mail to selected user(s). If more than one user, BCC and batch size are used.
+     *
      * @param UserEntity[] $users
      * @param array $messageData
      *  required keys
@@ -194,7 +196,7 @@ class MailHelper
      *      'format'
      * @return bool
      */
-    public function mailUsers(array $users, array $messageData)
+    public function mailUsers(array $users, array $messageData): bool
     {
         $mailSent = true;
         $message = new Swift_Message($messageData['subject'], $messageData['message']);
@@ -231,15 +233,18 @@ class MailHelper
      * @param string $subject The e-mail subject, overriding the template's subject
      * @return bool
      */
-    public function sendNotification($toAddress, $notificationType = '', array $templateArgs = [], $subject = '')
-    {
-        $html = false;
-
+    public function sendNotification(
+        string $toAddress,
+        string $notificationType = '',
+        array $templateArgs = [],
+        string $subject = ''
+    ): bool {
         $templateName = "@ZikulaUsersModule/Email/{$notificationType}.html.twig";
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
         } catch (LoaderError $e) {
+            $html = false;
             $htmlBody = '';
         }
 
@@ -264,7 +269,7 @@ class MailHelper
         return $this->mailerApi->sendMessage($message, null, null, $textBody, $html);
     }
 
-    private function generateEmailSubject($notificationType, array $templateArgs = [])
+    private function generateEmailSubject(string $notificationType, array $templateArgs = []): string
     {
         $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {

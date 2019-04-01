@@ -19,26 +19,15 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CopyRequirementsFile extends ScriptHandler
 {
-    public static function copy(Event $event)
+    public static function copy(Event $event): void
     {
         $options = static::getOptions($event);
-        $appDir = $options['symfony-app-dir'];
         $fs = new Filesystem();
-        $newDirectoryStructure = static::useNewDirectoryStructure($options);
 
-        if (!$newDirectoryStructure) {
-            // for Core-1.x
-            if (!static::hasDirectory($event, 'symfony-app-dir', $appDir, 'install the requirements files')) {
-                return;
-            }
-            $fs->copy(__DIR__ . '/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', $appDir . '/SymfonyRequirements.php', true);
-        } else {
-            // for Core-2.x
-            $varDir = $options['symfony-var-dir'];
-            if (!static::hasDirectory($event, 'symfony-var-dir', $varDir, 'install the requirements files')) {
-                return;
-            }
-            $fs->copy(__DIR__ . '/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
+        $varDir = $options['symfony-var-dir'];
+        if (!static::hasDirectory($event, 'symfony-var-dir', $varDir, 'install the requirements files')) {
+            return;
         }
+        $fs->copy(__DIR__ . '/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
     }
 }

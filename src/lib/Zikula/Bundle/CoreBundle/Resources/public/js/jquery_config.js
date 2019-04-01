@@ -4,7 +4,7 @@ jQuery.noConflict();
 /*
  Fix provided by http://softec.lu/site/DevelopersCorner/BootstrapPrototypeConflict
  */
-if (typeof Prototype !== 'undefined' && Prototype.BrowserFeatures.ElementExtensions) {
+if ('undefined' !== typeof Prototype && Prototype.BrowserFeatures.ElementExtensions) {
     var disablePrototypeJS = function (method, pluginsToDisable) {
             var handler = function (event) {
                 event.target[method] = undefined;

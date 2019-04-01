@@ -20,31 +20,23 @@ interface SearchableInterface
     /**
      * Modify the search form
      * Note that the `active` status (checkbox) is already included
-     *
-     * @param FormBuilderInterface $form
      */
-    public function amendForm(FormBuilderInterface $form);
+    public function amendForm(FormBuilderInterface $form): void;
 
     /**
-     * Get the search results
-     *
-     * @param array $words array of words to search for
-     * @param string $searchType AND|OR|EXACT
-     * @param array|null $modVars module form vars passed though (form data from `amendForm` method)
-     * @return array (Core-2.0 modules MUST return an array of SearchResultEntity[])
+     * Get the search results.
+     * Must return an array of SearchResultEntity[].
      */
-    public function getResults(array $words, $searchType = 'AND', $modVars = null);
+    public function getResults(array $words, string $searchType = 'AND', array $modVars = []): array;
 
     /**
      * Return an array of errors generated during the search action
-     * in the format [<extensionName>: <errorText>]
-     * @return array
+     * in the format [<extensionName>: <errorText>].
      */
-    public function getErrors();
+    public function getErrors(): array;
 
     /**
      * Return the name of the providing bundle.
-     * @return string
      */
-    public function getBundleName();
+    public function getBundleName(): string;
 }

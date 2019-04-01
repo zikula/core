@@ -39,14 +39,7 @@ class PermissionController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaPermissionsModule:Permission:list.html.twig")
      *
-     * view permissions
-     *
-     * @param GroupRepositoryInterface $groupsRepository
-     * @param PermissionRepositoryInterface $permissionRepository
-     * @param PermissionApiInterface $permissionApi
-     * @param SchemaHelper $schemaHelper
-     *
-     * @return array
+     * View permissions.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
@@ -55,7 +48,7 @@ class PermissionController extends AbstractController
         PermissionRepositoryInterface $permissionRepository,
         PermissionApiInterface $permissionApi,
         SchemaHelper $schemaHelper
-    ) {
+    ): array {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -89,13 +82,7 @@ class PermissionController extends AbstractController
     /**
      * @Route("/edit/{pid}", options={"expose"=true})
      *
-     * @param Request $request
-     * @param GroupRepositoryInterface $groupsRepository
-     * @param PermissionRepositoryInterface $permissionRepository
-     * @param PermissionApiInterface $permissionApi
-     * @param PermissionEntity $permissionEntity
-     *
-     * @return JsonResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions to the module
      */
     public function editAction(
         Request $request,
@@ -103,7 +90,7 @@ class PermissionController extends AbstractController
         PermissionRepositoryInterface $permissionRepository,
         PermissionApiInterface $permissionApi,
         PermissionEntity $permissionEntity = null
-    ) {
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -129,7 +116,7 @@ class PermissionController extends AbstractController
                 if ($permissionEntity->getSequence() === -1) {
                     $permissionEntity->setSequence($permissionRepository->getMaxSequence() + 1); // last
                 } else {
-                    $permissionRepository->updateSequencesFrom($permissionEntity->getSequence(), 1); // insert
+                    $permissionRepository->updateSequencesFrom($permissionEntity->getSequence()); // insert
                 }
             }
             $permissionRepository->persistAndFlush($permissionEntity);
@@ -157,17 +144,14 @@ class PermissionController extends AbstractController
     /**
      * @Route("/change-order", methods = {"POST"}, options={"expose"=true})
      *
-     * Change the order of a permission rule
+     * Change the order of a permission rule.
      *
-     * @param Request $request
-     *  permorder array of sorted permissions (value = permission id)
-     * @param PermissionRepositoryInterface $permissionRepository
-     *
-     * @return JsonResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function changeOrderAction(Request $request, PermissionRepositoryInterface $permissionRepository)
-    {
+    public function changeOrderAction(
+        Request $request,
+        PermissionRepositoryInterface $permissionRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -177,7 +161,7 @@ class PermissionController extends AbstractController
             $permission = $permissionRepository->find($permOrder[$cnt]);
             $permission['sequence'] = $cnt + 1;
         }
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->json(['result' => true]);
     }
@@ -185,17 +169,16 @@ class PermissionController extends AbstractController
     /**
      * @Route("/delete/{pid}", methods = {"POST"}, options={"expose"=true})
      *
-     * Delete a permission
+     * Delete a permission.
      *
-     * @param PermissionEntity $permissionEntity
-     * @param PermissionRepositoryInterface $permissionRepository
-     *
-     * @return JsonResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @throws FatalErrorException Thrown if the requested permission rule is the default admin rule or if
      *                                    if the permission rule couldn't be deleted
      */
-    public function deleteAction(PermissionEntity $permissionEntity, PermissionRepositoryInterface $permissionRepository)
-    {
+    public function deleteAction(
+        PermissionEntity $permissionEntity,
+        PermissionRepositoryInterface $permissionRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -208,8 +191,8 @@ class PermissionController extends AbstractController
             throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
         }
 
-        $this->get('doctrine')->getManager()->remove($permissionEntity);
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->remove($permissionEntity);
+        $this->getDoctrine()->getManager()->flush();
         $permissionRepository->reSequence();
         if ($permissionEntity->getPid() === $this->getVar('adminid')) {
             $this->setVar('adminid', 0);
@@ -222,17 +205,15 @@ class PermissionController extends AbstractController
     /**
      * @Route("/test", methods = {"POST"}, options={"expose"=true})
      *
-     * Test a permission rule for a given username
+     * Test a permission rule for a given username.
      *
-     * @param Request $request
-     * @param PermissionApiInterface $permissionApi
-     * @param UserRepositoryInterface $userRepository
-     *
-     * @return JsonResponse
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function testAction(Request $request, PermissionApiInterface $permissionApi, UserRepositoryInterface $userRepository)
-    {
+    public function testAction(
+        Request $request,
+        PermissionApiInterface $permissionApi,
+        UserRepositoryInterface $userRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaPermissionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -252,11 +233,11 @@ class PermissionController extends AbstractController
         }
 
         if (false === $uid) {
-            $result .= '<span id="permissiontestinfored">' . $this->__('unknown user.') . '</span>';
+            $result .= '<span class="text-danger">' . $this->__('unknown user.') . '</span>';
         } else {
             $granted = $this->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
 
-            $result .= '<span id="' . ($granted ? 'permissiontestinfogreen' : 'permissiontestinfored') . '">';
+            $result .= '<span class="' . ($granted ? 'text-success' : 'text-danger') . '">';
             $result .= (0 === $uid) ? $this->__('unregistered user') : $data['user'];
             $result .= ': ';
             if ($granted) {

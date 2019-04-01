@@ -17,22 +17,22 @@ use Zikula\Component\Wizard\StageInterface;
 
 class NotInstalledStage implements StageInterface
 {
-    public function getName()
+    public function getName(): string
     {
         return 'notinstalled';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Install:notinstalled.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }

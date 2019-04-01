@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
+use Locale;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -26,6 +26,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Helper\AccountLinksHelper;
 
 /**
@@ -37,13 +38,12 @@ class AccountController extends AbstractController
      * @Route("")
      * @Template("ZikulaUsersModule:Account:menu.html.twig")
      *
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param AccountLinksHelper $accountLinksHelper
-     *
-     * @return Response|array
+     * @throws AccessDeniedException Thrown if the user isn't logged in or hasn't read permissions for the module
      */
-    public function menuAction(CurrentUserApiInterface $currentUserApi, AccountLinksHelper $accountLinksHelper)
-    {
+    public function menuAction(
+        CurrentUserApiInterface $currentUserApi,
+        AccountLinksHelper $accountLinksHelper
+    ): array {
         if ($currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
@@ -59,11 +59,6 @@ class AccountController extends AbstractController
     /**
      * @Route("/change-language")
      * @Template("ZikulaUsersModule:Account:changeLanguage.html.twig")
-     *
-     * @param Request $request
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
-     * @param LocaleApiInterface $localeApi
      *
      * @return array|RedirectResponse
      */
@@ -103,11 +98,14 @@ class AccountController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 $data = $form->getData();
                 $locale = !empty($data['locale']) ? $data['locale'] : $locale;
+                /** @var UserEntity $userEntity */
                 $userEntity = $userRepository->find($this->get('zikula_users_module.current_user')->get('uid'));
                 $userEntity->setLocale($locale);
                 $userRepository->persistAndFlush($userEntity);
-                $request->getSession()->set('_locale', $locale);
-                \Locale::setDefault($locale);
+                if ($request->hasSession() && null !== $request->getSession()) {
+                    $request->getSession()->set('_locale', $locale);
+                }
+                Locale::setDefault($locale);
                 $langText = Intl::getLanguageBundle()->getLanguageName($locale);
                 $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $langText], 'zikula', $locale));
             }

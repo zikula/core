@@ -26,49 +26,42 @@ class CommonHelper
     /**
      * Constant value for core type groups.
      */
-    const GTYPE_CORE = 0;
+    public const GTYPE_CORE = 0;
 
     /**
      * Constant value for public type groups.
      */
-    const GTYPE_PUBLIC = 1;
+    public const GTYPE_PUBLIC = 1;
 
     /**
      * Constant value for private type groups.
      */
-    const GTYPE_PRIVATE = 2;
+    public const GTYPE_PRIVATE = 2;
 
     /**
      * Constant value for groups in the Closed state (not accepting members).
      */
-    const STATE_CLOSED = 0;
+    public const STATE_CLOSED = 0;
 
     /**
      * Constant value for groups in the Open state (accepting members).
      */
-    const STATE_OPEN = 1;
+    public const STATE_OPEN = 1;
 
-    /**
-     * Constructs an instance of this helper class.
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
     /**
-     * Return the standard set of labels for Group types.
-     *
-     * @staticvar array $gtypeLabels The array of standard group type labels.
-     *
-     * @return array An associative array of group type labels indexed by group type constants
+     * Return the standard set of labels for group types.
      */
-    public function gtypeLabels()
+    public function gtypeLabels(): array
     {
         static $gtypeLabels;
 
@@ -84,13 +77,9 @@ class CommonHelper
     }
 
     /**
-     * Return the standard set of labels for Group states.
-     *
-     * @staticvar array $stateLabels The array of standard state labels.
-     *
-     * @return array An associative array of state labels indexed by state constants
+     * Return the standard set of labels for group states.
      */
-    public function stateLabels()
+    public function stateLabels(): array
     {
         static $stateLabels;
 

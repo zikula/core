@@ -27,45 +27,28 @@ class TwigPreRenderEvent extends Event
      */
     protected $parameters;
 
-    /**
-     * TwigPreRenderEvent constructor.
-     * @param string $name
-     * @param array $parameters
-     */
-    public function __construct($name, array $parameters = [])
+    public function __construct(string $name, array $parameters = [])
     {
         $this->templateName = $name;
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->templateName;
     }
 
-    /**
-     * @return array
-     */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setTemplateName($name)
+    public function setTemplateName(string $name): void
     {
         $this->templateName = $name;
     }
 
-    /**
-     * @param array $parameters
-     */
-    public function setParameters($parameters)
+    public function setParameters(array $parameters = []): void
     {
         $this->parameters = $parameters;
     }

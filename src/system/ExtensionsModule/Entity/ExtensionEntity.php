@@ -92,112 +92,112 @@ class ExtensionEntity extends EntityAccess
      */
     private $coreCompatibility;
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }
 
-    public function setType($type)
+    public function setType(int $type): void
     {
         $this->type = $type;
     }
 
-    public function getDisplayname()
+    public function getDisplayname(): string
     {
         return $this->displayname;
     }
 
-    public function setDisplayname($displayname)
+    public function setDisplayname(string $displayname): void
     {
         $this->displayname = $displayname;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
-    public function setUrl($url)
+    public function setUrl(string $url): void
     {
         $this->url = $url;
     }
 
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }
 
-    public function setVersion($version)
+    public function setVersion(string $version): void
     {
         $this->version = $version;
     }
 
-    public function getCapabilities()
+    public function getCapabilities(): array
     {
         return $this->capabilities;
     }
 
-    public function setCapabilities($capabilities)
+    public function setCapabilities(array $capabilities): void
     {
         $this->capabilities = $capabilities;
     }
 
-    public function getState()
+    public function getState(): int
     {
         return $this->state;
     }
 
-    public function setState($state)
+    public function setState(int $state): void
     {
         $this->state = $state;
     }
 
-    public function getSecurityschema()
+    public function getSecurityschema(): array
     {
         return $this->securityschema;
     }
 
-    public function setSecurityschema($securityschema)
+    public function setSecurityschema(array $securityschema): void
     {
         $this->securityschema = $securityschema;
     }
 
-    public function getCoreCompatibility()
+    public function getCoreCompatibility(): string
     {
         return $this->coreCompatibility;
     }
 
-    public function setCoreCompatibility($coreCompatibility)
+    public function setCoreCompatibility(string $coreCompatibility): void
     {
         $this->coreCompatibility = $coreCompatibility;
     }

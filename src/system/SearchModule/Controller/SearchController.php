@@ -22,7 +22,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Api\ApiInterface\SearchApiInterface;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Entity\RepositoryInterface\SearchStatRepositoryInterface;
@@ -35,19 +34,14 @@ class SearchController extends AbstractController
      * @Route("/{page}", requirements={"page"="\d+"})
      * @Template("ZikulaSearchModule:Search:execute.html.twig")
      *
-     * @param Request $request
-     * @param SearchableModuleCollector $collector
-     * @param SearchApiInterface $searchApi
-     * @param PermissionApiInterface $permissionApi
-     * @param int $page
+     * @throws AccessDeniedException Thrown if the user doesn't have read access
      * @return array|Response
      */
     public function executeAction(
         Request $request,
         SearchableModuleCollector $collector,
         SearchApiInterface $searchApi,
-        PermissionApiInterface $permissionApi,
-        $page = -1
+        int $page = -1
     ) {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
@@ -77,7 +71,7 @@ class SearchController extends AbstractController
             if ($setActiveDefaults) {
                 $activeModules[$moduleName] = 1;
             }
-            if ($this->getVar('disable_' . $moduleName, false)) {
+            if ($this->getVar('disable_' . $moduleName)) {
                 continue;
             }
             if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
@@ -122,7 +116,7 @@ class SearchController extends AbstractController
 
         return [
             'noResultsFound' => $noResultsFound,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -130,47 +124,39 @@ class SearchController extends AbstractController
      * @Route("/recent")
      * @Template("ZikulaSearchModule:Search:recent.html.twig")
      *
-     * Display a list of recent searches
-     *
-     * @param Request $request
-     * @param SearchStatRepositoryInterface $searchStatRepository
-     *
-     * @return array
+     * Display a list of recent searches.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have read access
      */
-    public function recentAction(Request $request, SearchStatRepositoryInterface $searchStatRepository)
-    {
-        // security check
+    public function recentAction(
+        Request $request,
+        SearchStatRepositoryInterface $searchStatRepository
+    ): array {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        $startnum = $request->query->getInt('startnum', 0);
+        $startnum = $request->query->getInt('startnum');
         $itemsPerPage = $this->getVar('itemsperpage', 25);
         $items = $searchStatRepository->getStats([], ['date' => 'DESC'], $itemsPerPage, $startnum);
 
-        $templateParameters = [
+        return [
             'recentSearches' => $items,
             'pager' => [
                 'amountOfItems' => $searchStatRepository->countStats(),
                 'itemsPerPage'  => $itemsPerPage
             ]
         ];
-
-        return $templateParameters;
     }
 
     /**
      * @Route("/opensearch", options={"i18n"=false})
      *
-     * Generate xml for opensearch syndication
+     * Generate xml for opensearch syndication.
      *
-     * @param VariableApiInterface $variableApi
-     *
-     * @return PlainResponse Thrown if the user doesn't have read access to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have read access
      */
-    public function opensearchAction(VariableApiInterface $variableApi)
+    public function opensearchAction(VariableApiInterface $variableApi): PlainResponse
     {
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
@@ -180,9 +166,11 @@ class SearchController extends AbstractController
             'siteName' => $variableApi->getSystemVar('sitename', $variableApi->getSystemVar('sitename_en')),
             'slogan' => $variableApi->getSystemVar('slogan', $variableApi->getSystemVar('slogan_en')),
             'adminMail' => $variableApi->getSystemVar('adminmail'),
-            'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content', false)
+            'hasAdultContent' => $variableApi->get('ZikulaSearchModule', 'opensearch_adult_content')
         ];
 
-        return new PlainResponse($this->renderView('@ZikulaSearchModule/Search/opensearch.xml.twig', $templateParameters), Response::HTTP_OK, ['Content-Type' => 'text/xml']);
+        $output = $this->renderView('@ZikulaSearchModule/Search/opensearch.xml.twig', $templateParameters);
+
+        return new PlainResponse($output, Response::HTTP_OK, ['Content-Type' => 'text/xml']);
     }
 }

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Exception;
 
-class InvalidAuthenticationMethodLoginFormException extends \Exception
+use Exception;
+
+class InvalidAuthenticationMethodLoginFormException extends Exception
 {
-    /**
-     * InvalidAuthenticationMethodFormException constructor.
-     */
     public function __construct()
     {
+        parent::__construct();
         $this->message = 'Zikula Authentication Method login forms are required to contain a rememberme field.';
     }
 }

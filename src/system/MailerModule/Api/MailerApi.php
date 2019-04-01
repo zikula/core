@@ -15,6 +15,7 @@ namespace Zikula\MailerModule\Api;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use RuntimeException;
 use Swift_Attachment;
 use Swift_DependencyContainer;
 use Swift_Mailer;
@@ -30,10 +31,7 @@ use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\MailerModule\MailerEvents;
 
 /**
- * Class MailerApi.
- *
- * This class manages the sending of mails using SwiftMailer.
- * It should be used instead of the old sendmessage() method in user api.
+ * Mailer Api class managing the sending of mails using SwiftMailer.
  */
 class MailerApi implements MailerApiInterface
 {
@@ -69,19 +67,8 @@ class MailerApi implements MailerApiInterface
      */
     protected $dataValues;
 
-    /**
-     * MailerApi constructor.
-     *
-     * @param bool $installed Installed flag
-     * @param ZikulaHttpKernelInterface $kernel Kernel service instance
-     * @param TranslatorInterface $translator Translator service instance
-     * @param EventDispatcherInterface $eventDispatcher EventDispatcher service instance
-     * @param DynamicConfigDumper $configDumper Configuration dumper for retrieving SwiftMailer configuration parameters
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param Swift_Mailer $mailer
-     */
     public function __construct(
-        $installed,
+        bool $installed,
         ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
@@ -104,32 +91,24 @@ class MailerApi implements MailerApiInterface
         $this->dataValues = array_merge($mailerParams, $modVars);
     }
 
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator Translator service instance
-     */
-    public function setTranslator(/*TranslatorInterface */$translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendMessage(
         Swift_Message $message,
-        $subject = null,
-        $body = null,
-        $altBody = '',
-        $html = false,
+        string $subject = null,
+        string $body = null,
+        string $altBody = '',
+        bool $html = false,
         array $headers = [],
         array $attachments = [],
         array $stringAttachments = [],
         array $embeddedImages = []
-    ) {
+    ): bool {
         if (!$this->installed) {
-            return;
+            return false;
         }
 
         $this->message = $message;
@@ -156,23 +135,21 @@ class MailerApi implements MailerApiInterface
         // add message subject
         if (isset($subject)) {
             $this->message->setSubject($subject);
-        } else {
-            if ('' === $message->getSubject() || null === $message->getSubject()) {
-                throw new \RuntimeException('There is no subject set.');
-            }
+        }
+        if (empty($message->getSubject())) {
+            throw new RuntimeException('There is no subject set.');
         }
 
         // add body with formatting
         $bodyFormat = 'text/plain';
-        if (!empty($altBody) || ((bool)$html) || $this->dataValues['html']) {
+        if (!empty($altBody) || $html || $this->dataValues['html']) {
             $bodyFormat = 'text/html';
         }
         if (isset($body)) {
             $this->message->setBody($body);
-        } else {
-            if ('' === $message->getBody() || null === $message->getBody()) {
-                throw new \RuntimeException('There is no message body set.');
-            }
+        }
+        if (empty($message->getBody())) {
+            throw new RuntimeException('There is no message body set.');
         }
 
         $this->message->setContentType($bodyFormat);
@@ -203,7 +180,7 @@ class MailerApi implements MailerApiInterface
     /**
      * Defines technical parameters for the current message.
      */
-    private function setTechnicalParameters()
+    private function setTechnicalParameters(): void
     {
         $this->message->setCharset($this->dataValues['charset']);
         $this->message->setMaxLineLength($this->dataValues['wordwrap']);
@@ -222,10 +199,8 @@ class MailerApi implements MailerApiInterface
 
     /**
      * Adds given attachments to the current message object.
-     *
-     * @param array $attachments List of attachments to add
      */
-    private function addAttachments(array $attachments)
+    private function addAttachments(array $attachments = []): void
     {
         foreach ($attachments as $attachment) {
             if (is_array($attachment)) {
@@ -242,10 +217,8 @@ class MailerApi implements MailerApiInterface
 
     /**
      * Adds given string attachments to the current message object.
-     *
-     * @param array $attachments List of string attachments to add
      */
-    private function addStringAttachments(array $attachments)
+    private function addStringAttachments(array $attachments = []): void
     {
         foreach ($attachments as $attachment) {
             if (is_array($attachment) && 4 === count($attachment)) {
@@ -256,10 +229,8 @@ class MailerApi implements MailerApiInterface
 
     /**
      * Adds given embedded images to the current message object.
-     *
-     * @param array $embeddedImages List of embedded images to add
      */
-    private function addEmbeddedImages(array $embeddedImages)
+    private function addEmbeddedImages(array $embeddedImages = []): void
     {
         foreach ($embeddedImages as $embeddedImage) {
             $this->message->attach(Swift_Attachment::fromPath($embeddedImage['path'], $embeddedImage['type'])->setFilename($embeddedImage['name']));
@@ -268,10 +239,8 @@ class MailerApi implements MailerApiInterface
 
     /**
      * Does the actual sending of the current message.
-     *
-     * @return bool true if successful
      */
-    private function performSending()
+    private function performSending(): bool
     {
         $logFile = $this->kernel->getLogDir() . '/mailer.log';
         $event = new GenericEvent($this->message);
@@ -291,7 +260,7 @@ class MailerApi implements MailerApiInterface
 
             $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_FAILURE, $event);
 
-            //throw new \RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
+            //throw new RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
 
             return false;
         }

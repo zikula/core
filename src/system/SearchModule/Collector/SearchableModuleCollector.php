@@ -26,11 +26,9 @@ class SearchableModuleCollector
     private $searchableModules = [];
 
     /**
-     * Constructor.
-     *
      * @param SearchableInterface[] $searchables
      */
-    public function __construct(iterable $searchables)
+    public function __construct(iterable $searchables = [])
     {
         foreach ($searchables as $searchable) {
             $this->add($searchable);
@@ -39,40 +37,27 @@ class SearchableModuleCollector
 
     /**
      * Add a service to the collection.
-     *
-     * @param SearchableInterface $searchable
      */
-    public function add(SearchableInterface $searchable)
+    public function add(SearchableInterface $searchable): void
     {
         $this->searchableModules[$searchable->getBundleName()] = $searchable;
     }
 
     /**
-     * Get a SearchableInterface from the collection by moduleName.
-     *
-     * @param $moduleName
-     * @return SearchableInterface|null
+     * Get a SearchableInterface from the collection by module name.
      */
-    public function get($moduleName)
+    public function get(string $moduleName): ?SearchableInterface
     {
-        return isset($this->searchableModules[$moduleName]) ? $this->searchableModules[$moduleName] : null;
+        return $this->searchableModules[$moduleName] ?? null;
     }
 
     /**
-     * Get all the searchableModules in the collection.
+     * Get all the searchable modules in the collection.
      *
      * @return SearchableInterface[]
      */
-    public function getAll()
+    public function getAll(): iterable
     {
         return $this->searchableModules;
-    }
-
-    /**
-     * @return array of service aliases
-     */
-    public function getKeys()
-    {
-        return array_keys($this->searchableModules);
     }
 }

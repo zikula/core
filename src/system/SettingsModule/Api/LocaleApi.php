@@ -37,40 +37,36 @@ class LocaleApi implements LocaleApiInterface
      */
     protected $requestStack;
 
-    /**
-     * LocaleApi constructor.
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param RequestStack $requestStack
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel, RequestStack $requestStack)
     {
         $this->kernel = $kernel;
+        $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedLocales()
+    public function getSupportedLocales(): array
     {
-        if (empty($this->supportedLocales)) {
-            $this->supportedLocales[] = 'en';
-            $finder = new Finder();
-            $translationPath = $this->kernel->getRootDir() . '/Resources/translations';
-            if (is_dir($translationPath)) {
-                $files = $finder->files()
-                    ->in([$translationPath])
-                    ->depth(0)
-                    ->name('*.po')
-                    ->notName('*.template.*');
-                foreach ($files as $file) {
-                    $fileName = $file->getBasename('.po');
-                    if (false === mb_strpos($fileName, '.')) {
-                        continue;
-                    }
-                    list(, $locale) = explode('.', $fileName);
-                    if (!in_array($locale, $this->supportedLocales)) {
-                        $this->supportedLocales[] = $locale;
-                    }
+        if (!empty($this->supportedLocales)) {
+            return $this->supportedLocales;
+        }
+
+        $this->supportedLocales[] = 'en';
+        $finder = new Finder();
+        $translationPath = $this->kernel->getProjectDir() . '/app/Resources/translations';
+        if (is_dir($translationPath)) {
+            $files = $finder->files()
+                ->in([$translationPath])
+                ->depth(0)
+                ->name('*.po')
+                ->notName('*.template.*')
+            ;
+            foreach ($files as $file) {
+                $fileName = $file->getBasename('.po');
+                if (false === mb_strpos($fileName, '.')) {
+                    continue;
+                }
+                list(, $locale) = explode('.', $fileName);
+                if (!in_array($locale, $this->supportedLocales, true)) {
+                    $this->supportedLocales[] = $locale;
                 }
             }
         }
@@ -78,10 +74,7 @@ class LocaleApi implements LocaleApiInterface
         return $this->supportedLocales;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedLocaleNames($region = null, $displayLocale = null)
+    public function getSupportedLocaleNames(string $region = null, string $displayLocale = null): array
     {
         $locales = $this->getSupportedLocales();
         $namedLocales = [];
@@ -92,15 +85,12 @@ class LocaleApi implements LocaleApiInterface
         return $namedLocales;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBrowserLocale($default = 'en')
+    public function getBrowserLocale(string $default = 'en'): string
     {
         $request = null !== $this->requestStack ? $this->requestStack->getCurrentRequest() : null;
 
         // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
-        if (null === $request || !$request->server->has('HTTP_ACCEPT_LANGUAGE') || 'cli' === php_sapi_name()) {
+        if (null === $request || 'cli' === PHP_SAPI || !$request->server->has('HTTP_ACCEPT_LANGUAGE')) {
             return $default;
         }
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', mb_strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);

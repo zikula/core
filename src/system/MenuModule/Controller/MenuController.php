@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\MenuModule\Entity\MenuItemEntity;
+use Zikula\MenuModule\Entity\Repository\MenuItemRepository;
 use Zikula\MenuModule\Form\Type\DeleteMenuItemType;
 use Zikula\MenuModule\Form\Type\MenuItemType;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -32,25 +33,27 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  */
 class MenuController extends AbstractController
 {
+    /**
+     * @var string
+     */
     private $domTreeNodePrefix = 'node_';
 
     /**
      * @Route("/list")
      * @Template("ZikulaMenuModule:Menu:list.html.twig")
      * @Theme("admin")
-     * @param Request $request
-     * @return array
+     *
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
-    public function listAction(Request $request)
-    {
+    public function listAction(
+        MenuItemRepository $menuItemRepository
+    ): array {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
-        $rootNodes = $repo->getRootNodes();
 
         return [
-            'rootNodes' => $rootNodes
+            'rootNodes' => $menuItemRepository->getRootNodes()
         ];
     }
 
@@ -58,18 +61,19 @@ class MenuController extends AbstractController
      * @Route("/view/{id}")
      * @Template("ZikulaMenuModule:Menu:view.html.twig")
      * @Theme("admin")
-     * @param MenuItemEntity $menuItemEntity
-     * @return array
+     *
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
-    public function viewAction(MenuItemEntity $menuItemEntity)
-    {
+    public function viewAction(
+        MenuItemRepository $menuItemRepository,
+        MenuItemEntity $menuItemEntity
+    ): array {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN) || null !== $menuItemEntity->getParent()) {
             throw new AccessDeniedException();
         }
-        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
-        $htmlTree = $repo->childrenHierarchy(
+        $htmlTree = $menuItemRepository->childrenHierarchy(
             $menuItemEntity, /* node to start from */
             false, /* false: load all children, true: only direct */
             [
@@ -78,7 +82,7 @@ class MenuController extends AbstractController
                 'childOpen' => function($node) {
                     return '<li class="jstree-open" id="' . $this->domTreeNodePrefix . $node['id'] . '">';
                 },
-                'nodeDecorator' => function($node) {
+                'nodeDecorator' => static function($node) {
                     return '<a href="#">' . $node['title'] . ' (' . $node['id'] . ')</a>';
                 }
             ]
@@ -93,16 +97,18 @@ class MenuController extends AbstractController
     /**
      * @Route("/edit/{id}", defaults={"id" = null})
      * @Theme("admin")
-     * @param Request $request
-     * @param MenuItemEntity|null $menuItemEntity
-     * @return Response|RedirectResponse
+     *
+     * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
-    public function editAction(Request $request, MenuItemEntity $menuItemEntity = null)
-    {
+    public function editAction(
+        Request $request,
+        MenuItemRepository $menuItemRepository,
+        MenuItemEntity $menuItemEntity = null
+    ): Response {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
+
         if (!isset($menuItemEntity)) {
             $menuItemEntity = new MenuItemEntity();
         }
@@ -124,14 +130,14 @@ class MenuController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() && $form->get('save')->isClicked()) {
             $menuItemEntity = $form->getData();
-            $repo->persistAsFirstChild($menuItemEntity);
+            $menuItemRepository->persistAsFirstChild($menuItemEntity);
             if (null === $menuItemEntity->getId()) {
                 // create dummy child
                 $dummy = new MenuItemEntity();
                 $dummy->setTitle('dummy child');
-                $repo->persistAsFirstChildOf($dummy, $menuItemEntity);
+                $menuItemRepository->persistAsFirstChildOf($dummy, $menuItemEntity);
             }
-            $this->get('doctrine')->getManager()->flush();
+            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('zikulamenumodule_menu_list');
         }
@@ -150,8 +156,7 @@ class MenuController extends AbstractController
      * @Route("/delete/{id}")
      * @Template("ZikulaMenuModule:Menu:delete.html.twig")
      * @Theme("admin")
-     * @param Request $request
-     * @param MenuItemEntity|null $menuItemEntity
+     *
      * @return array|RedirectResponse
      */
     public function deleteAction(Request $request, MenuItemEntity $menuItemEntity)
@@ -165,8 +170,8 @@ class MenuController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->get('delete')->isClicked()) {
             $menuItemEntity = $form->get('entity')->getData();
-            $this->get('doctrine')->getManager()->remove($menuItemEntity);
-            $this->get('doctrine')->getManager()->flush();
+            $this->getDoctrine()->getManager()->remove($menuItemEntity);
+            $this->getDoctrine()->getManager()->flush();
             $this->addFlash('status', $this->__('Menu removed!'));
 
             return $this->redirectToRoute('zikulamenumodule_menu_list');

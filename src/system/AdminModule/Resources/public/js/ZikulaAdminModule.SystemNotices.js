@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         // Toggle developer notices
         $(document).on('click', '#z-developernotices strong', function(e) {

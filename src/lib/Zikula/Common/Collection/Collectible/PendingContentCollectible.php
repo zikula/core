@@ -35,7 +35,7 @@ class PendingContentCollectible
     /**
      * Number of pending items.
      *
-     * @var integer
+     * @var int
      */
     protected $number;
 
@@ -53,70 +53,36 @@ class PendingContentCollectible
      */
     protected $args;
 
-    /**
-     * Constructor.
-     *
-     * @param string  $type        Type of collectible item
-     * @param string  $description Description of aggregate
-     * @param integer $number      Number of items in aggregate
-     * @param string  $route       Route id (to view action)
-     * @param array   $args        Arguments for method
-     */
-    public function __construct($type, $description, $number, $route, array $args = [])
+    public function __construct(string $type, string $description, int $number, string $route, array $args = [])
     {
-        $this->type = (string)$type;
-        $this->description = (string)$description;
-        $this->number = (int)$number;
-        $this->route = (string)$route;
+        $this->type = $type;
+        $this->description = $description;
+        $this->number = $number;
+        $this->route = $route;
         $this->args = $args;
     }
 
-    /**
-     * Get type.
-     *
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * Get description.
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * Get number.
-     *
-     * @return integer
-     */
-    public function getNumber()
+    public function getNumber(): int
     {
         return $this->number;
     }
 
-    /**
-     * Get route.
-     *
-     * @return string
-     */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
 
-    /**
-     * Get method call args.
-     *
-     * @return array
-     */
-    public function getArgs()
+    public function getArgs(): array
     {
         return $this->args;
     }

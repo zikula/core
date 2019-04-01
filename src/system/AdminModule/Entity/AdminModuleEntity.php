@@ -64,82 +64,42 @@ class AdminModuleEntity extends EntityAccess
         $this->sortorder = 0;
     }
 
-    /**
-     * get the id of the module/category association
-     *
-     * @return integer the module/category association id
-     */
-    public function getAmid()
+    public function getAmid(): int
     {
         return $this->amid;
     }
 
-    /**
-     * set the id for the module/category association
-     *
-     * @param integer $amid the module/category association id
-     */
-    public function setAmid($amid)
+    public function setAmid(int $amid): void
     {
         $this->amid = $amid;
     }
 
-    /**
-     * get the id of the module
-     *
-     * @return integer the module id
-     */
-    public function getMid()
+    public function getMid(): int
     {
         return $this->mid;
     }
 
-    /**
-     * set the id for the module
-     *
-     * @param integer $mid the module id
-     */
-    public function setMid($mid)
+    public function setMid(int $mid): void
     {
         $this->mid = $mid;
     }
 
-    /**
-     * get the id of the category
-     *
-     * @return integer the category id
-     */
-    public function getCid()
+    public function getCid(): int
     {
         return $this->cid;
     }
 
-    /**
-     * set the id for the category
-     *
-     * @param integer $cid the category id
-     */
-    public function setCid($cid)
+    public function setCid(int $cid): void
     {
         $this->cid = $cid;
     }
 
-    /**
-     * get the sortorder of the module/category association
-     *
-     * @return integer the module/category association sortorder
-     */
-    public function getSortorder()
+    public function getSortorder(): int
     {
         return $this->sortorder;
     }
 
-    /**
-     * set the sortorder for the module/category association
-     *
-     * @param integer $sortorder the module/category association sortorder
-     */
-    public function setSortorder($sortorder)
+    public function setSortorder(int $sortorder): void
     {
         $this->sortorder = $sortorder;
     }

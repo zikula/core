@@ -21,12 +21,9 @@ use Zikula\SearchModule\SearchableInterface;
 
 class ZikulaSearchExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(realpath(__DIR__ . '/../Resources/config')));
+        $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yml');
 
         $container->registerForAutoconfiguration(SearchableInterface::class)

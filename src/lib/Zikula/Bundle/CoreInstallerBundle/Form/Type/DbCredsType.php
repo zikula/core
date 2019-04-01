@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use PDO;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -95,23 +96,23 @@ class DbCredsType extends AbstractType
         return 'dbcreds';
     }
 
-    private function getDbTypes()
+    private function getDbTypes(): array
     {
-        $availableDrivers = \PDO::getAvailableDrivers();
+        $availableDrivers = PDO::getAvailableDrivers();
 
         $types = [];
-        if (in_array('mysql', $availableDrivers)) {
+        if (in_array('mysql', $availableDrivers, true)) {
             $types['MySQL'] = 'mysql';
         }
-        if (in_array('sqlsrv', $availableDrivers)) {
+        if (in_array('sqlsrv', $availableDrivers, true)) {
             $types['MSSQL (alpha)'] = 'sqlsrv';
         }
-        if (in_array('oci8', $availableDrivers)) {
+        if (in_array('oci8', $availableDrivers, true)) {
             $types['Oracle (alpha) via OCI8 driver'] = 'oci8';
-        } elseif (in_array('oci', $availableDrivers)) {
+        } elseif (in_array('oci', $availableDrivers, true)) {
             $types['Oracle (alpha) via Oracle driver'] = 'oracle';
         }
-        if (in_array('pgsql', $availableDrivers)) {
+        if (in_array('pgsql', $availableDrivers, true)) {
             $types['PostgreSQL'] = 'pgsql';
         }
 

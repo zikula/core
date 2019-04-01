@@ -23,10 +23,6 @@ class AdminHeaderFunction
      */
     private $handler;
 
-    /**
-     * AdminHeaderFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -34,19 +30,14 @@ class AdminHeaderFunction
 
     /**
      * Inserts admin header.
-     *
      * This has NO configuration options.
      *
-     * Examples:
-     *
-     * <samp>{{ adminHeader() }}</samp>
-     *
-     * @return string
+     * Example: {{ adminHeader() }}
      */
-    public function display()
+    public function display(): string
     {
         $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:header');
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

@@ -13,29 +13,31 @@ declare(strict_types=1);
 
 namespace Zikula\Component\SortableColumns\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 
-class SortableColumnsTest extends \PHPUnit\Framework\TestCase
+class SortableColumnsTest extends TestCase
 {
     /**
      * @var SortableColumns
      */
     private $sortableColumns;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $router = $this
-            ->getMockBuilder('Symfony\Component\Routing\RouterInterface')
+            ->getMockBuilder(RouterInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $router
             ->method('generate')
-            ->will($this->returnCallback(function($id, $params) {
+            ->willReturnCallback(static function ($id, $params) {
                 return '/foo?' . http_build_query($params);
-            }));
+            });
 
         $this->sortableColumns = new SortableColumns($router, 'foo');
         $this->sortableColumns->addColumn(new Column('a'));
@@ -46,17 +48,17 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::getColumn
      */
-    public function testGetColumn()
+    public function testGetColumn(): void
     {
         $a = $this->sortableColumns->getColumn('a');
-        $this->assertInstanceOf('Zikula\Component\SortableColumns\Column', $a);
+        $this->assertInstanceOf(Column::class, $a);
         $this->assertEquals('a', $a->getName());
     }
 
     /**
      * @covers SortableColumns::addColumn
      */
-    public function testAddColumn()
+    public function testAddColumn(): void
     {
         $d = new Column('d');
         $this->sortableColumns->addColumn($d);
@@ -66,7 +68,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::addColumns
      */
-    public function testAddColumns()
+    public function testAddColumns(): void
     {
         $e = new Column('e');
         $f = new Column('f');
@@ -80,7 +82,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::getDefaultColumn
      */
-    public function testGetDefaultColumn()
+    public function testGetDefaultColumn(): void
     {
         $a = $this->sortableColumns->getColumn('a');
         $b = $this->sortableColumns->getColumn('b');
@@ -91,7 +93,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::removeColumn
      */
-    public function testRemoveColumn()
+    public function testRemoveColumn(): void
     {
         $this->sortableColumns->removeColumn('b');
         $this->assertNull($this->sortableColumns->getColumn('b'));
@@ -100,7 +102,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::getSortDirection
      */
-    public function testGetSortDirection()
+    public function testGetSortDirection(): void
     {
         $this->assertEquals(Column::DIRECTION_ASCENDING, $this->sortableColumns->getSortDirection());
     }
@@ -108,7 +110,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::getSortColumn
      */
-    public function testGetSortColumn()
+    public function testGetSortColumn(): void
     {
         $a = $this->sortableColumns->getColumn('a');
         $this->assertEquals($a, $this->sortableColumns->getSortColumn());
@@ -117,7 +119,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::setOrderBy
      */
-    public function testSetOrderBy()
+    public function testSetOrderBy(): void
     {
         $c = $this->sortableColumns->getColumn('c');
         $this->sortableColumns->setOrderBy($c, Column::DIRECTION_DESCENDING);
@@ -128,7 +130,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers SortableColumns::setOrderByFromRequest
      */
-    public function testSetOrderByFromRequest()
+    public function testSetOrderByFromRequest(): void
     {
         $request = new Request([
             'sort-field' => 'b',
@@ -144,7 +146,7 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
      * @covers SortableColumns::setAdditionalUrlParameters
      * @covers SortableColumns::getAdditionalUrlParameters
      */
-    public function testAdditionalUrlParameters()
+    public function testAdditionalUrlParameters(): void
     {
         $this->sortableColumns->setAdditionalUrlParameters(['x' => 1, 'z' => 0]);
         $this->assertEquals(['x' => 1, 'z' => 0], $this->sortableColumns->getAdditionalUrlParameters());
@@ -153,9 +155,8 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider columnDefProvider
      * @covers SortableColumns::generateSortableColumns
-     * @param $columnDef
      */
-    public function testGenerateSortableColumns($col, $dir, $columnDef)
+    public function testGenerateSortableColumns(string $col, string $dir, array $columnDef = []): void
     {
         $this->sortableColumns->setOrderBy($this->sortableColumns->getColumn($col), $dir);
         $this->assertEquals($columnDef, $this->sortableColumns->generateSortableColumns());
@@ -165,20 +166,20 @@ class SortableColumnsTest extends \PHPUnit\Framework\TestCase
      * @covers SortableColumns::generateSortableColumns
      * @covers SortableColumns::setAdditionalUrlParameters
      */
-    public function testGenerateSortableColumnsWithAdditionalUrlParameters()
+    public function testGenerateSortableColumnsWithAdditionalUrlParameters(): void
     {
         $expected = [
-                'a' => ['url' => '/foo?x=1&z=0&sort-direction=' . Column::DIRECTION_DESCENDING . '&sort-field=a', 'class' => Column::CSS_CLASS_ASCENDING],
-                'b' => ['url' => '/foo?x=1&z=0&sort-direction=' . Column::DIRECTION_ASCENDING . '&sort-field=b', 'class' => Column::CSS_CLASS_UNSORTED],
-                'c' => ['url' => '/foo?x=1&z=0&sort-direction=' . Column::DIRECTION_ASCENDING . '&sort-field=c', 'class' => Column::CSS_CLASS_UNSORTED],
-            ];
+            'a' => ['url' => '/foo?x=1&z=0&sort-direction=' . Column::DIRECTION_DESCENDING . '&sort-field=a', 'class' => Column::CSS_CLASS_ASCENDING],
+            'b' => ['url' => '/foo?x=1&z=0&sort-direction=' . Column::DIRECTION_ASCENDING . '&sort-field=b', 'class' => Column::CSS_CLASS_UNSORTED],
+            'c' => ['url' => '/foo?x=1&z=0&sort-direction=' . Column::DIRECTION_ASCENDING . '&sort-field=c', 'class' => Column::CSS_CLASS_UNSORTED],
+        ];
 
         $this->sortableColumns->setOrderBy($this->sortableColumns->getColumn('a'), Column::DIRECTION_ASCENDING);
         $this->sortableColumns->setAdditionalUrlParameters(['x' => 1, 'z' => 0]);
         $this->assertEquals($expected, $this->sortableColumns->generateSortableColumns());
     }
 
-    public function columnDefProvider()
+    public function columnDefProvider(): array
     {
         return [
             [null, '',

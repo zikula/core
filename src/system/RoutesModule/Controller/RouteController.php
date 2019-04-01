@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -12,13 +15,10 @@
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AbstractRouteController;
-
-use RuntimeException;
-
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -35,7 +35,6 @@ use Zikula\RoutesModule\Helper\WorkflowHelper;
 class RouteController extends AbstractRouteController
 {
     /**
-     * @inheritDoc
      *
      * @Route("/admin/routes",
      *        methods = {"GET"}
@@ -45,12 +44,11 @@ class RouteController extends AbstractRouteController
     public function adminIndexAction(
         Request $request,
         PermissionHelper $permissionHelper
-    ) {
+    ): Response {
         return $this->indexInternal($request, $permissionHelper, true);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/routes",
      *        methods = {"GET"}
@@ -59,12 +57,11 @@ class RouteController extends AbstractRouteController
     public function indexAction(
         Request $request,
         PermissionHelper $permissionHelper
-    ) {
+    ): Response {
         return $this->indexInternal($request, $permissionHelper, false);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/admin/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
@@ -78,16 +75,15 @@ class RouteController extends AbstractRouteController
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
-        $sort,
-        $sortdir,
-        $pos,
-        $num
-    ) {
+        string $sort,
+        string $sortdir,
+        int $pos,
+        int $num
+    ): Response {
         return $this->viewInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $sort, $sortdir, $pos, $num, true);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/routes/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
      *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
@@ -100,16 +96,15 @@ class RouteController extends AbstractRouteController
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
-        $sort,
-        $sortdir,
-        $pos,
-        $num
-    ) {
+        string $sort,
+        string $sortdir,
+        int $pos,
+        int $num
+    ): Response {
         return $this->viewInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $sort, $sortdir, $pos, $num, false);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/admin/route/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -124,13 +119,13 @@ class RouteController extends AbstractRouteController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EntityFactory $entityFactory,
-        $id
-    ) {
-        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $id, true);
+        RouteEntity $route = null,
+        int $id = 0
+    ): Response {
+        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $route, $id, true);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/route/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -144,13 +139,13 @@ class RouteController extends AbstractRouteController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EntityFactory $entityFactory,
-        $id
-    ) {
-        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $id, false);
+        RouteEntity $route = null,
+        int $id = 0
+    ): Response {
+        return $this->displayInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $route, $id, false);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/admin/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -165,12 +160,11 @@ class RouteController extends AbstractRouteController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EditHandler $formHandler
-    ) {
+    ): Response {
         return $this->editInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $formHandler, true);
     }
     
     /**
-     * @inheritDoc
      *
      * @Route("/route/edit/{id}.{_format}",
      *        requirements = {"id" = "\d+", "_format" = "html"},
@@ -184,56 +178,13 @@ class RouteController extends AbstractRouteController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EditHandler $formHandler
-    ) {
+    ): Response {
         return $this->editInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $formHandler, false);
     }
     
     /**
-     * @inheritDoc
+     * Process status changes for multiple items.
      *
-     * @Route("/admin/route/delete/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"_format" = "html"},
-     *        methods = {"GET", "POST"}
-     * )
-     * @Theme("admin")
-     */
-    public function adminDeleteAction(
-        Request $request,
-        PermissionHelper $permissionHelper,
-        ControllerHelper $controllerHelper,
-        ViewHelper $viewHelper,
-        EntityFactory $entityFactory,
-        CurrentUserApiInterface $currentUserApi,
-        WorkflowHelper $workflowHelper,
-        $id
-    ) {
-        return $this->deleteInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $currentUserApi, $workflowHelper, $id, true);
-    }
-    
-    /**
-     * @inheritDoc
-     *
-     * @Route("/route/delete/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
-     *        defaults = {"_format" = "html"},
-     *        methods = {"GET", "POST"}
-     * )
-     */
-    public function deleteAction(
-        Request $request,
-        PermissionHelper $permissionHelper,
-        ControllerHelper $controllerHelper,
-        ViewHelper $viewHelper,
-        EntityFactory $entityFactory,
-        CurrentUserApiInterface $currentUserApi,
-        WorkflowHelper $workflowHelper,
-        $id
-    ) {
-        return $this->deleteInternal($request, $permissionHelper, $controllerHelper, $viewHelper, $entityFactory, $currentUserApi, $workflowHelper, $id, false);
-    }
-    
-    /**
      * @inheritDoc
      * @Route("/admin/routes/handleSelectedEntries",
      *        methods = {"POST"}
@@ -245,11 +196,13 @@ class RouteController extends AbstractRouteController
         EntityFactory $entityFactory,
         WorkflowHelper $workflowHelper,
         CurrentUserApiInterface $currentUserApi
-    ) {
+    ): RedirectResponse {
         return $this->handleSelectedEntriesActionInternal($request, $entityFactory, $workflowHelper, $currentUserApi, true);
     }
     
     /**
+     * Process status changes for multiple items.
+     *
      * @inheritDoc
      * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
@@ -260,7 +213,7 @@ class RouteController extends AbstractRouteController
         EntityFactory $entityFactory,
         WorkflowHelper $workflowHelper,
         CurrentUserApiInterface $currentUserApi
-    ) {
+    ): RedirectResponse {
         return $this->handleSelectedEntriesActionInternal($request, $entityFactory, $workflowHelper, $currentUserApi, false);
     }
     

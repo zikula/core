@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
@@ -29,25 +29,22 @@ class ModuleListener implements EventSubscriberInterface
     private $variableApi;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    /**
-     * ModuleListener constructor.
-     * @param VariableApiInterface $variableApi
-     * @param SessionInterface $session
-     * @param TranslatorInterface $translator
-     */
-    public function __construct(VariableApiInterface $variableApi, SessionInterface $session, TranslatorInterface $translator)
-    {
+    public function __construct(
+        VariableApiInterface $variableApi,
+        RequestStack $requestStack,
+        TranslatorInterface $translator
+    ) {
         $this->variableApi = $variableApi;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->translator = $translator;
     }
 
@@ -59,24 +56,23 @@ class ModuleListener implements EventSubscriberInterface
     }
 
     /**
-     * Handle module deactivated event CoreEvents::MODULE_DISABLE.
-     *
-     * @param ModuleStateEvent $event
-     *
-     * @return void
+     * Handle module deactivated event.
      */
-    public function moduleDeactivated(ModuleStateEvent $event)
+    public function moduleDeactivated(ModuleStateEvent $event): void
     {
         $module = $event->getModule();
-        $moduleName = isset($module) ? $event->getModule()->getName() : $event->getModInfo()['name'];
+        $moduleName = isset($module) ? $module->getName() : $event->getModInfo()['name'];
         $startController = $this->variableApi->getSystemVar('startController');
         list($startModule) = explode(':', $startController);
 
         if ($moduleName === $startModule) {
             // since the start module has been removed, set all related variables to ''
-            $this->variableApi->set(VariableApi::CONFIG, 'startController', '');
-            $this->variableApi->set(VariableApi::CONFIG, 'startargs', '');
-            $this->session->getFlashBag()->add('info', $this->translator->__('The startController was reset to a static frontpage.'));
+            $this->variableApi->set(VariableApi::CONFIG, 'startController');
+            $this->variableApi->set(VariableApi::CONFIG, 'startargs');
+            $request = $this->requestStack->getCurrentRequest();
+            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+                $request->getSession()->getFlashBag()->add('info', $this->translator->__('The startController was reset to a static frontpage.'));
+            }
         }
     }
 }

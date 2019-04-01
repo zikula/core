@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -25,8 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\RoutesModule\RoutesEvents;
-use Zikula\RoutesModule\Event\FilterRouteEvent;
+use Zikula\UsersModule\Api\CurrentUserApi;
 
 /**
  * Event subscriber base class for entity lifecycle events.
@@ -45,13 +47,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      */
     protected $logger;
 
-    /**
-     * EntityLifecycleListener constructor.
-     *
-     * @param ContainerInterface $container
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         ContainerInterface $container,
         EventDispatcherInterface $eventDispatcher,
@@ -87,10 +82,8 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * The preFlush event is called at EntityManager#flush() before anything else.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#preflush
-     *
-     * @param PreFlushEventArgs $args Event arguments
      */
-    public function preFlush(PreFlushEventArgs $args)
+    public function preFlush(PreFlushEventArgs $args): void
     {
     }
 
@@ -99,10 +92,8 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * managed entities and their associations have been computed.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#onflush
-     *
-     * @param OnFlushEventArgs $args Event arguments
      */
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
     }
 
@@ -110,10 +101,8 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * The postFlush event is called at the end of EntityManager#flush().
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#postflush
-     *
-     * @param PostFlushEventArgs $args Event arguments
      */
-    public function postFlush(PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args): void
     {
     }
 
@@ -122,11 +111,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * remove operation for that entity is executed. It is not called for a DQL DELETE statement.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#preremove
-     *
-     * @param LifecycleEventArgs $args Event arguments
      */
-    public function preRemove(LifecycleEventArgs $args)
+    public function preRemove(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -135,9 +123,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
         $this->eventDispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_REMOVE'), $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
     }
 
     /**
@@ -149,11 +134,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * In this case, you should load yourself the proxy in the associated pre event.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#postupdate-postremove-postpersist
-     *
-     * @param LifecycleEventArgs $args Event arguments
      */
-    public function postRemove(LifecycleEventArgs $args)
+    public function postRemove(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -179,11 +163,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * This includes modifications to collections such as additions, removals or replacement.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#prepersist
-     *
-     * @param LifecycleEventArgs $args Event arguments
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -192,9 +175,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
         $this->eventDispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_PERSIST'), $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
     }
 
     /**
@@ -203,11 +183,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * are available in the postPersist event.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#postupdate-postremove-postpersist
-     *
-     * @param LifecycleEventArgs $args Event arguments
      */
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -227,11 +206,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * It is not called for a DQL UPDATE statement nor when the computed changeset is empty.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#preupdate
-     *
-     * @param PreUpdateEventArgs $args Event arguments
      */
-    public function preUpdate(PreUpdateEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -240,9 +218,6 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
         $this->eventDispatcher->dispatch(constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_UPDATE'), $event);
-        if ($event->isPropagationStopped()) {
-            return false;
-        }
     }
 
     /**
@@ -250,11 +225,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * It is not called for a DQL UPDATE statement.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#postupdate-postremove-postpersist
-     *
-     * @param LifecycleEventArgs $args Event arguments
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function postUpdate(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -279,11 +253,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * and postLoad event handlers.
      *
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/events.html#postload
-     *
-     * @param LifecycleEventArgs $args Event arguments
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(LifecycleEventArgs $args): void
     {
+        /** @var EntityAccess $entity */
         $entity = $args->getObject();
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
@@ -298,33 +271,26 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
      * Checks whether this listener is responsible for the given entity or not.
      *
      * @param EntityAccess $entity The given entity
-     *
-     * @return boolean True if entity is managed by this listener, false otherwise
      */
-    protected function isEntityManagedByThisBundle($entity)
+    protected function isEntityManagedByThisBundle($entity): bool
     {
         $entityClassParts = explode('\\', get_class($entity));
 
-        if ('DoctrineProxy' == $entityClassParts[0] && '__CG__' == $entityClassParts[1]) {
+        if ('DoctrineProxy' === $entityClassParts[0] && '__CG__' === $entityClassParts[1]) {
             array_shift($entityClassParts);
             array_shift($entityClassParts);
         }
 
-        return ('Zikula' == $entityClassParts[0] && 'RoutesModule' == $entityClassParts[1]);
+        return 'Zikula' === $entityClassParts[0] && 'RoutesModule' === $entityClassParts[1];
     }
 
     /**
      * Returns a filter event instance for the given entity.
-     *
-     * @param EntityAccess $entity The given entity
-     *
-     * @return Event The created event instance
      */
-    protected function createFilterEvent($entity)
+    protected function createFilterEvent(EntityAccess $entity): Event
     {
         $filterEventClass = '\\Zikula\\RoutesModule\\Event\\Filter' . ucfirst($entity->get_objectType()) . 'Event';
-        $event = new $filterEventClass($entity);
 
-        return $event;
+        return new $filterEventClass($entity);
     }
 }

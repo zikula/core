@@ -36,15 +36,8 @@ class AdminCreatedUserType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @var VariableApiInterface
-     */
     private $variableApi;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         VariableApiInterface $variableApi
@@ -53,17 +46,11 @@ class AdminCreatedUserType extends AbstractType
         $this->variableApi = $variableApi;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -156,17 +143,11 @@ class AdminCreatedUserType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_admincreateduser';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

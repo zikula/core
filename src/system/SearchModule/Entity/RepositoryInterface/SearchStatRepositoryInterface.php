@@ -21,27 +21,16 @@ interface SearchStatRepositoryInterface extends ObjectRepository, Selectable
 {
     /**
      * Returns amount of previous search queries.
-     *
-     * @return integer
      */
-    public function countStats();
+    public function countStats(): int;
 
     /**
      * Returns stats for given arguments.
-     *
-     * @param array   $filters Optional array with filters
-     * @param array   $sorting Optional array with sorting criteria
-     * @param integer $limit   Optional limitation for amount of retrieved objects
-     * @param integer $offset  Optional start offset of retrieved objects
-     *
-     * @return array
      */
-    public function getStats($filters = [], $sorting = [], $limit = 0, $offset = 0);
+    public function getStats(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array;
 
     /**
-     * Persist and flush an entity.
-     * @param SearchStatEntity $entity
-     * @return mixed
+     * Persist and flush a search stat entity.
      */
-    public function persistAndFlush(SearchStatEntity $entity);
+    public function persistAndFlush(SearchStatEntity $entity): void;
 }

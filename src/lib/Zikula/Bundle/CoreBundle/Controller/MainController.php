@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 /**
@@ -35,11 +34,6 @@ class MainController
      */
     private $variableApi;
 
-    /**
-     * MainController constructor.
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param VariableApiInterface $variableApi
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel, VariableApiInterface $variableApi)
     {
         $this->kernel = $kernel;
@@ -49,18 +43,15 @@ class MainController
     /**
      * This controller action is designed for the "/" route (home).
      * The route definition is set in `CoreBundle/Resources/config/routing.xml`
-     *
-     * @param Request $request
-     * @return bool|mixed|Response|PlainResponse
      */
-    public function homeAction(Request $request)
+    public function homeAction(Request $request): Response
     {
         $controller = $this->variableApi->getSystemVar('startController');
         if (!$controller) {
             return new Response(''); // home page is static
         }
         $args = $this->variableApi->getSystemVar('startargs');
-        parse_str($args, $attributes);
+        $attributes = null !== $args ? parse_str($args, $attributes) : [];
         $attributes['_controller'] = $controller;
         $subRequest = $request->duplicate(null, null, $attributes);
         list($moduleName) = explode(':', $controller);

@@ -24,35 +24,32 @@ class UiHooksSubscriber implements HookSubscriberInterface
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getOwner()
+    public function getOwner(): string
     {
         return 'ZikulaMailerModule';
     }
 
-    public function getCategory()
+    public function getCategory(): string
     {
         return UiHooksCategory::NAME;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->translator->__('HTML mail hook');
     }
 
-    public function getAreaName()
+    public function getAreaName(): string
     {
         return 'mailer.ui_hooks.htmlmail.form_edit';
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         return [
             UiHooksCategory::TYPE_FORM_EDIT => 'mailer.ui_hooks.htmlmail.form_edit'

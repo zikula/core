@@ -3,7 +3,7 @@
 /*******************************************************************************
  * Toggle block
  *******************************************************************************/
-( function($) {
+(function($) {
     $(document).ready(function() {
         $('.block-state-switch').click(function (event) {
             event.preventDefault();
@@ -38,7 +38,7 @@
             })
             .always(function() {
                 $('#spin' + bid).remove();
-            })
+            });
         });
     });
 })(jQuery);

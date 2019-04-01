@@ -37,23 +37,12 @@ class AdminExtension extends AbstractExtension
      */
     private $permissionApi;
 
-    /**
-     * Constructor.
-     *
-     * @param FragmentHandler $handler FragmentHandler service instance
-     * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     */
     public function __construct(FragmentHandler $handler, PermissionApiInterface $permissionApi)
     {
         $this->handler = $handler;
         $this->permissionApi = $permissionApi;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
@@ -64,16 +53,11 @@ class AdminExtension extends AbstractExtension
             new TwigFunction('adminSecurityAnalyzer', [new AdminSecurityAnalyzerFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminMenu', [new AdminMenuFunction($this->handler, $this->permissionApi), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminPanelMenu', [$this, 'adminPanelMenu'], ['is_safe' => ['html']]),
-            new TwigFunction('adminFooter', [new AdminFooterFunction($this->handler), 'display'], ['is_safe' => ['html']]),
+            new TwigFunction('adminFooter', [new AdminFooterFunction($this->handler), 'display'], ['is_safe' => ['html']])
         ];
     }
 
-    /**
-     * @param string $mode
-     * @param string $template
-     * @return string
-     */
-    public function adminPanelMenu($mode = 'modules', $template = 'panel')
+    public function adminPanelMenu(string $mode = 'modules', string $template = 'panel'): string
     {
         $adminMenu = new AdminMenuFunction($this->handler, $this->permissionApi);
 

@@ -2,7 +2,7 @@
 
 var ZikulaUsersAdminConfig = {};
 
-( function($) {
+(function($) {
 
     /**
      * Initialize the script and form elements.
@@ -40,13 +40,13 @@ var ZikulaUsersAdminConfig = {};
         var approvalOrder_state = (isModerated && !isVerified);
         var autoLogin_state = (!isModerated && isVerified);
 
-        if (approvalOrder_state == true) {
+        if (approvalOrder_state === true) {
             approvalOrderWrap.show();
         } else {
             approvalOrderWrap.hide();
         }
 
-        if (autoLogin_state == true) {
+        if (autoLogin_state === true) {
             autoLoginWrap.show();
         } else {
             autoLoginWrap.hide();
@@ -60,7 +60,7 @@ var ZikulaUsersAdminConfig = {};
         var regQuestion = $('#' + ZikulaUsersAdminConfig.registrationAntispamQuestionId);
         var regAnswerMandatory = $('#' + ZikulaUsersAdminConfig.registrationAntispamAnswerMandatoryId);
 
-        if ($.trim(regQuestion.val()) == '') {
+        if ($.trim(regQuestion.val()) === '') {
             regAnswerMandatory.addClass('hide');
         } else {
             regAnswerMandatory.removeClass('hide');

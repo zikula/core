@@ -26,25 +26,16 @@ class EmailLoginType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -58,7 +49,7 @@ class EmailLoginType extends AbstractType
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
-                'label' => $this->__('Remember me'),
+                'label' => $this->__('Remember me')
             ])
             ->add('submit', SubmitType::class, [
                 'label' => $this->__('Login'),
@@ -68,9 +59,6 @@ class EmailLoginType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_authentication_email';

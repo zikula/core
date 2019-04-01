@@ -25,10 +25,6 @@ class CoreInstallerListener implements EventSubscriberInterface
 {
     private $hookBundleInstaller;
 
-    /**
-     * CoreInstallerListener constructor.
-     * @param HookBundleInstaller $hookBundleInstaller
-     */
     public function __construct(HookBundleInstaller $hookBundleInstaller)
     {
         $this->hookBundleInstaller = $hookBundleInstaller;
@@ -42,14 +38,14 @@ class CoreInstallerListener implements EventSubscriberInterface
         ];
     }
 
-    public function installHookBundle(GenericEvent $event)
+    public function installHookBundle(GenericEvent $event): void
     {
         if (!$this->hookBundleInstaller->install()) {
             $event->stopPropagation();
         }
     }
 
-    public function upgradeHookBundle(GenericEvent $event)
+    public function upgradeHookBundle(GenericEvent $event): void
     {
         $currentVersion = $event->getArgument('currentVersion');
         if (!$this->hookBundleInstaller->upgrade($currentVersion)) {

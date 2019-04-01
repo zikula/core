@@ -1,6 +1,6 @@
 // Copyright Zikula Foundation, licensed MIT.
 
-( function($) {
+(function($) {
     $(document).ready(function() {
         $('#togglebox').click( function() {
              $('.search input[type=checkbox]').prop('checked', $(this).prop('checked'));

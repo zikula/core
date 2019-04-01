@@ -36,55 +36,35 @@ class TwigExtension extends AbstractExtension
      */
     private $router;
 
-    /**
-     * TwigExtension constructor.
-     *
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param RouterInterface $router
-     */
     public function __construct(VariableApiInterface $variableApi, RouterInterface $router)
     {
         $this->variableApi = $variableApi;
         $this->router = $router;
     }
 
-    /**
-     * Returns a list of custom Twig functions.
-     *
-     * @return TwigFunction[]
-     */
     public function getFunctions()
     {
         return [
-            new TwigFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames']),
+            new TwigFunction('zikulasearchmodule_searchVarToFieldNames', [$this, 'searchVarToFieldNames'])
         ];
     }
 
-    /**
-     * Returns a list of custom Twig filters.
-     *
-     * @return TwigFilter[]
-     */
     public function getFilters()
     {
         return [
-            new TwigFilter('zikulasearchmodule_highlightWords', [$this, 'highlightWords'], ['is_safe' => ['html']]),
             new TwigFilter('zikulasearchmodule_generateUrl', [$this, 'generateUrl']),
+            new TwigFilter('zikulasearchmodule_highlightWords', [$this, 'highlightWords'], ['is_safe' => ['html']])
         ];
     }
 
     /**
      * The zikulasearchmodule_searchVarToFieldNames function generates a flat lost of field names
-     * for hidden form fields from a nested array set
+     * for hidden form fields from a nested array set.
      *
-     * @param array|string $data            The data that should be stored in hidden fields (nested arrays allowed).
-     *                                      If an empty string is given and $isRecursiveCall is false the module vars are used by default
-     * @param string       $prefix          Optional prefix
-     * @param bool         $isRecursiveCall Flag to determine whether this method has been called recursively
-     *
-     * @return array List of hidden form fields
+     * @param array|string $data The data that should be stored in hidden fields (nested arrays allowed).
+     *                           If an empty string is given and $isRecursiveCall is false the module vars are used by default
      */
-    public function searchVarToFieldNames($data = '', $prefix = 'modvar', $isRecursiveCall = false)
+    public function searchVarToFieldNames($data = '', string $prefix = 'modvar', bool $isRecursiveCall = false): array
     {
         $dataValues = '' !== $data && $isRecursiveCall ? $data : $this->variableApi->getAll('ZikulaSearchModule');
 
@@ -109,14 +89,12 @@ class TwigExtension extends AbstractExtension
     }
 
     /**
-     * Generate the url from a search result
-     * @param RouteUrl $url
-     * @return string
+     * Generate the url from a search result.
      */
-    public function generateUrl(RouteUrl $url)
+    public function generateUrl(RouteUrl $routeUrl): string
     {
         try {
-            $url = $this->router->generate($url->getRoute(), $url->getArgs()) . $url->getFragment();
+            $url = $this->router->generate($routeUrl->getRoute(), $routeUrl->getArgs()) . $routeUrl->getFragment();
         } catch (RouteNotFoundException $exception) {
             $url = '';
         }
@@ -125,16 +103,12 @@ class TwigExtension extends AbstractExtension
     }
 
     /**
-     * Highlight words in a string by adding `class="highlight1"`
-     * @param string $string
-     * @param string $words
-     * @param int $highlightType
-     * @return string
+     * Highlight words in a string by adding `class="highlight1"`.
      */
-    public function highlightWords($string, $words, $highlightType = 1)
+    public function highlightWords(string $string, string $words, int $highlightType = 1): string
     {
-        $words = explode(' ', $words);
-        foreach ($words as $word) {
+        $singleWords = explode(' ', $words);
+        foreach ($singleWords as $word) {
             $string = str_ireplace($word, '<strong class="highlight' . $highlightType . '">' . $word . '</strong>', $string);
         }
 

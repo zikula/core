@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -64,12 +67,8 @@ abstract class AbstractArrayFieldTransformer implements DataTransformerInterface
 
     /**
      * Iterates over the given array and removes all empty entries.
-     *
-     * @param array array The given input array.
-     *
-     * @return array The cleaned array.
      */
-    protected function removeEmptyEntries(array $array = [])
+    protected function removeEmptyEntries(array $array = []): array
     {
         $items = $array;
 

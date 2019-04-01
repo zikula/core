@@ -25,7 +25,7 @@ class SwitchNodeTest extends NodeTestCase
     /**
      * @covers SwitchNode::__construct
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $expression = new NameExpression('foo', 0);
         $default = null;
@@ -51,7 +51,7 @@ class SwitchNodeTest extends NodeTestCase
         $this->assertEquals($default, $node->getNode('default'));
     }
 
-    public function getTests()
+    public function getTests(): array
     {
         $tests = [];
 

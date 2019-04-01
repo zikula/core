@@ -17,11 +17,13 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class UniqueNameForPositionValidator extends ConstraintValidator
 {
-    use TranslatorTrait;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     /**
      * @var CategoryRepositoryInterface
@@ -30,13 +32,8 @@ class UniqueNameForPositionValidator extends ConstraintValidator
 
     public function __construct(TranslatorInterface $translator, CategoryRepositoryInterface $categoryRepository)
     {
-        $this->setTranslator($translator);
-        $this->categoryRepository = $categoryRepository;
-    }
-
-    public function setTranslator($translator)
-    {
         $this->translator = $translator;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function validate($category, Constraint $constraint)

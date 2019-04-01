@@ -19,9 +19,6 @@ use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransf
 
 class RegexibleFormOptionsArrayType extends FormOptionsArrayType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);

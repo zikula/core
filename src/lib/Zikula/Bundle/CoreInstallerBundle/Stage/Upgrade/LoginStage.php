@@ -34,38 +34,40 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'login';
     }
 
-    public function getFormType()
+    public function getFormType(): string
     {
         return LoginType::class;
     }
 
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         return [];
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle::login.html.twig';
     }
 
-    public function handleFormResult(FormInterface $form)
-    {
-        $this->container->get(ControllerHelper::class)->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
-    }
-
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
+    }
+
+    public function handleFormResult(FormInterface $form): bool
+    {
+        $this->container->get(ControllerHelper::class)->writeEncodedAdminCredentials($this->yamlManager, $form->getData());
+
+        return true;
     }
 }

@@ -96,7 +96,7 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         ]
     ];
 
-    protected function bootstrap($disableSessions = true, $fakeRequest = true)
+    protected function bootstrap($disableSessions = true, $fakeRequest = true): void
     {
         if ($disableSessions) {
             // Disable sessions.
@@ -111,14 +111,14 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         }
     }
 
-    protected function printWarnings(OutputInterface $output, $warnings)
+    protected function printWarnings(OutputInterface $output, $warnings): void
     {
         foreach ($warnings as $warning) {
             $output->writeln('<error>' . $warning . '</error>');
         }
     }
 
-    protected function printRequirementsWarnings(OutputInterface $output, $warnings)
+    protected function printRequirementsWarnings(OutputInterface $output, $warnings): void
     {
         $failures = [];
         foreach ($warnings as $key => $value) {
@@ -130,17 +130,17 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         $this->printWarnings($output, $failures);
     }
 
-    private function errorCodeToMessage($key)
+    private function errorCodeToMessage(string $key): string
     {
         $messages = [
-            'phpsatisfied' => $this->translator->__f("You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.", ['%actual' => phpversion(), '%required' => ZikulaKernel::PHP_MINIMUM_VERSION]),
-            'datetimezone' => $this->translator->__("date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin."),
+            'phpsatisfied' => $this->translator->__f('You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.', ['%actual' => PHP_VERSION, '%required' => ZikulaKernel::PHP_MINIMUM_VERSION]),
+            'datetimezone' => $this->translator->__('date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.'),
             'pdo' => $this->translator->__("Your PHP installation doesn't have the PDO extension loaded."),
             'phptokens' => $this->translator->__("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
-            'mbstring' => $this->translator->__("Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets."),
+            'mbstring' => $this->translator->__('Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.'),
             'pcreUnicodePropertiesEnabled' => $this->translator->__("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
-            'json_encode' => $this->translator->__("Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests."),
-            'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => "config/personal_config.php"])/*,
+            'json_encode' => $this->translator->__('Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.'),
+            'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => 'config/personal_config.php'])/*,
             'custom_parameters_yml' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml")*/
         ];
         if (array_key_exists($key, $messages)) {
@@ -151,13 +151,15 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         return $this->translator->__f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%s' => $key]);
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ContainerInterface $container = null): void
     {
         parent::setContainer($container);
-        $this->translator = $container->get(Translator::class);
+        if (null !== $container) {
+            $this->translator = $container->get(Translator::class);
+        }
     }
 
-    protected function printSettings($givenSettings, SymfonyStyle $io)
+    protected function printSettings($givenSettings, SymfonyStyle $io): void
     {
         $rows = [];
         foreach ($givenSettings as $name => $givenSetting) {

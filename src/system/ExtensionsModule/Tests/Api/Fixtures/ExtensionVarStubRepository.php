@@ -19,11 +19,11 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInt
 
 class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
 {
+    /**
+     * @var array
+     */
     private $entities;
 
-    /**
-     * StubRepository constructor.
-     */
     public function __construct()
     {
         $datas = [
@@ -55,16 +55,15 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
         }
     }
 
-    public function remove(ExtensionVarEntity $entity)
+    public function remove(ExtensionVarEntity $entity): void
     {
     }
 
-    public function persistAndFlush(ExtensionVarEntity $entity)
+    public function persistAndFlush(ExtensionVarEntity $entity): void
     {
-        return true;
     }
 
-    public function deleteByExtensionAndName($extensionName, $variableName)
+    public function deleteByExtensionAndName(string $extensionName, string $variableName): bool
     {
         if (isset($this->entities[$extensionName][$variableName])) {
             unset($this->entities[$extensionName][$variableName]);
@@ -73,7 +72,7 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
         return true;
     }
 
-    public function deleteByExtension($extensionName)
+    public function deleteByExtension(string $extensionName): bool
     {
         if (isset($this->entities[$extensionName])) {
             unset($this->entities[$extensionName]);
@@ -89,11 +88,12 @@ class ExtensionVarStubRepository implements ExtensionVarRepositoryInterface
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        return isset($this->entities[$criteria['modname']][$criteria['name']]) ? $this->entities[$criteria['modname']][$criteria['name']] : [];
+        return $this->entities[$criteria['modname']][$criteria['name']] ?? [];
     }
 
-    public function updateName($oldName, $newName)
+    public function updateName(string $oldName, string $newName): bool
     {
+        return true;
     }
 
     public function find($id)

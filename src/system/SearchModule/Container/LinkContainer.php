@@ -47,15 +47,6 @@ class LinkContainer implements LinkContainerInterface
      */
     private $statRepo;
 
-    /**
-     * LinkContainer constructor.
-     *
-     * @param TranslatorInterface $translator TranslatorInterface service instance
-     * @param RouterInterface $router RouterInterface service instance
-     * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     * @param CurrentUserApiInterface $currentUserApi CurrentUserApi service instance
-     * @param SearchStatRepositoryInterface $searchStatRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
@@ -70,14 +61,7 @@ class LinkContainer implements LinkContainerInterface
         $this->statRepo = $searchStatRepository;
     }
 
-    /**
-     * get Links of any type for this extension
-     * required by the interface
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         if (LinkContainerInterface::TYPE_ADMIN === $type) {
             return $this->getAdmin();
@@ -90,11 +74,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Admin links for this extension
-     *
-     * @return array
+     * Get the admin links for this extension.
      */
-    private function getAdmin()
+    private function getAdmin(): array
     {
         $links = [];
 
@@ -116,11 +98,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the User links for this extension
-     *
-     * @return array
+     * Get the user links for this extension.
      */
-    private function getUser()
+    private function getUser(): array
     {
         $links = [];
 
@@ -138,26 +118,19 @@ class LinkContainer implements LinkContainerInterface
                 'text' => $this->translator->__('New search'),
                 'icon' => 'search'
             ];
-            if ($this->currentUserApi->isLoggedIn()) {
-                if ($this->statRepo->countStats() > 0) {
-                    $links[] = [
-                        'url' => $this->router->generate('zikulasearchmodule_search_recent'),
-                        'text' => $this->translator->__('Recent searches list'),
-                        'icon' => 'list'
-                    ];
-                }
+            if ($this->currentUserApi->isLoggedIn() && $this->statRepo->countStats() > 0) {
+                $links[] = [
+                    'url' => $this->router->generate('zikulasearchmodule_search_recent'),
+                    'text' => $this->translator->__('Recent searches list'),
+                    'icon' => 'list'
+                ];
             }
         }
 
         return $links;
     }
 
-    /**
-     * set the BundleName as required by the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaSearchModule';
     }

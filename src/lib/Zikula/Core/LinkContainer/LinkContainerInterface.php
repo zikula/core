@@ -20,19 +20,18 @@ namespace Zikula\Core\LinkContainer;
  */
 interface LinkContainerInterface
 {
-    const EVENT_NAME = 'zikula.link_collector';
+    public const EVENT_NAME = 'zikula.link_collector';
 
-    const TYPE_ADMIN = 'admin';
+    public const TYPE_ADMIN = 'admin';
 
-    const TYPE_USER = 'user';
+    public const TYPE_USER = 'user';
 
-    const TYPE_ACCOUNT = 'account';
+    public const TYPE_ACCOUNT = 'account';
 
     /**
      * Return the name of the providing bundle.
-     * @return string
      */
-    public function getBundleName();
+    public function getBundleName(): string;
 
     /**
      * Return an array of arrays based on the `type` parameter.
@@ -46,8 +45,6 @@ interface LinkContainerInterface
      *     'icon' => 'check'],
      * ]
      * </code>
-     * @param string $type
-     * @return array
      */
-    public function getLinks($type = self::TYPE_ADMIN);
+    public function getLinks(string $type = self::TYPE_ADMIN): array;
 }

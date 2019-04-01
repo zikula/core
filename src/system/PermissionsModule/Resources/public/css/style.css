@@ -2,13 +2,6 @@
 #permission-test-info {
     font-weight: bold;
 }
-#permissiontestinfored {
-    color: red;
-}
-#permissiontestinfogreen {
-    color: green;
-}
-
 #permission-list > tbody > tr:not(.warning) {
     cursor: move;
 }

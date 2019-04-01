@@ -22,43 +22,29 @@ use Zikula\Core\AbstractModule;
 class ModuleStateEvent extends Event
 {
     /**
-     * An array of info for the module. Possibly a result of calling legacy ModUtil::getInfo()
-     * or $extensionEntity->toArray().
+     * An array of info for the module. Possibly a result of calling $extensionEntity->toArray().
      *
      * @var null|array
      */
     private $modInfo;
 
     /**
-     * @var null|AbstractModule The module instance. Null for non-Symfony styled modules
-     *   or when Module object is not available
+     * @var null|AbstractModule The module instance. Null when Module object is not available
      */
     private $module;
 
-    /**
-     * @param null|AbstractModule $module The module instance
-     * @param null|array $modInfo
-     */
-    public function __construct(AbstractModule $module = null, $modInfo = null)
+    public function __construct(AbstractModule $module = null, array $modInfo = null)
     {
         $this->module = $module;
         $this->modInfo = $modInfo;
     }
 
-    /**
-     * Get the module instance.
-     *
-     * @return null|AbstractModule
-     */
-    public function getModule()
+    public function getModule(): ?AbstractModule
     {
         return $this->module;
     }
 
-    /**
-     * @return array|null
-     */
-    public function getModInfo()
+    public function getModInfo(): ?array
     {
         return $this->modInfo;
     }

@@ -55,32 +55,32 @@ abstract class AbstractCategoryAssignment extends EntityAccess
         $this->setEntity($entity);
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function getCategoryRegistryId()
+    public function getCategoryRegistryId(): int
     {
         return $this->categoryRegistryId;
     }
 
-    public function setCategoryRegistryId($categoryRegistryId)
+    public function setCategoryRegistryId(int $categoryRegistryId): void
     {
         $this->categoryRegistryId = $categoryRegistryId;
     }
 
-    public function getCategory()
+    public function getCategory(): CategoryEntity
     {
         return $this->category;
     }
 
-    public function setCategory(CategoryEntity $category)
+    public function setCategory(CategoryEntity $category): void
     {
         $this->category = $category;
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -26,9 +29,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 abstract class AbstractKernelListener implements EventSubscriberInterface
 {
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -76,9 +76,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param GetResponseEvent $event The event instance
      */
-    public function onRequest(GetResponseEvent $event)
+    public function onRequest(GetResponseEvent $event): void
     {
     }
     
@@ -125,9 +124,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param FilterControllerEvent $event The event instance
      */
-    public function onController(FilterControllerEvent $event)
+    public function onController(FilterControllerEvent $event): void
     {
     }
     
@@ -165,9 +163,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param GetResponseForControllerResultEvent $event The event instance
      */
-    public function onView(GetResponseForControllerResultEvent $event)
+    public function onView(GetResponseForControllerResultEvent $event): void
     {
     }
     
@@ -210,9 +207,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param FilterResponseEvent $event The event instance
      */
-    public function onResponse(FilterResponseEvent $event)
+    public function onResponse(FilterResponseEvent $event): void
     {
     }
     
@@ -242,9 +238,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param FinishRequestEvent $event The event instance
      */
-    public function onFinishRequest(FinishRequestEvent $event)
+    public function onFinishRequest(FinishRequestEvent $event): void
     {
     }
     
@@ -277,9 +272,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param PostResponseEvent $event The event instance
      */
-    public function onTerminate(PostResponseEvent $event)
+    public function onTerminate(PostResponseEvent $event): void
     {
     }
     
@@ -330,9 +324,8 @@ abstract class AbstractKernelListener implements EventSubscriberInterface
      * The currently handled request:
      *     `$request = $event->getRequest();`
      *
-     * @param GetResponseForExceptionEvent $event The event instance
      */
-    public function onException(GetResponseForExceptionEvent $event)
+    public function onException(GetResponseForExceptionEvent $event): void
     {
     }
 }

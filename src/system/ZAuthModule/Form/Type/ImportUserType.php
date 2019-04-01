@@ -26,25 +26,16 @@ class ImportUserType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -63,7 +54,7 @@ class ImportUserType extends AbstractType
                             'application/vnd.msexcel',
                             'text/anytext',
                             'application/octet-stream',
-                            'application/txt',
+                            'application/txt'
                         ]
                     ])
                 ]
@@ -73,13 +64,13 @@ class ImportUserType extends AbstractType
                 'choices' => [
                     ',' => ',',
                     ';' => ';',
-                    ':' => ':',
+                    ':' => ':'
                 ]
             ])
             ->add('upload', SubmitType::class, [
                 'label' => $this->__('Upload'),
                 'icon' => 'fa-upload',
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
@@ -89,9 +80,6 @@ class ImportUserType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_importuser';

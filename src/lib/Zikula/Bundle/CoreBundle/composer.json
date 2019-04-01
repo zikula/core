@@ -38,6 +38,7 @@
         "stof/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
 
+        "robloach/component-installer": "*",
         "michelf/php-markdown": "1.*",
         "twig/extensions": "1.*",
         "zikula/filesystem": "1.*",

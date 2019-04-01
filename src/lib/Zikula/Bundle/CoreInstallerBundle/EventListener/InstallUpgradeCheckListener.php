@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\EventListener;
 
+use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,7 +34,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
         $this->container = $container;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -50,7 +51,7 @@ class InstallUpgradeCheckListener implements EventSubscriberInterface
 
         try {
             $routeInfo = $this->container->get('router')->match($request->getPathInfo());
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return;
         }
         $containsInstall = 'install' === $routeInfo['_route'];

@@ -70,12 +70,6 @@ class UpdateCheckHelper
      */
     private $checked;
 
-    /**
-     * UpdateCheckHelper constructor.
-     *
-     * @param VariableApiInterface $variableApi
-     * @param RequestStack $requestStack RequestStack service instance
-     */
     public function __construct(VariableApiInterface $variableApi, RequestStack $requestStack)
     {
         $this->variableApi = $variableApi;
@@ -90,32 +84,31 @@ class UpdateCheckHelper
         $this->force = (bool)$requestStack->getMasterRequest()->query->get('forceupdatecheck');
         $this->checked = false;
         $this->releases = false;
-        $this->show = false;
 
         $this->checkForUpdates();
     }
 
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
-    public function getCurrentVersion()
+    public function getCurrentVersion(): string
     {
         return $this->currentVersion;
     }
 
-    public function getLastChecked()
+    public function getLastChecked(): int
     {
         return $this->lastChecked;
     }
 
-    public function getCheckInterval()
+    public function getCheckInterval(): int
     {
         return $this->checkInterval;
     }
 
-    public function getUpdateversion()
+    public function getUpdateversion(): string
     {
         return $this->updateversion;
     }
@@ -125,12 +118,12 @@ class UpdateCheckHelper
         return $this->releases;
     }
 
-    public function versionCompare()
+    public function versionCompare(): int
     {
         return version_compare($this->updateversion, $this->currentVersion);
     }
 
-    public function checkForUpdates()
+    public function checkForUpdates(): void
     {
         $now = time();
 
@@ -167,33 +160,28 @@ class UpdateCheckHelper
      * This function is internal for the time being and may be extended to be a proper library
      * or find an alternative solution later.
      *
-     * @param string $url
-     * @param int $timeout
-     *            default=5
-     *
      * @return string|bool false if no url handling functions are present or url string
      */
-    private function zcurl($url, $timeout = 5)
+    private function zcurl(string $url, int $timeout = 5)
     {
         $urlArray = parse_url($url);
         $data = '';
         $userAgent = 'Zikula/' . $this->currentVersion;
-        $ref = $this->requestStack
-            ->getMasterRequest()
-            ->getBaseURL();
+        $request = $this->requestStack->getMasterRequest();
+        $ref = null !== $request ? $request->getBaseURL() : null;
         $port = ('https' === $urlArray['scheme']) ? 443 : 80;
 
         if (function_exists('curl_init')) {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_URL, "${url}?");
+            curl_setopt($ch, CURLOPT_URL, $url . '?');
             curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
             curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
-            curl_setopt($ch, CURLOPT_REFERER, $ref);
+            if (null !== $ref) {
+                curl_setopt($ch, CURLOPT_REFERER, $ref);
+            }
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            if (!ini_get('safe_mode') && !ini_get('open_basedir')) {
-                // This option does not work in safe_mode or with open_basedir set in php.ini
+            if (!ini_get('open_basedir')) {
+                // This option does not work with open_basedir set in php.ini
                 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             }
             curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
@@ -212,17 +200,19 @@ class UpdateCheckHelper
         if (ini_get('allow_url_fopen')) {
             // handle SSL connections
             $path_query = (isset($urlArray['query']) ? $urlArray['path'] . $urlArray['query'] : $urlArray['path']);
-            $host = (443 === $port ? "ssl://{$urlArray[host]}" : $urlArray['host']);
+            $host = (443 === $port ? 'ssl://' . $urlArray['host'] : $urlArray['host']);
             $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
             if (!$fp) {
                 return false;
             }
 
-            $out = "GET ${path_query}? HTTP/1.1\r\n";
-            $out .= "User-Agent: ${userAgent}\r\n";
-            $out .= "Referer: ${ref}\r\n";
-            $out .= "Host: {$urlArray[host]}\r\n";
-            $out .= "Connection: Close\r\n\r\n";
+            $out = 'GET ' . $path_query . "? HTTP/1.1\r\n";
+            $out .= 'User-Agent: ' . $userAgent . "\r\n";
+            if (null !== $ref) {
+                $out .= 'Referer: ' . $ref . "\r\n";
+            }
+            $out .= 'Host: ' . $urlArray['host'] . "\r\n";
+            $out .= 'Connection: Close' . "\r\n\r\n";
             fwrite($fp, $out);
             while (!feof($fp)) {
                 $data .= fgets($fp, 1024);

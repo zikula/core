@@ -23,10 +23,6 @@ interface BlockFactoryApiInterface
     /**
      * Factory method to create an instance of a block given its name and the providing module instance.
      * Given block class needs to implement Zikula\BlocksModule\BlockHandlerInterface.
-     *
-     * @param string $blockClassName
-     *
-     * @return BlockHandlerInterface
      */
-    public function getInstance($blockClassName);
+    public function getInstance(string $blockClassName): BlockHandlerInterface;
 }

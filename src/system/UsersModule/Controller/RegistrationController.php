@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Controller;
 
+use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
@@ -53,18 +56,10 @@ class RegistrationController extends AbstractController
      *
      * @Route("/register", methods = {"GET", "POST"}, options={"zkNoBundlePrefix"=1})
      *
-     * @param Request $request
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
-     * @param AuthenticationMethodCollector $authenticationMethodCollector
-     * @param RegistrationHelper $registrationHelper
-     * @param AccessHelper $accessHelper
-     * @param HookDispatcherInterface $hookDispatcher
-     *
      * @return Response|RedirectResponse
      *
      * @throws InvalidAuthenticationMethodRegistrationFormException
-     * @throws \Exception
+     * @throws Exception
      */
     public function registerAction(
         Request $request,
@@ -73,7 +68,9 @@ class RegistrationController extends AbstractController
         AuthenticationMethodCollector $authenticationMethodCollector,
         RegistrationHelper $registrationHelper,
         AccessHelper $accessHelper,
-        HookDispatcherInterface $hookDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        HookDispatcherInterface $hookDispatcher,
+        ValidatorInterface $validator
     ) {
         if ($currentUserApi->isLoggedIn()) {
             return $this->redirectToRoute('zikulausersmodule_account_menu');
@@ -85,7 +82,7 @@ class RegistrationController extends AbstractController
         $this->throwExceptionForBannedUserAgents($request);
 
         // Display the authentication method selector if required
-        $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod', null));
+        $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod'));
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
                 'collector' => $authenticationMethodCollector,
@@ -106,7 +103,7 @@ class RegistrationController extends AbstractController
             $redirectUri = $this->generateUrl('zikulausersmodule_registration_register', [], UrlGeneratorInterface::ABSOLUTE_URL);
             $uid = $authenticationMethod->authenticate(['redirectUri' => $redirectUri]);
             if (isset($uid)) {
-                throw new \Exception('User already exists!');
+                throw new Exception('User already exists!');
             }
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                 $authenticationMethodId = $authenticationMethod->getId();
@@ -117,7 +114,6 @@ class RegistrationController extends AbstractController
                 ];
             }
         }
-        $dispatcher = $this->get('event_dispatcher');
 
         $formClassName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationFormClassName()
@@ -126,7 +122,7 @@ class RegistrationController extends AbstractController
         if (!$form->has('uname') || !$form->has('email')) {
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }
-        $hasListeners = $dispatcher->hasListeners(UserEvents::EDIT_FORM);
+        $hasListeners = $eventDispatcher->hasListeners(UserEvents::EDIT_FORM);
         $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.registration');
         if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && 0 === count($hookBindings)) {
             // skip form display and process immediately.
@@ -135,7 +131,7 @@ class RegistrationController extends AbstractController
             $form->submit($userData);
         } else {
             $formEvent = new UserFormAwareEvent($form);
-            $dispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+            $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
             $form->handleRequest($request);
         }
 
@@ -152,7 +148,7 @@ class RegistrationController extends AbstractController
                     $userEntity->setUname($formData['uname']);
                     $userEntity->setEmail($formData['email']);
                     $userEntity->setAttribute(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY, $authenticationMethod->getAlias());
-                    $validationErrors = $this->get('validator')->validate($userEntity);
+                    $validationErrors = $validator->validate($userEntity);
                     if (count($validationErrors) > 0) {
                         foreach ($validationErrors as $validationError) {
                             $this->addFlash('error', $validationError->getMessage());
@@ -170,12 +166,12 @@ class RegistrationController extends AbstractController
                         // revert registration
                         $this->addFlash('error', $this->__('The registration process failed.'));
                         $userRepository->removeAndFlush($userEntity);
-                        $dispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
+                        $eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
 
                         return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
                     }
                     $formDataEvent = new UserFormDataEvent($userEntity, $form);
-                    $dispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                    $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
                     $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
@@ -184,7 +180,7 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $dispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
+                    $event = $eventDispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
                     $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
                     if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
@@ -208,7 +204,7 @@ class RegistrationController extends AbstractController
         }
 
         // Notify that we are beginning a registration session.
-        $dispatcher->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
+        $eventDispatcher->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
 
         $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationTemplateName()
@@ -223,11 +219,9 @@ class RegistrationController extends AbstractController
     /**
      * Throw an exception if the user agent has been banned in the UserModule settings.
      *
-     * @param Request $request
-     *
      * @throws AccessDeniedException if User Agent is banned
      */
-    private function throwExceptionForBannedUserAgents(Request $request)
+    private function throwExceptionForBannedUserAgents(Request $request): void
     {
         // Check for illegal user agents trying to register.
         $userAgent = $request->server->get('HTTP_USER_AGENT', '');
@@ -244,11 +238,8 @@ class RegistrationController extends AbstractController
 
     /**
      * Add flash message to session based on registration results.
-     *
-     * @param bool $activatedStatus
-     * @param bool $autoLogIn
      */
-    private function generateRegistrationFlashMessage($activatedStatus, $autoLogIn = false)
+    private function generateRegistrationFlashMessage(int $activatedStatus, bool $autoLogIn = false): void
     {
         if (UsersConstant::ACTIVATED_PENDING_REG === $activatedStatus) {
             $this->addFlash('status', $this->__('Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.'));

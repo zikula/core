@@ -15,25 +15,27 @@ namespace Zikula\ZAuthModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function persistAndFlush(AuthenticationMappingEntity $entity);
+    public function persistAndFlush(AuthenticationMappingEntity $entity): void;
 
-    public function removeByZikulaId($uid);
+    public function removeByZikulaId(int $userId): void;
 
-    /**
-     * @param integer $uid
-     * @return AuthenticationMappingEntity
-     */
-    public function getByZikulaId($uid);
+    public function getByZikulaId(int $userId): AuthenticationMappingEntity;
+
+    public function setEmailVerification(int $userId, bool $value = true): void;
 
     /**
-     * @param $uid
-     * @param bool $value
+     * @return Paginator|AuthenticationMappingEntity[]
      */
-    public function setEmailVerification($uid, $value = true);
-
-    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and');
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        int $limit = 0,
+        int $offset = 0,
+        string $exprType = 'and'
+    );
 }

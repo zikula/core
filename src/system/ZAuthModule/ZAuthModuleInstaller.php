@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule;
 
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\UserVerificationEntity;
@@ -30,14 +31,14 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
         UserVerificationEntity::class
     ];
 
-    public function install()
+    public function install(): bool
     {
         foreach ($this->entities as $entity) {
             try {
                 $this->schemaTool->create([
                     $entity
                 ]);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 if (UserVerificationEntity::class !== $entity) {
                     throw $exception;
                 }
@@ -49,9 +50,9 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldversion)
+    public function upgrade($oldVersion): bool
     {
-        switch ($oldversion) {
+        switch ($oldVersion) {
             case '1.0.0':
                 // remove password reminder
                 $this->schemaTool->update([
@@ -66,7 +67,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function uninstall()
+    public function uninstall(): bool
     {
         $this->schemaTool->drop($this->entities);
 
@@ -76,7 +77,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
     /**
      * @return array An array of all current module variables, with their default values, suitable for {@link setVars()}
      */
-    private function getDefaultModvars()
+    private function getDefaultModvars(): array
     {
         return [
             ZAuthConstant::MODVAR_HASH_METHOD => ZAuthConstant::DEFAULT_HASH_METHOD,

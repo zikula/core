@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -32,7 +35,7 @@ class AjaxController extends AbstractAjaxController
     public function updateSortPositionsAction(
         Request $request,
         EntityFactory $entityFactory
-    )
+    ): JsonResponse
      {
         return parent::updateSortPositionsAction($request, $entityFactory);
     }

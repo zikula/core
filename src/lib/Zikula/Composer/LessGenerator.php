@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\Composer;
 
+use Less_Parser;
+
 /**
  * A class to handle less2css generation by composer
  */
 class LessGenerator
 {
     /**
-     * This function generates from the customized bootstrap.less und font-awesome.less a combined css file
-     *
-     * @param string|null $writeTo Where to dump the generated file
+     * Generates a combined css file from the customized bootstrap.less und font-awesome.less.
      */
-    public static function generateCombinedBootstrapFontAwesomeCSS($writeTo = null)
+    public static function generateCombinedBootstrapFontAwesomeCSS(string $writeTo = null): void
     {
         // Also change build.xml if you change the default writeTo path here!
         $writeTo = is_string($writeTo) ? $writeTo : 'src/web/bootstrap-font-awesome.css';
-        $parser = new \Less_Parser();
+        $parser = new Less_Parser();
         $parser->setOptions(['relativeUrls' => false, 'compress' => true]);
         $parser->parseFile('src/web/bundles/core/css/bootstrap-font-awesome.less');
 

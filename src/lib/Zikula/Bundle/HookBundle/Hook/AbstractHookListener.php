@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Hook;
 
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher as EventDispatcher;
+use ReflectionObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -27,7 +28,7 @@ abstract class AbstractHookListener
     /**
      * Dispatcher instance.
      *
-     * @var EventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $dispatcher;
 
@@ -41,29 +42,24 @@ abstract class AbstractHookListener
     /**
      * Display hook response object.
      *
-     * @var \Zikula\Bundle\HookBundle\Hook\DisplayHookResponse
+     * @var DisplayHookResponse
      */
     protected $display;
 
     /**
      * Validation object.
      *
-     * @var \Zikula\Bundle\HookBundle\Hook\ValidationResponse
+     * @var ValidationResponse
      */
     protected $validation;
 
     /**
      * This object's reflection.
      *
-     * @var \ReflectionObject
+     * @var ReflectionObject
      */
     protected $reflection;
 
-    /**
-     * Constructor.
-     *
-     * @param EventDispatcher $dispatcher ServiceManager
-     */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
@@ -74,41 +70,29 @@ abstract class AbstractHookListener
         }
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
     /**
      * Get reflection of this object.
-     *
-     * @return \ReflectionObject
      */
-    public function getReflection()
+    public function getReflection(): ReflectionObject
     {
         if (!$this->reflection) {
-            $this->reflection = new \ReflectionObject($this);
+            $this->reflection = new ReflectionObject($this);
         }
 
         return $this->reflection;
     }
 
-    /**
-     * Get dispatcher.
-     *
-     * @return EventDispatcher
-     */
-    public function getDispatcher()
+    public function getDispatcher(): EventDispatcherInterface
     {
         return $this->dispatcher;
     }
 
-    /**
-     * Post constructor hook.
-     *
-     * @return void
-     */
-    public function setup()
+    public function setup(): void
     {
     }
 }

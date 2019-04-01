@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -45,16 +48,6 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      */
     protected $logger;
     
-    /**
-     * UserListener constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param EntityFactory $entityFactory
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param LoggerInterface $logger
-     *
-     * @return void
-     */
     public function __construct(
         TranslatorInterface $translator,
         EntityFactory $entityFactory,
@@ -67,9 +60,6 @@ abstract class AbstractUserListener implements EventSubscriberInterface
         $this->logger = $logger;
     }
     
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -93,9 +83,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function create(GenericEvent $event)
+    public function create(GenericEvent $event): void
     {
     }
     
@@ -112,9 +101,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function update(GenericEvent $event)
+    public function update(GenericEvent $event): void
     {
     }
     
@@ -129,9 +117,8 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param GenericEvent $event The event instance
      */
-    public function delete(GenericEvent $event)
+    public function delete(GenericEvent $event): void
     {
         $userId = $event->getSubject();
     

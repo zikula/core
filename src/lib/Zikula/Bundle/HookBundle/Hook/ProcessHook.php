@@ -29,18 +29,13 @@ class ProcessHook extends Hook
      */
     protected $url;
 
-    public function __construct($id, UrlInterface $url = null)
+    public function __construct(/*int type hint currently disabled as UsersModule assigns a UserEntity for LoginUiHooksSubscriber::LOGIN_PROCESS */$id, UrlInterface $url = null)
     {
         $this->id = $id;
         $this->url = $url;
     }
 
-    /**
-     * Gets the ModUrl
-     *
-     * @return UrlInterface
-     */
-    public function getUrl()
+    public function getUrl(): UrlInterface
     {
         return $this->url;
     }

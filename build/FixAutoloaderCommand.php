@@ -51,9 +51,11 @@ class FixAutoloaderCommand extends Command
         foreach ($composerFiles as $file) {
             $file = "${dir}/composer/${file}";
             $content = file_get_contents($file);
-            $content = str_replace("baseDir . '/src/", "baseDir . '/", $content);
-            $content = str_replace('dirname(dirname($vendorDir))', 'dirname($vendorDir)', $content);
-            $content = str_replace("__DIR__ . '/../../..' . '/src", "__DIR__ . '/../..' . '", $content);
+            $content = str_replace(
+                ["baseDir . '/src/", 'dirname(dirname($vendorDir))', "__DIR__ . '/../../..' . '/src"],
+                ["baseDir . '/", 'dirname($vendorDir)', "__DIR__ . '/../..' . '"],
+                $content
+            );
             file_put_contents($file, $content);
             $progress->advance();
         }

@@ -17,34 +17,27 @@ interface AuthenticationMethodInterface
 {
     /**
      * An unique alias for this authentication method.
-     * @return string
      */
-    public function getAlias();
+    public function getAlias(): string;
 
     /**
      * A displayable title.
-     * @return string
      */
-    public function getDisplayName();
+    public function getDisplayName(): string;
 
     /**
      * Describe the nature of this method.
-     * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * Authenticate the user from the provided data and return the associated native uid.
-     * @param array $data
-     * @return integer|null
      */
-    public function authenticate(array $data = []);
+    public function authenticate(array $data = []): ?int;
 
     /**
      * Register a new user from the provided data and map authorization to a Zikula UID.
      * MUST return boolean TRUE on success.
-     * @param array $data
-     * @return boolean
      */
-    public function register(array $data);
+    public function register(array $data = []): bool;
 }

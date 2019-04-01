@@ -27,13 +27,13 @@ class AdminModuleRepository extends ServiceEntityRepository implements AdminModu
         parent::__construct($registry, AdminModuleEntity::class);
     }
 
-    public function persistAndFlush($entity)
+    public function persistAndFlush(AdminModuleEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
 
-    public function countModulesByCategory($cid)
+    public function countModulesByCategory(int $cid): int
     {
         $query = $this->createQueryBuilder('m')
             ->select('COUNT(m.amid)')
@@ -44,11 +44,7 @@ class AdminModuleRepository extends ServiceEntityRepository implements AdminModu
         return (int)$query->getSingleScalarResult();
     }
 
-    /**
-     * @param ExtensionEntity $moduleEntity
-     * @param AdminCategoryEntity $adminCategoryEntity
-     */
-    public function setModuleCategory(ExtensionEntity $moduleEntity, AdminCategoryEntity $adminCategoryEntity)
+    public function setModuleCategory(ExtensionEntity $moduleEntity, AdminCategoryEntity $adminCategoryEntity): void
     {
         $adminModuleEntity = $this->findOneBy(['mid' => $moduleEntity->getId()]);
         if (!isset($adminModuleEntity)) {
@@ -61,11 +57,7 @@ class AdminModuleRepository extends ServiceEntityRepository implements AdminModu
         $this->persistAndFlush($adminModuleEntity);
     }
 
-    /**
-     * @param int $oldCategory
-     * @param int $newCategory
-     */
-    public function changeCategory($oldCategory, $newCategory)
+    public function changeCategory(int $oldCategory, int $newCategory): void
     {
         $query = $this->_em->createQueryBuilder()
             ->update('ZikulaAdminModule:AdminModuleEntity', 'm')

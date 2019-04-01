@@ -19,28 +19,14 @@ use Zikula\ThemeModule\ThemeEvents;
 
 class TemplateNameExposeListener implements EventSubscriberInterface
 {
+    /**
+     * @var string
+     */
     private $env;
 
-    public function __construct($env)
+    public function __construct(string $env)
     {
         $this->env = $env;
-    }
-
-    /**
-     * This listener decorates the rendered output to include the template name in the html source as an html comment.
-     * @param TwigPostRenderEvent $event
-     */
-    public function exposeTemplateNames(TwigPostRenderEvent $event)
-    {
-        if ('dev' === $this->env) {
-            $name = $event->getTemplateName();
-            if (false !== mb_strpos($name, '.js.')) {
-                $content = '/* ' . $name . ' */' . $event->getContent() . '/* end ' . $name . ' */';
-            } else {
-                $content = '<!-- ' . $name . ' -->' . $event->getContent() . '<!-- /' . $name . ' -->';
-            }
-            $event->setContent($content);
-        }
     }
 
     public static function getSubscribedEvents()
@@ -50,5 +36,23 @@ class TemplateNameExposeListener implements EventSubscriberInterface
                 ['exposeTemplateNames']
             ]
         ];
+    }
+
+    /**
+     * Decorate the rendered output to include the template name in the html source as an html comment.
+     */
+    public function exposeTemplateNames(TwigPostRenderEvent $event): void
+    {
+        if ('dev' !== $this->env) {
+            return;
+        }
+
+        $name = $event->getTemplateName();
+        if (false !== mb_strpos($name, '.js.')) {
+            $content = '/* ' . $name . ' */' . $event->getContent() . '/* end ' . $name . ' */';
+        } else {
+            $content = '<!-- ' . $name . ' -->' . $event->getContent() . '<!-- /' . $name . ' -->';
+        }
+        $event->setContent($content);
     }
 }

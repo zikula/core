@@ -20,12 +20,8 @@ use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
-use Zikula\ThemeModule\Engine\ParameterBag;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
-/**
- * Class AddJSConfigListener
- */
 class AddJSConfigListener implements EventSubscriberInterface
 {
     /**
@@ -44,11 +40,6 @@ class AddJSConfigListener implements EventSubscriberInterface
     private $twig;
 
     /**
-     * @var ParameterBag
-     */
-    private $pageVars;
-
-    /**
      * @var AssetBag
      */
     private $headers;
@@ -58,41 +49,40 @@ class AddJSConfigListener implements EventSubscriberInterface
      */
     private $defaultSessionName;
 
+    /**
+     * @var bool
+     */
     private $installed;
 
-    /**
-     * JSConfig constructor.
-     *
-     * @param boolean $installed
-     * @param VariableApiInterface $variableApi
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param Environment $twig
-     * @param ParameterBag $pageVars
-     * @param AssetBag $headers
-     * @param string $defaultSessionName
-     */
     public function __construct(
-        $installed,
+        bool $installed,
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
         Environment $twig,
-        ParameterBag $pageVars,
         AssetBag $headers,
-        $defaultSessionName = '_zsid'
+        string $defaultSessionName = '_zsid'
     ) {
         $this->installed = $installed;
         $this->variableApi = $variableApi;
         $this->currentUserApi = $currentUserApi;
         $this->twig = $twig;
-        $this->pageVars = $pageVars;
         $this->headers = $headers;
         $this->defaultSessionName = $defaultSessionName;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::RESPONSE => [
+                ['addJSConfig', -1]
+            ]
+        ];
     }
 
     /**
      * Generate a configuration for javascript and add script to headers.
      */
-    public function addJSConfig(FilterResponseEvent $event)
+    public function addJSConfig(FilterResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -117,14 +107,5 @@ class AddJSConfigListener implements EventSubscriberInterface
             'config' => $config
         ]);
         $this->headers->add([$content => 0]);
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::RESPONSE => [
-                ['addJSConfig', -1]
-            ]
-        ];
     }
 }

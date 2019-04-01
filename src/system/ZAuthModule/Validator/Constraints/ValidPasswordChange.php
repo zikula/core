@@ -20,5 +20,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidPasswordChange extends Constraint
 {
+    /**
+     * @var string
+     */
     public $message = 'The password "%string%" is invalid.';
 }

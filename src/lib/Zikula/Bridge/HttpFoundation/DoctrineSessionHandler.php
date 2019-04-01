@@ -56,17 +56,11 @@ class DoctrineSessionHandler extends AbstractSessionHandler
      */
     private $gcCalled = false;
 
-    /**
-     * @param UserSessionRepositoryInterface $userSessionRepository
-     * @param VariableApiInterface $variableApi
-     * @param RequestStack $requestStack
-     * @param $installed
-     */
     public function __construct(
         UserSessionRepositoryInterface $userSessionRepository,
         VariableApiInterface $variableApi,
         RequestStack $requestStack,
-        $installed
+        bool $installed
     ) {
         $this->userSessionRepository = $userSessionRepository;
         $this->variableApi = $variableApi;
@@ -74,20 +68,18 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         $this->installed = $installed;
     }
 
-    public function setStorage(SessionStorageInterface $storage)
+    public function setStorage(SessionStorageInterface $storage): void
     {
         $this->storage = $storage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doRead($sessionId)
     {
         if (!$this->installed) {
             return '';
         }
 
+        $vars = '';
         $sessionEntity = $this->userSessionRepository->find($sessionId);
         if ($sessionEntity) {
             $vars = $sessionEntity->getVars();
@@ -96,9 +88,6 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         return !empty($vars) ? $vars : '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doWrite($sessionId, $data)
     {
         if (!$this->installed) {
@@ -112,9 +101,6 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function gc($maxlifetime)
     {
         if (!$this->installed) {
@@ -128,13 +114,10 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doDestroy($sessionId)
     {
         // expire the cookie
-        if ('cli' !== php_sapi_name()) {
+        if ('cli' !== PHP_SAPI) {
             setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
         }
         $this->userSessionRepository->removeAndFlush($sessionId);
@@ -142,32 +125,25 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function close()
     {
-        $result = true;
         if (!$this->installed) {
-            return $result;
+            return true;
         }
 
         if ($this->gcCalled) {
             $this->gcCalled = false;
 
-            $result = $this->userSessionRepository->gc(
+            $this->userSessionRepository->gc(
                 $this->variableApi->getSystemVar('seclevel', 'Medium'),
                 $this->variableApi->getSystemVar('secinactivemins', 20),
                 $this->variableApi->getSystemVar('secmeddays', 7)
             );
         }
 
-        return $result;
+        return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateTimestamp($sessionId, $data)
     {
         $sessionEntity = $this->getSessionEntity($sessionId);
@@ -177,12 +153,8 @@ class DoctrineSessionHandler extends AbstractSessionHandler
 
     /**
      * Returns the session entity.
-     *
-     * @param string $sessionId
-     *
-     * @return UserSessionEntity
      */
-    private function getSessionEntity($sessionId)
+    private function getSessionEntity(string $sessionId): UserSessionEntity
     {
         $sessionEntity = $this->userSessionRepository->find($sessionId);
         if (!$sessionEntity) {
@@ -200,17 +172,18 @@ class DoctrineSessionHandler extends AbstractSessionHandler
     }
 
     /**
-     * find the current IP address
-     * @param string $default
-     * @return string
+     * Find the current IP address.
      */
-    private function getCurrentIp($default = '127.0.0.1')
+    private function getCurrentIp(string $default = '127.0.0.1'): string
     {
-        if ('cli' !== php_sapi_name()) {
-            $ipAddress = $this->requestStack->getCurrentRequest()->getClientIp();
-            $ipAddress = !empty($ipAddress) ? $ipAddress : $this->requestStack->getCurrentRequest()->server->get('HTTP_HOST');
+        $ipAddress = null;
+        if ('cli' !== PHP_SAPI) {
+            $request = $this->requestStack->getCurrentRequest();
+            if (null !== $request) {
+                $ipAddress = $request->getClientIp() ?? $request->server->get('HTTP_HOST');
+            }
         }
 
-        return !empty($ipAddress) ? $ipAddress : $default;
+        return $ipAddress ?? $default;
     }
 }

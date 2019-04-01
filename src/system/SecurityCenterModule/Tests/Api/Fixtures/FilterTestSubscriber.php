@@ -26,7 +26,7 @@ class FilterTestSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function test(GenericEvent $event)
+    public function test(GenericEvent $event): void
     {
         $string = $event->getData();
         $string = '***' . $string . '***';

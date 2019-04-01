@@ -34,7 +34,7 @@ class DisplayHook extends Hook
      */
     private $url;
 
-    public function __construct($id, UrlInterface $url = null)
+    public function __construct(int $id = null, UrlInterface $url = null)
     {
         $this->id = $id;
         $this->url = $url;
@@ -42,18 +42,14 @@ class DisplayHook extends Hook
 
     /**
      * Add response.
-     *
-     * @param DisplayHookResponse $response
-     *
-     * @return DisplayHookResponse
      */
-    public function setResponse(DisplayHookResponse $response)
+    public function setResponse(DisplayHookResponse $response): DisplayHookResponse
     {
         if (isset($this->responses[$response->getArea()])) {
             // if there are multiple reponses for the same area, append them together
             $existingContent = $this->responses[$response->getArea()]->__toString();
             $incomingContent = $response->__toString();
-            $response = new DisplayHookResponse($response->getArea(), $existingContent . "<br>" . $incomingContent);
+            $response = new DisplayHookResponse($response->getArea(), $existingContent . '<br>' . $incomingContent);
         }
 
         return $this->responses[$response->getArea()] = $response;
@@ -64,17 +60,12 @@ class DisplayHook extends Hook
      *
      * @return DisplayHookResponse[]
      */
-    public function getResponses()
+    public function getResponses(): array
     {
         return $this->responses;
     }
 
-    /**
-     * Url getter.
-     *
-     * @return UrlInterface
-     */
-    public function getUrl()
+    public function getUrl(): UrlInterface
     {
         return $this->url;
     }

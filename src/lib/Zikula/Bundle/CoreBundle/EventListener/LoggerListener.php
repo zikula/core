@@ -42,21 +42,15 @@ class LoggerListener extends BaseListener
     private $currentUserApi;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $installed;
 
-    /**
-     * @param LoggableListener        $loggableListener
-     * @param TranslatorInterface     $translator
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param boolean                 $installed
-     */
     public function __construct(
         LoggableListener $loggableListener,
         TranslatorInterface $translator,
         CurrentUserApiInterface $currentUserApi,
-        $installed
+        bool $installed
     ) {
         $this->loggableListener = $loggableListener;
         $this->translator = $translator;
@@ -64,12 +58,17 @@ class LoggerListener extends BaseListener
         $this->installed = $installed;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onKernelRequest'
+        ];
+    }
+
     /**
-     * Set the username from the current user api by listening on core.request.
-     *
-     * @param GetResponseEvent $event
+     * Set the username from the current user api.
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         if (!$this->installed) {
             return;
@@ -82,12 +81,5 @@ class LoggerListener extends BaseListener
         $userName = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uname') : $this->translator->__('Guest');
 
         $this->loggableListener->setUsername($userName);
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => 'onKernelRequest'
-        ];
     }
 }

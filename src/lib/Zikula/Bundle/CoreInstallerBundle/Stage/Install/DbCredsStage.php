@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
+use PDO;
+use PDOException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
@@ -42,27 +44,27 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'dbcreds';
     }
 
-    public function getFormType()
+    public function getFormType(): string
     {
         return DbCredsType::class;
     }
 
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         return [];
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
-        return "ZikulaCoreInstallerBundle:Install:dbcreds.html.twig";
+        return 'ZikulaCoreInstallerBundle:Install:dbcreds.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         $params = $this->yamlManager->getParameters();
         if (!empty($params['database_host']) && !empty($params['database_user']) && !empty($params['database_name'])) {
@@ -78,22 +80,24 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }
 
-    public function handleFormResult(FormInterface $form)
+    public function handleFormResult(FormInterface $form): bool
     {
         $data = $form->getData();
         $params = array_merge($this->yamlManager->getParameters(), $data);
-        if ('pdo_' !== mb_substr($params['database_driver'], 0, 4)) {
+        if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
             $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         }
         $this->writeParams($params);
+
+        return true;
     }
 
-    private function writeParams($params)
+    private function writeParams($params): void
     {
         try {
             $this->yamlManager->setParameters($params);
@@ -107,9 +111,10 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
     public function testDBConnection($params)
     {
         $params['database_driver'] = mb_substr($params['database_driver'], 4);
+        $dsn = $params['database_driver'] . ':host=' . $params['database_host'] . ';dbname=' . $params['database_name'];
         try {
-            new \PDO("{$params[database_driver]}:host={$params[database_host]};dbname={$params[database_name]}", $params['database_user'], $params['database_password']);
-        } catch (\PDOException $exception) {
+            new PDO($dsn, $params['database_user'], $params['database_password']);
+        } catch (PDOException $exception) {
             return $exception->getMessage();
         }
 

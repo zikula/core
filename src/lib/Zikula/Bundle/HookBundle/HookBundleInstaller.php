@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookBindingEntity;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
 use Zikula\Core\Doctrine\Helper\SchemaHelper;
@@ -36,14 +37,9 @@ class HookBundleInstaller implements InstallerInterface
 
     private static $entities = [
         HookBindingEntity::class,
-        HookRuntimeEntity::class,
+        HookRuntimeEntity::class
     ];
 
-    /**
-     * HookBundleInstaller constructor.
-     * @param SchemaHelper $schemaTool
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
         SchemaHelper $schemaTool,
         EntityManagerInterface $entityManager
@@ -52,23 +48,23 @@ class HookBundleInstaller implements InstallerInterface
         $this->em = $entityManager;
     }
 
-    public function install()
+    public function install(): bool
     {
         try {
             $this->schemaTool->create(self::$entities);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
         return true;
     }
 
-    public function uninstall()
+    public function uninstall(): bool
     {
         return false;
     }
 
-    public function upgrade($currentCoreVersion)
+    public function upgrade($currentCoreVersion): bool
     {
         // special note, the $currentCoreVersion var will contain the version of the CORE (not this bundle)
 

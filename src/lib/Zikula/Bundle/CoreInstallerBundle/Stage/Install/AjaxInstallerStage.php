@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -23,42 +24,42 @@ class AjaxInstallerStage implements StageInterface, InjectContainerInterface
 {
     use TranslatorTrait;
 
-    const NAME = 'name';
+    public const NAME = 'name';
 
-    const PRE = 'pre';
+    public const PRE = 'pre';
 
-    const DURING = 'during';
+    public const DURING = 'during';
 
-    const SUCCESS = 'success';
+    public const SUCCESS = 'success';
 
-    const FAIL = 'fail';
+    public const FAIL = 'fail';
 
     public function __construct(ContainerInterface $container)
     {
         $this->setTranslator($container->get(Translator::class));
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'ajaxinstaller';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Install:ajaxinstaller.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return ['stages' => [
             1 => [

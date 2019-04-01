@@ -52,7 +52,6 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOpti
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 
@@ -69,11 +68,6 @@ class DynamicFieldType extends AbstractType
     private $eventDispatcher;
 
     /**
-     * @var LocaleApiInterface
-     */
-    private $localeApi;
-
-    /**
      * @var PageAssetApiInterface
      */
     private $pageAssetApi;
@@ -83,40 +77,23 @@ class DynamicFieldType extends AbstractType
      */
     private $assetHelper;
 
-    /**
-     * DynamicFieldType constructor.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param LocaleApiInterface $localeApi
-     * @param TranslatorInterface $translator
-     * @param PageAssetApiInterface $pageAssetApi
-     * @param Asset $assetHelper
-     */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        LocaleApiInterface $localeApi,
         TranslatorInterface $translator,
         PageAssetApiInterface $pageAssetApi,
         Asset $assetHelper
     ) {
         $this->eventDispatcher = $eventDispatcher;
-        $this->localeApi = $localeApi;
         $this->setTranslator($translator);
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('formType', ChoiceType::class, [
@@ -161,34 +138,28 @@ class DynamicFieldType extends AbstractType
             }
             $form->add($formOptions->getForm());
         };
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($formModifier) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) use ($formModifier) {
             $data = $event->getData();
             $formType = $data['formType'];
             $formModifier($event->getForm(), $formType);
         });
-        $builder->get('formType')->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($formModifier) {
+        $builder->get('formType')->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $event) use ($formModifier) {
             $formType = $event->getForm()->getData();
             $formModifier($event->getForm()->getParent(), $formType);
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $this->pageAssetApi->add('javascript', $this->assetHelper->resolve('@ZikulaFormExtensionBundle:js/ZikulaFormExtensionBundle.DynamicField.Edit.js'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulaformextensionbundle_dynamicfield';
     }
 
-    private function getChoices()
+    private function getChoices(): FormTypesChoices
     {
         $choices = new FormTypesChoices([
             $this->__('Text Fields') => [
@@ -220,7 +191,7 @@ class DynamicFieldType extends AbstractType
             $this->__('Other Fields') => [
                 $this->__('Checkbox') => CheckboxType::class,
                 $this->__('Radio') => RadioType::class,
-            ],
+            ]
         ]);
 
         $event = new FormTypeChoiceEvent($choices);

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -14,7 +17,7 @@ namespace Zikula\RoutesModule\DependencyInjection;
 use Zikula\RoutesModule\DependencyInjection\Base\AbstractZikulaRoutesExtension;
 
 /**
- * Implementation class for service definition loader using the DependencyInjection extension.
+ * DependencyInjection extension implementation class.
  */
 class ZikulaRoutesExtension extends AbstractZikulaRoutesExtension
 {

@@ -23,7 +23,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 class MockPotFileLoader extends ArrayLoader
 {
     /**
-     * returns empty MessageCatalogue
+     * Returns empty MessageCatalogue
      *
      * @param mixed $resource
      * @param string $locale

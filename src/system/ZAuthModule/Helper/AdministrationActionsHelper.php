@@ -49,14 +49,6 @@ class AdministrationActionsHelper
      */
     private $userRepository;
 
-    /**
-     * UserAdministrationActionsFunction constructor.
-     * @param PermissionApiInterface $permissionsApi
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(
         PermissionApiInterface $permissionsApi,
         RouterInterface $router,
@@ -71,11 +63,7 @@ class AdministrationActionsHelper
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param AuthenticationMappingEntity $mapping
-     * @return array
-     */
-    public function user(AuthenticationMappingEntity $mapping)
+    public function user(AuthenticationMappingEntity $mapping): array
     {
         $actions = [];
         if (!$this->permissionsApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_MODERATE)) {
@@ -87,53 +75,55 @@ class AdministrationActionsHelper
             'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL
         ]);
         // send verification email requires no further perm check
-        if (!$mapping->isVerifiedEmail()) {
-            if (!empty($userVerification)) {
-                $title = (null === $userVerification->getVerifycode())
-                    ? $this->translator->__f('Send an e-mail verification code for %sub%', ["%sub%" => $mapping->getUname()])
-                    : $this->translator->__f('Send a new e-mail verification code for %sub%', ["%sub%" => $mapping->getUname()]);
-                $actions['verify'] = [
-                    'url' => $this->router->generate('zikulazauthmodule_useradministration_verify', ['mapping' => $mapping->getId()]),
-                    'text' => $title,
-                    'icon' => 'envelope',
-                ];
-            }
+        if (null !== $userVerification && !$mapping->isVerifiedEmail()) {
+            $title = (null === $userVerification->getVerifycode())
+                ? $this->translator->__f('Send an e-mail verification code for %sub%', ['%sub%' => $mapping->getUname()])
+                : $this->translator->__f('Send a new e-mail verification code for %sub%', ['%sub%' => $mapping->getUname()]);
+            $actions['verify'] = [
+                'url' => $this->router->generate('zikulazauthmodule_useradministration_verify', ['mapping' => $mapping->getId()]),
+                'text' => $title,
+                'icon' => 'envelope',
+            ];
         }
         $hasModeratePermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_MODERATE);
         $hasEditPermissionToUser = $this->permissionsApi->hasPermission('ZikulaZAuthModule::', $mapping->getUname() . '::' . $mapping->getUid(), ACCESS_EDIT);
-        if ($mapping->getUid() > 1 && $hasModeratePermissionToUser) {
+        if ($hasModeratePermissionToUser && $mapping->getUid() > 1) {
             $actions['senduname'] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_sendusername', ['mapping' => $mapping->getId()]),
-                'text' => $this->translator->__f('Send user name to %sub%', ["%sub%" => $mapping->getUname()]),
+                'text' => $this->translator->__f('Send user name to %sub%', ['%sub%' => $mapping->getUname()]),
                 'icon' => 'user',
             ];
         }
         if ($hasModeratePermissionToUser) {
             $actions['sendconfirm'] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_sendconfirmation', ['mapping' => $mapping->getId()]),
-                'text' => $this->translator->__f('Send password recovery e-mail to %sub%', ["%sub%" => $mapping->getUname()]),
+                'text' => $this->translator->__f('Send password recovery e-mail to %sub%', ['%sub%' => $mapping->getUname()]),
                 'icon' => 'key',
             ];
         }
         if ($hasEditPermissionToUser) {
             $userEntity = $this->userRepository->find($mapping->getUid());
-            if ($userEntity->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && (bool)$userEntity->getAttributeValue(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
-                $title = $this->translator->__f('Cancel required change of password for %sub%', ["%sub%" => $mapping->getUname()]);
-                $fa = 'unlock-alt';
-            } else {
-                $title = $this->translator->__f('Require %sub% to change password at next login', ["%sub%" => $mapping->getUname()]);
-                $fa = 'lock';
+            if (null !== $userEntity) {
+                if ((bool)$userEntity->getAttributeValue(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)
+                    && $userEntity->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)
+                ) {
+                    $title = $this->translator->__f('Cancel required change of password for %sub%', ['%sub%' => $mapping->getUname()]);
+                    $fa = 'unlock-alt';
+                } else {
+                    $title = $this->translator->__f('Require %sub% to change password at next login', ['%sub%' => $mapping->getUname()]);
+                    $fa = 'lock';
+                }
+                $actions['togglepass'] = [
+                    'url' => $this->router->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $mapping->getUid()]), // note intentionally UID
+                    'text' => $title,
+                    'icon' => $fa,
+                ];
             }
-            $actions['togglepass'] = [
-                'url' => $this->router->generate('zikulazauthmodule_useradministration_togglepasswordchange', ['user' => $mapping->getUid()]), // note intentionally UID
-                'text' => $title,
-                'icon' => $fa,
-            ];
         }
-        if ($mapping->getUid() > 1 && $hasEditPermissionToUser) {
+        if ($hasEditPermissionToUser && $mapping->getUid() > 1) {
             $actions['modify'] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_modify', ['mapping' => $mapping->getId()]),
-                'text' => $this->translator->__f('Edit %sub%', ["%sub%" => $mapping->getUname()]),
+                'text' => $this->translator->__f('Edit %sub%', ['%sub%' => $mapping->getUname()]),
                 'icon' => 'pencil',
             ];
         }

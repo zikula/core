@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
@@ -32,21 +32,19 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
 class PositionController extends AbstractController
 {
     /**
-     * Create a new position or edit an existing position.
-     *
      * @Route("/edit/{positionEntity}", requirements={"positionEntity" = "^[1-9]\d*$"})
      * @Theme("admin")
      * @Template("ZikulaBlocksModule:Position:edit.html.twig")
      *
-     * @param Request $request
-     * @param BlockPositionEntity $positionEntity
+     * Create a new position or edit an existing position.
      *
-     * @return RedirectResponse|Response
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions for the position
      */
     public function editAction(Request $request, BlockPositionEntity $positionEntity = null)
     {
         $permParam = (null !== $positionEntity) ? $positionEntity->getName() : 'position';
-        if (!$this->hasPermission('ZikulaBlocksModule::' . $permParam, '::', ACCESS_ADMIN)) {
+        if (!$this->hasPermission('ZikulaBlocksModule::' . $permParam, '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
@@ -58,7 +56,7 @@ class PositionController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
-                /** @var \Doctrine\ORM\EntityManager $em */
+                /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($positionEntity);
                 $em->flush();
@@ -72,7 +70,7 @@ class PositionController extends AbstractController
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 
@@ -83,10 +81,8 @@ class PositionController extends AbstractController
      *
      * Delete a position.
      *
-     * @param Request $request
-     * @param BlockPositionEntity $positionEntity
-     *
-     * @return RedirectResponse|Response
+     * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have delete permissions for the position
      */
     public function deleteAction(Request $request, BlockPositionEntity $positionEntity)
     {

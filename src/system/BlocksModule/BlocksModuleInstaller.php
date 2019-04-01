@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule;
 
+use Exception;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractExtensionInstaller;
 
 /**
@@ -33,16 +35,11 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         BlockPlacementEntity::class
     ];
 
-    /**
-     * initialise the blocks module
-     *
-     * @return bool true on success, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
 
@@ -53,14 +50,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the blocks module
-     *
-     * @param string $oldVersion version being upgraded
-     *
-     * @return bool true if successful, false otherwise
-     */
-    public function upgrade($oldVersion)
+    public function upgrade($oldVersion): bool
     {
         $blockRepository = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity');
         // Upgrade dependent on old version number
@@ -68,7 +58,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             case '3.8.1':
             case '3.8.2':
             case '3.9.0':
-                $sql = "SELECT * FROM blocks";
+                $sql = 'SELECT * FROM blocks';
                 $blocks = $this->entityManager->getConnection()->fetchAll($sql);
                 foreach ($blocks as $block) {
                     $content = $block['content'];
@@ -85,7 +75,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                                 }
                             }
                         }
-                        $this->entityManager->getConnection()->executeUpdate("UPDATE blocks SET content=? WHERE bid=?", [serialize($content), $block['bid']]);
+                        $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET content=? WHERE bid=?', [serialize($content), $block['bid']]);
                     }
                 }
 
@@ -96,7 +86,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
             case '3.9.1':
                 // make all content fields of blocks serialized.
-                $sql = "SELECT * FROM blocks";
+                $sql = 'SELECT * FROM blocks';
                 $blocks = $this->entityManager->getConnection()->fetchAll($sql);
                 $oldContent = [];
                 foreach ($blocks as $block) {
@@ -108,12 +98,14 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
                 $blocks = $blockRepository->findAll();
                 $installerHelper = new InstallerHelper();
-                /** @var \Zikula\BlocksModule\Entity\BlockEntity $block */
+                /** @var ZikulaHttpKernelInterface $kernel */
+                $kernel = $this->container->get('kernel');
+                /** @var BlockEntity $block */
                 foreach ($blocks as $block) {
                     $block->setProperties($oldContent[$block->getBid()]);
                     $block->setFilters($installerHelper->upgradeFilterArray($block->getFilters()));
-                    $block->setBlocktype(preg_match('/.*Block$/', $block->getBkey()) ? mb_substr($block->getBkey(), 0, -5) : $block->getBkey());
-                    $block->setBkey($installerHelper->upgradeBkeyToFqClassname($this->container->get('kernel'), $block));
+                    $block->setBlocktype(preg_match('/Block$/', $block->getBkey()) ? mb_substr($block->getBkey(), 0, -5) : $block->getBkey());
+                    $block->setBkey($installerHelper->upgradeBkeyToFqClassname($kernel, $block));
                 }
                 $this->entityManager->flush();
 
@@ -181,25 +173,19 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the blocks module
-     *
-     * Since the blocks module should never be deleted we'all always return false here
-     * @return bool false
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Deletion not allowed
         return false;
     }
 
     /**
-     * Add default block data for new installs
+     * Add default block data for new installations.
      * This is called after a complete installation since the blocks
      * need to be populated with module id's which are only available
-     * once the install has been completed
+     * once the installation has been completed.
      */
-    public function defaultdata()
+    public function createDefaultData(): void
     {
         // create the default block positions - left, right and center for the traditional 3 column layout
         $positions = [
@@ -210,8 +196,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'header' => $this->__('Header block'),
             'footer' => $this->__('Footer block'),
             'topnav' => $this->__('Top navigation block'),
-            'bottomnav' => $this->__('Bottom navigation block'),
-            ];
+            'bottomnav' => $this->__('Bottom navigation block')
+        ];
         foreach ($positions as $name => $description) {
             $positions[$name] = new BlockPositionEntity();
             $positions[$name]->setName($name);
@@ -245,7 +231,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'blocktype' => 'Html',
             'language' => '',
             'module' => $blocksModuleEntity,
-            'title' => $this->__("This site is powered by Zikula!"),
+            'title' => $this->__('This site is powered by Zikula!'),
             'description' => $this->__('HTML block'),
             'properties' => ['content' => $hellomessage],
             'position' => $positions['center']
@@ -281,11 +267,9 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             $this->entityManager->persist($placement);
         }
         $this->entityManager->flush();
-
-        return;
     }
 
-    private function isSerialized($string)
+    private function isSerialized($string): bool
     {
         return 'b:0;' === $string || false !== @unserialize($string);
     }

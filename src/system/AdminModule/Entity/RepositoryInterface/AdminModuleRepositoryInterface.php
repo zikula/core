@@ -16,23 +16,16 @@ namespace Zikula\AdminModule\Entity\RepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 interface AdminModuleRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function persistAndFlush($entity);
+    public function persistAndFlush(AdminModuleEntity $entity): void;
 
-    public function countModulesByCategory($cid);
+    public function countModulesByCategory(int $cid): int;
 
-    /**
-     * @param ExtensionEntity $moduleEntity
-     * @param AdminCategoryEntity $adminCategoryEntity
-     */
-    public function setModuleCategory(ExtensionEntity $moduleEntity, AdminCategoryEntity $adminCategoryEntity);
+    public function setModuleCategory(ExtensionEntity $moduleEntity, AdminCategoryEntity $adminCategoryEntity): void;
 
-    /**
-     * @param int $oldCategory
-     * @param int $newCategory
-     */
-    public function changeCategory($oldCategory, $newCategory);
+    public function changeCategory(int $oldCategory, int $newCategory): void;
 }

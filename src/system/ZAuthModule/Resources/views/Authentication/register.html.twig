@@ -25,14 +25,16 @@
         {{ form_row(form.uname) }}
         <em class="help-block small col-sm-offset-3 col-sm-9">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</em>
     </fieldset>
+    {% if form.children.email is defined %}{# email may not be defined if authentication is non-local #}
+        <fieldset>
+            <legend>{{ __('Enter your e-mail address') }}</legend>
+            {{ form_row(form.email) }}
+        </fieldset>
+    {% endif %}
     <fieldset>
         <legend>{{ __('Set a password') }}</legend>
         {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-    </fieldset>
-    <fieldset {% if hideEmail is defined and hideEmail %}class="hide"{% endif %}>
-        <legend>{{ __('Enter your e-mail address') }}</legend>
-        {% if form.children.email is defined %}{{ form_row(form.email) }}{% endif %}{# email may not be defined if authentication is non-local #}
     </fieldset>
 
     {% for additional_template in additional_templates %}

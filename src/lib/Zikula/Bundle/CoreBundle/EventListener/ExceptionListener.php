@@ -47,18 +47,11 @@ class ExceptionListener implements EventSubscriberInterface
      */
     private $installed;
 
-    /**
-     * ExceptionListener constructor.
-     * @param TranslatorInterface $translator
-     * @param RouterInterface $router
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param bool $installed
-     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
-        $installed
+        bool $installed
     ) {
         $this->translator = $translator;
         $this->router = $router;
@@ -77,43 +70,46 @@ class ExceptionListener implements EventSubscriberInterface
 
     /**
      * Handles exceptions.
-     *
-     * @param GetResponseForExceptionEvent $event An GetResponseForExceptionEvent instance
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(GetResponseForExceptionEvent $event): void
     {
-        if (!$event->getRequest()->isXmlHttpRequest()) {
-            $exception = $event->getException();
-            do {
-                $userLoggedIn = $this->installed ? $this->currentUserApi->isLoggedIn() : false;
-                if ($exception instanceof AccessDeniedException) {
-                    $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
-                }
-                // list and handle additional exceptions here
-            } while (null !== $exception = $exception->getPrevious());
+        if ($event->getRequest()->isXmlHttpRequest()) {
+            return;
         }
+
+        $exception = $event->getException();
+        do {
+            $userLoggedIn = $this->installed ? $this->currentUserApi->isLoggedIn() : false;
+            if ($exception instanceof AccessDeniedException) {
+                $this->handleAccessDeniedException($event, $userLoggedIn, $exception->getMessage());
+            }
+            // list and handle additional exceptions here
+        } while (null !== $exception = $exception->getPrevious());
     }
 
     /**
      * Handle an AccessDeniedException
      *
-     * @param GetResponseForExceptionEvent $event
-     * @param boolean $userLoggedIn
-     * @param string $message a custom error message (default: 'Access Denied') (The default message from Symfony)
-     * @see http://api.symfony.com/2.8/Symfony/Component/Security/Core/Exception/AccessDeniedException.html
+     * @see AccessDeniedException
      */
-    private function handleAccessDeniedException(GetResponseForExceptionEvent $event, $userLoggedIn, $message = 'Access Denied')
+    private function handleAccessDeniedException(GetResponseForExceptionEvent $event, bool $userLoggedIn, string $message = 'Access Denied'): void
     {
+        $session = null !== $event->getRequest() && $event->getRequest()->hasSession()
+            && null !== $event->getRequest()->getSession() ? $event->getRequest()->getSession() : null;
         if (!$userLoggedIn) {
-            $message = ('Access Denied.' === $message) ? $this->translator->__('You do not have permission. You must login first.') : $message;
-            $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
+            if (null !== $session) {
+                $message = ('Access Denied.' === $message) ? $this->translator->__('You do not have permission. You must login first.') : $message;
+                $session->getFlashBag()->add('error', $message);
+            }
 
             $params = ['returnUrl' => urlencode($event->getRequest()->getRequestUri())];
             // redirect to login page
             $route = $this->router->generate('zikulausersmodule_access_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
-            $message = ('Access Denied.' === $message) ? $this->translator->__('You do not have permission for that action.') : $message;
-            $event->getRequest()->getSession()->getFlashBag()->add('error', $message);
+            if (null !== $session) {
+                $message = ('Access Denied.' === $message) ? $this->translator->__('You do not have permission for that action.') : $message;
+                $session->getFlashBag()->add('error', $message);
+            }
 
             // redirect to previous page
             $route = $event->getRequest()->server->get('HTTP_REFERER', $this->router->generate('home'));

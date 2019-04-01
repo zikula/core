@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
+use Symfony\Component\EventDispatcher\Event;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
@@ -23,89 +24,50 @@ interface HookDispatcherInterface
 {
     /**
      * Get storage driver.
-     *
-     * @return StorageInterface
      */
-    public function getStorage();
+    public function getStorage(): StorageInterface;
 
     /**
      * Dispatch hook listeners.
-     *
-     * @param string $name Hook event name
-     * @param Hook   $hook Hook instance
-     *
-     * @return Hook
      */
-    public function dispatch($name, Hook $hook);
+    public function dispatch(string $eventName, Hook $hook): Event;
 
     /**
      * Return all bindings for a given area.
-     *
      * Area names are unique so you can specify subscriber or provider area.
-     *
-     * @param string $areaName Areaname
-     * @param string $type subscriber|provider
-     *
-     * @return array
      */
-    public function getBindingsFor($areaName, $type = 'subscriber');
+    public function getBindingsFor(string $areaName, string $type = 'subscriber'): array;
 
     /**
      * Set the bind order of hooks.
-     *
-     * Used to resort the order providers are invoked for a given
-     * area name.
-     *
-     * @param string $subscriberAreaName
-     * @param array  $providerAreas      Array of provider area names
+     * Used to resort the order providers are invoked for a given area name.
      */
-    public function setBindOrder($subscriberAreaName, array $providerAreas);
+    public function setBindOrder(string $subscriberAreaName, array $providerAreas = []): void;
 
     /**
      * Get binding between areas.
-     *
-     * @param string $subscriberArea
-     * @param string $providerArea
-     *
-     * @return array
      */
-    public function getBindingBetweenAreas($subscriberArea, $providerArea);
+    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea): array;
 
     /**
      * Check if areas may be bound together.
-     *
-     * @param string $subscriberarea
-     * @param string $providerarea
-     *
-     * @return boolean
      */
-    public function isAllowedBindingBetweenAreas($subscriberarea, $providerarea);
+    public function isAllowedBindingBetweenAreas(string $subscriberarea, string $providerarea): bool;
 
     /**
      * Get bindings between two owners.
-     *
-     * @param string $subscriberName
-     * @param string $providerName
-     *
-     * @return array
      */
-    public function getBindingsBetweenOwners($subscriberName, $providerName);
+    public function getBindingsBetweenOwners(string $subscriberName, string $providerName): array;
 
     /**
      * Bind subscriber and provider area together.
      *
-     * @param string $subscriberArea
-     * @param string $providerArea
-     *
      * @throws LogicException
      */
-    public function bindSubscriber($subscriberArea, $providerArea);
+    public function bindSubscriber(string $subscriberArea, string $providerArea): void;
 
     /**
      * Unbind subscriber.
-     *
-     * @param string $subscriberArea
-     * @param string $providerArea
      */
-    public function unbindSubscriber($subscriberArea, $providerArea);
+    public function unbindSubscriber(string $subscriberArea, string $providerArea): void;
 }

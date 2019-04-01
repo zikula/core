@@ -21,51 +21,45 @@ interface DynamicFieldInterface
 {
     /**
      * Returns name of form field.
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns optional prefix of form field.
-     * @return string
      */
-    public function getPrefix();
+    public function getPrefix(): string;
 
     /**
      * Returns a list of labels per locale.
-     * @return array
+     * @return string[]
      */
-    public function getLabels();
+    public function getLabels(): array;
 
     /**
      * Returns label for a specific locale.
-     * @return string
      */
-    public function getLabel($locale = '', $default = 'en');
+    public function getLabel(string $locale = '', string $default = 'en'): string;
 
     /**
      * Returns the FqCN of the form class (e.g. return IntegerType::class;)
-     * @return string
      */
-    public function getFormType();
+    public function getFormType(): string;
 
     /**
      * Returns an array of form options.
-     * @return array
      */
-    public function getFormOptions();
+    public function getFormOptions(): array;
 
     /**
      * Returns a weighting number for sorting fields.
      * This is currently not utilised, but reserved for future usage.
-     * @return integer
      */
-    public function getWeight();
+    public function getWeight(): int;
 
     /**
      * Returns a list of group names per locale.
      * May optionally be used for dividing fields into several fieldsets.
-     * @return array
+     * @return string[]
      */
-    public function getGroupNames();
+    public function getGroupNames(): array;
 }

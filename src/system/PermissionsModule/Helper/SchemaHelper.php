@@ -24,31 +24,26 @@ class SchemaHelper
      */
     private $extensionRepository;
 
-    /**
-     * SchemaHelper constructor.
-     * @param ExtensionRepositoryInterface $extensionRepository
-     */
     public function __construct(ExtensionRepositoryInterface $extensionRepository)
     {
         $this->extensionRepository = $extensionRepository;
     }
 
     /**
-     * Get the security schema for each registered extension
-     * Optionally filter by active status
-     * @param bool $activeOnly
-     * @return array
+     * Get the security schema for each registered extension.
+     * Optionally filter by active status.
      */
-    public function getAllSchema($activeOnly = false)
+    public function getAllSchema(bool $activeOnly = false): array
     {
         $criteria = $activeOnly ? ['state' => Constant::STATE_ACTIVE] : [];
         /** @var ExtensionEntity[] $extensions */
         $extensions = $this->extensionRepository->findBy($criteria);
         $schema = [];
         foreach ($extensions as $extension) {
-            if (null !== $extension->getSecurityschema()) {
-                $schema = array_merge($schema, $extension->getSecurityschema());
+            if (null === $extension->getSecurityschema()) {
+                continue;
             }
+            $schema = array_merge($schema, $extension->getSecurityschema());
         }
         uksort($schema, 'strnatcasecmp');
 

@@ -23,16 +23,12 @@ class DefaultPathSimpleFunction
      */
     private $coreExtension;
 
-    /**
-     * DefaultPathSimpleFunction constructor.
-     * @param CoreExtension $coreExtension
-     */
     public function __construct(CoreExtension $coreExtension)
     {
         $this->coreExtension = $coreExtension;
     }
 
-    public function getDefaultPath($extensionName, $type = CapabilityApiInterface::USER)
+    public function getDefaultPath(string $extensionName, string $type = CapabilityApiInterface::USER): string
     {
         $container = $this->coreExtension->getContainer();
         $capability = $container->get('zikula_extensions_module.api.capability')->isCapable($extensionName, $type);

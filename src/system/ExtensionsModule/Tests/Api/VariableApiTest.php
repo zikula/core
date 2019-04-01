@@ -13,22 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Tests\Api\Fixtures\ExtensionVarStubRepository;
 use Zikula\ExtensionsModule\Tests\Fixtures\BaseBundle\BaseBundle;
 
-class VariableApiTest extends \PHPUnit\Framework\TestCase
+class VariableApiTest extends TestCase
 {
     /**
-     * @var VariableApi
+     * @var VariableApiInterface
      */
     private $api;
 
-    /**
-     * VariableApiTest constructor.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $kernel = $this
             ->getMockBuilder(ZikulaHttpKernelInterface::class)
@@ -39,7 +38,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
         $kernel
             ->expects($this->once())
             ->method('getBundles')
-            ->will($this->returnValue(['BaseBundle' => new BaseBundle()]))
+            ->willReturn(['BaseBundle' => new BaseBundle()])
         ;
 
         $repo = new ExtensionVarStubRepository();
@@ -49,7 +48,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::has
      */
-    public function testHas()
+    public function testHas(): void
     {
         $this->assertFalse($this->api->has('BaseBundle', 'test'));
         $this->assertTrue($this->api->has('FooExtension', 'bar'));
@@ -58,7 +57,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::get
      */
-    public function testGet()
+    public function testGet(): void
     {
         $this->assertEquals($this->api->get('FooExtension', 'bar'), 'test');
         $this->assertEquals($this->api->get('BarExtension', 'bar'), 7);
@@ -69,7 +68,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::getSystemVar
      */
-    public function testGetSystemVar()
+    public function testGetSystemVar(): void
     {
         $this->assertEquals($this->api->get('ZConfig', 'systemvar'), 'abc');
         $this->assertFalse($this->api->get('ZConfig', 'nonExistentVariable'));
@@ -79,9 +78,8 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::getAll
      */
-    public function testGetAll()
+    public function testGetAll(): void
     {
-        $this->assertInternalType('array', $this->api->getAll('FooExtension'));
         $this->assertCount(1, $this->api->getAll('FooExtension'));
         $this->assertArrayHasKey('bar', $this->api->getAll('FooExtension'));
     }
@@ -89,7 +87,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::set
      */
-    public function testSetAndGet()
+    public function testSetAndGet(): void
     {
         $this->assertTrue($this->api->set('TestSet', 'int', 8));
         $this->assertEquals($this->api->get('TestSet', 'int'), 8);
@@ -98,7 +96,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::setAll
      */
-    public function testSetAllAndGetAll()
+    public function testSetAllAndGetAll(): void
     {
         $variables = [
             'int' => 9,
@@ -112,7 +110,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::del
      */
-    public function testDel()
+    public function testDel(): void
     {
         $this->assertCount(3, $this->api->getAll('BarExtension'));
         $this->assertTrue($this->api->has('BarExtension', 'name'));
@@ -124,7 +122,7 @@ class VariableApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers VariableApi::delAll
      */
-    public function testDelAll()
+    public function testDelAll(): void
     {
         $this->assertCount(3, $this->api->getAll('BarExtension'));
         $this->assertTrue($this->api->delAll('BarExtension'));

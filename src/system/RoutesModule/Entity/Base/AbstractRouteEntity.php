@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -46,7 +49,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=1000000000)
-     * @var integer $id
+     * @var int $id
      */
     protected $id = 0;
     
@@ -119,7 +122,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\Column(type="boolean")
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $prependBundlePrefix
+     * @var bool $prependBundlePrefix
      */
     protected $prependBundlePrefix = true;
     
@@ -127,7 +130,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\Column(type="boolean")
      * @Assert\NotNull()
      * @Assert\Type(type="bool")
-     * @var boolean $translatable
+     * @var bool $translatable
      */
     protected $translatable = true;
     
@@ -182,7 +185,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=100000000000)
-     * @var integer $sort
+     * @var int $sort
      */
     protected $sort = 0;
     
@@ -199,460 +202,232 @@ abstract class AbstractRouteEntity extends EntityAccess
     {
     }
     
-    /**
-     * Returns the _object type.
-     *
-     * @return string
-     */
-    public function get_objectType()
+    public function get_objectType(): string
     {
         return $this->_objectType;
     }
     
-    /**
-     * Sets the _object type.
-     *
-     * @param string $_objectType
-     *
-     * @return void
-     */
-    public function set_objectType($_objectType)
+    public function set_objectType(string $_objectType): void
     {
-        if ($this->_objectType != $_objectType) {
-            $this->_objectType = isset($_objectType) ? $_objectType : '';
+        if ($this->_objectType !== $_objectType) {
+            $this->_objectType = $_objectType ?? '';
         }
     }
     
     
-    /**
-     * Returns the id.
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
     
-    /**
-     * Sets the id.
-     *
-     * @param integer $id
-     *
-     * @return void
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
-        if (intval($this->id) !== intval($id)) {
-            $this->id = intval($id);
+        if ((int)$this->id !== $id) {
+            $this->id = $id;
         }
     }
     
-    /**
-     * Returns the workflow state.
-     *
-     * @return string
-     */
-    public function getWorkflowState()
+    public function getWorkflowState(): string
     {
         return $this->workflowState;
     }
     
-    /**
-     * Sets the workflow state.
-     *
-     * @param string $workflowState
-     *
-     * @return void
-     */
-    public function setWorkflowState($workflowState)
+    public function setWorkflowState(string $workflowState): void
     {
         if ($this->workflowState !== $workflowState) {
-            $this->workflowState = isset($workflowState) ? $workflowState : '';
+            $this->workflowState = $workflowState ?? '';
         }
     }
     
-    /**
-     * Returns the bundle.
-     *
-     * @return string
-     */
-    public function getBundle()
+    public function getBundle(): string
     {
         return $this->bundle;
     }
     
-    /**
-     * Sets the bundle.
-     *
-     * @param string $bundle
-     *
-     * @return void
-     */
-    public function setBundle($bundle)
+    public function setBundle(string $bundle): void
     {
         if ($this->bundle !== $bundle) {
-            $this->bundle = isset($bundle) ? $bundle : '';
+            $this->bundle = $bundle ?? '';
         }
     }
     
-    /**
-     * Returns the controller.
-     *
-     * @return string
-     */
-    public function getController()
+    public function getController(): string
     {
         return $this->controller;
     }
     
-    /**
-     * Sets the controller.
-     *
-     * @param string $controller
-     *
-     * @return void
-     */
-    public function setController($controller)
+    public function setController(string $controller): void
     {
         if ($this->controller !== $controller) {
-            $this->controller = isset($controller) ? $controller : '';
+            $this->controller = $controller ?? '';
         }
     }
     
-    /**
-     * Returns the action.
-     *
-     * @return string
-     */
-    public function getAction()
+    public function getAction(): string
     {
         return $this->action;
     }
     
-    /**
-     * Sets the action.
-     *
-     * @param string $action
-     *
-     * @return void
-     */
-    public function setAction($action)
+    public function setAction(string $action): void
     {
         if ($this->action !== $action) {
-            $this->action = isset($action) ? $action : '';
+            $this->action = $action ?? '';
         }
     }
     
-    /**
-     * Returns the path.
-     *
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
     
-    /**
-     * Sets the path.
-     *
-     * @param string $path
-     *
-     * @return void
-     */
-    public function setPath($path)
+    public function setPath(string $path): void
     {
         if ($this->path !== $path) {
-            $this->path = isset($path) ? $path : '';
+            $this->path = $path ?? '';
         }
     }
     
-    /**
-     * Returns the host.
-     *
-     * @return string
-     */
-    public function getHost()
+    public function getHost(): ?string
     {
         return $this->host;
     }
     
-    /**
-     * Sets the host.
-     *
-     * @param string $host
-     *
-     * @return void
-     */
-    public function setHost($host)
+    public function setHost(string $host = null): void
     {
         if ($this->host !== $host) {
             $this->host = $host;
         }
     }
     
-    /**
-     * Returns the schemes.
-     *
-     * @return string
-     */
-    public function getSchemes()
+    public function getSchemes(): string
     {
         return $this->schemes;
     }
     
-    /**
-     * Sets the schemes.
-     *
-     * @param string $schemes
-     *
-     * @return void
-     */
-    public function setSchemes($schemes)
+    public function setSchemes(string $schemes): void
     {
         if ($this->schemes !== $schemes) {
-            $this->schemes = isset($schemes) ? $schemes : '';
+            $this->schemes = $schemes ?? '';
         }
     }
     
-    /**
-     * Returns the methods.
-     *
-     * @return string
-     */
-    public function getMethods()
+    public function getMethods(): string
     {
         return $this->methods;
     }
     
-    /**
-     * Sets the methods.
-     *
-     * @param string $methods
-     *
-     * @return void
-     */
-    public function setMethods($methods)
+    public function setMethods(string $methods): void
     {
         if ($this->methods !== $methods) {
-            $this->methods = isset($methods) ? $methods : '';
+            $this->methods = $methods ?? '';
         }
     }
     
-    /**
-     * Returns the prepend bundle prefix.
-     *
-     * @return boolean
-     */
-    public function getPrependBundlePrefix()
+    public function getPrependBundlePrefix(): bool
     {
         return $this->prependBundlePrefix;
     }
     
-    /**
-     * Sets the prepend bundle prefix.
-     *
-     * @param boolean $prependBundlePrefix
-     *
-     * @return void
-     */
-    public function setPrependBundlePrefix($prependBundlePrefix)
+    public function setPrependBundlePrefix(bool $prependBundlePrefix): void
     {
-        if (boolval($this->prependBundlePrefix) !== boolval($prependBundlePrefix)) {
-            $this->prependBundlePrefix = boolval($prependBundlePrefix);
+        if ((bool)$this->prependBundlePrefix !== $prependBundlePrefix) {
+            $this->prependBundlePrefix = $prependBundlePrefix;
         }
     }
     
-    /**
-     * Returns the translatable.
-     *
-     * @return boolean
-     */
-    public function getTranslatable()
+    public function getTranslatable(): bool
     {
         return $this->translatable;
     }
     
-    /**
-     * Sets the translatable.
-     *
-     * @param boolean $translatable
-     *
-     * @return void
-     */
-    public function setTranslatable($translatable)
+    public function setTranslatable(bool $translatable): void
     {
-        if (boolval($this->translatable) !== boolval($translatable)) {
-            $this->translatable = boolval($translatable);
+        if ((bool)$this->translatable !== $translatable) {
+            $this->translatable = $translatable;
         }
     }
     
-    /**
-     * Returns the translation prefix.
-     *
-     * @return string
-     */
-    public function getTranslationPrefix()
+    public function getTranslationPrefix(): ?string
     {
         return $this->translationPrefix;
     }
     
-    /**
-     * Sets the translation prefix.
-     *
-     * @param string $translationPrefix
-     *
-     * @return void
-     */
-    public function setTranslationPrefix($translationPrefix)
+    public function setTranslationPrefix(string $translationPrefix = null): void
     {
         if ($this->translationPrefix !== $translationPrefix) {
             $this->translationPrefix = $translationPrefix;
         }
     }
     
-    /**
-     * Returns the defaults.
-     *
-     * @return array
-     */
-    public function getDefaults()
+    public function getDefaults(): array
     {
         return $this->defaults;
     }
     
-    /**
-     * Sets the defaults.
-     *
-     * @param array $defaults
-     *
-     * @return void
-     */
-    public function setDefaults($defaults)
+    public function setDefaults(array $defaults): void
     {
         if ($this->defaults !== $defaults) {
-            $this->defaults = isset($defaults) ? $defaults : '';
+            $this->defaults = $defaults ?? '';
         }
     }
     
-    /**
-     * Returns the requirements.
-     *
-     * @return array
-     */
-    public function getRequirements()
+    public function getRequirements(): array
     {
         return $this->requirements;
     }
     
-    /**
-     * Sets the requirements.
-     *
-     * @param array $requirements
-     *
-     * @return void
-     */
-    public function setRequirements($requirements)
+    public function setRequirements(array $requirements): void
     {
         if ($this->requirements !== $requirements) {
-            $this->requirements = isset($requirements) ? $requirements : '';
+            $this->requirements = $requirements ?? '';
         }
     }
     
-    /**
-     * Returns the options.
-     *
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
     
-    /**
-     * Sets the options.
-     *
-     * @param array $options
-     *
-     * @return void
-     */
-    public function setOptions($options)
+    public function setOptions(array $options): void
     {
         if ($this->options !== $options) {
-            $this->options = isset($options) ? $options : '';
+            $this->options = $options ?? '';
         }
     }
     
-    /**
-     * Returns the condition.
-     *
-     * @return string
-     */
-    public function getCondition()
+    public function getCondition(): ?string
     {
         return $this->condition;
     }
     
-    /**
-     * Sets the condition.
-     *
-     * @param string $condition
-     *
-     * @return void
-     */
-    public function setCondition($condition)
+    public function setCondition(string $condition = null): void
     {
         if ($this->condition !== $condition) {
             $this->condition = $condition;
         }
     }
     
-    /**
-     * Returns the description.
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
     
-    /**
-     * Sets the description.
-     *
-     * @param string $description
-     *
-     * @return void
-     */
-    public function setDescription($description)
+    public function setDescription(string $description = null): void
     {
         if ($this->description !== $description) {
             $this->description = $description;
         }
     }
     
-    /**
-     * Returns the sort.
-     *
-     * @return integer
-     */
-    public function getSort()
+    public function getSort(): int
     {
         return $this->sort;
     }
     
-    /**
-     * Sets the sort.
-     *
-     * @param integer $sort
-     *
-     * @return void
-     */
-    public function setSort($sort)
+    public function setSort(int $sort): void
     {
-        if (intval($this->sort) !== intval($sort)) {
-            $this->sort = intval($sort);
+        if ((int)$this->sort !== $sort) {
+            $this->sort = $sort;
         }
     }
     
@@ -661,10 +436,8 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * Creates url arguments array for easy creation of display urls.
-     *
-     * @return array List of resulting arguments
      */
-    public function createUrlArgs()
+    public function createUrlArgs(): array
     {
         return [
             'id' => $this->getId()
@@ -673,22 +446,16 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * Returns the primary key.
-     *
-     * @return integer The identifier
      */
-    public function getKey()
+    public function getKey(): int
     {
         return $this->getId();
     }
     
     /**
      * Returns an array of all related objects that need to be persisted after clone.
-     * 
-     * @param array $objects Objects that are added to this array
-     * 
-     * @return array List of entity objects
      */
-    public function getRelatedObjectsToPersist(&$objects = [])
+    public function getRelatedObjectsToPersist(array &$objects = []): array
     {
         return [];
     }
@@ -696,10 +463,8 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * ToString interceptor implementation.
      * This method is useful for debugging purposes.
-     *
-     * @return string The output string for this entity
      */
-    public function __toString()
+    public function __toString(): string
     {
         return 'Route ' . $this->getKey() . ': ' . $this->getBundle();
     }

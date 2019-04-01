@@ -20,6 +20,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidRegistrationVerification extends Constraint
 {
+    /**
+     * @var string
+     */
     public $message = 'The fields are invalid.';
 
     public function getTargets()

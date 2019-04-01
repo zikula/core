@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
@@ -74,6 +77,7 @@ class BlockEntity extends EntityAccess
     /**
      * The id of the module owning the block
      *
+     * @var ExtensionEntity
      * @ORM\ManyToOne(targetEntity="Zikula\ExtensionsModule\Entity\ExtensionEntity")
      * @ORM\JoinColumn(name="mid", referencedColumnName="id")
      */
@@ -116,9 +120,6 @@ class BlockEntity extends EntityAccess
      */
     private $placements;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->bkey = '';
@@ -128,248 +129,142 @@ class BlockEntity extends EntityAccess
         $this->properties = [];
         $this->module = 0;
         $this->filters = [];
-        $this->active = 1;
-        $this->last_update = new \DateTime("now");
+        $this->active = BlockApi::BLOCK_ACTIVE;
+        $this->last_update = new DateTime('now');
         $this->language = '';
         $this->placements = new ArrayCollection();
     }
 
-    /**
-     * get the id of the block
-     *
-     * @return integer the block's id
-     */
-    public function getBid()
+    public function getBid(): int
     {
         return $this->bid;
     }
 
-    /**
-     * set the id for the block
-     *
-     * @param integer $bid the block's id
-     */
-    public function setBid($bid)
+    public function setBid(int $bid): void
     {
         $this->bid = $bid;
     }
 
-    /**
-     * get the bkey of the block
-     *
-     * @return string the block's bkey
-     */
-    public function getBkey()
+    public function getBkey(): string
     {
         return $this->bkey;
     }
 
-    /**
-     * set the bkey for the block
-     *
-     * @param string $bkey the block's bkey
-     */
-    public function setBkey($bkey)
+    public function setBkey(string $bkey): void
     {
         $this->bkey = $bkey;
     }
 
-    /**
-     * @return string
-     */
-    public function getBlocktype()
+    public function getBlocktype(): string
     {
         return $this->blocktype;
     }
 
-    /**
-     * @param string $blocktype
-     */
-    public function setBlocktype($blocktype)
+    public function setBlocktype(string $blocktype): void
     {
         $this->blocktype = $blocktype;
     }
 
-    /**
-     * get the title of the block
-     *
-     * @return string the block's title
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * set the title for the block
-     *
-     * @param string $title the block's title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * get the description of the block
-     *
-     * @return string the block's description
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * set the description for the block
-     *
-     * @param string $description the block's description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return array
-     */
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }
 
-    /**
-     * @param array $properties
-     */
-    public function setProperties(array $properties)
+    public function setProperties(array $properties = []): void
     {
         $this->properties = $properties;
     }
 
-    /**
-     * get the module that the block belongs to
-     *
-     * @return ExtensionEntity
-     */
-    public function getModule()
+    public function getModule(): ExtensionEntity
     {
         return $this->module;
     }
 
-    /**
-     * set the module that the block belongs to
-     *
-     * @param \Zikula\ExtensionsModule\Entity\ExtensionEntity $module
-     */
-    public function setModule(ExtensionEntity $module)
+    public function setModule(ExtensionEntity $module): void
     {
         $this->module = $module;
     }
 
-    /**
-     * get the filters of the block
-     *
-     * @return array the block's filters
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return $this->filters;
     }
 
-    /**
-     * set the filters for the block
-     *
-     * @param array $filters the blocks's filters
-     */
-    public function setFilters($filters)
+    public function setFilters(array $filters = []): void
     {
         $this->filters = $filters;
     }
 
-    /**
-     * get the status of the block
-     *
-     * @return integer the status number (0=inactive, 1=active)
-     */
-    public function getActive()
+    public function getActive(): int
     {
         return $this->active;
     }
 
-    /**
-     * set the status of the block
-     *
-     * @param integer $active the status number (0=inactive, 1=active)
-     */
-    public function setActive($active)
+    public function setActive(int $active): void
     {
         $this->active = $active;
     }
 
-    /**
-     * get last update time of the block
-     *
-     * @return \DateTime the block's last updated time
-     */
-    public function getLast_Update()
+    public function getLast_Update(): DateTime
     {
         return $this->last_update;
     }
 
-    /**
-     * set the last updated time of the block
-     *
-     * @param none
-     */
-    public function setLast_Update()
+    public function setLast_Update(): void
     {
-        $this->last_update = new \DateTime("now");
+        $this->last_update = new DateTime('now');
     }
 
-    /**
-     * get the language of the block
-     *
-     * @return string the block's language
-     */
-    public function getLanguage()
+    public function getLanguage(): string
     {
         return $this->language;
     }
 
-    /**
-     * set the language of the block
-     *
-     * @param string $language the block's language
-     */
-    public function setLanguage($language)
+    public function setLanguage(string $language): void
     {
         $this->language = $language;
     }
 
-    public function getPlacements()
+    public function getPlacements(): Collection
     {
         return $this->placements;
     }
 
-    public function addPlacement(BlockPlacementEntity $placement)
+    public function addPlacement(BlockPlacementEntity $placement): void
     {
         if (!$this->placements->contains($placement)) {
             $this->placements->add($placement);
         }
     }
 
-    public function removePlacement(BlockPlacementEntity $placement)
+    public function removePlacement(BlockPlacementEntity $placement): void
     {
         if ($this->placements->contains($placement)) {
             $this->placements->removeElement($placement);
         }
     }
 
-    /**
-     * Get an ArrayCollection of BlockPositionEntity that are assigned to this Block
-     * @return ArrayCollection
-     */
-    public function getPositions()
+    public function getPositions(): ArrayCollection
     {
         $positions = new ArrayCollection();
         foreach ($this->getPlacements() as $placement) {
@@ -385,16 +280,16 @@ class BlockEntity extends EntityAccess
      *   cascade={"remove, "persist"}
      *   orphanRemoval=true
      *   on the association of $this->placements
-     * @param ArrayCollection $positions
      */
-    public function setPositions(ArrayCollection $positions)
+    public function setPositions(ArrayCollection $positions): void
     {
         // remove placements and skip existing placements.
         foreach ($this->placements as $placement) {
             if (!$positions->contains($placement->getPosition())) {
                 $this->placements->removeElement($placement);
             } else {
-                $positions->removeElement($placement->getPosition()); // remove from positions to add.
+                // remove from positions to add
+                $positions->removeElement($placement->getPosition());
             }
         }
 

@@ -19,54 +19,51 @@ use Zikula\Common\Translator\TranslatorInterface;
 
 class RegistrationUiHooksSubscriber implements HookSubscriberInterface
 {
-    const REGISTRATION_DISPLAY = 'users.ui_hooks.registration.display_view';
+    public const REGISTRATION_DISPLAY = 'users.ui_hooks.registration.display_view';
 
-    const REGISTRATION_FORM = 'users.ui_hooks.registration.form_edit';
+    public const REGISTRATION_FORM = 'users.ui_hooks.registration.form_edit';
 
-    const REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
+    public const REGISTRATION_VALIDATE = 'users.ui_hooks.registration.validate_edit';
 
-    const REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
+    public const REGISTRATION_PROCESS = 'users.ui_hooks.registration.process_edit';
 
-    const REGISTRATION_DELETE_FORM = 'users.ui_hooks.registration.form_delete';
+    public const REGISTRATION_DELETE_FORM = 'users.ui_hooks.registration.form_delete';
 
-    const REGISTRATION_DELETE_VALIDATE = 'users.ui_hooks.registration.validate_delete';
+    public const REGISTRATION_DELETE_VALIDATE = 'users.ui_hooks.registration.validate_delete';
 
-    const REGISTRATION_DELETE_PROCESS = 'users.ui_hooks.registration.process_delete';
+    public const REGISTRATION_DELETE_PROCESS = 'users.ui_hooks.registration.process_delete';
 
     /**
      * @var TranslatorInterface
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getOwner()
+    public function getOwner(): string
     {
         return 'ZikulaUsersModule';
     }
 
-    public function getCategory()
+    public function getCategory(): string
     {
         return UiHooksCategory::NAME;
     }
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->translator->__('Registration management hooks');
     }
 
-    public function getAreaName()
+    public function getAreaName(): string
     {
         return 'subscriber.users.ui_hooks.registration';
     }
 
-    public function getEvents()
+    public function getEvents(): array
     {
         return [
             UiHooksCategory::TYPE_DISPLAY_VIEW => self::REGISTRATION_DISPLAY,
@@ -75,7 +72,7 @@ class RegistrationUiHooksSubscriber implements HookSubscriberInterface
             UiHooksCategory::TYPE_PROCESS_EDIT => self::REGISTRATION_PROCESS,
             UiHooksCategory::TYPE_FORM_DELETE => self::REGISTRATION_DELETE_FORM,
             UiHooksCategory::TYPE_VALIDATE_DELETE => self::REGISTRATION_DELETE_VALIDATE,
-            UiHooksCategory::TYPE_PROCESS_DELETE => self::REGISTRATION_DELETE_PROCESS,
+            UiHooksCategory::TYPE_PROCESS_DELETE => self::REGISTRATION_DELETE_PROCESS
         ];
     }
 }

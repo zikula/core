@@ -23,7 +23,7 @@ use Zikula\SearchModule\Collector\SearchableModuleCollector;
 /**
  * Class ModuleEventListener
  *
- * Modify Search block properties based on the availability and searchability of a module as its state changes
+ * Modify search block properties based on the availability and searchability of a module as its state changes.
  */
 class ModuleEventListener implements EventSubscriberInterface
 {
@@ -37,12 +37,10 @@ class ModuleEventListener implements EventSubscriberInterface
      */
     private $blockRepository;
 
-    /**
-     * ModuleEventListener constructor.
-     * @param SearchableModuleCollector $searchableModuleCollector
-     */
-    public function __construct(SearchableModuleCollector $searchableModuleCollector, BlockRepositoryInterface $blockRepository)
-    {
+    public function __construct(
+        SearchableModuleCollector $searchableModuleCollector,
+        BlockRepositoryInterface $blockRepository
+    ) {
         $this->searchableModuleCollector = $searchableModuleCollector;
         $this->blockRepository = $blockRepository;
     }
@@ -53,11 +51,11 @@ class ModuleEventListener implements EventSubscriberInterface
             CoreEvents::MODULE_INSTALL => ['moduleEnable'],
             CoreEvents::MODULE_ENABLE => ['moduleEnable'],
             CoreEvents::MODULE_DISABLE => ['moduleDisable'],
-            CoreEvents::MODULE_REMOVE => ['moduleRemove'],
+            CoreEvents::MODULE_REMOVE => ['moduleRemove']
         ];
     }
 
-    public function moduleEnable(ModuleStateEvent $event)
+    public function moduleEnable(ModuleStateEvent $event): void
     {
         $moduleName = $this->getModuleName($event);
         if (null === $moduleName) {
@@ -78,7 +76,7 @@ class ModuleEventListener implements EventSubscriberInterface
         }
     }
 
-    public function moduleDisable(ModuleStateEvent $event)
+    public function moduleDisable(ModuleStateEvent $event): void
     {
         $moduleName = $this->getModuleName($event);
         if (null === $moduleName) {
@@ -99,7 +97,7 @@ class ModuleEventListener implements EventSubscriberInterface
         }
     }
 
-    public function moduleRemove(ModuleStateEvent $event)
+    public function moduleRemove(ModuleStateEvent $event): void
     {
         $moduleName = $this->getModuleName($event);
         if (null === $moduleName) {
@@ -119,8 +117,11 @@ class ModuleEventListener implements EventSubscriberInterface
         }
     }
 
-    private function getModuleName(ModuleStateEvent $event)
+    private function getModuleName(ModuleStateEvent $event): ?string
     {
+        if (null === $event->getModule()) {
+            return null;
+        }
         $moduleName = $event->getModule()->getName();
         if (null === $this->searchableModuleCollector->get($moduleName)) {
             return null;

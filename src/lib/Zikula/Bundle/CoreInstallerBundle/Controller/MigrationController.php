@@ -19,30 +19,30 @@ use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 
 class MigrationController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function migrateAction(Request $request, MigrationHelper $migrationHelper)
+    public function migrateAction(Request $request, MigrationHelper $migrationHelper): JsonResponse
     {
-        if (!$request->getSession()->has('user_migration_lastuid')) {
-            $request->getSession()->set('user_migration_count', $migrationHelper->countUnMigratedUsers());
-            $request->getSession()->set('user_migration_complete', 0);
-            $request->getSession()->set('user_migration_lastuid', 0);
-            $request->getSession()->set('user_migration_maxuid', $migrationHelper->getMaxUnMigratedUid());
-        }
-        $result = $migrationHelper->migrateUsers($request->getSession()->get('user_migration_lastuid'));
-        $request->getSession()->set('user_migration_complete', $request->getSession()->get('user_migration_complete') + $result['complete']);
-        $request->getSession()->set('user_migration_lastuid', $result['lastUid']);
-        if ($request->getSession()->get('user_migration_lastuid') === $request->getSession()->get('user_migration_maxuid')) {
-            $percentComplete = 100;
-            // clean up
-            $request->getSession()->remove('user_migration_count');
-            $request->getSession()->remove('user_migration_complete');
-            $request->getSession()->remove('user_migration_lastuid');
-            $request->getSession()->remove('user_migration_maxuid');
-        } else {
-            $percentComplete = ceil(100 * $request->getSession()->get('user_migration_complete') / $request->getSession()->get('user_migration_count'));
+        $percentComplete = 0;
+        $session = $request->getSession();
+        if (null !== $session) {
+            if (!$session->has('user_migration_lastuid')) {
+                $session->set('user_migration_count', $migrationHelper->countUnMigratedUsers());
+                $session->set('user_migration_complete', 0);
+                $session->set('user_migration_lastuid', 0);
+                $session->set('user_migration_maxuid', $migrationHelper->getMaxUnMigratedUid());
+            }
+            $result = $migrationHelper->migrateUsers($session->get('user_migration_lastuid'));
+            $session->set('user_migration_complete', $session->get('user_migration_complete') + $result['complete']);
+            $session->set('user_migration_lastuid', $result['lastUid']);
+            if ($session->get('user_migration_lastuid') === $session->get('user_migration_maxuid')) {
+                $percentComplete = 100;
+                // clean up
+                $session->remove('user_migration_count');
+                $session->remove('user_migration_complete');
+                $session->remove('user_migration_lastuid');
+                $session->remove('user_migration_maxuid');
+            } else {
+                $percentComplete = ceil(100 * $session->get('user_migration_complete') / $session->get('user_migration_count'));
+            }
         }
 
         return $this->json([

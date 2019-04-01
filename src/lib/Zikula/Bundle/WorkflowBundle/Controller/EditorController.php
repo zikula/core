@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\WorkflowBundle\Controller;
 
+use ReflectionClass;
+use ReflectionException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +33,7 @@ use Zikula\ThemeModule\Engine\Annotation\Theme;
  *
  * @Route("/editor")
  */
-class EditorController extends Controller
+class EditorController extends AbstractController
 {
     /**
      * This is the default action handling the index action.
@@ -42,13 +44,6 @@ class EditorController extends Controller
      * @Theme("admin")
      * @Template("ZikulaWorkflowBundle:Editor:index.html.twig")
      *
-     * @param Request $request
-     * @param PermissionApiInterface $permissionApi
-     * @param Registry $workflowRegistry
-     * @param TranslatorInterface $translator
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if the desired workflow could not be found
      */
@@ -57,7 +52,7 @@ class EditorController extends Controller
         PermissionApiInterface $permissionApi,
         Registry $workflowRegistry,
         TranslatorInterface $translator
-    ) {
+    ): array {
         if (!$permissionApi->hasPermission('ZikulaWorkflowBundle::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -87,19 +82,20 @@ class EditorController extends Controller
             }
             $markingStoreField = $markingStore->getProperty();
 
-            $reflection = new \ReflectionClass(get_class($workflowRegistry));
+            $reflection = new ReflectionClass(get_class($workflowRegistry));
             $workflowsProperty = $reflection->getProperty('workflows');
             $workflowsProperty->setAccessible(true);
             $workflows = $workflowsProperty->getValue($workflowRegistry);
             foreach ($workflows as list($aWorkflow, $workflowClass)) {
-                if ($aWorkflow->getName() === $workflow->getName()) {
-                    if (method_exists($workflowClass, 'getClassName')) {
-                        $workflowClass = $workflowClass->getClassName();
-                    }
-                    $supportedEntityClassNames[] = $workflowClass;
+                if ($aWorkflow->getName() !== $workflow->getName()) {
+                    continue;
                 }
+                if (method_exists($workflowClass, 'getClassName')) {
+                    $workflowClass = $workflowClass->getClassName();
+                }
+                $supportedEntityClassNames[] = $workflowClass;
             }
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $exception) {
             $markingStoreType = 'single_state';
             $markingStoreField = 'state';
         }

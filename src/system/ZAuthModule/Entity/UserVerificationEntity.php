@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
 
@@ -86,130 +87,73 @@ class UserVerificationEntity extends EntityAccess
         $this->uid = 0;
         $this->newemail = '';
         $this->verifycode = '';
-        $this->created_dt = new \DateTime("now");
+        $this->created_dt = new DateTime('now');
     }
 
-    /**
-     * get the id of the user verification
-     *
-     * @return integer the user verification's id
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * set the id for the user verification
-     *
-     * @param integer $id the user verification's id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * get the changetype of the user verification
-     *
-     * @return integer the user verification's changetype
-     */
-    public function getChangetype()
+    public function getChangetype(): int
     {
         return $this->changetype;
     }
 
-    /**
-     * set the changetype for the user verification
-     *
-     * @param integer $changetype the user verification's changetype
-     */
-    public function setChangetype($changetype)
+    public function setChangetype(int $changetype): void
     {
         $this->changetype = $changetype;
     }
 
-    /**
-     * get the uid of the user verification
-     *
-     * @return integer the user verification's uid
-     */
-    public function getUid()
+    public function getUid(): int
     {
         return $this->uid;
     }
 
-    /**
-     * set the uid for the user verification
-     *
-     * @param integer $uid the user verification's uid
-     */
-    public function setUid($uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
 
-    /**
-     * get the new email of the user verification
-     *
-     * @return string the user verification's new email
-     */
-    public function getNewemail()
+    public function getNewemail(): string
     {
         return $this->newemail;
     }
 
-    /**
-     * set the new email for the user verification
-     *
-     * @param string $newemail the user verification's new email
-     */
-    public function setNewemail($newemail)
+    public function setNewemail(string $newemail): void
     {
         $this->newemail = $newemail;
     }
 
-    /**
-     * get the verifycode of the user verification
-     *
-     * @return string the user verification's verifycode
-     */
-    public function getVerifycode()
+    public function getVerifycode(): string
     {
         return $this->verifycode;
     }
 
-    /**
-     * set the verifycode for the user verification
-     *
-     * @param string $verifycode the user verification's verifycode
-     */
-    public function setVerifycode($verifycode)
+    public function setVerifycode(string $verifycode): void
     {
         $this->verifycode = $verifycode;
     }
 
-    /**
-     * get the created date of the user verification
-     *
-     * @return \DateTime the user verification's created date
-     */
-    public function getCreated_Dt()
+    public function getCreated_Dt(): DateTime
     {
         return $this->created_dt;
     }
 
     /**
-     * set the created date for the user verification
-     *
-     * @param string|\DateTime $created_dt the user verification's created date
+     * @param string|DateTime $created_dt the user verification's created date
      */
-    public function setCreated_Dt($created_dt)
+    public function setCreated_Dt($created_dt): void
     {
-        if ($created_dt instanceof \DateTime) {
+        if ($created_dt instanceof DateTime) {
             $this->created_dt = $created_dt;
         } else {
-            $this->created_dt = new \DateTime($created_dt);
+            $this->created_dt = new DateTime($created_dt);
         }
     }
 }

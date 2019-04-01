@@ -17,17 +17,18 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
+use SplFileInfo;
 use Twig\Node\Node;
 
 class ZikulaJsFileExtractor implements FileVisitorInterface
 {
-    const JAVASCRIPT_DOMAIN = 'zikula_javascript'; // figure out way to compute the bundle's translation domain? #3650
+    public const JAVASCRIPT_DOMAIN = 'zikula_javascript'; // figure out way to compute the bundle's translation domain? #3650
 
-    const SINGULAR_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?';
+    public const SINGULAR_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?';
 
-    const PLURAL_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?,\s?([\'"])((?:(?!\3).)*)\3\s?';
+    public const PLURAL_CAPTURE_REGEX = '\s?([\'"])((?:(?!\1).)*)\1\s?,\s?([\'"])((?:(?!\3).)*)\3\s?';
 
-    const REGEX_DELIMITER = '/';
+    public const REGEX_DELIMITER = '/';
 
     private $singularFunctions = [
         'trans', // should be replaced by vendor eventually
@@ -41,7 +42,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         '_fn'
     ];
 
-    public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue)
+    public function visitFile(SplFileInfo $file, MessageCatalogue $catalogue)
     {
         if ('.js' !== mb_substr($file, -3)) {
             return;
@@ -66,16 +67,16 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         }
     }
 
-    private function generateRegexPattern($functions, $base)
+    private function generateRegexPattern(array $functions, string $base): string
     {
         return self::REGEX_DELIMITER . '\.(?:' . implode('|', $functions) . ')\(' . $base . self::REGEX_DELIMITER;
     }
 
-    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
+    public function visitPhpFile(SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
     {
     }
 
-    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, Node $node)
+    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, Node $node)
     {
     }
 }

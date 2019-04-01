@@ -1,12 +1,12 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __("Basic properties") }}</legend>
+    <legend>{{ __('Basic properties') }}</legend>
     {{ form_row(form.name) }}
     {{ form_row(form.parent) }}
     {{ form_row(form.is_locked) }}
@@ -65,7 +65,7 @@
 
 {{ form_row(form.attributes) }}
 {{ form_end(form) }}
-<script type="text/javascript">
-    // used in @ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js
+<script>
+    {# used in @ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js #}
     var attributeCount = '{{ form.attributes|length }}';
 </script>

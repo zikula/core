@@ -57,31 +57,6 @@ class RegistrationListener implements EventSubscriberInterface
      */
     private $verificationHelper;
 
-    public static function getSubscribedEvents()
-    {
-        return [
-            RegistrationEvents::FULL_USER_CREATE_VETO => [
-                'vetoFullUserCreate'
-            ],
-            RegistrationEvents::REGISTRATION_SUCCEEDED => [
-                'sendEmailVerificationEmail'
-            ],
-            RegistrationEvents::FORCE_REGISTRATION_APPROVAL => [
-                'forceRegistrationApproval'
-            ]
-        ];
-    }
-
-    /**
-     * RegistrationListener constructor.
-     *
-     * @param RequestStack $requestStack
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param PermissionApiInterface $permissionApi
-     * @param VariableApiInterface $variableApi
-     * @param AuthenticationMappingRepositoryInterface $mappingRepository
-     * @param RegistrationVerificationHelper $registrationVerificationHelper
-     */
     public function __construct(
         RequestStack $requestStack,
         CurrentUserApiInterface $currentUserApi,
@@ -98,13 +73,27 @@ class RegistrationListener implements EventSubscriberInterface
         $this->verificationHelper = $registrationVerificationHelper;
     }
 
-    public function vetoFullUserCreate(GenericEvent $event)
+    public static function getSubscribedEvents()
     {
-        // user exists
+        return [
+            RegistrationEvents::FULL_USER_CREATE_VETO => [
+                'vetoFullUserCreate'
+            ],
+            RegistrationEvents::REGISTRATION_SUCCEEDED => [
+                'sendEmailVerificationEmail'
+            ],
+            RegistrationEvents::FORCE_REGISTRATION_APPROVAL => [
+                'forceRegistrationApproval'
+            ]
+        ];
+    }
+
+    public function vetoFullUserCreate(GenericEvent $event): void
+    {
         $userEntity = $event->getSubject();
         if ($userEntity->getAttributes()->containsKey(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY)) {
             $method = $userEntity->getAttributeValue(UsersConstant::AUTHENTICATION_METHOD_ATTRIBUTE_KEY);
-            if (!in_array($method, [ZAuthConstant::AUTHENTICATION_METHOD_EMAIL, ZAuthConstant::AUTHENTICATION_METHOD_UNAME, ZAuthConstant::AUTHENTICATION_METHOD_EITHER])) {
+            if (!in_array($method, [ZAuthConstant::AUTHENTICATION_METHOD_EMAIL, ZAuthConstant::AUTHENTICATION_METHOD_UNAME, ZAuthConstant::AUTHENTICATION_METHOD_EITHER], true)) {
                 return;
             }
         }
@@ -114,19 +103,22 @@ class RegistrationListener implements EventSubscriberInterface
         if (isset($mapping) && $mapping->isVerifiedEmail()) {
             return;
         }
+
         // user doesn't exist or email is not verified
         $isAdmin = $this->currentUserApi->isLoggedIn() && $this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_EDIT);
-        $session = $this->requestStack->getCurrentRequest()->getSession();
-        $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
-            ? 'Y' === $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
-            : $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED)
-        ;
+        $request = $this->requestStack->getCurrentRequest();
+        $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
+        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+            $userMustVerify = $request->hasSession()->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+                ? 'Y' === $request->hasSession()->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+                : $userMustVerify;
+        }
         if ($userMustVerify && !$isAdmin) {
             $event->stopPropagation();
         }
     }
 
-    public function sendEmailVerificationEmail(GenericEvent $event)
+    public function sendEmailVerificationEmail(GenericEvent $event): void
     {
         $userEntity = $event->getSubject();
         if (null !== $userEntity->getUid()) {
@@ -137,9 +129,9 @@ class RegistrationListener implements EventSubscriberInterface
         }
     }
 
-    public function forceRegistrationApproval(GenericEvent $event)
+    public function forceRegistrationApproval(GenericEvent $event): void
     {
         $userEntity = $event->getSubject();
-        $this->mappingRepository->setEmailVerification($userEntity->getUid(), true);
+        $this->mappingRepository->setEmailVerification($userEntity->getUid());
     }
 }

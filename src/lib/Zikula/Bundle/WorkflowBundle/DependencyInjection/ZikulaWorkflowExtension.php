@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\WorkflowBundle\DependencyInjection;
 
+use InvalidArgumentException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -28,18 +29,12 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
 {
     private $workflowDirectories = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepend(ContainerBuilder $container)
     {
         // modules may define their workflows in: <bundlePath>/Resources/workflows/
@@ -64,8 +59,6 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
 
     /**
      * Loads workflow files from given directories.
-     *
-     * @param ContainerBuilder $container
      */
     private function loadWorkflowDefinitions(ContainerBuilder $container)
     {
@@ -84,7 +77,7 @@ class ZikulaWorkflowExtension extends Extension implements PrependExtensionInter
                 $loader = new XmlFileLoader($container, new FileLocator($file->getPath()));
                 $loader->load($file->getFilename());
             }
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $exception) {
             // no module with a workflow directory exists, ignore
         }
     }

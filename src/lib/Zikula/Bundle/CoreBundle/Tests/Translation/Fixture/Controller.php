@@ -24,8 +24,14 @@ use Zikula\Common\Translator\TranslatorInterface;
  */
 class Controller
 {
+    /**
+     * @var TranslatorInterface
+     */
     private $translator;
 
+    /**
+     * @var SessionInterface
+     */
     private $session;
 
     public function __construct(TranslatorInterface $translator, SessionInterface $session)
@@ -34,43 +40,43 @@ class Controller
         $this->session = $session;
     }
 
-    public function indexAction()
+    public function indexAction(): void
     {
-        $this->session->setFlash('foo', $this->translator->__(/** @Desc("Foo bar") */ 'text.foo_bar'));
+        $this->session->getFlashBag()->add('foo', $this->translator->__(/** @Desc("Foo bar") */ 'text.foo_bar'));
     }
 
-    public function welcomeAction()
+    public function welcomeAction(): void
     {
-        $this->session->setFlash('bar',
+        $this->session->getFlashBag()->add('bar',
             /** @Desc("Welcome %name%! Thanks for signing up.") */
             $this->translator->__f('text.sign_up_successful %name%', ['%name%' => 'Johannes']));
     }
 
-    public function foobarAction()
+    public function foobarAction(): void
     {
-        $this->session->setFlash('archive',
+        $this->session->getFlashBag()->add('archive',
             /** @Desc("Archive Message") @Meaning("The verb (to archive), describes an action") */
             $this->translator->__('button.archive'));
     }
 
-    public function nonExtractableButIgnoredAction()
+    public function nonExtractableButIgnoredAction(): void
     {
         /** @Ignore */ $this->translator->__($foo);
         /** Foobar */
         /** @Ignore */ $this->translator->__f('foo', [], $baz);
     }
 
-    public function irrelevantDocComment()
+    public function irrelevantDocComment(): void
     {
         /** @Foo @Bar */ $this->translator->__f('text.irrelevant_doc_comment', [], 'baz');
     }
 
-    public function arrayAccess()
+    public function arrayAccess(): void
     {
         $arr['foo']->__('text.array_method_call');
     }
 
-    public function assignToVar()
+    public function assignToVar(): string
     {
         /** @Desc("The var %foo% should be assigned.") */
         return $this->translator->__f('text.var.assign %foo%', ['%foo%' => 'fooVar']);

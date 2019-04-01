@@ -20,7 +20,8 @@ interface DynamicFieldsContainerInterface
 {
     /**
      * Returns a list of field specifications.
+     *
      * @return DynamicFieldInterface[]
      */
-    public function getDynamicFieldsSpecification();
+    public function getDynamicFieldsSpecification(): array;
 }

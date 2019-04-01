@@ -35,12 +35,6 @@ class CategoryTreeType extends AbstractType
      */
     private $categoryRepository;
 
-    /**
-     * CategoryTreeType constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         CategoryRepositoryInterface $categoryRepository
@@ -49,34 +43,22 @@ class CategoryTreeType extends AbstractType
         $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new CategoryTreeTransformer($this->categoryRepository);
         $builder->addModelTransformer($transformer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulacategoriesmodule_category_tree';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -94,7 +76,7 @@ class CategoryTreeType extends AbstractType
         $resolver->setAllowedTypes('all', 'bool');
 
         $options['translator'] = $this->translator;
-        $resolver->setNormalizer('label', function(Options $options, $label) {
+        $resolver->setNormalizer('label', static function(Options $options, $label) {
             if (null === $label || empty($label)) {
                 $isMultiple = $options['multiple'];
                 $translator = $options['translator'];
@@ -104,7 +86,7 @@ class CategoryTreeType extends AbstractType
 
             return $label;
         });
-        $resolver->setNormalizer('placeholder', function(Options $options, $placeholder) {
+        $resolver->setNormalizer('placeholder', static function(Options $options, $placeholder) {
             if (!$options['required']) {
                 if (null === $placeholder || empty($placeholder)) {
                     $isMultiple = $options['multiple'];
@@ -125,20 +107,12 @@ class CategoryTreeType extends AbstractType
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return ChoiceType::class;
     }
 
-    /**
-     * Returns choices for category selection.
-     *
-     * @return array
-     */
-    private function getCategoryChoices($options)
+    private function getCategoryChoices(Options $options): array
     {
         $locale = $options['locale'];
         $recurse = $options['recurse'] ?? true;

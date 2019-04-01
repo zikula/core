@@ -20,13 +20,11 @@ use Zikula\Bundle\CoreBundle\DependencyInjection\CoreExtension;
 
 class TestExtension extends CoreExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../../../../Resources/config'));
         $loader->load('translation.yml');
+
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
         $this->registerTranslatorConfiguration($config['translator'], $container);

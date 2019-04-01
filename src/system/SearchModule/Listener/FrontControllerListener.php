@@ -53,6 +53,22 @@ class FrontControllerListener implements EventSubscriberInterface
      */
     private $isUpgrading;
 
+    public function __construct(
+        RouterInterface $router,
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        AssetBag $headerAssetBag,
+        bool $installed,
+        bool $isUpgrading = false
+    ) {
+        $this->router = $router;
+        $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->headerAssetBag = $headerAssetBag;
+        $this->installed = $installed;
+        $this->isUpgrading = $isUpgrading;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -64,39 +80,9 @@ class FrontControllerListener implements EventSubscriberInterface
     }
 
     /**
-     * FrontControllerListener constructor.
-     *
-     * @param RouterInterface $router RouterInterface service instance
-     * @param PermissionApiInterface $permissionApi PermissionApi service instance
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param AssetBag $headerAssetBag AssetBag service instance for header code
-     * @param bool $installed
-     * @param bool $isUpgrading
-     */
-    public function __construct(
-        RouterInterface $router,
-        PermissionApiInterface $permissionApi,
-        VariableApiInterface $variableApi,
-        AssetBag $headerAssetBag,
-        $installed,
-        $isUpgrading = false
-    ) {
-        $this->router = $router;
-        $this->permissionApi = $permissionApi;
-        $this->variableApi = $variableApi;
-        $this->headerAssetBag = $headerAssetBag;
-        $this->installed = $installed;
-        $this->isUpgrading = $isUpgrading;
-    }
-
-    /**
      * Handle page load event KernelEvents::REQUEST.
-     *
-     * @param GetResponseEvent $event
-     *
-     * @return void
      */
-    public function pageLoad(GetResponseEvent $event)
+    public function pageLoad(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

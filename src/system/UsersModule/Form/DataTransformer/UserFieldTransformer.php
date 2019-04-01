@@ -29,11 +29,6 @@ class UserFieldTransformer implements DataTransformerInterface
      */
     protected $userRepository;
 
-    /**
-     * UserFieldTransformer constructor.
-     *
-     * @param UserRepositoryInterface $userRepository UserRepository service instance
-     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;

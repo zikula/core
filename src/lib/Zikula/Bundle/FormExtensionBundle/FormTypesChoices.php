@@ -13,20 +13,23 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\FormExtensionBundle;
 
-class FormTypesChoices implements \ArrayAccess, \Iterator
-{
-    private $choices = [];
+use ArrayAccess;
+use Exception;
+use Iterator;
 
+class FormTypesChoices implements ArrayAccess, Iterator
+{
     /**
-     * FormTypesChoices constructor.
-     * @param array $choices
+     * @var array
      */
+    private $choices;
+
     public function __construct(array $choices = [])
     {
         $this->choices = $choices;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->choices[$offset]);
     }
@@ -36,14 +39,14 @@ class FormTypesChoices implements \ArrayAccess, \Iterator
         return $this->choices[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->choices[$offset] = $value;
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
-        throw new \Exception('Not allowed to unset!');
+        throw new Exception('Not allowed to unset!');
     }
 
     public function rewind()
@@ -66,7 +69,7 @@ class FormTypesChoices implements \ArrayAccess, \Iterator
         return next($this->choices);
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return null !== key($this->choices);
     }

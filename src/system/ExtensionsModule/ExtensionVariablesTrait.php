@@ -31,61 +31,54 @@ trait ExtensionVariablesTrait
     private $extensionName;
 
     /**
-     * Convenience shortcut to get Extension Variable.
-     * @param string $variableName
+     * Convenience shortcut to get extension variable.
+     *
      * @param mixed $default
      * @return mixed
      */
-    public function getVar($variableName, $default = false)
+    public function getVar(string $variableName, $default = false)
     {
         return $this->variableApi->get($this->extensionName, $variableName, $default);
     }
 
     /**
-     * Convenience shortcut to get all Extension Variables.
-     * @return array
+     * Convenience shortcut to get all extension variables.
      */
-    public function getVars()
+    public function getVars(): array
     {
         return $this->variableApi->getAll($this->extensionName);
     }
 
     /**
-     * Convenience shortcut to set Extension Variable.
-     * @param string $variableName
+     * Convenience shortcut to set extension variable.
+     *
      * @param string|integer|boolean $value
-     * @return bool
      */
-    public function setVar($variableName, $value = '')
+    public function setVar(string $variableName, $value = ''): bool
     {
         return $this->variableApi->set($this->extensionName, $variableName, $value);
     }
 
     /**
-     * Convenience shortcut to set many Extension Variables.
-     * @param array $variables
-     * @return bool
+     * Convenience shortcut to set many extension variables.
      */
-    public function setVars(array $variables)
+    public function setVars(array $variables = []): bool
     {
         return $this->variableApi->setAll($this->extensionName, $variables);
     }
 
     /**
-     * Convenience shortcut to delete an Extension Variable.
-     * @param $variableName
-     * @return bool
+     * Convenience shortcut to delete an extension variable.
      */
-    public function delVar($variableName)
+    public function delVar(string $variableName): bool
     {
         return $this->variableApi->del($this->extensionName, $variableName);
     }
 
     /**
-     * Convenience shortcut to delete all Extension Variables.
-     * @return bool
+     * Convenience shortcut to delete all extension variables.
      */
-    public function delVars()
+    public function delVars(): bool
     {
         return $this->variableApi->delAll($this->extensionName);
     }

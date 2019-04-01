@@ -27,9 +27,9 @@ class ClickjackProtectionListener implements EventSubscriberInterface
     /**
      * @var string
      */
-    private $xFrameOptions = '';
+    private $xFrameOptions;
 
-    public function __construct($xFrameOptions)
+    public function __construct(string $xFrameOptions)
     {
         $this->xFrameOptions = $xFrameOptions;
     }
@@ -45,10 +45,8 @@ class ClickjackProtectionListener implements EventSubscriberInterface
 
     /**
      * Sets x-origin headers in the response object.
-     *
-     * @param FilterResponseEvent $event A FilterResponseEvent instance
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(FilterResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

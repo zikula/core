@@ -13,9 +13,32 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule\Entity\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use LogicException;
+use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 
-class MenuItemRepository extends NestedTreeRepository implements MenuItemRepositoryInterface
+class MenuItemRepository extends NestedTreeRepository implements MenuItemRepositoryInterface, ServiceEntityRepositoryInterface
 {
+    /**
+     * Code from Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository
+     */
+    public function __construct(ManagerRegistry $registry)
+    {
+        $entityClass = MenuItemEntity::class;
+
+        /** @var EntityManagerInterface $manager */
+        $manager = $registry->getManagerForClass($entityClass);
+        if (null === $manager) {
+            throw new LogicException(sprintf(
+                'Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.',
+                $entityClass
+            ));
+        }
+
+        parent::__construct($manager, $manager->getClassMetadata($entityClass));
+    }
 }

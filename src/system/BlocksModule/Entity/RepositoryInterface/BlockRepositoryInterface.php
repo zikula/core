@@ -20,14 +20,9 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 interface BlockRepositoryInterface extends ObjectRepository, Selectable
 {
     /**
-     * @param array $filter
      * @return mixed
      */
-    public function getFilteredBlocks(array $filter);
+    public function getFilteredBlocks(array $filter = []);
 
-    /**
-     * @param BlockEntity $entity
-     * @return mixed
-     */
-    public function persistAndFlush(BlockEntity $entity);
+    public function persistAndFlush(BlockEntity $entity): void;
 }

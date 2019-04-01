@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Common\Content;
 
+use Exception;
 use Twig\Environment;
-use Twig\Loader\LoaderInterface;
+use Twig\Loader\FilesystemLoader;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ThemeModule\Engine\Asset;
 
@@ -61,7 +62,7 @@ abstract class AbstractContentType implements ContentTypeInterface
     /**
      * Twig template loader
      *
-     * @var LoaderInterface
+     * @var FilesystemLoader
      */
     protected $twigLoader;
 
@@ -90,27 +91,17 @@ abstract class AbstractContentType implements ContentTypeInterface
      */
     protected $data;
 
-    /**
-     * AbstractContentType constructor.
-     *
-     * @param TranslatorInterface $translator       Translator service instance
-     * @param Environment         $twig             Twig service instance
-     * @param LoaderInterface     $twigLoader       Twig loader service instance
-     * @param PermissionHelper    $permissionHelper PermissionHelper service instance
-     * @param Asset               $assetHelper      Asset service instance
-     */
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
-        LoaderInterface $twigLoader,
+        FilesystemLoader $twigLoader,
         /*PermissionHelper */$permissionHelper,
         Asset $assetHelper
     ) {
         $this->translator = $translator;
 
         $nsParts = explode('\\', get_class($this));
-        $vendor = $nsParts[0];
-        $nameAndType = $nsParts[1];
+        list($vendor, $nameAndType) = $nsParts;
 
         $this->bundleName = $vendor . $nameAndType;
         $this->domain = mb_strtolower($this->bundleName);
@@ -126,12 +117,8 @@ abstract class AbstractContentType implements ContentTypeInterface
 
     /**
      * Performs a singular translation.
-     *
-     * @param string $msg String to be translated
-     * @param string|null $locale Optional forced locale
-     * @return string
      */
-    public function __($msg, $locale = null)
+    public function __(string $msg, string $locale = null): string
     {
         /** @Ignore */
         return $this->translator->__($msg, $this->domain, $locale);
@@ -139,47 +126,29 @@ abstract class AbstractContentType implements ContentTypeInterface
 
     /**
      * Performs a plural translation.
-     *
-     * @param string $m1 Singular instance
-     * @param string $m2 Plural instance
-     * @param integer $n Object count
-     * @param string| null $locale Optional forced locale
-     * @return string
      */
-    public function _n($m1, $m2, $n, $locale = null)
+    public function _n(string $m1, string $m2, int $number, string $locale = null): string
     {
         /** @Ignore */
-        return $this->translator->_n($m1, $m2, $n, $this->domain, $locale);
+        return $this->translator->_n($m1, $m2, $number, $this->domain, $locale);
     }
 
     /**
      * Performs a format singular translation.
-     *
-     * @param string $msg String to be translated
-     * @param string|array $param Format parameters
-     * @param string|null $locale Optional forced locale
-     * @return string
      */
-    public function __f($msg, $param, $locale = null)
+    public function __f(string $msg, array $parameters = [], string $locale = null): string
     {
         /** @Ignore */
-        return $this->translator->__f($msg, $param, $this->domain, $locale);
+        return $this->translator->__f($msg, $parameters, $this->domain, $locale);
     }
 
     /**
      * Performs a format plural translation.
-     *
-     * @param string $m1 Singular instance
-     * @param string $m2 Plural instance
-     * @param integer $n Object count
-     * @param string|array $param Format parameters
-     * @param string|null $locale Optional forced locale
-     * @return string
      */
-    public function _fn($m1, $m2, $n, $param, $locale = null)
+    public function _fn(string $m1, string $m2, int $number, array $parameters = [], string $locale = null): string
     {
         /** @Ignore */
-        return $this->translator->_fn($m1, $m2, $n, $param, $this->domain, $locale);
+        return $this->translator->_fn($m1, $m2, $number, $parameters, $this->domain, $locale);
     }
 
     /**
@@ -187,7 +156,7 @@ abstract class AbstractContentType implements ContentTypeInterface
      *
      * @return \Zikula\ContentModule\Entity\ContentItemEntity
      */
-    public function getEntity()
+    public function getEntity()/*: ContentItemEntity*/
     {
         return $this->entity;
     }
@@ -197,152 +166,82 @@ abstract class AbstractContentType implements ContentTypeInterface
      *
      * @param \Zikula\ContentModule\Entity\ContentItemEntity $entity
      */
-    public function setEntity(/*ContentItemEntity */$entity)
+    public function setEntity(/*ContentItemEntity */$entity): void
     {
         $this->entity = $entity;
 
         $this->data = $entity->getContentData();
     }
 
-    /**
-     * Returns the bundle name.
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return $this->bundleName;
     }
 
-    /**
-     * Returns the name of this content type.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Returns the category of this content type.
-     *
-     * @return boolean
-     */
-    public function getCategory()
+    public function getCategory(): string
     {
         return ContentTypeInterface::CATEGORY_INTEGRATION;
     }
 
-    /**
-     * Returns the icon name (FontAwesome icon code suffix, e.g. "pencil").
-     *
-     * @return string
-     */
-    public function getIcon()
+    public function getIcon(): string
     {
         return 'cube';
     }
 
-    /**
-     * Returns the title of this content type.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return '- ' . $this->__('no title defined') . ' -';
     }
 
-    /**
-     * Returns the description of this content type.
-     *
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return '';
     }
 
-    /**
-     * Returns an extended plugin information shown on settings page.
-     *
-     * @return string
-     */
-    public function getAdminInfo()
+    public function getAdminInfo(): string
     {
         return '';
     }
 
-    /**
-     * Returns whether this content type is active or not.
-     *
-     * @return boolean
-     */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->permissionHelper->mayReadContentType($this->getName());
     }
 
-    /**
-     * Returns the minimum amount of (Bootstrap) grid columns required by this content type.
-     * This layout constraint is used during page editing to avoid unwanted shrinking.
-     *
-     * @return integer
-     */
-    public function getMinimumAmountOfGridColumns()
+    public function getMinimumAmountOfGridColumns(): int
     {
         return 2;
     }
 
-    /**
-     * Returns an array of data values retrieved from persistence with proper default values.
-     * @return array
-     */
-    public function getDefaultData()
+    public function getDefaultData(): array
     {
         return [];
     }
 
-    /**
-     * Returns a list of translatable field names if any.
-     *
-     * @return array
-     */
-    public function getTranslatableDataFields()
+    public function getTranslatableDataFields(): array
     {
         return [];
     }
 
-    /**
-     * Returns an array of current data values.
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return array_merge($this->getDefaultData(), $this->data);
     }
 
-    /**
-     * Returns searchable text, that is all the text that is searchable through Zikula's standard
-     * search interface. You must strip the text of any HTML tags and other structural information
-     * before returning the text. If you have multiple searchable text fields then concatenate all
-     * the text from these and return the full string.
-     *
-     * @return string
-     */
-    public function getSearchableText()
+    public function getSearchableText(): string
     {
         return '';
     }
 
     /**
      * Returns output for normal or editing display.
-     *
-     * @param boolean $editMode
-     * @return string
      */
-    public function display($editMode = false)
+    public function display(bool $editMode = false): string
     {
         $output = '';
         if (!$this->isActive()) {
@@ -368,10 +267,8 @@ abstract class AbstractContentType implements ContentTypeInterface
      * you can choose to override this method in inherited plugins in order to
      * generate more compact HTML where the styling is included in the actual
      * content.
-     *
-     * @return string The displayed text
      */
-    protected function displayStart()
+    protected function displayStart(): string
     {
         $classHtml = '';
         $stylingClasses = $this->getEntity()->getStylingClasses();
@@ -384,20 +281,13 @@ abstract class AbstractContentType implements ContentTypeInterface
 
     /**
      * Returns any text displayed after the actual content.
-     *
-     * @return string The displayed text
      */
-    protected function displayEnd()
+    protected function displayEnd(): string
     {
         return '</div>';
     }
 
-    /**
-     * Returns output for normal display.
-     *
-     * @return string
-     */
-    public function displayView()
+    public function displayView(): string
     {
         $templateParameters = $this->getData();
         $templateParameters['contentId'] = null !== $this->getEntity() ? $this->getEntity()->getId() : 0;
@@ -412,34 +302,17 @@ abstract class AbstractContentType implements ContentTypeInterface
         ]);
     }
 
-    /**
-     * Returns output for display in editing mode.
-     *
-     * @return string
-     */
-    public function displayEditing()
+    public function displayEditing(): string
     {
         return $this->displayView();
     }
 
-    /**
-     * Returns the full path to the template for the display function in 'namespaced' name-style.
-     *     e.g. `return '@AcmeMyBundle/ContentType/headingView.html.twig';`
-     *
-     * @return string
-     */
-    public function getViewTemplatePath()
+    public function getViewTemplatePath(): string
     {
         return $this->getTemplatePath('View');
     }
 
-    /**
-     * Returns the full name of the edit form's template in 'namespaced' name-style.
-     *     e.g. `return '@AcmeMyBundle/ContentType/headingEdit.html.twig';`
-     *
-     * @return string
-     */
-    public function getEditTemplatePath()
+    public function getEditTemplatePath(): string
     {
         return $this->getTemplatePath('Edit');
     }
@@ -447,53 +320,31 @@ abstract class AbstractContentType implements ContentTypeInterface
     /**
      * Tries to resolve a certain template using a given suffix in 'namespaced' name-style
      * and returns the resulting path.
-     *
-     * @param string $suffix
-     * @return string
      */
-    protected function getTemplatePath($suffix = '')
+    protected function getTemplatePath(string $suffix = ''): string
     {
         $template = '@' . $this->getBundleName() . '/ContentType/' . lcfirst($this->getName()) . $suffix . '.html.twig';
 
         if (!$this->twigLoader->exists($template)) {
-            throw new \Exception($this->__f('Error! Could not resolve %template% template.', ['%template%' => $template]));
+            throw new Exception($this->__f('Error! Could not resolve %template% template.', ['%template%' => $template]));
         }
 
         return $template;
     }
 
-    /**
-     * Returns the FqCN of the form class (e.g. return HeadingType::class;)
-     *
-     * @return string
-     */
-    public function getEditFormClass()
+    public function getEditFormClass(): string
     {
         return '';
     }
 
-    /**
-     * Returns an array of form options.
-     *
-     * @param string $context The target page context (one of CONTEXT* constants)
-     *
-     * @return array
-     */
-    public function getEditFormOptions($context)
+    public function getEditFormOptions(string $context): array
     {
         return [
             'context' => $context
         ];
     }
 
-    /**
-     * Returns an array of required assets.
-     *
-     * @param string $context The target page context (one of CONTEXT* constants)
-     *
-     * @return array
-     */
-    public function getAssets($context)
+    public function getAssets(string $context): array
     {
         return [
             'css' => [],
@@ -501,15 +352,7 @@ abstract class AbstractContentType implements ContentTypeInterface
         ];
     }
 
-    /**
-     * Returns the name of the JS function to execute or null for nothing.
-     * The function must be registered in the global scope and must not expect any arguments.
-     *
-     * @param string $context The target page context (one of CONTEXT* constants)
-     *
-     * @return string
-     */
-    public function getJsEntrypoint($context)
+    public function getJsEntrypoint(string $context): ?string
     {
         return null;
     }

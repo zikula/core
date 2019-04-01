@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Helper\MailHelper;
@@ -23,44 +23,42 @@ use Zikula\UsersModule\RegistrationEvents;
 class RegistrationEventsListener implements EventSubscriberInterface
 {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var MailHelper
      */
     private $mailHelper;
 
-    public static function getSubscribedEvents()
+    public function __construct(RequestStack $requestStack, MailHelper $mailHelper)
     {
-        return [
-            RegistrationEvents::REGISTRATION_SUCCEEDED => ['sendRegistrationEmail'],
-        ];
-    }
-
-    /**
-     * RegistrationEventsListener constructor.
-     * @param SessionInterface $session
-     * @param MailHelper $mailHelper
-     */
-    public function __construct(SessionInterface $session, MailHelper $mailHelper)
-    {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->mailHelper = $mailHelper;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function sendRegistrationEmail(GenericEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            RegistrationEvents::REGISTRATION_SUCCEEDED => ['sendRegistrationEmail']
+        ];
+    }
+
+    public function sendRegistrationEmail(GenericEvent $event): void
     {
         $userEntity = $event->getSubject();
-        if (UsersConstant::ACTIVATED_PENDING_REG !== $userEntity->getActivated()) {
-            $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
+        if (UsersConstant::ACTIVATED_PENDING_REG === $userEntity->getActivated()) {
+            return;
         }
-        if (!empty($notificationErrors)) {
-            $this->session->getFlashBag()->add('error', implode('<br />', $notificationErrors));
+        $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
+        if (empty($notificationErrors)) {
+            return;
         }
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request || !$request->hasSession() || null === $request->getSession()) {
+            return;
+        }
+        $request->getSession()->getFlashBag()->add('error', implode('<br />', $notificationErrors));
     }
 }

@@ -14,31 +14,33 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\DataTransformerInterface;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer;
 use Zikula\CategoriesModule\Tests\Fixtures\CategoryAssignmentEntity;
 
-class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
+class CategoriesCollectionTransformerTest extends TestCase
 {
-    public function testTransform()
+    public function testTransform(): void
     {
         $this->assertEquals(1, 1);
     }
 
-    public function testReverseTransformEmptyArray()
+    public function testReverseTransformEmptyArray(): void
     {
         $transformer = $this->getTransformer();
         $this->assertEquals(new ArrayCollection(), $transformer->reverseTransform([]));
     }
 
-    public function testTransformEmptyArray()
+    public function testTransformEmptyArray(): void
     {
         $transformer = $this->getTransformer();
         $this->assertEquals([], $transformer->transform([]));
     }
 
-    public function testTransformSingleAssociation()
+    public function testTransformSingleAssociation(): void
     {
         $transformer = $this->getTransformer();
 
@@ -49,7 +51,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $transformer->transform([$categoryAssignment]));
     }
 
-    public function testReverseTransformSingleAssociation()
+    public function testReverseTransformSingleAssociation(): void
     {
         $transformer = $this->getTransformer();
         $subCollection = new ArrayCollection();
@@ -62,7 +64,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $transformer->reverseTransform(['registry_1' => $category]));
     }
 
-    public function testTransformMultipleAssociation()
+    public function testTransformMultipleAssociation(): void
     {
         $transformer = $this->getTransformer(true);
 
@@ -75,7 +77,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $transformer->transform([$categoryAssignmentA, $categoryAssignmentB]));
     }
 
-    public function testReverseTransformMultipleAssociation()
+    public function testReverseTransformMultipleAssociation(): void
     {
         $transformer = $this->getTransformer(true);
         $subCollection = new ArrayCollection();
@@ -91,7 +93,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $transformer->reverseTransform(['registry_1' => [$categoryA, $categoryB]]));
     }
 
-    public function testTransformMultipleRegistriesAndAssociations()
+    public function testTransformMultipleRegistriesAndAssociations(): void
     {
         $transformer = $this->getTransformer(true);
 
@@ -111,7 +113,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $transformer->transform([$categoryAssignmentA, $categoryAssignmentB, $categoryAssignmentC, $categoryAssignmentD]));
     }
 
-    public function testReverseTransformMultipleRegistriesAndAssociations()
+    public function testReverseTransformMultipleRegistriesAndAssociations(): void
     {
         $transformer = $this->getTransformer(true);
         $subCollectionA = new ArrayCollection();
@@ -138,7 +140,7 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         ]));
     }
 
-    protected function getTransformer($multiple = false)
+    protected function getTransformer(bool $multiple = false): DataTransformerInterface
     {
         $options = [
             'entityCategoryClass' => CategoryAssignmentEntity::class,
@@ -148,11 +150,9 @@ class CategoriesCollectionTransformerTest extends \PHPUnit\Framework\TestCase
         return new CategoriesCollectionTransformer($options);
     }
 
-    protected function generateCategoryAssignment($category, $registryId)
+    protected function generateCategoryAssignment($category, $registryId): AbstractCategoryAssignment
     {
-        $categoryAssignment = $this->getMockBuilder(AbstractCategoryAssignment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $categoryAssignment = $this->getMockForAbstractClass(AbstractCategoryAssignment::class);
         $categoryAssignment->method('getCategory')->willReturn($category);
         $categoryAssignment->method('getCategoryRegistryId')->willReturn($registryId);
 

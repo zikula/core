@@ -33,17 +33,17 @@ class InitStage implements StageInterface, InjectContainerInterface
         $this->container = $container;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'init';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Migration:migrate.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, '2.0.0', '>=')) {
@@ -64,8 +64,10 @@ class InitStage implements StageInterface, InjectContainerInterface
         return false;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
-        return ['count' => $this->count];
+        return [
+            'count' => $this->count
+        ];
     }
 }

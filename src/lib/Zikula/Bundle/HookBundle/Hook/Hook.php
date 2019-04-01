@@ -30,7 +30,7 @@ class Hook extends Event
     /**
      * Subscriber area id.
      *
-     * @var integer
+     * @var string
      */
     protected $areaId;
 
@@ -41,58 +41,29 @@ class Hook extends Event
      */
     protected $caller;
 
-    /**
-     * Get caller.
-     *
-     * @return string
-     */
-    public function getCaller()
+    public function getCaller(): string
     {
         return $this->caller;
     }
 
-    /**
-     * Set caller.
-     *
-     * @param string $caller Caller name
-     *
-     * @return Hook
-     */
-    public function setCaller($caller)
+    public function setCaller(string $caller): self
     {
         $this->caller = $caller;
 
         return $this;
     }
 
-    /**
-     * Get subscriber object id.
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId()/*: int type hint currently disabled as UsersModule assigns a UserEntity for LoginUiHooksSubscriber::LOGIN_PROCESS */
     {
         return $this->id;
     }
 
-    /**
-     * Get subscriber area id.
-     *
-     * @return integer
-     */
-    public function getAreaId()
+    public function getAreaId(): ?string
     {
         return $this->areaId;
     }
 
-    /**
-     * Set subscriber area id.
-     *
-     * @param string $areaId ID of the area
-     *
-     * @return Hook
-     */
-    public function setAreaId($areaId)
+    public function setAreaId(string $areaId): self
     {
         $this->areaId = $areaId;
 

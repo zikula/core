@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Intrusion
@@ -36,43 +38,39 @@ class IntrusionEntity extends EntityAccess
     private $id;
 
     /**
-     * name of the entity
+     * Name of the entity
      *
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
      */
     private $name;
 
     /**
-     * tag
+     * Tag
      *
      * @var string
-     *
      * @ORM\Column(name="tag", type="string", length=40, nullable=true)
      */
     private $tag;
 
     /**
-     * value
+     * Value
      *
-     * @var text
-     *
+     * @var string
      * @ORM\Column(name="value", type="text", nullable=false)
      */
     private $value;
 
     /**
-     * page called when intrusion was detected
+     * Page called when intrusion was detected
      *
-     * @var text
-     *
+     * @var string
      * @ORM\Column(name="page", type="text", nullable=false)
      */
     private $page;
 
     /**
-     * user id assoicated with the intrusion
+     * User id assoicated with the intrusion
      *
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="uid", referencedColumnName="uid")
@@ -80,264 +78,156 @@ class IntrusionEntity extends EntityAccess
     private $user;
 
     /**
-     * ip address of the intrustion
+     * Ip address of the intrustion
      *
      * @var string
-     *
      * @ORM\Column(name="ip", type="string", length=40, nullable=false)
      */
     private $ip;
 
     /**
-     * impact
+     * Impact
      *
      * @var integer
-     *
      * @ORM\Column(name="impact", type="integer", nullable=false)
      */
     private $impact;
 
     /**
-     * filters
+     * Filters
      *
-     * @var text
-     *
+     * @var string
      * @ORM\Column(name="filters", type="text", nullable=false)
      */
     private $filters;
 
     /**
-     * timestamp of the intrusion
+     * Timestamp of the intrusion
      *
-     * @var \Datetime
-     *
+     * @var DateTime
      * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return IntrusionEntity
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Set tag
-     *
-     * @param string $tag
-     * @return IntrusionEntity
-     */
-    public function setTag($tag)
+    public function setTag(string $tag): self
     {
         $this->tag = $tag;
 
         return $this;
     }
 
-    /**
-     * Get tag
-     *
-     * @return string
-     */
-    public function getTag()
+    public function getTag(): string
     {
         return $this->tag;
     }
 
-    /**
-     * Set value
-     *
-     * @param text $value
-     * @return IntrusionEntity
-     */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
 
         return $this;
     }
 
-    /**
-     * Get value
-     *
-     * @return text
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * Set page
-     *
-     * @param text $page
-     * @return IntrusionEntity
-     */
-    public function setPage($page)
+    public function setPage(string $page): self
     {
         $this->page = $page;
 
         return $this;
     }
 
-    /**
-     * Get page
-     *
-     * @return text
-     */
-    public function getPage()
+    public function getPage(): string
     {
         return $this->page;
     }
 
-    /**
-     * Set user
-     *
-     * @param \Zikula\UsersModule\Entity\UserEntity $user
-     * @return IntrusionEntity
-     */
-    public function setUser($user)
+    public function setUser(UserEntity $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    /**
-     * Get user
-     *
-     * @return \Zikula\UsersModule\Entity\UserEntity
-     */
-    public function getUser()
+    public function getUser(): UserEntity
     {
         return $this->user;
     }
 
-    public function getUid()
+    public function getUid(): int
     {
         return $this->getUser()->getUid();
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->getUser()->getUname();
     }
 
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return IntrusionEntity
-     */
-    public function setIp($ip)
+    public function setIp(string $ip): self
     {
         $this->ip = $ip;
 
         return $this;
     }
 
-    /**
-     * Get ip
-     *
-     * @return string
-     */
-    public function getIp()
+    public function getIp(): string
     {
         return $this->ip;
     }
 
-    /**
-     * Set impact
-     *
-     * @param integer $impact
-     * @return IntrusionEntity
-     */
-    public function setImpact($impact)
+    public function setImpact(int $impact): self
     {
         $this->impact = $impact;
 
         return $this;
     }
 
-    /**
-     * Get impact
-     *
-     * @return integer
-     */
-    public function getImpact()
+    public function getImpact(): int
     {
         return $this->impact;
     }
 
-    /**
-     * Set filters
-     *
-     * @param text $filters
-     * @return IntrusionEntity
-     */
-    public function setFilters($filters)
+    public function setFilters(string $filters): self
     {
         $this->filters = $filters;
 
         return $this;
     }
 
-    /**
-     * Get filters
-     *
-     * @return text
-     */
-    public function getFilters()
+    public function getFilters(): string
     {
         return $this->filters;
     }
 
-    /**
-     * Set date
-     *
-     * @param \Datetime $date
-     * @return IntrusionEntity
-     */
-    public function setDate($date)
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
 
         return $this;
     }
 
-    /**
-     * Get date
-     *
-     * @return \Datetime
-     */
-    public function getDate()
+    public function getDate(): DateTime
     {
         return $this->date;
     }

@@ -59,7 +59,7 @@ class LoginBlock extends AbstractBlockHandler
      */
     private $hookDispatcher;
 
-    public function display(array $properties)
+    public function display(array $properties): string
     {
         if (!$this->hasPermission('Loginblock::', $properties['title'] . '::', ACCESS_READ)) {
             return '';
@@ -89,7 +89,7 @@ class LoginBlock extends AbstractBlockHandler
         if (!$addedContent && 0 === count($hookBindings) && 1 === count($this->authenticationMethodCollector->getActiveKeys())) {
             $request = $this->requestStack->getCurrentRequest();
             $selectedMethod = $this->authenticationMethodCollector->getActiveKeys()[0];
-            if ($request->hasSession()) {
+            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
                 $request->getSession()->set('authenticationMethod', $selectedMethod);
                 if (!$request->getSession()->has('returnUrl')) {
                     $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
@@ -112,54 +112,48 @@ class LoginBlock extends AbstractBlockHandler
 
     /**
      * @required
-     * @param RouterInterface $router
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
     /**
      * @required
-     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * @required
-     * @param FormFactoryInterface $formFactory
      */
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
 
     /**
      * @required
-     * @param CurrentUserApiInterface $currentUserApi
      */
-    public function setCurrentUserApi(CurrentUserApiInterface $currentUserApi)
+    public function setCurrentUserApi(CurrentUserApiInterface $currentUserApi): void
     {
         $this->currentUserApi = $currentUserApi;
     }
 
     /**
      * @required
-     * @param AuthenticationMethodCollector $authenticationMethodCollector
      */
-    public function setAuthenticationMethodCollector(AuthenticationMethodCollector $authenticationMethodCollector)
+    public function setAuthenticationMethodCollector(AuthenticationMethodCollector $authenticationMethodCollector): void
     {
         $this->authenticationMethodCollector = $authenticationMethodCollector;
     }
 
     /**
      * @required
-     * @param HookDispatcherInterface $hookDispatcher
      */
-    public function setHookDispatcher(HookDispatcherInterface $hookDispatcher)
+    public function setHookDispatcher(HookDispatcherInterface $hookDispatcher): void
     {
         $this->hookDispatcher = $hookDispatcher;
     }

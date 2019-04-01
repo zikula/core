@@ -15,7 +15,7 @@ namespace Zikula\Core;
 
 abstract class AbstractModule extends AbstractBundle
 {
-    public function getNameType()
+    public function getNameType(): string
     {
         return 'Module';
     }

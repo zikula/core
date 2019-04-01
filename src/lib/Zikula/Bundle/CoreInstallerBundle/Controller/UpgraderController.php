@@ -27,14 +27,9 @@ use Zikula\Component\Wizard\WizardCompleteInterface;
  */
 class UpgraderController extends AbstractController
 {
-    const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.4.3';
+    public const ZIKULACORE_MINIMUM_UPGRADE_VERSION = '1.4.3';
 
-    /**
-     * @param Request $request
-     * @param string $stage
-     * @return Response
-     */
-    public function upgradeAction(Request $request, $stage)
+    public function upgradeAction(Request $request, $stage): Response
     {
         $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, ZikulaKernel::VERSION, '=')) {
@@ -56,7 +51,7 @@ class UpgraderController extends AbstractController
         $request->setLocale($this->container->getParameter('locale'));
 
         // begin the wizard
-        $wizard = new Wizard($this->container, realpath(__DIR__ . '/../Resources/config/upgrade_stages.yml'));
+        $wizard = new Wizard($this->container, dirname(__DIR__) . '/Resources/config/upgrade_stages.yml');
         $currentStage = $wizard->getCurrentStage($stage);
         if ($currentStage instanceof WizardCompleteInterface) {
             $yamlDumper->setParameter('upgrading', false);

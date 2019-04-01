@@ -27,12 +27,12 @@ class CategoryAssignmentEntity extends AbstractCategoryAssignment
      */
     private $entity;
 
-    public function getEntity()
+    public function getEntity(): CategorizableEntity
     {
         return $this->entity;
     }
 
-    public function setEntity($entity)
+    public function setEntity($entity): void
     {
         $this->entity = $entity;
     }

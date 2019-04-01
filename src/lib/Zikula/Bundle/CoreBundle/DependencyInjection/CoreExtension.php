@@ -13,12 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\DependencyInjection;
 
+use ReflectionClass;
+use SplFileInfo;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Zikula\Common\Translator\Translator;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 
 /**
@@ -26,9 +31,6 @@ use Zikula\Core\LinkContainer\LinkContainerInterface;
  */
 class CoreExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -49,46 +51,37 @@ class CoreExtension extends Extension
 
     /**
      * Loads the translator configuration.
-     *
-     * @param array $config
-     *            A translator configuration array
-     * @param ContainerBuilder $container
-     *            A ContainerBuilder instance
      */
-    protected function registerTranslatorConfiguration(array $config, ContainerBuilder $container)
+    protected function registerTranslatorConfiguration(array $config, ContainerBuilder $container): void
     {
-        $translatorServiceDefinition = $container->findDefinition('Zikula\Common\Translator\Translator');
+        $translatorServiceDefinition = $container->findDefinition(Translator::class);
         $translatorServiceDefinition->addMethodCall('setFallbackLocales', [
             $config['fallbacks']
         ]);
         $container->setParameter('translator.logging', $config['logging']);
 
         // Discover translation directories
+        $translationsFolder = '/Resources/translations';
         $dirs = [];
-
-        if (class_exists('Symfony\Component\Validator\Validator')) {
-            $r = new \ReflectionClass('Symfony\Component\Validator\Validator');
-            $dirs[] = dirname($r->getFileName()) . '/Resources/translations';
+        if (class_exists(Validator::class)) {
+            $r = new ReflectionClass(Validator::class);
+            $dirs[] = dirname($r->getFileName()) . $translationsFolder;
         }
-        if (class_exists('Symfony\Component\Form\Form')) {
-            $r = new \ReflectionClass('Symfony\Component\Form\Form');
-            $dirs[] = dirname($r->getFileName()) . '/Resources/translations';
+        if (class_exists(Form::class)) {
+            $r = new ReflectionClass(Form::class);
+            $dirs[] = dirname($r->getFileName()) . $translationsFolder;
         }
-        if (class_exists('Symfony\Component\Security\Core\Exception\AuthenticationException')) {
-            $r = new \ReflectionClass('Symfony\Component\Security\Core\Exception\AuthenticationException');
-            $dirs[] = dirname($r->getFileName()) . '/../Resources/translations';
+        if (class_exists(AuthenticationException::class)) {
+            $r = new ReflectionClass(AuthenticationException::class);
+            $dirs[] = dirname($r->getFileName()) . '/..' . $translationsFolder;
         }
 
         $appResourcesPath = $container->getParameter('kernel.root_dir') . '/Resources/';
 
         $overridePath = $appResourcesPath . '%s/translations';
         foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
-            $reflection = new \ReflectionClass($class);
-            if (is_dir($dir = dirname($reflection->getFileName()) . '/Resources/translations')) {
-                $dirs[] = $dir;
-            }
-
-            if (is_dir($dir = dirname($reflection->getFileName()) . '/Resources/locale')) {
+            $reflection = new ReflectionClass($class);
+            if (is_dir($dir = dirname($reflection->getFileName()) . $translationsFolder)) {
                 $dirs[] = $dir;
             }
 
@@ -101,10 +94,6 @@ class CoreExtension extends Extension
             $dirs[] = $dir;
         }
 
-        if (is_dir($dir = $appResourcesPath . 'locale')) {
-            $dirs[] = $dir;
-        }
-
         // Register translation resources
         if ($dirs) {
             foreach ($dirs as $dir) {
@@ -112,7 +101,7 @@ class CoreExtension extends Extension
             }
 
             $finder = Finder::create()->files()
-                ->filter(function(\SplFileInfo $file) {
+                ->filter(static function(SplFileInfo $file) {
                     return 2 === mb_substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
                 })
                 ->in($dirs);
@@ -130,12 +119,12 @@ class CoreExtension extends Extension
         }
     }
 
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         return new Configuration($container->getParameter('kernel.debug'));
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return 'http://symfony.com/schema/dic/symfony';
     }

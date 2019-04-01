@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaBlocksModule:js/Zikula.Blocks.Admin.Edit.js')) }}
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <div class="container-fluid">
@@ -41,7 +41,6 @@
             <legend>{{ __('Filters') }}</legend>
             {{ form_row(form.positions) }}
             {{ form_row(form.language) }}
-            <script>var filterCount = '{{ form.filters|length }}';</script>
             <div class="form-group">
                 {{ form_label(form.filters) }}
                 <div class="col-sm-9">
@@ -69,3 +68,7 @@
 
 </div>
 {{ adminFooter() }}
+<script>
+    {# used in @ZikulaBlocksModule:js/Zikula.Blocks.Admin.Edit.js #}
+    var filterCount = '{{ form.filters|length }}';
+</script>

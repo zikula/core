@@ -26,7 +26,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
         parent::__construct($registry, HookBindingEntity::class);
     }
 
-    public function deleteByBothAreas($subscriberArea, $providerArea)
+    public function deleteByBothAreas(string $subscriberArea, string $providerArea): void
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->delete(HookBindingEntity::class, 't')
@@ -36,7 +36,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
             ->execute();
     }
 
-    public function selectByAreaName($areaName, $type = 'sareaid')
+    public function selectByAreaName(string $areaName, string $type = 'sareaid'): array
     {
         $type = in_array($type, ['sareaid', 'pareaid']) ? $type : 'sareaid';
         $order = new OrderBy();
@@ -51,7 +51,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
             ->getArrayResult();
     }
 
-    public function setSortOrder($order, $subscriberAreaName, $providerAreaName)
+    public function setSortOrder(int $order, string $subscriberAreaName, string $providerAreaName): void
     {
         $this->_em->createQueryBuilder()
             ->update(HookBindingEntity::class, 't')
@@ -62,7 +62,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
             ->execute();
     }
 
-    public function findOneOrNullByAreas($subscriberArea, $providerArea)
+    public function findOneOrNullByAreas(string $subscriberArea, string $providerArea)
     {
         return $this->createQueryBuilder('t')
             ->where('t.sareaid = ?1 AND t.pareaid = ?2')
@@ -71,7 +71,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
             ->getOneOrNullResult();
     }
 
-    public function findByOwners($subscriberOwner, $providerOwner)
+    public function findByOwners(string $subscriberOwner, string $providerOwner): array
     {
         return $this->createQueryBuilder('t')
             ->where('t.sowner = ?1 AND t.powner = ?2')
@@ -80,7 +80,7 @@ class HookBindingRepository extends ServiceEntityRepository implements HookBindi
             ->getArrayResult();
     }
 
-    public function deleteAllByOwner($owner)
+    public function deleteAllByOwner(string $owner): void
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->delete(HookBindingEntity::class, 't')

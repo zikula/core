@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -27,7 +28,7 @@ use Zikula\ZAuthModule\ZAuthConstant;
  */
 class MigrationHelper
 {
-    const BATCH_LIMIT = 25;
+    public const BATCH_LIMIT = 25;
 
     /**
      * @var Connection
@@ -49,12 +50,6 @@ class MigrationHelper
      */
     private $logger;
 
-    /**
-     * MigrationHelper constructor.
-     * @param RegistryInterface $registry
-     * @param ValidatorInterface $validator
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         RegistryInterface $registry,
         ValidatorInterface $validator,
@@ -67,12 +62,9 @@ class MigrationHelper
     }
 
     /**
-     * @param array $user
-     * @param string $method
-     * @return AuthenticationMappingEntity|null
-     * @throws \Exception
+     * @throws Exception
      */
-    public function createMappingFromUser($user, $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER)
+    public function createMappingFromUser(array $user = [], string $method = ZAuthConstant::AUTHENTICATION_METHOD_EITHER): ?AuthenticationMappingEntity
     {
         $query = $this->conn->createQueryBuilder()
             ->select('*')
@@ -104,12 +96,7 @@ class MigrationHelper
         return $mapping;
     }
 
-    /**
-     * @param $uid
-     * @param integer $limit
-     * @return array
-     */
-    private function getUnMigratedUsers($uid, $limit)
+    private function getUnMigratedUsers(int $uid, int $limit): array
     {
         $qb = $this->conn->createQueryBuilder();
         $query = $qb
@@ -128,6 +115,9 @@ class MigrationHelper
         return $query->execute()->fetchAll();
     }
 
+    /**
+     * @return false|mixed
+     */
     public function getMaxUnMigratedUid()
     {
         $query = $this->conn->createQueryBuilder()
@@ -138,6 +128,9 @@ class MigrationHelper
         return $query->execute()->fetchColumn();
     }
 
+    /**
+     * @return false|mixed
+     */
     public function countUnMigratedUsers()
     {
         $query = $this->conn->createQueryBuilder()
@@ -148,7 +141,7 @@ class MigrationHelper
         return $query->execute()->fetchColumn();
     }
 
-    public function migrateUsers($lastUid)
+    public function migrateUsers(int $lastUid): array
     {
         $users = $this->getUnMigratedUsers($lastUid, self::BATCH_LIMIT);
         $complete = 0;

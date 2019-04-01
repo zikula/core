@@ -18,19 +18,19 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
  */
 interface StorageInterface
 {
-    public function bindSubscriber($subscriberArea, $providerArea);
+    public function bindSubscriber(string $subscriberArea, string $providerArea): void;
 
-    public function unbindSubscriber($subscriberArea, $providerArea);
+    public function unbindSubscriber(string $subscriberArea, string $providerArea): void;
 
-    public function getBindingsFor($areaName, $type = 'subscriber');
+    public function getBindingsFor(string $areaName, string $type = 'subscriber'): array;
 
-    public function getRuntimeMetaByEventName($eventName);
+    public function getRuntimeMetaByEventName(string $eventName);
 
-    public function setBindOrder($subscriberAreaName, array $providerAreas);
+    public function setBindOrder(string $subscriberAreaName, array $providerAreas): void;
 
-    public function getBindingBetweenAreas($subscriberArea, $providerArea);
+    public function getBindingBetweenAreas(string $subscriberArea, string $providerArea);
 
-    public function isAllowedBindingBetweenAreas($subscriberArea, $providerArea);
+    public function isAllowedBindingBetweenAreas(string $subscriberArea, string $providerArea): bool;
 
-    public function getBindingsBetweenOwners($subscriberOwner, $providerOwner);
+    public function getBindingsBetweenOwners(string $subscriberOwner, string $providerOwner): array;
 }

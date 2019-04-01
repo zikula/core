@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Tests\Api;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Zikula\ThemeModule\Api\PageAssetApi;
 use Zikula\ThemeModule\Engine\AssetBag;
 
-class PageAssetApiTest extends \PHPUnit\Framework\TestCase
+class PageAssetApiTest extends TestCase
 {
     /**
      * @var AssetBag
@@ -28,13 +30,13 @@ class PageAssetApiTest extends \PHPUnit\Framework\TestCase
      */
     private $api;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->stylesheets = new AssetBag();
         $this->api = new PageAssetApi($this->stylesheets, new AssetBag(), new AssetBag(), new AssetBag());
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $this->assertEmpty($this->stylesheets);
         $this->api->add('stylesheet', '/style.css');
@@ -42,15 +44,15 @@ class PageAssetApiTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @dataProvider exceptionDataProvider
      */
-    public function testException($type, $value)
+    public function testException($type, $value): void
     {
         $this->api->add($type, $value);
     }
 
-    public function exceptionDataProvider()
+    public function exceptionDataProvider(): array
     {
         return [
             ['foo', 'bar'],

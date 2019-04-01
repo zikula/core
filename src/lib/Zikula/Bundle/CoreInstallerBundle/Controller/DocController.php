@@ -37,12 +37,7 @@ class DocController
     private $twig;
 
     /**
-     * @var MarkdownExtra
-     */
-    private $parser;
-
-    /**
-     * @var
+     * @var string
      */
     private $basePath;
 
@@ -51,47 +46,31 @@ class DocController
      */
     private $translator;
 
-    /**
-     * Constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param Environment $twig
-     * @param MarkdownExtra $parser
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         Environment $twig,
-        MarkdownExtra $parser,
         TranslatorInterface $translator
     ) {
         $this->kernel = $kernel;
         $this->twig = $twig;
-        $this->parser = $parser;
         $this->translator = $translator;
     }
 
-    /**
-     * @param Request $request
-     * @param string $name
-     *
-     * @return Response
-     */
-    public function displayAction(Request $request, $name = 'INSTALL-2.0.md')
+    public function displayAction(Request $request, string $name = 'INSTALL-2.0.md'): Response
     {
         $this->setBasePath($request);
 
-        $content = '';
         if (!file_exists($this->basePath . '/' . $name) && 'en' !== $request->getLocale()) {
             // fallback to English docs
             $this->basePath = str_replace('docs/' . $request->getLocale(), 'docs/en', $this->basePath);
         }
-        if (file_exists($this->basePath . "/${name}")) {
-            $content = file_get_contents($this->basePath . "/${name}");
+
+        if (file_exists($this->basePath . '/' . $name)) {
+            $content = file_get_contents($this->basePath . '/' . $name);
         } else {
-            $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => "${name}"]);
+            $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => $name]);
         }
-        $content = $this->parser->defaultTransform($content);
+        $content = MarkdownExtra::defaultTransform($content);
         $templateParams = [
             'lang' => $request->getLocale(),
             'charset' => $this->kernel->getCharset(),
@@ -105,15 +84,13 @@ class DocController
 
     /**
      * Set the base path for doc files, computing whether this is a Github clone or CI build.
-     *
-     * @param Request $request
      */
-    private function setBasePath(Request $request)
+    private function setBasePath(Request $request): void
     {
         $paths = [
-            $this->kernel->getRootDir() . '/../docs/' . $request->getLocale(), // localized in ci build
-            $this->kernel->getRootDir() . '/../docs/en', // default in ci build
-            $this->kernel->getRootDir() . '/../..' // github clone
+            $this->kernel->getProjectDir() . '/docs/' . $request->getLocale(), // localized in ci build
+            $this->kernel->getProjectDir() . '/docs/en', // default in ci build
+            $this->kernel->getProjectDir() . '/..' // github clone
         ];
         foreach ($paths as $docPath) {
             if ($path = realpath($docPath)) {

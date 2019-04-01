@@ -15,147 +15,130 @@ namespace Zikula\Common\Content;
 
 interface ContentTypeInterface
 {
-    const CATEGORY_BASIC = 'basic';
+    public const CATEGORY_BASIC = 'basic';
 
-    const CATEGORY_EXTERNAL = 'external';
+    public const CATEGORY_EXTERNAL = 'external';
 
-    const CATEGORY_INTEGRATION = 'integration';
+    public const CATEGORY_INTEGRATION = 'integration';
 
-    const CATEGORY_EXPERT = 'expert';
+    public const CATEGORY_EXPERT = 'expert';
 
-    const CONTEXT_VIEW = 'view';
+    public const CONTEXT_VIEW = 'view';
 
-    const CONTEXT_EDIT = 'edit';
+    public const CONTEXT_EDIT = 'edit';
 
-    const CONTEXT_TRANSLATION = 'translation';
+    public const CONTEXT_TRANSLATION = 'translation';
 
     /**
      * Returns the name of this content type.
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Returns the category of this content type.
-     * @return boolean
      */
-    public function getCategory();
+    public function getCategory(): string;
 
     /**
      * Returns the icon name (FontAwesome icon code suffix, e.g. "pencil").
-     * @return string
      */
-    public function getIcon();
+    public function getIcon(): string;
 
     /**
      * Returns the title of this content type.
-     * @return string
      */
-    public function getTitle();
+    public function getTitle(): string;
 
     /**
      * Returns the description of this content type.
-     * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * Returns an extended plugin information shown on settings page.
-     * @return string
      */
-    public function getAdminInfo();
+    public function getAdminInfo(): string;
 
     /**
      * Returns whether this content type is active or not.
-     * @return boolean
      */
-    public function isActive();
+    public function isActive(): bool;
 
     /**
      * Returns the minimum amount of (Bootstrap) grid columns required by this content type.
      * This layout constraint is used during page editing to avoid unwanted shrinking.
-     * @return integer
      */
-    public function getMinimumAmountOfGridColumns();
+    public function getMinimumAmountOfGridColumns(): int;
 
     /**
      * Returns an array of data values retrieved from persistence with proper default values.
-     * @return array
      */
-    public function getDefaultData();
+    public function getDefaultData(): array;
 
     /**
      * Returns a list of translatable field names if any.
-     * @return array
      */
-    public function getTranslatableDataFields();
+    public function getTranslatableDataFields(): array;
 
     /**
      * Returns searchable text, that is all the text that is searchable through Zikula's standard
      * search interface. You must strip the text of any HTML tags and other structural information
      * before returning the text. If you have multiple searchable text fields then concatenate all
      * the text from these and return the full string.
-     * @return string
      */
-    public function getSearchableText();
+    public function getSearchableText(): string;
+
+    /**
+     * Returns output for normal or editing display.
+     */
+    public function display(bool $editMode = false): string;
 
     /**
      * Returns output for normal display.
-     * @return string
      */
-    public function displayView();
+    public function displayView(): string;
 
     /**
      * Returns output for display in editing mode.
-     * @return string
      */
-    public function displayEditing();
+    public function displayEditing(): string;
 
     /**
      * Returns the full path to the template for the display function in 'namespaced' name-style.
      *     e.g. `return '@AcmeMyBundle/ContentType/headingView.html.twig';`
-     * @return string
      */
-    public function getViewTemplatePath();
+    public function getViewTemplatePath(): string;
 
     /**
      * Returns the full name of the edit form's template in 'namespaced' name-style.
      *     e.g. `return '@AcmeMyBundle/ContentType/headingEdit.html.twig';`
-     * @return string
      */
-    public function getEditTemplatePath();
+    public function getEditTemplatePath(): string;
 
     /**
      * Returns the FqCN of the form class (e.g. return HeadingType::class;)
-     * @return string
      */
-    public function getEditFormClass();
+    public function getEditFormClass(): string;
 
     /**
-     * Returns an array of form options.
-     * @param string $context The target page context (one of CONTEXT* constants)
-     * @return array
+     * Returns an array of form options for a target page context (one of CONTEXT* constants).
      */
-    public function getEditFormOptions($context);
+    public function getEditFormOptions(string $context): array;
 
     /**
-     * Returns an array of required assets.
-     * @param string $context The target page context (one of CONTEXT* constants)
-     * @return array
+     * Returns an array of required assets for a target page context (one of CONTEXT* constants).
      */
-    public function getAssets($context);
+    public function getAssets(string $context): array;
 
     /**
-     * Returns the name of the JS function to execute or null for nothing.
+     * Returns the name of the JS function to execute for a target page context
+     * (one of CONTEXT* constants) or null for nothing.
      * The function must be registered in the global scope and must not expect any arguments.
-     * @param string $context The target page context (one of CONTEXT* constants)
-     * @return string
      */
-    public function getJsEntrypoint($context);
+    public function getJsEntrypoint(string $context): ?string;
 
     /**
      * Return the name of the providing bundle.
-     * @return string
      */
-    public function getBundleName();
+    public function getBundleName(): string;
 }

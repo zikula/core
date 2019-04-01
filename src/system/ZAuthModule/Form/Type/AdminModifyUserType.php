@@ -33,25 +33,16 @@ class AdminModifyUserType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -78,7 +69,7 @@ class AdminModifyUserType extends AbstractType
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Set password now'),
+                'label' => $this->__('Set password now')
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -111,17 +102,11 @@ class AdminModifyUserType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulazauthmodule_adminmodifyuser';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

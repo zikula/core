@@ -25,16 +25,12 @@ interface HookProviderInterface extends HookInterface
      * Returns an array of hook types this provider wants to listen to.
      *
      * The array keys are hook types and the value can be:
-     *
      *  * The method name to call
      *  * An array composed of the method names to call
      *
      * For instance:
-     *
      *  * array('hookType' => 'methodName')
      *  * array('hookType' => array('methodName1','methodName2'))
-     *
-     * @return array The hook types to listen to
      */
-    public function getProviderTypes();
+    public function getProviderTypes(): array;
 }

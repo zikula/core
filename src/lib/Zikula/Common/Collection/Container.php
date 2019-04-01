@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Common\Collection;
 
+use ArrayObject;
+use InvalidArgumentException;
+use Traversable;
+
 /**
  * Generic Collection.
  */
@@ -28,50 +32,36 @@ class Container implements CollectionInterface
     /**
      * Collection.
      *
-     * @var \ArrayObject
+     * @var ArrayObject
      */
     protected $collection;
 
-    /**
-     * Construct a new Zikula_Collection.
-     *
-     * @param string      $name       The name of the collection
-     * @param \ArrayObject $collection The collection (optional)
-     */
-    public function __construct($name, \ArrayObject $collection = null)
+    public function __construct(string $name, ArrayObject $collection = null)
     {
         $this->name = $name;
-        $this->collection = !$collection ? new \ArrayObject([]) : $collection;
+        $this->collection = !$collection ? new ArrayObject([]) : $collection;
     }
 
     /**
      * Retrieve the collection.
-     *
-     * @return \ArrayObject The collection
      */
-    public function getCollection()
+    public function getCollection(): ArrayObject
     {
         return $this->collection;
     }
 
     /**
      * Set the collection.
-     *
-     * @param \ArrayObject $collection The collection
-     *
-     * @return void
      */
-    public function setCollection(\ArrayObject $collection)
+    public function setCollection(ArrayObject $collection): void
     {
         $this->collection = $collection;
     }
 
     /**
      * Retrieve the name of the collection.
-     *
-     * @return string The name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -80,10 +70,8 @@ class Container implements CollectionInterface
      * Append a value to the collection without an index.
      *
      * @param mixed $value The value to append
-     *
-     * @return void
      */
-    public function add($value)
+    public function add($value): void
     {
         $this->collection[] = $value;
     }
@@ -91,12 +79,10 @@ class Container implements CollectionInterface
     /**
      * Set the value of the specified item in the collection.
      *
-     * @param mixed $key   The index of the item for which the value should be set
+     * @param mixed $key The index of the item for which the value should be set
      * @param mixed $value The value of the item
-     *
-     * @return void
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->collection[$key] = $value;
     }
@@ -117,10 +103,8 @@ class Container implements CollectionInterface
      * Indicates whether the element indexed by the $key is set.
      *
      * @param mixed $key The index to check
-     *
-     * @return boolean True if the collection contains the item identified by $key; otherwise false
      */
-    public function has($key)
+    public function has($key): bool
     {
         return $this->offsetExists($key);
     }
@@ -129,24 +113,20 @@ class Container implements CollectionInterface
      * Remove the specified item from the collection.
      *
      * @param mixed $key The index of the item to remove
-     *
-     * @return void
      */
-    public function del($key)
+    public function del($key): void
     {
         if ($this->has($key)) {
             $this->offsetUnset($key);
         }
     }
 
-    // iteratoraggregate interface implementation
+    // IteratorAggregate interface implementation
 
     /**
-     * Retrieve an external iterator (see {@link IteratorAggregate}).
-     *
-     * @return \Traversable The iterator instance
+     * Retrieve an external iterator ({@see IteratorAggregate}).
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->collection->getIterator();
     }
@@ -155,20 +135,16 @@ class Container implements CollectionInterface
 
     /**
      * Count the number of elements in the collection.
-     *
-     * @return integer The number of elements in the collection
      */
-    public function count()
+    public function count(): int
     {
         return count($this->collection);
     }
 
     /**
      * Indicates whether this collection is initialized or not.
-     *
-     * @return boolean True if the instance has a collection, otherwise false
      */
-    public function hasCollection()
+    public function hasCollection(): bool
     {
         return !$this->collection;
     }
@@ -182,23 +158,23 @@ class Container implements CollectionInterface
      *
      * @return mixed The value at the specified offset
      *
-     * @throws \InvalidArgumentException Thrown if the key does not exist in the collection
+     * @throws InvalidArgumentException Thrown if the key does not exist in the collection
      */
     public function offsetGet($key)
     {
         if ($this->has($key)) {
             return $this->collection[$key];
         }
-        throw new \InvalidArgumentException(sprintf('Key %s does not exist in collection', $key));
+        throw new InvalidArgumentException(sprintf('Key %s does not exist in collection', $key));
     }
 
     /**
      * Set the value at the specified offset (see {@link ArrayAccess::offsetSet()}).
      *
-     * @param mixed $key   The offset to retrieve
+     * @param mixed $key The offset to retrieve
      * @param mixed $value The value to set at the specified offset
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         $this->collection[$key] = $value;
     }
@@ -207,10 +183,8 @@ class Container implements CollectionInterface
      * Indicate whether the specified offset is set (see {@link ArrayAccess::offsetExists()}).
      *
      * @param mixed $key The offset to check
-     *
-     * @return boolean True if the offset is set, otherwise false
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return $this->collection->offsetExists($key);
     }
@@ -219,10 +193,8 @@ class Container implements CollectionInterface
      * Unset the specified offset (see {@link ArrayAccess::offsetUnset()}).
      *
      * @param mixed $key The offset to unset
-     *
-     * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         $this->collection->offsetUnset($key);
     }

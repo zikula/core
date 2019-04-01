@@ -22,14 +22,7 @@ use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
  */
 class MailerModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Install the ZikulaMailerModule application.
-     *
-     * @return boolean True on success, or false
-     *
-     * @throws \RuntimeException Thrown if database tables can not be created or another error occurs
-     */
-    public function install()
+    public function install(): bool
     {
         $this->setVars($this->getDefaults());
 
@@ -37,18 +30,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * Upgrade the ZikulaMailerModule application from an older version.
-     *
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param string $oldVersion Version to upgrade from
-     *
-     * @return boolean True on success, false otherwise
-     *
-     * @throws \RuntimeException Thrown if database tables can not be updated
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
         $configDumper = $this->container->get(DynamicConfigDumper::class);
         // Upgrade dependent on old version number
@@ -85,8 +67,8 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
                     'password' => $modVars['smtppassword'],
                     'host' => $modVars['smtpserver'],
                     'port' => $modVars['smtpport'],
-                    'encryption' => (isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], ['ssl', 'tls']) ? $modVars['smtpsecuremethod'] : 'ssl'),
-                    'auth_mode' => (!empty($modVars['auth'])) ? 'login' : null,
+                    'encryption' => isset($modVars['smtpsecuremethod']) && in_array($modVars['smtpsecuremethod'], ['ssl', 'tls']) ? $modVars['smtpsecuremethod'] : 'ssl',
+                    'auth_mode' => !empty($modVars['auth']) ? 'login' : null,
                     'spool' => ['type' => 'memory'],
                     'delivery_addresses' => [],
                     'disable_delivery' => 5 === $modVars['mailertype'],
@@ -116,14 +98,7 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * Uninstall ZikulaMailerModule.
-     *
-     * @return boolean True on success, false otherwise
-     *
-     * @throws \RuntimeException Thrown if database tables or stored workflows can not be removed
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Delete any module variables
         $this->delVars();
@@ -134,27 +109,24 @@ class MailerModuleInstaller extends AbstractExtensionInstaller
 
     /**
      * Default module vars.
-     *
-     * @return array
      */
-    private function getDefaults()
+    private function getDefaults(): array
     {
         return [
             'charset' => $this->container->get('kernel')->getCharset(),
             'encoding' => '8bit',
             'html' => false,
             'wordwrap' => 50,
-            'enableLogging' => false,
+            'enableLogging' => false
         ];
     }
 
     /**
-     * set the module var but if it is not set, use the default instead.
+     * Set the module var but if it is not set, use the default instead.
      *
-     * @param string $key
-     * @param null $value
+     * @param mixed $value
      */
-    private function setVarWithDefault($key, $value = null)
+    private function setVarWithDefault(string $key, $value = null): void
     {
         if (isset($value)) {
             $this->setVar($key, $value);

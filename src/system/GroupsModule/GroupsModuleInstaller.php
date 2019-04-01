@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule;
 
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
@@ -27,19 +28,14 @@ use Zikula\UsersModule\Entity\UserEntity;
  */
 class GroupsModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * initialise the groups module
-     *
-     * @return bool true if initialisation successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         try {
             $this->schemaTool->create([
                 GroupEntity::class,
                 GroupApplicationEntity::class
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
@@ -50,21 +46,14 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('hideclosed', false);
         $this->setVar('hidePrivate', false);
 
-        // create the default data for the modules module
-        $this->defaultdata();
+        // create the default data
+        $this->createDefaultData();
 
         // Initialisation successful
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
@@ -78,7 +67,7 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $anonymousUser = $this->container->get(UserRepository::class)->find(UsersConstant::USER_ID_ANONYMOUS);
                 $usersGroup = $this->container->get(GroupRepository::class)->find(GroupsConstant::GROUP_ID_USERS);
                 $anonymousUser->getGroups()->removeElement($usersGroup);
-                $this->entityManager->flush($anonymousUser);
+                $this->entityManager->flush();
                 $this->addFlash('info', $this->__('NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.'));
             case '2.4.2':
             // future upgrade routines
@@ -88,23 +77,16 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the groups module
-     *
-     * @return bool false this module cannot be deleted
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         // Deletion not allowed
         return false;
     }
 
     /**
-     * create the default data for the groups module
-     *
-     * @return void
+     * Create the default data for the groups module.
      */
-    public function defaultdata()
+    public function createDefaultData(): void
     {
         $records = [
             [
@@ -130,6 +112,7 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
             $group->setDescription($record['description']);
             $group->setPrefix($record['prefix']);
             foreach ($record['users'] as $uid) {
+                /** @var UserEntity $user */
                 $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $uid);
                 $user->addGroup($group);
             }

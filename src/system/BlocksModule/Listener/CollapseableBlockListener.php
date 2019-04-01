@@ -20,9 +20,6 @@ use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 
-/**
- * Class CollapseableBlockListener
- */
 class CollapseableBlockListener implements EventSubscriberInterface
 {
     /**
@@ -50,8 +47,13 @@ class CollapseableBlockListener implements EventSubscriberInterface
      */
     private $isUpgrading;
 
-    public function __construct(AssetBag $jsAssetBag, VariableApiInterface $variableApi, Asset $assetHelper, $installed, $isUpgrading = false)
-    {
+    public function __construct(
+        AssetBag $jsAssetBag,
+        VariableApiInterface $variableApi,
+        Asset $assetHelper,
+        bool $installed,
+        bool $isUpgrading = false
+    ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->variableApi = $variableApi;
         $this->assetHelper = $assetHelper;
@@ -59,10 +61,16 @@ class CollapseableBlockListener implements EventSubscriberInterface
         $this->isUpgrading = $isUpgrading;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function addCollapseableBehavior(GetResponseEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => [
+                ['addCollapseableBehavior', 202]
+            ]
+        ];
+    }
+
+    public function addCollapseableBehavior(GetResponseEvent $event): void
     {
         if (!$this->installed || $this->isUpgrading) {
             return;
@@ -73,14 +81,5 @@ class CollapseableBlockListener implements EventSubscriberInterface
         if ($this->variableApi->get('ZikulaBlocksModule', 'collapseable')) {
             $this->jsAssetBag->add($this->assetHelper->resolve('@ZikulaBlocksModule:js/Zikula.Blocks.Common.Minimizer.js'));
         }
-    }
-
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => [
-                ['addCollapseableBehavior', 202]
-            ]
-        ];
     }
 }

@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\Composer;
 
+use ComponentInstaller\Process\BuildJsProcess;
+use ComponentInstaller\Process\Process;
 use Composer\Script\Event;
+use RuntimeException;
+use Zikula\Composer\Process\RequireJsProcess;
 
 /**
  * A class to rewrite RequireJS configuration
@@ -21,11 +25,9 @@ use Composer\Script\Event;
 class RequireJsConfigGenerator
 {
     /**
-     * This function generates from the customized bootstrap.less und font-awesome.less a combined css file
-     *
-     * @param string|null Where to dump the generated file
+     * Generates a RequireJS configuration file.
      */
-    public static function regenerateRequireJs(Event $event)
+    public static function regenerateRequireJs(Event $event): void
     {
         // Retrieve basic information about the environment and present a
         // message to the user.
@@ -36,9 +38,9 @@ class RequireJsConfigGenerator
         // Set up all the processes.
         $processes = [
             // Build the require.js file.
-            "Zikula\\Composer\\Process\\RequireJsProcess",
+            RequireJsProcess::class,
             // Compile the require-built.js file.
-            "ComponentInstaller\\Process\\BuildJsProcess",
+            BuildJsProcess::class,
         ];
 
         // Initialize and execute each process in sequence.
@@ -48,7 +50,7 @@ class RequireJsConfigGenerator
                 continue;
             }
             $io->write("<info>Running '${class}' </info>");
-            /** @var \ComponentInstaller\Process\Process $process */
+            /** @var Process $process */
             $process = new $class($composer, $io);
             // When an error occurs during initialization, end the process.
             if (!$process->init()) {
@@ -61,8 +63,8 @@ class RequireJsConfigGenerator
         // move files into subfolder
         $webDir = 'src/web/';
         $requireDir = $webDir . 'require/';
-        if (!file_exists($requireDir)) {
-            mkdir($requireDir, 0755);
+        if (!file_exists($requireDir) && !mkdir($requireDir, 0755) && !is_dir($requireDir)) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', $requireDir));
         }
         $requireJsFiles = [
             'require.config.js',

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Api;
 
+use InvalidArgumentException;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
@@ -38,13 +39,6 @@ class PageAssetApi implements PageAssetApiInterface
      */
     private $footers;
 
-    /**
-     * constructor.
-     * @param AssetBag $styleSheets
-     * @param AssetBag $scripts
-     * @param AssetBag $headers
-     * @param AssetBag $footers
-     */
     public function __construct(
         AssetBag $styleSheets,
         AssetBag $scripts,
@@ -57,22 +51,14 @@ class PageAssetApi implements PageAssetApiInterface
         $this->footers = $footers;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function add($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
+    public function add(string $type, string $value, int $weight = AssetBag::WEIGHT_DEFAULT): void
     {
         if (empty($type) || empty($value)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
-        if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer']) || !is_numeric($weight)) {
-            throw new \InvalidArgumentException();
+        if (!in_array($type, ['stylesheet', 'javascript', 'header', 'footer'])) {
+            throw new InvalidArgumentException();
         }
-
-        // ensure proper variable types
-        $value = (string)$value;
-        $type = (string)$type;
-        $weight = (int)$weight;
 
         if ('stylesheet' === $type) {
             $this->styleSheets->add([$value => $weight]);

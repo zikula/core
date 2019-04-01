@@ -14,7 +14,7 @@ services:
 
     Zikula\RoutesModule\:
         resource: '../../*'
-        exclude: '../../{bootstrap.php,Base/bootstrap.php,Tests}'
+        exclude: '../../{bootstrap.php,Base/bootstrap.php,Tests,vendor}'
 
     Zikula\RoutesModule\Helper\:
         resource: '../../Helper/*'

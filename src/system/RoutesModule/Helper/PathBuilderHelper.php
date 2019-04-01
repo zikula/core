@@ -12,6 +12,7 @@
 
 namespace Zikula\RoutesModule\Helper;
 
+use Exception;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -23,11 +24,6 @@ class PathBuilderHelper
      */
     private $kernel;
 
-    /**
-     * PathBuilderHelper constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -35,12 +31,8 @@ class PathBuilderHelper
 
     /**
      * Returns the route's path prepended with the bundle prefix.
-     *
-     * @param RouteEntity $route
-     *
-     * @return string
      */
-    public function getPathWithBundlePrefix(RouteEntity $route)
+    public function getPathWithBundlePrefix(RouteEntity $route): string
     {
         $options = $route->getOptions();
         if (isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix']) {
@@ -54,7 +46,7 @@ class PathBuilderHelper
         $bundle = null;
         try {
             $bundle = $this->kernel->getBundle($route->getBundle());
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return $route->getPath();
         }
 

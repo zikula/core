@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule;
 
+use Exception;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\Core\AbstractExtensionInstaller;
@@ -22,23 +23,14 @@ use Zikula\Core\AbstractExtensionInstaller;
  */
 class AdminModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * Initialise the Admin module.
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return boolean True if initialisation successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
-        // create tables
         try {
             $this->schemaTool->create([
                 AdminCategoryEntity::class,
                 AdminModuleEntity::class
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
 
@@ -50,33 +42,24 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
         // change below to 0 before release - just makes it easier doing development meantime - drak
         // we can now leave this at 0 since the code also checks the development flag (config.php) - markwest
         $this->setVar('ignoreinstallercheck', 0);
-        $this->setVar('admintheme', '');
+        $this->setVar('admintheme');
         $this->setVar('displaynametype', 1);
 
-        $this->defaultdata();
+        $this->createDefaultData();
 
         // Initialisation successful
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * This function must consider all the released versions of the module!
-     * If the upgrade fails at some point, it returns the last upgraded version.
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool|string true on success, last valid version string or false if fails
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '1.9.1':
                 // ensure there is a proper sortorder for modulecategories
                 // has the sort order already been set?
-                $categories = $this->entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')->findBy(['sortorder' => 0]);
+                $categories = $this->entityManager->getRepository('ZikulaAdminModule:AdminCategoryEntity')
+                    ->findBy(['sortorder' => 0]);
                 if (count($categories) > 1) {
                     // sort categories by id
                     $dql = "
@@ -94,28 +77,15 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the Admin module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return bool true if deletion successful, false otherwise
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
         return false;
     }
 
     /**
-     * create the default data for the modules module
-     *
-     * This function is only ever called once during the lifetime of a particular
-     * module instance
-     *
-     * @return boolean|null false
+     * Create the default data for the Admin module.
      */
-    public function defaultdata()
+    public function defaultdata(): void
     {
         $records = [
             [

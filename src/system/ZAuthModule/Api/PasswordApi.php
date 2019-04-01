@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Api;
 
+use InvalidArgumentException;
 use RandomLib\Factory as RandomLibFactory;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 
@@ -45,28 +46,21 @@ class PasswordApi implements PasswordApiInterface
      * A string of characters to use in random string generation
      * @var string
      */
-    private $randomStringCharacters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|][";
+    private $randomStringCharacters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ~@#$%^*()_+-={}|][';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHashedPassword($unhashedPassword, $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE)
-    {
-        if (!is_numeric($hashMethodCode) || ((int)$hashMethodCode !== $hashMethodCode)) {
-            throw new \InvalidArgumentException();
-        }
+    public function getHashedPassword(
+        string $unhashedPassword,
+        int $hashMethodCode = self::DEFAULT_HASH_METHOD_CODE
+    ): string {
         $hashMethodNamesByCode = array_flip($this->methods);
         $hashAlgorithmName = $hashMethodNamesByCode[$hashMethodCode]; // throws ContextErrorException if not set
 
-        return $this->getSaltedHash($unhashedPassword, $hashAlgorithmName, $this->methods, self::SALT_LENGTH, self::SALT_DELIM);
+        return $this->getSaltedHash($unhashedPassword, $hashAlgorithmName, $this->methods);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function generatePassword($length = self::MIN_LENGTH)
+    public function generatePassword(int $length = self::MIN_LENGTH): string
     {
-        if (!is_numeric($length) || ((int)$length !== $length) || ($length < self::MIN_LENGTH)) {
+        if ($length < self::MIN_LENGTH) {
             $length = self::MIN_LENGTH;
         }
         $factory = new RandomLibFactory();
@@ -76,21 +70,16 @@ class PasswordApi implements PasswordApiInterface
         return $generator->generateString($length, $chars);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function passwordsMatch($unhashedPassword, $hashedPassword)
+    public function passwordsMatch(string $unhashedPassword, string $hashedPassword): bool
     {
-        if (empty($unhashedPassword) || !is_string($unhashedPassword)) {
-            throw new \InvalidArgumentException();
-        }
-        if (empty($hashedPassword) || !is_string($hashedPassword) || (false === mb_strpos($hashedPassword, self::SALT_DELIM)) || (2 !== mb_substr_count($hashedPassword, self::SALT_DELIM))) {
-            throw new \InvalidArgumentException();
+        if (empty($unhashedPassword) || empty($hashedPassword)
+            || false === mb_strpos($hashedPassword, self::SALT_DELIM)
+            || 2 !== mb_substr_count($hashedPassword, self::SALT_DELIM)
+        ) {
+            throw new InvalidArgumentException();
         }
 
-        $passwordsMatch = $this->checkSaltedHash($unhashedPassword, $hashedPassword);
-
-        return $passwordsMatch;
+        return $this->checkSaltedHash($unhashedPassword, $hashedPassword);
     }
 
     /**
@@ -106,8 +95,13 @@ class PasswordApi implements PasswordApiInterface
      *
      * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
      */
-    protected function getSaltedHash($unhashedData, $hashMethodName, array $hashMethodNameToCode = [], $saltLength = self::SALT_LENGTH, $saltDelimiter = self::SALT_DELIM)
-    {
+    protected function getSaltedHash(
+        string $unhashedData,
+        string $hashMethodName,
+        array $hashMethodNameToCode = [],
+        int $saltLength = self::SALT_LENGTH,
+        string $saltDelimiter = self::SALT_DELIM
+    ): string {
         $factory = new RandomLibFactory();
         $generator = $factory->getMediumStrengthGenerator();
         $chars = str_replace($saltDelimiter, '', $this->randomStringCharacters);
@@ -129,18 +123,23 @@ class PasswordApi implements PasswordApiInterface
      *
      * @return string The algorithm name (or code if $hashMethodNameToCode specified), salt and hashed data separated by the salt delimiter
      */
-    protected function buildSaltedHash($unhashedData, $hashMethodName, $saltStr, array $hashMethodNameToCode = [], $saltDelimiter = self::SALT_DELIM)
-    {
+    protected function buildSaltedHash(
+        string $unhashedData,
+        string $hashMethodName,
+        string $saltStr,
+        array $hashMethodNameToCode = [],
+        string $saltDelimiter = self::SALT_DELIM
+    ): string {
         $saltedHash = false;
         $algoList = hash_algos();
 
-        if ((false !== array_search($hashMethodName, $algoList)) && is_string($saltStr) && is_string($saltDelimiter) && (1 === mb_strlen($saltDelimiter))) {
+        if (in_array($hashMethodName, $algoList, true) && 1 === mb_strlen($saltDelimiter)) {
             $hashedData = hash($hashMethodName, $saltStr . $unhashedData);
             if (!empty($hashMethodNameToCode)) {
                 if (isset($hashMethodNameToCode[$hashMethodName])) {
                     $saltedHash = $hashMethodNameToCode[$hashMethodName] . $saltDelimiter . $saltStr . $saltDelimiter . $hashedData;
                 } else {
-                    throw new \InvalidArgumentException();
+                    throw new InvalidArgumentException();
                 }
             } else {
                 $saltedHash = $hashMethodName . $saltDelimiter . $saltStr . $saltDelimiter . $hashedData;
@@ -159,26 +158,24 @@ class PasswordApi implements PasswordApiInterface
      *
      * @return bool If the data matches the salted hash, then true; If the data does not match, then false
      */
-    protected function checkSaltedHash($unhashedData, $saltedHash, $saltDelimiter = self::SALT_DELIM)
-    {
+    protected function checkSaltedHash(
+        string $unhashedData,
+        string $saltedHash,
+        string $saltDelimiter = self::SALT_DELIM
+    ): bool {
         $dataMatches = false;
         $algoList = hash_algos();
         $hashMethodCodeToName = array_flip($this->methods);
 
-        if (is_string($unhashedData) && is_string($saltedHash) && is_string($saltDelimiter) && (1 === mb_strlen($saltDelimiter))
-            && (false !== mb_strpos($saltedHash, $saltDelimiter))) {
+        if (1 === mb_strlen($saltDelimiter) && false !== mb_strpos($saltedHash, $saltDelimiter)) {
             list($hashMethod, $saltStr, $correctHash) = explode($saltDelimiter, $saltedHash);
 
             if (is_numeric($hashMethod) && ((int)$hashMethod === $hashMethod)) {
                 $hashMethod = (int)$hashMethod;
             }
-            if (isset($hashMethodCodeToName[$hashMethod])) {
-                $hashMethodName = $hashMethodCodeToName[$hashMethod];
-            } else {
-                $hashMethodName = $hashMethod;
-            }
+            $hashMethodName = $hashMethodCodeToName[$hashMethod] ?? $hashMethod;
 
-            if (false !== array_search($hashMethodName, $algoList)) {
+            if (in_array($hashMethodName, $algoList, true)) {
                 $dataHash = hash($hashMethodName, $saltStr . $unhashedData); // throws ContextErrorException if $hashMethodName is unknown algorithm
                 $dataMatches = $dataHash === $correctHash;
             }

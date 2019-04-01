@@ -18,7 +18,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 interface BlockPositionRepositoryInterface extends ObjectRepository, Selectable
 {
-    public function findByName($name);
+    public function findByName(string $name);
 
-    public function getPositionChoiceArray();
+    /**
+     * Get an array of position names indexed by the id.
+     */
+    public function getPositionChoiceArray(): array;
 }

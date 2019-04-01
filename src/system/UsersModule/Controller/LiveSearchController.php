@@ -30,24 +30,19 @@ class LiveSearchController extends AbstractController
      * Retrieves a list of users for a given search term (fragment).
      *
      * @Route("/getUsers", methods = {"GET"}, options={"expose"=true})
-     *
-     * @param Request $request Current request instance
-     * @param UserRepositoryInterface $userRepository
-     * @param ProfileModuleCollector $profileModuleCollector
-     *
-     * @return JsonResponse
+     * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the live search component
      */
     public function getUsersAction(
         Request $request,
         UserRepositoryInterface $userRepository,
         ProfileModuleCollector $profileModuleCollector
-    ) {
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaUsersModule::LiveSearch', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
 
         $fragment = $request->query->get('fragment', '');
-        $results = $userRepository->searchActiveUser(['operator' => 'like', 'operand' => '%' . $fragment . '%'], 50);
+        $results = $userRepository->searchActiveUser(['operator' => 'like', 'operand' => '%' . $fragment . '%']);
 
         $profileModule = $profileModuleCollector->getSelected();
 

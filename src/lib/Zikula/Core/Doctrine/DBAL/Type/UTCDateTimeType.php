@@ -13,18 +13,23 @@ declare(strict_types=1);
 
 namespace Zikula\Core\Doctrine\DBAL\Type;
 
+use DateTime;
+use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\DateTimeType;
 
 class UTCDateTimeType extends DateTimeType
 {
+    /**
+     * @var DateTimeZone
+     */
     private static $utc;
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        if ($value instanceof \DateTime) {
-            $value->setTimezone(self::$utc ? self::$utc : self::$utc = new \DateTimeZone('UTC'));
+        if ($value instanceof DateTime) {
+            $value->setTimezone(self::$utc ?: self::$utc = new DateTimeZone('UTC'));
         }
 
         return parent::convertToDatabaseValue($value, $platform);
@@ -32,14 +37,14 @@ class UTCDateTimeType extends DateTimeType
 
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
-        if (null === $value || $value instanceof \DateTime) {
+        if (null === $value || $value instanceof DateTime) {
             return $value;
         }
 
-        $converted = \DateTime::createFromFormat(
+        $converted = DateTime::createFromFormat(
             $platform->getDateTimeFormatString(),
             $value,
-            self::$utc ? self::$utc : self::$utc = new \DateTimeZone('UTC')
+            self::$utc ?: self::$utc = new DateTimeZone('UTC')
         );
 
         if (!$converted) {

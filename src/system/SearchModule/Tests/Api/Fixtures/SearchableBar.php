@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SearchModule\Tests\Api\Fixtures;
 
+use DateTime;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Core\RouteUrl;
 use Zikula\SearchModule\Entity\SearchResultEntity;
@@ -20,21 +21,15 @@ use Zikula\SearchModule\SearchableInterface;
 
 class SearchableBar implements SearchableInterface
 {
-    /**
-     * * {@inheritdoc}
-     */
-    public function amendForm(FormBuilderInterface $form)
+    public function amendForm(FormBuilderInterface $form): void
     {
         // TODO: Implement amendForm() method.
     }
 
-    /**
-     * * {@inheritdoc}
-     */
-    public function getResults(array $words, $searchType = 'AND', $modVars = null)
+    public function getResults(array $words, string $searchType = 'AND', array $modVars = []): array
     {
         $results = [];
-        if (in_array('top', $words)) {
+        if (in_array('top', $words, true)) {
             $r = $this->getBaseResult();
             $r->setText(sprintf('ZikulaBarModule found using %s', implode(', ', $words)));
             $results[] = $r;
@@ -43,18 +38,15 @@ class SearchableBar implements SearchableInterface
         return $results;
     }
 
-    /**
-     * * {@inheritdoc}
-     */
-    public function getErrors()
+    public function getErrors(): array
     {
         return [];
     }
 
-    private function getBaseResult()
+    private function getBaseResult(): SearchResultEntity
     {
         $r = new SearchResultEntity();
-        $r->setCreated(new \DateTime())
+        $r->setCreated(new DateTime())
             ->setModule($this->getBundleName())
             ->setSesid('test')
             ->setTitle('ZikulaBarModule result')
@@ -63,10 +55,7 @@ class SearchableBar implements SearchableInterface
         return $r;
     }
 
-    /**
-     * * {@inheritdoc}
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaBarModule';
     }

@@ -16,12 +16,12 @@ namespace Zikula\GroupsModule;
 class Constant
 {
     /**
-     * Default Users group
+     * Default users group
      */
-    const GROUP_ID_USERS = 1;
+    public const GROUP_ID_USERS = 1;
 
     /**
-     * Default Administrators group
+     * Default administrators group
      */
-    const GROUP_ID_ADMIN = 2;
+    public const GROUP_ID_ADMIN = 2;
 }

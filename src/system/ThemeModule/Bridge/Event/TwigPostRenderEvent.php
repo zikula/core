@@ -32,47 +32,29 @@ class TwigPostRenderEvent extends Event
      */
     protected $content;
 
-    /**
-     * TwigPostRenderEvent constructor.
-     * @param string $content
-     * @param string $name
-     * @param array $parameters
-     */
-    public function __construct($content, $name, array $parameters = [])
+    public function __construct(string $content, string $name, array $parameters = [])
     {
         $this->content = $content;
         $this->templateName = $name;
         $this->parameters = $parameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->templateName;
     }
 
-    /**
-     * @return array
-     */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * @return string
-     */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     */
-    public function setContent($content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }

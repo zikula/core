@@ -35,15 +35,9 @@ class HtmlFilterApi implements HtmlFilterApiInterface
      */
     private $eventDispatcher;
 
-    /**
-     * HtmlFilterApi constructor.
-     * @param VariableApiInterface $variableApi
-     * @param bool $installed
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         VariableApiInterface $variableApi,
-        $installed,
+        bool $installed,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->variableApi = $variableApi;
@@ -51,15 +45,12 @@ class HtmlFilterApi implements HtmlFilterApiInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function filter($value)
     {
         if (!$this->installed) {
             return $value;
         }
-        if ('cli' !== php_sapi_name()) {
+        if ('cli' !== PHP_SAPI) {
             // don't use static vars when testing
             static $allowedTags = null;
             static $outputFilter;
@@ -95,9 +86,9 @@ class HtmlFilterApi implements HtmlFilterApiInterface
             // Fix the HTML that we want
             $value = preg_replace_callback(
                 '#\022([^\024]*)\024#',
-                    function($matches) {
+                    static function($matches) {
                         if (!$matches) {
-                            return;
+                            return '';
                         }
 
                         return '<' . strtr($matches[1], ['&gt;' => '>', '&lt;' => '<', '&quot;' => '"']) . '>';
@@ -113,7 +104,7 @@ class HtmlFilterApi implements HtmlFilterApiInterface
         return $value;
     }
 
-    private function getAllowedTags()
+    private function getAllowedTags(): string
     {
         $allowedHTML = [];
         $allowableHTML = $this->variableApi->getSystemVar('AllowableHTML');

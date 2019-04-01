@@ -25,11 +25,12 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
         parent::__construct($registry, BlockEntity::class);
     }
 
-    public function getFilteredBlocks(array $filters)
+    public function getFilteredBlocks(array $filters = [])
     {
         $qb = $this->_em->createQueryBuilder();
         $query = $qb->select('b')
-            ->from($this->_entityName, 'b');
+            ->from($this->_entityName, 'b')
+        ;
         if (isset($filters['position'])) {
             $subQb = $this->_em->createQueryBuilder();
             $query
@@ -40,7 +41,8 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
                         ->where('bp.pid = ?1')
                         ->getDQL()
                 ))
-                ->setParameter(1, $filters['position']);
+                ->setParameter(1, $filters['position'])
+            ;
             unset($filters['position']);
         }
         $paramIndex = 2;
@@ -60,7 +62,7 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
         return $query->getQuery()->getResult();
     }
 
-    public function persistAndFlush(BlockEntity $entity)
+    public function persistAndFlush(BlockEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);

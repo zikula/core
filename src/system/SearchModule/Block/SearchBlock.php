@@ -48,13 +48,7 @@ class SearchBlock extends AbstractBlockHandler
      */
     private $searchableCollector;
 
-    /**
-     * display block
-     *
-     * @param array $properties
-     * @return string the rendered bock
-     */
-    public function display(array $properties)
+    public function display(array $properties = []): string
     {
         $title = !empty($properties['title']) ? $properties['title'] : '';
         if (!$this->hasPermission('Searchblock::', "${title}::", ACCESS_READ)) {
@@ -72,7 +66,7 @@ class SearchBlock extends AbstractBlockHandler
                 'required' => false
             ]);
         foreach ($searchableModules as $moduleName => $searchableInstance) {
-            if (!in_array($moduleName, $properties['active'])) {
+            if (!in_array($moduleName, $properties['active'], true)) {
                 continue;
             }
             if (!$this->hasPermission('ZikulaSearchModule::Item', $moduleName . '::', ACCESS_READ)) {
@@ -97,22 +91,12 @@ class SearchBlock extends AbstractBlockHandler
         return $this->renderView('@ZikulaSearchModule/Block/search.html.twig', $templateParameters);
     }
 
-    /**
-     * Returns the fully qualified class name of the block's form class.
-     *
-     * @return string Template path
-     */
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
         return SearchBlockType::class;
     }
 
-    /**
-     * Returns any array of form options.
-     *
-     * @return array Options array
-     */
-    public function getFormOptions()
+    public function getFormOptions(): array
     {
         $searchModules = [];
         $searchableModules = $this->searchableCollector->getAll();
@@ -122,59 +106,49 @@ class SearchBlock extends AbstractBlockHandler
         }
         // remove disabled
         foreach ($searchModules as $displayName => $moduleName) {
-            if ((bool)$this->getVar('disable_' . $moduleName, false)) {
+            if ((bool)$this->getVar('disable_' . $moduleName)) {
                 unset($searchModules[$displayName]);
             }
         }
 
-        // get all the search plugins
         return [
             'activeModules' => $searchModules
         ];
     }
 
-    /**
-     * Returns the template used for rendering the editing form.
-     *
-     * @return string Template path
-     */
-    public function getFormTemplate()
+    public function getFormTemplate(): string
     {
         return '@ZikulaSearchModule/Block/search_modify.html.twig';
     }
 
     /**
      * @required
-     * @param ZikulaHttpKernelInterface $kernel
      */
-    public function setKernel(ZikulaHttpKernelInterface $kernel)
+    public function setKernel(ZikulaHttpKernelInterface $kernel): void
     {
         $this->kernel = $kernel;
     }
 
     /**
      * @required
-     * @param RouterInterface $router
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
     /**
      * @required
-     * @param FormFactoryInterface $formFactory
      */
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
 
     /**
      * @required
-     * @param SearchableModuleCollector $searchableCollector
      */
-    public function setSearchableModuleCollector(SearchableModuleCollector $searchableCollector)
+    public function setSearchableModuleCollector(SearchableModuleCollector $searchableCollector): void
     {
         $this->searchableCollector = $searchableCollector;
     }

@@ -15,6 +15,7 @@ namespace Zikula\Core\Doctrine\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\ORM\Tools\ToolsException;
 
 /**
  * Class SchemaHelper
@@ -26,6 +27,9 @@ class SchemaHelper
      */
     private $entityManager;
 
+    /**
+     * @var SchemaTool
+     */
     private $tool;
 
     public function __construct(EntityManagerInterface $em)
@@ -35,11 +39,11 @@ class SchemaHelper
     }
 
     /**
-     * create tables from array of entity classes
-     * @param array $classes
-     * @throws \Doctrine\ORM\Tools\ToolsException
+     * Create tables from array of entity classes.
+     *
+     * @throws ToolsException
      */
-    public function create(array $classes)
+    public function create(array $classes = []): void
     {
         $metaClasses = [];
         foreach ($classes as $class) {
@@ -49,10 +53,9 @@ class SchemaHelper
     }
 
     /**
-     * drop tables from array of entity classes
-     * @param array $classes
+     * Drop tables from array of entity classes.
      */
-    public function drop(array $classes)
+    public function drop(array $classes = []): void
     {
         $metaClasses = [];
         foreach ($classes as $class) {
@@ -62,11 +65,9 @@ class SchemaHelper
     }
 
     /**
-     * update tables from array of entity classes
-     * @param array $classes
-     * @param bool $saveMode
+     * Update tables from array of entity classes.
      */
-    public function update(array $classes, $saveMode = true)
+    public function update(array $classes = [], bool $saveMode = true): void
     {
         $metaClasses = [];
         foreach ($classes as $class) {

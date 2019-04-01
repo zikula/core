@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -27,17 +30,12 @@ abstract class AbstractAjaxController extends AbstractController
     /**
      * Updates the sort positions for a given list of entities.
      *
-     * @param Request $request
-     * @param EntityFactory $entityFactory
-     *
-     * @return JsonResponse
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     public function updateSortPositionsAction(
         Request $request,
         EntityFactory $entityFactory
-    )
+    ): JsonResponse
      {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
@@ -49,10 +47,10 @@ abstract class AbstractAjaxController extends AbstractController
         
         $objectType = $request->request->getAlnum('ot', 'route');
         $itemIds = $request->request->get('identifiers', []);
-        $min = $request->request->getInt('min', 0);
-        $max = $request->request->getInt('max', 0);
+        $min = $request->request->getInt('min');
+        $max = $request->request->getInt('max');
         
-        if (!is_array($itemIds) || count($itemIds) < 2 || $max < 1 || $max <= $min) {
+        if (!is_array($itemIds) || 2 > count($itemIds) || 1 > $max || $max <= $min) {
             return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         

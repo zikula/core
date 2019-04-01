@@ -21,13 +21,10 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DynamicConfigDumper extends YamlDumper
 {
-    const CONFIG_GENERATED = 'dynamic/generated.yml';
+    public const CONFIG_GENERATED = 'dynamic/generated.yml';
 
-    const CONFIG_DEFAULT = 'dynamic/default.yml';
+    public const CONFIG_DEFAULT = 'dynamic/default.yml';
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($configDir)
     {
         $this->fullPath = $configDir . DIRECTORY_SEPARATOR . self::CONFIG_GENERATED;
@@ -43,12 +40,10 @@ class DynamicConfigDumper extends YamlDumper
 
     /**
      * Dump configuration into dynamic configuration file.
-     *
-     * @param array $configuration The configuration array to dump
      */
-    protected function dumpFile($configuration)
+    protected function dumpFile(array $configuration = []): void
     {
-        $flags = Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE; // see #2889
+        $flags = Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE; // for #2889
         $yaml = "#This is a dynamically generated configuration file. Do not touch!\n\n" . Yaml::dump($configuration, 2, 4, $flags);
         $this->fs->dumpFile($this->fullPath, $yaml);
     }

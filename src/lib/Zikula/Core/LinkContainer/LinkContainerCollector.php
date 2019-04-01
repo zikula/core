@@ -19,11 +19,17 @@ use Zikula\Core\Event\GenericEvent;
 
 class LinkContainerCollector
 {
+    /**
+     * @var array
+     */
     private $linkContainers;
 
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher, iterable $linkContainers)
+    public function __construct(EventDispatcherInterface $dispatcher, iterable $linkContainers = [])
     {
         $this->eventDispatcher = $dispatcher;
         $this->linkContainers = [];
@@ -32,16 +38,12 @@ class LinkContainerCollector
         }
     }
 
-    private function addContainer(LinkContainerInterface $linkContainer)
+    public function addContainer(LinkContainerInterface $linkContainer): void
     {
         $this->linkContainers[$linkContainer->getBundleName()] = $linkContainer;
     }
 
-    /**
-     * @param string $containerName
-     * @param string $type
-     */
-    public function getLinks($containerName, $type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $containerName, string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         $links = [];
 
@@ -60,7 +62,7 @@ class LinkContainerCollector
         return $links;
     }
 
-    public function getAllLinksByType($type = LinkContainerInterface::TYPE_ACCOUNT)
+    public function getAllLinksByType(string $type = LinkContainerInterface::TYPE_ACCOUNT): array
     {
         $links = [];
         foreach ($this->linkContainers as $name => $container) {
@@ -73,7 +75,7 @@ class LinkContainerCollector
         return $links;
     }
 
-    public function hasContainer($containerName)
+    public function hasContainer(string $containerName): bool
     {
         return isset($this->linkContainers[$containerName]);
     }

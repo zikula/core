@@ -1,4 +1,6 @@
-( function($) {
+// Copyright Zikula Foundation, licensed MIT.
+
+(function($) {
     $(document).ready(function() {
         // config items
         var id_prefix = 'node_'; // must match NodeController::$domTreeNodePrefix

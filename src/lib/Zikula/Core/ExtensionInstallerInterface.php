@@ -18,5 +18,5 @@ namespace Zikula\Core;
  */
 interface ExtensionInstallerInterface extends InstallerInterface
 {
-    public function setBundle(AbstractBundle $bundle);
+    public function setBundle(AbstractBundle $bundle): void;
 }

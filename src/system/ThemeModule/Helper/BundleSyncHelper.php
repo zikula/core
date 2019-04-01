@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Helper;
 
+use Exception;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
+use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
+use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
@@ -58,16 +61,6 @@ class BundleSyncHelper
      */
     protected $session;
 
-    /**
-     * BundleSyncHelper constructor.
-     *
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param ThemeEntityRepository $themeEntityRepository
-     * @param BootstrapHelper $bootstrapHelper
-     * @param TranslatorInterface $translator
-     * @param ComposerValidationHelper $composerValidationHelper
-     * @param SessionInterface $session
-     */
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         ThemeEntityRepository $themeEntityRepository,
@@ -85,11 +78,11 @@ class BundleSyncHelper
     }
 
     /**
-     * Regenerates the theme list
-     * @return bool true
-     * @throws \Exception
+     * Regenerates the theme list.
+     *
+     * @throws Exception
      */
-    public function regenerate()
+    public function regenerate(): bool
     {
         // sync the filesystem and the bundles table
         $this->bootstrapHelper->load();
@@ -102,7 +95,7 @@ class BundleSyncHelper
         $scanner->scan(['themes']);
         $newThemes = $scanner->getThemesMetaData();
 
-        /** @var \Zikula\Bundle\CoreBundle\Bundle\MetaData $themeMetaData */
+        /** @var MetaData $themeMetaData */
         foreach ($newThemes as $name => $themeMetaData) {
             foreach ($themeMetaData->getPsr4() as $ns => $path) {
                 $this->kernel->getAutoloader()->addPsr4($ns, $path);
@@ -110,7 +103,7 @@ class BundleSyncHelper
 
             $bundleClass = $themeMetaData->getClass();
 
-            /** @var $bundle \Zikula\ThemeModule\AbstractTheme */
+            /** @var $bundle AbstractTheme */
             $bundle = new $bundleClass();
             $themeMetaData->setTranslator($this->translator);
             $themeVersionArray = $themeMetaData->getThemeFilteredVersionInfoArray();
@@ -136,56 +129,58 @@ class BundleSyncHelper
             }
         }
 
-        /**
-         * Persist themes
-         */
+        // persist themes
         $dbthemes = [];
         $themeEntities = $this->themeEntityRepository->findAll();
+        /** @var ThemeEntity $entity */
         foreach ($themeEntities as $entity) {
             $entity = $entity->toArray();
             $dbthemes[$entity['name']] = $entity;
         }
 
-        // See if we have lost any themes since last generation
+        // see if we have lost any themes since last generation
         foreach ($dbthemes as $name => $themeinfo) {
             if (empty($bundleThemes[$name])) {
-                // delete item from db
+                /** @var ThemeEntity $item */
                 $item = $this->themeEntityRepository->findOneBy(['name' => $name]);
+                // delete item from db
                 $this->themeEntityRepository->removeAndFlush($item);
 
                 unset($dbthemes[$name]);
             }
         }
 
-        // See if we have gained any themes since last generation,
+        // see if we have gained any themes since last generation,
         // or if any current themes have been upgraded
         foreach ($bundleThemes as $name => $themeinfo) {
-            if (empty($dbthemes[$name])) {
-                // add item to db
-                $item = new ThemeEntity();
-                $item->merge($themeinfo);
-                $this->themeEntityRepository->persistAndFlush($item);
+            if (!empty($dbthemes[$name])) {
+                continue;
             }
+            // add item to db
+            $item = new ThemeEntity();
+            $item->merge($themeinfo);
+            $this->themeEntityRepository->persistAndFlush($item);
         }
 
         // see if any themes have changed
         foreach ($bundleThemes as $name => $themeinfo) {
-            if (isset($dbthemes[$name])) {
-                if (($dbthemes[$name]['type'] !== $themeinfo['type']) ||
-                    ($dbthemes[$name]['description'] !== $themeinfo['description']) ||
-                        ($dbthemes[$name]['version'] !== $themeinfo['version']) ||
-                        ($dbthemes[$name]['admin'] !== $themeinfo['admin']) ||
-                        ($dbthemes[$name]['user'] !== $themeinfo['user']) ||
-                        ($dbthemes[$name]['system'] !== $themeinfo['system']) ||
-                        ($dbthemes[$name]['contact'] !== $themeinfo['contact']) ||
-                        ($dbthemes[$name]['xhtml'] !== $themeinfo['xhtml'])) {
-                    $themeinfo['id'] = $dbthemes[$name]['id'];
-                    // update item
-                    /** @var $item ThemeEntity */
-                    $item = $this->themeEntityRepository->find($themeinfo['id']);
-                    $item->merge($themeinfo);
-                    $this->themeEntityRepository->persistAndFlush($item);
-                }
+            if (!isset($dbthemes[$name])) {
+                continue;
+            }
+            if (($dbthemes[$name]['type'] !== $themeinfo['type']) ||
+                ($dbthemes[$name]['description'] !== $themeinfo['description']) ||
+                    ($dbthemes[$name]['version'] !== $themeinfo['version']) ||
+                    ($dbthemes[$name]['admin'] !== (bool)$themeinfo['admin']) ||
+                    ($dbthemes[$name]['user'] !== (bool)$themeinfo['user']) ||
+                    ($dbthemes[$name]['system'] !== (bool)$themeinfo['system']) ||
+                    ($dbthemes[$name]['contact'] != $themeinfo['contact']) ||
+                    ($dbthemes[$name]['xhtml'] !== (bool)$themeinfo['xhtml'])) {
+                $themeinfo['id'] = $dbthemes[$name]['id'];
+                // update item
+                /** @var $item ThemeEntity */
+                $item = $this->themeEntityRepository->find($themeinfo['id']);
+                $item->merge($themeinfo);
+                $this->themeEntityRepository->persistAndFlush($item);
             }
         }
 

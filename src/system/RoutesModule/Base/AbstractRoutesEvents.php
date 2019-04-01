@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -12,6 +15,7 @@
 namespace Zikula\RoutesModule\Base;
 
 use Zikula\RoutesModule\Listener\EntityLifecycleListener;
+use Zikula\RoutesModule\Menu\MenuBuilder;
 
 /**
  * Events definition base class.
@@ -25,10 +29,10 @@ abstract class AbstractRoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\ConfigureItemActionsMenuEvent instance.
      *
-     * @see Zikula\RoutesModule\Menu\MenuBuilder::createItemActionsMenu()
+     * @see MenuBuilder::createItemActionsMenu()
      * @var string
      */
-    const MENU_ITEMACTIONS_PRE_CONFIGURE = 'zikularoutesmodule.itemactionsmenu_pre_configure';
+    public const MENU_ITEMACTIONS_PRE_CONFIGURE = 'zikularoutesmodule.itemactionsmenu_pre_configure';
     
     /**
      * The zikularoutesmodule.itemactionsmenu_post_configure event is thrown after the item actions
@@ -37,10 +41,10 @@ abstract class AbstractRoutesEvents
      * The event listener receives an
      * Zikula\RoutesModule\Event\ConfigureItemActionsMenuEvent instance.
      *
-     * @see Zikula\RoutesModule\Menu\MenuBuilder::createItemActionsMenu()
+     * @see MenuBuilder::createItemActionsMenu()
      * @var string
      */
-    const MENU_ITEMACTIONS_POST_CONFIGURE = 'zikularoutesmodule.itemactionsmenu_post_configure';
+    public const MENU_ITEMACTIONS_POST_CONFIGURE = 'zikularoutesmodule.itemactionsmenu_post_configure';
     /**
      * The zikularoutesmodule.route_post_load event is thrown when routes
      * are loaded from the database.
@@ -51,7 +55,7 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::postLoad()
      * @var string
      */
-    const ROUTE_POST_LOAD = 'zikularoutesmodule.route_post_load';
+    public const ROUTE_POST_LOAD = 'zikularoutesmodule.route_post_load';
     
     /**
      * The zikularoutesmodule.route_pre_persist event is thrown before a new route
@@ -63,7 +67,7 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::prePersist()
      * @var string
      */
-    const ROUTE_PRE_PERSIST = 'zikularoutesmodule.route_pre_persist';
+    public const ROUTE_PRE_PERSIST = 'zikularoutesmodule.route_pre_persist';
     
     /**
      * The zikularoutesmodule.route_post_persist event is thrown after a new route
@@ -75,7 +79,7 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::postPersist()
      * @var string
      */
-    const ROUTE_POST_PERSIST = 'zikularoutesmodule.route_post_persist';
+    public const ROUTE_POST_PERSIST = 'zikularoutesmodule.route_post_persist';
     
     /**
      * The zikularoutesmodule.route_pre_remove event is thrown before an existing route
@@ -87,7 +91,7 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::preRemove()
      * @var string
      */
-    const ROUTE_PRE_REMOVE = 'zikularoutesmodule.route_pre_remove';
+    public const ROUTE_PRE_REMOVE = 'zikularoutesmodule.route_pre_remove';
     
     /**
      * The zikularoutesmodule.route_post_remove event is thrown after an existing route
@@ -99,7 +103,7 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::postRemove()
      * @var string
      */
-    const ROUTE_POST_REMOVE = 'zikularoutesmodule.route_post_remove';
+    public const ROUTE_POST_REMOVE = 'zikularoutesmodule.route_post_remove';
     
     /**
      * The zikularoutesmodule.route_pre_update event is thrown before an existing route
@@ -111,7 +115,7 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::preUpdate()
      * @var string
      */
-    const ROUTE_PRE_UPDATE = 'zikularoutesmodule.route_pre_update';
+    public const ROUTE_PRE_UPDATE = 'zikularoutesmodule.route_pre_update';
     
     /**
      * The zikularoutesmodule.route_post_update event is thrown after an existing new route
@@ -123,6 +127,6 @@ abstract class AbstractRoutesEvents
      * @see EntityLifecycleListener::postUpdate()
      * @var string
      */
-    const ROUTE_POST_UPDATE = 'zikularoutesmodule.route_post_update';
+    public const ROUTE_POST_UPDATE = 'zikularoutesmodule.route_post_update';
     
 }

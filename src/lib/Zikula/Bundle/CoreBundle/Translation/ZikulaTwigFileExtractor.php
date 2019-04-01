@@ -17,6 +17,7 @@ use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
+use SplFileInfo;
 use Twig\Environment;
 use Twig\Node\Expression\FunctionExpression;
 use Twig\Node\Node;
@@ -29,7 +30,7 @@ use Zikula\Core\AbstractBundle;
 class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitorInterface
 {
     /**
-     * @var \SplFileInfo
+     * @var SplFileInfo
      */
     private $file;
 
@@ -70,11 +71,6 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
         4 => '_fn'
     ];
 
-    /**
-     * ZikulaTwigFileExtractor constructor.
-     * @param Environment $env
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(Environment $env, ZikulaHttpKernelInterface $kernel)
     {
         $this->traverser = new NodeTraverser($env, [$this]);
@@ -82,16 +78,13 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
         self::$domainCache = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doEnterNode(Node $node, Environment $env)
     {
         $this->stack[] = $node;
 
         if ($node instanceof FunctionExpression) {
             $name = $node->getAttribute('name');
-            if (in_array($name, $this->methodNames)) {
+            if (in_array($name, $this->methodNames, true)) {
                 $args = $node->getNode('arguments');
                 switch ($name) {
                     case '_n':
@@ -127,7 +120,7 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
                         $domain = 'zikula';
                     }
                 }
-                $domainNode = array_search($name, $this->methodNames);
+                $domainNode = array_search($name, $this->methodNames, true);
                 $domain = $args->hasNode($domainNode) ? $args->getNode($domainNode)->getAttribute('value') : $domain;
 
                 $message = new Message($id, $domain);
@@ -139,12 +132,12 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
         return $node;
     }
 
-    public function getPriority()
+    public function getPriority(): int
     {
         return 0;
     }
 
-    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, Node $ast)
+    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, Node $ast)
     {
         $this->file = $file;
         $this->catalogue = $catalogue;
@@ -156,8 +149,6 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
      * If the current Twig Node has embedded templates, we want to travese these templates
      * in the same manner as we do the main twig template to ensure all translations are
      * caught.
-     *
-     * @param Node $node
      */
     private function traverseEmbeddedTemplates(Node $node)
     {
@@ -171,9 +162,6 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doLeaveNode(Node $node, Environment $env)
     {
         array_pop($this->stack);
@@ -181,11 +169,11 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
         return $node;
     }
 
-    public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue)
+    public function visitFile(SplFileInfo $file, MessageCatalogue $catalogue)
     {
     }
 
-    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
+    public function visitPhpFile(SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
     {
     }
 }

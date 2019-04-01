@@ -15,9 +15,9 @@ namespace Zikula\Bundle\CoreBundle\Tests\Functional;
 
 class TranslationTest extends BaseTestCase
 {
-    public function testTwigTranslation()
+    public function testTwigTranslation(): void
     {
-        $client = $this->createClient();
+        $client = self::createClient();
         $client->getContainer()->get('cache_clearer')->clear('');
         $client->request('GET', '/apples/view');
         $response = $client->getResponse();
@@ -32,9 +32,9 @@ class TranslationTest extends BaseTestCase
         $this->assertEquals("text.apples_remaining_does_not_exist\n\nThere are 5 apples (messages.en.po)\n", $response->getContent());
     }
 
-    public function testChangedLocale()
+    public function testChangedLocale(): void
     {
-        $client = $this->createClient();
+        $client = self::createClient();
         $client->request('GET', '/de/apples/t');
         $response = $client->getResponse();
 

@@ -32,23 +32,12 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * Returns amount of groups.
-     *
-     * @param int $groupType     Optional type filter
-     * @param int $excludedState Optional state exclusion filter
-     *
-     * @return integer
-     */
-    public function countGroups($groupType = null, $excludedState = null)
+    public function countGroups(int $groupType = null, int $excludedState = null): int
     {
         $qb = $this->createQueryBuilder('g')
             ->select('COUNT(g.gid)');
@@ -68,19 +57,10 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
         return (int)$query->getSingleScalarResult();
     }
 
-    /**
-     * Returns groups for given arguments.
-     *
-     * @param array   $filters    Optional array with filters
-     * @param array   $exclusions Optional array with exclusion filters
-     * @param array   $sorting    Optional array with sorting criteria
-     * @param integer $limit      Optional limitation for amount of retrieved objects
-     * @param integer $offset     Optional start offset of retrieved objects
-     *
-     * @return array
-     */
-    public function getGroups($filters = [], $exclusions = [], $sorting = [], $limit = 0, $offset = 0)
-    {
+    public function getGroups(
+        array $filters = [], array $exclusions = [], array $sorting = [],
+        int $limit = 0, int $offset = 0
+    ): array {
         $qb = $this->createQueryBuilder('g');
 
         // add clauses for where
@@ -121,12 +101,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
         return $query->getResult();
     }
 
-    /**
-     * @param string $indexField
-     * @return array
-     * @throws \Doctrine\ORM\Query\QueryException
-     */
-    public function findAllAndIndexBy($indexField)
+    public function findAllAndIndexBy(string $indexField): array
     {
         return $this->createQueryBuilder('g')
             ->indexBy('g', 'g.' . $indexField)
@@ -134,12 +109,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
             ->getResult();
     }
 
-    /**
-     * @param bool $includeAll
-     * @param bool $includeUnregistered
-     * @return array
-     */
-    public function getGroupNamesById($includeAll = true, $includeUnregistered = true)
+    public function getGroupNamesById(bool $includeAll = true, bool $includeUnregistered = true): array
     {
         $groups = [];
         $groups[PermissionApi::ALL_GROUPS] = $this->translator->__('All groups');
@@ -153,12 +123,7 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
         return $groups;
     }
 
-    /**
-     * @param string $name
-     * @param int    $excludedGroupId
-     * @return array
-     */
-    public function getGroupByName($name = '', $excludedGroupId = 0)
+    public function getGroupByName(string $name = '', int $excludedGroupId = 0): array
     {
         if ('' === $name) {
             return null;
@@ -177,7 +142,6 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
 
         $query = $qb->getQuery();
 
-        // execute query
         return $query->getOneOrNullResult();
     }
 }

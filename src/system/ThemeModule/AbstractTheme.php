@@ -16,18 +16,23 @@ namespace Zikula\ThemeModule;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Environment;
 use Zikula\Core\AbstractBundle;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 abstract class AbstractTheme extends AbstractBundle
 {
+    /**
+     * @var array
+     */
     private $config;
 
-    public function getNameType()
+    public function getNameType(): string
     {
         return 'Theme';
     }
 
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -37,6 +42,8 @@ abstract class AbstractTheme extends AbstractBundle
      */
     public function __construct()
     {
+        $this->config = [];
+
         $configPath = $this->getConfigPath() . '/theme.yml';
         if (!file_exists($configPath)) {
             return;
@@ -49,22 +56,18 @@ abstract class AbstractTheme extends AbstractBundle
     }
 
     /**
-     * Generate a response wrapped in the theme
-     *   wrap the maincontent in a unique div.
-     *
-     * @param string $realm
-     * @param Response $response
-     * @param string $moduleName
-     *
-     * @return Response
+     * Generate a response wrapped in the theme; wrap the main content in a unique div.
      */
-    public function generateThemedResponse($realm, Response $response, $moduleName = null)
-    {
+    public function generateThemedResponse(
+        string $realm,
+        Response $response,
+        string $moduleName = null
+    ): Response {
         $template = $this->config[$realm]['page'];
         $classes = 'home' === $realm ? 'z-homepage' : '';
         $classes .= (empty($classes) ? '' : ' ') . (isset($moduleName) ? 'z-module-' . $moduleName : '');
 
-        /* @var Twig\Environment */
+        /* @var Environment $twig */
         $twig = $this->getContainer()->get('twig');
 
         $content = $twig->render('ZikulaThemeModule:Default:maincontent.html.twig', [
@@ -79,16 +82,13 @@ abstract class AbstractTheme extends AbstractBundle
 
     /**
      * Convert the block content to a theme-wrapped response.
-     *
-     * @param string $realm
-     * @param $positionName
-     * @param string $blockContent
-     * @param $blockTitle
-     *
-     * @return string
      */
-    public function generateThemedBlockContent($realm, $positionName, $blockContent, $blockTitle)
-    {
+    public function generateThemedBlockContent(
+        string $realm,
+        string $positionName,
+        string $blockContent,
+        string $blockTitle
+    ): string {
         if (isset($this->config[$realm]['block']['positions'][$positionName])) {
             $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$positionName];
         } else {
@@ -96,40 +96,36 @@ abstract class AbstractTheme extends AbstractBundle
             $template = 'ZikulaThemeModule:Default:block.html.twig';
         }
 
-        $templateParameters = [
+        return $this->getContainer()->get('twig')->render($template, [
             'title' => $blockTitle,
             'content' => $blockContent
-        ];
-
-        return $this->getContainer()->get('twig')->render($template, $templateParameters);
+        ]);
     }
 
     /**
      * Enclose themed block content in a unique div which is useful in applying styling.
-     *
-     * @param string $content
-     * @param string $positionName
-     * @param string $blockType
-     * @param integer $bid
-     *
-     * @return string
      */
-    public function wrapBlockContentWithUniqueDiv($content, $positionName, $blockType, $bid)
-    {
-        $templateParams = [
+    public function wrapBlockContentWithUniqueDiv(
+        string $content,
+        string $positionName,
+        string $blockType,
+        int $blockId
+    ): string {
+        /* @var Environment $twig */
+        $twig = $this->getContainer()->get('twig');
+
+        return $twig->render('ZikulaThemeModule:Default:blockwrapper.html.twig', [
             'position' => $positionName,
             'type' => $blockType,
-            'bid' => $bid,
+            'bid' => $blockId,
             'content' => $content
-        ];
-
-        return $this->getContainer()->get('twig')->render('ZikulaThemeModule:Default:blockwrapper.html.twig', $templateParams);
+        ]);
     }
 
     /**
-     * load the themevars into the themeEngine global vars
+     * Load the theme variables into the theme engine global vars.
      */
-    public function loadThemeVars()
+    public function loadThemeVars(): void
     {
         if ($this->getContainer()->has('zikula_core.common.theme.themevars')) {
             $this->getContainer()->get('zikula_core.common.theme.themevars')->replace($this->getThemeVars());
@@ -138,12 +134,10 @@ abstract class AbstractTheme extends AbstractBundle
 
     /**
      * Get the theme variables from both the DB and the .yml file.
-     *
-     * @return array|string
      */
-    public function getThemeVars()
+    public function getThemeVars(): array
     {
-        $variableApi = $this->container->get('Zikula\ExtensionsModule\Api\VariableApi');
+        $variableApi = $this->container->get(VariableApi::class);
         $dbVars = $variableApi->getAll($this->name);
         if (empty($dbVars) && !is_array($dbVars)) {
             $dbVars = [];
@@ -160,10 +154,8 @@ abstract class AbstractTheme extends AbstractBundle
 
     /**
      * Get the default values from variables.yml.
-     *
-     * @return array
      */
-    public function getDefaultThemeVars()
+    public function getDefaultThemeVars(): array
     {
         $defaultVars = [];
         $themeVarsPath = $this->getConfigPath() . '/variables.yml';

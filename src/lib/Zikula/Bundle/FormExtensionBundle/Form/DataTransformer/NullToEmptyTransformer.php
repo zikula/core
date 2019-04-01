@@ -25,9 +25,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 class NullToEmptyTransformer implements DataTransformerInterface
 {
     /**
-     * Does not transform anything
+     * Does not transform anything.
      *
-     * @param  string|null $value
+     * @param string|null $value
      * @return string
      */
     public function transform($value)
@@ -36,17 +36,13 @@ class NullToEmptyTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms a null to an empty string.
+     * Transforms a null value to an empty string.
      *
-     * @param  string $value
+     * @param string $value
      * @return string
      */
     public function reverseTransform($value)
     {
-        if (is_null($value)) {
-            return '';
-        }
-
-        return $value;
+        return $value ?? '';
     }
 }

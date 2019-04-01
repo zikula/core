@@ -19,6 +19,7 @@ use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Collector\MessageModuleCollector;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class MessageExtension extends AbstractExtension
 {
@@ -37,12 +38,6 @@ class MessageExtension extends AbstractExtension
      */
     private $translator;
 
-    /**
-     * ProfileExtension constructor.
-     * @param UserRepositoryInterface $userRepository
-     * @param MessageModuleCollector $messageModuleCollector
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         UserRepositoryInterface $userRepository,
         MessageModuleCollector $messageModuleCollector,
@@ -69,16 +64,17 @@ class MessageExtension extends AbstractExtension
     }
 
     /**
-     * Display a link to a uid's inbox
-     * @param null $uid defaults to current user
-     * @param string $text defaults to 'Inbox'
-     * @param bool $urlOnly default false
-     * @param string $class
-     * @return string
+     * Display a link to a user's inbox.
+     *
+     * @param int|string $userId The user's id or name
      */
-    public function messageInboxLink($uid = null, $urlOnly = false, $text = '', $class = '')
-    {
-        $url = $this->messageModuleCollector->getSelected()->getInboxUrl($uid);
+    public function messageInboxLink(
+        $userId = null,
+        bool $urlOnly = false,
+        string $text = '',
+        string $class = ''
+    ): string {
+        $url = $this->messageModuleCollector->getSelected()->getInboxUrl($userId);
         if ($urlOnly) {
             return $url;
         }
@@ -89,33 +85,42 @@ class MessageExtension extends AbstractExtension
     }
 
     /**
-     * Display a link to send a message to the uid
-     * @param null $uid
-     * @param bool $urlOnly
-     * @param string $text
-     * @param string $class
-     * @return string
+     * Display a link to send a message to the given user.
+     *
+     * @param int|string $userId The user's id or name
      */
-    public function messageSendLink($uid = null, $urlOnly = false, $text = '', $class = '')
-    {
-        $url = $this->messageModuleCollector->getSelected()->getSendMessageUrl($uid);
+    public function messageSendLink(
+        $userId = null,
+        bool $urlOnly = false,
+        string $text = '',
+        string $class = ''
+    ): string {
+        $url = $this->messageModuleCollector->getSelected()->getSendMessageUrl($userId);
         if ($urlOnly) {
             return $url;
         }
         $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
-        $text = !empty($text) ? htmlspecialchars($text, ENT_QUOTES) : $this->userRepository->find($uid)->getUname();
+
+        if (!empty($text)) {
+            $text = htmlspecialchars($text, ENT_QUOTES);
+        } else {
+            /** @var UserEntity $user */
+            $user = $this->userRepository->find($userId);
+            $text = null !== $user ? $user->getUname() : '';
+        }
 
         return '<a' . $class . ' title="' . $this->translator->__('Send a message to this user') . '" href="' . $url . '">' . $text . '</a>';
     }
 
     /**
-     * Retrieve the total or unread message count for uid
-     * @param null $uid
-     * @param bool $unreadOnly
-     * @return int
+     * Retrieve the total or unread message count for the given user.
+     *
+     * @param int|string $userId The user's id or name
      */
-    public function messageCount($uid = null, $unreadOnly = false)
-    {
-        return $this->messageModuleCollector->getSelected()->getMessageCount($uid, $unreadOnly);
+    public function messageCount(
+        $userId = null,
+        bool $unreadOnly = false
+    ): int {
+        return $this->messageModuleCollector->getSelected()->getMessageCount($userId, $unreadOnly);
     }
 }

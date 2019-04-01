@@ -34,10 +34,6 @@ class ValidPasswordValidator extends ConstraintValidator
      */
     private $validator;
 
-    /**
-     * @param VariableApiInterface $variableApi
-     * @param ValidatorInterface $validator
-     */
     public function __construct(VariableApiInterface $variableApi, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;

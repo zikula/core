@@ -23,10 +23,6 @@ class ModuleHeaderFunction
      */
     private $handler;
 
-    /**
-     * ModuleHeaderFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -35,9 +31,7 @@ class ModuleHeaderFunction
     /**
      * Inserts module header.
      *
-     * Examples:
-     *
-     * <samp>{{ moduleHeader() }}</samp>
+     * Example: {{ moduleHeader() }}
      *
      * @param string $type Type of header (defaults to 'user')
      * @param string $title Title to display in header (optional, defaults to module name)
@@ -48,8 +42,15 @@ class ModuleHeaderFunction
      * @param bool $image If set to true, module image is also displayed next to title
      * @return string
      */
-    public function display($type = 'user', $title = '', $titleLink = '', $setPageTitle = false, $insertFlashes = false, $menuFirst = false, $image = false)
-    {
+    public function display(
+        string $type = 'user',
+        string $title = '',
+        string $titleLink = '',
+        bool $setPageTitle = false,
+        bool $insertFlashes = false,
+        bool $menuFirst = false,
+        bool $image = false
+    ): string {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:header', [
             'type' => $type,
             'title' => $title,
@@ -60,6 +61,6 @@ class ModuleHeaderFunction
             'image' => $image
         ]);
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

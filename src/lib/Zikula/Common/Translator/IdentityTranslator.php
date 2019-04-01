@@ -17,84 +17,40 @@ use Symfony\Component\Translation\IdentityTranslator as SymfonyIdentityTranslato
 
 /**
  * IdentityTranslator does not translate anything.
- *
- * Class IdentityTranslator
  */
 class IdentityTranslator extends SymfonyIdentityTranslator implements TranslatorInterface
 {
-    /**
-     * singular translation for modules.
-     *
-     * @param string $msg Message
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function __($msg, $domain = null, $locale = null)
+    public function __(string $msg, string $domain = null, string $locale = null): string
     {
         return $this->trans($msg, [], $domain, $locale);
     }
 
-    /**
-     * Plural translations for modules.
-     *
-     * @param string $m1 Singular
-     * @param string $m2 Plural
-     * @param integer $n Count
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function _n($m1, $m2, $n, $domain = null, $locale = null)
+    public function _n(string $m1, string $m2, int $number, string $domain = null, string $locale = null): string
     {
-        $message = $this->chooseMessage($m1, $m2, $n, $domain);
+        $message = $this->chooseMessage($m1, $m2, $number, $domain);
 
-        return $this->transChoice($message, $n, [], $domain, $locale);
+        return $this->trans($message, ['%count%' => $number], $domain, $locale);
     }
 
-    /**
-     * Format translations for modules.
-     *
-     * @param string $msg Message
-     * @param array $param Format parameters
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function __f($msg, array $param, $domain = null, $locale = null)
+    public function __f(string $msg, array $parameters = [], string $domain = null, string $locale = null): string
     {
-        return $this->trans($msg, $param, $domain, $locale);
+        return $this->trans($msg, $parameters, $domain, $locale);
     }
 
-    /**
-     * Format plural translations for modules.
-     *
-     * @param string $m1 Singular
-     * @param string $m2 Plural
-     * @param integer $n Count
-     * @param array $param Format parameters
-     * @param null $domain
-     * @param null $locale
-     * @return string
-     */
-    public function _fn($m1, $m2, $n, array $param, $domain = null, $locale = null)
+    public function _fn(string $m1, string $m2, int $number, array $parameters = [], string $domain = null, string $locale = null): string
     {
-        $message = $this->chooseMessage($m1, $m2, $n, $domain);
+        $message = $this->chooseMessage($m1, $m2, $number, $domain);
 
-        return $this->transChoice($message, $n, $param, $domain, $locale);
+        return $this->trans($message, ['%count%' => $number] + $parameters, $domain, $locale);
     }
 
-    /**
-     * Choose message if no translation catalogue
-     *
-     * @param string $m1 Singular
-     * @param string $m2 Plural
-     * @param integer $n Count
-     * @param string|null $domain
-     * @return string
-     */
-    private function chooseMessage($m1, $m2, $n, $domain = null)
+    private function chooseMessage(string $m1, string $m2, int $number, string $domain = null): string
     {
         return $m2;
+    }
+
+    public function getDomain(): string
+    {
+        return 'dummy';
     }
 }

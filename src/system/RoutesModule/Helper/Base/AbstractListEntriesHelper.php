@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -21,53 +24,34 @@ abstract class AbstractListEntriesHelper
 {
     use TranslatorTrait;
     
-    /**
-     * ListEntriesHelper constructor.
-     *
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
     
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
     
     /**
      * Return the name or names for a given list item.
-     *
-     * @param string $value      The dropdown value to process
-     * @param string $objectType The treated object type
-     * @param string $fieldName  The list field's name
-     * @param string $delimiter  String used as separator for multiple selections
-     *
-     * @return string List item name
      */
-    public function resolve($value, $objectType = '', $fieldName = '', $delimiter = ', ')
+    public function resolve(string $value, string $objectType = '', string $fieldName = '', string $delimiter = ', '): string
     {
-        if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
+        if ((empty($value) && '0' !== $value) || empty($objectType) || empty($fieldName)) {
             return $value;
         }
     
         $isMulti = $this->hasMultipleSelection($objectType, $fieldName);
-        if (true === $isMulti) {
-            $value = $this->extractMultiList($value);
-        }
+        $values = $isMulti ? $this->extractMultiList($value) : [];
     
         $options = $this->getEntries($objectType, $fieldName);
         $result = '';
     
         if (true === $isMulti) {
             foreach ($options as $option) {
-                if (!in_array($option['value'], $value)) {
+                if (!in_array($option['value'], $values, true)) {
                     continue;
                 }
                 if (!empty($result)) {
@@ -77,7 +61,7 @@ abstract class AbstractListEntriesHelper
             }
         } else {
             foreach ($options as $option) {
-                if ($option['value'] != $value) {
+                if ($option['value'] !== $value) {
                     continue;
                 }
                 $result = $option['text'];
@@ -91,19 +75,15 @@ abstract class AbstractListEntriesHelper
     
     /**
      * Extract concatenated multi selection.
-     *
-     * @param string $value The dropdown value to process
-     *
-     * @return array List of single values
      */
-    public function extractMultiList($value)
+    public function extractMultiList(string $value): array
     {
         $listValues = explode('###', $value);
         $amountOfValues = count($listValues);
-        if ($amountOfValues > 1 && $listValues[$amountOfValues - 1] == '') {
+        if ($amountOfValues > 1 && '' === $listValues[$amountOfValues - 1]) {
             unset($listValues[$amountOfValues - 1]);
         }
-        if ($listValues[0] == '') {
+        if ('' === $listValues[0]) {
             // use array_shift instead of unset for proper key reindexing
             // keys must start with 0, otherwise the dropdownlist form plugin gets confused
             array_shift($listValues);
@@ -115,13 +95,8 @@ abstract class AbstractListEntriesHelper
     
     /**
      * Determine whether a certain dropdown field has a multi selection or not.
-     *
-     * @param string $objectType The treated object type
-     * @param string $fieldName  The list field's name
-     *
-     * @return boolean True if this is a multi list false otherwise
      */
-    public function hasMultipleSelection($objectType, $fieldName)
+    public function hasMultipleSelection(string $objectType, string $fieldName): bool
     {
         if (empty($objectType) || empty($fieldName)) {
             return false;
@@ -150,13 +125,8 @@ abstract class AbstractListEntriesHelper
     
     /**
      * Get entries for a certain dropdown field.
-     *
-     * @param string  $objectType The treated object type
-     * @param string  $fieldName  The list field's name
-     *
-     * @return array Array with desired list entries
      */
-    public function getEntries($objectType, $fieldName)
+    public function getEntries(string $objectType, string $fieldName): array
     {
         if (empty($objectType) || empty($fieldName)) {
             return [];
@@ -185,10 +155,8 @@ abstract class AbstractListEntriesHelper
     
     /**
      * Get 'workflow state' list entries.
-     *
-     * @return array Array with desired list entries
      */
-    public function getWorkflowStateEntriesForRoute()
+    public function getWorkflowStateEntriesForRoute(): array
     {
         $states = [];
         $states[] = [
@@ -225,10 +193,8 @@ abstract class AbstractListEntriesHelper
     
     /**
      * Get 'schemes' list entries.
-     *
-     * @return array Array with desired list entries
      */
-    public function getSchemesEntriesForRoute()
+    public function getSchemesEntriesForRoute(): array
     {
         $states = [];
         $states[] = [
@@ -251,10 +217,8 @@ abstract class AbstractListEntriesHelper
     
     /**
      * Get 'methods' list entries.
-     *
-     * @return array Array with desired list entries
      */
-    public function getMethodsEntriesForRoute()
+    public function getMethodsEntriesForRoute(): array
     {
         $states = [];
         $states[] = [

@@ -35,13 +35,6 @@ class LinkContainer implements LinkContainerInterface
      */
     private $permissionApi;
 
-    /**
-     * constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param RouterInterface $router
-     * @param PermissionApiInterface $permissionApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
@@ -52,14 +45,7 @@ class LinkContainer implements LinkContainerInterface
         $this->permissionApi = $permissionApi;
     }
 
-    /**
-     * get Links of any type for this extension
-     * required by the interface
-     *
-     * @param string $type
-     * @return array
-     */
-    public function getLinks($type = LinkContainerInterface::TYPE_ADMIN)
+    public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         if (LinkContainerInterface::TYPE_ADMIN === $type) {
             return $this->getAdmin();
@@ -69,11 +55,9 @@ class LinkContainer implements LinkContainerInterface
     }
 
     /**
-     * get the Admin links for this extension
-     *
-     * @return array
+     * Get the admin links for this extension.
      */
-    private function getAdmin()
+    private function getAdmin(): array
     {
         $links = [];
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
@@ -92,12 +76,7 @@ class LinkContainer implements LinkContainerInterface
         return $links;
     }
 
-    /**
-     * set the BundleName as required by the interface
-     *
-     * @return string
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaMenuModule';
     }

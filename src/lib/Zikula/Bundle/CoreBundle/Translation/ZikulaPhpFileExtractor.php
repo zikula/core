@@ -30,6 +30,7 @@ use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
 use Psr\Log\LoggerInterface;
+use SplFileInfo;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Twig\Node\Node as TwigNode;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -58,7 +59,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     private $catalogue;
 
     /**
-     * @var \SplFileInfo
+     * @var SplFileInfo
      */
     private $file;
 
@@ -99,11 +100,6 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         4 => '_fn'
     ];
 
-    /**
-     * ZikulaPhpFileExtractor constructor.
-     * @param DocParser $docParser
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(DocParser $docParser, ZikulaHttpKernelInterface $kernel)
     {
         $this->docParser = $docParser;
@@ -117,10 +113,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         $this->traverser->addVisitor($this);
     }
 
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
     }
@@ -142,15 +135,15 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
 
                 return;
             }
-            foreach ($node->stmts as $node) {
-                $this->enterNode($node);
+            foreach ($node->stmts as $theNode) {
+                $this->enterNode($theNode);
             }
 
             return;
         }
         if (!$node instanceof MethodCall
             || !is_string($node->name)
-            || !in_array(mb_strtolower($node->name), $this->methodNames)
+            || !in_array(mb_strtolower($node->name), $this->methodNames, true)
         ) {
             $this->previousNode = $node;
 
@@ -194,7 +187,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         }
 
         // determine location of domain
-        $domainIndex = array_search(mb_strtolower($node->name), $this->methodNames);
+        $domainIndex = array_search(mb_strtolower($node->name), $this->methodNames, true);
 
         if (isset($node->args[$domainIndex])) {
             if (!$node->args[$domainIndex]->value instanceof String_) {
@@ -226,7 +219,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         $this->catalogue->add($message);
     }
 
-    public function visitPhpFile(\SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
+    public function visitPhpFile(SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
     {
         $this->file = $file;
         $this->catalogue = $catalogue;
@@ -245,21 +238,22 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     {
     }
 
-    public function visitFile(\SplFileInfo $file, MessageCatalogue $catalogue)
+    public function visitFile(SplFileInfo $file, MessageCatalogue $catalogue)
     {
     }
 
-    public function visitTwigFile(\SplFileInfo $file, MessageCatalogue $catalogue, TwigNode $ast)
+    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, TwigNode $ast)
     {
     }
 
-    private function getDocCommentForNode(Node $node)
+    private function getDocCommentForNode(Node $node): ?string
     {
         // check if there is a doc comment for the ID argument
         // ->trans(/** @Desc("FOO") */ 'my.id')
+        /* TODO check whether this can be entirely removed, refs #3941
         if (null !== $comment = $node->args[0]->getDocComment()) {
             return $comment->getText();
-        }
+        }*/
 
         // this may be placed somewhere up in the hierarchy,
         // -> /** @Desc("FOO") */ trans('my.id')
@@ -267,7 +261,9 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         // /** @Desc("FOO") */ $translator->trans('my.id')
         if (null !== $comment = $node->getDocComment()) {
             return $comment->getText();
-        } elseif (null !== $this->previousNode && null !== $this->previousNode->getDocComment()) {
+        }
+
+        if (null !== $this->previousNode && null !== $this->previousNode->getDocComment()) {
             $comment = $this->previousNode->getDocComment();
 
             return is_object($comment) ? $comment->getText() : $comment;
@@ -277,17 +273,13 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     }
 
     /**
-     * Search namespaces for match and return BundleObject
-     * @param $nodeNamespace
-     * @return BundleInterface|null
+     * Search namespaces for match and return bundle object.
      */
-    private function getBundleFromNodeNamespace($nodeNamespace)
+    private function getBundleFromNodeNamespace(string $nodeNamespace): ?BundleInterface
     {
         foreach ($this->bundles as $namespace => $bundleName) {
-            if (false !== mb_strpos($nodeNamespace, $namespace)) {
-                if ($this->kernel->isBundle($bundleName)) {
-                    return $this->kernel->getBundle($bundleName);
-                }
+            if (false !== mb_strpos($nodeNamespace, $namespace) && $this->kernel->isBundle($bundleName)) {
+                return $this->kernel->getBundle($bundleName);
             }
         }
 

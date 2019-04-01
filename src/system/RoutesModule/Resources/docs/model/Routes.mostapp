@@ -134,8 +134,7 @@ application "Routes" targets ZK30 {
                 mainAction "Main",
                 viewAction "View",
                 displayAction "Display",
-                editAction "Edit",
-                deleteAction "Delete"
+                editAction "Edit"
             }
         }
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -52,9 +55,6 @@ class InstallerListener extends AbstractInstallerListener
      */
     protected $requestStack;
 
-    /**
-     * @inheritDoc
-     */
     public static function getSubscribedEvents()
     {
         // override subscription to ALL available events to only needed events.
@@ -66,15 +66,6 @@ class InstallerListener extends AbstractInstallerListener
         ];
     }
 
-    /**
-     * InstallerListener constructor.
-     *
-     * @param CacheClearer $cacheClearer
-     * @param RouteDumperHelper $routeDumperHelper
-     * @param MultilingualRoutingHelper $multilingualRoutingHelper
-     * @param EntityFactory $entityFactory
-     * @param RequestStack $requestStack
-     */
     public function __construct(
         CacheClearer $cacheClearer,
         RouteDumperHelper $routeDumperHelper,
@@ -89,10 +80,7 @@ class InstallerListener extends AbstractInstallerListener
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function modulePostInstalled(ModuleStateEvent $event)
+    public function modulePostInstalled(ModuleStateEvent $event): void
     {
         parent::modulePostInstalled($event);
 
@@ -112,10 +100,7 @@ class InstallerListener extends AbstractInstallerListener
         $this->updateJsRoutes();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function moduleUpgraded(ModuleStateEvent $event)
+    public function moduleUpgraded(ModuleStateEvent $event): void
     {
         parent::moduleUpgraded($event);
 
@@ -130,15 +115,12 @@ class InstallerListener extends AbstractInstallerListener
         $this->updateJsRoutes();
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function moduleRemoved(ModuleStateEvent $event)
+    public function moduleRemoved(ModuleStateEvent $event): void
     {
         parent::moduleRemoved($event);
 
         $module = $event->getModule();
-        if (null === $module || $module->getName() == 'ZikulaRoutesModule') {
+        if (null === $module || $module->getName() === 'ZikulaRoutesModule') {
             return;
         }
 
@@ -151,22 +133,16 @@ class InstallerListener extends AbstractInstallerListener
         $this->cacheClearer->clear('symfony.routing');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function newRoutesAvail(GenericEvent $event)
+    public function newRoutesAvail(GenericEvent $event): void
     {
         // reload **all** JS routes
         $this->updateJsRoutes();
     }
 
-    /**
-     * Reloads all JavaScript routes and adds errors to the flash bag.
-     */
-    private function updateJsRoutes()
+    private function updateJsRoutes(): void
     {
         $errors = $this->routeDumperHelper->dumpJsRoutes();
-        if ($errors == '') {
+        if ('' === $errors) {
             return;
         }
 

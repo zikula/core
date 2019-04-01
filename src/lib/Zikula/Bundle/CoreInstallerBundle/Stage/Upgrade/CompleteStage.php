@@ -16,6 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\Translator;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -31,27 +32,27 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $this->container = $container;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'complete';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return '';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }
 
-    public function getResponse(Request $request)
+    public function getResponse(Request $request): Response
     {
         $request->getSession()->getFlashBag()->add('success', $this->container->get(Translator::class)->__('Congratulations! Upgrade Complete.'));
 

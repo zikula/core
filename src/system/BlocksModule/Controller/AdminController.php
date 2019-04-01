@@ -15,7 +15,6 @@ namespace Zikula\BlocksModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -42,16 +41,7 @@ class AdminController extends AbstractController
      *
      * View all blocks.
      *
-     * @param Request $request
-     * @param BlockRepositoryInterface $blockRepository
-     * @param BlockPositionRepositoryInterface $positionRepository
-     * @param BlockApiInterface $blockApi
-     * @param LocaleApiInterface $localeApi
-     * @param RouterInterface $router
-     *
-     * @return Response symfony response object
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have edit permissions to the module
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
     public function viewAction(
         Request $request,
@@ -60,13 +50,13 @@ class AdminController extends AbstractController
         BlockApiInterface $blockApi,
         LocaleApiInterface $localeApi,
         RouterInterface $router
-    ) {
-        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_EDIT)) {
+    ): array {
+
+        if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-
         $clear = $request->request->get('clear', 0);
-        if ($clear) {
+        if ($clear && null !== $request->getSession()) {
             $request->getSession()->set('zikulablocksmodule.filter', []);
         }
         $sessionFilterData = $request->getSession()->get('zikulablocksmodule.filter', []);
@@ -109,7 +99,7 @@ class AdminController extends AbstractController
         ]);
 
         $filterActive = !empty($filterData['position']) || !empty($filterData['module']) || !empty($filterData['language'])
-            || (!empty($filterData['active']) && in_array($filterData['active'], [0, 1]));
+            || (!empty($filterData['active']) && in_array($filterData['active'], [0, 1], true));
 
         return [
             'blocks' => $blockRepository->getFilteredBlocks($filterData),

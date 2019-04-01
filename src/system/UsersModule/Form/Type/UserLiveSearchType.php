@@ -33,28 +33,17 @@ class UserLiveSearchType extends AbstractType
      */
     protected $userRepository;
 
-    /**
-     * UserLiveSearchType constructor.
-     *
-     * @param UserRepositoryInterface $userRepository UserRepository service instance
-     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new UserFieldTransformer($this->userRepository);
         $builder->addModelTransformer($transformer);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['inline_usage'] = $options['inline_usage'];
@@ -68,9 +57,6 @@ class UserLiveSearchType extends AbstractType
         $view->vars['user_name'] = null !== $user && is_object($user) ? $user->getUname() : '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -83,17 +69,11 @@ class UserLiveSearchType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return TextType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulausersmodule_userlivesearch';

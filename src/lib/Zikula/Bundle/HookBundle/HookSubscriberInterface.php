@@ -25,14 +25,10 @@ interface HookSubscriberInterface extends HookInterface
      * Returns an array of hook types this subscriber will dispatch.
      *
      * The array keys are hook types and the value can be:
-     *
      *  * The event name that will be dispatched: format: <module>.<category>.<area>.<type>
      *
      * For instance:
-     *
      *  * array('hookType' => 'eventName')
-     *
-     * @return array The hook types and their names
      */
-    public function getEvents();
+    public function getEvents(): array;
 }

@@ -43,8 +43,8 @@ var currentDelete;
             event.preventDefault();
             $(this).find('.fa').addClass('fa-spin');
             var pars = {};
-            var id = event.data.action == 'edit' ? $(this).parents("tr").data('id') : 'undefined';
-            if (event.data.action == 'new') {
+            var id = event.data.action === 'edit' ? $(this).parents("tr").data('id') : 'undefined';
+            if (event.data.action === 'new') {
                 pars.sequence = $(this).hasClass('insertBefore') ? $(this).parents("tr").data("id") : -1;
             }
             $.ajax({
@@ -68,9 +68,9 @@ var currentDelete;
         /* Save permission changes */
         $('#save-permission').click(function () {
             var pid = $('#zikulapermissionsmodule_permission_pid').val();
-            if (pid == '') {
+            if (pid === '') {
                 pid = '-1';
-            } else if (pid == adminpermission && lockadmin == 1) {
+            } else if (pid === adminpermission && lockadmin === 1) {
                 return;
             }
             // fetch each input and hidden field and store the value to POST
@@ -198,12 +198,12 @@ var currentDelete;
             var component = $('#zikulapermissionsmodule_filterlist_filterComponent').val();
 
             // toggle warnings
-            if (group == -1) {
+            if (group === -1) {
                 $('#filter-warning-group').hide();
             } else {
                 $('#filter-warning-group').show();
             }
-            if (component == "-1") {
+            if (component === "-1") {
                 $('#filter-warning-component').hide();
             } else {
                 $('#filter-warning-component').show();
@@ -213,10 +213,10 @@ var currentDelete;
                 var $this = $(this);
                 var pid = $this.data('id');
                 var show = true;
-                if (group != -1 && group != $('#permission-group-' + pid).data('id')) {
+                if (group !== -1 && group !== $('#permission-group-' + pid).data('id')) {
                     show = false;
                 }
-                if (component != "-1" && $('#permission-component-' + pid).text().indexOf(component) == -1) {
+                if (component !== "-1" && $('#permission-component-' + pid).text().indexOf(component) === -1) {
                     show = false;
                 }
                 if (show) {

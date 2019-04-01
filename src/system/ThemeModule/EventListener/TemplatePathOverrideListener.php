@@ -16,14 +16,11 @@ namespace Zikula\ThemeModule\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Twig\Error\LoaderError;
 use Twig\Loader\LoaderInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Engine;
 
 /**
- * Class TemplatePathOverrideListener
- *
  * This class adds the theme Resources path to the search path when locating assets like templates.
  * This listener only works when new "namespaced" (e.g. "@Bundle/template.html.twig") is used.
  * If old name-scheme (Bundle:template) or controller annotations ("@Template") are used
@@ -31,38 +28,20 @@ use Zikula\ThemeModule\Engine\Engine;
  */
 class TemplatePathOverrideListener implements EventSubscriberInterface
 {
+    /**
+     * @var LoaderInterface
+     */
     private $loader;
 
+    /**
+     * @var Engine
+     */
     private $themeEngine;
 
     public function __construct(LoaderInterface $loader, Engine $themeEngine)
     {
         $this->loader = $loader;
         $this->themeEngine = $themeEngine;
-    }
-
-    /**
-     * Add ThemePath to searchable paths when locating templates using name-spaced scheme
-     * @param FilterControllerEvent $event
-     * @throws LoaderError
-     */
-    public function setUpThemePathOverrides(FilterControllerEvent $event)
-    {
-        // add theme path to template locator
-        $controller = $event->getController()[0];
-        if ($controller instanceof AbstractController) {
-            $theme = $this->themeEngine->getTheme();
-            $bundleName = $controller->getName();
-            if ($theme) {
-                $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
-                if (is_readable($overridePath)) {
-                    $paths = $this->loader->getPaths($bundleName);
-                    // inject themeOverridePath before the original path in the array
-                    array_splice($paths, count($paths) - 1, 0, [$overridePath]);
-                    $this->loader->setPaths($paths, $bundleName);
-                }
-            }
-        }
     }
 
     public static function getSubscribedEvents()
@@ -72,5 +51,33 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
                 ['setUpThemePathOverrides']
             ]
         ];
+    }
+
+    /**
+     * Add theme path to searchable paths when locating templates using name-spaced scheme.
+     */
+    public function setUpThemePathOverrides(FilterControllerEvent $event): void
+    {
+        // add theme path to template locator
+        $controller = $event->getController()[0];
+        if (!($controller instanceof AbstractController)) {
+            return;
+        }
+
+        $theme = $this->themeEngine->getTheme();
+        if (!$theme) {
+            return;
+        }
+
+        $bundleName = $controller->getName();
+        $overridePath = $theme->getPath() . '/Resources/' . $bundleName . '/views';
+        if (!is_readable($overridePath)) {
+            return;
+        }
+
+        $paths = $this->loader->getPaths($bundleName);
+        // inject themeOverridePath before the original path in the array
+        array_splice($paths, count($paths) - 1, 0, [$overridePath]);
+        $this->loader->setPaths($paths, $bundleName);
     }
 }

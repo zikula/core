@@ -19,9 +19,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
-/**
- * Class CategoriesMergeCollectionListener
- */
 class CategoriesMergeCollectionListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents()
@@ -35,9 +32,8 @@ class CategoriesMergeCollectionListener implements EventSubscriberInterface
      * This listener sets the value for Entity on each AbstractCategoryAssignment that has been submitted
      * because it cannot be done when reverse transforming the data
      * @see \Zikula\CategoriesModule\Form\DataTransformer\CategoriesCollectionTransformer
-     * @param FormEvent $event
      */
-    public function onBindNormData(FormEvent $event)
+    public function onBindNormData(FormEvent $event): void
     {
         $submittedData = $event->getData();
         $rootEntity = $event->getForm()->getParent()->getData();

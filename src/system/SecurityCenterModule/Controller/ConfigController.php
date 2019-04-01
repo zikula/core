@@ -20,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -45,14 +44,6 @@ class ConfigController extends AbstractController
      * @Route("/config")
      * @Theme("admin")
      * @Template("ZikulaSecurityCenterModule:Config:config.html.twig")
-     *
-     * This is a standard function to modify the configuration parameters of the module.
-     *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param DynamicConfigDumper $configDumper
-     * @param CacheClearer $cacheClearer
-     * @param AccessHelper $accessHelper
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
@@ -325,17 +316,15 @@ class ConfigController extends AbstractController
      *
      * HTMLPurifier configuration.
      *
-     * @param Request $request
-     * @param PurifierHelper $purifierHelper
-     * @param CacheClearer $cacheClearer
-     * @param string $reset
-     *
-     * @return Response
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @return array|RedirectResponse
      */
-    public function purifierconfigAction(Request $request, PurifierHelper $purifierHelper, CacheClearer $cacheClearer, $reset = null)
-    {
+    public function purifierconfigAction(
+        Request $request,
+        PurifierHelper $purifierHelper,
+        CacheClearer $cacheClearer,
+        string $reset = null
+    ) {
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -345,19 +334,17 @@ class ConfigController extends AbstractController
             $purifier = $purifierHelper->getPurifier();
 
             // Update module variables.
-            $config = $request->request->get('purifierConfig', null);
+            $config = $request->request->get('purifierConfig');
             $config = HTMLPurifier_Config::prepareArrayFromForm($config, false, true, true, $purifier->config->def);
 
             $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm(true, $purifier->config->def);
-            foreach ($allowed as $allowedDirective) {
-                list($namespace, $directive) = $allowedDirective;
-
+            foreach ($allowed as list($namespace, $directive)) {
                 $directiveKey = $namespace . '.' . $directive;
                 $def = $purifier->config->def->info[$directiveKey];
 
                 if (isset($config[$namespace])
                         && array_key_exists($directive, $config[$namespace])
-                        && is_null($config[$namespace][$directive])) {
+                        && null === $config[$namespace][$directive]) {
                     unset($config[$namespace][$directive]);
 
                     if (count($config[$namespace]) <= 0) {
@@ -365,11 +352,11 @@ class ConfigController extends AbstractController
                     }
                 }
 
-                if (isset($config[$namespace], $config[$namespace][$directive])) {
+                if (isset($config[$namespace][$directive])) {
                     if (is_int($def)) {
                         $directiveType = abs($def);
                     } else {
-                        $directiveType = (isset($def->type) ? $def->type : 0);
+                        $directiveType = $def->type ?? 0;
                     }
 
                     switch ($directiveType) {
@@ -419,7 +406,7 @@ class ConfigController extends AbstractController
 
                 if (isset($config[$namespace])
                         && array_key_exists($directive, $config[$namespace])
-                        && is_null($config[$namespace][$directive])) {
+                        && null === $config[$namespace][$directive]) {
                     unset($config[$namespace][$directive]);
 
                     if (count($config[$namespace]) <= 0) {
@@ -477,10 +464,8 @@ class ConfigController extends AbstractController
         ];
 
         $purifierAllowed = [];
-        foreach ($allowed as $allowedDirective) {
-            list($namespace, $directive) = $allowedDirective;
-
-            if (in_array($namespace . '_' . $directive, $excluded)) {
+        foreach ($allowed as list($namespace, $directive)) {
+            if (in_array($namespace . '_' . $directive, $excluded, true)) {
                 continue;
             }
 
@@ -506,7 +491,7 @@ class ConfigController extends AbstractController
                 $directiveRec['type'] = abs($def);
             } else {
                 $directiveRec['allowNull'] = (isset($def->allow_null) && $def->allow_null);
-                $directiveRec['type'] = (isset($def->type) ? $def->type : 0);
+                $directiveRec['type'] = ($def->type ?? 0);
                 if (isset($def->allowed)) {
                     $directiveRec['allowedValues'] = [];
                     foreach ($def->allowed as $val => $b) {
@@ -534,7 +519,7 @@ class ConfigController extends AbstractController
                 }
             }
 
-            $directiveRec['supported'] = in_array($directiveRec['type'], $editableTypes);
+            $directiveRec['supported'] = in_array($directiveRec['type'], $editableTypes, true);
 
             $purifierAllowed[$namespace][$directive] = $directiveRec;
         }
@@ -553,16 +538,14 @@ class ConfigController extends AbstractController
      *
      * Display the allowed html form.
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param CacheClearer $cacheClearer
-     *
-     * @return Response symfony response object
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
+     * @return array|RedirectResponse
      */
-    public function allowedhtmlAction(Request $request, VariableApiInterface $variableApi, CacheClearer $cacheClearer)
-    {
+    public function allowedhtmlAction(
+        Request $request,
+        VariableApiInterface $variableApi,
+        CacheClearer $cacheClearer
+    ) {
         if (!$this->hasPermission('ZikulaSecurityCenterModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -596,7 +579,7 @@ class ConfigController extends AbstractController
 
         return [
             'htmlEntities' => $variableApi->getSystemVar('htmlentities'),
-            'htmlPurifier' => (bool)(1 === $variableApi->getSystemVar('outputfilter')),
+            'htmlPurifier' => 1 === $variableApi->getSystemVar('outputfilter'),
             'configUrl' => $this->get('router')->generate('zikulasecuritycentermodule_config_config'),
             'htmlTags' => $htmlTags,
             'currentHtmlTags' => $variableApi->getSystemVar('AllowableHTML')
@@ -605,10 +588,8 @@ class ConfigController extends AbstractController
 
     /**
      * Utility function to return the list of available tags.
-     *
-     * @return array
      */
-    private function getHtmlTags()
+    private function getHtmlTags(): array
     {
         // Possible allowed HTML tags
         return [

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\MenuModule;
 
+use Exception;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 
@@ -28,16 +29,11 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         MenuItemEntity::class
     ];
 
-    /**
-     * Initialise the module.
-     *
-     * @return boolean True if initialisation successful, false otherwise
-     */
-    public function install()
+    public function install(): bool
     {
         try {
             $this->schemaTool->create($this->entities);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             return false;
         }
         $this->createMainMenu();
@@ -45,14 +41,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * upgrade the module from an old version
-     *
-     * @param string $oldVersion version number string to upgrade from
-     *
-     * @return bool true as there are no upgrade routines currently
-     */
-    public function upgrade($oldVersion)
+    public function upgrade($oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {
@@ -71,22 +60,17 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    /**
-     * delete the module
-     *
-     * @return bool true if deletion successful, false otherwise
-     */
-    public function uninstall()
+    public function uninstall(): bool
     {
-        return false; // cannot delete core modules
+        // cannot delete core modules
+        return false;
     }
 
     /**
-     * Create a demo menu
+     * Create a demo menu.
      */
-    private function createMainMenu()
+    private function createMainMenu(): void
     {
-        // Create the Main Menu
         $root = new MenuItemEntity();
         $root->setTitle('mainMenu');
         $root->setOptions([

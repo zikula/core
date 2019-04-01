@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Api;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class CurrentUserApi implements CurrentUserApiInterface
 {
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var UserRepositoryInterface
@@ -36,26 +37,18 @@ class CurrentUserApi implements CurrentUserApiInterface
     private $loggedIn;
 
     /**
-     * @var \Zikula\UsersModule\Entity\UserEntity
+     * @var UserEntity
      */
     private $user;
 
-    /**
-     * CurrentUser constructor.
-     * @param SessionInterface $session
-     * @param UserRepositoryInterface $repository
-     */
-    public function __construct(SessionInterface $session, UserRepositoryInterface $repository)
+    public function __construct(RequestStack $requestStack, UserRepositoryInterface $repository)
     {
         $this->loggedIn = false;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isLoggedIn()
+    public function isLoggedIn(): bool
     {
         if (!isset($this->user)) {
             $this->setUser();
@@ -68,46 +61,44 @@ class CurrentUserApi implements CurrentUserApiInterface
     }
 
     /**
-     * Allows Twig to fetch properties without use of ArrayAccess
+     * Allows Twig to fetch properties without use of ArrayAccess.
      *
      * ArrayAccess is problematic because Twig uses isset() to
      * check if property field exists, so it's not possible
      * to get using default values, ie, empty.
      *
-     * @param $key
-     * @param $args
-     *
-     * @return string
+     * @param mixed $args
+     * @return mixed
      */
-    public function __call($key, $args)
+    public function __call(string $key, $args)
     {
         return $this->get($key);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key)
+    public function get(string $key)
     {
         if (!isset($this->user)) {
             $this->setUser();
         }
-        $method = "get" . ucwords($key);
+        $method = 'get' . ucwords($key);
         if (method_exists($this->user, $method)) {
             return $this->user->{$method}();
         }
 
-        return null;
+        return '';
     }
 
     /**
      * Get the uid from the session and create a user from the repository.
      * Default to Constant::USER_ID_ANONYMOUS
      */
-    private function setUser()
+    private function setUser(): void
     {
-        $this->session->start();
-        $uid = $this->session->get('uid', Constant::USER_ID_ANONYMOUS);
-        $this->user = $this->repository->find($uid);
+        $request = $this->requestStack->getCurrentRequest();
+        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+            $request->getSession()->start();
+            $userId = $request->getSession()->get('uid', Constant::USER_ID_ANONYMOUS);
+            $this->user = $this->repository->find($userId);
+        }
     }
 }

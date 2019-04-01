@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Collector;
 
+use PHPUnit\Framework\TestCase;
 use Zikula\BlocksModule\Collector\BlockCollector;
+use Zikula\BlocksModule\BlockHandlerInterface;
 
-class BlockCollectorTest extends \PHPUnit\Framework\TestCase
+class BlockCollectorTest extends TestCase
 {
     /**
      * @var BlockCollector
      */
     private $collector;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->collector = new BlockCollector();
     }
@@ -30,60 +32,60 @@ class BlockCollectorTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers BlockCollector::add
      */
-    public function testAdd()
+    public function testAdd(): void
     {
-        $this->assertEquals(0, count($this->collector->getBlocks()));
-        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
+        $this->assertCount(0, $this->collector->getBlocks());
+        $block = $this->getMockBuilder(BlockHandlerInterface::class)
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('A');
-        $this->collector->add('a', $block);
-        $this->assertEquals(1, count($this->collector->getBlocks()));
-        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
+        $this->collector->add($block);
+        $this->assertCount(1, $this->collector->getBlocks());
+        $block = $this->getMockBuilder(BlockHandlerInterface::class)
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('B');
-        $this->collector->add('b', $block);
-        $this->assertEquals(2, count($this->collector->getBlocks()));
+        $this->collector->add($block);
+        $this->assertCount(2, $this->collector->getBlocks());
     }
 
     /**
      * @covers BlockCollector::add
      */
-    public function testGet()
+    public function testGet(): void
     {
-        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
+        $block = $this->getMockBuilder(BlockHandlerInterface::class)
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('A');
-        $this->collector->add('a', $block);
-        $a = $this->collector->get('a');
+        $this->collector->add($block);
+        $a = $this->collector->getBlocks()[0];
         $this->assertEquals('A', $a->getType());
     }
 
     /**
      * @covers BlockCollector::getBlocks
      */
-    public function testGetBlocks()
+    public function testGetBlocks(): void
     {
         $expected = [];
-        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
+        $block = $this->getMockBuilder(BlockHandlerInterface::class)
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('A');
         $expected['a'] = $block;
-        $this->collector->add('a', $block);
-        $block = $this->getMockBuilder('Zikula\BlocksModule\BlockHandlerInterface')
+        $this->collector->add($block);
+        $block = $this->getMockBuilder(BlockHandlerInterface::class)
             ->getMock();
         $block
             ->method('getType')
             ->willReturn('B');
         $expected['b'] = $block;
-        $this->collector->add('b', $block);
+        $this->collector->add($block);
         $this->assertEquals($expected, $this->collector->getBlocks());
     }
 }

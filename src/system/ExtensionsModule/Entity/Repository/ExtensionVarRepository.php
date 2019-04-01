@@ -25,52 +25,54 @@ class ExtensionVarRepository extends ServiceEntityRepository implements Extensio
         parent::__construct($registry, ExtensionVarEntity::class);
     }
 
-    public function remove(ExtensionVarEntity $entity)
+    public function remove(ExtensionVarEntity $entity): void
     {
         $this->_em->remove($entity);
     }
 
-    public function persistAndFlush(ExtensionVarEntity $entity)
+    public function persistAndFlush(ExtensionVarEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
     }
 
-    public function deleteByExtensionAndName($extensionName, $variableName)
+    public function deleteByExtensionAndName(string $extensionName, string $variableName): bool
     {
-        $qb = $this->_em->createQueryBuilder()
-            ->delete('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
+        $query = $this->_em->createQueryBuilder()
+            ->delete(ExtensionVarEntity::class, 'v')
             ->where('v.modname = :modname')
             ->setParameter('modname', $extensionName)
             ->andWhere('v.name = :name')
-            ->setParameter('name', $variableName);
-        $query = $qb->getQuery();
+            ->setParameter('name', $variableName)
+            ->getQuery();
         $result = $query->execute();
 
         return (bool)$result;
     }
 
-    public function deleteByExtension($extensionName)
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->delete('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
-            ->where('v.modname = :modname')
-            ->setParameter('modname', $extensionName);
-        $query = $qb->getQuery();
-        $result = $query->execute();
-
-        return (bool)$result;
-    }
-
-    public function updateName($oldName, $newName)
+    public function deleteByExtension(string $extensionName): bool
     {
         $query = $this->_em->createQueryBuilder()
-            ->update('Zikula\ExtensionsModule\Entity\ExtensionVarEntity', 'v')
+            ->delete(ExtensionVarEntity::class, 'v')
+            ->where('v.modname = :modname')
+            ->setParameter('modname', $extensionName)
+            ->getQuery();
+        $result = $query->execute();
+
+        return (bool)$result;
+    }
+
+    public function updateName(string $oldName, string $newName): bool
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->update(ExtensionVarEntity::class, 'v')
             ->set('v.modname', ':newname')
             ->setParameter('newname', $newName)
             ->where('v.modname = :oldname')
             ->setParameter('oldname', $oldName)
             ->getQuery();
-        $query->execute();
+        $result = $query->execute();
+
+        return (bool)$result;
     }
 }

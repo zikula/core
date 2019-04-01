@@ -23,10 +23,6 @@ class ModuleFooterFunction
      */
     private $handler;
 
-    /**
-     * ModuleFooterFunction constructor.
-     * @param FragmentHandler $handler
-     */
     public function __construct(FragmentHandler $handler)
     {
         $this->handler = $handler;
@@ -34,19 +30,14 @@ class ModuleFooterFunction
 
     /**
      * Inserts module footer.
-     *
      * This has NO configuration options.
      *
-     * Examples:
-     *
-     * <samp>{( moduleFooter() }}</samp>
-     *
-     * @return string
+     * Example: {( moduleFooter() }}
      */
-    public function display()
+    public function display(): string
     {
         $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:footer');
 
-        return $this->handler->render($ref, 'inline', []);
+        return $this->handler->render($ref);
     }
 }

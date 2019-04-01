@@ -65,48 +65,33 @@ class ZikulaKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load($this->rootDir . '/config/config_' . $this->getEnvironment() . '.yml');
-        $loader->load($this->rootDir . '/config/parameters.yml');
-        if (is_readable($this->rootDir . '/config/custom_parameters.yml')) {
-            $loader->load($this->rootDir . '/config/custom_parameters.yml');
+        $configDir = $this->getProjectDir() . '/app/config/';
+        $loader->load($configDir . 'config_' . $this->getEnvironment() . '.yml');
+
+        $loader->load($configDir . 'parameters.yml');
+        if (is_readable($configDir . 'custom_parameters.yml')) {
+            $loader->load($configDir . 'custom_parameters.yml');
         }
 
-        if (!is_readable($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED)) {
+        if (!is_readable($configDir . DynamicConfigDumper::CONFIG_GENERATED)) {
             // There is no generated configuration (yet), load default values.
             // This only happens at the very first time Symfony is started.
-            $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_DEFAULT);
+            $loader->load($configDir . DynamicConfigDumper::CONFIG_DEFAULT);
         } else {
-            $loader->load($this->rootDir . '/config/' . DynamicConfigDumper::CONFIG_GENERATED);
+            $loader->load($configDir . DynamicConfigDumper::CONFIG_GENERATED);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getRootDir()
-    {
-        return __DIR__;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCacheDir()
     {
         return dirname(__DIR__) . '/var/cache/' . $this->environment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLogDir()
     {
         return dirname(__DIR__) . '/var/logs';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProjectDir()
     {
         return dirname(__DIR__);

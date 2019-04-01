@@ -18,9 +18,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class MoneyFormOptionsArrayType extends FormOptionsArrayType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);

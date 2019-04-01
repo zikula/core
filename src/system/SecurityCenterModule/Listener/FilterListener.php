@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Listener;
 
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use IDS\Event;
 use IDS\Init as IdsInit;
 use IDS\Monitor as IdsMonitor;
 use IDS\Report as IdsReport;
+use RuntimeException;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -72,25 +75,14 @@ class FilterListener implements EventSubscriberInterface
      */
     private $cacheDir;
 
-    /**
-     * FilterListener constructor.
-     *
-     * @param bool $installed Installed flag
-     * @param $isUpgrading
-     * @param VariableApiInterface $variableApi VariableApi service instance
-     * @param EntityManagerInterface $em Doctrine entity manager
-     * @param MailerApiInterface $mailer MailerApi service instance
-     * @param TranslatorInterface $translator
-     * @param $cacheDir
-     */
     public function __construct(
-        $installed,
-        $isUpgrading,
+        bool $installed,
+        bool $isUpgrading,
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerApiInterface $mailer,
         TranslatorInterface $translator,
-        $cacheDir
+        string $cacheDir
     ) {
         $this->installed = $installed;
         $this->isUpgrading = $isUpgrading;
@@ -115,13 +107,9 @@ class FilterListener implements EventSubscriberInterface
      *
      * @see http://technicalinfo.net/papers/CSS.html
      *
-     * @param GetResponseEvent $event
-     *
-     * @return void
-     *
-     * @throws \Exception Thrown if there was a problem running ids detection
+     * @throws Exception Thrown if there was a problem running ids detection
      */
-    public function idsInputFilter(GetResponseEvent $event)
+    public function idsInputFilter(GetResponseEvent $event): void
     {
         if (!$this->installed || $this->isUpgrading) {
             return;
@@ -183,21 +171,18 @@ class FilterListener implements EventSubscriberInterface
             // analyze the results
             if (!$result->isEmpty()) {
                 // process the IdsReport object
-                $session = $request->hasSession() ? $request->getSession() : null;
-                $this->processIdsResult($init, $result, $session, $request);
+                $this->processIdsResult($result, $request);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             // sth went wrong - maybe the filter rules weren't found
-            throw new \Exception($this->translator->__f('An error occured during executing PHPIDS: %s', ['%s' => $e->getMessage()]));
+            throw new Exception($this->translator->__f('An error occured during executing PHPIDS: %s', ['%s' => $exception->getMessage()]));
         }
     }
 
     /**
      * Retrieves configuration array for PHPIDS.
-     *
-     * @return array IDS configuration settings
      */
-    private function getIdsConfig()
+    private function getIdsConfig(): array
     {
         $config = [];
 
@@ -253,14 +238,11 @@ class FilterListener implements EventSubscriberInterface
 
     /**
      * Process results from IDS scan.
-     *
-     * @param IdsInit $init PHPIDS init object reference
-     * @param IdsReport $result The result object from PHPIDS
-     * @param SessionInterface $session
-     * @param Request $request
      */
-    private function processIdsResult(IdsInit $init, IdsReport $result, SessionInterface $session, Request $request)
-    {
+    private function processIdsResult(
+        IdsReport $result,
+        Request $request
+    ): void {
         // $result contains any suspicious fields enriched with additional info
 
         // Note: it is moreover possible to dump this information by simply doing
@@ -273,9 +255,9 @@ class FilterListener implements EventSubscriberInterface
         }
 
         // update total session impact to track an attackers activity for some time
-        if (!empty($session)) {
-            $sessionImpact = $session->get('idsImpact', 0) + $requestImpact;
-            $session->set('idsImpact', $sessionImpact);
+        if (null !== $request->getSession()) {
+            $sessionImpact = $request->getSession()->get('idsImpact', 0) + $requestImpact;
+            $request->getSession()->set('idsImpact', $sessionImpact);
         } else {
             $sessionImpact = $requestImpact;
         }
@@ -297,6 +279,7 @@ class FilterListener implements EventSubscriberInterface
         $impactThresholdThree = $this->getSystemVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
         $impactThresholdFour  = $this->getSystemVar('idsimpactthresholdfour', 75) * $idsImpactFactor;
 
+        $session = $request->getSession();
         $usedImpact = (1 === $idsImpactMode) ? $requestImpact : $sessionImpact;
 
         // react according to given impact
@@ -306,10 +289,10 @@ class FilterListener implements EventSubscriberInterface
             // determine IP address of current user
             $_REMOTE_ADDR = $request->server->get('REMOTE_ADDR');
             $_HTTP_X_FORWARDED_FOR = $request->server->get('HTTP_X_FORWARDED_FOR');
-            $ipAddress = ($_HTTP_X_FORWARDED_FOR) ? $_HTTP_X_FORWARDED_FOR : $_REMOTE_ADDR;
+            $ipAddress = $_HTTP_X_FORWARDED_FOR ?: $_REMOTE_ADDR;
 
             $currentPage = $request->getRequestUri();
-            $currentUid = !empty($session) ? $session->get('uid', Constant::USER_ID_ANONYMOUS) : Constant::USER_ID_ANONYMOUS;
+            $currentUid = null !== $session ? $session->get('uid', Constant::USER_ID_ANONYMOUS) : Constant::USER_ID_ANONYMOUS;
             $currentUser = $this->em->getReference('ZikulaUsersModule:UserEntity', $currentUid);
 
             $intrusionItems = [];
@@ -319,15 +302,15 @@ class FilterListener implements EventSubscriberInterface
                 $malVar = explode('.', $eventName, 2);
 
                 $filters = [];
-                /** @var \IDS\Event $event */
+                /** @var Event $event */
                 foreach ($event as $filter) {
-                    array_push($filters, [
+                    $filters[] = [
                         'id' => $filter->getId(),
                         'description' => $filter->getDescription(),
                         'impact' => $filter->getImpact(),
                         'tags' => $filter->getTags(),
                         'rule' => $filter->getRule()
-                    ]);
+                    ];
                 }
 
                 $tagVal = $malVar[1];
@@ -341,7 +324,7 @@ class FilterListener implements EventSubscriberInterface
                     'ip'      => $ipAddress,
                     'impact'  => $result->getImpact(),
                     'filters' => serialize($filters),
-                    'date'    => new \DateTime('now')
+                    'date'    => new DateTime('now')
                 ];
 
                 if (array_key_exists($tagVal, $intrusionItems)) {
@@ -363,13 +346,13 @@ class FilterListener implements EventSubscriberInterface
             $this->em->flush();
         }
 
-        if ($this->getSystemVar('idsmail') && $usedImpact > $impactThresholdTwo) {
+        if ($usedImpact > $impactThresholdTwo && $this->getSystemVar('idsmail')) {
             // mail admin
             // prepare mail text
             $mailBody = $this->translator->__('The following attack has been detected by PHPIDS') . "\n\n";
             $mailBody .= isset($ipAddress) ? $this->translator->__f('IP: %s', ['%s' => $ipAddress]) . "\n" : '';
             $mailBody .= isset($currentUid) ? $this->translator->__f('UserID: %s', ['%s' => $currentUid]) . "\n" : '';
-            $currentDate = new \DateTime();
+            $currentDate = new DateTime();
             $mailBody .= $this->translator->__f('Date: %s', ['%s' => $currentDate->format('%b %d, %Y')]) . "\n";
             if (1 === $idsImpactMode) {
                 $mailBody .= $this->translator->__f('Request Impact: %d', ['%d' => $requestImpact]) . "\n";
@@ -380,7 +363,7 @@ class FilterListener implements EventSubscriberInterface
 
             $attackedParameters = '';
             foreach ($result as $event) {
-                $attackedParameters .= $event->getName() . '=' . urlencode($event->getValue()) . ", ";
+                $attackedParameters .= $event->getName() . '=' . urlencode($event->getValue()) . ', ';
             }
 
             $mailBody .= $this->translator->__f('Affected parameters: %s', ['%s' => trim($attackedParameters)]) . "\n";
@@ -405,30 +388,25 @@ class FilterListener implements EventSubscriberInterface
 
             if ($this->getSystemVar('idssoftblock')) {
                 // warn only for debugging the ruleset
-                throw new \RuntimeException($this->translator->__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
+                throw new RuntimeException($this->translator->__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             }
-            throw new AccessDeniedException($this->translator->__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null, $result);
+            throw new AccessDeniedException($this->translator->__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null);
         }
 
-        if ($usedImpact > $impactThresholdFour) {
+        if ($usedImpact > $impactThresholdFour && null !== $session) {
             // kick user (destroy session)
-            if (!empty($session)) {
-                $session->invalidate();
-            }
+            $session->invalidate();
         }
-
-        return;
     }
 
     /**
      * Returns a system var.
      *
-     * @param string $variableName The variable name
-     * @param mixed  $default      The default value
+     * @param mixed $default The default value
      *
      * @return mixed Result returned by variable api call
      */
-    private function getSystemVar($variableName, $default = false)
+    private function getSystemVar(string $variableName, $default = false)
     {
         return $this->variableApi->getSystemVar($variableName, $default);
     }

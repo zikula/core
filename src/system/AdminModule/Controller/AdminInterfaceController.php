@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
+use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Helper\UpdateCheckHelper;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\LinkContainer\LinkContainerCollector;
@@ -36,10 +40,8 @@ class AdminInterfaceController extends AbstractController
      * @Route("/header")
      *
      * Open the admin container
-     *
-     * @return Response symfony response object
      */
-    public function headerAction()
+    public function headerAction(): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/header.html.twig', [
             'caller' => $this->get('request_stack')->getMasterRequest()->attributes->all()
@@ -50,12 +52,8 @@ class AdminInterfaceController extends AbstractController
      * @Route("/footer")
      *
      * Close the admin container
-     *
-     * @param ExtensionRepositoryInterface $extensionRepository
-     *
-     * @return Response symfony response object
      */
-    public function footerAction(ExtensionRepositoryInterface $extensionRepository)
+    public function footerAction(ExtensionRepositoryInterface $extensionRepository): Response
     {
         $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
@@ -63,7 +61,7 @@ class AdminInterfaceController extends AbstractController
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
             'caller' => $caller,
             'symfonyVersion' => Kernel::VERSION,
-            'phpVersion' => phpversion()
+            'phpVersion' => PHP_VERSION
         ]);
     }
 
@@ -71,13 +69,12 @@ class AdminInterfaceController extends AbstractController
      * @Route("/breadcrumbs", methods = {"GET"})
      *
      * Admin breadcrumbs
-     *
-     * @param ExtensionRepositoryInterface $extensionRepository
-     *
-     * @return Response symfony response object
      */
-    public function breadcrumbsAction(ExtensionRepositoryInterface $extensionRepository)
-    {
+    public function breadcrumbsAction(
+        ExtensionRepositoryInterface $extensionRepository,
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        AdminCategoryRepositoryInterface $adminCategoryRepository
+    ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -91,12 +88,12 @@ class AdminInterfaceController extends AbstractController
 
         $categoryId = $defaultCid;
         if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' !== $caller['_zkModule']) {
-            $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
+            $moduleRelation = $adminModuleRepository->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
                 $categoryId = $moduleRelation->getCid();
             }
         }
-        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($categoryId);
+        $caller['category'] = $adminCategoryRepository->find($categoryId);
 
         return $this->render('@ZikulaAdminModule/AdminInterface/breadCrumbs.html.twig', [
             'caller' => $caller
@@ -106,13 +103,9 @@ class AdminInterfaceController extends AbstractController
     /**
      * @Route("/developernotices")
      *
-     * Add developer notices
-     *
-     * @param VariableApiInterface $variableApi
-     *
-     * @return Response symfony response object
+     * Display developer notices
      */
-    public function developernoticesAction(VariableApiInterface $variableApi)
+    public function developernoticesAction(VariableApiInterface $variableApi): Response
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -165,26 +158,20 @@ class AdminInterfaceController extends AbstractController
     /**
      * @Route("/securityanalyzer")
      *
-     * Add security analyzer
-     *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     *
-     * @return Response symfony response object
+     * Display security analyzer
      */
-    public function securityanalyzerAction(Request $request, VariableApiInterface $variableApi)
+    public function securityanalyzerAction(Request $request, VariableApiInterface $variableApi): Response
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // check for .htaccess in app directory
-        $app_htaccess = false;
         $appDir = $this->get('kernel')->getRootDir();
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if ('/' === mb_substr($appDir, 0, 1) && false === mb_strpos($appDir, $docRoot)) {
+            if (0  === mb_strpos($appDir, '/') && false === mb_strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
             } else {
@@ -220,11 +207,11 @@ class AdminInterfaceController extends AbstractController
     /**
      * @Route("/updatecheck")
      *
-     * Add update check
+     * Display update check
      *
-     * @return Response symfony response object
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
-    public function updatecheckAction(UpdateCheckHelper $updateCheckHelper)
+    public function updatecheckAction(UpdateCheckHelper $updateCheckHelper): Response
     {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -244,21 +231,18 @@ class AdminInterfaceController extends AbstractController
     /**
      * @Route("/menu")
      *
-     * Admin menu.
+     * Display admin menu
      *
-     * @param ExtensionRepositoryInterface $extensionRepository
-     * @param LinkContainerCollector $linkContainerCollector
-     * @param CapabilityApiInterface $capabilityApi
-     * @param Asset $assetHelper
-     *
-     * @return Response symfony response object
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function menuAction(
         ExtensionRepositoryInterface $extensionRepository,
         LinkContainerCollector $linkContainerCollector,
         CapabilityApiInterface $capabilityApi,
+        AdminModuleRepositoryInterface $adminModuleRepository,
+        AdminCategoryRepositoryInterface $adminCategoryRepository,
         Asset $assetHelper
-    ) {
+    ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -280,12 +264,12 @@ class AdminInterfaceController extends AbstractController
 
         $categoryId = $defaultCid;
         if (!empty($caller['_zkModule']) && 'ZikulaAdminModule' !== $caller['_zkModule']) {
-            $moduleRelation = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $caller['info']['id']]);
+            $moduleRelation = $adminModuleRepository->findOneBy(['mid' => $caller['info']['id']]);
             if (null !== $moduleRelation) {
                 $categoryId = $moduleRelation->getCid();
             }
         }
-        $caller['category'] = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminCategoryEntity')->find($categoryId);
+        $caller['category'] = $adminCategoryRepository->find($categoryId);
 
         // mode requested
         $mode = $currentRequest->attributes->has('mode') ? $currentRequest->attributes->get('mode') : 'categories';
@@ -304,15 +288,15 @@ class AdminInterfaceController extends AbstractController
         }
         array_multisort($moduleNames, SORT_ASC, $adminModules);
 
-        $moduleCategories = $this->getDoctrine()->getManager()->getRepository('ZikulaAdminModule:AdminCategoryEntity')->getIndexedCollection('cid');
+        $moduleCategories = $adminCategoryRepository->getIndexedCollection('cid');
         $menuModules = [];
         $menuCategories = [];
         foreach ($adminModules as $adminModule) {
-            if (!$this->hasPermission("{$adminModule[name]}::", '::', ACCESS_EDIT)) {
+            if (!$this->hasPermission($adminModule['name'] . '::', '::', ACCESS_EDIT)) {
                 continue;
             }
 
-            $categoryAssignment = $this->get('doctrine')->getRepository('ZikulaAdminModule:AdminModuleEntity')->findOneBy(['mid' => $adminModule['id']]);
+            $categoryAssignment = $adminModuleRepository->findOneBy(['mid' => $adminModule['id']]);
             if (null !== $categoryAssignment) {
                 $catid = $categoryAssignment->getCid();
                 $order = $categoryAssignment->getSortorder();
@@ -331,10 +315,11 @@ class AdminInterfaceController extends AbstractController
                 $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
             }
 
-            $links = $linkContainerCollector->getLinks($adminModule['name'], 'admin');
+            $moduleName = (string)$adminModule['name'];
+            $links = $linkContainerCollector->getLinks($moduleName, 'admin');
             try {
                 $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 // use default icon
                 $adminIconPath = $assetHelper->resolve('bundles/core/images/admin.png');
             }
@@ -368,7 +353,7 @@ class AdminInterfaceController extends AbstractController
         }
 
         // add empty categories
-        /** @var \Zikula\AdminModule\Entity\AdminCategoryEntity[] $moduleCategories */
+        /** @var AdminCategoryEntity[] $moduleCategories */
         foreach ($moduleCategories as $moduleCategory) {
             if (array_key_exists($moduleCategory->getSortorder(), $menuCategories)) {
                 continue;

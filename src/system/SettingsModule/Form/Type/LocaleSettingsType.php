@@ -30,25 +30,16 @@ class LocaleSettingsType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -61,8 +52,8 @@ class LocaleSettingsType extends AbstractType
                 'expanded' => true,
                 'choices' => [
                     $this->__('Always') => 1,
-                    $this->__('Only for non-default languages') => 0,
-                ],
+                    $this->__('Only for non-default languages') => 0
+                ]
             ])
             ->add('language_detect', CheckboxType::class, [
                 'label' => $this->__('Automatically detect language from browser settings'),
@@ -71,7 +62,7 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('language_i18n', ChoiceType::class, [
                 'label' => $this->__('Default language to use for this site'),
-                'choices' => $options['languages'],
+                'choices' => $options['languages']
             ])
             ->add('timezone', TimezoneType::class, [
                 'label' => $this->__('Time zone for anonymous guests'),
@@ -101,17 +92,11 @@ class LocaleSettingsType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasettingsmodule_localesettings';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

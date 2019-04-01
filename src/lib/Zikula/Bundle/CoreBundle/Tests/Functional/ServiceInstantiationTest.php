@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Tests\Functional;
 
+use JMS\TranslationBundle\Translation\Updater;
+use JMS\TranslationBundle\Translation\ConfigFactory;
+use JMS\TranslationBundle\Twig\TranslationExtension;
+
 /**
  * Make sure we instantiate services.
  *
@@ -20,26 +24,24 @@ namespace Zikula\Bundle\CoreBundle\Tests\Functional;
  */
 class ServiceInstantiationTest extends BaseTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         static::createClient();
     }
 
-    public function provider()
+    public function provider(): array
     {
         return [
-            ['jms_translation.updater', 'JMS\TranslationBundle\Translation\Updater'],
-            ['jms_translation.config_factory', 'JMS\TranslationBundle\Translation\ConfigFactory'],
-            ['jms_translation.twig_extension', 'JMS\TranslationBundle\Twig\TranslationExtension'],
-            ['twig.extension.zikula_gettext', 'Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension'],
-            ['translator.default', 'Zikula\Common\Translator\Translator'],
+            ['jms_translation.updater', Updater::class],
+            ['jms_translation.config_factory', ConfigFactory::class],
+            ['jms_translation.twig_extension', TranslationExtension::class]
         ];
     }
 
     /**
      * @dataProvider provider
      */
-    public function testServiceExists($serviceId, $class)
+    public function testServiceExists(string $serviceId, string $class): void
     {
         $container = static::$kernel->getContainer();
         $this->assertTrue($container->has($serviceId));

@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Category registry entity.
@@ -71,6 +73,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * The user id of the creator of this entity
      *
+     * @var UserEntity
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
@@ -80,6 +83,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * The user id of the last update of this entity
      *
+     * @var UserEntity
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
@@ -89,6 +93,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * The creation timestamp of this entity
      *
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -97,6 +102,7 @@ class CategoryRegistryEntity extends EntityAccess
     /**
      * The last updated timestamp of this entity
      *
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
@@ -110,201 +116,103 @@ class CategoryRegistryEntity extends EntityAccess
      */
     protected $obj_status = 'A';
 
-    /**
-     * get the registry id
-     *
-     * @return int the id
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * set the registry id
-     *
-     * @param int $id the id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * get the registry module name
-     *
-     * @return string the module name
-     */
-    public function getModname()
+    public function getModname(): ?string
     {
         return $this->modname;
     }
 
-    /**
-     * set the registry module name
-     *
-     * @param string $modname the module name
-     */
-    public function setModname($modname)
+    public function setModname(string $modname): void
     {
         $this->modname = $modname;
     }
 
-    /**
-     * get the registry entity name
-     *
-     * @return string the module name
-     */
-    public function getEntityname()
+    public function getEntityname(): ?string
     {
         return $this->entityname;
     }
 
-    /**
-     * set the registry entity name
-     *
-     * @param string $entityname the module name
-     */
-    public function setEntityname($entityname)
+    public function setEntityname(string $entityname): void
     {
         $this->entityname = $entityname;
     }
 
-    /**
-     * get the registry property name
-     *
-     * @return string the property name
-     */
-    public function getProperty()
+    public function getProperty(): ?string
     {
         return $this->property;
     }
 
-    /**
-     * set the registry property name
-     *
-     * @param string $property the property name
-     */
-    public function setProperty($property)
+    public function setProperty(string $property): void
     {
         $this->property = $property;
     }
 
-    /**
-     * @return CategoryEntity
-     */
-    public function getCategory()
+    public function getCategory(): ?CategoryEntity
     {
         return $this->category;
     }
 
-    /**
-     * set the category
-     *
-     * @param CategoryEntity $category
-     */
-    public function setCategory(CategoryEntity $category)
+    public function setCategory(CategoryEntity $category): void
     {
         $this->category = $category;
     }
 
-    /**
-     * set the creation date
-     *
-     * @param mixed $cr_date the creation date
-     */
-    public function setCr_date($cr_date)
-    {
-        $this->cr_date = $cr_date;
-    }
-
-    /**
-     * get the creation date
-     *
-     * @return mixed the creation date
-     */
-    public function getCr_date()
+    public function getCr_date(): DateTime
     {
         return $this->cr_date;
     }
 
-    /**
-     * set the creation user id
-     *
-     * @param mixed $cr_uid the user id
-     */
-    public function setCr_uid($cr_uid)
+    public function setCr_date(DateTime $cr_date): void
     {
-        $this->cr_uid = $cr_uid;
+        $this->cr_date = $cr_date;
     }
 
-    /**
-     * get the creation user id
-     *
-     * @return int the user id
-     */
-    public function getCr_uid()
+    public function getCr_uid(): UserEntity
     {
         return $this->cr_uid;
     }
 
-    /**
-     * set the last updated date
-     *
-     * @param mixed $lu_date the date of the last update
-     */
-    public function setLu_date($lu_date)
+    public function setCr_uid(UserEntity $cr_uid): void
     {
-        $this->lu_date = $lu_date;
+        $this->cr_uid = $cr_uid;
     }
 
-    /**
-     * get the last updated date
-     *
-     * @return mixed the date of the last update
-     */
-    public function getLu_date()
+    public function getLu_date(): DateTime
     {
         return $this->lu_date;
     }
 
-    /**
-     * set the user id of the user who last updated the entity
-     *
-     * @param mixed $lu_uid the user id
-     */
-    public function setLu_uid($lu_uid)
+    public function setLu_date(DateTime $lu_date): void
     {
-        $this->lu_uid = $lu_uid;
+        $this->lu_date = $lu_date;
     }
 
-    /**
-     * get the user id of the user who last updated the entity
-     *
-     * @return int the user id
-     */
-    public function getLu_uid()
+    public function getLu_uid(): UserEntity
     {
         return $this->lu_uid;
     }
 
-    /**
-     * set the status of the entity
-     *
-     * @param string $obj_status the entity status
-     */
-    public function setObj_status($obj_status)
+    public function setLu_uid(UserEntity $lu_uid): void
     {
-        $this->obj_status = $obj_status;
+        $this->lu_uid = $lu_uid;
     }
 
-    /**
-     * get the status of the entity
-     *
-     * @return string the entity status
-     */
-    public function getObj_status()
+    public function getObj_status(): string
     {
         return $this->obj_status;
+    }
+
+    public function setObj_status(string $obj_status): void
+    {
+        $this->obj_status = $obj_status;
     }
 }

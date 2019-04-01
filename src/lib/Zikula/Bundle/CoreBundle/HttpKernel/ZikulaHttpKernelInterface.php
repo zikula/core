@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Composer\Autoload\ClassLoader;
+use InvalidArgumentException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Zikula\Core\AbstractModule;
@@ -22,59 +23,45 @@ use Zikula\ThemeModule\AbstractTheme;
 interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
 {
     /**
-     * Flag determines if container is dumped or not
-     *
-     * @param $flag
+     * Flag determines if container is dumped or not.
      */
-    public function setDump($flag);
+    public function setDump(bool $flag): void;
 
     /**
      * Gets named module bundle.
      *
-     * @param string $moduleName
-     *
-     * @throws \InvalidArgumentException when the bundle is not enabled
-     * @return AbstractModule
+     * @throws InvalidArgumentException when the bundle is not enabled
      */
-    public function getModule($moduleName);
+    public function getModule(string $moduleName): AbstractModule;
 
-    public function getModules();
+    public function getModules(): array;
 
     /**
      * Checks if name is is the list of core modules.
-     * @param $moduleName
-     * @return bool
      */
-    public static function isCoreModule($moduleName);
+    public static function isCoreModule(string $moduleName): bool;
 
     /**
      * Gets named theme bundle.
      *
-     * @param string $themeName
-     *
-     * @throws \InvalidArgumentException when the bundle is not enabled
-     *
-     * @return AbstractTheme
+     * @throws InvalidArgumentException when the bundle is not enabled
      */
-    public function getTheme($themeName);
+    public function getTheme(string $themeName): AbstractTheme;
 
-    public function getThemes();
+    public function getThemes(): array;
 
-    public function getJustBundles();
+    public function getJustBundles(): array;
 
     /**
      * Is this a Bundle?
-     *
-     * @param $name
-     * @return bool
      */
-    public function isBundle($name);
+    public function isBundle(string $name): bool;
 
-    public function setAutoloader(ClassLoader $autoloader);
+    public function setAutoloader(ClassLoader $autoloader): void;
 
-    public function getAutoloader();
+    public function getAutoloader(): ClassLoader;
 
-    public function getConnectionConfig();
+    public function getConnectionConfig(): array;
 
-    public function isClassInBundle($class);
+    public function isClassInBundle(string $class): bool;
 }

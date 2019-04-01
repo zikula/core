@@ -26,7 +26,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         parent::__construct($registry, PermissionEntity::class);
     }
 
-    public function getPermissionsByGroups(array $groups)
+    public function getPermissionsByGroups(array $groups): array
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->select('p')
@@ -38,13 +38,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         return $query->getArrayResult();
     }
 
-    /**
-     * Optionally filter a selection of PermissionEntity by group or component or both
-     * @param int $group
-     * @param null $component
-     * @return array
-     */
-    public function getFilteredPermissions($group = PermissionApi::ALL_GROUPS, $component = null)
+    public function getFilteredPermissions(int $group = PermissionApi::ALL_GROUPS, string $component = null): array
     {
         $qb = $this->createQueryBuilder('p')
             ->select('p')
@@ -61,10 +55,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         return $qb->getQuery()->getResult();
     }
 
-    /**
-     * @return array
-     */
-    public function getAllComponents()
+    public function getAllComponents(): array
     {
         $all = $this->findBy([], ['sequence' => 'ASC']);
         $components = [];
@@ -77,17 +68,13 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         return $components;
     }
 
-    public function persistAndFlush(PermissionEntity $entity)
+    public function persistAndFlush(PermissionEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
 
-    /**
-     * Get the highest sequential number
-     * @return int
-     */
-    public function getMaxSequence()
+    public function getMaxSequence(): int
     {
         $qb = $this->createQueryBuilder('p');
         $query = $qb->select($qb->expr()->max('p.sequence'))
@@ -96,13 +83,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         return (int)$query->getSingleScalarResult();
     }
 
-    /**
-     * Update all sequence values >= the provided $value by the provided $amount
-     *   to increment, amount = 1; to decrement, amount = -1
-     * @param $value
-     * @param int $amount
-     */
-    public function updateSequencesFrom($value, $amount = 1)
+    public function updateSequencesFrom(int $value, int $amount = 1): void
     {
         $query = $this->_em->createQueryBuilder()
             ->update('ZikulaPermissionsModule:PermissionEntity', 'p')
@@ -114,10 +95,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         $query->execute();
     }
 
-    /**
-     * ReSequence all perms
-     */
-    public function reSequence()
+    public function reSequence(): void
     {
         /** @var PermissionEntity[] $permissions */
         $permissions = $this->findBy([], ['sequence' => 'ASC']);
@@ -129,12 +107,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
         $this->_em->flush();
     }
 
-    /**
-     * Deletes all permissions for a given group.
-     *
-     * @param int $groupId The group id
-     */
-    public function deleteGroupPermissions($groupId = 0)
+    public function deleteGroupPermissions(int $groupId = 0): void
     {
         if ($groupId < 1) {
             return;

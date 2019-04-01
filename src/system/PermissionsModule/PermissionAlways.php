@@ -16,8 +16,6 @@ namespace Zikula\PermissionsModule;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
- * Class PermissionAlwaysApi
- *
  * This class exists for testing and to ensure a functional Api is provided in a default situation.
  * ALL hasPermission tests return TRUE regardless of settings.
  * Access level names are returned untranslated.
@@ -25,25 +23,13 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
  */
 class PermissionAlways implements PermissionApiInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPermission($component = null, $instance = null, $level = ACCESS_NONE, $user = null)
+    public function hasPermission(string $component = null, string $instance = null, int $level = ACCESS_NONE, int $user = null): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function accessLevelNames($level = null)
+    public function accessLevelNames(int $level = null)
     {
-        if (isset($level) && !is_numeric($level)) {
-            throw new \InvalidArgumentException();
-        } elseif (isset($level)) {
-            $level = (int) $level;
-        }
-
         $accessNames = [
             ACCESS_INVALID => 'Invalid',
             ACCESS_NONE => 'No access',
@@ -60,10 +46,7 @@ class PermissionAlways implements PermissionApiInterface
         return isset($level) ? $accessNames[$level] : $accessNames;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resetPermissionsForUser($uid)
+    public function resetPermissionsForUser(int $uid): void
     {
         // nothing to do
     }

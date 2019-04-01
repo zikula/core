@@ -73,14 +73,15 @@ CHANGELOG - ZIKULA 3.0.x
     - Reworked `Zikula\Bridge\HttpFoundation\DoctrineSessionHandler` to extend `Symfony\Component\HttpFoundation\Session\Storage\Handler\AbstractSessionHandler` (#3870).
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
     - More user-friendly response messages during account information recovery (#3723).
+    - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
 
  - Vendor updates:
     - components/bootstrap updated from 3.3.7 to 3.4.0
     - composer/ca-bundle updated from 1.1.3 to 1.1.4
     - composer/semver updated from 1.4.2 to 1.5.0
-    - doctrine/annotations updated from 1.2.7 to 1.6.0
+    - doctrine/annotations updated from 1.2.7 to 1.6.1
     - doctrine/cache updated from 1.6.2 to 1.8.0
-    - doctrine/collections updated from 1.3.0 to 1.5.0
+    - doctrine/collections updated from 1.3.0 to 1.6.1
     - doctrine/common updated from 2.6.2 to 2.10.0
     - doctrine/dbal updated from 2.5.13 to 2.9.2
     - doctrine/doctrine-bundle updated from 1.6.13 to 1.10.2
@@ -93,6 +94,7 @@ CHANGELOG - ZIKULA 3.0.x
     - egulias/email-validator installed in 2.1.7
     - elao/web-profiler-extra-bundle updated from 2.3.5 to 2.3.6
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.0
+    - gedmo/doctrine-extensions updated from 2.4.36 to 2.4.37
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.2
     - jms/translation-bundle updated from 1.3.2 to 1.4.3
     - jquery.mmenu updated from 7.2.2 to 7.3.2
@@ -122,12 +124,12 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/symfony updated from 3.4.20 to 4.2.4
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.35.4 to 2.7.4
-    - zikula/andreas08-theme updated from 3.0.2 to 3.1.0
-    - zikula/generator-bundle updated from 2.0.1 to 3.0.0
-    - zikula/legal-module updated from 3.1.2 to 3.2.1
-    - zikula/pagelock-module updated from 1.2.3 to 1.3.2
-    - zikula/profile-module updated from 3.0.5 to 3.1.1
-    - zikula/oauth-module updated from 1.0.4 to 1.0.7
-    - zikula/seabreeze-theme updated from 4.0.3 to 4.1.1
-    - zikula/wizard updated from 2.0 to 3.0.0
+    - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
+    - zikula/generator-bundle updated from 2.0.1 to 3.0.1
+    - zikula/legal-module updated from 3.1.2 to 3.2.5
+    - zikula/pagelock-module updated from 1.2.3 to 1.3.5
+    - zikula/profile-module updated from 3.0.5 to 3.1.5
+    - zikula/oauth-module updated from 1.0.4 to 1.1.0
+    - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2
+    - zikula/wizard updated from 2.0 to 3.0.1
 

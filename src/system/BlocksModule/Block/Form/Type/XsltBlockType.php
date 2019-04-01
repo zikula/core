@@ -24,25 +24,16 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
-/**
- * Class XsltBlockType
- */
 class XsltBlockType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
@@ -96,23 +87,20 @@ class XsltBlockType extends AbstractType
 
     /**
      * Validation method for entire form.
-     *
-     * @param $data
-     * @param ExecutionContextInterface $context
      */
-    public function validateOrFields($data, ExecutionContextInterface $context)
+    public function validateOrFields($data, ExecutionContextInterface $context): void
     {
         if (empty($data['docurl']) && empty($data['doccontents'])) {
-            $context->addViolation('Either the Document URL or the Document contents must contain a value.');
+            $context->addViolation($this->__('Either the Document URL or the Document contents must contain a value.'));
         }
         if (!empty($data['docurl']) && !empty($data['doccontents'])) {
-            $context->addViolation('Either the Document URL of the Document contents can contain a value, not both.');
+            $context->addViolation($this->__('Either the Document URL of the Document contents can contain a value, not both.'));
         }
         if (empty($data['styleurl']) && empty($data['stylecontents'])) {
-            $context->addViolation('Either the Style sheet URL or the Style sheet contents must contain a value.');
+            $context->addViolation($this->__('Either the Style sheet URL or the Style sheet contents must contain a value.'));
         }
         if (!empty($data['styleurl']) && !empty($data['stylecontents'])) {
-            $context->addViolation('Either the Style sheet URL or the Style sheet contents can contain a value, not both.');
+            $context->addViolation($this->__('Either the Style sheet URL or the Style sheet contents can contain a value, not both.'));
         }
     }
 }

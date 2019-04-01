@@ -1,12 +1,11 @@
 {% form_theme form with [
-'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
+    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
 ] %}
 <div id="form_container">
     {{ form_start(form) }}
     {{ form_errors(form) }}
     {{ form_row(form.title) }}
-    <script>var optionCount = '{{ form.options|length }}';</script>
     <div class="form-group">
         {{ form_label(form.options) }}
         <div class="col-sm-9">
@@ -33,3 +32,7 @@
     </div>
     {{ form_end(form) }}
 </div>
+<script>
+    {# used in @ZikulaMenuModule:js/Zikula.Menu.Edit.js #}
+    var optionCount = '{{ form.options|length }}';
+</script>

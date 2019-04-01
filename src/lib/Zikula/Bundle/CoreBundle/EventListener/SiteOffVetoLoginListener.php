@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
@@ -45,49 +45,22 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
     private $router;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
-    /**
-     * SiteOffListener constructor.
-     *
-     * @param VariableApiInterface $variableApi
-     * @param PermissionApiInterface $permissionApi
-     * @param TranslatorInterface $translator
-     * @param RouterInterface $router
-     * @param SessionInterface $session
-     */
     public function __construct(
         VariableApiInterface $variableApi,
         PermissionApiInterface $permissionApi,
         TranslatorInterface $translator,
         RouterInterface $router,
-        SessionInterface $session
+        RequestStack $requestStack
     ) {
-        $this->siteOff = $variableApi->getSystemVar('siteoff', false);
+        $this->siteOff = $variableApi->getSystemVar('siteoff');
         $this->permissionApi = $permissionApi;
         $this->translator = $translator;
         $this->router = $router;
-        $this->session = $session;
-    }
-
-    /**
-     * Veto a login by a non-admin when the site is disabled.
-     * @param GenericEvent $event
-     */
-    public function vetoNonAdminsOnSiteOff(GenericEvent $event)
-    {
-        if (!$this->siteOff) {
-            return;
-        }
-        $user = $event->getSubject();
-        if (!$this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user->getUid())) {
-            $event->stopPropagation();
-            $this->session->remove('authenticationMethod');
-            $event->setArgument('flash', $this->translator->__('Admin credentials required when site is disabled.'));
-            $event->setArgument('returnUrl', $this->router->generate('home'));
-        }
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
@@ -97,5 +70,26 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
                 ['vetoNonAdminsOnSiteOff']
             ]
         ];
+    }
+
+    /**
+     * Veto a login by a non-admin when the site is disabled.
+     */
+    public function vetoNonAdminsOnSiteOff(GenericEvent $event): void
+    {
+        if (!$this->siteOff) {
+            return;
+        }
+        $user = $event->getSubject();
+        if (!$this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user->getUid())) {
+            $event->stopPropagation();
+
+            $request = $this->requestStack->getCurrentRequest();
+            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+                $request->getSession()->remove('authenticationMethod');
+            }
+            $event->setArgument('flash', $this->translator->__('Admin credentials required when site is disabled.'));
+            $event->setArgument('returnUrl', $this->router->generate('home'));
+        }
     }
 }

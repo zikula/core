@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\SearchableInterface;
@@ -28,57 +28,53 @@ class SearchHelper implements SearchableInterface
     private $permissionApi;
 
     /**
-     * @var SessionInterface
+     * @var RequestStack
      */
-    private $session;
+    private $requestStack;
 
     /**
      * @var UserRepositoryInterface
      */
     private $userRepository;
 
-    /**
-     * SearchHelper constructor.
-     * @param PermissionApiInterface $permissionApi
-     * @param SessionInterface $session
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(
         PermissionApiInterface $permissionApi,
-        SessionInterface $session,
+        RequestStack $requestStack,
         UserRepositoryInterface $userRepository
     ) {
         $this->permissionApi = $permissionApi;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function amendForm(FormBuilderInterface $form)
+    public function amendForm(FormBuilderInterface $form): void
     {
         // not needed because `active` child object is already added and that is all that is needed.
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getResults(array $words, $searchType = 'AND', $modVars = null)
+    public function getResults(array $words, string $searchType = 'AND', array $modVars = []): array
     {
         if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return [];
         }
         $users = $this->userRepository->getSearchResults($words);
 
+        $request = $this->requestStack->getCurrentRequest();
+        $sessionId = '';
+        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
+            $sessionId = $request->getSession()->getId();
+        }
+
         $results = [];
         foreach ($users as $user) {
-            if (1 !== $user->getUid() && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)) {
+            if (1 !== $user->getUid()
+                && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)
+            ) {
                 $result = new SearchResultEntity();
                 $result->setTitle($user->getUname())
                     ->setModule($this->getBundleName())
                     ->setCreated($user->getUser_Regdate())
-                    ->setSesid($this->session->getId());
+                    ->setSesid($sessionId);
                 $results[] = $result;
             }
         }
@@ -86,15 +82,12 @@ class SearchHelper implements SearchableInterface
         return $results;
     }
 
-    public function getErrors()
+    public function getErrors(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBundleName()
+    public function getBundleName(): string
     {
         return 'ZikulaUsersModule';
     }

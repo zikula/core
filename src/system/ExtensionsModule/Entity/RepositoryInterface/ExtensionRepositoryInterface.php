@@ -15,23 +15,28 @@ namespace Zikula\ExtensionsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 interface ExtensionRepositoryInterface extends ObjectRepository, Selectable
 {
     /**
-     * @param $name
      * @return ExtensionEntity
      */
-    public function get($name);
+    public function get(string $name);
 
-    public function getPagedCollectionBy(array $criteria, array $orderBy = null, $limit = 0, $offset = 1);
+    public function getPagedCollectionBy(
+        array $criteria,
+        array $orderBy = null,
+        int $limit = 0,
+        int $offset = 1
+    ): Paginator;
 
-    public function getIndexedArrayCollection($indexBy);
+    public function getIndexedArrayCollection(string $indexBy): array;
 
-    public function updateName($oldName, $newName);
+    public function updateName(string $oldName, string $newName): void;
 
-    public function persistAndFlush($entity);
+    public function persistAndFlush(ExtensionEntity $entity): void;
 
-    public function removeAndFlush($entity);
+    public function removeAndFlush(ExtensionEntity $entity): void;
 }

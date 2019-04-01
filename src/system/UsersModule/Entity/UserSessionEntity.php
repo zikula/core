@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
 
@@ -81,131 +82,75 @@ class UserSessionEntity extends EntityAccess
     {
         $this->sessid = '';
         $this->ipaddr = '';
-        $this->lastused = new \DateTime("now");
+        $this->lastused = new DateTime('now');
         $this->uid = 0;
         $this->remember = 0;
         $this->vars = '';
     }
 
-    /**
-     * get the session id of the user session
-     *
-     * @return string the user session's session id
-     */
-    public function getSessid()
+    public function getSessid(): string
     {
         return $this->sessid;
     }
 
-    /**
-     * set the session id for the user session
-     *
-     * @param string $sessid the user session's session id
-     */
-    public function setSessid($sessid)
+    public function setSessid(string $sessid): void
     {
         $this->sessid = $sessid;
     }
 
-    /**
-     * get the ip address of the user session
-     *
-     * @return string the user session's ip address
-     */
-    public function getIpaddr()
+    public function getIpaddr(): string
     {
         return $this->ipaddr;
     }
 
-    /**
-     * set the ip address for the user session
-     *
-     * @param string $ipaddr the user session's ip address
-     */
-    public function setIpaddr($ipaddr)
+    public function setIpaddr(string $ipaddr): void
     {
         $this->ipaddr = $ipaddr;
     }
 
-    /**
-     * get the last used datetime of the user session
-     *
-     * @return \DateTime the user session's last used datetime
-     */
-    public function getLastused()
+    public function getLastused(): DateTime
     {
         return $this->lastused;
     }
 
     /**
-     * set the last used datetime for the user session
-     *
-     * @param string|\DateTime $lastused the user session's last used datetime
+     * @param string|DateTime $lastused the user session's last used datetime
      */
-    public function setLastused($lastused)
+    public function setLastused($lastused): void
     {
-        if (!($lastused instanceof \DateTime)) {
-            $lastused = new \DateTime($lastused);
+        if ($lastused instanceof DateTime) {
+            $this->lastused = $lastused;
+        } else {
+            $this->lastused = new DateTime($lastused);
         }
-        $this->lastused = $lastused;
     }
 
-    /**
-     * get the uid of the user session
-     *
-     * @return integer the user session's uid
-     */
-    public function getUid()
+    public function getUid(): int
     {
         return $this->uid;
     }
 
-    /**
-     * set the uid for the user session
-     *
-     * @param integer $uid the user session's uid
-     */
-    public function setUid($uid)
+    public function setUid(int $uid): void
     {
         $this->uid = $uid;
     }
 
-    /**
-     * get the remember status of the user session
-     *
-     * @return integer the user session's remember status
-     */
-    public function getRemember()
+    public function getRemember(): int
     {
         return $this->remember;
     }
 
-    /**
-     * set the remember status for the user session
-     *
-     * @param integer $remember the user session's remember status
-     */
-    public function setRemember($remember)
+    public function setRemember(int $remember): void
     {
         $this->remember = $remember;
     }
 
-    /**
-     * get the vars of the user session
-     *
-     * @return string the user session's vars
-     */
-    public function getVars()
+    public function getVars(): string
     {
         return $this->vars;
     }
 
-    /**
-     * set the vars for the user session
-     *
-     * @param string $vars the user session's vars
-     */
-    public function setVars($vars)
+    public function setVars(string $vars): void
     {
         $this->vars = $vars;
     }

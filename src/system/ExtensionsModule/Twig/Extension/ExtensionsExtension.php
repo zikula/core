@@ -27,35 +27,26 @@ class ExtensionsExtension extends AbstractExtension
      */
     private $translator;
 
-    /**
-     * ExtensionsExtension constructor.
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
-            new TwigFunction('stateLabel', [$this, 'stateLabel'], ['is_safe' => ['html']]),
+            new TwigFunction('stateLabel', [$this, 'stateLabel'], ['is_safe' => ['html']])
         ];
     }
 
     public function getFilters()
     {
         return [
-            new TwigFilter('isCoreModule', ['ZikulaKernel', 'isCoreModule']),
+            new TwigFilter('isCoreModule', ['ZikulaKernel', 'isCoreModule'])
         ];
     }
 
-    public function stateLabel(ExtensionEntity $extensionEntity, array $upgradedExtensions = null)
+    public function stateLabel(ExtensionEntity $extensionEntity, array $upgradedExtensions = null): string
     {
         switch ($extensionEntity->getState()) {
             case Constant::STATE_INACTIVE:

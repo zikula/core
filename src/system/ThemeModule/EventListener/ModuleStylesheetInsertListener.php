@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\EventListener;
 
+use InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Twig\Error\LoaderError;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 
-/**
- * Class ModuleStylesheetInsertListener
- */
 class ModuleStylesheetInsertListener implements EventSubscriberInterface
 {
     /**
@@ -30,34 +27,9 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
      */
     private $kernel;
 
-    /**
-     * ModuleStylesheetInsertListener constructor.
-     * @param ZikulaHttpKernelInterface $kernel
-     */
     public function __construct(ZikulaHttpKernelInterface $kernel)
     {
         $this->kernel = $kernel;
-    }
-
-    /**
-     * Add the module stylesheet to the page assets.
-     * @param FilterControllerEvent $event
-     * @throws LoaderError
-     */
-    public function insertModuleStylesheet(FilterControllerEvent $event)
-    {
-        if (!$event->isMasterRequest()) {
-            return;
-        }
-        $controller = $event->getController()[0];
-        if ($controller instanceof AbstractController) {
-            try {
-                $module = $this->kernel->getModule($controller->getName());
-                $module->addStylesheet();
-            } catch (\InvalidArgumentException $e) {
-                // The module doesn't contain the default stylesheet.
-            }
-        }
     }
 
     public static function getSubscribedEvents()
@@ -67,5 +39,24 @@ class ModuleStylesheetInsertListener implements EventSubscriberInterface
                 ['insertModuleStylesheet']
             ]
         ];
+    }
+
+    /**
+     * Add the module stylesheet to the page assets.
+     */
+    public function insertModuleStylesheet(FilterControllerEvent $event): void
+    {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+        $controller = $event->getController()[0];
+        if ($controller instanceof AbstractController) {
+            try {
+                $module = $this->kernel->getModule($controller->getName());
+                $module->addStylesheet();
+            } catch (InvalidArgumentException $exception) {
+                // The module doesn't contain the default stylesheet.
+            }
+        }
     }
 }

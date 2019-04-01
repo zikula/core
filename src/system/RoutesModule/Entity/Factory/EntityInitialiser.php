@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -20,10 +23,7 @@ use Zikula\RoutesModule\Entity\RouteEntity;
  */
 class EntityInitialiser extends AbstractEntityInitialiser
 {
-    /**
-     * @inheritDoc
-     */
-    public function initRoute(RouteEntity $entity)
+    public function initRoute(RouteEntity $entity): RouteEntity
     {
         $entity = parent::initRoute($entity);
 

@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class CategorizableEntity extends \Zikula\Core\Doctrine\EntityAccess
+class CategorizableEntity
 {
     /**
      * @ORM\Id
@@ -35,42 +35,27 @@ class CategorizableEntity extends \Zikula\Core\Doctrine\EntityAccess
      */
     private $categoryAssignments;
 
-    /**
-     * CategorizableEntity constructor.
-     */
     public function __construct()
     {
         $this->categoryAssignments = new ArrayCollection();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getCategoryAssignments()
+    public function getCategoryAssignments(): ArrayCollection
     {
         return $this->categoryAssignments;
     }
 
-    /**
-     * @param ArrayCollection $categoryAssignments
-     */
-    public function setCategoryAssignments(ArrayCollection $categoryAssignments)
+    public function setCategoryAssignments(ArrayCollection $categoryAssignments): void
     {
         $this->categoryAssignments = $categoryAssignments;
     }

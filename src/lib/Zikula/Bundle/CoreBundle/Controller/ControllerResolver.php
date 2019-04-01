@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Controller;
 
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver as BaseControllerResolver;
+use Zikula\Bundle\CoreInstallerBundle\Controller\AbstractController as InstallerController;
+use Zikula\Core\Controller\AbstractController;
 
 /**
  * Class ControllerResolver.
@@ -28,13 +31,13 @@ class ControllerResolver extends BaseControllerResolver
 
         list($class, $method) = explode('::', $controller, 2);
         if (!class_exists($class)) {
-            throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+            throw new InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
 
         // Own logic
-        if (is_subclass_of($class, 'Zikula\Bundle\CoreInstallerBundle\Controller\AbstractController')) {
+        if (is_subclass_of($class, InstallerController::class)) {
             $controller = new $class($this->container);
-        } elseif (is_subclass_of($class, 'Zikula\Core\Controller\AbstractController')) {
+        } elseif (is_subclass_of($class, AbstractController::class)) {
             $controller = $this->container->get($class);
             if (method_exists($controller, 'setContainer')) {
                 $controller->setContainer($this->container);

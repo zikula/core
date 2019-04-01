@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Exception;
 
-class InvalidAuthenticationMethodRegistrationFormException extends \Exception
+use Exception;
+
+class InvalidAuthenticationMethodRegistrationFormException extends Exception
 {
-    /**
-     * InvalidAuthenticationMethodFormException constructor.
-     */
     public function __construct()
     {
+        parent::__construct();
         $this->message = 'Zikula Authentication Method registration forms are required to contain an email, uname and submit fields.';
     }
 }

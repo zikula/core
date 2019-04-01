@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Tests\Api\Fixtures;
 
+use DateTime;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 
 class MockUserRepository implements UserRepositoryInterface
 {
+    /**
+     * @var array
+     */
     private $users = [];
 
     public function __construct()
@@ -69,48 +74,60 @@ class MockUserRepository implements UserRepositoryInterface
         // TODO: Implement matching() method.
     }
 
-    public function findByUids($uids)
+    public function findByUids(array $userIds = []): array
     {
         // TODO: Implement findByUids() method.
+        return [];
     }
 
-    public function persistAndFlush(UserEntity $user)
+    public function persistAndFlush(UserEntity $user): void
     {
         // TODO: Implement persistAndFlush() method.
     }
 
-    public function removeAndFlush(UserEntity $user)
+    public function removeAndFlush(UserEntity $user): void
     {
         // TODO: Implement removeAndFlush() method.
     }
 
-    public function setApproved(UserEntity $user, $approvedOn, $approvedBy = null)
+    public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void
     {
         // TODO: Implement setApproved() method.
     }
 
-    public function queryBySearchForm(array $formData)
+    public function queryBySearchForm(array $formData = [])
     {
         // TODO: Implement queryBySearchForm() method.
     }
 
-    public function getSearchResults(array $words)
+    public function getSearchResults(array $words = [])
     {
         // TODO: Implement getSearchResults() method.
     }
 
-    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
-    {
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        int $limit = 0,
+        int $offset = 0,
+        string $exprType = 'and'
+    ) {
         // TODO: Implement query() method.
     }
 
-    public function count(array $filter = [], $exprType = 'and')
+    public function count(array $filter = [], string $exprType = 'and'): int
     {
         // TODO: Implement count() method.
+        return 123;
     }
 
-    public function findAllAsIterable()
+    public function findAllAsIterable(): IterableResult
     {
         // TODO: Implement findAllAsIterable() method.
+    }
+
+    public function searchActiveUser(array $unameFilter = [], int $limit = 50)
+    {
+        // TODO: Implement searchActiveUser() method.
     }
 }

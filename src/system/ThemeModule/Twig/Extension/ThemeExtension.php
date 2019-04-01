@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Twig\Extension;
 
+use Exception;
+use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
@@ -31,60 +33,42 @@ class ThemeExtension extends AbstractExtension
      */
     private $assetHelper;
 
-    /**
-     * ThemeExtension constructor.
-     * @param PageAssetApiInterface $pageAssetApi
-     * @param Asset $assetHelper
-     */
     public function __construct(PageAssetApiInterface $pageAssetApi, Asset $assetHelper)
     {
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
             new TwigFunction('pageAddAsset', [$this, 'pageAddAsset']),
             new TwigFunction('getPreviewImagePath', [$this, 'getPreviewImagePath'], ['is_safe' => ['html']]),
-            new TwigFunction('zasset', [$this, 'getAssetPath']),
+            new TwigFunction('zasset', [$this, 'getAssetPath'])
         ];
     }
 
     /**
-     * Zikula allows only the following asset types
+     * Zikula allows only the following asset types:
      * <ul>
      *  <li>stylesheet</li>
      *  <li>javascript</li>
      *  <li>header</li>
      *  <li>footer</li>
      * </ul>
-     *
-     * @param string $type
-     * @param string $value
-     * @param int $weight
      */
-    public function pageAddAsset($type, $value, $weight = AssetBag::WEIGHT_DEFAULT)
+    public function pageAddAsset(string $type, string $value, int $weight = AssetBag::WEIGHT_DEFAULT): void
     {
         $this->pageAssetApi->add($type, $value, $weight);
     }
 
     /**
      * Get path to theme preview image.
-     *
-     * @param $themeName
-     * @param string $size
-     * @return string
      */
-    public function getPreviewImagePath($themeName, $size = 'medium')
+    public function getPreviewImagePath(string $themeName, string $size = 'medium'): string
     {
         if (!isset($themeName)) {
-            throw new \InvalidArgumentException('Invalid theme name.');
+            throw new InvalidArgumentException('Invalid theme name.');
         }
 
         if (!in_array($size, ['large', 'medium', 'small'])) {
@@ -93,7 +77,7 @@ class ThemeExtension extends AbstractExtension
 
         try {
             $imagePath = $this->assetHelper->resolve('@' . $themeName . ':images/preview_' . $size . '.png');
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             $imagePath = $this->assetHelper->resolve('@ZikulaThemeModule:images/preview_' . $size . '.png');
         }
 
@@ -102,11 +86,8 @@ class ThemeExtension extends AbstractExtension
 
     /**
      * Resolves a given asset path.
-     *
-     * @param string $path
-     * @return string
      */
-    public function getAssetPath($path)
+    public function getAssetPath(string $path): string
     {
         return $this->assetHelper->resolve($path);
     }

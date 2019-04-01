@@ -20,13 +20,16 @@ use Symfony\Component\Validator\Constraint;
  */
 class ValidEmail extends Constraint
 {
+    /**
+     * @var string
+     */
     public $message = 'The email "%string%" is invalid.';
 
+    /**
+     * @var int
+     */
     public $excludedUid;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultOption()
     {
         return 'excludedUid';

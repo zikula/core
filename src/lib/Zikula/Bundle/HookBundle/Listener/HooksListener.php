@@ -19,7 +19,6 @@ use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
-use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
@@ -47,24 +46,13 @@ class HooksListener implements EventSubscriberInterface
      */
     private $translator;
 
-    /**
-     * ExtensionServicesListener constructor.
-     *
-     * @param PermissionApiInterface $permissionApi
-     * @param CapabilityApiInterface $capabilityApi
-     * @param HookCollectorInterface $hookCollector
-     * @param RouterInterface $router
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         PermissionApiInterface $permissionApi,
-        CapabilityApiInterface $capabilityApi,
         HookCollectorInterface $hookCollector,
         RouterInterface $router,
         TranslatorInterface $translator
     ) {
         $this->permissionsApi = $permissionApi;
-        $this->capabilityApi = $capabilityApi;
         $this->hookCollector = $hookCollector;
         $this->router = $router;
         $this->translator = $translator;
@@ -84,7 +72,7 @@ class HooksListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function linkCollectorResponder(GenericEvent $event)
+    public function linkCollectorResponder(GenericEvent $event): void
     {
         $event->setArgument('modname', $event->getSubject());
         $event->setArgument('modfunc', [1 => 'getLinks']);

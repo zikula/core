@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Api;
 
+use InvalidArgumentException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
@@ -25,8 +26,11 @@ use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionVarRepositoryInt
  */
 class VariableApi implements VariableApiInterface
 {
-    const CONFIG = 'ZConfig';
+    public const CONFIG = 'ZConfig';
 
+    /**
+     * @var bool
+     */
     private $isInitialized = false;
 
     /**
@@ -54,16 +58,8 @@ class VariableApi implements VariableApiInterface
      */
     private $variables;
 
-    /**
-     * VariableApi constructor.
-     *
-     * @param $installed
-     * @param ExtensionVarRepositoryInterface $repository
-     * @param ZikulaHttpKernelInterface $kernel
-     * @param array $multisitesParameters
-     */
     public function __construct(
-        $installed,
+        bool $installed,
         ExtensionVarRepositoryInterface $repository,
         ZikulaHttpKernelInterface $kernel,
         array $multisitesParameters
@@ -76,10 +72,8 @@ class VariableApi implements VariableApiInterface
 
     /**
      * Loads extension vars for all extensions to reduce sql statements.
-     *
-     * @return void
      */
-    private function initialize()
+    private function initialize(): void
     {
         if (!$this->installed) {
             return;
@@ -114,26 +108,22 @@ class VariableApi implements VariableApiInterface
         $this->isInitialized = true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function localizeVariables($lang)
+    public function localizeVariables(string $lang): void
     {
         $items = ['sitename', 'slogan', 'defaultpagetitle', 'defaultmetadescription'];
         foreach ($items as $item) {
-            if (isset($this->variables[self::CONFIG][$item . '_en'])) {
-                $this->variables[self::CONFIG][$item] = !empty($this->variables[self::CONFIG][$item . '_' . $lang]) ? $this->variables[self::CONFIG][$item . '_' . $lang] : $this->variables[self::CONFIG][$item . '_en'];
+            $indexSource = $item . '_en';
+            $indexTarget = $item . '_' . $lang;
+            if (isset($this->variables[self::CONFIG][$indexSource])) {
+                $this->variables[self::CONFIG][$item] = !empty($this->variables[self::CONFIG][$indexTarget]) ? $this->variables[self::CONFIG][$indexTarget] : $this->variables[self::CONFIG][$indexSource];
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function has($extensionName, $variableName)
+    public function has(string $extensionName, string $variableName): bool
     {
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
             $this->initialize();
@@ -142,13 +132,10 @@ class VariableApi implements VariableApiInterface
         return isset($this->variables[$extensionName]) && array_key_exists($variableName, $this->variables[$extensionName]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($extensionName, $variableName, $default = false)
+    public function get(string $extensionName, string $variableName, $default = false)
     {
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
             $this->initialize();
@@ -161,55 +148,50 @@ class VariableApi implements VariableApiInterface
         return $default;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getSystemVar($variableName, $default = false)
+    public function getSystemVar(string $variableName, $default = false)
     {
         return $this->get(self::CONFIG, $variableName, $default);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAll($extensionName)
+    public function getAll(string $extensionName): array
     {
         if (empty($extensionName) || !is_string($extensionName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
             $this->initialize();
         }
 
-        return isset($this->variables[$extensionName]) ? $this->variables[$extensionName] : [];
+        return $this->variables[$extensionName] ?? [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($extensionName, $variableName, $value = '')
+    public function set(string $extensionName, string $variableName, $value = ''): bool
     {
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
             $this->initialize();
         }
-        if (self::CONFIG === $extensionName && in_array($variableName, $this->protectedSystemVars)) {
+        if (self::CONFIG === $extensionName && in_array($variableName, $this->protectedSystemVars, true)) {
             return false;
         }
 
         $entities = $this->repository->findBy(['modname' => $extensionName, 'name' => $variableName]);
-        if (count($entities) > 1 || 0 === count($entities)) {
-            foreach ($entities as $entity) {
-                // possible duplicates exist. remove all (refs #2385)
-                $this->repository->remove($entity);
+        $amountOfEntities = count($entities);
+        if (1 === $amountOfEntities) {
+            $entity = $entities[0];
+        } else {
+            if (1 < $amountOfEntities) {
+                /** @var ExtensionVarEntity $entity */
+                foreach ($entities as $entity) {
+                    // possible duplicates exist. remove all (refs #2385)
+                    $this->repository->remove($entity);
+                }
             }
             $entity = new ExtensionVarEntity();
             $entity->setModname($extensionName);
             $entity->setName($variableName);
-        } else {
-            $entity = $entities[0];
         }
         $entity->setValue($value);
         $this->repository->persistAndFlush($entity);
@@ -218,26 +200,20 @@ class VariableApi implements VariableApiInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setAll($extensionName, array $vars)
+    public function setAll(string $extensionName, array $variables = []): bool
     {
         $ok = true;
-        foreach ($vars as $var => $value) {
+        foreach ($variables as $var => $value) {
             $ok = $ok && $this->set($extensionName, $var, $value);
         }
 
         return $ok;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function del($extensionName, $variableName)
+    public function del(string $extensionName, string $variableName): bool
     {
         if (empty($extensionName) || !is_string($extensionName) || empty($variableName) || !is_string($variableName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
             $this->initialize();
@@ -253,13 +229,10 @@ class VariableApi implements VariableApiInterface
         return $this->repository->deleteByExtensionAndName($extensionName, $variableName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function delAll($extensionName)
+    public function delAll(string $extensionName): bool
     {
         if (empty($extensionName) || !is_string($extensionName)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
         if (!$this->isInitialized) {
             $this->initialize();

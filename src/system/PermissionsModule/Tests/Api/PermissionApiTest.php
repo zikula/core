@@ -13,64 +13,82 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Tests\Api;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
+use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
+use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\PermissionsModule\Tests\Api\Fixtures\StubPermissionRepository;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant;
+use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 
-class PermissionApiTest extends \PHPUnit\Framework\TestCase
+class PermissionApiTest extends TestCase
 {
     /**
      * for testing purposes only.
      */
-    const RANDOM_USER_ID = 99;
+    public const RANDOM_USER_ID = 99;
 
+    /**
+     * @var PermissionRepositoryInterface
+     */
     private $permRepo;
 
+    /**
+     * @var UserEntity
+     */
     private $user;
 
+    /**
+     * @var UserRepositoryInterface
+     */
     private $userRepo;
 
+    /**
+     * @var CurrentUserApiInterface
+     */
     private $currentUserApi;
 
     /**
-     * @var IdentityTranslator
+     * @var TranslatorInterface
      */
     private $translator;
 
-    /**
-     * VariableApiTest setUp.
-     */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->permRepo = new StubPermissionRepository();
         $this->user = $this
-            ->getMockBuilder('Zikula\UsersModule\Entity\UserEntity')
+            ->getMockBuilder(UserEntity::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->userRepo = $this
-            ->getMockBuilder('Zikula\UsersModule\Entity\Repository\UserRepository')
+            ->getMockBuilder(UserRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->userRepo
             ->method('findByUids')
             ->with($this->anything())
-            ->will($this->returnCallback(function(array $uids) {
+            ->willReturnCallback(function (array $uids) {
                 $groups = [];
                 // getGroups returns [gid => $group, gid => $group, ...]
-                if (in_array(self::RANDOM_USER_ID, $uids)) {
+                if (in_array(self::RANDOM_USER_ID, $uids, true)) {
                     $groups = [GroupsConstant::GROUP_ID_USERS => []];
-                } elseif (in_array(Constant::USER_ID_ADMIN, $uids)) {
+                } elseif (in_array(Constant::USER_ID_ADMIN, $uids, true)) {
                     $groups = [GroupsConstant::GROUP_ID_USERS => [], GroupsConstant::GROUP_ID_ADMIN => []];
                 }
                 $this->user
                     ->method('getGroups')
-                    ->will($this->returnValue($groups));
+                    ->willReturn($groups);
 
                 return [$this->user]; // must return an array of users.
-            }));
+            });
         $this->currentUserApi = $this
             ->getMockBuilder(CurrentUserApiInterface::class)
             ->disableOriginalConstructor()
@@ -81,14 +99,12 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
     /**
      * Call protected/private method of the api class.
      *
-     * @param PermissionApi $api
-     * @param string $methodName Method name to call
-     * @param array $parameters Array of parameters to pass into method
      * @return mixed Method return
+     * @throws ReflectionException
      */
-    private function invokeMethod($api, $methodName, array $parameters = [])
+    private function invokeMethod(PermissionApiInterface $api, string $methodName, array $parameters = [])
     {
-        $reflection = new \ReflectionClass(get_class($api));
+        $reflection = new ReflectionClass(get_class($api));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
@@ -99,22 +115,22 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
      * @covers PermissionApi::setGroupPermsForUser
      * @dataProvider permProvider
      */
-    public function testSetGroupPermsForUser($uid, $perms)
+    public function testSetGroupPermsForUser(int $userId, array $perms): void
     {
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
-        $this->invokeMethod($api, 'setGroupPermsForUser', [$uid]);
-        $this->assertEquals($perms, $api->getGroupPerms($uid));
+        $this->invokeMethod($api, 'setGroupPermsForUser', [$userId]);
+        $this->assertEquals($perms, $api->getGroupPerms($userId));
     }
 
     /**
      * @covers PermissionApi::getSecurityLevel
      * @dataProvider secLevelProvider
      */
-    public function testGetSecurityLevel($uid, $component, $instance, $expectedLevel)
+    public function testGetSecurityLevel(int $userId, string $component, string $instance, int $expectedLevel): void
     {
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
-        $this->invokeMethod($api, 'setGroupPermsForUser', [$uid]);
-        $perms = $api->getGroupPerms($uid);
+        $this->invokeMethod($api, 'setGroupPermsForUser', [$userId]);
+        $perms = $api->getGroupPerms($userId);
         $this->assertEquals($expectedLevel, $this->invokeMethod($api, 'getSecurityLevel', [$perms, $component, $instance]));
     }
 
@@ -122,23 +138,23 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
      * @covers PermissionApi::hasPermission
      * @dataProvider uidProvider
      */
-    public function testHasPermission($component, $instance, $level, $uid, $result)
+    public function testHasPermission(string $component, string $instance, int $level, int $userId, array $result): void
     {
         $this->currentUserApi
             ->method('get')
             ->with($this->equalTo('uid'))
-            ->will($this->returnCallback(function() use ($uid) {
-                return $uid ?? Constant::USER_ID_ANONYMOUS;
-            }));
+            ->willReturnCallback(static function () use ($userId) {
+                return $userId ?? Constant::USER_ID_ANONYMOUS;
+            });
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
-        $this->assertEquals($result, $api->hasPermission($component, $instance, $level, $uid));
+        $this->assertEquals($result, $api->hasPermission($component, $instance, $level, $userId));
     }
 
     /**
      * @covers PermissionApi::accessLevelNames
      * @dataProvider accessLevelNamesProvider
      */
-    public function testAccessLevelNames($expectedText, $level)
+    public function testAccessLevelNames(string $expectedText, int $level): void
     {
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $this->assertEquals($expectedText, $api->accessLevelNames($level));
@@ -147,7 +163,7 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers PermissionApi::accessLevelNames()
      */
-    public function testAccessLevelArray()
+    public function testAccessLevelArray(): void
     {
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $accessNames = [
@@ -167,15 +183,15 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @covers PermissionApi::accessLevelNames()
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
-    public function testAccessLevelException()
+    public function testAccessLevelException(): void
     {
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
-        $api->accessLevelNames('foo');
+        $api->accessLevelNames(99);
     }
 
-    public function permProvider()
+    public function permProvider(): array
     {
         return [
             [Constant::USER_ID_ADMIN, [
@@ -211,7 +227,7 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function secLevelProvider()
+    public function secLevelProvider(): array
     {
         return [
             [Constant::USER_ID_ADMIN, '.*', '.*', ACCESS_ADMIN],
@@ -225,7 +241,7 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function uidProvider()
+    public function uidProvider(): array
     {
         return [
             ['.*', '.*', ACCESS_OVERVIEW, Constant::USER_ID_ADMIN, true], // #0
@@ -338,7 +354,7 @@ class PermissionApiTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function accessLevelNamesProvider()
+    public function accessLevelNamesProvider(): array
     {
         return [
             ['Invalid', ACCESS_INVALID],

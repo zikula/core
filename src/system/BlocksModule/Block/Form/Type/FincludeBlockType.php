@@ -26,25 +26,16 @@ use Zikula\BlocksModule\Block\FincludeBlock;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
-/**
- * Class FincludeBlockType
- */
 class FincludeBlockType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
@@ -88,13 +79,10 @@ class FincludeBlockType extends AbstractType
 
     /**
      * Validate file type against the mime type.
-     *
-     * @param $data
-     * @param ExecutionContextInterface $context
      */
-    public function validateFileAgainstMimeType($data, ExecutionContextInterface $context)
+    public function validateFileAgainstMimeType($data, ExecutionContextInterface $context): void
     {
-        if ('text/html' === mime_content_type($data['filo']) && 0 !== $data['typo']) {
+        if (0 !== $data['typo'] && 'text/html' === mime_content_type($data['filo'])) {
             $context->addViolation($this->translator->__('For Html files please select the Html file type.'));
         }
     }

@@ -29,7 +29,7 @@ class AccessEvents
      * redirected to the full log-in screen for corrections.
      * This event does not have any subject, arguments, or data.
      */
-    const LOGIN_STARTED = 'module.users.ui.login.started';
+    public const LOGIN_STARTED = 'module.users.ui.login.started';
 
     /**
      * Occurs immediately prior to a log-in that is expected to succeed. (All prerequisites for a
@@ -55,7 +55,7 @@ class AccessEvents
      * The arguments of the event are:
      * `'authenticationMethod'` will contain the alias (name) of the method that was used to authenticate the user.
      */
-    const LOGIN_VETO = 'user.login.veto';
+    public const LOGIN_VETO = 'user.login.veto';
 
     /**
      * Occurs right after a successful attempt to log in, and just prior to redirecting the user to the desired page.
@@ -76,7 +76,7 @@ class AccessEvents
      * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
      * programmatically by directly calling the login function will not see this event fired.
      */
-    const LOGIN_SUCCESS = 'module.users.ui.login.succeeded';
+    public const LOGIN_SUCCESS = 'module.users.ui.login.succeeded';
 
     /**
      * Occurs right after an unsuccessful attempt to log in.
@@ -95,7 +95,7 @@ class AccessEvents
      * Finally, this event only fires in the event of a "normal" UI-oriented log-in attempt. A module attempting to log in
      * programmatically by directly calling core functions will not see this event fired.
      */
-    const LOGIN_FAILED = 'module.users.ui.login.failed';
+    public const LOGIN_FAILED = 'module.users.ui.login.failed';
 
     /**
      * Occurs right after a successful logout.
@@ -103,7 +103,7 @@ class AccessEvents
      * Args contain array of `['authentication_method' => $authenticationMethod,
      * 'uid'=> $uid];`
      */
-    const LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
+    public const LOGOUT_SUCCESS = 'module.users.ui.logout.succeeded';
 
     /**
      * Event called on user login.
@@ -113,7 +113,7 @@ class AccessEvents
      * Has a `templates` property that can be added to via `$event->addTemplate('@FooBundle/Area/foo.html.twig')`
      *   templates will be included/rendered within the user form output
      */
-    const AUTHENTICATION_FORM = 'module.users.authentication.form';
+    public const AUTHENTICATION_FORM = 'module.users.authentication.form';
 
     /**
      * Event called on user login handle form submission.
@@ -122,5 +122,5 @@ class AccessEvents
      * Contains instance of \Zikula\UsersModule\Entity\UserEntity
      * Has a `formData` property to access data from form after it has handled the Request.
      */
-    const AUTHENTICATION_FORM_HANDLE = 'module.users.authentication.form.handle';
+    public const AUTHENTICATION_FORM_HANDLE = 'module.users.authentication.form.handle';
 }

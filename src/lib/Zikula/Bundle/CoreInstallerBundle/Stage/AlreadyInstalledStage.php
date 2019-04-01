@@ -17,22 +17,22 @@ use Zikula\Component\Wizard\StageInterface;
 
 class AlreadyInstalledStage implements StageInterface
 {
-    public function getName()
+    public function getName(): string
     {
         return 'alreadyinstalled';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Install:alreadyinstalled.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return [];
     }

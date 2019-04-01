@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -19,10 +22,7 @@ use Zikula\RoutesModule\Base\AbstractRoutesModuleInstaller;
  */
 class RoutesModuleInstaller extends AbstractRoutesModuleInstaller
 {
-    /**
-     * @inheritDoc
-     */
-    public function upgrade($oldVersion)
+    public function upgrade(string $oldVersion): bool
     {
         switch ($oldVersion) {
             case '1.0.0':

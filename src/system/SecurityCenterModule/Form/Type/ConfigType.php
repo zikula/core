@@ -31,25 +31,16 @@ class ConfigType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -113,7 +104,7 @@ class ConfigType extends AbstractType
             ])
             ->add('signingkey', TextType::class, [
                 'label' => $this->__('Signing key'),
-                'empty_data' => sha1(mt_rand(0, time())),
+                'empty_data' => sha1((string)random_int(0, time())),
                 'attr' => [
                     'maxlength' => 100
                 ],
@@ -354,9 +345,6 @@ class ConfigType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_config';

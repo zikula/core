@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -21,9 +24,6 @@ use Zikula\ThemeModule\ThemeEvents;
  */
 abstract class AbstractThemeListener implements EventSubscriberInterface
 {
-    /**
-     * Makes our handlers known to the event system.
-     */
     public static function getSubscribedEvents()
     {
         return [
@@ -42,9 +42,8 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param TwigPreRenderEvent $event The event instance
      */
-    public function preRender(TwigPreRenderEvent $event)
+    public function preRender(TwigPreRenderEvent $event): void
     {
     }
     
@@ -60,9 +59,8 @@ abstract class AbstractThemeListener implements EventSubscriberInterface
      * The event name:
      *     `echo 'Event: ' . $event->getName();`
      *
-     * @param TwigPostRenderEvent $event The event instance
      */
-    public function postRender(TwigPostRenderEvent $event)
+    public function postRender(TwigPostRenderEvent $event): void
     {
     }
 }

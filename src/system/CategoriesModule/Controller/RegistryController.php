@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\CategoriesModule\Form\Type\CategoryRegistryType;
@@ -42,15 +42,12 @@ class RegistryController extends AbstractController
      *
      * Creates or edits a category registry.
      *
-     * @param Request $request
-     * @param CapabilityApiInterface $capabilityApi
-     * @param CategoryRegistryRepositoryInterface $registryRepository
-     * @param CategoryRegistryEntity $registryEntity
-     *
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function editAction(
         Request $request,
+        EntityManagerInterface $entityManager,
         CapabilityApiInterface $capabilityApi,
         CategoryRegistryRepositoryInterface $registryRepository,
         CategoryRegistryEntity $registryEntity = null
@@ -63,15 +60,13 @@ class RegistryController extends AbstractController
         }
 
         $form = $this->createForm(CategoryRegistryType::class, $registryEntity, [
-            'categorizableModules' => $this->getCategorizableModules($capabilityApi),
-            'entitySelectionBuilder' => new EntitySelectionBuilder($this->get('kernel'))
+            'categorizableModules' => $this->getCategorizableModules($capabilityApi)
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
-                $manager = $this->get('doctrine')->getManager();
-                $manager->persist($registryEntity);
-                $manager->flush();
+                $entityManager->persist($registryEntity);
+                $entityManager->flush();
                 $this->addFlash('success', $this->__('Registry updated'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -86,12 +81,13 @@ class RegistryController extends AbstractController
         ];
     }
 
-    private function getCategorizableModules(CapabilityApiInterface $capabilityApi)
+    private function getCategorizableModules(CapabilityApiInterface $capabilityApi): array
     {
         $modules = $capabilityApi->getExtensionsCapableOf(CapabilityApi::CATEGORIZABLE);
         $moduleOptions = [];
         foreach ($modules as $module) {
-            $moduleOptions[$module->getName()] = $module->getName();
+            $moduleName = $module->getName();
+            $moduleOptions[$moduleName] = $moduleName;
         }
 
         return $moduleOptions;
@@ -104,12 +100,14 @@ class RegistryController extends AbstractController
      *
      * Deletes a category registry.
      *
-     * @param Request $request
-     * @param CategoryRegistryEntity $registry
      * @return array|RedirectResponse
+     * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
-    public function deleteAction(Request $request, CategoryRegistryEntity $registry)
-    {
+    public function deleteAction(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        CategoryRegistryEntity $registry
+    ) {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -117,7 +115,6 @@ class RegistryController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
-                $entityManager = $this->get('doctrine')->getManager();
                 $entityManager->remove($registry);
                 $entityManager->flush();
                 $this->addFlash('success', $this->__('Done! Registry entry deleted.'));

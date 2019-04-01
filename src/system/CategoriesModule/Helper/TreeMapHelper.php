@@ -15,6 +15,7 @@ namespace Zikula\CategoriesModule\Helper;
 
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
 class TreeMapHelper
@@ -39,23 +40,20 @@ class TreeMapHelper
      */
     private $level;
 
-    /**
-     * TreeMapHelper constructor.
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(RegistryInterface $doctrine, CategoryRepositoryInterface $repository)
     {
         $this->doctrine = $doctrine;
-        $this->repository = $doctrine->getRepository('ZikulaCategoriesModule:CategoryEntity');
+        $this->repository = $repository;
     }
 
     /**
-     * map tree with parents/children to NestedTree
+     * Map tree with parents/children to nested tree.
      */
-    public function map()
+    public function map(): void
     {
         $this->index = 1;
         $this->level = 0;
+        /** @var CategoryEntity $root */
         $root = $this->repository->find(1);
         $root->setLvl($this->level);
         $root->setLft($this->index);
@@ -65,10 +63,9 @@ class TreeMapHelper
     }
 
     /**
-     * Recursive method to properly set lft/rgt/lvl properties
-     * @param Collection $children
+     * Recursive method to properly set lft/rgt/lvl properties.
      */
-    private function setTreePropertiesForChildren(Collection $children)
+    private function setTreePropertiesForChildren(Collection $children): void
     {
         $this->level++;
         foreach ($children as $child) {

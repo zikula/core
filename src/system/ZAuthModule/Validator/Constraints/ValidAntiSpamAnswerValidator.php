@@ -39,11 +39,6 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
      */
     private $validator;
 
-    /**
-     * @param VariableApiInterface $variableApi
-     * @param TranslatorInterface $translator
-     * @param ValidatorInterface $validator
-     */
     public function __construct(VariableApiInterface $variableApi, TranslatorInterface $translator, ValidatorInterface $validator)
     {
         $this->variableApi = $variableApi;

@@ -37,21 +37,18 @@ class CssResolver implements ResolverInterface
      */
     private $combine;
 
-    /**
-     * CssResolver constructor.
-     * @param AssetBag $bag
-     * @param MergerInterface $merger
-     * @param string $env
-     * @param bool $combine
-     */
-    public function __construct(AssetBag $bag, MergerInterface $merger, $env = 'prod', $combine = false)
-    {
+    public function __construct(
+        AssetBag $bag,
+        MergerInterface $merger,
+        string $env = 'prod',
+        bool $combine = false
+    ) {
         $this->bag = $bag;
         $this->merger = $merger;
         $this->combine = 'prod' === $env && $combine;
     }
 
-    public function compile()
+    public function compile(): string
     {
         $assets = $this->bag->all();
         if ($this->combine) {
@@ -59,13 +56,13 @@ class CssResolver implements ResolverInterface
         }
         $headers = '';
         foreach ($assets as $asset) {
-            $headers .= '<link rel="stylesheet" href="' . $asset . '" type="text/css">' . "\n";
+            $headers .= '<link rel="stylesheet" href="' . $asset . '" />' . "\n";
         }
 
         return $headers;
     }
 
-    public function getBag()
+    public function getBag(): AssetBag
     {
         return $this->bag;
     }

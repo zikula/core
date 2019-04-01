@@ -2,7 +2,6 @@
     background-color: #FAFAFA; /*non-CSS3 browsers*/
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#f2f2f2'); /* for IE */
     background: -webkit-gradient(linear,left top, left bottom,from(#FAFAFA),to(#f2f2f2)); /*webkit*/
-    background: -moz-linear-gradient(center top , #FAFAFA, #F2F2F2) repeat scroll 0 0 transparent; /*gecko*/
     background: linear-gradient(#FAFAFA, #F2F2F2); /*CSS3*/
     border: solid 1px #b4b4b4;
 }

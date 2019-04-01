@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
+use Requirement;
+use SymfonyRequirements;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
 
 /**
@@ -21,14 +23,17 @@ use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
  */
 class ZikulaRequirements
 {
+    /**
+     * @var array
+     */
     public $requirementsErrors = [];
 
-    public function runSymfonyChecks($parameters = [])
+    public function runSymfonyChecks(array $parameters = []): void
     {
         try {
-            $path = realpath(__DIR__ . '/../../../../../var/SymfonyRequirements.php');
+            $path = dirname(__DIR__, 5) . '/var/SymfonyRequirements.php';
             require_once $path;
-            $symfonyRequirements = new \SymfonyRequirements();
+            $symfonyRequirements = new SymfonyRequirements();
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
             foreach ($symfonyRequirements->getRequirements() as $req) {
@@ -41,10 +46,10 @@ class ZikulaRequirements
         }
     }
 
-    protected function getErrorMessage(\Requirement $requirement, $lineSize = 70)
+    protected function getErrorMessage(Requirement $requirement, $lineSize = 70): string
     {
         if ($requirement->isFulfilled()) {
-            return;
+            return '';
         }
         $errorMessage = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL . '   ') . PHP_EOL;
         $errorMessage .= '   > ' . wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL . '   > ') . PHP_EOL;
@@ -52,9 +57,9 @@ class ZikulaRequirements
         return $errorMessage;
     }
 
-    private function addZikulaPathRequirements(\SymfonyRequirements $symfonyRequirements, $parameters)
+    private function addZikulaPathRequirements(SymfonyRequirements $symfonyRequirements, array $parameters = []): void
     {
-        $src = realpath(__DIR__ . '/../../../../../');
+        $src = dirname(__DIR__, 5) . '/';
         $symfonyRequirements->addRequirement(
             is_writable($src . '/app/config'),
             'app/config/ directory must be writable',

@@ -18,7 +18,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\Core\Doctrine\WhereFromFilterTrait;
-use Zikula\OAuthModule\Entity\MappingEntity;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\AuthenticationMappingRepositoryInterface;
 
@@ -31,29 +30,29 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         parent::__construct($registry, AuthenticationMappingEntity::class);
     }
 
-    public function persistAndFlush(AuthenticationMappingEntity $entity)
+    public function persistAndFlush(AuthenticationMappingEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
 
-    public function removeByZikulaId($uid)
+    public function removeByZikulaId(int $userId): void
     {
-        $mapping = $this->findOneBy(['uid' => $uid]);
+        $mapping = $this->findOneBy(['uid' => $userId]);
         if (isset($mapping)) {
             $this->_em->remove($mapping);
             $this->_em->flush();
         }
     }
 
-    public function getByZikulaId($uid)
+    public function getByZikulaId(int $userId): AuthenticationMappingEntity
     {
-        return $this->findOneBy(['uid' => $uid]);
+        return $this->findOneBy(['uid' => $userId]);
     }
 
-    public function setEmailVerification($uid, $value = true)
+    public function setEmailVerification(int $userId, bool $value = true): void
     {
-        $mapping = $this->findOneBy(['uid' => $uid]);
+        $mapping = $this->findOneBy(['uid' => $userId]);
         if (isset($mapping)) {
             $mapping->setVerifiedEmail($value);
             $this->_em->flush($mapping);
@@ -65,15 +64,15 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
      *   filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
      *   when value is not an array, operator is assumed to be '='
      *
-     * @param array $filter
-     * @param array $sort
-     * @param int $limit
-     * @param int $offset
-     * @param string $exprType
-     * @return \Doctrine\ORM\Tools\Pagination\Paginator|MappingEntity[]
+     * @return Paginator|AuthenticationMappingEntity[]
      */
-    public function query(array $filter = [], array $sort = [], $limit = 0, $offset = 0, $exprType = 'and')
-    {
+    public function query(
+        array $filter = [],
+        array $sort = [],
+        int $limit = 0,
+        int $offset = 0,
+        string $exprType = 'and'
+    ) {
         $qb = $this->createQueryBuilder('m')
             ->select('m');
         if (!empty($filter)) {
@@ -88,9 +87,8 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         if ($limit > 0) {
             $query->setMaxResults($limit);
             $query->setFirstResult($offset);
-            $paginator = new Paginator($query);
 
-            return $paginator;
+            return new Paginator($query);
         }
 
         return $query->getResult();
@@ -99,14 +97,12 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
     /**
      * Construct a QueryBuilder Expr\OrderBy object suitable for use in QueryBuilder->orderBy() from an array.
      * sort = [field => dir, field => dir, ...]
-     * @param array $sort
-     * @return OrderBy
      */
-    private function orderByFromArray(array $sort)
+    private function orderByFromArray(array $sort = []): OrderBy
     {
         $orderBy = new OrderBy();
         foreach ($sort as $field => $direction) {
-            $orderBy->add("m.${field}", $direction);
+            $orderBy->add('m.' . $field, $direction);
         }
 
         return $orderBy;

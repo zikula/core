@@ -30,25 +30,17 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
         parent::__construct($registry, SearchStatEntity::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function countStats()
+    public function countStats(): int
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('COUNT(tbl.id)');
 
         $query = $qb->getQuery();
 
-        $count = (int)$query->getSingleScalarResult();
-
-        return $count;
+        return (int)$query->getSingleScalarResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStats($filters = [], $sorting = [], $limit = 0, $offset = 0)
+    public function getStats(array $filters = [], array $sorting = [], int $limit = 0, int $offset = 0): array
     {
         $qb = $this->createQueryBuilder('tbl')
             ->select('tbl');
@@ -83,10 +75,7 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
         return $query->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function persistAndFlush(SearchStatEntity $entity)
+    public function persistAndFlush(SearchStatEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush($entity);

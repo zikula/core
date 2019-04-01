@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
@@ -61,9 +62,6 @@ class BlockPositionEntity extends EntityAccess
      */
     private $placements;
 
-    /**
-     * constructor
-     */
     public function __construct()
     {
         $this->name = '';
@@ -71,79 +69,49 @@ class BlockPositionEntity extends EntityAccess
         $this->placements = new ArrayCollection();
     }
 
-    /**
-     * get the id of the position
-     *
-     * @return integer the position's id
-     */
-    public function getPid()
+    public function getPid(): ?int
     {
         return $this->pid;
     }
 
-    /**
-     * set the id for the position
-     *
-     * @param integer $pid the position's id
-     */
-    public function setPid($pid)
+    public function setPid(int $pid): void
     {
         $this->pid = $pid;
     }
 
-    /**
-     * get the name of the position
-     *
-     * @return string the position's name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * set the name for the position
-     *
-     * @param string $name the position's name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * get the description of the position
-     *
-     * @return string the position's description
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * set the description for the position
-     *
-     * @param string $description the position's description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    public function getPlacements()
+    public function getPlacements(): Collection
     {
         return $this->placements;
     }
 
-    public function addPlacement(BlockPlacementEntity $placement)
+    public function addPlacement(BlockPlacementEntity $placement): void
     {
         if (!$this->placements->contains($placement)) {
             $this->placements->add($placement);
         }
     }
 
-    public function removePlacement(BlockPlacementEntity $placement)
+    public function removePlacement(BlockPlacementEntity $placement): void
     {
         if ($this->placements->contains($placement)) {
             $this->placements->removeElement($placement);

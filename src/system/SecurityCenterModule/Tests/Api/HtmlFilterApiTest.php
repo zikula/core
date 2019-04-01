@@ -13,17 +13,21 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Tests\Api;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 use Zikula\SecurityCenterModule\Api\HtmlFilterApi;
 use Zikula\SecurityCenterModule\Tests\Api\Fixtures\FilterTestSubscriber;
 
-class HtmlFilterApiTest extends \PHPUnit\Framework\TestCase
+class HtmlFilterApiTest extends TestCase
 {
+    /**
+     * @var array
+     */
     private $allowableHTML = [];
 
-    public function testAllowedTags()
+    public function testAllowedTags(): void
     {
         $this->allowableHTML = [
             'i' => HtmlFilterApiInterface::TAG_NOT_ALLOWED,
@@ -40,15 +44,15 @@ class HtmlFilterApiTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider stringProvider
      */
-    public function testHtmlEntities($string, $expectedOn, $exptectedOff)
+    public function testHtmlEntities(string $string, string $expectedOn, string $exptectedOff): void
     {
         $api = $this->getApi();
         $this->assertEquals($expectedOn, $api->filter($string));
-        $api = $this->getApi(0);
+        $api = $this->getApi(false);
         $this->assertEquals($exptectedOff, $api->filter($string));
     }
 
-    public function stringProvider()
+    public function stringProvider(): array
     {
         return [
             ['"foo" and \'bar\' <foo>', '&quot;foo&quot; and \'bar\' &lt;foo&gt;', '&quot;foo&quot; and \'bar\' &lt;foo&gt;'],
@@ -56,13 +60,13 @@ class HtmlFilterApiTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testSubscriber()
+    public function testSubscriber(): void
     {
-        $api = $this->getApi(1, 1);
+        $api = $this->getApi(true, true);
         $this->assertEquals('***foo***', $api->filter('foo'));
     }
 
-    private function getApi($htmlEntities = 1, $outputFilter = 0)
+    private function getApi(bool $htmlEntities = true, bool $outputFilter = false): HtmlFilterApiInterface
     {
         $variableApi = $this->getMockBuilder(VariableApiInterface::class)->getMock();
         $variableApi->method('getSystemVar')->willReturnCallback(
@@ -88,7 +92,7 @@ class HtmlFilterApiTest extends \PHPUnit\Framework\TestCase
         return new HtmlFilterApi($variableApi, true, $eventDispatcher);
     }
 
-    private function getAllowableHTML()
+    private function getAllowableHTML(): array
     {
         return $this->allowableHTML;
     }

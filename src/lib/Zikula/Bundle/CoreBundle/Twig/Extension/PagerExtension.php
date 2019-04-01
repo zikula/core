@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
@@ -56,11 +57,6 @@ class PagerExtension extends AbstractExtension
         $this->twig = $twig;
     }
 
-    /**
-     * Returns a list of functions to add to the existing list.
-     *
-     * @return array An array of functions
-     */
     public function getFunctions()
     {
         return [
@@ -90,11 +86,8 @@ class PagerExtension extends AbstractExtension
      *  processDetailLinks Should the single page links be processed? (default: false if using pagerimage.tpl, otherwise true)
      *  optimize           Only deliver page links which are actually displayed to the template (default: true)
      *  includePostVars    Whether or not to include the POST variables as GET variables in the pager URLs (default: true)
-     *
-     * @param array $params All attributes passed to this function from the template
-     * @return string
      */
-    public function pager($params)
+    public function pager(array $params = []): string
     {
         /** @var Request $request */
         $request = $this->requestStack->getMasterRequest();
@@ -106,18 +99,19 @@ class PagerExtension extends AbstractExtension
         }
 
         // set default values - $pager is sent to template
-        $pager = [];
-        $pager['total'] = $params['rowcount'];
-        $pager['perpage'] = $params['limit'] ?? 20;
-        $pager['class'] = $params['class'] ?? 'z-pager';
-        $pager['optimize'] = $params['optimize'] ?? true;
-        $pager['posvar'] = $params['posvar'] ?? 'pos';
-        $pager['maxPages'] = $params['maxpages'] ?? 15;
-        $pager['includeStylesheet'] = $params['includeStylesheet'] ?? true;
+        $pager = [
+            'total' => $params['rowcount'],
+            'perpage' => $params['limit'] ?? 20,
+            'class' => $params['class'] ?? 'z-pager',
+            'optimize' => $params['optimize'] ?? true,
+            'posvar' => $params['posvar'] ?? 'pos',
+            'maxPages' => $params['maxpages'] ?? 15,
+            'includeStylesheet' => $params['includeStylesheet'] ?? true
+        ];
         $displayType = $params['display'] ?? 'startnum';
         $includePostVars = $params['includePostVars'] ?? true;
         $routeName = $params['route'] ?? false;
-        $templateName = (isset($params['template'])) ? $params['template'] : 'CoreBundle:Pager:pagercss.html.twig';
+        $templateName = $params['template'] ?? 'CoreBundle:Pager:pagercss.html.twig';
         $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('CoreBundle:Pager:pagerimage.html.twig' !== $templateName);
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
         $systemVars = $this->variableApi->getAll(VariableApi::CONFIG);
@@ -126,7 +120,7 @@ class PagerExtension extends AbstractExtension
         if ($request->attributes->has('_route_params')) {
             $routeParams = $request->attributes->get('_route_params');
             if (isset($routeParams[$pager['posvar']])) {
-                $pager['pos'] = (int)($routeParams[$pager['posvar']]);
+                $pager['pos'] = (int)$routeParams[$pager['posvar']];
             } else {
                 $pager['pos'] = (int)$request->query->get($pager['posvar'], '');
             }
@@ -134,7 +128,7 @@ class PagerExtension extends AbstractExtension
             $pager['pos'] = (int)$request->query->get($pager['posvar'], '');
         }
         if ('page' === $displayType) {
-            $pager['pos'] = $pager['pos'] * $pager['perpage'];
+            $pager['pos'] *= $pager['perpage'];
             $pager['increment'] = 1;
         } else {
             $pager['increment'] = $pager['perpage'];
@@ -157,7 +151,7 @@ class PagerExtension extends AbstractExtension
         // Include POST vars as requested, i.e. for search results
         $allVars = $includePostVars ? array_merge($request->request->all(), $request->query->all(), $routeParams) : array_merge($request->query->all(), $routeParams);
         foreach ($allVars as $k => $v) {
-            if ($k !== $pager['posvar'] && !is_null($v)) {
+            if (null !== $v && $k !== $pager['posvar']) {
                 switch ($k) {
                     case 'route':
                         if (!isset($routeName)) {
@@ -177,25 +171,23 @@ class PagerExtension extends AbstractExtension
                                     foreach ($vv as $kkk => $vvv) {
                                         if (is_array($vvv)) {
                                             foreach ($vvv as $kkkk => $vvvv) {
-                                                if (mb_strlen($vvvv)) {
+                                                if ('' !== $vvvv) {
                                                     $tkey = $k . '[' . $kk . '][' . $kkk . '][' . $kkkk . ']';
                                                     $pager['args'][$tkey] = $vvvv;
                                                 }
                                             }
-                                        } elseif (mb_strlen($vvv)) {
+                                        } elseif ('' !== $vvv) {
                                             $tkey = $k . '[' . $kk . '][' . $kkk . ']';
                                             $pager['args'][$tkey] = $vvv;
                                         }
                                     }
-                                } elseif (mb_strlen($vv)) {
+                                } elseif ('' !== $vv) {
                                     $tkey = $k . '[' . $kk . ']';
                                     $pager['args'][$tkey] = $vv;
                                 }
                             }
-                        } else {
-                            if (mb_strlen($v)) {
-                                $pager['args'][$k] = $v;
-                            }
+                        } elseif ('' !== $v) {
+                            $pager['args'][$k] = $v;
                         }
                 }
             }
@@ -238,9 +230,10 @@ class PagerExtension extends AbstractExtension
             for ($currItem = 1; $currItem <= $pager['countPages']; $currItem++) {
                 $currItemVisible = true;
 
-                if ($pager['maxPages'] > 0 &&
+                if (0 < $pager['maxPages'] &&
                     //(($currItem < $leftMargin && $currItem > 1) || ($currItem > $rightMargin && $currItem <= $pager['countPages']))) {
-                    (($currItem < $leftMargin) || ($currItem > $rightMargin))) {
+                    ($currItem < $leftMargin || $currItem > $rightMargin)
+                ) {
                     if ($pager['optimize']) {
                         continue;
                     }
@@ -262,7 +255,7 @@ class PagerExtension extends AbstractExtension
         }
 
         // link to first & prev page
-        $pager['args'][$pager['posvar']] = $pager['first'] = '1';
+        $pager['args'][$pager['posvar']] = $pager['first'] = 1;
         $pager['firstUrl'] = $pagerUrl($pager) . $anchorText;
 
         if ('page' === $displayType) {
@@ -308,7 +301,7 @@ class PagerExtension extends AbstractExtension
     /**
      * ABC-Pager function.
      *
-     *  Examples:
+     *  Example:
      *    code:
      *    {{ pagerabc({route:'acmefoomodule_user_view', posvar:'letter', class:'abcpager', class_num:'abclink', class_numon:'abclink_on', separator:' - ', names:'A,B;C,D;E,F;G,H;I,J;K,L;M,N,O;P,Q,R;S,T;U,V,W,X,Y,Z'}) }}
      *
@@ -326,9 +319,8 @@ class PagerExtension extends AbstractExtension
      *  - <a class="abclink" href="index.php?module=Example&amp;letter=U,V,W,X,Y,Z">&nbspU,V,W,X,Y,Z</a>
      * </span>
      *
-     *
-     * Parameters:
-     *  route          Name of a fixed route to use REQURIED
+     * Available parameters:
+     *  route          Name of a fixed route to use (required)
      *  posvar         Name of the variable that contains the position data, eg "letter"
      *  forwardvars    Comma- semicolon- or space-delimited list of POST and GET variables to forward in the pager links. If unset, all vars are forwarded.
      *  additionalvars Comma- semicolon- or space-delimited list of additional variable and value pairs to forward in the links. eg "foo=2,bar=4"
@@ -339,15 +331,11 @@ class PagerExtension extends AbstractExtension
      *  lang           Language
      *  names          String or array of names to select from (array or csv)
      *  values         Optional parameter for the previous names (array or cvs)
-     *
-     * @param array       $params All attributes passed to this function from the template
-     *
-     * @return string
      */
-    public function pagerabc($params)
+    public function pagerabc(array $params = []): string
     {
         if (empty($params['route'])) {
-            throw new \InvalidArgumentException('route is a required parameter.');
+            throw new InvalidArgumentException('route is a required parameter.');
         }
         /** @var Request $request */
         $request = $this->requestStack->getMasterRequest();
@@ -408,7 +396,7 @@ class PagerExtension extends AbstractExtension
                 $params['forwardvars'] = preg_split('/[,;\s]/', $params['forwardvars'], -1, PREG_SPLIT_NO_EMPTY);
             }
             foreach ((array)$params['forwardvars'] as $key => $var) {
-                if (!empty($var) && (!empty($allVars[$var]))) {
+                if (!empty($var) && !empty($allVars[$var])) {
                     $pager['args'][$var] = $allVars[$var];
                 }
             }
@@ -420,7 +408,7 @@ class PagerExtension extends AbstractExtension
                 $params['additionalvars'] = preg_split('/[,;\s]/', $params['additionalvars'], -1, PREG_SPLIT_NO_EMPTY);
             }
             foreach ((array)$params['additionalvars'] as $var) {
-                $additionalvar = preg_split('/=/', $var);
+                $additionalvar = explode('=', $var);
                 if (!empty($var) && !empty($additionalvar[1])) {
                     $pager['args'][$additionalvar[0]] = $additionalvar[1];
                 }

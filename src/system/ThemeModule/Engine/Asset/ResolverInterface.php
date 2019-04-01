@@ -22,10 +22,7 @@ use Zikula\ThemeModule\Engine\AssetBag;
  */
 interface ResolverInterface
 {
-    public function compile();
+    public function compile(): string;
 
-    /**
-     * @return AssetBag
-     */
-    public function getBag();
+    public function getBag(): AssetBag;
 }

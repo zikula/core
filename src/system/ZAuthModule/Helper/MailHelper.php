@@ -42,13 +42,6 @@ class MailHelper
      */
     private $mailerApi;
 
-    /**
-     * MailHelper constructor.
-     * @param TranslatorInterface $translator
-     * @param Environment $twig
-     * @param VariableApiInterface $variableApi
-     * @param MailerApiInterface $mailerApi
-     */
     public function __construct(
         TranslatorInterface $translator,
         Environment $twig,
@@ -63,32 +56,28 @@ class MailHelper
 
     /**
      * Sends a notification e-mail of a specified type to a user or registrant.
-     *
-     * @param string $toAddress The destination e-mail address
-     * @param string $notificationType The type of notification, converted to the name of a template
-     *                                     in the form users_userapi_{type}mail.tpl and/or .txt
-     * @param array $templateArgs One or more arguments to pass to the renderer for use in the template
-     * @param string $subject The e-mail subject, overriding the template's subject
-     * @return bool
      */
-    public function sendNotification($toAddress, $notificationType = '', array $templateArgs = [], $subject = '')
-    {
-        $html = false;
-
+    public function sendNotification(
+        string $toAddress,
+        string $notificationType = '',
+        array $templateArgs = [],
+        string $subject = ''
+    ): bool {
         //Set translation domain to avoid problems when calling sendNotification from external modules
         $templateArgs['domain'] = 'zikula';
-        $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.html.twig";
+        $templateName = '@ZikulaZAuthModule/Email/' . $notificationType . '.html.twig';
         try {
             $html = true;
             $htmlBody = $this->twig->render($templateName, $templateArgs);
-        } catch (LoaderError $e) {
+        } catch (LoaderError $exception) {
+            $html = false;
             $htmlBody = '';
         }
 
-        $templateName = "@ZikulaZAuthModule/Email/{$notificationType}.txt.twig";
+        $templateName = '@ZikulaZAuthModule/Email/' . $notificationType . '.txt.twig';
         try {
             $textBody = $this->twig->render($templateName, $templateArgs);
-        } catch (LoaderError $e) {
+        } catch (LoaderError $exception) {
             $textBody = '';
         }
 
@@ -107,10 +96,7 @@ class MailHelper
         return $this->mailerApi->sendMessage($message, null, $body, $altBody, $html);
     }
 
-    /**
-     * @param string $notificationType
-     */
-    private function generateEmailSubject($notificationType)
+    private function generateEmailSubject(string $notificationType): string
     {
         $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {

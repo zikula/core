@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Block;
 
+use Exception;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,13 +42,7 @@ class LocaleBlock extends AbstractBlockHandler
      */
     private $localeApi;
 
-    /**
-     * display block
-     *
-     * @param array $properties
-     * @return string the rendered block
-     */
-    public function display(array $properties)
+    public function display(array $properties): string
     {
         if (!$this->hasPermission('LocaleBlock::', '::', ACCESS_OVERVIEW)
         || (!$this->hasPermission('LocaleBlock::bid', '::' . $properties['bid'], ACCESS_OVERVIEW))) {
@@ -59,12 +54,13 @@ class LocaleBlock extends AbstractBlockHandler
         $request = $this->requestStack->getMasterRequest();
         try {
             $routeInfo = $this->router->match($request->getPathInfo());
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return '';
         }
+        $locale = $request->getLocale();
         $selectedRoute = false;
         foreach ($locales as $displayName => $code) {
-            if ($request->getLocale() === $code) {
+            if ($locale === $code) {
                 $url = $request->getPathInfo();
                 $selectedRoute = $url;
             } else {
@@ -83,7 +79,7 @@ class LocaleBlock extends AbstractBlockHandler
         ]);
     }
 
-    private function filterRouteInfo(array $routeInfo, $locale)
+    private function filterRouteInfo(array $routeInfo, string $locale): array
     {
         $params = [];
         foreach ($routeInfo as $param => $value) {
@@ -98,27 +94,24 @@ class LocaleBlock extends AbstractBlockHandler
 
     /**
      * @required
-     * @param RouterInterface $router
      */
-    public function setRouter(RouterInterface $router)
+    public function setRouter(RouterInterface $router): void
     {
         $this->router = $router;
     }
 
     /**
      * @required
-     * @param FormFactoryInterface $formFactory
      */
-    public function setFormFactory(FormFactoryInterface $formFactory)
+    public function setFormFactory(FormFactoryInterface $formFactory): void
     {
         $this->formFactory = $formFactory;
     }
 
     /**
      * @required
-     * @param LocaleApiInterface $localeApi
      */
-    public function setLocaleApi(LocaleApiInterface $localeApi)
+    public function setLocaleApi(LocaleApiInterface $localeApi): void
     {
         $this->localeApi = $localeApi;
     }

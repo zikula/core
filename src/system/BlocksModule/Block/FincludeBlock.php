@@ -21,15 +21,15 @@ use Zikula\BlocksModule\Block\Form\Type\FincludeBlockType;
  */
 class FincludeBlock extends AbstractBlockHandler
 {
-    const FILETYPE_HTML = 0;
+    public const FILETYPE_HTML = 0;
 
-    const FILETYPE_TEXT = 1;
+    public const FILETYPE_TEXT = 1;
 
-    const FILETYPE_PHP = 2;
+    public const FILETYPE_PHP = 2;
 
-    public function display(array $properties)
+    public function display(array $properties): string
     {
-        if (!$this->hasPermission('fincludeblock::', "{$properties[title]}::", ACCESS_READ)) {
+        if (!$this->hasPermission('fincludeblock::', $properties['title'] . '::', ACCESS_READ)) {
             return '';
         }
 
@@ -51,12 +51,12 @@ class FincludeBlock extends AbstractBlockHandler
         }
     }
 
-    public function getFormClassName()
+    public function getFormClassName(): string
     {
         return FincludeBlockType::class;
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->__('File Include');
     }

@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Helper;
 
+use DateTime;
+use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -55,15 +58,6 @@ class RegistrationHelper
      */
     private $eventDispatcher;
 
-    /**
-     * RegistrationHelper constructor.
-     * @param VariableApiInterface $variableApi
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
-     * @param GroupRepositoryInterface $groupRepository
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
@@ -80,21 +74,19 @@ class RegistrationHelper
         $this->setTranslator($translator);
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
     /**
      * Create a new user or registration.
-     *
-     * @param UserEntity $userEntity
      */
-    public function registerNewUser(UserEntity $userEntity)
+    public function registerNewUser(UserEntity $userEntity): void
     {
         $adminApprovalRequired = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED);
         if (null === $userEntity->getUid()) {
-            $userEntity->setUser_Regdate(new \DateTime());
+            $userEntity->setUser_Regdate(new DateTime());
         }
         $userCreateEvent = new GenericEvent($userEntity);
         $this->eventDispatcher->dispatch(RegistrationEvents::FULL_USER_CREATE_VETO, $userCreateEvent);
@@ -115,11 +107,12 @@ class RegistrationHelper
             $userEntity->setActivated(UsersConstant::ACTIVATED_ACTIVE);
 
             // Add user to default group @todo refactor with Groups module
-            $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup', false);
+            $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
             if (!$defaultGroup) {
-                throw new \RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+                throw new RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
             if (!$userEntity->getGroups()->containsKey($defaultGroup)) {
+                /** @var GroupEntity $defaultGroupEntity */
                 $defaultGroupEntity = $this->groupRepository->find($defaultGroup);
                 $userEntity->addGroup($defaultGroupEntity);
             }
@@ -133,7 +126,7 @@ class RegistrationHelper
         }
         if (!$adminApprovalRequired) {
             $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
-            $this->userRepository->setApproved($userEntity, new \DateTime(), $approvedBy); // flushes EM
+            $this->userRepository->setApproved($userEntity, new DateTime(), $approvedBy); // flushes EM
         }
         $this->eventDispatcher->dispatch($eventName, new GenericEvent($userEntity));
     }
@@ -141,13 +134,11 @@ class RegistrationHelper
     /**
      * Approves a registration.
      * If the registration is also verified (or does not need it) then a new users table record is created.
-     *
-     * @param UserEntity $user
      */
-    public function approve(UserEntity $user)
+    public function approve(UserEntity $user): void
     {
-        $user->setApproved_By($this->currentUserApi->get('uid'));
-        $user->setApproved_Date(new \DateTime());
+        $user->setApproved_By((int)$this->currentUserApi->get('uid'));
+        $user->setApproved_Date(new DateTime());
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);

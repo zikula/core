@@ -27,28 +27,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ButtonTypeIconExtension extends AbstractTypeExtension
 {
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('icon', $options['icon']);
     }
 
-    /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['icon'] = $options['icon'];
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -56,11 +44,6 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
         ]);
     }
 
-    /**
-     * Returns the name of the types being extended.
-     *
-     * @return string[] The name of the types being extended
-     */
     public function getExtendedTypes()
     {
         return [ButtonType::class]; // Extend the button field type

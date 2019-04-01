@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Command;
 
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,9 +28,6 @@ use Symfony\Component\Finder\Finder;
  */
 class AssetsInstallCommand extends ContainerAwareCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure()
     {
         $this
@@ -63,18 +61,16 @@ EOT
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException When the target directory does not exist or symlink cannot be used
+     * @throws InvalidArgumentException When the target directory does not exist or symlink cannot be used
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $targetArg = rtrim($input->getArgument('target'), '/');
         if (!is_dir($targetArg)) {
-            throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $input->getArgument('target')));
+            throw new InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $input->getArgument('target')));
         }
         if (!function_exists('symlink') && $input->getOption('symlink')) {
-            throw new \InvalidArgumentException('The symlink() function is not available on your system. You need to install the assets without the --symlink option.');
+            throw new InvalidArgumentException('The symlink() function is not available on your system. You need to install the assets without the --symlink option.');
         }
         $filesystem = $this->getContainer()->get('filesystem');
         $kernel = $this->getContainer()->get('kernel');
@@ -86,7 +82,7 @@ EOT
         foreach ($array as $type => $bundles) {
             // Create the bundles directory otherwise symlink will fail.
             $filesystem->mkdir($targetArg . "/{$type}s/", 0777);
-            $output->writeln(sprintf("Installing assets using the <comment>%s</comment> option", $input->getOption('symlink') ? 'symlink' : 'hard copy'));
+            $output->writeln(sprintf('Installing assets using the <comment>%s</comment> option', $input->getOption('symlink') ? 'symlink' : 'hard copy'));
             foreach ($bundles as $bundle) {
                 if (is_dir($originDir = $bundle->getPath() . '/Resources/public')) {
                     $bundlesDir = $targetArg . '/' . $type . 's/';

@@ -66,64 +66,56 @@ class GroupApplicationEntity extends EntityAccess
 
     public function __construct()
     {
-        $this->user = null;
-        $this->group = null;
         $this->application = '';
         $this->status = 0;
     }
 
-    public function getAppId()
+    public function getAppId(): int
     {
         return $this->app_id;
     }
 
-    public function setAppId($app_id)
+    public function setAppId(int $app_id): void
     {
         $this->app_id = $app_id;
     }
 
-    /**
-     * @return UserEntity
-     */
-    public function getUser()
+    public function getUser(): UserEntity
     {
         return $this->user;
     }
 
-    public function setUser(UserEntity $user)
+    public function setUser(UserEntity $user): void
     {
         $this->user = $user;
     }
 
-    /**
-     * @return GroupEntity
-     */
-    public function getGroup()
+    public function getGroup(): GroupEntity
     {
         return $this->group;
     }
 
-    public function setGroup(GroupEntity $group)
+    public function setGroup(GroupEntity $group): void
     {
         $this->group = $group;
     }
 
-    public function getApplication()
+    public function getApplication(): string
     {
         return $this->application;
     }
 
-    public function setApplication($application)
+    public function setApplication(string $application): void
     {
         $this->application = $application;
     }
 
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
 
-    public function setStatus($status)
+    public function setStatus(int $status): void
     {
         $this->status = $status;
     }

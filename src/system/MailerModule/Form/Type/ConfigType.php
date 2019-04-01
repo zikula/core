@@ -32,25 +32,16 @@ class ConfigType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transportChoices = [
@@ -61,7 +52,7 @@ class ConfigType extends AbstractType
         ];
         $transportAlert = null;
 
-        // see http://swiftmailer.org/docs/sending.html
+        // see https://swiftmailer.symfony.com/docs/sending.html
         if (!function_exists('proc_open')) {
             $transportChoices = [
                 $this->__('Google gmail') => 'gmail',
@@ -197,17 +188,11 @@ class ConfigType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulamailermodule_config';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

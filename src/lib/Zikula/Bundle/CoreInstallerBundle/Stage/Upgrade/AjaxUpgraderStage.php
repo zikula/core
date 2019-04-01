@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Common\Translator\Translator;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -36,27 +37,27 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
         $this->oldVersion = $container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
     }
 
-    public function setTranslator($translator)
+    public function setTranslator(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'ajaxupgrader';
     }
 
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return 'ZikulaCoreInstallerBundle:Upgrade:ajaxupgrader.html.twig';
     }
 
-    public function isNecessary()
+    public function isNecessary(): bool
     {
         return true;
     }
 
-    public function getTemplateParams()
+    public function getTemplateParams(): array
     {
         return ['stages' => [
             1 => [

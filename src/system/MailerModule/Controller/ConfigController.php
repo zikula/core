@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\MailerModule\Controller;
 
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
@@ -38,15 +38,13 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaMailerModule:Config:config.html.twig")
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param DynamicConfigDumper $configDumper
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response
      */
-    public function configAction(Request $request, VariableApiInterface $variableApi, DynamicConfigDumper $configDumper)
-    {
+    public function configAction(
+        Request $request,
+        VariableApiInterface $variableApi,
+        DynamicConfigDumper $configDumper
+    ): array {
         if (!$this->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -78,9 +76,17 @@ class ConfigController extends AbstractController
                     $disableDelivery = true;
                 }
 
-                // write the config file
-                // http://symfony.com/doc/current/reference/configuration/swiftmailer.html
                 $currentConfig = $configDumper->getConfiguration('swiftmailer');
+
+                $deliveryAddresses = [];
+                if (isset($currentConfig['delivery_addresses']) && !empty($currentConfig['delivery_addresses'])) {
+                    $deliveryAddresses = $currentConfig['delivery_addresses'];
+                } elseif (isset($currentConfig['delivery_address']) && !empty($currentConfig['delivery_address'])) {
+                    $deliveryAddresses = [$currentConfig['delivery_address']];
+                }
+
+                // write the config file
+                // https://symfony.com/doc/current/reference/configuration/swiftmailer.html
                 $config = [
                     'transport' => $transport,
                     'username' => $formData['username' . $credentialsSuffix],
@@ -91,9 +97,7 @@ class ConfigController extends AbstractController
                     'auth_mode' => $formData['auth_mode'],
                     // the items below can be configured by modifying the app/config/dynamic/generated.yml file
                     // 'spool' => !empty($currentConfig['spool']) ? $currentConfig['spool'] : ['type' => 'memory'],
-                    'delivery_addresses' => !empty($currentConfig['delivery_addresses'])
-                        ? $currentConfig['delivery_addresses']
-                        : (!empty($currentConfig['delivery_address']) ? [$currentConfig['delivery_address']] : []),
+                    'delivery_addresses' => $deliveryAddresses,
                     'disable_delivery' => $disableDelivery
                 ];
                 if ('' === $config['encryption']) {
@@ -121,23 +125,22 @@ class ConfigController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaMailerModule:Config:test.html.twig")
      *
-     * This function displays a form to sent a test mail.
-     *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param DynamicConfigDumper $configDumper
-     * @param MailerApiInterface $mailerApi
+     * This function displays a form to send a test mail.
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
-     * @return Response
      */
-    public function testAction(Request $request, VariableApiInterface $variableApi, DynamicConfigDumper $configDumper, MailerApiInterface $mailerApi)
-    {
+    public function testAction(
+        Request $request,
+        VariableApiInterface $variableApi,
+        DynamicConfigDumper $configDumper,
+        MailerApiInterface $mailerApi
+    ): array {
         if (!$this->hasPermission('ZikulaMailerModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         $paramHtml = $configDumper->getConfigurationForHtml('swiftmailer');
+        // avoid exposing a password
         $paramHtml = preg_replace('/<li><strong>password:(.*?)<\/li>/is', '', $paramHtml);
 
         $form = $this->createForm(TestType::class, $this->getDataValues($variableApi, $configDumper));
@@ -189,7 +192,7 @@ class ConfigController extends AbstractController
                     } else {
                         $this->addFlash('error', $this->__('It looks like the message could not be sent properly.'));
                     }
-                } catch (\RuntimeException $e) {
+                } catch (RuntimeException $exception) {
                     $this->addFlash('error', $this->__('The message could not be sent properly.'));
                 }
             }
@@ -206,12 +209,11 @@ class ConfigController extends AbstractController
 
     /**
      * Returns required data from module variables and SwiftMailer configuration.
-     *
-     * @param VariableApiInterface $variableApi
-     * @param DynamicConfigDumper $configDumper
      */
-    private function getDataValues(VariableApiInterface $variableApi, DynamicConfigDumper $configDumper)
-    {
+    private function getDataValues(
+        VariableApiInterface $variableApi,
+        DynamicConfigDumper $configDumper
+    ): array {
         $params = $configDumper->getConfiguration('swiftmailer');
         $modVars = $variableApi->getAll('ZikulaMailerModule');
 

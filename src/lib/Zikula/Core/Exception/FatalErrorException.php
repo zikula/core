@@ -20,16 +20,7 @@ use Symfony\Component\Debug\Exception\FatalErrorException as SymfonyFatalErrorEx
  */
 class FatalErrorException extends SymfonyFatalErrorException
 {
-    /**
-     * Constructor.
-     *
-     * @param string $message
-     * @param int $code
-     * @param int $severity
-     * @param string $filename
-     * @param int $lineno
-     */
-    public function __construct($message = 'Fatal Error!', $code = 0, $severity = 1, $filename = __FILE__, $lineno = __LINE__)
+    public function __construct(string $message = 'Fatal Error!', int $code = 0, int $severity = 1, string $filename = __FILE__, int $lineno = __LINE__)
     {
         parent::__construct($message, $code, $severity, $filename, $lineno);
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Component\SortableColumns;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -80,8 +81,12 @@ class SortableColumns
      */
     private $additionalUrlParameters = [];
 
-    public function __construct(RouterInterface $router, $routeName, $sortFieldName = 'sort-field', $directionFieldName = 'sort-direction')
-    {
+    public function __construct(
+        RouterInterface $router,
+        string $routeName,
+        string $sortFieldName = 'sort-field',
+        string $directionFieldName = 'sort-direction'
+    ) {
         $this->router = $router;
         $this->routeName = $routeName;
         $this->sortFieldName = $sortFieldName;
@@ -98,10 +103,8 @@ class SortableColumns
      *     ],
      *   ]
      * </code>
-     *
-     * @return array
      */
-    public function generateSortableColumns()
+    public function generateSortableColumns(): array
     {
         $resultArray = [];
         /** @var Column $column */
@@ -119,86 +122,69 @@ class SortableColumns
 
     /**
      * Add one column.
-     * @param Column $column
      */
-    public function addColumn(Column $column)
+    public function addColumn(Column $column): void
     {
         $this->columnCollection->set($column->getName(), $column);
     }
 
     /**
      * Shortcut to add an array of columns.
-     * @param array $columns
      */
-    public function addColumns(array $columns)
+    public function addColumns(array $columns = []): void
     {
         foreach ($columns as $column) {
             if ($column instanceof Column) {
                 $this->addColumn($column);
             } else {
-                throw new \InvalidArgumentException('Columns must be an instance of \Zikula\Component\SortableColumns\Column.');
+                throw new InvalidArgumentException('Columns must be an instance of \Zikula\Component\SortableColumns\Column.');
             }
         }
     }
 
-    /**
-     * @param $name
-     */
-    public function removeColumn($name)
+    public function removeColumn(string $name): void
     {
         $this->columnCollection->remove($name);
     }
 
-    /**
-     * @param $name
-     * @return Column
-     */
-    public function getColumn($name)
+    public function getColumn(string $name): ?Column
     {
         return $this->columnCollection->get($name);
     }
 
     /**
      * Set the column to sort by and the sort direction.
-     *
-     * @param Column|null $sortColumn
-     * @param null $sortDirection
      */
-    public function setOrderBy(Column $sortColumn = null, $sortDirection = null)
+    public function setOrderBy(Column $sortColumn = null, string $sortDirection = null): void
     {
-        $sortDirection = !empty($sortDirection) ? $sortDirection : Column::DIRECTION_ASCENDING;
-        $sortColumn = !empty($sortColumn) ? $sortColumn : $this->getDefaultColumn();
+        $sortColumn = $sortColumn ?: $this->getDefaultColumn();
+        if (null === $sortColumn) {
+            return;
+        }
+        $sortDirection = $sortDirection ?: Column::DIRECTION_ASCENDING;
         $this->setSortDirection($sortDirection);
         $this->setSortColumn($sortColumn);
     }
 
     /**
      * Shortcut to set OrderBy using the Request object.
-     * @param Request $request
      */
-    public function setOrderByFromRequest(Request $request)
+    public function setOrderByFromRequest(Request $request): void
     {
+        if (null === $this->getDefaultColumn()) {
+            return;
+        }
         $sortColumnName = $request->get($this->sortFieldName, $this->getDefaultColumn()->getName());
         $sortDirection = $request->get($this->directionFieldName, Column::DIRECTION_ASCENDING);
         $this->setOrderBy($this->getColumn($sortColumnName), $sortDirection);
     }
 
-    /**
-     * @return Column
-     */
-    public function getSortColumn()
+    public function getSortColumn(): ?Column
     {
-        if (isset($this->sortColumn)) {
-            return $this->sortColumn;
-        }
-
-        return $this->getDefaultColumn();
+        return $this->sortColumn ?? $this->getDefaultColumn();
     }
 
-    /**
-     * @param Column $sortColumn
-     */
-    private function setSortColumn(Column $sortColumn)
+    private function setSortColumn(Column $sortColumn): void
     {
         if ($this->columnCollection->contains($sortColumn)) {
             $this->sortColumn = $sortColumn;
@@ -207,28 +193,19 @@ class SortableColumns
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getSortDirection()
+    public function getSortDirection(): string
     {
         return $this->sortDirection;
     }
 
-    /**
-     * @param string $sortDirection
-     */
-    private function setSortDirection($sortDirection)
+    private function setSortDirection(string $sortDirection): void
     {
-        if (in_array($sortDirection, [Column::DIRECTION_ASCENDING, Column::DIRECTION_DESCENDING])) {
+        if (in_array($sortDirection, [Column::DIRECTION_ASCENDING, Column::DIRECTION_DESCENDING], true)) {
             $this->sortDirection = $sortDirection;
         }
     }
 
-    /**
-     * @return Column
-     */
-    public function getDefaultColumn()
+    public function getDefaultColumn(): ?Column
     {
         if (!empty($this->defaultColumn)) {
             return $this->defaultColumn;
@@ -237,26 +214,17 @@ class SortableColumns
         return $this->columnCollection->first();
     }
 
-    /**
-     * @param Column $defaultColumn
-     */
-    public function setDefaultColumn(Column $defaultColumn)
+    public function setDefaultColumn(Column $defaultColumn): void
     {
         $this->defaultColumn = $defaultColumn;
     }
 
-    /**
-     * @return array
-     */
-    public function getAdditionalUrlParameters()
+    public function getAdditionalUrlParameters(): array
     {
         return $this->additionalUrlParameters;
     }
 
-    /**
-     * @param array $additionalUrlParameters
-     */
-    public function setAdditionalUrlParameters(array $additionalUrlParameters = [])
+    public function setAdditionalUrlParameters(array $additionalUrlParameters = []): void
     {
         $this->additionalUrlParameters = $additionalUrlParameters;
     }

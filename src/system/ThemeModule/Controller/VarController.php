@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Controller;
 
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
@@ -31,15 +34,11 @@ class VarController extends AbstractController
      * @Theme("admin")
      * @Template("ZikulaThemeModule:Var:var.html.twig")
      *
-     * @param Request $request
-     * @param VariableApiInterface $variableApi
-     * @param string $themeName
+     * @return array|RedirectResponse
      *
-     * @return mixed
-     *
-     * @throws \InvalidArgumentException if theme type is not twig-based
+     * @throws InvalidArgumentException if theme type is not twig-based
      */
-    public function varAction(Request $request, VariableApiInterface $variableApi, $themeName)
+    public function varAction(Request $request, VariableApiInterface $variableApi, string $themeName)
     {
         $themeBundle = $this->get('kernel')->getBundle($themeName);
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
@@ -49,7 +48,7 @@ class VarController extends AbstractController
             return $this->redirectToRoute('zikulathememodule_theme_view');
         }
         $variableDefinitions = Yaml::parse(file_get_contents($themeVarsPath));
-        /** @var \Symfony\Component\Form\FormBuilder $formBuilder */
+        /** @var FormBuilder $formBuilder */
         $formBuilder = $this->createFormBuilder($themeBundle->getThemeVars());
         foreach ($variableDefinitions as $fieldName => $definitions) {
             $options = $definitions['options'] ?? [];

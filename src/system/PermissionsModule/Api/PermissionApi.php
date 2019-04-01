@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Api;
 
+use InvalidArgumentException;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
@@ -33,17 +34,17 @@ class PermissionApi implements PermissionApiInterface
     /**
      * 'all users', includes unregistered users
      */
-    const ALL_USERS = -1;
+    public const ALL_USERS = -1;
 
     /**
      * 'all groups', includes unregistered users
      */
-    const ALL_GROUPS = -1;
+    public const ALL_GROUPS = -1;
 
     /**
      * pseudo group of unregistered users.
      */
-    const UNREGISTERED_USER_GROUP = 0;
+    public const UNREGISTERED_USER_GROUP = 0;
 
     /**
      * @var PermissionRepositoryInterface
@@ -71,13 +72,6 @@ class PermissionApi implements PermissionApiInterface
      */
     private $groupPermsByUser = [];
 
-    /**
-     * PermissionApi constructor.
-     * @param PermissionRepositoryInterface $permRepository Permission repository
-     * @param UserRepositoryInterface $userRepository User repository
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param TranslatorInterface $translator Translator service instance
-     */
     public function __construct(
         PermissionRepositoryInterface $permRepository,
         UserRepositoryInterface $userRepository,
@@ -93,34 +87,26 @@ class PermissionApi implements PermissionApiInterface
     /**
      * {@inheritdoc}
      */
-    public function hasPermission($component = null, $instance = null, $level = ACCESS_NONE, $user = null)
+    public function hasPermission(string $component = null, string $instance = null, int $level = ACCESS_NONE, int $user = null): bool
     {
-        if (!is_numeric($level)) {
-            throw new \InvalidArgumentException('Invalid security level');
-        }
-        if (isset($user) && !is_numeric($user)) {
-            throw new \InvalidArgumentException('User argument must be an integer.');
-        }
         if (!isset($user)) {
-            $user = $this->currentUserApi->get('uid');
+            $user = (int)$this->currentUserApi->get('uid');
         }
         if (!isset($this->groupPermsByUser[$user]) || false === $this->groupPermsByUser[$user]) {
             $this->setGroupPermsForUser($user);
         }
 
-        return (0 === count($this->groupPermsByUser[$user]))
+        return 0 === count($this->groupPermsByUser[$user])
             ? false
             : $this->getSecurityLevel($this->groupPermsByUser[$user], $component, $instance) >= $level;
     }
 
     /**
      * Get auth info.
-     *
-     * @param integer $user User Id
      */
-    private function setGroupPermsForUser($user)
+    private function setGroupPermsForUser(int $user): void
     {
-        $user = !$user ? Constant::USER_ID_ANONYMOUS : (int)$user; // convert possible boolean to integer, ensure non-bool is also integer
+        $user = !$user ? Constant::USER_ID_ANONYMOUS : $user;
         $uids = [self::ALL_USERS, $user]; // by default include 'all users'
 
         // Get all groups that user is in
@@ -155,14 +141,8 @@ class PermissionApi implements PermissionApiInterface
 
     /**
      * Get security Level
-     *
-     * @param array $perms Array of permissions
-     * @param string $component Component
-     * @param string $instance Instance
-     *
-     * @return integer Matching security level
      */
-    private function getSecurityLevel($perms, $component, $instance)
+    private function getSecurityLevel(array $perms = [], string $component = null, string $instance = null): int
     {
         $level = ACCESS_INVALID;
 
@@ -176,7 +156,7 @@ class PermissionApi implements PermissionApiInterface
         }
 
         // Test for generic permission
-        if ((empty($component)) && (empty($instance))) {
+        if (empty($component) && empty($instance)) {
             // Looking for best permission
             foreach ($perms as $perm) {
                 if ($perm['level'] > $level) {
@@ -192,15 +172,15 @@ class PermissionApi implements PermissionApiInterface
             $levels = [$level];
             foreach ($perms as $perm) {
                 // component check
-                if (!preg_match("=^{$perm[component]}$=", $component)) {
-                    continue; // component doestn't match.
+                if (!preg_match('=^' . $perm['component'] . '$=', $component)) {
+                    continue; // component doesn't match.
                 }
 
                 // if component matches -  keep the level we found
                 $levels[] = $perm['level'];
 
                 // check that the instance matches :: or '' (nothing)
-                if ((preg_match("=^{$perm[instance]}$=", '::') || preg_match("=^{$perm[instance]}$=", ''))) {
+                if (preg_match('=^' . $perm['instance'] . '$=', '::') || preg_match('=^' . $perm['instance'] . '$=', '')) {
                     break; // instance matches - stop searching
                 }
             }
@@ -220,12 +200,12 @@ class PermissionApi implements PermissionApiInterface
             // Looking for best permission
             foreach ($perms as $perm) {
                 // component check
-                if (!preg_match("=^{$perm[component]}$=", $component)) {
-                    continue; // component doestn't match.
+                if (!preg_match('=^' . $perm['component'] . '$=', $component)) {
+                    continue; // component doesn't match.
                 }
 
                 // check that the instance matches :: or '' (nothing)
-                if (!(preg_match("=^{$perm[instance]}$=", '::') || preg_match("=^{$perm[instance]}$=", ''))) {
+                if (!(preg_match('=^' . $perm['instance'] . '$=', '::') || preg_match('=^' . $perm['instance'] . '$=', ''))) {
                     continue; // instance does not match
                 }
 
@@ -241,13 +221,13 @@ class PermissionApi implements PermissionApiInterface
         // there *is* a $instance at this point.
         foreach ($perms as $perm) {
             // if there is a component, check that it matches
-            if (('' !== $component) && (!preg_match("=^{$perm[component]}$=", $component))) {
+            if ('' !== $component && !preg_match('=^' . $perm['component'] . '$=', $component)) {
                 // component exists, and does not match.
                 continue;
             }
 
             // Confirm that instance matches
-            if (!preg_match("=^{$perm[instance]}$=", $instance)) {
+            if (!preg_match('=' . $perm['instance'] . '$=', $instance)) {
                 // instance does not match
                 continue;
             }
@@ -262,12 +242,8 @@ class PermissionApi implements PermissionApiInterface
 
     /**
      * Fix security string.
-     *
-     * @param string $string String
-     *
-     * @return string
      */
-    private function normalizeRegexString($string)
+    private function normalizeRegexString(string $string): string
     {
         if (empty($string)) {
             $string = '.*';
@@ -277,23 +253,14 @@ class PermissionApi implements PermissionApiInterface
         }
         $string = str_replace('::', ':.*:', $string);
         if (mb_strrpos($string, ':') === mb_strlen($string) - 1) {
-            $string = $string . '.*';
+            $string .= '.*';
         }
 
         return $string;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function accessLevelNames($level = null)
+    public function accessLevelNames(int $level = null)
     {
-        if (isset($level) && !is_numeric($level)) {
-            throw new \InvalidArgumentException();
-        } elseif (isset($level)) {
-            $level = (int) $level;
-        }
-
         $accessNames = [
             ACCESS_INVALID => $this->translator->__('Invalid'),
             ACCESS_NONE => $this->translator->__('No access'),
@@ -310,32 +277,24 @@ class PermissionApi implements PermissionApiInterface
         return isset($level) ? $accessNames[$level] : $accessNames;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resetPermissionsForUser($uid)
+    public function resetPermissionsForUser(int $userId): void
     {
-        if (!is_numeric($uid)) {
-            throw new \InvalidArgumentException();
+        if (!isset($userId)) {
+            throw new InvalidArgumentException('User id must be set.');
         }
-        $this->groupPermsByUser[$uid] = false;
+        $this->groupPermsByUser[$userId] = false;
     }
 
     /**
      * Get group permissions for one user.
      * (not an @api method)
-     *
-     * @param null $user
-     * @return array|null
      */
-    public function getGroupPerms($user)
+    public function getGroupPerms(int $userId): array
     {
-        if (!isset($user)) {
-            throw new \InvalidArgumentException('User must be set.');
+        if (!isset($userId)) {
+            throw new InvalidArgumentException('User must be set.');
         }
 
-        return (isset($this->groupPermsByUser[$user]))
-            ? $this->groupPermsByUser[$user]
-            : [];
+        return $this->groupPermsByUser[$userId] ?? [];
     }
 }

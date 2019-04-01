@@ -30,10 +30,6 @@ class ValidGroupNameValidator extends ConstraintValidator
      */
     private $groupRepository;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param GroupRepositoryInterface $groupRepository
-     */
     public function __construct(
         TranslatorInterface $translator,
         GroupRepositoryInterface $groupRepository
@@ -49,17 +45,19 @@ class ValidGroupNameValidator extends ConstraintValidator
         $qb->select('count(g.gid)')
             ->where($qb->expr()->eq('LOWER(g.name)', ':name'))
             ->setParameter('name', $data->getName());
-        // when updating an existing Group, the existing gid must be excluded.
+
         $gid = $data->getGid();
         if (isset($gid)) {
-            $qb->andWhere('g.gid <> :excludedGid')
+            // when updating an existing group, the existing gid must be excluded.
+            $qb->andWhere('g.gid != :excludedGid')
                 ->setParameter('excludedGid', $gid);
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
             $this->context->buildViolation($this->translator->__f('The group name you entered (%u) has already been registered.', ['%u' => $data->getName()]))
                 ->atPath('name')
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 }

@@ -24,23 +24,19 @@ class AdminModuleHelper
      */
     private $adminModuleRepository;
 
-    /**
-     * AdminModuleHelper constructor.
-     * @param AdminModuleRepositoryInterface $adminModuleRepository
-     */
     public function __construct(AdminModuleRepositoryInterface $adminModuleRepository)
     {
         $this->adminModuleRepository = $adminModuleRepository;
     }
 
-    public function setAdminModuleCategory(ExtensionEntity $module, $categoryId)
+    public function setAdminModuleCategory(ExtensionEntity $module, int $categoryId): void
     {
         $adminModule = $this->adminModuleRepository->findOneBy(['mid' => $module->getId()]);
         if (!isset($adminModule)) {
             $adminModule = new AdminModuleEntity();
         }
         $adminModule->setMid($module->getId());
-        $adminModule->setCid((int)$categoryId);
+        $adminModule->setCid($categoryId);
         $adminModule->setSortorder($this->adminModuleRepository->countModulesByCategory($categoryId));
         $this->adminModuleRepository->persistAndFlush($adminModule);
     }

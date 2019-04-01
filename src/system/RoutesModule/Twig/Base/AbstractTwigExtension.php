@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -16,6 +19,7 @@ use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\RoutesModule\Helper\EntityDisplayHelper;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
@@ -48,15 +52,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
      */
     protected $listHelper;
     
-    /**
-     * TwigExtension constructor.
-     *
-     * @param TranslatorInterface $translator
-     * @param VariableApiInterface $variableApi
-     * @param EntityDisplayHelper $entityDisplayHelper
-     * @param WorkflowHelper $workflowHelper
-     * @param ListEntriesHelper $listHelper
-     */
     public function __construct(
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
@@ -71,21 +66,11 @@ abstract class AbstractTwigExtension extends AbstractExtension
         $this->listHelper = $listHelper;
     }
     
-    /**
-     * Sets the translator.
-     *
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
     
-    /**
-     * Returns a list of custom Twig functions.
-     *
-     * @return TwigFunction[] List of functions
-     */
     public function getFunctions()
     {
         return [
@@ -94,11 +79,6 @@ abstract class AbstractTwigExtension extends AbstractExtension
         ];
     }
     
-    /**
-     * Returns a list of custom Twig filters.
-     *
-     * @return TwigFilter[] List of filters
-     */
     public function getFilters()
     {
         return [
@@ -113,13 +93,8 @@ abstract class AbstractTwigExtension extends AbstractExtension
      * Examples:
      *    {{ item.workflowState|zikularoutesmodule_objectState }}        {# with visual feedback #}
      *    {{ item.workflowState|zikularoutesmodule_objectState(false) }} {# no ui feedback #}
-     *
-     * @param string  $state      Name of given workflow state
-     * @param boolean $uiFeedback Whether the output should include some visual feedback about the state
-     *
-     * @return string Enriched and translated workflow state ready for display
      */
-    public function getObjectState($state = 'initial', $uiFeedback = true)
+    public function getObjectState(string $state = 'initial', bool $uiFeedback = true): string
     {
         $stateInfo = $this->workflowHelper->getStateInfo($state);
     
@@ -137,17 +112,10 @@ abstract class AbstractTwigExtension extends AbstractExtension
      * or names for a given list item.
      * Example:
      *     {{ entity.listField|zikularoutesmodule_listEntry('entityName', 'fieldName') }}
-     *
-     * @param string $value      The dropdown value to process
-     * @param string $objectType The treated object type
-     * @param string $fieldName  The list field's name
-     * @param string $delimiter  String used as separator for multiple selections
-     *
-     * @return string List item name
      */
-    public function getListEntry($value, $objectType = '', $fieldName = '', $delimiter = ', ')
+    public function getListEntry(string $value, string $objectType = '', string $fieldName = '', string $delimiter = ', '): string
     {
-        if ((empty($value) && $value != '0') || empty($objectType) || empty($fieldName)) {
+        if ((empty($value) && '0' !== $value) || empty($objectType) || empty($fieldName)) {
             return $value;
         }
     
@@ -155,59 +123,15 @@ abstract class AbstractTwigExtension extends AbstractExtension
     }
     
     
-    /**
-     * The zikularoutesmodule_objectTypeSelector function provides items for a dropdown selector.
-     *
-     * @return string The output of the plugin
-     */
-    public function getObjectTypeSelector()
-    {
-        $result = [];
-    
-        $result[] = [
-            'text' => $this->__('Routes'),
-            'value' => 'route'
-        ];
-    
-        return $result;
-    }
     
     
-    /**
-     * The zikularoutesmodule_templateSelector function provides items for a dropdown selector.
-     *
-     * @return string The output of the plugin
-     */
-    public function getTemplateSelector()
-    {
-        $result = [];
-    
-        $result[] = [
-            'text' => $this->__('Only item titles'),
-            'value' => 'itemlist_display.html.twig'
-        ];
-        $result[] = [
-            'text' => $this->__('With description'),
-            'value' => 'itemlist_display_description.html.twig'
-        ];
-        $result[] = [
-            'text' => $this->__('Custom template'),
-            'value' => 'custom'
-        ];
-    
-        return $result;
-    }
     
     /**
      * The zikularoutesmodule_formattedTitle filter outputs a formatted title for a given entity.
      * Example:
      *     {{ myPost|zikularoutesmodule_formattedTitle }}
-     *
-     * @param object $entity The given entity instance
-     *
-     * @return string The formatted title
      */
-    public function getFormattedEntityTitle($entity)
+    public function getFormattedEntityTitle(EntityAccess $entity): string
     {
         return $this->entityDisplayHelper->getFormattedTitle($entity);
     }

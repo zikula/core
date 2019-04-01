@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\DataCollector;
 
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -26,16 +27,12 @@ class ZikulaVersionDataCollector extends DataCollector
      */
     private $themeEngine;
 
-    /**
-     * ZikulaVersionDataCollector constructor.
-     * @param $themeEngine
-     */
     public function __construct(Engine $themeEngine)
     {
         $this->themeEngine = $themeEngine;
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, Exception $exception = null): void
     {
         $this->data = [
             'version' => ZikulaKernel::VERSION,
@@ -58,37 +55,37 @@ class ZikulaVersionDataCollector extends DataCollector
         }
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->data['version'];
     }
 
-    public function getGhZikulaCoreUrl()
+    public function getGhZikulaCoreUrl(): string
     {
         return $this->data['ghZikulaCoreUrl'];
     }
 
-    public function getGhZikulaDocsUrl()
+    public function getGhZikulaDocsUrl(): string
     {
         return $this->data['ghZikulaDocsUrl'];
     }
 
-    public function getGhZikulaBootstrapDocsUrl()
+    public function getGhZikulaBootstrapDocsUrl(): string
     {
         return $this->data['ghZikulaBootstrapDocsUrl'];
     }
 
-    public function getThemeEngine()
+    public function getThemeEngine(): array
     {
         return $this->data['themeEngine'];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'zikula_version';
     }

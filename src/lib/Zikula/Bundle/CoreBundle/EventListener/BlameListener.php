@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Gedmo\Blameable\BlameableListener;
+use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -50,7 +51,7 @@ class BlameListener implements EventSubscriberInterface
         BlameableListener $blameableListener,
         EntityManagerInterface $entityManager,
         SessionInterface $session,
-        $installed
+        bool $installed
     ) {
         $this->blameableListener = $blameableListener;
         $this->entityManager = $entityManager;
@@ -58,10 +59,14 @@ class BlameListener implements EventSubscriberInterface
         $this->installed = $installed;
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onKernelRequest'
+        ];
+    }
+
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         try {
             if (!$this->installed) {
@@ -71,20 +76,8 @@ class BlameListener implements EventSubscriberInterface
             }
             $user = $this->entityManager->getReference('ZikulaUsersModule:UserEntity', $uid);
             $this->blameableListener->setUserValue($user);
-        } catch (\Exception $e) {
+        } catch (Exception $exception) {
             // silently fail - likely installing and tables not available
         }
-    }
-
-    /**
-     * required implementation of abstract parent class
-     *
-     * @return array
-     */
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::REQUEST => 'onKernelRequest'
-        ];
     }
 }

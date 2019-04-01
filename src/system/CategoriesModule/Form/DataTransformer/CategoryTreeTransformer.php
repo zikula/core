@@ -18,9 +18,6 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
-/**
- * Class CategoryTreeTransformer
- */
 class CategoryTreeTransformer implements DataTransformerInterface
 {
     /**
@@ -28,10 +25,6 @@ class CategoryTreeTransformer implements DataTransformerInterface
      */
     private $categoryRepository;
 
-    /**
-     * CategoryTreeTransformer constructor.
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
@@ -54,6 +47,7 @@ class CategoryTreeTransformer implements DataTransformerInterface
 
     /**
      * Transform a CategoryId to a CategoryEntity
+     *
      * @param mixed $categoryId
      * @return CategoryEntity|void
      */
@@ -62,6 +56,7 @@ class CategoryTreeTransformer implements DataTransformerInterface
         if (!$categoryId) {
             return;
         }
+        /** @var CategoryEntity $category */
         $category = $this->categoryRepository->find($categoryId);
         if (null === $category) {
             throw new TransformationFailedException(sprintf(

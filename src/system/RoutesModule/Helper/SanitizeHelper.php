@@ -19,14 +19,10 @@ class SanitizeHelper
 {
     /**
      * Sanitizes the controller / type parameter.
-     *
-     * @param string $controllerName
-     *
-     * @return array [$controllerName, $type]
      */
-    public function sanitizeController($controllerName)
+    public function sanitizeController(string $controllerName): array
     {
-        if (substr($controllerName, -10) !== 'Controller') {
+        if ('Controller' !== substr($controllerName, -10)) {
             $type = $controllerName;
             $controllerName .= 'Controller';
         } else {
@@ -41,14 +37,10 @@ class SanitizeHelper
 
     /**
      * Sanitizes the action / func parameter.
-     *
-     * @param string $methodName
-     *
-     * @return array [$methodName, $func]
      */
-    public function sanitizeAction($methodName)
+    public function sanitizeAction(string $methodName): array
     {
-        if (substr($methodName, -6) !== 'Action') {
+        if ('Action' !== substr($methodName, -6)) {
             $methodName .= 'Action';
         }
 

@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\MenuModule\Entity\MenuItemEntity;
+use Zikula\MenuModule\Entity\Repository\MenuItemRepository;
 use Zikula\MenuModule\Form\Type\MenuItemType;
 
 /**
@@ -27,24 +28,26 @@ use Zikula\MenuModule\Form\Type\MenuItemType;
  */
 class NodeController extends AbstractController
 {
+    /**
+     * @var string
+     */
     private $domTreeNodePrefix = 'node_';
 
     /**
      * @Route("/contextMenu/{action}/{id}", options={"expose"=true, "i18n"=false})
-     * @param Request $request
-     * @param string $action
-     * @param MenuItemEntity $menuItemEntity
-     * @return JsonResponse
      */
-    public function contextMenuAction(Request $request, $action = 'edit', MenuItemEntity $menuItemEntity = null)
-    {
+    public function contextMenuAction(
+        Request $request,
+        MenuItemRepository $menuItemRepository,
+        string $action = 'edit',
+        MenuItemEntity $menuItemEntity = null
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
             return $this->json($this->__('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
-        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         $mode = $request->request->get('mode', 'edit');
 
         switch ($action) {
@@ -54,28 +57,30 @@ class NodeController extends AbstractController
                     $parentId = $request->request->get('parent');
                     $mode = 'new';
                     if (!empty($parentId)) {
-                        $parent = $repo->find($request->request->get('parent'));
+                        /** @var MenuItemEntity $parent */
+                        $parent = $menuItemRepository->find($request->request->get('parent'));
                         $menuItemEntity->setParent($parent);
                         $menuItemEntity->setRoot($parent->getRoot());
                     } elseif (empty($parentId) && $request->request->has('after')) { // sibling of top-level child
-                        $sibling = $repo->find($request->request->get('after'));
+                        /** @var MenuItemEntity $sibling */
+                        $sibling = $menuItemRepository->find($request->request->get('after'));
                         $menuItemEntity->setParent($sibling->getParent());
                         $menuItemEntity->setRoot($sibling->getRoot());
                     }
                 }
                 $form = $this->createForm(MenuItemType::class, $menuItemEntity);
-                $form->get('after')->setData($request->request->get('after', null));
+                $form->get('after')->setData($request->request->get('after'));
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
                     $menuItemEntity = $form->getData();
                     $after = $form->get('after')->getData();
                     if (!empty($after)) {
-                        $sibling = $repo->find($after);
-                        $repo->persistAsNextSiblingOf($menuItemEntity, $sibling);
+                        $sibling = $menuItemRepository->find($after);
+                        $menuItemRepository->persistAsNextSiblingOf($menuItemEntity, $sibling);
                     } elseif ('new' === $mode) {
-                        $repo->persistAsLastChild($menuItemEntity);
+                        $menuItemRepository->persistAsLastChild($menuItemEntity);
                     } // no need to persist edited entity
-                    $this->get('doctrine')->getManager()->flush();
+                    $this->getDoctrine()->getManager()->flush();
 
                     return $this->json([
                         'node' => $menuItemEntity->toJson($this->domTreeNodePrefix),
@@ -93,8 +98,8 @@ class NodeController extends AbstractController
                 break;
             case 'delete':
                 $id = $menuItemEntity->getId();
-                $this->get('doctrine')->getManager()->remove($menuItemEntity);
-                $this->get('doctrine')->getManager()->flush();
+                $this->getDoctrine()->getManager()->remove($menuItemEntity);
+                $this->getDoctrine()->getManager()->flush();
                 $response = [
                     'id' => $id,
                     'action' => $action,
@@ -108,20 +113,19 @@ class NodeController extends AbstractController
     }
 
     /**
-     * Ajax function for use on Drag and Drop of nodes.
+     * Ajax function for use on drag and drop of nodes.
      * @Route("/move", options={"expose"=true})
-     * @param Request $request
-     * @return JsonResponse
      */
-    public function moveAction(Request $request)
-    {
+    public function moveAction(
+        Request $request,
+        MenuItemRepository $menuItemRepository
+    ): JsonResponse {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
-        $repo = $this->get('doctrine')->getRepository(MenuItemEntity::class);
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);
-        $menuItemEntity = $repo->find($entityId);
+        $menuItemEntity = $menuItemRepository->find($entityId);
         $oldParent = $request->request->get('old_parent');
         $oldPosition = (int)$request->request->get('old_position');
         $parent = $request->request->get('parent');
@@ -129,13 +133,13 @@ class NodeController extends AbstractController
         if ($oldParent === $parent) {
             $diff = $oldPosition - $position; // if $diff is positive, then node moved up
             $methodName = $diff > 0 ? 'moveUp' : 'moveDown';
-            $repo->{$methodName}($menuItemEntity, abs($diff));
+            $menuItemRepository->{$methodName}($menuItemEntity, abs($diff));
         } else {
-            $parentEntity = $repo->find(str_replace($this->domTreeNodePrefix, '', $parent));
-            $children = $repo->children($parentEntity);
-            $repo->persistAsNextSiblingOf($menuItemEntity, $children[$position - 1]);
+            $parentEntity = $menuItemRepository->find(str_replace($this->domTreeNodePrefix, '', $parent));
+            $children = $menuItemRepository->children($parentEntity);
+            $menuItemRepository->persistAsNextSiblingOf($menuItemEntity, $children[$position - 1]);
         }
-        $this->get('doctrine')->getManager()->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->json(['result' => true]);
     }

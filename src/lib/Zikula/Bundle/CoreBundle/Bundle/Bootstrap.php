@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use function Composer\Autoload\includeFile;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Exception;
+use InvalidArgumentException;
+use PDO;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -28,7 +32,7 @@ class Bootstrap
      */
     private $extensionStateMap = [];
 
-    public function getConnection(ZikulaKernel $kernel)
+    public function getConnection(ZikulaHttpKernelInterface $kernel): Connection
     {
         // get bundles from persistence
         $connectionParams = $kernel->getConnectionConfig();
@@ -41,22 +45,21 @@ class Bootstrap
         return DriverManager::getConnection($connectionParams, new Configuration());
     }
 
-    public function getPersistedBundles(ZikulaKernel $kernel, array &$bundles)
+    public function getPersistedBundles(ZikulaHttpKernelInterface $kernel, array &$bundles): void
     {
         try {
             $this->doGetPersistedBundles($kernel, $bundles);
-        } catch (\Exception $e) {
-            // fail silently on purpose (drak)
+        } catch (Exception $exception) {
+            // fail silently on purpose
         }
     }
 
-    private function doGetPersistedBundles(ZikulaKernel $kernel, array &$bundles)
+    private function doGetPersistedBundles(ZikulaHttpKernelInterface $kernel, array &$bundles): void
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
         $res = $conn->executeQuery('SELECT bundleclass, autoload, bundlestate, bundletype FROM bundles');
-        foreach ($res->fetchAll(\PDO::FETCH_NUM) as $row) {
-            list($class, $autoload, $state, $type) = $row;
+        foreach ($res->fetchAll(PDO::FETCH_NUM) as list($class, $autoload, $state, $type)) {
             $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
             if ($extensionIsActive) {
                 try {
@@ -67,14 +70,14 @@ class Bootstrap
                         $bundle = new $class();
                         try {
                             if ($bundle instanceof AbstractBundle) {
-                                $bundle->setState($state);
+                                $bundle->setState((int)$state);
                             }
                             $bundles[] = $bundle;
-                        } catch (\InvalidArgumentException $e) {
+                        } catch (InvalidArgumentException $exception) {
                             // continue
                         }
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $exception) {
                     // unable to autoload $prefix / $path
                 }
             }
@@ -83,15 +86,9 @@ class Bootstrap
     }
 
     /**
-     * determine if the extension is active
-     *
-     * @param Connection $conn
-     * @param string $class
-     * @param string $type
-     *
-     * @return boolean|null
+     * Determine if an extension is active.
      */
-    private function extensionIsActive(Connection $conn, $class, $type)
+    private function extensionIsActive(Connection $conn, string $class, string $type): ?bool
     {
         $extensionNameArray = explode('\\', $class);
         $extensionName = array_pop($extensionNameArray);
@@ -100,7 +97,7 @@ class Bootstrap
             $state = $this->extensionStateMap[$extensionName];
         } else {
             // load all values into class var for lookup
-            $sql = "SELECT m.name, m.state, m.id FROM modules as m";
+            $sql = 'SELECT m.name, m.state, m.id FROM modules as m';
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = [
@@ -108,7 +105,7 @@ class Bootstrap
                     'id'    => (int)$row['id'],
                 ];
             }
-            $sql = "SELECT t.name, t.state, t.id FROM themes as t";
+            $sql = 'SELECT t.name, t.state, t.id FROM themes as t';
             $rows = $conn->executeQuery($sql);
             foreach ($rows as $row) {
                 $this->extensionStateMap[$row['name']] = [
@@ -117,33 +114,20 @@ class Bootstrap
                 ];
             }
 
-            if (isset($this->extensionStateMap[$extensionName])) {
-                $state = $this->extensionStateMap[$extensionName];
-            } else {
-                $state = ['state' => ('T' === $type) ? ThemeEntityRepository::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
-            }
+            $state = $this->extensionStateMap[$extensionName] ?? ['state' => ('T' === $type) ? ThemeEntityRepository::STATE_INACTIVE : Constant::STATE_UNINITIALISED];
         }
 
-        switch ($type) {
-            case 'T':
-                return ThemeEntityRepository::STATE_ACTIVE === $state['state'];
-                break;
-            default:
-                if ((Constant::STATE_ACTIVE === $state['state']) || (Constant::STATE_UPGRADED === $state['state']) || (Constant::STATE_TRANSITIONAL === $state['state'])) {
-                    return true;
-                }
-
-                return false;
+        if ('T' === $type) {
+            return ThemeEntityRepository::STATE_ACTIVE === $state['state'];
         }
+
+        return in_array($state['state'], [Constant::STATE_ACTIVE, Constant::STATE_UPGRADED, Constant::STATE_TRANSITIONAL], true);
     }
 
     /**
-     * Add autoloaders to kernel or include files from json
-     *
-     * @param ZikulaKernel $kernel
-     * @param array        $autoload
+     * Add autoloaders to kernel or include files from json.
      */
-    public function addAutoloaders(ZikulaKernel $kernel, array $autoload)
+    public function addAutoloaders(ZikulaHttpKernelInterface $kernel, array $autoload = []): void
     {
         if (isset($autoload['psr-0'])) {
             foreach ($autoload['psr-0'] as $prefix => $path) {
@@ -160,7 +144,7 @@ class Bootstrap
         }
         if (isset($autoload['files'])) {
             foreach ($autoload['files'] as $path) {
-                \Composer\Autoload\includeFile($path);
+                includeFile($path);
             }
         }
     }

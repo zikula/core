@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -30,19 +33,7 @@ class RouteType extends AbstractRouteType
      */
     private $extensionRepository;
 
-    /**
-     * @required
-     * @param ExtensionRepositoryInterface $extensionRepository
-     */
-    public function setExtensionRepository(ExtensionRepositoryInterface $extensionRepository)
-    {
-        $this->extensionRepository = $extensionRepository;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function addEntityFields(FormBuilderInterface $builder, array $options = [])
+    public function addEntityFields(FormBuilderInterface $builder, array $options = []): void
     {
         parent::addEntityFields($builder, $options);
 
@@ -54,8 +45,9 @@ class RouteType extends AbstractRouteType
         /** @var ExtensionEntity[] $modules */
         $modules = $this->extensionRepository->findBy(['state' => ExtensionConstant::STATE_ACTIVE]);
         foreach ($modules as $module) {
-            $moduleChoices[$module->getDisplayName()] = $module->getName();
-            $moduleChoiceAttributes[$module->getDisplayName()] = ['title' => $module->getDisplayName()];
+            $displayName = $module->getDisplayName();
+            $moduleChoices[$displayName] = $module->getName();
+            $moduleChoiceAttributes[$displayName] = ['title' => $displayName];
         }
         ksort($moduleChoices);
 
@@ -145,5 +137,13 @@ class RouteType extends AbstractRouteType
             'required' => false,
             'help' => $this->__('Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.')
         ]);
+    }
+
+    /**
+     * @required
+     */
+    public function setExtensionRepository(ExtensionRepositoryInterface $extensionRepository): void
+    {
+        $this->extensionRepository = $extensionRepository;
     }
 }

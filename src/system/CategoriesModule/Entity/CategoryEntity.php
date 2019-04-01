@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\UsersModule\Entity\UserEntity;
 
 /**
  * Category entity.
@@ -153,6 +156,7 @@ class CategoryEntity extends EntityAccess
     /**
      * The user id of the creator of the category
      *
+     * @var UserEntity
      * @Gedmo\Blameable(on="create")
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="cr_uid", referencedColumnName="uid")
@@ -162,6 +166,7 @@ class CategoryEntity extends EntityAccess
     /**
      * The user id of the last updater of the category
      *
+     * @var UserEntity
      * @Gedmo\Blameable(on="update")
      * @ORM\ManyToOne(targetEntity="Zikula\UsersModule\Entity\UserEntity")
      * @ORM\JoinColumn(name="lu_uid", referencedColumnName="uid")
@@ -171,6 +176,7 @@ class CategoryEntity extends EntityAccess
     /**
      * The creation timestamp of the category
      *
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -179,6 +185,7 @@ class CategoryEntity extends EntityAccess
     /**
      * The last updated timestamp of the category
      *
+     * @var DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
      */
@@ -190,8 +197,6 @@ class CategoryEntity extends EntityAccess
      */
     public function __construct(array $locales = [])
     {
-        $this->parent = null;
-        $this->children = null;
         $this->is_locked = false; //  was 0
         $this->is_leaf = false; // was 0
         $this->name = '';
@@ -207,200 +212,115 @@ class CategoryEntity extends EntityAccess
         $this->attributes = new ArrayCollection();
     }
 
-    /**
-     * get the category id
-     *
-     * @return int the category id
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * set the category id
-     *
-     * @param int $id the category id
-     */
-    public function setId($id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    /**
-     * get the categories parent id
-     *
-     * @return CategoryEntity
-     */
-    public function getParent()
+    public function getParent(): ?CategoryEntity
     {
         return $this->parent;
     }
 
-    /**
-     * set the categories parent id
-     *
-     * @param CategoryEntity $parent
-     */
-    public function setParent(CategoryEntity $parent = null)
+    public function setParent(CategoryEntity $parent = null): void
     {
         $this->parent = $parent;
     }
 
-    /**
-     * get the categories childen
-     *
-     * @return ArrayCollection the child categories
-     */
-    public function getChildren()
+    public function getChildren(): Collection
     {
         return !empty($this->children) ? $this->children : new ArrayCollection();
     }
 
-    /**
-     * set the categories childen
-     *
-     * @param array $children the child categories
-     */
-    public function setChildren($children)
+    public function setChildren(Collection $children): void
     {
         $this->children = $children;
     }
 
-    /**
-     * get the category locked status
-     *
-     * @return bool locked status flag
-     */
-    public function getIs_locked()
+    public function getIs_locked(): bool
     {
         return $this->is_locked;
     }
 
     /**
-     * Alias layer for Symfony Forms
-     * @return bool
+     * Alias for Symfony Forms.
      */
-    public function getIsLocked()
+    public function getIsLocked(): bool
     {
         return $this->getIs_locked();
     }
 
-    /**
-     * get the category locked status
-     *
-     * @param bool $is_locked locked status flag
-     */
-    public function setIs_locked($is_locked)
+    public function setIs_locked(bool $is_locked): void
     {
         $this->is_locked = $is_locked;
     }
 
     /**
-     * Alias layer for Symfony Forms
-     * @param $isLocked
+     * Alias for Symfony Forms
      */
-    public function setIsLocked($isLocked)
+    public function setIsLocked(bool $isLocked): void
     {
         $this->setIs_locked($isLocked);
     }
 
-    /**
-     * get the category leaf status
-     *
-     * @return bool leaf status flag
-     */
-    public function getIs_leaf()
+    public function getIs_leaf(): bool
     {
         return $this->is_leaf;
     }
 
     /**
-     * Alias layer for Symfony Forms
-     * @return bool
+     * Alias for Symfony Forms
      */
-    public function getIsLeaf()
+    public function getIsLeaf(): bool
     {
         return $this->getIs_leaf();
     }
 
-    /**
-     * set the category leaf status
-     *
-     * @param bool $is_leaf leaft status flag
-     */
-    public function setIs_leaf($is_leaf)
+    public function setIs_leaf(bool $is_leaf): void
     {
         $this->is_leaf = $is_leaf;
     }
 
     /**
-     * Alias layer for Symfony Forms
-     * @param $isLeaf
+     * Alias for Symfony Forms
      */
-    public function setIsLeaf($isLeaf)
+    public function setIsLeaf(bool $isLeaf): void
     {
         $this->setIs_leaf($isLeaf);
     }
 
-    /**
-     * get the category name
-     *
-     * @return string the category name
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * set the category name
-     *
-     * @param string $name the category name
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * get the category value
-     *
-     * @return string the category name
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * set the category value
-     *
-     * @param string $value the category name
-     */
-    public function setValue($value)
+    public function setValue(string $value): void
     {
         $this->value = $value;
     }
 
     /**
-     * get the category display name
-     * @param $lang
-     *
      * @return array|string the category display name(s)
      */
-    public function getDisplay_name($lang = null)
+    public function getDisplay_name(string $lang = null)
     {
         if (!empty($lang)) {
-            if (isset($this->display_name[$lang])) {
-                return $this->display_name[$lang];
-            }
-
-            if (isset($this->display_name['en'])) {
-                return $this->display_name['en'];
-            }
-
-            return $this->name;
+            return $this->display_name[$lang] ?? $this->display_name['en'] ?? $this->name;
         }
 
         return $this->display_name;
@@ -414,42 +334,26 @@ class CategoryEntity extends EntityAccess
         return $this->getDisplay_name();
     }
 
-    /**
-     * set the category display name
-     *
-     * @param array $display_name the category display name array
-     */
-    public function setDisplay_name($display_name)
+    public function setDisplay_name(array $display_name): void
     {
         $this->display_name = $display_name;
     }
 
     /**
      * Alias to self::setDisplay_name() required for PropertyAccess of collection form type
-     *
-     * @param array $display_name the category display name array
      */
-    public function setDisplayName($display_name)
+    public function setDisplayName(array $display_name): void
     {
         $this->setDisplay_name($display_name);
     }
 
     /**
-     * get the category display description
-     * @param $lang
-     *
      * @return array|string the category display description
      */
-    public function getDisplay_desc($lang = null)
+    public function getDisplay_desc(string $lang = null)
     {
         if (!empty($lang)) {
-            if (isset($this->display_desc[$lang])) {
-                return $this->display_desc[$lang];
-            }
-
-            if (isset($this->display_desc['en'])) {
-                return $this->display_desc['en'];
-            }
+            return $this->display_desc[$lang] ?? $this->display_desc['en'] ?? '';
         }
 
         return $this->display_desc;
@@ -458,47 +362,30 @@ class CategoryEntity extends EntityAccess
     /**
      * Alias to self::getDisplay_desc() required for Twig property access
      */
-    public function getDisplayDesc($lang = null)
+    public function getDisplayDesc(string $lang = null)
     {
         return $this->getDisplay_desc($lang);
     }
 
-    /**
-     * set the category display description
-     *
-     * @param array $display_desc the category display description
-     */
-    public function setDisplay_desc($display_desc)
+    public function setDisplay_desc(array $display_desc): void
     {
         $this->display_desc = $display_desc;
     }
 
     /**
      * Alias to self::setDisplay_desc() required for PropertyAccess of collection form type
-     *
-     * @param array $display_desc the category display description
      */
-    public function setDisplayDesc($display_desc)
+    public function setDisplayDesc(array $display_desc): void
     {
         $this->setDisplay_desc($display_desc);
     }
 
-    /**
-     * get the category status
-     *
-     * @return bool the category status
-     */
-    public function getStatus()
+    public function getStatus(): bool
     {
         return 'A' === $this->status;
     }
 
-    /**
-     * set the category status
-     *
-     * @param bool $status the category status
-     */
-    public function setStatus($status)
+    public function setStatus($status): void
     {
         if (is_bool($status)) {
             $status = $status ? 'A' : 'I';
@@ -506,124 +393,68 @@ class CategoryEntity extends EntityAccess
         $this->status = $status;
     }
 
-    /**
-     * set the creation date of the category
-     *
-     * @param mixed $cr_date the creation date
-     */
-    public function setCr_date($cr_date)
-    {
-        $this->cr_date = $cr_date;
-    }
-
-    /**
-     * get the creation date of the category
-     *
-     * @return mixed the creation date
-     */
-    public function getCr_date()
+    public function getCr_date(): DateTime
     {
         return $this->cr_date;
     }
 
-    /**
-     * set the creation user id of the category
-     *
-     * @param int $cr_uid the user id
-     */
-    public function setCr_uid($cr_uid)
+    public function setCr_date(DateTime $cr_date): void
     {
-        $this->cr_uid = $cr_uid;
+        $this->cr_date = $cr_date;
     }
 
-    /**
-     * get the creation user id
-     *
-     * @return int the user id
-     */
-    public function getCr_uid()
+    public function getCr_uid(): UserEntity
     {
         return $this->cr_uid;
     }
 
-    /**
-     * set the last updated timestamp of the category
-     *
-     * @param mixed $lu_date the last updated timestamp
-     */
-    public function setLu_date($lu_date)
+    public function setCr_uid(UserEntity $cr_uid): void
     {
-        $this->lu_date = $lu_date;
+        $this->cr_uid = $cr_uid;
     }
 
-    /**
-     * get the last updated timestamp of the category
-     *
-     * @return mixed the last updated timestamp
-     */
-    public function getLu_date()
+    public function getLu_date(): DateTime
     {
         return $this->lu_date;
     }
 
-    /**
-     * set the user id of the user who last updated the category
-     *
-     * @param int $lu_uid the user id
-     */
-    public function setLu_uid($lu_uid)
+    public function setLu_date(DateTime $lu_date): void
     {
-        $this->lu_uid = $lu_uid;
+        $this->lu_date = $lu_date;
     }
 
-    /**
-     * get the user id of the user who last updated the category
-     *
-     * @return int the user id
-     */
-    public function getLu_uid()
+    public function getLu_uid(): UserEntity
     {
         return $this->lu_uid;
     }
 
-    /**
-     * get the attributes of the category
-     *
-     * @return ArrayCollection the category's attributes
-     */
-    public function getAttributes()
+    public function setLu_uid(UserEntity $lu_uid): void
+    {
+        $this->lu_uid = $lu_uid;
+    }
+
+    public function getAttributes(): ArrayCollection
     {
         return $this->attributes;
     }
 
-    /**
-     * set the attributes for the category
-     *
-     * @param ArrayCollection $attributes the attributes for the category
-     */
-    public function setAttributes(ArrayCollection $attributes)
+    public function setAttributes(ArrayCollection $attributes): void
     {
         $this->attributes = $attributes;
     }
 
-    public function addAttribute(CategoryAttributeEntity $attribute)
+    public function addAttribute(CategoryAttributeEntity $attribute): void
     {
         $attribute->setCategory($this);
         $this->attributes->add($attribute);
     }
 
-    public function removeAttribute(CategoryAttributeEntity $attribute)
+    public function removeAttribute(CategoryAttributeEntity $attribute): void
     {
         $this->attributes->removeElement($attribute);
     }
 
-    /**
-     * set a single attribute for the category
-     *
-     * @param $name string attribute name
-     * @param $value string attribute value
-     */
-    public function setAttribute($name, $value)
+    public function setAttribute(string $name, string $value): void
     {
         if (isset($this->attributes[$name])) {
             $this->attributes[$name]->setValue($value);
@@ -636,83 +467,54 @@ class CategoryEntity extends EntityAccess
         }
     }
 
-    /**
-     * delete a single attribute of the category
-     *
-     * @param $name string attribute name
-     */
-    public function delAttribute($name)
+    public function delAttribute(string $name): void
     {
         if (isset($this->attributes[$name])) {
             $this->attributes->remove($name);
         }
     }
 
-    /**
-     * @return int
-     */
-    public function getLft()
+    public function getLft(): int
     {
         return $this->lft;
     }
 
-    /**
-     * @param int $lft
-     */
-    public function setLft($lft)
+    public function setLft(int $lft): void
     {
         $this->lft = $lft;
     }
 
-    /**
-     * @return int
-     */
-    public function getLvl()
+    public function getLvl(): int
     {
         return $this->lvl;
     }
 
-    /**
-     * @param int $lvl
-     */
-    public function setLvl($lvl)
+    public function setLvl(int $lvl): void
     {
         $this->lvl = $lvl;
     }
 
-    /**
-     * @return int
-     */
-    public function getRgt()
+    public function getRgt(): int
     {
         return $this->rgt;
     }
 
-    /**
-     * @param int $rgt
-     */
-    public function setRgt($rgt)
+    public function setRgt(int $rgt): void
     {
         $this->rgt = $rgt;
     }
 
-    /**
-     * @return CategoryEntity
-     */
-    public function getRoot()
+    public function getRoot(): self
     {
         return $this->root;
     }
 
-    /**
-     * @param CategoryEntity $root
-     */
-    public function setRoot(CategoryEntity $root)
+    public function setRoot(CategoryEntity $root): void
     {
         $this->root = $root;
     }
 
-    public function toJson($prefix = '', $locale = 'en')
+    public function toJson(string $prefix = '', string $locale = 'en'): string
     {
         return json_encode([
             'id' => $prefix . $this->id,
@@ -726,15 +528,14 @@ class CategoryEntity extends EntityAccess
             'is_locked' => $this->is_locked,
             'parent' => $this->parent->getId(),
 //            'children' => $this->children,
-            'root' => null !== $this->root ? $this->root->getId() : null
+            'root' => null !== $this->getRoot() ? $this->getRoot()->getId() : null
         ]);
     }
 
     /**
-     * required for repository->recover() method
-     * @return string
+     * Required for repository->recover() method.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }

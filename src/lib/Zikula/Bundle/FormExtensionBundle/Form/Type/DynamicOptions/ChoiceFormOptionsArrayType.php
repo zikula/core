@@ -19,9 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ChoiceFormOptionsArrayType extends FormOptionsArrayType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);

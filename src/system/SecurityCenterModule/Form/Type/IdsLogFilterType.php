@@ -27,25 +27,16 @@ class IdsLogFilterType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
 
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setMethod('GET');
@@ -61,14 +52,13 @@ class IdsLogFilterType extends AbstractType
 
     /**
      * Adds a choice field for filtering by a certain IDS log field.
-     *
-     * @param FormBuilderInterface $builder   The form builder
-     * @param array                $options   Form type options
-     * @param string               $fieldName Name of field to select
-     * @param string               $label     Label for the form field
      */
-    private function addFilterField($builder, array $options, $fieldName, $label)
-    {
+    private function addFilterField(
+        FormBuilderInterface $builder,
+        array $options,
+        string $fieldName,
+        string $label
+    ): void {
         $repository = $options['repository'];
         $listEntries = $repository->getDistinctFieldValues($fieldName);
 
@@ -90,17 +80,11 @@ class IdsLogFilterType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_idslogfilter';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

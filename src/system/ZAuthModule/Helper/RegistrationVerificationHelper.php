@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Helper;
 
+use DateTime;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
+use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\Entity\RepositoryInterface\UserVerificationRepositoryInterface;
+use Zikula\ZAuthModule\Entity\UserVerificationEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationVerificationHelper
@@ -54,15 +57,6 @@ class RegistrationVerificationHelper
      */
     private $passwordApi;
 
-    /**
-     * RegistrationVerificationHelper constructor.
-     * @param PermissionApiInterface $permissionApi
-     * @param UserVerificationRepositoryInterface $userVerificationRepository
-     * @param MailHelper $mailHelper
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param UserRepositoryInterface $userRepository
-     * @param PasswordApiInterface $passwordApi
-     */
     public function __construct(
         PermissionApiInterface $permissionApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
@@ -82,8 +76,8 @@ class RegistrationVerificationHelper
     /**
      * Creates, saves and sends a registration e-mail address verification code.
      *
-     * @param AuthenticationMappingEntity $mapping
-     * @return bool True on success; otherwise false
+     * @return DateTime|bool
+     * @throws AccessDeniedException
      */
     public function sendVerificationCode(AuthenticationMappingEntity $mapping)
     {
@@ -94,6 +88,7 @@ class RegistrationVerificationHelper
 
         $verificationCode = $this->passwordApi->generatePassword();
         $this->userVerificationRepository->setVerificationCode($mapping->getUid(), ZAuthConstant::VERIFYCHGTYPE_REGEMAIL, $this->passwordApi->getHashedPassword($verificationCode), $mapping->getEmail());
+        /** @var UserEntity $userEntity */
         $userEntity = $this->userRepository->find($mapping->getUid());
         $codeSent = $this->mailHelper->sendNotification($mapping->getEmail(), 'regverifyemail', [
             'user' => $mapping,
@@ -101,6 +96,7 @@ class RegistrationVerificationHelper
             'verifycode' => $verificationCode,
         ]);
 
+        /** @var UserVerificationEntity $userVerificationEntity */
         $userVerificationEntity = $this->userVerificationRepository->findOneBy(['uid' => $mapping->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if ($codeSent) {
             return $userVerificationEntity->getCreated_Dt();

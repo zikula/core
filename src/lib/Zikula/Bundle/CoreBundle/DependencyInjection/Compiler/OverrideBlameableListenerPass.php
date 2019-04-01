@@ -17,13 +17,14 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Parameter;
 use Symfony\Component\DependencyInjection\Reference;
+use Zikula\Bundle\CoreBundle\EventListener\BlameListener;
 
 class OverrideBlameableListenerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
         $definition = $container->getDefinition('stof_doctrine_extensions.event_listener.blame');
-        $definition->setClass('Zikula\Bundle\CoreBundle\EventListener\BlameListener')
+        $definition->setClass(BlameListener::class)
             ->setArguments([
                 new Reference('stof_doctrine_extensions.listener.blameable'),
                 new Reference('doctrine.orm.default_entity_manager'),

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -26,13 +29,9 @@ class RouteRepository extends AbstractRouteRepository
     /**
      * Deletes all custom routes for a certain bundle.
      *
-     * @param string $bundleName Name of the bundle
-     *
-     * @return void
-     *
      * @throws InvalidArgumentException Thrown if invalid parameters are received
      */
-    public function deleteByBundle($bundleName)
+    public function deleteByBundle(string $bundleName): void
     {
         // check id parameter
         if (empty($bundleName)) {

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Routes.
  *
@@ -11,13 +14,14 @@
 
 namespace Zikula\RoutesModule\Controller\Base;
 
+use Exception;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
@@ -39,18 +43,13 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This is the default action handling the main area called without defining arguments.
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      */
     protected function indexInternal(
         Request $request,
         PermissionHelper $permissionHelper,
-        $isAdmin = false
-    ) {
+        bool $isAdmin = false
+    ): Response {
         $objectType = 'route';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
@@ -69,26 +68,20 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides an item list overview.
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param ControllerHelper $controllerHelper
-     * @param ViewHelper $viewHelper
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     * @throws Exception
      */
     protected function viewInternal(
         Request $request,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
-        $sort,
-        $sortdir,
-        $pos,
-        $num,
-        $isAdmin = false
-    ) {
+        string $sort,
+        string $sortdir,
+        int $pos,
+        int $num,
+        bool $isAdmin = false
+    ): Response {
         $objectType = 'route';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
@@ -104,7 +97,9 @@ abstract class AbstractRouteController extends AbstractController
         $request->query->set('sortdir', $sortdir);
         $request->query->set('pos', $pos);
         
-        $sortableColumns = new SortableColumns($this->get('router'), 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
+        /** @var RouterInterface $router */
+        $router = $this->get('router');
+        $sortableColumns = new SortableColumns($router, 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         
         $sortableColumns->addColumns([
             new Column('bundle'),
@@ -146,14 +141,6 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides a item detail view.
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param ControllerHelper $controllerHelper
-     * @param ViewHelper $viewHelper
-     * @param EntityFactory $entityFactory
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if route to be displayed isn't found
      */
@@ -163,10 +150,13 @@ abstract class AbstractRouteController extends AbstractController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EntityFactory $entityFactory,
-        $id,
-        $isAdmin = false
-    ) {
-        $route = $entityFactory->getRepository('route')->selectById($id);
+        RouteEntity $route = null,
+        int $id = 0,
+        bool $isAdmin = false
+    ): Response {
+        if (null === $route) {
+            $route = $entityFactory->getRepository('route')->selectById($id);
+        }
         if (null === $route) {
             throw new NotFoundHttpException($this->__('No such route found.'));
         }
@@ -195,16 +185,9 @@ abstract class AbstractRouteController extends AbstractController
     /**
      * This action provides a handling of edit requests.
      *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param ControllerHelper $controllerHelper
-     * @param ViewHelper $viewHelper
-     * @param EditHandler $formHandler
-     *
-     * @return Response Output
-     *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws RuntimeException Thrown if another critical error occurs (e.g. workflow actions not available)
+     * @throws Exception
      */
     protected function editInternal(
         Request $request,
@@ -212,8 +195,8 @@ abstract class AbstractRouteController extends AbstractController
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
         EditHandler $formHandler,
-        $isAdmin = false
-    ) {
+        bool $isAdmin = false
+    ): Response {
         $objectType = 'route';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_EDIT;
@@ -241,122 +224,10 @@ abstract class AbstractRouteController extends AbstractController
     
     
     /**
-     * This action provides a handling of simple delete requests.
-     *
-     * @param Request $request
-     * @param PermissionHelper $permissionHelper
-     * @param ControllerHelper $controllerHelper
-     * @param ViewHelper $viewHelper
-     * @param EntityFactory $entityFactory
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param WorkflowHelper $workflowHelper
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     * @throws NotFoundHttpException Thrown if route to be deleted isn't found
-     * @throws RuntimeException Thrown if another critical error occurs (e.g. workflow actions not available)
-     */
-    protected function deleteInternal(
-        Request $request,
-        PermissionHelper $permissionHelper,
-        ControllerHelper $controllerHelper,
-        ViewHelper $viewHelper,
-        EntityFactory $entityFactory,
-        CurrentUserApiInterface $currentUserApi,
-        WorkflowHelper $workflowHelper,
-        $id,
-        $isAdmin = false
-    ) {
-        $route = $entityFactory->getRepository('route')->selectById($id);
-        if (null === $route) {
-            throw new NotFoundHttpException($this->__('No such route found.'));
-        }
-        
-        $objectType = 'route';
-        // permission check
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_DELETE;
-        if (!$permissionHelper->hasEntityPermission($route, $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        
-        $logger = $this->get('logger');
-        $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => 'route', 'id' => $route->getKey()];
-        
-        // determine available workflow actions
-        $actions = $workflowHelper->getActionsForObject($route);
-        if (false === $actions || !is_array($actions)) {
-            $this->addFlash('error', $this->__('Error! Could not determine workflow actions.'));
-            $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but failed to determine available workflow actions.', $logArgs);
-            throw new \RuntimeException($this->__('Error! Could not determine workflow actions.'));
-        }
-        
-        // redirect to the list of routes
-        $redirectRoute = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
-        
-        // check whether deletion is allowed
-        $deleteActionId = 'delete';
-        $deleteAllowed = false;
-        foreach ($actions as $actionId => $action) {
-            if ($actionId != $deleteActionId) {
-                continue;
-            }
-            $deleteAllowed = true;
-            break;
-        }
-        if (!$deleteAllowed) {
-            $this->addFlash('error', $this->__('Error! It is not allowed to delete this route.'));
-            $logger->error('{app}: User {user} tried to delete the {entity} with id {id}, but this action was not allowed.', $logArgs);
-        
-            return $this->redirectToRoute($redirectRoute);
-        }
-        
-        $form = $this->createForm(DeletionType::class, $route);
-        
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('delete')->isClicked()) {
-                // execute the workflow action
-                $success = $workflowHelper->executeAction($route, $deleteActionId);
-                if ($success) {
-                    $this->addFlash('status', $this->__('Done! Item deleted.'));
-                    $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', $logArgs);
-                }
-                
-                return $this->redirectToRoute($redirectRoute);
-            } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
-        
-                return $this->redirectToRoute($redirectRoute);
-            }
-        }
-        
-        $templateParameters = [
-            'routeArea' => $isAdmin ? 'admin' : '',
-            'deleteForm' => $form->createView(),
-            $objectType => $route
-        ];
-        
-        $templateParameters = $controllerHelper->processDeleteActionParameters($objectType, $templateParameters);
-        
-        // fetch and return the appropriate template
-        return $viewHelper->processTemplate($objectType, 'delete', $templateParameters);
-    }
-    
-    
-    /**
      * Process status changes for multiple items.
      *
      * This function processes the items selected in the admin view page.
      * Multiple items may have their state changed or be deleted.
-     *
-     * @param Request $request
-     * @param EntityFactory $entityFactory
-     * @param WorkflowHelper $workflowHelper
-     * @param CurrentUserApiInterface $currentUserApi
-     * @param boolean $isAdmin Whether the admin area is used or not
-     *
-     * @return RedirectResponse
      *
      * @throws RuntimeException Thrown if executing the workflow action fails
      */
@@ -365,13 +236,16 @@ abstract class AbstractRouteController extends AbstractController
         EntityFactory $entityFactory,
         WorkflowHelper $workflowHelper,
         CurrentUserApiInterface $currentUserApi,
-        $isAdmin = false
-    ) {
+        bool $isAdmin = false
+    ): RedirectResponse {
         $objectType = 'route';
         
         // Get parameters
-        $action = $request->request->get('action', null);
-        $items = $request->request->get('items', null);
+        $action = $request->request->get('action');
+        $items = $request->request->get('items');
+        if (!is_array($items) || !count($items)) {
+            return $this->redirectToRoute('zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'index');
+        }
         
         $action = strtolower($action);
         
@@ -390,7 +264,7 @@ abstract class AbstractRouteController extends AbstractController
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
             $actionIds = array_keys($allowedActions);
-            if (!in_array($action, $actionIds)) {
+            if (!in_array($action, $actionIds, true)) {
                 // action not allowed, skip this object
                 continue;
             }
@@ -399,7 +273,7 @@ abstract class AbstractRouteController extends AbstractController
             try {
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $exception->getMessage());
                 $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'action' => $action, 'entity' => 'route', 'id' => $itemId, 'errorMessage' => $exception->getMessage()]);
             }
@@ -408,7 +282,7 @@ abstract class AbstractRouteController extends AbstractController
                 continue;
             }
         
-            if ($action == 'delete') {
+            if ('delete' === $action) {
                 $this->addFlash('status', $this->__('Done! Item deleted.'));
                 $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'ZikulaRoutesModule', 'user' => $userName, 'entity' => 'route', 'id' => $itemId]);
             } else {

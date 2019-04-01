@@ -25,7 +25,7 @@ use Zikula\Core\Doctrine\EntityAccess;
 class HookRuntimeEntity extends EntityAccess
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
@@ -48,14 +48,14 @@ class HookRuntimeEntity extends EntityAccess
     private $powner;
 
     /**
-     * @var integer
+     * @var string
      *
      * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
      */
     private $sareaid;
 
     /**
-     * @var integer
+     * @var string
      *
      * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
      */
@@ -83,202 +83,109 @@ class HookRuntimeEntity extends EntityAccess
     private $method;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
      */
     private $priority;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set sowner
-     *
-     * @param string $sowner
-     * @return HookRuntimeEntity
-     */
-    public function setSowner($sowner)
+    public function setSowner(string $sowner): self
     {
         $this->sowner = $sowner;
 
         return $this;
     }
 
-    /**
-     * Get sowner
-     *
-     * @return string
-     */
-    public function getSowner()
+    public function getSowner(): string
     {
         return $this->sowner;
     }
 
-    /**
-     * Set powner
-     *
-     * @param string $powner
-     * @return HookRuntimeEntity
-     */
-    public function setPowner($powner)
+    public function setPowner(string $powner): self
     {
         $this->powner = $powner;
 
         return $this;
     }
 
-    /**
-     * Get powner
-     *
-     * @return string
-     */
-    public function getPowner()
+    public function getPowner(): string
     {
         return $this->powner;
     }
 
-    /**
-     * Set sareaid
-     *
-     * @param integer $sareaid
-     * @return HookRuntimeEntity
-     */
-    public function setSareaid($sareaid)
+    public function setSareaid(string $subscriberAreaId): self
     {
-        $this->sareaid = $sareaid;
+        $this->sareaid = $subscriberAreaId;
 
         return $this;
     }
 
-    /**
-     * Get sareaid
-     *
-     * @return integer
-     */
-    public function getSareaid()
+    public function getSareaid(): string
     {
         return $this->sareaid;
     }
 
-    /**
-     * Set pareaid
-     *
-     * @param integer $pareaid
-     * @return HookRuntimeEntity
-     */
-    public function setPareaid($pareaid)
+    public function setPareaid(string $providerAreaId): self
     {
-        $this->pareaid = $pareaid;
+        $this->pareaid = $providerAreaId;
 
         return $this;
     }
 
-    /**
-     * Get pareaid
-     *
-     * @return integer
-     */
-    public function getPareaid()
+    public function getPareaid(): string
     {
         return $this->pareaid;
     }
 
-    /**
-     * Set eventname
-     *
-     * @param string $eventname
-     * @return HookRuntimeEntity
-     */
-    public function setEventname($eventname)
+    public function setEventname(string $eventname): self
     {
         $this->eventname = $eventname;
 
         return $this;
     }
 
-    /**
-     * Get eventname
-     *
-     * @return string
-     */
-    public function getEventname()
+    public function getEventname(): string
     {
         return $this->eventname;
     }
 
-    /**
-     * Set classname
-     *
-     * @param string $classname
-     * @return HookRuntimeEntity
-     */
-    public function setClassname($classname)
+    public function setClassname(string $classname): self
     {
         $this->classname = $classname;
 
         return $this;
     }
 
-    /**
-     * Get classname
-     *
-     * @return string
-     */
-    public function getClassname()
+    public function getClassname(): string
     {
         return $this->classname;
     }
 
-    /**
-     * Set method
-     *
-     * @param string $method
-     * @return HookRuntimeEntity
-     */
-    public function setMethod($method)
+    public function setMethod(string $method): self
     {
         $this->method = $method;
 
         return $this;
     }
 
-    /**
-     * Get method
-     *
-     * @return string
-     */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * Set priority
-     *
-     * @param integer $priority
-     * @return HookRuntimeEntity
-     */
-    public function setPriority($priority)
+    public function setPriority(int $priority): self
     {
         $this->priority = $priority;
 
         return $this;
     }
 
-    /**
-     * Get priority
-     *
-     * @return integer
-     */
-    public function getPriority()
+    public function getPriority(): int
     {
         return $this->priority;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Core\Doctrine;
 
+use DateTime;
 use Doctrine\ORM\Query\Expr\Composite;
 use Doctrine\ORM\QueryBuilder;
 
@@ -25,18 +26,12 @@ trait WhereFromFilterTrait
      * Construct a QueryBuilder Expr object suitable for use in QueryBuilder->where(Expr).
      * filter = [field => value, field => value, field => ['operator' => '!=', 'operand' => value], ...]
      * when value is not an array, operator is assumed to be '='
-     *
-     * @param QueryBuilder $qb
-     * @param array $filter The filter, see getAll() and countAll()
-     * @param string $exprType default 'and'
-     * @param string $alias table alias e.g. SELECT * from tableName u WHERE u.uname ...
-     * @return Composite
      */
-    private function whereFromFilter(QueryBuilder $qb, array $filter, $exprType = 'and', $alias = 'u')
+    private function whereFromFilter(QueryBuilder $qb, array $filter = [], string $exprType = 'and', string $alias = 'u'): Composite
     {
         $exprType = in_array($exprType, ['and', 'or']) ? $exprType : 'and';
-        $exprMethod = mb_strtolower($exprType) . "X";
-        /** @var \Doctrine\ORM\Query\Expr\Composite $expr */
+        $exprMethod = mb_strtolower($exprType) . 'X';
+        /** @var Composite $expr */
         $expr = $qb->expr()->{$exprMethod}();
         $i = 1; // parameter counter
         foreach ($filter as $field => $value) {
@@ -56,10 +51,10 @@ trait WhereFromFilterTrait
             } else {
                 if (is_bool($value['operand'])) {
                     $dbValue = $value['operand'] ? '1' : '0';
-                } elseif (is_int($value['operand']) || is_array($value['operand']) || ($value['operand'] instanceof \DateTime)) {
+                } elseif (is_int($value['operand']) || is_array($value['operand']) || $value['operand'] instanceof DateTime) {
                     $dbValue = $value['operand'];
                 } else {
-                    $dbValue = "{$value['operand']}";
+                    $dbValue = (string)$value['operand'];
                 }
                 $methodMap = [
                     '=' => 'eq',
