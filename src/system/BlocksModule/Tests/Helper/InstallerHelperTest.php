@@ -15,11 +15,11 @@ namespace Zikula\BlocksModule\Tests\Helper;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\Core\AbstractModule;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class InstallerHelperTest extends TestCase
 {

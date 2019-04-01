@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
 use Requirement;
-use SymfonyRequirements;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
+use SymfonyRequirements;
 
 /**
  * Portions of this class copied from or inspired by the Symfony Installer (@see https://github.com/symfony/symfony-installer)

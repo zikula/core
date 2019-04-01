@@ -100,8 +100,7 @@ class ExtensionStubRepository implements ExtensionRepositoryInterface
         array $orderBy = null,
         int $limit = 0,
         int $offset = 1
-    ): Paginator
-    {
+    ): Paginator {
         return null;
     }
 

@@ -17,9 +17,9 @@ use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\WarmableInterface;
 use Symfony\Component\Translation\Formatter\MessageFormatterInterface;
-use Symfony\Component\Translation\Translator as BaseTranslator;
-use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Loader\PoFileLoader;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Component\Translation\Translator as BaseTranslator;
 use Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader;
 
 /**

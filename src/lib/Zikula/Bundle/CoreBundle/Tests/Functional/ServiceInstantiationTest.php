@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Tests\Functional;
 
-use JMS\TranslationBundle\Translation\Updater;
 use JMS\TranslationBundle\Translation\ConfigFactory;
+use JMS\TranslationBundle\Translation\Updater;
 use JMS\TranslationBundle\Twig\TranslationExtension;
 
 /**

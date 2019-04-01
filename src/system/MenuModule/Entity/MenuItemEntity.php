@@ -213,7 +213,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
 
     public function getAttributes(): array
     {
-        return $this->hasAttributes() ? $this->options['attributes']: [];
+        return $this->hasAttributes() ? $this->options['attributes'] : [];
     }
 
     public function getAttribute(string $name, $default = null)
@@ -243,7 +243,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
 
     public function getLinkAttributes(): array
     {
-        return $this->hasLinkAttributes() ? $this->options['linkAttributes']: [];
+        return $this->hasLinkAttributes() ? $this->options['linkAttributes'] : [];
     }
 
     public function getLinkAttribute(string $name, $default = null)

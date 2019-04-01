@@ -235,7 +235,6 @@ class FileIOHelper
         $nowUTC = new DateTime(null, new DateTimeZone('UTC'));
         // create users
         foreach ($importValues as $k => $importValue) {
-
             $unHashedPass = $importValue['pass'];
             $importValue['pass'] = $this->passwordApi->getHashedPassword($importValue['pass']);
             if (!$importValue['activated']) {
