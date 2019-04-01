@@ -71,7 +71,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         $route = $event->getRequest()->attributes->has('_route') ? $event->getRequest()->attributes->get('_route') : '0'; // default must not be '_'
         if (!($response instanceof Response)
             || 'html' !== $format
-            || 0 === strpos($route, '_') // the profiler and other symfony routes begin with '_' @todo this is still too permissive
+            || 0 === mb_strpos($route, '_') // the profiler and other symfony routes begin with '_' @todo this is still too permissive
             || is_subclass_of($response, Response::class)
             || $event->getRequest()->isXmlHttpRequest()
             || false === mb_strpos($response->headers->get('Content-Type'), 'text/html')

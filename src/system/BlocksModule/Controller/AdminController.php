@@ -51,7 +51,6 @@ class AdminController extends AbstractController
         LocaleApiInterface $localeApi,
         RouterInterface $router
     ): array {
-
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }

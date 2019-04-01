@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bridge\HttpFoundation;
 
-use Symfony\Component\HttpFoundation\Session\SessionStorageInterface;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;

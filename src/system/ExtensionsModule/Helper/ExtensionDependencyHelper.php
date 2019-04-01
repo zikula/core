@@ -46,7 +46,6 @@ class ExtensionDependencyHelper
      * unused, see below /
     private $installedPackages = [];
      */
-
     public function __construct(
         ExtensionDependencyRepository $extensionDependencyRepo,
         ExtensionRepositoryInterface $extensionEntityRepo,

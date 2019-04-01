@@ -121,8 +121,7 @@ class UserAdministrationController extends AbstractController
         Request $request,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         AdministrationActionsHelper $actionsHelper
-    ): Response
-    {
+    ): Response {
         if (!$this->hasPermission('ZikulaZAuthModule', '::', ACCESS_MODERATE)) {
             return new PlainResponse('');
         }

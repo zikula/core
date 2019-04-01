@@ -173,7 +173,7 @@ class BundleSyncHelper
                     ($dbthemes[$name]['admin'] !== (bool)$themeinfo['admin']) ||
                     ($dbthemes[$name]['user'] !== (bool)$themeinfo['user']) ||
                     ($dbthemes[$name]['system'] !== (bool)$themeinfo['system']) ||
-                    ($dbthemes[$name]['contact'] != $themeinfo['contact']) ||
+                    ($dbthemes[$name]['contact'] !== $themeinfo['contact']) ||
                     ($dbthemes[$name]['xhtml'] !== (bool)$themeinfo['xhtml'])) {
                 $themeinfo['id'] = $dbthemes[$name]['id'];
                 // update item

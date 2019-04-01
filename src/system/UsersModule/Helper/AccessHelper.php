@@ -97,7 +97,6 @@ class AccessHelper
                 if (null !== $flashBag) {
                     $flashBag->add('error', $this->translator->__('Login Denied!'));
                 }
-
         }
 
         return false;

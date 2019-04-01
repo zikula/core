@@ -23,8 +23,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\Core\Doctrine\WhereFromFilterTrait;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Entity\UserAttributeEntity;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
