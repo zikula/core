@@ -36,8 +36,6 @@ class FormOptionsArrayType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->translator = $options['translator'];
-
         $builder
             ->add('required', CheckboxType::class, [
                 'label' => $this->__('Required'),
