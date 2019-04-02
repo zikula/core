@@ -14,6 +14,7 @@
     <div>
         <table class="table table-bordered table-striped">
             <colgroup>
+                <col id="cId" />
                 <col id="cModule" />
                 <col id="cEntity" />
                 <col id="cProperty" />
@@ -22,6 +23,7 @@
             </colgroup>
             <thead>
                 <tr>
+                    <th id="hId" scope="col"><label>ID</label></th>
                     <th id="hModule" scope="col"><label>{{ form_label(form.modname) }}</label></th>
                     <th id="hEntity" scope="col"><label>{{ form_label(form.entityname) }}</label></th>
                     <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
@@ -33,6 +35,7 @@
             {% if form.vars.value.id is empty %}
                 {% for registry in registries %}
                 <tr>
+                    <td headers="hId">{{ registry.id }}</td>
                     {#modgetinfo assign='dModname' info='displayname' modname=$registry.modname default=$registry.modname#}
                     <td headers="hModule">{# dModname #}{{ registry.modname }}</td>
                     <td headers="hEntity">{% if registry.entityname|default %}{{ registry.entityname }}{% endif %}</td>
@@ -46,6 +49,7 @@
                 {% endfor %}
             {% endif %}
                 <tr>
+                    <td headers="hId"></td>
                     <td headers="hModule">
                         {{ form_widget(form.modname) }}
                     </td>
