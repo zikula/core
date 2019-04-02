@@ -206,7 +206,7 @@ EOT;
         foreach ($array2 as $key => &$value) {
             if (is_numeric($key)) {
                 $merged[] = $value;
-            } else if (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
+            } elseif (is_array($value) && isset($merged[$key]) && is_array($merged[$key])) {
                 $merged[$key] = $this->arrayMergeRecursiveDistinct($merged[$key], $value);
             } else {
                 $merged[$key] = $value;

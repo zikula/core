@@ -44,6 +44,7 @@ class UserAttributeRepository extends ServiceEntityRepository implements UserAtt
             $qb->andWhere('a.user NOT IN (:forbidden_users)')
                 ->setParameter('forbidden_users', $forbiddenUsers);
         }
+
         return $qb->getQuery()->execute();
     }
 }

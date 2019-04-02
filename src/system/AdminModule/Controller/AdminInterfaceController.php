@@ -171,7 +171,7 @@ class AdminInterfaceController extends AbstractController
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
-            if (0  === mb_strpos($appDir, '/') && false === mb_strpos($appDir, $docRoot)) {
+            if (0 === mb_strpos($appDir, '/') && false === mb_strpos($appDir, $docRoot)) {
                 // temp dir is outside the webroot, no .htaccess file needed
                 $app_htaccess = true;
             } else {

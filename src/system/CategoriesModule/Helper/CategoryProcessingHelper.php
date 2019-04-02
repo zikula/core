@@ -15,11 +15,11 @@ namespace Zikula\CategoriesModule\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRegistryRepositoryInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\CapabilityApi;
-use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
 /**
  * Category processing helper functions for the categories module.

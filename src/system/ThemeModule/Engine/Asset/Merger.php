@@ -177,7 +177,7 @@ class Merger implements MergerInterface
                     } elseif ($importsAllowd && '@' === $char && '@import' === mb_substr($lineParse, $i, 7)) {
                         // an @import starts here
                         $lineParseRest = trim(mb_substr($lineParse, $i + 7));
-                        if (mb_stripos($lineParseRest, 'url') === 0) {
+                        if (0 === mb_stripos($lineParseRest, 'url')) {
                             // the @import uses url to specify the path
                             $posEnd = mb_strpos($lineParse, ';', $i);
                             $charsEnd = mb_substr($lineParse, $posEnd - 1, 2);
@@ -186,7 +186,7 @@ class Merger implements MergerInterface
                                 $start = mb_strpos($lineParseRest, '(') + 1;
                                 $end = mb_strpos($lineParseRest, ')');
                                 $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if (strpos($url, '"') === 0 | strpos($url, "'") === 0) {
+                                if (0 === mb_strpos($url, '"') | 0 === mb_strpos($url, "'")) {
                                     $url = mb_substr($url, 1, -1);
                                 }
                                 // fix url
@@ -208,7 +208,7 @@ class Merger implements MergerInterface
                                 $start = mb_strpos($lineParseRest, '(') + 1;
                                 $end = mb_strpos($lineParseRest, ')');
                                 $url = mb_substr($lineParseRest, $start, $end - $start);
-                                if (strpos($url, '"') === 0 | strpos($url, "'") === 0) {
+                                if (0 === mb_strpos($url, '"') | 0 === mb_strpos($url, "'")) {
                                     $url = mb_substr($url, 1, -1);
                                 }
                                 // fix url
@@ -218,7 +218,7 @@ class Merger implements MergerInterface
                                 // skip @import statement
                                 $i += $posEnd - $i;
                             }
-                        } elseif (mb_strpos($lineParseRest, '"') === 0 || 0 === mb_strpos($lineParseRest, '\'')) {
+                        } elseif (0 === mb_strpos($lineParseRest, '"') || 0 === mb_strpos($lineParseRest, '\'')) {
                             // the @import uses an normal string to specify the path
                             $posEnd = mb_strpos($lineParseRest, ';');
                             $url = mb_substr($lineParseRest, 1, $posEnd - 2);
@@ -275,7 +275,7 @@ class Merger implements MergerInterface
 
         preg_match_all($regexpurl, $line, $matches, PREG_SET_ORDER);
         foreach ($matches as $match) {
-            if (0 !== mb_strpos($match[1], '/') && mb_strpos($match[2], 'http://') !== 0 && mb_strpos($match[2], 'https://') !== 0) {
+            if (0 !== mb_strpos($match[1], '/') && 0 !== mb_strpos($match[2], 'http://') && 0 !== mb_strpos($match[2], 'https://')) {
                 $depth = mb_substr_count($match[1], '../') * -1;
                 $pathSegments = $depth < 0 ? array_slice($filePathSegments, 0, $depth) : $filePathSegments;
                 $path = implode('/', $pathSegments) . '/';

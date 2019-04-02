@@ -76,6 +76,7 @@ class CapabilityApi implements CapabilityApiInterface
             ? $capabilities[$requestedCapability]
             : false;
     }
+
     public function getCapabilitiesOf(string $extensionName): array
     {
         if (empty($this->extensionsByName[$extensionName])) {

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Tests\Collector;
 
 use PHPUnit\Framework\TestCase;
-use Zikula\BlocksModule\Collector\BlockCollector;
 use Zikula\BlocksModule\BlockHandlerInterface;
+use Zikula\BlocksModule\Collector\BlockCollector;
 
 class BlockCollectorTest extends TestCase
 {

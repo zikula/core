@@ -71,7 +71,7 @@ class MainSettingsType extends AbstractType
             },
             function($submittedPageTitle) {
                 $submittedPageTitle = str_replace(
-                    [$this->__('%pagetitle%'), $this->__('%sitename%'), $this->__('%modulename%')],#
+                    [$this->__('%pagetitle%'), $this->__('%sitename%'), $this->__('%modulename%')],//
                     ['%pagetitle%', '%sitename%', '%modulename%'],
                     $submittedPageTitle
                 );
@@ -212,13 +212,13 @@ class MainSettingsType extends AbstractType
         if ('' === $data['permasearch']) {
             $permasearchCount = 0;
         } else {
-            $permasearchCount = (!mb_ereg(',', $data['permasearch']) && '' !== $data['permasearch']) ? 1 : substr_count($data['permasearch'], ',') + 1;
+            $permasearchCount = (!mb_ereg(',', $data['permasearch']) && '' !== $data['permasearch']) ? 1 : mb_substr_count($data['permasearch'], ',') + 1;
         }
 
         if ('' === $data['permareplace']) {
             $permareplaceCount = 0;
         } else {
-            $permareplaceCount = (!mb_ereg(',', $data['permareplace']) && '' !== $data['permareplace']) ? 1 : substr_count($data['permareplace'], ',') + 1;
+            $permareplaceCount = (!mb_ereg(',', $data['permareplace']) && '' !== $data['permareplace']) ? 1 : mb_substr_count($data['permareplace'], ',') + 1;
         }
 
         if ($permareplaceCount !== $permasearchCount) {

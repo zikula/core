@@ -90,7 +90,7 @@ class AjaxUpgradeController extends AbstractController
                     return true;
                 }
 
-                return true;//$result;
+                return true; //$result;
             case 'regenthemes':
                 return $this->regenerateThemes();
             case 'versionupgrade':
