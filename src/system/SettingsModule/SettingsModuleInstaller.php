@@ -36,7 +36,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('funtext', '1');
         $this->setSystemVar('reportlevel', '0');
         $this->setSystemVar('Version_Num', ZikulaKernel::VERSION);
-        $this->setSystemVar('Version_Sub', ZikulaKernel::VERSION_SUB);
         $this->setSystemVar('debug_sql', '0');
         $this->setSystemVar('multilingual', '1');
         $this->setSystemVar('useflags', '0');
@@ -129,6 +128,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $variableApi->del(VariableApi::CONFIG, 'shorturls');
                 $variableApi->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
             case '2.9.14': // ship with Core-1.5.0
+                $variableApi = $this->container->get(VariableApi::class);
+                $variableApi->del(VariableApi::CONFIG, 'Version_Sub');
+            case '2.9.15': // ship with Core-3.0.0
                 // current version
         }
 

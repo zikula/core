@@ -94,7 +94,6 @@ class DefaultPageVarSetterListener implements EventSubscriberInterface
         $this->pageVars->set('homepath', $this->router->generate('home'));
         $this->pageVars->set('coredata', [
             'version' => ZikulaKernel::VERSION,
-            'subVersion' => ZikulaKernel::VERSION_SUB,
             'minimumPhpVersion' => ZikulaKernel::PHP_MINIMUM_VERSION
         ]);
     }

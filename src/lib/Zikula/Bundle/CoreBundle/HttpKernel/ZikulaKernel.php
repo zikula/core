@@ -59,8 +59,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 {
     public const VERSION = '3.0.0';
 
-    public const VERSION_SUB = 'Concerto';
-
     public const PHP_MINIMUM_VERSION = '7.2.0';
 
     /**

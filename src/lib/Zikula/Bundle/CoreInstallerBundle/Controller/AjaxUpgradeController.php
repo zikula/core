@@ -266,7 +266,6 @@ class AjaxUpgradeController extends AbstractController
 
         // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
         $variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
-        $variableApi->set(VariableApi::CONFIG, 'Version_Sub', ZikulaKernel::VERSION_SUB);
 
         $startController = $variableApi->getSystemVar('startController');
         list($moduleName) = explode(':', $startController);

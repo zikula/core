@@ -39,7 +39,7 @@ class ZikulaVersionDataCollector extends DataCollector
             'ghZikulaCoreUrl' => 'https://github.com/zikula/core',
             'ghZikulaDocsUrl' => 'https://github.com/zikula/zikula-docs',
             'ghZikulaBootstrapDocsUrl' => 'https://zikula.github.io/bootstrap-docs'
-            ];
+        ];
         if (null !== $this->themeEngine->getTheme()) {
             $this->data['themeEngine'] = [
                 'theme' => $this->themeEngine->getTheme()->getName(),

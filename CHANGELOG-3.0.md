@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 3.0.x
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - The `polyfill` Twig tag has been removed (#3925).
     - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
+    - Removed `ZikulaKernel::VERSION_SUB` constant.
 
  - Deprecated:
     - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
