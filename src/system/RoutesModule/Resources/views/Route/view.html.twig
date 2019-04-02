@@ -196,7 +196,7 @@
             {% set linkTitle = __('Show also entries from other users') %}
             {% set routeArgs = all ? {all: 1} : {} %}
             <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-users"></i> {{ linkTitle }}</a>
-        {% else %}
+        {% elseif permissionHelper.hasComponentPermission('route', constant('ACCESS_EDIT')) %}
             {% set linkTitle = __('Show only own entries') %}
             {% set routeArgs = all ? {all: 1, own: 1} : {own: 1} %}
             <a href="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'view', routeArgs) }}" title="{{ linkTitle|e('html_attr') }}"><i class="fa fa-user"></i> {{ linkTitle }}</a>
