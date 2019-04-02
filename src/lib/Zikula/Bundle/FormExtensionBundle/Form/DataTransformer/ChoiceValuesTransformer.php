@@ -46,6 +46,9 @@ class ChoiceValuesTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if (null === $value) {
+            return [];
+        }
         if (is_array($value)) {
             return $value;
         }
