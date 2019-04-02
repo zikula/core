@@ -68,7 +68,7 @@ class Asset
     {
         // for straight asset paths
         if ('@' !== $path[0]) {
-            if (0 === mb_strpos($path, '/')) {
+            if (0 === strpos($path, '/')) {
                 $path = mb_substr($path, 1);
             }
 
@@ -95,7 +95,7 @@ class Asset
             }
 
             $webPath = $this->assetPackages->getUrl($relativeAssetPath);
-            $filePath = /*realpath(*/$this->kernel->getProjectDir() . $webPath/*)*/;
+            $filePath = $this->kernel->getProjectDir() . '/..' . $webPath;
             if (is_file($filePath)) {
                 return $webPath;
             }
