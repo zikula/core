@@ -68,7 +68,7 @@ class Asset
     {
         // for straight asset paths
         if ('@' !== $path[0]) {
-            if (0 === strpos($path, '/')) {
+            if (0 === mb_strpos($path, '/')) {
                 $path = mb_substr($path, 1);
             }
 
