@@ -77,7 +77,7 @@ trait StandardFieldsTrait
     public function setCreatedDate(DateTimeInterface $createdDate = null): void
     {
         if ($this->createdDate !== $createdDate) {
-            $this->createdDate = $createdDate ?? '';
+            $this->createdDate = $createdDate;
         }
     }
     
@@ -101,7 +101,7 @@ trait StandardFieldsTrait
     public function setUpdatedDate(DateTimeInterface $updatedDate = null): void
     {
         if ($this->updatedDate !== $updatedDate) {
-            $this->updatedDate = $updatedDate ?? '';
+            $this->updatedDate = $updatedDate;
         }
     }
     
