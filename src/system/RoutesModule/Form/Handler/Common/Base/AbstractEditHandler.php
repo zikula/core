@@ -532,8 +532,10 @@ abstract class AbstractEditHandler
 
     /**
      * Input data processing called by handleCommand method.
+     *
+     * @return mixed
      */
-    public function fetchInputData(): array
+    public function fetchInputData()
     {
         // fetch posted data input values as an associative array
         $formData = $this->form->getData();

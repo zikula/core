@@ -18,8 +18,12 @@ function zikulaRoutesInitQuickNavigation() {
     quickNavForm = jQuery('.zikularoutesmodule-quicknav').first();
     objectType = quickNavForm.attr('id').replace('zikulaRoutesModule', '').replace('QuickNavForm', '');
 
+    var quickNavFilterTimer;
     quickNavForm.find('select').change(function (event) {
-        quickNavForm.submit();
+        clearTimeout(quickNavFilterTimer);
+        quickNavFilterTimer = setTimeout(function() {
+            quickNavForm.submit();
+        }, 5000);
     });
 
     var fieldPrefix = 'zikularoutesmodule_' + objectType.toLowerCase() + 'quicknav_';

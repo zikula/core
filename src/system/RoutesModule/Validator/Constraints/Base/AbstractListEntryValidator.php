@@ -61,7 +61,7 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
 
         if (!$constraint->multiple) {
             // single-valued list
-            if ('' !== $value && !in_array($value, $allowedValues, true)) {
+            if ('' !== $value && !in_array($value, $allowedValues/*, true*/)) {
                 $this->context->buildViolation(
                     $this->__f('The value "%value%" is not allowed for the "%property%" property.', [
                         '%value%' => $value,
@@ -79,7 +79,7 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
             if ('' === $singleValue) {
                 continue;
             }
-            if (!in_array($singleValue, $allowedValues, true)) {
+            if (!in_array($singleValue, $allowedValues/*, true*/)) {
                 $this->context->buildViolation(
                     $this->__f('The value "%value%" is not allowed for the "%property%" property.', [
                         '%value%' => $singleValue,
