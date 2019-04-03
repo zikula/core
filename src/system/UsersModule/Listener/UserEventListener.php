@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
@@ -73,9 +74,13 @@ class UserEventListener implements EventSubscriberInterface
             if (0 === mb_strpos($url, $httpRoot)) {
                 $url = str_replace($httpRoot, '', $url);
             }
-            $pathInfo = $this->router->match($url);
-            if ($pathInfo['_route']) {
-                $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+            try {
+                $pathInfo = $this->router->match($url);
+                if ($pathInfo['_route']) {
+                    $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+                }
+            } catch (MethodNotAllowedException $exception) {
+                // ignore
             }
         }
         if ($request->hasSession() && null !== $request->getSession()) {
