@@ -99,7 +99,7 @@ class AccountController extends AbstractController
                 $data = $form->getData();
                 $locale = !empty($data['locale']) ? $data['locale'] : $locale;
                 /** @var UserEntity $userEntity */
-                $userEntity = $userRepository->find($this->get('zikula_users_module.current_user')->get('uid'));
+                $userEntity = $userRepository->find($currentUserApi->get('uid'));
                 $userEntity->setLocale($locale);
                 $userRepository->persistAndFlush($userEntity);
                 if ($request->hasSession() && null !== $request->getSession()) {
