@@ -83,7 +83,8 @@ class SearchController extends AbstractController
             ]);
             $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
         }
-        $form = $this->createForm(SearchType::class, []);
+        $keyword = $request->query->get('q');
+        $form = $this->createForm(SearchType::class, ['q' => $keyword]);
         $form->add($moduleFormBuilder->getForm());
 
         $form->handleRequest($request);

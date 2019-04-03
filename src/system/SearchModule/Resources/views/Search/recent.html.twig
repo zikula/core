@@ -4,21 +4,27 @@
 <h3>{{ templateTitle }}</h3>
 
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cSearchKeywords" />
+        <col id="cAmountOfSearches" />
+        <col id="cDateOfLastSearch" />
+    </colgroup>
     <thead>
         <tr>
-            <th>{{ __('Search keywords') }}</th>
-            <th>{{ __('Number of searches') }}</th>
-            <th>{{ __('Date of last search') }}</th>
+            <th id="hSearchKeywords" scope="col">{{ __('Search keywords') }}</th>
+            <th id="hAmountOfSearches" scope="col">{{ __('Number of searches') }}</th>
+            <th id="hDateOfLastSearch" scope="col">{{ __('Date of last search') }}</th>
         </tr>
     </thead>
     <tbody>
-        {%  set token = csrf_token('zikulasearchmodule_search') %}
         {% for recentSearch in recentSearches %}
-        <tr>
-            <td><a href="{{ path('zikulasearchmodule_search_execute', { q: recentSearch.search, _token: token }) }}">{{ recentSearch.search|replace({' ': ', '}) }}</a></td>
-            <td>{{ recentSearch.count }}</td>
-            <td>{{ recentSearch.date.timestamp|localizeddate('short', 'none') }}</td>
-        </tr>
+            <tr>
+                <th id="hSearchRow{{ loop.index }}" scope="row" headers="hSearchKeywords">
+                    <a href="{{ path('zikulasearchmodule_search_execute', {q: recentSearch.search}) }}">{{ recentSearch.search|replace({' ': ', '}) }}</a>
+                </th>
+                <td headers="hSearchRow{{ loop.index }} hAmountOfSearches">{{ recentSearch.count }}</td>
+                <td headers="hSearchRow{{ loop.index }} hDateOfLastSearch">{{ recentSearch.date.timestamp|localizeddate('short', 'none') }}</td>
+            </tr>
         {% else %}
             <tr class="table table-borderedempty"><td colspan="3">{{ __('No items found.') }}</td></tr>
         {% endfor %}

@@ -63,6 +63,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Added Twig function for creating a `RouteUrl` instance (#3802).
     - Readded missing functionality for configurable page title schemes (#3921).
     - Readded missing permission checks for specific admin area categories.
+    - Fixed behaviour of recent searches list.
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
