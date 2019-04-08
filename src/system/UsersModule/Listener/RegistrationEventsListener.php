@@ -16,7 +16,6 @@ namespace Zikula\UsersModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Helper\MailHelper;
 use Zikula\UsersModule\RegistrationEvents;
 
@@ -48,9 +47,6 @@ class RegistrationEventsListener implements EventSubscriberInterface
     public function sendRegistrationEmail(GenericEvent $event): void
     {
         $userEntity = $event->getSubject();
-        if (UsersConstant::ACTIVATED_PENDING_REG === $userEntity->getActivated()) {
-            return;
-        }
         $notificationErrors = $this->mailHelper->createAndSendUserMail($userEntity);
         if (empty($notificationErrors)) {
             return;

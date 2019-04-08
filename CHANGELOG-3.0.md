@@ -64,6 +64,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Readded missing functionality for configurable page title schemes (#3921).
     - Readded missing permission checks for specific admin area categories.
     - Fixed behaviour of recent searches list.
+    - Fixed admin notification email for new registrations which was not done in some cases.
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
