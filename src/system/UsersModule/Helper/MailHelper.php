@@ -166,7 +166,7 @@ class MailHelper
         }
         if ($adminNotification) {
             // mail notify email to inform admin about registration
-            $notificationEmail = $this->variableApi->get('ZikulaUsersModule', 'reg_notifyemail', '');
+            $notificationEmail = $this->variableApi->get('ZikulaUsersModule', UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL, '');
             if (!empty($notificationEmail)) {
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
                 $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
