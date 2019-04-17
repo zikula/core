@@ -1,7 +1,7 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.13 (unreleased)
+2.0.13 (2019-04-17)
 -------------------
 
  - Security fixes from Symfony:
