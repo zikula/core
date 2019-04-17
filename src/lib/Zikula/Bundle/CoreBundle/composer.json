@@ -25,7 +25,7 @@
         "symfony/symfony": "3.*",
         "symfony/monolog-bundle": "3.*",
         "sensio/distribution-bundle": "5.0.*",
-        "sensio/framework-extra-bundle": "dev-master",
+        "sensio/framework-extra-bundle": "3.*",
         "sensio/generator-bundle": "3.1.*",
         "elao/web-profiler-extra-bundle" : "~2.3.3",
 
