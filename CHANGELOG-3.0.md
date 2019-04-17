@@ -79,9 +79,6 @@ CHANGELOG - ZIKULA 3.0.x
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
 
  - Vendor updates:
-    - components/bootstrap updated from 3.3.7 to 3.4.0
-    - composer/ca-bundle updated from 1.1.3 to 1.1.4
-    - composer/semver updated from 1.4.2 to 1.5.0
     - doctrine/annotations updated from 1.2.7 to 1.6.1
     - doctrine/cache updated from 1.6.2 to 1.8.0
     - doctrine/collections updated from 1.3.0 to 1.6.1
@@ -95,12 +92,9 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/persistence installed in 1.1.0
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.7
-    - elao/web-profiler-extra-bundle updated from 2.3.5 to 2.3.6
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.0
-    - gedmo/doctrine-extensions updated from 2.4.36 to 2.4.37
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.2
     - jms/translation-bundle updated from 1.3.2 to 1.4.3
-    - jquery.mmenu updated from 7.2.2 to 7.3.2
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.8
     - knplabs/knp-menu updated from 2.2.0 to 2.3.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 2.2.1
@@ -108,30 +102,25 @@ CHANGELOG - ZIKULA 3.0.x
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.3.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
     - nikic/php-parser updated from 1.4.1 to 4.2.1
-    - paragonie/random_compat updated from 2.0.17 to 9.99.99
-    - sensio/distribution-bundle updated from 5.0.23 to 5.0.24
-    - sensiolabs/security-checker updated from 5.0.1 to 5.0.3
+    - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.0
     - symfony/contracts installed in 1.0.2
     - symfony/maker-bundle installed in 1.11.5
     - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
     - symfony/phpunit-bridge installed in 4.2.7
-    - symfony/polyfill-ctype installed in 1.11.0
     - symfony/polyfill-iconv installed in 1.11.0
-    - symfony/polyfill-intl-icu installed in 1.11.0
     - symfony/polyfill-intl-idn installed in 1.11.0
-    - symfony/polyfill-mbstring installed in 1.11.0
     - symfony/polyfill-php72 installed in 1.11.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.5
-    - symfony/symfony updated from 3.4.20 to 4.2.7
+    - symfony/symfony updated from 3.4.26 to 4.2.7
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.35.4 to 2.8.1
+    - twig/twig updated from 1.39.1 to 2.8.1
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to 3.2.5
     - zikula/pagelock-module updated from 1.2.3 to 1.3.5
-    - zikula/profile-module updated from 3.0.5 to 3.1.5
+    - zikula/profile-module updated from 3.0.6 to 3.1.5
     - zikula/oauth-module updated from 1.0.4 to 1.1.1
     - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2
     - zikula/wizard updated from 2.0 to 3.0.1
