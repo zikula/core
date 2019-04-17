@@ -1,11 +1,45 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.13 (unreleased)
+2.0.14 (unreleased)
 -------------------
 
  - Fixes:
     - ?
+
+
+2.0.13 (2019-04-17)
+-------------------
+
+ - Security fixes from Symfony:
+    - Check service IDs are valid (CVE-2019-10910).
+    - Fix XSS issues in the form theme of the PHP templating engine (CVE-2019-10909).
+    - Prevent destructors with side-effects from being unserialized (CVE-2019-10912).
+    - Add a separator in the remember me cookie hash (CVE-2019-10911).
+    - Reject invalid method override (CVE-2019-10913).
+
+ - Vendor updates:
+    - components/bootstrap updated from 3.3.7 to 3.4.0
+    - composer/ca-bundle updated from 1.1.3 to 1.1.4
+    - composer/semver updated from 1.4.2 to 1.5.0
+    - elao/web-profiler-extra-bundle updated from 2.3.5 to 2.3.6
+    - gedmo/doctrine-extensions updated from 2.4.36 to 2.4.37
+    - jquery.mmenu updated from 7.2.2 to 7.3.3
+    - paragonie/random_compat updated from 2.0.17 to 2.0.18
+    - sensio/distribution-bundle updated from 5.0.23 to 5.0.24
+    - sensiolabs/security-checker updated from 5.0.1 to 5.0.3
+    - symfony/polyfill-apcu updated from 1.10.0 to 1.11.0
+    - symfony/polyfill-ctype updated from 1.10.0 to 1.11.0
+    - symfony/polyfill-intl-icu updated from 1.10.0 to 1.11.0
+    - symfony/polyfill-mbstring updated from 1.10.0 to 1.11.0
+    - symfony/polyfill-php56 updated from 1.10.0 to 1.11.0
+    - symfony/polyfill-php70 updated from 1.10.0 to 1.11.0
+    - symfony/polyfill-util updated from 1.10.0 to 1.11.0
+    - symfony/symfony updated from 3.4.20 to 3.4.26
+    - twig/twig updated from 1.35.4 to 1.39.1
+    - webmozart/assert updated from 1.3.0 to 1.4.0
+    - zikula/profile-module updated from 3.0.5 to 3.0.6
+
 
 2.0.12 (2018-12-06)
 -------------------
