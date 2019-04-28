@@ -89,7 +89,7 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/inflector updated from 1.1.0 to 1.3.0
     - doctrine/instantiator updated from 1.0.5 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.6.3
-    - doctrine/persistence installed in 1.1.0
+    - doctrine/persistence installed in 1.1.0 and updated to 1.1.1
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.7
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.0
@@ -99,23 +99,23 @@ CHANGELOG - ZIKULA 3.0.x
     - knplabs/knp-menu updated from 2.2.0 to 2.3.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 2.2.1
     - liip/imagine-bundle updated from 1.9.1 to 2.1.0
-    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.3.0
+    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.4
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
     - nikic/php-parser updated from 1.4.1 to 4.2.1
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
-    - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.0
+    - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.1
     - symfony/contracts installed in 1.0.2
-    - symfony/maker-bundle installed in 1.11.5
+    - symfony/maker-bundle installed in 1.11.5 and updated to 1.11.6
     - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
     - symfony/phpunit-bridge installed in 4.2.7
     - symfony/polyfill-iconv installed in 1.11.0
     - symfony/polyfill-intl-idn installed in 1.11.0
     - symfony/polyfill-php72 installed in 1.11.0
-    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.5
+    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.6
     - symfony/symfony updated from 3.4.26 to 4.2.7
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.39.1 to 2.8.1
+    - twig/twig updated from 1.39.1 to 2.9.0
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to 3.2.5
