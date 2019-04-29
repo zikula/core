@@ -5085,16 +5085,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.7",
+            "version": "3.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "bc5187e5826244dee5ebdc0e9db2e2652fefe928"
+                "reference": "c9d7c1425f2272c5400536fa631eba8657522ecf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/bc5187e5826244dee5ebdc0e9db2e2652fefe928",
-                "reference": "bc5187e5826244dee5ebdc0e9db2e2652fefe928",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/c9d7c1425f2272c5400536fa631eba8657522ecf",
+                "reference": "c9d7c1425f2272c5400536fa631eba8657522ecf",
                 "shasum": ""
             },
             "require": {
@@ -5138,7 +5138,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2018-11-06T21:15:47+00:00"
+            "time": "2019-04-28T21:22:05+00:00"
         },
         {
             "name": "wikimedia/composer-merge-plugin",

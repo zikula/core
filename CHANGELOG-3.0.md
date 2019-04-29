@@ -116,6 +116,7 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/symfony updated from 3.4.26 to 4.2.7
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.39.1 to 2.9.0
+    - vakata/jstree updated from 3.3.7 to 3.3.8
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to 3.2.5
