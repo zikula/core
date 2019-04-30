@@ -92,7 +92,7 @@ class BootstrapHelper
         $res = $qb->execute();
         foreach ($res->fetchAll() as $row) {
             if (!array_key_exists($row['bundlename'], $fileExtensions)) {
-                $this->removeById($row['id']);
+                $this->removeById((int)$row['id']);
             }
         }
 
