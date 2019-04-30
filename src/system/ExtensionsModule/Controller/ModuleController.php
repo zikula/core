@@ -492,8 +492,8 @@ class ModuleController extends AbstractController
         $blocks = $blockRepository->findBy(['module' => $extension]);
 
         $form = $this->createForm(DeletionType::class);
-
-        if ($form->handleRequest($request)->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 // remove dependent extensions
                 if (!$extensionHelper->uninstallArray($requiredDependents)) {
