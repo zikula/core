@@ -52,16 +52,16 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "3.4.0",
+            "version": "3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "5d60b2efd3159e1a9e203901849b3493c5aac61f"
+                "reference": "427f4d414fc6ae8385aee02b7efc8e391eb141ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/5d60b2efd3159e1a9e203901849b3493c5aac61f",
-                "reference": "5d60b2efd3159e1a9e203901849b3493c5aac61f",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/427f4d414fc6ae8385aee02b7efc8e391eb141ad",
+                "reference": "427f4d414fc6ae8385aee02b7efc8e391eb141ad",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "responsive",
                 "web"
             ],
-            "time": "2018-12-14T15:55:15+00:00"
+            "time": "2019-05-08T19:36:29+00:00"
         },
         {
             "name": "components/font-awesome",
@@ -2403,17 +2403,17 @@
         },
         {
             "name": "jms/i18n-routing-bundle",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "target-dir": "JMS/I18nRoutingBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSI18nRoutingBundle.git",
-                "reference": "712a76f6fc30127bd73b662a72f59c546201c995"
+                "reference": "f9f653d1aff48ee85c3477ba4a92f859c064b4a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/712a76f6fc30127bd73b662a72f59c546201c995",
-                "reference": "712a76f6fc30127bd73b662a72f59c546201c995",
+                "url": "https://api.github.com/repos/schmittjoh/JMSI18nRoutingBundle/zipball/f9f653d1aff48ee85c3477ba4a92f859c064b4a3",
+                "reference": "f9f653d1aff48ee85c3477ba4a92f859c064b4a3",
                 "shasum": ""
             },
             "require": {
@@ -2455,7 +2455,7 @@
                 "routing",
                 "translation"
             ],
-            "time": "2017-12-06T09:20:21+00:00"
+            "time": "2019-05-05T18:42:08+00:00"
         },
         {
             "name": "jms/translation-bundle",
@@ -3193,16 +3193,16 @@
         },
         {
             "name": "matthiasnoback/symfony-console-form",
-            "version": "v3.4",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/matthiasnoback/symfony-console-form.git",
-                "reference": "e6edf5d180fb8d6fdf33f4eb2abdaaeb9985a490"
+                "reference": "365c72473e0ec055e79d5c102a946960e27f0566"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/e6edf5d180fb8d6fdf33f4eb2abdaaeb9985a490",
-                "reference": "e6edf5d180fb8d6fdf33f4eb2abdaaeb9985a490",
+                "url": "https://api.github.com/repos/matthiasnoback/symfony-console-form/zipball/365c72473e0ec055e79d5c102a946960e27f0566",
+                "reference": "365c72473e0ec055e79d5c102a946960e27f0566",
                 "shasum": ""
             },
             "require": {
@@ -3245,7 +3245,7 @@
                 "form",
                 "symfony"
             ],
-            "time": "2019-04-23T13:03:39+00:00"
+            "time": "2019-05-03T19:07:27+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -4192,16 +4192,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v1.0.2",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf"
+                "reference": "d3636025e8253c6144358ec0a62773cae588395b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/1aa7ab2429c3d594dd70689604b5cf7421254cdf",
-                "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/d3636025e8253c6144358ec0a62773cae588395b",
+                "reference": "d3636025e8253c6144358ec0a62773cae588395b",
                 "shasum": ""
             },
             "require": {
@@ -4209,19 +4209,22 @@
             },
             "require-dev": {
                 "psr/cache": "^1.0",
-                "psr/container": "^1.0"
+                "psr/container": "^1.0",
+                "symfony/polyfill-intl-idn": "^1.10"
             },
             "suggest": {
                 "psr/cache": "When using the Cache contracts",
                 "psr/container": "When using the Service contracts",
                 "symfony/cache-contracts-implementation": "",
+                "symfony/event-dispatcher-implementation": "",
+                "symfony/http-client-contracts-implementation": "",
                 "symfony/service-contracts-implementation": "",
                 "symfony/translation-contracts-implementation": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -4256,7 +4259,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2018-12-05T08:06:11+00:00"
+            "time": "2019-04-27T14:29:50+00:00"
         },
         {
             "name": "symfony/maker-bundle",
@@ -5800,16 +5803,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.5",
+            "version": "3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "2dfc4e66b38534bde9c6d5c1c4f2fa7a3f0330e9"
+                "reference": "160698bf04831e9a8bb57ecc0af889f2467d7a63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/2dfc4e66b38534bde9c6d5c1c4f2fa7a3f0330e9",
-                "reference": "2dfc4e66b38534bde9c6d5c1c4f2fa7a3f0330e9",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/160698bf04831e9a8bb57ecc0af889f2467d7a63",
+                "reference": "160698bf04831e9a8bb57ecc0af889f2467d7a63",
                 "shasum": ""
             },
             "require": {
@@ -5864,10 +5867,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.1.5",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.6",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-04-01T16:59:38+00:00"
+            "time": "2019-05-09T16:31:53+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",

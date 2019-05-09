@@ -79,6 +79,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
 
  - Vendor updates:
+    - components/bootstrap updated from 3.4.0 to 3.4.1
     - doctrine/annotations updated from 1.2.7 to 1.6.1
     - doctrine/cache updated from 1.6.2 to 1.8.0
     - doctrine/collections updated from 1.3.0 to 1.6.1
@@ -93,19 +94,19 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.7
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.0
-    - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.2
+    - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
     - jms/translation-bundle updated from 1.3.2 to 1.4.3
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.8
     - knplabs/knp-menu updated from 2.2.0 to 2.3.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 2.2.1
     - liip/imagine-bundle updated from 1.9.1 to 2.1.0
-    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.4
+    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
     - nikic/php-parser updated from 1.4.1 to 4.2.1
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.1
-    - symfony/contracts installed in 1.0.2
+    - symfony/contracts installed in 1.0.2 and updated to 1.1.0
     - symfony/maker-bundle installed in 1.11.5 and updated to 1.11.6
     - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
     - symfony/phpunit-bridge installed in 4.2.8
@@ -121,7 +122,7 @@ CHANGELOG - ZIKULA 3.0.x
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to 3.2.5
     - zikula/pagelock-module updated from 1.2.3 to 1.3.5
-    - zikula/profile-module updated from 3.0.6 to 3.1.5
+    - zikula/profile-module updated from 3.0.6 to 3.1.6
     - zikula/oauth-module updated from 1.0.4 to 1.1.1
     - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2
     - zikula/wizard updated from 2.0 to 3.0.1
