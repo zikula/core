@@ -5803,16 +5803,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.6",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "160698bf04831e9a8bb57ecc0af889f2467d7a63"
+                "reference": "011b38662205b6d74c2e062743197c0ec2def899"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/160698bf04831e9a8bb57ecc0af889f2467d7a63",
-                "reference": "160698bf04831e9a8bb57ecc0af889f2467d7a63",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/011b38662205b6d74c2e062743197c0ec2def899",
+                "reference": "011b38662205b6d74c2e062743197c0ec2def899",
                 "shasum": ""
             },
             "require": {
@@ -5867,10 +5867,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.1.6",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.7",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-05-09T16:31:53+00:00"
+            "time": "2019-05-10T04:57:59+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
