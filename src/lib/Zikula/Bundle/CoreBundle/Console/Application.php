@@ -40,7 +40,7 @@ class Application extends BaseApplication
                 // composer is called, the system may not be installed yet
                 return parent::registerCommands();
             }
-    
+
             return parent::registerCommands();
         }
     */
