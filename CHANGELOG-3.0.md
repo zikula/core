@@ -109,12 +109,13 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/contracts installed in 1.1.1
     - symfony/maker-bundle installed in 1.11.6
     - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
-    - symfony/phpunit-bridge installed in 4.2.9
+    - symfony/phpunit-bridge installed in 4.3.0
     - symfony/polyfill-iconv installed in 1.11.0
     - symfony/polyfill-intl-idn installed in 1.11.0
     - symfony/polyfill-php72 installed in 1.11.0
+    - symfony/polyfill-php73 installed in 1.11.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.7
-    - symfony/symfony updated from 3.4.26 to 4.2.9
+    - symfony/symfony updated from 3.4.26 to 4.3.0
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.39.1 to 2.10.0
     - vakata/jstree updated from 3.3.7 to 3.3.8
