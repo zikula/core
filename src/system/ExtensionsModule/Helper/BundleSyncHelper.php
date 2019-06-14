@@ -266,7 +266,7 @@ class BundleSyncHelper
             // update the DB information for this extension to reflect user settings (e.g. url)
             if (isset($extensionsFromDB[$name]['id'])) {
                 $extensionFromFile['id'] = $extensionsFromDB[$name]['id'];
-                if ($extensionsFromDB[$name]['state'] !== Constant::STATE_UNINITIALISED && $extensionsFromDB[$name]['state'] !== Constant::STATE_INVALID) {
+                if (Constant::STATE_UNINITIALISED !== $extensionsFromDB[$name]['state'] && Constant::STATE_INVALID !== $extensionsFromDB[$name]['state']) {
                     unset($extensionFromFile['version']);
                 }
                 if (!$forceDefaults) {
@@ -375,11 +375,11 @@ class BundleSyncHelper
                 }
             } else {
                 // extension is in the db already
-                if (($extensionsFromDB[$name]['state'] === Constant::STATE_MISSING)
+                if ((Constant::STATE_MISSING === $extensionsFromDB[$name]['state'])
                     || ($extensionsFromDB[$name]['state'] === Constant::STATE_MISSING + Constant::INCOMPATIBLE_CORE_SHIFT)) {
                     // extension was lost, now it is here again
                     $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_INACTIVE);
-                } elseif ((($extensionsFromDB[$name]['state'] === Constant::STATE_INVALID)
+                } elseif (((Constant::STATE_INVALID === $extensionsFromDB[$name]['state'])
                         || ($extensionsFromDB[$name]['state'] === Constant::STATE_INVALID + Constant::INCOMPATIBLE_CORE_SHIFT))
                     && $extensionFromFile['version']) {
                     $coreCompatibility = $extensionFromFile['coreCompatibility'];
@@ -390,8 +390,8 @@ class BundleSyncHelper
                 }
 
                 if ($extensionsFromDB[$name]['version'] !== $extensionFromFile['version']) {
-                    if ($extensionsFromDB[$name]['state'] !== Constant::STATE_UNINITIALISED &&
-                        $extensionsFromDB[$name]['state'] !== Constant::STATE_INVALID) {
+                    if (Constant::STATE_UNINITIALISED !== $extensionsFromDB[$name]['state'] &&
+                        Constant::STATE_INVALID !== $extensionsFromDB[$name]['state']) {
                         $this->extensionStateHelper->updateState($extensionsFromDB[$name]['id'], Constant::STATE_UPGRADED);
                         $upgradedExtensions[$name] = $extensionFromFile['version'];
                     }

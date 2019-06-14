@@ -113,14 +113,14 @@ class PermissionController extends AbstractController
             $permissionEntity = $form->getData();
             $pid = $permissionEntity->getPid();
             if (null === $pid) {
-                if ($permissionEntity->getSequence() === -1) {
+                if (-1 === $permissionEntity->getSequence()) {
                     $permissionEntity->setSequence($permissionRepository->getMaxSequence() + 1); // last
                 } else {
                     $permissionRepository->updateSequencesFrom($permissionEntity->getSequence()); // insert
                 }
             }
             $permissionRepository->persistAndFlush($permissionEntity);
-            $row = (null === $pid) ? $this->renderView('@ZikulaPermissionsModule/Permission/permissionTableRow.html.twig', [
+            $row = null === $pid ? $this->renderView('@ZikulaPermissionsModule/Permission/permissionTableRow.html.twig', [
                 'permission' => $permissionEntity,
                 'groups' => $groupNames,
                 'permissionLevels' => $accessLevelNames,
@@ -134,7 +134,7 @@ class PermissionController extends AbstractController
             ]);
         }
         $templateParameters = [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
         $view = $this->renderView('@ZikulaPermissionsModule/Permission/permission.html.twig', $templateParameters);
 

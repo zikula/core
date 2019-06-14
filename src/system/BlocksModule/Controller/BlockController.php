@@ -196,8 +196,8 @@ class BlockController extends AbstractController
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
         }
-        $bid = $request->request->get('bid', -1);
-        if ($bid === -1) {
+        $bid = $request->request->getInt('bid', -1);
+        if (-1 === $bid) {
             return $this->json($this->__('No block ID passed.'), Response::HTTP_BAD_REQUEST);
         }
         $em = $this->getDoctrine()->getManager();

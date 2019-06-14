@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Bundle;
 
+use function Composer\Autoload\includeFile;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
@@ -23,7 +24,6 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
-use function Composer\Autoload\includeFile;
 
 class Bootstrap
 {
