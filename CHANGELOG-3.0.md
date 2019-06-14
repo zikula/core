@@ -60,7 +60,6 @@ CHANGELOG - ZIKULA 3.0.x
     - Properly handle deleted user groups in permissions module (#3963).
     - Made Blocks module's JavaScript functionality more robust (#3911).
     - Removed ancient workaround in printer theme (#3653).
-    - Added Twig function for creating a `RouteUrl` instance (#3802).
     - Readded missing functionality for configurable page title schemes (#3921).
     - Readded missing permission checks for specific admin area categories.
     - Fixed behaviour of recent searches list.
@@ -71,6 +70,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
     - Allow zasset syntax for relative assets also for normal bundles.
+    - Added Twig function for creating a `RouteUrl` instance (#3802).
     - Added support for separators in dropdown menus of extensions interface / module links (#3904).
     - Added common header/footer templates for login templates (#3937).
     - Added common header/footer templates for user registration and login related email templates (#3937).
