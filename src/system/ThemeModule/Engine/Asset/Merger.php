@@ -85,7 +85,7 @@ class Merger implements MergerInterface
         // skip remote files from combining
         foreach ($assets as $weight => $asset) {
             $path = realpath($this->rootDir . $asset);
-            if (is_file($path)) {
+            if (false !== $path && is_file($path)) {
                 $cachedFiles[] = $path;
             } elseif ($weight < 0) {
                 $preCachedFiles[] = $asset;
@@ -122,7 +122,7 @@ class Merger implements MergerInterface
         }
         $route = $this->router->generate('zikulathememodule_combinedasset_asset', ['type' => $type, 'key' => $key]);
         array_unshift($outputFiles, $route);
-        array_merge($preCachedFiles, $outputFiles);
+        $outputFiles = array_merge($preCachedFiles, $outputFiles);
 
         return $outputFiles;
     }
@@ -151,7 +151,7 @@ class Merger implements MergerInterface
         while (!feof($source)) {
             if ('css' === $ext) {
                 $line = fgets($source, 4096);
-                $lineParse = trim($line);
+                $lineParse = false !== $line ? trim($line) : '';
                 $lineParse_length = mb_strlen($lineParse, 'UTF-8');
                 $newLine = '';
                 // parse line char by char

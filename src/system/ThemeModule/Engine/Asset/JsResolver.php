@@ -50,7 +50,7 @@ class JsResolver implements ResolverInterface
 
     public function compile(): string
     {
-        $assets = $this->bag->all();
+        $assets = $this->bag->allWithWeight();
         if ($this->combine) {
             $assets = $this->merger->merge($assets);
         }

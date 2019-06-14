@@ -33,7 +33,7 @@ class CombinedAssetController extends AbstractController
         $lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         if ($compress && extension_loaded('zlib')) {
             ini_set('zlib.output_handler', '');
-            ini_set('zlib.output_compression', 1);
+            ini_set('zlib.output_compression', '1');
         }
         $response = new Response($cachedFile);
         $response->headers->set('Content-type', 'js' === $type ? 'text/javascript' : 'text/css');
