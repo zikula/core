@@ -65,6 +65,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Readded missing permission checks for specific admin area categories.
     - Fixed behaviour of recent searches list.
     - Fixed admin notification email for new registrations which was not done in some cases.
+    - Improved asset merger with regards to negative weights (#3978).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
