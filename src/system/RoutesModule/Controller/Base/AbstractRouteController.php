@@ -124,14 +124,7 @@ abstract class AbstractRouteController extends AbstractController
         $templateParameters = $controllerHelper->processViewActionParameters($objectType, $sortableColumns, $templateParameters);
         
         // filter by permissions
-        $filteredEntities = [];
-        foreach ($templateParameters['items'] as $route) {
-            if (!$permissionHelper->hasEntityPermission($route, $permLevel)) {
-                continue;
-            }
-            $filteredEntities[] = $route;
-        }
-        $templateParameters['items'] = $filteredEntities;
+        $templateParameters['items'] = $permissionHelper->filterCollection($objectType, $templateParameters['items'], $permLevel);
         
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);

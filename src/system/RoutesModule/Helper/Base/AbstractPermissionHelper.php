@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Helper\Base;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\GroupsModule\Entity\GroupEntity;
@@ -92,6 +93,24 @@ abstract class AbstractPermissionHelper
         $instance = $entity->getKey() . '::';
     
         return $this->permissionApi->hasPermission('ZikulaRoutesModule:' . ucfirst($objectType) . ':', $instance, $permissionLevel, $userId);
+    }
+    
+    /**
+     * Filters a given collection of entities based on different permission checks.
+     *
+     * @param array|ArrayCollection $entities The given list of entities
+     */
+    public function filterCollection($objectType, $entities, int $permissionLevel, int $userId = null): array
+    {
+        $filteredEntities = [];
+        foreach ($entities as $routes) {
+            if (!$this->hasEntityPermission($routes, $permissionLevel, $userId)) {
+                continue;
+            }
+            $filteredEntities[] = $routes;
+        }
+    
+        return $filteredEntities;
     }
     
     /**

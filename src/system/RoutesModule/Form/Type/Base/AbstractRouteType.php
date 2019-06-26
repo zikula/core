@@ -146,7 +146,7 @@ abstract class AbstractRouteType extends AbstractType
             'label_attr' => [
                 'class' => 'checkbox-inline'
             ],
-            'empty_data' => 'http###https',
+            'empty_data' => [],
             'attr' => [
                 'class' => '',
                 'title' => $this->__('Choose the schemes.')
@@ -170,7 +170,7 @@ abstract class AbstractRouteType extends AbstractType
             'label_attr' => [
                 'class' => 'checkbox-inline'
             ],
-            'empty_data' => 'GET',
+            'empty_data' => [],
             'attr' => [
                 'class' => '',
                 'title' => $this->__('Choose the methods.')

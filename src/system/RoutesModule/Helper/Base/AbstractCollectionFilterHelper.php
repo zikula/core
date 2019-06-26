@@ -161,7 +161,7 @@ abstract class AbstractCollectionFilterHelper
     
             // field filter
             if ((!is_numeric($v) && '' !== $v) || (is_numeric($v) && 0 < $v)) {
-                if ('workflowState' === $k && '0' === strpos($v, '!')) {
+                if ('workflowState' === $k && 0 === strpos($v, '!')) {
                     $qb->andWhere('tbl.' . $k . ' != :' . $k)
                        ->setParameter($k, substr($v, 1));
                 } elseif (0 === strpos($v, '%')) {
@@ -190,23 +190,23 @@ abstract class AbstractCollectionFilterHelper
         if (null === $request) {
             return $qb;
         }
+    
+        $showOnlyOwnEntries = (bool)$request->query->getInt('own', $this->showOnlyOwnEntries);
+        if ($showOnlyOwnEntries) {
+            $qb = $this->addCreatorFilter($qb);
+        }
+    
         $routeName = $request->get('_route', '');
         $isAdminArea = false !== strpos($routeName, 'zikularoutesmodule_route_admin');
         if ($isAdminArea) {
             return $qb;
         }
     
-        $showOnlyOwnEntries = (bool)$request->query->getInt('own', $this->showOnlyOwnEntries);
-    
         if (!array_key_exists('workflowState', $parameters) || empty($parameters['workflowState'])) {
             // per default we show approved routes only
             $onlineStates = ['approved'];
             $qb->andWhere('tbl.workflowState IN (:onlineStates)')
                ->setParameter('onlineStates', $onlineStates);
-        }
-    
-        if ($showOnlyOwnEntries) {
-            $qb = $this->addCreatorFilter($qb);
         }
     
         return $qb;

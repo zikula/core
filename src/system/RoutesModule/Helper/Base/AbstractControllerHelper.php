@@ -202,13 +202,13 @@ abstract class AbstractControllerHelper
         $where = '';
         if (1 === $templateParameters['all']) {
             // retrieve item list without pagination
-            $entities = $repository->selectWhere($where, $sort . ' ' . $sortdir);
+            $entities = $repository->selectWhere($where, $sort . ' ' . $sortdir, false);
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $request->query->getInt('pos', 1);
     
             // retrieve item list with pagination
-            list($entities, $objectCount) = $repository->selectWherePaginated($where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
+            list($entities, $objectCount) = $repository->selectWherePaginated($where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage, false);
     
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [

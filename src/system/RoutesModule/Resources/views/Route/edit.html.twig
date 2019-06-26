@@ -2,46 +2,6 @@
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends 'ZikulaRoutesModule::' ~ baseTemplate ~ '.html.twig' %}
 
-{% block header %}
-    {{ parent() }}
-    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.Validation.js', 98)) }}
-    {{ pageAddAsset('javascript', zasset('@ZikulaRoutesModule:js/ZikulaRoutesModule.EditFunctions.js', 99)) }}
-    {% set customScript %}
-    <script>
-        (function($) {
-            $(function() {
-                function updatePathPrefix() {
-                    var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');
-                    var bundlePrefix = $('#zikularoutesmodule_route_prependBundlePrefix').prop('checked');
-                    var baseUrl = {{ app.request.baseUrl|json_encode|raw }}
-                    var moduleUrlNames = {{ moduleUrlNames|json_encode|raw }};
-
-                    if (bundlePrefix) {
-                        var bundle = $('#zikularoutesmodule_route_bundle').val();
-                        bundlePrefix = '/' + moduleUrlNames[bundle];
-                    } else {
-                        bundlePrefix = '';
-                    }
-
-                    if (i18n) {
-                        i18n = '/{' + '{{ __('lang') }}' + '}';
-                    } else {
-                        i18n = '';
-                    }
-
-                    var pathPrefix = baseUrl + i18n + bundlePrefix;
-                    $('#pathPrefix').text(pathPrefix.replace('"', ''));
-                }
-
-                updatePathPrefix();
-                $('#zikularoutesmodule_route_bundle, #zikularoutesmodule_route_prependBundlePrefix, #zikularoutesmodule_route_translatable').change(updatePathPrefix);
-            });
-        })(jQuery)
-    </script>
-    {% endset %}
-    {{ pageAddAsset('footer', customScript) }}
-{% endblock %}
-
 {% block title mode == 'create' ? __('Create route') : __('Edit route') %}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
 {% block content %}
@@ -127,11 +87,37 @@
         /* <![CDATA[ */
             
             ( function($) {
+                function updatePathPrefix() {
+                    var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');
+                    var bundlePrefix = $('#zikularoutesmodule_route_prependBundlePrefix').prop('checked');
+                    var baseUrl = {{ app.request.baseUrl|json_encode|raw }}
+                    var moduleUrlNames = {{ moduleUrlNames|json_encode|raw }};
+
+                    if (bundlePrefix) {
+                        var bundle = $('#zikularoutesmodule_route_bundle').val();
+                        bundlePrefix = '/' + moduleUrlNames[bundle];
+                    } else {
+                        bundlePrefix = '';
+                    }
+
+                    if (i18n) {
+                        i18n = '/{' + '{{ __('lang') }}' + '}';
+                    } else {
+                        i18n = '';
+                    }
+
+                    var pathPrefix = baseUrl + i18n + bundlePrefix;
+                    $('#pathPrefix').text(pathPrefix.replace('"', ''));
+                }
+
                 $(document).ready(function() {
                     zikulaRoutesInitEditForm('{{ mode }}', '{% if mode != 'create' %}{{ route.id }}{% endif %}');
                     {% if form.moderationSpecificCreator is defined %}
                         initUserLiveSearch('zikularoutesmodule_route_moderationSpecificCreator');
                     {% endif %}
+
+                    updatePathPrefix();
+                    $('#zikularoutesmodule_route_bundle, #zikularoutesmodule_route_prependBundlePrefix, #zikularoutesmodule_route_translatable').change(updatePathPrefix);
                 });
             })(jQuery);
         /* ]]> */
