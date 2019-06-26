@@ -94,7 +94,7 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/orm updated from 2.5.14 to 2.6.3
     - doctrine/persistence installed in 1.1.1
     - doctrine/reflection installed in 1.0.0
-    - egulias/email-validator installed in 2.1.8
+    - egulias/email-validator installed in 2.1.9
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.1
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
     - jms/translation-bundle updated from 1.3.2 to 1.4.4
@@ -108,16 +108,16 @@ CHANGELOG - ZIKULA 3.0.x
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.1
-    - symfony/contracts installed in 1.1.3
+    - symfony/contracts installed in 1.1.5
     - symfony/maker-bundle installed in 1.11.6
-    - symfony/monolog-bundle updated from 3.2.0 to 3.3.1
-    - symfony/phpunit-bridge installed in 4.3.1
+    - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
+    - symfony/phpunit-bridge installed in 4.3.2
     - symfony/polyfill-iconv installed in 1.11.0
     - symfony/polyfill-intl-idn installed in 1.11.0
     - symfony/polyfill-php72 installed in 1.11.0
     - symfony/polyfill-php73 installed in 1.11.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.8
-    - symfony/symfony updated from 3.4.26 to 4.3.1
+    - symfony/symfony updated from 3.4.26 to 4.3.2
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.39.1 to 2.11.3
     - vakata/jstree updated from 3.3.7 to 3.3.8
