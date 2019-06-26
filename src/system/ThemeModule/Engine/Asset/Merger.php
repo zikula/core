@@ -16,6 +16,7 @@ namespace Zikula\ThemeModule\Engine\Asset;
 use DateTime;
 use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\ThemeModule\Engine\AssetBag;
 
 class Merger implements MergerInterface
 {
@@ -83,14 +84,14 @@ class Merger implements MergerInterface
         $cachedFiles = [];
         $outputFiles = [];
         // skip remote files from combining
-        foreach ($assets as $weight => $asset) {
+        foreach ($assets as $asset => $weight) {
             $path = realpath($this->rootDir . $asset);
             if (false !== $path && is_file($path)) {
                 $cachedFiles[] = $path;
             } elseif ($weight < 0) {
-                $preCachedFiles[] = $asset;
+                $preCachedFiles[$asset] = $weight;
             } else {
-                $outputFiles[] = $asset;
+                $outputFiles[$asset] = $weight;
             }
         }
         if ('js' === $type) {
@@ -121,7 +122,8 @@ class Merger implements MergerInterface
             $cacheService->save($key, $data, $this->lifetime);
         }
         $route = $this->router->generate('zikulathememodule_combinedasset_asset', ['type' => $type, 'key' => $key]);
-        array_unshift($outputFiles, $route);
+        $outputFiles[$route] = AssetBag::WEIGHT_DEFAULT;
+
         $outputFiles = array_merge($preCachedFiles, $outputFiles);
 
         return $outputFiles;

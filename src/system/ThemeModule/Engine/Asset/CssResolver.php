@@ -50,12 +50,12 @@ class CssResolver implements ResolverInterface
 
     public function compile(): string
     {
-        $assets = $this->bag->all();
+        $assets = $this->bag->allWithWeight();
         if ($this->combine) {
             $assets = $this->merger->merge($assets, 'css');
         }
         $headers = '';
-        foreach ($assets as $asset) {
+        foreach ($assets as $asset => $weight) {
             $headers .= '<link rel="stylesheet" href="' . $asset . '" />' . "\n";
         }
 

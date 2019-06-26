@@ -108,7 +108,7 @@ class AssetBag implements IteratorAggregate, Countable
 
     public function allWithWeight(): array
     {
-        return array_flip($this->assets);
+        return $this->assets;
     }
 
     /**

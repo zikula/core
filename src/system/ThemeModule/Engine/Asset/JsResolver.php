@@ -54,12 +54,12 @@ class JsResolver implements ResolverInterface
         if ($this->combine) {
             $assets = $this->merger->merge($assets);
         }
-        $headers = '';
-        foreach ($assets as $asset) {
-            $headers .= '<script src="' . $asset . '"></script>' . "\n";
+        $scripts = '';
+        foreach ($assets as $asset => $weight) {
+            $scripts .= '<script src="' . $asset . '"></script>' . "\n";
         }
 
-        return $headers;
+        return $scripts;
     }
 
     public function getBag(): AssetBag
