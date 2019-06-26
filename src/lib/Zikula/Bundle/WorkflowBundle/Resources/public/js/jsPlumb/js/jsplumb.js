@@ -1582,6 +1582,15 @@
         for (var i = 0; i < availableSelectors.length; i++) {
             el = findDelegateElement(parentElement, childElement, prefix + availableSelectors[i].selector);
             if (el != null) {
+                if (availableSelectors[i].filter) {
+                    var matches = matchesSelector(childElement, availableSelectors[i].filter, el),
+                        exclude = availableSelectors[i].filterExclude === true;
+
+                    if ( (exclude && !matches) || matches) {
+                        return null;
+                    }
+
+                }
                 return [ availableSelectors[i], el ];
             }
         }
@@ -2079,7 +2088,7 @@
         var _dispatch = function(evt, value) {
             var result = null;
             if (activeSelectorParams && activeSelectorParams[evt]) {
-                activeSelectorParams[evt](value);
+                result = activeSelectorParams[evt](value);
             } else if (listeners[evt]) {
                 for (var i = 0; i < listeners[evt].length; i++) {
                     try {
@@ -2104,9 +2113,14 @@
                     sel = k.getSelection(),
                     dPos = this.params.getPosition(dragEl);
 
-                for (var i = 0; i < sel.length; i++) {
-                    var p = this.params.getPosition(sel[i].el);
-                    positions.push([ sel[i].el, { left: p[0], top: p[1] }, sel[i] ]);
+                if (sel.length > 0) {
+                    for (var i = 0; i < sel.length; i++) {
+                        var p = this.params.getPosition(sel[i].el);
+                        positions.push([ sel[i].el, { left: p[0], top: p[1] }, sel[i] ]);
+                    }
+                }
+                else {
+                    positions.push([ dragEl, {left:dPos[0], top:dPos[1]}, this ]);
                 }
 
                 _dispatch("stop", {
@@ -2148,7 +2162,7 @@
         this.unmark = function(e, doNotCheckDroppables) {
             _setDroppablesActive(matchingDroppables, false, true, this);
 
-            if (isConstrained && useGhostProxy(elementToDrag)) {
+            if (isConstrained && useGhostProxy(elementToDrag, dragEl)) {
                 ghostProxyOffsets = [dragEl.offsetLeft - ghostDx, dragEl.offsetTop - ghostDy];
                 dragEl.parentNode.removeChild(dragEl);
                 dragEl = elementToDrag;
@@ -2178,7 +2192,7 @@
                 cPos = constrain(desiredLoc, dragEl, constrainRect, this.size);
 
             // if we should use a ghost proxy...
-            if (useGhostProxy(this.el)) {
+            if (useGhostProxy(this.el, dragEl)) {
                 // and the element has been dragged outside of its parent bounds
                 if (desiredLoc[0] !== cPos[0] || desiredLoc[1] !== cPos[1]) {
 
@@ -4226,7 +4240,7 @@
 
     var jsPlumbInstance = root.jsPlumbInstance = function (_defaults) {
 
-        this.version = "2.10.0";
+        this.version = "2.10.1";
 
         this.Defaults = {
             Anchor: "Bottom",
@@ -6223,7 +6237,7 @@
                         // the params passed in, because after a connection is established we're going to reset the endpoint
                         // to have the anchor we were given.
                         var tempEndpointParams = {};
-                        root.jsPlumb.extend(tempEndpointParams, p);
+                        root.jsPlumb.extend(tempEndpointParams, def.def);
                         tempEndpointParams.isTemporarySource = true;
                         tempEndpointParams.anchor = [ elxy[0], elxy[1] , 0, 0];
                         tempEndpointParams.dragOptions = dragOptions;
@@ -9095,6 +9109,8 @@
                 this.canvas = this.connector.canvas;
                 this.bgCanvas = this.connector.bgCanvas;
 
+                this.connector.reattach(this._jsPlumb.instance);
+
                 // put classes from prior connector onto the canvas
                 this.addClass(previousClasses);
 
@@ -11833,8 +11849,8 @@
         this.length = params.length || 20;
         this.width = params.width || 20;
         this.id = params.id;
-        var direction = (params.direction || 1) < 0 ? -1 : 1,
-            paintStyle = params.paintStyle || { "stroke-width": 1 },
+        this.direction = (params.direction || 1) < 0 ? -1 : 1;
+        var paintStyle = params.paintStyle || { "stroke-width": 1 },
         // how far along the arrow the lines folding back in come to. default is 62.3%.
             foldback = params.foldback || 0.623;
 
@@ -11860,7 +11876,7 @@
                     var l = parseInt(this.loc, 10),
                         fromLoc = this.loc < 0 ? 1 : 0;
                     hxy = component.pointAlongPathFrom(fromLoc, l, false);
-                    mid = component.pointAlongPathFrom(fromLoc, l - (direction * this.length / 2), false);
+                    mid = component.pointAlongPathFrom(fromLoc, l - (this.direction * this.length / 2), false);
                     txy = _jg.pointOnLine(hxy, mid, this.length);
                 }
                 else if (this.loc === 1) {
@@ -11868,7 +11884,7 @@
                     mid = component.pointAlongPathFrom(this.loc, -(this.length));
                     txy = _jg.pointOnLine(hxy, mid, this.length);
 
-                    if (direction === -1) {
+                    if (this.direction === -1) {
                         var _ = txy;
                         txy = hxy;
                         hxy = _;
@@ -11878,14 +11894,14 @@
                     txy = component.pointOnPath(this.loc);
                     mid = component.pointAlongPathFrom(this.loc, this.length);
                     hxy = _jg.pointOnLine(txy, mid, this.length);
-                    if (direction === -1) {
+                    if (this.direction === -1) {
                         var __ = txy;
                         txy = hxy;
                         hxy = __;
                     }
                 }
                 else {
-                    hxy = component.pointAlongPathFrom(this.loc, direction * this.length / 2);
+                    hxy = component.pointAlongPathFrom(this.loc, this.direction * this.length / 2);
                     mid = component.pointOnPath(this.loc);
                     txy = _jg.pointOnLine(hxy, mid, this.length);
                 }
