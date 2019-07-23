@@ -117,7 +117,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $newStargArgs = str_replace(',', '&', $this->getSystemVar('startargs')); // replace comma with `&`
                 $this->setSystemVar('startargs', $newStargArgs);
             case '2.9.11':
-                $this->setSystemVar('useCompression', (bool)$this->getSystemVar('useCompression'));
+                $this->setSystemVar('UseCompression', (bool)$this->getSystemVar('UseCompression'));
             case '2.9.12': // ship with Core-1.4.4
                 // reconfigure TZ settings
                 $this->setGuestTimeZone();

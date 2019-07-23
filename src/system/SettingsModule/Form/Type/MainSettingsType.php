@@ -118,7 +118,7 @@ class MainSettingsType extends AbstractType
                 'required' => false,
                 'help' => $this->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
             ])
-            ->add('useCompression', CheckboxType::class, [
+            ->add('UseCompression', CheckboxType::class, [
                 'label' => $this->__('Activate compression'),
                 'required' => false
             ])

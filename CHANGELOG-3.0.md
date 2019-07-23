@@ -65,6 +65,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Fixed behaviour of recent searches list.
     - Fixed admin notification email for new registrations which was not done in some cases.
     - Improved asset merger with regards to negative weights (#3978).
+    - Fixed invalid reference to "use compression" option in general settings form.
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
