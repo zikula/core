@@ -250,9 +250,10 @@ class AjaxUpgradeController extends AbstractController
         // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
         $request = $this->container->get('request_stack')->getMasterRequest();
         $hostFromRequest = isset($request) ? $request->getHost() : null;
+        $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
         $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
         $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
-        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? 'http';
+        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
         $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
 
         // set currently installed version into parameters
