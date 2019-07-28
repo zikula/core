@@ -451,13 +451,13 @@ class ConfigController extends AbstractController
 
         // Editing for only these types is supported
         $editableTypes = [
-            HTMLPurifier_VarParser::STRING,
+            HTMLPurifier_VarParser::C_STRING,
             HTMLPurifier_VarParser::ISTRING,
             HTMLPurifier_VarParser::TEXT,
             HTMLPurifier_VarParser::ITEXT,
-            HTMLPurifier_VarParser::INT,
-            HTMLPurifier_VarParser::FLOAT,
-            HTMLPurifier_VarParser::BOOL,
+            HTMLPurifier_VarParser::C_INT,
+            HTMLPurifier_VarParser::C_FLOAT,
+            HTMLPurifier_VarParser::C_BOOL,
             HTMLPurifier_VarParser::LOOKUP,
             HTMLPurifier_VarParser::ALIST,
             HTMLPurifier_VarParser::HASH
