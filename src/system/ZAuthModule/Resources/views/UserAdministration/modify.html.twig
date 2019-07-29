@@ -46,7 +46,8 @@
     </div>
 </div>
 {{ adminFooter() }}
-<script type="text/javascript">
+{% set customScript %}
+<script>
     (function($) {
         $(document).ready(function() {
             var setPassEle = $('#{{ form.setpass.vars.id }}');
@@ -86,6 +87,8 @@
         });
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}
 {% set customScript %}
