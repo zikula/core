@@ -29,7 +29,6 @@ CHANGELOG - ZIKULA 3.0.x
     - Dropped vendors:
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
-        - Removed composer/ca-bundle
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
         - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
@@ -82,7 +81,9 @@ CHANGELOG - ZIKULA 3.0.x
 
  - Vendor updates:
     - components/bootstrap updated from 3.4.0 to 3.4.1
-    - doctrine/annotations updated from 1.2.7 to 1.6.1
+    - components/installers updated from 1.6.0 to 1.7.0
+    - composer/ca-bundle updated from 1.1.4 to 1.2.3
+    - doctrine/annotations updated from 1.2.7 to 1.7.0
     - doctrine/cache updated from 1.6.2 to 1.8.0
     - doctrine/collections updated from 1.3.0 to 1.6.2
     - doctrine/common updated from 2.6.2 to 2.10.0
@@ -91,36 +92,39 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/event-manager installed in 1.0.0
     - doctrine/inflector updated from 1.1.0 to 1.3.0
     - doctrine/instantiator updated from 1.0.5 to 1.2.0
-    - doctrine/lexer updated from 1.0.1 to 1.0.2
+    - doctrine/lexer updated from 1.0.1 to 1.1.0
     - doctrine/orm updated from 2.5.14 to 2.6.3
     - doctrine/persistence installed in 1.1.1
     - doctrine/reflection installed in 1.0.0
-    - egulias/email-validator installed in 2.1.10
-    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.3.1
+    - egulias/email-validator installed in 2.1.11
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.4.0
     - guzzlehttp/psr7 updated from 1.5.2 to 1.6.1
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
     - jms/translation-bundle updated from 1.3.2 to 1.4.4
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.8
-    - knplabs/knp-menu updated from 2.2.0 to 2.3.0
+    - knplabs/knp-menu updated from 2.2.0 to 2.5.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 2.2.2
     - liip/imagine-bundle updated from 1.9.1 to 2.1.0
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
-    - nikic/php-parser updated from 1.4.1 to 4.2.2
+    - nikic/php-parser updated from 1.4.1 to 4.2.3
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.1
     - symfony/contracts installed in 1.1.5
-    - symfony/maker-bundle installed in 1.12.0
+    - symfony/maker-bundle installed in 1.13.0
     - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
-    - symfony/phpunit-bridge installed in 4.3.3
-    - symfony/polyfill-iconv installed in 1.11.0
+    - symfony/phpunit-bridge installed in 4.3.4
+    - symfony/polyfill-ctype updated from 1.11.0 to 1.12.0
+    - symfony/polyfill-iconv installed in 1.12.0
+    - symfony/polyfill-intl-icu updated from 1.11.0 to 1.12.0
     - symfony/polyfill-intl-idn installed in 1.11.0
-    - symfony/polyfill-php72 installed in 1.11.0
-    - symfony/polyfill-php73 installed in 1.11.0
+    - symfony/polyfill-mbstring updated from 1.11.0 to 1.12.0
+    - symfony/polyfill-php72 installed in 1.12.0
+    - symfony/polyfill-php73 installed in 1.12.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.8
-    - symfony/symfony updated from 3.4.26 to 4.3.3
+    - symfony/symfony updated from 3.4.26 to 4.3.4
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.39.1 to 2.11.3
     - vakata/jstree updated from 3.3.7 to 3.3.8
