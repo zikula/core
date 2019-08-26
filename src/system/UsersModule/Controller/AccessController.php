@@ -27,6 +27,7 @@ use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\AuthenticationMethodInterface\AuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\ReEntrantAuthenticationMethodInterface;
 use Zikula\UsersModule\Collector\AuthenticationMethodCollector;
@@ -201,7 +202,7 @@ class AccessController extends AbstractController
 
     private function dispatchLoginFailedEvent(
         EventDispatcherInterface $eventDispatcher,
-        string $authenticationMethod,
+        AuthenticationMethodInterface $authenticationMethod,
         string $returnUrl,
         UserEntity $user = null
     ) {
