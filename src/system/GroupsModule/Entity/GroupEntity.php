@@ -23,7 +23,7 @@ use Zikula\UsersModule\Entity\UserEntity;
  * Group entity class.
  *
  * @ORM\Entity(repositoryClass="Zikula\GroupsModule\Entity\Repository\GroupRepository")
- * @ORM\Table(name="groups")
+ * @ORM\Table(name="`groups`")
  */
 class GroupEntity extends EntityAccess
 {

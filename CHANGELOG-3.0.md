@@ -65,6 +65,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Fixed admin notification email for new registrations which was not done in some cases.
     - Improved asset merger with regards to negative weights (#3978).
     - Fixed invalid reference to "use compression" option in general settings form.
+    - Escape `groups` table name since it became a reserved word in MySQL 8.
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
