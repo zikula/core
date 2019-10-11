@@ -177,7 +177,12 @@ class UserAdministrationController extends AbstractController
             if ($form->get('submit')->isClicked()) {
                 $user = $form->getData();
                 $this->checkSelf($currentUserApi, $variableApi, $user, $originalGroups);
+
+                $formDataEvent = new UserFormDataEvent($user, $form);
+                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+
                 $this->getDoctrine()->getManager()->flush();
+
                 $eventArgs = [
                     'action'    => 'setVar',
                     'field'     => 'uname',
@@ -186,8 +191,7 @@ class UserAdministrationController extends AbstractController
                 $eventData = ['old_value' => $originalUserName];
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
                 $eventDispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
-                $formDataEvent = new UserFormDataEvent($user, $form);
-                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));
