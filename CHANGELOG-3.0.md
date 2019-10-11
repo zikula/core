@@ -66,6 +66,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Improved asset merger with regards to negative weights (#3978).
     - Fixed invalid reference to "use compression" option in general settings form.
     - Escape `groups` table name since it became a reserved word in MySQL 8.
+    - Improved input value checks for `yesNo` Twig filter.
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
