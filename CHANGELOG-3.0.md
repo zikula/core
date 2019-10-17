@@ -136,7 +136,7 @@ CHANGELOG - ZIKULA 3.0.x
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to 3.2.5
     - zikula/pagelock-module updated from 1.2.3 to 1.3.5
-    - zikula/profile-module updated from 3.0.6 to 3.1.9
+    - zikula/profile-module updated from 3.0.6 to 3.1.10
     - zikula/oauth-module updated from 1.0.4 to 1.1.1
     - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2
     - zikula/wizard updated from 2.0 to 3.0.1

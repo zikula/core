@@ -5860,16 +5860,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.9",
+            "version": "3.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "1fea46c461f5342c7b46f737d8121b740dfe3e47"
+                "reference": "8a915e4a20770226f43a384dc98401190a8a1da2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/1fea46c461f5342c7b46f737d8121b740dfe3e47",
-                "reference": "1fea46c461f5342c7b46f737d8121b740dfe3e47",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8a915e4a20770226f43a384dc98401190a8a1da2",
+                "reference": "8a915e4a20770226f43a384dc98401190a8a1da2",
                 "shasum": ""
             },
             "require": {
@@ -5924,10 +5924,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.1.9",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.10",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-10-17T12:13:45+00:00"
+            "time": "2019-10-17T14:00:30+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
