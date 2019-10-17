@@ -104,7 +104,7 @@ CHANGELOG - ZIKULA 3.0.x
     - imagine/imagine updated from 0.7.1 to 1.2.2
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
     - jms/translation-bundle updated from 1.3.2 to 1.4.4
-    - justinrainbow/json-schema updated from 4.1.0 to 5.2.8
+    - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 2.6.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 2.3.0
     - liip/imagine-bundle updated from 1.9.1 to 2.2.0
@@ -119,6 +119,7 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/contracts installed in 1.1.7
     - symfony/maker-bundle installed in 1.13.0
     - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
+    - symfony/phpunit-bridge updated from 3.4.14 to 4.3.5
     - symfony/polyfill-ctype updated from 1.11.0 to 1.12.0
     - symfony/polyfill-iconv installed in 1.12.0
     - symfony/polyfill-intl-icu updated from 1.11.0 to 1.12.0
@@ -129,7 +130,7 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.2.8
     - symfony/symfony updated from 3.4.26 to 4.3.5
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.39.1 to 2.12.0
+    - twig/twig updated from 1.39.1 to 2.12.1
     - vakata/jstree updated from 3.3.7 to 3.3.8
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
