@@ -68,6 +68,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Escape `groups` table name since it became a reserved word in MySQL 8.
     - Improved input value checks for `yesNo` Twig filter.
     - Dynamically determine available locales from locale api in custom locale form type.
+    - Increased amount of letters for top level domains in email address validation pattern (#3980).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
