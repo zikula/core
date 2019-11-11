@@ -33,10 +33,7 @@ class MenuItemRepository extends NestedTreeRepository implements MenuItemReposit
         /** @var EntityManagerInterface $manager */
         $manager = $registry->getManagerForClass($entityClass);
         if (null === $manager) {
-            throw new LogicException(sprintf(
-                'Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.',
-                $entityClass
-            ));
+            throw new LogicException(sprintf('Could not find the entity manager for class "%s". Check your Doctrine configuration to make sure it is configured to load this entity’s metadata.', $entityClass));
         }
 
         parent::__construct($manager, $manager->getClassMetadata($entityClass));

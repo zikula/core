@@ -59,10 +59,7 @@ class CategoryTreeTransformer implements DataTransformerInterface
         /** @var CategoryEntity $category */
         $category = $this->categoryRepository->find($categoryId);
         if (null === $category) {
-            throw new TransformationFailedException(sprintf(
-                'A category with number "%s" does not exist!',
-                $categoryId
-            ));
+            throw new TransformationFailedException(sprintf('A category with number "%s" does not exist!', $categoryId));
         }
 
         return $category;

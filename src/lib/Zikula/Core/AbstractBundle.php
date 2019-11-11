@@ -124,10 +124,7 @@ abstract class AbstractBundle extends Bundle
                 // check naming convention
                 $expectedAlias = Container::underscore($basename);
                 if ($expectedAlias !== $extension->getAlias()) {
-                    throw new LogicException(sprintf(
-                        'The extension alias for the default extension of a %s must be the underscored version of the %s name ("%s" instead of "%s")',
-                        $typeLower, $typeLower, $expectedAlias, $extension->getAlias()
-                    ));
+                    throw new LogicException(sprintf('The extension alias for the default extension of a %s must be the underscored version of the %s name ("%s" instead of "%s")', $typeLower, $typeLower, $expectedAlias, $extension->getAlias()));
                 }
 
                 $this->extension = $extension;
