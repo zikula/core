@@ -89,17 +89,17 @@ CHANGELOG - ZIKULA 3.0.x
     - components/jquery updated from 3.3.1 to 3.4.1
     - composer/ca-bundle updated from 1.1.4 to 1.2.4
     - doctrine/annotations updated from 1.2.7 to 1.8.0
-    - doctrine/cache updated from 1.6.2 to 1.8.1
-    - doctrine/collections updated from 1.3.0 to 1.6.2
+    - doctrine/cache updated from 1.6.2 to 1.9.0
+    - doctrine/collections updated from 1.3.0 to 1.6.3
     - doctrine/common updated from 2.6.2 to 2.11.0
-    - doctrine/dbal updated from 2.5.13 to 2.9.2
+    - doctrine/dbal updated from 2.5.13 to 2.10.0
     - doctrine/doctrine-bundle updated from 1.6.13 to 1.11.2
-    - doctrine/event-manager installed in 1.0.0
-    - doctrine/inflector updated from 1.1.0 to 1.3.0
-    - doctrine/instantiator updated from 1.0.5 to 1.2.0
-    - doctrine/lexer updated from 1.0.1 to 1.1.0
+    - doctrine/event-manager installed in 1.1.0
+    - doctrine/inflector updated from 1.1.0 to 1.3.1
+    - doctrine/instantiator updated from 1.0.5 to 1.3.0
+    - doctrine/lexer updated from 1.0.1 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.6.4
-    - doctrine/persistence installed in 1.1.1
+    - doctrine/persistence installed in 1.2.0
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.11
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.4.0
@@ -115,16 +115,16 @@ CHANGELOG - ZIKULA 3.0.x
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
     - monolog/monolog updated from 1.24.0 to 1.25.1
-    - nikic/php-parser updated from 1.4.1 to 4.2.5
+    - nikic/php-parser updated from 1.4.1 to 4.3.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - psr/log updated from 1.1.0 to 1.1.2
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.1
-    - symfony/contracts installed in 1.1.7
-    - symfony/maker-bundle installed in 1.14.0
+    - symfony/contracts installed in 1.1.8
+    - symfony/maker-bundle installed in 1.14.3
     - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
-    - symfony/phpunit-bridge updated from 3.4.14 to 4.3.6
+    - symfony/phpunit-bridge updated from 3.4.14 to 4.3.7
     - symfony/polyfill-ctype updated from 1.11.0 to 1.12.0
     - symfony/polyfill-iconv installed in 1.12.0
     - symfony/polyfill-intl-icu updated from 1.11.0 to 1.12.0
@@ -132,10 +132,10 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/polyfill-mbstring updated from 1.11.0 to 1.12.0
     - symfony/polyfill-php72 installed in 1.12.0
     - symfony/polyfill-php73 installed in 1.12.0
-    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.3.0
-    - symfony/symfony updated from 3.4.26 to 4.3.6
+    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.3.1
+    - symfony/symfony updated from 3.4.26 to 4.3.7
     - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.39.1 to 2.12.1
+    - twig/twig updated from 1.39.1 to 2.12.2
     - vakata/jstree updated from 3.3.7 to 3.3.8
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
