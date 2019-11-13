@@ -23,7 +23,7 @@
         "zikula/seabreeze-theme": "4.*",
 
         "symfony/symfony": "4.*",
-        "symfony/monolog-bundle": "3.*",
+        "symfony/monolog-bundle": "3.4.*",
         "sensio/framework-extra-bundle": "dev-master",
         "symfony/maker-bundle": "1.*",
         "elao/web-profiler-extra-bundle" : "2.*",

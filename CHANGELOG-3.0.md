@@ -106,7 +106,7 @@ CHANGELOG - ZIKULA 3.0.x
     - liip/imagine-bundle updated from 1.9.1 to 2.2.0
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
-    - monolog/monolog updated from 1.24.0 to 2.0.1
+    - monolog/monolog updated from 1.24.0 to 1.25.2
     - nikic/php-parser updated from 1.4.1 to 4.3.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - psr/log updated from 1.1.0 to 1.1.2
@@ -115,7 +115,7 @@ CHANGELOG - ZIKULA 3.0.x
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
     - symfony/contracts installed in 1.1.8
     - symfony/maker-bundle installed in 1.14.3
-    - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
+    - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
     - symfony/phpunit-bridge updated from 3.4.14 to 4.3.8
     - symfony/polyfill-ctype updated from 1.11.0 to 1.12.0
     - symfony/polyfill-iconv installed in 1.12.0
