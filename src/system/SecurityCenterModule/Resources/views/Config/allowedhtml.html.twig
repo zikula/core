@@ -31,7 +31,7 @@
                 <div class="alert alert-warning">
                     <p>{{ __("Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them.")|raw }}</p>
                     {% if htmlPurifier %}
-                        <p>{{ __f('Warning! Using the <a href="%s">HTML Purifier output filter</a> will override settings for some HTML tags (such as &lt;object&gt; and &lt;embed&gt;).', {'%s': configUrl }) }}</p>
+                        <p>{{ __f('Warning! Using the <a href="%s">HTML Purifier output filter</a> will override settings for some HTML tags (such as &lt;object&gt; and &lt;embed&gt;).', {'%s': configUrl })|raw }}</p>
                     {% endif %}
                 </div>
 
