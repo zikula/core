@@ -1,6 +1,9 @@
 services:
     zikula.form.type.locale:
         class: Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType
+        arguments:
+            - "@translator.default"
+            - "@zikula_settings_module.locale_api"
         tags:
             - { name: form.type, alias: zikula_locale }
 

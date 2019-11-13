@@ -70,7 +70,7 @@
         </fieldset>
         <fieldset>
             <legend>{{ __('General settings') }}</legend>
-            {{ form_row(form.useCompression) }}
+            {{ form_row(form.UseCompression) }}
             {% if zlibEnabled is defined and not zlibEnabled %}
             <div class="col-sm-offset-3 col-sm-9">
                 <p class="alert alert-warning">{{ __('Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case.') }}</p>

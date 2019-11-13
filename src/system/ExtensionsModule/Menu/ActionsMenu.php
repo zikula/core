@@ -104,7 +104,7 @@ class ActionsMenu implements ContainerAwareInterface
                 break;
         }
 
-        if (Constant::STATE_INVALID != $extension->getState()) {
+        if (!in_array($extension->getState(), [Constant::STATE_UNINITIALISED, Constant::STATE_INVALID])) {
             $menu->addChild($this->__f('Edit %s', ['%s' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $extension->getId()],

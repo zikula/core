@@ -97,7 +97,7 @@ class CoreExtension extends \Twig_Extension
      */
     public function yesNo($string)
     {
-        if ('0' != $string && '1' != $string) {
+        if (null !== $string && !in_array($string, ['', '0', '1'], true)) {
             return $string;
         }
 

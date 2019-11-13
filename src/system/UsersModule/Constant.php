@@ -253,7 +253,8 @@ namespace Zikula\UsersModule
 
         /**
          * The PCRE regular expression fragment used to validate e-mail address domains.
+         * Note the last part's allowed length is indeed 64 characters (based on RFC 1034), see #3980 for more information.
          */
-        const EMAIL_DOMAIN_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,6}';
+        const EMAIL_DOMAIN_VALIDATION_PATTERN = '(?:[^\\s\\000-\\037\\177\\(\\)<>@,;:\\\\"\\[\\]]\\.?)+\\.[a-z]{2,64}';
     }
 }

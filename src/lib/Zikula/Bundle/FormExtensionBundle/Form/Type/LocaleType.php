@@ -14,38 +14,49 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\IdentityTranslator;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
  * Locale form type.
  */
 class LocaleType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
-     * {@inheritdoc}
+     * @var LocaleApiInterface
      */
+    protected $localeApi;
+
+    public function __construct(TranslatorInterface $translator, LocaleApiInterface $localeApi)
+    {
+        $this->setTranslator($translator);
+        $this->localeApi = $localeApi;
+    }
+
+    public function setTranslator(TranslatorInterface $translator): void
+    {
+        $this->translator = $translator;
+    }
+
     public function configureDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => ['English' => 'en'],
+            'choices' => $this->localeApi->getSupportedLocaleNames(),
             'label' => 'Locale',
             'required' => false,
-            'placeholder' => 'All',
-            'translator' => new IdentityTranslator()
+            'placeholder' => $this->__('All'),
+            'attr' => ['class' => 'locale-switcher-block']
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'zikula_locale';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return ChoiceType::class;

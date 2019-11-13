@@ -63,7 +63,12 @@ class MainController
         $attributes['_controller'] = $controller;
         $subRequest = $request->duplicate(null, null, $attributes);
         list($moduleName) = explode(':', $controller);
+
+        $subRequest->attributes->set('_zkBundle', $moduleName);
         $subRequest->attributes->set('_zkModule', $moduleName);
+        // fix for #3929, #3932
+        $request->attributes->set('_zkBundle', $moduleName);
+        $request->attributes->set('_zkModule', $moduleName);
 
         return $this->kernel
             ->handle($subRequest, HttpKernelInterface::SUB_REQUEST);

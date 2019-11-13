@@ -8,6 +8,16 @@ CHANGELOG - ZIKULA 2.0.x
     - Use constant time comparison in UriSigner (CVE-2019-18887).
     - Prevent argument injection in a MimeTypeGuesser (CVE-2019-18888).
 
+ - Fixes:
+    - Improved setting meta data for start page settings (#3929, #3932).
+    - Clear cache after changing active authentication methods (#3936).
+    - Prevent exception caused by modification of uninitialised extensions.
+    - Fixed invalid reference to "use compression" option in general settings form.
+    - Escape `groups` table name since it became a reserved word in MySQL 8.
+    - Improved input value checks for `yesNo` Twig filter.
+    - Dynamically determine available locales from locale api in custom locale form type.
+    - Increased amount of letters for top level domains in email address validation pattern (#3980).
+
  - Vendor updates:
     - components/bootstrap updated from 3.4.0 to 3.4.1
     - components/jquery updated from 3.3.1 to 3.4.1
