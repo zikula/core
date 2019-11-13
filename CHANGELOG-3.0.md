@@ -49,11 +49,8 @@ CHANGELOG - ZIKULA 3.0.x
     - Check if verification record is already deleted when confirming a changed mail address.
     - Updated listener priorities in Settings module to fix non-working variable localisation (#3934).
     - Fixed broken functionality of hiding submit button in search block.
-    - Improved setting meta data for start page settings (#3929, #3932).
     - Provide more kernel information in coredata (#3651).
-    - Clear cache after changing active authentication methods (#3936).
     - Cosmetical corrections for account link graphics.
-    - Prevent exception caused by modification of uninitialised extensions.
     - Properly consider "user must verify" flag during user creation in ZAuth module (#3964).
     - Removed workaround for older DBAL versions (#2185).
     - Properly handle deleted user groups in permissions module (#3963).
@@ -64,11 +61,6 @@ CHANGELOG - ZIKULA 3.0.x
     - Fixed behaviour of recent searches list.
     - Fixed admin notification email for new registrations which was not done in some cases.
     - Improved asset merger with regards to negative weights (#3978).
-    - Fixed invalid reference to "use compression" option in general settings form.
-    - Escape `groups` table name since it became a reserved word in MySQL 8.
-    - Improved input value checks for `yesNo` Twig filter.
-    - Dynamically determine available locales from locale api in custom locale form type.
-    - Increased amount of letters for top level domains in email address validation pattern (#3980).
 
  - Features:
     - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
@@ -90,7 +82,7 @@ CHANGELOG - ZIKULA 3.0.x
     - composer/ca-bundle updated from 1.1.4 to 1.2.4
     - doctrine/annotations updated from 1.2.7 to 1.8.0
     - doctrine/cache updated from 1.6.2 to 1.9.0
-    - doctrine/collections updated from 1.3.0 to 1.6.3
+    - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.11.0
     - doctrine/dbal updated from 2.5.13 to 2.10.0
     - doctrine/doctrine-bundle updated from 1.6.13 to 1.11.2
@@ -114,17 +106,17 @@ CHANGELOG - ZIKULA 3.0.x
     - liip/imagine-bundle updated from 1.9.1 to 2.2.0
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
-    - monolog/monolog updated from 1.24.0 to 1.25.1
+    - monolog/monolog updated from 1.24.0 to 2.0.1
     - nikic/php-parser updated from 1.4.1 to 4.3.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - psr/log updated from 1.1.0 to 1.1.2
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
-    - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.1
+    - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
     - symfony/contracts installed in 1.1.8
     - symfony/maker-bundle installed in 1.14.3
-    - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
-    - symfony/phpunit-bridge updated from 3.4.14 to 4.3.7
+    - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
+    - symfony/phpunit-bridge updated from 3.4.14 to 4.3.8
     - symfony/polyfill-ctype updated from 1.11.0 to 1.12.0
     - symfony/polyfill-iconv installed in 1.12.0
     - symfony/polyfill-intl-icu updated from 1.11.0 to 1.12.0
@@ -133,7 +125,7 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/polyfill-php72 installed in 1.12.0
     - symfony/polyfill-php73 installed in 1.12.0
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.3.1
-    - symfony/symfony updated from 3.4.26 to 4.3.7
+    - symfony/symfony updated from 3.4.26 to 4.3.8
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.39.1 to 2.12.2
     - vakata/jstree updated from 3.3.7 to 3.3.8

@@ -27,6 +27,7 @@
     "scripts": {
         "zikula-scripts": [
             "Zikula\\Composer\\CopyRequirementsFile::copy",
+            "composer dump-autoload",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",

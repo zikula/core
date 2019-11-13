@@ -116,8 +116,8 @@ class ConfigController extends AbstractController
                 $this->addFlash('status', $this->__('Done! Configuration updated.'));
 
                 // clear cache to reflect the updated state (#3936)
-                $cacheClearer->clear('symfony');
-                $cacheClearer->clear('twig');
+                $this->get('zikula.cache_clearer')->clear('symfony');
+                $this->get('zikula.cache_clearer')->clear('twig');
 
                 return $this->redirectToRoute('zikulausersmodule_config_authenticationmethods');
             }
