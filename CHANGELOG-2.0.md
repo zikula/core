@@ -1,13 +1,37 @@
 CHANGELOG - ZIKULA 2.0.x
 ========================
 
-2.0.14 (unreleased)
+2.0.14 (2019-11-13)
 -------------------
 
- - Fixes:
-    - ?
+ - Security fixes from Symfony:
+    - Use constant time comparison in UriSigner (CVE-2019-18887).
+    - Prevent argument injection in a MimeTypeGuesser (CVE-2019-18888).
 
-
+ - Vendor updates:
+    - components/bootstrap updated from 3.4.0 to 3.4.1
+    - components/jquery updated from 3.3.1 to 3.4.1
+    - composer/ca-bundle updated from 1.1.4 to 1.2.4
+    - composer/installers updated from v1.6.0 to v1.7.0
+    - doctrine/lexer updated from v1.0.1 to 1.0.2
+    - guzzlehttp/guzzle updated from 6.3.3 to 6.4.1
+    - guzzlehttp/psr7 updated from 1.5.2 to 1.6.1
+    - monolog/monolog updated from 1.24.0 to 1.25.2
+    - phpspec/prophecy updated from 1.8.0 to 1.9.0
+    - psr/log updated from 1.1.0 to 1.1.2
+    - sensio/distribution-bundle updated from v5.0.24 to v5.0.25
+    - symfony/polyfill-apcu updated from v1.11.0 to v1.12.0
+    - symfony/polyfill-ctype updated from v1.11.0 to v1.12.0
+    - symfony/polyfill-intl-icu updated from v1.11.0 to v1.12.0
+    - symfony/polyfill-mbstring updated from v1.11.0 to v1.12.0
+    - symfony/polyfill-php56 updated from v1.11.0 to v1.12.0
+    - symfony/polyfill-php70 updated from v1.11.0 to v1.12.0
+    - symfony/polyfill-util updated from v1.11.0 to v1.12.0
+    - symfony/symfony updated from v3.4.26 to v3.4.35
+    - twig/twig updated from v1.39.1 to v1.42.4
+    - vakata/jstree updated from 3.3.7 to 3.3.8
+    - webmozart/assert updated from 1.4.0 to 1.5.0
+  
 2.0.13 (2019-04-17)
 -------------------
 
