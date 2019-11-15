@@ -72,9 +72,13 @@ class UserEventListener implements EventSubscriberInterface
                 if (0 === strpos($url, $httpRoot)) {
                     $url = str_replace($httpRoot, '', $url);
                 }
-                $pathInfo = $this->router->match($url);
-                if ($pathInfo['_route']) {
-                    $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+                try {
+                    $pathInfo = $this->router->match($url);
+                    if ($pathInfo['_route']) {
+                        $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
+                    }
+                } catch (\Exception $exception) {
+                    // nothing
                 }
             }
             $this->session->set('_locale', $locale);

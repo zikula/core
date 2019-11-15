@@ -5,8 +5,7 @@ CHANGELOG - ZIKULA 2.0.x
 -------------------
 
  - Fixes:
-    - ?
-
+    - Prevent exception caused by invalid return URL during login.
 
 
 2.0.14 (2019-11-13)
@@ -49,7 +48,8 @@ CHANGELOG - ZIKULA 2.0.x
     - twig/twig updated from v1.39.1 to v1.42.4
     - vakata/jstree updated from 3.3.7 to 3.3.8
     - webmozart/assert updated from 1.4.0 to 1.5.0
-  
+
+
 2.0.13 (2019-04-17)
 -------------------
 
