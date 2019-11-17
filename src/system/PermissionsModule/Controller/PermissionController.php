@@ -97,7 +97,7 @@ class PermissionController extends AbstractController
             $permissionEntity = $form->getData();
             $pid = $permissionEntity->getPid();
             if (null === $pid) {
-                if ($permissionEntity->getSequence() == -1) {
+                if (-1 == $permissionEntity->getSequence()) {
                     $permissionEntity->setSequence($this->get('zikula_permissions_module.permission_repository')->getMaxSequence() + 1); // last
                 } else {
                     $this->get('zikula_permissions_module.permission_repository')->updateSequencesFrom($permissionEntity->getSequence(), 1); // insert

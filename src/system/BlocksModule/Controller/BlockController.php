@@ -189,7 +189,7 @@ class BlockController extends AbstractController
             return new ForbiddenResponse($this->__('No permission for this action.'));
         }
         $bid = $request->request->get('bid', -1);
-        if ($bid == -1) {
+        if (-1 == $bid) {
             return new FatalResponse($this->__('No block ID passed.'));
         }
         $em = $this->getDoctrine()->getManager();
