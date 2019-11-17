@@ -30,7 +30,7 @@ class ManageApplicationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $options['translator'];
-        $reason = $options['data']['theAction'] == 'accept'
+        $reason = 'accept' == $options['data']['theAction']
             ? $translator->__('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
             : $translator->__('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.');
         $builder
@@ -52,8 +52,8 @@ class ManageApplicationType extends AbstractType
                 ],
             ])
             ->add('save', SubmitType::class, [
-                'label' => $options['data']['theAction'] == 'deny' ? $translator->__('Deny') : $translator->__('Accept'),
-                'icon' => $options['data']['theAction'] == 'deny' ? 'fa-user-times' : 'fa-user-plus',
+                'label' => 'deny' == $options['data']['theAction'] ? $translator->__('Deny') : $translator->__('Accept'),
+                'icon' => 'deny' == $options['data']['theAction'] ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
