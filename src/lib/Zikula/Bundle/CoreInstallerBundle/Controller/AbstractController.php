@@ -134,7 +134,7 @@ abstract class AbstractController
         if (isset($modulesCategories[$translatedCategoryName])) {
             $moduleRepository->setModuleCategory($moduleEntity, $modulesCategories[$translatedCategoryName]);
         } else {
-            $defaultCategoryId = $this->container->get(VariableApi::class)->get('ZikulaSettingsModule', 'defaultcategory', 5);
+            $defaultCategoryId = $this->container->get(VariableApi::class)->get('ZikulaAdminModule', 'defaultcategory', 5);
             $defaultCategory = $categoryRepository->find($defaultCategoryId);
             $moduleRepository->setModuleCategory($moduleEntity, $defaultCategory);
         }
