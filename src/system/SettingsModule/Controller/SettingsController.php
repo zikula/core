@@ -64,8 +64,10 @@ class SettingsController extends AbstractController
         $profileModules = $profileModuleCollector->getKeys();
         $messageModules = $messageModuleCollector->getKeys();
 
+        $variables = $variableApi->getAll(VariableApi::CONFIG);
+        $variables['UseCompression'] = (bool)$variables['UseCompression'];
         $form = $this->createForm(MainSettingsType::class,
-            $variableApi->getAll(VariableApi::CONFIG), [
+            $variables, [
                 'languages' => $installedLanguageNames,
                 'profileModules' => $this->formatModuleArrayForSelect($extensionRepository, $profileModules),
                 'messageModules' => $this->formatModuleArrayForSelect($extensionRepository, $messageModules)

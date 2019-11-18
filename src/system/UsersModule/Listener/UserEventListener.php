@@ -79,7 +79,7 @@ class UserEventListener implements EventSubscriberInterface
                 if ($pathInfo['_route']) {
                     $event->setArgument('returnUrl', $this->router->generate($pathInfo['_route'], ['_locale' => $locale]));
                 }
-            } catch (MethodNotAllowedException $exception) {
+            } catch (\Exception $exception) {
                 // ignore
             }
         }
