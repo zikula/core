@@ -49,8 +49,10 @@ class SettingsController extends AbstractController
         $profileModules = $this->get('zikula_users_module.internal.profile_module_collector')->getKeys();
         $messageModules = $this->get('zikula_users_module.internal.message_module_collector')->getKeys();
 
+        $variables = $this->getSystemVars();
+        $variables['UseCompression'] = (bool)$variables['UseCompression'];
         $form = $this->createForm(MainSettingsType::class,
-            $this->getSystemVars(),
+            $variables,
             [
                 'translator' => $this->get('translator.default'),
                 'languages' => $installedLanguageNames,

@@ -7,6 +7,7 @@ CHANGELOG - ZIKULA 2.0.x
  - Fixes:
     - Prevent exception caused by invalid return URL during login.
     - Updated listener priorities in Settings module to fix non-working variable localisation (#3934).
+    - Fixed regression in settings page (#3983).
 
 
 2.0.14 (2019-11-13)
