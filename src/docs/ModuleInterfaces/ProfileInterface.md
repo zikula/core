@@ -13,18 +13,33 @@ The interface requires:
     /**
      * Display a module-defined user display name (e.g. set by the user) or display the uname as defined by the UserModule
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
-     * @param null $uid
-     * @return string
-     * @throws \InvalidArgumentException if provided $uid is not null and invalid
+     *
+     * @param int|string $userId The user's id or name
+     * @throws InvalidArgumentException if provided $userId is not null and invalid
      */
-    public function getDisplayName($uid = null);
+    public function getDisplayName($userId = null): string;
 
     /**
+     * Get the url to a user's profile.
      * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
-     * @param null $uid
-     * @return string
-     * @throws \InvalidArgumentException if provided $uid is not null and invalid
+     *
+     * @param int|string $userId The user's id or name
+     * @throws InvalidArgumentException if provided $userId is not null and invalid
      */
-    public function getProfileUrl($uid = null);
+    public function getProfileUrl($userId = null): string;
 
-These methods are used in the Core's twig filters - `profileLinkByUserId` and `profileLinkByUserName`
+    /**
+     * Get the avatar image for a given user.
+     * If uid is undefined, use CurrentUserApi to check loggedIn status and obtain and use the current user's uid
+     *
+     * @param int|string $userId The user's id or name
+     * @throws InvalidArgumentException if provided $userId is not null and invalid
+     */
+    public function getAvatar($userId = null, array $parameters = []): string;
+
+    /**
+     * Return the name of the providing bundle.
+     */
+    public function getBundleName(): string;
+
+These methods are used in the Core's twig filters - `userAvatar`, `profileLinkByUserId` and `profileLinkByUserName`
