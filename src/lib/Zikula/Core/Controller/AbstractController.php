@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Throwable;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
@@ -108,7 +109,7 @@ abstract class AbstractController extends BaseController
      * Returns a NotFoundHttpException; this will result in a 404 response code.
      * Usage example: throw $this->createNotFoundException();
      */
-    public function createNotFoundException(string $message = null, Exception $previous = null): NotFoundHttpException
+    public function createNotFoundException(string $message = 'Not Found', ?Throwable $previous = null): NotFoundHttpException
     {
         $message = $message ?? $this->__('Page not found');
 
@@ -119,7 +120,7 @@ abstract class AbstractController extends BaseController
      * Returns a AccessDeniedException; this will result in a 403 response code.
      * Usage example: throw $this->createAccessDeniedException();
      */
-    public function createAccessDeniedException(string $message = null, Exception $previous = null): AccessDeniedException
+    public function createAccessDeniedException(string $message = 'Access Denied', ?Throwable $previous = null): AccessDeniedException
     {
         //Do not translate Access denied. to ensure that the ExceptionListener is able to catch the message also in other languages.
         $message = $message ?? 'Access denied.';
