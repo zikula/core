@@ -29,30 +29,27 @@ jQuery( document ).ready(function( $ ) {
         indicateStageStarted(stageitem);
         $.ajax({
             type: 'POST',
+            url: Routing.generate(route),
             data: {
                 stage: stagename
-            },
-            url: Routing.generate(route),
-            success: function(data, textStatus, jqXHR) {
-                if (1 === data.status) {
-                    indicateStageSuccessful(stageitem);
-                } else {
-                    indicateStageFailure(stageitem);
-                }
-                if ((typeof data.results !== 'undefined') && (data.results.length > 0)) {
-                    stageitem.append(getResultTable(data.results));
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                indicateStageFailure(stageitem);
-                alert(jqXHR.responseText);
-            },
-            complete: function(jqXHR, textStatus) {
-                indicateStageComplete(stageitem);
-                var nextstage = getNextStage(stagename);
-                updateProgressBar(nextstage);
-                processStage(nextstage)
             }
+        }).done(function (data, textStatus, jqXHR) {
+            if (1 === data.status) {
+                indicateStageSuccessful(stageitem);
+            } else {
+                indicateStageFailure(stageitem);
+            }
+            if ((typeof data.results !== 'undefined') && (data.results.length > 0)) {
+                stageitem.append(getResultTable(data.results));
+            }
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            indicateStageFailure(stageitem);
+            alert(jqXHR.responseText);
+        }).always(function(jqXHR, textStatus) {
+            indicateStageComplete(stageitem);
+            var nextstage = getNextStage(stagename);
+            updateProgressBar(nextstage);
+            processStage(nextstage)
         });
     }
 

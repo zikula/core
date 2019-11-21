@@ -17,8 +17,7 @@
                 data: {
                     bid: bid
                 }
-            })
-            .done(function(data) {
+            }).done(function (data) {
                 if (a.hasClass('label-success')) {
                     a.removeClass('label-success')
                         .addClass('label-danger')
@@ -32,11 +31,10 @@
                         .attr('title', Translator.__('Click to deactivate block'))
                     ; 
                 }
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
             })
-            .fail(function(jqXHR, textStatus) {
-                alert('Error: ' + textStatus);
-            })
-            .always(function() {
+            .always(function () {
                 $('#spin' + bid).remove();
             });
         });

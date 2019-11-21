@@ -20,10 +20,9 @@
 
                 $.ajax({
                     url: Routing.generate('zikulaadminmodule_ajax_sortcategories'),
-                    data: {admintabs: tab},
-                    error: function (response) {
-                        alert($.parseJSON(response.responseText).core.statusmsg);
-                    }
+                    data: { admintabs: tab }
+                }).fail(function (jqXHR, textStatus) {
+                    alert('Request failed: ' + textStatus);
                 });
              },
         });
@@ -60,28 +59,26 @@
                 url: Routing.generate('zikulaadminmodule_ajax_addcategory'),
                 data: {
                     name: name
-                },
-                success: function (data) {
-                    var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
-                                 '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
-                                 '">'+
-                                 '<span class="fa fa-arrows admintabs-unlock"></span> '+
-                                 data.name+
-                                 ' <span class="fa fa-caret-down"></span>'+
-                                 '</a>'+
-                                 '<ul class="admintabs-new dropdown-menu"></ul>'+
-                                 '</li>';
-                    $('#admintabs .admintabs-add').before(newtab);
-                    for (var i = 0; i < 6; i++) {
-                        $('#admintabs ul:first > li:nth-child('+i+')').clone().appendTo('.admintabs-new')
-                    }
-                    $('.admintabs-new').removeClass('admintabs-new');
-                    $('#admintabs-add a').popover('hide');
-                },
-                error: function (response) {
-                    alert($.parseJSON(response.responseText).core.statusmsg);
                 }
-            })
+            }).done(function (data) {
+                var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
+                                '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
+                                '">'+
+                                '<span class="fa fa-arrows admintabs-unlock"></span> '+
+                                data.name+
+                                ' <span class="fa fa-caret-down"></span>'+
+                                '</a>'+
+                                '<ul class="admintabs-new dropdown-menu"></ul>'+
+                                '</li>';
+                $('#admintabs .admintabs-add').before(newtab);
+                for (var i = 0; i < 6; i++) {
+                    $('#admintabs ul:first > li:nth-child('+i+')').clone().appendTo('.admintabs-new')
+                }
+                $('.admintabs-new').removeClass('admintabs-new');
+                $('#admintabs-add a').popover('hide');
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
+            });
         });
 
         /*******************************************************************************
@@ -121,13 +118,11 @@
                     data: {
                         modid: ui.draggable.data('modid'),
                         cat: categoryId
-                    },
-                    success: function(data) {
-                        ui.draggable.remove();
-                    },
-                    error: function (response) {
-                        alert($.parseJSON(response.responseText).core.statusmsg);
                     }
+                }).done(function (data) {
+                    ui.draggable.remove();
+                }).fail(function (jqXHR, textStatus) {
+                    alert('Request failed: ' + textStatus);
                 });
             }
         });
@@ -148,10 +143,9 @@
                 });
                 $.ajax({
                     url: Routing.generate('zikulaadminmodule_ajax_sortmodules'),
-                    data: { modules: modules },
-                    error: function (response) {
-                        alert($.parseJSON(response.responseText).core.statusmsg);
-                    }
+                    data: { modules: modules }
+                }).fail(function (jqXHR, textStatus) {
+                    alert('Request failed: ' + textStatus);
                 });
             },
         });
@@ -225,14 +219,12 @@
             var elem = $(this);
             $.ajax({
                 url: Routing.generate('zikulaadminmodule_ajax_defaultcategory'),
-                data: {cid: catid},
-                success: function() {
-                    $('.admintabs-makedefault').removeClass('hide');
-                    elem.addClass('hide');
-                },
-                error: function (response) {
-                    alert($.parseJSON(response.responseText).core.statusmsg);
-                }
+                data: { cid: catid }
+            }).done(function () {
+                $('.admintabs-makedefault').removeClass('hide');
+                elem.addClass('hide');
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
             });
         });
 
@@ -246,13 +238,11 @@
             var catid = li.data('catid');
             $.ajax({
                 url: Routing.generate('zikulaadminmodule_ajax_deletecategory'),
-                data: {cid: catid},
-                success: function () {
-                    li.remove();
-                },
-                error: function (response) {
-                    alert($.parseJSON(response.responseText).core.statusmsg);
-                }
+                data: { cid: catid }
+            }).done(function () {
+                li.remove();
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
             });
         });
 
@@ -278,13 +268,11 @@
                 data: {
                     cid: renameCategoryId,
                     name: name
-                },
-                success: function() {
-                    renameTitleElement.text(name);
-                },
-                error: function (response) {
-                    alert($.parseJSON(response.responseText).core.statusmsg);
                 }
+            }).done(function () {
+                renameTitleElement.text(name);
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
             });
         });
     });

@@ -28,10 +28,9 @@ var currentDelete;
                     type: 'POST',
                     data: {
                         permorder: parameters
-                    },
-                    success: function (result) {
-                        console.log(result);
                     }
+                }).done(function (data) {
+                    //console.log(data);
                 });
             }
         });
@@ -43,21 +42,21 @@ var currentDelete;
             event.preventDefault();
             $(this).find('.fa').addClass('fa-spin');
             var pars = {};
-            var id = event.data.action === 'edit' ? $(this).parents("tr").data('id') : 'undefined';
-            if (event.data.action === 'new') {
+            var id = 'edit' === event.data.action ? $(this).parents("tr").data('id') : 'undefined';
+            if ('new' === event.data.action) {
                 pars.sequence = $(this).hasClass('insertBefore') ? $(this).parents("tr").data("id") : -1;
             }
             $.ajax({
                 type: 'POST',
                 url: Routing.generate('zikulapermissionsmodule_permission_edit', {pid: id}),
                 data: pars
-            }).done(function(data) {
+            }).done(function (data) {
                 var modal = $('#editModal');
                 modal.find('.modal-body').html(data.view);
                 modal.modal();
-            }).fail(function(result) {
-                alert(result.status + ': ' + result.statusText);
-            }).always(function() {
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
+            }).always(function () {
             });
         }
 
@@ -84,7 +83,7 @@ var currentDelete;
                     pid: pid
                 }),
                 data: pars
-            }).done(function(data) {
+            }).done(function (data) {
                 if (data.view) {
                     // validation failed
                     updateEditForm(data.view);
@@ -109,9 +108,9 @@ var currentDelete;
                         initRowHandlers();
                     }
                 }
-            }).fail(function(result) {
-                alert(result.status + ': ' + result.statusText);
-            }).always(function() {
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
+            }).always(function () {
                 $('#editModal').modal('hide');
             });
         });
@@ -129,10 +128,9 @@ var currentDelete;
         $('#confirm-delete-permission').click(function () {
             $.ajax({
                 url: Routing.generate('zikulapermissionsmodule_permission_delete', {pid: currentDelete.data('id')}),
-                type: 'POST',
-                success: function () {
-                    currentDelete.remove();
-                }
+                type: 'POST'
+            }).done(function () {
+                currentDelete.remove();
             });
         });
 
@@ -163,10 +161,9 @@ var currentDelete;
                 url: Routing.generate('zikulapermissionsmodule_permission_test'),
                 dataType: 'json',
                 type: 'POST',
-                data: pars,
-                success: function (result) {
-                    $permissionTestInfo.html(result.data.testresult);
-                }
+                data: pars
+            }).done(function (data) {
+                $permissionTestInfo.html(data.testresult);
             });
         });
         $('#zikulapermissionsmodule_permissioncheck_reset').click(function (event) {

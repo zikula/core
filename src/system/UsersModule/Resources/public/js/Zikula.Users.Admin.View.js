@@ -3,7 +3,6 @@
 (function($) {
 
     var lastFragment = null;
-    var ajax = null;
     var queryId = 0;
     var resultStore = {};
 
@@ -83,27 +82,26 @@
             // get search result from database
             // route must be defined as a data-attribute of the text field e.g. data-route="my_special_route"
             // route-params *may* also be defined if desired and they will be included e.g. data-route-params='{"gid":"{{ group.gid }}"}'
-            ajax = $.ajax({
+            $.ajax({
                 url: Routing.generate($(this).data('route'), $(this).data('route-params')),
                 dataType: 'html',
                 type: 'POST',
                 data: {
                     'fragment': fragment
-                },
-                success: function (data) {
-                    userSearchListTable.find('tbody').empty().append(data);
-                    resultStore[fragment] = data;
+                }
+            }).done(function (data) {
+                userSearchListTable.find('tbody').empty().append(data);
+                resultStore[fragment] = data;
 
-                    if (currentQueryId != queryId) {
-                        userSearchListTable.find('tbody tr').each(function() {
-                            var $this = $(this);
-                            var username = $this.children().first().text();
-                            if (username.indexOf(lastFragment) === -1) {
-                                $this.remove();
-                            }
-                            resultStore[lastFragment] = userSearchListTable.find('tbody').html();
-                        });
-                    }
+                if (currentQueryId != queryId) {
+                    userSearchListTable.find('tbody tr').each(function() {
+                        var $this = $(this);
+                        var username = $this.children().first().text();
+                        if (username.indexOf(lastFragment) === -1) {
+                            $this.remove();
+                        }
+                        resultStore[lastFragment] = userSearchListTable.find('tbody').html();
+                    });
                 }
             });
             lastFragment = fragment;

@@ -121,11 +121,11 @@
                 type: 'POST',
                 url: Routing.generate('zikulamenumodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
-            }).done(function(data) {
+            }).done(function (data) {
                 performContextMenuActionCallback(data);
-            }).fail(function(result) {
-                alert(result.status + ': ' + result.statusText);
-            }).always(function() {
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
+            }).always(function () {
                 $('#temp-spinner').remove();
                 redrawTree(treeElem);
             });
@@ -254,14 +254,14 @@
                                 data: {
                                     id: $(node).attr('id').replace(id_prefix, '')
                                 }
-                            }).done(function(data) {
+                            }).done(function (data) {
                                 var children_move = data.result;
                                 deleteModal.find('.modal-body').append(children_move);
                                 deleteModal.find('#node_delete_move').hide();
                                 deleteModal.find('#node_delete_move_action').show();
-                            }).fail(function(result) {
-                                alert(result.status + ': ' + result.statusText);
-                            }).always(function() {
+                            }).fail(function (jqXHR, textStatus) {
+                                alert('Request failed: ' + textStatus);
+                            }).always(function () {
                                 $('#button-spinner').remove();
                             });
                         } else {
@@ -346,10 +346,10 @@
                     parent: data.parent,
                     position: data.position
                 }
-            }).done(function(data) {
-                console.log(data);
-            }).fail(function(result) {
-                alert(result.status + ': ' + result.statusText);
+            }).done(function (data) {
+                //console.log(data);
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
             });
         }
     });

@@ -77,16 +77,16 @@ CHANGELOG - ZIKULA 3.0.x
 
  - Vendor updates:
     - doctrine/annotations updated from 1.2.7 to 1.8.0
-    - doctrine/cache updated from 1.6.2 to 1.9.0
+    - doctrine/cache updated from 1.6.2 to 1.9.1
     - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.11.0
     - doctrine/dbal updated from 2.5.13 to 2.10.0
-    - doctrine/doctrine-bundle updated from 1.6.13 to 1.11.2
+    - doctrine/doctrine-bundle updated from 1.6.13 to 1.12.0
     - doctrine/event-manager installed in 1.1.0
     - doctrine/inflector updated from 1.1.0 to 1.3.1
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
     - doctrine/lexer updated from 1.0.2 to 1.2.0
-    - doctrine/orm updated from 2.5.14 to 2.6.4
+    - doctrine/orm updated from 2.5.14 to 2.7.0
     - doctrine/persistence installed in 1.2.0
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.11
@@ -113,14 +113,14 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/polyfill-intl-idn installed in 1.11.0
     - symfony/polyfill-php72 installed in 1.12.0
     - symfony/polyfill-php73 installed in 1.12.0
-    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.3.1
+    - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
     - symfony/symfony updated from 3.4.35 to 4.3.8
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.42.4 to 2.12.2
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to 3.2.5
-    - zikula/pagelock-module updated from 1.2.3 to 1.3.5
+    - zikula/pagelock-module updated from 1.2.3 to 1.3.6
     - zikula/profile-module updated from 3.0.6 to 3.1.10
     - zikula/oauth-module updated from 1.0.4 to 1.1.1
     - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2

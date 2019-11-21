@@ -172,11 +172,11 @@
                 type: 'POST',
                 url: Routing.generate('zikulacategoriesmodule_node_contextmenu', {action: action, id: entityId}),
                 data: pars
-            }).done(function(data) {
+            }).done(function (data) {
                 performContextMenuActionCallback(data);
-            }).fail(function(result) {
-                alert(result.status + ': ' + result.statusText);
-            }).always(function() {
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
+            }).always(function () {
                 $('#temp-spinner').remove();
             });
 
@@ -235,14 +235,14 @@
                             type: 'POST',
                             url: Routing.generate('zikulacategoriesmodule_node_contextmenu', {action: data.action, id: entityId}),
                             data: pars
-                        }).done(function(data) {
+                        }).done(function (data) {
                             if (data.action) {
                                 // validation failed
                                 updateEditForm(data.result);
                             } else {
                                 var nodeData = $.parseJSON(data.node);
                                 var editedNode;
-                                if (data.mode === 'edit') {
+                                if ('edit' === data.mode) {
                                     // rename the existing node
                                     editedNode = treeElem.jstree('get_node', nodeData.id);
                                     treeElem.jstree(true).rename_node(editedNode, nodeData.display_name[Translator.locale]);
@@ -257,8 +257,8 @@
                                 treeElem.jstree(true).set_type(editedNode, nodeType);
                                 closeEditForm();
                             }
-                        }).fail(function(result) {
-                            alert(result.status + ': ' + result.statusText);
+                        }).fail(function (jqXHR, textStatus) {
+                            alert('Request failed: ' + textStatus);
                         });
 
                         return true;
@@ -382,10 +382,10 @@
                     parent: data.parent,
                     position: data.position
                 }
-            }).done(function(data) {
+            }).done(function (data) {
                 //console.log(data);
-            }).fail(function(result) {
-                alert(result.status + ': ' + result.statusText);
+            }).fail(function (jqXHR, textStatus) {
+                alert('Request failed: ' + textStatus);
             });
         }
     });

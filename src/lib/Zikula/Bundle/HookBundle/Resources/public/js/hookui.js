@@ -150,7 +150,7 @@ var cloneDraggedItem = true;
                 subscriberarea: sarea,
                 providerarea: parea
             }
-        }).done(function(data) {
+        }).done(function (data) {
             if ('bind' === data.action) {
                 if (!appendItemBeforeResponse) {
                     appendProviderAreaToSubscriberArea(data.subscriberarea_id, data.subscriberarea, data.providerarea_id);
@@ -160,8 +160,8 @@ var cloneDraggedItem = true;
                     removeProviderAreaFromSubscriberArea(data.subscriberarea_id, data.providerarea_id)
                 }
             }
-        }).fail(function(result) {
-            alert(result.status + ': ' + result.statusText);
+        }).fail(function (jqXHR, textStatus) {
+            alert('Request failed: ' + textStatus);
         });
     };
 
@@ -288,11 +288,11 @@ var cloneDraggedItem = true;
         $.ajax({
             url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
             data: parameters
-        }).done(function(data) {
+        }).done(function (data) {
             // update new sort order
             recolorListElements(listId, $('#' + listId).down(0).attr('id'));
-        }).fail(function(result) {
-            alert(result.status + ': ' + result.statusText);
+        }).fail(function (jqXHR, textStatus) {
+            alert('Request failed: ' + textStatus);
         });
     };
 

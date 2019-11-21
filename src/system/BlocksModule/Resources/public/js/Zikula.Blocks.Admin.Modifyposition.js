@@ -40,14 +40,12 @@
                         position: $('#position').data('position'),
                         blockorder: blockOrder
                     }
-                })
-                .done(function(data) {
+                }).done(function (data) {
                     $('#feedback').fadeIn(200).fadeOut(3500);
                     //var descriptionDiv = $('#zikulablocksmodule_block_description').parents('.form-group');
                     //descriptionDiv.after(data);
-                })
-                .fail(function(jqXHR, textStatus) {
-                    alert('Error: ' + textStatus);
+                }).fail(function (jqXHR, textStatus) {
+                    alert('Request failed: ' + textStatus);
                 })
             }
         }).disableSelection();
