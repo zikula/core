@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Core\Controller;
 
-use Exception;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\HttpFoundation\Response;
