@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
-use Requirement;
+use Symfony\Requirements\Requirement;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
-use SymfonyRequirements;
+use Symfony\Requirements\SymfonyRequirements;
 
 /**
  * Portions of this class copied from or inspired by the Symfony Installer (@see https://github.com/symfony/symfony-installer)
@@ -31,9 +31,10 @@ class ZikulaRequirements
     public function runSymfonyChecks(array $parameters = []): void
     {
         try {
-            $path = dirname(__DIR__, 5) . '/var/SymfonyRequirements.php';
+            $rootDir = dirname(__DIR__, 5);
+            $path = $rootDir . '/var/SymfonyRequirements.php';
             require_once $path;
-            $symfonyRequirements = new SymfonyRequirements();
+            $symfonyRequirements = new SymfonyRequirements($rootDir);
             $this->addZikulaPathRequirements($symfonyRequirements, $parameters);
 
             foreach ($symfonyRequirements->getRequirements() as $req) {

@@ -14,20 +14,19 @@ declare(strict_types=1);
 namespace Zikula\Composer;
 
 use Composer\Script\Event;
-use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler;
 use Symfony\Component\Filesystem\Filesystem;
 
-class CopyRequirementsFile extends ScriptHandler
+class CopyRequirementsFile
 {
     public static function copy(Event $event): void
     {
-        $options = static::getOptions($event);
-        $fs = new Filesystem();
+        $varDir = $event->getComposer()->getPackage()->getExtra()['symfony-var-dir'];
 
-        $varDir = $options['symfony-var-dir'];
-        if (!static::hasDirectory($event, 'symfony-var-dir', $varDir, 'install the requirements files')) {
+        if (empty($varDir) || !is_dir($varDir)) {
+            $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'symfony-var-dir', $varDir, getcwd(), 'install the requirements files'));
             return;
         }
-        $fs->copy(__DIR__ . '/../../../vendor/sensio/distribution-bundle/Resources/skeleton/app/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
+        $fs = new Filesystem();
+        $fs->copy(__DIR__ . '/../../../vendor/symfony/requirements-checker/src/SymfonyRequirements.php', $varDir . '/SymfonyRequirements.php', true);
     }
 }

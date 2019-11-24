@@ -1,6 +1,8 @@
 /composer
 /composer.phar
 /bin/
+/src/bin/*
+!/src/bin/console
 /src/app/config/custom_*.yml
 /src/app/config/dynamic/*
 !/src/app/config/dynamic/default.yml
@@ -15,6 +17,7 @@
 /src/web/*
 !/src/web/uploads/
 /.vagrant
+
 
 !/test_dbs/*.sql
 /src/lib/Zikula/Bundle/CoreBundle/Tests/Functional/cache/

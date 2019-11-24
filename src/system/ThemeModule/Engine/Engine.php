@@ -141,7 +141,7 @@ class Engine
     /**
      * @api Core-2.0
      */
-    public function getTheme(): AbstractTheme
+    public function getTheme(): ?AbstractTheme
     {
         if (!isset($this->activeThemeBundle) && $this->kernel->getContainer()->getParameter('installed')) {
             $this->setActiveTheme();

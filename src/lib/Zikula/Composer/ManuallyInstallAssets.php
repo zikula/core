@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Composer;
 
 use Composer\Script\Event;
-use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -22,7 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
  *
  * Manually install vendor assets to a defined path in the web directory.
  */
-class ManuallyInstallAssets extends ScriptHandler
+class ManuallyInstallAssets
 {
     /**
      * @var array
@@ -38,13 +37,14 @@ class ManuallyInstallAssets extends ScriptHandler
 
     public static function install(Event $event): void
     {
-        $options = static::getOptions($event);
-        $webDir = $options['symfony-web-dir'];
-        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
-        if (!static::hasDirectory($event, 'symfony-web-dir', $webDir, 'manually install assets')) {
+        $webDir = $event->getComposer()->getPackage()->getExtra()['symfony-web-dir'];
+        if (!is_dir($webDir)) {
+            $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'symfony-web-dir', $webDir, getcwd(), 'manually install assets'));
             return;
         }
-        if (!static::hasDirectory($event, 'vendor-dir', $vendorDir, 'manually install assets')) {
+        $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+        if (!is_dir($vendorDir)) {
+            $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'vendor-dir', $vendorDir, getcwd(), 'manually install assets'));
             return;
         }
         $fs = new Filesystem();

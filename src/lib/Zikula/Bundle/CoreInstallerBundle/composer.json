@@ -14,6 +14,8 @@
     "require": {
         "php": ">=7.2.0",
         "symfony/framework-bundle": "4.*",
+        "symfony/console": "^4.3",
+        "symfony/requirements-checker": "1.*",
         "matthiasnoback/symfony-console-form": "3.*",
         "zikula/wizard": "3.*"
     },
