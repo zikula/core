@@ -39,7 +39,7 @@ class ZikulaKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
+//            new Liip\ImagineBundle\LiipImagineBundle(),
             new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
             new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
             new Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle(),
