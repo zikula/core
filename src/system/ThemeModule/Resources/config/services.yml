@@ -11,8 +11,10 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
+  # public because CoreInstallerBundle::AbstractController accesses this using container
     Zikula\ThemeModule\Helper\:
         resource: '../../Helper/*'
+        public: true
         lazy: true
 
     Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
@@ -133,3 +135,14 @@ services:
     Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
         arguments:
           $active: '%zikula_asset_manager.combine%'
+
+    # this is needed in ThemeModuleInstaller
+    Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository:
+        public: true
+        factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+        arguments:
+          - "ZikulaThemeModule:ThemeEntity"
+        calls:
+          - method: setKernel
+            arguments:
+              - '@kernel'
