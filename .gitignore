@@ -14,6 +14,7 @@
 !/src/themes/RssTheme
 /src/app/Resources/translations/*
 /src/vendor/
+/vendor/
 /src/web/*
 !/src/web/uploads/
 /.vagrant
