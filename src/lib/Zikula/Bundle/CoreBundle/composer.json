@@ -45,7 +45,6 @@
         "zikula/filesystem": "1.*",
 
         "oyejorge/less.php": "dev-master",
-        "liip/imagine-bundle": "2.*",
 
         "zikula/generator-bundle": "3.*"
     },
