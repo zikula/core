@@ -59,7 +59,7 @@ class FrontControllerListener implements EventSubscriberInterface
         VariableApiInterface $variableApi,
         AssetBag $headerAssetBag,
         bool $installed,
-        bool $isUpgrading = false
+        $isUpgrading = false // cannot cast to bool because set with expression language
     ) {
         $this->router = $router;
         $this->permissionApi = $permissionApi;

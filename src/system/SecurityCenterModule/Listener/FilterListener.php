@@ -77,7 +77,7 @@ class FilterListener implements EventSubscriberInterface
 
     public function __construct(
         bool $installed,
-        bool $isUpgrading,
+        $isUpgrading, // cannot cast to bool because set with expression language
         VariableApiInterface $variableApi,
         EntityManagerInterface $em,
         MailerApiInterface $mailer,

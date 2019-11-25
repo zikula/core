@@ -52,7 +52,7 @@ class CollapseableBlockListener implements EventSubscriberInterface
         VariableApiInterface $variableApi,
         Asset $assetHelper,
         bool $installed,
-        bool $isUpgrading = false
+        $isUpgrading = false // cannot cast to bool because set with expression language
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->variableApi = $variableApi;

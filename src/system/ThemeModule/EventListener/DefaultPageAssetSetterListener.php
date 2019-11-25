@@ -68,7 +68,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         string $bootstrapJavascriptPath,
         string $bootstrapFontAwesomeStylesheetPath,
         string $fontAwesomePath,
-        string $bootstrapStylesheetPath
+        $bootstrapStylesheetPath // cannot cast to bool because set with expression language
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
