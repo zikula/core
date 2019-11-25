@@ -24,6 +24,7 @@ class CopyRequirementsFile
 
         if (empty($varDir) || !is_dir($varDir)) {
             $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'symfony-var-dir', $varDir, getcwd(), 'install the requirements files'));
+
             return;
         }
         $fs = new Filesystem();

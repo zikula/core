@@ -40,11 +40,13 @@ class ManuallyInstallAssets
         $webDir = $event->getComposer()->getPackage()->getExtra()['symfony-web-dir'];
         if (!is_dir($webDir)) {
             $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'symfony-web-dir', $webDir, getcwd(), 'manually install assets'));
+
             return;
         }
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
         if (!is_dir($vendorDir)) {
             $event->getIO()->write(sprintf('The %s (%s) specified in composer.json was not found in %s, can not %s.', 'vendor-dir', $vendorDir, getcwd(), 'manually install assets'));
+
             return;
         }
         $fs = new Filesystem();
