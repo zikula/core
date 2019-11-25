@@ -29,6 +29,7 @@ before_install:
     - composer run-script post-install-cmd
 
     - cd src
+    - php bin/console lint:container
     - php bin/console lint:yaml app/config/
     - php bin/console lint:yaml system/ --parse-tags
     - php bin/console lint:yaml themes/
