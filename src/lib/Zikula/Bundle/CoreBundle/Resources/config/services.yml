@@ -51,7 +51,7 @@ services:
 
     Zikula\Core\LinkContainer\LinkContainerCollector:
         arguments:
-          $linkContainers: !tagged zikula.link_container
+          $linkContainers: !tagged_iterator zikula.link_container
 
     Zikula\Bundle\CoreBundle\EventListener\BlameListener:
         arguments:

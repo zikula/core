@@ -31,12 +31,12 @@ services:
 
     Zikula\UsersModule\Collector\AuthenticationMethodCollector:
         arguments:
-          $methods: !tagged zikula.authentication_method
+          $methods: !tagged_iterator zikula.authentication_method
 
     Zikula\UsersModule\Collector\MessageModuleCollector:
         arguments:
-          $modules: !tagged zikula.message_module
+          $modules: !tagged_iterator zikula.message_module
 
     Zikula\UsersModule\Collector\ProfileModuleCollector:
         arguments:
-          $modules: !tagged zikula.profile_module
+          $modules: !tagged_iterator zikula.profile_module
