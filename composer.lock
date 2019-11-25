@@ -3276,6 +3276,36 @@
             "time": "2018-01-15T00:49:33+00:00"
         },
         {
+            "name": "mmenu.js",
+            "version": "8.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FrDH/mmenu-js",
+                "reference": "ac5897a16a8844c7e74739638bccc8efc48e2c33"
+            },
+            "type": "library",
+            "license": [
+                "CC-BY-NC-4.0"
+            ],
+            "description": "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
+            "keywords": [
+                "app",
+                "curtain",
+                "list",
+                "listview",
+                "megamenu",
+                "menu",
+                "mmenu",
+                "mobile",
+                "navigation",
+                "off-canvas",
+                "on-canvas",
+                "panels",
+                "submenu"
+            ],
+            "time": "2019-11-23T23:52:57+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.25.2",
             "source": {

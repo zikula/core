@@ -28,8 +28,8 @@ class ManuallyInstallAssets
      * The list of assets. [[vendorPath => destinationPath]]
      */
     protected static $assets = [
-//        '/jQuery.mmenu/dist/jquery.mmenu.all.js' => '/jquery-mmenu/js/jquery.mmenu.all.js',
-//        '/jQuery.mmenu/dist/jquery.mmenu.all.css' => '/jquery-mmenu/css/jquery.mmenu.all.css',
+        '/mmenu.js/dist/mmenu.js' => '/mmenu/js/mmenu.js',
+        '/mmenu.js/dist/mmenu.css' => '/mmenu/css/mmenu.css',
         '/dimsemenov/magnific-popup/dist/jquery.magnific-popup.js' => '/magnific-popup/jquery.magnific-popup.js',
         '/dimsemenov/magnific-popup/dist/jquery.magnific-popup.min.js' => '/magnific-popup/jquery.magnific-popup.min.js',
         '/dimsemenov/magnific-popup/dist/magnific-popup.css' => '/magnific-popup/magnific-popup.css',
