@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Util;
 
-use Symfony\Requirements\Requirement;
 use Symfony\Component\Intl\Exception\MethodArgumentValueNotImplementedException;
+use Symfony\Requirements\Requirement;
 use Symfony\Requirements\SymfonyRequirements;
 
 /**

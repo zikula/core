@@ -108,7 +108,7 @@ abstract class AbstractController extends BaseController
      * Returns a NotFoundHttpException; this will result in a 404 response code.
      * Usage example: throw $this->createNotFoundException();
      */
-    public function createNotFoundException(string $message = 'Access Denied.', \Throwable $previous = null): NotFoundHttpException
+    public function createNotFoundException(string $message = 'Not Found.', \Throwable $previous = null): NotFoundHttpException
     {
         $message = $message ?? $this->__('Page not found');
 
