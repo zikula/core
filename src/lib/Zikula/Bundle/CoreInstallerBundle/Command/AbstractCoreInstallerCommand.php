@@ -100,8 +100,8 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
     {
         if ($disableSessions) {
             // Disable sessions.
-            $this->getContainer()->set('session.storage', new MockArraySessionStorage());
-            $this->getContainer()->set('session.handler', new NullSessionHandler());
+//            $this->getContainer()->set('session.storage', new MockArraySessionStorage());
+//            $this->getContainer()->set('session.handler', new NullSessionHandler());
         }
 
         if ($fakeRequest) {
