@@ -77,7 +77,7 @@ class ControllerHelper
                 '%4$s' => $currentSetting
             ]);
         }
-        if (false === ini_set('max_execution_time', 86400)) {
+        if (false === ini_set('max_execution_time', '86400')) {
             // 86400 = 24 hours
             $currentSetting = ini_get('max_execution_time');
             if ($currentSetting > 0) {
