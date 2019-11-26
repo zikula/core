@@ -23,6 +23,7 @@ use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\SettingsModule\Api\LocaleApi;
 use Zikula\UsersModule\Entity\UserEntity;
 
 /**
@@ -163,7 +164,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'value' => '',
             'name' => '__SYSTEM__',
             'display_name' => $this->localize($this->__('Category root')),
-            'display_desc' => '',
+            'display_desc' => $this->localize(),
             'status' => 'A'
         ];
         $categoryData[] = [
@@ -446,7 +447,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     public function localize(string $value = ''): array
     {
         $values = [];
-        foreach ($this->container->get('zikula_settings_module.locale_api')->getSupportedLocales() as $code) {
+        foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $code) {
             $values[$code] = $this->__(/** @Ignore */$value, 'zikula', $code);
         }
 

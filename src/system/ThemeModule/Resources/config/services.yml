@@ -19,6 +19,10 @@ services:
 
     Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
 
+    # public because installer accesses this using container
+    Zikula\ThemeModule\Helper\BundleSyncHelper:
+        public: true
+
     Zikula\ThemeModule\Twig\Extension\PageVarExtension:
         arguments:
             $pageVars: '@zikula_core.common.theme.pagevars'

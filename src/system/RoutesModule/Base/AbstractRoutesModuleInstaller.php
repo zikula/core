@@ -32,14 +32,14 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
 
     public function install(): bool
     {
-        $logger = $this->container->get('logger');
+        //$logger = $this->container->get('logger');
     
         // create all tables from according entity definitions
         try {
             $this->schemaTool->create($this->entities);
         } catch (Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
-            $logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
+            //$logger->error('{app}: Could not create the database tables during installation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
     
             return false;
         }
@@ -82,13 +82,13 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     
     public function uninstall(): bool
     {
-        $logger = $this->container->get('logger');
+        //$logger = $this->container->get('logger');
     
         try {
             $this->schemaTool->drop($this->entities);
         } catch (Exception $exception) {
             $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
-            $logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
+            //$logger->error('{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.', ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]);
     
             return false;
         }

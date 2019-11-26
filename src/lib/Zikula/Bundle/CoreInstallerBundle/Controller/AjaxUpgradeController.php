@@ -231,7 +231,7 @@ class AjaxUpgradeController extends AbstractController
         $kernel = $this->container->get('kernel');
         // Set the System Identifier as a unique string.
         if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
-            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(random_int(1000000000, 9999999999), true)));
+            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(strval(random_int(1000000000, 9999999999)), true)));
         }
 
         // add new configuration parameters

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule;
 
 use Exception;
+use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Core\AbstractExtensionInstaller;
@@ -50,7 +51,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('sessionauthkeyua', 0);
         $this->setSystemVar('secure_domain');
         $this->setSystemVar('signcookies', 1);
-        $this->setSystemVar('signingkey', sha1(random_int(0, time())));
+        $this->setSystemVar('signingkey', sha1(strval(random_int(0, time()))));
         $this->setSystemVar('seclevel', 'Medium');
         $this->setSystemVar('secmeddays', 7);
         $this->setSystemVar('secinactivemins', 20);
@@ -69,7 +70,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('filtercookievars', 1);
 
         // HTML Purifier cache dir
-        $this->container->get('zikula.cache_clearer')->clear('purifier');
+        $this->container->get(CacheClearer::class)->clear('purifier');
 
         // HTML Purifier default settings
         $purifierDefaultConfig = $this->container->get(PurifierHelper::class)->getPurifierConfig(['forcedefault' => true]);
