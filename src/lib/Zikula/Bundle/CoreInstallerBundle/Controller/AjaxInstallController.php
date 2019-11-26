@@ -220,7 +220,7 @@ class AjaxInstallController extends AbstractController
         $variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         $variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
-        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(strval(random_int(1000000000, 9999999999)), true)));
+        $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid((string) (random_int(1000000000, 9999999999)), true)));
         // add admin email as site email
         $variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
         // regenerate the theme list

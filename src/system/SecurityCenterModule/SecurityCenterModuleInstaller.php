@@ -51,7 +51,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('sessionauthkeyua', 0);
         $this->setSystemVar('secure_domain');
         $this->setSystemVar('signcookies', 1);
-        $this->setSystemVar('signingkey', sha1(strval(random_int(0, time()))));
+        $this->setSystemVar('signingkey', sha1((string) (random_int(0, time()))));
         $this->setSystemVar('seclevel', 'Medium');
         $this->setSystemVar('secmeddays', 7);
         $this->setSystemVar('secinactivemins', 20);
