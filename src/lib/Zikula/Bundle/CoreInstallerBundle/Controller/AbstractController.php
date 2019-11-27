@@ -72,8 +72,8 @@ abstract class AbstractController
     {
         $this->container = $container;
 //        $this->router = $this->container->has('router') ? $this->container->get('router') : null;
-        $this->twig = $this->container->get('twig');
-        $this->form = $this->container->get('form.factory');
+//        $this->twig = $this->container->get('twig');
+//        $this->form = $this->container->get('form.factory');
         $this->controllerHelper = $this->container->get(ControllerHelper::class);
         $this->translator = $container->get(Translator::class);
     }
@@ -178,7 +178,7 @@ abstract class AbstractController
             $response = new PlainResponse();
         }
 
-        $response->setContent($this->twig->render($view, $parameters));
+        $response->setContent($this->container->get('twig')->render($view, $parameters));
 
         return $response;
     }

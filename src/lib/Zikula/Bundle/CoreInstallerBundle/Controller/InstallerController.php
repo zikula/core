@@ -30,6 +30,7 @@ class InstallerController extends AbstractController
     {
         parent::__construct($container);
         $this->router = $container->get('router');
+        $this->form = $this->container->get('form.factory');
     }
 
     public function installAction(Request $request, string $stage): Response

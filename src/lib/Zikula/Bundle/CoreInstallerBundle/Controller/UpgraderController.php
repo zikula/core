@@ -34,6 +34,7 @@ class UpgraderController extends AbstractController
     {
         parent::__construct($container);
         $this->router = $container->get('router');
+        $this->form = $this->container->get('form.factory');
     }
 
     public function upgradeAction(Request $request, $stage): Response
