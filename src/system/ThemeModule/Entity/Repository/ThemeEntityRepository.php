@@ -16,10 +16,11 @@ namespace Zikula\ThemeModule\Entity\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
+use Zikula\ThemeModule\Entity\RepositoryInterface\ThemeEntityRepositoryInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
-class ThemeEntityRepository extends ServiceEntityRepository
+class ThemeEntityRepository extends ServiceEntityRepository implements ThemeEntityRepositoryInterface
 {
     public const STATE_ALL = 0;
 

@@ -30,6 +30,10 @@ services:
     Zikula\ExtensionsModule\Helper\BundleSyncHelper:
         public: true
 
+    # public because installer accesses this using container
+    Zikula\ExtensionsModule\Helper\ExtensionHelper:
+        public: true
+
     # public because AbstractBundle accesses this using container
     Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository:
         public: true

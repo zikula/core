@@ -20,8 +20,6 @@ use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 
-ini_set("memory_limit", "-1");
-
 class FinishCommand extends AbstractCoreInstallerCommand
 {
     protected function configure()

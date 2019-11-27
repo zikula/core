@@ -18,6 +18,11 @@ services:
         lazy: true
 
     Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
+    Zikula\ThemeModule\Entity\RepositoryInterface\ThemeEntityRepositoryInterface: '@Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository'
+
+    # public because ThemeModuleInstaller uses it
+    Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository:
+        public: true
 
     # public because installer accesses this using container
     Zikula\ThemeModule\Helper\BundleSyncHelper:
@@ -139,14 +144,3 @@ services:
     Zikula\ThemeModule\EventListener\ExtensionInstallationListener:
         arguments:
           $active: '%zikula_asset_manager.combine%'
-
-    # this is needed in ThemeModuleInstaller
-    Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository:
-        public: true
-        factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
-        arguments:
-          - "ZikulaThemeModule:ThemeEntity"
-        calls:
-          - method: setKernel
-            arguments:
-              - '@kernel'
