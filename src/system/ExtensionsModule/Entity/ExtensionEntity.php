@@ -39,7 +39,7 @@ class ExtensionEntity extends EntityAccess
     private $name;
 
     /**
-     * @ORM\Column(type="integer", length=2)
+     * @ORM\Column(name="`type`", type="integer", length=2)
      * @var integer
      */
     private $type;
