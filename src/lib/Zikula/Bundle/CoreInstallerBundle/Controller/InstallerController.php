@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,12 @@ use Zikula\Component\Wizard\WizardCompleteInterface;
  */
 class InstallerController extends AbstractController
 {
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+        $this->router = $container->get('router');
+    }
+
     public function installAction(Request $request, string $stage): Response
     {
         // already installed?

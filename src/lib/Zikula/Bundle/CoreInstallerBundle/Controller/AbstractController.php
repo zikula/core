@@ -71,7 +71,7 @@ abstract class AbstractController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->router = $this->container->get('router');
+//        $this->router = $this->container->has('router') ? $this->container->get('router') : null;
         $this->twig = $this->container->get('twig');
         $this->form = $this->container->get('form.factory');
         $this->controllerHelper = $this->container->get(ControllerHelper::class);

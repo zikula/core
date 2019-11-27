@@ -106,12 +106,14 @@ class ThemeEntityRepository extends ServiceEntityRepository
     {
         $this->_em->remove($entity);
         $this->_em->flush();
+        $this->_em->clear();
     }
 
     public function persistAndFlush(ThemeEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
+        $this->_em->clear();
     }
 
     /**
