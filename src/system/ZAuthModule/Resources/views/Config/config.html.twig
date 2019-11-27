@@ -43,15 +43,15 @@
 
 </div>
 {{ adminFooter() }}
-<script type="text/javascript">
+{% set customScript %}
+<script>
     (function($) {
         /**
          * show & require or hide anti-spam answer based on question value
          */
-        function toggleAntiSpamAnswerDisplay()
-        {
+        function toggleAntiSpamAnswerDisplay() {
             var antiSpamAnswerElementId = '{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_ANSWER', ZAC)].vars.id }}';
-            if ('' !== $('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').val()) {
+            if ($('#{{ form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)].vars.id }}').val() != '') {
                 $('label[for="'+antiSpamAnswerElementId+'"]').addClass('required');
                 $('#'+antiSpamAnswerElementId).prop('required', true);
                 $('#antispam_answer').collapse('show');
@@ -70,3 +70,5 @@
         });
     })(jQuery);
 </script>
+{% endset %}
+{{ pageAddAsset('footer', customScript) }}
