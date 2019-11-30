@@ -252,7 +252,7 @@ class ExtensionHelper
      *
      * @throws Exception
      */
-    public function installAssets(): void
+    public function installAssets(): bool
     {
         /** @var ZikulaHttpKernelInterface $kernel */
         $kernel = $this->container->get('kernel');
@@ -263,6 +263,8 @@ class ExtensionHelper
         ]);
         $output = new NullOutput();
         $application->run($input, $output);
+
+        return true;
     }
 
     /**
