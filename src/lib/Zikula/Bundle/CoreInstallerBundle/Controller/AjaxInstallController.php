@@ -33,7 +33,6 @@ use Zikula\Core\CoreEvents;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
-use Zikula\ThemeModule\Helper\BundleSyncHelper;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\ZAuthModule\Api\PasswordApi;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -223,8 +222,6 @@ class AjaxInstallController extends AbstractController
         $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid((string) (random_int(1000000000, 9999999999)), true)));
         // add admin email as site email
         $variableApi->set(VariableApi::CONFIG, 'adminmail', $params['email']);
-        // regenerate the theme list
-        $this->container->get(BundleSyncHelper::class)->regenerate();
 
         // add remaining parameters and remove unneeded ones
         unset($params['username'], $params['password'], $params['email'], $params['dbtabletype']);
