@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
 
 /**
  * Class AjaxInstallController
