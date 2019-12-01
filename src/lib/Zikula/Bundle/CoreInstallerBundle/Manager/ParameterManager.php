@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -95,9 +97,9 @@ class ParameterManager
             // Configure the Request Context
             // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
             $request = $this->requestStack->getMasterRequest();
-            $hostFromRequest = isset($request) ? $request->getHost() : NULL;
+            $hostFromRequest = isset($request) ? $request->getHost() : null;
             $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
-            $basePathFromRequest = isset($request) ? $request->getBasePath() : NULL;
+            $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
             $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
             $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
             $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;

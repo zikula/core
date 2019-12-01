@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -23,7 +25,6 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class SuperUserManager
 {
-
     /**
      * @var UserRepositoryInterface
      */
