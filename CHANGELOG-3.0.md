@@ -78,11 +78,12 @@ CHANGELOG - ZIKULA 3.0.x
 
  - Vendor updates:
     - doctrine/annotations updated from 1.2.7 to 1.8.0
-    - doctrine/cache updated from 1.6.2 to 1.9.1
+    - doctrine/cache updated from 1.6.2 to 1.10.0
     - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.11.0
     - doctrine/dbal updated from 2.5.13 to 2.10.0
-    - doctrine/doctrine-bundle updated from 1.6.13 to 1.12.0
+    - doctrine/doctrine-bundle updated from 1.6.13 to 1.12.2
+    - doctrine/doctrine-cache-bundle updated from 1.3.5 to 1.4.0
     - doctrine/event-manager installed in 1.1.0
     - doctrine/inflector updated from 1.1.0 to 1.3.1
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
@@ -91,13 +92,14 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/persistence installed in 1.2.0
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.11
-    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.4.0
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.0
+    - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.38
     - imagine/imagine updated from 0.7.1 to 1.2.2
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
     - jms/translation-bundle updated from 1.3.2 to 1.4.4
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
-    - knplabs/knp-menu updated from 2.2.0 to 2.6.0
-    - knplabs/knp-menu-bundle updated from 2.1.3 to 2.3.0
+    - knplabs/knp-menu updated from 2.2.0 to 3.1.0
+    - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
     - liip/imagine-bundle updated from 1.9.1 to 2.2.0
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
     - michelf/php-markdown updated from 1.7.0 to 1.8.0
@@ -109,13 +111,16 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/contracts installed in 1.1.8
     - symfony/maker-bundle installed in 1.14.3
     - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
-    - symfony/phpunit-bridge updated from 3.4.14 to 4.4.0
-    - symfony/polyfill-iconv installed in 1.12.0
-    - symfony/polyfill-intl-idn installed in 1.11.0
-    - symfony/polyfill-php72 installed in 1.12.0
-    - symfony/polyfill-php73 installed in 1.12.0
+    - symfony/phpunit-bridge updated from 3.4.14 to 4.4.1
+    - symfony/polyfill-ctype updated from v1.12.0 to v1.13.1
+    - symfony/polyfill-iconv installed in 1.13.1
+    - symfony/polyfill-intl-icu updated from 1.11.0 to 1.13.1
+    - symfony/polyfill-intl-idn updated from 1.11.0 to 1.13.1
+    - symfony/polyfill-mbstring updated from v1.12.0 to v1.13.1
+    - symfony/polyfill-php72 installed in 1.13.1
+    - symfony/polyfill-php73 installed in 1.13.1
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
-    - symfony/symfony updated from 3.4.35 to 4.4.0
+    - symfony/symfony updated from 3.4.35 to 4.4.1
     - twig/extensions updated from 1.4.1 to 1.5.4
     - twig/twig updated from 1.42.4 to 2.12.2
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
