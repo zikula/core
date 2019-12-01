@@ -24,7 +24,7 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Manager\ParameterManager:
         arguments:
-            $configDir: '%kernel.project_dir%/config'
+            $configDir: '%kernel.project_dir%/app/config'
 
     Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage:
         arguments:
