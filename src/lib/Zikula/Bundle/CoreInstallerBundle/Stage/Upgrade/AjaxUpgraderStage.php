@@ -22,7 +22,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
+class AjaxUpgraderStage implements StageInterface
 {
     use TranslatorTrait;
 
@@ -31,10 +31,10 @@ class AjaxUpgraderStage implements StageInterface, InjectContainerInterface
      */
     private $oldVersion;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(TranslatorInterface $translator, string $oldVersion)
     {
-        $this->setTranslator($container->get(Translator::class));
-        $this->oldVersion = $container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $this->setTranslator($translator);
+        $this->oldVersion = $oldVersion;
     }
 
     public function setTranslator(TranslatorInterface $translator)

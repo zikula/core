@@ -7,3 +7,25 @@ services:
     Zikula\Bundle\CoreInstallerBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
+
+    Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand:
+        arguments:
+            $environment: '%env%'
+            $installed: '%installed%'
+
+    Zikula\Bundle\CoreInstallerBundle\Command\Install\FinishCommand:
+        arguments:
+            $environment: '%env%'
+            $installed: '%installed%'
+
+    Zikula\Bundle\CoreInstallerBundle\Command\UpgradeCommand:
+        arguments:
+            $currentInstalledVersion: !php/const Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
+
+    Zikula\Bundle\CoreInstallerBundle\Manager\ParameterManager:
+        arguments:
+            $configDir: '%kernel.project_dir%/config'
+
+    Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage:
+        arguments:
+            $oldVersion: !php/const Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM

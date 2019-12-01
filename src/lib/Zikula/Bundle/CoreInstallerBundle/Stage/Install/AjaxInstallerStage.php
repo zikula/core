@@ -13,14 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 
-class AjaxInstallerStage implements StageInterface, InjectContainerInterface
+class AjaxInstallerStage implements StageInterface
 {
     use TranslatorTrait;
 
@@ -34,9 +31,9 @@ class AjaxInstallerStage implements StageInterface, InjectContainerInterface
 
     public const FAIL = 'fail';
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->setTranslator($container->get(Translator::class));
+        $this->setTranslator($translator);
     }
 
     public function setTranslator(TranslatorInterface $translator)

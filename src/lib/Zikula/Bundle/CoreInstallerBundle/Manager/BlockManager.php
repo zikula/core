@@ -12,24 +12,59 @@
 namespace Zikula\Bundle\CoreInstallerBundle\Manager;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\BlocksModule\BlocksModuleInstaller;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class BlockManager
 {
     /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        TranslatorInterface $translator,
+        ContainerInterface $container
+    ) {
+        $this->entityManager = $entityManager;
+        $this->translator = $translator;
+        $this->container = $container;
+    }
+
+    public function createBlocks(): bool
+    {
+        $installer = new BlocksModuleInstaller();
+        $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
+        $installer->setContainer($this->container);
+        $installer->createDefaultData();
+        $this->createMainMenuBlock();
+
+        return true;
+    }
+
+    /**
      * Create the main menu block.
      */
     private function createMainMenuBlock(): void
     {
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->container->get('doctrine')->getManager();
-
         /** @var ExtensionEntity $menuModuleEntity */
-        $menuModuleEntity = $entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+        $menuModuleEntity = $this->entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
             ->findOneBy(['name' => 'ZikulaMenuModule']);
         $blockEntity = new BlockEntity();
         $mainMenuString = $this->translator->__('Main menu');
@@ -42,29 +77,17 @@ class BlockManager
             'name' => 'mainMenu',
             'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
         ]);
-        $entityManager->persist($blockEntity);
+        $this->entityManager->persist($blockEntity);
 
         /** @var BlockPositionEntity $topNavPosition */
-        $topNavPosition = $entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')
+        $topNavPosition = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')
             ->findOneBy(['name' => 'topnav']);
         $placement = new BlockPlacementEntity();
         $placement->setBlock($blockEntity);
         $placement->setPosition($topNavPosition);
         $placement->setSortorder(0);
-        $entityManager->persist($placement);
+        $this->entityManager->persist($placement);
 
-        $entityManager->flush();
-    }
-
-    private function createBlocks(): bool
-    {
-        $installer = new BlocksModuleInstaller();
-        $installer->setBundle($this->container->get('kernel')->getModule('ZikulaBlocksModule'));
-        $installer->setContainer($this->container);
-        // create the default blocks.
-        $installer->createDefaultData();
-        $this->createMainMenuBlock();
-
-        return true;
+        $this->entityManager->flush();
     }
 }

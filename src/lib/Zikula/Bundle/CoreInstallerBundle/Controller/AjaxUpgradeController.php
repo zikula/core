@@ -48,8 +48,8 @@ class AjaxUpgradeController extends AbstractController
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getRootDir() . '/config/parameters.yml'));
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
+        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getProjectDir() . '/config/parameters.yml'));
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/config', 'custom_parameters.yml');
         // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
         $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
         $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
@@ -68,17 +68,11 @@ class AjaxUpgradeController extends AbstractController
         return new JsonResponse($response);
     }
 
-    public function commandLineAction($stage): bool
-    {
-        $this->yamlManager->setParameter('upgrading', true);
-
-        return $this->executeStage($stage);
-    }
-
     private function executeStage($stageName): bool
     {
         switch ($stageName) {
             case 'loginadmin':
+                $this->yamlManager->setParameter('upgrading', true);
                 $params = $this->decodeParameters($this->yamlManager->getParameters());
 
                 return $this->loginAdmin($params);
@@ -277,7 +271,7 @@ class AjaxUpgradeController extends AbstractController
         }
 
         // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
-        $defaultTheme = $variableApi->getSystemVar('Default_Theme');
+        $defaultTheme = (string) $variableApi->getSystemVar('Default_Theme');
         if (!$kernel->isBundle($defaultTheme) && $kernel->isBundle('ZikulaBootstrapTheme')) {
             $variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
         }

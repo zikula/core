@@ -11,13 +11,30 @@
 
 namespace Zikula\Bundle\CoreInstallerBundle\Manager;
 
+use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Constant;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 
 class ModuleManager
 {
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     public function installModule(string $moduleName): bool
     {
         $module = $this->container->get('kernel')->getModule($moduleName);
@@ -84,6 +101,28 @@ class ModuleManager
         foreach (ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
             $this->setModuleCategory($systemModule, $systemModulesCategories[$systemModule]);
         }
+
+        return true;
+    }
+
+    /**
+     * Scan the filesystem and sync the modules table. Set all core modules to active state.
+     */
+    public function reSyncAndActivateModules(): bool
+    {
+        $bundleSyncHelper = $this->container->get(BundleSyncHelper::class);
+        $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
+        $bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+
+        $doctrine = $this->container->get('doctrine');
+
+        /** @var ExtensionEntity[] $extensions */
+        $extensions = $doctrine->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+            ->findBy(['name' => array_keys(ZikulaKernel::$coreModules)]);
+        foreach ($extensions as $extension) {
+            $extension->setState(Constant::STATE_ACTIVE);
+        }
+        $doctrine->getManager()->flush();
 
         return true;
     }

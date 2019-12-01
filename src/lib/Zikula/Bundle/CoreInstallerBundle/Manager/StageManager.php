@@ -46,18 +46,39 @@ class StageManager
      */
     private $moduleManager;
 
+    /**
+     * @var BlockManager
+     */
+    private $blockManager;
+
+    /**
+     * @var ParameterManager
+     */
+    private $parameterManager;
+
+    /**
+     * @var SuperUserManager
+     */
+    private $superUserManager;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         BootstrapHelper $bootstrapHelper,
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
-        ModuleManager $moduleManager
+        ModuleManager $moduleManager,
+        BlockManager $blockManager,
+        ParameterManager $parameterManager,
+        SuperUserManager $superUserManager
     ) {
         $this->kernel = $kernel;
         $this->bootstrapHelper = $bootstrapHelper;
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = $eventDispatcher;
         $this->moduleManager = $moduleManager;
+        $this->blockManager = $blockManager;
+        $this->parameterManager = $parameterManager;
+        $this->superUserManager = $superUserManager;
     }
 
     public function executeStage($stageName): bool
@@ -98,23 +119,21 @@ class StageManager
             case 'menu':
                 return $this->moduleManager->installModule('ZikulaMenuModule');
             case 'updateadmin':
-                return $this->updateAdmin();
+                return $this->superUserManager->updateAdmin();
             case 'loginadmin':
-                $params = $this->decodeParameters($this->yamlManager->getParameters());
-
-                return $this->loginAdmin($params);
+                return $this->superUserManager->loginAdmin();
             case 'activatemodules':
-                return $this->reSyncAndActivateModules();
+                return $this->moduleManager->reSyncAndActivateModules();
             case 'categorize':
                 return $this->moduleManager->categorizeModules();
             case 'createblocks':
-                return $this->createBlocks();
+                return $this->blockManager->createBlocks();
             case 'finalizeparameters':
-                return $this->finalizeParameters();
+                return $this->parameterManager->finalizeParameters();
             case 'installassets':
                 return $this->extensionHelper->installAssets();
             case 'protect':
-                return $this->protectFiles();
+                return $this->parameterManager->protectFiles();
         }
 
         return true;

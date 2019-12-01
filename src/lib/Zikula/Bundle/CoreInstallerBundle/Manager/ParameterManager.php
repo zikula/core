@@ -27,11 +27,6 @@ class ParameterManager
     private $configDir;
 
     /**
-     * @var YamlDumper
-     */
-    private $yamlManager;
-
-    /**
      * @var VariableApiInterface
      */
     private $variableApi;
@@ -56,15 +51,32 @@ class ParameterManager
         RequestStack $requestStack
     ) {
         $this->configDir = $configDir;
-        $this->yamlManager = new YamlDumper($configDir, 'custom_parameters.yml');
         $this->variableApi = $variableApi;
         $this->cacheClearer = $cacheClearer;
         $this->requestStack = $requestStack;
     }
 
-    public function finalizeParameters($configureRequestContext = true): bool
+    public function getYamlManager(bool $initCopy = false): YamlDumper
     {
-        $params = $this->decodeParameters($this->yamlManager->getParameters());
+        $copyFile = $initCopy ? 'parameters.yml' : null;
+
+        return new YamlDumper($this->configDir, 'custom_parameters.yml', $copyFile);
+    }
+
+    public function initializeParameters(array $paramsToMerge = []): bool
+    {
+        $yamlManager = $this->getYamlManager(true);
+        $params = array_merge($yamlManager->getParameters(), $paramsToMerge);
+        $yamlManager->setParameters($params);
+        $this->cacheClearer->clear('symfony.config');
+
+        return true;
+    }
+
+    public function finalizeParameters(bool $configureRequestContext = true): bool
+    {
+        $yamlManager = $this->getYamlManager();
+        $params = $this->decodeParameters($yamlManager->getParameters());
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         $this->variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
@@ -91,7 +103,7 @@ class ParameterManager
             $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
         }
         $params['umask'] = $params['umask'] ?? null;
-        $this->yamlManager->setParameters($params);
+        $yamlManager->setParameters($params);
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
@@ -115,12 +127,13 @@ class ParameterManager
         }
 
         // set installed = true
-        $params = $this->yamlManager->getParameters();
+        $yamlManager = $this->getYamlManager();
+        $params = $yamlManager->getParameters();
         $params['installed'] = true;
         // set currently installed version into parameters
         $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
 
-        $this->yamlManager->setParameters($params);
+        $yamlManager->setParameters($params);
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
 
@@ -130,7 +143,7 @@ class ParameterManager
     /**
      * Remove base64 encoding for admin parameters.
      */
-    private function decodeParameters(array $params = []): array
+    public function decodeParameters(array $params = []): array
     {
         if (!empty($params['password'])) {
             $params['password'] = base64_decode($params['password']);

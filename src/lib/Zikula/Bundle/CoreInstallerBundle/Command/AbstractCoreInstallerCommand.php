@@ -13,21 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 
-/**
- * Class AbstractCoreInstallerCmd
- */
-abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
+abstract class AbstractCoreInstallerCommand extends Command
 {
     /**
      * @var TranslatorInterface
@@ -96,19 +88,10 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
         ]
     ];
 
-    protected function bootstrap($disableSessions = true, $fakeRequest = true): void
+    public function __construct(TranslatorInterface $translator)
     {
-        if ($disableSessions) {
-            // Disable sessions.
-//            $this->getContainer()->set('session.storage', new MockArraySessionStorage());
-//            $this->getContainer()->set('session.handler', new NullSessionHandler());
-        }
-
-        if ($fakeRequest) {
-            // Fake request
-            $request = Request::create('http://localhost/install');
-            $this->getContainer()->set('request', $request);
-        }
+        parent::__construct();
+        $this->translator = $translator;
     }
 
     protected function printWarnings(OutputInterface $output, $warnings): void
@@ -149,14 +132,6 @@ abstract class AbstractCoreInstallerCommand extends ContainerAwareCommand
 
         // remaining keys are filenames
         return $this->translator->__f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%s' => $key]);
-    }
-
-    public function setContainer(ContainerInterface $container = null): void
-    {
-        parent::setContainer($container);
-        if (null !== $container) {
-            $this->translator = $container->get(Translator::class);
-        }
     }
 
     protected function printSettings($givenSettings, SymfonyStyle $io): void

@@ -15,6 +15,7 @@ namespace Zikula\MenuModule\Loader;
 
 use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Loader\LoaderInterface;
 use Knp\Menu\NodeInterface;
 use Zikula\MenuModule\Entity\MenuItemEntity;
@@ -38,7 +39,7 @@ class PermissionAwareNodeLoader implements LoaderInterface
         $this->permissionApi = $permissionApi;
     }
 
-    public function load($data)
+    public function load($data): ItemInterface
     {
         if (!$data instanceof MenuItemEntity) {
             throw new InvalidArgumentException(sprintf('Unsupported data. Expected Zikula\MenuModule\Entity\MenuItemEntity but got %s', is_object($data) ? get_class($data) : gettype($data)));
@@ -57,7 +58,7 @@ class PermissionAwareNodeLoader implements LoaderInterface
         return $item;
     }
 
-    public function supports($data)
+    public function supports($data): bool
     {
         return $data instanceof NodeInterface;
     }

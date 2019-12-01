@@ -15,6 +15,7 @@ namespace Zikula\MenuModule\Provider;
 
 use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
@@ -59,7 +60,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     /**
      * @throws InvalidArgumentException if the menu does not exists
      */
-    public function get($name, array $options = [])
+    public function get($name, array $options = []): ItemInterface
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
         if (null === $node) {
@@ -72,7 +73,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
         return $menu;
     }
 
-    public function has($name, array $options = [])
+    public function has($name, array $options = []): bool
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
 

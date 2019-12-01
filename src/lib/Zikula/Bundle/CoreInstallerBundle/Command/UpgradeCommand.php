@@ -18,21 +18,53 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Controller\AjaxUpgradeController;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
+use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand
 {
+    /**
+     * @var string
+     */
+    private $currentInstalledVersion;
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @var ControllerHelper
+     */
+    private $controllerHelper;
+
+    /**
+     * @var MigrationHelper
+     */
+    private $migrationHelper;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
+     * @var StageManager
+     */
+    private $stageManager;
+
     /**
      * @var array
      */
@@ -43,6 +75,24 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         'router:request_context:scheme',
         'router:request_context:base_url'
     ];
+
+    public function __construct(
+        string $currentInstalledVersion,
+        ZikulaHttpKernelInterface $kernel,
+        ControllerHelper $controllerHelper,
+        MigrationHelper $migrationHelper,
+        LocaleApiInterface $localeApi,
+        StageManager $stageManager,
+        TranslatorInterface $translator
+    ) {
+        $this->currentInstalledVersion = $currentInstalledVersion;
+        $this->kernel = $kernel;
+        $this->controllerHelper = $controllerHelper;
+        $this->migrationHelper = $migrationHelper;
+        $this->localeApi = $localeApi;
+        $this->stageManager = $stageManager;
+        parent::__construct($translator);
+    }
 
     protected function configure()
     {
@@ -67,9 +117,8 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $currentVersion = $this->getContainer()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
-        if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
-            $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+        if (version_compare($this->currentInstalledVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
+            $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $this->currentInstalledVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
             return false;
         }
@@ -77,36 +126,30 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io = new SymfonyStyle($input, $output);
         $io->title($this->translator->__('Zikula Upgrader Script'));
         $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
-        $env = $this->getContainer()->get('kernel')->getEnvironment();
-        $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $env]));
+        $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
 
-        $this->bootstrap(false);
-
-        $controllerHelper = $this->getContainer()->get(ControllerHelper::class);
-
-        $warnings = $controllerHelper->initPhp();
+        $warnings = $this->controllerHelper->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
             return false;
         }
-        $checks = $controllerHelper->requirementsMet();
+        $checks = $this->controllerHelper->requirementsMet();
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
             return false;
         }
 
-        $migrationHelper = $this->getContainer()->get(MigrationHelper::class);
-        $count = $migrationHelper->countUnMigratedUsers();
+        $count = $this->migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
             $io->text($this->translator->__('Beginning user migration...'));
-            $userMigrationMaxuid = (int)$migrationHelper->getMaxUnMigratedUid();
+            $userMigrationMaxuid = (int)$this->migrationHelper->getMaxUnMigratedUid();
             $progressBar = new ProgressBar($output, (int)ceil($count / MigrationHelper::BATCH_LIMIT));
             $progressBar->start();
             $lastUid = 0;
             do {
-                $result = $migrationHelper->migrateUsers($lastUid);
+                $result = $this->migrationHelper->migrateUsers($lastUid);
                 $lastUid = $result['lastUid'];
                 $progressBar->advance();
             } while ($lastUid < $userMigrationMaxuid);
@@ -124,7 +167,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choices' => $this->getContainer()->get(LocaleApi::class)->getSupportedLocaleNames()
+            'choices' => $this->localeApi->getSupportedLocaleNames()
         ]);
 
         $data = $this->getHelper('form')->interactUsingForm(LoginType::class, $input, $output);
@@ -145,18 +188,18 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->newLine();
 
         // write the parameters to custom_parameters.yml
-        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
+        $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'custom_parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
         unset($params['upgrading']);
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxInstallerStage = new AjaxUpgraderStage($this->getContainer());
+        $ajaxInstallerStage = new AjaxUpgraderStage($this->translator, $this->currentInstalledVersion);
         $stages = $ajaxInstallerStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
             $io->text($stage[AjaxInstallerStage::PRE]);
             $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
-            $status = $this->getContainer()->get(AjaxUpgradeController::class)->commandLineAction($stage[AjaxInstallerStage::NAME]);
+            $status = $this->stageManager->executeStage($stage[AjaxInstallerStage::NAME]);
             if ($status) {
                 $io->success($stage[AjaxInstallerStage::SUCCESS]);
             } else {

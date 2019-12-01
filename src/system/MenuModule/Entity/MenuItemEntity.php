@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\MenuModule\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Knp\Menu\NodeInterface;
@@ -206,7 +205,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
         return !empty($this->options);
     }
 
-    public function getChildren(): Collection
+    public function getChildren(): \Traversable
     {
         return $this->children;
     }
