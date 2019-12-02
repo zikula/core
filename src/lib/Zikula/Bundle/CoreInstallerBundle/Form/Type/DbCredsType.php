@@ -35,7 +35,7 @@ class DbCredsType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'choices' => $this->getDbTypes(),
-                'data' => 'mysql'
+                'data' => 'pdo_mysql'
             ])
             ->add('dbtabletype', ChoiceType::class, [
                 'label' => $this->__('Storage Engine'),
@@ -102,18 +102,18 @@ class DbCredsType extends AbstractType
 
         $types = [];
         if (in_array('mysql', $availableDrivers, true)) {
-            $types['MySQL'] = 'mysql';
+            $types['MySQL'] = 'pdo_mysql';
         }
         if (in_array('sqlsrv', $availableDrivers, true)) {
-            $types['MSSQL (alpha)'] = 'sqlsrv';
+            $types['MSSQL (alpha)'] = 'pdo_sqlsrv';
         }
         if (in_array('oci8', $availableDrivers, true)) {
-            $types['Oracle (alpha) via OCI8 driver'] = 'oci8';
+            $types['Oracle (alpha) via OCI8 driver'] = 'pdo_oci8';
         } elseif (in_array('oci', $availableDrivers, true)) {
-            $types['Oracle (alpha) via Oracle driver'] = 'oracle';
+            $types['Oracle (alpha) via Oracle driver'] = 'pdo_oracle';
         }
         if (in_array('pgsql', $availableDrivers, true)) {
-            $types['PostgreSQL'] = 'pgsql';
+            $types['PostgreSQL'] = 'pdo_pgsql';
         }
 
         return $types;
