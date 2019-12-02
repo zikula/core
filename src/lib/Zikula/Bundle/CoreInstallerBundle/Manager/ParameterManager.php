@@ -69,6 +69,9 @@ class ParameterManager
     {
         $yamlManager = $this->getYamlManager(true);
         $params = array_merge($yamlManager->getParameters(), $paramsToMerge);
+        if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
+            $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
+        }
         $yamlManager->setParameters($params);
         $this->cacheClearer->clear('symfony.config');
 
