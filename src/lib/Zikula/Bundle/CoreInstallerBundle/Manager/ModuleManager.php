@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
@@ -35,6 +36,13 @@ class ModuleManager
      * @var TranslatorInterface
      */
     private $translator;
+
+    public function __construct(
+        ContainerInterface $container
+    ) {
+        $this->container = $container;
+        $this->translator = $container->get(Translator::class);
+    }
 
     public function installModule(string $moduleName): bool
     {
