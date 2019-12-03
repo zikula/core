@@ -194,12 +194,6 @@ class YamlDumper
     {
         $yaml = Yaml::dump($configuration);
         $this->fs->dumpFile($this->fullPath, $yaml);
-        do {
-            // await completion of file write
-            if (file_exists($this->fullPath)) {
-                break;
-            }
-        } while(!file_exists($this->fullPath));
     }
 
     /**
