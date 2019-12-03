@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Manager;
 
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
+use Zikula\Component\Wizard\StageInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
@@ -139,6 +142,21 @@ class StageManager
         }
 
         return true;
+    }
+
+    public function handleAjaxStage(StageInterface $ajaxStage, StyleInterface $io)
+    {
+        $stages = $ajaxStage->getTemplateParams();
+        foreach ($stages['stages'] as $key => $stage) {
+            $io->text($stage[AjaxInstallerStage::PRE]);
+            $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
+            $status = $this->executeStage($stage[AjaxInstallerStage::NAME]);
+            if ($status) {
+                $io->success($stage[AjaxInstallerStage::SUCCESS]);
+            } else {
+                $io->error($stage[AjaxInstallerStage::FAIL]);
+            }
+        }
     }
 
     private function createBundles(): bool

@@ -188,24 +188,14 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->newLine();
 
         // write the parameters to custom_parameters.yml
-        $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/config', 'custom_parameters.yml');
+        $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/app/config', 'custom_parameters.yml');
         $params = array_merge($yamlManager->getParameters(), $settings);
         unset($params['upgrading']);
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxInstallerStage = new AjaxUpgraderStage($this->translator, $this->currentInstalledVersion);
-        $stages = $ajaxInstallerStage->getTemplateParams();
-        foreach ($stages['stages'] as $key => $stage) {
-            $io->text($stage[AjaxInstallerStage::PRE]);
-            $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
-            $status = $this->stageManager->executeStage($stage[AjaxInstallerStage::NAME]);
-            if ($status) {
-                $io->success($stage[AjaxInstallerStage::SUCCESS]);
-            } else {
-                $io->error($stage[AjaxInstallerStage::FAIL]);
-            }
-        }
+        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->currentInstalledVersion);
+        $this->stageManager->handleAjaxStage($ajaxStage, $io);
 
         error_reporting($reportingLevel);
 
