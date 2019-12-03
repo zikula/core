@@ -28,7 +28,6 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
