@@ -118,7 +118,16 @@ class ParameterManager
 
     public function protectFiles(): bool
     {
-        // protect config.php and parameters.yml files
+        // set installed = true
+        $yamlManager = $this->getYamlManager();
+        $params = $yamlManager->getParameters();
+        $params['installed'] = true;
+        // set currently installed version into parameters
+        $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
+
+        $yamlManager->setParameters($params);
+
+        // protect custom_parameters.yml files
         foreach ([
                      dirname($this->configDir . '/parameters.yml')
                  ] as $file) {
@@ -131,14 +140,6 @@ class ParameterManager
             }
         }
 
-        // set installed = true
-        $yamlManager = $this->getYamlManager();
-        $params = $yamlManager->getParameters();
-        $params['installed'] = true;
-        // set currently installed version into parameters
-        $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
-
-        $yamlManager->setParameters($params);
         // clear the cache
         $this->cacheClearer->clear('symfony.config');
 
