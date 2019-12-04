@@ -221,25 +221,25 @@ class AjaxInstallerStage implements StageInterface
                 self::FAIL => $this->__('There was an error finalizing the parameters')
             ],
             24 => [
+                self::NAME => 'protect',
+                self::PRE => $this->__('Protect configuration files'),
+                self::DURING => $this->__('Protecting configuration files'),
+                self::SUCCESS => $this->__('Configuration files protected'),
+                self::FAIL => $this->__('There was an error protecting configuration files')
+            ],
+            25 => [
                 self::NAME => 'installassets',
                 self::PRE => $this->__('Install assets'),
                 self::DURING => $this->__('Installing assets to /web'),
                 self::SUCCESS => $this->__('Assets installed'),
                 self::FAIL => $this->__('Failed to install assets')
             ],
-            25 => [
+            26 => [
                 self::NAME => 'finish',
                 self::PRE => $this->__('Finish'),
                 self::DURING => $this->__('Finish'),
                 self::SUCCESS => $this->__('Finish'),
                 self::FAIL => $this->__('Finish')
-            ],
-            26 => [
-                self::NAME => 'protect',
-                self::PRE => $this->__('Protect configuration files'),
-                self::DURING => $this->__('Protecting configuration files'),
-                self::SUCCESS => $this->__('Configuration files protected'),
-                self::FAIL => $this->__('There was an error protecting configuration files')
             ],
         ]];
     }

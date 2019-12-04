@@ -52,40 +52,40 @@ install:
     - mysql -e 'drop database zk_test'
 
     # create an upgrade db for 143
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core143.sql
+#    - mysql -e 'create database zk_test;'
+#    - mysql zk_test < ../test_dbs/core143.sql
     # run the upgrade from the 143 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.3''/" app/config/custom_parameters.yml'
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
+#    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.3''/" app/config/custom_parameters.yml'
+#    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
-    - mysql -e 'drop database zk_test'
+#    - mysql -e 'drop database zk_test'
 
     # create an upgrade db for 144
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core144.sql
+#    - mysql -e 'create database zk_test;'
+#    - mysql zk_test < ../test_dbs/core144.sql
     # run the upgrade from the 144 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" app/config/custom_parameters.yml'
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
+#    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" app/config/custom_parameters.yml'
+#    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
-    - mysql -e 'drop database zk_test'
+#    - mysql -e 'drop database zk_test'
 
     # create an upgrade db for 145
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core145.sql
+#    - mysql -e 'create database zk_test;'
+#    - mysql zk_test < ../test_dbs/core145.sql
     # run the upgrade from the 145 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.5''/" app/config/custom_parameters.yml'
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
+#    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.5''/" app/config/custom_parameters.yml'
+#    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
-    - mysql -e 'drop database zk_test'
+#    - mysql -e 'drop database zk_test'
 
     # create an upgrade db for 146
-    - mysql -e 'create database zk_test;'
-    - mysql zk_test < ../test_dbs/core146.sql
+#    - mysql -e 'create database zk_test;'
+#    - mysql zk_test < ../test_dbs/core146.sql
     # run the upgrade from the 146 db
-    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.6''/" app/config/custom_parameters.yml'
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
+#    - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.6''/" app/config/custom_parameters.yml'
+#    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
-    - mysql -e 'drop database zk_test'
+#    - mysql -e 'drop database zk_test'
 
 script:
   - cd ..
