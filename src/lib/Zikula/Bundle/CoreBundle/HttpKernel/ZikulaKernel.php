@@ -306,7 +306,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         // add theme path to template locator
         // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
         // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
-        // the \Zikula\Bundle\CoreBundle\EventListener\Theme\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
+        // the \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
         if ($themeBundle && false === mb_strpos($name, $themeBundle->getName())) {
             // do not add theme override path to theme files
             $customThemePath = $themeBundle->getPath() . '/Resources';
