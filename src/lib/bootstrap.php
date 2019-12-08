@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 require __DIR__ . '/../app/autoload.php';
 require __DIR__ . '/../lib/RequirementChecker.php';
 
-$kernelConfig = Yaml::parse(file_get_contents(__DIR__ . '/../app/config/parameters.yml'));
+$kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/../app/config/parameters.yml')));
 if (is_readable($file = __DIR__ . '/../app/config/custom_parameters.yml')) {
     $kernelConfig = array_merge($kernelConfig, Yaml::parse(file_get_contents($file)));
 }
