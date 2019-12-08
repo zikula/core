@@ -1920,12 +1920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "df923d1f1577b6dfa2e5bece50a1b6a5c447cf29"
+                "reference": "fe0452d6887a0fa76e2eaf80166e1ea205e7bb81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/df923d1f1577b6dfa2e5bece50a1b6a5c447cf29",
-                "reference": "df923d1f1577b6dfa2e5bece50a1b6a5c447cf29",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/fe0452d6887a0fa76e2eaf80166e1ea205e7bb81",
+                "reference": "fe0452d6887a0fa76e2eaf80166e1ea205e7bb81",
                 "shasum": ""
             },
             "require": {
@@ -1962,7 +1962,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2019-11-21T15:05:07+00:00"
+            "time": "2019-12-04T15:29:08+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -2110,16 +2110,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.4.1",
+            "version": "6.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "0895c932405407fd3a7368b6910c09a24d26db11"
+                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0895c932405407fd3a7368b6910c09a24d26db11",
-                "reference": "0895c932405407fd3a7368b6910c09a24d26db11",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
+                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
                 "shasum": ""
             },
             "require": {
@@ -2134,12 +2134,13 @@
                 "psr/log": "^1.1"
             },
             "suggest": {
+                "ext-intl": "Required for Internationalized Domain Name (IDN) support",
                 "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "6.3-dev"
+                    "dev-master": "6.5-dev"
                 }
             },
             "autoload": {
@@ -2172,7 +2173,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2019-10-23T15:58:00+00:00"
+            "time": "2019-12-07T18:20:45+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3446,12 +3447,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "42925c5a01a07d67ca7e82dfc8fb31814d557bc9"
+                "reference": "6a898d7a9d43a5a3e356aafdd8dc687ce71e6932"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/42925c5a01a07d67ca7e82dfc8fb31814d557bc9",
-                "reference": "42925c5a01a07d67ca7e82dfc8fb31814d557bc9",
+                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/6a898d7a9d43a5a3e356aafdd8dc687ce71e6932",
+                "reference": "6a898d7a9d43a5a3e356aafdd8dc687ce71e6932",
                 "shasum": ""
             },
             "require": {
@@ -3478,16 +3479,16 @@
             ],
             "authors": [
                 {
+                    "name": "Josh Schmidt",
+                    "homepage": "https://github.com/oyejorge"
+                },
+                {
                     "name": "Matt Agar",
                     "homepage": "https://github.com/agar"
                 },
                 {
                     "name": "Martin Jantošovič",
                     "homepage": "https://github.com/Mordred"
-                },
-                {
-                    "name": "Josh Schmidt",
-                    "homepage": "https://github.com/oyejorge"
                 }
             ],
             "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
@@ -3500,7 +3501,7 @@
                 "php",
                 "stylesheet"
             ],
-            "time": "2017-03-28T22:19:25+00:00"
+            "time": "2019-12-05T00:05:03+00:00"
         },
         {
             "name": "paragonie/random_compat",
