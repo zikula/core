@@ -21,16 +21,6 @@ class AjaxInstallerStage implements StageInterface
 {
     use TranslatorTrait;
 
-    public const NAME = 'name';
-
-    public const PRE = 'pre';
-
-    public const DURING = 'during';
-
-    public const SUCCESS = 'success';
-
-    public const FAIL = 'fail';
-
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
