@@ -55,7 +55,7 @@ abstract class AbstractController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->controllerHelper = $this->container->get(ControllerHelper::class);
+        $this->controllerHelper = $container->get(ControllerHelper::class);
         $this->translator = $container->get(Translator::class);
     }
 
