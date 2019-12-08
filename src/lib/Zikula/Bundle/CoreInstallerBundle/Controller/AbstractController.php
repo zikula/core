@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -39,6 +41,16 @@ abstract class AbstractController
      * @var TranslatorInterface
      */
     protected $translator;
+
+    /**
+     * @var Form
+     */
+    protected $form;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
 
     public function __construct(ContainerInterface $container)
     {
