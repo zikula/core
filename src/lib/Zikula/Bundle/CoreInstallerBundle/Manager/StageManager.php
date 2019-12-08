@@ -19,7 +19,9 @@ use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ThemeHelper;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
@@ -67,6 +69,16 @@ class StageManager
      */
     private $superUserManager;
 
+    /**
+     * @var CacheHelper
+     */
+    private $cacheHelper;
+
+    /**
+     * @var ThemeHelper
+     */
+    private $themeHelper;
+
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         BootstrapHelper $bootstrapHelper,
@@ -75,7 +87,9 @@ class StageManager
         ModuleManager $moduleManager,
         BlockManager $blockManager,
         ParameterManager $parameterManager,
-        SuperUserManager $superUserManager
+        SuperUserManager $superUserManager,
+        CacheHelper $cacheHelper,
+        ThemeHelper $themeHelper
     ) {
         $this->kernel = $kernel;
         $this->bootstrapHelper = $bootstrapHelper;
@@ -85,10 +99,19 @@ class StageManager
         $this->blockManager = $blockManager;
         $this->parameterManager = $parameterManager;
         $this->superUserManager = $superUserManager;
+        $this->cacheHelper = $cacheHelper;
+        $this->themeHelper = $themeHelper;
     }
 
-    public function executeStage($stageName): bool
+    /**
+     * Specific stages are assigned in Ajax(Installer|Upgrader)Stage
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function executeStage(string $stageName): bool
     {
+        $currentVersion = $this->parameterManager->getYamlManager()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         switch ($stageName) {
             case 'bundles':
                 return $this->createBundles();
@@ -140,6 +163,18 @@ class StageManager
                 return $this->extensionHelper->installAssets();
             case 'protect':
                 return $this->parameterManager->protectFiles();
+            case 'reinitparams':
+                return $this->parameterManager->reInitParameters();
+            case 'upgrade_event':
+                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $currentVersion]);
+            case 'upgrademodules':
+                return $this->moduleManager->upgradeModules();
+            case 'regenthemes':
+                return $this->themeHelper->regenerateThemes();
+            case 'versionupgrade':
+                return $this->moduleManager->executeCoreMetaUpgrade($currentVersion);
+            case 'clearcaches':
+                return $this->cacheHelper->clearCaches();
         }
 
         return true;
@@ -149,13 +184,13 @@ class StageManager
     {
         $stages = $ajaxStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
-            $io->text($stage[AjaxInstallerStage::PRE]);
-            $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
-            $status = $this->executeStage($stage[AjaxInstallerStage::NAME]);
+            $io->text($stage[StageInterface::PRE]);
+            $io->text('<fg=blue;options=bold>' . $stage[StageInterface::DURING] . '</fg=blue;options=bold>');
+            $status = $this->executeStage($stage[StageInterface::NAME]);
             if ($status) {
-                $io->success($stage[AjaxInstallerStage::SUCCESS]);
+                $io->success($stage[StageInterface::SUCCESS]);
             } else {
-                $io->error($stage[AjaxInstallerStage::FAIL]);
+                $io->error($stage[StageInterface::FAIL]);
             }
         }
     }
