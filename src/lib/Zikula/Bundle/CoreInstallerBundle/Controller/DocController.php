@@ -77,7 +77,7 @@ class DocController
             'content' => $content,
         ];
         $response = new PlainResponse();
-        $response->setContent($this->twig->render('ZikulaCoreInstallerBundle::doc.html.twig', $templateParams));
+        $response->setContent($this->twig->render('@ZikulaCoreInstaller/doc.html.twig', $templateParams));
 
         return $response;
     }

@@ -71,7 +71,7 @@ class UpgraderController extends AbstractController
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
 
-            return $this->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
+            return $this->renderResponse('@ZikulaCoreInstaller/error.html.twig', $templateParams);
         }
 
         // handle the form
