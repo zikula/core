@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Block;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
@@ -79,7 +80,7 @@ class LoginBlock extends AbstractBlockHandler
         if ($this->eventDispatcher->hasListeners(AccessEvents::AUTHENTICATION_FORM)) {
             $mockForm = $this->formFactory->create();
             $mockLoginFormEvent = new UserFormAwareEvent($mockForm);
-            $this->eventDispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM, $mockLoginFormEvent);
+            $this->eventDispatcher->dispatch($mockLoginFormEvent, AccessEvents::AUTHENTICATION_FORM);
             $addedContent = $mockForm->count() > 0;
         }
         $hookBindings = $this->hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.login_screen');
@@ -123,7 +124,7 @@ class LoginBlock extends AbstractBlockHandler
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
     }
 
     /**

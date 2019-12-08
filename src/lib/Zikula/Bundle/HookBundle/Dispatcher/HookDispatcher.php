@@ -15,6 +15,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**
@@ -39,7 +40,7 @@ class HookDispatcher implements HookDispatcherInterface
         EventDispatcherInterface $dispatcher
     ) {
         $this->storage = $storage;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
     }
 
     public function getStorage(): StorageInterface
@@ -54,7 +55,7 @@ class HookDispatcher implements HookDispatcherInterface
             return $hook;
         }
 
-        return $this->dispatcher->dispatch($name, $hook);
+        return $this->dispatcher->dispatch($hook, $name);
     }
 
     public function getBindingsFor(string $areaName, string $type = 'subscriber'): array

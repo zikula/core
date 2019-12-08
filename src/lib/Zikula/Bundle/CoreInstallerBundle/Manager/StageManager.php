@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Manager;
 
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -79,7 +80,7 @@ class StageManager
         $this->kernel = $kernel;
         $this->bootstrapHelper = $bootstrapHelper;
         $this->extensionHelper = $extensionHelper;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->moduleManager = $moduleManager;
         $this->blockManager = $blockManager;
         $this->parameterManager = $parameterManager;
@@ -174,7 +175,7 @@ class StageManager
     {
         $event = new GenericEvent();
         $event->setArguments($args);
-        $this->eventDispatcher->dispatch($event);
+        $this->eventDispatcher->dispatch($event, $eventName);
         if ($event->isPropagationStopped()) {
             return false;
         }

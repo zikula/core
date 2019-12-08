@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Bridge\Twig;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Twig\Environment;
 use Twig\Error\Error as TwigError;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
 use Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent;
 use Zikula\ThemeModule\ThemeEvents;
 
-class EventEnabledTwigEngine extends TwigEngine
+class EventEnabledTwigEngine extends Environment
 {
     /**
      * @var EventDispatcherInterface
@@ -39,12 +40,12 @@ class EventEnabledTwigEngine extends TwigEngine
     public function render($name, array $parameters = [])
     {
         $preEvent = new TwigPreRenderEvent($name, $parameters);
-        $this->eventDispatcher->dispatch(ThemeEvents::PRE_RENDER, $preEvent);
+        $this->eventDispatcher->dispatch($preEvent, ThemeEvents::PRE_RENDER);
 
         $content = parent::render($preEvent->getTemplateName(), $preEvent->getParameters());
 
         $postEvent = new TwigPostRenderEvent($content, $preEvent->getTemplateName(), $preEvent->getParameters());
-        $this->eventDispatcher->dispatch(ThemeEvents::POST_RENDER, $postEvent);
+        $this->eventDispatcher->dispatch($postEvent, ThemeEvents::POST_RENDER);
 
         return $postEvent->getContent();
     }
@@ -54,6 +55,6 @@ class EventEnabledTwigEngine extends TwigEngine
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
     }
 }

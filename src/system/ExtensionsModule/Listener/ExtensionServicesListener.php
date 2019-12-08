@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
@@ -41,7 +42,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
         RouterInterface $router,
         TranslatorInterface $translator
     ) {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->router = $router;
         $this->translator = $translator;
     }
@@ -67,7 +68,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
         // notify EVENT here to gather any system service links
         $args = ['modname' => $event->getArgument('modname')];
         $localevent = new GenericEvent($event->getSubject(), $args);
-        $this->eventDispatcher->dispatch('module_dispatch.service_links', $localevent);
+        $this->eventDispatcher->dispatch($localevent, 'module_dispatch.service_links');
         $sublinks = $localevent->getData();
 
         if (!empty($sublinks)) {

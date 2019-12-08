@@ -17,6 +17,7 @@ use Composer\Semver\Semver;
 use Exception;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
@@ -107,7 +108,7 @@ class BundleSyncHelper
         $this->extensionVarRepository = $extensionVarRepository;
         $this->extensionDependencyRepository = $extensionDependencyRepository;
         $this->translator = $translator;
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
         $this->extensionStateHelper = $extensionStateHelper;
         $this->bootstrapHelper = $bootstrapHelper;
         $this->composerValidationHelper = $composerValidationHelper;
@@ -365,7 +366,7 @@ class BundleSyncHelper
                 $newExtension = new ExtensionEntity();
                 $newExtension->merge($extensionFromFile);
                 $vetoEvent = new GenericEvent($newExtension);
-                $this->dispatcher->dispatch(ExtensionEvents::INSERT_VETO, $vetoEvent);
+                $this->dispatcher->dispatch($vetoEvent, ExtensionEvents::INSERT_VETO);
                 if (!$vetoEvent->isPropagationStopped()) {
                     $this->extensionRepository->persistAndFlush($newExtension);
                 }

@@ -17,6 +17,7 @@ namespace Zikula\RoutesModule\Menu\Base;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -76,7 +77,7 @@ class AbstractMenuBuilder
     ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->requestStack = $requestStack;
         $this->permissionHelper = $permissionHelper;
         $this->entityDisplayHelper = $entityDisplayHelper;
@@ -103,11 +104,11 @@ class AbstractMenuBuilder
         $context = $options['context'];
         $menu->setChildrenAttribute('class', 'list-inline item-actions');
 
-        $this->eventDispatcher->dispatch(RoutesEvents::MENU_ITEMACTIONS_PRE_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
+        $this->eventDispatcher->dispatch(new ConfigureItemActionsMenuEvent($this->factory, $menu, $options), RoutesEvents::MENU_ITEMACTIONS_PRE_CONFIGURE);
 
         if ($entity instanceof RouteEntity) {
             $routePrefix = 'zikularoutesmodule_route_';
-        
+
             if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'zikularoutesmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
@@ -155,7 +156,7 @@ class AbstractMenuBuilder
             }
         }
 
-        $this->eventDispatcher->dispatch(RoutesEvents::MENU_ITEMACTIONS_POST_CONFIGURE, new ConfigureItemActionsMenuEvent($this->factory, $menu, $options));
+        $this->eventDispatcher->dispatch(new ConfigureItemActionsMenuEvent($this->factory, $menu, $options), RoutesEvents::MENU_ITEMACTIONS_POST_CONFIGURE);
 
         return $menu;
     }

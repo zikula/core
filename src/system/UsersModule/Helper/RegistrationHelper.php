@@ -16,6 +16,7 @@ namespace Zikula\UsersModule\Helper;
 use DateTime;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
@@ -70,7 +71,7 @@ class RegistrationHelper
         $this->currentUserApi = $currentUserApi;
         $this->userRepository = $userRepository;
         $this->groupRepository = $groupRepository;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->setTranslator($translator);
     }
 
@@ -89,7 +90,7 @@ class RegistrationHelper
             $userEntity->setUser_Regdate(new DateTime());
         }
         $userCreateEvent = new GenericEvent($userEntity);
-        $this->eventDispatcher->dispatch(RegistrationEvents::FULL_USER_CREATE_VETO, $userCreateEvent);
+        $this->eventDispatcher->dispatch($userCreateEvent, RegistrationEvents::FULL_USER_CREATE_VETO);
         if (($adminApprovalRequired && !$userEntity->isApproved()) || $userCreateEvent->isPropagationStopped()) {
             // We need a registration record
             $userEntity->setActivated(UsersConstant::ACTIVATED_PENDING_REG);
@@ -128,7 +129,7 @@ class RegistrationHelper
             $approvedBy = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : $userEntity->getUid();
             $this->userRepository->setApproved($userEntity, new DateTime(), $approvedBy); // flushes EM
         }
-        $this->eventDispatcher->dispatch($eventName, new GenericEvent($userEntity));
+        $this->eventDispatcher->dispatch(new GenericEvent($userEntity), $eventName);
     }
 
     /**
@@ -142,7 +143,7 @@ class RegistrationHelper
 
         $user->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         $this->userRepository->persistAndFlush($user);
-        $this->eventDispatcher->dispatch(RegistrationEvents::FORCE_REGISTRATION_APPROVAL, new GenericEvent($user));
+        $this->eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::FORCE_REGISTRATION_APPROVAL);
 
         $this->registerNewUser($user);
     }
