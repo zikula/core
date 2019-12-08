@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Manager;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,14 +20,12 @@ use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper;
-use Zikula\Bundle\CoreInstallerBundle\Helper\ThemeHelper;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
-class StageManager
+class StageHelper
 {
     /**
      * @var ExtensionHelper
@@ -50,24 +48,24 @@ class StageManager
     private $bootstrapHelper;
 
     /**
-     * @var ModuleManager
+     * @var ModuleHelper
      */
-    private $moduleManager;
+    private $moduleHelper;
 
     /**
-     * @var BlockManager
+     * @var BlockHelper
      */
-    private $blockManager;
+    private $blockHelper;
 
     /**
-     * @var ParameterManager
+     * @var ParameterHelper
      */
-    private $parameterManager;
+    private $parameterHelper;
 
     /**
-     * @var SuperUserManager
+     * @var SuperUserHelper
      */
-    private $superUserManager;
+    private $superUserHelper;
 
     /**
      * @var CacheHelper
@@ -84,10 +82,10 @@ class StageManager
         BootstrapHelper $bootstrapHelper,
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
-        ModuleManager $moduleManager,
-        BlockManager $blockManager,
-        ParameterManager $parameterManager,
-        SuperUserManager $superUserManager,
+        ModuleHelper $moduleHelper,
+        BlockHelper $blockHelper,
+        ParameterHelper $parameterHelper,
+        SuperUserHelper $superUserHelper,
         CacheHelper $cacheHelper,
         ThemeHelper $themeHelper
     ) {
@@ -95,10 +93,10 @@ class StageManager
         $this->bootstrapHelper = $bootstrapHelper;
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
-        $this->moduleManager = $moduleManager;
-        $this->blockManager = $blockManager;
-        $this->parameterManager = $parameterManager;
-        $this->superUserManager = $superUserManager;
+        $this->moduleHelper = $moduleHelper;
+        $this->blockHelper = $blockHelper;
+        $this->parameterHelper = $parameterHelper;
+        $this->superUserHelper = $superUserHelper;
         $this->cacheHelper = $cacheHelper;
         $this->themeHelper = $themeHelper;
     }
@@ -111,68 +109,68 @@ class StageManager
      */
     public function executeStage(string $stageName): bool
     {
-        $currentVersion = $this->parameterManager->getYamlManager()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $currentVersion = $this->parameterHelper->getYamlHelper()->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         switch ($stageName) {
             case 'bundles':
                 return $this->createBundles();
             case 'install_event':
                 return $this->fireEvent(CoreEvents::CORE_INSTALL_PRE_MODULE);
             case 'extensions':
-                return $this->moduleManager->installModule('ZikulaExtensionsModule');
+                return $this->moduleHelper->installModule('ZikulaExtensionsModule');
             case 'settings':
-                return $this->moduleManager->installModule('ZikulaSettingsModule');
+                return $this->moduleHelper->installModule('ZikulaSettingsModule');
             case 'theme':
-                return $this->moduleManager->installModule('ZikulaThemeModule');
+                return $this->moduleHelper->installModule('ZikulaThemeModule');
             case 'admin':
-                return $this->moduleManager->installModule('ZikulaAdminModule');
+                return $this->moduleHelper->installModule('ZikulaAdminModule');
             case 'permissions':
-                return $this->moduleManager->installModule('ZikulaPermissionsModule');
+                return $this->moduleHelper->installModule('ZikulaPermissionsModule');
             case 'groups':
-                return $this->moduleManager->installModule('ZikulaGroupsModule');
+                return $this->moduleHelper->installModule('ZikulaGroupsModule');
             case 'blocks':
-                return $this->moduleManager->installModule('ZikulaBlocksModule');
+                return $this->moduleHelper->installModule('ZikulaBlocksModule');
             case 'users':
-                return $this->moduleManager->installModule('ZikulaUsersModule');
+                return $this->moduleHelper->installModule('ZikulaUsersModule');
             case 'zauth':
-                return $this->moduleManager->installModule('ZikulaZAuthModule');
+                return $this->moduleHelper->installModule('ZikulaZAuthModule');
             case 'security':
-                return $this->moduleManager->installModule('ZikulaSecurityCenterModule');
+                return $this->moduleHelper->installModule('ZikulaSecurityCenterModule');
             case 'categories':
-                return $this->moduleManager->installModule('ZikulaCategoriesModule');
+                return $this->moduleHelper->installModule('ZikulaCategoriesModule');
             case 'mailer':
-                return $this->moduleManager->installModule('ZikulaMailerModule');
+                return $this->moduleHelper->installModule('ZikulaMailerModule');
             case 'search':
-                return $this->moduleManager->installModule('ZikulaSearchModule');
+                return $this->moduleHelper->installModule('ZikulaSearchModule');
             case 'routes':
-                return $this->moduleManager->installModule('ZikulaRoutesModule');
+                return $this->moduleHelper->installModule('ZikulaRoutesModule');
             case 'menu':
-                return $this->moduleManager->installModule('ZikulaMenuModule');
+                return $this->moduleHelper->installModule('ZikulaMenuModule');
             case 'updateadmin':
-                return $this->superUserManager->updateAdmin();
+                return $this->superUserHelper->updateAdmin();
             case 'loginadmin':
-                return $this->superUserManager->loginAdmin();
+                return $this->superUserHelper->loginAdmin();
             case 'activatemodules':
-                return $this->moduleManager->reSyncAndActivateModules();
+                return $this->moduleHelper->reSyncAndActivateModules();
             case 'categorize':
-                return $this->moduleManager->categorizeModules();
+                return $this->moduleHelper->categorizeModules();
             case 'createblocks':
-                return $this->blockManager->createBlocks();
+                return $this->blockHelper->createBlocks();
             case 'finalizeparameters':
-                return $this->parameterManager->finalizeParameters();
+                return $this->parameterHelper->finalizeParameters();
             case 'installassets':
                 return $this->extensionHelper->installAssets();
             case 'protect':
-                return $this->parameterManager->protectFiles();
+                return $this->parameterHelper->protectFiles();
             case 'reinitparams':
-                return $this->parameterManager->reInitParameters();
+                return $this->parameterHelper->reInitParameters();
             case 'upgrade_event':
                 return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $currentVersion]);
             case 'upgrademodules':
-                return $this->moduleManager->upgradeModules();
+                return $this->moduleHelper->upgradeModules();
             case 'regenthemes':
                 return $this->themeHelper->regenerateThemes();
             case 'versionupgrade':
-                return $this->moduleManager->executeCoreMetaUpgrade($currentVersion);
+                return $this->moduleHelper->executeCoreMetaUpgrade($currentVersion);
             case 'clearcaches':
                 return $this->cacheHelper->clearCaches();
         }

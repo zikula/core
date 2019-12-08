@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Manager;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +23,7 @@ use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 use Zikula\ZAuthModule\ZAuthConstant;
 
-class SuperUserManager
+class SuperUserHelper
 {
     /**
      * @var UserRepositoryInterface
@@ -36,9 +36,9 @@ class SuperUserManager
     private $entityManager;
 
     /**
-     * @var ParameterManager
+     * @var ParameterHelper
      */
-    private $parameterManager;
+    private $parameterHelper;
 
     /**
      * @var RequestStack
@@ -58,14 +58,14 @@ class SuperUserManager
     public function __construct(
         UserRepositoryInterface $userRepository,
         EntityManagerInterface $entityManager,
-        ParameterManager $parameterManager,
+        ParameterHelper $parameterHelper,
         RequestStack $requestStack,
         AccessHelper $accessHelper,
         PasswordApiInterface $passwordApi
     ) {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
-        $this->parameterManager = $parameterManager;
+        $this->parameterHelper = $parameterHelper;
         $this->requestStack = $requestStack;
         $this->accessHelper = $accessHelper;
         $this->passwordApi = $passwordApi;
@@ -76,7 +76,7 @@ class SuperUserManager
      */
     public function updateAdmin(): bool
     {
-        $params = $this->parameterManager->decodeParameters($this->parameterManager->getYamlManager()->getParameters());
+        $params = $this->parameterHelper->decodeParameters($this->parameterHelper->getYamlHelper()->getParameters());
         /** @var UserEntity $userEntity */
         $userEntity = $this->userRepository->find(2);
         $userEntity->setUname($params['username']);
@@ -102,7 +102,7 @@ class SuperUserManager
 
     public function loginAdmin(): bool
     {
-        $params = $this->parameterManager->decodeParameters($this->parameterManager->getYamlManager()->getParameters());
+        $params = $this->parameterHelper->decodeParameters($this->parameterHelper->getYamlHelper()->getParameters());
         $user = $this->userRepository->findOneBy(['uname' => $params['username']]);
         $request = $this->requestStack->getCurrentRequest();
         if (isset($request) && $request->hasSession()) {

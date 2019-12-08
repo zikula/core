@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Manager;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use RandomLib\Factory;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,7 +23,7 @@ use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 
-class ParameterManager
+class ParameterHelper
 {
     /**
      * @var string
@@ -52,7 +52,7 @@ class ParameterManager
     private $kernel;
 
     /**
-     * ParameterManager constructor.
+     * ParameterHelper constructor.
      */
     public function __construct(
         string $configDir,
@@ -68,7 +68,7 @@ class ParameterManager
         $this->kernel = $kernel;
     }
 
-    public function getYamlManager(bool $initCopy = false): YamlDumper
+    public function getYamlHelper(bool $initCopy = false): YamlDumper
     {
         $copyFile = $initCopy ? 'parameters.yml' : null;
 
@@ -77,12 +77,12 @@ class ParameterManager
 
     public function initializeParameters(array $paramsToMerge = []): bool
     {
-        $yamlManager = $this->getYamlManager(true);
-        $params = array_merge($yamlManager->getParameters(), $paramsToMerge);
+        $yamlHelper = $this->getYamlHelper(true);
+        $params = array_merge($yamlHelper->getParameters(), $paramsToMerge);
         if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
             $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
         }
-        $yamlManager->setParameters($params);
+        $yamlHelper->setParameters($params);
         $this->cacheClearer->clear('symfony.config');
 
         return true;
@@ -96,8 +96,8 @@ class ParameterManager
     public function reInitParameters(): bool
     {
         $originalParameters = Yaml::parse(file_get_contents($this->kernel->getProjectDir() . '/config/parameters.yml'));
-        $yamlManager = $this->getYamlManager();
-        $yamlManager->setParameters(array_merge($originalParameters['parameters'], $yamlManager->getParameters()));
+        $yamlHelper = $this->getYamlHelper();
+        $yamlHelper->setParameters(array_merge($originalParameters['parameters'], $yamlHelper->getParameters()));
         $this->cacheClearer->clear('symfony.config');
 
         return true;
@@ -105,8 +105,8 @@ class ParameterManager
 
     public function finalizeParameters(bool $configureRequestContext = true): bool
     {
-        $yamlManager = $this->getYamlManager();
-        $params = $this->decodeParameters($yamlManager->getParameters());
+        $yamlHelper = $this->getYamlHelper();
+        $params = $this->decodeParameters($yamlHelper->getParameters());
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
         $this->variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
         // Set the System Identifier as a unique string.
@@ -165,7 +165,7 @@ class ParameterManager
             unset($params['upgrading']);
         }
 
-        $yamlManager->setParameters($params);
+        $yamlHelper->setParameters($params);
 
         // clear the cache
         $this->cacheClearer->clear('symfony.config');

@@ -17,8 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Bundle\CoreInstallerBundle\Manager\ParameterManager;
-use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 
 /**
  * Class AjaxUpgradeController
@@ -31,22 +31,22 @@ class AjaxUpgradeController extends AbstractController
     private $yamlManager;
 
     /**
-     * @var StageManager
+     * @var StageHelper
      */
-    private $stageManager;
+    private $stageHelper;
 
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $this->yamlManager = $container->get(ParameterManager::class)->getYamlManager();
-        $this->stageManager = $container->get(StageManager::class);
+        $this->yamlManager = $container->get(ParameterHelper::class)->getYamlManager();
+        $this->stageHelper = $container->get(StageHelper::class);
     }
 
     public function ajaxAction(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
         $this->yamlManager->setParameter('upgrading', true);
-        $status = $this->stageManager->executeStage($stage);
+        $status = $this->stageHelper->executeStage($stage);
 
         return new JsonResponse(['status' => $status]);
     }

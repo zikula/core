@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Manager;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use ReflectionClass;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -28,7 +28,7 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 use Zikula\ExtensionsModule\Helper\ExtensionHelper;
 
-class ModuleManager
+class ModuleHelper
 {
     /**
      * @var ContainerInterface
@@ -43,14 +43,14 @@ class ModuleManager
     /**
      * @var YamlDumper
      */
-    private $yamlManager;
+    private $yamlHelper;
 
     public function __construct(
         ContainerInterface $container
     ) {
         $this->container = $container;
         $this->translator = $container->get(Translator::class);
-        $this->yamlManager = $container->get(ParameterManager::class)->getYamlManager();
+        $this->yamlHelper = $container->get(ParameterHelper::class)->getYamlHelper();
     }
 
     public function installModule(string $moduleName): bool
@@ -223,7 +223,7 @@ class ModuleManager
                 $variableApi->del(VariableApi::CONFIG, 'startfunc');
                 $variableApi->del(VariableApi::CONFIG, 'starttype');
                 if ('userdata' === $this->container->getParameter('datadir')) {
-                    $this->yamlManager->setParameter('datadir', 'web/uploads');
+                    $this->yamlHelper->setParameter('datadir', 'web/uploads');
                     $fs = $this->container->get('filesystem');
                     $src = dirname(__DIR__, 5) . '/';
                     try {

@@ -24,7 +24,7 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
-use Zikula\Bundle\CoreInstallerBundle\Manager\ParameterManager;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -51,16 +51,16 @@ class StartCommand extends AbstractCoreInstallerCommand
     private $localeApi;
 
     /**
-     * @var ParameterManager
+     * @var ParameterHelper
      */
-    private $parameterManager;
+    private $parameterHelper;
 
     public function __construct(
         string $environment,
         bool $installed,
         ControllerHelper $controllerHelper,
         LocaleApiInterface $localeApi,
-        ParameterManager $parameterManager,
+        ParameterHelper $parameterHelper,
         TranslatorInterface $translator
     ) {
         parent::__construct($translator);
@@ -68,7 +68,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->installed = $installed;
         $this->controllerHelper = $controllerHelper;
         $this->localeApi = $localeApi;
-        $this->parameterManager = $parameterManager;
+        $this->parameterHelper = $parameterHelper;
     }
 
     protected function configure()
@@ -156,7 +156,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         // write the parameters to custom_parameters.yml
-        $this->parameterManager->initializeParameters($settings);
+        $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->__('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
     }

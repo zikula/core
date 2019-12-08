@@ -27,7 +27,7 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\LoginType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
-use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
+use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
@@ -60,9 +60,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $localeApi;
 
     /**
-     * @var StageManager
+     * @var StageHelper
      */
-    private $stageManager;
+    private $stageHelper;
 
     /**
      * @var array
@@ -81,7 +81,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         ControllerHelper $controllerHelper,
         MigrationHelper $migrationHelper,
         LocaleApiInterface $localeApi,
-        StageManager $stageManager,
+        StageHelper $stageHelper,
         TranslatorInterface $translator
     ) {
         $this->currentInstalledVersion = $currentInstalledVersion;
@@ -89,7 +89,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->controllerHelper = $controllerHelper;
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
-        $this->stageManager = $stageManager;
+        $this->stageHelper = $stageHelper;
         parent::__construct($translator);
     }
 
@@ -194,7 +194,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         // upgrade!
         $ajaxStage = new AjaxUpgraderStage($this->translator, $this->currentInstalledVersion);
-        $this->stageManager->handleAjaxStage($ajaxStage, $io);
+        $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
         error_reporting($reportingLevel);
 

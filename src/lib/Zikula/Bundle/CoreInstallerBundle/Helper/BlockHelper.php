@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreInstallerBundle\Manager;
+namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,7 +22,7 @@ use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
-class BlockManager
+class BlockHelper
 {
     /**
      * @var EntityManagerInterface

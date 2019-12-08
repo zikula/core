@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
-use Zikula\Bundle\CoreInstallerBundle\Manager\StageManager;
+use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
 use Zikula\Common\Translator\TranslatorInterface;
 
@@ -34,20 +34,20 @@ class FinishCommand extends AbstractCoreInstallerCommand
     private $installed;
 
     /**
-     * @var StageManager
+     * @var StageHelper
      */
-    private $stageManager;
+    private $stageHelper;
 
     public function __construct(
         string $environment,
         bool $installed,
-        StageManager $stageManager,
+        StageHelper $stageHelper,
         TranslatorInterface $translator
     ) {
         parent::__construct($translator);
         $this->installed = $installed;
         $this->environment = $environment;
-        $this->stageManager = $stageManager;
+        $this->stageHelper = $stageHelper;
     }
 
     protected function configure()
@@ -73,7 +73,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
 
         // install!
         $ajaxStage = new AjaxInstallerStage($this->translator);
-        $this->stageManager->handleAjaxStage($ajaxStage, $io);
+        $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
         $io->success($this->translator->__('INSTALL COMPLETE!'));
     }
