@@ -95,10 +95,11 @@ services:
           $combine: '%zikula_asset_manager.combine%'
 
     Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine:
-        decorates: templating.engine.twig
+        decorates: twig
         arguments:
-          $parser: '@templating.name_parser'
-          $locator: '@templating.locator'
+          $loader: '@twig.loader'
+        calls:
+          - [setEventDispatcher, ['@event_dispatcher']]
 
     Zikula\ThemeModule\EventListener\CreateThemedResponseListener:
         tags:
