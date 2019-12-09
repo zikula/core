@@ -46,7 +46,6 @@ class CacheHelper
         $this->env = $env;
     }
 
-
     public function clearCaches(): bool
     {
         // clear cache with zikula's method
@@ -62,5 +61,4 @@ class CacheHelper
 
         return true;
     }
-
 }

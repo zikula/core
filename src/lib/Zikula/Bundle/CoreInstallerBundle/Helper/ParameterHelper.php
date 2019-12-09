@@ -17,8 +17,8 @@ use RandomLib\Factory;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -47,7 +47,6 @@ class ParameterHelper
 
     /**
      * @var ZikulaHttpKernelInterface
-     *
      */
     private $kernel;
 
@@ -176,7 +175,7 @@ class ParameterHelper
     public function protectFiles(): bool
     {
         // protect custom_parameters.yml files
-        $files = array_diff(scandir($this->configDir), array('.', '..'));
+        $files = array_diff(scandir($this->configDir), ['.', '..']);
         foreach ($files as $file) {
             @chmod($file, 0400);
             if (!is_readable($file)) {
