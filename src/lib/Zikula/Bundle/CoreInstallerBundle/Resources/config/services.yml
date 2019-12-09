@@ -33,3 +33,4 @@ services:
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
             $env: '%env%'
+            $symfonyCacheClearer: '@cache_clearer'
