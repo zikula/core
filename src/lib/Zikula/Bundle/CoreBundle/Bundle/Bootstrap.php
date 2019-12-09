@@ -67,15 +67,15 @@ class Bootstrap
                     $this->addAutoloaders($kernel, $autoload);
 
                     if (class_exists($class)) {
-                        $bundle = new $class();
-                        try {
-                            if ($bundle instanceof AbstractBundle) {
-                                $bundle->setState((int)$state);
-                            }
+                        $bundle = $class;
+//                        try {
+//                            if ($bundle instanceof AbstractBundle) {
+//                                $bundle->setState((int)$state);
+//                            }
                             $bundles[] = $bundle;
-                        } catch (InvalidArgumentException $exception) {
-                            // continue
-                        }
+//                        } catch (InvalidArgumentException $exception) {
+//                            // continue
+//                        }
                     }
                 } catch (Exception $exception) {
                     // unable to autoload $prefix / $path
