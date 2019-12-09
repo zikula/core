@@ -176,9 +176,8 @@ class ParameterHelper
     public function protectFiles(): bool
     {
         // protect custom_parameters.yml files
-        foreach ([
-                     dirname($this->configDir . '/parameters.yml')
-                 ] as $file) {
+        $files = array_diff(scandir($this->configDir), array('.', '..'));
+        foreach ($files as $file) {
             @chmod($file, 0400);
             if (!is_readable($file)) {
                 @chmod($file, 0440);
