@@ -72,7 +72,7 @@ class Bootstrap
 //                            if ($bundle instanceof AbstractBundle) {
 //                                $bundle->setState((int)$state);
 //                            }
-                            $bundles[] = $bundle;
+                        $bundles[] = $bundle;
 //                        } catch (InvalidArgumentException $exception) {
 //                            // continue
 //                        }
