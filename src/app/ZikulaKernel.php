@@ -18,7 +18,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 
 class ZikulaKernel extends Kernel
 {
-    public function registerBundles(): Iterable
+    public function registerBundles(): iterable
     {
         $bundles = [
             Symfony\Bundle\FrameworkBundle\FrameworkBundle::class,
