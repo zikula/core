@@ -18,7 +18,7 @@
 
     {{ block('page_nav_links') }}
 
-    {{ include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', { workflowStateFilter: false, schemesFilter: false, methodsFilter: false, sorting: false, pageSizeSelector: false }) }}{# see template file for available options #}
+    {{ include('@ZikulaRoutesModule/Route/viewQuickNav.html.twig', {workflowStateFilter: false, schemesFilter: false, methodsFilter: false, sorting: false, pageSizeSelector: false}) }}{# see template file for available options #}
 
     {% if routeArea == 'admin' %}
     <form action="{{ path('zikularoutesmodule_route_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="routesViewForm" class="form-horizontal" role="form">
@@ -96,7 +96,7 @@
                 {% endif %}
                 <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap z-w02">
                     {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'view'}) %}
-                    <div class="dropdown">
+                    <div class="dropdown item-actions">
                         <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
                         {{ knp_menu_render(itemActions, {template: 'ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig'}) }}
                     </div>

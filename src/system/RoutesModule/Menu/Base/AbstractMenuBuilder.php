@@ -108,7 +108,7 @@ class AbstractMenuBuilder
 
         if ($entity instanceof RouteEntity) {
             $routePrefix = 'zikularoutesmodule_route_';
-
+        
             if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'zikularoutesmodule');
                 $previewRouteParameters = $entity->createUrlArgs();

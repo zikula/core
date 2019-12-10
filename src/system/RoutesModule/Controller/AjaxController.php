@@ -29,7 +29,6 @@ class AjaxController extends AbstractAjaxController
 {
     
     /**
-     * @inheritDoc
      * @Route("/updateSortPositions", methods = {"POST"}, options={"expose"=true})
      */
     public function updateSortPositionsAction(

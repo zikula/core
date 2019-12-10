@@ -44,7 +44,7 @@
         </fieldset>
 
         {% if mode != 'create' %}
-            {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', { obj: route }) }}
+            {{ include('@ZikulaRoutesModule/Helper/includeStandardFieldsEdit.html.twig', {obj: route}) }}
         {% endif %}
 
         {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}

@@ -33,37 +33,37 @@ abstract class AbstractViewHelper
      * @var Environment
      */
     protected $twig;
-
+    
     /**
      * @var FilesystemLoader
      */
     protected $twigLoader;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var VariableApiInterface
      */
     protected $variableApi;
-
+    
     /**
      * @var AssetFilter
      */
     protected $assetFilter;
-
+    
     /**
      * @var ControllerHelper
      */
     protected $controllerHelper;
-
+    
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-
+    
     public function __construct(
         Environment $twig,
         FilesystemLoader $twigLoader,
@@ -81,7 +81,7 @@ abstract class AbstractViewHelper
         $this->controllerHelper = $controllerHelper;
         $this->permissionHelper = $permissionHelper;
     }
-
+    
     /**
      * Determines the view template for a certain method with given parameters.
      */
@@ -89,10 +89,10 @@ abstract class AbstractViewHelper
     {
         // create the base template name
         $template = '@ZikulaRoutesModule/' . ucfirst($type) . '/' . $func;
-
+    
         // check for template extension
         $templateExtension = '.' . $this->determineExtension($type, $func);
-
+    
         // check whether a special template is used
         $request = $this->requestStack->getCurrentRequest();
         $tpl = null !== $request ? $request->query->getAlnum('tpl') : '';
@@ -103,12 +103,12 @@ abstract class AbstractViewHelper
                 $template = $customTemplate;
             }
         }
-
+    
         $template .= $templateExtension;
-
+    
         return $template;
     }
-
+    
     /**
      * Helper method for managing view templates.
      */
@@ -122,29 +122,29 @@ abstract class AbstractViewHelper
         if (empty($template)) {
             $template = $this->getViewTemplate($type, $func);
         }
-
+    
         // look whether we need output with or without the theme
         $request = $this->requestStack->getCurrentRequest();
         $raw = null !== $request ? $request->query->getBoolean('raw') : false;
         if (!$raw && 'html.twig' !== $templateExtension) {
             $raw = true;
         }
-
+    
         $output = $this->twig->render($template, $templateParameters);
         $response = null;
         if (true === $raw) {
             // standalone output
             $output = $this->injectAssetsIntoRawOutput($output);
-
+    
             $response = new PlainResponse($output);
         } else {
             // normal output
             $response = new Response($output);
         }
-
+    
         return $response;
     }
-
+    
     /**
      * Adds assets to a raw page which is not processed by the Theme engine.
      */
@@ -152,7 +152,7 @@ abstract class AbstractViewHelper
     {
         return $this->assetFilter->filter($output);
     }
-
+    
     /**
      * Get extension of the currently treated template.
      */
@@ -162,21 +162,21 @@ abstract class AbstractViewHelper
         if (!in_array($func, ['view', 'display'])) {
             return $templateExtension;
         }
-
+    
         $extensions = $this->availableExtensions($type, $func);
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
             return $templateExtension;
         }
-
+    
         $format = $request->getRequestFormat();
         if ('html' !== $format && in_array($format, $extensions, true)) {
             $templateExtension = $format . '.twig';
         }
-
+    
         return $templateExtension;
     }
-
+    
     /**
      * Get list of available template extensions.
      *
@@ -199,7 +199,7 @@ abstract class AbstractViewHelper
                 $extensions = [];
             }
         }
-
+    
         return $extensions;
     }
 }

@@ -185,7 +185,6 @@ class RouteController extends AbstractRouteController
     /**
      * Process status changes for multiple items.
      *
-     * @inheritDoc
      * @Route("/admin/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )
@@ -203,7 +202,6 @@ class RouteController extends AbstractRouteController
     /**
      * Process status changes for multiple items.
      *
-     * @inheritDoc
      * @Route("/routes/handleSelectedEntries",
      *        methods = {"POST"}
      * )

@@ -51,9 +51,9 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         return [
             'workflow.guard' => ['onGuard', 5],
             'workflow.leave' => ['onLeave', 5],
-            'workflow.entered' => ['onEntered', 5],
             'workflow.transition' => ['onTransition', 5],
             'workflow.enter' => ['onEnter', 5],
+            'workflow.entered' => ['onEntered', 5],
             'workflow.completed' => ['onCompleted', 5],
             'workflow.announce' => ['onAnnounce', 5]
         ];
@@ -62,13 +62,14 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     /**
      * Listener for the `workflow.guard` event.
      *
-     * Occurs just before a transition is started and when testing which transitions are available.
-     * Allows to define that the transition is not allowed by calling `$event->setBlocked(true);`.
+     * Occurs before a transition is started and when testing which transitions are available.
+     * Validates whether the transition is allowed or not.
+     * Allows to block it by calling `$event->setBlocked(true);`.
      *
      * This event is also triggered for each workflow individually, so you can react only to the events
      * of a specific workflow by listening to `workflow.<workflow_name>.guard` instead.
      * You can even listen to some specific transitions or states for a specific workflow
-     * using `workflow.<workflow_name>.guard.<transition_name>`.
+     * using `workflow.<workflow_name>.guard.<state_name>`.
      *
      * You can access general data available in the event.
      *
@@ -91,13 +92,13 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-    
+        
         $objectType = $entity->get_objectType();
         $permissionLevel = ACCESS_READ;
         $transitionName = $event->getTransition()->getName();
         
         $hasApproval = false;
-    
+        
         switch ($transitionName) {
             case 'defer':
             case 'submit':
@@ -121,11 +122,11 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
                 $permissionLevel = ACCESS_DELETE;
                 break;
         }
-    
+        
         if (!$this->permissionHelper->hasEntityPermission($entity, $permissionLevel)) {
             // no permission for this transition, so disallow it
             $event->setBlocked(true);
-    
+        
             return;
         }
     }
@@ -133,7 +134,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     /**
      * Listener for the `workflow.leave` event.
      *
-     * Occurs just after an object has left it's current state.
+     * Occurs after a subject has left it's current state.
      * Carries the marking with the initial places.
      *
      * This event is also triggered for each workflow individually, so you can react only to the events
@@ -161,9 +162,69 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     }
     
     /**
+     * Listener for the `workflow.transition` event.
+     *
+     * Occurs before starting to transition to the new state.
+     * Carries the marking with the current places.
+     *
+     * This event is also triggered for each workflow individually, so you can react only to the events
+     * of a specific workflow by listening to `workflow.<workflow_name>.transition` instead.
+     * You can even listen to some specific transitions or states for a specific workflow
+     * using `workflow.<workflow_name>.transition.<state_name>`.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * Access the entity: `$entity = $event->getSubject();`
+     * Access the marking: `$marking = $event->getMarking();`
+     * Access the transition: `$transition = $event->getTransition();`
+     * Access the workflow name: `$workflowName = $event->getWorkflowName();`
+     */
+    public function onTransition(Event $event): void
+    {
+        /** @var EntityAccess $entity */
+        $entity = $event->getSubject();
+        if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
+            return;
+        }
+    }
+    
+    /**
+     * Listener for the `workflow.enter` event.
+     *
+     * Occurs before the subject enters into the new state and places are updated.
+     * This means the marking of the subject is not yet updated with the new places.
+     *
+     * This event is also triggered for each workflow individually, so you can react only to the events
+     * of a specific workflow by listening to `workflow.<workflow_name>.enter` instead.
+     * You can even listen to some specific transitions or states for a specific workflow
+     * using `workflow.<workflow_name>.enter.<state_name>`.
+     *
+     * You can access general data available in the event.
+     *
+     * The event name:
+     *     `echo 'Event: ' . $event->getName();`
+     *
+     * Access the entity: `$entity = $event->getSubject();`
+     * Access the marking: `$marking = $event->getMarking();`
+     * Access the transition: `$transition = $event->getTransition();`
+     * Access the workflow name: `$workflowName = $event->getWorkflowName();`
+     */
+    public function onEnter(Event $event): void
+    {
+        /** @var EntityAccess $entity */
+        $entity = $event->getSubject();
+        if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
+            return;
+        }
+    }
+    
+    /**
      * Listener for the `workflow.entered` event.
      *
-     * Occurs just before the object enters into the new state.
+     * Occurs after the subject has entered into the new state.
      * Carries the marking with the new places.
      * This is a good place to flush data in Doctrine based on the entity not being updated yet.
      *
@@ -192,69 +253,9 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     }
     
     /**
-     * Listener for the `workflow.transition` event.
-     *
-     * Occurs just before starting to transition to the new state.
-     * Carries the marking with the current places.
-     *
-     * This event is also triggered for each workflow individually, so you can react only to the events
-     * of a specific workflow by listening to `workflow.<workflow_name>.transition` instead.
-     * You can even listen to some specific transitions or states for a specific workflow
-     * using `workflow.<workflow_name>.transition.<transition_name>`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     * Access the entity: `$entity = $event->getSubject();`
-     * Access the marking: `$marking = $event->getMarking();`
-     * Access the transition: `$transition = $event->getTransition();`
-     * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     */
-    public function onTransition(Event $event): void
-    {
-        /** @var EntityAccess $entity */
-        $entity = $event->getSubject();
-        if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
-            return;
-        }
-    }
-    
-    /**
-     * Listener for the `workflow.enter` event.
-     *
-     * Occurs just after the object has entered into the new state.
-     * Carries the marking with the new places.
-     *
-     * This event is also triggered for each workflow individually, so you can react only to the events
-     * of a specific workflow by listening to `workflow.<workflow_name>.enter` instead.
-     * You can even listen to some specific transitions or states for a specific workflow
-     * using `workflow.<workflow_name>.enter.<state_name>`.
-     *
-     * You can access general data available in the event.
-     *
-     * The event name:
-     *     `echo 'Event: ' . $event->getName();`
-     *
-     * Access the entity: `$entity = $event->getSubject();`
-     * Access the marking: `$marking = $event->getMarking();`
-     * Access the transition: `$transition = $event->getTransition();`
-     * Access the workflow name: `$workflowName = $event->getWorkflowName();`
-     */
-    public function onEnter(Event $event): void
-    {
-        /** @var EntityAccess $entity */
-        $entity = $event->getSubject();
-        if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
-            return;
-        }
-    }
-    
-    /**
      * Listener for the `workflow.completed` event.
      *
-     * Occurs after the object has completed a transition.
+     * Occurs after the subject has completed a transition.
      *
      * This event is also triggered for each workflow individually, so you can react only to the events
      * of a specific workflow by listening to `workflow.<workflow_name>.completed` instead.
@@ -283,7 +284,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
     /**
      * Listener for the `workflow.announce` event.
      *
-     * Triggered for each place that now is available for the object.
+     * Triggered for each place that now is available for the subject.
      *
      * This event is also triggered for each workflow individually, so you can react only to the events
      * of a specific workflow by listening to `workflow.<workflow_name>.announce` instead.

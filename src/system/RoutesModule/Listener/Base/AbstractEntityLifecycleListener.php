@@ -120,10 +120,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
-        $this->eventDispatcher->dispatch(constant($event, '\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_REMOVE'));
+        $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_REMOVE'));
     }
 
     /**
@@ -143,13 +143,13 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         $objectType = $entity->get_objectType();
-
+        
         $currentUserApi = $this->container->get(CurrentUserApi::class);
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $objectType, 'id' => $entity->getKey()];
         $this->logger->debug('{app}: User {user} removed the {entity} with id {id}.', $logArgs);
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
         $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($objectType) . '_POST_REMOVE'));
@@ -172,10 +172,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
-        $this->eventDispatcher->dispatch(constant($event, '\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_PERSIST'));
+        $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_PERSIST'));
     }
 
     /**
@@ -192,14 +192,14 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         $currentUserApi = $this->container->get(CurrentUserApi::class);
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $entity->getKey()];
         $this->logger->debug('{app}: User {user} created the {entity} with id {id}.', $logArgs);
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
-        $this->eventDispatcher->dispatch(constant($event, '\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_PERSIST'));
+        $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_PERSIST'));
     }
 
     /**
@@ -215,10 +215,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
-        $this->eventDispatcher->dispatch(constant($event, '\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_UPDATE'));
+        $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_PRE_UPDATE'));
     }
 
     /**
@@ -234,14 +234,14 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         $currentUserApi = $this->container->get(CurrentUserApi::class);
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $currentUserApi->get('uname'), 'entity' => $entity->get_objectType(), 'id' => $entity->getKey()];
         $this->logger->debug('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
-        $this->eventDispatcher->dispatch(constant($event, '\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_UPDATE'));
+        $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_UPDATE'));
     }
 
     /**
@@ -262,10 +262,10 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         if (!$this->isEntityManagedByThisBundle($entity) || !method_exists($entity, 'get_objectType')) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $event = $this->createFilterEvent($entity);
-        $this->eventDispatcher->dispatch(constant($event, '\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_LOAD'));
+        $this->eventDispatcher->dispatch($event, constant('\\Zikula\\RoutesModule\\RoutesEvents::' . strtoupper($entity->get_objectType()) . '_POST_LOAD'));
     }
 
     /**

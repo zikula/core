@@ -174,7 +174,6 @@ abstract class AbstractEditHandler extends EditHandler
     }
 
     /**
-     * @inheritDoc
      * @throws RuntimeException Thrown if concurrent editing is recognised or another error occurs
      */
     public function applyAction(array $args = []): bool

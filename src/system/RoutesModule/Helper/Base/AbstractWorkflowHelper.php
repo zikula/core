@@ -234,18 +234,18 @@ abstract class AbstractWorkflowHelper
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname')];
     
         $result = false;
-        if (!$workflow->can($entity, $actionId)) {
-            return $result;
-        }
-    
         try {
             if ('delete' === $actionId) {
                 $entityManager->remove($entity);
             } else {
                 $entityManager->persist($entity);
             }
+            // we flush two times on purpose to avoid a hen-egg problem with workflow post-processing
+            // first we flush to ensure that the entity gets an identifier
             $entityManager->flush();
+            // then we apply the workflow which causes additional actions, like notifications
             $workflow->apply($entity, $actionId);
+            // then we flush again to save the new workflow state of the entity
             $entityManager->flush();
     
             $result = true;

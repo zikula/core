@@ -215,12 +215,12 @@ abstract class AbstractRouteEntity extends EntityAccess
     }
     
     
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
     
-    public function setId(int $id): void
+    public function setId(int $id = null): void
     {
         if ((int)$this->id !== $id) {
             $this->id = $id;
@@ -367,7 +367,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     public function setDefaults(array $defaults): void
     {
         if ($this->defaults !== $defaults) {
-            $this->defaults = $defaults ?? '';
+            $this->defaults = $defaults ?? [];
         }
     }
     
@@ -379,7 +379,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     public function setRequirements(array $requirements): void
     {
         if ($this->requirements !== $requirements) {
-            $this->requirements = $requirements ?? '';
+            $this->requirements = $requirements ?? [];
         }
     }
     
@@ -391,7 +391,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     public function setOptions(array $options): void
     {
         if ($this->options !== $options) {
-            $this->options = $options ?? '';
+            $this->options = $options ?? [];
         }
     }
     
@@ -447,7 +447,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     /**
      * Returns the primary key.
      */
-    public function getKey(): int
+    public function getKey(): ?int
     {
         return $this->getId();
     }
