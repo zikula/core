@@ -1,0 +1,32 @@
+name: Update dependencies
+on:
+  schedule:
+    - cron:  '0 12 * * *' # run every 12 hours
+jobs:
+  update-deps:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout sources from master branch
+      uses: actions/checkout@v1
+      with:
+        ref: master
+
+    - name: Update dependencies
+      run: |
+        composer update
+
+    # see https://github.com/peter-evans/create-pull-request
+    - name: Commit changes and create/update pull request
+      uses: peter-evans/create-pull-request@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'update dependencies :balloon:'
+        title: Vendor update
+        body: This is an auto-generated PR with dependency updates.
+        labels: dep-updates
+        branch: dep-updates
+        branch-suffix: none
+
+    - name: Check outputs
+      run: |
+        echo "Created pull request number: ${{ env.PULL_REQUEST_NUMBER }}"
