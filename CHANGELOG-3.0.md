@@ -91,6 +91,7 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.11
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.4.0
+    - guzzlehttp/guzzle updated from 6.4.1 to 6.5.0
     - imagine/imagine updated from 0.7.1 to 1.2.2
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
     - jms/translation-bundle updated from 1.3.2 to 1.4.4
