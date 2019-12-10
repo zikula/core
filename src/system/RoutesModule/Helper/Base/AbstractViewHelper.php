@@ -17,7 +17,7 @@ namespace Zikula\RoutesModule\Helper\Base;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
-use Twig\Loader\LoaderInterface;
+use Twig\Loader\FilesystemLoader;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\AssetFilter;
@@ -35,7 +35,7 @@ abstract class AbstractViewHelper
     protected $twig;
 
     /**
-     * @var LoaderInterface
+     * @var FilesystemLoader
      */
     protected $twigLoader;
 
@@ -66,7 +66,7 @@ abstract class AbstractViewHelper
 
     public function __construct(
         Environment $twig,
-        LoaderInterface $twigLoader,
+        FilesystemLoader $twigLoader,
         RequestStack $requestStack,
         VariableApiInterface $variableApi,
         AssetFilter $assetFilter,
