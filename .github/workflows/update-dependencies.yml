@@ -1,7 +1,7 @@
 name: Update dependencies
 on:
   schedule:
-    - cron:  '0 12 * * *' # run every 12 hours
+    - cron:  '0 */12 * * *' # run every 12 hours
 jobs:
   update-deps:
     runs-on: ubuntu-latest
