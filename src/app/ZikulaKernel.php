@@ -85,16 +85,6 @@ class ZikulaKernel extends Kernel
         }
     }
 
-//    public function getCacheDir()
-//    {
-//        return dirname(__DIR__) . '/var/cache/' . $this->environment;
-//    }
-//
-//    public function getLogDir()
-//    {
-//        return dirname(__DIR__) . '/var/logs';
-//    }
-
     public function getProjectDir()
     {
         return dirname(__DIR__);
