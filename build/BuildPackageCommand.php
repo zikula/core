@@ -30,15 +30,15 @@ class BuildPackageCommand extends Command
             ->setDescription('Packages Zikula')
             ->addUsage('my-buildname path/to/my/build/dir path/to/my/source/dir')
             ->addArgument('name', InputArgument::REQUIRED, 'Build name')
-            ->addArgument('source-dir', InputArgument::REQUIRED, 'Build dir')
-            ->addArgument('build-dir', InputArgument::REQUIRED, 'Source dir');
+            ->addArgument('build-dir', InputArgument::REQUIRED, 'Build dir');
+            ->addArgument('source-dir', InputArgument::REQUIRED, 'Source dir')
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getArgument('name');
-        $sourceDir = $input->getArgument('source-dir');
         $buildDir = $input->getArgument('build-dir');
+        $sourceDir = $input->getArgument('source-dir');
 
         $progress = new ProgressBar($output, 17);
         $progress->start();
@@ -62,7 +62,7 @@ class BuildPackageCommand extends Command
 
         $writableArray = [
             "${buildDir}/${name}/var/cache",
-            "${buildDir}/${name}/var/logs",
+            "${buildDir}/${name}/var/log",
             "${buildDir}/${name}/web/uploads",
         ];
         $filesystem->chmod($writableArray, 0777);
