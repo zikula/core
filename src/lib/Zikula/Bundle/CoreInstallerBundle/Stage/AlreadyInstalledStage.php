@@ -24,7 +24,7 @@ class AlreadyInstalledStage implements StageInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:alreadyinstalled.html.twig';
+        return '@ZikulaCoreInstaller/Install/alreadyinstalled.html.twig';
     }
 
     public function isNecessary(): bool

@@ -76,7 +76,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:locale.html.twig';
+        return '@ZikulaCoreInstaller/Install/locale.html.twig';
     }
 
     public function isNecessary(): bool

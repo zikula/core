@@ -33,7 +33,7 @@ services:
 
     Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector:
         tags:
-            - { name: data_collector, template: '@ZikulaCoreBundle/Collector/ZikulaVersion.html.twig', id: zikula_version, priority: 300 }
+            - { name: data_collector, template: '@ZikulaCore/Collector/ZikulaVersion.html.twig', id: zikula_version, priority: 300 }
 
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         arguments:

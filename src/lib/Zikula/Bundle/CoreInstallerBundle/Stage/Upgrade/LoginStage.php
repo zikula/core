@@ -51,7 +51,7 @@ class LoginStage implements StageInterface, FormHandlerInterface, InjectContaine
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle::login.html.twig';
+        return '@ZikulaCoreInstaller/login.html.twig';
     }
 
     public function isNecessary(): bool
