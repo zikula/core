@@ -45,7 +45,7 @@ class AjaxUpgraderStage implements StageInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Upgrade:ajaxupgrader.html.twig';
+        return '@ZikulaCoreInstaller/Upgrade/ajaxupgrader.html.twig';
     }
 
     public function isNecessary(): bool
@@ -57,67 +57,67 @@ class AjaxUpgraderStage implements StageInterface
     {
         return ['stages' => [
             1 => [
-                self::NAME => 'reinitparams',
-                self::PRE => $this->__('Reinitialize parameters'),
-                self::DURING => $this->__('Reinitializing parameters'),
-                self::SUCCESS => $this->__('Reinitialized parameters'),
-                self::FAIL => $this->__('There was an error reinitialize parameters')
+                StageInterface::NAME => 'reinitparams',
+                StageInterface::PRE => $this->__('Reinitialize parameters'),
+                StageInterface::DURING => $this->__('Reinitializing parameters'),
+                StageInterface::SUCCESS => $this->__('Reinitialized parameters'),
+                StageInterface::FAIL => $this->__('There was an error reinitialize parameters')
             ],
             2 => [
-                self::NAME => 'loginadmin',
-                self::PRE => $this->__('Login'),
-                self::DURING => $this->__('Logging in as admin'),
-                self::SUCCESS => $this->__('Logged in as admin'),
-                self::FAIL => $this->__('There was an error logging in as admin')
+                StageInterface::NAME => 'loginadmin',
+                StageInterface::PRE => $this->__('Login'),
+                StageInterface::DURING => $this->__('Logging in as admin'),
+                StageInterface::SUCCESS => $this->__('Logged in as admin'),
+                StageInterface::FAIL => $this->__('There was an error logging in as admin')
             ],
             3 => [
-                self::NAME => 'upgrade_event',
-                self::PRE => $this->__('Fire upgrade event'),
-                self::DURING => $this->__('Firing upgrade event'),
-                self::SUCCESS => $this->__('Fired upgrade event'),
-                self::FAIL => $this->__('There was an error firing the upgrade event')
+                StageInterface::NAME => 'upgrade_event',
+                StageInterface::PRE => $this->__('Fire upgrade event'),
+                StageInterface::DURING => $this->__('Firing upgrade event'),
+                StageInterface::SUCCESS => $this->__('Fired upgrade event'),
+                StageInterface::FAIL => $this->__('There was an error firing the upgrade event')
             ],
             4 => [
-                self::NAME => 'upgrademodules',
-                self::PRE => $this->__('Upgrade modules'),
-                self::DURING => $this->__('Upgrading modules'),
-                self::SUCCESS => $this->__('Modules upgraded'),
-                self::FAIL => $this->__('There was an error upgrading the modules')
+                StageInterface::NAME => 'upgrademodules',
+                StageInterface::PRE => $this->__('Upgrade modules'),
+                StageInterface::DURING => $this->__('Upgrading modules'),
+                StageInterface::SUCCESS => $this->__('Modules upgraded'),
+                StageInterface::FAIL => $this->__('There was an error upgrading the modules')
             ],
             5 => [
-                self::NAME => 'regenthemes',
-                self::PRE => $this->__('Regenerate themes'),
-                self::DURING => $this->__('Regenerating themes'),
-                self::SUCCESS => $this->__('Themes regenerated'),
-                self::FAIL => $this->__('There was an error regenerating the themes')
+                StageInterface::NAME => 'regenthemes',
+                StageInterface::PRE => $this->__('Regenerate themes'),
+                StageInterface::DURING => $this->__('Regenerating themes'),
+                StageInterface::SUCCESS => $this->__('Themes regenerated'),
+                StageInterface::FAIL => $this->__('There was an error regenerating the themes')
             ],
             6 => [
-                self::NAME => 'versionupgrade',
-                self::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->oldVersion, '%newVersion%' => ZikulaKernel::VERSION]),
-                self::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
-                self::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
-                self::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION])
+                StageInterface::NAME => 'versionupgrade',
+                StageInterface::PRE => $this->__f('Upgrade from Core %oldVersion% to Core %newVersion%', ['%oldVersion%' => $this->oldVersion, '%newVersion%' => ZikulaKernel::VERSION]),
+                StageInterface::DURING => $this->__f('Upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
+                StageInterface::SUCCESS => $this->__f('Upgraded to Core %version%', ['%version%' => ZikulaKernel::VERSION]),
+                StageInterface::FAIL => $this->__f('There was an error upgrading to Core %version%', ['%version%' => ZikulaKernel::VERSION])
             ],
             7 => [
-                self::NAME => 'finalizeparameters',
-                self::PRE => $this->__('Finalize parameters'),
-                self::DURING => $this->__('Finalizing parameters'),
-                self::SUCCESS => $this->__('Parameters finalized'),
-                self::FAIL => $this->__('There was an error finalizing the parameters')
+                StageInterface::NAME => 'finalizeparameters',
+                StageInterface::PRE => $this->__('Finalize parameters'),
+                StageInterface::DURING => $this->__('Finalizing parameters'),
+                StageInterface::SUCCESS => $this->__('Parameters finalized'),
+                StageInterface::FAIL => $this->__('There was an error finalizing the parameters')
             ],
             8 => [
-                self::NAME => 'clearcaches',
-                self::PRE => $this->__('Clear caches'),
-                self::DURING => $this->__('Clearing caches'),
-                self::SUCCESS => $this->__('Caches cleared'),
-                self::FAIL => $this->__('There was an error clearing caches')
+                StageInterface::NAME => 'clearcaches',
+                StageInterface::PRE => $this->__('Clear caches'),
+                StageInterface::DURING => $this->__('Clearing caches'),
+                StageInterface::SUCCESS => $this->__('Caches cleared'),
+                StageInterface::FAIL => $this->__('There was an error clearing caches')
             ],
             9 => [
-                self::NAME => 'finish',
-                self::PRE => $this->__('Finish'),
-                self::DURING => $this->__('Finish'),
-                self::SUCCESS => $this->__('Finish'),
-                self::FAIL => $this->__('Finish')
+                StageInterface::NAME => 'finish',
+                StageInterface::PRE => $this->__('Finish'),
+                StageInterface::DURING => $this->__('Finish'),
+                StageInterface::SUCCESS => $this->__('Finish'),
+                StageInterface::FAIL => $this->__('Finish')
             ]
         ]];
     }

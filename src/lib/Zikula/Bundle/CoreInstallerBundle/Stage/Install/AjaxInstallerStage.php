@@ -38,7 +38,7 @@ class AjaxInstallerStage implements StageInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:ajaxinstaller.html.twig';
+        return '@ZikulaCoreInstaller/Install/ajaxinstaller.html.twig';
     }
 
     public function isNecessary(): bool
@@ -50,186 +50,186 @@ class AjaxInstallerStage implements StageInterface
     {
         return ['stages' => [
             1 => [
-                self::NAME => 'bundles',
-                self::PRE => $this->__('Symfony Bundles'),
-                self::DURING => $this->__('Persisting Symfony Bundles'),
-                self::SUCCESS => $this->__('Symfony Bundles persisted'),
-                self::FAIL => $this->__('There was an error persisting the Symfony Bundles')
+                StageInterface::NAME => 'bundles',
+                StageInterface::PRE => $this->__('Symfony Bundles'),
+                StageInterface::DURING => $this->__('Persisting Symfony Bundles'),
+                StageInterface::SUCCESS => $this->__('Symfony Bundles persisted'),
+                StageInterface::FAIL => $this->__('There was an error persisting the Symfony Bundles')
             ],
             2 => [
-                self::NAME => 'install_event',
-                self::PRE => $this->__('Fire install event'),
-                self::DURING => $this->__('Firing install event'),
-                self::SUCCESS => $this->__('Fired install event'),
-                self::FAIL => $this->__('There was an error firing the install event')
+                StageInterface::NAME => 'install_event',
+                StageInterface::PRE => $this->__('Fire install event'),
+                StageInterface::DURING => $this->__('Firing install event'),
+                StageInterface::SUCCESS => $this->__('Fired install event'),
+                StageInterface::FAIL => $this->__('There was an error firing the install event')
             ],
             3 => [
-                self::NAME => 'extensions',
-                self::PRE => $this->__('Zikula Extension Module'),
-                self::DURING => $this->__('Installing Zikula Extensions Module'),
-                self::SUCCESS => $this->__('Zikula Extensions Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Extensions Module')
+                StageInterface::NAME => 'extensions',
+                StageInterface::PRE => $this->__('Zikula Extension Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Extensions Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Extensions Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Extensions Module')
             ],
             4 => [
-                self::NAME => 'settings',
-                self::PRE => $this->__('Zikula Settings Module'),
-                self::DURING => $this->__('Installing Zikula Settings Module'),
-                self::SUCCESS => $this->__('Zikula Settings Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Settings Module')
+                StageInterface::NAME => 'settings',
+                StageInterface::PRE => $this->__('Zikula Settings Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Settings Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Settings Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Settings Module')
             ],
             5 => [
-                self::NAME => 'theme',
-                self::PRE => $this->__('Zikula Theme Module'),
-                self::DURING => $this->__('Installing Zikula Theme Module'),
-                self::SUCCESS => $this->__('Zikula Theme Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Theme Module')
+                StageInterface::NAME => 'theme',
+                StageInterface::PRE => $this->__('Zikula Theme Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Theme Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Theme Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Theme Module')
             ],
             6 => [
-                self::NAME => 'admin',
-                self::PRE => $this->__('Zikula Administration Module'),
-                self::DURING => $this->__('Installing Zikula Administration Module'),
-                self::SUCCESS => $this->__('Zikula Administration Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Administration Module')
+                StageInterface::NAME => 'admin',
+                StageInterface::PRE => $this->__('Zikula Administration Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Administration Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Administration Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Administration Module')
             ],
             7 => [
-                self::NAME => 'permissions',
-                self::PRE => $this->__('Zikula Permissions Module'),
-                self::DURING => $this->__('Installing Zikula Permissions Module'),
-                self::SUCCESS => $this->__('Zikula Permissions Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Permissions Module')
+                StageInterface::NAME => 'permissions',
+                StageInterface::PRE => $this->__('Zikula Permissions Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Permissions Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Permissions Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Permissions Module')
             ],
             8 => [
-                self::NAME => 'users',
-                self::PRE => $this->__('Zikula Users Module'),
-                self::DURING => $this->__('Installing Zikula Users Module'),
-                self::SUCCESS => $this->__('Zikula Users Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Users Module')
+                StageInterface::NAME => 'users',
+                StageInterface::PRE => $this->__('Zikula Users Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Users Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Users Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Users Module')
             ],
             9 => [
-                self::NAME => 'zauth',
-                self::PRE => $this->__('Zikula ZAuth Module'),
-                self::DURING => $this->__('Installing Zikula ZAuth Module'),
-                self::SUCCESS => $this->__('Zikula ZAuth Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula ZAuth Module')
+                StageInterface::NAME => 'zauth',
+                StageInterface::PRE => $this->__('Zikula ZAuth Module'),
+                StageInterface::DURING => $this->__('Installing Zikula ZAuth Module'),
+                StageInterface::SUCCESS => $this->__('Zikula ZAuth Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula ZAuth Module')
             ],
             10 => [
-                self::NAME => 'groups',
-                self::PRE => $this->__('Zikula Groups Module'),
-                self::DURING => $this->__('Installing Zikula Groups Module'),
-                self::SUCCESS => $this->__('Zikula Groups Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Groups Module')
+                StageInterface::NAME => 'groups',
+                StageInterface::PRE => $this->__('Zikula Groups Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Groups Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Groups Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Groups Module')
             ],
             11 => [
-                self::NAME => 'blocks',
-                self::PRE => $this->__('Zikula Blocks Module'),
-                self::DURING => $this->__('Installing Zikula Blocks Module'),
-                self::SUCCESS => $this->__('Zikula Blocks Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Blocks Module')
+                StageInterface::NAME => 'blocks',
+                StageInterface::PRE => $this->__('Zikula Blocks Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Blocks Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Blocks Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Blocks Module')
             ],
             12 => [
-                self::NAME => 'security',
-                self::PRE => $this->__('Zikula Security Module'),
-                self::DURING => $this->__('Installing Zikula Security Module'),
-                self::SUCCESS => $this->__('Zikula Security Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Security Module')
+                StageInterface::NAME => 'security',
+                StageInterface::PRE => $this->__('Zikula Security Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Security Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Security Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Security Module')
             ],
             13 => [
-                self::NAME => 'categories',
-                self::PRE => $this->__('Zikula Categories Module'),
-                self::DURING => $this->__('Installing Zikula Categories Module'),
-                self::SUCCESS => $this->__('Zikula Categories Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Categories Module')
+                StageInterface::NAME => 'categories',
+                StageInterface::PRE => $this->__('Zikula Categories Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Categories Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Categories Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Categories Module')
             ],
             14 => [
-                self::NAME => 'mailer',
-                self::PRE => $this->__('Zikula Mailer Module'),
-                self::DURING => $this->__('Installing Zikula Mailer Module'),
-                self::SUCCESS => $this->__('Zikula Mailer Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Mailer Module')
+                StageInterface::NAME => 'mailer',
+                StageInterface::PRE => $this->__('Zikula Mailer Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Mailer Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Mailer Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Mailer Module')
             ],
             15 => [
-                self::NAME => 'search',
-                self::PRE => $this->__('Zikula Search Module'),
-                self::DURING => $this->__('Installing Zikula Search Module'),
-                self::SUCCESS => $this->__('Zikula Search Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Search Module')
+                StageInterface::NAME => 'search',
+                StageInterface::PRE => $this->__('Zikula Search Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Search Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Search Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Search Module')
             ],
             16 => [
-                self::NAME => 'routes',
-                self::PRE => $this->__('Zikula Routes Module'),
-                self::DURING => $this->__('Installing Zikula Routes Module'),
-                self::SUCCESS => $this->__('Zikula Routes Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Routes Module')
+                StageInterface::NAME => 'routes',
+                StageInterface::PRE => $this->__('Zikula Routes Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Routes Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Routes Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Routes Module')
             ],
             17 => [
-                self::NAME => 'menu',
-                self::PRE => $this->__('Zikula Menu Module'),
-                self::DURING => $this->__('Installing Zikula Menu Module'),
-                self::SUCCESS => $this->__('Zikula Menu Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Menu Module')
+                StageInterface::NAME => 'menu',
+                StageInterface::PRE => $this->__('Zikula Menu Module'),
+                StageInterface::DURING => $this->__('Installing Zikula Menu Module'),
+                StageInterface::SUCCESS => $this->__('Zikula Menu Module installed'),
+                StageInterface::FAIL => $this->__('There was an error installing Zikula Menu Module')
             ],
             18 => [
-                self::NAME => 'activatemodules',
-                self::PRE => $this->__('Activate system modules'),
-                self::DURING => $this->__('Activating system modules'),
-                self::SUCCESS => $this->__('System modules activated'),
-                self::FAIL => $this->__('There was an error activating system modules')
+                StageInterface::NAME => 'activatemodules',
+                StageInterface::PRE => $this->__('Activate system modules'),
+                StageInterface::DURING => $this->__('Activating system modules'),
+                StageInterface::SUCCESS => $this->__('System modules activated'),
+                StageInterface::FAIL => $this->__('There was an error activating system modules')
             ],
             19 => [
-                self::NAME => 'categorize',
-                self::PRE => $this->__('Module categorization'),
-                self::DURING => $this->__('Moving modules to their default categories'),
-                self::SUCCESS => $this->__('Modules moved to their default categories'),
-                self::FAIL => $this->__('There was an error moving modules to their default categories')
+                StageInterface::NAME => 'categorize',
+                StageInterface::PRE => $this->__('Module categorization'),
+                StageInterface::DURING => $this->__('Moving modules to their default categories'),
+                StageInterface::SUCCESS => $this->__('Modules moved to their default categories'),
+                StageInterface::FAIL => $this->__('There was an error moving modules to their default categories')
             ],
             20 => [
-                self::NAME => 'createblocks',
-                self::PRE => $this->__('Create blocks'),
-                self::DURING => $this->__('Creating default blocks'),
-                self::SUCCESS => $this->__('Default blocks created'),
-                self::FAIL => $this->__('There was an error creating default blocks')
+                StageInterface::NAME => 'createblocks',
+                StageInterface::PRE => $this->__('Create blocks'),
+                StageInterface::DURING => $this->__('Creating default blocks'),
+                StageInterface::SUCCESS => $this->__('Default blocks created'),
+                StageInterface::FAIL => $this->__('There was an error creating default blocks')
             ],
             21 => [
-                self::NAME => 'updateadmin',
-                self::PRE => $this->__('Create admin account'),
-                self::DURING => $this->__('Creating admin account'),
-                self::SUCCESS => $this->__('Admin account created'),
-                self::FAIL => $this->__('There was an error creating admin account')
+                StageInterface::NAME => 'updateadmin',
+                StageInterface::PRE => $this->__('Create admin account'),
+                StageInterface::DURING => $this->__('Creating admin account'),
+                StageInterface::SUCCESS => $this->__('Admin account created'),
+                StageInterface::FAIL => $this->__('There was an error creating admin account')
             ],
             22 => [
-                self::NAME => 'loginadmin',
-                self::PRE => $this->__('Login'),
-                self::DURING => $this->__('Logging in as admin'),
-                self::SUCCESS => $this->__('Logged in as admin'),
-                self::FAIL => $this->__('There was an error logging in as admin')
+                StageInterface::NAME => 'loginadmin',
+                StageInterface::PRE => $this->__('Login'),
+                StageInterface::DURING => $this->__('Logging in as admin'),
+                StageInterface::SUCCESS => $this->__('Logged in as admin'),
+                StageInterface::FAIL => $this->__('There was an error logging in as admin')
             ],
             23 => [
-                self::NAME => 'finalizeparameters',
-                self::PRE => $this->__('Finalize parameters'),
-                self::DURING => $this->__('Finalizing parameters'),
-                self::SUCCESS => $this->__('Parameters finalized'),
-                self::FAIL => $this->__('There was an error finalizing the parameters')
+                StageInterface::NAME => 'finalizeparameters',
+                StageInterface::PRE => $this->__('Finalize parameters'),
+                StageInterface::DURING => $this->__('Finalizing parameters'),
+                StageInterface::SUCCESS => $this->__('Parameters finalized'),
+                StageInterface::FAIL => $this->__('There was an error finalizing the parameters')
             ],
             24 => [
-                self::NAME => 'protect',
-                self::PRE => $this->__('Protect configuration files'),
-                self::DURING => $this->__('Protecting configuration files'),
-                self::SUCCESS => $this->__('Configuration files protected'),
-                self::FAIL => $this->__('There was an error protecting configuration files')
+                StageInterface::NAME => 'protect',
+                StageInterface::PRE => $this->__('Protect configuration files'),
+                StageInterface::DURING => $this->__('Protecting configuration files'),
+                StageInterface::SUCCESS => $this->__('Configuration files protected'),
+                StageInterface::FAIL => $this->__('There was an error protecting configuration files')
             ],
             25 => [
-                self::NAME => 'installassets',
-                self::PRE => $this->__('Install assets'),
-                self::DURING => $this->__('Installing assets to /web'),
-                self::SUCCESS => $this->__('Assets installed'),
-                self::FAIL => $this->__('Failed to install assets')
+                StageInterface::NAME => 'installassets',
+                StageInterface::PRE => $this->__('Install assets'),
+                StageInterface::DURING => $this->__('Installing assets to /web'),
+                StageInterface::SUCCESS => $this->__('Assets installed'),
+                StageInterface::FAIL => $this->__('Failed to install assets')
             ],
             26 => [
-                self::NAME => 'finish',
-                self::PRE => $this->__('Finish'),
-                self::DURING => $this->__('Finish'),
-                self::SUCCESS => $this->__('Finish'),
-                self::FAIL => $this->__('Finish')
+                StageInterface::NAME => 'finish',
+                StageInterface::PRE => $this->__('Finish'),
+                StageInterface::DURING => $this->__('Finish'),
+                StageInterface::SUCCESS => $this->__('Finish'),
+                StageInterface::FAIL => $this->__('Finish')
             ],
         ]];
     }
