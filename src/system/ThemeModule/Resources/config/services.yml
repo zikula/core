@@ -101,7 +101,7 @@ services:
         public: true
         arguments:
           $loader: '@twig.loader'
-          $options: []
+          $options: ~
         calls:
           - [setEventDispatcher, ['@event_dispatcher']]
           - [addGlobal, ['app', '@twig.app_variable']]
