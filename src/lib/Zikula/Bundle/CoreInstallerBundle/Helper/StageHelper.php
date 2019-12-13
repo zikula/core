@@ -20,6 +20,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
+use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
@@ -182,13 +183,13 @@ class StageHelper
     {
         $stages = $ajaxStage->getTemplateParams();
         foreach ($stages['stages'] as $key => $stage) {
-            $io->text($stage[StageInterface::PRE]);
-            $io->text('<fg=blue;options=bold>' . $stage[StageInterface::DURING] . '</fg=blue;options=bold>');
-            $status = $this->executeStage($stage[StageInterface::NAME]);
+            $io->text($stage[AjaxStageInterface::PRE]);
+            $io->text('<fg=blue;options=bold>' . $stage[AjaxStageInterface::DURING] . '</fg=blue;options=bold>');
+            $status = $this->executeStage($stage[AjaxStageInterface::NAME]);
             if ($status) {
-                $io->success($stage[StageInterface::SUCCESS]);
+                $io->success($stage[AjaxStageInterface::SUCCESS]);
             } else {
-                $io->error($stage[StageInterface::FAIL]);
+                $io->error($stage[AjaxStageInterface::FAIL]);
             }
         }
     }
