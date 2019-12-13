@@ -11,17 +11,18 @@ ARCHIVE_PATH="${BUILD_PATH}/archive"
 PHP_BUILD="${SOURCE_PATH}/build.php"
 
 DOC_PATH="${PACKAGE_PATH}/docs/en"
+declare -A COPY_FILES
 COPY_FILES=(
-    ["README.md"]="${DOC_PATH}"
-    ["INSTALL-2.0.md"]="${PACKAGE_PATH}"
-    ["INSTALL-2.0.md"]="${DOC_PATH}"
-    ["UPGRADE-2.0.md"]="${PACKAGE_PATH}"
-    ["UPGRADE-2.0.md"]="${DOC_PATH}"
-    ["CHANGELOG-2.0.md"]="${DOC_PATH}"
-    ["CHANGELOG-3.0.md"]="${DOC_PATH}"
-    ["ROADMAP.md"]="${DOC_PATH}"
-    ["composer.json"]="${DOC_PATH}/dev"
-    ["composer.lock"]="${DOC_PATH}/dev"
+    ["README_md"]="${DOC_PATH}"
+    ["INSTALL-2_0_md"]="${PACKAGE_PATH}"
+    ["INSTALL-2_0_md"]="${DOC_PATH}"
+    ["UPGRADE-2_0_md"]="${PACKAGE_PATH}"
+    ["UPGRADE-2_0_md"]="${DOC_PATH}"
+    ["CHANGELOG-2_0_md"]="${DOC_PATH}"
+    ["CHANGELOG-3_0_md"]="${DOC_PATH}"
+    ["ROADMAP_md"]="${DOC_PATH}"
+    ["composer_json"]="${DOC_PATH}/dev"
+    ["composer_lock"]="${DOC_PATH}/dev"
 )
 
 echo "Prepare"
@@ -47,9 +48,10 @@ ${PHP_BUILD} build:generate_less --write-to "${PACKAGE_PATH}/web/bootstrap-font-
 echo "Copying docs and composer files..."
 mkdir -p "${DOC_PATH}/dev"
 for fileName in "${!COPY_FILES[@]}"; do
-    folder=${COPY_FILES[$fileName]}
-    if [ -e "${SOURCE_PATH}/${fileName}" ]; then
-        cp -f "${SOURCE_PATH}/${fileName}" "${folder}/"
+    FILE_NAME="${fileName//_/.}"
+    FILE_FOLDER=${COPY_FILES[$FILE_NAME]}
+    if [ -e "${SOURCE_PATH}/${FILE_NAME}" ]; then
+        cp -f "${SOURCE_PATH}/${FILE_NAME}" "${FILE_FOLDER}/"
     fi
 done
 
