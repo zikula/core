@@ -98,7 +98,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     /**
      * @var boolean
      */
-    private $dump = true;
+//    private $dump = true;
 
     /**
      * @var array
@@ -115,10 +115,10 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      */
     private $autoloader;
 
-    public function setDump(bool $flag): void
-    {
-        $this->dump = $flag;
-    }
+//    public function setDump(bool $flag): void
+//    {
+//        $this->dump = $flag;
+//    }
 
     public function boot()
     {
@@ -247,73 +247,76 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      *
      * Overridden not to dump the container.
      */
-    protected function initializeContainer()
-    {
-        if (true === $this->dump) {
-            return parent::initializeContainer();
-        }
-
-        $this->container = $this->buildContainer();
-        $this->container->set('kernel', $this);
-    }
+//    protected function initializeContainer()
+//    {
+//        if (true === $this->dump) {
+//            return parent::initializeContainer();
+//        }
+//
+//        $this->container = $this->buildContainer();
+//        $this->container->set('kernel', $this);
+//    }
 
     /**
      * Prepares the ContainerBuilder before it is compiled.
      */
-    protected function prepareContainer(ContainerBuilder $container)
-    {
-        $extensions = [];
-        foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
-                continue;
-            }
-            if ($extension = $bundle->getContainerExtension()) {
-                $container->registerExtension($extension);
-                $extensions[] = $extension->getAlias();
-            }
+//    protected function prepareContainer(ContainerBuilder $container)
+//    {
+//        $extensions = [];
+//        foreach ($this->bundles as $bundle) {
+//            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
+//                continue;
+//            }
+//            if ($extension = $bundle->getContainerExtension()) {
+//                $container->registerExtension($extension);
+//                $extensions[] = $extension->getAlias();
+//            }
+//
+//            if ($this->debug) {
+//                $container->addObjectResource($bundle);
+//            }
+//        }
+//
+//        foreach ($this->bundles as $bundle) {
+//            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
+//                continue;
+//            }
+//            $bundle->build($container);
+//        }
+//
+//        $this->build($container);
+//
+//        foreach ($container->getExtensions() as $extension) {
+//            $extensions[] = $extension->getAlias();
+//        }
+//
+//        // ensure these extensions are implicitly loaded
+//        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
+//    }
 
-            if ($this->debug) {
-                $container->addObjectResource($bundle);
-            }
-        }
-
-        foreach ($this->bundles as $bundle) {
-            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
-                continue;
-            }
-            $bundle->build($container);
-        }
-
-        $this->build($container);
-
-        foreach ($container->getExtensions() as $extension) {
-            $extensions[] = $extension->getAlias();
-        }
-
-        // ensure these extensions are implicitly loaded
-        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
-    }
-
-    public function locateResource($name, $dir = null, $first = true)
-    {
-        $locations = parent::locateResource($name, $dir, false);
-        if ($locations && null !== $dir && false !== mb_strpos($locations[0], $dir)) {
-            // if found in $dir (typically app/Resources) return it immediately.
-            return $locations[0];
-        }
-
-        $themeBundle = $this->container->get(ThemeEngine::class)->getTheme();
-        // add theme path to template locator
-        // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
-        // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
-        // the \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
-        if ($themeBundle && false === mb_strpos($name, $themeBundle->getName())) {
-            // do not add theme override path to theme files
-            $customThemePath = $themeBundle->getPath() . '/Resources';
-
-            return parent::locateResource($name, $customThemePath);
-        }
-
-        return $locations[0];
-    }
+    /**
+     * REMOVE THIS I THINK
+     */
+//    public function locateResource($name, $dir = null, $first = true)
+//    {
+//        $locations = parent::locateResource($name, $dir, false);
+//        if ($locations && null !== $dir && false !== mb_strpos($locations[0], $dir)) {
+//            // if found in $dir (typically app/Resources) return it immediately.
+//            return $locations[0];
+//        }
+//
+//        $themeBundle = $this->container->get(ThemeEngine::class)->getTheme();
+//        // add theme path to template locator
+//        // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
+//        // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
+//        // the \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
+//        if ($themeBundle && false === mb_strpos($name, $themeBundle->getName())) {
+//            // do not add theme override path to theme files
+//            $customThemePath = $themeBundle->getPath() . '/Resources';
+//
+//            return parent::locateResource($name, $customThemePath);
+//        }
+//
+//        return $locations[0];
+//    }
 }

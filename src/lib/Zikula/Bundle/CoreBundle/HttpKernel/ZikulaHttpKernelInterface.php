@@ -25,7 +25,7 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
     /**
      * Flag determines if container is dumped or not.
      */
-    public function setDump(bool $flag): void;
+//    public function setDump(bool $flag): void;
 
     /**
      * Gets named module bundle.
