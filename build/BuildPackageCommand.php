@@ -30,8 +30,9 @@ class BuildPackageCommand extends Command
             ->setDescription('Packages Zikula')
             ->addUsage('my-buildname path/to/my/build/dir path/to/my/source/dir')
             ->addArgument('name', InputArgument::REQUIRED, 'Build name')
-            ->addArgument('build-dir', InputArgument::REQUIRED, 'Build dir');
+            ->addArgument('build-dir', InputArgument::REQUIRED, 'Build dir')
             ->addArgument('source-dir', InputArgument::REQUIRED, 'Source dir')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

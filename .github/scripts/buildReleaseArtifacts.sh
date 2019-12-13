@@ -49,7 +49,9 @@ echo "Copying docs and composer files..."
 mkdir -p "${DOC_PATH}/dev"
 for fileName in "${!COPY_FILES[@]}"; do
     FILE_NAME="${fileName//_/.}"
-    FILE_FOLDER=${COPY_FILES[$FILE_NAME]}
+    FILE_FOLDER=${COPY_FILES[$fileName]}
+    echo "File: ${FILE_NAME}"
+    echo "Folder: ${FILE_FOLDER}"
     if [ -e "${SOURCE_PATH}/${FILE_NAME}" ]; then
         cp -f "${SOURCE_PATH}/${FILE_NAME}" "${FILE_FOLDER}/"
     fi
