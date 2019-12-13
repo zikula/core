@@ -89,7 +89,7 @@ fi
 
 echo "Creating archives..."
 ARCHIVE_BASE_PATH="${ARCHIVE_PATH}/${BRANCH_NAME}"
-cd "${EXPORT_PATH}"; zip -D -r "${ARCHIVE_BASE_PATH}.zip" .
+cd "${EXPORT_PATH}"; zip -q -D -r "${ARCHIVE_BASE_PATH}.zip" .
 cd "${EXPORT_PATH}"; tar cp "${BRANCH_NAME}" > "${ARCHIVE_BASE_PATH}.tar"; gzip "${ARCHIVE_BASE_PATH}.tar"
 
 echo "Creating MD5 and SHA1 checksums..."
@@ -100,5 +100,5 @@ md5sum "${ARCHIVE_PATH}/"*.tar.gz "${ARCHIVE_PATH}/"*.zip >> "${TMP_FILE}"
 echo "-----------------sha1sums-----------------" >> "${TMP_FILE}"
 sha1sum "${ARCHIVE_PATH}/"*.tar.gz "${ARCHIVE_PATH}/"*.zip >> "${TMP_FILE}"
 
-cat "${TMP_FILE}" | sed \'s!${ARCHIVE_PATH}/!!g\' > "${CHECKSUM_PATH}.txt"
+cat "${TMP_FILE}" | sed "s!${ARCHIVE_PATH}/!!g" > "${CHECKSUM_PATH}.txt"
 rm -f "${TMP_FILE}"
