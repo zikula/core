@@ -94,28 +94,21 @@ services:
           $env: '%env%'
           $combine: '%zikula_asset_manager.combine%'
 
-#    Twig\Loader\LoaderInterface: '@twig.loader'
-
-#    Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine:
-#        decorates: twig
-##        decoration_priority: 25
-#        arguments:
-#          $loader: '@twig.loader'
-#        calls:
-#          - [setEventDispatcher, ['@event_dispatcher']]
-#          - [addGlobal, ['app', '@twig.app_variable']]
-#          - [addRuntimeLoader, ['@twig.runtime_loader']]
-#
-    Twig\Environment: '@Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine'
-    Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine:
+    # override TwigBundle's Twig\Environment definition with Zikula's own child class
+    # see vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/twig.xml
+    twig:
+        class: Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine
+        public: true
         arguments:
           $loader: '@twig.loader'
+          $options: []
         calls:
           - [setEventDispatcher, ['@event_dispatcher']]
           - [addGlobal, ['app', '@twig.app_variable']]
           - [addRuntimeLoader, ['@twig.runtime_loader']]
         configurator: ['@twig.configurator.environment', 'configure']
-    twig: '@Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine'
+    Twig_Environment: '@twig'
+    Twig\Environment: '@twig'
 
     Zikula\ThemeModule\EventListener\CreateThemedResponseListener:
         tags:

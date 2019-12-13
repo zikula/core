@@ -31,7 +31,7 @@ class EventEnabledTwigEngine extends Environment
     /**
      * {@inheritdoc}
      *
-     * This overrides the TwigEngine::render method in order to dispatch events both before and after rendering the content.
+     * This overrides the \Twig\Environment::render method in order to dispatch events both before and after rendering the content.
      *
      * It also supports TwigTemplate as name parameter.
      *
