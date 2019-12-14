@@ -20,7 +20,7 @@
 {% if enableFilter %}
     {% form_theme filterForm with [
     'ZikulaCategoriesModule:Form:filter_layout_customizations.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
     ] %}
     {{ form_start(filterForm) }}
     <fieldset>
@@ -74,7 +74,7 @@
 
 {% form_theme permissionCheckForm with [
 'bootstrap_3_horizontal_layout.html.twig',
-'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+'@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ form_start(permissionCheckForm) }}
 {{ form_errors(permissionCheckForm) }}

@@ -8,7 +8,7 @@
     <div class="zikularoutesmodule-route zikularoutesmodule-edit">
         {% form_theme form with [
             '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
-            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+            '@ZikulaFormExtension/Form/form_div_layout.html.twig'
         ] %}
         {{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
         {{ form_errors(form) }}
@@ -85,7 +85,7 @@
     {% set formInitScript %}
         <script>
         /* <![CDATA[ */
-            
+
             ( function($) {
                 function updatePathPrefix() {
                     var i18n = $('#zikularoutesmodule_route_translatable').prop('checked');

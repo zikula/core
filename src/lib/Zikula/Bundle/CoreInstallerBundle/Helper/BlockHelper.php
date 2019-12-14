@@ -77,7 +77,7 @@ class BlockHelper
         $blockEntity->setModule($menuModuleEntity);
         $blockEntity->setProperties([
             'name' => 'mainMenu',
-            'options' => '{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}'
+            'options' => '{"template": "@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig"}'
         ]);
         $this->entityManager->persist($blockEntity);
 

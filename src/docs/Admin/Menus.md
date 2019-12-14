@@ -43,7 +43,7 @@ Visit the BlocksModule admin interface and select "Create new block" from the ad
 "MenuModule/Menu" from the choices. Give your block the title "Test Menu" and leave the
 description blank. For Menu Name, you must enter the *unique title* you created as your menu
 root above. For "options" enter
-`{"template": "ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig"}`.
+`{"template": "@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig"}`.
 Setting the template as this value allows automatically uses all the bootstrap and fontawesome
 goodness that is pre-installed with Zikula. You are allowed to create and utilize your own
 templates as needed in your custom situation. More on that later. Select the "Left" or "Right"

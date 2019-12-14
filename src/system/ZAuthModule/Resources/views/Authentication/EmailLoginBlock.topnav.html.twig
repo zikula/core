@@ -1,6 +1,6 @@
 {% form_theme form with [
-    'ZikulaZAuthModule:Authentication:input_group_layout.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    '@ZikulaZAuthModule/Authentication/input_group_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {% if linkOnly %}
     <a href="{{ path('zikulausersmodule_access_login') }}" class="btn btn-default navbar-btn">{{ __('Login') }}</a>
