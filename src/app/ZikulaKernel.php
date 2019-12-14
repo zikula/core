@@ -40,7 +40,7 @@ class ZikulaKernel extends Kernel
             FOS\JsRoutingBundle\FOSJsRoutingBundle::class,
             Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle::class,
             Knp\Bundle\MenuBundle\KnpMenuBundle::class,
-//            Liip\ImagineBundle\LiipImagineBundle::class,
+            Liip\ImagineBundle\LiipImagineBundle::class,
             Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class,
             Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class,
             Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle::class,
