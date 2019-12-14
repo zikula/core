@@ -24,9 +24,11 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
 {
     use TranslatorTrait;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container = null)
     {
-        $this->setTranslator($container->get(Translator::class));
+        if (isset($container)) {
+            $this->setTranslator($container->get(Translator::class));
+        }
     }
 
     public function setTranslator(TranslatorInterface $translator)

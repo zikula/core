@@ -106,9 +106,6 @@ EOF;
         $message->setFrom($adminUser->getEmail());
         $message->setTo($adminUser->getEmail());
 
-        /**
-         * @var $mailer Swift_Mailer
-         */
         $mailer = $this->container->get('mailer');
         try {
             $mailer->send($message);
