@@ -36,7 +36,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template("ZikulaMailerModule:Config:config.html.twig")
+     * @Template("@ZikulaMailerModule/Config/config.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
@@ -123,7 +123,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/test")
      * @Theme("admin")
-     * @Template("ZikulaMailerModule:Config:test.html.twig")
+     * @Template("@ZikulaMailerModule/Config/test.html.twig")
      *
      * This function displays a form to send a test mail.
      *
