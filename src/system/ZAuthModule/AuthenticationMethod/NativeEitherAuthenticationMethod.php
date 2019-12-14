@@ -42,13 +42,13 @@ class NativeEitherAuthenticationMethod extends AbstractNativeAuthenticationMetho
     {
         if ('block' === $type) {
             if ('topnav' === $position) {
-                return 'ZikulaZAuthModule:Authentication:EitherLoginBlock.topnav.html.twig';
+                return '@ZikulaZAuthModule/Authentication/EitherLoginBlock.topnav.html.twig';
             }
 
-            return 'ZikulaZAuthModule:Authentication:EitherLoginBlock.html.twig';
+            return '@ZikulaZAuthModule/Authentication/EitherLoginBlock.html.twig';
         }
 
-        return 'ZikulaZAuthModule:Authentication:EitherLogin.html.twig';
+        return '@ZikulaZAuthModule/Authentication/EitherLogin.html.twig';
     }
 
     public function authenticate(array $data = []): ?int

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
-use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -106,11 +105,13 @@ EOF;
         $message->setFrom($adminUser->getEmail());
         $message->setTo($adminUser->getEmail());
 
-        /**
-         * @var Swift_Mailer
-         */
         $mailer = $this->container->get('mailer');
+        try {
+            $mailer->send($message);
+        } catch (\Exception $exception) {
+            return 0;
+        }
 
-        return $mailer->send($message);
+        return 1;
     }
 }

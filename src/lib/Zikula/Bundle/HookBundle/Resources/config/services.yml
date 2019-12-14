@@ -10,8 +10,8 @@ services:
 
     Zikula\Bundle\HookBundle\Collector\HookCollector:
         arguments:
-          $providers: !tagged zikula.hook_provider
-          $subscribers: !tagged zikula.hook_subscriber
+          $providers: !tagged_iterator zikula.hook_provider
+          $subscribers: !tagged_iterator zikula.hook_subscriber
 
     Zikula\Bundle\HookBundle\Listener\HookListenerBuilderListener:
         arguments:

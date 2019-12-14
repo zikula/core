@@ -11,11 +11,22 @@ services:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'
 
+  # public because CoreInstallerBundle::AbstractController accesses this using container
     Zikula\ThemeModule\Helper\:
         resource: '../../Helper/*'
+        public: true
         lazy: true
 
     Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface: '@Zikula\ThemeModule\Api\PageAssetApi'
+    Zikula\ThemeModule\Entity\RepositoryInterface\ThemeEntityRepositoryInterface: '@Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository'
+
+    # public because ThemeModuleInstaller uses it
+    Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository:
+        public: true
+
+    # public because installer accesses this using container
+    Zikula\ThemeModule\Helper\BundleSyncHelper:
+        public: true
 
     Zikula\ThemeModule\Twig\Extension\PageVarExtension:
         arguments:
@@ -83,11 +94,23 @@ services:
           $env: '%env%'
           $combine: '%zikula_asset_manager.combine%'
 
-    Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine:
-        decorates: templating.engine.twig
+    # override TwigBundle's Twig\Environment definition with Zikula's own child class
+    # see vendor/symfony/symfony/src/Symfony/Bundle/TwigBundle/Resources/config/twig.xml
+    twig:
+        class: Zikula\ThemeModule\Bridge\Twig\EventEnabledTwigEngine
+        public: true
         arguments:
-          $parser: '@templating.name_parser'
-          $locator: '@templating.locator'
+          $loader: '@twig.loader'
+          $options: []
+        calls:
+          - [setEventDispatcher, ['@event_dispatcher']]
+          - [addGlobal, ['pagevars', '@zikula_core.common.theme.pagevars']]
+          - [addGlobal, ['themevars', '@zikula_core.common.theme.themevars']]
+          - [addGlobal, ['currentUser', '@Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface']]
+          - [addRuntimeLoader, ['@twig.runtime_loader']]
+        configurator: ['@twig.configurator.environment', 'configure']
+    Twig_Environment: '@twig'
+    Twig\Environment: '@twig'
 
     Zikula\ThemeModule\EventListener\CreateThemedResponseListener:
         tags:

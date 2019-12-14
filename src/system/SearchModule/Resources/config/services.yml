@@ -16,7 +16,7 @@ services:
 
     Zikula\SearchModule\Collector\SearchableModuleCollector:
         arguments:
-          $searchables: !tagged zikula.searchable_module
+          $searchables: !tagged_iterator zikula.searchable_module
 
     Zikula\SearchModule\Listener\FrontControllerListener:
         arguments:

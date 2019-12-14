@@ -14,29 +14,21 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
-use Zikula\Component\Wizard\StageInterface;
 
-class AjaxInstallerStage implements StageInterface, InjectContainerInterface
+class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
 {
     use TranslatorTrait;
 
-    public const NAME = 'name';
-
-    public const PRE = 'pre';
-
-    public const DURING = 'during';
-
-    public const SUCCESS = 'success';
-
-    public const FAIL = 'fail';
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container = null)
     {
-        $this->setTranslator($container->get(Translator::class));
+        if (isset($container)) {
+            $this->setTranslator($container->get(Translator::class));
+        }
     }
 
     public function setTranslator(TranslatorInterface $translator)
@@ -51,7 +43,7 @@ class AjaxInstallerStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:ajaxinstaller.html.twig';
+        return '@ZikulaCoreInstaller/Install/ajaxinstaller.html.twig';
     }
 
     public function isNecessary(): bool
@@ -63,187 +55,187 @@ class AjaxInstallerStage implements StageInterface, InjectContainerInterface
     {
         return ['stages' => [
             1 => [
-                self::NAME => 'bundles',
-                self::PRE => $this->__('Symfony Bundles'),
-                self::DURING => $this->__('Persisting Symfony Bundles'),
-                self::SUCCESS => $this->__('Symfony Bundles persisted'),
-                self::FAIL => $this->__('There was an error persisting the Symfony Bundles')
+                AjaxStageInterface::NAME => 'bundles',
+                AjaxStageInterface::PRE => $this->__('Symfony Bundles'),
+                AjaxStageInterface::DURING => $this->__('Persisting Symfony Bundles'),
+                AjaxStageInterface::SUCCESS => $this->__('Symfony Bundles persisted'),
+                AjaxStageInterface::FAIL => $this->__('There was an error persisting the Symfony Bundles')
             ],
             2 => [
-                self::NAME => 'install_event',
-                self::PRE => $this->__('Fire install event'),
-                self::DURING => $this->__('Firing install event'),
-                self::SUCCESS => $this->__('Fired install event'),
-                self::FAIL => $this->__('There was an error firing the install event')
+                AjaxStageInterface::NAME => 'install_event',
+                AjaxStageInterface::PRE => $this->__('Fire install event'),
+                AjaxStageInterface::DURING => $this->__('Firing install event'),
+                AjaxStageInterface::SUCCESS => $this->__('Fired install event'),
+                AjaxStageInterface::FAIL => $this->__('There was an error firing the install event')
             ],
             3 => [
-                self::NAME => 'extensions',
-                self::PRE => $this->__('Zikula Extension Module'),
-                self::DURING => $this->__('Installing Zikula Extensions Module'),
-                self::SUCCESS => $this->__('Zikula Extensions Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Extensions Module')
+                AjaxStageInterface::NAME => 'extensions',
+                AjaxStageInterface::PRE => $this->__('Zikula Extension Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Extensions Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Extensions Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Extensions Module')
             ],
             4 => [
-                self::NAME => 'settings',
-                self::PRE => $this->__('Zikula Settings Module'),
-                self::DURING => $this->__('Installing Zikula Settings Module'),
-                self::SUCCESS => $this->__('Zikula Settings Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Settings Module')
+                AjaxStageInterface::NAME => 'settings',
+                AjaxStageInterface::PRE => $this->__('Zikula Settings Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Settings Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Settings Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Settings Module')
             ],
             5 => [
-                self::NAME => 'theme',
-                self::PRE => $this->__('Zikula Theme Module'),
-                self::DURING => $this->__('Installing Zikula Theme Module'),
-                self::SUCCESS => $this->__('Zikula Theme Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Theme Module')
+                AjaxStageInterface::NAME => 'theme',
+                AjaxStageInterface::PRE => $this->__('Zikula Theme Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Theme Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Theme Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Theme Module')
             ],
             6 => [
-                self::NAME => 'admin',
-                self::PRE => $this->__('Zikula Administration Module'),
-                self::DURING => $this->__('Installing Zikula Administration Module'),
-                self::SUCCESS => $this->__('Zikula Administration Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Administration Module')
+                AjaxStageInterface::NAME => 'admin',
+                AjaxStageInterface::PRE => $this->__('Zikula Administration Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Administration Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Administration Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Administration Module')
             ],
             7 => [
-                self::NAME => 'permissions',
-                self::PRE => $this->__('Zikula Permissions Module'),
-                self::DURING => $this->__('Installing Zikula Permissions Module'),
-                self::SUCCESS => $this->__('Zikula Permissions Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Permissions Module')
+                AjaxStageInterface::NAME => 'permissions',
+                AjaxStageInterface::PRE => $this->__('Zikula Permissions Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Permissions Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Permissions Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Permissions Module')
             ],
             8 => [
-                self::NAME => 'users',
-                self::PRE => $this->__('Zikula Users Module'),
-                self::DURING => $this->__('Installing Zikula Users Module'),
-                self::SUCCESS => $this->__('Zikula Users Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Users Module')
+                AjaxStageInterface::NAME => 'users',
+                AjaxStageInterface::PRE => $this->__('Zikula Users Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Users Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Users Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Users Module')
             ],
             9 => [
-                self::NAME => 'zauth',
-                self::PRE => $this->__('Zikula ZAuth Module'),
-                self::DURING => $this->__('Installing Zikula ZAuth Module'),
-                self::SUCCESS => $this->__('Zikula ZAuth Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula ZAuth Module')
+                AjaxStageInterface::NAME => 'zauth',
+                AjaxStageInterface::PRE => $this->__('Zikula ZAuth Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula ZAuth Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula ZAuth Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula ZAuth Module')
             ],
             10 => [
-                self::NAME => 'groups',
-                self::PRE => $this->__('Zikula Groups Module'),
-                self::DURING => $this->__('Installing Zikula Groups Module'),
-                self::SUCCESS => $this->__('Zikula Groups Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Groups Module')
+                AjaxStageInterface::NAME => 'groups',
+                AjaxStageInterface::PRE => $this->__('Zikula Groups Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Groups Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Groups Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Groups Module')
             ],
             11 => [
-                self::NAME => 'blocks',
-                self::PRE => $this->__('Zikula Blocks Module'),
-                self::DURING => $this->__('Installing Zikula Blocks Module'),
-                self::SUCCESS => $this->__('Zikula Blocks Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Blocks Module')
+                AjaxStageInterface::NAME => 'blocks',
+                AjaxStageInterface::PRE => $this->__('Zikula Blocks Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Blocks Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Blocks Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Blocks Module')
             ],
             12 => [
-                self::NAME => 'security',
-                self::PRE => $this->__('Zikula Security Module'),
-                self::DURING => $this->__('Installing Zikula Security Module'),
-                self::SUCCESS => $this->__('Zikula Security Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Security Module')
+                AjaxStageInterface::NAME => 'security',
+                AjaxStageInterface::PRE => $this->__('Zikula Security Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Security Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Security Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Security Module')
             ],
             13 => [
-                self::NAME => 'categories',
-                self::PRE => $this->__('Zikula Categories Module'),
-                self::DURING => $this->__('Installing Zikula Categories Module'),
-                self::SUCCESS => $this->__('Zikula Categories Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Categories Module')
+                AjaxStageInterface::NAME => 'categories',
+                AjaxStageInterface::PRE => $this->__('Zikula Categories Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Categories Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Categories Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Categories Module')
             ],
             14 => [
-                self::NAME => 'mailer',
-                self::PRE => $this->__('Zikula Mailer Module'),
-                self::DURING => $this->__('Installing Zikula Mailer Module'),
-                self::SUCCESS => $this->__('Zikula Mailer Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Mailer Module')
+                AjaxStageInterface::NAME => 'mailer',
+                AjaxStageInterface::PRE => $this->__('Zikula Mailer Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Mailer Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Mailer Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Mailer Module')
             ],
             15 => [
-                self::NAME => 'search',
-                self::PRE => $this->__('Zikula Search Module'),
-                self::DURING => $this->__('Installing Zikula Search Module'),
-                self::SUCCESS => $this->__('Zikula Search Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Search Module')
+                AjaxStageInterface::NAME => 'search',
+                AjaxStageInterface::PRE => $this->__('Zikula Search Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Search Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Search Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Search Module')
             ],
             16 => [
-                self::NAME => 'routes',
-                self::PRE => $this->__('Zikula Routes Module'),
-                self::DURING => $this->__('Installing Zikula Routes Module'),
-                self::SUCCESS => $this->__('Zikula Routes Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Routes Module')
+                AjaxStageInterface::NAME => 'routes',
+                AjaxStageInterface::PRE => $this->__('Zikula Routes Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Routes Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Routes Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Routes Module')
             ],
             17 => [
-                self::NAME => 'menu',
-                self::PRE => $this->__('Zikula Menu Module'),
-                self::DURING => $this->__('Installing Zikula Menu Module'),
-                self::SUCCESS => $this->__('Zikula Menu Module installed'),
-                self::FAIL => $this->__('There was an error installing Zikula Menu Module')
+                AjaxStageInterface::NAME => 'menu',
+                AjaxStageInterface::PRE => $this->__('Zikula Menu Module'),
+                AjaxStageInterface::DURING => $this->__('Installing Zikula Menu Module'),
+                AjaxStageInterface::SUCCESS => $this->__('Zikula Menu Module installed'),
+                AjaxStageInterface::FAIL => $this->__('There was an error installing Zikula Menu Module')
             ],
             18 => [
-                self::NAME => 'activatemodules',
-                self::PRE => $this->__('Activate system modules'),
-                self::DURING => $this->__('Activating system modules'),
-                self::SUCCESS => $this->__('System modules activated'),
-                self::FAIL => $this->__('There was an error activating system modules')
+                AjaxStageInterface::NAME => 'activatemodules',
+                AjaxStageInterface::PRE => $this->__('Activate system modules'),
+                AjaxStageInterface::DURING => $this->__('Activating system modules'),
+                AjaxStageInterface::SUCCESS => $this->__('System modules activated'),
+                AjaxStageInterface::FAIL => $this->__('There was an error activating system modules')
             ],
             19 => [
-                self::NAME => 'categorize',
-                self::PRE => $this->__('Module categorization'),
-                self::DURING => $this->__('Moving modules to their default categories'),
-                self::SUCCESS => $this->__('Modules moved to their default categories'),
-                self::FAIL => $this->__('There was an error moving modules to their default categories')
+                AjaxStageInterface::NAME => 'categorize',
+                AjaxStageInterface::PRE => $this->__('Module categorization'),
+                AjaxStageInterface::DURING => $this->__('Moving modules to their default categories'),
+                AjaxStageInterface::SUCCESS => $this->__('Modules moved to their default categories'),
+                AjaxStageInterface::FAIL => $this->__('There was an error moving modules to their default categories')
             ],
             20 => [
-                self::NAME => 'createblocks',
-                self::PRE => $this->__('Create blocks'),
-                self::DURING => $this->__('Creating default blocks'),
-                self::SUCCESS => $this->__('Default blocks created'),
-                self::FAIL => $this->__('There was an error creating default blocks')
+                AjaxStageInterface::NAME => 'createblocks',
+                AjaxStageInterface::PRE => $this->__('Create blocks'),
+                AjaxStageInterface::DURING => $this->__('Creating default blocks'),
+                AjaxStageInterface::SUCCESS => $this->__('Default blocks created'),
+                AjaxStageInterface::FAIL => $this->__('There was an error creating default blocks')
             ],
             21 => [
-                self::NAME => 'updateadmin',
-                self::PRE => $this->__('Create admin account'),
-                self::DURING => $this->__('Creating admin account'),
-                self::SUCCESS => $this->__('Admin account created'),
-                self::FAIL => $this->__('There was an error creating admin account')
+                AjaxStageInterface::NAME => 'updateadmin',
+                AjaxStageInterface::PRE => $this->__('Create admin account'),
+                AjaxStageInterface::DURING => $this->__('Creating admin account'),
+                AjaxStageInterface::SUCCESS => $this->__('Admin account created'),
+                AjaxStageInterface::FAIL => $this->__('There was an error creating admin account')
             ],
             22 => [
-                self::NAME => 'loginadmin',
-                self::PRE => $this->__('Login'),
-                self::DURING => $this->__('Logging in as admin'),
-                self::SUCCESS => $this->__('Logged in as admin'),
-                self::FAIL => $this->__('There was an error logging in as admin')
+                AjaxStageInterface::NAME => 'loginadmin',
+                AjaxStageInterface::PRE => $this->__('Login'),
+                AjaxStageInterface::DURING => $this->__('Logging in as admin'),
+                AjaxStageInterface::SUCCESS => $this->__('Logged in as admin'),
+                AjaxStageInterface::FAIL => $this->__('There was an error logging in as admin')
             ],
             23 => [
-                self::NAME => 'finalizeparameters',
-                self::PRE => $this->__('Finalize parameters'),
-                self::DURING => $this->__('Finalizing parameters'),
-                self::SUCCESS => $this->__('Parameters finalized'),
-                self::FAIL => $this->__('There was an error finalizing the parameters')
+                AjaxStageInterface::NAME => 'finalizeparameters',
+                AjaxStageInterface::PRE => $this->__('Finalize parameters'),
+                AjaxStageInterface::DURING => $this->__('Finalizing parameters'),
+                AjaxStageInterface::SUCCESS => $this->__('Parameters finalized'),
+                AjaxStageInterface::FAIL => $this->__('There was an error finalizing the parameters')
             ],
             24 => [
-                self::NAME => 'protect',
-                self::PRE => $this->__('Protect configuration files'),
-                self::DURING => $this->__('Protecting configuration files'),
-                self::SUCCESS => $this->__('Configuration files protected'),
-                self::FAIL => $this->__('There was an error protecting configuration files')
+                AjaxStageInterface::NAME => 'protect',
+                AjaxStageInterface::PRE => $this->__('Protect configuration files'),
+                AjaxStageInterface::DURING => $this->__('Protecting configuration files'),
+                AjaxStageInterface::SUCCESS => $this->__('Configuration files protected'),
+                AjaxStageInterface::FAIL => $this->__('There was an error protecting configuration files')
             ],
             25 => [
-                self::NAME => 'installassets',
-                self::PRE => $this->__('Install assets'),
-                self::DURING => $this->__('Installing assets to /web'),
-                self::SUCCESS => $this->__('Assets installed'),
-                self::FAIL => $this->__('Failed to install assets')
+                AjaxStageInterface::NAME => 'installassets',
+                AjaxStageInterface::PRE => $this->__('Install assets'),
+                AjaxStageInterface::DURING => $this->__('Installing assets to /web'),
+                AjaxStageInterface::SUCCESS => $this->__('Assets installed'),
+                AjaxStageInterface::FAIL => $this->__('Failed to install assets')
             ],
             26 => [
-                self::NAME => 'finish',
-                self::PRE => $this->__('Finish'),
-                self::DURING => $this->__('Finish'),
-                self::SUCCESS => $this->__('Finish'),
-                self::FAIL => $this->__('Finish')
-            ]
+                AjaxStageInterface::NAME => 'finish',
+                AjaxStageInterface::PRE => $this->__('Finish'),
+                AjaxStageInterface::DURING => $this->__('Finish'),
+                AjaxStageInterface::SUCCESS => $this->__('Finish'),
+                AjaxStageInterface::FAIL => $this->__('Finish')
+            ],
         ]];
     }
 }

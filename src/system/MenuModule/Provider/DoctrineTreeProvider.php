@@ -18,6 +18,7 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 use Zikula\MenuModule\Event\ConfigureMenuEvent;
 use Zikula\MenuModule\Loader\PermissionAwareNodeLoader;
@@ -54,7 +55,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
         $this->factory = $factory;
         $this->nodeLoader = new PermissionAwareNodeLoader($factory, $permissionApi);
         $this->menuItemRepository = $menuItemRepository;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
     }
 
     /**
@@ -68,7 +69,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
         }
         $menu = $this->nodeLoader->load($node);
 
-        $this->eventDispatcher->dispatch(ConfigureMenuEvent::POST_CONFIGURE, new ConfigureMenuEvent($this->factory, $menu, $options));
+        $this->eventDispatcher->dispatch(new ConfigureMenuEvent($this->factory, $menu, $options), ConfigureMenuEvent::POST_CONFIGURE);
 
         return $menu;
     }

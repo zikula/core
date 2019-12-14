@@ -17,9 +17,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Exception;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ThemeModule\Entity\RepositoryInterface\ThemeEntityRepositoryInterface;
 use Zikula\ThemeModule\Entity\ThemeEntity;
 
-class ThemeEntityRepository extends ServiceEntityRepository
+class ThemeEntityRepository extends ServiceEntityRepository implements ThemeEntityRepositoryInterface
 {
     public const STATE_ALL = 0;
 
@@ -106,12 +107,14 @@ class ThemeEntityRepository extends ServiceEntityRepository
     {
         $this->_em->remove($entity);
         $this->_em->flush();
+        $this->_em->clear();
     }
 
     public function persistAndFlush(ThemeEntity $entity): void
     {
         $this->_em->persist($entity);
         $this->_em->flush();
+        $this->_em->clear();
     }
 
     /**

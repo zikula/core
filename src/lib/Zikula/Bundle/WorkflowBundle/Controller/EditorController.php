@@ -43,7 +43,7 @@ class EditorController extends AbstractController
      *        methods = {"GET"}
      * )
      * @Theme("admin")
-     * @Template("ZikulaWorkflowBundle:Editor:index.html.twig")
+     * @Template("@ZikulaWorkflow/Editor/index.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have required permissions
      * @throws NotFoundHttpException Thrown if the desired workflow could not be found

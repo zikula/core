@@ -37,7 +37,6 @@ Weights utilized by core assets are listed below.
     const WEIGHT_JQUERY = 20;
     const WEIGHT_BOOTSTRAP_JS = 21;
     const WEIGHT_BOOTSTRAP_ZIKULA = 22;
-    const WEIGHT_HTML5SHIV = 23;
     const WEIGHT_ROUTER_JS = 24;
     const WEIGHT_ROUTES_JS = 25;
     const WEIGHT_JS_TRANSLATOR = 26;

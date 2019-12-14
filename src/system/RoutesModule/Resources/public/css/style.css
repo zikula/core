@@ -11,6 +11,12 @@ div#z-maincontent.z-module-routes table tbody tr td {
     margin: 18px 0 0 18px;
 }
 
+.z-module-zikularoutesmodule h2 .dropdown.item-actions,
+.z-module-zikularoutesmodule h3 .dropdown.item-actions {
+    display: inline;
+    font-size: 18px;
+}
+
 
 /* validation */
 div.form-group input:required, div.form-group textarea:required, div.form-group select:required {

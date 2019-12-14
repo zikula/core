@@ -12,55 +12,56 @@ declare(strict_types=1);
  */
 
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 
 class ZikulaKernel extends Kernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         $bundles = [
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new Symfony\Bundle\TwigBundle\TwigBundle(),
-            new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Zikula\Bundle\CoreBundle\CoreBundle(),
-            new Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle(),
-            new Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle(),
-            new Zikula\Bundle\HookBundle\ZikulaHookBundle(),
-            new Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle(),
-            new Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle(),
-            new JMS\I18nRoutingBundle\JMSI18nRoutingBundle(),
-            new JMS\TranslationBundle\JMSTranslationBundle(),
-            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
-            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
-            new Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle(),
-            new Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle(),
+            Symfony\Bundle\FrameworkBundle\FrameworkBundle::class,
+            Symfony\Bundle\SecurityBundle\SecurityBundle::class,
+            Symfony\Bundle\TwigBundle\TwigBundle::class,
+            Symfony\Bundle\MonologBundle\MonologBundle::class,
+            Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class,
+            Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class,
+            Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class,
+            Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class,
+            Zikula\Bundle\CoreBundle\CoreBundle::class,
+            Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle::class,
+            Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class,
+            Zikula\Bundle\HookBundle\ZikulaHookBundle::class,
+            Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle::class,
+            Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle::class,
+            JMS\I18nRoutingBundle\JMSI18nRoutingBundle::class,
+            JMS\TranslationBundle\JMSTranslationBundle::class,
+            FOS\JsRoutingBundle\FOSJsRoutingBundle::class,
+            Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle::class,
+            Knp\Bundle\MenuBundle\KnpMenuBundle::class,
+            Liip\ImagineBundle\LiipImagineBundle::class,
+            Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle::class,
+            Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class,
+            Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle::class,
         ];
 
         foreach (self::$coreModules as $bundleClass) {
-            $bundles[] = new $bundleClass();
+            $bundles[] = $bundleClass;
         }
-        $boot = new \Zikula\Bundle\CoreBundle\Bundle\Bootstrap();
+        $boot = new Bootstrap();
         $boot->getPersistedBundles($this, $bundles);
 
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Elao\WebProfilerExtraBundle\WebProfilerExtraBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle();
+            $bundles[] = Symfony\Bundle\DebugBundle\DebugBundle::class;
+            $bundles[] = Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class;
+            $bundles[] = Elao\WebProfilerExtraBundle\WebProfilerExtraBundle::class;
+            $bundles[] = Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle::class;
         }
 
-        return $bundles;
+        foreach ($bundles as $class) {
+            yield new $class();
+        }
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
@@ -80,16 +81,6 @@ class ZikulaKernel extends Kernel
         } else {
             $loader->load($configDir . DynamicConfigDumper::CONFIG_GENERATED);
         }
-    }
-
-    public function getCacheDir()
-    {
-        return dirname(__DIR__) . '/var/cache/' . $this->environment;
-    }
-
-    public function getLogDir()
-    {
-        return dirname(__DIR__) . '/var/logs';
     }
 
     public function getProjectDir()

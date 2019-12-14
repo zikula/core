@@ -61,7 +61,7 @@ class DbCredsStage implements StageInterface, FormHandlerInterface, InjectContai
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:dbcreds.html.twig';
+        return '@ZikulaCoreInstaller/Install/dbcreds.html.twig';
     }
 
     public function isNecessary(): bool

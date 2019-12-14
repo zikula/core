@@ -10,8 +10,8 @@
 </h3>
 
 {% form_theme resultsForm with [
-    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 <div>
     {{ form_start(resultsForm) }}
@@ -80,8 +80,8 @@
 </div>
 
 {% form_theme mailForm with [
-    'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-    'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 <div class="collapse" id="email-users-form">
     <hr />

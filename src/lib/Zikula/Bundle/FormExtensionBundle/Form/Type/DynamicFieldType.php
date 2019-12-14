@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -83,7 +84,7 @@ class DynamicFieldType extends AbstractType
         PageAssetApiInterface $pageAssetApi,
         Asset $assetHelper
     ) {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->setTranslator($translator);
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
@@ -195,7 +196,7 @@ class DynamicFieldType extends AbstractType
         ]);
 
         $event = new FormTypeChoiceEvent($choices);
-        $this->eventDispatcher->dispatch(FormTypeChoiceEvent::NAME, $event);
+        $this->eventDispatcher->dispatch($event, FormTypeChoiceEvent::NAME);
 
         return $choices;
     }

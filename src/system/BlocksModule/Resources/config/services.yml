@@ -22,7 +22,7 @@ services:
 
     Zikula\BlocksModule\Collector\BlockCollector:
         arguments:
-          $blocks: !tagged zikula.block_handler
+          $blocks: !tagged_iterator zikula.block_handler
 
     Zikula\BlocksModule\Twig\Extension\BlocksExtension:
         arguments:

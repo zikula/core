@@ -17,19 +17,60 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\DbCredsType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
-use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\Common\Translator\TranslatorInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand
 {
+    /**
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * @var string
+     */
+    private $installed;
+
+    /**
+     * @var ControllerHelper
+     */
+    private $controllerHelper;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
+     * @var ParameterHelper
+     */
+    private $parameterHelper;
+
+    public function __construct(
+        string $environment,
+        bool $installed,
+        ControllerHelper $controllerHelper,
+        LocaleApiInterface $localeApi,
+        ParameterHelper $parameterHelper,
+        TranslatorInterface $translator
+    ) {
+        parent::__construct($translator);
+        $this->environment = $environment;
+        $this->installed = $installed;
+        $this->controllerHelper = $controllerHelper;
+        $this->localeApi = $localeApi;
+        $this->parameterHelper = $parameterHelper;
+    }
+
     protected function configure()
     {
         $this
@@ -53,23 +94,19 @@ class StartCommand extends AbstractCoreInstallerCommand
         $io = new SymfonyStyle($input, $output);
         $io->title($this->translator->__('Zikula Installer Script'));
 
-        $this->bootstrap();
-
-        if (true === $this->getContainer()->getParameter('installed')) {
+        if (true === $this->installed) {
             $io->error($this->translator->__('Zikula already appears to be installed.'));
 
             return;
         }
 
-        $controllerHelper = $this->getContainer()->get(ControllerHelper::class);
-
-        $warnings = $controllerHelper->initPhp();
+        $warnings = $this->controllerHelper->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
             return;
         }
-        $checks = $controllerHelper->requirementsMet();
+        $checks = $this->controllerHelper->requirementsMet();
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
@@ -77,14 +114,13 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         if ($input->isInteractive()) {
-            $env = $this->getContainer()->get('kernel')->getEnvironment();
-            $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
+            $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
             $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => ZikulaKernel::VERSION]));
         }
 
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choices' => $this->getContainer()->get(LocaleApi::class)->getSupportedLocaleNames()
+            'choices' => $this->localeApi->getSupportedLocaleNames()
         ]);
         $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
         foreach ($data as $k => $v) {
@@ -119,14 +155,8 @@ class StartCommand extends AbstractCoreInstallerCommand
             }
         }
 
-        // write the parameters to personal_config.php and custom_parameters.yml
-        $yamlManager = new YamlDumper($this->getContainer()->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml', 'parameters.yml');
-        $params = array_merge($yamlManager->getParameters(), $settings);
-        if (0 !== mb_strpos($params['database_driver'], 'pdo_')) {
-            $params['database_driver'] = 'pdo_' . $params['database_driver']; // doctrine requires prefix in custom_parameters.yml
-        }
-        $yamlManager->setParameters($params);
-        $this->getContainer()->get(CacheClearer::class)->clear('symfony.config');
+        // write the parameters to custom_parameters.yml
+        $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->__('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
     }

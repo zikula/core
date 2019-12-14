@@ -15,6 +15,7 @@
     },
     "require": {
         "php": ">=7.2.0",
+        "twig/twig": "2.*",
         "zikula/jquery-bundle": "2.*",
         "zikula/jquery-ui-bundle": "1.*",
         "zikula/bootstrap-bundle": "3.*",

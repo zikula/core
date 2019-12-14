@@ -162,7 +162,7 @@ class RequireJsProcess extends Process
             $destination = $this->componentDir . DIRECTORY_SEPARATOR . $file;
             $this->fs->ensureDirectoryExists(dirname($destination));
 
-            return file_put_contents($destination, $js);
+            return file_put_contents($destination, $js) ? true : false;
         }
 
         return false;

@@ -21,6 +21,7 @@ use Swift_DependencyContainer;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -79,7 +80,7 @@ class MailerApi implements MailerApiInterface
         $this->installed = $installed;
         $this->kernel = $kernel;
         $this->setTranslator($translator);
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->mailer = $mailer;
 
         if (!$this->installed) {
@@ -114,7 +115,7 @@ class MailerApi implements MailerApiInterface
         $this->message = $message;
 
         $event = new GenericEvent($this->message);
-        $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_START, $event);
+        $this->eventDispatcher->dispatch($event, MailerEvents::SEND_MESSAGE_START);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }
@@ -168,7 +169,7 @@ class MailerApi implements MailerApiInterface
         }
 
         $event = new GenericEvent($this->message);
-        $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_PERFORM, $event);
+        $this->eventDispatcher->dispatch($event, MailerEvents::SEND_MESSAGE_PERFORM);
         if ($event->isPropagationStopped()) {
             return $event->getData();
         }
@@ -258,7 +259,7 @@ class MailerApi implements MailerApiInterface
                 $logger->addError("Could not send message to: ${emailList} :: " . $this->message->toString());
             }
 
-            $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_FAILURE, $event);
+            $this->eventDispatcher->dispatch($event, MailerEvents::SEND_MESSAGE_FAILURE);
 
             //throw new RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
 
@@ -272,7 +273,7 @@ class MailerApi implements MailerApiInterface
             $logger->addInfo('Message sent: ' . $this->message->toString());
         }
 
-        $this->eventDispatcher->dispatch(MailerEvents::SEND_MESSAGE_SUCCESS, $event);
+        $this->eventDispatcher->dispatch($event, MailerEvents::SEND_MESSAGE_SUCCESS);
 
         return true;
     }

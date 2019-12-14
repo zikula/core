@@ -40,7 +40,7 @@ class InitStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Migration:migrate.html.twig';
+        return '@ZikulaCoreInstaller/Migration/migrate.html.twig';
     }
 
     public function isNecessary(): bool

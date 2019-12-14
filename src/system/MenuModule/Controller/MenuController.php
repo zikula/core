@@ -40,7 +40,7 @@ class MenuController extends AbstractController
 
     /**
      * @Route("/list")
-     * @Template("ZikulaMenuModule:Menu:list.html.twig")
+     * @Template("@ZikulaMenuModule/Menu/list.html.twig")
      * @Theme("admin")
      *
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
@@ -59,7 +59,7 @@ class MenuController extends AbstractController
 
     /**
      * @Route("/view/{id}")
-     * @Template("ZikulaMenuModule:Menu:view.html.twig")
+     * @Template("@ZikulaMenuModule/Menu/view.html.twig")
      * @Theme("admin")
      *
      * @see https://jstree.com/
@@ -147,14 +147,14 @@ class MenuController extends AbstractController
             return $this->redirectToRoute('zikulamenumodule_menu_list');
         }
 
-        return $this->render('ZikulaMenuModule:Menu:editRootNode.html.twig', [
+        return $this->render('@ZikulaMenuModule/Menu/editRootNode.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
      * @Route("/delete/{id}")
-     * @Template("ZikulaMenuModule:Menu:delete.html.twig")
+     * @Template("@ZikulaMenuModule/Menu/delete.html.twig")
      * @Theme("admin")
      *
      * @return array|RedirectResponse

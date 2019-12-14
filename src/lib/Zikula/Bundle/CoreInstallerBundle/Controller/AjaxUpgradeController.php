@@ -13,22 +13,12 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
-use Exception;
-use RandomLib\Factory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Yaml\Yaml;
-use Zikula\BlocksModule\Entity\BlockEntity;
-use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Core\CoreEvents;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Helper\ExtensionHelper;
-use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
-use Zikula\ThemeModule\Entity\ThemeEntity;
-use Zikula\ThemeModule\Helper\BundleSyncHelper as ThemeSyncHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
+use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 
 /**
  * Class AjaxUpgradeController
@@ -41,264 +31,23 @@ class AjaxUpgradeController extends AbstractController
     private $yamlManager;
 
     /**
-     * @var string the currently installed core version
+     * @var StageHelper
      */
-    private $currentVersion;
+    private $stageHelper;
 
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $originalParameters = Yaml::parse(file_get_contents($this->container->get('kernel')->getRootDir() . '/config/parameters.yml'));
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
-        // load and set new default values from the original parameters.yml file into the custom_parameters.yml file.
-        $this->yamlManager->setParameters(array_merge($originalParameters['parameters'], $this->yamlManager->getParameters()));
-        $this->currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
+        $this->yamlManager = $container->get(ParameterHelper::class)->getYamlManager();
+        $this->stageHelper = $container->get(StageHelper::class);
     }
 
     public function ajaxAction(Request $request): JsonResponse
     {
         $stage = $request->request->get('stage');
         $this->yamlManager->setParameter('upgrading', true);
-        $status = $this->executeStage($stage);
-        $response = ['status' => $status];
-        if (is_array($status)) {
-            $response['results'] = $status;
-        }
+        $status = $this->stageHelper->executeStage($stage);
 
-        return new JsonResponse($response);
-    }
-
-    public function commandLineAction($stage): bool
-    {
-        $this->yamlManager->setParameter('upgrading', true);
-
-        return $this->executeStage($stage);
-    }
-
-    private function executeStage($stageName): bool
-    {
-        switch ($stageName) {
-            case 'loginadmin':
-                $params = $this->decodeParameters($this->yamlManager->getParameters());
-
-                return $this->loginAdmin($params);
-            case 'upgrade_event':
-                return $this->fireEvent(CoreEvents::CORE_UPGRADE_PRE_MODULE, ['currentVersion' => $this->currentVersion]);
-            case 'upgrademodules':
-                $result = $this->upgradeModules();
-                if (0 === count($result)) {
-                    return true;
-                }
-
-                return true; //$result;
-            case 'regenthemes':
-                return $this->regenerateThemes();
-            case 'versionupgrade':
-                return $this->versionUpgrade();
-            case 'finalizeparameters':
-                return $this->finalizeParameters();
-            case 'clearcaches':
-                return $this->clearCaches();
-        }
-
-        return true;
-    }
-
-    /**
-     * Attempt to upgrade ALL the core modules. Some will need it, some will not.
-     * Modules that do not need upgrading return TRUE as a result of the upgrade anyway.
-     */
-    private function upgradeModules(): array
-    {
-        $coreModulesInPriorityUpgradeOrder = [
-            'ZikulaExtensionsModule',
-            'ZikulaUsersModule',
-            'ZikulaZAuthModule',
-            'ZikulaGroupsModule',
-            'ZikulaPermissionsModule',
-            'ZikulaAdminModule',
-            'ZikulaBlocksModule',
-            'ZikulaThemeModule',
-            'ZikulaSettingsModule',
-            'ZikulaCategoriesModule',
-            'ZikulaSecurityCenterModule',
-            'ZikulaRoutesModule',
-            'ZikulaMailerModule',
-            'ZikulaSearchModule',
-            'ZikulaMenuModule',
-        ];
-        $result = [];
-        foreach ($coreModulesInPriorityUpgradeOrder as $moduleName) {
-            $extensionEntity = $this->container->get('doctrine')->getRepository('ZikulaExtensionsModule:ExtensionEntity')->get($moduleName);
-            if (isset($extensionEntity)) {
-                $result[$moduleName] = $this->container->get(ExtensionHelper::class)->upgrade($extensionEntity);
-            }
-        }
-
-        return $result;
-    }
-
-    private function regenerateThemes(): bool
-    {
-        // regenerate the themes list
-        $this->container->get(ThemeSyncHelper::class)->regenerate();
-        // set all themes as active @todo this is probably overkill
-        $themes = $this->container->get('doctrine')->getRepository('ZikulaThemeModule:ThemeEntity')->findAll();
-        /** @var ThemeEntity $theme */
-        foreach ($themes as $theme) {
-            $theme->setState(ThemeEntityRepository::STATE_ACTIVE);
-        }
-        $this->container->get('doctrine')->getManager()->flush();
-
-        return true;
-    }
-
-    private function versionUpgrade(): bool
-    {
-        $doctrine = $this->container->get('doctrine');
-        /**
-         * NOTE: There are *intentionally* no `break` statements within each case here so that the process continues
-         * through each case until the end.
-         */
-        switch ($this->currentVersion) {
-            case '1.4.3':
-                $this->installModule('ZikulaMenuModule');
-                $this->reSyncAndActivateModules();
-                $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
-            case '1.4.4':
-                // nothing
-            case '1.4.5':
-                // Menu module was introduced in 1.4.4 but not installed on upgrade
-                $schemaManager = $doctrine->getConnection()->getSchemaManager();
-                if (!$schemaManager->tablesExist(['menu_items'])) {
-                    $this->installModule('ZikulaMenuModule');
-                    $this->reSyncAndActivateModules();
-                    $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
-                }
-            case '1.4.6':
-                // nothing needed
-            case '1.4.7':
-                // nothing needed
-            case '1.5.0':
-                // nothing needed
-            case '1.9.99':
-                // upgrades required for 2.0.0
-                foreach (['objectdata_attributes', 'objectdata_log', 'objectdata_meta', 'workflows'] as $table) {
-                    $sql = "DROP TABLE ${table};";
-                    $connection = $doctrine->getConnection();
-                    $stmt = $connection->prepare($sql);
-                    $stmt->execute();
-                    $stmt->closeCursor();
-                }
-                $variableApi = $this->container->get(VariableApi::class);
-                $variableApi->del(VariableApi::CONFIG, 'metakeywords');
-                $variableApi->del(VariableApi::CONFIG, 'startpage');
-                $variableApi->del(VariableApi::CONFIG, 'startfunc');
-                $variableApi->del(VariableApi::CONFIG, 'starttype');
-                if ('userdata' === $this->container->getParameter('datadir')) {
-                    $this->yamlManager->setParameter('datadir', 'web/uploads');
-                    $fs = $this->container->get('filesystem');
-                    $src = dirname(__DIR__, 5) . '/';
-                    try {
-                        if ($fs->exists($src . '/userdata')) {
-                            $fs->mirror($src . '/userdata', $src . '/web/uploads');
-                        }
-                    } catch (Exception $exception) {
-                        $this->container->get('session')->getFlashBag()->add('info', $this->translator->__('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
-                    }
-                }
-                // remove legacy blocks
-                $blocksToRemove = $doctrine->getRepository(BlockEntity::class)->findBy(['blocktype' => ['Extmenu', 'Menutree', 'Menu']]);
-                foreach ($blocksToRemove as $block) {
-                    $doctrine->getManager()->remove($block);
-                }
-                $doctrine->getManager()->flush();
-            case '2.0.0':
-                // nothing needed
-            case '2.0.1':
-                // current version - cannot perform anything yet
-        }
-
-        // always do this
-        $this->reSyncAndActivateModules();
-
-        return true;
-    }
-
-    private function finalizeParameters(): bool
-    {
-        $variableApi = $this->container->get(VariableApi::class);
-        $kernel = $this->container->get('kernel');
-        // Set the System Identifier as a unique string.
-        if (!$variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
-            $variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid(random_int(1000000000, 9999999999), true)));
-        }
-
-        // add new configuration parameters
-        $params = $this->yamlManager->getParameters();
-        unset($params['username'], $params['password']);
-        $RandomLibFactory = new Factory();
-        $generator = $RandomLibFactory->getMediumStrengthGenerator();
-
-        if (!isset($params['secret']) || ('ThisTokenIsNotSoSecretChangeIt' === $params['secret'])) {
-            $params['secret'] = $generator->generateString(50);
-        }
-        if (!isset($params['url_secret'])) {
-            $params['url_secret'] = $generator->generateString(10);
-        }
-        // Configure the Request Context
-        // see http://symfony.com/doc/current/cookbook/console/sending_emails.html#configuring-the-request-context-globally
-        $request = $this->container->get('request_stack')->getMasterRequest();
-        $hostFromRequest = isset($request) ? $request->getHost() : null;
-        $schemeFromRequest = isset($request) ? $request->getScheme() : 'http';
-        $basePathFromRequest = isset($request) ? $request->getBasePath() : null;
-        $params['router.request_context.host'] = $params['router.request_context.host'] ?? $hostFromRequest;
-        $params['router.request_context.scheme'] = $params['router.request_context.scheme'] ?? $schemeFromRequest;
-        $params['router.request_context.base_url'] = $params['router.request_context.base_url'] ?? $basePathFromRequest;
-
-        // set currently installed version into parameters
-        $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] = ZikulaKernel::VERSION;
-
-        // disable asset combination on upgrades
-        $params['zikula_asset_manager.combine'] = false;
-
-        unset($params['upgrading']);
-        $this->yamlManager->setParameters($params);
-
-        // store the recent version in a config var for later usage. This enables us to determine the version we are upgrading from
-        $variableApi->set(VariableApi::CONFIG, 'Version_Num', ZikulaKernel::VERSION);
-
-        $startController = $variableApi->getSystemVar('startController');
-        list($moduleName) = explode(':', $startController);
-        if (!$kernel->isBundle($moduleName)) {
-            // set the 'start' page information to empty to avoid missing module errors.
-            $variableApi->set(VariableApi::CONFIG, 'startController', '');
-            $variableApi->set(VariableApi::CONFIG, 'startargs', '');
-        }
-
-        // on upgrade, if a user doesn't add their custom theme back to the /theme dir, it should be reset to a core theme, if available.
-        $defaultTheme = $variableApi->getSystemVar('Default_Theme');
-        if (!$kernel->isBundle($defaultTheme) && $kernel->isBundle('ZikulaBootstrapTheme')) {
-            $variableApi->set(VariableApi::CONFIG, 'Default_Theme', 'ZikulaBootstrapTheme');
-        }
-
-        return true;
-    }
-
-    private function clearCaches(): bool
-    {
-        // clear cache with zikula's method
-        $cacheClearer = $this->container->get(CacheClearer::class);
-        $cacheClearer->clear('symfony');
-        // use full symfony cache_clearer not zikula's to clear entire cache and set for warmup
-        // console commands always run in `dev` mode but site should be `prod` mode. clear both for good measure.
-        $this->container->get('cache_clearer')->clear('dev');
-        $this->container->get('cache_clearer')->clear('prod');
-        if (!in_array($this->container->getParameter('env'), ['dev', 'prod'])) {
-            // this is just in case anyone ever creates a mode that isn't dev|prod
-            $this->container->get('cache_clearer')->clear($this->container->getParameter('env'));
-        }
-
-        return true;
+        return new JsonResponse(['status' => $status]);
     }
 }

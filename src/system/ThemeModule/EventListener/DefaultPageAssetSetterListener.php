@@ -68,7 +68,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         string $bootstrapJavascriptPath,
         string $bootstrapFontAwesomeStylesheetPath,
         string $fontAwesomePath,
-        string $bootstrapStylesheetPath
+        $bootstrapStylesheetPath // cannot cast to string because set with expression language
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
@@ -108,7 +108,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->jsAssetBag->add([
             $this->assetHelper->resolve($this->params['zikula.javascript.bootstrap.min.path']) => AssetBag::WEIGHT_BOOTSTRAP_JS,
             $this->assetHelper->resolve('bundles/core/js/bootstrap-zikula.js') => AssetBag::WEIGHT_BOOTSTRAP_ZIKULA,
-            $this->assetHelper->resolve('html5shiv/dist/html5shiv.js') => AssetBag::WEIGHT_HTML5SHIV,
         ]);
         $this->addFosJsRouting();
         $this->addJsTranslation();

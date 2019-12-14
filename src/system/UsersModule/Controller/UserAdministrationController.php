@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -166,7 +167,8 @@ class UserAdministrationController extends AbstractController
         $originalUserName = $user->getUname();
         $originalGroups = $user->getGroups()->toArray();
         $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -179,7 +181,7 @@ class UserAdministrationController extends AbstractController
                 $this->checkSelf($currentUserApi, $variableApi, $user, $originalGroups);
 
                 $formDataEvent = new UserFormDataEvent($user, $form);
-                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -190,7 +192,7 @@ class UserAdministrationController extends AbstractController
                 ];
                 $eventData = ['old_value' => $originalUserName];
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $eventDispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+                $eventDispatcher->dispatch($updateEvent, UserEvents::UPDATE_ACCOUNT);
 
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
@@ -291,8 +293,10 @@ class UserAdministrationController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         HookDispatcherInterface $hookDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         UserEntity $user = null
     ) {
+        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
@@ -341,7 +345,7 @@ class UserAdministrationController extends AbstractController
                     continue;
                 }
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
-                $validators = $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_VALIDATE, $event)->getData();
+                $validators = $eventDispatcher->dispatch($event, UserEvents::DELETE_VALIDATE)->getData();
                 $hook = new ValidationHook($validators);
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_VALIDATE, $hook);
                 $validators = $hook->getValidators();
@@ -354,8 +358,8 @@ class UserAdministrationController extends AbstractController
                 $deletedUsers = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => $userIds]]);
                 foreach ($deletedUsers as $deletedUser) {
                     $eventName = UsersConstant::ACTIVATED_ACTIVE === $deletedUser->getActivated() ? UserEvents::DELETE_ACCOUNT : RegistrationEvents::DELETE_REGISTRATION;
-                    $this->get('event_dispatcher')->dispatch($eventName, new GenericEvent($deletedUser->getUid()));
-                    $this->get('event_dispatcher')->dispatch(UserEvents::DELETE_PROCESS, new GenericEvent(null, ['id' => $deletedUser->getUid()]));
+                    $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), $eventName);
+                    $eventDispatcher->dispatch(new GenericEvent(null, ['id' => $deletedUser->getUid()]), UserEvents::DELETE_PROCESS);
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                     $userRepository->removeAndFlush($deletedUser);
                 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Core\LinkContainer;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Zikula\Core\Event\GenericEvent;
 
@@ -29,9 +30,9 @@ class LinkContainerCollector
      */
     private $eventDispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher, iterable $linkContainers = [])
+    public function __construct(EventDispatcherInterface $eventDispatcher, iterable $linkContainers = [])
     {
-        $this->eventDispatcher = $dispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->linkContainers = [];
         foreach ($linkContainers as $linkContainer) {
             $this->addContainer($linkContainer);
@@ -56,7 +57,7 @@ class LinkContainerCollector
 
             // fire event here to add more links like hooks, moduleServices, etc
             $event = new GenericEvent($containerName, ['type' => $type], $links);
-            $links = $this->eventDispatcher->dispatch(LinkContainerInterface::EVENT_NAME, $event)->getData();
+            $links = $this->eventDispatcher->dispatch($event, LinkContainerInterface::EVENT_NAME)->getData();
         }
 
         return $links;

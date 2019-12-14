@@ -44,7 +44,7 @@ class ThemeEntity extends EntityAccess
     /**
      * theme type
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="`type`", type="smallint")
      */
     private $type;
 
@@ -93,7 +93,7 @@ class ThemeEntity extends EntityAccess
     /**
      * is theme an system theme
      *
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="`system`", type="smallint")
      */
     private $system;
 

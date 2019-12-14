@@ -44,13 +44,13 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
 
     public function visitFile(SplFileInfo $file, MessageCatalogue $catalogue)
     {
-        if ('.js' !== mb_substr($file, -3)) {
+        if ('.js' !== mb_substr($file->getFilename(), -3)) {
             return;
         }
 
         // singular type
         $argumentsRegex = $this->generateRegexPattern($this->singularFunctions, self::SINGULAR_CAPTURE_REGEX);
-        preg_match_all($argumentsRegex, file_get_contents($file), $singularMatches);
+        preg_match_all($argumentsRegex, file_get_contents($file->getPath()), $singularMatches);
         foreach ($singularMatches[2] as $string) {
             $message = new Message($string, self::JAVASCRIPT_DOMAIN);
             $message->addSource(new FileSource((string)$file));
@@ -58,7 +58,7 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
         }
         // plural type
         $argumentsRegex = $this->generateRegexPattern($this->pluralFunctions, self::PLURAL_CAPTURE_REGEX);
-        preg_match_all($argumentsRegex, file_get_contents($file), $pluralMatches);
+        preg_match_all($argumentsRegex, file_get_contents($file->getPath()), $pluralMatches);
         foreach ($pluralMatches[2] as $key => $singularString) {
             $fullString = $singularString . '|' . $pluralMatches[4][$key];
             $message = new Message($fullString, self::JAVASCRIPT_DOMAIN);

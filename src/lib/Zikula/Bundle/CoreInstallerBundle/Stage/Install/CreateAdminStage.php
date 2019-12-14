@@ -54,7 +54,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:createadmin.html.twig';
+        return '@ZikulaCoreInstaller/Install/createadmin.html.twig';
     }
 
     public function isNecessary(): bool

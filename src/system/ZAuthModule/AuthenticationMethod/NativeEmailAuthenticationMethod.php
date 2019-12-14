@@ -42,13 +42,13 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
     {
         if ('block' === $type) {
             if ('topnav' === $position) {
-                return 'ZikulaZAuthModule:Authentication:EmailLoginBlock.topnav.html.twig';
+                return '@ZikulaZAuthModule/Authentication/EmailLoginBlock.topnav.html.twig';
             }
 
-            return 'ZikulaZAuthModule:Authentication:EmailLoginBlock.html.twig';
+            return '@ZikulaZAuthModule/Authentication/EmailLoginBlock.html.twig';
         }
 
-        return 'ZikulaZAuthModule:Authentication:EmailLogin.html.twig';
+        return '@ZikulaZAuthModule/Authentication/EmailLogin.html.twig';
     }
 
     public function authenticate(array $data = []): ?int

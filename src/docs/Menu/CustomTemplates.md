@@ -4,8 +4,8 @@ Custom Menu Templates
 The default template for all menus is `Knp/Menu/Resources/views/knp_menu.html.twig`.
 
 ZikulaMenuModule provides two custom overrides:
- - `ZikulaMenuModule:Override:bootstrap_fontawesome.html.twig`
- - `ZikulaMenuModule:Override:actions.html.twig`
+ - `@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig`
+ - `@ZikulaMenuModule/Override/:actions.html.twig`
 
 both of these templates extend the original.
 

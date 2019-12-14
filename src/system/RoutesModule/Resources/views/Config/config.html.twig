@@ -6,7 +6,7 @@
     <div class="zikularoutesmodule-config">
         {% form_theme form with [
             '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
-            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+            '@ZikulaFormExtension/Form/form_div_layout.html.twig'
         ] %}
         {{ form_start(form) }}
         <div class="zikula-bootstrap-tab-container">
@@ -31,9 +31,9 @@
                     {% set tabTitle = __('List views') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
+
                         <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
-                    
+
                         {{ form_row(form.routeEntriesPerPage) }}
                         {{ form_row(form.showOnlyOwnEntries) }}
                     </fieldset>
@@ -42,9 +42,9 @@
                     {% set tabTitle = __('Moderation') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                    
+
                         <p class="alert alert-info">{{ __('Here you can define moderation-related settings.')|nl2br }}</p>
-                    
+
                         {{ form_row(form.allowModerationSpecificCreatorForRoute) }}
                         {{ form_row(form.allowModerationSpecificCreationDateForRoute) }}
                     </fieldset>
@@ -53,9 +53,9 @@
                     {% set tabTitle = __('Workflows') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-                
+
                         <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
-                
+
                         <h4>{{ __('Routes') }}</h4>
                         <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'zikularoutesmodule_none'}) }}" title="{{ __('Edit workflow for routes') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit routes workflow') }}</a>
                     </fieldset>

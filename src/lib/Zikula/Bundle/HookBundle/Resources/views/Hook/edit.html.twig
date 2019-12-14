@@ -29,26 +29,26 @@
         <div role="tabpanel" class="tab-pane active" id="subscriberTab">
             <br />
             <div id="hookSubscriber" class="clearfix">
-                {{ include('ZikulaHookBundle:Hook:subscriber.html.twig') }}
+                {{ include('@ZikulaHook/Hook/subscriber.html.twig') }}
             </div>
         </div>
         <div role="tabpanel" class="tab-pane" id="providerTab">
             <br />
             <div id="hookProvider" class="form-horizontal" role="form">
-                {{ include('ZikulaHookBundle:Hook:provider.html.twig') }}
+                {{ include('@ZikulaHook/Hook/provider.html.twig') }}
             </div>
         </div>
     </div>
 {% else %}
     {% if isSubscriber %}
         <div id="hookSubscriber" class="clearfix">
-            {{ include('ZikulaHookBundle:Hook:subscriber.html.twig') }}
+            {{ include('@ZikulaHook/Hook/subscriber.html.twig') }}
         </div>
     {% endif %}
 
     {% if isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
         <div id="hookProvider" class="form-horizontal" role="form">
-            {{ include('ZikulaHookBundle:Hook:provider.html.twig') }}
+            {{ include('@ZikulaHook/Hook/provider.html.twig') }}
         </div>
     {% endif %}
 

@@ -93,14 +93,12 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 'gid' => GroupsConstant::GROUP_ID_USERS,
                 'name' => $this->__('Users'),
                 'description' => $this->__('By default, all users are made members of this group.'),
-                'prefix' => $this->__('usr'),
                 'users' => [UsersConstant::USER_ID_ADMIN]
             ],
             [
                 'gid' => GroupsConstant::GROUP_ID_ADMIN,
                 'name' => $this->__('Administrators'),
                 'description' => $this->__('Group of administrators of this site.'),
-                'prefix' => $this->__('adm'),
                 'users' => [UsersConstant::USER_ID_ADMIN]
             ]
         ];
@@ -110,7 +108,6 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
             $group->setGid($record['gid']);
             $group->setName($record['name']);
             $group->setDescription($record['description']);
-            $group->setPrefix($record['prefix']);
             foreach ($record['users'] as $uid) {
                 /** @var UserEntity $user */
                 $user = $this->entityManager->find('ZikulaUsersModule:UserEntity', $uid);

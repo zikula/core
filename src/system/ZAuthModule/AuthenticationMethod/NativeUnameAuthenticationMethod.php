@@ -42,13 +42,13 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
     {
         if ('block' === $type) {
             if ('topnav' === $position) {
-                return 'ZikulaZAuthModule:Authentication:UnameLoginBlock.topnav.html.twig';
+                return '@ZikulaZAuthModule/Authentication/UnameLoginBlock.topnav.html.twig';
             }
 
-            return 'ZikulaZAuthModule:Authentication:UnameLoginBlock.html.twig';
+            return '@ZikulaZAuthModule/Authentication/UnameLoginBlock.html.twig';
         }
 
-        return 'ZikulaZAuthModule:Authentication:UnameLogin.html.twig';
+        return '@ZikulaZAuthModule/Authentication/UnameLogin.html.twig';
     }
 
     public function authenticate(array $data = []): ?int

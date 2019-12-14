@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Twig\Extension;
 
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 
 class DefaultPathExtension extends AbstractExtension
@@ -37,7 +38,14 @@ class DefaultPathExtension extends AbstractExtension
         $this->router = $router;
     }
 
-    public function getDefaultPath($extensionName, $type = CapabilityApiInterface::USER): string
+    public function getFunctions()
+    {
+        return [
+            new TwigFunction('getDefaultPath', [$this, 'getDefaultPath']),
+        ];
+    }
+
+    public function getDefaultPath(string $extensionName, $type = CapabilityApiInterface::USER): string
     {
         $capability = $this->capabilityApi->isCapable($extensionName, $type);
         if (!$capability) {

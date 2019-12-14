@@ -28,9 +28,9 @@
         "zikula-scripts": [
             "Zikula\\Composer\\CopyRequirementsFile::copy",
             "composer dump-autoload",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "src/bin/console cache:clear --env prod",
+            "src/bin/console cache:clear",
+            "src/bin/console assets:install --relative src/web",
             "Zikula\\Composer\\ManuallyInstallAssets::install",
             "Zikula\\Composer\\LessGenerator::generateCombinedBootstrapFontAwesomeCSS",
             "Zikula\\Composer\\RequireJsConfigGenerator::regenerateRequireJs"
@@ -44,7 +44,7 @@
     },
     "config": {
         "vendor-dir": "src/vendor",
-        "bin-dir": "bin",
+        "bin-dir": "src/bin",
         "component-dir": "src/web"
     },
     "extra": {

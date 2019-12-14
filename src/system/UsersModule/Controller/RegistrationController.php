@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\Controller;
 
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -122,6 +123,7 @@ class RegistrationController extends AbstractController
         if (!$form->has('uname') || !$form->has('email')) {
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }
+        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $hasListeners = $eventDispatcher->hasListeners(UserEvents::EDIT_FORM);
         $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.registration');
         if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && 0 === count($hookBindings)) {
@@ -131,7 +133,7 @@ class RegistrationController extends AbstractController
             $form->submit($userData);
         } else {
             $formEvent = new UserFormAwareEvent($form);
-            $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+            $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
             $form->handleRequest($request);
         }
 
@@ -166,12 +168,12 @@ class RegistrationController extends AbstractController
                         // revert registration
                         $this->addFlash('error', $this->__('The registration process failed.'));
                         $userRepository->removeAndFlush($userEntity);
-                        $eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($userEntity->getUid()));
+                        $eventDispatcher->dispatch(new GenericEvent($userEntity->getUid()), RegistrationEvents::DELETE_REGISTRATION);
 
                         return $this->redirectToRoute('zikulausersmodule_registration_register'); // try again.
                     }
                     $formDataEvent = new UserFormDataEvent($userEntity, $form);
-                    $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                    $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
                     $hookDispatcher->dispatch(RegistrationUiHooksSubscriber::REGISTRATION_PROCESS, new ProcessHook($userEntity->getUid()));
 
                     // Register the appropriate status or error to be displayed to the user, depending on the account's activated status.
@@ -180,7 +182,7 @@ class RegistrationController extends AbstractController
                     $this->generateRegistrationFlashMessage($userEntity->getActivated(), $autoLogIn);
 
                     // Notify that we are completing a registration session.
-                    $event = $eventDispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($userEntity, ['redirectUrl' => '']));
+                    $event = $eventDispatcher->dispatch(new GenericEvent($userEntity, ['redirectUrl' => '']), RegistrationEvents::REGISTRATION_SUCCEEDED);
                     $redirectUrl = $event->hasArgument('redirectUrl') ? $event->getArgument('redirectUrl') : '';
 
                     if ($autoLogIn && $accessHelper->loginAllowed($userEntity)) {
@@ -204,7 +206,7 @@ class RegistrationController extends AbstractController
         }
 
         // Notify that we are beginning a registration session.
-        $eventDispatcher->dispatch(RegistrationEvents::REGISTRATION_STARTED, new GenericEvent());
+        $eventDispatcher->dispatch(new GenericEvent(), RegistrationEvents::REGISTRATION_STARTED);
 
         $templateName = ($authenticationMethod instanceof NonReEntrantAuthenticationMethodInterface)
             ? $authenticationMethod->getRegistrationTemplateName()

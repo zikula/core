@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -164,7 +165,8 @@ class UserAdministrationController extends AbstractController
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
         ]);
         $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -197,15 +199,15 @@ class UserAdministrationController extends AbstractController
                 if (!$authMethod->register($mapping->toArray())) {
                     $this->addFlash('error', $this->__('The create process failed for an unknown reason.'));
                     $userRepository->removeAndFlush($user);
-                    $eventDispatcher->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($user->getUid()));
+                    $eventDispatcher->dispatch(new GenericEvent($user->getUid()), RegistrationEvents::DELETE_REGISTRATION);
 
                     return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
                 }
                 $formDataEvent = new UserFormDataEvent($user, $form);
-                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
                 $hook = new ProcessHook($user->getUid());
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, $hook);
-                $eventDispatcher->dispatch(RegistrationEvents::REGISTRATION_SUCCEEDED, new GenericEvent($user));
+                $eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::REGISTRATION_SUCCEEDED);
 
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
                     $this->addFlash('status', $this->__('Done! Created new registration application.'));
@@ -258,7 +260,8 @@ class UserAdministrationController extends AbstractController
         ]);
         $originalMapping = clone $mapping;
         $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher->dispatch(UserEvents::EDIT_FORM, $formEvent);
+        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 
         $hook = new ValidationHook(new ValidationProviders());
@@ -286,10 +289,10 @@ class UserAdministrationController extends AbstractController
                 ];
                 $eventData = ['old_value' => $originalMapping->getUname()];
                 $updateEvent = new GenericEvent($user, $eventArgs, $eventData);
-                $eventDispatcher->dispatch(UserEvents::UPDATE_ACCOUNT, $updateEvent);
+                $eventDispatcher->dispatch($updateEvent, UserEvents::UPDATE_ACCOUNT);
 
                 $formDataEvent = new UserFormDataEvent($user, $form);
-                $eventDispatcher->dispatch(UserEvents::EDIT_FORM_HANDLE, $formDataEvent);
+                $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
                 $this->addFlash('status', $this->__("Done! Saved user's account information."));

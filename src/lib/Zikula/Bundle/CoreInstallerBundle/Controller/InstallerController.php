@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,13 @@ use Zikula\Component\Wizard\WizardCompleteInterface;
  */
 class InstallerController extends AbstractController
 {
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+        $this->router = $container->get('router');
+        $this->form = $this->container->get('form.factory');
+    }
+
     public function installAction(Request $request, string $stage): Response
     {
         // already installed?
@@ -55,7 +63,7 @@ class InstallerController extends AbstractController
         if ($wizard->isHalted()) {
             $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
 
-            return $this->renderResponse('ZikulaCoreInstallerBundle::error.html.twig', $templateParams);
+            return $this->renderResponse('@ZikulaCoreInstaller/error.html.twig', $templateParams);
         }
 
         // handle the form

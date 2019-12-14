@@ -17,11 +17,39 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
-use Zikula\Bundle\CoreInstallerBundle\Controller\AjaxInstallController;
+use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
+use Zikula\Common\Translator\TranslatorInterface;
 
 class FinishCommand extends AbstractCoreInstallerCommand
 {
+    /**
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * @var string
+     */
+    private $installed;
+
+    /**
+     * @var StageHelper
+     */
+    private $stageHelper;
+
+    public function __construct(
+        string $environment,
+        bool $installed,
+        StageHelper $stageHelper,
+        TranslatorInterface $translator
+    ) {
+        parent::__construct($translator);
+        $this->installed = $installed;
+        $this->environment = $environment;
+        $this->stageHelper = $stageHelper;
+    }
+
     protected function configure()
     {
         $this
@@ -33,31 +61,21 @@ class FinishCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $this->bootstrap(false);
 
-        if (true === $this->getContainer()->getParameter('installed')) {
+        if (true === $this->installed) {
             $io->error($this->translator->__('Zikula already appears to be installed.'));
 
             return;
         }
 
         $io->section($this->translator->__('*** INSTALLING ***'));
-        $env = $this->getContainer()->get('kernel')->getEnvironment();
-        $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $env]));
+        $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
 
         // install!
-        $ajaxInstallerStage = new AjaxInstallerStage($this->getContainer());
-        $stages = $ajaxInstallerStage->getTemplateParams();
-        foreach ($stages['stages'] as $key => $stage) {
-            $io->text($stage[AjaxInstallerStage::PRE]);
-            $io->text('<fg=blue;options=bold>' . $stage[AjaxInstallerStage::DURING] . '</fg=blue;options=bold>');
-            $status = $this->getContainer()->get(AjaxInstallController::class)->commandLineAction($stage[AjaxInstallerStage::NAME]);
-            if ($status) {
-                $io->success($stage[AjaxInstallerStage::SUCCESS]);
-            } else {
-                $io->error($stage[AjaxInstallerStage::FAIL]);
-            }
-        }
+        $ajaxStage = new AjaxInstallerStage();
+        $ajaxStage->setTranslator($this->translator);
+        $this->stageHelper->handleAjaxStage($ajaxStage, $io);
+
         $io->success($this->translator->__('INSTALL COMPLETE!'));
     }
 }

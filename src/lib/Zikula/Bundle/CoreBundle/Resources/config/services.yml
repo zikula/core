@@ -33,7 +33,7 @@ services:
 
     Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector:
         tags:
-            - { name: data_collector, template: 'CoreBundle:Collector:ZikulaVersion.html.twig', id: zikula_version, priority: 300 }
+            - { name: data_collector, template: '@ZikulaCore/Collector/ZikulaVersion.html.twig', id: zikula_version, priority: 300 }
 
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         arguments:
@@ -51,7 +51,7 @@ services:
 
     Zikula\Core\LinkContainer\LinkContainerCollector:
         arguments:
-          $linkContainers: !tagged zikula.link_container
+          $linkContainers: !tagged_iterator zikula.link_container
 
     Zikula\Bundle\CoreBundle\EventListener\BlameListener:
         arguments:

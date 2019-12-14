@@ -36,10 +36,14 @@ abstract class AbstractBundle extends Bundle
     public const STATE_MISSING = 6;
 
     /**
+     * @deprecated
      * @var int
      */
     protected $state;
 
+    /**
+     * @deprecated
+     */
     public function setState(int $state): self
     {
         if (!in_array($state, [self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING], true)) {
@@ -51,6 +55,9 @@ abstract class AbstractBundle extends Bundle
         return $this;
     }
 
+    /**
+     * @deprecated
+     */
     public function getState(): int
     {
         return $this->state;

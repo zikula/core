@@ -85,7 +85,7 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
     /**
      * Create the default data for the Admin module.
      */
-    public function defaultdata(): void
+    public function createDefaultData(): void
     {
         $records = [
             [

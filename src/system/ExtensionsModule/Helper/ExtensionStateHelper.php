@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Helper;
 
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -60,7 +61,7 @@ class ExtensionStateHelper
         TranslatorInterface $translator,
         ZikulaHttpKernelInterface $kernel
     ) {
-        $this->dispatcher = $dispatcher;
+        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
         $this->cacheClearer = $cacheClearer;
         $this->extensionRepository = $extensionRepository;
         $this->translator = $translator;
@@ -74,7 +75,7 @@ class ExtensionStateHelper
     {
         /** @var ExtensionEntity $extension */
         $extension = $this->extensionRepository->find($id);
-        $this->dispatcher->dispatch(ExtensionEvents::UPDATE_STATE, new GenericEvent($extension, ['state' => $state]));
+        $this->dispatcher->dispatch(new GenericEvent($extension, ['state' => $state]), ExtensionEvents::UPDATE_STATE);
 
         // Check valid state transition
         switch ($state) {
@@ -104,7 +105,7 @@ class ExtensionStateHelper
         if (isset($eventName)) {
             $moduleBundle = $this->kernel->getModule($extension->getName());
             $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
-            $this->dispatcher->dispatch($eventName, $event);
+            $this->dispatcher->dispatch($event, $eventName);
         }
 
         return true;

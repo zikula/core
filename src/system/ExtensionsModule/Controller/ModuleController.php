@@ -397,7 +397,7 @@ class ModuleController extends AbstractController
                     continue;
                 }
                 $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
-                $eventDispatcher->dispatch(CoreEvents::MODULE_POSTINSTALL, $event);
+                $eventDispatcher->dispatch($event, CoreEvents::MODULE_POSTINSTALL);
             }
             // currently commented out because it takes a long time.
             //$extensionHelper->installAssets();

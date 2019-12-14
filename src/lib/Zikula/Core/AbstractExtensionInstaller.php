@@ -109,6 +109,11 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     public function addFlash(string $type, string $message): void
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
+        if (null === $request) {
+            echo ucfirst($type) . ': ' . $message . "\n";
+
+            return;
+        }
         if (!$request->hasSession()) {
             throw new LogicException('You can not use the addFlash method if sessions are disabled.');
         }

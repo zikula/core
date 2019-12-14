@@ -49,7 +49,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Upgrade:notupgraded.html.twig';
+        return '@ZikulaCoreInstaller/Upgrade/notupgraded.html.twig';
     }
 
     public function isNecessary(): bool

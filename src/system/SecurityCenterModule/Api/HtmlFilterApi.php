@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule\Api;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
@@ -42,7 +43,7 @@ class HtmlFilterApi implements HtmlFilterApiInterface
     ) {
         $this->variableApi = $variableApi;
         $this->installed = $installed;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
     }
 
     public function filter($value)
@@ -75,7 +76,7 @@ class HtmlFilterApi implements HtmlFilterApiInterface
             // Run additional filters
             if ($outputFilter > 0) {
                 $event->setData($value);
-                $value = $this->eventDispatcher->dispatch(self::HTML_STRING_FILTER, $event)->getData();
+                $value = $this->eventDispatcher->dispatch($event, self::HTML_STRING_FILTER)->getData();
             }
             // Preparse var to mark the HTML that we want
             if (!empty($allowedTags)) {

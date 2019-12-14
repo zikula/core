@@ -43,7 +43,7 @@ class PurifierListener implements EventSubscriberInterface
 
     public function __construct(
         bool $installed,
-        bool $isUpgrading,
+        $isUpgrading, // cannot cast to bool because set with expression language
         VariableApiInterface $variableApi,
         PurifierHelper $purifierHelper
     ) {

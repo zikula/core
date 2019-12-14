@@ -18,6 +18,10 @@ services:
 
     Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface: '@Zikula\SecurityCenterModule\Api\HtmlFilterApi'
 
+    # public because installer accesses this using container
+    Zikula\SecurityCenterModule\Helper\PurifierHelper:
+        public: true
+
     Zikula\SecurityCenterModule\Listener\FilterListener:
         arguments:
           $cacheDir: '%kernel.cache_dir%'

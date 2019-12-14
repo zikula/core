@@ -70,12 +70,12 @@ abstract class AbstractTheme extends AbstractBundle
         /* @var Environment $twig */
         $twig = $this->getContainer()->get('twig');
 
-        $content = $twig->render('ZikulaThemeModule:Default:maincontent.html.twig', [
+        $content = $twig->render('@ZikulaThemeModule/Default/maincontent.html.twig', [
             'classes' => $classes,
             'maincontent' => $response->getContent()
         ]);
 
-        $content = $twig->render($this->name . ':' . $template, ['maincontent' => $content]);
+        $content = $twig->render('@' . $this->name . '/' . $template, ['maincontent' => $content]);
 
         return new Response($content);
     }
@@ -90,10 +90,10 @@ abstract class AbstractTheme extends AbstractBundle
         string $blockTitle
     ): string {
         if (isset($this->config[$realm]['block']['positions'][$positionName])) {
-            $template = $this->name . ':' . $this->config[$realm]['block']['positions'][$positionName];
+            $template = '@' . $this->name . '/' . $this->config[$realm]['block']['positions'][$positionName];
         } else {
             // block position not defined, provide a default template
-            $template = 'ZikulaThemeModule:Default:block.html.twig';
+            $template = '@ZikulaThemeModule/Default/block.html.twig';
         }
 
         return $this->getContainer()->get('twig')->render($template, [
@@ -114,7 +114,7 @@ abstract class AbstractTheme extends AbstractBundle
         /* @var Environment $twig */
         $twig = $this->getContainer()->get('twig');
 
-        return $twig->render('ZikulaThemeModule:Default:blockwrapper.html.twig', [
+        return $twig->render('@ZikulaThemeModule/Default/blockwrapper.html.twig', [
             'position' => $positionName,
             'type' => $blockType,
             'bid' => $blockId,

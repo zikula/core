@@ -16,8 +16,8 @@
 
         {% if logEntries|length > 0 %}
             {% form_theme filterForm with [
-                'ZikulaFormExtensionBundle:Form:bootstrap_3_zikula_admin_layout.html.twig',
-                'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+                '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+                '@ZikulaFormExtension/Form/form_div_layout.html.twig'
             ] %}
             {{ form_start(filterForm, {attr: {id: 'zikulaSecurityCenterModuleIdsLogFilterForm', class: 'navbar-form', role: 'navigation'}}) }}
             {{ form_errors(filterForm) }}

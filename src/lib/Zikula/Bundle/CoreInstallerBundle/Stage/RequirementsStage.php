@@ -39,7 +39,7 @@ class RequirementsStage implements StageInterface, InjectContainerInterface
 
     public function getTemplateName(): string
     {
-        return 'ZikulaCoreInstallerBundle:Install:requirements.html.twig';
+        return '@ZikulaCoreInstaller/Install/requirements.html.twig';
     }
 
     public function isNecessary(): bool

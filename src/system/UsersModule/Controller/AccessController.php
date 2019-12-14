@@ -16,6 +16,7 @@ namespace Zikula\UsersModule\Controller;
 use DateTime;
 use LogicException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,7 +87,8 @@ class AccessController extends AbstractController
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
 
-        $eventDispatcher->dispatch(AccessEvents::LOGIN_STARTED, new GenericEvent());
+        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $eventDispatcher->dispatch(new GenericEvent(), AccessEvents::LOGIN_STARTED);
 
         $loginHeader = $this->renderView('@ZikulaUsersModule/Access/loginHeader.html.twig');
         $loginFooter = $this->renderView('@ZikulaUsersModule/Access/loginFooter.html.twig');
@@ -98,7 +100,7 @@ class AccessController extends AbstractController
                 throw new InvalidAuthenticationMethodLoginFormException();
             }
             $loginFormEvent = new UserFormAwareEvent($form);
-            $eventDispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM, $loginFormEvent);
+            $eventDispatcher->dispatch($loginFormEvent, AccessEvents::AUTHENTICATION_FORM);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $data = $form->getData();
@@ -120,7 +122,7 @@ class AccessController extends AbstractController
             if ($hasListeners || count($hookBindings) > 0) {
                 $form = $this->createForm(DefaultLoginType::class, ['uid' => $uid]);
                 $loginFormEvent = new UserFormAwareEvent($form);
-                $eventDispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM, $loginFormEvent);
+                $eventDispatcher->dispatch($loginFormEvent, AccessEvents::AUTHENTICATION_FORM);
                 if ($form->count() > 3) { // count > 3 means that the AUTHENTICATION_FORM event added some form children
                     $form->handleRequest($request);
                     if ($form->isSubmitted() && $form->isValid()) {
@@ -150,11 +152,11 @@ class AccessController extends AbstractController
                 if (!$validators->hasErrors() && $accessHelper->loginAllowed($user)) {
                     if (isset($form)) {
                         $formDataEvent = new UserFormDataEvent($user, $form);
-                        $eventDispatcher->dispatch(AccessEvents::AUTHENTICATION_FORM_HANDLE, $formDataEvent);
+                        $eventDispatcher->dispatch($formDataEvent, AccessEvents::AUTHENTICATION_FORM_HANDLE);
                     }
                     $hookDispatcher->dispatch(LoginUiHooksSubscriber::LOGIN_PROCESS, new ProcessHook($user));
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
-                    $eventDispatcher->dispatch(AccessEvents::LOGIN_VETO, $event);
+                    $eventDispatcher->dispatch($event, AccessEvents::LOGIN_VETO);
                     if (!$event->isPropagationStopped()) {
                         $returnUrlFromSession = urldecode($request->getSession()->get('returnUrl', $returnUrl));
                         $accessHelper->login($user, $rememberMe);
@@ -195,7 +197,7 @@ class AccessController extends AbstractController
             $eventArgs['isFirstLogin'] = true;
         }
         $event = new GenericEvent($user, $eventArgs);
-        $event = $eventDispatcher->dispatch(AccessEvents::LOGIN_SUCCESS, $event);
+        $event = $eventDispatcher->dispatch($event, AccessEvents::LOGIN_SUCCESS);
 
         return $event->hasArgument('returnUrl') ? $event->getArgument('returnUrl') : $returnUrl;
     }
@@ -211,7 +213,7 @@ class AccessController extends AbstractController
             'returnUrl' => $returnUrl,
         ];
         $event = new GenericEvent($user, $eventArgs);
-        $event = $eventDispatcher->dispatch(AccessEvents::LOGIN_FAILED, $event);
+        $event = $eventDispatcher->dispatch($event, AccessEvents::LOGIN_FAILED);
 
         return $event->hasArgument('returnUrl') ? $event->getArgument('returnUrl') : $returnUrl;
     }
@@ -235,7 +237,7 @@ class AccessController extends AbstractController
                     'authenticationMethod' => $request->getSession()->get('authenticationMethod'),
                     'uid' => $uid,
                 ]);
-                $eventDispatcher->dispatch(AccessEvents::LOGOUT_SUCCESS, $event);
+                $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
             } else {
                 $this->addFlash('error', $this->__('Error! You have not been logged out.'));
             }
