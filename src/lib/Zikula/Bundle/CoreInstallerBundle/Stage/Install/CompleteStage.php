@@ -107,10 +107,15 @@ EOF;
         $message->setTo($adminUser->getEmail());
 
         /**
-         * @var Swift_Mailer
+         * @var $mailer Swift_Mailer
          */
         $mailer = $this->container->get('mailer');
+        try {
+            $mailer->send($message);
+        } catch (\Exception $exception) {
+            return 0;
+        }
 
-        return $mailer->send($message);
+        return 1;
     }
 }
