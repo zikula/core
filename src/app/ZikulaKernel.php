@@ -62,8 +62,6 @@ class ZikulaKernel extends Kernel
         foreach ($bundles as $class) {
             yield new $class();
         }
-
-//        return $bundles;
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

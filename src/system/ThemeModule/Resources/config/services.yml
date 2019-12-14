@@ -107,7 +107,6 @@ services:
           - [addGlobal, ['pagevars', '@zikula_core.common.theme.pagevars']]
           - [addGlobal, ['themevars', '@zikula_core.common.theme.themevars']]
           - [addGlobal, ['currentUser', '@Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface']]
-          - [addGlobal, ['localeApi', { "language_direction": "auto" }]]
           - [addRuntimeLoader, ['@twig.runtime_loader']]
         configurator: ['@twig.configurator.environment', 'configure']
     Twig_Environment: '@twig'
