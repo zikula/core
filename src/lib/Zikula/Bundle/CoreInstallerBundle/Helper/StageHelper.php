@@ -179,6 +179,9 @@ class StageHelper
         return true;
     }
 
+    /**
+     * This is used only by CLI commands to execute the stages needed for install/upgrade
+     */
     public function handleAjaxStage(StageInterface $ajaxStage, StyleInterface $io)
     {
         $stages = $ajaxStage->getTemplateParams();
