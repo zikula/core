@@ -58,7 +58,7 @@ class Asset
      */
     public function getSiteRoot(): string
     {
-        return dirname($this->kernel->getProjectDir());
+        return realpath($this->kernel->getProjectDir() . "/../../");
     }
 
     /**
@@ -95,8 +95,8 @@ class Asset
             }
 
             $webPath = $this->assetPackages->getUrl($relativeAssetPath);
-            $filePath = $this->kernel->getProjectDir() . '/..' . $webPath;
-            if (is_file($filePath)) {
+            $filePath = realpath($this->kernel->getProjectDir() . '/../..' . $webPath);
+            if (false !== $filePath) {
                 return $webPath;
             }
         }
