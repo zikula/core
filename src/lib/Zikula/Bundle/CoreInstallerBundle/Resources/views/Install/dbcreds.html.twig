@@ -56,7 +56,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-9">
-                <input type="submit" value="{{ __('Next') }}" class="btn btn-success" />
+                <p id="db-check" style="display: none;"><i class="fa fa-cog fa-spin fa-fw text-success"></i>{{ __('Checking database connection...') }}</p>
+                <input type="submit" id="submit_button" value="{{ __('Next') }}" class="btn btn-success" />
             </div>
         </div>
 
@@ -66,15 +67,15 @@
 <script>
     $(document).ready(function() {
         $('form:first *:input:text:first').focus();
-        
+
         var value = $('#dbcreds_database_driver').val();
-        
+
         if ('mysql' === value) {
             $('#dbcreds_dbtabletype').parent().parent().show();
         } else {
             $('#dbcreds_dbtabletype').parent().parent().hide();
         }
-            
+
         $('#dbcreds_database_driver').on('change', function() {
             var value = $(this).val();
 
@@ -83,6 +84,10 @@
             } else {
                 $('#dbcreds_dbtabletype').parent().parent().slideUp('slow');
             }
+        });
+
+        $('#submit_button').on('click', function() {
+            $('#db-check').show();
         });
     });
 </script>
