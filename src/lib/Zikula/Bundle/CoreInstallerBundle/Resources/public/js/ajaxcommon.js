@@ -34,7 +34,7 @@ jQuery( document ).ready(function( $ ) {
                 stage: stagename
             }
         }).done(function (data, textStatus, jqXHR) {
-            if (1 === data.status) {
+            if (true === data.status) {
                 indicateStageSuccessful(stageitem);
             } else {
                 indicateStageFailure(stageitem);
