@@ -40,8 +40,6 @@ class AssetBag implements IteratorAggregate, Countable
 
     public const WEIGHT_BOOTSTRAP_ZIKULA = 22;
 
-    public const WEIGHT_HTML5SHIV = 23;
-
     public const WEIGHT_ROUTER_JS = 24;
 
     public const WEIGHT_ROUTES_JS = 25;
