@@ -44,7 +44,7 @@ class ButtonTypeIconExtension extends AbstractTypeExtension
         ]);
     }
 
-    public function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [ButtonType::class]; // Extend the button field type
     }

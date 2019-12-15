@@ -52,7 +52,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('help', ['string', 'null', 'array']);
     }
 
-    public function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [FormType::class]; // Extend all field types
     }
