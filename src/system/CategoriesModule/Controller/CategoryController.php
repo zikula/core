@@ -35,7 +35,7 @@ class CategoryController extends AbstractController
     /**
      * @Route("/list/{id}", requirements={"category" = "^[1-9]\d*$"}, defaults={"id" = 1})
      * @Theme("admin")
-     * @Template("ZikulaCategoriesModule:Category:list.html.twig")
+     * @Template("@ZikulaCategoriesModule/Category/list.html.twig")
      *
      * @see https://jstree.com/
      * @see https://github.com/Atlantic18/DoctrineExtensions/blob/master/doc/tree.md

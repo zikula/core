@@ -66,7 +66,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
      * @Theme("admin")
-     * @Template("ZikulaZAuthModule:UserAdministration:list.html.twig")
+     * @Template("@ZikulaZAuthModule/UserAdministration/list.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
@@ -141,7 +141,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/user/create")
      * @Theme("admin")
-     * @Template("ZikulaZAuthModule:UserAdministration:create.html.twig")
+     * @Template("@ZikulaZAuthModule/UserAdministration/create.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
@@ -233,7 +233,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/user/modify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaZAuthModule:UserAdministration:modify.html.twig")
+     * @Template("@ZikulaZAuthModule/UserAdministration/modify.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the mapping record
@@ -313,7 +313,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/verify/{mapping}", requirements={"mapping" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaZAuthModule:UserAdministration:verify.html.twig")
+     * @Template("@ZikulaZAuthModule/UserAdministration/verify.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
@@ -411,7 +411,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/toggle-password-change/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaZAuthModule:UserAdministration:togglePasswordChange.html.twig")
+     * @Template("@ZikulaZAuthModule/UserAdministration/togglePasswordChange.html.twig")
      *
      * @param Request $request
      * @param UserEntity $user // note: this is intentionally left as UserEntity instead of mapping because of need to access attributes

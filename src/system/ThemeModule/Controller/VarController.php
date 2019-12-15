@@ -32,7 +32,7 @@ class VarController extends AbstractController
      *
      * @Route("/admin/var/{themeName}")
      * @Theme("admin")
-     * @Template("ZikulaThemeModule:Var:var.html.twig")
+     * @Template("@ZikulaThemeModule/Var/var.html.twig")
      *
      * @return array|RedirectResponse
      *

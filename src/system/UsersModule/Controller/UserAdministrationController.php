@@ -65,7 +65,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/list/{sort}/{sortdir}/{letter}/{startnum}")
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:UserAdministration:list.html.twig")
+     * @Template("@ZikulaUsersModule/UserAdministration/list.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
      */
@@ -143,7 +143,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/user/modify/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:UserAdministration:modify.html.twig")
+     * @Template("@ZikulaUsersModule/UserAdministration/modify.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't edit permissions for the user record
@@ -214,7 +214,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/approve/{user}/{force}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:UserAdministration:approve.html.twig")
+     * @Template("@ZikulaUsersModule/UserAdministration/approve.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module
@@ -283,7 +283,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/delete/{user}", requirements={"user" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:UserAdministration:delete.html.twig")
+     * @Template("@ZikulaUsersModule/UserAdministration/delete.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't delete permissions for the module
@@ -378,7 +378,7 @@ class UserAdministrationController extends AbstractController
     /**
      * @Route("/search")
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:UserAdministration:search.html.twig")
+     * @Template("@ZikulaUsersModule/UserAdministration/search.html.twig")
      *
      * @return array|Response
      * @throws AccessDeniedException Thrown if the user hasn't moderate permissions for the module

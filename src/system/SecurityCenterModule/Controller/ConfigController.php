@@ -43,7 +43,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template("ZikulaSecurityCenterModule:Config:config.html.twig")
+     * @Template("@ZikulaSecurityCenterModule/Config/config.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      * @return array|RedirectResponse
@@ -312,7 +312,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/purifierconfig/{reset}")
      * @Theme("admin")
-     * @Template("ZikulaSecurityCenterModule:Config:purifierconfig.html.twig")
+     * @Template("@ZikulaSecurityCenterModule/Config/purifierconfig.html.twig")
      *
      * HTMLPurifier configuration.
      *
@@ -534,7 +534,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/allowedhtml")
      * @Theme("admin")
-     * @Template("ZikulaSecurityCenterModule:Config:allowedhtml.html.twig")
+     * @Template("@ZikulaSecurityCenterModule/Config/allowedhtml.html.twig")
      *
      * Display the allowed html form.
      *

@@ -36,7 +36,7 @@ class PlacementController extends AbstractController
     /**
      * @Route("/edit/{pid}", requirements={"pid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaBlocksModule:Placement:edit.html.twig")
+     * @Template("@ZikulaBlocksModule/Placement/edit.html.twig")
      *
      * Create a new placement or edit an existing placement.
      *

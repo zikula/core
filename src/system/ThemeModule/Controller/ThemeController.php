@@ -46,7 +46,7 @@ class ThemeController extends AbstractController
     /**
      * @Route("/view", methods = {"GET"})
      * @Theme("admin")
-     * @Template("ZikulaThemeModule:Theme:view.html.twig")
+     * @Template("@ZikulaThemeModule/Theme/view.html.twig")
      *
      * View all themes.
      *
@@ -107,7 +107,7 @@ class ThemeController extends AbstractController
     /**
      * @Route("/makedefault/{themeName}")
      * @Theme("admin")
-     * @Template("ZikulaThemeModule:Theme:setAsDefault.html.twig")
+     * @Template("@ZikulaThemeModule/Theme/setAsDefault.html.twig")
      *
      * Set theme as default for site.
      *
@@ -169,7 +169,7 @@ class ThemeController extends AbstractController
     /**
      * @Route("/delete/{themeName}")
      * @Theme("admin")
-     * @Template("ZikulaThemeModule:Theme:delete.html.twig")
+     * @Template("@ZikulaThemeModule/Theme/delete.html.twig")
      *
      * Delete a theme.
      *
@@ -258,7 +258,7 @@ class ThemeController extends AbstractController
     /**
      * @Route("/credits/{themeName}", methods = {"GET"})
      * @Theme("admin")
-     * @Template("ZikulaThemeModule:Theme:credits.html.twig")
+     * @Template("@ZikulaThemeModule/Theme/credits.html.twig")
      *
      * Display the theme credits.
      *

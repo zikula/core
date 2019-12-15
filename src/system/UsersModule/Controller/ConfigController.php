@@ -38,7 +38,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config")
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:Config:config.html.twig")
+     * @Template("@ZikulaUsersModule/Config/config.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
@@ -71,7 +71,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("/config/authentication-methods")
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:Config:authenticationMethods.html.twig")
+     * @Template("@ZikulaUsersModule/Config/authenticationMethods.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module

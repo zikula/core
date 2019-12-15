@@ -50,7 +50,7 @@ class AccountController extends AbstractController
 {
     /**
      * @Route("/lost-user-name")
-     * @Template("ZikulaZAuthModule:Account:lostUserName.html.twig")
+     * @Template("@ZikulaZAuthModule/Account/lostUserName.html.twig")
      *
      * @return array|RedirectResponse
      */
@@ -100,7 +100,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/lost-password")
-     * @Template("ZikulaZAuthModule:Account:lostPassword.html.twig")
+     * @Template("@ZikulaZAuthModule/Account/lostPassword.html.twig")
      *
      * @return array|RedirectResponse
      */
@@ -188,7 +188,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/lost-password/reset")
-     * @Template("ZikulaZAuthModule:Account:lostPasswordReset.html.twig")
+     * @Template("@ZikulaZAuthModule/Account/lostPasswordReset.html.twig")
      *
      * @return array|RedirectResponse
      */
@@ -280,7 +280,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/change-email")
-     * @Template("ZikulaZAuthModule:Account:changeEmail.html.twig")
+     * @Template("@ZikulaZAuthModule/Account/changeEmail.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user is not logged in
@@ -384,7 +384,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/change-password")
-     * @Template("ZikulaZAuthModule:Account:changePassword.html.twig")
+     * @Template("@ZikulaZAuthModule/Account/changePassword.html.twig")
      *
      * @return array|RedirectResponse
      */

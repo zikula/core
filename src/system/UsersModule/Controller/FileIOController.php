@@ -34,7 +34,7 @@ class FileIOController extends AbstractController
     /**
      * @Route("/export")
      * @Theme("admin")
-     * @Template("ZikulaUsersModule:FileIO:export.html.twig")
+     * @Template("@ZikulaUsersModule/FileIO/export.html.twig")
      *
      * @return array|StreamedResponse
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module

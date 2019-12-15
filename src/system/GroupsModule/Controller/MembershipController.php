@@ -47,7 +47,7 @@ class MembershipController extends AbstractController
 {
     /**
      * @Route("/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
-     * @Template("ZikulaGroupsModule:Membership:list.html.twig")
+     * @Template("@ZikulaGroupsModule/Membership/list.html.twig")
      *
      * Display all members of a group to a user.
      *
@@ -84,7 +84,7 @@ class MembershipController extends AbstractController
     /**
      * @Route("/admin/list/{gid}/{letter}/{startNum}", methods = {"GET"}, requirements={"gid" = "^[1-9]\d*$", "letter" = "[a-zA-Z]|\*", "startNum" = "\d+"})
      * @Theme("admin")
-     * @Template("ZikulaGroupsModule:Membership:adminList.html.twig")
+     * @Template("@ZikulaGroupsModule/Membership/adminList.html.twig")
      *
      * Display all members of a group to an admin.
      *
@@ -183,7 +183,7 @@ class MembershipController extends AbstractController
     /**
      * @Route("/admin/remove/{gid}/{uid}", requirements={"gid" = "^[1-9]\d*$", "uid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaGroupsModule:Membership:remove.html.twig")
+     * @Template("@ZikulaGroupsModule/Membership/remove.html.twig")
      *
      * Remove a user from a group.
      *

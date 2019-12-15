@@ -59,7 +59,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
-     * @Template("ZikulaExtensionsModule:Module:viewModuleList.html.twig")
+     * @Template("@ZikulaExtensionsModule/Module/viewModuleList.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
@@ -210,7 +210,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/modify/{id}/{forceDefaults}", requirements={"id" = "^[1-9]\d*$", "forceDefaults" = "0|1"})
      * @Theme("admin")
-     * @Template("ZikulaExtensionsModule:Module:modify.html.twig")
+     * @Template("@ZikulaExtensionsModule/Module/modify.html.twig")
      *
      * Modify a module.
      *
@@ -268,7 +268,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/compatibility/{id}", methods = {"GET"}, requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaExtensionsModule:Module:compatibility.html.twig")
+     * @Template("@ZikulaExtensionsModule/Module/compatibility.html.twig")
      *
      * Display information of a module compatibility with the version of the core
      *
@@ -288,7 +288,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/install/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaExtensionsModule:Module:install.html.twig")
+     * @Template("@ZikulaExtensionsModule/Module/install.html.twig")
      *
      * Install and initialise an extension.
      *
@@ -456,7 +456,7 @@ class ModuleController extends AbstractController
     /**
      * @Route("/uninstall/{id}/{token}", requirements={"id" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaExtensionsModule:Module:uninstall.html.twig")
+     * @Template("@ZikulaExtensionsModule/Module/uninstall.html.twig")
      *
      * Uninstall an extension.
      *

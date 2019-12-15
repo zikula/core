@@ -37,7 +37,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/view")
      * @Theme("admin")
-     * @Template("ZikulaBlocksModule:Admin:view.html.twig")
+     * @Template("@ZikulaBlocksModule/Admin/view.html.twig")
      *
      * View all blocks.
      *

@@ -40,7 +40,7 @@ class ApplicationController extends AbstractController
     /**
      * @Route("/admin/{action}/{app_id}", requirements={"action" = "deny|accept", "app_id" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaGroupsModule:Application:admin.html.twig")
+     * @Template("@ZikulaGroupsModule/Application/admin.html.twig")
      *
      * Display a list of group applications.
      *
@@ -90,7 +90,7 @@ class ApplicationController extends AbstractController
 
     /**
      * @Route("/create/{gid}", requirements={"gid" = "^[1-9]\d*$"})
-     * @Template("ZikulaGroupsModule:Application:create.html.twig")
+     * @Template("@ZikulaGroupsModule/Application/create.html.twig")
      *
      * Create an application to a group.
      *

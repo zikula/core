@@ -56,7 +56,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/categories/{startnum}", methods = {"GET"}, requirements={"startnum" = "\d+"})
      * @Theme("admin")
-     * @Template("ZikulaAdminModule:Admin:view.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/view.html.twig")
      *
      * Views all admin categories.
      *
@@ -92,7 +92,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/newcategory")
      * @Theme("admin")
-     * @Template("ZikulaAdminModule:Admin:newcat.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/newcat.html.twig")
      *
      * Displays and handles a form for the user to input the details of the new category.
      *
@@ -132,7 +132,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaAdminModule:Admin:modify.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/modify.html.twig")
      *
      * Displays and handles a modify category form.
      *
@@ -174,7 +174,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/deletecategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaAdminModule:Admin:delete.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/delete.html.twig")
      *
      * Deletes an admin category.
      *
@@ -211,7 +211,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/panel/{acid}", methods = {"GET"}, requirements={"acid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("ZikulaAdminModule:Admin:adminpanel.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/adminpanel.html.twig")
      *
      * Displays main admin panel for a category.
      *
@@ -496,7 +496,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/help")
      * @Theme("admin")
-     * @Template("ZikulaAdminModule:Admin:help.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/help.html.twig")
      *
      * Displays the module's help page.
      *

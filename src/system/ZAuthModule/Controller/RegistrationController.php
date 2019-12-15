@@ -44,7 +44,7 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/verify-registration/{uname}/{verifycode}")
-     * @Template("ZikulaZAuthModule:Registration:verify.html.twig")
+     * @Template("@ZikulaZAuthModule/Registration/verify.html.twig")
      *
      * Render and process a registration e-mail verification code.
      *

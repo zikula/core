@@ -36,7 +36,7 @@ class AccountController extends AbstractController
 {
     /**
      * @Route("")
-     * @Template("ZikulaUsersModule:Account:menu.html.twig")
+     * @Template("@ZikulaUsersModule/Account/menu.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user isn't logged in or hasn't read permissions for the module
      */
@@ -58,7 +58,7 @@ class AccountController extends AbstractController
 
     /**
      * @Route("/change-language")
-     * @Template("ZikulaUsersModule:Account:changeLanguage.html.twig")
+     * @Template("@ZikulaUsersModule/Account/changeLanguage.html.twig")
      *
      * @return array|RedirectResponse
      */

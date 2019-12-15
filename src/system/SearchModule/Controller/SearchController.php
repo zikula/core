@@ -32,7 +32,7 @@ class SearchController extends AbstractController
 {
     /**
      * @Route("/{page}", requirements={"page"="\d+"})
-     * @Template("ZikulaSearchModule:Search:execute.html.twig")
+     * @Template("@ZikulaSearchModule/Search/execute.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have read access
      * @return array|Response
@@ -123,7 +123,7 @@ class SearchController extends AbstractController
 
     /**
      * @Route("/recent")
-     * @Template("ZikulaSearchModule:Search:recent.html.twig")
+     * @Template("@ZikulaSearchModule/Search/recent.html.twig")
      *
      * Display a list of recent searches.
      *

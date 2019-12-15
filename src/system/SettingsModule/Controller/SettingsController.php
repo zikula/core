@@ -40,7 +40,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("")
      * @Theme("admin")
-     * @Template("ZikulaSettingsModule:Settings:main.html.twig")
+     * @Template("@ZikulaSettingsModule/Settings/main.html.twig")
      *
      * Settings for entire site.
      *
@@ -99,7 +99,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/locale", options={"i18n"=false})
      * @Theme("admin")
-     * @Template("ZikulaSettingsModule:Settings:locale.html.twig")
+     * @Template("@ZikulaSettingsModule/Settings/locale.html.twig")
      *
      * Locale settings for entire site.
      *
@@ -164,7 +164,7 @@ class SettingsController extends AbstractController
     /**
      * @Route("/phpinfo")
      * @Theme("admin")
-     * @Template("ZikulaSettingsModule:Settings:phpinfo.html.twig")
+     * @Template("@ZikulaSettingsModule/Settings/phpinfo.html.twig")
      *
      * Displays the content of {@see phpinfo()}.
      *

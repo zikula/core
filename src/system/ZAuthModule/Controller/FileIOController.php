@@ -33,7 +33,7 @@ class FileIOController extends AbstractController
     /**
      * @Route("/import")
      * @Theme("admin")
-     * @Template("ZikulaZAuthModule:FileIO:import.html.twig")
+     * @Template("@ZikulaZAuthModule/FileIO/import.html.twig")
      *
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module

@@ -37,7 +37,7 @@ class ConfigController extends AbstractController
     /**
      * @Route("")
      * @Theme("admin")
-     * @Template("ZikulaExtensionsModule:Config:config.html.twig")
+     * @Template("@ZikulaExtensionsModule/Config/config.html.twig")
      *
      * @return array|Response
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
