@@ -21,7 +21,6 @@ use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
 class BootstrapBundlesCommand extends Command
 {
-
     /**
      * @var BootstrapHelper
      */
