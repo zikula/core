@@ -5728,11 +5728,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "http://zikula.org"
+                    "homepage": "https://ziku.la"
                 }
             ],
             "description": "Zikula Bootstrap bundle",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "keywords": [
                 "bootstrap",
                 "bundle",
@@ -5776,15 +5776,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "http://zikula.org/"
+                    "homepage": "https://ziku.la/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "info@ziku.la"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -5817,11 +5817,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "http://zikula.org"
+                    "homepage": "https://ziku.la"
                 }
             ],
             "description": "FontAwesome Bundle for Zikula",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "keywords": [
                 "css",
                 "graphics",
@@ -5962,11 +5962,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "http://zikula.org"
+                    "homepage": "https://ziku.la"
                 }
             ],
             "description": "Zikula jQuery UI bundle",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "keywords": [
                 "bundle",
                 "jQuery UI",
@@ -6045,16 +6045,16 @@
         },
         {
             "name": "zikula/oauth-module",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "9a549a8fc21dc72a576ace5fb46ae7f6b6aa57ed"
+                "reference": "a264b80b71d4a33fb2f3e946a1b0ff3b3566a7a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/9a549a8fc21dc72a576ace5fb46ae7f6b6aa57ed",
-                "reference": "9a549a8fc21dc72a576ace5fb46ae7f6b6aa57ed",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a264b80b71d4a33fb2f3e946a1b0ff3b3566a7a7",
+                "reference": "a264b80b71d4a33fb2f3e946a1b0ff3b3566a7a7",
                 "shasum": ""
             },
             "require": {
@@ -6099,10 +6099,10 @@
             ],
             "description": "Integrates league/oauth2-client and various providers.",
             "support": {
-                "source": "https://github.com/zikula/OAuth/tree/1.1.1",
+                "source": "https://github.com/zikula/OAuth/tree/1.1.2",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-04-05T18:34:09+00:00"
+            "time": "2019-12-16T08:06:18+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6156,16 +6156,16 @@
         },
         {
             "name": "zikula/profile-module",
-            "version": "3.1.10",
+            "version": "3.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "8a915e4a20770226f43a384dc98401190a8a1da2"
+                "reference": "5f0dceea88d9db14b8ab05e9a785a9ae823baeda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8a915e4a20770226f43a384dc98401190a8a1da2",
-                "reference": "8a915e4a20770226f43a384dc98401190a8a1da2",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/5f0dceea88d9db14b8ab05e9a785a9ae823baeda",
+                "reference": "5f0dceea88d9db14b8ab05e9a785a9ae823baeda",
                 "shasum": ""
             },
             "require": {
@@ -6220,10 +6220,10 @@
             ],
             "description": "User profiles and member list",
             "support": {
-                "source": "https://github.com/zikula-modules/Profile/tree/3.1.10",
+                "source": "https://github.com/zikula-modules/Profile/tree/3.1.11",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-10-17T14:00:30+00:00"
+            "time": "2019-12-16T08:01:46+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
