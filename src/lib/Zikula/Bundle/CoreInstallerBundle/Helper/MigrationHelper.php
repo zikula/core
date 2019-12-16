@@ -17,7 +17,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
@@ -51,7 +51,7 @@ class MigrationHelper
     private $logger;
 
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         ValidatorInterface $validator,
         LoggerInterface $logger
     ) {

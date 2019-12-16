@@ -15,7 +15,7 @@ namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
@@ -54,7 +54,7 @@ class DoctrineStorage implements StorageInterface
     private $hookCollector;
 
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         HookBindingRepositoryInterface $hookBindingRepository,
         HookRuntimeRepositoryInterface $hookRuntimeRepository,
         HookCollectorInterface $hookCollector

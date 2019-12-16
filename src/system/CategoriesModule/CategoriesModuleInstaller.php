@@ -16,7 +16,7 @@ namespace Zikula\CategoriesModule;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Exception;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
@@ -93,7 +93,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             case '1.2.3':
             case '1.3.0':
                 $this->delVars();
-                /** @var RegistryInterface $doctrine */
+                /** @var ManagerRegistry $doctrine */
                 $doctrine = $this->container->get('doctrine');
                 /** @var CategoryRepositoryInterface $categoryRepositoryInterface */
                 $categoryRepositoryInterface = $doctrine->getManager()->getRepository('ZikulaCategoriesModule:CategoryRepositoryEntity');

@@ -35,7 +35,7 @@
         "willdurand/js-translation-bundle": "2.*",
 
         "doctrine/orm": "2.*",
-        "doctrine/doctrine-bundle": "1.*",
+        "doctrine/doctrine-bundle": "2.*",
         "stof/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
 

@@ -42,6 +42,10 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
+        # Only needed for MySQL (ignored otherwise)
+#        charset: utf8mb4
+#        default_table_options:
+#            collate: utf8mb4_unicode_ci
         default_connection: default
         types:
             utcdatetime:
@@ -67,9 +71,9 @@ doctrine:
             # the standard distribution overrides this to be true in debug, false otherwise
             default:
                 auto_mapping: true
-                metadata_cache_driver: array
-                query_cache_driver: array
-                result_cache_driver: array
+#                metadata_cache_driver: array
+#                query_cache_driver: array
+#                result_cache_driver: array
                 mappings:
                     zikula_hookstorage:
                         type: annotation
@@ -102,18 +106,18 @@ doctrine:
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
 
-doctrine_cache:
-    providers:
-        zikula_js_asset_cache:
-            namespace: js_assets
-            file_system:
-                extension: ".combined.js"
-                directory: "%kernel.cache_dir%/assets/js"
-        zikula_css_asset_cache:
-            namespace: css_assets
-            file_system:
-                extension: ".combined.css"
-                directory: "%kernel.cache_dir%/assets/css"
+#doctrine_cache:
+#    providers:
+#        zikula_js_asset_cache:
+#            namespace: js_assets
+#            file_system:
+#                extension: ".combined.js"
+#                directory: "%kernel.cache_dir%/assets/js"
+#        zikula_css_asset_cache:
+#            namespace: css_assets
+#            file_system:
+#                extension: ".combined.css"
+#                directory: "%kernel.cache_dir%/assets/css"
 
 stof_doctrine_extensions:
     default_locale: en_US
