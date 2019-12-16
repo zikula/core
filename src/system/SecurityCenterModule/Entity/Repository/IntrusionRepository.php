@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use InvalidArgumentException;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 

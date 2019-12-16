@@ -15,8 +15,8 @@ namespace Zikula\CategoriesModule;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Exception;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
