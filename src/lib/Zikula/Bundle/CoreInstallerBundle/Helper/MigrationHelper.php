@@ -15,9 +15,9 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
