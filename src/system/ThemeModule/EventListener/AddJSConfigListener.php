@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
@@ -82,7 +82,7 @@ class AddJSConfigListener implements EventSubscriberInterface
     /**
      * Generate a configuration for javascript and add script to headers.
      */
-    public function addJSConfig(FilterResponseEvent $event): void
+    public function addJSConfig(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

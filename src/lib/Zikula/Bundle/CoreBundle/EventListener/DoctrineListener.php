@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
  * Event handler to set the default driver in the driver chain
@@ -49,7 +49,7 @@ class DoctrineListener implements EventSubscriberInterface
         ];
     }
 
-    public function setDefaultDriver(GetResponseEvent $event): void
+    public function setDefaultDriver(RequestEvent $event): void
     {
         /** @var $ORMConfig Configuration */
         $ORMConfig = $this->entityManager->getConfiguration();

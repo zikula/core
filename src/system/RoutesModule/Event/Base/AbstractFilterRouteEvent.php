@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Event\Base;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
 /**

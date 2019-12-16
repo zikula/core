@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\ThemeModule\Engine\Asset;
@@ -97,7 +97,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     /**
      * Add all default assets to every page (scripts and stylesheets).
      */
-    public function setDefaultPageAssets(GetResponseEvent $event): void
+    public function setDefaultPageAssets(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

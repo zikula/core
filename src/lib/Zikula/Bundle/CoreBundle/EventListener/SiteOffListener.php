@@ -16,7 +16,7 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 use Exception;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
@@ -82,7 +82,7 @@ class SiteOffListener implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelRequestSiteOff(GetResponseEvent $event): void
+    public function onKernelRequestSiteOff(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

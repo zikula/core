@@ -15,7 +15,7 @@ namespace Zikula\UsersModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Core\Event\GenericEvent;
@@ -95,7 +95,7 @@ class UserEventListener implements EventSubscriberInterface
      * if it detects session variables containing authentication information which might make it think
      * that a re-attempt is in progress.
      */
-    public function clearUsersNamespace(GetResponseForExceptionEvent $event, string $eventName): void
+    public function clearUsersNamespace(ExceptionEvent $event, string $eventName): void
     {
         $request = $this->requestStack->getCurrentRequest();
 

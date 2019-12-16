@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\FormExtensionBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
 
 /**

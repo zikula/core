@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
 
-class BootstrapBundlesCommand extends ContainerAwareCommand
+class BootstrapBundlesCommand extends Command
 {
+
+    /**
+     * @var BootstrapHelper
+     */
+    private $bootstrapHelper;
+
     protected function configure()
     {
         $this
@@ -37,12 +43,10 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $helper = $this->getContainer()->get(BootstrapHelper::class);
-
         if ($input->getArgument('create')) {
-            $helper->createSchema();
+            $this->bootstrapHelper->createSchema();
         }
 
-        $helper->load();
+        $this->bootstrapHelper->load();
     }
 }

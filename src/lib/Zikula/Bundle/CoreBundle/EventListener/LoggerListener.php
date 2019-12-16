@@ -18,6 +18,8 @@ use Stof\DoctrineExtensionsBundle\EventListener\LoggerListener as BaseListener;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
@@ -48,6 +50,8 @@ class LoggerListener extends BaseListener
 
     public function __construct(
         LoggableListener $loggableListener,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         TranslatorInterface $translator,
         CurrentUserApiInterface $currentUserApi,
         bool $installed
@@ -56,6 +60,7 @@ class LoggerListener extends BaseListener
         $this->translator = $translator;
         $this->currentUserApi = $currentUserApi;
         $this->installed = $installed;
+        parent::__construct($loggableListener, $tokenStorage, $authorizationChecker);
     }
 
     public static function getSubscribedEvents()
