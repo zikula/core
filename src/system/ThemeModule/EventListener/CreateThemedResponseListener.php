@@ -15,7 +15,7 @@ namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Engine;
@@ -57,7 +57,7 @@ class CreateThemedResponseListener implements EventSubscriberInterface
         ];
     }
 
-    public function createThemedResponse(FilterResponseEvent $event): void
+    public function createThemedResponse(ResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

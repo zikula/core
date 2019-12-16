@@ -15,7 +15,7 @@ namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -71,13 +71,13 @@ class ExceptionListener implements EventSubscriberInterface
     /**
      * Handles exceptions.
      */
-    public function onKernelException(GetResponseForExceptionEvent $event): void
+    public function onKernelException(ExceptionEvent $event): void
     {
         if ($event->getRequest()->isXmlHttpRequest()) {
             return;
         }
 
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         do {
             $userLoggedIn = $this->installed ? $this->currentUserApi->isLoggedIn() : false;
             if ($exception instanceof AccessDeniedException) {
@@ -92,7 +92,7 @@ class ExceptionListener implements EventSubscriberInterface
      *
      * @see AccessDeniedException
      */
-    private function handleAccessDeniedException(GetResponseForExceptionEvent $event, bool $userLoggedIn, string $message = 'Access Denied'): void
+    private function handleAccessDeniedException(ExceptionEvent $event, bool $userLoggedIn, string $message = 'Access Denied'): void
     {
         $session = null !== $event->getRequest() && $event->getRequest()->hasSession()
             && null !== $event->getRequest()->getSession() ? $event->getRequest()->getSession() : null;

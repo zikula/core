@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Helper;
 
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 
@@ -26,7 +26,7 @@ class TreeMapHelper
     private $repository;
 
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     private $doctrine;
 
@@ -40,7 +40,7 @@ class TreeMapHelper
      */
     private $level;
 
-    public function __construct(RegistryInterface $doctrine, CategoryRepositoryInterface $repository)
+    public function __construct(ManagerRegistry $doctrine, CategoryRepositoryInterface $repository)
     {
         $this->doctrine = $doctrine;
         $this->repository = $repository;

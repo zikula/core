@@ -14,20 +14,41 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Command;
 
 use InvalidArgumentException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 /**
  * Command that places bundle web assets into a given directory.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class AssetsInstallCommand extends ContainerAwareCommand
+class AssetsInstallCommand extends Command
 {
+    /**
+     * @var Filesystem
+     */
+    private $filesystem;
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
+    public function __construct(
+        Filesystem $filesystem,
+        ZikulaHttpKernelInterface $kernel
+    ) {
+        $this->filesystem = $filesystem;
+        $this->kernel = $kernel;
+        parent::__construct('assets:install');
+    }
+
     protected function configure()
     {
         $this
@@ -72,34 +93,32 @@ EOT
         if (!function_exists('symlink') && $input->getOption('symlink')) {
             throw new InvalidArgumentException('The symlink() function is not available on your system. You need to install the assets without the --symlink option.');
         }
-        $filesystem = $this->getContainer()->get('filesystem');
-        $kernel = $this->getContainer()->get('kernel');
         $array = [
-            'bundle' => $kernel->getJustBundles(),
-            'module' => $kernel->getModules(),
-            'theme' => $kernel->getThemes(),
+            'bundle' => $this->kernel->getJustBundles(),
+            'module' => $this->kernel->getModules(),
+            'theme' => $this->kernel->getThemes(),
         ];
         foreach ($array as $type => $bundles) {
             // Create the bundles directory otherwise symlink will fail.
-            $filesystem->mkdir($targetArg . "/{$type}s/", 0777);
+            $this->filesystem->mkdir($targetArg . "/{$type}s/", 0777);
             $output->writeln(sprintf('Installing assets using the <comment>%s</comment> option', $input->getOption('symlink') ? 'symlink' : 'hard copy'));
             foreach ($bundles as $bundle) {
                 if (is_dir($originDir = $bundle->getPath() . '/Resources/public')) {
                     $bundlesDir = $targetArg . '/' . $type . 's/';
                     $targetDir = $bundlesDir . preg_replace('/' . $type . '$/', '', mb_strtolower($bundle->getName()));
                     $output->writeln(sprintf('Installing assets for <comment>%s</comment> into <comment>%s</comment>', $bundle->getNamespace(), $targetDir));
-                    $filesystem->remove($targetDir);
+                    $this->filesystem->remove($targetDir);
                     if ($input->getOption('symlink')) {
                         if ($input->getOption('relative')) {
-                            $relativeOriginDir = $filesystem->makePathRelative($originDir, realpath($bundlesDir));
+                            $relativeOriginDir = $this->filesystem->makePathRelative($originDir, realpath($bundlesDir));
                         } else {
                             $relativeOriginDir = $originDir;
                         }
-                        $filesystem->symlink($relativeOriginDir, $targetDir);
+                        $this->filesystem->symlink($relativeOriginDir, $targetDir);
                     } else {
-                        $filesystem->mkdir($targetDir, 0777);
+                        $this->filesystem->mkdir($targetDir, 0777);
                         // We use a custom iterator to ignore VCS files
-                        $filesystem->mirror($originDir, $targetDir, Finder::create()->in($originDir));
+                        $this->filesystem->mirror($originDir, $targetDir, Finder::create()->in($originDir));
                     }
                 }
             }

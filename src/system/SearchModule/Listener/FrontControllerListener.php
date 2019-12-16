@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SearchModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -82,7 +82,7 @@ class FrontControllerListener implements EventSubscriberInterface
     /**
      * Handle page load event KernelEvents::REQUEST.
      */
-    public function pageLoad(GetResponseEvent $event): void
+    public function pageLoad(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

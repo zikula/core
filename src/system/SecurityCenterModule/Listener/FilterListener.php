@@ -24,7 +24,7 @@ use RuntimeException;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -109,7 +109,7 @@ class FilterListener implements EventSubscriberInterface
      *
      * @throws Exception Thrown if there was a problem running ids detection
      */
-    public function idsInputFilter(GetResponseEvent $event): void
+    public function idsInputFilter(RequestEvent $event): void
     {
         if (!$this->installed || $this->isUpgrading) {
             return;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class UserFormAwareEvent extends Event
 {

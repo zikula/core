@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Hook;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Hook class.

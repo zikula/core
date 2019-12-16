@@ -15,7 +15,7 @@ namespace Zikula\ThemeModule\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\ThemeModule\Engine\Engine;
 
@@ -45,14 +45,14 @@ class ControllerAnnotationReaderListener implements EventSubscriberInterface
     /**
      * Read the controller annotations and change theme if the annotation indicate that need
      */
-    public function readControllerAnnotations(FilterControllerEvent $event): void
+    public function readControllerAnnotations(ControllerEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             // prevents calling this for controller usage within a template or elsewhere
             return;
         }
         $controller = $event->getController();
-        list($controller, $method) = $controller;
+        [$controller, $method] = $controller;
         // the controller could be a proxy, e.g. when using the JMSSecurityExtraBundle or JMSDiExtraBundle
         $controllerClassName = ClassUtils::getClass($controller);
         $this->themeEngine->changeThemeByAnnotation($controllerClassName, $method);

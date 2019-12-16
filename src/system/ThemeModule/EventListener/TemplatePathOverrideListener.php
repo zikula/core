@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Loader\LoaderInterface;
 use Zikula\Core\Controller\AbstractController;
@@ -56,7 +56,7 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
     /**
      * Add theme path to searchable paths when locating templates using name-spaced scheme.
      */
-    public function setUpThemePathOverrides(FilterControllerEvent $event): void
+    public function setUpThemePathOverrides(ControllerEvent $event): void
     {
         // add theme path to template locator
         $controller = $event->getController()[0];

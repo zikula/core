@@ -15,7 +15,7 @@ namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
 
@@ -57,9 +57,8 @@ class HookListenerBuilderListener implements EventSubscriberInterface
 
     /**
      * Add dynamically assigned listeners to hookable events at runtime.
-     * @param GetResponseEvent $event
      */
-    public function addListeners(GetResponseEvent $event): void
+    public function addListeners(RequestEvent $event): void
     {
         if (!$this->installed || !$event->isMasterRequest()) {
             return;
