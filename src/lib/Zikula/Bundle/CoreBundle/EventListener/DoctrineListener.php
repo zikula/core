@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
-use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Mapping\Driver\MappingDriver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
