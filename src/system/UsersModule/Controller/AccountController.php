@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
@@ -106,7 +106,7 @@ class AccountController extends AbstractController
                     $request->getSession()->set('_locale', $locale);
                 }
                 Locale::setDefault($locale);
-                $langText = Intl::getLanguageBundle()->getLanguageName($locale);
+                $langText = Languages::getName($locale);
                 $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $langText], 'zikula', $locale));
             }
             if ($form->get('cancel')->isClicked()) {

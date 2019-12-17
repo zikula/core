@@ -15,7 +15,7 @@ namespace Zikula\SettingsModule\Api;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -64,7 +64,7 @@ class LocaleApi implements LocaleApiInterface
                 if (false === mb_strpos($fileName, '.')) {
                     continue;
                 }
-                list(, $locale) = explode('.', $fileName);
+                [, $locale] = explode('.', $fileName);
                 if (!in_array($locale, $this->supportedLocales, true)) {
                     $this->supportedLocales[] = $locale;
                 }
@@ -79,7 +79,8 @@ class LocaleApi implements LocaleApiInterface
         $locales = $this->getSupportedLocales();
         $namedLocales = [];
         foreach ($locales as $locale) {
-            $namedLocales[Intl::getLanguageBundle()->getLanguageName($locale, $region, $displayLocale)] = $locale;
+            // no way to set region
+            $namedLocales[Languages::getName($locale, $displayLocale)] = $locale;
         }
 
         return $namedLocales;
@@ -96,7 +97,7 @@ class LocaleApi implements LocaleApiInterface
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', mb_strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
         $availableLanguages = [];
         foreach ($matches as $match) {
-            list($languageCode) = explode('-', $match[1]) + ['', ''];
+            [$languageCode] = explode('-', $match[1]) + ['', ''];
             $priority = isset($match[2]) ? (float)$match[2] : 1.0;
             $availableLanguages[][$languageCode] = $priority;
         }

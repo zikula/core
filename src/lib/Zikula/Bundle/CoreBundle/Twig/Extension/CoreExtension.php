@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use InvalidArgumentException;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -70,7 +70,7 @@ class CoreExtension extends AbstractExtension
 
     public function languageName(string $code): string
     {
-        return Intl::getLanguageBundle()->getLanguageName($code);
+        return Languages::getName($code);
     }
 
     public function yesNo(string $string): string
