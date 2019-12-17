@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\LogicException;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
