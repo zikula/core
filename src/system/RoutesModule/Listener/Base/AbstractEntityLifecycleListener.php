@@ -15,19 +15,19 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Listener\Base;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Api\CurrentUserApi;
 
@@ -123,7 +123,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
@@ -151,9 +151,9 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         $objectType = $entity->get_objectType();
-
+        
         $currentUserApi = $this->container->get(CurrentUserApi::class);
         $logArgs = [
             'app' => 'ZikulaRoutesModule',
@@ -162,7 +162,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             'id' => $entity->getKey()
         ];
         $this->logger->debug('{app}: User {user} removed the {entity} with id {id}.', $logArgs);
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
@@ -190,7 +190,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
@@ -215,7 +215,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         $currentUserApi = $this->container->get(CurrentUserApi::class);
         $logArgs = [
             'app' => 'ZikulaRoutesModule',
@@ -224,7 +224,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             'id' => $entity->getKey()
         ];
         $this->logger->debug('{app}: User {user} created the {entity} with id {id}.', $logArgs);
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
@@ -248,7 +248,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
@@ -272,7 +272,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         $currentUserApi = $this->container->get(CurrentUserApi::class);
         $logArgs = [
             'app' => 'ZikulaRoutesModule',
@@ -281,7 +281,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             'id' => $entity->getKey()
         ];
         $this->logger->debug('{app}: User {user} updated the {entity} with id {id}.', $logArgs);
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
@@ -310,7 +310,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         ) {
             return;
         }
-
+        
         // create the filter event and dispatch it
         $eventClass = '\\Zikula\\RoutesModule\\RoutesEvents';
         $event = $this->createFilterEvent($entity);
