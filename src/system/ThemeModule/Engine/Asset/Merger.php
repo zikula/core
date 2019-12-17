@@ -91,7 +91,7 @@ class Merger implements MergerInterface
             $type . '_assets',
             $this->lifetime,
             $this->kernel->getCacheDir() . '/assets/' . $type);
-        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.' . $type . '.combined.' . $type ;
+        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.' . $type . '.combined.' . $type;
         $data = $cacheService->get($key, function() use ($cacheService, $cachedFiles, $type) {
             $data = [];
             foreach ($cachedFiles as $k => $file) {
