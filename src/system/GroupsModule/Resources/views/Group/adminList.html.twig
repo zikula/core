@@ -102,7 +102,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for application in applications if hasPermission('ZikulaGroupsModule::', application.group.gid ~ '::', 'ACCESS_EDIT') %}
+            {% for application in applications|filter(a => hasPermission('ZikulaGroupsModule::', a.group.gid ~ '::', 'ACCESS_EDIT')) %}
             <tr>
                 <td headers="hUserId">{{ application.user.uid }}</td>
                 <td headers="hUserName">{{ application.user.uid|profileLinkByUserId }}</td>
