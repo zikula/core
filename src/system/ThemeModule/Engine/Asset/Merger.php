@@ -88,10 +88,10 @@ class Merger implements MergerInterface
             }
         }
         $cacheService = new FilesystemAdapter(
-            $type . '_assets',
+            'combined_assets',
             $this->lifetime,
             $this->kernel->getCacheDir() . '/assets/' . $type);
-        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.' . $type . '.combined.' . $type;
+        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.combined.' . $type;
         $data = $cacheService->get($key, function() use ($cacheService, $cachedFiles, $type) {
             $data = [];
             foreach ($cachedFiles as $k => $file) {

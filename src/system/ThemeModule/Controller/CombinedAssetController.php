@@ -27,15 +27,16 @@ class CombinedAssetController extends AbstractController
      */
     public function assetAction(string $type, string $key): Response
     {
-        $lifetime = $this->container->getParameter('zikula_asset_manager.lifetime');
+        $lifetimeInSeconds = abs(new DateTime($this->container->getParameter('zikula_asset_manager.lifetime'))) - (new DateTime())->getTimestamp();
         $cacheService = new FilesystemAdapter(
-            $type . '_assets',
-            $lifetime,
+            'combined_assets',
+            $lifetimeInSeconds,
             $this->get('kernel')->getCacheDir() . '/assets/' . $type);
-        $cachedFile = $cacheService->get($key);
+        $cachedFile = $cacheService->get($key, function() {
+            throw new \Exception('Combined Assets not found');
+        });
 
         $compress = $this->container->getParameter('zikula_asset_manager.compress');
-        $lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         if ($compress && extension_loaded('zlib')) {
             ini_set('zlib.output_handler', '');
             ini_set('zlib.output_compression', '1');
@@ -46,7 +47,7 @@ class CombinedAssetController extends AbstractController
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $key);
         $response->headers->set('Content-Disposition', $disposition);
         $response->headers->addCacheControlDirective('must-revalidate');
-        $response->headers->set('Expires', gmdate('D, d M Y H:i:s', time() + $lifetime) . ' GMT');
+        $response->headers->set('Expires', gmdate('D, d M Y H:i:s', time() + $lifetimeInSeconds) . ' GMT');
 
         return $response;
     }
