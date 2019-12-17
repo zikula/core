@@ -6,6 +6,9 @@ services:
         bind:
             $installed: '%installed%'
 
+    # alias interface to doctrine service
+    Doctrine\Persistence\ManagerRegistry: '@doctrine'
+
     Zikula\Bundle\CoreBundle\:
         resource: '../../*'
         exclude: '../../{bootstrap.php,Tests,vendor}'

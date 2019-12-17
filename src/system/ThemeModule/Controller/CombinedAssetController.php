@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Controller;
 
 use DateTime;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,15 +27,20 @@ class CombinedAssetController extends AbstractController
      */
     public function assetAction(string $type, string $key): Response
     {
-        $serviceName = in_array($type, ['js', 'css']) ? 'doctrine_cache.providers.zikula_' . $type . '_asset_cache' : null;
-        $cachedFile = $this->get($serviceName)->fetch($key);
-        $compress = $this->container->getParameter('zikula_asset_manager.compress');
         $lifetime = $this->container->getParameter('zikula_asset_manager.lifetime');
+        $cacheService = new FilesystemAdapter(
+            $type . '_assets',
+            $lifetime,
+            $this->get('kernel')->getCacheDir() . '/assets/' . $type);
+        $cachedFile = $cacheService->get($key);
+
+        $compress = $this->container->getParameter('zikula_asset_manager.compress');
         $lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         if ($compress && extension_loaded('zlib')) {
             ini_set('zlib.output_handler', '');
             ini_set('zlib.output_compression', '1');
         }
+
         $response = new Response($cachedFile);
         $response->headers->set('Content-type', 'js' === $type ? 'text/javascript' : 'text/css');
         $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $key);
