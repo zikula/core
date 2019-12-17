@@ -17,7 +17,7 @@
         <col id="cValue" />
     </colgroup>
     <tbody>
-        {% for key, field in themeinfo if field != '' %}
+        {% for key, field in themeinfo|filter(f => f != '') %}
         <tr>
             {% if key == 'id' %}<th id="hId" scope="row">{{ __('Internal ID') }}</th><td headers="hId">{{ field }}</td>
             {% elseif key == 'name' %}<th id="hName" scope="row">{{ __('Name') }}</th><td headers="hName">{{ field }}</td>

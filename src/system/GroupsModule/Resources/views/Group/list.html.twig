@@ -25,7 +25,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for group in groups if hasPermission('ZikulaGroupsModule::', group.gid ~ '::', 'ACCESS_OVERVIEW') %}
+    {% for group in groups|filter(g => hasPermission('ZikulaGroupsModule::', g.gid ~ '::', 'ACCESS_OVERVIEW')) %}
         <tr id="group_{{ group.gid }}">
             <td headers="hName" id="groupname_{{ group.gid }}">
                 {{ group.name }}

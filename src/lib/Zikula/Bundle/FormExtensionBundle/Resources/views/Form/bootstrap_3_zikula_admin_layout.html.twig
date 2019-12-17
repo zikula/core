@@ -40,7 +40,7 @@ col-sm-9
 {%- endblock checkbox_widget %}
 
 {% block checkbox_row -%}
-{% spaceless %}
+{% apply spaceless %}
     <div class="form-group{% if not valid %} has-error{% endif %}">
         {{ block('form_label') }}
         <div class="{{ block('form_group_class') }}">
@@ -51,18 +51,18 @@ col-sm-9
             {{ macros.alertBlock(alert) }}
         </div>
     </div>
-{% endspaceless %}
+{% endapply %}
 {%- endblock checkbox_row %}
 
 {% block submit_row -%}
-{% spaceless %}
+{% apply spaceless %}
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9 {{ block('form_label_class') }}"></div>
         <div class="col-sm-offset-3 {{ block('form_group_class') }}">
             {{ form_widget(form) }}
         </div>
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock submit_row %}
 
 {# add input groups to simple inputs #}

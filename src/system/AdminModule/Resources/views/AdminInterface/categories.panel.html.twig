@@ -5,7 +5,7 @@
 
 {% macro draw(links, caller, module) %}
     {% import _self as menu %}
-    {% for link in links if link.url|default %}
+    {% for link in links|filter(l => l.url|default) %}
         <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
             <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             {% if link.links is defined %}

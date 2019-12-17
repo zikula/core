@@ -44,7 +44,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for group in groups if hasPermission('ZikulaGroupsModule::', group.gid ~ '::', 'ACCESS_EDIT') %}
+    {% for group in groups|filter(g => hasPermission('ZikulaGroupsModule::', g.gid ~ '::', 'ACCESS_EDIT')) %}
         <tr id="group_{{ group.gid }}">
             <td headers="hId" id="groupgid_{{ group.gid }}" class="z-itemcell z-w05">
                 <input type="hidden" id="gtypeid_{{ group.gid }}" value="{{ group.gtype }}" />

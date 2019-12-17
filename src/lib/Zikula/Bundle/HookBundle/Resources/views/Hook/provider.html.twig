@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% for subscriber in hooksubscribers if subscriber.areas is not empty %}
+                {% for subscriber in hooksubscribers|filter(s => s.areas is not empty) %}
                     <tr>
                         <td headers="hId">{{ subscriber.id }}</td>
                         <td headers="hName">{{ subscriber.displayname|default(subscriber.name) }}</td>
