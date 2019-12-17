@@ -64,7 +64,7 @@ class LocaleApi implements LocaleApiInterface
                 if (false === mb_strpos($fileName, '.')) {
                     continue;
                 }
-                [, $locale] = explode('.', $fileName);
+                list(, $locale) = explode('.', $fileName);
                 if (!in_array($locale, $this->supportedLocales, true)) {
                     $this->supportedLocales[] = $locale;
                 }
@@ -97,7 +97,7 @@ class LocaleApi implements LocaleApiInterface
         preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', mb_strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
         $availableLanguages = [];
         foreach ($matches as $match) {
-            [$languageCode] = explode('-', $match[1]) + ['', ''];
+            list($languageCode) = explode('-', $match[1]) + ['', ''];
             $priority = isset($match[2]) ? (float)$match[2] : 1.0;
             $availableLanguages[][$languageCode] = $priority;
         }
