@@ -56,7 +56,7 @@
                                             <span class="fa fa-paperclip"></span>
                                         </div>
                                         <div class="col-md-6">
-                                            {% for parea in providerAreas if hookDispatcher.isAllowedBindingBetweenAreas(sarea, parea) %}
+                                            {% for parea in providerAreas|filter(p => hookDispatcher.isAllowedBindingBetweenAreas(sarea, p)) %}
                                                 {% set parea_md5 = parea|php('md5') %}
                                                 {% set binding = hookDispatcher.getBindingBetweenAreas(sarea, parea) %}
                                                 <input type="checkbox" id="chk_{{ sarea_md5 }}_{{ parea_md5 }}" name="chk[{{ sarea_md5 }}][{{ parea_md5 }}]" onclick="subscriberAreaToggle('{{ sarea }}', '{{ parea }}');"{% if binding %} checked="checked"{% endif %} /> {{ providerAreasToTitles[parea] }} <span class="small">({{ parea }})</span><br />
