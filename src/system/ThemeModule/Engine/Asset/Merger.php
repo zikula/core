@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Engine\Asset;
 
 use DateTime;
-use Doctrine\Common\Cache\CacheProvider;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ThemeModule\Engine\AssetBag;
 
 class Merger implements MergerInterface
@@ -26,14 +27,9 @@ class Merger implements MergerInterface
     private $router;
 
     /**
-     * @var CacheProvider
+     * @var ZikulaHttpKernelInterface
      */
-    private $jsCache;
-
-    /**
-     * @var CacheProvider
-     */
-    private $cssCache;
+    private $kernel;
 
     /**
      * @var string
@@ -57,17 +53,14 @@ class Merger implements MergerInterface
 
     public function __construct(
         RouterInterface $router,
-        CacheProvider $jsCache,
-        CacheProvider $cssCache,
-        string $kernelProjectDir,
+        ZikulaHttpKernelInterface $kernel,
         string $lifetime = '1 day',
         bool $minify = false,
         bool $compress = false
     ) {
         $this->router = $router;
-        $this->jsCache = $jsCache;
-        $this->cssCache = $cssCache;
-        $projectDir = realpath($kernelProjectDir . '/');
+        $this->kernel = $kernel;
+        $projectDir = realpath($kernel->getProjectDir() . '/');
         $this->rootDir = str_replace($router->getContext()->getBaseUrl(), '', $projectDir);
         $this->lifetime = abs((new DateTime($lifetime))->getTimestamp() - (new DateTime())->getTimestamp());
         $this->minify = $minify;
@@ -94,17 +87,12 @@ class Merger implements MergerInterface
                 $outputFiles[$asset] = $weight;
             }
         }
-        if ('js' === $type) {
-            $cacheService = $this->jsCache;
-        } elseif ('css' === $type) {
-            $cacheService = $this->cssCache;
-        }
-        if (!isset($cacheService)) {
-            return [];
-        }
-        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.' . $type;
-        $data = $cacheService->fetch($key);
-        if (false === $data) {
+        $cacheService = new FilesystemAdapter(
+            'combined_assets',
+            $this->lifetime,
+            $this->kernel->getCacheDir() . '/assets/' . $type);
+        $key = md5(serialize($assets)) . (int)$this->minify . (int)$this->compress . $this->lifetime . '.combined.' . $type;
+        $data = $cacheService->get($key, function() use ($cacheService, $cachedFiles, $type) {
             $data = [];
             foreach ($cachedFiles as $k => $file) {
                 $this->readFile($data, $file, $type);
@@ -119,8 +107,10 @@ class Merger implements MergerInterface
             if ('css' === $type && $this->minify) {
                 $data = $this->minify($data);
             }
-            $cacheService->save($key, $data, $this->lifetime);
-        }
+
+            return $data;
+        });
+
         $route = $this->router->generate('zikulathememodule_combinedasset_asset', ['type' => $type, 'key' => $key]);
         $outputFiles[$route] = AssetBag::WEIGHT_DEFAULT;
 

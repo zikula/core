@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 

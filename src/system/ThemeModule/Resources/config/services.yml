@@ -75,9 +75,6 @@ services:
 
     Zikula\ThemeModule\Engine\Asset\Merger:
         arguments:
-          $jsCache: '@doctrine_cache.providers.zikula_js_asset_cache'
-          $cssCache: '@doctrine_cache.providers.zikula_css_asset_cache'
-          $kernelProjectDir: '%kernel.project_dir%'
           $lifetime: '%zikula_asset_manager.lifetime%'
           $minify: '%zikula_asset_manager.minify%'
           $compress: '%zikula_asset_manager.compress%'

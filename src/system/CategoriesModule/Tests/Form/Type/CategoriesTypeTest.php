@@ -15,10 +15,10 @@ namespace Zikula\CategoriesModule\Tests\Form\Type;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Gedmo\Tree\TreeListener;
 use Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension;

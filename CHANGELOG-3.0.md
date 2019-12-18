@@ -41,6 +41,7 @@ CHANGELOG - ZIKULA 3.0.x
     - The `polyfill` Twig tag has been removed (#3925).
     - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
     - Removed `ZikulaKernel::VERSION_SUB` constant.
+    - Removed DoctrineCacheBundle use Symfony/Cache https://symfony.com/doc/current/components/cache.html
 
  - Deprecated:
     - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
@@ -82,12 +83,10 @@ CHANGELOG - ZIKULA 3.0.x
     - composer/spdx-licenses installed in 1.5.2
     - composer/xdebug-handler installed in 1.4.0
     - doctrine/annotations updated from 1.2.7 to 1.8.0
-    - doctrine/cache updated from 1.6.2 to 1.10.0
     - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.11.0
     - doctrine/dbal updated from 2.5.13 to 2.10.0
-    - doctrine/doctrine-bundle updated from 1.6.13 to 1.12.2
-    - doctrine/doctrine-cache-bundle updated from 1.3.5 to 1.4.0
+    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.2
     - doctrine/event-manager installed in 1.1.0
     - doctrine/inflector updated from 1.1.0 to 1.3.1
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
