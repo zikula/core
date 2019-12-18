@@ -30,7 +30,8 @@ class ControllerResolver extends BaseControllerResolver
         }
 
         list($class, $method) = explode('::', $controller, 2);
-        if (!class_exists($class)) {
+        if (true === mb_strpos($class, '\\') && !class_exists($class)) {
+            // class is a FqCN (contains `\`) and class does not exist
             throw new InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
         }
 

@@ -76,7 +76,7 @@ class PagerExtension extends AbstractExtension
      *                       (if an array is assigned, it's count will be used)
      *  limit              Number of items on a page (if <0 unlimited)
      *  posvar             Name of the variable that contains the position data, eg "offset"
-     *  template           Optional name of a template file (default: 'CoreBundle:Pager:pagercss.html.twig')
+     *  template           Optional name of a template file (default: '@Core/Pager/pagercss.html.twig')
      *  includeStylesheet  Use predefined stylesheet file? Default is yes.
      *  anchorText         Optional text for hyperlink anchor (e.g. 'comments' for the anchor #comments) (default: '')
      *  maxpages           Optional maximum number of displayed pages, others will be hidden / suppressed
@@ -111,8 +111,8 @@ class PagerExtension extends AbstractExtension
         $displayType = $params['display'] ?? 'startnum';
         $includePostVars = $params['includePostVars'] ?? true;
         $routeName = $params['route'] ?? false;
-        $templateName = $params['template'] ?? 'CoreBundle:Pager:pagercss.html.twig';
-        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('CoreBundle:Pager:pagerimage.html.twig' !== $templateName);
+        $templateName = $params['template'] ?? '@Core/Pager/pagercss.html.twig';
+        $processDetailLinks = isset($params['processDetailLinks']) ? (bool)$params['processDetailLinks'] : ('@Core/Pager/pagerimage.html.twig' !== $templateName);
         $anchorText = isset($params['anchorText']) ? '#' . $params['anchorText'] : '';
         $systemVars = $this->variableApi->getAll(VariableApi::CONFIG);
 

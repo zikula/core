@@ -27,6 +27,7 @@
         "symfony/monolog-bundle": "3.4.*",
         "sensio/framework-extra-bundle": "dev-master",
         "symfony/maker-bundle": "1.*",
+        "symfony/profiler-pack": "^1.0",
         "elao/web-profiler-extra-bundle" : "2.*",
         "sensiolabs/security-checker" : "5.*",
 
