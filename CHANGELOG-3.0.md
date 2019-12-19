@@ -86,7 +86,7 @@ CHANGELOG - ZIKULA 3.0.x
     - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.11.0
     - doctrine/dbal updated from 2.5.13 to 2.10.0
-    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.2
+    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.5
     - doctrine/event-manager installed in 1.1.0
     - doctrine/inflector updated from 1.1.0 to 1.3.1
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
@@ -133,10 +133,10 @@ CHANGELOG - ZIKULA 3.0.x
     - twig/twig updated from 1.42.4 to 2.12.2
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
-    - zikula/legal-module updated from 3.1.2 to 3.2.5
-    - zikula/oauth-module updated from 1.0.4 to 1.1.2
-    - zikula/pagelock-module updated from 1.2.3 to 1.3.6
-    - zikula/profile-module updated from 3.0.6 to 3.1.11
+    - zikula/legal-module updated from 3.1.2 to dev-master
+    - zikula/oauth-module updated from 1.0.4 to dev-master
+    - zikula/pagelock-module updated from 1.2.3 to dev-master
+    - zikula/profile-module updated from 3.0.6 to dev-master
     - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2
     - zikula/wizard updated from 2.0 to 3.0.1
 
