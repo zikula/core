@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine;
 
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Exception\InvalidArgumentException;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\HookRuntimeEntity;
