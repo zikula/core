@@ -13,9 +13,9 @@ jobs:
 
     - name: Update dependencies
       #run: |
-        #composer update
+      #  php -dmemory_limit=10G /usr/bin/composer update
       run: |
-        php -dmemory_limit=10G /usr/bin/composer update
+        composer install
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
