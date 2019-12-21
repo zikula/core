@@ -15,7 +15,7 @@ jobs:
       #run: |
         #composer update
       run: |
-        php -dmemory_limit=10G /bin/composer update
+        php -dmemory_limit=10G composer update
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
