@@ -12,8 +12,10 @@ jobs:
         ref: master
 
     - name: Update dependencies
+      #run: |
+        #composer update
       run: |
-        composer update
+        php -dmemory_limit=10G /usr/local/bin/composer update
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
