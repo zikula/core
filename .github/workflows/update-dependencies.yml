@@ -15,6 +15,7 @@ jobs:
       #run: |
         #composer update
       run: |
+        whereis composer
         php -dmemory_limit=10G /bin/composer update
 
     # see https://github.com/peter-evans/create-pull-request
