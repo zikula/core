@@ -11,11 +11,23 @@ jobs:
       with:
         ref: master
 
+    # persist composer's internal cache directory to reduce the workflow execution time
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+
     - name: Update dependencies
       #run: |
       #  php -dmemory_limit=10G /usr/bin/composer update
       run: |
         composer install
+        composer update
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
