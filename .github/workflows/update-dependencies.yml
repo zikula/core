@@ -22,11 +22,14 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
 
+    - name: Installdependencies
+      run: |
+        composer install
+
     - name: Update dependencies
       #run: |
       #  php -dmemory_limit=10G /usr/bin/composer update
       run: |
-        composer install
         composer config --global github-oauth.github.com ${{ secrets.GITHUB_TOKEN }}
         composer update
         composer config --global --auth --unset github-oauth.github.com
