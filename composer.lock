@@ -1714,16 +1714,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.11",
+            "version": "2.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23"
+                "reference": "a6255605af39f2db7f5cb62e672bd8a7bad8d208"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/92dd169c32f6f55ba570c309d83f5209cefb5e23",
-                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6255605af39f2db7f5cb62e672bd8a7bad8d208",
+                "reference": "a6255605af39f2db7f5cb62e672bd8a7bad8d208",
                 "shasum": ""
             },
             "require": {
@@ -1768,7 +1768,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-08-13T17:33:27+00:00"
+            "time": "2019-12-20T12:49:39+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -2021,16 +2021,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.0",
+            "version": "6.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5"
+                "reference": "0274c05370a7bc9bb3a33838858253418bd7d14b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
-                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/0274c05370a7bc9bb3a33838858253418bd7d14b",
+                "reference": "0274c05370a7bc9bb3a33838858253418bd7d14b",
                 "shasum": ""
             },
             "require": {
@@ -2084,7 +2084,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2019-12-07T18:20:45+00:00"
+            "time": "2019-12-21T08:51:15+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -3353,15 +3353,23 @@
         },
         {
             "name": "mmenu.js",
-            "version": "8.4.3",
+            "version": "8.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/mmenu-js",
-                "reference": "f079a4fc31bd20dc6560f5077f045574e029b5a4"
+                "reference": "61e51fc6973d4c3cb464d9bb0a3a6d392d94db20"
             },
             "type": "library",
             "license": [
                 "CC-BY-NC-4.0"
+            ],
+            "authors": [
+                {
+                    "name": "Fred Heusschen",
+                    "email": "info@frebsite.nl",
+                    "homepage": "http://www.frebsite.nl",
+                    "role": "King :)"
+                }
             ],
             "description": "The best javascript plugin for app look-alike on- and off-canvas menus with sliding submenus for your website and webapp.",
             "keywords": [
@@ -3379,20 +3387,20 @@
                 "panels",
                 "submenu"
             ],
-            "time": "2019-11-25T21:19:43+00:00"
+            "time": "2019-12-21T13:41:56+00:00"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.25.2",
+            "version": "1.25.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "d5e2fb341cb44f7e2ab639d12a1e5901091ec287"
+                "reference": "fa82921994db851a8becaf3787a9e73c5976b6f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/d5e2fb341cb44f7e2ab639d12a1e5901091ec287",
-                "reference": "d5e2fb341cb44f7e2ab639d12a1e5901091ec287",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fa82921994db851a8becaf3787a9e73c5976b6f1",
+                "reference": "fa82921994db851a8becaf3787a9e73c5976b6f1",
                 "shasum": ""
             },
             "require": {
@@ -3457,7 +3465,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2019-11-13T10:00:05+00:00"
+            "time": "2019-12-20T14:15:16+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -5919,12 +5927,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "99bdc8a407444f42e32b2bc024942e220f420f51"
+                "reference": "fb8a7d953c71b794766f70a37b9ac5d802a3fd9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/99bdc8a407444f42e32b2bc024942e220f420f51",
-                "reference": "99bdc8a407444f42e32b2bc024942e220f420f51",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/fb8a7d953c71b794766f70a37b9ac5d802a3fd9d",
+                "reference": "fb8a7d953c71b794766f70a37b9ac5d802a3fd9d",
                 "shasum": ""
             },
             "require": {
@@ -5979,7 +5987,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2019-12-19T21:31:57+00:00"
+            "time": "2019-12-20T03:43:36+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6098,12 +6106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "3d443972f57ef8d5667a5b94deb08a56b0b50ad5"
+                "reference": "a883e2b3935858b5a4cd0d371b59e41a9b3ff0a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/3d443972f57ef8d5667a5b94deb08a56b0b50ad5",
-                "reference": "3d443972f57ef8d5667a5b94deb08a56b0b50ad5",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a883e2b3935858b5a4cd0d371b59e41a9b3ff0a5",
+                "reference": "a883e2b3935858b5a4cd0d371b59e41a9b3ff0a5",
                 "shasum": ""
             },
             "require": {
@@ -6161,7 +6169,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-19T21:28:18+00:00"
+            "time": "2019-12-20T03:45:12+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
