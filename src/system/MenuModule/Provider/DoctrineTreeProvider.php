@@ -61,7 +61,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
     /**
      * @throws InvalidArgumentException if the menu does not exists
      */
-    public function get($name, array $options = []): ItemInterface
+    public function get(string $name, array $options = []): ItemInterface
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
         if (null === $node) {
@@ -74,7 +74,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
         return $menu;
     }
 
-    public function has($name, array $options = []): bool
+    public function has(string $name, array $options = []): bool
     {
         $node = $this->menuItemRepository->findOneBy(['title' => $name]);
 

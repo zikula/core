@@ -50,7 +50,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldVersion): bool
+    public function upgrade(string $oldVersion): bool
     {
         $blockRepository = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity');
         // Upgrade dependent on old version number

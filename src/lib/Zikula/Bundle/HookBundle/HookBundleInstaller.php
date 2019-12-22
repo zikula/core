@@ -64,7 +64,7 @@ class HookBundleInstaller implements InstallerInterface
         return false;
     }
 
-    public function upgrade($currentCoreVersion): bool
+    public function upgrade(string $currentCoreVersion): bool
     {
         // special note, the $currentCoreVersion var will contain the version of the CORE (not this bundle)
 

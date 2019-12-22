@@ -50,7 +50,7 @@ class ZAuthModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldVersion): bool
+    public function upgrade(string $oldVersion): bool
     {
         switch ($oldVersion) {
             case '1.0.0':

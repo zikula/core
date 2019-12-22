@@ -69,7 +69,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldVersion): bool
+    public function upgrade(string $oldVersion): bool
     {
         $connection = $this->entityManager->getConnection();
         $this->schemaTool->update([

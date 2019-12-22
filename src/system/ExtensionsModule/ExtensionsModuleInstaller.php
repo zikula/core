@@ -49,7 +49,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldVersion): bool
+    public function upgrade(string $oldVersion): bool
     {
         // Upgrade dependent on old version number
         switch ($oldVersion) {

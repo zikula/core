@@ -222,7 +222,7 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         return true;
     }
 
-    public function upgrade($oldVersion): bool
+    public function upgrade(string $oldVersion): bool
     {
         $variableApi = $this->container->get(VariableApi::class);
         switch ($oldVersion) {
