@@ -70,7 +70,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function getFormOptions(): array
     {
         return [
-            'choices' => new CallbackChoiceLoader(function() {
+            'choice_loader' => new CallbackChoiceLoader(function() {
                 return $this->container->get(LocaleApi::class)->getSupportedLocaleNames();
             }),
             'choice' => $this->matchedLocale
