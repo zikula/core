@@ -167,9 +167,8 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choice_loader' => new CallbackChoiceLoader(function() {
-                return $this->localeApi->getSupportedLocaleNames();
-            })
+            'choices' => $this->localeApi->getSupportedLocaleNames(),
+            'choice_loader' => null
         ]);
 
         $data = $this->getHelper('form')->interactUsingForm(LoginType::class, $input, $output);
