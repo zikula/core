@@ -5995,12 +5995,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "416193745ebdaf3d70db751bab460653785299f6"
+                "reference": "1b8ff4621d91835dc2b362b580c854456d540594"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/416193745ebdaf3d70db751bab460653785299f6",
-                "reference": "416193745ebdaf3d70db751bab460653785299f6",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/1b8ff4621d91835dc2b362b580c854456d540594",
+                "reference": "1b8ff4621d91835dc2b362b580c854456d540594",
                 "shasum": ""
             },
             "require": {
@@ -6048,7 +6048,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-12-19T21:38:04+00:00"
+            "time": "2019-12-22T07:32:56+00:00"
         },
         {
             "name": "zikula/pagelock-module",
