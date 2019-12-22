@@ -14,7 +14,6 @@ Additionally, dynamically created forms (using the symfony form engine) can be u
       default_value: 3col_w_centerblock
       type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
       options:
-        choices_as_values: true
         choices:
           'One column': 1col
           'Two columns': 2col
