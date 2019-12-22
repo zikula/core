@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -166,7 +167,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
-            'choices' => $this->localeApi->getSupportedLocaleNames()
+            'choices' => new CallbackChoiceLoader(function() {
+                return $this->localeApi->getSupportedLocaleNames();
+            })
         ]);
 
         $data = $this->getHelper('form')->interactUsingForm(LoginType::class, $input, $output);

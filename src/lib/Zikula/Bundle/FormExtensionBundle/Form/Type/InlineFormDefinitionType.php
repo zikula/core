@@ -14,6 +14,11 @@ declare(strict_types=1);
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
+use Symfony\Component\Form\Extension\Core\Type\LanguageType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType;
+use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
@@ -53,11 +58,28 @@ class InlineFormDefinitionType extends AbstractType
         foreach ($this->dynamicFieldsContainer->getDynamicFieldsSpecification() as $fieldSpecification) {
             $fieldOptions = $fieldSpecification->getFormOptions();
             $fieldOptions['label'] = $fieldOptions['label'] ?? $fieldSpecification->getLabel($this->translator->getLocale());
+            $this->removeChoiceLoader($fieldSpecification->getFormType(), $fieldOptions);
 
             $prefix = $fieldSpecification->getPrefix();
             $prefix = null !== $prefix && '' !== $prefix ? $prefix . ':' : '';
 
             $builder->add($prefix . $fieldSpecification->getName(), $fieldSpecification->getFormType(), $fieldOptions);
+        }
+    }
+
+    /**
+     * Symfony 4 requires the choice_loader be nullified for certain FormTypes
+     */
+    private function removeChoiceLoader($type, &$fieldOptions): void
+    {
+        if (in_array($type, [
+            CountryType::class,
+            CurrencyType::class,
+            LanguageType::class,
+            LocaleType::class,
+            TimezoneType::class
+        ])) {
+            $fieldOptions['choice_loader'] = null;
         }
     }
 

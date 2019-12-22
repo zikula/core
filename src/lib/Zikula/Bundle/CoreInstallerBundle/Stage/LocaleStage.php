@@ -15,6 +15,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
 use Symfony\Component\Form\FormInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -69,7 +70,9 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function getFormOptions(): array
     {
         return [
-            'choices' => $this->container->get(LocaleApi::class)->getSupportedLocaleNames(),
+            'choices' => new CallbackChoiceLoader(function() {
+                return $this->container->get(LocaleApi::class)->getSupportedLocaleNames();
+            }),
             'choice' => $this->matchedLocale
         ];
     }
