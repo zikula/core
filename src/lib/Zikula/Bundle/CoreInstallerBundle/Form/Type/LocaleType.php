@@ -28,6 +28,7 @@ class LocaleType extends AbstractType
                     'class' => 'col-sm-3'
                 ],
                 'choices' => $options['choices'],
+                'choice_loader' => null,
                 'data' => $options['choice'],
             ])
         ;
@@ -41,6 +42,7 @@ class LocaleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'choice_loader' => null,
             'choices' => ['English' => 'en'],
             'choice' => 'en'
         ]);
