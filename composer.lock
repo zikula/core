@@ -5595,16 +5595,16 @@
         },
         {
             "name": "zikula/andreas08-theme",
-            "version": "3.1.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "cfdc47bedce99b29127717733afedd273bff6658"
+                "reference": "8bf508045750f8c951967317957a36332efe024c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/cfdc47bedce99b29127717733afedd273bff6658",
-                "reference": "cfdc47bedce99b29127717733afedd273bff6658",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/8bf508045750f8c951967317957a36332efe024c",
+                "reference": "8bf508045750f8c951967317957a36332efe024c",
                 "shasum": ""
             },
             "require": {
@@ -5638,10 +5638,10 @@
             ],
             "description": "Based on the theme Andreas08 by Andreas Viklund",
             "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/3.1.1",
+                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2019-03-26T07:03:25+00:00"
+            "time": "2019-12-23T16:58:15+00:00"
         },
         {
             "name": "zikula/bootstrap-bundle",
@@ -6173,16 +6173,16 @@
         },
         {
             "name": "zikula/seabreeze-theme",
-            "version": "4.1.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "7b9b3f53643c3a9cd25eba8a563656f61565a364"
+                "reference": "9d4dc83db3276fde8c408dbb6671e1eae9b0e53e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/7b9b3f53643c3a9cd25eba8a563656f61565a364",
-                "reference": "7b9b3f53643c3a9cd25eba8a563656f61565a364",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/9d4dc83db3276fde8c408dbb6671e1eae9b0e53e",
+                "reference": "9d4dc83db3276fde8c408dbb6671e1eae9b0e53e",
                 "shasum": ""
             },
             "require": {
@@ -6216,10 +6216,10 @@
             ],
             "description": "The SeaBreeze theme is a browser-oriented theme.",
             "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/4.1.2",
+                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/master",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2019-03-26T07:03:24+00:00"
+            "time": "2019-12-23T16:58:08+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -6344,6 +6344,8 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
+        "zikula/andreas08-theme": 20,
+        "zikula/seabreeze-theme": 20,
         "sensio/framework-extra-bundle": 20,
         "oyejorge/less.php": 20,
         "symfony/requirements-checker": 20,
