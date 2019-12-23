@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\Debug\Debug;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\Yaml\Yaml;
 
-require __DIR__ . '/../app/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../lib/RequirementChecker.php';
 
 $kernelConfig = Yaml::parse(file_get_contents(realpath(__DIR__ . '/../app/config/parameters.yml')));
@@ -32,6 +33,9 @@ if (isset($parameters['umask']) && null !== $parameters['umask']) {
 
 // set default locale for Intl classes
 Locale::setDefault($parameters['locale']);
+
+// Globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
+AnnotationReader::addGlobalIgnoredName('type');
 
 // on install or upgrade, check if system requirements are met.
 $requirementChecker = new RequirementChecker();
