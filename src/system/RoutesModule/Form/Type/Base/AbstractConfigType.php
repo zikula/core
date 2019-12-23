@@ -71,7 +71,6 @@ abstract class AbstractConfigType extends AbstractType
                 'title' => $this->__('Enter the route entries per page.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => true,
-            'scale' => 0
         ]);
         
         $builder->add('showOnlyOwnEntries', CheckboxType::class, [

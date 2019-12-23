@@ -45,7 +45,6 @@ application "Routes" targets ZK30 {
         Listener/EntityLifecycleListener.php,
         Listener/InstallerListener.php,
         README.md,
-        Resources/config/routing.yml,
         Resources/workflows/none.yml,
         RoutesModuleInstaller.php,
         Twig/TwigExtension.php

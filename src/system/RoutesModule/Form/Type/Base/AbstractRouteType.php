@@ -275,7 +275,6 @@ abstract class AbstractRouteType extends AbstractType
                 'title' => $this->__('Enter the sort of the route.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => false,
-            'scale' => 0
         ]);
     }
 

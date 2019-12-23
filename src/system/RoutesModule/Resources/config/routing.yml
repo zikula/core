@@ -3,15 +3,3 @@ zikularoutesmodule:
     resource: "@ZikulaRoutesModule/Controller"
     # enable support for defining routes by annotations
     type: annotation
-
-zikularoutesmodule_redirecting_removetrailingslash:
-    path: /{url}
-    defaults: { _controller: Zikula\RoutesModule\Controller\RedirectingController::removeTrailingSlashAction }
-    requirements:
-        url: .*/$
-    methods: [GET]
-    options:
-        zkDescription: "The goal of this route is to redirect URLs with a trailing slash to the same URL without a trailing slash (for example /en/blog/ to /en/blog)."
-        zkNoBundlePrefix: true
-        zkPosition: "bottom"
-        i18n: false
