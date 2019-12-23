@@ -127,7 +127,7 @@ CHANGELOG - ZIKULA 3.0.x
     - symfony/polyfill-mbstring updated from v1.12.0 to v1.13.1
     - symfony/polyfill-php72 installed in 1.13.1
     - symfony/polyfill-php73 installed in 1.13.1
-    - symfony/profiler-pack installer at 1.0.4
+    - symfony/profiler-pack installed in 1.0.4
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
     - symfony/symfony updated from 3.4.35 to 4.4.2
     - twig/extensions updated from 1.4.1 to 1.5.4

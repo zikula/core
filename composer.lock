@@ -5674,11 +5674,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "http://zikula.org"
+                    "homepage": "https://ziku.la"
                 }
             ],
             "description": "Zikula Bootstrap bundle",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "keywords": [
                 "bootstrap",
                 "bundle",
@@ -5722,15 +5722,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "http://zikula.org/"
+                    "homepage": "https://ziku.la/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "info@ziku.la"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -5763,11 +5763,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "http://zikula.org"
+                    "homepage": "https://ziku.la"
                 }
             ],
             "description": "FontAwesome Bundle for Zikula",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "keywords": [
                 "css",
                 "graphics",
@@ -5908,11 +5908,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "http://zikula.org"
+                    "homepage": "https://ziku.la"
                 }
             ],
             "description": "Zikula jQuery UI bundle",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "keywords": [
                 "bundle",
                 "jQuery UI",
