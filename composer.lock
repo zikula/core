@@ -5927,12 +5927,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "fb8a7d953c71b794766f70a37b9ac5d802a3fd9d"
+                "reference": "48d516e1be4c909ba3f6f2b3b50a63f60c867354"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/fb8a7d953c71b794766f70a37b9ac5d802a3fd9d",
-                "reference": "fb8a7d953c71b794766f70a37b9ac5d802a3fd9d",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/48d516e1be4c909ba3f6f2b3b50a63f60c867354",
+                "reference": "48d516e1be4c909ba3f6f2b3b50a63f60c867354",
                 "shasum": ""
             },
             "require": {
@@ -5987,7 +5987,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2019-12-20T03:43:36+00:00"
+            "time": "2019-12-22T12:35:57+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6106,12 +6106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "a883e2b3935858b5a4cd0d371b59e41a9b3ff0a5"
+                "reference": "ea10cdf1876abdc19c3b9064e56a864d48d4a5dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a883e2b3935858b5a4cd0d371b59e41a9b3ff0a5",
-                "reference": "a883e2b3935858b5a4cd0d371b59e41a9b3ff0a5",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/ea10cdf1876abdc19c3b9064e56a864d48d4a5dd",
+                "reference": "ea10cdf1876abdc19c3b9064e56a864d48d4a5dd",
                 "shasum": ""
             },
             "require": {
@@ -6169,7 +6169,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-20T03:45:12+00:00"
+            "time": "2019-12-22T12:29:14+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
