@@ -108,9 +108,9 @@ class RegistrationListener implements EventSubscriberInterface
         $isAdmin = $this->currentUserApi->isLoggedIn() && $this->permissionApi->hasPermission('ZikulaZAuthModule::', '::', ACCESS_EDIT);
         $request = $this->requestStack->getCurrentRequest();
         $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $userMustVerify = $request->hasSession()->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
-                ? 'Y' === $request->hasSession()->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+        if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+            $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+                ? 'Y' === $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
                 : $userMustVerify;
         }
         if ($userMustVerify && !$isAdmin) {

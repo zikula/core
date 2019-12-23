@@ -96,8 +96,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
         }
 
         $request = $this->requestStack->getCurrentRequest();
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $request->getSession()->getFlashBag()->add('error', $this->translator->__('Login failed.'));
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            $session->getFlashBag()->add('error', $this->translator->__('Login failed.'));
         }
 
         return null;
@@ -123,8 +123,8 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
             if (count($errors) > 0) {
                 // the error is probably only because of duplicate email... so....
                 $request = $this->requestStack->getCurrentRequest();
-                if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-                    $request->getSession()->getFlashBag()->add('error', $this->translator->__('The email you are trying to authenticate with is in use by another user. You can only login by username.'));
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    $session->getFlashBag()->add('error', $this->translator->__('The email you are trying to authenticate with is in use by another user. You can only login by username.'));
                 }
                 $mapping = null;
             } else {
@@ -152,17 +152,17 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
 
         $userMustVerify = $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED);
         $request = $this->requestStack->getCurrentRequest();
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $userMustVerify = $request->getSession()->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
-                ? 'Y' === $request->getSession()->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            $userMustVerify = $session->has(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
+                ? 'Y' === $session->get(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED)
                 : $userMustVerify;
         }
 
         $mapping->setVerifiedEmail(!$userMustVerify);
         $errors = $this->validator->validate($mapping);
-        if (null !== $request && $request->hasSession() && null !== $request->getSession() && count($errors) > 0) {
+        if ($request->hasSession() && ($session = $request->getSession()) && 0 < count($errors)) {
             foreach ($errors as $error) {
-                $request->getSession()->getFlashBag()->add('error', $error->getMessage());
+                $session->getFlashBag()->add('error', $error->getMessage());
             }
 
             return false;

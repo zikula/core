@@ -143,8 +143,8 @@ class SettingsController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
                 $multilingualRoutingHelper->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
-                if (null !== $request->getSession()) {
-                    $request->getSession()->set('_locale', $data['language_i18n']);
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    $session->set('_locale', $data['language_i18n']);
                 }
                 $this->addFlash('status', $this->__('Done! Localization configuration updated.'));
             }

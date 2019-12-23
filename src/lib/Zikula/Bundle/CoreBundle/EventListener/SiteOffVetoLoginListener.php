@@ -85,8 +85,8 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
             $event->stopPropagation();
 
             $request = $this->requestStack->getCurrentRequest();
-            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-                $request->getSession()->remove('authenticationMethod');
+            if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+                $session->remove('authenticationMethod');
             }
             $event->setArgument('flash', $this->translator->__('Admin credentials required when site is disabled.'));
             $event->setArgument('returnUrl', $this->router->generate('home'));

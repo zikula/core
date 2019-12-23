@@ -180,7 +180,9 @@ class UserAdministrationController extends AbstractController
                 $authMethodName = (ZAuthConstant::AUTHENTICATION_METHOD_EITHER === $mapping->getMethod()) ? ZAuthConstant::AUTHENTICATION_METHOD_UNAME : $mapping->getMethod();
                 $authMethod = $authenticationMethodCollector->get($authMethodName);
 
-                $request->getSession()->set(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ($form['usermustverify']->getData() ? 'Y' : 'N'));
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    $session->set(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ($form['usermustverify']->getData() ? 'Y' : 'N'));
+                }
 
                 $user = new UserEntity();
                 $user->merge($mapping->getUserEntityData());

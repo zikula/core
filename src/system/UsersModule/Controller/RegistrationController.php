@@ -82,8 +82,11 @@ class RegistrationController extends AbstractController
         }
         $this->throwExceptionForBannedUserAgents($request);
 
+        $session = $request->hasSession() ? $request->getSession() : null;
+
         // Display the authentication method selector if required
-        $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod'));
+        $selectedMethod = null !== $session ? $session->get('authenticationMethod') : '';
+        $selectedMethod = $request->query->get('authenticationMethod', $selectedMethod);
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
                 'collector' => $authenticationMethodCollector,
@@ -93,10 +96,15 @@ class RegistrationController extends AbstractController
         if (empty($selectedMethod) && 1 === count($authenticationMethodCollector->getActiveKeys())) {
             $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
         }
-        $request->getSession()->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
+        if (null !== $session) {
+            $session->set('authenticationMethod', $selectedMethod); // save method to session for reEntrant needs
+        }
 
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
-        $authenticationMethodId = $request->getSession()->get('authenticationMethodId');
+        $authenticationMethodId = null;
+        if (null !== $session) {
+            $session->get('authenticationMethodId');
+        }
 
         // authenticate user if required && check to make sure user doesn't already exist.
         $userData = [];
@@ -108,7 +116,9 @@ class RegistrationController extends AbstractController
             }
             if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface) {
                 $authenticationMethodId = $authenticationMethod->getId();
-                $request->getSession()->set('authenticationMethodId', $authenticationMethodId);
+                if (null !== $session) {
+                    $session->set('authenticationMethodId', $authenticationMethodId);
+                }
                 $userData = [
                     'uname' => $authenticationMethod->getUname(),
                     'email' => $authenticationMethod->getEmail()
@@ -200,7 +210,9 @@ class RegistrationController extends AbstractController
                     return $this->redirectToRoute('zikulausersmodule_access_login');
                 }
             }
-            $request->getSession()->invalidate();
+            if (null !== $session) {
+                $session->invalidate();
+            }
 
             return !empty($redirectUrl) ? $this->redirect($redirectUrl) : $this->redirectToRoute('home');
         }

@@ -60,23 +60,22 @@ class SearchHelper implements SearchableInterface
         $users = $this->userRepository->getSearchResults($words);
 
         $request = $this->requestStack->getCurrentRequest();
-        $sessionId = '';
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $sessionId = $request->getSession()->getId();
-        }
+        $sessionId = $request->hasSession() ? $request->getSession()->getId() : '';
 
         $results = [];
         foreach ($users as $user) {
-            if (1 !== $user->getUid()
-                && $this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)
+            if (1 >= $user->getUid()
+                || !$this->permissionApi->hasPermission('ZikulaUsersModule::', $user->getUname() . '::' . $user->getUid(), ACCESS_READ)
             ) {
-                $result = new SearchResultEntity();
-                $result->setTitle($user->getUname())
-                    ->setModule($this->getBundleName())
-                    ->setCreated($user->getUser_Regdate())
-                    ->setSesid($sessionId);
-                $results[] = $result;
+                continue;
             }
+            $result = new SearchResultEntity();
+            $result->setTitle($user->getUname())
+                ->setModule($this->getBundleName())
+                ->setCreated($user->getUser_Regdate())
+                ->setSesid($sessionId)
+            ;
+            $results[] = $result;
         }
 
         return $results;

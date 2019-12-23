@@ -260,8 +260,8 @@ class AccountController extends AbstractController
                 'pass' => '1234567890'
             ]);
             // will not authenticate with pass. clear the flashbag of errors.
-            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-                $request->getSession()->getFlashBag()->clear();
+            if ($request->hasSession() && ($session = $request->getSession())) {
+                $session->getFlashBag()->clear();
             }
             // update password
             $mapping = $authenticationMappingRepository->getByZikulaId($user->getUid());
@@ -400,10 +400,10 @@ class AccountController extends AbstractController
         // Retrieve and delete any session variables being sent in before we give the function a chance to
         // throw an exception. We need to make sure no sensitive data is left dangling in the session variables.
         $uid = $authenticationMethod = null;
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $uid = $request->getSession()->get(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY);
-            $authenticationMethod = $request->getSession()->get('authenticationMethod');
-            $request->getSession()->remove(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY);
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            $uid = $session->get(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY);
+            $authenticationMethod = $session->get('authenticationMethod');
+            $session->remove(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY);
         }
 
         if (isset($uid)) {

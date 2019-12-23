@@ -54,11 +54,14 @@ class AdminController extends AbstractController
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
-        $clear = $request->request->get('clear', 0);
-        if ($clear && null !== $request->getSession()) {
-            $request->getSession()->set('zikulablocksmodule.filter', []);
+        $sessionFilterData = [];
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            $clear = $request->request->get('clear', 0);
+            if ($clear) {
+                $session->set('zikulablocksmodule.filter', []);
+            }
+            $sessionFilterData = $session->get('zikulablocksmodule.filter', []);
         }
-        $sessionFilterData = $request->getSession()->get('zikulablocksmodule.filter', []);
         $sortField = $request->query->get('sort-field', $sessionFilterData['sort-field'] ?? 'bid');
         $currentSortDirection = $request->query->get('sort-direction', $sessionFilterData['sort-direction'] ?? Column::DIRECTION_ASCENDING);
         $filterForm = $this->createForm(AdminViewFilterType::class, $sessionFilterData, [
@@ -81,7 +84,9 @@ class AdminController extends AbstractController
         }
         $filterData['sort-field'] = $sortField;
         $filterData['sort-direction'] = $currentSortDirection;
-        $request->getSession()->set('zikulablocksmodule.filter', $filterData); // remember
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            $session->set('zikulablocksmodule.filter', $filterData); // remember
+        }
 
         $sortableColumns = new SortableColumns($router, 'zikulablocksmodule_admin_view');
         $sortableColumns->addColumn(new Column('bid')); // first added is automatically the default

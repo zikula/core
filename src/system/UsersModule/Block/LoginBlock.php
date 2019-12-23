@@ -90,10 +90,10 @@ class LoginBlock extends AbstractBlockHandler
         if (!$addedContent && 0 === count($hookBindings) && 1 === count($this->authenticationMethodCollector->getActiveKeys())) {
             $request = $this->requestStack->getCurrentRequest();
             $selectedMethod = $this->authenticationMethodCollector->getActiveKeys()[0];
-            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-                $request->getSession()->set('authenticationMethod', $selectedMethod);
-                if (!$request->getSession()->has('returnUrl')) {
-                    $request->getSession()->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
+            if ($request->hasSession() && ($session = $request->getSession())) {
+                $session->set('authenticationMethod', $selectedMethod);
+                if (!$session->has('returnUrl')) {
+                    $session->set('returnUrl', $request->isMethod('GET') ? $request->getUri() : '');
                 }
             }
             $authenticationMethod = $this->authenticationMethodCollector->get($selectedMethod);

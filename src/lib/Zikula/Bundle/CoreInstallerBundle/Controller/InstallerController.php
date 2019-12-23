@@ -45,10 +45,12 @@ class InstallerController extends AbstractController
             $stage = 'notinstalled';
         }
 
+        $session = $request->hasSession() ? $request->getSession() : null;
+
         // check php
         $ini_warnings = $this->controllerHelper->initPhp();
-        if (count($ini_warnings) > 0) {
-            $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
+        if (null !== $session && 0 < count($ini_warnings)) {
+            $session->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
 
         $request->setLocale($this->container->getParameter('locale'));
@@ -61,7 +63,9 @@ class InstallerController extends AbstractController
         $templateParams = $this->controllerHelper->getTemplateGlobals($currentStage);
         $templateParams['headertemplate'] = '@ZikulaCoreInstaller/installheader.html.twig';
         if ($wizard->isHalted()) {
-            $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
+            if (null !== $session) {
+                $session->getFlashBag()->add('danger', $wizard->getWarning());
+            }
 
             return $this->renderResponse('@ZikulaCoreInstaller/error.html.twig', $templateParams);
         }

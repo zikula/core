@@ -48,6 +48,9 @@ class LocaleListener implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
+        if (!$request->hasSession()) {
+            return;
+        }
         $session = $request->getSession();
         if (null === $session || !$request->hasPreviousSession()) {
             return;

@@ -385,7 +385,7 @@ class HookController extends AbstractController
             return false;
         }
 
-        if (null === $request->getSession()) {
+        if (!$request->hasSession()) {
             return false;
         }
 

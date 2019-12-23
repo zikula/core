@@ -48,10 +48,12 @@ class UpgraderController extends AbstractController
             return new RedirectResponse($this->router->generate('install'));
         }
 
+        $session = $request->hasSession() ? $request->getSession() : null;
+
         // check php
         $ini_warnings = $this->controllerHelper->initPhp();
-        if (count($ini_warnings) > 0) {
-            $request->getSession()->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
+        if (null !== $session && 0 < count($ini_warnings)) {
+            $session->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
         }
 
         $yamlDumper = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
@@ -69,7 +71,9 @@ class UpgraderController extends AbstractController
         $templateParams = $this->controllerHelper->getTemplateGlobals($currentStage);
         $templateParams['headertemplate'] = '@ZikulaCoreInstaller/upgradeheader.html.twig';
         if ($wizard->isHalted()) {
-            $request->getSession()->getFlashBag()->add('danger', $wizard->getWarning());
+            if (null !== $session) {
+                $session->getFlashBag()->add('danger', $wizard->getWarning());
+            }
 
             return $this->renderResponse('@ZikulaCoreInstaller/error.html.twig', $templateParams);
         }

@@ -128,8 +128,8 @@ class EditHandler extends AbstractEditHandler
                 $message = $this->__f('The path of the route you created or updated looks similar to the following already existing path: %s Are you sure you haven\'t just introduced a conflict?', ['%s' => $error['path']]);
             }
             $request = $this->requestStack->getCurrentRequest();
-            if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-                $request->getSession()->getFlashBag()->add('error', $message);
+            if ($request->hasSession() && ($session = $request->getSession())) {
+                $session->getFlashBag()->add('error', $message);
             }
         }
 

@@ -22,8 +22,7 @@ class MigrationController extends AbstractController
     public function migrateAction(Request $request, MigrationHelper $migrationHelper): JsonResponse
     {
         $percentComplete = 0;
-        $session = $request->getSession();
-        if (null !== $session) {
+        if ($request->hasSession() && ($session = $request->getSession())) {
             if (!$session->has('user_migration_lastuid')) {
                 $session->set('user_migration_count', $migrationHelper->countUnMigratedUsers());
                 $session->set('user_migration_complete', 0);

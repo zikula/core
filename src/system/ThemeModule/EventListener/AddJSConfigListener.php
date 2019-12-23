@@ -90,7 +90,8 @@ class AddJSConfigListener implements EventSubscriberInterface
         if (!$this->installed) {
             return;
         }
-        $session = $event->getRequest()->hasSession() ? $event->getRequest()->getSession() : null;
+        $request = $event->getRequest();
+        $session = $request->hasSession() ? $request->getSession() : null;
 
         $config = [
             'entrypoint' => ZikulaKernel::FRONT_CONTROLLER,

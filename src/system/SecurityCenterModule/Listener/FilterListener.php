@@ -254,10 +254,11 @@ class FilterListener implements EventSubscriberInterface
             return;
         }
 
+        $session = $request->hasSession() ? $request->getSession() : null;
         // update total session impact to track an attackers activity for some time
-        if (null !== $request->getSession()) {
-            $sessionImpact = $request->getSession()->get('idsImpact', 0) + $requestImpact;
-            $request->getSession()->set('idsImpact', $sessionImpact);
+        if (null !== $session) {
+            $sessionImpact = $session->get('idsImpact', 0) + $requestImpact;
+            $session->set('idsImpact', $sessionImpact);
         } else {
             $sessionImpact = $requestImpact;
         }
@@ -279,7 +280,6 @@ class FilterListener implements EventSubscriberInterface
         $impactThresholdThree = $this->getSystemVar('idsimpactthresholdthree', 25) * $idsImpactFactor;
         $impactThresholdFour  = $this->getSystemVar('idsimpactthresholdfour', 75) * $idsImpactFactor;
 
-        $session = $request->getSession();
         $usedImpact = (1 === $idsImpactMode) ? $requestImpact : $sessionImpact;
 
         // react according to given impact

@@ -82,8 +82,8 @@ class UserEventListener implements EventSubscriberInterface
                 // ignore
             }
         }
-        if ($request->hasSession() && null !== $request->getSession()) {
-            $request->getSession()->set('_locale', $locale);
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            $session->set('_locale', $locale);
         }
     }
 
@@ -109,8 +109,8 @@ class UserEventListener implements EventSubscriberInterface
             $doClear = true;
         }
 
-        if ($doClear && null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $request->getSession()->clear();
+        if ($doClear && $request->hasSession() && ($session = $request->getSession())) {
+            $session->clear();
         }
     }
 }

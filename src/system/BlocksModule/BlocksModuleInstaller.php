@@ -81,7 +81,11 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
                 // check if request is available (#2073)
                 $templateWarning = $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
-                if (is_object($this->container->get('request')) && method_exists($this->container->get('request'), 'getSession') && is_object($this->container->get('request')->getSession())) {
+                if (
+                    is_object($this->container->get('request'))
+                    && method_exists($this->container->get('request'), 'getSession')
+                    && is_object($this->container->get('request')->getSession())
+                ) {
                     $this->addFlash('warning', $templateWarning);
                 }
             case '3.9.1':

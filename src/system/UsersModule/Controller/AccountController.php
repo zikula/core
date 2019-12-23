@@ -102,8 +102,8 @@ class AccountController extends AbstractController
                 $userEntity = $userRepository->find($currentUserApi->get('uid'));
                 $userEntity->setLocale($locale);
                 $userRepository->persistAndFlush($userEntity);
-                if ($request->hasSession() && null !== $request->getSession()) {
-                    $request->getSession()->set('_locale', $locale);
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    $session->set('_locale', $locale);
                 }
                 Locale::setDefault($locale);
                 $langText = Languages::getName($locale);

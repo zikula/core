@@ -68,8 +68,8 @@ class AccessHelper
     {
         $flashBag = null;
         $request = $this->requestStack->getCurrentRequest();
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $flashBag = $request->getSession()->getFlashBag();
+        if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+            $flashBag = $session->getFlashBag();
         }
 
         switch ($user->getActivated()) {
@@ -111,11 +111,11 @@ class AccessHelper
             $lifetime = 2 * 365 * 24 * 60 * 60; // two years
         }
         $request = $this->requestStack->getCurrentRequest();
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $request->getSession()->migrate(true, $lifetime);
-            $request->getSession()->set('uid', $user->getUid());
+        if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+            $session->migrate(true, $lifetime);
+            $session->set('uid', $user->getUid());
             if ($rememberMe) {
-                $request->getSession()->set('rememberme', 1);
+                $session->set('rememberme', 1);
             }
         }
         $this->permissionApi->resetPermissionsForUser($user->getUid());
@@ -124,8 +124,8 @@ class AccessHelper
     public function logout(): bool
     {
         $request = $this->requestStack->getCurrentRequest();
-        if (null !== $request && $request->hasSession() && null !== $request->getSession()) {
-            $request->getSession()->invalidate();
+        if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
+            $session->invalidate();
         }
 
         return true;

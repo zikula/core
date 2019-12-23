@@ -63,7 +63,10 @@ class AccessController extends AbstractController
         }
         $returnUrl = $request->query->get('returnUrl', '');
 
-        $selectedMethod = $request->query->get('authenticationMethod', $request->getSession()->get('authenticationMethod'));
+        $session = $request->hasSession() ? $request->getSession() : null;
+
+        $selectedMethod = null !== $session ? $session->get('authenticationMethod') : '';
+        $selectedMethod = $request->query->get('authenticationMethod', $selectedMethod);
         if (empty($selectedMethod) && count($authenticationMethodCollector->getActiveKeys()) > 1) {
             // there are multiple authentication methods available and none selected yet, so let the user choose one
             return $this->render('@ZikulaUsersModule/Access/authenticationMethodSelector.html.twig', [
@@ -75,12 +78,12 @@ class AccessController extends AbstractController
             // there is only one authentication method available, so use this
             $selectedMethod = $authenticationMethodCollector->getActiveKeys()[0];
         }
-        if ($request->hasSession() && null !== $request->getSession()) {
+        if (null !== $session) {
             // save method to session for reEntrant needs
-            $request->getSession()->set('authenticationMethod', $selectedMethod);
+            $session->set('authenticationMethod', $selectedMethod);
             if (!empty($returnUrl)) {
                 // save returnUrl to session for reEntrant needs
-                $request->getSession()->set('returnUrl', $returnUrl);
+                $session->set('returnUrl', $returnUrl);
             }
         }
 
@@ -158,7 +161,8 @@ class AccessController extends AbstractController
                     $event = new GenericEvent($user, ['authenticationMethod' => $selectedMethod]);
                     $eventDispatcher->dispatch($event, AccessEvents::LOGIN_VETO);
                     if (!$event->isPropagationStopped()) {
-                        $returnUrlFromSession = urldecode($request->getSession()->get('returnUrl', $returnUrl));
+                        $returnUrlFromSession = null !== $session ? $session->get('returnUrl', $returnUrl) : $returnUrl;
+                        $returnUrlFromSession = urldecode($returnUrlFromSession);
                         $accessHelper->login($user, $rememberMe);
                         $returnUrl = $this->dispatchLoginSuccessEvent($eventDispatcher, $selectedMethod, $returnUrlFromSession, $user);
                     } else {
@@ -175,7 +179,9 @@ class AccessController extends AbstractController
         // login failed
         // implement auto-register setting here. If true, do so and proceed. #2915
         $this->addFlash('error', $this->__('Login failed.'));
-        $request->getSession()->remove('authenticationMethod');
+        if (null !== $session) {
+            $session->remove('authenticationMethod');
+        }
         $returnUrl = $this->dispatchLoginFailedEvent($eventDispatcher, $authenticationMethod, $returnUrl, $user);
 
         return !empty($returnUrl) ? $this->redirect($returnUrl) : $this->redirectToRoute('home');
@@ -233,8 +239,12 @@ class AccessController extends AbstractController
             $uid = $currentUserApi->get('uid');
             $user = $userRepository->find($uid);
             if ($accessHelper->logout()) {
+                $authMethod = null;
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    $authMethod = $session->get('authenticationMethod');
+                }
                 $event = new GenericEvent($user, [
-                    'authenticationMethod' => $request->getSession()->get('authenticationMethod'),
+                    'authenticationMethod' => $authMethod,
                     'uid' => $uid,
                 ]);
                 $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
