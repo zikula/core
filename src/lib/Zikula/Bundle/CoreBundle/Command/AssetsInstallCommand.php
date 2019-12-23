@@ -25,8 +25,6 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 /**
  * Command that places bundle web assets into a given directory.
- *
- * @author Fabien Potencier <fabien@symfony.com>
  */
 class AssetsInstallCommand extends Command
 {
@@ -52,7 +50,6 @@ class AssetsInstallCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('assets:install')
             ->setDefinition([
                 new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', 'web'),
             ])
