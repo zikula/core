@@ -139,6 +139,7 @@ bazinga_js_translation:
     active_locales: "%jms_i18n_routing.locales%"
 
 parameters:
+    container.dumper.inline_class_loader: true
     # all paths below are resolved as assets (in /web)
     # zikula core stylesheet and javascript component locations
     zikula.stylesheet.bootstrap-font-awesome.path: "/bootstrap-font-awesome.css"
