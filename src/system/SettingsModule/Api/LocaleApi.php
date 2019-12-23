@@ -89,30 +89,10 @@ class LocaleApi implements LocaleApiInterface
     public function getBrowserLocale(string $default = 'en'): string
     {
         $request = null !== $this->requestStack ? $this->requestStack->getCurrentRequest() : null;
-
-        // @todo consider http://php.net/manual/en/locale.acceptfromhttp.php and http://php.net/manual/en/locale.lookup.php
-        if (null === $request || 'cli' === PHP_SAPI || !$request->server->has('HTTP_ACCEPT_LANGUAGE')) {
+        if (null === $request || 'cli' === PHP_SAPI) {
             return $default;
         }
-        preg_match_all('~([\w-]+)(?:[^,\d]+([\d.]+))?~', mb_strtolower($request->server->get('HTTP_ACCEPT_LANGUAGE')), $matches, PREG_SET_ORDER);
-        $availableLanguages = [];
-        foreach ($matches as $match) {
-            list($languageCode) = explode('-', $match[1]) + ['', ''];
-            $priority = isset($match[2]) ? (float)$match[2] : 1.0;
-            $availableLanguages[][$languageCode] = $priority;
-        }
-        $defaultPriority = (float)0;
-        $matchedLanguage = '';
-        foreach ($availableLanguages as $key => $value) {
-            $languageCode = key($value);
-            $priority = $value[$languageCode];
-            $supportedLocales = $this->getSupportedLocales();
-            if ($priority > $defaultPriority && array_key_exists($languageCode, $supportedLocales)) {
-                $defaultPriority = $priority;
-                $matchedLanguage = $languageCode;
-            }
-        }
 
-        return '' !== $matchedLanguage ? $matchedLanguage : $default;
+        return $request->getPreferredLanguage($this->getSupportedLocales()) ?? $default;
     }
 }
