@@ -16,10 +16,8 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 use Composer\Autoload\ClassLoader;
 use Exception;
 use InvalidArgumentException;
-use Symfony\Component\Debug\DebugClassLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
-use Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\AdminModule\ZikulaAdminModule;
@@ -37,7 +35,6 @@ use Zikula\SearchModule\ZikulaSearchModule;
 use Zikula\SecurityCenterModule\ZikulaSecurityCenterModule;
 use Zikula\SettingsModule\ZikulaSettingsModule;
 use Zikula\ThemeModule\AbstractTheme;
-use Zikula\ThemeModule\Engine\Engine as ThemeEngine;
 use Zikula\ThemeModule\EventListener\AddJSConfigListener;
 use Zikula\ThemeModule\ZikulaThemeModule;
 use Zikula\UsersModule\ZikulaUsersModule;
@@ -96,11 +93,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     ];
 
     /**
-     * @var boolean
-     */
-//    private $dump = true;
-
-    /**
      * @var array
      */
     private $modules = [];
@@ -114,11 +106,6 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
      * @var ClassLoader
      */
     private $autoloader;
-
-//    public function setDump(bool $flag): void
-//    {
-//        $this->dump = $flag;
-//    }
 
     public function boot()
     {
@@ -198,7 +185,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         $this->autoloader = $autoloader;
     }
 
-    public function getAutoloader(): ClassLoader
+    public function getAutoloader(): object
     {
         if (null === $this->autoloader) {
             $loaders = spl_autoload_functions();
@@ -238,85 +225,4 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
 
         return false;
     }
-
-    /**
-     * Initializes the service container.
-     *
-     * The cached version of the service container is used when fresh, otherwise the
-     * container is built.
-     *
-     * Overridden not to dump the container.
-     */
-//    protected function initializeContainer()
-//    {
-//        if (true === $this->dump) {
-//            return parent::initializeContainer();
-//        }
-//
-//        $this->container = $this->buildContainer();
-//        $this->container->set('kernel', $this);
-//    }
-
-    /**
-     * Prepares the ContainerBuilder before it is compiled.
-     */
-//    protected function prepareContainer(ContainerBuilder $container)
-//    {
-//        $extensions = [];
-//        foreach ($this->bundles as $bundle) {
-//            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
-//                continue;
-//            }
-//            if ($extension = $bundle->getContainerExtension()) {
-//                $container->registerExtension($extension);
-//                $extensions[] = $extension->getAlias();
-//            }
-//
-//            if ($this->debug) {
-//                $container->addObjectResource($bundle);
-//            }
-//        }
-//
-//        foreach ($this->bundles as $bundle) {
-//            if ($bundle instanceof AbstractBundle && AbstractBundle::STATE_ACTIVE !== $bundle->getState()) {
-//                continue;
-//            }
-//            $bundle->build($container);
-//        }
-//
-//        $this->build($container);
-//
-//        foreach ($container->getExtensions() as $extension) {
-//            $extensions[] = $extension->getAlias();
-//        }
-//
-//        // ensure these extensions are implicitly loaded
-//        $container->getCompilerPassConfig()->setMergePass(new MergeExtensionConfigurationPass($extensions));
-//    }
-
-    /**
-     * REMOVE THIS I THINK
-     */
-//    public function locateResource($name, $dir = null, $first = true)
-//    {
-//        $locations = parent::locateResource($name, $dir, false);
-//        if ($locations && null !== $dir && false !== mb_strpos($locations[0], $dir)) {
-//            // if found in $dir (typically app/Resources) return it immediately.
-//            return $locations[0];
-//        }
-//
-//        $themeBundle = $this->container->get(ThemeEngine::class)->getTheme();
-//        // add theme path to template locator
-//        // this method functions if the controller uses `@Template` or `ZikulaSpecModule:Foo:index.html.twig` naming scheme
-//        // if `@ZikulaSpecModule/Foo/index.html.twig` (name-spaced) naming scheme is used
-//        // the \Zikula\ThemeModule\EventListener\TemplatePathOverrideListener::setUpThemePathOverrides method is used instead
-//        if ($themeBundle && false === mb_strpos($name, $themeBundle->getName())) {
-//            // do not add theme override path to theme files
-//            $customThemePath = $themeBundle->getPath() . '/Resources';
-//
-//            return parent::locateResource($name, $customThemePath);
-//        }
-//
-//        return $locations[0];
-//    }
 }
