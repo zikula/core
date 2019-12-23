@@ -84,10 +84,6 @@ services:
     Michelf\:
         resource: '../../../../../../vendor/michelf/php-markdown/Michelf/*'
 
-    # public because BootstrapBundlesCommand accesses this using container
-    Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper:
-        public: true
-
     # public because AbstractExtensionInstaller accesses this using container
     Zikula\Core\Doctrine\Helper\SchemaHelper:
         public: true
