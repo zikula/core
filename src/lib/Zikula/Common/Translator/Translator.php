@@ -179,17 +179,6 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
         return parent::trans($id, $parameters, $domain, $locale);
     }
 
-    /**
-     * @deprecated
-     */
-    public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
-    {
-        $domain = $domain ?? $this->domain;
-        $locale = $locale ?? $this->getLocale();
-
-        return parent::trans($id, ['%count%' => $number] + $parameters, $domain, $locale);
-    }
-
     public function __(string $msg, string $domain = null, string $locale = null): string
     {
         return $this->trans($msg, [], $domain, $locale);
