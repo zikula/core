@@ -138,6 +138,6 @@ CHANGELOG - ZIKULA 3.0.x
     - zikula/oauth-module updated from 1.0.4 to dev-master
     - zikula/pagelock-module updated from 1.2.3 to dev-master
     - zikula/profile-module updated from 3.0.6 to dev-master
-    - zikula/seabreeze-theme updated from 4.0.3 to 4.1.2
-    - zikula/wizard updated from 2.0 to 3.0.1
+    - zikula/seabreeze-theme updated from 4.0.3 to dev-master
+    - zikula/wizard updated from 2.0 to dev-master
 
