@@ -58,14 +58,14 @@ class FinishCommand extends AbstractCoreInstallerCommand
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         if (true === $this->installed) {
             $io->error($this->translator->__('Zikula already appears to be installed.'));
 
-            return;
+            return 1;
         }
 
         $io->section($this->translator->__('*** INSTALLING ***'));
@@ -77,5 +77,7 @@ class FinishCommand extends AbstractCoreInstallerCommand
         $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
         $io->success($this->translator->__('INSTALL COMPLETE!'));
+
+        return 0;
     }
 }

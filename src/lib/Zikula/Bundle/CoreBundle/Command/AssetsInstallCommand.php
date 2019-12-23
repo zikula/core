@@ -81,7 +81,7 @@ EOT
     /**
      * @throws InvalidArgumentException When the target directory does not exist or symlink cannot be used
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $targetArg = rtrim($input->getArgument('target'), '/');
         if (!is_dir($targetArg)) {
@@ -120,5 +120,7 @@ EOT
                 }
             }
         }
+
+        return 0;
     }
 }

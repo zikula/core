@@ -89,7 +89,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title($this->translator->__('Zikula Installer Script'));
@@ -97,20 +97,20 @@ class StartCommand extends AbstractCoreInstallerCommand
         if (true === $this->installed) {
             $io->error($this->translator->__('Zikula already appears to be installed.'));
 
-            return;
+            return 1;
         }
 
         $warnings = $this->controllerHelper->initPhp();
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
-            return;
+            return 2;
         }
         $checks = $this->controllerHelper->requirementsMet();
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
-            return;
+            return 2;
         }
 
         if ($input->isInteractive()) {
@@ -152,7 +152,7 @@ class StartCommand extends AbstractCoreInstallerCommand
             if (!$confirmation) {
                 $io->error($this->translator->__('Installation aborted'));
 
-                return;
+                return 3;
             }
         }
 
@@ -160,5 +160,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         $this->parameterHelper->initializeParameters($settings);
 
         $io->success($this->translator->__('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
+
+        return 0;
     }
 }

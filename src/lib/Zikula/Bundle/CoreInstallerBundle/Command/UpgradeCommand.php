@@ -114,12 +114,12 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (version_compare($this->currentInstalledVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
             $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $this->currentInstalledVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
-            return false;
+            return 1;
         }
 
         $io = new SymfonyStyle($input, $output);
@@ -131,13 +131,13 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         if (!empty($warnings)) {
             $this->printWarnings($output, $warnings);
 
-            return false;
+            return 2;
         }
         $checks = $this->controllerHelper->requirementsMet();
         if (true !== $checks) {
             $this->printRequirementsWarnings($output, $checks);
 
-            return false;
+            return 2;
         }
 
         $count = $this->migrationHelper->countUnMigratedUsers();
@@ -201,6 +201,6 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         $io->success($this->translator->__('UPGRADE COMPLETE!'));
 
-        return true;
+        return 0;
     }
 }
