@@ -20,8 +20,8 @@
         "zikula/profile-module": "dev-master",
         "zikula/oauth-module": "dev-master",
         "zikula/pagelock-module": "dev-master",
-        "zikula/andreas08-theme": "3.*",
-        "zikula/seabreeze-theme": "4.*",
+        "zikula/andreas08-theme": "dev-master",
+        "zikula/seabreeze-theme": "dev-master",
 
         "symfony/symfony": "4.*",
         "symfony/monolog-bundle": "3.4.*",
