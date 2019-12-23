@@ -27,6 +27,7 @@ framework:
         storage_id: "%zikula.session.storage_id%"
         save_path: "%zikula.session.save_path%"
         cookie_httponly: true
+        cookie_samesite: lax
     fragments:       ~
 
 # Twig Configuration
