@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Gedmo\Loggable\LoggableListener;
-use Stof\DoctrineExtensionsBundle\EventListener\LoggerListener as BaseListener;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -24,9 +23,9 @@ use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
- * Loggable listener subclass to provide the current user name
+ * Loggable listener to provide the current user name
  */
-class LoggerListener extends BaseListener
+class LoggerListener
 {
     /**
      * @var LoggableListener
@@ -60,7 +59,6 @@ class LoggerListener extends BaseListener
         $this->translator = $translator;
         $this->currentUserApi = $currentUserApi;
         $this->installed = $installed;
-        parent::__construct($loggableListener, $tokenStorage, $authorizationChecker);
     }
 
     public static function getSubscribedEvents()
@@ -73,7 +71,7 @@ class LoggerListener extends BaseListener
     /**
      * Set the username from the current user api.
      */
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (!$this->installed) {
             return;
