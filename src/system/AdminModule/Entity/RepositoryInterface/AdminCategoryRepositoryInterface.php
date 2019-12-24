@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\AdminModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ObjectRepository;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 
 interface AdminCategoryRepositoryInterface extends ObjectRepository, Selectable
