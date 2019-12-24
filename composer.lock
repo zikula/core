@@ -5995,12 +5995,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "a41f6ad64e9a79688f2698d496bdeba7f6716baa"
+                "reference": "a2703a352c218f7af8744f2e655ab669a82313b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a41f6ad64e9a79688f2698d496bdeba7f6716baa",
-                "reference": "a41f6ad64e9a79688f2698d496bdeba7f6716baa",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a2703a352c218f7af8744f2e655ab669a82313b1",
+                "reference": "a2703a352c218f7af8744f2e655ab669a82313b1",
                 "shasum": ""
             },
             "require": {
@@ -6048,7 +6048,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-12-23T22:07:29+00:00"
+            "time": "2019-12-24T07:13:51+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6106,12 +6106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "ea10cdf1876abdc19c3b9064e56a864d48d4a5dd"
+                "reference": "50cdcd093d5b5158f808d5d61d9ddd61ce6e0b68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/ea10cdf1876abdc19c3b9064e56a864d48d4a5dd",
-                "reference": "ea10cdf1876abdc19c3b9064e56a864d48d4a5dd",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/50cdcd093d5b5158f808d5d61d9ddd61ce6e0b68",
+                "reference": "50cdcd093d5b5158f808d5d61d9ddd61ce6e0b68",
                 "shasum": ""
             },
             "require": {
@@ -6169,7 +6169,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-22T12:29:14+00:00"
+            "time": "2019-12-24T07:19:10+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
