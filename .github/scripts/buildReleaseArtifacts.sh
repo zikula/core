@@ -71,9 +71,9 @@ mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/cache/"
 
 echo "Clearing log directory..."
 if [ -e "${PACKAGE_PATH}/var/log" ]; then # Zikula 3+
-    mv "${PACKAGE_PATH}/var/log/.htaccess" "${PACKAGE_PATH}/var/"
+#    mv "${PACKAGE_PATH}/var/log/.htaccess" "${PACKAGE_PATH}/var/"
     rm -rf "${PACKAGE_PATH}/var/log/"*
-    mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/log/"
+#    mv "${PACKAGE_PATH}/var/.htaccess" "${PACKAGE_PATH}/var/log/"
 elif [ -e "${PACKAGE_PATH}/var/logs" ]; then # Zikula 2
     mv "${PACKAGE_PATH}/var/logs/.htaccess" "${PACKAGE_PATH}/var/"
     rm -rf "${PACKAGE_PATH}/var/logs/"*
