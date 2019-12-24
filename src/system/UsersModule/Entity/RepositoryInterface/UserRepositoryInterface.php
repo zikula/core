@@ -15,9 +15,9 @@ namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
 use DateTime;
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ObjectRepository;
 use Zikula\UsersModule\Entity\UserEntity;
 
 interface UserRepositoryInterface extends ObjectRepository, Selectable

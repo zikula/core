@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ObjectRepository;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;
 
 interface AuthenticationMappingRepositoryInterface extends ObjectRepository, Selectable
