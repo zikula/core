@@ -20,7 +20,7 @@ zikula.stylesheet.bootstrap.min.path: "@AcmeFooModule:css/bootstrap.min.css"
 
 The recommended location is in `/web`.
 
-```
+```yaml
 zikula.stylesheet.bootstrap.min.path: "/bootstrap.min.css"
 ```
 
