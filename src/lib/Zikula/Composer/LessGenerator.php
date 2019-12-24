@@ -24,7 +24,7 @@ class LessGenerator
     /**
      * Generates a combined css file from the customized bootstrap.less und font-awesome.less.
      */
-    public static function generateCombinedBootstrapFontAwesomeCSS(Event $event): void
+    public static function generateCombinedBootstrapFontAwesomeCSS(Event $event): int
     {
         $args = $event->getArguments();
         // Also change build.xml if you change the default writeTo path here!
@@ -33,6 +33,6 @@ class LessGenerator
         $parser->setOptions(['relativeUrls' => false, 'compress' => true]);
         $parser->parseFile('src/web/bundles/core/css/bootstrap-font-awesome.less');
 
-        file_put_contents($writeTo, $parser->getCss());
+        return (false === file_put_contents($writeTo, $parser->getCss()) ? 1 : 0);
     }
 }
