@@ -29,6 +29,7 @@ class LessCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        LessGenerator::generateCombinedBootstrapFontAwesomeCSS($input->getOption('write-to'));
+        $writeTo = $input->getOption('write-to');
+        LessGenerator::generateCombinedBootstrapFontAwesomeCSS($writeTo);
     }
 }
