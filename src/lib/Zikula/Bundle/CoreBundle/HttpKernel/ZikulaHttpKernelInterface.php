@@ -57,7 +57,7 @@ interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
      */
     public function isBundle(string $name): bool;
 
-    public function setAutoloader(ClassLoader $autoloader): void;
+    public function setAutoloader(callable $autoloader): void;
 
     public function getAutoloader(): object;
 

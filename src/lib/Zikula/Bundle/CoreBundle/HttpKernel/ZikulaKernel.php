@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
-use Composer\Autoload\ClassLoader;
 use Exception;
 use InvalidArgumentException;
-use Symfony\Component\ErrorHandler\DebugClassLoader;
+use Symfony\Component\Debug\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
@@ -103,7 +102,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
     private $themes = [];
 
     /**
-     * @var ClassLoader
+     * @var callable
      */
     private $autoloader;
 
@@ -180,7 +179,7 @@ abstract class ZikulaKernel extends Kernel implements ZikulaHttpKernelInterface
         }
     }
 
-    public function setAutoloader(ClassLoader $autoloader): void
+    public function setAutoloader(callable $autoloader): void
     {
         $this->autoloader = $autoloader;
     }
