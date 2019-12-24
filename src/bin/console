@@ -2,7 +2,7 @@
 <?php
 
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Debug\Debug;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\Yaml\Yaml;
 use Zikula\Bundle\CoreBundle\Console\Application;
 
