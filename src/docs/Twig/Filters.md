@@ -10,7 +10,6 @@ Filters
 -------
 
  * isCoreModule
- * languageName
  * notifyFilters(filterEventName)
  * php(func)
  * profileLinkByUserId
@@ -20,3 +19,11 @@ Filters
  * urldecode
  * yesNo
  * onlineSince(minutes)
+
+For localisation:
+
+ * countryName
+ * currencyName
+ * languageName
+ * localeName
+ * timezoneName

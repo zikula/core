@@ -76,6 +76,7 @@ CHANGELOG - ZIKULA 3.0.x
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
+    - Added Twig extensions for easy access to localised names of countries, currencies, languages, locales and timezones.
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.2.4 to 1.2.5

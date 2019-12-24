@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use InvalidArgumentException;
-use Symfony\Component\Intl\Languages;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -51,7 +50,6 @@ class CoreExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('languageName', [$this, 'languageName']),
             new TwigFilter('yesNo', [$this, 'yesNo']),
             new TwigFilter('php', [$this, 'applyPhp']),
             new TwigFilter('protectMail', [$this, 'protectMailAddress'], ['is_safe' => ['html']])
@@ -66,11 +64,6 @@ class CoreExtension extends AbstractExtension
         unset($array[$key]);
 
         return $array;
-    }
-
-    public function languageName(string $code): string
-    {
-        return Languages::getName($code);
     }
 
     public function yesNo(string $string): string
