@@ -1,15 +1,12 @@
-CHANGELOG - ZIKULA 2.0.x
-========================
+# CHANGELOG - ZIKULA 2.0.x
 
-2.0.16 (unreleased)
--------------------
+## 2.0.16 (unreleased)
 
  - Fixes:
     - ...
 
 
-2.0.15 (2019-11-18)
--------------------
+## 2.0.15 (2019-11-18)
 
  - Fixes:
     - Prevent exception caused by invalid return URL during login.
@@ -18,8 +15,7 @@ CHANGELOG - ZIKULA 2.0.x
     - Updated obsolete HTML Purifier constant names.
 
 
-2.0.14 (2019-11-13)
--------------------
+## 2.0.14 (2019-11-13)
 
  - Security fixes from Symfony:
     - Use constant time comparison in UriSigner (CVE-2019-18887).
@@ -60,8 +56,7 @@ CHANGELOG - ZIKULA 2.0.x
     - webmozart/assert updated from 1.4.0 to 1.5.0
 
 
-2.0.13 (2019-04-17)
--------------------
+## 2.0.13 (2019-04-17)
 
  - Security fixes from Symfony:
     - Check service IDs are valid (CVE-2019-10910).
@@ -93,8 +88,7 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/profile-module updated from 3.0.5 to 3.0.6
 
 
-2.0.12 (2018-12-06)
--------------------
+## 2.0.12 (2018-12-06)
 
  - Security fixes from Symfony:
     - Disclosure of uploaded files full path (CVE-2018-19789).
@@ -119,16 +113,14 @@ CHANGELOG - ZIKULA 2.0.x
     - vakata/jstree updated from 3.3.5 to 3.3.7
 
 
-2.0.11 (2018-08-23)
--------------------
+## 2.0.11 (2018-08-23)
 
  - Fixes:
     - Avoid JS error if webshim is not available.
     - Resolved dependency conflict re-adding webshims polyfill.
 
 
-2.0.10 (2018-08-18)
--------------------
+## 2.0.10 (2018-08-18)
 
  - Fixes:
     - Fixed exception if no return url is given during login after upgrade (#3922).
@@ -146,15 +138,13 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/polyfill-* updated from 1.8.0 to 1.9.0
 
 
-2.0.9 (2018-08-06)
-------------------
+## 2.0.9 (2018-08-06)
 
  - Fixes:
     - Fixed invalid parameter update for frozen container in the upgrader.
 
 
-2.0.8 (2018-08-05)
-------------------
+## 2.0.8 (2018-08-05)
 
  - Security fixes from Symfony:
     - Remove support for legacy and risky HTTP headers (CVE-2018-14773).
@@ -195,8 +185,7 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/seabreeze-theme updated from 4.0.2 to 4.0.3
 
 
-2.0.7 (2018-05-28)
-------------------
+## 2.0.7 (2018-05-28)
 
  - Vendor updates:
     - gedmo/doctrine-extensions updated from 2.4.33 to 2.4.35
@@ -206,8 +195,7 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/symfony updated from 3.4.8 to 3.4.11
 
 
-2.0.6 (2018-04-13)
-------------------
+## 2.0.6 (2018-04-13)
 
  - BC Breaks:
     - Removed custom container builder bridge, so array access for the container is not available anymore (#3894).
@@ -228,8 +216,7 @@ CHANGELOG - ZIKULA 2.0.x
     - twig/twig updated from 1.35.0 to 1.35.3
 
 
-2.0.5 (2018-02-24)
-------------------
+## 2.0.5 (2018-02-24)
 
  - BC Breaks:
     - Removed matthiasnoback/symfony-service-definition-validator (#3885).
@@ -256,8 +243,7 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/andreas08-theme updated from 3.0.1 to 3.0.2
 
 
-2.0.4 (2017-12-16)
-------------------
+## 2.0.4 (2017-12-16)
 
  - BC Breaks:
     - CSRF tokens are now different for HTTP and HTTPS (#3856). See http://symfony.com/blog/cve-2017-16653-csrf-protection-does-not-use-different-tokens-for-http-and-https for more information.
@@ -283,8 +269,7 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/oauth-module updated from 1.0.3 to 1.0.4
 
 
-2.0.3 (2017-11-04)
-------------------
+## 2.0.3 (2017-11-04)
 
  - Fixes:
     - Fixed getAttributeValue error in case attribute does not exist.
@@ -312,8 +297,7 @@ CHANGELOG - ZIKULA 2.0.x
     - zikula/profile-module updated from 3.0.2 to 3.0.3
 
 
-2.0.2 (2017-10-03)
-------------------
+## 2.0.2 (2017-10-03)
 
  - Fixes:
     - Allow hooks to be managed in display (#3793).
@@ -329,8 +313,7 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/symfony updated from 3.3.8 to 3.3.9
 
 
-2.0.1 (2017-09-01)
-------------------
+## 2.0.1 (2017-09-01)
 
  - Fixes:
     - Corrected conditional statement for searchable modules (#3752).
@@ -362,8 +345,7 @@ CHANGELOG - ZIKULA 2.0.x
     - symfony/symfony updated from 3.3.5 to 3.3.8
 
 
-2.0.0 (2017-08-05)
-------------------
+## 2.0.0 (2017-08-05)
 
  - BC Breaks:
     - Removed all @deprecated items from Core-1.x.

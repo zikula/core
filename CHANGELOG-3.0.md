@@ -1,8 +1,6 @@
-CHANGELOG - ZIKULA 3.0.x
-========================
+# CHANGELOG - ZIKULA 3.0.x
 
-3.0.0 (unreleased)
-------------------
+## 3.0.0 (unreleased)
 
  - BC Breaks:
     - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).

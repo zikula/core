@@ -1,5 +1,4 @@
-Upgrading Zikula
-================
+# Upgrading Zikula
 
   1. [Test Environment](#testenv)
   2. [Before upgrading](#download)
@@ -7,30 +6,19 @@ Upgrading Zikula
 
 
 <a name="testenv"></a>
-
-Test Environment
-----------------
-
+## Test Environment
 The Zikula team strongly recommends having a duplicate testing environment of the live site in which all
 changes including upgrades are tested on before application to the live site.
 
-
 <a name="download"></a>
-
-Download
---------
-
+## Download
 ***Prior to any upgrade ensure that you have created a reliable backup of all files and the database.***
 
 Download the current release from [GitHub releases](https://github.com/zikula/core/releases/)
 All the dependencies and requirements are included in this package.
 
-
 <a name="upgrading"></a>
-
-Upgrading
----------
-
+## Upgrading
 The minimum upgrade version is Zikula Core 1.4.3. Please upgrade to at least this version before attempting to upgrade
 to Core-2.0.x.
 
@@ -55,7 +43,7 @@ The following process should be followed for all upgrades even small point relea
       - **Change the value of `datadir` to `web/uploads`** if upgrading from Core-1.x.
     - Do not change any other values.
 
-#### Continue:
+### Continue:
 
   - Copy your custom theme to your new installation. The folders of your theme should be in the exact same place as your
     backup.

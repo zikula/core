@@ -4,8 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/zikula/core/badges/gpa.svg)](https://codeclimate.com/github/zikula/core)
 [![Scrutinizer](https://scrutinizer-ci.com/g/zikula/core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/zikula/core/)
 
-Zikula Core - Application Framework
-===================================
+# Zikula Core - Application Framework
 
 Zikula Core is an Application Framework which extends Symfony 4.x and includes technologies
 fostering a dynamic modular development paradigm and Twig-based theming system which allows for rapid
@@ -19,8 +18,7 @@ Zikula can quickly become a Content Management System utilizing community-driven
 
 For more information visit https://ziku.la/
 
-Requirements
-------------
+## Requirements
 
  - Zikula Core requires PHP >= 7.2.0
  - Additional server considerations can be found on
@@ -35,15 +33,11 @@ Requirements
    provider on how to rectify these issues. Typically, they will require changing the `php.ini` file or
    possibly reconfiguring the php installation by your provider.
 
-
-Documentation
--------------
+## Documentation
 
 Please see our [developer documentation](https://github.com/zikula/core/tree/master/src/docs)
 
-
-Contributing
-------------
+## Contributing
 
 Contributions can be made to Zikula in a number of ways
 
