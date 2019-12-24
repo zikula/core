@@ -1,8 +1,6 @@
-Generating a New Module Skeleton
-================================
+# Generating a new module skeleton
 
-Usage
------
+## Usage
 
 The `zikula:generate:module` generates a new module structure.
 
@@ -16,8 +14,7 @@ forget to pass all needed options:
 
     php bin/console zikula:generate:module --namespace=Acme/BlogModule --no-interaction
 
-Available Options
------------------
+## Available options
 
 * `--namespace`: The namespace of the module to create. The namespace should
   begin with a "vendor" name like your company name, your project name, or

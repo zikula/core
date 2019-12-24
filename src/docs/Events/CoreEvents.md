@@ -1,28 +1,47 @@
-Core Events
-===========
+# Core events
 
-Class: \Zikula\Core\CoreEvents
+The `\Zikula\Core\CoreEvents` provides these events:
 
-    /**
-     * Occurs during Core installation before the modules are installed.
-     * Stop propagation of the event to cause the core installer to fail.
-     */
-    const CORE_INSTALL_PRE_MODULE = 'core.install.pre.module';
+```php
+/**
+ * Occurs during Core installation before the modules are installed.
+ * Stop propagation of the event to cause the core installer to fail.
+ */
+public const CORE_INSTALL_PRE_MODULE = 'core.install.pre.module';
 
-    /** Occurs when a module has been installed. */
-    const MODULE_INSTALL = 'module.install';
+/**
+ * Occurs during Core upgrade before the modules are upgraded.
+ * Stop propagation of the event to cause the core upgrader to fail.
+ */
+public const CORE_UPGRADE_PRE_MODULE = 'core.upgrade.pre.module';
 
-    /** Occurs after a module has been installed (on reload of the extensions view). */
-    const MODULE_POSTINSTALL = 'module.postinstall';
+/**
+ * Occurs when a module has been installed.
+ */
+public const MODULE_INSTALL = 'module.install';
 
-    /** Occurs when a module has been upgraded to a newer version. */
-    const MODULE_UPGRADE = 'module.upgrade';
+/**
+ * Occurs after a module has been installed (on reload of the extensions view).
+ */
+public const MODULE_POSTINSTALL = 'module.postinstall';
 
-    /** Occurs when a module has been enabled after it has been disabled before. */
-    const MODULE_ENABLE = 'module.enable';
+/**
+ * Occurs when a module has been upgraded to a newer version.
+ */
+public const MODULE_UPGRADE = 'module.upgrade';
 
-    /** Occurs when a module has been disabled. */
-    const MODULE_DISABLE = 'module.disable';
+/**
+ * Occurs when a module has been enabled after it has been disabled before.
+ */
+public const MODULE_ENABLE = 'module.enable';
 
-    /** Occurs when a module has been removed entirely. */
-    const MODULE_REMOVE = 'module.remove';
+/**
+ * Occurs when a module has been disabled.
+ */
+public const MODULE_DISABLE = 'module.disable';
+
+/**
+ * Occurs when a module has been removed entirely.
+ */
+public const MODULE_REMOVE = 'module.remove';
+```

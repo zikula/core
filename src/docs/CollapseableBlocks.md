@@ -1,5 +1,4 @@
-Collapseable Blocks
-===================
+# Collapseable blocks
 
 In the BlocksModule settings, an admin may **enable block collapse icons**. This feature adds a small icon next to each
 block title that when clicked will 'minimize' (collapse) the block. The icon can be clicked again to maximize or restore

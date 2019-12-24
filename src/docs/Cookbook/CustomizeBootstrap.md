@@ -1,9 +1,8 @@
-Customizing Bootstrap
-=====================
+# Customizing Bootstrap
 
-Changing the look of bootstrap is quite simple. 
+Changing the look of Bootstrap is quite simple. 
 
-* Please go to the site `http://getbootstrap.com/customize/` and configure what you need.
+* Please go to the site `https://getbootstrap.com/docs/3.4/customize/` and configure what you need.
 * Download your new customization
 * Unpack your download locally
 * You will find a file named `boostrap.min.css`

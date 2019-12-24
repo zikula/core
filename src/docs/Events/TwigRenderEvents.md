@@ -1,16 +1,17 @@
-Twig Render Events
-==================
+# Twig render events
 
-class: `\Zikula\ThemeModule\ThemeEvents`
+The `\Zikula\ThemeModule\ThemeEvents` class provides these events:
 
-    /**
-     * Occurs immediately before twig theme engine renders a template.
-     * subject is \Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent
-     */
-    const PRE_RENDER = 'theme.pre_render';
+```php
+/**
+ * Occurs immediately before twig theme engine renders a template.
+ * subject is \Zikula\ThemeModule\Bridge\Event\TwigPreRenderEvent
+ */
+public const PRE_RENDER = 'theme.pre_render';
 
-    /**
-     * Occurs immediately after twig theme engine renders a template.
-     * subject is \Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent
-     */
-    const POST_RENDER = 'theme.post_render';
+/**
+ * Occurs immediately after twig theme engine renders a template.
+ * subject is \Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent
+ */
+public const POST_RENDER = 'theme.post_render';
+```

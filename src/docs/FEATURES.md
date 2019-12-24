@@ -1,5 +1,6 @@
-Features of Zikula
-==================
+# Features of Zikula
+
+## Core system
 
 ### Foundation
 
@@ -52,6 +53,7 @@ Features of Zikula
  - CLI based module skeleton generator
  - Multi-Sites capability (one core-base, multiple custom DB)
 
+## Further components
 
 ### ModuleStudio (MOST)
 

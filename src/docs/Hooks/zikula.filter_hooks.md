@@ -1,19 +1,22 @@
-Hook Types
-==========
+# Hook types
 
-### 'filter_hooks' category
+## 'filter_hooks' category
 
-    see \Zikula\Bundle\HookBundle\Category\FilterHooksCategory
+See `\Zikula\Bundle\HookBundle\Category\FilterHooksCategory`.
 
-    filter          - Filter's content in a template.
+```php
+public const NAME = 'filter_hooks';
 
+/**
+ * Dispatches FilterHook instances.
+ */
+public const TYPE_FILTER = 'filter';
+```
 
-A filter is simply a something that alters data in some way.  A filter might be used to sanitize HTML content, format
-text in some way, or otherwise transform content.
+A filter is simply a something that alters data in some way.
+A filter might be used to sanitize HTML content, format text in some way, or otherwise transform content.
 
-
-Area Type
----------
+## Area Type
 
 There is only one kind of hook type in a filter bundle:
 
@@ -21,19 +24,17 @@ There is only one kind of hook type in a filter bundle:
                Have their own separate area(s) as it would give a user more control over
                what filters are applied and where.
 
+## Subscriber implementation
 
-Subscriber Implementation
--------------------------
+Usage in a Twig template:
 
-Usage in a twig template:
-
-    {{ var|notifyfilters:'news.filter_hooks.articles.filter'|safeHtml }}
+```twig
+{{ var|notifyfilters:'news.filter_hooks.articles.filter'|safeHtml }}
+```
 
 This generates a `Zikula\Bundle\HookBundle\Hook\FilterHook` event object that has the event name and
 the data to be filtered.
 
+## Provider implementation
 
-Provider Implementation
------------------------
-
-see `/src/docs/Hooks/zikula.ui_hooks.ProviderImplementation.md`
+See [zikula.ui_hooks.ProviderImplementation.md](zikula.ui_hooks.ProviderImplementation.md).

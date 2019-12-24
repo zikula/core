@@ -1,5 +1,4 @@
-Translation Extraction
-======================
+# Translation extraction
 
 Extract all the core translations
 

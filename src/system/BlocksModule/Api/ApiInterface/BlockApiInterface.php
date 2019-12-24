@@ -28,7 +28,7 @@ interface BlockApiInterface
 
     /**
      * Create an instance of a the block Object given a 'bKey' string like AcmeFooModule:Acme\FooModule\Block\FooBlock
-     *   which is the Common ModuleName and the FullyQualifiedClassName of the block.
+     * which is the common module name and the FullyQualifiedClassName of the block.
      */
     public function createInstanceFromBKey(string $bKey): BlockHandlerInterface;
 

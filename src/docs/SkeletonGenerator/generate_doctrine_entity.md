@@ -1,8 +1,6 @@
-Generating a New Doctrine Entity Stub
-=====================================
+# Generating a new Doctrine entity stub
 
-Usage
------
+## Usage
 
 The `zikula:generate:doctrine:entity` command generates a new Doctrine entity stub
 including the mapping definition and the class properties, getters and setters.
@@ -17,8 +15,7 @@ The command can be run in a non interactive mode by using the
 
     php bin/console zikula:generate:doctrine:entity --non-interaction --entity=AcmeBlogModule:Post --fields="title:string(100) body:text" --format=xml
 
-Available Options
------------------
+## Available options
 
 * `--entity`: The entity name given as a shortcut notation containing the
   module name in which the entity is located and the name of the entity. For

@@ -1,11 +1,9 @@
-Bootstrap NavBar Menus
-======================
+# Bootstrap NavBar Menus
 
 1. Standard NavBar (list-style) Menu
 2. Drop Menu
 
-Standard NavBar (list-style) Menu
----------------------------------
+## Standard NavBar (list-style) Menu
 
 A normal menu as created in the "Menus.md" document can be easily converted to a list-style
 NavBar menu by editing the *menu root* and adding one option: "childrenAttributes" and give it
@@ -16,9 +14,7 @@ Then, in the BlocksModule create a (or move the existing) block to the 'navbar' 
 
 Your menu should now work as expected in the navbar.
 
-
-Drop Menu
----------
+## Drop Menu
 
 This menu is slightly less intuitive. You must create a structure like so:
 

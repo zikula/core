@@ -1,10 +1,9 @@
-Debugging Translations
-======================
+# Debugging translations
 
 Symfony comes with `bin/console debug:translation` command line tool to debug translations.
 **This tool work only with Symfony and Zikula Core-2.0 translation paths.**
 
-Example output for more information please check http://symfony.com/doc/current/book/translation.html#debugging-translations
+Example output for more information please check https://symfony.com/doc/current/translation.html#debugging-translations
 
     %> php bin/console debug:translation pl KaikmediaPagesModule
     +----------+-------------+----------------------+

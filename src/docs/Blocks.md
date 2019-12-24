@@ -1,8 +1,6 @@
-Blocks
-======
+# Blocks
 
-Introduction
-------------
+## Introduction
 
 From a user point of view, a block is a small portion of content that appears along side the main content of a page.
 It can be a menu, a list of tags, a login form or any bit of content that a module can manage. The **theme** manages
@@ -15,13 +13,12 @@ are defined by a second class called a *BlockHandler*. (In previous versions of 
 "block class"). This class is provided by a module and can define any number of properties. It is the Handler's
 responsibility to display and modify the properties using a Symfony Form class.
 
-Requirements
-------------
+## Requirements
 
  - BlockHandler class names should be suffixed by `Block` and located in the `ModuleRoot/Block/` directory.
- - BlockHandler classes must implement Zikula\BlocksModule\BlockHandlerInterface.
- - Zikula\BlocksModule\AbstractBlockHandler is available if desired.
- - BlockHandlers must register their PermissionSchema as part of the owning module's array (in composer.json).
+ - BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface`.
+ - `Zikula\BlocksModule\AbstractBlockHandler` is available if desired.
+ - BlockHandlers must register their permission schema as part of the owning module's array (in `composer.json`).
  - BlockHandler must define a Symfony FormType class to allow editing of the block properties if this is needed.
    Otherwise the `getFormClassName` method must return `null`.
     - A simple Twig template is available as a default `@ZikulaBlocksModule/Block/default_modify.html.twig`.

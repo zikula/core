@@ -1,5 +1,4 @@
-Permissions
-===========
+# Permissions
 
 The permission schema for **dynamic** menu items is `ZikulaMenuModule::id`.
 

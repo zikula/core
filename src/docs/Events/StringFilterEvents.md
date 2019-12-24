@@ -1,10 +1,11 @@
-String Filter Events
-====================
+# String filter events
 
-class: `\Zikula\SecurityCenterModule\Api\HtmlFilterApiInterface`
+The `\Zikula\SecurityCenterModule\Api\HtmlFilterApiInterface` class provides this event:
 
-    /**
-     * Occurs when a string is passed to HtmlFilterApi and filtered.
-     * An instance of Zikula\Core\Event\GenericEvent, the data is the filterable string.
-     */
-    const HTML_STRING_FILTER = 'htmlfilter.outputfilter';
+```php
+/**
+ * Occurs when a string is passed to HtmlFilterApi and filtered.
+ * An instance of Zikula\Core\Event\GenericEvent, the data is the filterable string.
+ */
+public const HTML_STRING_FILTER = 'htmlfilter.outputfilter';
+```

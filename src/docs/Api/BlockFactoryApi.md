@@ -1,21 +1,17 @@
-BlockFactoryApi
-===============
+# BlockFactoryApi
 
-classname: \Zikula\BlocksModule\Api\BlockFactoryApi
+classname: `\Zikula\BlocksModule\Api\BlockFactoryApi`.
 
 The BlockFactoryApi helps with the instantiation of blocks.
 
-The class makes the following methods available:
+The class makes the following method available:
 
-    /**
-     * Factory method to create an instance of a block given its name and the providing module instance.
-     *  Supports either Zikula\BlocksModule\BlockHandlerInterface or
-     *  Zikula_Controller_AbstractBlock (to be removed).
-     *
-     * @param $blockClassName
-     * @param AbstractModule $moduleBundle
-     * @return BlockHandlerInterface
-     */
-    public function getInstance($blockClassName, AbstractModule $moduleBundle = null);
+```php
+/**
+ * Factory method to create an instance of a block given its name and the providing module instance.
+ * Given block class needs to implement Zikula\BlocksModule\BlockHandlerInterface.
+ */
+public function getInstance(string $blockClassName): BlockHandlerInterface;
+```
 
 The class is fully tested.

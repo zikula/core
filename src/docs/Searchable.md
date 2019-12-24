@@ -1,23 +1,7 @@
-Searchable
-==========
+# Searchable
 
-The Api/methodology for the search module requires a dedicated class that is identified as a DependencyInjection tagged 
-service, like so:
-
-```
-    acme_foo_module.helper.search_helper:
-        class: Acme\FooModule\Helper\SearchHelper
-        arguments:
-          - '@zikula_permissions_module.api.permission'
-          - '@twig'
-          - '@session'
-          - '@acme_foo_module.fooentity_repository'
-        tags:
-            - { name: zikula.searchable_module, bundleName: AcmeFooModule }
-```
-
-The class must implement `Zikula\SearchModule\SearchableInterface` Please see the interface itself for documentation 
-of the required methods.
+The Api/methodology for the search module requires a dedicated class which must implement `Zikula\SearchModule\SearchableInterface`.
+Please see the interface itself for documentation of the required methods.
 
 The `getResults()` method **MUST** return an array of `Zikula\SearchModule\Entity\SearchResultEntity`.
 

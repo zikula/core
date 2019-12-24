@@ -1,5 +1,4 @@
-Theme Composer file
-===================
+# Theme composer file
 
 Filename: `composer.json`
 
@@ -10,17 +9,17 @@ The composer.json file is also used by composer and packagist to enable package 
 
 Please see the [Official JSON Schema](https://getcomposer.org/doc/04-schema.md) for full details on most items
 
- - name: (required) can be anything, but typically `<vendor>/<name>-<type>`
- - version: (required) must adhere to [semver requirements](http://semver.org).
- - description: (required) a one sentence description of the extension (translatable)
- - type: (required) zikula-theme
- - license: (required) License name (string) or an array of license names (array of strings) under which the extension 
-   is provided. You must use the standardized identifier acronym for the license as defined by 
-   [Software Package Data Exchange](http://spdx.org/licenses/)
- - authors: (optional but recommended) an array of objects indicating author or group information
- - autoload: (required) object defining psr-4 namespace object
- - require: (required) object defining bundle dependencies
- - extra: (required) the zikula object with required keys
+- name: (required) can be anything, but typically `<vendor>/<name>-<type>`
+- version: (required) must adhere to [semver requirements](http://semver.org).
+- description: (required) a one sentence description of the extension (translatable)
+- type: (required) zikula-theme
+- license: (required) License name (string) or an array of license names (array of strings) under which the extension 
+  is provided. You must use the standardized identifier acronym for the license as defined by 
+  [Software Package Data Exchange](http://spdx.org/licenses/)
+- authors: (optional but recommended) an array of objects indicating author or group information
+- autoload: (required) object defining psr-4 namespace object
+- require: (required) object defining bundle dependencies
+- extra: (required) the zikula object with required keys
    - zikula: (required)
      - core-compatibility: (required) a [version compatibility string](https://getcomposer.org/doc/01-basic-usage.md#package-versions) defining core compatibility
      - class: (required) the fully qualified name of the Bundle class

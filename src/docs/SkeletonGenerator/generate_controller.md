@@ -1,8 +1,6 @@
-Generating a New Controller
-===========================
+# Generating a new controller
 
-Usage
------
+## Usage
 
 The `zikula:generate:controller` command generates a new Controller including 
 actions, tests, templates and routing.
@@ -17,8 +15,7 @@ The command can be run in a non interactive mode by using the
 
     $ php bin/console zikula:generate:controller --no-interaction --controller=AcmeBlogModule:Post
 
-Available Options
------------------
+## Available options
 
 * `--controller`: The controller name given as a shortcut notation containing 
   the module name in which the controller is located and the name of the

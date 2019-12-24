@@ -1,5 +1,4 @@
-Users and Authentication
-========================
+# Users and authentication
 
 As of Core 1.4.3, the UsersModule has been entirely rewritten and has dramatic "under the hood" changes. Some of these
 changes will be obvious to the site administrator because of the changes in the settings and admin interface. The user
@@ -20,16 +19,14 @@ ZAuth therefore maintains the password and provides admin and user interfaces fo
 
 It should be noted that many of the settings and admin-interface controls have been relocated from Users to ZAuth.
 
-User Types
-----------
+## User types
 
 Zikula will consider all users to be within two categories: "logged in" and "not logged in" users. Logged in users can
 be granted additional rights and roles with the Permissions Module. All users utilize sessions. It is not possible to 
 visit any zikula page without beginning a session. Users that are not logged in are all considered UserId = 1. Other
 users are assigned a UID as they are created.
 
-Authentication
---------------
+## Authentication
 
 It is important to consider what *authentication* means. Authentication is a method where a trusted relationship is 
 established to indicate that a user *is who they say they are*. There are many methods to do this (OpenID, OAuth, etc.)
@@ -37,15 +34,13 @@ ZAuth is the same type of method, it is simply local instead of external. Typica
 credential (email, password, etc) and are provided then with an ID that has previously been created through some kind
 of registration method.
 
-Security
---------
+## Security
 
 With passwords, security should be an immediate concern of any site admin. The proper storage of passwords is a difficult
 process and many systems have been provided to block attacks attempting to gain access to user data. The advantage of
 the new UsersModule is that ALL of this can be provided by external systems like Google or Facebook (via OAuth) and
 therefore relieve the Zikula site admin of the responsibility of password security.
 
-Events
-------
+## Events
 
 See the `Events/AccessUserAndRegistrationEvents.md` document for more information on User and Registration related events.

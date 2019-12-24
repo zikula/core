@@ -1,17 +1,14 @@
-Twig Functions Provided by Zikula Core
-======================================
+# Twig functions provided by Zikula Core
 
 The following twig functions are available in templates. These are in addition to the standard functions provided
-by the Twig package itself. See [Twig Documentation](http://twig.sensiolabs.org/documentation) for more information.
-Also see [standard Symfony functions](http://symfony.com/doc/current/reference/twig_reference.html) for additional
+by the Twig package itself. See [Twig documentation](https://twig.symfony.com) for more information.
+Also see [standard Symfony functions](https://symfony.com/doc/current/reference/twig_reference.html) for additional
 functions, filters, tags, tests and global variables.
 
-#### Note:
-Zikula Core provides a `zikula_default` package for use in the `asset()` twig function which allows the developer
+**Note:** Zikula Core provides a `zikula_default` package for use in the `asset()` twig function which allows the developer
 to access the core root directory e.g. `asset('images/logo_with_title.png', 'zikula_default')`
 
-Functions
----------
+## Functions
 
 ### Useful
 

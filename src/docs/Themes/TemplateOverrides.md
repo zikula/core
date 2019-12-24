@@ -1,27 +1,31 @@
-Theme Template Overrides
-========================
+# Theme template overrides
 
-**Theme resource overrides** are placed here under the target FQ Module name.
+## Theme resource overrides
+
+Placed within the theme `Resources` directory under the target FQ Module name.
 
 ```
-    Resources/
-        config/
+Resources/
+    config/
+    public/
+    views/
+    ZikulaSpecModule/
         public/
+            css/
+                style.css
         views/
-        ZikulaSpecModule/
-            public/
-                css/
-                    style.css
-            views/
-                Foo/
-                    index.html.twig
+            Foo/
+                index.html.twig
 ```
 
-#### System Resource Overrides
-Symfony has a system in place to override Resources of any Bundle. See 
-[Overriding Resources](http://symfony.com/doc/current/cookbook/bundles/inheritance.html#overriding-resources-templates-routing-etc)
-**Note that in Zikula, System Resource overrides take precedence over Theme Resource overrides.**
+## System resource overrides
 
-##### Override references
- - see `\Zikula\Bundle\CoreBundle\EventListener\ThemeListener::setUpThemePathOverrides` (for @ZikulaFoo/Bar/index.html.twig type notation)
- - see `\Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::locateResource` (for ZikulaFooBundle:Bar:index.html.twig type notation)
+Symfony has a system in place to override Resources of any Bundle. See 
+[Overriding Resources](https://symfony.com/doc/current/bundles/override.html#templates).
+
+**Note that in Zikula, System resource overrides take precedence over Theme resource overrides.**
+
+## Override references
+
+- See `\Zikula\Bundle\CoreBundle\EventListener\ThemeListener::setUpThemePathOverrides` (for @ZikulaFoo/Bar/index.html.twig type notation)
+- See `\Symfony\Component\HttpKernel\Kernel::locateResource` (for ZikulaFooBundle:Bar:index.html.twig type notation)

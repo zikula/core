@@ -1,5 +1,4 @@
-Exposing Template Names
-=======================
+# Exposing template names
 
 In past versions of zikula, the user was able to expose template names inside the html source by triggering a flag
 in the theme settings at `/theme/admin/config`.

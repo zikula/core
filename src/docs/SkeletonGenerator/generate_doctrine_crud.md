@@ -1,8 +1,6 @@
-Generating a CRUD Controller Based on a Doctrine Entity
-=======================================================
+# Generating a CRUD controller based on a Doctrine entity
 
-Usage
------
+## Usage
 
 The `generate:doctrine:crud` generates a basic controller for a given entity
 located in a given module. This controller allows to perform the five basic
@@ -25,8 +23,7 @@ forget to pass all needed options:
 
     php bin/console generate:doctrine:crud --entity=AcmeBlogModule:Post --format=annotation --with-write --no-interaction
 
-Available Options
------------------
+## Available options
 
 * `--entity`: The entity name given as a shortcut notation containing the
   module name in which the entity is located and the name of the entity. For

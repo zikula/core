@@ -1,7 +1,6 @@
-Theme File Structure
-====================
+# Theme file structure
 
-Reference: http://symfony.com/doc/current/cookbook/bundles/best_practices.html
+Reference: https://symfony.com/doc/current/bundles/best_practices.html
 
 ```
 SpecTheme/

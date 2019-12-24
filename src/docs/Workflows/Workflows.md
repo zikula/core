@@ -6,7 +6,7 @@ You can read more about it in [the manual](https://symfony.com/doc/master/compon
 
 ## Workflow events
 
-Please see the [Symfony docs](http://symfony.com/doc/current/workflow/usage.html#using-events) for a list of existing workflow events.
+Please see the [Symfony docs](https://symfony.com/doc/current/workflow/usage.html#using-events) for a list of existing workflow events.
 
 ## Custom functionality
 
@@ -32,13 +32,17 @@ Zikula provides a JavaScript-based workflow editor.
 
 The editor expects the name of a workflow which should be loaded. You can for example include a link to it like this:
 
-    <p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'acmetestmodule_enterprise' }) }}" title="{{ __('Edit workflow for articles') }}" target="_blank">{{ __('Articles workflow') }}</a>
+```twig
+<p><a href="{{ path('zikula_workflow_editor_index', { 'workflow': 'acmetestmodule_enterprise' }) }}" title="{{ __('Edit workflow for articles') }}" target="_blank">{{ __('Articles workflow') }}</a>
+```
 
 The editor can switch between `workflow` (petri net) and `state_machine` modes. There are several differences between these. For example if you have a transition with more than one input like this:
 
-    accept:
-        from: [initial, waiting]
-        to: accepted
+```yaml
+accept:
+    from: [initial, waiting]
+    to: accepted
+```
 
 When using in a petri net this transition is only enabled if the marking has both places. So your object needs both `froms` to transition into `to`. If you want two different `froms` you'll need two different transitions.
 

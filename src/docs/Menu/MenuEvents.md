@@ -1,5 +1,4 @@
-Menu Events
-===========
+# Menu events
 
 Each menu configured in the menu module's UI dispatches the following event:
 

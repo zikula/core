@@ -1,5 +1,4 @@
-ThemeClass
-==========
+Theme class
 
 Filename: `<Vendor><Name>Theme.php`
 

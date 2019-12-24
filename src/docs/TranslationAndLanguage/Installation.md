@@ -1,5 +1,4 @@
-Installation of translations
-============================
+# Installation of translations
 
 Translations must be located in `app/Resources/translations`
 

@@ -1,5 +1,4 @@
-Creating a Theme based on ZikulaBootstrapTheme
-==============================================
+# Creating a theme based on ZikulaBootstrapTheme
 
 If you want to create your own theme, the starting point of reusing the ZikulaBoostrapTheme is a good idea. This 
 example is based on the ZikulaBoostrapTheme of Zikula 1.4.5
@@ -21,7 +20,9 @@ class CompanyPaulaTheme extends AbstractCoreTheme
 {
 }
 ```
+
 * next the ``composer.json`` file must be changed. It is also located inside the theme root. It should look like:
+
 ```json
 {
     "name": "company/paula-theme",
@@ -54,6 +55,7 @@ class CompanyPaulaTheme extends AbstractCoreTheme
     }
 }
 ```
+
 * in `home.html.twig`, `master.html.twig` and `admin.html.twig` you have to change all instance of `@ZikulaBoostrapTheme`
 to `@CompanyPaulaTheme`. They are located in `theme/Company/Paula/Resources/views`
 * Do the same in `header.html.twig` which is located in `theme/Company/Paula/Resources/views/include`

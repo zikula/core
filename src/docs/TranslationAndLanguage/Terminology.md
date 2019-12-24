@@ -1,5 +1,4 @@
-Translation Terminology
-=======================
+# Translation terminology
 
 The technology for translations used in this guide is simple - anywhere in project we use English strings and English descriptions.
 These are translated to other language stored in files or database and loaded on demand instead of English strings. 
@@ -16,4 +15,4 @@ These are translated to other language stored in files or database and loaded on
  * **locale** - The locale that the translations are for (e.g. en_GB, en, etc);
  * **loader** - How Symfony/Zikula should load and parse the file (e.g. xlf, php, yml, etc Zikula .po .mo). 
 
-For more information please refer to http://symfony.com/doc/current/translation.html
+For more information please refer to https://symfony.com/doc/current/translation.html

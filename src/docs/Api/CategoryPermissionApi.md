@@ -1,29 +1,33 @@
-CategoryPermissionApi
-=====================
+# CategoryPermissionApi
 
-classname: \Zikula\CategoriesModule\Api\CategoryPermissionApi
+classname: `\Zikula\CategoriesModule\Api\CategoryPermissionApi`.
 
 The CategoryPermissionApi helps with implementing permission checks based on categories.
 
-The class makes the following methods available:
+The class makes the following method available:
 
-    /**
-     * Check for access to a certain set of categories.
-     *
-     * For each category property in the list, check if we have access to that category in that property.
-     * Check is done as "ZikulaCategoriesModule:PropertyId:CategoryId", "$regId::$catId"
-     *
-     * @param AbstractCategoryAssignment[] $categoryAssignments
-     * @param int $permLevel
-     * @param bool $requireAccessForAll
-     * @return bool True if access is allowed to at least one of the categories
-     */
-    public function hasCategoryAccess(array $categoryAssignments, $permLevel = ACCESS_OVERVIEW, $requireAccessForAll = false);
+```php
+/**
+ * Check for access to a certain set of categories.
+ *
+ * For each category property in the list, check if we have access to that category in that property.
+ * Check is done as "ZikulaCategoriesModule:PropertyId:CategoryId", "$regId::$catId"
+ *
+ * @param AbstractCategoryAssignment[] $categoryAssignments
+ */
+public function hasCategoryAccess(
+    array $categoryAssignments,
+    int $permLevel = ACCESS_OVERVIEW,
+    bool $requireAccessForAll = false
+): bool;
+```
 
-`$categoryAssignments` must be an array of \Zikula\CategoriesModule\Entity\AbstractCategoryAssignment
+`$categoryAssignments` must be an array of `\Zikula\CategoriesModule\Entity\AbstractCategoryAssignment`.
 
 The class is fully tested.
 
-use:
+Usage example:
 
-    $hasAccess = $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());
+```php
+$hasAccess = $this->categoryPermissionApi->hasCategoryAccess($page->getCategoryAssignments());
+```

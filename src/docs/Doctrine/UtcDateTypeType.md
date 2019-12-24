@@ -1,13 +1,11 @@
-UTC DateTime Column Type
-========================
+# UTC DateTime column type
 
-`utcdatetime` Column Type.
+The `utcdatetime` column type forces the DateTime instance to be stored in UTC timezone.
 
-Forces the DateTime instance to be stored in UTC timezone.
+Use like:
 
-use like:
-      
-      * @ORM\Column(type="utcdatetime")
+```
+* @ORM\Column(type="utcdatetime")
+```
 
-refs: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
-
+Refs: http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/cookbook/working-with-datetime.html
