@@ -66,7 +66,9 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('timezone', TimezoneType::class, [
                 'label' => $this->__('Time zone for anonymous guests'),
-                'help' => $this->__f('Server time zone is %tz', ['%tz' => date_default_timezone_get() . ' (' . date('T') . ')'])
+                'help' => $this->__f('Server time zone is %tz', ['%tz' => date_default_timezone_get() . ' (' . date('T') . ')']),
+                'choice_translation_locale' => $options['locale'],
+                'intl' => true
             ])
             ->add('idnnames', CheckboxType::class, [
                 'label' => $this->__('Allow IDN domain names'),
@@ -101,6 +103,7 @@ class LocaleSettingsType extends AbstractType
     {
         $resolver->setDefaults([
             'languages' => ['English' => 'en'],
+            'locale' => 'en',
             'timezones' => [0 => 'GMT']
         ]);
     }

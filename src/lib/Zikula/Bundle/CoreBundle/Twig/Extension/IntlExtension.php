@@ -19,6 +19,7 @@ use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Intl\Timezones;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class IntlExtension extends AbstractExtension
