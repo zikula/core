@@ -11,7 +11,7 @@ services:
         arguments:
           $installed: '%installed%'
         calls:
-            - [setStorage, ['@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine']]
+            - setStorage: ['@zikula_core.bridge.http_foundation.zikula_session_storage_doctrine']
     zikula_core.bridge.http_foundation.doctrine_session_handler:
         alias: Zikula\Bridge\HttpFoundation\DoctrineSessionHandler
 
@@ -20,11 +20,11 @@ services:
         arguments:
           $options: '%session.storage.options%'
         calls:
-            - [setSaveHandler, ['@Zikula\Bridge\HttpFoundation\DoctrineSessionHandler']]
+            - setSaveHandler: ['@Zikula\Bridge\HttpFoundation\DoctrineSessionHandler']
 
     zikula_core.bridge.http_foundation.zikula_session_storage_file:
         class: Zikula\Bridge\HttpFoundation\ZikulaSessionStorage
         arguments:
           $options: '%session.storage.options%'
         calls:
-            - [setSaveHandler, ['@session.handler.native_file']]
+            - setSaveHandler: ['@session.handler.native_file']

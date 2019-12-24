@@ -27,7 +27,7 @@ services:
     Zikula\RoutesModule\Form\Handler\:
         resource: '../../Form/Handler'
         calls:
-            - [setLockingApi, ['@?Zikula\PageLockModule\Api\LockingApi']]
+            - setLockingApi: ['@?Zikula\PageLockModule\Api\LockingApi']
 
     # public because installer accesses this using container
     Zikula\RoutesModule\Helper\MultilingualRoutingHelper:

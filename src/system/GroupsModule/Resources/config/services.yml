@@ -19,7 +19,7 @@ services:
 
     Zikula\GroupsModule\Entity\Repository\GroupRepository:
         calls:
-            - [setTranslator, ['@Zikula\Common\Translator\Translator']]
+            - setTranslator: ['@Zikula\Common\Translator\Translator']
 
     Zikula\GroupsModule\Menu\MenuBuilder:
         tags:
