@@ -49,7 +49,7 @@ class AdminMenuFunction
             return ''; // Since no permission, return empty
         }
 
-        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:menu', [
+        $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::menuAction', [
             'mode' => $mode,
             'template' => $template
         ]);

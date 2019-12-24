@@ -36,7 +36,7 @@ class AdminHeaderFunction
      */
     public function display(): string
     {
-        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:header');
+        $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::headerAction');
 
         return $this->handler->render($ref);
     }

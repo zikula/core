@@ -55,7 +55,7 @@ class ModuleLinksFunction
         string $last = '',
         string $template = ''
     ): string {
-        $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:links', [
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::linksAction', [
             'type' => $type,
             'links' => $links,
             'modname' => $modName,

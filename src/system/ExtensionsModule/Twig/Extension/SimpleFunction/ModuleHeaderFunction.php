@@ -51,7 +51,7 @@ class ModuleHeaderFunction
         bool $menuFirst = false,
         bool $image = false
     ): string {
-        $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:header', [
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::headerAction', [
             'type' => $type,
             'title' => $title,
             'titlelink' => $titleLink,

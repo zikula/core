@@ -36,7 +36,7 @@ class AdminSecurityAnalyzerFunction
      */
     public function display(): string
     {
-        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:securityanalyzer');
+        $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::securityanalyzerAction');
 
         return $this->handler->render($ref);
     }

@@ -36,7 +36,7 @@ class ModuleHelpFunction
      */
     public function display(): string
     {
-        $ref = new ControllerReference('ZikulaExtensionsModule:ExtensionsInterface:help');
+        $ref = new ControllerReference('Zikula\ExtensionsModule\Controller\ExtensionsInterfaceController::helpAction');
 
         return $this->handler->render($ref);
     }

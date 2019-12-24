@@ -36,7 +36,7 @@ class AdminUpdateCheckFunction
      */
     public function display(): string
     {
-        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:updatecheck');
+        $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::updatecheckAction');
 
         return $this->handler->render($ref);
     }

@@ -36,7 +36,7 @@ class AdminDeveloperNoticesFunction
      */
     public function display(): string
     {
-        $ref = new ControllerReference('ZikulaAdminModule:AdminInterface:developernotices');
+        $ref = new ControllerReference('Zikula\AdminModule\Controller\AdminInterfaceController::developernoticesAction');
 
         return $this->handler->render($ref);
     }
