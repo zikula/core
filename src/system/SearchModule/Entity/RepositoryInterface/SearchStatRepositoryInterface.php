@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SearchModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 
 interface SearchStatRepositoryInterface extends ObjectRepository, Selectable

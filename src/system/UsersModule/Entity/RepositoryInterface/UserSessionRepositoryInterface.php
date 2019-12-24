@@ -15,7 +15,7 @@ namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
 use DateTime;
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Zikula\UsersModule\Entity\UserSessionEntity;
 
 interface UserSessionRepositoryInterface extends ObjectRepository, Selectable

@@ -15,7 +15,7 @@ namespace Zikula\UsersModule\Entity\RepositoryInterface;
 
 use DateTime;
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Zikula\UsersModule\Entity\UserEntity;

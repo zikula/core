@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Gedmo\Tree\RepositoryInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
