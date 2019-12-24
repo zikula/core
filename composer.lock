@@ -6106,12 +6106,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "c260c42eece63224f882c5722b75e502226139bb"
+                "reference": "64fc9065a3db134100007e24909d332b9e9bd858"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/c260c42eece63224f882c5722b75e502226139bb",
-                "reference": "c260c42eece63224f882c5722b75e502226139bb",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/64fc9065a3db134100007e24909d332b9e9bd858",
+                "reference": "64fc9065a3db134100007e24909d332b9e9bd858",
                 "shasum": ""
             },
             "require": {
@@ -6169,7 +6169,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-24T09:52:59+00:00"
+            "time": "2019-12-24T14:58:13+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",

@@ -61,7 +61,7 @@ class ConfigController extends AbstractController
 
         $modVars = $variableApi->getAll(VariableApi::CONFIG);
 
-        $sessionName = $this->container->getParameter('zikula.session.name');
+        $sessionName = $this->getParameter('zikula.session.name');
         $modVars['sessionname'] = $sessionName;
         $modVars['idshtmlfields'] = implode(PHP_EOL, $modVars['idshtmlfields']);
         $modVars['idsjsonfields'] = implode(PHP_EOL, $modVars['idsjsonfields']);
@@ -205,7 +205,7 @@ class ConfigController extends AbstractController
 
                 // create tmp directory for PHPIDS
                 if (1 === $useIds) {
-                    $idsTmpDir = $this->container->getParameter('kernel.cache_dir') . '/idsTmp';
+                    $idsTmpDir = $this->getParameter('kernel.cache_dir') . '/idsTmp';
                     $fs = new Filesystem();
                     if (!$fs->exists($idsTmpDir)) {
                         $fs->mkdir($idsTmpDir);

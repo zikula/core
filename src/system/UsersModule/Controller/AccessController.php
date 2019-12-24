@@ -255,7 +255,7 @@ class AccessController extends AbstractController
 
         return isset($returnUrl)
             ? $this->redirect($returnUrl)
-            : $this->redirectToRoute('home', ['_locale' => $this->container->getParameter('locale')])
+            : $this->redirectToRoute('home', ['_locale' => $this->getParameter('locale')])
         ;
     }
 }
