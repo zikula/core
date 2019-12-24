@@ -33,6 +33,6 @@ class LessGenerator
         $parser->setOptions(['relativeUrls' => false, 'compress' => true]);
         $parser->parseFile('src/web/bundles/core/css/bootstrap-font-awesome.less');
 
-        return (false === file_put_contents($writeTo, $parser->getCss()) ? 1 : 0);
+        return false === file_put_contents($writeTo, $parser->getCss()) ? 1 : 0;
     }
 }
