@@ -17,5 +17,4 @@ $application->add(new BuildPackageCommand());
 $application->add(new PurgeVendorsCommand());
 $application->add(new FixAutoloaderCommand());
 $application->add(new GenerateVendorDocCommand());
-$application->add(new LessCommand());
 $application->run();
