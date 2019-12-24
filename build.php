@@ -9,7 +9,6 @@ require_once 'src/vendor/autoload.php';
 require_once 'build/BuildPackageCommand.php';
 require_once 'build/FixAutoloaderCommand.php';
 require_once 'build/GenerateVendorDocCommand.php';
-require_once 'build/LessCommand.php';
 require_once 'build/PurgeVendorsCommand.php';
 
 $application = new Application();
