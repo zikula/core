@@ -15,7 +15,7 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use Exception;
 use InvalidArgumentException;
-use Symfony\Component\Debug\DebugClassLoader;
+use Symfony\Component\ErrorHandler\DebugClassLoader;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Yaml\Yaml;
