@@ -8,6 +8,9 @@ liip_imagine:
         zikula_root:
             filesystem:
                 data_root: "%kernel.project_dir%/"
+        default:
+            filesystem:
+                data_root: "%kernel.project_dir%/"
     filter_sets:
         cache: ~
         my_thumb: # sample
