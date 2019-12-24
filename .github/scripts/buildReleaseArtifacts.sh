@@ -33,7 +33,9 @@ mkdir -p "${ARCHIVE_PATH}"
 
 echo "Composer Install"
 composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader --no-scripts
+echo "Post autoload dump"
 composer run-script post-autoload-dump
+echo "Post install command"
 composer run-script post-install-cmd
 
 echo "Copying sources to package directory..."
@@ -41,9 +43,6 @@ cp -a "${SOURCE_PATH}/src/". "${PACKAGE_PATH}"
 
 echo "Generating composer_vendors file..."
 ${PHP_BUILD} build:generate_vendor_doc --write-to "${PACKAGE_PATH}/docs/Composer_Vendors.md"
-
-echo "Generating LESS file..."
-${PHP_BUILD} build:generate_less --write-to "${PACKAGE_PATH}/web/bootstrap-font-awesome.css"
 
 echo "Copying docs and composer files..."
 mkdir -p "${DOC_PATH}/dev"
