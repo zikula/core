@@ -30,6 +30,7 @@ class LessCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $writeTo = $input->getOption('write-to');
+        var_dump($writeTo);
         LessGenerator::generateCombinedBootstrapFontAwesomeCSS($writeTo);
     }
 }
