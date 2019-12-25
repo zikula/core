@@ -131,6 +131,7 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $variableApi = $this->container->get(VariableApi::class);
                 $variableApi->del(VariableApi::CONFIG, 'Version_Sub');
             case '2.9.15': // ship with Core-3.0.0
+                $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
                 // current version
         }
 

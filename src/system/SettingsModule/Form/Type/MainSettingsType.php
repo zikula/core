@@ -26,10 +26,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\SettingsModule\Validator\Constraints\ValidController;
 
 /**
  * Main settings form type.
@@ -108,9 +108,9 @@ class MainSettingsType extends AbstractType
             ->add('startController', TextType::class, [
                 'label' => $this->__('Start Controller'),
                 'required' => false,
-                'help' => $this->__('MyModuleName:Controller:method'),
+                'help' => $this->__('FQCN::method, for example Zikula\FooModule\Controller\BarController::mainAction'),
                 'constraints' => [
-                    new Regex('/\w+:\w+:\w+/')
+                    new ValidController()
                 ]
             ])
             ->add('startargs', TextType::class, [

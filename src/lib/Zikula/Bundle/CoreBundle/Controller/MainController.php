@@ -46,7 +46,7 @@ class MainController
      */
     public function homeAction(Request $request): Response
     {
-        $controller = $this->variableApi->getSystemVar('startController');
+        $controller = trim($this->variableApi->getSystemVar('startController'), '\\');
         if (!$controller) {
             return new Response(''); // home page is static
         }
@@ -54,7 +54,8 @@ class MainController
         $attributes = null !== $args ? parse_str($args, $attributes) : [];
         $attributes['_controller'] = $controller;
         $subRequest = $request->duplicate(null, null, $attributes);
-        list($moduleName) = explode(':', $controller);
+        list($vendor, $moduleName) = explode('\\', $controller);
+        $moduleName = $vendor . $moduleName;
 
         $subRequest->attributes->set('_zkBundle', $moduleName);
         $subRequest->attributes->set('_zkModule', $moduleName);

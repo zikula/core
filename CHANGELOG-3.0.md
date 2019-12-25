@@ -40,6 +40,7 @@
     - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
     - Removed `ZikulaKernel::VERSION_SUB` constant.
     - Removed DoctrineCacheBundle use Symfony/Cache https://symfony.com/doc/current/components/cache.html
+    - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
 
  - Deprecated:
     - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
