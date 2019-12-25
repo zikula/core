@@ -3,9 +3,8 @@ framework:
         zikularoutesmodule_none:
             type: state_machine
             marking_store:
-                type: single_state
-                arguments:
-                    - workflowState
+                type: method
+                property: workflowState
             supports:
                 - Zikula\RoutesModule\Entity\RouteEntity
             places:
