@@ -5,6 +5,10 @@ framework:
     router:   { resource: "%kernel.root_dir%/config/routing_dev.yml" }
     profiler: { only_exceptions: false }
 
+maker:
+    # this value must be changed reflecting the intended destination bundle of the maker
+    root_namespace: 'Zikula\ExtensionsModule'
+
 web_profiler:
     toolbar: true
     intercept_redirects: false

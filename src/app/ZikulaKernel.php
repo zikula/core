@@ -55,7 +55,7 @@ class ZikulaKernel extends Kernel
             $bundles[] = Symfony\Bundle\DebugBundle\DebugBundle::class;
             $bundles[] = Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class;
             $bundles[] = Elao\WebProfilerExtraBundle\WebProfilerExtraBundle::class;
-            $bundles[] = Zikula\Bundle\GeneratorBundle\ZikulaGeneratorBundle::class;
+            $bundles[] = Symfony\Bundle\MakerBundle\MakerBundle::class;
         }
 
         foreach ($bundles as $class) {
