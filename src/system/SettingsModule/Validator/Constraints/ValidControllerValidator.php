@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Validator\Constraints;
 
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
