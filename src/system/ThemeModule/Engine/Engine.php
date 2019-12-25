@@ -116,6 +116,8 @@ class Engine
         $moduleName = $this->requestStack->getMasterRequest()->attributes->get('_zkModule');
         $themedResponse = $activeTheme->generateThemedResponse($this->getRealm(), $response, $moduleName);
 
+        $themedResponse->setStatusCode($response->getStatusCode());
+
         return $this->filter($themedResponse);
     }
 
