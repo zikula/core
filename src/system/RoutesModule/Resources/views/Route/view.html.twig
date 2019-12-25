@@ -1,5 +1,5 @@
 {# purpose of this template: routes list view #}
-{% extends routeArea == 'admin' ? 'ZikulaRoutesModule::adminBase.html.twig' : 'ZikulaRoutesModule::base.html.twig' %}
+{% extends routeArea == 'admin' ? '@ZikulaRoutesModule/adminBase.html.twig' : '@ZikulaRoutesModule/base.html.twig' %}
 {% block title own ? __('My custom routes') : __('Custom routes list') %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}

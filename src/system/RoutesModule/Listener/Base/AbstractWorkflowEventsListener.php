@@ -84,6 +84,10 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
      *     `if (!$event->isBlocked()) {
      *         $event->setBlocked(true);
      *     }`
+     * Example with providing a reason:
+     *     `$event->addTransitionBlocker(
+     *         new TransitionBlocker('You can not this because that.')
+     *     );`
      */
     public function onGuard(GuardEvent $event): void
     {
@@ -124,7 +128,7 @@ abstract class AbstractWorkflowEventsListener implements EventSubscriberInterfac
         }
         
         if (!$this->permissionHelper->hasEntityPermission($entity, $permissionLevel)) {
-            // no permission for this transition, so disallow it
+            // no permission for this transition, so disallow it (without a reason)
             $event->setBlocked(true);
         
             return;

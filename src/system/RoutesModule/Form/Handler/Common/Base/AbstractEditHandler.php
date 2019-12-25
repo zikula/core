@@ -321,7 +321,7 @@ abstract class AbstractEditHandler
         }
     
         if (null === $entity) {
-            if (null === $session) {
+            if (null !== $session) {
                 $session->getFlashBag()->add('error', $this->__('No such item found.'));
             }
     

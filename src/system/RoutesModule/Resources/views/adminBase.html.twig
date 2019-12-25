@@ -1,5 +1,5 @@
 {# purpose of this template: admin area base layout #}
-{% extends 'ZikulaRoutesModule::base.html.twig' %}
+{% extends '@ZikulaRoutesModule/base.html.twig' %}
 {% block header %}
     {% if not app.request.query.getBoolean('raw', false) %}
         {{ adminHeader() }}
