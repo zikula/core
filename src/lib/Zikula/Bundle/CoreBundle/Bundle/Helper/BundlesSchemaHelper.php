@@ -134,7 +134,7 @@ class BundlesSchemaHelper
     private function verifySchema(): void
     {
         $schemaManager = $this->conn->getSchemaManager();
-        if ($schemaManager->tablesExist(array('bundles')) !== true) {
+        if (true !== $schemaManager->tablesExist(['bundles'])) {
             $this->createSchema();
         }
     }
