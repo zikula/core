@@ -72,6 +72,7 @@ var regenerateOutput = function () {
         output.xml.push(indent + oneIndent + '<framework:type>' + jQuery('#markingStoreType').val() + '</framework:type>');
         output.xml.push(indent + oneIndent + '<framework:property>' + jQuery('#markingStoreField').val() + '</framework:property>');
     } else {
+        // deprecated, but kept for covering other marking store types in a general way
         output.yaml.push(indent + oneIndent + 'arguments:');
         output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreField').val());
         output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');

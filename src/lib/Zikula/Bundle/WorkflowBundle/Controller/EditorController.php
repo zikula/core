@@ -23,8 +23,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Workflow\MarkingStore\MethodMarkingStore;
-use Symfony\Component\Workflow\MarkingStore\MultipleStateMarkingStore;
-use Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore;
 use Symfony\Component\Workflow\Registry;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
@@ -84,14 +82,6 @@ class EditorController extends AbstractController
                 $propertyProperty = $reflection->getProperty('property');
                 $propertyProperty->setAccessible(true);
                 $markingStoreField = $propertyProperty->getValue($markingStore);
-            } elseif ($markingStore instanceof MultipleStateMarkingStore) {
-                // deprecated since Symfony 4.3
-                $markingStoreType = 'multiple_state';
-                $markingStoreField = $markingStore->getProperty();
-            } elseif ($markingStore instanceof SingleStateMarkingStore) {
-                // deprecated since Symfony 4.3
-                $markingStoreType = 'single_state';
-                $markingStoreField = $markingStore->getProperty();
             }
 
             $reflection = new ReflectionClass(get_class($workflowRegistry));
@@ -108,7 +98,7 @@ class EditorController extends AbstractController
                 $supportedEntityClassNames[] = $workflowClass;
             }
         } catch (ReflectionException $exception) {
-            $markingStoreType = 'single_state';
+            $markingStoreType = 'method';
             $markingStoreField = 'state';
         }
 
