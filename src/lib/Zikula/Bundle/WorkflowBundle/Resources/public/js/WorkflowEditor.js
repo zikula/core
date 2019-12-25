@@ -66,10 +66,17 @@ var regenerateOutput = function () {
     output.yaml.push(indent + 'type: ' + jQuery('#workflowType').val());
     output.yaml.push(indent + 'marking_store:');
     output.yaml.push(indent + oneIndent + 'type: ' + jQuery('#markingStoreType').val());
-    output.yaml.push(indent + oneIndent + 'arguments:');
-    output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreField').val());
-    output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');
-    output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreField').val() + '</framework:arguments>');
+    if ('method' === jQuery('#markingStoreType').val()) {
+        output.yaml.push(indent + oneIndent + 'property: ' + jQuery('#markingStoreField').val());
+        output.xml.push(indent + '<framework:marking-store>');
+        output.xml.push(indent + oneIndent + '<framework:type>' + jQuery('#markingStoreType').val() + '</framework:type>');
+        output.xml.push(indent + oneIndent + '<framework:property>' + jQuery('#markingStoreField').val() + '</framework:property>');
+    } else {
+        output.yaml.push(indent + oneIndent + 'arguments:');
+        output.yaml.push(indent + oneIndent + oneIndent + '- ' + jQuery('#markingStoreField').val());
+        output.xml.push(indent + '<framework:marking-store type="' + jQuery('#markingStoreType').val() + '">');
+        output.xml.push(indent + oneIndent + '<framework:arguments>' + jQuery('#markingStoreField').val() + '</framework:arguments>');
+    }
     output.xml.push(indent + '</framework:marking-store>');
     output.xml.push('');
 
@@ -391,7 +398,7 @@ jsPlumb.ready(function () {
         if ('workflow' === jQuery(this).val()) {
             jQuery('#markingStoreType').prop('disabled', false);
         } else if (jQuery(this).val() === 'state_machine') {
-            jQuery('#markingStoreType').val('single_state').prop('disabled', true);
+            jQuery('#markingStoreType').val('method').prop('disabled', true);
         }
         regenerateOutput();
     });

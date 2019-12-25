@@ -74,6 +74,7 @@
                         <div class="form-group">
                             <label for="markingStoreType">{{ __('Marking store') }}</label>
                             <select id="markingStoreType" class="form-control input-sm">
+                                <option value="method"{{ markingStoreType == 'method' ? ' selected="selected"' : '' }}>{{ __('Method') }}</option>
                                 <option value="multiple_state"{{ markingStoreType == 'multiple_state' ? ' selected="selected"' : '' }}>{{ __('Multiple state') }}</option>
                                 <option value="single_state"{{ markingStoreType == 'single_state' ? ' selected="selected"' : '' }}>{{ __('Single state') }}</option>
                             </select>
