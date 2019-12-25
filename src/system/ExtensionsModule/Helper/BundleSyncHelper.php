@@ -20,7 +20,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -77,9 +77,9 @@ class BundleSyncHelper
     private $extensionStateHelper;
 
     /**
-     * @var BootstrapHelper
+     * @var BundlesSchemaHelper
      */
-    private $bootstrapHelper;
+    private $bundlesSchemaHelper;
 
     /**
      * @var ComposerValidationHelper
@@ -99,7 +99,7 @@ class BundleSyncHelper
         TranslatorInterface $translator,
         EventDispatcherInterface $dispatcher,
         ExtensionStateHelper $extensionStateHelper,
-        BootstrapHelper $bootstrapHelper,
+        BundlesSchemaHelper $bundlesSchemaHelper,
         ComposerValidationHelper $composerValidationHelper,
         SessionInterface $session
     ) {
@@ -110,7 +110,7 @@ class BundleSyncHelper
         $this->translator = $translator;
         $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
         $this->extensionStateHelper = $extensionStateHelper;
-        $this->bootstrapHelper = $bootstrapHelper;
+        $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->composerValidationHelper = $composerValidationHelper;
         $this->session = $session;
     }
@@ -125,7 +125,7 @@ class BundleSyncHelper
         $directories = empty($directories) ? ['system', 'modules'] : $directories;
 
         // sync the filesystem and the bundles table
-        $this->bootstrapHelper->load();
+        $this->bundlesSchemaHelper->load();
 
         // Get all bundles on filesystem
         $bundles = [];

@@ -18,14 +18,12 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Exception;
-use InvalidArgumentException;
 use PDO;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\AbstractBundle;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
-class Bootstrap
+class PersistedBundleHandler
 {
     /**
      * @var array the active/inactive state of each extension
@@ -68,14 +66,7 @@ class Bootstrap
 
                     if (class_exists($class)) {
                         $bundle = $class;
-//                        try {
-//                            if ($bundle instanceof AbstractBundle) {
-//                                $bundle->setState((int)$state);
-//                            }
                         $bundles[] = $bundle;
-//                        } catch (InvalidArgumentException $exception) {
-//                            // continue
-//                        }
                     }
                 } catch (Exception $exception) {
                     // unable to autoload $prefix / $path

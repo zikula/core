@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Bootstrap;
+use Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
 
@@ -48,8 +48,8 @@ class ZikulaKernel extends Kernel
         foreach (self::$coreModules as $bundleClass) {
             $bundles[] = $bundleClass;
         }
-        $boot = new Bootstrap();
-        $boot->getPersistedBundles($this, $bundles);
+        $handler = new PersistedBundleHandler();
+        $handler->getPersistedBundles($this, $bundles);
 
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = Symfony\Bundle\DebugBundle\DebugBundle::class;

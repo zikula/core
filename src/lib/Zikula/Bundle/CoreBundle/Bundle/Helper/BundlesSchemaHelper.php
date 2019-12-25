@@ -22,7 +22,7 @@ use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\AbstractBundle;
 
-class BootstrapHelper
+class BundlesSchemaHelper
 {
     /**
      * @var Connection
@@ -48,6 +48,7 @@ class BootstrapHelper
 
     public function load(): void
     {
+        $this->verifySchema();
         $scanner = new Scanner();
         $scanner->setTranslator($this->translator);
         $scanner->scan(['modules', 'themes']);
@@ -58,7 +59,7 @@ class BootstrapHelper
     /**
      * Sync the filesystem scan and the bundles table.
      * This is a 'dumb' scan - there is no state management here.
-     * State management occurs in the module and theme management and is checked in Bundle/Bootstrap.
+     * State management occurs in the module and theme management and is checked in Bundle/PersistedBundleHandler.
      */
     private function sync(array $fileExtensions = []): void
     {
@@ -130,7 +131,15 @@ class BootstrapHelper
         ]);
     }
 
-    public function createSchema(): void
+    private function verifySchema(): void
+    {
+        $schemaManager = $this->conn->getSchemaManager();
+        if ($schemaManager->tablesExist(array('bundles')) !== true) {
+            $this->createSchema();
+        }
+    }
+
+    private function createSchema(): void
     {
         $schema = $this->conn->getSchemaManager();
         $table = new Table('bundles');

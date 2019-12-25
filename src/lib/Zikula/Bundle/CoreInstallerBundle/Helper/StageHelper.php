@@ -16,8 +16,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
-use Zikula\Bundle\CoreBundle\Bundle\Bootstrap as CoreBundleBootstrap;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
+use Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
@@ -44,9 +44,9 @@ class StageHelper
     private $kernel;
 
     /**
-     * @var BootstrapHelper
+     * @var BundlesSchemaHelper
      */
-    private $bootstrapHelper;
+    private $bundlesSchemaHelper;
 
     /**
      * @var ModuleHelper
@@ -80,7 +80,7 @@ class StageHelper
 
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
-        BootstrapHelper $bootstrapHelper,
+        BundlesSchemaHelper $bundlesSchemaHelper,
         ExtensionHelper $extensionHelper,
         EventDispatcherInterface $eventDispatcher,
         ModuleHelper $moduleHelper,
@@ -91,7 +91,7 @@ class StageHelper
         ThemeHelper $themeHelper
     ) {
         $this->kernel = $kernel;
-        $this->bootstrapHelper = $bootstrapHelper;
+        $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->extensionHelper = $extensionHelper;
         $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $this->moduleHelper = $moduleHelper;
@@ -199,11 +199,10 @@ class StageHelper
 
     private function createBundles(): bool
     {
-        $this->bootstrapHelper->createSchema();
-        $this->bootstrapHelper->load();
-        $boot = new CoreBundleBootstrap();
+        $this->bundlesSchemaHelper->load();
+        $handler = new PersistedBundleHandler();
         $bundles = [];
-        $boot->getPersistedBundles($this->kernel, $bundles);
+        $handler->getPersistedBundles($this->kernel, $bundles);
 
         return true;
     }

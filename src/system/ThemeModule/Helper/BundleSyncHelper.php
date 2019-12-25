@@ -16,7 +16,7 @@ namespace Zikula\ThemeModule\Helper;
 use Exception;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper;
+use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -42,9 +42,9 @@ class BundleSyncHelper
     private $themeEntityRepository;
 
     /**
-     * @var BootstrapHelper
+     * @var BundlesSchemaHelper
      */
-    private $bootstrapHelper;
+    private $bundlesSchemaHelper;
 
     /**
      * @var TranslatorInterface
@@ -64,14 +64,14 @@ class BundleSyncHelper
     public function __construct(
         ZikulaHttpKernelInterface $kernel,
         ThemeEntityRepository $themeEntityRepository,
-        BootstrapHelper $bootstrapHelper,
+        BundlesSchemaHelper $bundlesSchemaHelper,
         TranslatorInterface $translator,
         ComposerValidationHelper $composerValidationHelper,
         SessionInterface $session
     ) {
         $this->kernel = $kernel;
         $this->themeEntityRepository = $themeEntityRepository;
-        $this->bootstrapHelper = $bootstrapHelper;
+        $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->translator = $translator;
         $this->composerValidationHelper = $composerValidationHelper;
         $this->session = $session;
@@ -85,7 +85,7 @@ class BundleSyncHelper
     public function regenerate(): bool
     {
         // sync the filesystem and the bundles table
-        $this->bootstrapHelper->load();
+        $this->bundlesSchemaHelper->load();
 
         // Get all themes on filesystem
         $bundleThemes = [];

@@ -41,6 +41,11 @@
     - Removed `ZikulaKernel::VERSION_SUB` constant.
     - Removed DoctrineCacheBundle use Symfony/Cache https://symfony.com/doc/current/components/cache.html
     - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
+    - Zikula\Bundle\CoreBundle\Bundle\Bootstrap renamed to Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler
+    - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::getConnection visibility set to private
+    - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::addAutoloaders visibility set to private
+    - Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper renamed to Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper
+    - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
 
  - Deprecated:
     - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
