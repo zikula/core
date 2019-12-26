@@ -22,7 +22,7 @@
         "wikimedia/composer-merge-plugin": "1.*"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "4.*"
+        "symfony/phpunit-bridge": "5.*"
     },
     "scripts": {
         "zikula-scripts": [

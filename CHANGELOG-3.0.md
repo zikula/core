@@ -27,17 +27,18 @@
     - Dropped vendors:
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
+        - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
         - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
-        - Removed sensiolabs/security-checker
         - Removed symfony/polyfill-apcu
         - Removed symfony/polyfill-php56
         - Removed symfony/polyfill-php70
         - Removed symfony/polyfill-util
+        - Removed twig/extensions (use new Twig Extra extensions instead)
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
+    - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
     - The `polyfill` Twig tag has been removed (#3925).
-    - Removed bootstrap-plus/bootstrap-jqueryui. Use jQuery UI directly.
     - Removed `ZikulaKernel::VERSION_SUB` constant.
     - Removed DoctrineCacheBundle use Symfony/Cache https://symfony.com/doc/current/components/cache.html
     - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
@@ -46,9 +47,6 @@
     - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::addAutoloaders visibility set to private
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper renamed to Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
-
- - Deprecated:
-    - As we are now using Twig 2 please use the namespaced Twig classes only (#3370).
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
@@ -83,8 +81,9 @@
     - Added Twig extensions for easy access to localised names of countries, currencies, languages, locales and timezones.
 
  - Vendor updates:
+    - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
-    - composer/composer installed in 1.9.1
+    - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
     - composer/spdx-licenses installed in 1.5.2
     - composer/xdebug-handler installed in 1.4.0
     - doctrine/annotations updated from 1.2.7 to 1.8.0
@@ -100,43 +99,65 @@
     - doctrine/persistence installed in 1.3.3
     - doctrine/reflection installed in 1.0.0
     - egulias/email-validator installed in 2.1.12
+    - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
+    - erusev/parsedown installed in 1.7.3
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.1
     - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.38
     - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
     - imagine/imagine updated from 0.7.1 to 1.3.3
-    - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3
-    - jms/translation-bundle updated from 1.3.2 to 1.4.4
+    - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
+    - jms/translation-bundle updated from 1.3.2 to 1.4.4 (temporarily using prolix/1.4.11 instead)
     - jquery.mmenu updated from 7.3.3 to mmenu.js 8.4.4
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 3.1.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-    - liip/imagine-bundle updated from 1.9.1 to 2.2.0
-    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0
+    - league/commonmark installed in 1.1.2
+    - league/html-to-markdown installed in 4.9.0
+    - liip/imagine-bundle updated from 1.9.1 to 2.2.0 (temporarily using dev-symfony5 instead)
+    - lorenzo/pinky installed in 1.0.5
+    - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0 (temporarily using Jeroeny/dev-symfony-5 instead)
     - michelf/php-markdown updated from 1.7.0 to 1.9.0
-    - monolog/monolog updated from 1.25.2 to 1.25.3
+    - monolog/monolog updated from 1.25.2 to 2.0.2
     - nikic/php-parser updated from 1.4.1 to 4.3.0
+    - nyholm/nsa installed in 1.1.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
+    - php-translation/common installed in 2.0.0
+    - php-translation/extractor installed in 2.0.0
+    - php-translation/symfony-bundle installed in dev-master
+    - php-translation/symfony-storage installed in 2.0.0
+    - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2
     - seld/phar-utils installed in 1.0.1
-    - stof/doctrine-extensions-bundle updated from 1.2.2 to 1.3.0
+    - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
-    - symfony/contracts installed in 1.1.8
+    - symfony/contracts installed in 2.0.1
     - symfony/maker-bundle installed in 1.14.3
-    - symfony/monolog-bundle updated from 3.2.0 to 3.4.0
-    - symfony/phpunit-bridge updated from 3.4.14 to 4.4.2
+    - symfony/monolog-bundle updated from 3.2.0 to 3.5.0
+    - symfony/phpunit-bridge updated from 3.4.14 to 5.0.2
     - symfony/polyfill-ctype updated from v1.12.0 to v1.13.1
     - symfony/polyfill-iconv installed in 1.13.1
+    - symfony/polyfill-intl-grapheme installed in 1.13.1
     - symfony/polyfill-intl-icu updated from 1.11.0 to 1.13.1
     - symfony/polyfill-intl-idn updated from 1.11.0 to 1.13.1
+    - symfony/polyfill-intl-normalizer installed in 1.13.1
     - symfony/polyfill-mbstring updated from v1.12.0 to v1.13.1
     - symfony/polyfill-php72 installed in 1.13.1
     - symfony/polyfill-php73 installed in 1.13.1
     - symfony/profiler-pack installed in 1.0.4
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
-    - symfony/symfony updated from 3.4.35 to 4.4.2
-    - twig/extensions updated from 1.4.1 to 1.5.4
-    - twig/twig updated from 1.42.4 to 2.12.2
+    - symfony/symfony updated from 3.4.35 to 5.0.2
+    - tijsverkoyen/css-to-inline-styles installed in 2.2.2
+    - twig/extra-bundle installed in 3.0.0
+    - twig/cssinliner-extra installed in 3.0.0
+    - twig/html-extra installed in 3.0.0
+    - twig/inky-extra installed in 3.0.0
+    - twig/intl-extra installed in 3.0.0
+    - twig/markdown-extra installed in 3.0.0
+    - twig/string-extra installed in 3.0.0
+    - twig/twig updated from 1.42.4 to 3.0.0
+    - webmozart/assert updated from 1.5.0 to 1.6.0
+    - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0 (temporarily using vanputten's fork)
     - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
     - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to dev-master
@@ -144,5 +165,5 @@
     - zikula/pagelock-module updated from 1.2.3 to dev-master
     - zikula/profile-module updated from 3.0.6 to dev-master
     - zikula/seabreeze-theme updated from 4.0.3 to dev-master
-    - zikula/wizard updated from 2.0 to dev-master
+    - zikula/wizard updated from 2.0 to 3.0.2
 
