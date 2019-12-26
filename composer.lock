@@ -3961,16 +3961,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "dev-master",
+            "version": "0.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "8a487aad093e6439500d21cb4c56becd3b1c3049"
+                "reference": "e32091bd8bfd971b0f455b7489903e08b18b5887"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/8a487aad093e6439500d21cb4c56becd3b1c3049",
-                "reference": "8a487aad093e6439500d21cb4c56becd3b1c3049",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/e32091bd8bfd971b0f455b7489903e08b18b5887",
+                "reference": "e32091bd8bfd971b0f455b7489903e08b18b5887",
                 "shasum": ""
             },
             "require": {
@@ -4041,10 +4041,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/php-translation/symfony-bundle/tree/master",
+                "source": "https://github.com/php-translation/symfony-bundle/tree/0.10.0",
                 "issues": "https://github.com/php-translation/symfony-bundle/issues"
             },
-            "time": "2019-12-26T14:01:50+00:00"
+            "time": "2019-12-26T15:54:38+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -7365,7 +7365,6 @@
         "zikula/andreas08-theme": 20,
         "zikula/seabreeze-theme": 20,
         "sensio/framework-extra-bundle": 20,
-        "php-translation/symfony-bundle": 20,
         "oyejorge/less.php": 20,
         "liip/imagine-bundle": 20,
         "symfony/requirements-checker": 20,

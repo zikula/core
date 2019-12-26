@@ -34,7 +34,7 @@
         "sensiolabs/security-checker" : "6.*",
 
         "prolix/translation-bundle": "1.*",
-        "php-translation/symfony-bundle": "dev-master",
+        "php-translation/symfony-bundle": "0.*",
         "nikic/php-parser": "4.*",
         "willdurand/js-translation-bundle": "v3.0.0",
 
