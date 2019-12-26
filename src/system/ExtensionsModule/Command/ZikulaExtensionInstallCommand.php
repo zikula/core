@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -129,7 +130,7 @@ class ZikulaExtensionInstallCommand extends Command
             return 3;
         }
 
-        if (0 !== $this->clearCache($output)) {
+        if (0 !== $this->clearCache()) {
             if ($input->isInteractive()) {
                 $io->error('Could not clear the cache');
             }
@@ -147,11 +148,11 @@ class ZikulaExtensionInstallCommand extends Command
         return 0;
     }
 
-    private function clearCache(OutputInterface $output): int
+    private function clearCache(): int
     {
         $command = $this->getApplication()->find('cache:clear');
 
-        return $command->run(new ArrayInput(['--quiet', '--no-debug']), $output);
+        return $command->run(new ArrayInput(['--no-warmup' => true]), new NullOutput());
     }
 
     private function load($bundleName, OutputInterface $output)
@@ -165,7 +166,7 @@ class ZikulaExtensionInstallCommand extends Command
         // force the kernel to load the bundle
         $extension->setState(Constant::STATE_TRANSITIONAL);
         $this->extensionRepository->persistAndFlush($extension);
-        if (0 !== $this->clearCache($output)) {
+        if (0 !== $this->clearCache()) {
             return false;
         }
 
