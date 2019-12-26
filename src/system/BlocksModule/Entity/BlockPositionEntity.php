@@ -40,7 +40,7 @@ class BlockPositionEntity extends EntityAccess
      * The name of the block position
      *
      * @Assert\Regex("/^[a-zA-Z0-9\-\_]+$/")
-     * @Assert\Length(max="255")
+     * @Assert\Length(max="255", allowEmptyString="false")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -48,7 +48,7 @@ class BlockPositionEntity extends EntityAccess
     /**
      * The description of the block position
      *
-     * @Assert\Length(max="255")
+     * @Assert\Length(max="255", allowEmptyString="true")
      * @ORM\Column(type="string", length=255)
      */
     private $description;
