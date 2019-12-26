@@ -21,6 +21,8 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Console\Application;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -74,6 +76,11 @@ class ExtensionHelper
      */
     private $cacheClearer;
 
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     public function __construct(
         ContainerInterface $container,
         TranslatorInterface $translator,
@@ -88,6 +95,7 @@ class ExtensionHelper
         $this->extensionRepository = $extensionRepository;
         $this->stateHelper = $stateHelper;
         $this->cacheClearer = $cacheClearer;
+        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($this->container->get('event_dispatcher'));
     }
 
     /**
@@ -114,7 +122,7 @@ class ExtensionHelper
         $this->cacheClearer->clear('symfony.config');
 
         $event = new ModuleStateEvent($bundle, $extension->toArray());
-        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_INSTALL, $event);
+        $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_INSTALL);
 
         return true;
     }
@@ -162,7 +170,7 @@ class ExtensionHelper
         if ($this->container->getParameter('installed')) {
             // Upgrade succeeded, issue event.
             $event = new ModuleStateEvent($bundle, $extension->toArray());
-            $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_UPGRADE, $event);
+            $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_UPGRADE);
         }
 
         return true;
@@ -183,7 +191,7 @@ class ExtensionHelper
 
         // allow event to prevent extension removal
         $vetoEvent = new GenericEvent($extension);
-        $this->container->get('event_dispatcher')->dispatch(ExtensionEvents::REMOVE_VETO, $vetoEvent);
+        $this->eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REMOVE_VETO);
         if ($vetoEvent->isPropagationStopped()) {
             return false;
         }
@@ -205,7 +213,7 @@ class ExtensionHelper
         $this->cacheClearer->clear('symfony.config');
 
         $event = new ModuleStateEvent($bundle, $extension->toArray());
-        $this->container->get('event_dispatcher')->dispatch(CoreEvents::MODULE_REMOVE, $event);
+        $this->eventDispatcher->dispatch($event, CoreEvents::MODULE_REMOVE);
 
         return true;
     }
