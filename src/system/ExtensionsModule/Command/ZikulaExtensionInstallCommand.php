@@ -102,6 +102,7 @@ class ZikulaExtensionInstallCommand extends Command
         $bundleName = $input->getArgument('bundle_name');
         $ignoreDeps = $input->getOption('ignore_deps');
 
+        /** @var $extension ExtensionEntity */
         if (false === $extension = $this->load($bundleName, $output)) {
             if ($input->isInteractive()) {
                 $io->error('Extension could not be found and loaded from the expected directory');
@@ -149,6 +150,7 @@ class ZikulaExtensionInstallCommand extends Command
     private function clearCache(OutputInterface $output): int
     {
         $command = $this->getApplication()->find('cache:clear');
+
         return $command->run(new ArrayInput(['--quiet', '--no-debug']), $output);
     }
 
@@ -157,7 +159,6 @@ class ZikulaExtensionInstallCommand extends Command
         // load the extension into the modules table
         $this->bundleSyncHelper->scanForBundles();
         if (!($extension = $this->extensionRepository->findOneBy(['name' => $bundleName]))) {
-
             return false;
         }
 
