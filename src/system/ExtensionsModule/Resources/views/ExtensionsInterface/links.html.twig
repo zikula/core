@@ -1,5 +1,4 @@
 {% macro draw(links, menu_css, current_path) %}
-    {% import _self as menu %}
     {% for link in links %}
         {% if link.role is defined and link.role == 'separator' %}
             <li role="separator" class="divider"></li>
@@ -11,7 +10,7 @@
                     <span class="caret"></span>
                 </a>
                 <ul id="submenu_{{ menu_css.menuId }}" class="dropdown-menu">
-                    {{ menu.draw(link.links, menu_css, current_path) }}
+                    {{ _self.draw(link.links, menu_css, current_path) }}
                 </ul>
             </li>
         {% else %}
@@ -25,10 +24,8 @@
     {% endfor %}
 {% endmacro %}
 
-{% import _self as menu %}
-
 <div class="navbar navbar-default navbar-modulelinks">
     <ul{% if menu_css.menuId is not empty %} id="{{ menu_css.menuId }}"{% endif %}{% if menu_css.menuClass is not empty %} class="{{ menu_css.menuClass }}"{% endif %}>
-        {{ menu.draw(links, menu_css, current_path) }}
+        {{ _self.draw(links, menu_css, current_path) }}
     </ul>
 </div>

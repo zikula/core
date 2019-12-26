@@ -3,20 +3,6 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.AdminTabs.js')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/style.css')) }}
 
-{% macro draw(links) %}
-    {% import _self as menu %}
-    {% for link in links|filter(l => l.url|default) %}
-        <li>
-            <a href="{{ link.url }}" title="{{ link.text|e('html_attr') }}">{% if link.icon is defined %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
-            {% if link.links is defined %}
-                <ul class="text-left">{{ menu.draw(link.links) }}</ul>
-            {% endif %}
-        </li>
-    {% endfor %}
-{% endmacro %}
-
-{% import _self as menu %}
-
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {% for category in adminMenu %}
@@ -42,7 +28,6 @@
                     {% if category.modules|length > 0 %}
                         <li class="divider"></li>
                         {% for item in category.modules %}
-                            {% set modname = item.modname %}
                             <li><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
                         {% endfor %}
                     {% endif %}

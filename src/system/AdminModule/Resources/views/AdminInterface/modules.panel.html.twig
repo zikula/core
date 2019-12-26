@@ -5,18 +5,15 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css'), 101) }}
 
 {% macro draw(links, caller, module) %}
-    {% import _self as menu %}
     {% for link in links|filter(l => l.url|default) %}
         <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
             <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="fa fa-fw fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
             {% if link.links is defined %}
-                <ul class="text-left">{{ menu.draw(link.links, caller, module) }}</ul>
+                <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>
             {% endif %}
         </li>
     {% endfor %}
 {% endmacro %}
-
-{% import _self as menu %}
 
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{{ __("Show administration panel") }}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu">
@@ -30,7 +27,7 @@
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">
-                            {{ menu.draw(module.links, caller, module) }}
+                            {{ _self.draw(module.links, caller, module) }}
                         </ul>
                     {% endif %}
                 </li>
