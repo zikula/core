@@ -21,7 +21,6 @@ use Swift_DependencyContainer;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -80,7 +79,7 @@ class MailerApi implements MailerApiInterface
         $this->installed = $installed;
         $this->kernel = $kernel;
         $this->setTranslator($translator);
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
 
         if (!$this->installed) {

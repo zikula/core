@@ -17,7 +17,6 @@ namespace Zikula\RoutesModule\Menu\Base;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -77,7 +76,7 @@ class AbstractMenuBuilder
     ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
         $this->requestStack = $requestStack;
         $this->permissionHelper = $permissionHelper;
         $this->entityDisplayHelper = $entityDisplayHelper;

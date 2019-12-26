@@ -17,7 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -167,7 +166,6 @@ class UserAdministrationController extends AbstractController
         $originalUserName = $user->getUname();
         $originalGroups = $user->getGroups()->toArray();
         $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 
@@ -296,7 +294,6 @@ class UserAdministrationController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         UserEntity $user = null
     ) {
-        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         if (!$this->hasPermission('ZikulaUsersModule', '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }

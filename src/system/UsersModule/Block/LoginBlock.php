@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Block;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
@@ -124,7 +123,7 @@ class LoginBlock extends AbstractBlockHandler
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

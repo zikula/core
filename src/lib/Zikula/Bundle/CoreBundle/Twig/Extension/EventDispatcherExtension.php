@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\Core\Event\GenericEvent;
@@ -29,7 +28,7 @@ class EventDispatcherExtension extends AbstractExtension
     public function __construct(
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function getFunctions()

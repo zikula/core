@@ -17,7 +17,6 @@ use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -106,7 +105,7 @@ class FileIOHelper
         $this->validator = $validator;
         $this->entityManager = $entityManager;
         $this->mailHelper = $mailHelper;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
         $this->currentUser = $currentUserApi;
         $this->passwordApi = $passwordApi;
         $this->groupRepository = $groupRepository;

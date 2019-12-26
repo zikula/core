@@ -15,7 +15,6 @@ namespace Zikula\UsersModule\Controller;
 
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -133,7 +132,6 @@ class RegistrationController extends AbstractController
         if (!$form->has('uname') || !$form->has('email')) {
             throw new InvalidAuthenticationMethodRegistrationFormException();
         }
-        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $hasListeners = $eventDispatcher->hasListeners(UserEvents::EDIT_FORM);
         $hookBindings = $hookDispatcher->getBindingsFor('subscriber.users.ui_hooks.registration');
         if ($authenticationMethod instanceof ReEntrantAuthenticationMethodInterface && !empty($userData) && !$hasListeners && 0 === count($hookBindings)) {

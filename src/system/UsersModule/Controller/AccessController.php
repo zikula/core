@@ -16,7 +16,6 @@ namespace Zikula\UsersModule\Controller;
 use DateTime;
 use LogicException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +89,6 @@ class AccessController extends AbstractController
         $authenticationMethod = $authenticationMethodCollector->get($selectedMethod);
         $rememberMe = false;
 
-        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $eventDispatcher->dispatch(new GenericEvent(), AccessEvents::LOGIN_STARTED);
 
         $loginHeader = $this->renderView('@ZikulaUsersModule/Access/loginHeader.html.twig');

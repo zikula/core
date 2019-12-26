@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Bridge\Twig;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Twig\Environment;
 use Twig\Error\Error as TwigError;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;
@@ -55,6 +54,6 @@ class EventEnabledTwigEngine extends Environment
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

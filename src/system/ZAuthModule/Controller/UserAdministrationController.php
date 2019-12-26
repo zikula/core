@@ -15,7 +15,6 @@ namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -165,7 +164,6 @@ class UserAdministrationController extends AbstractController
             'minimumPasswordLength' => $variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH, ZAuthConstant::DEFAULT_PASSWORD_MINIMUM_LENGTH)
         ]);
         $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 
@@ -262,7 +260,6 @@ class UserAdministrationController extends AbstractController
         ]);
         $originalMapping = clone $mapping;
         $formEvent = new UserFormAwareEvent($form);
-        $eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
         $eventDispatcher->dispatch($formEvent, UserEvents::EDIT_FORM);
         $form->handleRequest($request);
 

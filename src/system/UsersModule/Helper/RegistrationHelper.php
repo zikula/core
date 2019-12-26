@@ -16,7 +16,6 @@ namespace Zikula\UsersModule\Helper;
 use DateTime;
 use RuntimeException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
@@ -71,7 +70,7 @@ class RegistrationHelper
         $this->currentUserApi = $currentUserApi;
         $this->userRepository = $userRepository;
         $this->groupRepository = $groupRepository;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
         $this->setTranslator($translator);
     }
 
