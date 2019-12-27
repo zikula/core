@@ -67,4 +67,22 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
         $this->_em->persist($entity);
         $this->_em->flush($entity);
     }
+
+    /**
+     * @param BlockEntity|BlockEntity[] $blocks
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function remove($blocks): void
+    {
+        if (!is_array($blocks)) {
+            $blocks = [$blocks];
+        }
+
+        foreach ($blocks as $block) {
+            $this->_em->remove($block);
+        }
+        $this->_em->flush();
+    }
 }
