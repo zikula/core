@@ -17,11 +17,3 @@ functions, filters, tags, tests and global variables.
  * urldecode
  * yesNo
  * onlineSince(minutes)
-
-### For localisation:
-
- * countryName
- * currencyName
- * languageName
- * localeName
- * timezoneName

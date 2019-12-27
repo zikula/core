@@ -28,6 +28,7 @@
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
         - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
+        - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
         - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
@@ -38,9 +39,9 @@
         - Removed twig/extensions (use new Twig Extra extensions instead)
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
-    - The `polyfill` Twig tag has been removed (#3925).
+    - Removed the `polyfill` Twig tag (#3925).
+    - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
     - Removed `ZikulaKernel::VERSION_SUB` constant.
-    - Removed DoctrineCacheBundle use Symfony/Cache https://symfony.com/doc/current/components/cache.html
     - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
     - Zikula\Bundle\CoreBundle\Bundle\Bootstrap renamed to Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler
     - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::getConnection visibility set to private
@@ -78,7 +79,6 @@
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
-    - Added Twig extensions for easy access to localised names of countries, currencies, languages, locales and timezones.
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
