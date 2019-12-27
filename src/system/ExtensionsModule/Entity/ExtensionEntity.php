@@ -92,7 +92,8 @@ class ExtensionEntity extends EntityAccess
      */
     private $coreCompatibility;
 
-    public function getId(): int
+    /** @return int|null */
+    public function getId()
     {
         return $this->id;
     }
