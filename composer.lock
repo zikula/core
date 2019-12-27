@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf9c60a3f1f43b49fb42aa363f6f8f7b",
+    "content-hash": "025c899e0db7e5a86a262a0957c69a4e",
     "packages": [
         {
             "name": "antishov/doctrine-extensions-bundle",
@@ -7241,16 +7241,16 @@
         },
         {
             "name": "zikula/wizard",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "2db46301c16a7c2bc4d028e09b1a2bec7a1c0723"
+                "reference": "121b37b90d88821d06dadf8bde55650e28191792"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/2db46301c16a7c2bc4d028e09b1a2bec7a1c0723",
-                "reference": "2db46301c16a7c2bc4d028e09b1a2bec7a1c0723",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/121b37b90d88821d06dadf8bde55650e28191792",
+                "reference": "121b37b90d88821d06dadf8bde55650e28191792",
                 "shasum": ""
             },
             "require": {
@@ -7282,10 +7282,10 @@
                 "wizard"
             ],
             "support": {
-                "source": "https://github.com/zikula/Wizard/tree/master",
+                "source": "https://github.com/zikula/Wizard/tree/3.0.3",
                 "issues": "https://github.com/zikula/Wizard/issues"
             },
-            "time": "2019-12-26T13:47:40+00:00"
+            "time": "2019-12-27T05:58:04+00:00"
         }
     ],
     "packages-dev": [
@@ -7375,7 +7375,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.0"
+        "php": "^7.2.5"
     },
     "platform-dev": []
 }
