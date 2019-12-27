@@ -6166,21 +6166,21 @@
         },
         {
             "name": "zikula/wizard",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/Wizard.git",
-                "reference": "1d19a5c14da3f17e1962be96a24c85fa733dc136"
+                "reference": "2db46301c16a7c2bc4d028e09b1a2bec7a1c0723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/Wizard/zipball/1d19a5c14da3f17e1962be96a24c85fa733dc136",
-                "reference": "1d19a5c14da3f17e1962be96a24c85fa733dc136",
+                "url": "https://api.github.com/repos/zikula/Wizard/zipball/2db46301c16a7c2bc4d028e09b1a2bec7a1c0723",
+                "reference": "2db46301c16a7c2bc4d028e09b1a2bec7a1c0723",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.0",
-                "symfony/symfony": "4.*"
+                "symfony/symfony": "4.*|5.*"
             },
             "type": "library",
             "autoload": {
@@ -6207,10 +6207,10 @@
                 "wizard"
             ],
             "support": {
-                "source": "https://github.com/zikula/Wizard/tree/3.0.1",
+                "source": "https://github.com/zikula/Wizard/tree/3.0.2",
                 "issues": "https://github.com/zikula/Wizard/issues"
             },
-            "time": "2019-03-26T06:56:29+00:00"
+            "time": "2019-12-26T13:47:40+00:00"
         }
     ],
     "packages-dev": [
