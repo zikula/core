@@ -54,14 +54,14 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
 
         $status = $this->translateState($extension->getState());
         if (null !== $get) {
-            if ('status' == $get) {
+            if ('status' === $get) {
                 $io->text($status);
 
                 return 0;
             }
             $method = 'get' . ucfirst($get);
             try {
-                $value = $extension->$method();
+                $value = $extension->{$method}();
                 $io->text($value);
             } catch (\Error $e) {
                 $io->error(sprintf('There is no property %s', $get));
