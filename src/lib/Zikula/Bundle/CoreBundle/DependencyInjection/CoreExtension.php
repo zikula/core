@@ -76,7 +76,7 @@ class CoreExtension extends Extension
             $dirs[] = dirname($r->getFileName()) . '/..' . $translationsFolder;
         }
 
-        $appResourcesPath = $container->getParameter('kernel.root_dir') . '/Resources/';
+        $appResourcesPath = $container->getParameter('kernel.project_dir') . '/app/Resources/';
 
         $overridePath = $appResourcesPath . '%s/translations';
         foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {

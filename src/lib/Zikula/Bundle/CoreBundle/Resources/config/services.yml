@@ -40,7 +40,7 @@ services:
 
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         arguments:
-          $configDir: '%kernel.root_dir%/config'
+          $configDir: '%kernel.project_dir%/app/config'
 
     # public because Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand accesses this using container
     Zikula\Bundle\CoreBundle\CacheClearer:
@@ -88,17 +88,6 @@ services:
     Zikula\Core\Doctrine\Helper\SchemaHelper:
         public: true
         lazy: true
-
-    #Twig\Extensions\:
-    #    resource: '../../../../../../vendor/twig/extensions/src/*'
-    twig.extension.text:
-        class: Twig\Extensions\TextExtension
-    twig.extension.intl:
-        class: Twig\Extensions\IntlExtension
-    twig.extension.date:
-        class: Twig\Extensions\DateExtension
-    twig.extension.array:
-        class: Twig\Extensions\ArrayExtension
 
     Zikula\Common\Translator\TranslatorInterface: '@Zikula\Common\Translator\Translator'
 
