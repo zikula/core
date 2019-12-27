@@ -31,7 +31,7 @@ abstract class AbstractAppSettings
      * The amount of routes shown per page
      *
      * @Assert\Type(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotEqualTo(value=0)
      * @Assert\LessThan(value=100000000000)
      * @var int $routeEntriesPerPage
@@ -41,7 +41,7 @@ abstract class AbstractAppSettings
     /**
      * Whether only own entries should be shown on view pages by default or not
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $showOnlyOwnEntries
      */
@@ -50,7 +50,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to allow moderators choosing a user which will be set as creator.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $allowModerationSpecificCreatorForRoute
      */
@@ -59,7 +59,7 @@ abstract class AbstractAppSettings
     /**
      * Whether to allow moderators choosing a custom creation date.
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $allowModerationSpecificCreationDateForRoute
      */
