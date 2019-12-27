@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle\Translation;
+namespace Zikula\Bundle\CoreBundle\Translation {
 
 use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
 use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
 use SplFileInfo;
-use Twig\Node\Node;
 
 class ZikulaJsFileExtractor implements FileVisitorInterface
 {
@@ -76,7 +75,18 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
     {
     }
 
-    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, Node $node)
+    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $node)
     {
+    }
+}
+}
+
+// TODO remove temporary workaround when vendor interface (FileVisitorInterface) is updated
+namespace {
+    use Twig\Node\Node;
+    if (!class_exists('Twig_Node')) {
+        class Twig_Node extends Node
+        {
+        }
     }
 }

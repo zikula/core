@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle\Translation;
+namespace Zikula\Bundle\CoreBundle\Translation {
 
 use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
@@ -137,7 +137,7 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
         return 0;
     }
 
-    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, Node $ast)
+    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $ast)
     {
         $this->file = $file;
         $this->catalogue = $catalogue;
@@ -150,7 +150,7 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
      * in the same manner as we do the main twig template to ensure all translations are
      * caught.
      */
-    private function traverseEmbeddedTemplates(Node $node)
+    private function traverseEmbeddedTemplates(\Twig_Node $node)
     {
         $templates = $node->getAttribute('embedded_templates');
 
@@ -175,5 +175,16 @@ class ZikulaTwigFileExtractor extends AbstractNodeVisitor implements FileVisitor
 
     public function visitPhpFile(SplFileInfo $file, MessageCatalogue $catalogue, array $ast)
     {
+    }
+}
+}
+
+// TODO remove temporary workaround when vendor interface (FileVisitorInterface) is updated
+namespace {
+    use Twig\Node\Node;
+    if (!class_exists('Twig_Node')) {
+        class Twig_Node extends Node
+        {
+        }
     }
 }

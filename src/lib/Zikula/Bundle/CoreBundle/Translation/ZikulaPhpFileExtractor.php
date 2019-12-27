@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\Bundle\CoreBundle\Translation;
+namespace Zikula\Bundle\CoreBundle\Translation {
 
 use Doctrine\Common\Annotations\DocParser;
 use JMS\TranslationBundle\Annotation\Desc;
@@ -242,7 +242,7 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
     {
     }
 
-    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, TwigNode $ast)
+    public function visitTwigFile(SplFileInfo $file, MessageCatalogue $catalogue, \Twig_Node $ast)
     {
     }
 
@@ -284,5 +284,16 @@ class ZikulaPhpFileExtractor implements LoggerAwareInterface, FileVisitorInterfa
         }
 
         return null;
+    }
+}
+}
+
+// TODO remove temporary workaround when vendor interface (FileVisitorInterface) is updated
+namespace {
+    use Twig\Node\Node;
+    if (!class_exists('Twig_Node')) {
+        class Twig_Node extends Node
+        {
+        }
     }
 }
