@@ -25,3 +25,10 @@ Provides some basic information about the module and its status
 
 usage `bin/console zikula:extension:status AcmeFooModule`
 shortcut `bin/console z:e:s AcmeFooModule`
+
+It is also possible to fetch individual properties like 'status', or 'version' 
+by doing something like:
+
+`bin/console z:e:s AcmeFooModule --get=version`
+
+All the properties of the ExtensionEntity are available.

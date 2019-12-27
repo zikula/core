@@ -15,6 +15,7 @@ namespace Zikula\ExtensionsModule\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\ExtensionsModule\Constant;
@@ -28,6 +29,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
         $this
             ->setDescription('Display status information of a Zikula extension')
             ->addArgument('bundle_name', InputArgument::REQUIRED, 'Bundle class name (e.g. ZikulaUsersModule)')
+            ->addOption('get', null, InputOption::VALUE_REQUIRED, 'Which property to fetch?')
         ;
     }
 
@@ -35,6 +37,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
     {
         $io = new SymfonyStyle($input, $output);
         $bundleName = $input->getArgument('bundle_name');
+        $get = $input->getOption('get');
 
         if (!$input->isInteractive()) {
             $io->error('This command only runs in interactive mode.');
@@ -45,6 +48,26 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
         $this->reSync();
         if (null === $extension = $this->extensionRepository->findOneBy(['name' => $bundleName])) {
             $io->error('The extension cannot be found, please check the name.');
+
+            return 2;
+        }
+
+        $status = $this->translateState($extension->getState());
+        if (null !== $get) {
+            if ('status' == $get) {
+                $io->text($status);
+
+                return 0;
+            }
+            $method = 'get' . ucfirst($get);
+            try {
+                $value = $extension->$method();
+                $io->text($value);
+            } catch (\Error $e) {
+                $io->error(sprintf('There is no property %s', $get));
+            }
+
+            return 0;
         }
 
         $io->title(sprintf('Status of %s', $bundleName));
@@ -53,7 +76,7 @@ class ZikulaExtensionStatusCommand extends AbstractExtensionCommand
             [
                 ['Name', $extension->getName()],
                 ['Version', $extension->getVersion()],
-                ['Status', $this->translateState($extension->getState())],
+                ['Status', $status],
                 ['Description', $extension->getDescription()],
                 ['Core Compatibility', $extension->getCoreCompatibility()],
         ]);
