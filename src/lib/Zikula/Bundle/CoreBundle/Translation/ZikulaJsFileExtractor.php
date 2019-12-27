@@ -12,7 +12,6 @@ declare(strict_types=1);
  */
 
 namespace Zikula\Bundle\CoreBundle\Translation {
-
 use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
@@ -82,8 +81,10 @@ class ZikulaJsFileExtractor implements FileVisitorInterface
 }
 
 // TODO remove temporary workaround when vendor interface (FileVisitorInterface) is updated
+
 namespace {
     use Twig\Node\Node;
+
     if (!class_exists('Twig_Node')) {
         class Twig_Node extends Node
         {
