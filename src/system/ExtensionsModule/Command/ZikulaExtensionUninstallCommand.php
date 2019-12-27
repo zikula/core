@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Zikula\ExtensionsModule\Constant;
 
-class ZikulaExtensionUninstallCommand extends Command
+class ZikulaExtensionUninstallCommand extends AbstractExtensionCommand
 {
     protected static $defaultName = 'zikula:extension:uninstall';
 
@@ -28,25 +27,60 @@ class ZikulaExtensionUninstallCommand extends Command
     {
         $this
             ->setDescription('Uninstall a zikula module or theme')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addArgument('bundle_name', InputArgument::REQUIRED, 'Bundle class name (e.g. ZikulaUsersModule)')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        $bundleName = $input->getArgument('bundle_name');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        if (false === $extension = $this->isInstalled($bundleName)) {
+            if ($input->isInteractive()) {
+                $io->error('The extension is not installed and therefore cannot be uninstalled.');
+            }
+
+            return 1;
         }
 
-        if ($input->getOption('option1')) {
-            // ...
+        if (Constant::STATE_MISSING === $extension->getState()) {
+            if ($input->isInteractive()) {
+                $io->error('The extension cannot be uninstalled because its files are missing.');
+            }
+
+            return 2;
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $requiredDependents = $this->dependencyHelper->getDependentExtensions($extension);
+        if (!empty($requiredDependents)) {
+            if ($input->isInteractive()) {
+                $names = implode(', ', array_map(function ($dependent) {
+                    return $dependent->getModname();
+                } , $requiredDependents));
+
+                $io->error(sprintf('The extension is a required dependency of [%s]. Please uninstall these extensions first.', $names));
+            }
+
+            return 3;
+        }
+
+        $blocks = $this->blockRepository->findBy(['module' => $extension]);
+        $this->blockRepository->remove($blocks);
+
+        if (false === $this->extensionHelper->uninstall($extension)) {
+            if ($input->isInteractive()) {
+                $io->error('Could not uninstall the extension');
+            }
+
+            return 4;
+        }
+
+        $this->reSync();
+
+        if ($input->isInteractive()) {
+            $io->success('The extension has been uninstalled.');
+        }
 
         return 0;
     }
