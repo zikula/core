@@ -15,17 +15,13 @@ namespace Zikula\Bundle\CoreBundle\HttpKernel;
 
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\HttpKernel\RebootableInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Zikula\Core\AbstractModule;
 use Zikula\ThemeModule\AbstractTheme;
 
-interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface
+interface ZikulaHttpKernelInterface extends KernelInterface, TerminableInterface, RebootableInterface
 {
-    /**
-     * Flag determines if container is dumped or not.
-     */
-//    public function setDump(bool $flag): void;
-
     /**
      * Gets named module bundle.
      *

@@ -25,4 +25,6 @@ interface BlockRepositoryInterface extends ObjectRepository, Selectable
     public function getFilteredBlocks(array $filter = []);
 
     public function persistAndFlush(BlockEntity $entity): void;
+
+    public function remove($blocks): void;
 }

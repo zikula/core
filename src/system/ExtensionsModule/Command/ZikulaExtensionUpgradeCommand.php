@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Zikula\ExtensionsModule\Constant;
 
-class ZikulaExtensionUpgradeCommand extends Command
+class ZikulaExtensionUpgradeCommand extends AbstractExtensionCommand
 {
     protected static $defaultName = 'zikula:extension:upgrade';
 
@@ -28,26 +27,56 @@ class ZikulaExtensionUpgradeCommand extends Command
     {
         $this
             ->setDescription('Upgrade a zikula module or theme')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            ->addArgument('bundle_name', InputArgument::REQUIRED, 'Bundle class name (e.g. ZikulaUsersModule)')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        $bundleName = $input->getArgument('bundle_name');
 
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
+        if (false === $this->isInstalled($bundleName)) {
+            if ($input->isInteractive()) {
+                $io->error('The extension is not installed and therefore cannot be upgraded.');
+            }
+
+            return 1;
         }
 
-        if ($input->getOption('option1')) {
-            // ...
+        if (false !== $extension = $this->isUpgradeable($bundleName)) {
+            if ($input->isInteractive()) {
+                $io->error('The extension cannot be upgraded because its version number has not changed.');
+            }
+
+            return 2;
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        if (!$this->extensionHelper->upgrade($extension)) {
+            if ($input->isInteractive()) {
+                $io->error('The extension could not be upgraded.');
+            }
+
+            return 3;
+        }
+
+        if ($input->isInteractive()) {
+            $io->success('The extension has been upgraded.');
+        }
 
         return 0;
+    }
+
+    private function isUpgradeable(string $bundleName)
+    {
+        $extensionsInFileSystem = $this->bundleSyncHelper->scanForBundles();
+        $this->bundleSyncHelper->syncExtensions($extensionsInFileSystem);
+        if (null !== $extension = $this->extensionRepository->findOneBy(['name' => $bundleName])) {
+            if (Constant::STATE_UPGRADED === $extension->getState()) {
+                return $extension;
+            }
+        }
+
+        return false;
     }
 }
