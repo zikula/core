@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Controller\ErrorController;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Loader\LoaderInterface;

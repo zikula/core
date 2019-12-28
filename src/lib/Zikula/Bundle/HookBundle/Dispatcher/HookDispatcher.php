@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
 
 /**

@@ -15,7 +15,7 @@ namespace Zikula\UsersModule\Helper;
 
 use DateTime;
 use RuntimeException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;

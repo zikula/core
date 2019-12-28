@@ -15,7 +15,6 @@ namespace Zikula\ExtensionsModule\Controller;
 
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\CacheClearer;
@@ -77,7 +77,7 @@ class ModuleController extends AbstractController
         if (!empty($modulesJustInstalled)) {
             // notify the event dispatcher that new routes are available (ids of modules just installed avail as args)
             $event = new GenericEvent(null, json_decode($modulesJustInstalled));
-            $this->get('event_dispatcher')->dispatch(self::NEW_ROUTES_AVAIL, $event);
+            $this->get('event_dispatcher')->dispatch($event, self::NEW_ROUTES_AVAIL);
         }
 
         $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_module_viewmodulelist');
@@ -86,7 +86,7 @@ class ModuleController extends AbstractController
 
         $upgradedExtensions = [];
         $vetoEvent = new GenericEvent();
-        $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
+        $this->get('event_dispatcher')->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (1 === $pos && !$vetoEvent->isPropagationStopped()) {
             // regenerate the extension list only when viewing the first page
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
@@ -502,10 +502,7 @@ class ModuleController extends AbstractController
                     return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
                 }
                 // remove blocks
-                foreach ($blocks as $block) {
-                    $this->getDoctrine()->getManager()->remove($block);
-                }
-                $this->getDoctrine()->getManager()->flush();
+                $blockRepository->remove($blocks);
 
                 // remove the extension
                 if ($extensionHelper->uninstall($extension)) {

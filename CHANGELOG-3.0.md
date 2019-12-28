@@ -79,6 +79,7 @@
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
+    - Added CLI Commands to manage extension installation, upgrade & uninstall (#3517)
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2

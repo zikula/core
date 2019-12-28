@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\UsersModule\Block;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\UsersModule\AccessEvents;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Helper;
 
 use RuntimeException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
