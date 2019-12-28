@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Block;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\Common\Collection\Collectible\PendingContentCollectible;
 use Zikula\Common\Collection\Container;

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Console\Style\StyleInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;

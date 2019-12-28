@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\Core\Event\GenericEvent;

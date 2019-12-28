@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\Core\LinkContainer;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
 
 class LinkContainerCollector
