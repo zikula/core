@@ -65,7 +65,7 @@ class BlockRepository extends ServiceEntityRepository implements BlockRepository
     public function persistAndFlush(BlockEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     /**

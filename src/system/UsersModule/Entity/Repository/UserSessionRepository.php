@@ -75,7 +75,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
     public function persistAndFlush(UserSessionEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function removeAndFlush(string $id): void
@@ -84,7 +84,7 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         $entity = $this->find($id);
         if ($entity) {
             $this->_em->remove($entity);
-            $this->_em->flush($entity);
+            $this->_em->flush();
         }
     }
 

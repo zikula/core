@@ -78,6 +78,6 @@ class SearchStatRepository extends ServiceEntityRepository implements SearchStat
     public function persistAndFlush(SearchStatEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 }

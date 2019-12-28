@@ -43,7 +43,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     public function persistAndFlush(UserEntity $user): void
     {
         $this->_em->persist($user);
-        $this->_em->flush($user);
+        $this->_em->flush();
     }
 
     public function removeAndFlush(UserEntity $user): void
@@ -59,14 +59,14 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
         $user->setAttributes(new ArrayCollection());
         $this->_em->remove($user);
-        $this->_em->flush($user);
+        $this->_em->flush();
     }
 
     public function setApproved(UserEntity $user, DateTime $approvedOn, int $approvedBy = null): void
     {
         $user->setApproved_Date($approvedOn);
         $user->setApproved_By($approvedBy ?? $user->getUid());
-        $this->_em->flush($user);
+        $this->_em->flush();
     }
 
     public function queryBySearchForm(array $formData = [])
