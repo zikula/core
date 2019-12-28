@@ -20,7 +20,7 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Command\UpgradeCommand:
         arguments:
-            $currentInstalledVersion: !php/const Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
+            $currentInstalledVersion: '%core_installed_version%'
 
     Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
         arguments:
@@ -28,7 +28,7 @@ services:
 
     Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage:
         arguments:
-            $oldVersion: !php/const Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
+            $oldVersion: '%core_installed_version%'
 
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:
