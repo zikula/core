@@ -37,6 +37,16 @@ class GenericEvent extends SymfonyGenericEvent
     protected $exception;
 
     /**
+     * @var mixed
+     */
+    protected $subject;
+
+    /**
+     * @var array
+     */
+    protected $args = [];
+
+    /**
      * Encapsulate an event with $subject, $args, and $data.
      *
      * @param mixed $subject Usually an object or other PHP callable
@@ -46,7 +56,8 @@ class GenericEvent extends SymfonyGenericEvent
     public function __construct($subject = null, array $args = [], $data = null)
     {
         $this->data = $data;
-        parent::__construct($subject, $args);
+        $this->subject = $subject;
+        $this->args = $args;
     }
 
     /**
@@ -100,5 +111,45 @@ class GenericEvent extends SymfonyGenericEvent
     public function hasException(): bool
     {
         return (bool)$this->exception;
+    }
+
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    public function setSubject($subject): void
+    {
+        $this->subject = $subject;
+    }
+
+    public function getArgs(): array
+    {
+        return $this->args;
+    }
+
+    public function setArgs(array $args): void
+    {
+        $this->args = $args;
+    }
+
+    public function getArguments(): array
+    {
+        return $this->args;
+    }
+
+    public function setArguments(array $args): void
+    {
+        $this->args = $args;
+    }
+
+    public function setArgument(string $key, $val)
+    {
+        $this->args[$key] = $val;
+    }
+
+    public function getArgument(string $key)
+    {
+        return $this->args[$key];
     }
 }
