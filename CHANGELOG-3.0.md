@@ -81,6 +81,7 @@
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
     - Added Twig extensions for easy access to localised names of countries, currencies, languages, locales and timezones.
+    - Added CLI Commands to manage extension installation, upgrade & uninstall (#3517)
 
  - Vendor updates:
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
