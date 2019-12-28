@@ -45,6 +45,7 @@
 
         "twig/twig": "3.*",
         "twig/cssinliner-extra": "3.*",
+        "twig/html-extra": "3.*",
         "twig/inky-extra": "3.*",
         "twig/intl-extra": "3.*",
         "twig/markdown-extra": "3.*",
