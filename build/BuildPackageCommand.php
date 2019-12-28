@@ -54,7 +54,7 @@ class BuildPackageCommand extends Command
         $filesystem->mkdir($buildDir, 0755);
         $progress->advance();
 
-        $filesystem->mirror($sourceDir, "${buildDir}/${name}");
+        $filesystem->mirror(/** @scrutinizer ignore-type */ $sourceDir, "${buildDir}/${name}");
         $progress->advance();
 
         PurgeVendorsCommand::cleanVendors("${buildDir}/${name}/vendor", $progress);

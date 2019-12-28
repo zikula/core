@@ -23,7 +23,7 @@ class EventDispatcherExtension extends AbstractExtension
     /**
      * @var EventDispatcherInterface
      */
-    private $dispatcher;
+    private $eventDispatcher;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher
@@ -41,7 +41,7 @@ class EventDispatcherExtension extends AbstractExtension
     public function dispatchEvent(string $name, GenericEvent $providedEvent = null, $subject = null, array $arguments = [], $data = null)
     {
         $event = $providedEvent ?? new GenericEvent($subject, $arguments, $data);
-        $this->dispatcher->dispatch($event, $name);
+        $this->eventDispatcher->dispatch($event, $name);
 
         return $event->getData();
     }
