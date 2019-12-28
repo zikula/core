@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Block;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;

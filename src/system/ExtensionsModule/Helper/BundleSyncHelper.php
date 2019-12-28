@@ -16,7 +16,7 @@ namespace Zikula\ExtensionsModule\Helper;
 use Composer\Semver\Semver;
 use Exception;
 use RuntimeException;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

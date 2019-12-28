@@ -27,7 +27,7 @@ class CombinedAssetController extends AbstractController
      */
     public function assetAction(string $type, string $key): Response
     {
-        $lifetimeInSeconds = abs(new DateTime($this->getParameter('zikula_asset_manager.lifetime'))) - (new DateTime())->getTimestamp();
+        $lifetimeInSeconds = abs(new DateTime($this->container->getParameter('zikula_asset_manager.lifetime'))) - (new DateTime())->getTimestamp();
         $cacheService = new FilesystemAdapter(
             'combined_assets',
             $lifetimeInSeconds,
@@ -36,7 +36,7 @@ class CombinedAssetController extends AbstractController
             throw new \Exception('Combined Assets not found');
         });
 
-        $compress = $this->getParameter('zikula_asset_manager.compress');
+        $compress = $this->container->getParameter('zikula_asset_manager.compress');
         if ($compress && extension_loaded('zlib')) {
             ini_set('zlib.output_handler', '');
             ini_set('zlib.output_compression', '1');
