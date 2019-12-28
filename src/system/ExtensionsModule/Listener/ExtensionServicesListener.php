@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Listener;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Api;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;

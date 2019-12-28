@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
@@ -42,6 +41,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;

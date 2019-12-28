@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Bridge\Twig;
 
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Twig\Error\Error as TwigError;
 use Zikula\ThemeModule\Bridge\Event\TwigPostRenderEvent;

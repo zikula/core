@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\ProcessHook;
 use Zikula\Bundle\HookBundle\Hook\ValidationHook;
