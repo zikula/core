@@ -15,7 +15,7 @@ namespace Zikula\Core\Event;
 
 use Exception;
 use RuntimeException;
-use Symfony\Component\EventDispatcher\GenericEvent as SymfonyGenericEvent;
+use Symfony\Contracts\EventDispatcher\Event as SymfonyGenericEvent;
 
 /**
  * Event encapsulation class.

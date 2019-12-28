@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Core\Tests\LinkContainer;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
