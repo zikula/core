@@ -131,7 +131,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->getDoctrine()->getManager()->persist($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_CREATE, new GenericEvent($groupEntity));
+                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_CREATE);
                 $this->addFlash('status', $this->__('Done! Created the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -169,7 +169,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->getDoctrine()->getManager()->persist($groupEntity); // this isn't technically required
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_UPDATE, new GenericEvent($groupEntity));
+                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_UPDATE);
                 $this->addFlash('status', $this->__('Done! Updated the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -220,10 +220,10 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
-                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_PRE_DELETE, new GenericEvent($groupEntity));
+                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_PRE_DELETE);
                 $this->getDoctrine()->getManager()->remove($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(GroupEvents::GROUP_DELETE, new GenericEvent($groupEntity));
+                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_DELETE);
                 $this->addFlash('status', $this->__('Done! Group deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

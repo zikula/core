@@ -54,7 +54,7 @@ class UserDeleteListener implements EventSubscriberInterface
 
     public function deleteUsers(GenericEvent $event): void
     {
-        $deletedUid = $event->getSubject();
+        $deletedUid = (int) $event->getSubject();
         $this->mappingRepository->removeByZikulaId($deletedUid);
         $this->verificationRepository->removeByZikulaId($deletedUid);
     }
