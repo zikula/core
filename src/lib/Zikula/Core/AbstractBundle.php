@@ -42,7 +42,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function setState(int $state): self
     {
-        trigger_error('State management of bundles is deprecated and will be removed in Core 4.0', E_USER_DEPRECATED);
+        @trigger_error('State management of bundles is deprecated and will be removed in Core 4.0', E_USER_DEPRECATED);
 
         return $this;
     }
