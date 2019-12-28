@@ -15,7 +15,6 @@ namespace Zikula\PermissionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Core\Event\GenericEvent;
-use Zikula\GroupsModule\Entity\Group;
 use Zikula\GroupsModule\GroupEvents;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 

@@ -62,7 +62,7 @@ class ThemeController extends AbstractController
             throw new AccessDeniedException();
         }
         $vetoEvent = new GenericEvent();
-        $this->get('event_dispatcher')->dispatch(ExtensionEvents::REGENERATE_VETO, $vetoEvent);
+        $this->get('event_dispatcher')->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (!$vetoEvent->isPropagationStopped()) {
             $syncHelper->regenerate();
         }

@@ -83,7 +83,7 @@ class RegistrationController extends AbstractController
         if ($regExpireDays > 0) {
             $deletedUsers = $userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
-                $this->get('event_dispatcher')->dispatch(RegistrationEvents::DELETE_REGISTRATION, new GenericEvent($deletedUser->getUid()));
+                $this->get('event_dispatcher')->dispatch(new GenericEvent($deletedUser->getUid()), RegistrationEvents::DELETE_REGISTRATION);
             }
         }
         $codeValidationErrors = $validator->validate(['uname' => $uname, 'verifycode' => $verifycode], new ValidRegistrationVerification());
