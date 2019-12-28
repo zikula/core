@@ -29,11 +29,7 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractBundle extends Bundle
 {
-    public const STATE_DISABLED = 2;
-
     public const STATE_ACTIVE = 3;
-
-    public const STATE_MISSING = 6;
 
     /**
      * @deprecated
@@ -46,11 +42,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function setState(int $state): self
     {
-        if (!in_array($state, [self::STATE_ACTIVE, self::STATE_DISABLED, self::STATE_MISSING], true)) {
-            throw new InvalidArgumentException(sprintf('Invalid state %s', $state));
-        }
-
-        $this->state = $state;
+        @trigger_error('State management of bundles is deprecated and will be removed in Core 4.0', E_USER_DEPRECATED);
 
         return $this;
     }
@@ -60,7 +52,7 @@ abstract class AbstractBundle extends Bundle
      */
     public function getState(): int
     {
-        return $this->state;
+        return self::STATE_ACTIVE;
     }
 
     public function getInstallerClass(): string

@@ -71,7 +71,7 @@ class SearchStatEntity extends EntityAccess
         $this->date = new DateTime('now', new DateTimeZone('UTC'));
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

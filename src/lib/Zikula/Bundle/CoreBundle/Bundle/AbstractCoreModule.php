@@ -17,11 +17,6 @@ use Zikula\Core\AbstractModule;
 
 abstract class AbstractCoreModule extends AbstractModule
 {
-    public function getState(): int
-    {
-        return self::STATE_ACTIVE;
-    }
-
     public function getTranslationDomain(): string
     {
         return 'zikula';

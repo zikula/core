@@ -64,7 +64,7 @@ class AdminCategoryEntity extends EntityAccess
         $this->sortorder = 99;
     }
 
-    public function getCid(): int
+    public function getCid(): ?int
     {
         return $this->cid;
     }

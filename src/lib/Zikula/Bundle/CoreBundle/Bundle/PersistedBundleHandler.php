@@ -26,7 +26,7 @@ use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 class PersistedBundleHandler
 {
     /**
-     * @var array the active/inactive state of each extension
+     * @var array the active/inactive state of each extension (extension state !== bundle state)
      */
     private $extensionStateMap = [];
 
@@ -56,6 +56,7 @@ class PersistedBundleHandler
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
+        // bundlestate is @deprecated - remove in Core 4.0
         $res = $conn->executeQuery('SELECT bundleclass, autoload, bundlestate, bundletype FROM bundles');
         foreach ($res->fetchAll(PDO::FETCH_NUM) as list($class, $autoload, $state, $type)) {
             $extensionIsActive = $this->extensionIsActive($conn, $class, $type);

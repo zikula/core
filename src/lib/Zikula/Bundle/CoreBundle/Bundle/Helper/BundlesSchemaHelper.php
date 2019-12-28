@@ -67,6 +67,7 @@ class BundlesSchemaHelper
         /** @var $metadata MetaData */
         foreach ($fileExtensions as $name => $metadata) {
             $qb = $this->conn->createQueryBuilder();
+            // bundlestate is @deprecated - remove in Core 4.0
             $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
                 ->from('bundles', 'b')
                 ->where('b.bundlename = :name')
@@ -88,6 +89,7 @@ class BundlesSchemaHelper
 
         // remove what is in db but missing from array
         $qb = $this->conn->createQueryBuilder();
+        // bundlestate is @deprecated - remove in Core 4.0
         $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
             ->from('bundles', 'b');
         $res = $qb->execute();
@@ -127,7 +129,7 @@ class BundlesSchemaHelper
             'autoload'    => $autoload,
             'bundleclass' => $class,
             'bundletype'  => $type,
-            'bundlestate' => AbstractBundle::STATE_ACTIVE,
+            'bundlestate' => AbstractBundle::STATE_ACTIVE, // @deprecated
         ]);
     }
 
@@ -148,7 +150,7 @@ class BundlesSchemaHelper
         $table->addColumn('autoload', 'string', ['length' => 384]);
         $table->addColumn('bundleclass', 'string', ['length' => 100]);
         $table->addColumn('bundletype', 'string', ['length' => 2]);
-        $table->addColumn('bundlestate', 'integer', ['length' => 1]);
+        $table->addColumn('bundlestate', 'integer', ['length' => 1]); // @deprecated
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['bundlename']);
         $schema->createTable($table);

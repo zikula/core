@@ -88,7 +88,7 @@ class UserSessionEntity extends EntityAccess
         $this->vars = '';
     }
 
-    public function getSessid(): string
+    public function getSessid(): ?string
     {
         return $this->sessid;
     }

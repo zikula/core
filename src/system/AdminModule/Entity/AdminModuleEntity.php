@@ -64,7 +64,7 @@ class AdminModuleEntity extends EntityAccess
         $this->sortorder = 0;
     }
 
-    public function getAmid(): int
+    public function getAmid(): ?int
     {
         return $this->amid;
     }
