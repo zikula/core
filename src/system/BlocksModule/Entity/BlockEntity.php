@@ -135,7 +135,7 @@ class BlockEntity extends EntityAccess
         $this->placements = new ArrayCollection();
     }
 
-    public function getBid(): int
+    public function getBid(): ?int
     {
         return $this->bid;
     }

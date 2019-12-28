@@ -55,7 +55,7 @@ abstract class AbstractCategoryAssignment extends EntityAccess
         $this->setEntity($entity);
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
