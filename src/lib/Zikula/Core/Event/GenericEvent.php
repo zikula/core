@@ -22,7 +22,7 @@ use Symfony\Contracts\EventDispatcher\Event as SymfonyGenericEvent;
  *
  * Encapsulates events thus decoupling the observer from the subject they encapsulate.
  */
-class GenericEvent extends SymfonyGenericEvent
+class GenericEvent extends SymfonyGenericEvent implements \ArrayAccess, \IteratorAggregate
 {
     /**
      * @var mixed
@@ -148,8 +148,40 @@ class GenericEvent extends SymfonyGenericEvent
         $this->args[$key] = $val;
     }
 
+    public function hasArgument($key)
+    {
+        return \array_key_exists($key, $this->args);
+    }
+
     public function getArgument(string $key)
     {
         return $this->args[$key];
+    }
+
+    public function offsetExists($offset)
+    {
+        return $this->hasArgument($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->getArgument($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->setArgument($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        if ($this->hasArgument($offset)) {
+            unset($this->args[$offset]);
+        }
+    }
+
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->args);
     }
 }
