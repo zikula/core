@@ -90,7 +90,7 @@ class UserVerificationEntity extends EntityAccess
         $this->created_dt = new DateTime('now');
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

@@ -212,7 +212,7 @@ class CategoryEntity extends EntityAccess
         $this->attributes = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

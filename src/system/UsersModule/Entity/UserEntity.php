@@ -183,7 +183,7 @@ class UserEntity extends EntityAccess
         $this->groups = new ArrayCollection();
     }
 
-    public function getUid(): int
+    public function getUid(): ?int
     {
         return $this->uid;
     }

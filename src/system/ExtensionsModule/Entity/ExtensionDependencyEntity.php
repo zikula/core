@@ -69,7 +69,7 @@ class ExtensionDependencyEntity extends EntityAccess
      */
     private $reason = false;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

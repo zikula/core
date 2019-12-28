@@ -110,7 +110,7 @@ class GroupEntity extends EntityAccess
         $this->applications = $applications;
     }
 
-    public function getGid(): int
+    public function getGid(): ?int
     {
         return $this->gid;
     }

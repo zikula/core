@@ -93,7 +93,7 @@ class PermissionEntity extends EntityAccess
         $this->bond = 0;
     }
 
-    public function getPid(): int
+    public function getPid(): ?int
     {
         return $this->pid;
     }

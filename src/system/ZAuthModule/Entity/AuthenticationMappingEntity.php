@@ -67,7 +67,7 @@ class AuthenticationMappingEntity extends EntityAccess
      */
     private $pass;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
