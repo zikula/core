@@ -30,7 +30,7 @@ class AdminModuleRepository extends ServiceEntityRepository implements AdminModu
     public function persistAndFlush(AdminModuleEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function countModulesByCategory(int $cid): int

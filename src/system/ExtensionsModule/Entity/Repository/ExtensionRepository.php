@@ -82,7 +82,7 @@ class ExtensionRepository extends ServiceEntityRepository implements ExtensionRe
     public function persistAndFlush(ExtensionEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function removeAndFlush(ExtensionEntity $entity): void

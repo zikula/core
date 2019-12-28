@@ -34,13 +34,13 @@ class UserVerificationRepository extends ServiceEntityRepository implements User
     public function persistAndFlush(UserVerificationEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function removeAndFlush(UserVerificationEntity $entity): void
     {
         $this->_em->remove($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function removeByZikulaId(int $userId): void

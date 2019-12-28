@@ -103,7 +103,7 @@ class SearchResultRepository extends ServiceEntityRepository implements SearchRe
 
     public function flush(SearchResultEntity $entity = null): void
     {
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function truncateTable(): void

@@ -71,7 +71,7 @@ class PermissionRepository extends ServiceEntityRepository implements Permission
     public function persistAndFlush(PermissionEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function getMaxSequence(): int

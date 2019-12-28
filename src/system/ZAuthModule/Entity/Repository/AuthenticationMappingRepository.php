@@ -33,7 +33,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
     public function persistAndFlush(AuthenticationMappingEntity $entity): void
     {
         $this->_em->persist($entity);
-        $this->_em->flush($entity);
+        $this->_em->flush();
     }
 
     public function removeByZikulaId(int $userId): void
@@ -55,7 +55,7 @@ class AuthenticationMappingRepository extends ServiceEntityRepository implements
         $mapping = $this->findOneBy(['uid' => $userId]);
         if (isset($mapping)) {
             $mapping->setVerifiedEmail($value);
-            $this->_em->flush($mapping);
+            $this->_em->flush();
         }
     }
 
