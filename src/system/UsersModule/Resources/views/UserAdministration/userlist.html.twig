@@ -4,12 +4,12 @@
         <td headers="hId">{{ user.uid }}</td>
         <td headers="hRegistrationDate">
             {% if user.uid != constant('Zikula\\UsersModule\\Constant::USER_ID_ANONYMOUS') %}
-                {{ user.user_regdate|localizeddate('medium', 'short') }}
+                {{ user.user_regdate|format_datetime('medium', 'short') }}
             {% endif %}
         </td>
         <td headers="hLastLogin">
             {% if user.uid != constant('Zikula\\UsersModule\\Constant::USER_ID_ANONYMOUS') %}
-                {{ user.lastlogin|localizeddate('medium', 'short') }}
+                {{ user.lastlogin|format_datetime('medium', 'short') }}
             {% endif %}
         </td>
         <td headers="hGroups">

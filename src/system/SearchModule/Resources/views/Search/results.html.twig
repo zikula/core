@@ -25,9 +25,9 @@
         {% endif %}
     </dt>
     <dd>
-        {{ result.text|truncate(limitSummary, true)|zikulasearchmodule_highlightWords(q) }}
+        {{ result.text|u.truncate(limitSummary, '…')|zikulasearchmodule_highlightWords(q) }}
         {% if result.created is not empty %}
-            <div class="search_created">{{ __f('Created on %s.', { '%s': result.created|localizeddate('long', 'none') }) }}</div>
+            <div class="search_created">{{ __f('Created on %s.', { '%s': result.created|format_date('long') }) }}</div>
         {% endif %}
     </dd>
     {% endfor %}

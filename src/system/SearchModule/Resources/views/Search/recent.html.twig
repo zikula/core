@@ -23,7 +23,7 @@
                     <a href="{{ path('zikulasearchmodule_search_execute', {q: recentSearch.search}) }}">{{ recentSearch.search|replace({' ': ', '}) }}</a>
                 </th>
                 <td headers="hSearchRow{{ loop.index }} hAmountOfSearches">{{ recentSearch.count }}</td>
-                <td headers="hSearchRow{{ loop.index }} hDateOfLastSearch">{{ recentSearch.date.timestamp|localizeddate('short', 'none') }}</td>
+                <td headers="hSearchRow{{ loop.index }} hDateOfLastSearch">{{ recentSearch.date.timestamp|format_date('short') }}</td>
             </tr>
         {% else %}
             <tr class="table table-borderedempty"><td colspan="3">{{ __('No items found.') }}</td></tr>
