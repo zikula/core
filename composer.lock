@@ -3283,13 +3283,13 @@
             "version": "dev-symfony5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "f8bf61e75a605ca0ac7bdf34727905eacda8fca8"
+                "url": "https://github.com/Guite/LiipImagineBundle.git",
+                "reference": "5a1a4d2602d4486613b489f039fcce6fd69c2c2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/f8bf61e75a605ca0ac7bdf34727905eacda8fca8",
-                "reference": "f8bf61e75a605ca0ac7bdf34727905eacda8fca8",
+                "url": "https://api.github.com/repos/Guite/LiipImagineBundle/zipball/5a1a4d2602d4486613b489f039fcce6fd69c2c2b",
+                "reference": "5a1a4d2602d4486613b489f039fcce6fd69c2c2b",
                 "shasum": ""
             },
             "require": {
@@ -3377,10 +3377,9 @@
                 "transformation"
             ],
             "support": {
-                "source": "https://github.com/liip/LiipImagineBundle/tree/symfony5",
-                "issues": "https://github.com/liip/LiipImagineBundle/issues"
+                "source": "https://github.com/Guite/LiipImagineBundle/tree/symfony5"
             },
-            "time": "2019-11-29T11:00:08+00:00"
+            "time": "2019-12-28T11:53:44+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -3434,13 +3433,13 @@
             "version": "dev-symfony-5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Jeroeny/symfony-console-form.git",
-                "reference": "0e62abf3e3c85be0f733bf71ad0d31e750762f79"
+                "url": "https://github.com/Guite/symfony-console-form.git",
+                "reference": "78e6681d36260d545c50c3b544867d1c9f758613"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Jeroeny/symfony-console-form/zipball/0e62abf3e3c85be0f733bf71ad0d31e750762f79",
-                "reference": "0e62abf3e3c85be0f733bf71ad0d31e750762f79",
+                "url": "https://api.github.com/repos/Guite/symfony-console-form/zipball/78e6681d36260d545c50c3b544867d1c9f758613",
+                "reference": "78e6681d36260d545c50c3b544867d1c9f758613",
                 "shasum": ""
             },
             "require": {
@@ -3488,9 +3487,9 @@
                 "form"
             ],
             "support": {
-                "source": "https://github.com/Jeroeny/symfony-console-form/tree/symfony-5"
+                "source": "https://github.com/Guite/symfony-console-form/tree/symfony-5"
             },
-            "time": "2019-11-23T11:18:05+00:00"
+            "time": "2019-12-28T13:10:30+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -4134,17 +4133,17 @@
         },
         {
             "name": "prolix/translation-bundle",
-            "version": "1.4.11",
+            "version": "dev-master",
             "target-dir": "JMS/TranslationBundle",
             "source": {
                 "type": "git",
-                "url": "https://github.com/prolixtechnikos/JMSTranslationBundle.git",
-                "reference": "7dc207d83e4e58eac1b2d88de61b372e1cdd558c"
+                "url": "https://github.com/Guite/JMSTranslationBundle.git",
+                "reference": "47883110f984d8eee63faaaecfdd22dc25c11073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/prolixtechnikos/JMSTranslationBundle/zipball/7dc207d83e4e58eac1b2d88de61b372e1cdd558c",
-                "reference": "7dc207d83e4e58eac1b2d88de61b372e1cdd558c",
+                "url": "https://api.github.com/repos/Guite/JMSTranslationBundle/zipball/47883110f984d8eee63faaaecfdd22dc25c11073",
+                "reference": "47883110f984d8eee63faaaecfdd22dc25c11073",
                 "shasum": ""
             },
             "require": {
@@ -4197,9 +4196,9 @@
                 "webinterface"
             ],
             "support": {
-                "source": "https://github.com/prolixtechnikos/JMSTranslationBundle/tree/1.4.11"
+                "source": "https://github.com/Guite/JMSTranslationBundle/tree/master"
             },
-            "time": "2019-12-20T14:45:46+00:00"
+            "time": "2019-12-28T12:39:16+00:00"
         },
         {
             "name": "psr/cache",
@@ -6617,36 +6616,37 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "v3.0.0",
+            "version": "4.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vanputten/BazingaJsTranslationBundle.git",
-                "reference": "87b0d0dac30647e5448108c86ffd2310ae9c2172"
+                "reference": "d795253d36119cfc8fab02e06389ec0f22eb3934"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vanputten/BazingaJsTranslationBundle/zipball/87b0d0dac30647e5448108c86ffd2310ae9c2172",
-                "reference": "87b0d0dac30647e5448108c86ffd2310ae9c2172",
+                "url": "https://api.github.com/repos/vanputten/BazingaJsTranslationBundle/zipball/d795253d36119cfc8fab02e06389ec0f22eb3934",
+                "reference": "d795253d36119cfc8fab02e06389ec0f22eb3934",
                 "shasum": ""
             },
             "require": {
-                "symfony/console": "~4.4|~5.0",
-                "symfony/finder": "~4.4|~5.0",
-                "symfony/framework-bundle": "~4.4|~5.0",
-                "symfony/intl": "~4.4|~5.0",
-                "symfony/translation": "~4.4|~5.0",
-                "symfony/twig-bundle": "~4.4|~5.0"
+                "php": "^7.1",
+                "symfony/console": "~3.4|~4.0|~5.0",
+                "symfony/finder": "~3.4|~4.0|~5.0",
+                "symfony/framework-bundle": "~3.4|~4.0|~5.0",
+                "symfony/intl": "~3.4|~4.0|~5.0",
+                "symfony/translation": "~3.4|~4.0|~5.0",
+                "symfony/twig-bundle": "~3.4|~4.0|~5.0"
             },
             "replace": {
                 "willdurand/expose-translation-bundle": "2.5.*"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|~5.7",
-                "symfony/asset": "~4.4|~5.0",
-                "symfony/browser-kit": "~4.4|~5.0",
-                "symfony/phpunit-bridge": "~4.4|~5.0",
-                "symfony/twig-bundle": "~4.4|~5.0",
-                "symfony/yaml": "~4.4|~5.0"
+                "phpunit/phpunit": "^4.8|~5.7|~6.5",
+                "symfony/asset": "~3.4|~4.0|~5.0",
+                "symfony/browser-kit": "~3.4|~4.0|~5.0",
+                "symfony/phpunit-bridge": "^3.4.24|^4.0|^5.0",
+                "symfony/twig-bundle": "~3.4|~4.0|~5.0",
+                "symfony/yaml": "~3.4|~4.0|~5.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -6675,9 +6675,9 @@
                 "translation"
             ],
             "support": {
-                "source": "https://github.com/vanputten/BazingaJsTranslationBundle/tree/v3.0.0"
+                "source": "https://github.com/vanputten/BazingaJsTranslationBundle/tree/4.4"
             },
-            "time": "2019-12-09T08:49:42+00:00"
+            "time": "2019-12-11T13:32:00+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -7416,6 +7416,8 @@
         "zikula/andreas08-theme": 20,
         "zikula/seabreeze-theme": 20,
         "sensio/framework-extra-bundle": 20,
+        "prolix/translation-bundle": 20,
+        "willdurand/js-translation-bundle": 20,
         "oyejorge/less.php": 20,
         "liip/imagine-bundle": 20,
         "symfony/requirements-checker": 20,

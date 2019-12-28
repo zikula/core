@@ -47,7 +47,6 @@ services:
         public: true
         arguments:
           $cacheDir: '%kernel.cache_dir%'
-          $cachePrefix: '%router.cache_class_prefix%'
           $kernelContainerClass: '%kernel.container_class%'
           $fosJsRoutesExtractor: '@fos_js_routing.extractor'
           $routingLocales: '%jms_i18n_routing.locales%'

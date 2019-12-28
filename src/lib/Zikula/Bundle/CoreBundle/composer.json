@@ -33,10 +33,10 @@
         "elao/web-profiler-extra-bundle" : "2.*",
         "sensiolabs/security-checker" : "6.*",
 
-        "prolix/translation-bundle": "1.*",
+        "prolix/translation-bundle": "dev-master",
         "php-translation/symfony-bundle": "0.*",
         "nikic/php-parser": "4.*",
-        "willdurand/js-translation-bundle": "v3.0.0",
+        "willdurand/js-translation-bundle": "4.4.x-dev",
 
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "2.*",
@@ -87,7 +87,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/prolixtechnikos/JMSTranslationBundle"
+            "url": "https://github.com/Guite/JMSTranslationBundle"
         },
         {
             "type": "vcs",
@@ -103,7 +103,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/liip/LiipImagineBundle"
+            "url": "https://github.com/Guite/LiipImagineBundle"
         }
     ],
     "autoload": {
