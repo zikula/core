@@ -38,7 +38,10 @@ services:
         tags:
             - { name: data_collector, template: '@Core/Collector/ZikulaVersion.html.twig', id: 'zikula_version', priority: 300 }
 
+    # public because used in \Zikula\SecurityCenterModule\SecurityCenterModuleInstaller::upgrade
+    # and \Zikula\MailerModule\MailerModuleInstaller::upgrade from the container
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
+        public: true
         arguments:
           $configDir: '%kernel.root_dir%/config'
 
