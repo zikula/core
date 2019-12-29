@@ -76,6 +76,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $selectedSettings = [
         'username',
         'password',
+        'locale',
         'router:request_context:host',
         'router:request_context:scheme',
         'router:request_context:base_url'
