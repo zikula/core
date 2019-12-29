@@ -18,6 +18,7 @@ services:
     Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface: '@Zikula\GroupsModule\Entity\Repository\GroupRepository'
 
     Zikula\GroupsModule\Entity\Repository\GroupRepository:
+        public: true # used in GroupsModuleInstaller from the container
         calls:
             - setTranslator: ['@Zikula\Common\Translator\Translator']
 
