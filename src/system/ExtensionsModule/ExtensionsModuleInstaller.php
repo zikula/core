@@ -73,17 +73,9 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
             case '3.7.14':
                 $this->schemaTool->update([ExtensionEntity::class]);
             case '3.7.15':
-                // Load DB connection
-                $connection = $this->entityManager->getConnection();
-
-                // increase length of some hook table fields from 20 to 60
-                $commands = [];
-                $commands[] = 'ALTER TABLE `modules` CHANGE `core_min` `coreCompatibility` VARCHAR(64) NOT NULL';
-                $commands[] = 'ALTER TABLE `modules` DROP COLUMN `core_max`';
-
-                foreach ($commands as $sql) {
-                    $connection->executeQuery($sql);
-                }
+                // altering the 'modules' table to rename the core_min to coreCompatibility
+                // is done \Zikula\ExtensionsModule\Listener\Core3UpgradeListener::upgrade
+                // in the core upgrade process so that it happens before any access to the table
             case '3.7.16':
                 // future upgrade routines
         }
