@@ -41,7 +41,7 @@ class Core3UpgradeListener implements EventSubscriberInterface
         if (!version_compare($event->getArgument('currentVersion'), '3.0.0', '<')) {
             return;
         }
-        if ($this->columnExists('modules','coreCompatibility')) {
+        if ($this->columnExists('modules', 'coreCompatibility')) {
             return;
         }
         $commands = [];
@@ -57,7 +57,7 @@ class Core3UpgradeListener implements EventSubscriberInterface
         $sm = $this->conn->getSchemaManager();
         $existingColumns = $sm->listTableColumns($tableName);
         foreach ($existingColumns as $existingColumn) {
-            if ($existingColumn->getName() == $columnName) {
+            if ($existingColumn->getName() === $columnName) {
                 return true;
             }
         }
