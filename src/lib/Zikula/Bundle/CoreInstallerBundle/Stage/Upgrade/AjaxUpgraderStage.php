@@ -27,7 +27,7 @@ class AjaxUpgraderStage implements AjaxStageInterface
      */
     private $oldVersion;
 
-    public function __construct(TranslatorInterface $translator, string $oldVersion)
+    public function __construct(TranslatorInterface $translator, ?string $oldVersion = '')
     {
         $this->setTranslator($translator);
         $this->oldVersion = $oldVersion;

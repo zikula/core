@@ -76,20 +76,20 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     ];
 
     public function __construct(
-        string $currentInstalledVersion,
         ZikulaHttpKernelInterface $kernel,
         ControllerHelper $controllerHelper,
         MigrationHelper $migrationHelper,
         LocaleApiInterface $localeApi,
         StageHelper $stageHelper,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ?string $currentInstalledVersion = ''
     ) {
-        $this->currentInstalledVersion = $currentInstalledVersion;
         $this->kernel = $kernel;
         $this->controllerHelper = $controllerHelper;
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
+        $this->currentInstalledVersion = $currentInstalledVersion;
         parent::__construct($translator);
     }
 
