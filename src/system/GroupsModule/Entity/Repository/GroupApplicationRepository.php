@@ -16,8 +16,9 @@ namespace Zikula\GroupsModule\Entity\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
+use Zikula\GroupsModule\Entity\RepositoryInterface\GroupApplicationRepositoryInterface;
 
-class GroupApplicationRepository extends ServiceEntityRepository
+class GroupApplicationRepository extends ServiceEntityRepository implements GroupApplicationRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
