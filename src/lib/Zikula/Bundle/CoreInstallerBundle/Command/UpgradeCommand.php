@@ -41,6 +41,11 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     private $currentInstalledVersion;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private $params;
+
+    /**
      * @var ZikulaHttpKernelInterface
      */
     private $kernel;
@@ -90,6 +95,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
+        $this->params = $params;
         $this->currentInstalledVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
         parent::__construct($translator);
     }
@@ -195,7 +201,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->currentInstalledVersion);
+        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->params);
         $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
         error_reporting($reportingLevel);
