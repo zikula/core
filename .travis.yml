@@ -52,6 +52,7 @@ install:
     - php bin/console zikula:install:finish -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
+    - 'cat app/config/custom_parameters.yml'
 
     # create an upgrade db for 143
     - mysql -e 'create database zk_test;'
