@@ -26,7 +26,9 @@ class Core3UpgradeListener implements EventSubscriberInterface
     private $conn;
 
     public function __construct(
+        Connection $connection
     ) {
+        $this->conn = $connection;
     }
 
     public static function getSubscribedEvents()
