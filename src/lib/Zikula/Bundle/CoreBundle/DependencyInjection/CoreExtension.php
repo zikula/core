@@ -23,6 +23,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Validator\Validation;
 use Zikula\Common\Translator\Translator;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 
@@ -63,8 +64,8 @@ class CoreExtension extends Extension
         // Discover translation directories
         $translationsFolder = '/Resources/translations';
         $dirs = [];
-        if (class_exists(Validator::class)) {
-            $r = new ReflectionClass(Validator::class);
+        if (class_exists(Validation::class)) {
+            $r = new ReflectionClass(Validation::class);
             $dirs[] = dirname($r->getFileName()) . $translationsFolder;
         }
         if (class_exists(Form::class)) {
