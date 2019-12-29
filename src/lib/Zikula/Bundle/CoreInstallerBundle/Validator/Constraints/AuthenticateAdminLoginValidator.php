@@ -78,7 +78,7 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
                 ->addViolation()
             ;
         } else {
-            $granted = $this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, $user['uid']);
+            $granted = $this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, (int) $user['uid']);
             if (!$granted) {
                 $this->context
                     ->buildViolation($this->__('Error! You logged in to an account without Admin permissions'))

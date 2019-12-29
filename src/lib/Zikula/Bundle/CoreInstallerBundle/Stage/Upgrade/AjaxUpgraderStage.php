@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -27,10 +28,12 @@ class AjaxUpgraderStage implements AjaxStageInterface
      */
     private $oldVersion;
 
-    public function __construct(TranslatorInterface $translator, string $oldVersion)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        ParameterBagInterface $params
+    ) {
         $this->setTranslator($translator);
-        $this->oldVersion = $oldVersion;
+        $this->oldVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
     }
 
     public function setTranslator(TranslatorInterface $translator)

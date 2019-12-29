@@ -18,17 +18,9 @@ services:
             $environment: '%env%'
             $installed: '%installed%'
 
-    Zikula\Bundle\CoreInstallerBundle\Command\UpgradeCommand:
-        arguments:
-            $currentInstalledVersion: !php/const Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
-
     Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper:
         arguments:
             $configDir: '%kernel.project_dir%/app/config'
-
-    Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage:
-        arguments:
-            $oldVersion: !php/const Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel::CORE_INSTALLED_VERSION_PARAM
 
     Zikula\Bundle\CoreInstallerBundle\Helper\CacheHelper:
         arguments:

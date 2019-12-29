@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -38,6 +39,11 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
      * @var string
      */
     private $currentInstalledVersion;
+
+    /**
+     * @var ParameterBagInterface
+     */
+    private $params;
 
     /**
      * @var ZikulaHttpKernelInterface
@@ -76,20 +82,21 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     ];
 
     public function __construct(
-        string $currentInstalledVersion,
         ZikulaHttpKernelInterface $kernel,
         ControllerHelper $controllerHelper,
         MigrationHelper $migrationHelper,
         LocaleApiInterface $localeApi,
         StageHelper $stageHelper,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ParameterBagInterface $params
     ) {
-        $this->currentInstalledVersion = $currentInstalledVersion;
         $this->kernel = $kernel;
         $this->controllerHelper = $controllerHelper;
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
+        $this->params = $params;
+        $this->currentInstalledVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
         parent::__construct($translator);
     }
 
@@ -194,7 +201,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $yamlManager->setParameters($params);
 
         // upgrade!
-        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->currentInstalledVersion);
+        $ajaxStage = new AjaxUpgraderStage($this->translator, $this->params);
         $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
         error_reporting($reportingLevel);
