@@ -78,7 +78,7 @@ class MigrationHelper
         }
 
         $mapping = new AuthenticationMappingEntity();
-        $mapping->setUid($user['uid']);
+        $mapping->setUid((int) $user['uid']);
         $mapping->setUname($user['uname']);
         $mapping->setEmail($user['email']);
         $mapping->setVerifiedEmail(true);
