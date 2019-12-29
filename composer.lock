@@ -3284,12 +3284,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guite/LiipImagineBundle.git",
-                "reference": "5a1a4d2602d4486613b489f039fcce6fd69c2c2b"
+                "reference": "7476aa5ccd5e6016d0e3c196a8cdc83725e9888e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/LiipImagineBundle/zipball/5a1a4d2602d4486613b489f039fcce6fd69c2c2b",
-                "reference": "5a1a4d2602d4486613b489f039fcce6fd69c2c2b",
+                "url": "https://api.github.com/repos/Guite/LiipImagineBundle/zipball/7476aa5ccd5e6016d0e3c196a8cdc83725e9888e",
+                "reference": "7476aa5ccd5e6016d0e3c196a8cdc83725e9888e",
                 "shasum": ""
             },
             "require": {
@@ -3379,7 +3379,7 @@
             "support": {
                 "source": "https://github.com/Guite/LiipImagineBundle/tree/symfony5"
             },
-            "time": "2019-12-28T11:53:44+00:00"
+            "time": "2019-12-29T17:52:07+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -3542,11 +3542,11 @@
         },
         {
             "name": "mmenu.js",
-            "version": "8.4.4",
+            "version": "8.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/mmenu-js",
-                "reference": "61e51fc6973d4c3cb464d9bb0a3a6d392d94db20"
+                "reference": "56e1cf586b3cc30db70af0ca93ad03625a240fcf"
             },
             "type": "library",
             "license": [
@@ -3576,7 +3576,7 @@
                 "panels",
                 "submenu"
             ],
-            "time": "2019-12-21T13:41:56+00:00"
+            "time": "2019-12-29T15:44:12+00:00"
         },
         {
             "name": "monolog/monolog",
