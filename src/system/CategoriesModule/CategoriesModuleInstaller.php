@@ -20,7 +20,6 @@ use Exception;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\CategoriesModule\Entity\Repository\CategoryRepository;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Helper\TreeMapHelper;
 use Zikula\Core\AbstractExtensionInstaller;
@@ -97,7 +96,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                 /** @var ManagerRegistry $doctrine */
                 $doctrine = $this->container->get('doctrine');
                 /** @var CategoryRepositoryInterface $categoryRepository */
-                $categoryRepository = $doctrine->getManager()->getRepository(CategoryRepository::class);
+                $categoryRepository = $doctrine->getManager()->getRepository(CategoryEntity::class);
                 $helper = new TreeMapHelper($doctrine, $categoryRepository);
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
