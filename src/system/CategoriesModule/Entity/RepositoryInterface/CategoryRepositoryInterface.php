@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Entity\RepositoryInterface;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
 use Gedmo\Tree\RepositoryInterface;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 
-interface CategoryRepositoryInterface extends ObjectRepository, Selectable, RepositoryInterface
+interface CategoryRepositoryInterface extends ObjectRepository, Selectable, RepositoryInterface, ServiceEntityRepositoryInterface
 {
     /**
      * Returns amount of categories for specified filters.

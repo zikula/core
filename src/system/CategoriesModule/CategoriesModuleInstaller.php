@@ -95,9 +95,9 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
                 $this->delVars();
                 /** @var ManagerRegistry $doctrine */
                 $doctrine = $this->container->get('doctrine');
-                /** @var CategoryRepositoryInterface $categoryRepositoryInterface */
-                $categoryRepositoryInterface = $doctrine->getManager()->getRepository('ZikulaCategoriesModule:CategoryRepositoryEntity');
-                $helper = new TreeMapHelper($doctrine, $categoryRepositoryInterface);
+                /** @var CategoryRepositoryInterface $categoryRepository */
+                $categoryRepository = $doctrine->getManager()->getRepository(CategoryEntity::class);
+                $helper = new TreeMapHelper($doctrine, $categoryRepository);
                 $helper->map(); // updates NestedTree values in entities
                 $connection->executeQuery('UPDATE categories_category SET `tree_root` = 1 WHERE 1');
 
