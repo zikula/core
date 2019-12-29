@@ -52,7 +52,6 @@ install:
     - php bin/console zikula:install:finish -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
-    - 'cat app/config/custom_parameters.yml'
 
     # create an upgrade db for 143
     - mysql -e 'create database zk_test;'
@@ -65,11 +64,9 @@ install:
 
     # create an upgrade db for 144
     - mysql -e 'create database zk_test;'
-    - 'cat app/config/custom_parameters.yml'
     - mysql zk_test < ../test_dbs/core144.sql
     # run the upgrade from the 144 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.4''/" app/config/custom_parameters.yml'
-    - 'cat app/config/custom_parameters.yml'
     - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
     # drop the test db
     - mysql -e 'drop database zk_test'
