@@ -94,7 +94,7 @@ class ParameterHelper
      */
     public function reInitParameters(): bool
     {
-        $originalParameters = Yaml::parse(file_get_contents($this->kernel->getProjectDir() . '/config/parameters.yml'));
+        $originalParameters = Yaml::parse(file_get_contents($this->kernel->getProjectDir() . '/app/config/parameters.yml'));
         $yamlHelper = $this->getYamlHelper();
         $yamlHelper->setParameters(array_merge($originalParameters['parameters'], $yamlHelper->getParameters()));
         $this->cacheClearer->clear('symfony.config');
