@@ -121,8 +121,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         // get the settings from user input
         $settings = $this->getHelper('form')->interactUsingForm(LocaleType::class, $input, $output, [
             'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choice_loader' => null,
-            'choice' => 'en'
+            'choice_loader' => null
         ]);
         $data = $this->getHelper('form')->interactUsingForm(RequestContextType::class, $input, $output);
         foreach ($data as $k => $v) {
