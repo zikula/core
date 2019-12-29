@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
@@ -82,14 +83,14 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         LocaleApiInterface $localeApi,
         StageHelper $stageHelper,
         TranslatorInterface $translator,
-        ?string $currentInstalledVersion = ''
+        ParameterBagInterface $params
     ) {
         $this->kernel = $kernel;
         $this->controllerHelper = $controllerHelper;
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
-        $this->currentInstalledVersion = $currentInstalledVersion;
+        $this->currentInstalledVersion = $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] ?? '';
         parent::__construct($translator);
     }
 
