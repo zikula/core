@@ -33,7 +33,7 @@ class AjaxUpgraderStage implements AjaxStageInterface
         ParameterBagInterface $params
     ) {
         $this->setTranslator($translator);
-        $this->oldVersion = $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] ?? '';
+        $this->oldVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
     }
 
     public function setTranslator(TranslatorInterface $translator)

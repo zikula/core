@@ -90,7 +90,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $this->migrationHelper = $migrationHelper;
         $this->localeApi = $localeApi;
         $this->stageHelper = $stageHelper;
-        $this->currentInstalledVersion = $params[ZikulaKernel::CORE_INSTALLED_VERSION_PARAM] ?? '';
+        $this->currentInstalledVersion = $params->has(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) ? $params->get(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM) : '';
         parent::__construct($translator);
     }
 
