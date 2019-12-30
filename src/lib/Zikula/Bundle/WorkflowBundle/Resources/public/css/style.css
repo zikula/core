@@ -134,7 +134,7 @@
 .node i.ep:hover {
     color: green;
 }
-.node i.fa-trash-o:hover {
+.node i.fa-trash-alt:hover {
     color: red;
 }
 

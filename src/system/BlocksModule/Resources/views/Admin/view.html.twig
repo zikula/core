@@ -63,8 +63,8 @@
                     </td>
                     <td headers="hBlockActions" class="actions">
                         <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid:block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="{{ __('Preview block') }}"></a>
-                        <a class="fa fa-pencil tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity:block.bid}) }}" title="{{ __('Edit block') }}"></a>
-                        <a class="fa fa-trash-o tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid:block.bid}) }}" title="{{ __('Delete block') }}"></a>
+                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity:block.bid}) }}" title="{{ __('Edit block') }}"></a>
+                        <a class="fa fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid:block.bid}) }}" title="{{ __('Delete block') }}"></a>
                     </td>
                 </tr>
             {% else %}
@@ -109,8 +109,8 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
             <td headers="hPosTwig"><code>&#123;&#123; showblockposition('{{ position.name }}') &#125;&#125;</code></td>
             <td headers="hPosActions" class="actions">
                 <a class="fa fa-cubes tooltips" href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}" title="{{ __('Edit block placements') }}"></a>
-                <a class="fa fa-pencil tooltips" href="{{ path('zikulablocksmodule_position_edit', {positionEntity:position.pid}) }}" title="{{ __('Edit block position') }}"></a>
-                <a class="fa fa-trash-o tooltips" href="{{ path('zikulablocksmodule_position_delete', {pid:position.pid}) }}" title="{{ __('Delete block position') }}"></a>
+                <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_position_edit', {positionEntity:position.pid}) }}" title="{{ __('Edit block position') }}"></a>
+                <a class="fa fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_position_delete', {pid:position.pid}) }}" title="{{ __('Delete block position') }}"></a>
             </td>
         </tr>
         {% else %}

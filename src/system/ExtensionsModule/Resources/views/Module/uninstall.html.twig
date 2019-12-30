@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-trash-o"></span>
+            <span class="fa fa-trash-alt"></span>
             {{ __('Uninstall module') }} '{{ extension.displayname }}'
             {{ pageSetVar('title', __('Uninstall module')) }}
         </h3>
@@ -24,14 +24,14 @@
             </div>
         {% endif %}
         {% if requiredDependents|length > 0 %}
-        <div class="alert alert-danger">
-            {{ __('Warning! Other modules present in the system require this module. If you uninstall this module then these modules that require it will also be uninstalled.') }}
-            <ul>
-                {% for dependent in requiredDependents %}
-                <li>{{ dependent.displayname }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+            <div class="alert alert-danger">
+                {{ __('Warning! Other modules present in the system require this module. If you uninstall this module then these modules that require it will also be uninstalled.') }}
+                <ul>
+                    {% for dependent in requiredDependents %}
+                    <li>{{ dependent.displayname }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
 
         {{ form_start(form) }}
@@ -44,6 +44,5 @@
         </div>
         {{ form_end(form) }}
     </div>
-
 </div>
 {{ adminFooter() }}

@@ -42,8 +42,8 @@
                     <td headers="hProperty">{{ registry.property }}</td>
                     <td headers="hCategory">{{ registry.category.display_name(app.request.locale) }}</td>
                     <td headers="hActions" class="actions">
-                        <a class="fa fa-pencil tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', { id: registry.id }) }}" title="{{ __('Edit') }}" ></a>
-                        <a class="fa fa-trash-o tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', { id: registry.id }) }}" title="{{ __('Delete') }}"></a>
+                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', { id: registry.id }) }}" title="{{ __('Edit') }}" ></a>
+                        <a class="fa fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', { id: registry.id }) }}" title="{{ __('Delete') }}"></a>
                     </td>
                 </tr>
                 {% endfor %}

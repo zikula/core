@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.2.5",
         "composer/composer": "1.*",
         "composer/installers": "1.*",
         "robloach/component-installer": "*",
@@ -42,22 +42,6 @@
         "doctrine/doctrine-bundle": "2.*",
         "antishov/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
-
-        "twig/twig": "3.*",
-        "twig/cssinliner-extra": "3.*",
-        "twig/html-extra": "3.*",
-        "twig/inky-extra": "3.*",
-        "twig/intl-extra": "3.*",
-        "twig/markdown-extra": "3.*",
-        "twig/string-extra": "3.*",
-        "twig/extra-bundle": "3.*",
-
-        "erusev/parsedown": "^1.7",
-        "league/commonmark": "^1.0",
-        "league/html-to-markdown": "^4.8",
-        "michelf/php-markdown": "^1.9",
-
-        "oyejorge/less.php": "dev-master",
         "liip/imagine-bundle": "dev-symfony5"
     },
     "repositories": [

@@ -149,7 +149,7 @@ class AbstractMenuBuilder
                     'title',
                     $this->__('Edit this route', 'zikularoutesmodule')
                 );
-                $menu[$title]->setAttribute('icon', 'fa fa-pencil-square-o');
+                $menu[$title]->setAttribute('icon', 'fa fa-edit');
                 $title = $this->__('Reuse', 'zikularoutesmodule');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
@@ -159,7 +159,7 @@ class AbstractMenuBuilder
                     'title',
                     $this->__('Reuse for new route', 'zikularoutesmodule')
                 );
-                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
+                $menu[$title]->setAttribute('icon', 'fa fa-copy');
             }
             if ('display' === $context) {
                 $title = $this->__('Routes list', 'zikularoutesmodule');

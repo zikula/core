@@ -84,7 +84,7 @@ class MenuBuilder
         $menu->addChild($this->__('Delete'), [
                 'route' => 'zikulamenumodule_menu_delete',
                 'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-trash-o');
+            ])->setAttribute('icon', 'fa fa-trash-alt');
 
         return $menu;
     }

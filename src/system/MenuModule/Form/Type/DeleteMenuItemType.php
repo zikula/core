@@ -39,7 +39,7 @@ class DeleteMenuItemType extends AbstractType
             ->add('entity', HiddenMenuItemType::class)
             ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete'),
-                'icon' => 'fa-trash-o',
+                'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ]

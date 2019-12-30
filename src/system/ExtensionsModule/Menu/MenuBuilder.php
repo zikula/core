@@ -88,8 +88,8 @@ class MenuBuilder
                 $menu->addChild($this->__f('Uninstall %s', ['%s' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-trash-o')
-                    ->setLinkAttribute('style', 'color:#c00');
+                ])->setAttribute('icon', 'fa fa-trash-alt')
+                    ->setLinkAttribute('style', 'color: #c00');
                 break;
             case Constant::STATE_MISSING:
                 // Nothing to do.
@@ -99,8 +99,8 @@ class MenuBuilder
                 $menu->addChild($this->__f('Upgrade %s', ['%s' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_upgrade',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-refresh')
-                    ->setLinkAttribute('style', 'color:#00c');
+                ])->setAttribute('icon', 'fa fa-sync')
+                    ->setLinkAttribute('style', 'color: #00c');
                 break;
             case Constant::STATE_INVALID:
                 // nothing to do.
@@ -111,8 +111,8 @@ class MenuBuilder
                 $menu->addChild($this->__f('Remove %s', ['%s' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-trash-o')
-                    ->setLinkAttribute('style', 'color:#c00');
+                ])->setAttribute('icon', 'fa fa-trash-alt')
+                    ->setLinkAttribute('style', 'color: #c00');
                 break;
             case Constant::STATE_UNINITIALISED:
             default:
@@ -128,7 +128,7 @@ class MenuBuilder
                         'route' => 'zikulaextensionsmodule_module_compatibility',
                         'routeParameters' => ['id' => $id]
                     ])->setAttribute('icon', 'fa fa-info-circle')
-                        ->setLinkAttribute('style', 'color:black');
+                        ->setLinkAttribute('style', 'color: #000');
                 }
                 break;
         }
@@ -138,7 +138,7 @@ class MenuBuilder
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $id]
             ])->setAttribute('icon', 'fa fa-wrench')
-                ->setLinkAttribute('style', 'color:black');
+                ->setLinkAttribute('style', 'color: #000');
         }
 
         return $menu;

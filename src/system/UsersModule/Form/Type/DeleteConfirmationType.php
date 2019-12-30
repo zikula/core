@@ -40,10 +40,10 @@ class DeleteConfirmationType extends AbstractType
             ->add('users', HiddenType::class)
             ->add('delete', SubmitType::class, [
                 'label' => $this->__('Confirm deletion'),
-                'icon' => 'fa-trash-o',
+                'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'
-                ],
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),

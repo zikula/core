@@ -134,14 +134,14 @@ class LinkContainer implements LinkContainerInterface
     {
         $links = [];
         $links[] = [
-            'icon' => 'fa fa-user-circle-o',
+            'icon' => 'fa fa-user-circle',
             'text' => $this->translator->__('Account menu'),
             'url' => $this->router->generate('zikulausersmodule_account_menu')
         ];
 
         if (!$this->currentUser->isLoggedIn()) {
             $links[] = [
-                'icon' => 'sign-in',
+                'icon' => 'sign-in-alt',
                 'text' => $this->translator->__('Log in'),
                 'url' => $this->router->generate('zikulausersmodule_access_login')
             ];

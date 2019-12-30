@@ -14,11 +14,27 @@
         "psr-4": { "Zikula\\ThemeModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.2.5",
+
+        "twig/twig": "3.*",
+        "twig/cssinliner-extra": "3.*",
+        "twig/html-extra": "3.*",
+        "twig/inky-extra": "3.*",
+        "twig/intl-extra": "3.*",
+        "twig/markdown-extra": "3.*",
+        "twig/string-extra": "3.*",
+        "twig/extra-bundle": "3.*",
+
+        "erusev/parsedown": "^1.7",
+        "league/commonmark": "^1.0",
+        "league/html-to-markdown": "^4.8",
+        "michelf/php-markdown": "^1.9",
+
+        "oyejorge/less.php": "dev-master",
         "zikula/jquery-bundle": "2.*",
         "zikula/jquery-ui-bundle": "1.*",
         "zikula/bootstrap-bundle": "3.*",
-        "zikula/fontawesome-bundle": "4.1.*",
+        "components/font-awesome": "5.*",
         "dimsemenov/magnific-popup": "1.*",
         "vakata/jstree": "3.*"
     },

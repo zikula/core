@@ -185,8 +185,8 @@ function initDiagramEventListeners() {
 }
 
 var addNodeTools = function(node) {
-    node.append('<p class="node-tools"><i class="ep fa fa-exchange" title="' + Translator.trans('Add connection') + '"></i><i class="fa fa-trash-o pointer" title="' + Translator.trans('Remove element') + '"></i></p>');
-    node.find('i.fa-trash-o').click(function (event) {
+    node.append('<p class="node-tools"><i class="ep fa fa-exchange" title="' + Translator.trans('Add connection') + '"></i><i class="fa fa-trash-alt pointer" title="' + Translator.trans('Remove element') + '"></i></p>');
+    node.find('i.fa-trash-alt').click(function (event) {
         plumbInstance.remove(node.attr('id'));
         regenerateOutput();
     });
