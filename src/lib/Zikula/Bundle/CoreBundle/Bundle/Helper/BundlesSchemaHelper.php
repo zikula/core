@@ -59,7 +59,7 @@ class BundlesSchemaHelper
     /**
      * Sync the filesystem scan and the bundles table.
      * This is a 'dumb' scan - there is no state management here.
-     * State management occurs in the module and theme management and is checked in Bundle/PersistedBundleHandler.
+     * State management occurs in the module and theme management and is checked in CoreBundle\Bundle\PersistedBundleHandler.
      */
     private function sync(array $fileExtensions = []): void
     {
@@ -67,8 +67,7 @@ class BundlesSchemaHelper
         /** @var $metadata MetaData */
         foreach ($fileExtensions as $name => $metadata) {
             $qb = $this->conn->createQueryBuilder();
-            // bundlestate is @deprecated - remove in Core 4.0
-            $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
+            $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype')
                 ->from('bundles', 'b')
                 ->where('b.bundlename = :name')
                 ->setParameter('name', $name);
@@ -89,8 +88,7 @@ class BundlesSchemaHelper
 
         // remove what is in db but missing from array
         $qb = $this->conn->createQueryBuilder();
-        // bundlestate is @deprecated - remove in Core 4.0
-        $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype', 'b.bundlestate')
+        $qb->select('b.id', 'b.bundlename', 'b.bundleclass', 'b.autoload', 'b.bundletype')
             ->from('bundles', 'b');
         $res = $qb->execute();
         foreach ($res->fetchAll() as $row) {
@@ -129,7 +127,6 @@ class BundlesSchemaHelper
             'autoload'    => $autoload,
             'bundleclass' => $class,
             'bundletype'  => $type,
-            'bundlestate' => AbstractBundle::STATE_ACTIVE, // @deprecated
         ]);
     }
 
@@ -150,7 +147,6 @@ class BundlesSchemaHelper
         $table->addColumn('autoload', 'string', ['length' => 384]);
         $table->addColumn('bundleclass', 'string', ['length' => 100]);
         $table->addColumn('bundletype', 'string', ['length' => 2]);
-        $table->addColumn('bundlestate', 'integer', ['length' => 1]); // @deprecated
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['bundlename']);
         $schema->createTable($table);

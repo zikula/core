@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\ExtensionsModule\Listener;
+namespace Zikula\Bundle\CoreBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Common\ColumnExistsTrait;
@@ -34,12 +34,11 @@ class Core3UpgradeListener implements EventSubscriberInterface
         if (!version_compare($event->getArgument('currentVersion'), '3.0.0', '<')) {
             return;
         }
-        if ($this->columnExists('modules', 'coreCompatibility')) {
+        if (!$this->columnExists('bundles', 'bundlestate')) {
             return;
         }
         $commands = [];
-        $commands[] = 'ALTER TABLE `modules` CHANGE `core_min` `coreCompatibility` VARCHAR(64) NOT NULL';
-        $commands[] = 'ALTER TABLE `modules` DROP COLUMN `core_max`';
+        $commands[] = 'ALTER TABLE `bundles` DROP COLUMN `bundlestate`';
         foreach ($commands as $sql) {
             $this->conn->executeQuery($sql);
         }
