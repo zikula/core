@@ -3341,12 +3341,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guite/LiipImagineBundle.git",
-                "reference": "7476aa5ccd5e6016d0e3c196a8cdc83725e9888e"
+                "reference": "0740c6038c5c496db9c7d7a29180be2a49ae0f6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/LiipImagineBundle/zipball/7476aa5ccd5e6016d0e3c196a8cdc83725e9888e",
-                "reference": "7476aa5ccd5e6016d0e3c196a8cdc83725e9888e",
+                "url": "https://api.github.com/repos/Guite/LiipImagineBundle/zipball/0740c6038c5c496db9c7d7a29180be2a49ae0f6e",
+                "reference": "0740c6038c5c496db9c7d7a29180be2a49ae0f6e",
                 "shasum": ""
             },
             "require": {
@@ -3436,7 +3436,7 @@
             "support": {
                 "source": "https://github.com/Guite/LiipImagineBundle/tree/symfony5"
             },
-            "time": "2019-12-29T17:52:07+00:00"
+            "time": "2019-12-30T12:00:53+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -3924,16 +3924,16 @@
         },
         {
             "name": "php-translation/common",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/common.git",
-                "reference": "8d350c8f3124417dec015047e497e3be118255e1"
+                "reference": "dbf73744a22121b85e369ac73ae658c80dd888b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/common/zipball/8d350c8f3124417dec015047e497e3be118255e1",
-                "reference": "8d350c8f3124417dec015047e497e3be118255e1",
+                "url": "https://api.github.com/repos/php-translation/common/zipball/dbf73744a22121b85e369ac73ae658c80dd888b7",
+                "reference": "dbf73744a22121b85e369ac73ae658c80dd888b7",
                 "shasum": ""
             },
             "require": {
@@ -3961,7 +3961,7 @@
                 }
             ],
             "description": "Common translation stuff",
-            "time": "2019-12-06T15:01:18+00:00"
+            "time": "2019-12-30T10:58:18+00:00"
         },
         {
             "name": "php-translation/extractor",
@@ -4104,21 +4104,21 @@
         },
         {
             "name": "php-translation/symfony-storage",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-storage.git",
-                "reference": "199499eed5adf85e0e692cf25c6166216eec1377"
+                "reference": "7ace69c5e9bc2744d121012fa2bb658477e673c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/199499eed5adf85e0e692cf25c6166216eec1377",
-                "reference": "199499eed5adf85e0e692cf25c6166216eec1377",
+                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/7ace69c5e9bc2744d121012fa2bb658477e673c5",
+                "reference": "7ace69c5e9bc2744d121012fa2bb658477e673c5",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2",
-                "php-translation/common": "^2.0",
+                "php-translation/common": "^3.0",
                 "symfony/translation": "^3.4 || ^4.2 || ^5.0"
             },
             "require-dev": {
@@ -4148,7 +4148,7 @@
                 }
             ],
             "description": "A translation file storage using Symfony translation component.",
-            "time": "2019-12-20T13:39:01+00:00"
+            "time": "2019-12-30T11:41:01+00:00"
         },
         {
             "name": "phpids/phpids",

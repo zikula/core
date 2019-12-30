@@ -122,10 +122,10 @@
     - nikic/php-parser updated from 1.4.1 to 4.3.0
     - nyholm/nsa installed in 1.1.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
-    - php-translation/common installed in 2.0.0
+    - php-translation/common installed in 3.0.0
     - php-translation/extractor installed in 2.0.0
     - php-translation/symfony-bundle installed in 0.10.0
-    - php-translation/symfony-storage installed in 2.0.0
+    - php-translation/symfony-storage installed in 2.1.0
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2
