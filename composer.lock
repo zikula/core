@@ -3353,11 +3353,11 @@
         },
         {
             "name": "mmenu.js",
-            "version": "8.4.4",
+            "version": "8.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FrDH/mmenu-js",
-                "reference": "61e51fc6973d4c3cb464d9bb0a3a6d392d94db20"
+                "reference": "56e1cf586b3cc30db70af0ca93ad03625a240fcf"
             },
             "type": "library",
             "license": [
@@ -3387,7 +3387,7 @@
                 "panels",
                 "submenu"
             ],
-            "time": "2019-12-21T13:41:56+00:00"
+            "time": "2019-12-29T15:44:12+00:00"
         },
         {
             "name": "monolog/monolog",
