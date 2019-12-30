@@ -286,7 +286,7 @@ abstract class AbstractRouteType extends AbstractType
         foreach ($options['actions'] as $action) {
             $builder->add($action['id'], SubmitType::class, [
                 'label' => $action['title'],
-                'icon' => 'delete' === $action['id'] ? 'fa-trash-o' : '',
+                'icon' => 'delete' === $action['id'] ? 'fa-trash-alt' : '',
                 'attr' => [
                     'class' => $action['buttonClass']
                 ]

@@ -197,7 +197,7 @@ class ThemeController extends AbstractController
             ])
             ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete'),
-                'icon' => 'fa-trash-o',
+                'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ]

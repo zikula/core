@@ -50,7 +50,7 @@ class DeleteType extends AbstractType
             ])
             ->add('delete', SubmitType::class, [
                 'label' => $this->__('Delete selected users'),
-                'icon' => 'fa-trash-o',
+                'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ],

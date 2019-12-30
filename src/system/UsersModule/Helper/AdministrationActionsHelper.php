@@ -73,7 +73,7 @@ class AdministrationActionsHelper
             $actions['modify'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_modify', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Edit %sub%', ['%sub%' => $user->getUname()]),
-                'icon' => 'pencil',
+                'icon' => 'pencil-alt',
             ];
         }
         $isCurrentUser = $this->currentUser->get('uid') === $user->getUid();
@@ -81,7 +81,7 @@ class AdministrationActionsHelper
             $actions['delete'] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_delete', ['user' => $user->getUid()]),
                 'text' => $this->translator->__f('Delete %sub%', ['%sub%' => $user->getUname()]),
-                'icon' => 'trash-o',
+                'icon' => 'trash-alt',
             ];
         }
 
