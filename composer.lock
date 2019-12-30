@@ -1714,27 +1714,26 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.12",
+            "version": "2.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "a6255605af39f2db7f5cb62e672bd8a7bad8d208"
+                "reference": "834593d5900615639208417760ba6a17299e2497"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/a6255605af39f2db7f5cb62e672bd8a7bad8d208",
-                "reference": "a6255605af39f2db7f5cb62e672bd8a7bad8d208",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
+                "reference": "834593d5900615639208417760ba6a17299e2497",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^1.0.1",
-                "php": ">= 5.5"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "dominicsayers/isemail": "dev-master",
-                "phpunit/phpunit": "^4.8.35||^5.7||^6.0",
-                "satooshi/php-coveralls": "^1.0.1",
-                "symfony/phpunit-bridge": "^4.4@dev"
+                "dominicsayers/isemail": "^3.0.7",
+                "phpunit/phpunit": "^4.8.36|^7.5.15",
+                "satooshi/php-coveralls": "^1.0.1"
             },
             "suggest": {
                 "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
@@ -1768,7 +1767,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-20T12:49:39+00:00"
+            "time": "2019-12-30T08:14:25+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -6047,12 +6046,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "e5090dbac981c93865a30b8fa8c9a9a9ccf9580f"
+                "reference": "f51144fa7b53b4d6ec81068c923d95ba85fb52ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/e5090dbac981c93865a30b8fa8c9a9a9ccf9580f",
-                "reference": "e5090dbac981c93865a30b8fa8c9a9a9ccf9580f",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/f51144fa7b53b4d6ec81068c923d95ba85fb52ac",
+                "reference": "f51144fa7b53b4d6ec81068c923d95ba85fb52ac",
                 "shasum": ""
             },
             "require": {
@@ -6110,7 +6109,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-28T14:51:18+00:00"
+            "time": "2019-12-30T10:24:24+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
