@@ -56,22 +56,22 @@ class PersistedBundleHandler
     {
         $conn = $this->getConnection($kernel);
         $conn->connect();
-        // bundlestate is @deprecated - remove in Core 4.0
-        $res = $conn->executeQuery('SELECT bundleclass, autoload, bundlestate, bundletype FROM bundles');
-        foreach ($res->fetchAll(PDO::FETCH_NUM) as list($class, $autoload, $state, $type)) {
+        $res = $conn->executeQuery('SELECT bundleclass, autoload, bundletype FROM bundles');
+        foreach ($res->fetchAll(PDO::FETCH_NUM) as list($class, $autoload, $type)) {
             $extensionIsActive = $this->extensionIsActive($conn, $class, $type);
-            if ($extensionIsActive) {
-                try {
-                    $autoload = unserialize($autoload);
-                    $this->addAutoloaders($kernel, $autoload);
+            if (!$extensionIsActive) {
+                continue;
+            }
+            try {
+                $autoload = unserialize($autoload);
+                $this->addAutoloaders($kernel, $autoload);
 
-                    if (class_exists($class)) {
-                        $bundle = $class;
-                        $bundles[] = $bundle;
-                    }
-                } catch (Exception $exception) {
-                    // unable to autoload $prefix / $path
+                if (class_exists($class)) {
+                    $bundle = $class;
+                    $bundles[] = $bundle;
                 }
+            } catch (Exception $exception) {
+                // unable to autoload $prefix / $path
             }
         }
         $conn->close();
