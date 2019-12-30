@@ -145,4 +145,4 @@ parameters:
     zikula.stylesheet.bootstrap-font-awesome.path: "/bootstrap-font-awesome.css"
     zikula.javascript.bootstrap.min.path: "/bootstrap/js/bootstrap.min.js"
     # this is needed if an external bootstrap path is used
-    zikula.stylesheet.fontawesome.min.path: "/font-awesome/css/font-awesome.min.css"
+    zikula.stylesheet.fontawesome.min.path: "/font-awesome/css/all.min.css"

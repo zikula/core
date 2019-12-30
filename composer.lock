@@ -193,38 +193,38 @@
         },
         {
             "name": "components/font-awesome",
-            "version": "4.7.0",
+            "version": "5.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "885308b939369d147bec93174722786bc2c4eedd"
+                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/885308b939369d147bec93174722786bc2c4eedd",
-                "reference": "885308b939369d147bec93174722786bc2c4eedd",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/f4f114c4ab37d101e6a15370769bc0af681792fa",
+                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa",
                 "shasum": ""
             },
             "type": "component",
             "extra": {
                 "component": {
                     "styles": [
-                        "css/font-awesome.css"
+                        "css/all.css"
                     ],
                     "files": [
-                        "css/font-awesome.min.css",
-                        "css/font-awesome.css.map",
-                        "fonts/*"
+                        "css/all.min.css",
+                        "webfonts/*"
                     ]
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
+                "CC-BY-4.0",
                 "MIT",
                 "OFL-1.1"
             ],
-            "description": "The iconic font designed for use with Twitter Bootstrap.",
-            "time": "2016-10-25T10:56:23+00:00"
+            "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
+            "time": "2019-11-13T10:33:06+00:00"
         },
         {
             "name": "components/jquery",
@@ -6859,50 +6859,6 @@
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
-            "name": "zikula/fontawesome-bundle",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/FontAwesomeBundle.git",
-                "reference": "ea184aaef6d746085c38fbeb2ff34bf30d48ca40"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/FontAwesomeBundle/zipball/ea184aaef6d746085c38fbeb2ff34bf30d48ca40",
-                "reference": "ea184aaef6d746085c38fbeb2ff34bf30d48ca40",
-                "shasum": ""
-            },
-            "require": {
-                "components/font-awesome": "~4.0"
-            },
-            "type": "symfony-bundle",
-            "autoload": {
-                "psr-0": {
-                    "Zikula\\Bundle\\FontAwesomeBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula",
-                    "homepage": "https://ziku.la"
-                }
-            ],
-            "description": "FontAwesome Bundle for Zikula",
-            "homepage": "https://ziku.la",
-            "keywords": [
-                "css",
-                "graphics",
-                "symfony",
-                "typography",
-                "webfonts"
-            ],
-            "time": "2014-06-07T22:21:47+00:00"
-        },
-        {
             "name": "zikula/jquery-bundle",
             "version": "2.0.0",
             "source": {
@@ -7417,12 +7373,12 @@
         "sensio/framework-extra-bundle": 20,
         "prolix/translation-bundle": 20,
         "willdurand/js-translation-bundle": 20,
-        "oyejorge/less.php": 20,
         "liip/imagine-bundle": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "jms/i18n-routing-bundle": 20,
-        "phpids/phpids": 20
+        "phpids/phpids": 20,
+        "oyejorge/less.php": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

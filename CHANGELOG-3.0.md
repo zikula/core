@@ -37,6 +37,7 @@
         - Removed symfony/polyfill-php70
         - Removed symfony/polyfill-util
         - Removed twig/extensions (use new Twig Extra extensions instead)
+        - Removed zikula/fontawesome-bundle
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
     - Removed the `polyfill` Twig tag (#3925).
@@ -83,6 +84,7 @@
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
+    - components/font-awesome updated from 4.7.0 to 5.11.2
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
     - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
     - composer/spdx-licenses installed in 1.5.2
