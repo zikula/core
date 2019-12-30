@@ -29,32 +29,6 @@ use Zikula\ThemeModule\Engine\AssetBag;
 
 abstract class AbstractBundle extends Bundle
 {
-    public const STATE_ACTIVE = 3;
-
-    /**
-     * @deprecated
-     * @var int
-     */
-    protected $state;
-
-    /**
-     * @deprecated
-     */
-    public function setState(int $state): self
-    {
-        @trigger_error('State management of bundles is deprecated and will be removed in Core 4.0', E_USER_DEPRECATED);
-
-        return $this;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getState(): int
-    {
-        return self::STATE_ACTIVE;
-    }
-
     public function getInstallerClass(): string
     {
         $ns = $this->getNamespace();
