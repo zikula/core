@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Common;
 
-
 use Doctrine\DBAL\Connection;
 
 trait ColumnExistsTrait

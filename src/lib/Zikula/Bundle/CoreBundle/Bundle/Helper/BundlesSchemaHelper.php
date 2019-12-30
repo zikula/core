@@ -20,7 +20,6 @@ use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Common\Translator\TranslatorInterface;
-use Zikula\Core\AbstractBundle;
 
 class BundlesSchemaHelper
 {
