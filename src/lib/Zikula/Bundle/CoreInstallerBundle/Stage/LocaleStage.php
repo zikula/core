@@ -51,7 +51,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml', 'parameters.yml');
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/app/config', 'custom_parameters.yml', 'parameters.yml');
         $this->installedLocales = $container->get(LocaleApi::class)->getSupportedLocales();
         $this->matchedLocale = $container->get(LocaleApi::class)->getBrowserLocale();
     }

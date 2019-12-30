@@ -16,14 +16,14 @@
         "psr-4": { "Zikula\\RoutesModule\\": "" }
     },
     "require": {
-        "php": ">=7.2.0",
-        "remmel/i18n-routing-bundle": "dev-master",
+        "php": ">=7.2.5",
+        "jms/i18n-routing-bundle": "dev-master",
         "friendsofsymfony/jsrouting-bundle": "2.*"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/Guite/i18n-routing-bundle"
+            "url": "https://github.com/Guite/JMSI18nRoutingBundle/"
         }
     ],
     "extra": {

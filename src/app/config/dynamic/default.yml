@@ -2,10 +2,10 @@
 # generated.yml
 # It's here to give an initial configuration (until Zikula is installed).
 
-#jms_i18n_routing:
-    #default_locale: en
-    #locales: [en]
-    #strategy: prefix_except_default
+jms_i18n_routing:
+    default_locale: en
+    locales: [en]
+    strategy: prefix_except_default
 swiftmailer:
     transport: smtp
     username: ''

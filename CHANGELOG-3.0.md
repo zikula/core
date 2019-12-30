@@ -99,7 +99,7 @@
     - doctrine/orm updated from 2.5.14 to 2.7.0
     - doctrine/persistence installed in 1.3.3
     - doctrine/reflection installed in 1.0.0
-    - egulias/email-validator installed in 2.1.12
+    - egulias/email-validator installed in 2.1.13
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
     - erusev/parsedown installed in 1.7.3
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.1

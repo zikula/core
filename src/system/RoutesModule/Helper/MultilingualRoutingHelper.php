@@ -108,6 +108,7 @@ class MultilingualRoutingHelper
             ? $this->variableApi->getSystemVar('languageurl', 0)
             : 0
         ;
+
         $this->configDumper->setConfiguration('jms_i18n_routing', [
             'default_locale' => $defaultLocale,
             'locales' => $supportedLocales,

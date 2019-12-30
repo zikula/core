@@ -45,7 +45,6 @@ class ConfigType extends AbstractType
         $builder
             ->add('itemsperpage', IntegerType::class, [
                 'label' => $this->__('Items per page'),
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 3,
                     'min' => 1

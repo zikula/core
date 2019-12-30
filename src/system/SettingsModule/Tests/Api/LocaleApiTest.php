@@ -59,7 +59,7 @@ class LocaleApiTest extends TestCase
     private function getApi(string $dir = '/Fixtures'): LocaleApiInterface
     {
         $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
-        $kernel->method('getRootDir')->willReturn(__DIR__ . $dir);
+        $kernel->method('getProjectDir')->willReturn(__DIR__ . $dir);
         $requestStack = $this->getMockBuilder(RequestStack::class)->getMock();
 
         return new LocaleApi($kernel, $requestStack);

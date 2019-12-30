@@ -34,7 +34,7 @@ class CreateAdminStage implements StageInterface, FormHandlerInterface, InjectCo
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getRootDir() . '/config', 'custom_parameters.yml');
+        $this->yamlManager = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/app/config', 'custom_parameters.yml');
     }
 
     public function getName(): string
