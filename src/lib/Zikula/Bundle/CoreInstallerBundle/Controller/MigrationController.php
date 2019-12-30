@@ -44,7 +44,7 @@ class MigrationController extends AbstractController
             }
         }
 
-        return $this->json([
+        return new JsonResponse([
             'percentcomplete' => $percentComplete,
         ]);
     }
