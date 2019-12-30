@@ -1,4 +1,4 @@
-<?php
+f<?php
 
 declare(strict_types=1);
 
@@ -54,7 +54,7 @@ class BuildPackageCommand extends Command
         $filesystem->mkdir($buildDir, 0755);
         $progress->advance();
 
-        $filesystem->mirror(/** @scrutinizer ignore-type */ $sourceDir, "${buildDir}/${name}");
+        $filesystem->mirror($sourceDir, "${buildDir}/${name}");
         $progress->advance();
 
         PurgeVendorsCommand::cleanVendors("${buildDir}/${name}/vendor", $progress);
