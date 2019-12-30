@@ -121,7 +121,8 @@ abstract class AbstractController extends BaseController
      */
     public function createAccessDeniedException(string $message = 'Access Denied.', Throwable $previous = null): AccessDeniedException
     {
-        //Do not translate Access denied. to ensure that the ExceptionListener is able to catch the message also in other languages.
+        // Do not translate "Access denied." to ensure the ExceptionListener is able
+        // to catch the message also in other languages.
         $message = $message ?? 'Access denied.';
 
         return new AccessDeniedException($message, $previous);
