@@ -264,9 +264,7 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
 .sorted-desc:after,
 .sorted-asc:after,
 .unsorted:after {
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
+    font-family: 'Font Awesome 5 Free';
 }
 .sorted-asc:after {
     content: "\A0\f0de";
