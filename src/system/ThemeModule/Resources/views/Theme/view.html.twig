@@ -47,7 +47,7 @@
             </td>
             <td headers="hActions" class="actions">
                 {% if theme.state != 1 %}
-                    <a href="{{ path('zikulathememodule_theme_activate', {"themeName":theme.name}) }}"><span class="fa fa-gear tooltips" title="{{ __f('Activate %theme%', {'%theme%': theme.displayname}) }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_activate', {"themeName":theme.name}) }}"><span class="fa fa-cog tooltips" title="{{ __f('Activate %theme%', {'%theme%': theme.displayname}) }}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.user and theme.state == 1 %}
                     <a href="{{ path('zikulathememodule_theme_setasdefault', {"themeName":theme.name}) }}"><span class="fa fa-check tooltips" title="{{ __f('Set %theme% as site theme', {'%theme%': theme.displayname}) }}"></span></a>
@@ -56,10 +56,10 @@
                     <a href="{{ path('zikulathememodule_theme_preview', {"themeName":theme.name}) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 and theme.vars %}
-                    <a href="{{ path('zikulathememodule_var_var', {"themeName":theme.name}) }}"><span class="fa fa-pencil tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_var_var', {"themeName":theme.name}) }}"><span class="fa fa-pencil-alt tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_delete', {"themeName":theme.name}) }}"><span class="fa fa-trash-o tooltips" title="{{ __('Delete or deactivate') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_delete', {"themeName":theme.name}) }}"><span class="fa fa-trash-alt tooltips" title="{{ __('Delete or deactivate') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 <a href="{{ path('zikulathememodule_theme_credits', {"themeName":theme.name}) }}"><span class="fa fa-info-circle tooltips" title="{{ __('Credits for') }} {{ theme.displayname }}"></span></a>
             </td>

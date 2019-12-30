@@ -39,7 +39,7 @@
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
-                    icon: 'fa fa-remove'
+                    icon: 'fa fa-times'
                 },
                 copyItem: {
                     label: 'Copy',
@@ -53,28 +53,28 @@
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'activate');
                 //     },
-                //     icon: 'fa fa-check-square-o'
+                //     icon: 'fa fa-check-square'
                 // },
                 // deactivateItem: {
                 //     label: 'Deactivate',
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'deactivate');
                 //     },
-                //     icon: 'fa fa-square-o'
+                //     icon: 'fa fa-square'
                 // },
                 addItemAfter: {
                     label: 'Add sibling item (after selected)',
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
-                    icon: 'fa fa-level-up fa-rotate-90'
+                    icon: 'fa fa-level-up-alt fa-rotate-90'
                 },
                 addItemInto: {
                     label: 'Add child item (into selected)',
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },
-                    icon: 'fa fa-long-arrow-right'
+                    icon: 'fa fa-long-arrow-alt-right'
                 }
             };
         }
@@ -247,7 +247,7 @@
                     case 'DeleteAndMoveChildren':
                         if (!$('#children_move').length) {
                             // present dialog to determine new parent
-                            $(this).prepend('<i id="button-spinner" class="fa fa-gear fa-spin fa-lg text-danger"></i> ');
+                            $(this).prepend('<i id="button-spinner" class="fa fa-cog fa-spin fa-lg text-danger"></i> ');
                             $.ajax({
                                 type: 'POST',
                                 url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),

@@ -51,7 +51,7 @@
         </tr>
         {% for block in assignedblocks %}
         <tr style="cursor: move" data-bid="{{ block.bid }}">
-            <td headers="hAssignedDnd"><span class="fa fa-arrows"></span></td>
+            <td headers="hAssignedDnd"><span class="fa fa-arrows-alt"></span></td>
             <td headers="hAssignedId">{{ block.bid }}</td>
             <td headers="hAssignedTitle" id="blockdrag_{{ block.bid }}">
                 {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}
@@ -96,7 +96,7 @@
         </tr>
         {% for block in unassignedblocks %}
         <tr style="cursor: move" data-bid="{{ block.bid }}">
-            <td headers="hUnassignedDnd"><span class="fa fa-arrows"></span></td>
+            <td headers="hUnassignedDnd"><span class="fa fa-arrows-alt"></span></td>
             <td headers="hUnassignedId">{{ block.bid }}</td>
             <td headers="hUnassignedTitle" id="blockdrag_{{ block.bid }}">
                 {{ block.title|safeHtml|default('') }}{% if block.title and block.description %},&nbsp;{% endif %}{{ block.description|safeHtml }}

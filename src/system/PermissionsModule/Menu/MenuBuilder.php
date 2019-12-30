@@ -60,12 +60,12 @@ class MenuBuilder
         if (!$lockAdmin || $adminPermId !== $permission->getPid()) {
             $menu->addChild($this->__f('Edit permission %s', ['%s' => $permission->getPid()]), [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-pencil')
+            ])->setAttribute('icon', 'fa fa-pencil-alt')
                 ->setLinkAttributes(['class' => 'edit-permission pointer tooltips']);
 
             $menu->addChild($this->__f('Delete permission %s', ['%s' => $permission->getPid()]), [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-trash-o')
+            ])->setAttribute('icon', 'fa fa-trash-alt')
                 ->setLinkAttributes(['class' => 'delete-permission pointer tooltips']);
         }
 

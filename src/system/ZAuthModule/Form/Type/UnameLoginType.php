@@ -41,11 +41,11 @@ class UnameLoginType extends AbstractType
         $builder
             ->add('uname', TextType::class, [
                 'label' => $this->__('User name'),
-                'input_group' => ['left' => '<i class="fa fa-user fa-fw"></i>']
+                'input_group' => ['left' => '<i class="fa fa-fw fa-user"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => $this->__('Password'),
-                'input_group' => ['left' => '<i class="fa fa-key fa-fw"></i>']
+                'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,

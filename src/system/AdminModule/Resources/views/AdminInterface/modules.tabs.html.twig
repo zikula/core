@@ -16,7 +16,7 @@
         {% for module in adminMenu %}
             <li class="dropdown droppable nowrap{% if caller._zkModule == module.modname %} active{% endif %}">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext|e('html_attr') }}">
-                    <span class="fa fa-arrows admintabs-lock"></span>
+                    <span class="fa fa-arrows-alt admintabs-lock"></span>
                     <span><img src="{{ app.request.basePath }}/{{ module.icon }}" alt="icon" style="height: 18px"/></span>
                     <span class="fa fa-caret-down"></span>
                 </a>

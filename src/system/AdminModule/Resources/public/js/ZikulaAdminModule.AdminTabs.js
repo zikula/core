@@ -62,14 +62,15 @@
                 }
             }).done(function (data) {
                 var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
-                                '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
-                                '">'+
-                                '<span class="fa fa-arrows admintabs-unlock"></span> '+
-                                data.name+
-                                ' <span class="fa fa-caret-down"></span>'+
-                                '</a>'+
-                                '<ul class="admintabs-new dropdown-menu"></ul>'+
-                                '</li>';
+                    '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
+                    '">'+
+                    '<span class="fa fa-arrows-alt admintabs-unlock"></span> '+
+                    data.name+
+                    ' <span class="fa fa-caret-down"></span>'+
+                    '</a>'+
+                    '<ul class="admintabs-new dropdown-menu"></ul>'+
+                    '</li>'
+                ;
                 $('#admintabs .admintabs-add').before(newtab);
                 for (var i = 0; i < 6; i++) {
                     $('#admintabs ul:first > li:nth-child('+i+')').clone().appendTo('.admintabs-new')

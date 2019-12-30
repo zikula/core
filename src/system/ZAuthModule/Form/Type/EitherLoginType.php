@@ -41,11 +41,11 @@ class EitherLoginType extends AbstractType
         $builder
             ->add('either', TextType::class, [
                 'label' => $this->__('User name or Email'),
-                'input_group' => ['left' => '<i class="fa fa-sign-in fa-fw"></i>']
+                'input_group' => ['left' => '<i class="fa fa-fw fa-sign-in-alt"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => $this->__('Password'),
-                'input_group' => ['left' => '<i class="fa fa-key fa-fw"></i>']
+                'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,

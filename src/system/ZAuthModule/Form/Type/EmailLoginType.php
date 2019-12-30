@@ -41,11 +41,11 @@ class EmailLoginType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => $this->__('Email address'),
-                'input_group' => ['left' => '<i class="fa fa-at fa-fw"></i>']
+                'input_group' => ['left' => '<i class="fa fa-fw fa-at"></i>']
             ])
             ->add('pass', PasswordType::class, [
                 'label' => $this->__('Password'),
-                'input_group' => ['left' => '<i class="fa fa-key fa-fw"></i>']
+                'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,

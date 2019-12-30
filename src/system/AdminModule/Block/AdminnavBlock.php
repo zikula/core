@@ -85,7 +85,7 @@ class AdminnavBlock extends AbstractBlockHandler
                         $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->router->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
                     } catch (RouteNotFoundException $routeNotFoundException) {
                         $menuTextUrl = 'javascript:void(0)';
-                        $menuText .= ' (<i class="fa fa-warning"></i> ' . $this->__('invalid route') . ')';
+                        $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->__('invalid route') . ')';
                     }
                     $adminLinks[] = [
                         'menuTextUrl' => $menuTextUrl,

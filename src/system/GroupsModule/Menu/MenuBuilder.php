@@ -107,14 +107,14 @@ class MenuBuilder
         $menu->addChild($this->__f('Edit ":name" group', [':name' => $group->getName()]), [
             'route' => 'zikulagroupsmodule_group_edit',
             'routeParameters' => $routeParams,
-        ])->setAttribute('icon', 'fa fa-pencil');
+        ])->setAttribute('icon', 'fa fa-pencil-alt');
         if (Constant::GROUP_ID_ADMIN !== $gid
             && $defaultGroup !== $gid
             && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
             $menu->addChild($this->__f('Delete ":name" group', [':name' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
-            ])->setAttribute('icon', 'fa fa-trash-o');
+            ])->setAttribute('icon', 'fa fa-trash-alt');
         }
         $menu->addChild($this->__('Group membership'), [
             'route' => 'zikulagroupsmodule_membership_adminlist',

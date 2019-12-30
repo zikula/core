@@ -9,11 +9,11 @@
     <div class="form-group">
         {{ form_label(form.options) }}
         <div class="col-sm-9">
-            <ul class="list-unstyled" id="options" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.options.vars.prototype.key)|e }} {{ form_widget(form.options.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-option fa fa-trash fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
+            <ul class="list-unstyled" id="options" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.options.vars.prototype.key)|e }} {{ form_widget(form.options.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-option fa fa-trash-alt fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
                 {% for keyValuePair in form.options %}
                     {% form_theme form _self %}
                     {% block _options_entry_widget %}
-                        <li class="form-inline">{{ form_widget(keyValuePair.key) }} {{ form_widget(keyValuePair.value) }}&nbsp;&nbsp;<a href="#" class="delete-option fa fa-trash fa-lg text-danger"></a></li>
+                        <li class="form-inline">{{ form_widget(keyValuePair.key) }} {{ form_widget(keyValuePair.value) }}&nbsp;&nbsp;<a href="#" class="delete-option fa fa-trash-alt fa-lg text-danger"></a></li>
                     {% endblock %}
                 {% endfor %}
                 <li style="display:none">{{ form_row(form.options) }}</li><!-- hack to hide repeated display of options label -->

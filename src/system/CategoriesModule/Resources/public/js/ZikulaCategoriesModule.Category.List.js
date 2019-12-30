@@ -80,7 +80,7 @@
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
-                    icon: 'fa fa-remove'
+                    icon: 'fa fa-times'
                 },
                 copyItem: {
                     label: Translator.__('Copy'),
@@ -94,28 +94,28 @@
                     action: function (obj) {
                         performContextMenuAction(node, 'activate');
                     },
-                    icon: 'fa fa-check-square-o'
+                    icon: 'fa fa-check-square'
                 },
                 deactivateItem: {
                     label: Translator.__('Deactivate'),
                     action: function (obj) {
                         performContextMenuAction(node, 'deactivate');
                     },
-                    icon: 'fa fa-square-o'
+                    icon: 'fa fa-square'
                 },
                 addItemAfter: {
                     label: Translator.__('Add sibling item (after selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
-                    icon: 'fa fa-level-up fa-rotate-90'
+                    icon: 'fa fa-level-up-alt fa-rotate-90'
                 },
                 addItemInto: {
                     label: Translator.__('Add child item (into selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },
-                    icon: 'fa fa-long-arrow-right'
+                    icon: 'fa fa-long-arrow-alt-right'
                 }
             };
             if (treeElem.jstree('is_disabled', node, true)) {

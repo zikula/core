@@ -6,15 +6,15 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-trash-o"></span>
+            <span class="fa fa-trash-alt"></span>
             {{ __('Purge IDS log') }}
             {{ pageSetVar('title', __('Purge IDS log')) }}
         </h3>
 
         <div class="navbar navbar-default navbar-modulelinks">
             <ul class="navbar-nav">
-                <li><a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a csv file') }}" class="fa fa-arrow-circle-o-down"> {{ __('Export IDS Log') }}</a></li>
-                <li class="active"><span class="fa fa-trash-o"> {{ __('Purge IDS Log') }}</span></li>
+                <li><a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a csv file') }}" class="fa fa-arrow-alt-circle-down"> {{ __('Export IDS Log') }}</a></li>
+                <li class="active"><span class="fa fa-trash-alt"> {{ __('Purge IDS Log') }}</span></li>
             </ul>
         </div>
 

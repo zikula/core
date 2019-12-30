@@ -44,16 +44,16 @@
             <div class="form-group">
                 {{ form_label(form.filters) }}
                 <div class="col-sm-9">
-                    <ul id="filters" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.filters.vars.prototype.attribute, { 'attr': {'class': 'attribute-selector'} })|e }} {{ form_widget(form.filters.vars.prototype.queryParameter, { 'attr': {'disabled': true, 'class': 'queryParameter'} })|e }} {{ form_widget(form.filters.vars.prototype.comparator)|e }} {{ form_widget(form.filters.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-filter fa fa-trash fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
+                    <ul id="filters" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.filters.vars.prototype.attribute, { 'attr': {'class': 'attribute-selector'} })|e }} {{ form_widget(form.filters.vars.prototype.queryParameter, { 'attr': {'disabled': true, 'class': 'queryParameter'} })|e }} {{ form_widget(form.filters.vars.prototype.comparator)|e }} {{ form_widget(form.filters.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-filter fa fa-trash-alt fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
                         {% for filter in form.filters %}
                         {% form_theme form _self %}
                         {% block _filters_entry_widget %}
-                        <li class="form-inline">{{ form_widget(filter.attribute, { 'attr': {'class': 'attribute-selector'} }) }} {{ form_widget(filter.queryParameter, { 'attr': {'disabled': filter.vars.value.queryParameter is empty, 'class': 'queryParameter'} }) }} {{ form_widget(filter.comparator) }} {{ form_widget(filter.value) }}&nbsp;&nbsp;<a href="#" class="delete-filter fa fa-trash fa-lg text-danger"></a></li>
+                        <li class="form-inline">{{ form_widget(filter.attribute, { 'attr': {'class': 'attribute-selector'} }) }} {{ form_widget(filter.queryParameter, { 'attr': {'disabled': filter.vars.value.queryParameter is empty, 'class': 'queryParameter'} }) }} {{ form_widget(filter.comparator) }} {{ form_widget(filter.value) }}&nbsp;&nbsp;<a href="#" class="delete-filter fa fa-trash-alt fa-lg text-danger"></a></li>
                         {% endblock %}
                         {% endfor %}
-                        <li style="display:none">{{ form_row(form.filters) }}</li><!-- hack to hide repeated display of filters label -->
+                        <li style="display:none">{{ form_row(form.filters) }}</li>{# hack to hide repeated display of filters label #}
                     </ul>
-                    <a href="#" id="add-filter" class="btn btn-default btn-sm fa fa-plus"> Add Filter</a>
+                    <a href="#" id="add-filter" class="btn btn-default btn-sm fa fa-plus"> {{ __('Add filter') }}</a>
                 </div>
             </div>
         </fieldset>
