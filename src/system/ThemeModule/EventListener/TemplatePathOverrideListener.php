@@ -58,11 +58,18 @@ class TemplatePathOverrideListener implements EventSubscriberInterface
      */
     public function setUpThemePathOverrides(ControllerEvent $event): void
     {
-        // add theme path to template locator
-        $controller = $event->getController()[0];
+        $controller = $event->getController();
+
+        if (!is_array($controller)) {
+            return;
+        }
+
+        $controller = $controller[0];
         if (!($controller instanceof AbstractController)) {
             return;
         }
+
+        // add theme path to template locator
 
         $theme = $this->themeEngine->getTheme();
         if (!$theme) {

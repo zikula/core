@@ -237,12 +237,13 @@ abstract class AbstractRouteRepository extends SortableRepository
     {
         $orX = $qb->expr()->orX();
     
-        foreach ($idList as $id) {
+        foreach ($idList as $key => $id) {
             if (0 === $id) {
                 throw new InvalidArgumentException('Invalid identifier received.');
             }
     
-            $orX->add($qb->expr()->eq('tbl.id', $id));
+            $orX->add($qb->expr()->eq('tbl.id', ':idListFilter_' . $key));
+            $qb->setParameter('idListFilter_' . $key, $id);
         }
     
         $qb->andWhere($orX);

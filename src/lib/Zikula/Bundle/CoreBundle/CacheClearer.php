@@ -25,11 +25,6 @@ class CacheClearer
     private $cacheDir;
 
     /**
-     * @var string
-     */
-    private $cachePrefix;
-
-    /**
      * @var array
      */
     private $cacheTypes;
@@ -41,13 +36,11 @@ class CacheClearer
 
     public function __construct(
         string $cacheDir,
-        string $cachePrefix,
         string $kernelContainerClass,
         ExposedRoutesExtractorInterface $fosJsRoutesExtractor,
         array $routingLocales = []
     ) {
         $this->cacheDir = $cacheDir;
-        $this->cachePrefix = $cachePrefix;
         $this->fs = new Filesystem();
 
         $fosJsRoutingFiles = [];
@@ -67,12 +60,12 @@ class CacheClearer
                 $cacheFolder . 'annotations'
             ],
             'symfony.routing.generator' => [
-                $cacheFolder . $this->cachePrefix . 'UrlGenerator.php',
-                $cacheFolder . $this->cachePrefix . 'UrlGenerator.php.meta'
+                $cacheFolder . 'url_generating_routes.php',
+                $cacheFolder . 'url_generating_routes.php.meta'
             ],
             'symfony.routing.matcher' => [
-                $cacheFolder . $this->cachePrefix . 'UrlMatcher.php',
-                $cacheFolder . $this->cachePrefix . 'UrlMatcher.php.meta'
+                $cacheFolder . 'url_matching_routes.php',
+                $cacheFolder . 'url_matching_routes.php.meta'
             ],
             'symfony.routing.fosjs' => $fosJsRoutingFiles,
             'symfony.config' => [

@@ -59,6 +59,9 @@ class BlockFilterApi implements BlockFilterApiInterface
                 default:
                     $name = $request->attributes->get($filter['attribute']);
             }
+            if (empty($name)) {
+                continue;
+            }
             $displayable = $displayable && $this->compare($name, $filter['comparator'], $filter['value']);
         }
 

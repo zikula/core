@@ -174,8 +174,8 @@ class ExtensionDependencyHelper
             if ($this->kernel->isBundle($dependency->getModname())) {
                 if (empty($this->installedPackages)) {
                     // create and cache installed packages from composer.lock file
-                    $appPath = $this->kernel->getRootDir();
-                    $composerLockPath = realpath($appPath . '/../') . 'composer.lock';
+                    $projectPath = $this->kernel->getProjectDir();
+                    $composerLockPath = realpath($projectPath . '/') . 'composer.lock';
                     $packages = json_decode(file_get_contents($composerLockPath), true);
                     foreach ($packages as $package) {
                         $this->installedPackages[$package['name']] = $package;

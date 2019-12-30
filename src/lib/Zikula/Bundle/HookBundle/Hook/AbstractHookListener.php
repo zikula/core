@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Hook;
 
 use ReflectionObject;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -63,7 +62,7 @@ abstract class AbstractHookListener
 
     public function __construct(EventDispatcherInterface $dispatcher)
     {
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
         $this->setTranslator($dispatcher->getContainer()->get('translator.default'));
         $this->setup();
         if (null !== $this->domain) {

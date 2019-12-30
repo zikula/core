@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Helper;
 
 use RuntimeException;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
@@ -61,7 +60,7 @@ class ExtensionStateHelper
         TranslatorInterface $translator,
         ZikulaHttpKernelInterface $kernel
     ) {
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
         $this->cacheClearer = $cacheClearer;
         $this->extensionRepository = $extensionRepository;
         $this->translator = $translator;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Dispatcher;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\HookBundle\Hook\Hook;
@@ -40,7 +39,7 @@ class HookDispatcher implements HookDispatcherInterface
         EventDispatcherInterface $dispatcher
     ) {
         $this->storage = $storage;
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
     }
 
     public function getStorage(): StorageInterface

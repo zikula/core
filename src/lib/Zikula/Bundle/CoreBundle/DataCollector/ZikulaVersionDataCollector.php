@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\DataCollector;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -32,7 +31,7 @@ class ZikulaVersionDataCollector extends DataCollector
         $this->themeEngine = $themeEngine;
     }
 
-    public function collect(Request $request, Response $response, Exception $exception = null): void
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         $this->data = [
             'version' => ZikulaKernel::VERSION,

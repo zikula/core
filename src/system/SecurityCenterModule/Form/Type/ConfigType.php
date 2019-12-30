@@ -68,7 +68,6 @@ class ConfigType extends AbstractType
             ->add('keyexpiry', IntegerType::class, [
                 'label' => $this->__("Time limit for authorisation keys ('authkeys') in seconds (default: 0)"),
                 'empty_data' => 0,
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 4
                 ]
@@ -125,7 +124,6 @@ class ConfigType extends AbstractType
             ->add('secmeddays', IntegerType::class, [
                 'label' => $this->__('Automatically log user out after'),
                 'empty_data' => 7,
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 3
                 ],
@@ -134,7 +132,6 @@ class ConfigType extends AbstractType
             ->add('secinactivemins', IntegerType::class, [
                 'label' => $this->__('Expire session after'),
                 'empty_data' => 20,
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 4
                 ],
@@ -162,7 +159,6 @@ class ConfigType extends AbstractType
             ->add('gc_probability', IntegerType::class, [
                 'label' => $this->__('Garbage collection probability'),
                 'empty_data' => 100,
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 5
                 ],
@@ -203,7 +199,6 @@ class ConfigType extends AbstractType
             ->add('sessionregeneratefreq', IntegerType::class, [
                 'label' => $this->__('Regeneration probability'),
                 'empty_data' => 10,
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 3
                 ],
@@ -271,23 +266,19 @@ class ConfigType extends AbstractType
             ])
             ->add('idsimpactthresholdone', IntegerType::class, [
                 'label' => $this->__('Minimum impact to log intrusion in the database'),
-                'empty_data' => 1,
-                'scale' => 0
+                'empty_data' => 1
             ])
             ->add('idsimpactthresholdtwo', IntegerType::class, [
                 'label' => $this->__('Minimum impact to email the administrator'),
-                'empty_data' => 10,
-                'scale' => 0
+                'empty_data' => 10
             ])
             ->add('idsimpactthresholdthree', IntegerType::class, [
                 'label' => $this->__('Minimum impact to block the request'),
-                'empty_data' => 25,
-                'scale' => 0
+                'empty_data' => 25
             ])
             ->add('idsimpactthresholdfour', IntegerType::class, [
                 'label' => $this->__('Minimum impact to kick the user (destroy the session)'),
-                'empty_data' => 75,
-                'scale' => 0
+                'empty_data' => 75
             ])
             ->add('idsimpactmode', ChoiceType::class, [
                 'label' => $this->__('Select the way the impact thresholds are used in Zikula'),

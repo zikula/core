@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Block;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
@@ -82,6 +81,6 @@ class PendingContentBlock extends AbstractBlockHandler
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\SecurityCenterModule\Api;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -43,7 +42,7 @@ class HtmlFilterApi implements HtmlFilterApiInterface
     ) {
         $this->variableApi = $variableApi;
         $this->installed = $installed;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function filter($value)

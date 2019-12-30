@@ -139,7 +139,7 @@
                     {{ route.translationPrefix }}
                 </td>
                 <td headers="hDescription" class="text-left">
-                    {{ route.description|truncate(50, true) }}
+                    {{ route.description|u.truncate(50, '…') }}
                 </td>
             </tr>
         {% else %}

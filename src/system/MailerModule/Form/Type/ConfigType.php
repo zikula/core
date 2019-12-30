@@ -95,7 +95,6 @@ class ConfigType extends AbstractType
             ])
             ->add('wordwrap', IntegerType::class, [
                 'label' => $this->__('Word wrap'),
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 3
                 ],
@@ -115,7 +114,6 @@ class ConfigType extends AbstractType
             ])
             ->add('port', IntegerType::class, [
                 'label' => $this->__('SMTP port'),
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 5
                 ],

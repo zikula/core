@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Symfony\Component\Console\Style\StyleInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler;
@@ -93,7 +92,7 @@ class StageHelper
         $this->kernel = $kernel;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->extensionHelper = $extensionHelper;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
         $this->moduleHelper = $moduleHelper;
         $this->blockHelper = $blockHelper;
         $this->parameterHelper = $parameterHelper;

@@ -57,7 +57,6 @@ class ConfigType extends AbstractType
             ->add('adminid', IntegerType::class, [
                 'label' => $this->__('ID of main administration permission rule'),
                 'empty_data' => 1,
-                'scale' => 0,
                 'attr' => [
                     'maxlength' => 3
                 ]

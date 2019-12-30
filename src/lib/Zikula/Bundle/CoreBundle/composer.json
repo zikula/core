@@ -15,6 +15,7 @@
         "php": ">=7.2.0",
         "composer/composer": "1.*",
         "composer/installers": "1.*",
+        "robloach/component-installer": "*",
 
         "zikula/legal-module": "dev-master",
         "zikula/profile-module": "dev-master",
@@ -22,41 +23,44 @@
         "zikula/pagelock-module": "dev-master",
         "zikula/andreas08-theme": "dev-master",
         "zikula/seabreeze-theme": "dev-master",
+        "zikula/filesystem": "1.*",
 
-        "symfony/symfony": "4.*",
-        "symfony/monolog-bundle": "3.4.*",
+        "symfony/symfony": "5.*",
+        "symfony/monolog-bundle": "3.*",
         "sensio/framework-extra-bundle": "dev-master",
         "symfony/maker-bundle": "1.*",
         "symfony/profiler-pack": "^1.0",
         "elao/web-profiler-extra-bundle" : "2.*",
-        "sensiolabs/security-checker" : "5.*",
+        "sensiolabs/security-checker" : "6.*",
 
-        "jms/translation-bundle": "1.*",
+        "prolix/translation-bundle": "dev-master",
+        "php-translation/symfony-bundle": "0.*",
         "nikic/php-parser": "4.*",
-        "willdurand/js-translation-bundle": "2.*",
+        "willdurand/js-translation-bundle": "4.4.x-dev",
 
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "2.*",
-        "stof/doctrine-extensions-bundle": "1.*",
+        "antishov/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
 
-        "robloach/component-installer": "*",
-        "michelf/php-markdown": "1.*",
-        "twig/extensions": "1.*",
-        "zikula/filesystem": "1.*",
+        "twig/twig": "3.*",
+        "twig/cssinliner-extra": "3.*",
+        "twig/html-extra": "3.*",
+        "twig/inky-extra": "3.*",
+        "twig/intl-extra": "3.*",
+        "twig/markdown-extra": "3.*",
+        "twig/string-extra": "3.*",
+        "twig/extra-bundle": "3.*",
+
+        "erusev/parsedown": "^1.7",
+        "league/commonmark": "^1.0",
+        "league/html-to-markdown": "^4.8",
+        "michelf/php-markdown": "^1.9",
 
         "oyejorge/less.php": "dev-master",
-        "liip/imagine-bundle": "2.*"
+        "liip/imagine-bundle": "dev-symfony5"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/Wizard"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/GeneratorBundle"
-        },
         {
             "type": "vcs",
             "url": "https://github.com/zikula-modules/Legal"
@@ -80,6 +84,26 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula/ZikulaSeaBreezeTheme"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Guite/JMSTranslationBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/php-translation/symfony-bundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/vanputten/BazingaJsTranslationBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Guite/WebProfilerExtraBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Guite/LiipImagineBundle"
         }
     ],
     "autoload": {

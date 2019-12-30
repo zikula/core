@@ -7,7 +7,7 @@ build:
 
         tests-and-coverage:
             environment:
-                php: '7.2.0'
+                php: '7.2.5'
                 apache2:
                     modules: ['rewrite']
             tests:

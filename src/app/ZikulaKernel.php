@@ -29,6 +29,7 @@ class ZikulaKernel extends Kernel
             Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class,
             Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class,
             Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class,
+            Twig\Extra\TwigExtraBundle\TwigExtraBundle::class,
             Zikula\Bundle\CoreBundle\CoreBundle::class,
             Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle::class,
             Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class,

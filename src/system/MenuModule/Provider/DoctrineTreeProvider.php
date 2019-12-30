@@ -17,7 +17,6 @@ use InvalidArgumentException;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 use Zikula\MenuModule\Event\ConfigureMenuEvent;
@@ -55,7 +54,7 @@ class DoctrineTreeProvider implements MenuProviderInterface
         $this->factory = $factory;
         $this->nodeLoader = new PermissionAwareNodeLoader($factory, $permissionApi);
         $this->menuItemRepository = $menuItemRepository;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

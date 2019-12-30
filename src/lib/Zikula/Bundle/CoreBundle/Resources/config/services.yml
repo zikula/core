@@ -43,14 +43,13 @@ services:
     Zikula\Bundle\CoreBundle\DynamicConfigDumper:
         public: true
         arguments:
-          $configDir: '%kernel.root_dir%/config'
+          $configDir: '%kernel.project_dir%/app/config'
 
     # public because Zikula\Bundle\CoreInstallerBundle\Command\Install\StartCommand accesses this using container
     Zikula\Bundle\CoreBundle\CacheClearer:
         public: true
         arguments:
           $cacheDir: '%kernel.cache_dir%'
-          $cachePrefix: '%router.cache_class_prefix%'
           $kernelContainerClass: '%kernel.container_class%'
           $fosJsRoutesExtractor: '@fos_js_routing.extractor'
           $routingLocales: '%jms_i18n_routing.locales%'
@@ -91,17 +90,6 @@ services:
     Zikula\Core\Doctrine\Helper\SchemaHelper:
         public: true
         lazy: true
-
-    #Twig\Extensions\:
-    #    resource: '../../../../../../vendor/twig/extensions/src/*'
-    twig.extension.text:
-        class: Twig\Extensions\TextExtension
-    twig.extension.intl:
-        class: Twig\Extensions\IntlExtension
-    twig.extension.date:
-        class: Twig\Extensions\DateExtension
-    twig.extension.array:
-        class: Twig\Extensions\ArrayExtension
 
     Zikula\Common\Translator\TranslatorInterface: '@Zikula\Common\Translator\Translator'
 

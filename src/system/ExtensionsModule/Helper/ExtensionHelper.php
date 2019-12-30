@@ -21,7 +21,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Console\Application;
@@ -87,7 +86,8 @@ class ExtensionHelper
         VariableApiInterface $variableApi,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionStateHelper $stateHelper,
-        CacheClearer $cacheClearer
+        CacheClearer $cacheClearer,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->container = $container;
         $this->translator = $translator;
@@ -95,7 +95,7 @@ class ExtensionHelper
         $this->extensionRepository = $extensionRepository;
         $this->stateHelper = $stateHelper;
         $this->cacheClearer = $cacheClearer;
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($this->container->get('event_dispatcher'));
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

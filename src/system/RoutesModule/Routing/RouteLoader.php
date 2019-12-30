@@ -218,14 +218,20 @@ class RouteLoader extends Loader
     {
         /** @var RouteEntity $dbRoute */
         foreach ($customRoutes as $dbRoute) {
+            $bundleName = $dbRoute->getBundle();
+            if (!$this->kernel->isBundle($bundleName)) {
+                continue;
+            }
+            $bundle = $this->kernel->getBundle($bundleName);
+
             // Add modname, type and func to the route's default values.
             $defaults = $dbRoute->getDefaults();
-            $defaults['_zkModule'] = $dbRoute->getBundle();
+            $defaults['_zkModule'] = $bundleName;
             list (, $type) = $this->sanitizeHelper->sanitizeController($dbRoute->getController());
             list (, $func) = $this->sanitizeHelper->sanitizeAction($dbRoute->getAction());
             $defaults['_zkType'] = $type;
             $defaults['_zkFunc'] = $func;
-            $defaults['_controller'] = $dbRoute->getBundle() . ':' . ucfirst($type) . ':' . ucfirst($func);
+            $defaults['_controller'] = $bundle->getNamespace() . '\\Controller\\' . ucfirst($type) . 'Controller::' . lcfirst($func) . 'Action';
 
             // We have to prepend the bundle prefix (see detailed description in docblock of prependBundlePrefix() method).
             $options = $dbRoute->getOptions();
@@ -275,7 +281,7 @@ class RouteLoader extends Loader
         $controller = explode(':', $controller);
         $defaults['_zkType'] = $type = lcfirst($controller[1]);
         $defaults['_zkFunc'] = $func = lcfirst($controller[2]);
-        $defaults['_controller'] = $bundleName . ':' . $controller[1] . ':' . $func;
+        $defaults['_controller'] = $bundle->getNamespace() . '\\Controller\\' . ucfirst($controller[1]) . 'Controller::' . $func . 'Action';
 
         $route->setDefaults($defaults);
 
@@ -298,7 +304,10 @@ class RouteLoader extends Loader
         $prefix = '';
         $options = $route->getOptions();
         $prependBundle = empty($this->extractTranslationHelper->getBundleName()) && isset($options['i18n']) && !$options['i18n'];
-        if (!$prependBundle || (isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix'])) {
+        if (!$prependBundle) {
+            return;
+        }
+        if ((isset($options['zkNoBundlePrefix']) && $options['zkNoBundlePrefix'])) {
             return;
         }
 

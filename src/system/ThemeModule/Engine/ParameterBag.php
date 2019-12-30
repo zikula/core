@@ -264,7 +264,7 @@ class ParameterBag implements IteratorAggregate, Countable
 
             $moduleDisplayName = '';
             $request = $this->requestStack->getCurrentRequest();
-            if (null !== $request) {
+            if (null !== $request && null !== $request->attributes->get('_controller')) {
                 $controllerNameParts = explode('\\', $request->attributes->get('_controller'));
                 $bundleName = count($controllerNameParts) > 1 ? $controllerNameParts[0] . $controllerNameParts[1] : '';
                 if ('Module' === mb_substr($bundleName, -6)) {

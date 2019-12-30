@@ -47,7 +47,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
      * @Assert\Type(type="integer")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\LessThan(value=1000000000)
      * @var int $id
      */
@@ -57,7 +57,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * the current workflow state
      *
      * @ORM\Column(length=20)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @RoutesAssert\ListEntry(entityName="route", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
@@ -65,46 +65,46 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min="0", max="255")
+     * @Assert\NotBlank
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string $bundle
      */
     protected $bundle = '';
     
     /**
      * @ORM\Column(length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min="0", max="255")
+     * @Assert\NotBlank
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string $controller
      */
     protected $controller = '';
     
     /**
      * @ORM\Column(name="route_action", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min="0", max="255")
+     * @Assert\NotBlank
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string $action
      */
     protected $action = '';
     
     /**
      * @ORM\Column(name="route_path", length=255)
-     * @Assert\NotBlank()
-     * @Assert\Length(min="0", max="255")
+     * @Assert\NotBlank
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string $path
      */
     protected $path = '';
     
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
      * @var string $host
      */
     protected $host = '';
     
     /**
      * @ORM\Column(length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @RoutesAssert\ListEntry(entityName="route", propertyName="schemes", multiple=true)
      * @var string $schemes
      */
@@ -112,7 +112,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @RoutesAssert\ListEntry(entityName="route", propertyName="methods", multiple=true)
      * @var string $methods
      */
@@ -120,7 +120,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $prependBundlePrefix
      */
@@ -128,7 +128,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="bool")
      * @var bool $translatable
      */
@@ -136,14 +136,14 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
      * @var string $translationPrefix
      */
     protected $translationPrefix = '';
     
     /**
      * @ORM\Column(name="route_defaults", type="array")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="array")
      * @var array $defaults
      */
@@ -151,7 +151,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(type="array")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="array")
      * @var array $requirements
      */
@@ -159,7 +159,7 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(type="array")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\Type(type="array")
      * @var array $options
      */
@@ -167,14 +167,14 @@ abstract class AbstractRouteEntity extends EntityAccess
     
     /**
      * @ORM\Column(name="route_condition", length=255, nullable=true)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
      * @var string $condition
      */
     protected $condition = '';
     
     /**
      * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(min="0", max="255")
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
      * @var string $description
      */
     protected $description = '';
@@ -183,7 +183,7 @@ abstract class AbstractRouteEntity extends EntityAccess
      * @Gedmo\SortablePosition
      * @ORM\Column(type="integer")
      * @Assert\Type(type="integer")
-     * @Assert\NotNull()
+     * @Assert\NotNull
      * @Assert\LessThan(value=100000000000)
      * @var int $sort
      */

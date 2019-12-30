@@ -167,7 +167,7 @@ class AdminInterfaceController extends AbstractController
         }
 
         // check for .htaccess in app directory
-        $appDir = $this->get('kernel')->getRootDir();
+        $appDir = $this->get('kernel')->getProjectDir() . '/app';
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');

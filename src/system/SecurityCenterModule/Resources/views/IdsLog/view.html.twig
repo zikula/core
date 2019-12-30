@@ -108,7 +108,7 @@
                                 </div>
                             {% endfor %}
                             </td>
-                            <td headers="hDate">{{ event.date|localizeddate('medium', 'none') }}</td>
+                            <td headers="hDate">{{ event.date|format_date('medium') }}</td>
                             <td headers="hActions" class="text-right">
                                 <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', { id: event.id, token: csrfToken }) }}"><i class="fa fa-times"></i></a>
                             </td>

@@ -16,7 +16,6 @@ namespace Zikula\ExtensionsModule\Helper;
 use Composer\Semver\Semver;
 use Exception;
 use RuntimeException;
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -108,7 +107,7 @@ class BundleSyncHelper
         $this->extensionVarRepository = $extensionVarRepository;
         $this->extensionDependencyRepository = $extensionDependencyRepository;
         $this->translator = $translator;
-        $this->dispatcher = LegacyEventDispatcherProxy::decorate($dispatcher);
+        $this->dispatcher = $dispatcher;
         $this->extensionStateHelper = $extensionStateHelper;
         $this->bundlesSchemaHelper = $bundlesSchemaHelper;
         $this->composerValidationHelper = $composerValidationHelper;

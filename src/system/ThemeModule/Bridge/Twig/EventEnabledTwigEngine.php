@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Bridge\Twig;
 
-use Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Twig\Environment;
 use Twig\Error\Error as TwigError;
@@ -37,9 +36,9 @@ class EventEnabledTwigEngine extends Environment
      *
      * @throws TwigError if something went wrong like a thrown exception while rendering the template
      */
-    public function render($name, array $parameters = [])
+    public function render($name, array $context = []): string
     {
-        $preEvent = new TwigPreRenderEvent($name, $parameters);
+        $preEvent = new TwigPreRenderEvent($name, $context);
         $this->eventDispatcher->dispatch($preEvent, ThemeEvents::PRE_RENDER);
 
         $content = parent::render($preEvent->getTemplateName(), $preEvent->getParameters());
@@ -55,6 +54,6 @@ class EventEnabledTwigEngine extends Environment
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $this->eventDispatcher = LegacyEventDispatcherProxy::decorate($eventDispatcher);
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
