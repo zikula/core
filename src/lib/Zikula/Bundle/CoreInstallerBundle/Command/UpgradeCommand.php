@@ -148,23 +148,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
             return 2;
         }
 
-        $count = $this->migrationHelper->countUnMigratedUsers();
-        if ($count > 0) {
-            $io->text($this->translator->__('Beginning user migration...'));
-            $userMigrationMaxuid = (int)$this->migrationHelper->getMaxUnMigratedUid();
-            $progressBar = new ProgressBar($output, (int)ceil($count / MigrationHelper::BATCH_LIMIT));
-            $progressBar->start();
-            $lastUid = 0;
-            do {
-                $result = $this->migrationHelper->migrateUsers($lastUid);
-                $lastUid = $result['lastUid'];
-                $progressBar->advance();
-            } while ($lastUid < $userMigrationMaxuid);
-            $progressBar->finish();
-            $io->success($this->translator->__('User migration complete!'));
-        } else {
-            $io->text($this->translator->__('There was no need to migrate any users.'));
-        }
+        $this->migrateUsers($io, $output);
 
         // avoid warning in PHP 7.2 based on ini_set() usage which is caused by any access to the
         // session before regeneration happens (e.g. by an event listener executed before a login)
@@ -210,5 +194,29 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         $io->success($this->translator->__('UPGRADE COMPLETE!'));
 
         return 0;
+    }
+
+    private function migrateUsers(SymfonyStyle $io, OutputInterface $output): void
+    {
+        if (version_compare($this->currentInstalledVersion, '2.0.0', '>=')) {
+            return;
+        }
+        $count = $this->migrationHelper->countUnMigratedUsers();
+        if ($count > 0) {
+            $io->text($this->translator->__('Beginning user migration...'));
+            $userMigrationMaxuid = (int)$this->migrationHelper->getMaxUnMigratedUid();
+            $progressBar = new ProgressBar($output, (int)ceil($count / MigrationHelper::BATCH_LIMIT));
+            $progressBar->start();
+            $lastUid = 0;
+            do {
+                $result = $this->migrationHelper->migrateUsers($lastUid);
+                $lastUid = $result['lastUid'];
+                $progressBar->advance();
+            } while ($lastUid < $userMigrationMaxuid);
+            $progressBar->finish();
+            $io->success($this->translator->__('User migration complete!'));
+        } else {
+            $io->text($this->translator->__('There was no need to migrate any users.'));
+        }
     }
 }
