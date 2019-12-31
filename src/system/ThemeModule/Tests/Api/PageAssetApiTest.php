@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Tests\Api;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Zikula\ThemeModule\Api\PageAssetApi;
 use Zikula\ThemeModule\Engine\AssetBag;

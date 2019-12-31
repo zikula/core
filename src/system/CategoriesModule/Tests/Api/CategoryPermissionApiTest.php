@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Tests\Api;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Zikula\CategoriesModule\Api\CategoryPermissionApi;
 use Zikula\CategoriesModule\Entity\CategoryEntity;

@@ -63,7 +63,7 @@ class BlockCollectorTest extends KernelTestCase
         $block = self::$container->get(ABlock::class);
         $expected[ABlock::class] = $block;
         $this->collector->add($block);
-        $block = self::$container->get(BBlock::class);;
+        $block = self::$container->get(BBlock::class);
         $expected[BBlock::class] = $block;
         $this->collector->add($block);
         $this->assertEquals($expected, $this->collector->getBlocks());

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Tests\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockFactoryApi;
