@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Twig\Extension;
 
+use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -46,7 +47,7 @@ class PermissionsExtension extends AbstractExtension
     public function hasPermission(string $component, string $instance, string $level): bool
     {
         if (empty($component) || empty($instance) || empty($level)) {
-            throw new \InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->permissionApi->hasPermission($component, $instance, constant($level));

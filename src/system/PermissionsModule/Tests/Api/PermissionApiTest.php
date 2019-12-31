@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Tests\Api;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
