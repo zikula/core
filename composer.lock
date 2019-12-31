@@ -6799,11 +6799,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "https://ziku.la"
+                    "homepage": "http://zikula.org"
                 }
             ],
             "description": "Zikula Bootstrap bundle",
-            "homepage": "https://ziku.la",
+            "homepage": "http://zikula.org",
             "keywords": [
                 "bootstrap",
                 "bundle",
@@ -6932,11 +6932,11 @@
             "authors": [
                 {
                     "name": "Zikula",
-                    "homepage": "https://ziku.la"
+                    "homepage": "http://zikula.org"
                 }
             ],
             "description": "Zikula jQuery UI bundle",
-            "homepage": "https://ziku.la",
+            "homepage": "http://zikula.org",
             "keywords": [
                 "bundle",
                 "jQuery UI",
@@ -7130,12 +7130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "6f003c6c24492f71ee954c460ed6edc0a8de068f"
+                "reference": "8ff8f6e605180f52e84e804d8d813ea4cecff1ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/6f003c6c24492f71ee954c460ed6edc0a8de068f",
-                "reference": "6f003c6c24492f71ee954c460ed6edc0a8de068f",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8ff8f6e605180f52e84e804d8d813ea4cecff1ac",
+                "reference": "8ff8f6e605180f52e84e804d8d813ea4cecff1ac",
                 "shasum": ""
             },
             "require": {
@@ -7193,7 +7193,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-30T15:12:40+00:00"
+            "time": "2019-12-31T09:43:14+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
