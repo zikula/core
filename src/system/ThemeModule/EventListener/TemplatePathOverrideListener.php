@@ -23,8 +23,6 @@ use Zikula\ThemeModule\Engine\Engine;
 /**
  * This class adds the theme Resources path to the search path when locating assets like templates.
  * This listener only works when new "namespaced" (e.g. "@Bundle/template.html.twig") is used.
- * If old name-scheme (Bundle:template) or controller annotations ("@Template") are used
- * the \Zikula\ThemeModule\HttpKernel\ZikulaKernel::locateResource method is used instead
  */
 class TemplatePathOverrideListener implements EventSubscriberInterface
 {
