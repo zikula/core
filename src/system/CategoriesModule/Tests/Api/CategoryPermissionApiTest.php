@@ -31,11 +31,9 @@ class CategoryPermissionApiTest extends TestCase
         $this->assertTrue($api->hasCategoryAccess([]));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidDataThrowsException(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
         $category = new CategoryEntity();

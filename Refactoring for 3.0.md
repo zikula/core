@@ -1,5 +1,21 @@
 # Refactoring for 3.0
 
+## Modules
+
+### Service registration
+
+Please use `autowire` and `autoconfigure` as this will magically solve most issues.
+refs: https://symfony.com/doc/current/service_container/3.3-di-changes.html#step-1-adding-defaults
+
+Module services should be registered by their classname (automatically as above) and not with old-fashioned
+`service.class.dot.notation`.
+
+### Blocks
+
+BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` as in Core-2.0 but there is no longer
+a need to tag these classes in your services file as they are auto-tagged. Also - as above, the classname should be
+used as the service name.
+
 ## Twig
 
 ### Classes
@@ -17,7 +33,7 @@ For example:
 
 and so on…
 
-### Template pathes
+### Template paths
 
 - change all template names from e.g. `Bundle:Controller:Action.html.twig` to `@Bundle/Controller/Action.html.twig`
 - Modules and themes retain the `Module` or `Theme` suffix but bundles do not.

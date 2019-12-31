@@ -183,10 +183,10 @@ class PermissionApiTest extends TestCase
 
     /**
      * @covers PermissionApi::accessLevelNames()
-     * @expectedException InvalidArgumentException
      */
     public function testAccessLevelException(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $api->accessLevelNames(99);
     }

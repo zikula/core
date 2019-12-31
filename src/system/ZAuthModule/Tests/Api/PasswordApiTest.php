@@ -55,37 +55,37 @@ class PasswordApiTest extends TestCase
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException InvalidArgumentException
      */
     public function testGetHashedPasswordOnEmpty(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678', '');
     }
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException InvalidArgumentException
      */
     public function testGetHashedPasswordOnNull(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678', null);
     }
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException InvalidArgumentException
      */
     public function testGetHashedPasswordOnString(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 'a');
     }
 
     /**
      * @covers PasswordApi::getHashedPassword()
-     * @expectedException InvalidArgumentException
      */
     public function testGetHashedPasswordOnUndefined(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 
@@ -110,20 +110,20 @@ class PasswordApiTest extends TestCase
 
     /**
      * @covers PasswordApi::passwordsMatch()
-     * @expectedException InvalidArgumentException
      */
     public function testPasswordsMatchExceptionOnEmpty(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678');
         $this->api->passwordsMatch('', $hashedPass);
     }
 
     /**
      * @covers PasswordApi::passwordsMatch()
-     * @expectedException InvalidArgumentException
      */
     public function testPasswordsMatchExceptionOnNull(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $hashedPass = $this->api->getHashedPassword('12345678');
         $this->api->passwordsMatch(null, $hashedPass);
     }

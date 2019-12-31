@@ -58,11 +58,9 @@ class FormTypesChoicesTest extends TestCase
         $this->assertEquals('sixvalue', $foo[6]);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testExceptionOnUnset(): void
     {
+        $this->expectException(\Exception::class);
         $foo = new FormTypesChoices([
             'foo' => 'bar',
             'three' => 'nine',

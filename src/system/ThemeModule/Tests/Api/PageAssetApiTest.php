@@ -44,11 +44,11 @@ class PageAssetApiTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
      * @dataProvider exceptionDataProvider
      */
     public function testException($type, $value): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->api->add($type, $value);
     }
 

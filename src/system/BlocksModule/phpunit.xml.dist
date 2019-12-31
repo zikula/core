@@ -8,9 +8,11 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          bootstrap="../../lib/bootstrap.php"
 >
+    <php>
+        <server name="KERNEL_CLASS" value="ZikulaKernel" />
+    </php>
     <testsuites>
         <testsuite name="Zikula Blocks Module Test Suite">
             <directory>./Tests/</directory>

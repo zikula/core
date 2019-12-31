@@ -11,7 +11,7 @@
     bootstrap="./src/lib/bootstrap.php"
 >
     <php>
-        <server name="KERNEL_DIR" value="./src/app/" />
+        <server name="KERNEL_CLASS" value="ZikulaKernel" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
     </php>
     <testsuites>

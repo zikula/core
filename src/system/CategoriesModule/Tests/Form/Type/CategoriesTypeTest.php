@@ -110,11 +110,9 @@ class CategoriesTypeTest extends TypeTestCase
         ];
     }
 
-    /**
-     * @expectedException InvalidOptionsException
-     */
     public function testClassOptionIsRequired(): void
     {
+        $this->expectException(InvalidOptionsException::class);
         $this->factory->createNamed('name', CategoriesType::class);
     }
 

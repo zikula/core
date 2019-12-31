@@ -25,6 +25,9 @@ class ZikulaBlocksExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(dirname(__DIR__) . '/Resources/config'));
         $loader->load('services.yml');
+        if ($container->getParameter('kernel.environment') == 'test') {
+            $loader->load('test_services.yml');
+        }
 
         $container->registerForAutoconfiguration(BlockHandlerInterface::class)
             ->addTag('zikula.block_handler')

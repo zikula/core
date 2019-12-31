@@ -11,7 +11,7 @@
          bootstrap="../../lib/bootstrap.php"
 >
     <php>
-        <server name="KERNEL_DIR" value="../../app/" />
+        <server name="KERNEL_CLASS" value="ZikulaKernel" />
     </php>
     <testsuites>
         <testsuite name="Zikula Extensions Module Test Suite">
