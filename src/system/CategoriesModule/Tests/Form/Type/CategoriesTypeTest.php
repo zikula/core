@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Tests\Form\Type;
 
 use DateTime;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +55,8 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
+        AnnotationRegistry::registerLoader('class_exists');
+
         $this->em = DoctrineTestHelper::createTestEntityManager();
         $this->emRegistry = $this->createRegistryMock('default', $this->em);
         $this->em->getEventManager()->addEventSubscriber(new TreeListener());
@@ -104,10 +107,10 @@ class CategoriesTypeTest extends TypeTestCase
 
         $type = new CategoriesType($repository, $requestStack);
 
-        return [
+        return array_merge(parent::getExtensions(), [
             new PreloadedExtension([$type], []),
             new DoctrineOrmExtension($this->emRegistry),
-        ];
+        ]);
     }
 
     public function testClassOptionIsRequired(): void
