@@ -21,6 +21,7 @@ use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\MenuModule\Block\MenuBlock;
 
 class BlockHelper
 {
@@ -66,12 +67,12 @@ class BlockHelper
     private function createMainMenuBlock(): void
     {
         /** @var ExtensionEntity $menuModuleEntity */
-        $menuModuleEntity = $this->entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity')
+        $menuModuleEntity = $this->entityManager->getRepository(ExtensionEntity::class)
             ->findOneBy(['name' => 'ZikulaMenuModule']);
         $blockEntity = new BlockEntity();
         $mainMenuString = $this->translator->__('Main menu');
         $blockEntity->setTitle($mainMenuString);
-        $blockEntity->setBkey('ZikulaMenuModule:\Zikula\MenuModule\Block\MenuBlock');
+        $blockEntity->setBkey(MenuBlock::class);
         $blockEntity->setBlocktype('Menu');
         $blockEntity->setDescription($mainMenuString);
         $blockEntity->setModule($menuModuleEntity);
@@ -82,7 +83,7 @@ class BlockHelper
         $this->entityManager->persist($blockEntity);
 
         /** @var BlockPositionEntity $topNavPosition */
-        $topNavPosition = $this->entityManager->getRepository('ZikulaBlocksModule:BlockPositionEntity')
+        $topNavPosition = $this->entityManager->getRepository(BlockPositionEntity::class)
             ->findOneBy(['name' => 'topnav']);
         $placement = new BlockPlacementEntity();
         $placement->setBlock($blockEntity);

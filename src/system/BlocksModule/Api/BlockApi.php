@@ -94,9 +94,11 @@ class BlockApi implements BlockApiInterface
 
     public function createInstanceFromBKey(string $bKey): BlockHandlerInterface
     {
-        list(/*$moduleName*/, $blockFqCn) = explode(':', $bKey);
+        if (false !== strpos($bKey, ':')) {
+            @trigger_error('The BKey should not contain the module name with a colon as of Core-3.0.0');
+        }
 
-        return $this->blockFactory->getInstance($blockFqCn);
+        return $this->blockFactory->getInstance($bKey);
     }
 
     public function getAvailableBlockTypes(ExtensionEntity $moduleEntity = null): array
