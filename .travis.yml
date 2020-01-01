@@ -39,7 +39,7 @@ before_install:
     - php bin/console lint:twig --show-deprecations system/ lib/Zikula/
     # twig linting in themes won't work because the themes are not active bundles
 
-#    - php bin/simple-phpunit
+    - php bin/simple-phpunit
 
     # extract en translations
 #    - php -dmemory_limit=2G bin/console translation:extract en --output-format=po --output-dir=app/Resources/translations --enable-extractor=jms_i18n_routing --dir=system --dir=lib/Zikula/Bundle
