@@ -36,8 +36,8 @@ class LinkContainerCollectorTest extends TestCase
             ->getMock();
         $dispatcher
             ->method('dispatch')
-            ->with($this->anything(), $this->isInstanceOf(GenericEvent::class))
-            ->will($this->returnArgument(1));
+            ->with($this->isInstanceOf(GenericEvent::class), $this->anything())
+            ->will($this->returnArgument(0));
         $this->collector = new LinkContainerCollector($dispatcher, []);
         $this->collector->addContainer(new FooLinkContainer());
         $this->collector->addContainer(new BarLinkContainer());

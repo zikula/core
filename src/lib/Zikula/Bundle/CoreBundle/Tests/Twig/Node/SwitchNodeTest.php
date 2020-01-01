@@ -28,17 +28,17 @@ class SwitchNodeTest extends NodeTestCase
     public function testConstructor(): void
     {
         $expression = new NameExpression('foo', 0);
-        $default = null;
+        $default = new Node();
         $cases = new Node();
-        $cases->setNode(0, new Node([
+        $cases->setNode('A', new Node([
             'expression' => new ConstantExpression(0, 0),
             'body' => new TextNode('case 0', 0)
         ]));
-        $cases->setNode(1, new Node([
+        $cases->setNode('B', new Node([
             'expression' => new ConstantExpression(1, 0),
             'body' => new TextNode('case 1', 0)
         ]));
-        $cases->getNode(1)->setAttribute('break', true);
+        $cases->getNode('B')->setAttribute('break', true);
 
         $node = new SwitchNode($cases, $default, $expression, 0);
 
@@ -57,9 +57,9 @@ class SwitchNodeTest extends NodeTestCase
 
         // #1 switch with one case, without break
         $expression = new NameExpression('foo', 0);
-        $default = null;
+        $default = new Node();
         $cases = new Node();
-        $cases->setNode(0, new Node([
+        $cases->setNode('A', new Node([
             'expression' => new ConstantExpression(0, 0),
             'body' => new TextNode('case 0', 0)
         ]));
@@ -69,23 +69,24 @@ class SwitchNodeTest extends NodeTestCase
 switch ({$this->getVariableGetter('foo')}) {
     case 0:
         echo "case 0";
+    default:
 }
 EOF
         ];
 
         // #2 switch with two cases, second with break
         $expression = new NameExpression('foo', 0);
-        $default = null;
+        $default = new Node();
         $cases = new Node();
-        $cases->setNode(0, new Node([
+        $cases->setNode('A', new Node([
             'expression' => new ConstantExpression(0, 0),
             'body' => new TextNode('case 0', 0)
         ]));
-        $cases->setNode(1, new Node([
+        $cases->setNode('B', new Node([
             'expression' => new ConstantExpression(1, 0),
             'body' => new TextNode('case 1', 0)
         ]));
-        $cases->getNode(1)->setAttribute('break', true);
+        $cases->getNode('B')->setAttribute('break', true);
         $node = new SwitchNode($cases, $default, $expression, 0);
 
         $tests[] = [$node, <<<EOF
@@ -95,6 +96,7 @@ switch ({$this->getVariableGetter('foo')}) {
     case 1:
         echo "case 1";
         break;
+    default:
 }
 EOF
         ];
@@ -103,15 +105,15 @@ EOF
         $expression = new NameExpression('foo', 0);
         $default = new TextNode('default case', 0);
         $cases = new Node();
-        $cases->setNode(0, new Node([
+        $cases->setNode('A', new Node([
             'expression' => new ConstantExpression(0, 0),
             'body' => new TextNode('case 0', 0)
         ]));
-        $cases->setNode(1, new Node([
+        $cases->setNode('B', new Node([
             'expression' => new ConstantExpression(1, 0),
             'body' => new TextNode('case 1', 0)
         ]));
-        $cases->getNode(1)->setAttribute('break', true);
+        $cases->getNode('B')->setAttribute('break', true);
         $node = new SwitchNode($cases, $default, $expression, 0);
 
         $tests[] = [$node, <<<EOF
@@ -131,15 +133,15 @@ EOF
         $expression = new NameExpression('foo', 0);
         $default = new TextNode('default case', 0);
         $cases = new Node();
-        $cases->setNode(0, new Node([
+        $cases->setNode('A', new Node([
             'expression' => new ConstantExpression(0, 0),
             'body' => new Node()
         ]));
-        $cases->setNode(1, new Node([
+        $cases->setNode('B', new Node([
             'expression' => new ConstantExpression(1, 0),
             'body' => new TextNode('case 1', 0)
         ]));
-        $cases->getNode(1)->setAttribute('break', true);
+        $cases->getNode('B')->setAttribute('break', true);
         $node = new SwitchNode($cases, $default, $expression, 0);
 
         $tests[] = [$node, <<<EOF

@@ -147,7 +147,7 @@ class SortableColumns
         $this->columnCollection->remove($name);
     }
 
-    public function getColumn(string $name): ?Column
+    public function getColumn(?string $name): ?Column
     {
         return $this->columnCollection->get($name);
     }

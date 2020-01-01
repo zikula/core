@@ -22,7 +22,7 @@ class IntegrationTest extends IntegrationTestCase
     public function getExtensions(): array
     {
         return [
-            new CoreExtension($this->getMockBuilder(TranslatorInterface::class))
+            new CoreExtension($this->getMockBuilder(TranslatorInterface::class)->getMock())
         ];
     }
 
