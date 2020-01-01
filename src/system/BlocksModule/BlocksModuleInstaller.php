@@ -174,17 +174,14 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
             case '3.9.8':
-                echo 'upgrading blocks';
-                $blocks = $blockRepository->findAll();
+                $blocks = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
                 foreach ($blocks as $block) {
-                    $bKey = $block->getBkey();
+                    $bKey = $block['bkey'];
                     if (mb_strpos($bKey, ':')) {
                         [/*$moduleName*/, $bKey] = explode(':', $bKey);
                     }
-                    $block->setBkey(trim($bKey, '\\'));
+                    $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET bKey=? WHERE bid=?', [trim($bKey, '\\'), $block['bid']]);
                 }
-                $this->entityManager->flush();
-                echo 'finished upgrading blocks';
             case '3.9.9':
             // future upgrade routines
         }
