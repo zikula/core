@@ -99,7 +99,7 @@ class ParameterBagTest extends TestCase
      */
     public function testExpectedFailureToRecastToNamespace(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\TypeError::class);
         $this->bag->set('foo.bang', 6);
     }
 

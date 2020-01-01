@@ -57,7 +57,7 @@ class PasswordApiTest extends TestCase
      */
     public function testGetHashedPasswordOnEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $hashedPass = $this->api->getHashedPassword('12345678', '');
     }
 
@@ -66,7 +66,7 @@ class PasswordApiTest extends TestCase
      */
     public function testGetHashedPasswordOnNull(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $hashedPass = $this->api->getHashedPassword('12345678', null);
     }
 
@@ -75,7 +75,7 @@ class PasswordApiTest extends TestCase
      */
     public function testGetHashedPasswordOnString(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 'a');
     }
 
@@ -84,7 +84,7 @@ class PasswordApiTest extends TestCase
      */
     public function testGetHashedPasswordOnUndefined(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\ErrorException::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 
@@ -122,7 +122,7 @@ class PasswordApiTest extends TestCase
      */
     public function testPasswordsMatchExceptionOnNull(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\TypeError::class);
         $hashedPass = $this->api->getHashedPassword('12345678');
         $this->api->passwordsMatch(null, $hashedPass);
     }

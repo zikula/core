@@ -24,7 +24,7 @@ class LocaleApiTest extends TestCase
     public function testGetSupportedLocales(): void
     {
         $api = $this->getApi();
-        $this->assertEquals(['en', 'de', 'ru'], $api->getSupportedLocales());
+        $this->assertEquals(['en', 'ru', 'de'], $api->getSupportedLocales());
     }
 
     public function testGetSupportedLocaleNames(): void
