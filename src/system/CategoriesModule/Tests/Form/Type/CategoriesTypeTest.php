@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
+use Doctrine\Persistence\AbstractManagerRegistry;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Gedmo\Tree\TreeListener;
@@ -96,7 +97,7 @@ class CategoriesTypeTest extends TypeTestCase
     protected function getExtensions(): array
     {
         /** @var CategoryRegistryRepositoryInterface $repository */
-        $repository = $this->em->getRepository(CategoryRegistryEntity::class);
+        $repository = $this->emRegistry->getRepository(CategoryRegistryEntity::class);
 
         $request = new Request([], [], [], [], [], [], json_encode([
             'foo' => 'bar'
@@ -426,7 +427,7 @@ class CategoriesTypeTest extends TypeTestCase
         $registry->setCr_date($now);
         $registry->setLu_date($now);
         /** @var CategoryEntity $rootCategory */
-        $rootCategory = $this->em->getRepository(CategoryEntity::class)->find(1);
+        $rootCategory = $this->emRegistry->getRepository(CategoryEntity::class)->find(1);
         $registry->setCategory($rootCategory);
         $this->em->persist($registry);
         $this->em->flush();
@@ -435,7 +436,7 @@ class CategoriesTypeTest extends TypeTestCase
     protected function generateCategories(DateTime $now): void
     {
         /** @var CategoryRepository $repository */
-        $repository = $this->em->getRepository(CategoryEntity::class);
+        $repository = $this->emRegistry->getRepository(CategoryEntity::class);
 
         // root
         $root = new CategoryEntity();
