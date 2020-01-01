@@ -2,6 +2,11 @@
 
 ## Modules
 
+### Interfaces
+
+In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said
+interfaces, etc. Extensions must update their implementation of any core/system interface to adhere to the new signature.
+
 ### Service registration
 
 Please use `autowire` and `autoconfigure` as this will magically solve most issues.

@@ -8,6 +8,7 @@
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` because bundle inheritance is not supported in Symfony 4 anymore (#3377).
     - Interface extensions and amendments
+        - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
         - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
         - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
         - `Zikula\Bundle\HookBundle\HookProviderInterface` requires a new method `getAreaName()` to be implemented.
@@ -17,6 +18,7 @@
         - `Zikula\Common\Content\ContentTypeInterface` requires a new method `getBundleName()` to be implemented.
         - `Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface` requires a new method `deleteGroupPermissions` to be implemented.
         - `Zikula\ŞearchModule\SearchableInterface` requires a new method `getBundleName()` to be implemented.
+        - `Zikula\ŞearchModule\SearchableInterface` has changed signature of `getResults()` method.        
         - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
         - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.

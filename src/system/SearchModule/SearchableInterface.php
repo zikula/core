@@ -27,7 +27,7 @@ interface SearchableInterface
      * Get the search results.
      * Must return an array of SearchResultEntity[].
      */
-    public function getResults(array $words, string $searchType = 'AND', array $modVars = []): array;
+    public function getResults(array $words, string $searchType = 'AND', ?array $modVars = []): array;
 
     /**
      * Return an array of errors generated during the search action

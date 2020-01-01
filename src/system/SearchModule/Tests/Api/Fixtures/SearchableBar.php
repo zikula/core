@@ -26,7 +26,7 @@ class SearchableBar implements SearchableInterface
         // TODO: Implement amendForm() method.
     }
 
-    public function getResults(array $words, string $searchType = 'AND', array $modVars = []): array
+    public function getResults(array $words, string $searchType = 'AND', ?array $modVars = []): array
     {
         $results = [];
         if (in_array('top', $words, true)) {
