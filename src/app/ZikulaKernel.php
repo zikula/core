@@ -34,8 +34,6 @@ class ZikulaKernel extends Kernel
             Zikula\Bundle\CoreInstallerBundle\ZikulaCoreInstallerBundle::class,
             Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class,
             Zikula\Bundle\HookBundle\ZikulaHookBundle::class,
-            Zikula\Bundle\JQueryBundle\ZikulaJQueryBundle::class,
-            Zikula\Bundle\JQueryUIBundle\ZikulaJQueryUIBundle::class,
             JMS\I18nRoutingBundle\JMSI18nRoutingBundle::class,
             JMS\TranslationBundle\JMSTranslationBundle::class,
             FOS\JsRoutingBundle\FOSJsRoutingBundle::class,

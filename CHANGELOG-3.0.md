@@ -37,7 +37,10 @@
         - Removed symfony/polyfill-php70
         - Removed symfony/polyfill-util
         - Removed twig/extensions (use new Twig Extra extensions instead)
-        - Removed zikula/fontawesome-bundle
+        - Removed zikula/bootstrap-bundle (in favour of direct usage of components/bootstrap)
+        - Removed zikula/fontawesome-bundle (in favour of direct usage of components/font-awesome)
+        - Removed zikula/jquery-bundle (in favour of direct usage of components/jquery)
+        - Removed zikula/jquery-ui-bundle (in favour of direct usage of components/jqueryui)
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
     - Removed the `polyfill` Twig tag (#3925).
