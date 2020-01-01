@@ -94,7 +94,7 @@ class BlockApi implements BlockApiInterface
 
     public function createInstanceFromBKey(string $bKey): BlockHandlerInterface
     {
-        if (false !== strpos($bKey, ':')) {
+        if (false !== mb_strpos($bKey, ':')) {
             @trigger_error('The BKey should not contain the module name with a colon as of Core-3.0.0');
         }
 

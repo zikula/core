@@ -19,7 +19,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\Persistence\AbstractManagerRegistry;
 use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Gedmo\Tree\TreeListener;

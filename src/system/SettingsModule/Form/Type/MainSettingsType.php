@@ -71,7 +71,7 @@ class MainSettingsType extends AbstractType
             },
             function($submittedPageTitle) {
                 $submittedPageTitle = str_replace(
-                    [$this->__('%pagetitle%'), $this->__('%sitename%'), $this->__('%modulename%')],//
+                    [$this->__('%pagetitle%'), $this->__('%sitename%'), $this->__('%modulename%')],
                     ['%pagetitle%', '%sitename%', '%modulename%'],
                     $submittedPageTitle
                 );
