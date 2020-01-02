@@ -1,30 +1,30 @@
-{% extends "bootstrap_3_horizontal_layout.html.twig" %}
+{% extends "bootstrap_4_horizontal_layout.html.twig" %}
 
-{% macro helpBlock(param = null) %}
+{% macro helpBlock(param = null, html = false) %}
     {% if param|default %}
         {% if param is iterable %}
             {% for helpText in param %}
-                <em class="help-block small">{{ helpText }}</em>
+                <small class="form-text text-muted">{{ html ? helpText|raw : helpText }}</small>
             {% endfor %}
         {% else %}
-            <em class="help-block small">{{ param }}</em>
+            <small class="form-text text-muted">{{ html ? param|raw : param }}</small>
         {% endif %}
     {% endif %}
 {% endmacro %}
 {% macro alertBlock(param = null) %}
     {% if param|default and param is iterable %}
         {% for alertText, type in param %}
-            <div class="alert alert-{{ type }}">{{ alertText }}</div>
+            <div class="alert alert-{{ type }}" role="alert">{{ alertText }}</div>
         {% endfor %}
     {% endif %}
 {% endmacro %}
 
 {% block form_label_class -%}
-col-sm-3
+col-md-3
 {%- endblock form_label_class %}
 
 {% block form_group_class -%}
-col-sm-9
+col-md-9
 {%- endblock form_group_class %}
 
 {% block checkbox_widget -%}
@@ -56,8 +56,8 @@ col-sm-9
 {% block submit_row -%}
 {% apply spaceless %}
     <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9 {{ block('form_label_class') }}"></div>
-        <div class="col-sm-offset-3 {{ block('form_group_class') }}">
+        <div class="{{ block('form_label_class') }}"></div>
+        <div class="{{ block('form_group_class') }}">
             {{ form_widget(form) }}
         </div>
     </div>
@@ -79,23 +79,9 @@ col-sm-9
 
 {# add help text and alerts #}
 {% block form_help -%}
-    {#%- if help is not empty -%}
-        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block')|trim}) -%}
-        <span id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
-            {%- if translation_domain is same as(false) -%}
-                {{- help -}}
-            {%- else -%}
-                {{- help|trans({}, translation_domain) -}}
-            {%- endif -%}
-        </span>
-    {%- endif -%#}
-    {{ _self.helpBlock(help) }}
+    {{ _self.helpBlock(help, help_html|default(false)) }}
     {{ _self.alertBlock(alert) }}
 {%- endblock form_help %}
-
-{% block form_errors -%}
-    {{ parent()|replace({'<span class="glyphicon glyphicon-exclamation-sign"></span>': '<i class="fa fa-warning"></i>'})|raw }}
-{%- endblock form_errors %}
 
 {# user live search input widget #}
 {% block zikulausersmodule_userlivesearch_widget %}
@@ -105,17 +91,17 @@ col-sm-9
         <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
         <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{{ __('Enter a part of the user name to search') }}" class="user-selector" />
     </div>
-    <span id="{{ id }}Avatar" class="help-block avatar">
+    <small id="{{ id }}Avatar" class="form-text text-muted avatar">
         {% if value and not inline_usage %}
             {{ userAvatar(value, { rating: 'g' }) }}
         {% endif %}
-    </span>
+    </small>
     {% if not required %}
-        <span class="help-block"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{{ __('Reset to empty value') }}</a></span>
+        <small class="form-text text-muted"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{{ __('Reset to empty value') }}</a></small>
     {% endif %}
     {% if value and not inline_usage %}
         {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_ADMIN') %}
-            <span class="help-block"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{{ __('Switch to users administration') }}">{{ __('Manage user') }}</a></span>
+            <small class="form-text text-muted"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{{ __('Switch to users administration') }}">{{ __('Manage user') }}</a></small>
         {% endif %}
     {% endif %}
     {# load required assets: jQuery UI + custom search code #}

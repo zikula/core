@@ -9,23 +9,23 @@ Zikula provides two form themes that can be used together or separately
 
 ```twig
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 ```
 
-The `@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig` theme automatically 'bootstrapifies' the
-form so all form elements use the bootstrap css stylesheet. This is an extension of Symfony's own bootstrap theme.
+The `@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig` theme automatically 'bootstrapifies' the
+form so all elements use the Bootstrap 4 form styles. This is an extension of Symfony's own bootstrap theme.
 Additional customizations are added to format the form in a standard Zikula 'admin' style form.
 
 ## Input additions
 
-When using `@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig` you can specify 'help' text, 
+When using `@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig` you can specify 'help' text, 
 'alert' text and 'input_group' parameters for each form element. 
 
-- Help texts are rendered as bootstrap `help-block small` class (see [bootstrap forms](http://getbootstrap.com/css/#forms)).
-- Alert texts are rendered as a [bootstrap alert](http://getbootstrap.com/components/#alerts).
-- Input groups are rendered as [bootstrap input-group](http://getbootstrap.com/components/#input-groups)
+- Help texts are rendered as bootstrap `form-text text-muted` class (see [Bootstrap forms](https://getbootstrap.com/docs/4.4/components/forms/)).
+- Alert texts are rendered as a [Bootstrap alert](https://getbootstrap.com/docs/4.4/components/alerts/).
+- Input groups are rendered as [Bootstrap input-group](https://getbootstrap.com/docs/4.4/components/input-group/)
 
 Help text can be a simple text value. Input groups must be an array with the position as key and the content as value.
 
@@ -41,6 +41,15 @@ It is also possible to have multiple help text elements using an array:
 ```php
 ->add('foo', TextType::class, [
     'help' => ['Foo help text.', 'Bar another text.']
+])
+```
+
+You can use HTML inside help messages if you enable the `help_html` option:
+
+```php
+->add('foo', TextType::class, [
+    'help' => '<a target="_blank" href="...">Look up your ZIP code.</a>',
+    'help_html' => true
 ])
 ```
 
