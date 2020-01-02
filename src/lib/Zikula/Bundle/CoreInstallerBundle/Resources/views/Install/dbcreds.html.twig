@@ -51,7 +51,7 @@
             <div class="col-md-9">
                 {{ form_errors(form.database_name) }}
                 {{ form_widget(form.database_name) }}
-                <p class="help-block"><span class="text-danger">{{ __('Ensure the database is in UTF-8 format.') }}</span></p>
+                <small class="form-text text-danger">{{ __('Ensure the database is in UTF-8 format.') }}</small>
             </div>
         </div>
         <div class="form-group row">
