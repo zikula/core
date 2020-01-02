@@ -3,7 +3,7 @@
 ## 3.0.0 (unreleased)
 
  - BC Breaks:
-    - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).
+    - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` because bundle inheritance is not supported in Symfony 4 anymore (#3377).
@@ -29,6 +29,7 @@
         - Removed afarkas/webshim (#3925)
         - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
         - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
+        - Removed oyejorge/less.php
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
         - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
@@ -52,6 +53,7 @@
     - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::addAutoloaders visibility set to private
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper renamed to Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
+    - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.

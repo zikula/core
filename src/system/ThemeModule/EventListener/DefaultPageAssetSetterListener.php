@@ -66,9 +66,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         string $env,
         bool $installed,
         string $bootstrapJavascriptPath,
-        string $bootstrapFontAwesomeStylesheetPath,
-        string $fontAwesomePath,
-        $bootstrapStylesheetPath // cannot cast to string because set with expression language
+        string $bootstrapStylesheetPath,
+        string $fontAwesomePath
     ) {
         $this->jsAssetBag = $jsAssetBag;
         $this->cssAssetBag = $cssAssetBag;
@@ -79,9 +78,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             'env' => $env,
             'installed' => $installed,
             'zikula.javascript.bootstrap.min.path' => $bootstrapJavascriptPath,
-            'zikula.stylesheet.bootstrap-font-awesome.path' => $bootstrapFontAwesomeStylesheetPath,
-            'zikula.stylesheet.fontawesome.min.path' => $fontAwesomePath,
-            'zikula.stylesheet.bootstrap.min.path' => $bootstrapStylesheetPath
+            'zikula.stylesheet.bootstrap.min.path' => $bootstrapStylesheetPath,
+            'zikula.stylesheet.fontawesome.min.path' => $fontAwesomePath
         ];
     }
 
@@ -160,22 +158,17 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
 
     private function addBootstrapCss(): void
     {
-        $overrideBootstrapPath = '';
+        $bootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
         if ($this->params['installed']) {
             // Check for override of bootstrap css path
-            if (!empty($this->params['zikula.stylesheet.bootstrap.min.path'])) {
-                $overrideBootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
-            } elseif (null !== $this->themeEngine->getTheme() && !empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
-                $overrideBootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
+            if (null !== $this->themeEngine->getTheme() && !empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
+                $bootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
             }
         }
-        if (empty($overrideBootstrapPath)) {
-            $this->cssAssetBag->add([$this->assetHelper->resolve($this->params['zikula.stylesheet.bootstrap-font-awesome.path']) => 0]);
-        } else {
-            $this->cssAssetBag->add([
-                $this->assetHelper->resolve($overrideBootstrapPath) => 0, // throws exception if asset not found
-                $this->assetHelper->resolve($this->params['zikula.stylesheet.fontawesome.min.path']) => 1,
-            ]);
-        }
+
+        $this->cssAssetBag->add([
+            $this->assetHelper->resolve($bootstrapPath) => 0,
+            $this->assetHelper->resolve($this->params['zikula.stylesheet.fontawesome.min.path']) => 1,
+        ]);
     }
 }

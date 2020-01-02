@@ -119,9 +119,8 @@ services:
           $cssAssetBag: '@zikula_core.common.theme.assets_css'
           $env: '%env%'
           $bootstrapJavascriptPath: '%zikula.javascript.bootstrap.min.path%'
-          $bootstrapFontAwesomeStylesheetPath: '%zikula.stylesheet.bootstrap-font-awesome.path%'
+          $bootstrapStylesheetPath: "%zikula.stylesheet.bootstrap.min.path%"
           $fontAwesomePath: '%zikula.stylesheet.fontawesome.min.path%'
-          $bootstrapStylesheetPath: "@=container.hasParameter('zikula.stylesheet.bootstrap.min.path') ? parameter('zikula.stylesheet.bootstrap.min.path') : ''"
         tags:
             - { name: monolog.logger, channel: request }
 
