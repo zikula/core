@@ -51,42 +51,38 @@
         <div class="col-md-4">
             <h2>{{ __('Workflow settings') }}</h2>
             <div id="basicProperties" class="form">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="workflowName">{{ __('Name') }}</label>
-                            <input type="text" id="workflowName" value="{{ name }}" class="form-control form-control-sm" />
-                        </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="workflowName" class="col-form-label">{{ __('Name') }}</label>
+                        <input type="text" id="workflowName" value="{{ name }}" class="form-control form-control-sm" />
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="workflowType">{{ __('Type') }}</label>
-                            <select id="workflowType" class="form-control form-control-sm">
-                                <option value="workflow"{{ type == 'workflow' ? ' selected="selected"' : '' }}>{{ __('Workflow') }}</option>
-                                <option value="state_machine"{{ type == 'state_machine' ? ' selected="selected"' : '' }}>{{ __('State Machine') }}</option>
-                            </select>
-                        </div>
+                    <div class="form-group col-md-6">
+                        <label for="workflowType" class="col-form-label">{{ __('Type') }}</label>
+                        <select id="workflowType" class="form-control form-control-sm">
+                            <option value="workflow"{{ type == 'workflow' ? ' selected="selected"' : '' }}>{{ __('Workflow') }}</option>
+                            <option value="state_machine"{{ type == 'state_machine' ? ' selected="selected"' : '' }}>{{ __('State Machine') }}</option>
+                        </select>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 d-none">
-                        <div class="form-group">
-                            <label for="markingStoreType">{{ __('Marking store') }}</label>
-                            <select id="markingStoreType" class="form-control form-control-sm">
-                                <option value="method"{{ markingStoreType == 'method' ? ' selected="selected"' : '' }}>{{ __('Method') }}</option>
-                            </select>
-                        </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6 d-none">
+                        <label for="markingStoreType" class="col-form-label">{{ __('Marking store') }}</label>
+                        <select id="markingStoreType" class="form-control form-control-sm">
+                            <option value="method"{{ markingStoreType == 'method' ? ' selected="selected"' : '' }}>{{ __('Method') }}</option>
+                        </select>
                     </div>
-                    <div class="col-md-6">
+                    <div class="form-group col-md-6">
                         <div class="form-group">
-                            <label for="markingStoreField">{{ __('State field') }}<span class="d-none"> (<span id="markingStoreFieldType"></span>)</span></label>
+                            <label for="markingStoreField" class="col-form-label">{{ __('State field') }}<span class="d-none"> (<span id="markingStoreFieldType"></span>)</span></label>
                             <input type="text" id="markingStoreField" value="{{ markingStoreField|default('state') }}" class="form-control form-control-sm" />
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="supportedEntities">{{ __('Supported entities (one per line)') }}</label><br />
-                    <textarea id="supportedEntities" class="form-control form-control-sm">{{ supportedEntities|join("\n") }}</textarea>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label for="supportedEntities" class="col-form-label">{{ __('Supported entities (one per line)') }}</label><br />
+                        <textarea id="supportedEntities" class="form-control form-control-sm">{{ supportedEntities|join("\n") }}</textarea>
+                    </div>
                 </div>
             </div>
             <h2>Output</h2>
