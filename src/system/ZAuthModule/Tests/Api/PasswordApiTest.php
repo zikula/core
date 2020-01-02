@@ -84,7 +84,7 @@ class PasswordApiTest extends TestCase
      */
     public function testGetHashedPasswordOnUndefined(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\ErrorException::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 
