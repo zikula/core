@@ -191,6 +191,15 @@ class PermissionApiTest extends TestCase
         $api->accessLevelNames(99);
     }
 
+    public function testArrayKeyUndefined(): void
+    {
+        $a = [1 => 'a', 2 => 'b', 3 => 'c'];
+        $this->assertEquals('a', $a[1]);
+        $this->assertEquals('c', $a[3]);
+        $this->expectException(\ErrorException::class);
+        $b = $a[99];
+    }
+
     public function permProvider(): array
     {
         return [
