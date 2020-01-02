@@ -1,7 +1,6 @@
 {{ pageAddAsset('javascript', asset('mmenu/js/mmenu.js')) }}
 {{ pageAddAsset('stylesheet', asset('mmenu/css/mmenu.css')) }}
 {{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modal.Fix.js')) }}
 
 {% macro draw(links, caller, module) %}
     {% for link in links|filter(l => l.url|default) %}
