@@ -4,17 +4,16 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/WorkflowEditor.js'), 99) }}
 {{ pageSetVar('title', __('Workflow editor')) }}
 {{ showflashes() }}
-
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-md-8">
             <div class="jtk-main">
                 <h2>{{ __('Workflow editor') }}</h2>
-                <div id="tools" class="btn-group-sm">
-                    <button type="button" class="btn btn-default" id="decreaseZoomLevel" title="{{ __('Decrease zoom level') }}"><i class="fa fa-search-minus"></i></button>
-                    <button type="button" class="btn btn-default" id="resetZoomLevel" title="{{ __('Reset zoom level') }}"><i class="fa fa-search"></i></button>
-                    <button type="button" class="btn btn-default" id="increaseZoomLevel" title="{{ __('Increase zoom level') }}"><i class="fa fa-search-plus"></i></button>
-                    <button type="button" class="btn btn-default" id="addNode" title="{{ __('Add node') }}"><i class="fa fa-plus"></i> {{ __('Add node') }}</button>
+                <div id="tools" class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-secondary" id="decreaseZoomLevel" title="{{ __('Decrease zoom level') }}"><i class="fa fa-search-minus"></i></button>
+                    <button type="button" class="btn btn-secondary" id="resetZoomLevel" title="{{ __('Reset zoom level') }}"><i class="fa fa-search"></i></button>
+                    <button type="button" class="btn btn-secondary" id="increaseZoomLevel" title="{{ __('Increase zoom level') }}"><i class="fa fa-search-plus"></i></button>
+                    <button type="button" class="btn btn-secondary" id="addNode" title="{{ __('Add node') }}"><i class="fa fa-plus"></i> {{ __('Add node') }}</button>
                 </div>
                 <div class="jtk-canvas canvas-wide jtk-surface jtk-surface-nopan" id="canvas">
                     {% for place in workflow.getPlaces() %}
@@ -28,7 +27,7 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <ul id="connectionList" class="hidden">
+                <ul id="connectionList" class="d-none">
                     {% for transition in workflow.getTransitions() %}
                         {% for from in transition.getFroms() %}
                             <li data-from="state{{ from }}" data-to="transition{{ transition.getName() }}"></li>
@@ -49,20 +48,20 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <h2>{{ __('Workflow settings') }}</h2>
             <div id="basicProperties" class="form">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="workflowName">{{ __('Name') }}</label>
-                            <input type="text" id="workflowName" value="{{ name }}" class="form-control input-sm" />
+                            <input type="text" id="workflowName" value="{{ name }}" class="form-control form-control-sm" />
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="workflowType">{{ __('Type') }}</label>
-                            <select id="workflowType" class="form-control input-sm">
+                            <select id="workflowType" class="form-control form-control-sm">
                                 <option value="workflow"{{ type == 'workflow' ? ' selected="selected"' : '' }}>{{ __('Workflow') }}</option>
                                 <option value="state_machine"{{ type == 'state_machine' ? ' selected="selected"' : '' }}>{{ __('State Machine') }}</option>
                             </select>
@@ -70,30 +69,30 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6 hidden">
+                    <div class="col-md-6 d-none">
                         <div class="form-group">
                             <label for="markingStoreType">{{ __('Marking store') }}</label>
-                            <select id="markingStoreType" class="form-control input-sm">
+                            <select id="markingStoreType" class="form-control form-control-sm">
                                 <option value="method"{{ markingStoreType == 'method' ? ' selected="selected"' : '' }}>{{ __('Method') }}</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <label for="markingStoreField">{{ __('State field') }}<span class="hidden"> (<span id="markingStoreFieldType"></span>)</span></label>
-                            <input type="text" id="markingStoreField" value="{{ markingStoreField|default('state') }}" class="form-control input-sm" />
+                            <label for="markingStoreField">{{ __('State field') }}<span class="d-none"> (<span id="markingStoreFieldType"></span>)</span></label>
+                            <input type="text" id="markingStoreField" value="{{ markingStoreField|default('state') }}" class="form-control form-control-sm" />
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="supportedEntities">{{ __('Supported entities (one per line)') }}</label><br />
-                    <textarea id="supportedEntities" class="form-control input-sm">{{ supportedEntities|join("\n") }}</textarea>
+                    <textarea id="supportedEntities" class="form-control form-control-sm">{{ supportedEntities|join("\n") }}</textarea>
                 </div>
             </div>
             <h2>Output</h2>
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#outputYaml" role="tab" data-toggle="tab">{{ __('YAML') }}</a></li>
-                <li role="presentation"><a href="#outputXml" role="tab" data-toggle="tab">{{ __('XML') }}</a></li>
+                <li class="nav-item"><a href="#outputYaml" role="tab" data-toggle="tab" class="nav-link active">{{ __('YAML') }}</a></li>
+                <li class="nav-item"><a href="#outputXml" role="tab" data-toggle="tab" class="nav-link">{{ __('XML') }}</a></li>
             </ul>
             <div id="outputTabPanels" class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="outputYaml">
@@ -112,20 +111,20 @@
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="nodeModalLabel">{{ __('Edit node') }}</h4>
+                <h5 class="modal-title" id="nodeModalLabel">{{ __('Edit node') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div id="nodeTypeSelection" class="form-group">
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="nodeType" id="nodeTypeState" value="state" required="required" checked="checked"> {{ __('State') }}
-                        </label>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" name="nodeType" id="nodeTypeState" value="state" required="required" checked="checked" class="custom-control-input">
+                        <label class="custom-control-label" for="nodeTypeState">{{ __('State') }}</label>
                     </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="nodeType" id="nodeTypeTransition" value="transition" required="required"> {{ __('Transition') }}
-                        </label>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" name="nodeType" id="nodeTypeTransition" value="transition" required="required" class="custom-control-input">
+                        <label class="custom-control-label" for="nodeTypeTransition">{{ __('Transition') }}</label>
                     </div>
                 </div>
                 <div class="form-group">

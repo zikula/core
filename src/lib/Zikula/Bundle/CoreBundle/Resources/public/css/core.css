@@ -20,28 +20,9 @@ p + iframe {
 }
 
 /******************************************************************************
-* Generic styles
-******************************************************************************/
-
-.invisible { visibility: hidden !important; }
-.visible { visibility: inherit !important; }
-.top { vertical-align: top !important; }
-.middle { vertical-align: middle !important; }
-.bottom { vertical-align: bottom !important; }
-.nowrap { white-space: nowrap !important; }
-.italic { font-style: italic !important; }
-.bold { font-weight: bold !important; }
-.underline { text-decoration: underline !important; }
-.line-through { text-decoration: line-through !important; }
-.normal { font-weight: normal !important; font-style: normal !important; }
-.gap { margin: 1em 0 !important; padding: 1em 0 !important; }
-.sub { color: #777; font-size: 0.9em;}
-.pointer { cursor: pointer !important;}
-
-/******************************************************************************
 * Module links navbar bootstrap.css overrides
 ******************************************************************************/
-
+/* TODO remove
 .navbar-modulelinks {
     min-height: inherit;
 }
@@ -94,11 +75,12 @@ ul.navbar > li.active > a {
 .navbar-modulelinks-main {
     z-index: 1001;
 }
+*/
 
 /******************************************************************************
 * Form
 ******************************************************************************/
-
+/* TODO remove
 .form-horizontal fieldset,
 .form-inline fieldset {
     border: 1px #ddd solid;
@@ -108,10 +90,10 @@ ul.navbar > li.active > a {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background: #fafafa; /*non-CSS3 browsers*/
-    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
-    background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko*/
-    background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
+    background: #fafafa; /*non-CSS3 browsers* /
+    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit* /
+    background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko* /
+    background: linear-gradient(#fafafa, #f2f2f2); /*CSS3* /
 }
 
 .form-horizontal legend,
@@ -127,7 +109,7 @@ ul.navbar > li.active > a {
 }
 
 #admintabs-container .nav-tabs > li > a {
-    background-color: #dddddd;
+    background-color: #ddd;
 }
 
 #admintabs-container .nav-tabs > li {
@@ -143,6 +125,7 @@ ul.navbar > li.active > a {
     vertical-align: middle;
     text-align: left;
 }
+*/
 
 /******************************************************************************
 * Action buttons in tables
@@ -236,7 +219,7 @@ td.actions a:hover {
     content: "\00a0";
 }
 
-
+/* TODO remove
 input:invalid, select:invalid, textarea:invalid, .form-error {
     background: #ffe1da;
     border: 1px solid #f34f4f;
@@ -246,6 +229,7 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
     content: "\002A";
     color: red;
 }
+*/
 
 /**
  * bootstrap tab container mods

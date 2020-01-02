@@ -30,7 +30,7 @@
 
 #hookProviderAreas .parea_wrapper,
 #hookSubscriber .sareas_category .sarea_wrapper {
-    border: 1px solid #CCCCCC;
+    border: 1px solid #ccc;
 }
 
 #hookSubscriber .sarea_wrapper h4 {
@@ -43,7 +43,7 @@
 
 #hookSubscriber .sarea_wrapper h4:hover {
     background-color: #ccc;
-    color: #666666;
+    color: #666;
 }
 
 #hookSubscriber .sarea_wrapper h4.active {
@@ -97,7 +97,7 @@
 
 #hookProviderAreas h4:hover {
     background-color: #ccc;
-    color: #666666;
+    color: #666;
 }
 
 #hookProviderAreas .panel-content {
@@ -106,7 +106,7 @@
 }
 
 #hookSubscriber .pareas_category ol li {
-    border: 1px solid #DDDDDD;
+    border: 1px solid #DDD;
     line-height: 1.4em;
 }
 

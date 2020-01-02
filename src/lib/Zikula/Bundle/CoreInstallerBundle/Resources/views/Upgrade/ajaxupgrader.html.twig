@@ -12,7 +12,6 @@
 {% block title __('Zikula is upgrading!') %}
 
 {% block content %}
-
 <div>
     <div class="progress">
         <div id="progress-bar" class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
@@ -20,28 +19,31 @@
         </div>
     </div>
 
-    <div class="text-center"><a href="#upgrade-fieldset" id="beginupgrade" class="btn btn-lg btn-success">{{ __('Begin Upgrader') }}<br />{{ __('be patient!') }} <i class="fa fa-clock-o"></i></a></div>
+    <div class="text-center">
+        <a href="#upgrade-fieldset" id="beginUpgrade" class="btn btn-lg btn-success">{{ __('Begin Upgrader') }}<br />{{ __('be patient!') }} <i class="fa fa-clock"></i></a>
+    </div>
 
     <fieldset id="upgrade-fieldset">
-        <legend>{{  __("Upgrading Modules and Helpers") }}</legend>
+        <legend>{{  __('Upgrading Modules and Helpers') }}</legend>
 
         <div class="row">
-            <ul id="ajaxlist" class="fa-ul text-left">
+            <ul id="ajaxList" class="fa-ul text-left">
                 {% for stage in stages %}
-                <li id="{{ stage.name }}" class="text-muted col-xs-12 col-sm-5 col-sm-offset-1 pull-left">
-                    <i class="fa-li fa fa-circle-o"></i>
+                <li id="{{ stage.name }}" class="text-muted col-sm-12 col-md-5 offset-md-1 float-left">
+                    <span class="fa-li"><i fa fa-circle"></i></span>
                     <span class="pre">{{ stage.pre }}</span>
-                    <span class="during" style="display: none;">{{ stage.during }} </span>
-                    <span class="success" style="display: none;">{{ stage.success }}</span>
-                    <span class="fail" style="display: none;">{{ stage.fail }}</span>
+                    <span class="during d-none">{{ stage.during }} </span>
+                    <span class="success d-none">{{ stage.success }}</span>
+                    <span class="fail d-none">{{ stage.fail }}</span>
                 </li>
                 {% endfor %}
             </ul>
         </div>
-
     </fieldset>
 
-    <div class="text-center"><a href="{{ url('upgrade', { 'stage': 'complete' }) }}" id="continuebutton" class="btn btn-lg btn-success" style="display:none;">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a></div>
+    <div class="text-center">
+        <a id="continueButton" href="{{ url('upgrade', {'stage': 'complete'}) }}" class="btn btn-lg btn-success d-none">{{ __('Finish') }} <i class="fa fa-angle-double-right"></i></a>
+    </div>
 </div>
 {# create a javascript array of all the stages #}
 <script>

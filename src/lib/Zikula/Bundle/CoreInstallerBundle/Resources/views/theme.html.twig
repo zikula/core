@@ -13,7 +13,6 @@
 <div class="container">
     <div id="content">
         {{ include(headertemplate) }}
-
         <div id="maincontent" class="text-left">
             {{ showflashes() }}
 
@@ -23,14 +22,24 @@
     <div id="footer" class="footer">
         <ul>
             <li><strong>{{ __("Useful resources") }}:</strong></li>
-            <li><a href="{{ path('doc', {'name': 'INSTALL-1.x.md'}) }}" onclick="window.open(this.href);return false;">{{ __("Installation guide") }}</a></li>
-            <li><a href="https://github.com/zikula/core/wiki" onclick="window.open(this.href);return false;">{{ __("Zikula documentation") }}</a></li>
-            <li><a href="https://zikula.slack.com/" onclick="window.open(this.href);return false;">{{ __("Support @ Slack") }}</a></li>
+            <li><a href="{{ path('doc', {'name': 'INSTALL-2.0.md'}) }}">{{ __('Installation guide') }}</a></li>
+            <li><a href="https://github.com/zikula/core/wiki">{{ __('Zikula documentation') }}</a></li>
+            <li><a href="https://zikula.slack.com/">{{ __('Support @ Slack') }}</a></li>
             {# custom links for each action go here #}
             {% if currentstage == 'requirements' %}
-            <li class="highlight"><a href="http://www.wikipedia.org/wiki/File_system_permissions" onclick="window.open(this.href);return false;">{{ __("File system permissions") }}</a></li>
+            <li class="highlight"><a href="https://en.wikipedia.org/wiki/File_system_permissions>{{ __('File system permissions') }}</a></li>
             {% endif %}
         </ul>
     </div>
 </div>
+<script>
+    jQuery(document).ready(function( $ ) {
+        $('#footer a').click(function (event) {
+            event.preventDefault();
+            window.open($(this).attr('href'));
+
+            return false;
+        });
+    });
+</script>
 {% endblock %}

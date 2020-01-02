@@ -1,12 +1,12 @@
-#begininstall,
-#continueinstall,
-#beginupgrade,
-#continueupgrade {
+#beginInstall,
+#continueInstall,
+#beginUpgrade,
+#continueUpgrade {
     margin: 1em;
 }
-#ajaxlist {
+#ajaxList {
     font-size: 1.2em;
 }
-#ajaxlist li {
+#ajaxList li {
     padding-bottom: .3em;
 }

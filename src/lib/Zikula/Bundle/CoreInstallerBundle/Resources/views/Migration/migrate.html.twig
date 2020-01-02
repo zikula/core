@@ -21,17 +21,17 @@
             </div>
         </div>
         <div class="alert alert-info">{{ __f('There are %f users to try to migrate.', {'%f': count}) }}</div>
-        <div class="text-center"><i id='spinner' class="fa fa-cog fa-2x fa-spin fa-fw" style="display: none"></i> <button id="migrate" class="btn btn-lg btn-success">{{ __('Begin migration') }}</button></div>
+        <div class="text-center"><i id="spinner" class="fa fa-cog fa-2x fa-spin fa-fw" class="d-none"></i> <button id="migrate" class="btn btn-lg btn-success">{{ __('Begin migration') }}</button></div>
     </div>
 </div>
 <script>
     (function($) {
         $(document).ready(function() {
-            $("#migrate").on("click", function() {
-                $('#spinner').show();
+            $('#migrate').on('click', function() {
+                $('#spinner').removeClass('d-none');
                 $(this).addClass('disabled');
                 $(this).bind('click', false);
-                migrate()
+                migrate();
             });
             function migrate() {
                 $.ajax({

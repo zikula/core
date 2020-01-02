@@ -199,7 +199,7 @@ var cleanName = function (name) {
 var addNode = function () {
     jQuery('#nodeModalLabel').text(Translator.trans('Add node'));
     jQuery('#nodeName').val('');
-    jQuery('#nodeTypeSelection').removeClass('hidden');
+    jQuery('#nodeTypeSelection').removeClass('d-none');
     jQuery('#nodeTypeSelection input').prop('required', true);
 
     jQuery('#nodeModal .modal-footer .btn-primary').text(Translator.trans('Create')).unbind('click').click(function (event) {
@@ -235,7 +235,7 @@ var editNode = function (event) {
     }
     jQuery('#nodeName').val(node.text());
 
-    jQuery('#nodeTypeSelection').addClass('hidden');
+    jQuery('#nodeTypeSelection').addClass('d-none');
     jQuery('#nodeTypeSelection input').removeProp('required');
 
     jQuery('#nodeModal .modal-footer .btn-primary').text(Translator.trans('Update')).unbind('click').click(function (event) {

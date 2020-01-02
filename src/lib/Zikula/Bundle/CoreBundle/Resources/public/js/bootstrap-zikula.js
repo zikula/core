@@ -19,14 +19,14 @@
         var text  = $this.data('text') || '';
         
         if (0 === $('#confimationModal').length) {
-            var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">'+title+'</h4></div><div class="modal-body">' + text + '</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">' + Zikula.__('No') + '</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">' + Zikula.__('Yes') + '</button></div></div></div></div>';
+            var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">' + title + '</h5><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></div><div class="modal-body">' + text + '</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">' + Zikula.__('No') + '</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">' + Zikula.__('Yes') + '</button></div></div></div></div>';
             $(document.body).append(Modal);
             $(document).on('click', '#confirmationOkButton', function (e) {
                 window.location = $this.attr('href');
             });
         }
         
-        $('#confimationModal').modal({}, this).one('hide', function () {
+        $('#confimationModal').modal({}, this).on('hide', function () {
             $this.is(':visible') && $this.focus();
         });
     });

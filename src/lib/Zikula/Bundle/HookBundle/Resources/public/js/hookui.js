@@ -52,7 +52,8 @@ var cloneDraggedItem = true;
             .draggable({
                 cursor: 'move',
                 revert: true
-            });
+            })
+        ;
 
         initAreasDroppables();
 
@@ -196,7 +197,7 @@ var cloneDraggedItem = true;
         var newContent = newItem.html();
         newContent = newContent.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
         newContent = newContent.replace(new RegExp('sarea_identifier', 'g'), sarea_id);
-        newContent = newContent.replace(' hide', '');
+        newContent = newContent.replace(' d-none', '');
         newContent = newContent.replace('##id', sarea_id);
         newContent = newContent.replace('##name', sarea_name);
         newItem.html(newContent);
@@ -217,8 +218,8 @@ var cloneDraggedItem = true;
         );
 
         // hide empty_area if it is visible
-        if (!emptyArea.hasClass('hide')) {
-            emptyArea.addClass('hide');
+        if (!emptyArea.hasClass('d-none')) {
+            emptyArea.addClass('d-none');
         }
 
         // append dragged item to our list
@@ -253,7 +254,7 @@ var cloneDraggedItem = true;
 
         // if there no more areas attached, show empty_area
         if (1 > amountOfAttachedAreas) {
-            $('#sarea_empty_' + sarea_id).removeClass('hide');
+            $('#sarea_empty_' + sarea_id).removeClass('d-none');
         } else {
             areaToDetachFrom.css('height', (areaToDetachFrom.height() - heightOfDetachedArea) + 'px');
         }

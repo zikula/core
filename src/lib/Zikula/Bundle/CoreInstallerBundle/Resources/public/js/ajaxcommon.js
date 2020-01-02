@@ -6,13 +6,13 @@ jQuery( document ).ready(function( $ ) {
     var progressbar = 0;
     var percentage = (1 / stages.length) * 100;
 
-    $('#begininstall').click(function() {
+    $('#beginInstall').click(function() {
         route = 'ajaxinstall';
         $(this).addClass('disabled');
         $(this).bind('click', false);
         processStage(getNextStage())
     });
-    $('#beginupgrade').click(function() {
+    $('#beginUpgrade').click(function() {
         route = 'ajaxupgrade';
         $(this).addClass('disabled');
         $(this).bind('click', false);
@@ -55,25 +55,25 @@ jQuery( document ).ready(function( $ ) {
 
     function indicateStageStarted(listitem) {
         listitem.removeClass('text-muted').addClass('text-primary');
-        listitem.children('.pre').hide();
-        listitem.children('.during').show();
-        listitem.find('i').removeClass('fa-circle-o').addClass('fa-cog fa-spin'); // spinner
+        listitem.children('.pre').addClass('d-none');
+        listitem.children('.during').removeClass('d-none');
+        listitem.find('i').removeClass('fa-circle').addClass('fa-cog fa-spin'); // spinner
     }
 
     function indicateStageComplete(listitem) {
         listitem.find('i').removeClass('fa-cog fa-spin'); // spinner
-        listitem.children('.during').hide();
+        listitem.children('.during').addClass('d-none');
     }
 
     function indicateStageSuccessful(listitem) {
         listitem.removeClass('text-primary').addClass('text-success');
-        listitem.children('.success').show();
+        listitem.children('.success').removeClass('d-none');
         listitem.find('i').addClass('fa-check-circle'); // spinner
     }
 
     function indicateStageFailure(listitem) {
         listitem.removeClass('text-primary').addClass('text-danger');
-        listitem.children('.fail').show();
+        listitem.children('.fail').removeClass('d-none');
         listitem.find('i').addClass('fa-times-circle'); // spinner
     }
 
@@ -93,12 +93,12 @@ jQuery( document ).ready(function( $ ) {
 
     function finalizeUI() {
         $('li#finish').removeClass('text-muted').addClass('text-success');
-        $('li#finish').children('i').removeClass('fa-circle-o').addClass('fa-check-circle');
-        $('#continuebutton').show();
+        $('li#finish').children('i').removeClass('fa-circle').addClass('fa-check-circle');
+        $('#continueButton').removeClass('d-none');
     }
 
     function getResultTable(resultArray) {
-        var table = '<table><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>';
+        var table = '<table class="table"><thead><tr><th>Item</th><th>Value</th></tr></thead><tbody>';
         var index;
         for (index = 0; index < resultArray.length; ++index) {
             table += '<tr><td>'+resultArray[index][0]+'</td><td>'+resultArray[index][1]+'</td></tr>';
