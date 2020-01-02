@@ -19,7 +19,7 @@ enabled:
   - no_null_property_initialization
   - no_php4_constructor
   - no_short_echo_tag
-  - no_unneeded_curly_braces
+#  - no_unneeded_curly_braces
   - no_unneeded_final_method
   - no_useless_else
   - non_printable_character
