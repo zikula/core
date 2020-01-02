@@ -135,6 +135,7 @@
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2
     - seld/phar-utils installed in 1.0.1
+    - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
     - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
     - symfony/contracts installed in 2.0.1

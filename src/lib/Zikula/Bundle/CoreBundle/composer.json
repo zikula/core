@@ -27,7 +27,7 @@
 
         "symfony/symfony": "5.*",
         "symfony/monolog-bundle": "3.*",
-        "sensio/framework-extra-bundle": "dev-master",
+        "sensio/framework-extra-bundle": "5.*",
         "symfony/maker-bundle": "1.*",
         "symfony/profiler-pack": "^1.0",
         "elao/web-profiler-extra-bundle" : "2.*",
