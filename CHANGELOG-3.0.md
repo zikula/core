@@ -87,6 +87,7 @@
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
+    - components/bootstrap updated from 3.4.1 to 4.3.1
     - components/font-awesome updated from 4.7.0 to 5.11.2
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
     - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
