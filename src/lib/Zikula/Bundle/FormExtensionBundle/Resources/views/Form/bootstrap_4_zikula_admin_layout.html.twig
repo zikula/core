@@ -27,43 +27,6 @@ col-md-3
 col-md-9
 {%- endblock form_group_class %}
 
-{% block checkbox_widget -%}
-    {%- set parent_label_class = parent_label_class|default('') -%}
-    {% if 'checkbox-inline' in parent_label_class %}
-        {#{- form_label(form, null, { widget: parent() }) -}#}
-        {{ parent() }}
-    {% else -%}
-        <div class="checkbox">
-            <input type="checkbox" {{ block('widget_attributes') }} style="margin-left: auto"{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-        </div>
-    {%- endif %}
-{%- endblock checkbox_widget %}
-
-{% block checkbox_row -%}
-{% apply spaceless %}
-    <div class="form-group{% if not valid %} has-error{% endif %}">
-        {{ block('form_label') }}
-        <div class="{{ block('form_group_class') }}">
-            {{ form_widget(form) }}
-            {{ form_errors(form) }}
-            {{ _self.helpBlock(help) }}
-            {{ _self.alertBlock(alert) }}
-        </div>
-    </div>
-{% endapply %}
-{%- endblock checkbox_row %}
-
-{% block submit_row -%}
-{% apply spaceless %}
-    <div class="form-group">
-        <div class="{{ block('form_label_class') }}"></div>
-        <div class="{{ block('form_group_class') }}">
-            {{ form_widget(form) }}
-        </div>
-    </div>
-{% endapply %}
-{% endblock submit_row %}
-
 {# add input groups to simple inputs #}
 {% block form_widget_simple %}
     {% if type is not defined or type not in ['file', 'hidden'] %}
