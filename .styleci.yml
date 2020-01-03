@@ -60,3 +60,4 @@ disabled:
 finder:
   exclude:
     - "src/system/RoutesModule"
+    - "src/system/BlocksModule/Api/BlockFilterApi.php"
