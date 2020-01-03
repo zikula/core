@@ -4,27 +4,23 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-plus-square"></span>
-            {{ __('Create block') }}
-            {{ pageSetVar('title', __('Create block')) }}
-        </h3>
-        {{ showflashes() }}
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <fieldset>
-            <legend>{{ __('Properties') }}</legend>
-            <div class="alert alert-info">{{ __('Select a block type.') }}</div>
-            {{ form_row(form.bkey) }}
-        </fieldset>
-        <div class="form-group row">
-            <div class="col-md-9 offset-md-3">
-                {{ form_widget(form.choose) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<h3>
+    <span class="fa fa-plus-square"></span>
+    {{ __('Create block') }}
+    {{ pageSetVar('title', __('Create block')) }}
+</h3>
+{{ showflashes() }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Properties') }}</legend>
+    <div class="alert alert-info">{{ __('Select a block type.') }}</div>
+    {{ form_row(form.bkey) }}
+</fieldset>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.choose) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

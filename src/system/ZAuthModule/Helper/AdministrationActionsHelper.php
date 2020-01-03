@@ -124,7 +124,7 @@ class AdministrationActionsHelper
             $actions['modify'] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_modify', ['mapping' => $mapping->getId()]),
                 'text' => $this->translator->__f('Edit %sub%', ['%sub%' => $mapping->getUname()]),
-                'icon' => 'pencil',
+                'icon' => 'pencil-alt',
             ];
         }
 

@@ -9,14 +9,12 @@
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaPermissionsModule:js/Zikula.Permission.Admin.View.js')) }}
-
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Permission rules list') }}
     {{ pageSetVar('title', __('Permission rules list')) }}
 </h3>
-
 {% if enableFilter %}
     {% form_theme filterForm with [
         '@ZikulaCategoriesModule/Form/filter_layout_customizations.html.twig',
@@ -143,5 +141,4 @@
         </div>
     </div>
 </div>
-
 {{ adminFooter() }}

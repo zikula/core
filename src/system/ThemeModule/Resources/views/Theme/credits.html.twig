@@ -32,7 +32,7 @@
             {% elseif key == 'admin' %}<th id="hAdminTheme" scope="row">{{ __('Admin panel theme') }}</th><td headers="hAdminTheme">{{ field|yesNo }}</td>
             {% elseif key == 'user' %}<th id="hUserTheme" scope="row">{{ __('User theme') }}</th><td headers="hUserTheme">{{ field|yesNo }}</td>
             {% elseif key == 'system' %}<th id="hSystemTheme" scope="row">{{ __('System theme') }}</th><td headers="hSystemTheme">{{ field|yesNo }}</td>
-            {% elseif key == 'state' %}<th id="hState" scope="row">{{ __('State') }}</th><td headers="hState">{% if (field) and field == 1 %}<span class="label label-success">{{ __('Active') }}</span>{% else %}<span class="label label-danger">{{ __('Inactive') }}</span>{% endif %} </td>
+            {% elseif key == 'state' %}<th id="hState" scope="row">{{ __('State') }}</th><td headers="hState">{% if (field) and field == 1 %}<span class="badge badge-success">{{ __('Active') }}</span>{% else %}<span class="badge badge-danger">{{ __('Inactive') }}</span>{% endif %} </td>
             {% elseif key == 'credits' %}<th id="hCredits" scope="row">{{ __('Credits') }}</th><td headers="hCredits">{{ field }}</td>
             {% elseif key == 'changelog' %}<th id="hChangelog" scope="row">{{ __('Change log') }}</th><td headers="hChangelog">{{ field }}</td>
             {% elseif key == 'help' %}<th id="hHelp" scope="row">{{ __('Help') }}</th><td headers="hHelp">{{ field }}</td>

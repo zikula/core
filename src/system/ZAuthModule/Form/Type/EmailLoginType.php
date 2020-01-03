@@ -49,7 +49,8 @@ class EmailLoginType extends AbstractType
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
-                'label' => $this->__('Remember me')
+                'label' => $this->__('Remember me'),
+                'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('submit', SubmitType::class, [
                 'label' => $this->__('Login'),

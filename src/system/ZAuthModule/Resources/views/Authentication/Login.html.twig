@@ -1,0 +1,26 @@
+{% form_theme form with [
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
+] %}
+{{ moduleHeader('user', __('User login'), '', true, true) }}
+<fieldset>
+    {{ loginHeader|raw }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_widget(attribute(form, loginField|default('uname'))) }}
+    {{ form_row(form.pass) }}
+    {{ form_row(form.rememberme) }}
+
+    {% for additional_template in additional_templates %}
+        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
+    {% endfor %}
+    <div id="zikulausersmodule-login-hooks">
+        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) }}
+    </div>
+
+    {{ form_row(form.submit) }}
+
+    {{ form_end(form) }}
+    {{ loginFooter|raw }}
+</fieldset>

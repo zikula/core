@@ -3,26 +3,22 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-check"></span>
-            {{ __('Theme confirmation prompt') }}
-            {{ pageSetVar('title', __('Theme confirmation prompt')) }}
-        </h3>
+<h3>
+    <span class="fa fa-check"></span>
+    {{ __('Theme confirmation prompt') }}
+    {{ pageSetVar('title', __('Theme confirmation prompt')) }}
+</h3>
 
-        <p class="alert alert-danger">
-            {{ __f('Do you really want to set %sub% as the active theme for all site users?', {'%sub%': '<strong>' ~ themeName ~ '</strong>'})|raw }}
-        </p>
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <div class="form-group row">
-            <div class="col-md-9 offset-md-3">
-                {{ form_widget(form.accept) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<p class="alert alert-danger">
+    {{ __f('Do you really want to set %sub% as the active theme for all site users?', {'%sub%': '<strong>' ~ themeName ~ '</strong>'})|raw }}
+</p>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.accept) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

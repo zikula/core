@@ -3,24 +3,20 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-trash-alt"></span> {{ __('Delete block position') }} '{{ position.name }}'
-            {{ pageSetVar('title', __('Delete block position')) }}
-        </h3>
+<h3>
+    <span class="fa fa-trash-alt"></span> {{ __('Delete block position') }} '{{ position.name }}'
+    {{ pageSetVar('title', __('Delete block position')) }}
+</h3>
 
-        <p class="alert alert-warning">{{ __f("Do you really want to delete position '%name%'?", {'%name%': position.name}) }}</p>
+<p class="alert alert-warning">{{ __f("Do you really want to delete position '%name%'?", {'%name%': position.name}) }}</p>
 
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <div class="form-group row">
-            <div class="col-md-9 offset-md-3">
-                {{ form_widget(form.delete) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.delete) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

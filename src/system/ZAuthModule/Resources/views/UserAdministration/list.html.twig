@@ -6,16 +6,18 @@
     {{ pageSetVar('title', __('Users list')) }}
 </h3>
 
-<div id="user-search-container" class="form hide">
+<div id="user-search-container" class="form d-none">
     <div class="input-group">
-        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" data-route="zikulazauthmodule_useradministration_getusersbyfragmentastable" value="" />
-        <span class="input-group-addon"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
+        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulazauthmodule_useradministration_getusersbyfragmentastable" />
+        <div class="input-group-append">
+            <span class="input-group-text"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
+        </div>
     </div>
 </div>
-<div id="user-search-min-char" class="hide">{{ __('Please enter at least 3 characters') }}</div>
+<p id="user-search-min-char" class="d-none">{{ __('Please enter at least 3 characters') }}</p>
 
 <p id="users-alphafilter">
-    {{ pagerabc({posvar:'letter', forwardvars:'sortby', printempty:true, route:'zikulazauthmodule_useradministration_list'}) }}
+    {{ pagerabc({posvar: 'letter', forwardvars: 'sortby', printempty: true, route: 'zikulazauthmodule_useradministration_list'}) }}
 </p>
 
 <div id="user-list">
@@ -30,10 +32,10 @@
         </colgroup>
         <thead>
             <tr>
-                <th id="hUser" scope="col"><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+                <th id="hUser" scope="col"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{{ __('User name') }}</a></th>
                 <th id="hEmail" scope="col">{{ __('Email') }}</th>
                 <th id="hVerified" scope="col">{{ __('Email verified') }}</th>
-                <th id="hId" scope="col"><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+                <th id="hId" scope="col"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{{ __('Internal ID') }}</a></th>
                 <th id="hMethod" scope="col">{{ __('Method') }}</th>
                 <th id="hActions" scope="col">{{ __('Actions') }}</th>
             </tr>
@@ -42,11 +44,11 @@
             {{ include('@ZikulaZAuthModule/UserAdministration/userlist.html.twig') }}
         </tbody>
     </table>
-    {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulazauthmodule_useradministration_list', posvar:'startnum'}) }}
+    {{ pager({rowcount: pager.count, limit: pager.limit, route: 'zikulazauthmodule_useradministration_list', posvar: 'startnum'}) }}
 </div>
 
 {# This table is for ajax search results and is hidden until needed and populated then with the results. #}
-<table id="user-search-list" class="table table-bordered table-striped hide">
+<table id="user-search-list" class="table table-bordered table-striped d-none">
     <colgroup>
         <col id="cSearchUser" />
         <col id="cSearchEmail" />
@@ -57,10 +59,10 @@
     </colgroup>
     <thead>
     <tr>
-        <th headers="hSearchUser"><a class='{{ sort.uname.class }}' href='{{ sort.uname.url }}'>{{ __('User name') }}</a></th>
+        <th headers="hSearchUser"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{{ __('User name') }}</a></th>
         <th headers="hSearchEmail">{{ __('Email') }}</th>
         <th headers="hSearchVerified">{{ __('Email verified') }}</th>
-        <th headers="hSearchId"><a class='{{ sort.uid.class }}' href='{{ sort.uid.url }}'>{{ __('Internal ID') }}</a></th>
+        <th headers="hSearchId"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{{ __('Internal ID') }}</a></th>
         <th headers="hSearchMethod">{{ __('Method') }}</th>
         <th headers="hSearchActions">{{ __('Actions') }}</th>
     </tr>

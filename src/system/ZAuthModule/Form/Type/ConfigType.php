@@ -69,6 +69,7 @@ class ConfigType extends AbstractType
             ])
             ->add(ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED, CheckboxType::class, [
                 'label' => $this->__('Show password strength meter'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
             ])
             ->add(ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL, IntegerType::class, [
@@ -110,6 +111,7 @@ class ConfigType extends AbstractType
             ])
             ->add(ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, CheckboxType::class, [
                 'label' => $this->__('New users must verify their email address on registration.'),
+                'label_attr' => ['class' => 'switch-custom'],
                 //'help' => $this->__('Users created by an admin are automatically considered verified.'),
                 'required' => false,
             ])

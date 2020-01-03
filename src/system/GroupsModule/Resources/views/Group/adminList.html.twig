@@ -83,7 +83,6 @@
     {% endfor %}
     </tbody>
 </table>
-
 {% if applications %}
     <a id="applications"></a><h3>{{ __('Pending applications') }}</h3>
     <table class="table table-bordered table-striped">
@@ -121,6 +120,5 @@
         </tbody>
     </table>
 {% endif %}
-
 {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_adminlist'}) }}
 {{ adminFooter() }}

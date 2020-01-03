@@ -1,14 +1,11 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaThemeModule:js/ZikulaThemeModule.Admin.View.js')) }}
-
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Themes list') }}
     {{ pageSetVar('title', __('Themes list')) }}
 </h3>
-
 <p class="alert alert-info">{{ __('Themes control the visual presentation of a site.') }}</p>
-
 <table class="table table-bordered table-striped">
     <colgroup>
         <col id="cName" />
@@ -70,7 +67,5 @@
         {% endfor %}
     </tbody>
 </table>
-
-<em><span class="required"></span> = {{ __('Default theme') }}</em>
-
+<p><em><span class="required"></span> = {{ __('Default theme') }}</em></p>
 {{ adminFooter() }}
