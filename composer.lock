@@ -1951,12 +1951,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "fe0452d6887a0fa76e2eaf80166e1ea205e7bb81"
+                "reference": "d15890222b6deb08fe44a57fa8e2e6ec2e25eb84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/fe0452d6887a0fa76e2eaf80166e1ea205e7bb81",
-                "reference": "fe0452d6887a0fa76e2eaf80166e1ea205e7bb81",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d15890222b6deb08fe44a57fa8e2e6ec2e25eb84",
+                "reference": "d15890222b6deb08fe44a57fa8e2e6ec2e25eb84",
                 "shasum": ""
             },
             "require": {
@@ -1993,7 +1993,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2019-12-04T15:29:08+00:00"
+            "time": "2020-01-02T11:58:15+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -4727,7 +4727,7 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "dev-master",
+            "version": "v5.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
@@ -6820,12 +6820,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "70bf2070b2724b25eb4f7667825b8fa1dc32aa7d"
+                "reference": "9f6b5f19ae1d5d746805afcbaf48ced26fee12ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/70bf2070b2724b25eb4f7667825b8fa1dc32aa7d",
-                "reference": "70bf2070b2724b25eb4f7667825b8fa1dc32aa7d",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/9f6b5f19ae1d5d746805afcbaf48ced26fee12ea",
+                "reference": "9f6b5f19ae1d5d746805afcbaf48ced26fee12ea",
                 "shasum": ""
             },
             "require": {
@@ -6880,7 +6880,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2019-12-23T17:25:15+00:00"
+            "time": "2020-01-02T17:58:46+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6888,12 +6888,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "a2703a352c218f7af8744f2e655ab669a82313b1"
+                "reference": "820b16207a46ade854e7223f2aae1e1e1bc33ef8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a2703a352c218f7af8744f2e655ab669a82313b1",
-                "reference": "a2703a352c218f7af8744f2e655ab669a82313b1",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/820b16207a46ade854e7223f2aae1e1e1bc33ef8",
+                "reference": "820b16207a46ade854e7223f2aae1e1e1bc33ef8",
                 "shasum": ""
             },
             "require": {
@@ -6941,7 +6941,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-12-24T07:13:51+00:00"
+            "time": "2020-01-02T16:57:53+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6949,12 +6949,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "c091411e0e8c6417a0095d76778612ef1894e89f"
+                "reference": "203160bb2f705717f42dc84a1bce9f9da789c7d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/c091411e0e8c6417a0095d76778612ef1894e89f",
-                "reference": "c091411e0e8c6417a0095d76778612ef1894e89f",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/203160bb2f705717f42dc84a1bce9f9da789c7d3",
+                "reference": "203160bb2f705717f42dc84a1bce9f9da789c7d3",
                 "shasum": ""
             },
             "require": {
@@ -6991,7 +6991,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2019-12-30T15:14:06+00:00"
+            "time": "2020-01-02T16:59:50+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6999,12 +6999,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "8ff8f6e605180f52e84e804d8d813ea4cecff1ac"
+                "reference": "df48c718978f2e1c9df2027e81e732b90f9c3734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8ff8f6e605180f52e84e804d8d813ea4cecff1ac",
-                "reference": "8ff8f6e605180f52e84e804d8d813ea4cecff1ac",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/df48c718978f2e1c9df2027e81e732b90f9c3734",
+                "reference": "df48c718978f2e1c9df2027e81e732b90f9c3734",
                 "shasum": ""
             },
             "require": {
@@ -7062,7 +7062,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-31T09:43:14+00:00"
+            "time": "2020-01-02T18:46:46+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
@@ -7239,7 +7239,6 @@
         "zikula/pagelock-module": 20,
         "zikula/andreas08-theme": 20,
         "zikula/seabreeze-theme": 20,
-        "sensio/framework-extra-bundle": 20,
         "prolix/translation-bundle": 20,
         "willdurand/js-translation-bundle": 20,
         "liip/imagine-bundle": 20,
