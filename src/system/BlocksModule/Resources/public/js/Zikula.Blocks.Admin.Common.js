@@ -18,19 +18,7 @@
                     bid: bid
                 }
             }).done(function (data) {
-                if (a.hasClass('label-success')) {
-                    a.removeClass('label-success')
-                        .addClass('label-danger')
-                        .text(Translator.__('Inactive'))
-                        .attr('title', Translator.__('Click to activate block'))
-                    ;
-                } else {
-                    a.removeClass('label-danger')
-                        .addClass('label-success')
-                        .text(Translator.__('Active'))
-                        .attr('title', Translator.__('Click to deactivate block'))
-                    ; 
-                }
+                a.parent().find('a').toggleClass('d-none');
             }).fail(function (jqXHR, textStatus) {
                 alert('Request failed: ' + textStatus);
             })

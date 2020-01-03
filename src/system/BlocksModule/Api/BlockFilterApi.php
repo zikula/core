@@ -60,7 +60,7 @@ class BlockFilterApi implements BlockFilterApiInterface
                     $name = $request->attributes->get($filter['attribute']);
             }
             if (empty($name)) {
-                continue;
+                return false;
             }
             $displayable = $displayable && $this->compare($name, $filter['comparator'], $filter['value']);
         }
@@ -70,14 +70,17 @@ class BlockFilterApi implements BlockFilterApiInterface
 
     /**
      * Compare variables according to a dynamic comparator.
+     *
+     * @param mixed $var1
+     * @param mixed $var2
      */
-    private function compare(string $var1, string $comparator, string $var2): bool
+    private function compare($var1, string $comparator, $var2): bool
     {
         switch ($comparator) {
             case '==':
-                return $var1 === $var2;
+                return $var1 == $var2; // cannot use strict comparison
             case '!=':
-                return $var1 !== $var2;
+                return $var1 != $var2; // cannot use strict comparison
             case '>=':
                 return $var1 >= $var2;
             case '<=':
@@ -89,11 +92,11 @@ class BlockFilterApi implements BlockFilterApiInterface
             case 'in_array':
                 $var2Array = array_map('trim', explode(',', $var2));
 
-                return in_array($var1, $var2Array, true);
+                return in_array($var1, $var2Array); // cannot use strict comparison
             case '!in_array':
                 $var2Array = array_map('trim', explode(',', $var2));
 
-                return !in_array($var1, $var2Array, true);
+                return !in_array($var1, $var2Array); // cannot use strict comparison
             default:
                 return true;
         }

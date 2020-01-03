@@ -53,22 +53,22 @@
                     <td headers="hBlockPositions">
                         {% for position in block.positions %}
                             {% if not positionavailable(position.name) %} <i class="fa fa-exclamation-triangle text-danger tooltips" title="{{ __('Position not available in current default theme.') }}"></i>{% endif %}
-                            <a href="{{ path('zikulablocksmodule_placement_edit', {pid:position.pid}) }}">{{ position.name }}</a>{% if not loop.last %}, {% endif %}
+                            <a href="{{ path('zikulablocksmodule_placement_edit', {pid: position.pid}) }}">{{ position.name }}</a>{% if not loop.last %}, {% endif %}
                         {% endfor %}
-                        {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success pull-right"></i>{% endif %}
+                        {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success float-right" title="{{ __('This block has filters') }}"></i>{% endif %}
                     </td>
                     <td headers="hBlockLanguage">{{ block.language|default( __('All') ) }}</td>
                     <td headers="hBlockState">
                         <a href="#" class="block-state-switch label label-{{ block.active ? 'success' : 'danger' }} tooltips" title="{{ block.active ? __('Click to deactivate block') : __('Click to activate block')  }}" data-bid="{{ block.bid }}">{{ block.active ? __('Active')  : __('Inactive') }}</a>
                     </td>
                     <td headers="hBlockActions" class="actions">
-                        <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid:block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="{{ __('Preview block') }}"></a>
-                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity:block.bid}) }}" title="{{ __('Edit block') }}"></a>
-                        <a class="fa fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid:block.bid}) }}" title="{{ __('Delete block') }}"></a>
+                        <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid: block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="{{ __('Preview block') }}"></a>
+                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulablocksmodule_block_edit', {blockEntity: block.bid}) }}" title="{{ __('Edit block') }}"></a>
+                        <a class="fa fa-trash-alt tooltips" href="{{ path('zikulablocksmodule_block_delete', {bid: block.bid}) }}" title="{{ __('Delete block') }}"></a>
                     </td>
                 </tr>
             {% else %}
-                <tr class="table table-borderedempty"><td colspan="9">{{ __('No items found.') }}</td></tr>
+                <tr class="table-info"><td colspan="9" class="text-center">{{ __('No items found.') }}</td></tr>
             {% endfor %}
         </tbody>
     </table>
@@ -114,7 +114,7 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
             </td>
         </tr>
         {% else %}
-        <tr class="table table-borderedempty"><td colspan="5">{{ __('No items found.') }}</td></tr>
+        <tr class="table-info"><td colspan="4" class="text-center">{{ __('No items found.') }}</td></tr>
         {% endfor %}
         </tbody>
     </table>
@@ -128,8 +128,8 @@ To delete a block position, click on the 'Delete' icon and confirm the action in
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">{{ __('Block View') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{{ __('Block View') }}</h4>
             </div>
             <div class="modal-body">
                 <div class="text-center"><i class="fa fa-spin fa-3x fa-spinner"></i></div>

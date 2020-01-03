@@ -14,12 +14,16 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule;
 
 use Exception;
+use Zikula\BlocksModule\Block\HtmlBlock;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\SearchModule\Block\SearchBlock;
+use Zikula\UsersModule\Block\LoginBlock;
 
 /**
  * Installation and upgrade routines for the blocks module.
@@ -52,7 +56,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
 
     public function upgrade(string $oldVersion): bool
     {
-        $blockRepository = $this->entityManager->getRepository('ZikulaBlocksModule:BlockEntity');
+        $blockRepository = $this->entityManager->getRepository(BlockEntity::class);
         // Upgrade dependent on old version number
         switch ($oldVersion) {
             case '3.8.1':
@@ -170,6 +174,15 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
             case '3.9.8':
+                $blocks = $this->entityManager->getConnection()->executeQuery("SELECT * FROM blocks");
+                foreach ($blocks as $block) {
+                    $bKey = $block['bkey'];
+                    if (mb_strpos($bKey, ':')) {
+                        [/*$moduleName*/, $bKey] = explode(':', $bKey);
+                    }
+                    $this->entityManager->getConnection()->executeUpdate('UPDATE blocks SET bKey=? WHERE bid=?', [trim($bKey, '\\'), $block['bid']]);
+                }
+            case '3.9.9':
             // future upgrade routines
         }
 
@@ -213,12 +226,12 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         $hellomessage = $this->__('<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework (CMF) built on top of Symfony.</p><p>With Zikula:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="https://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site\'s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site\'s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
 
         $blocks = [];
-        $extensionRepo = $this->entityManager->getRepository('ZikulaExtensionsModule:ExtensionEntity');
+        $extensionRepo = $this->entityManager->getRepository(ExtensionEntity::class);
         $blocksModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaBlocksModule']);
         $searchModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaSearchModule']);
         $usersModuleEntity = $extensionRepo->findOneBy(['name' => 'ZikulaUsersModule']);
         $blocks[] = [
-            'bkey' => 'ZikulaSearchModule:\Zikula\SearchModule\Block\SearchBlock',
+            'bkey' => SearchBlock::class,
             'blocktype' => 'Search',
             'language' => '',
             'module' => $searchModuleEntity,
@@ -231,7 +244,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'position' => $positions['left']
         ];
         $blocks[] = [
-            'bkey' => 'ZikulaBlocksModule:\Zikula\BlocksModule\Block\HtmlBlock',
+            'bkey' => HtmlBlock::class,
             'blocktype' => 'Html',
             'language' => '',
             'module' => $blocksModuleEntity,
@@ -241,7 +254,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'position' => $positions['center']
         ];
         $blocks[] = [
-            'bkey' => 'ZikulaUsersModule:\Zikula\UsersModule\Block\LoginBlock',
+            'bkey' => LoginBlock::class,
             'blocktype' => 'Login',
             'language' => '',
             'module' => $usersModuleEntity,

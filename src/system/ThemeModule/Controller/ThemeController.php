@@ -193,6 +193,7 @@ class ThemeController extends AbstractController
             ->add('themeName', HiddenType::class)
             ->add('deletefiles', CheckboxType::class, [
                 'label' => $this->__('Also delete theme files, if possible'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
             ])
             ->add('delete', SubmitType::class, [

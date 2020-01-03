@@ -19,13 +19,12 @@
             <div class="alert alert-info">{{ __('Select a block type.') }}</div>
             {{ form_row(form.bkey) }}
         </fieldset>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.choose) }}
             </div>
         </div>
         {{ form_end(form) }}
     </div>
-
 </div>
 {{ adminFooter() }}

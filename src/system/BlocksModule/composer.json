@@ -1,6 +1,6 @@
 {
     "name": "zikula/blocks-module",
-    "version": "3.9.8",
+    "version": "3.9.9",
     "description": "Blocks administration",
     "type": "zikula-module",
     "license": "LGPL-3.0-or-later",

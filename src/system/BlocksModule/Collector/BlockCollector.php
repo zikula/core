@@ -41,9 +41,7 @@ class BlockCollector
      */
     public function add(BlockHandlerInterface $block): void
     {
-        $id = str_replace('\\', '_', get_class($block));
-
-        $this->blocks[$id] = $block;
+        $this->blocks[get_class($block)] = $block;
     }
 
     /**

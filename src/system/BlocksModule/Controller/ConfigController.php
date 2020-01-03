@@ -46,6 +46,7 @@ class ConfigController extends AbstractController
         $form = $this->createFormBuilder($this->getVars())
             ->add('collapseable', CheckboxType::class, [
                 'label' => $this->__('Enable block collapse icons'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('save', SubmitType::class, [

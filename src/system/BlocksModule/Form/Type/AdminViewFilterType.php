@@ -47,7 +47,7 @@ class AdminViewFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => $this->__('All'),
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ]
             ])
             ->add('module', ChoiceType::class, [
@@ -55,7 +55,7 @@ class AdminViewFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => $this->__('All'),
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ]
             ])
             ->add('language', ChoiceType::class, [
@@ -63,7 +63,7 @@ class AdminViewFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => $this->__('All'),
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ]
             ])
             ->add('active', ChoiceType::class, [
@@ -74,7 +74,7 @@ class AdminViewFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => $this->__('All'),
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterButton', SubmitType::class, [
@@ -96,11 +96,13 @@ class AdminViewFilterType extends AbstractType
     {
         $resolver->setDefaults([
             'attr' => [
-                'class' => 'form form-inline',
+                'class' => 'form-inline',
             ],
             'moduleChoices' => [],
             'positionChoices' => [],
-            'localeChoices' => ['English' => 'en']
+            'localeChoices' => [
+                $this->__('English') => 'en'
+            ]
         ]);
     }
 }
