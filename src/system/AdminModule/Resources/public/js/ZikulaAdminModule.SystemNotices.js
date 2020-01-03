@@ -9,15 +9,12 @@
 
             if ($('#z-developernotices ul').is(':visible')) {
                 ul.slideUp();
+                ul.addClass('d-none');
                 span.removeClass('fa fa-caret-down');
                 span.addClass('fa fa-caret-right');
             } else {
-                // We have to do some magic here, because the element has
-                // 'display: none !important;' (Bootstrap's 'hide' class).
-                // So first hide the element the jQuery way and then remove the css class.
                 ul.hide();
-                ul.removeClass('hide');
-
+                ul.removeClass('d-none');
                 ul.slideDown();
                 span.removeClass('fa fa-caret-right');
                 span.addClass('fa fa-caret-down');

@@ -1,9 +1,8 @@
-{% set adminHelpUrl = path('zikulaadminmodule_admin_help') %}
 {% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
     {% if not security.scactive %}
         <div id="securityanalyzer" class="alert alert-warning">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-md-12">
                     <i class="close" data-dismiss="alert">&times;</i>
                     <a class="text-warning" data-toggle="collapse" href="#securitysettings_full" aria-expanded="false"
                        aria-controls="securitysettings_full">
@@ -11,27 +10,25 @@
                     </a>
                 </div>
                 <div class="collapse" id="securitysettings_full">
-                    <div class="legacy col-sm-6">
+                    <div class="legacy col-md-6">
                         <h4>{{ __('Security warnings') }}</h4>
                         {% if not security.app_htaccess %}
-                            <p>
-                                <a href="{{ adminHelpUrl }}#admin_app_htaccess_warning">{{ __("There is no '.htaccess' file in the application directory '/app', but one should be present.") }}</a>
-                            </p>
+                            <p><strong>{{ __("There is no '.htaccess' file in the application directory '/app', but one should be present.") }}</strong></p>
+                            <p>{{ __('If properly installed, a site will include an \'.htaccess\' file in the site\'s \'app\' folder. However, some methods used for transferring the package\'s files to a web space may lead to this file not being transferred. In this case, you are strongly recommended to create one (and to ensure that \'.htaccess\' files exist in certain other directories, too).') }}</p>
                         {% endif %}
                         {% if not security.updatecheck %}
-                            <p>
-                                {{ __('The update check is not enabled, but preferably should be.') }}
-                            </p>
+                            <p><strong>{{ __('The update check is not enabled, but preferably should be.') }}</strong></p>
                         {% endif %}
                         {% if not security.scactive %}
-                            <p>
-                                <a href="{{ adminHelpUrl }}#admin_security_center_warning2">{{ __("Security center module is not installed, but preferably should be.") }}</a>
-                            </p>
+                            <p><strong>{{ __('Security center module is not activated, but preferably should be.') }}</strong></p>
+                            <p>{{ __("When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site's security.") }}</p>
                         {% endif %}
-                        {% if security.useids and security.idssoftblock %}
-                            <p>
-                                <a href="{{ adminHelpUrl }}#admin_idssoftblock_warning">{{ __("PHPIDS is activated, but requests are NOT blocked.") }}</a>
-                            </p>
+                        {% if not security.useids %}
+                            <p><strong>{{ __('PHPIDS with the Security Center is not activated, but preferably should be.') }}</strong></p>
+                            <p>{{ __('PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.') }}</p>
+                        {% elseif security.useids and security.idssoftblock %}
+                            <p><strong>{{ __("PHPIDS is activated, but requests are NOT blocked.") }}</strong></p>
+                            <p>{{ __("PHPIDS is enabled and you have set the Block action to 'Warn only'. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.") }}</p>
                         {% endif %}
                     </div>
                 </div>

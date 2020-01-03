@@ -1,7 +1,7 @@
 {% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') and updateCheckHelper.enabled %}
     <div id="updatecheck" class="alert alert-success">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-md-12">
                 <i class="close" data-dismiss="alert">&times;</i>
                 <a href="#updatecheck_full" title="{{ __('Update checker') }}"
                    data-toggle="collapse" aria-expanded="false" aria-controls="updatecheck_full">
@@ -23,42 +23,43 @@
                 </a>
             </div>
             <div class="collapse" id="updatecheck_full">
-                <div class="alert col-sm-12">
-                    <span class="col-sm-4">
+                <div class="alert col-md-12">
+                    <span class="col-md-4">
                         {# % if updateCheckHelper.enabled % #}
                             <i class="fa fa-check"></i> {{ __('Update checker is enabled') }}
                         {# % else % #}
                         {#    <i class="fa fa-times"></i> {{ __('Update checker is disabled') }} #}
                         {# % endif % #}
                     </span>
-                    <span class="col-sm-4">
+                    <span class="col-md-4">
                         <i class="fa fa-calendar-alt"></i> {{ __('Check interval') }}: {{ updateCheckHelper.checkInterval }} {{ __('days') }}
                     </span>
-                    <span class="col-sm-4">
+                    <span class="col-md-4">
                         <i class="fa fa-calendar-check"></i> {{ __('Last checked') }}: {{ updateCheckHelper.lastChecked|date('F j, Y, g:i a') }}
                     </span>
                 </div>
                 {% if updateCheckHelper.releases %}
-                    <div class="col-sm-12">
+                    <div class="col-md-12">
                         <strong>{{ __('Releases') }}</strong>
-                        <div class="col-sm-12">
+                        <div class="col-md-12">
                             <ul class="list-group">
                                 {% if updateCheckHelper.versionCompare == -1 %}
                                     <li class="list-group-item active clearfix">
-                                        <span class="col-sm-3"> {{ __('Zikula Core') }} {{ updateCheckHelper.currentVersion }} </span>
-                                        <span class="col-sm-3"> {{ __('Currently used version') }} </span>
+                                        <span class="col-md-3"> {{ __('Zikula Core') }} {{ updateCheckHelper.currentVersion }} </span>
+                                        <span class="col-md-3"> {{ __('Currently used version') }} </span>
                                     </li>
                                 {% endif %}
-                                {% for release in updateCheckHelper.releases %}
-                                    {% if release.prerelease %}
+                                {% for release in updateCheckHelper.releases|filter(r => not r.prerelease) %}
+                                    {% if 'Zikula Core 1.' in release.name %}
+                                        {# do not show versions before at least 2.0 #}
                                     {% else %}
                                         <li class="list-group-item {% if loop.first %} list-group-item-success {% endif %} clearfix">
-                                            <a href="#release_{{ loop.index }}" class="col-sm-3" role="button"
+                                            <a href="#release_{{ loop.index }}" class="col-md-3" role="button"
                                                data-toggle="collapse" aria-expanded="false" aria-controls="release_{{ loop.index }}">
                                                 {{ release.name }}
                                             </a>
                                             {% if loop.first %}
-                                                <span class="col-sm-3">
+                                                <span class="col-md-3">
                                                     {{ __('Latest stable relese') }} 
                                                 </span>
                                             {% endif %}
@@ -67,10 +68,10 @@
                                                 <i class="fa fa-info"> </i>
                                             </a>
                                             <div class="collapse clearfix" id="release_{{ loop.index }}">
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6">
                                                     {{ release.body|nl2br }}
                                                 </div>
-                                                <div class="col-sm-6">
+                                                <div class="col-md-6">
                                                     {% for asset in release.assets %}
                                                         <p>
                                                             <a href="{{ asset.browser_download_url }}" class="text-success">
@@ -87,7 +88,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <div class="col-sm-12 text-center">
+                    <div class="col-md-12 text-center">
                         <p>{{ __('Stable Zikula Core available') }}: {{ updateCheckHelper.updateversion }} </p>
                         <a href="{{ path(caller._route, caller._route_params|merge({'forceupdatecheck':1})) }}" class="btn btn-sm btn-primary">
                             {{ __('Check now') }}

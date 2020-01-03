@@ -69,13 +69,6 @@ class EditCategoryType extends AbstractType
                     'class' => 'btn btn-default'
                 ]
             ])
-            ->add('help', SubmitType::class, [
-                'label' => $this->__('Help'),
-                'icon' => 'fa-question',
-                'attr' => [
-                    'class' => 'btn btn-info'
-                ]
-            ])
         ;
     }
 

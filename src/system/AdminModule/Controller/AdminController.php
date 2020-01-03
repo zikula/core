@@ -118,9 +118,6 @@ class AdminController extends AbstractController
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
             }
-            if ($form->get('help')->isClicked()) {
-                return $this->redirect($this->generateUrl('zikulaadminmodule_admin_view') . '#new');
-            }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
         }
@@ -159,9 +156,6 @@ class AdminController extends AbstractController
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
-            }
-            if ($form->get('help')->isClicked()) {
-                return $this->redirect($this->generateUrl('zikulaadminmodule_admin_help') . '#modify');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -493,24 +487,6 @@ class AdminController extends AbstractController
         return $this->render('@ZikulaAdminModule/Admin/footer.html.twig', [
             'symfonyversion' => Kernel::VERSION
         ]);
-    }
-
-    /**
-     * @Route("/help")
-     * @Theme("admin")
-     * @Template("@ZikulaAdminModule/Admin/help.html.twig")
-     *
-     * Displays the module's help page.
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have admin permission to the module
-     */
-    public function helpAction(): array
-    {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        return [];
     }
 
     /**
