@@ -1,6 +1,6 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <div class="container-fluid">
@@ -14,9 +14,11 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.itemsperpage) }}
-        <div class="alert alert-danger">{{ form_row(form.hardreset) }}</div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="alert alert-danger">
+            {{ form_row(form.hardreset) }}
+        </div>
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}
             </div>

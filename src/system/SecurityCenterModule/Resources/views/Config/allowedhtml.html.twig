@@ -10,17 +10,21 @@
 
         <p class="alert alert-info">{{ __('Filtering of allowed HTML occurs when a template string or variable is modified with the \'safeHtml\' filter, or when a module asks for similar processing from within its functions.') }}</p>
 
-        <form class="form-horizontal" role="form" action="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" method="post" enctype="application/x-www-form-urlencoded">
+        <form action="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" method="post" enctype="application/x-www-form-urlencoded" role="form">
             <fieldset>
                 <legend>{{ __('HTML entities') }}</legend>
 
-                <div class="form-group" id="securitycenter_htmlentities">
+                <div class="form-group row">
                     <div class="col-sm-12">
                         <label>{{ __('Translate embedded HTML entities into real characters') }}</label>
-                        <input id="securitycenter_htmlentities_yes" type="radio" name="htmlentities" value="1"{% if htmlEntities == 1 %} checked="checked"{% endif %} />
-                        <label for="securitycenter_htmlentities_yes">{{ __('Yes') }}</label>
-                        <input id="securitycenter_htmlentities_n0" type="radio" name="htmlentities" value="0"{% if htmlEntities != 1 %} checked="checked"{% endif %} />
-                        <label for="securitycenter_htmlentities_n0">{{ __('No') }}</label>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input id="securitycenter_htmlentities_yes" type="radio" name="htmlentities" value="1"{% if htmlEntities == 1 %} checked="checked"{% endif %}class="custom-control-input" />
+                            <label class="custom-control-label" for="securitycenter_htmlentities_yes">{{ __('Yes') }}</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input id="securitycenter_htmlentities_n0" type="radio" name="htmlentities" value="0"{% if htmlEntities != 1 %} checked="checked"{% endif %}class="custom-control-input" />
+                            <label class="custom-control-label" for="securitycenter_htmlentities_n0">{{ __('No') }}</label>
+                        </div>
                     </div>
                 </div>
             </fieldset>
@@ -82,9 +86,8 @@
                     </tbody>
                 </table>
             </fieldset>
-
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
+            <div class="form-group row">
+                <div class="col-md-9 offset-md-3">
                     <button class="btn btn-success" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
                     <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{{ __('Cancel') }}"><i clas="fa fa-times"></i> {{ __('Cancel') }}</a>
                 </div>

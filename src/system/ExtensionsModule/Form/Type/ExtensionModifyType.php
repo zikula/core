@@ -48,7 +48,9 @@ class ExtensionModifyType extends AbstractType
                 'label' => $this->__('Display name')
             ])
             ->add('url', TextType::class, [
-                'label' => $this->__('URL')
+                'label' => $this->__('URL'),
+                'input_group' => ['left' => '/'],
+                'help' => $this->__('WARNING: changing the url affects SEO by breaking existing indexed search results.')
             ])
             ->add('description', TextType::class, [
                 'label' => $this->__('Description')
@@ -60,16 +62,16 @@ class ExtensionModifyType extends AbstractType
                     'class' => 'btn btn-success'
                 ]
             ])
-            ->add('defaults', SubmitType::class, [
-                'label' => $this->__('Reload Defaults'),
-                'icon' => 'fa-refresh',
-                'attr' => [
-                    'class' => 'btn btn-warning'
-                ]
-            ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn btn-default'
+                ]
+            ])
+            ->add('defaults', SubmitType::class, [
+                'label' => $this->__('Reload Defaults'),
+                'icon' => 'fa-sync',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]

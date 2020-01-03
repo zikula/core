@@ -1,7 +1,3 @@
-/* style.css */
-#permission-test-info {
-    font-weight: bold;
-}
-#permission-list > tbody > tr:not(.warning) {
+#permission-list > tbody > tr:not(.table-warning) {
     cursor: move;
 }

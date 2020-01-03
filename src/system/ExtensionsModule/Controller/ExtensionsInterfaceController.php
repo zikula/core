@@ -122,7 +122,7 @@ class ExtensionsInterfaceController extends AbstractController
         // menu css
         $menu_css = [
             'menuId' => $currentRequest->attributes->get('menuid', ''),
-            'menuClass' => '' !== $currentRequest->attributes->get('menuclass') ? $currentRequest->attributes->get('menuclass') : 'navbar-nav',
+            'menuClass' => $currentRequest->attributes->get('menuclass', ''),
             'menuItemClass' => $currentRequest->attributes->get('itemclass', ''),
             'menuFirstItemClass' => $currentRequest->attributes->get('first', ''),
             'menuLastItemClass' => $currentRequest->attributes->get('last', '')

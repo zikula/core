@@ -172,9 +172,6 @@ class ConfigController extends AbstractController
                 }
                 $variableApi->set(VariableApi::CONFIG, 'sessionregeneratefreq', $sessionRegenerateFrequency);
 
-                $sessionIpCheck = $formData['sessionipcheck'] ?? 0;
-                $variableApi->set(VariableApi::CONFIG, 'sessionipcheck', $sessionIpCheck);
-
                 $newSessionName = $formData['sessionname'] ?? $sessionName;
                 if (mb_strlen($newSessionName) < 3) {
                     $newSessionName = $sessionName;
@@ -553,13 +550,13 @@ class ConfigController extends AbstractController
         $htmlTags = $this->getHtmlTags();
 
         if ('POST' === $request->getMethod()) {
-            $htmlEntities = $request->request->getDigits('htmlentities', 0);
+            $htmlEntities = $request->request->getInt('htmlentities', 0);
             $variableApi->set(VariableApi::CONFIG, 'htmlentities', $htmlEntities);
 
             // update the allowed html settings
             $allowedHtml = [];
             foreach ($htmlTags as $htmlTag => $usageTag) {
-                $tagVal = (int)$request->request->getDigits('htmlallow' . $htmlTag . 'tag', 0);
+                $tagVal = $request->request->getInt('htmlallow' . $htmlTag . 'tag', 0);
                 if (1 !== $tagVal && 2 !== $tagVal) {
                     $tagVal = 0;
                 }

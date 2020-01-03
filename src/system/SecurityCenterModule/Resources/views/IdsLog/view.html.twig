@@ -7,12 +7,14 @@
             {{ pageSetVar('title', __('View IDS log')) }}
         </h3>
 
-        <div class="navbar navbar-default navbar-modulelinks">
-            <ul class="navbar-nav">
-                <li><a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file.') }}"><i class="fa fa-arrow-alt-circle-down"></i> {{ __('Export IDS Log') }}</a></li>
-                <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}"><i class="fa fa-trash-alt"></i> {{ __('Purge IDS Log') }}</a></li>
-            </ul>
-        </div>
+        <ul class="nav nav-modulelinks">
+            <li class="nav-item">
+                <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file') }}" class="nav-link"><i class="fa fa-download"></i> {{ __('Export IDS Log') }}</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}" class="nav-link"><i class="fa fa-trash-alt"></i> {{ __('Purge IDS Log') }}</a>
+            </li>
+        </ul>
 
         {% if logEntries|length > 0 %}
             {% form_theme filterForm with [
@@ -21,10 +23,8 @@
             ] %}
             {{ form_start(filterForm, {attr: {id: 'zikulaSecurityCenterModuleIdsLogFilterForm', class: 'navbar-form', role: 'navigation'}}) }}
             {{ form_errors(filterForm) }}
-
             <fieldset>
                 <legend>{{ __('Filter') }}</legend>
-
                 {{ form_row(filterForm.username) }}
                 {{ form_row(filterForm.name) }}
                 {{ form_row(filterForm.tag) }}
@@ -32,12 +32,10 @@
                 {{ form_row(filterForm.page) }}
                 {{ form_row(filterForm.ip) }}
                 {{ form_row(filterForm.impact) }}
-
                 {% if filter.uid or filter.name or filter.tag or filter.value or filter.page or filter.ip or filter.impact %}
                     <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{{ __('Clear filter') }}"><i class="fa fa-times"></i></a>
                 {% endif %}
             </fieldset>
-
             {{ form_end(filterForm) }}
 
             <table class="table table-bordered table-striped">
@@ -100,7 +98,7 @@
                             <td headers="hImpact">{{ event.impact }}</td>
                             <td headers="hFilters">
                             {% for filter in event.filters %}
-                                <a id="f_{{ event.id }}_{{ loop.index }}" href="#f_{{ event.id }}_{{ loop.index }}_content" title="{{ __f('PHPIDS filter %s', { '%s': filter.id }) }}" class="eventfilter">{{ filter.id }}</a>{% if not loop.last %}, {% endif %}
+                                <a id="f_{{ event.id }}_{{ loop.index }}" href="#f_{{ event.id }}_{{ loop.index }}_content" title="{{ __f('PHPIDS filter %s', {'%s': filter.id}) }}" class="eventfilter">{{ filter.id }}</a>{% if not loop.last %}, {% endif %}
                                 <div id="f_{{ event.id }}_{{ loop.index }}_content" style="display: none">
                                     <p><strong>{{ __('Impact') }}:</strong> {{ filter.impact }}</p>
                                     <p><strong>{{ __('Description') }}:</strong> {{ filter.description }}</p>
@@ -110,14 +108,14 @@
                             </td>
                             <td headers="hDate">{{ event.date|format_date('medium') }}</td>
                             <td headers="hActions" class="text-right">
-                                <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', { id: event.id, token: csrfToken }) }}"><i class="fa fa-times"></i></a>
+                                <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', {id: event.id, token: csrfToken}) }}"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
         {% else %}
-            <p>{{ __('No logged intrusions found.') }}</p>
+            <p class="alert alert-info text-center">{{ __('No logged intrusions found.') }}</p>
         {% endif %}
         {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulasecuritycentermodule_idslog_view'}) }}
     </div>

@@ -85,8 +85,8 @@ class ExtensionsExtension extends AbstractExtension
                 break;
         }
 
-        $newVersionString = (Constant::STATE_UPGRADED === $extensionEntity->getState()) ? '&nbsp;<span class="label label-warning">' . $upgradedExtensions[$extensionEntity->getName()] . '</span>' : null;
+        $newVersionString = (Constant::STATE_UPGRADED === $extensionEntity->getState()) ? '&nbsp;<span class="badge badge-warning">' . $upgradedExtensions[$extensionEntity->getName()] . '</span>' : null;
 
-        return '<span class="label label-' . $statusclass . '">' . $status . '</span>' . $newVersionString;
+        return '<span class="badge badge-' . $statusclass . '">' . $status . '</span>' . $newVersionString;
     }
 }

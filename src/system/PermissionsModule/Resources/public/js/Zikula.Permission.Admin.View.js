@@ -16,7 +16,7 @@ var currentDelete;
         };
         $sortable.sortable({
             helper: fixHelper,
-            items: 'tr:not(.warning)',
+            items: 'tr:not(.table-warning)',
             update: function (event, ui) {
                 var parameters = [];
                 $('#permission-list > tbody > tr').each(function () {
@@ -195,32 +195,20 @@ var currentDelete;
             var component = $('#zikulapermissionsmodule_filterlist_filterComponent').val();
 
             // toggle warnings
-            if (group === -1) {
-                $('#filter-warning-group').hide();
-            } else {
-                $('#filter-warning-group').show();
-            }
-            if (component === "-1") {
-                $('#filter-warning-component').hide();
-            } else {
-                $('#filter-warning-component').show();
-            }
+            $('#filter-warning-group').toggleClass('d-none', group == '-1');
+            $('#filter-warning-component').toggleClass('d-none', component == '-1');
 
             $('#permission-list > tbody > tr').each(function () {
                 var $this = $(this);
                 var pid = $this.data('id');
                 var show = true;
-                if (group !== -1 && group !== $('#permission-group-' + pid).data('id')) {
+                if (group != '-1' && group != $('#permission-group-' + pid).data('id')) {
                     show = false;
                 }
-                if (component !== "-1" && $('#permission-component-' + pid).text().indexOf(component) === -1) {
+                if (component != '-1' && $('#permission-component-' + pid).text().indexOf(component) == -1) {
                     show = false;
                 }
-                if (show) {
-                    $this.show();
-                } else {
-                    $this.hide();
-                }
+                $this.toggleClass('d-none', !show);
             });
         });
 
