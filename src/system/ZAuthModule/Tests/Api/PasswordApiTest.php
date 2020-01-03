@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\ZAuthModule\Tests\Api;
 
+use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
 use Zikula\ZAuthModule\Api\PasswordApi;
@@ -84,7 +85,7 @@ class PasswordApiTest extends TestCase
      */
     public function testGetHashedPasswordOnUndefined(): void
     {
-        $this->expectException(\ErrorException::class);
+        $this->expectException(Notice::class);
         $hashedPass = $this->api->getHashedPassword('12345678', 2); // 2 is not a defined algorithm
     }
 

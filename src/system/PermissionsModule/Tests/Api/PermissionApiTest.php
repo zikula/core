@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule\Tests\Api;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -186,18 +187,9 @@ class PermissionApiTest extends TestCase
      */
     public function testAccessLevelException(): void
     {
-//        $this->expectException(\ErrorException::class);
+        $this->expectException(Notice::class);
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $api->accessLevelNames(99);
-    }
-
-    public function testArrayKeyUndefined(): void
-    {
-        $a = [1 => 'a', 2 => 'b', 3 => 'c'];
-        $this->assertEquals('a', $a[1]);
-        $this->assertEquals('c', $a[3]);
-//        $this->expectException(\ErrorException::class);
-        $b = $a[99];
     }
 
     public function permProvider(): array
