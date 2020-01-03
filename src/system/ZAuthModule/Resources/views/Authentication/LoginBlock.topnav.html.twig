@@ -12,7 +12,7 @@
         {{ form_errors(form) }}
         {{ form_widget(attribute(form, loginField|default('uname'))) }}
         {{ form_widget(form.pass) }}
-        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+        <button type="button" class="btn btn-success dropdown-toggle ml-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
         {{ form_widget(form.submit) }}
         <ul class="dropdown-menu">
             {% if getModVar('ZConfig', 'seclevel') == 'high' %}
