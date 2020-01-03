@@ -17,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 use Zikula\SearchModule\Form\Type\ConfigType;
@@ -35,8 +36,11 @@ class ConfigController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    public function configAction(Request $request, SearchableModuleCollector $collector): array
-    {
+    public function configAction(
+        Request $request,
+        ZikulaHttpKernelInterface $kernel,
+        SearchableModuleCollector $collector
+    ): array {
         // Security check
         if (!$this->hasPermission('ZikulaSearchModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -48,7 +52,7 @@ class ConfigController extends AbstractController
         // get Core-2.0 type searchable modules and add to array
         $searchableModules = $collector->getAll();
         foreach (array_keys($searchableModules) as $searchableModuleName) {
-            $displayName = $this->get('kernel')->getModule($searchableModuleName)->getMetaData()->getDisplayName();
+            $displayName = $kernel->getModule($searchableModuleName)->getMetaData()->getDisplayName();
             $plugins[$displayName] = $searchableModuleName;
         }
 

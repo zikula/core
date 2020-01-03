@@ -56,6 +56,7 @@ class AccountController extends AbstractController
      */
     public function lostUserNameAction(
         Request $request,
+        RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
         VariableApiInterface $variableApi,
@@ -86,7 +87,7 @@ class AccountController extends AbstractController
             } else {
                 $hasRegistration = $variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED);
                 if ($hasRegistration) {
-                    $this->addFlash('error', $this->__('A user with this address does not exist at this site.') . ' ' . $this->__f('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $this->get('router')->generate('zikulausersmodule_registration_register')]));
+                    $this->addFlash('error', $this->__('A user with this address does not exist at this site.') . ' ' . $this->__f('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $router->generate('zikulausersmodule_registration_register')]));
                 } else {
                     $this->addFlash('error', $this->__('A user with this address does not exist at this site.'));
                 }
@@ -106,6 +107,7 @@ class AccountController extends AbstractController
      */
     public function lostPasswordAction(
         Request $request,
+        RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository,
         AuthenticationMappingRepositoryInterface $authenticationMappingRepository,
@@ -171,7 +173,7 @@ class AccountController extends AbstractController
             } else {
                 $hasRegistration = $variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED);
                 if ($hasRegistration) {
-                    $this->addFlash('error', $this->__f('A user with this %s does not exist at this site.', ['%s' => $map[$field]]) . ' ' . $this->__f('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $this->get('router')->generate('zikulausersmodule_registration_register')]));
+                    $this->addFlash('error', $this->__f('A user with this %s does not exist at this site.', ['%s' => $map[$field]]) . ' ' . $this->__f('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $router->generate('zikulausersmodule_registration_register')]));
                 } else {
                     $this->addFlash('error', $this->__f('A user with this %s does not exist at this site.', ['%s' => $map[$field]]));
                 }
@@ -287,6 +289,7 @@ class AccountController extends AbstractController
      */
     public function changeEmailAction(
         Request $request,
+        RouterInterface $router,
         CurrentUserApiInterface $currentUserApi,
         UserVerificationRepositoryInterface $userVerificationRepository,
         PasswordApiInterface $passwordApi,
@@ -307,7 +310,7 @@ class AccountController extends AbstractController
                 'uname'    => $currentUserApi->get('uname'),
                 'email'    => $currentUserApi->get('email'),
                 'newemail' => $data['email'],
-                'url'      => $this->get('router')->generate('zikulazauthmodule_account_confirmchangedemail', ['code' => $code], RouterInterface::ABSOLUTE_URL),
+                'url'      => $router->generate('zikulazauthmodule_account_confirmchangedemail', ['code' => $code], RouterInterface::ABSOLUTE_URL),
             ];
             $sent = $mailHelper->sendNotification($data['email'], 'userverifyemail', $templateArgs);
             if ($sent) {

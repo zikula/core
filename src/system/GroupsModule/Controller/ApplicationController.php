@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
@@ -47,8 +48,12 @@ class ApplicationController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
-    public function adminAction(Request $request, string $action, GroupApplicationEntity $groupApplicationEntity)
-    {
+    public function adminAction(
+        Request $request,
+        string $action,
+        GroupApplicationEntity $groupApplicationEntity,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -67,11 +72,11 @@ class ApplicationController extends AbstractController
                 if ('accept' === $action) {
                     $groupApplicationEntity->getUser()->addGroup($groupApplicationEntity->getGroup());
                     $addUserEvent = new GenericEvent(['gid' => $groupApplicationEntity->getGroup()->getGid(), 'uid' => $groupApplicationEntity->getUser()->getUid()]);
-                    $this->get('event_dispatcher')->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
+                    $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
                 }
                 $this->getDoctrine()->getManager()->flush();
                 $applicationProcessedEvent = new GenericEvent($groupApplicationEntity, $formData);
-                $this->get('event_dispatcher')->dispatch($applicationProcessedEvent, GroupEvents::GROUP_APPLICATION_PROCESSED);
+                $eventDispatcher->dispatch($applicationProcessedEvent, GroupEvents::GROUP_APPLICATION_PROCESSED);
                 $this->addFlash('success', $this->__f('Application processed (%action %user)', ['%action' => $action, '%user' => $groupApplicationEntity->getUser()->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -100,6 +105,7 @@ class ApplicationController extends AbstractController
     public function createAction(
         Request $request,
         GroupEntity $group,
+        EventDispatcherInterface $eventDispatcher,
         GroupApplicationRepository $applicationRepository,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
@@ -139,7 +145,7 @@ class ApplicationController extends AbstractController
                 $this->getDoctrine()->getManager()->persist($groupApplicationEntity);
                 $this->getDoctrine()->getManager()->flush();
                 $newApplicationEvent = new GenericEvent($groupApplicationEntity);
-                $this->get('event_dispatcher')->dispatch($newApplicationEvent, GroupEvents::GROUP_NEW_APPLICATION);
+                $eventDispatcher->dispatch($newApplicationEvent, GroupEvents::GROUP_NEW_APPLICATION);
                 $this->addFlash('status', $this->__('Done! The application has been sent. You will be notified by email when the application is processed.'));
             }
             if ($form->get('cancel')->isClicked()) {

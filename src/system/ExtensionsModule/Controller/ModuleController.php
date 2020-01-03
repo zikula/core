@@ -65,6 +65,7 @@ class ModuleController extends AbstractController
      */
     public function viewModuleListAction(
         Request $request,
+        EventDispatcherInterface $eventDispatcher,
         ExtensionRepositoryInterface $extensionRepository,
         BundleSyncHelper $bundleSyncHelper,
         RouterInterface $router,
@@ -77,7 +78,7 @@ class ModuleController extends AbstractController
         if (!empty($modulesJustInstalled)) {
             // notify the event dispatcher that new routes are available (ids of modules just installed avail as args)
             $event = new GenericEvent(null, json_decode($modulesJustInstalled));
-            $this->get('event_dispatcher')->dispatch($event, self::NEW_ROUTES_AVAIL);
+            $eventDispatcher->dispatch($event, self::NEW_ROUTES_AVAIL);
         }
 
         $sortableColumns = new SortableColumns($router, 'zikulaextensionsmodule_module_viewmodulelist');
@@ -86,7 +87,7 @@ class ModuleController extends AbstractController
 
         $upgradedExtensions = [];
         $vetoEvent = new GenericEvent();
-        $this->get('event_dispatcher')->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
+        $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (1 === $pos && !$vetoEvent->isPropagationStopped()) {
             // regenerate the extension list only when viewing the first page
             $extensionsInFileSystem = $bundleSyncHelper->scanForBundles();
@@ -219,6 +220,7 @@ class ModuleController extends AbstractController
      */
     public function modifyAction(
         Request $request,
+        ZikulaHttpKernelInterface $kernel,
         ExtensionEntity $extension,
         CacheClearer $cacheClearer,
         bool $forceDefaults = false
@@ -228,7 +230,7 @@ class ModuleController extends AbstractController
         }
 
         /** @var AbstractBundle $bundle */
-        $bundle = $this->get('kernel')->getModule($extension->getName());
+        $bundle = $kernel->getModule($extension->getName());
         $metaData = $bundle->getMetaData()->getFilteredVersionInfoArray();
 
         if ($forceDefaults) {
@@ -299,6 +301,7 @@ class ModuleController extends AbstractController
         Request $request,
         ExtensionEntity $extension,
         string $token,
+        ZikulaHttpKernelInterface $kernel,
         ExtensionRepositoryInterface $extensionRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
@@ -314,7 +317,7 @@ class ModuleController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        if (!$this->get('kernel')->isBundle($extension->getName())) {
+        if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
             $cacheClearer->clear('symfony');
 
@@ -467,6 +470,7 @@ class ModuleController extends AbstractController
         Request $request,
         ExtensionEntity $extension,
         string $token,
+        ZikulaHttpKernelInterface $kernel,
         BlockRepositoryInterface $blockRepository,
         ExtensionHelper $extensionHelper,
         ExtensionStateHelper $extensionStateHelper,
@@ -484,7 +488,7 @@ class ModuleController extends AbstractController
         if (Constant::STATE_MISSING === $extension->getState()) {
             throw new RuntimeException($this->__('Error! The requested extension cannot be uninstalled because its files are missing!'));
         }
-        if (!$this->get('kernel')->isBundle($extension->getName())) {
+        if (!$kernel->isBundle($extension->getName())) {
             $extensionStateHelper->updateState($extension->getId(), Constant::STATE_TRANSITIONAL);
             $cacheClearer->clear('symfony');
         }

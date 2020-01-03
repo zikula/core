@@ -21,6 +21,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
@@ -50,6 +51,7 @@ class ConfigController extends AbstractController
      */
     public function configAction(
         Request $request,
+        RouterInterface $router,
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
@@ -289,7 +291,7 @@ class ConfigController extends AbstractController
                 if (true === $causeLogout) {
                     $accessHelper->logout();
                     $this->addFlash('status', $this->__('Session handling variables have changed. You must log in again.'));
-                    $returnPage = urlencode($this->get('router')->generate('zikulasecuritycentermodule_config_config'));
+                    $returnPage = urlencode($router->generate('zikulasecuritycentermodule_config_config'));
 
                     return $this->redirectToRoute('zikulausersmodule_access_login', ['returnUrl' => $returnPage]);
                 }
@@ -540,6 +542,7 @@ class ConfigController extends AbstractController
      */
     public function allowedhtmlAction(
         Request $request,
+        RouterInterface $router,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer
     ) {
@@ -577,7 +580,7 @@ class ConfigController extends AbstractController
         return [
             'htmlEntities' => $variableApi->getSystemVar('htmlentities'),
             'htmlPurifier' => 1 === $variableApi->getSystemVar('outputfilter'),
-            'configUrl' => $this->get('router')->generate('zikulasecuritycentermodule_config_config'),
+            'configUrl' => $router->generate('zikulasecuritycentermodule_config_config'),
             'htmlTags' => $htmlTags,
             'currentHtmlTags' => $variableApi->getSystemVar('AllowableHTML')
         ];

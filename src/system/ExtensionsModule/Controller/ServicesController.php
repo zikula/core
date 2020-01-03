@@ -16,6 +16,7 @@ namespace Zikula\ExtensionsModule\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -35,7 +36,7 @@ class ServicesController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
-    public function moduleServicesAction(string $moduleName): array
+    public function moduleServicesAction(EventDispatcherInterface $eventDispatcher, string $moduleName): array
     {
         if (!$this->hasPermission($moduleName . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -43,7 +44,7 @@ class ServicesController extends AbstractController
 
         // notify EVENT here to gather any system service links
         $event = new GenericEvent(null, ['modname' => $moduleName]);
-        $this->get('event_dispatcher')->dispatch($event, 'module_dispatch.service_links');
+        $eventDispatcher->dispatch($event, 'module_dispatch.service_links');
         $sublinks = $event->getData();
 
         return [

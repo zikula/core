@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
@@ -38,9 +39,13 @@ class VarController extends AbstractController
      *
      * @throws InvalidArgumentException if theme type is not twig-based
      */
-    public function varAction(Request $request, VariableApiInterface $variableApi, string $themeName)
-    {
-        $themeBundle = $this->get('kernel')->getBundle($themeName);
+    public function varAction(
+        Request $request,
+        VariableApiInterface $variableApi,
+        ZikulaHttpKernelInterface $kernel,
+        string $themeName
+    ) {
+        $themeBundle = $kernel->getBundle($themeName);
         $themeVarsPath = $themeBundle->getConfigPath() . '/variables.yml';
         if (!file_exists($themeVarsPath)) {
             $this->addFlash('warning', $this->__f('%theme% has no configuration.', ['%theme%' => $themeName]));

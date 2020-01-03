@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
@@ -118,8 +119,10 @@ class GroupController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't permissions to add any groups
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(
+        Request $request,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', '::', ACCESS_ADD)) {
             throw new AccessDeniedException();
         }
@@ -131,7 +134,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->getDoctrine()->getManager()->persist($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_CREATE);
+                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_CREATE);
                 $this->addFlash('status', $this->__('Done! Created the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -156,8 +159,11 @@ class GroupController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't permissions to edit any groups
      */
-    public function editAction(Request $request, GroupEntity $groupEntity)
-    {
+    public function editAction(
+        Request $request,
+        GroupEntity $groupEntity,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', $groupEntity->getGid() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
@@ -169,7 +175,7 @@ class GroupController extends AbstractController
                 $groupEntity = $form->getData();
                 $this->getDoctrine()->getManager()->persist($groupEntity); // this isn't technically required
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_UPDATE);
+                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_UPDATE);
                 $this->addFlash('status', $this->__('Done! Updated the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -194,8 +200,11 @@ class GroupController extends AbstractController
      * @return array|RedirectResponse
      * @throws AccessDeniedException Thrown if the user hasn't permissions to delete any groups
      */
-    public function removeAction(Request $request, GroupEntity $groupEntity)
-    {
+    public function removeAction(
+        Request $request,
+        GroupEntity $groupEntity,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         if (!$this->hasPermission('ZikulaGroupsModule::', $groupEntity->getGid() . '::', ACCESS_DELETE)) {
             throw new AccessDeniedException();
         }
@@ -220,10 +229,10 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
                 $groupEntity = $form->getData();
-                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_PRE_DELETE);
+                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_PRE_DELETE);
                 $this->getDoctrine()->getManager()->remove($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
-                $this->get('event_dispatcher')->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_DELETE);
+                $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_DELETE);
                 $this->addFlash('status', $this->__('Done! Group deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));

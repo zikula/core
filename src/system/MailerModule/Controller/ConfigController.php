@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
@@ -42,6 +43,7 @@ class ConfigController extends AbstractController
      */
     public function configAction(
         Request $request,
+        ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper
     ): array {
@@ -51,7 +53,7 @@ class ConfigController extends AbstractController
 
         $form = $this->createForm(ConfigType::class,
             $this->getDataValues($variableApi, $configDumper), [
-                'charset' => $this->get('kernel')->getCharset()
+                'charset' => $kernel->getCharset()
             ]
         );
         $form->handleRequest($request);
