@@ -58,6 +58,7 @@ disabled:
   - unalign_equals
 
 finder:
-  exclude:
+  not-path:
     - "src/system/RoutesModule"
+  not-name:
     - "src/system/BlocksModule/Api/BlockFilterApi.php"
