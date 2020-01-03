@@ -39,7 +39,6 @@
                 }
             }
         });
-        // end config
 
         // Tree interaction
         treeElem.on('move_node.jstree', moveTreeNode);
@@ -281,14 +280,14 @@
             }
             var deleteModal = $('#deleteModal');
             // hide all buttons
-            deleteModal.find('.modal-footer button').hide();
-            $('#node_cancel').show();
+            deleteModal.find('.modal-footer button').addClass('d-none');
+            $('#node_cancel').removeClass('d-none');
 
             if (childrenCount > 0) {
-                $('#node_delete_all').show();
-                $('#node_delete_move').show();
+                $('#node_delete_all').removeClass('d-none');
+                $('#node_delete_move').removeClass('d-none');
             } else {
-                $('#node_delete').show();
+                $('#node_delete').removeClass('d-none');
                 deleteModal.find('.modal-dialog').removeClass('modal-lg');
             }
 
@@ -302,10 +301,10 @@
                         deleteModal.modal('hide');
                         break;
                     case 'DeleteAndMove':
-                        $('#node_delete_all').hide();
-                        $('#categorySelector').show();
-                        $('#node_delete_move_action').show();
-                        $(this).hide();
+                        $('#node_delete_all').addClass('d-none');
+                        $('#categorySelector').removeClass('d-none');
+                        $('#node_delete_move_action').removeClass('d-none');
+                        $(this).addClass('d-none');
                         break;
                     case 'DeleteAndMoveAction':
                         // utilize new parent to perform delete and move operation
@@ -322,7 +321,7 @@
 
             deleteModal.modal();
             deleteModal.on('hidden.bs.modal', function (e) {
-                $('#categorySelector').hide();
+                $('#categorySelector').addClass('d-none');
                 $(this).find('.modal-dialog').addClass('modal-lg');
                 $('#button-spinner').remove();
             });
@@ -330,7 +329,7 @@
         }
 
         function openEditForm(data, callback) {
-            $('#form_container').show();
+            $('#form_container').removeClass('d-none');
             var editModal = $('#editModal');
             editModal.find('.modal-footer button').unbind('click').click(callback);
 
@@ -339,7 +338,7 @@
         }
 
         function updateEditForm(data) {
-            $('#form_container').replaceWith(data).show();
+            $('#form_container').replaceWith(data).removeClass('d-none');
         }
 
         function closeEditForm() {
@@ -366,7 +365,7 @@
         function redrawTree(treeElem) {
             // treeElem
             // // hide folder icons for leaf nodes
-            //     .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
+            //     .find('a.jstree-anchor.leaf > i.fa-folder').addClass('d-none').end()
             // // use folder-open icon for already open nodes
             //     .find('li.jstree-open > a.z-tree-fixedparent > i.fa-folder').removeClass('fa-folder').addClass('fa-folder-open');
         }

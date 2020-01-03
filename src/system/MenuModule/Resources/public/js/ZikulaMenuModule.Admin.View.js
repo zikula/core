@@ -218,9 +218,9 @@
         function getDeleteMenuAction(node) {
             var childrenCount = node.children.length;
             if (childrenCount > 0) {
-                var info = Translator.__f('It contains %amount direct children.', {'%amount': childrenCount})
+                var info = Translator._fn('It contains %count% direct child.', 'It contains %count% direct children.', childrenCount, {count: childrenCount})
                     + ' '
-                    + Translator.__("Please choose what to do with this item's children.");
+                    + Translator._n("Please choose what to do with this item's child.", "Please choose what to do with this item's children.", childrenCount);
                 $('#deleteWithChildrenInfo').addClass('alert alert-warning').text(info);
             } else {
                 $('#deleteWithChildrenInfo').removeClass('alert alert-warning').text('');

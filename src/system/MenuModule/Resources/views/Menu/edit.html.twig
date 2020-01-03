@@ -16,7 +16,6 @@
                         <li class="form-inline">{{ form_widget(keyValuePair.key) }} {{ form_widget(keyValuePair.value) }}&nbsp;&nbsp;<a href="#" class="delete-option fa fa-trash-alt fa-lg text-danger"></a></li>
                     {% endblock %}
                 {% endfor %}
-                <li style="display:none">{{ form_row(form.options) }}</li><!-- hack to hide repeated display of options label -->
             </ul>
             <div class="alert alert-info">{{ __('Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.') }}</div>
             <a href="#" id="add-option" class="btn btn-default btn-sm fa fa-plus"> {{ __('Add Option') }}</a>

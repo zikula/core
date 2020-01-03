@@ -1,12 +1,12 @@
 {% form_theme categorySelector with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
 ] %}
 {{ pageAddAsset('javascript', asset('jstree/dist/jstree.min.js')) }}
 {{ pageAddAsset('stylesheet', asset('jstree/dist/themes/default/style.min.css')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.List.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js')) }}
 {% set customStyle %}
-    <style type="text/css">
+    <style>
         .jstree-contextmenu {
             z-index: 100;
         }
@@ -32,7 +32,7 @@
 
 <div class="btn-toolbar" role="toolbar" aria-label="category button toolbar">
     <div class="btn-group btn-group-sm" role="group" aria-label="category buttons">
-        <button type="button" class="btn btn-info btn-disabled" disabled><i class="fa fa-tree"></i></button>
+        <button type="button" class="btn btn-info btn-disabled" disabled="disabled"><i class="fa fa-tree"></i></button>
         <button type="button" id="catExpand" class="btn btn-info"><i class="fa fa-expand"></i> {{ __('Expand') }}</button>
         <button type="button" id="catCollapse"class="btn btn-info"><i class="fa fa-compress"></i> {{ __('Collapse') }}</button>
     </div>
@@ -49,8 +49,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">{{ __('Edit category') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="editModalLabel">{{ __('Edit category') }}</h4>
             </div>
             <div class="modal-body">
             </div>
@@ -65,23 +65,22 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">{{ __('Confirmation prompt') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('Close') }}"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="deleteModalLabel">{{ __('Confirmation prompt') }}</h4>
             </div>
             <div class="modal-body">
                 <p>{{ __('Do you really want to delete this category?') }}
                 <p id="deleteWithChildrenInfo"></p>
-                <div id="categorySelector" class="collapse">{{ form(categorySelector) }}{{ form_widget(categorySelector.category) }}{{ form_end(categorySelector) }}</div>
+                <div id="categorySelector" class="collapse">{{ form_start(categorySelector) }}{{ form_widget(categorySelector.category) }}{{ form_end(categorySelector) }}</div>
             </div>
             <div class="modal-footer">
-                <button type="button" id='node_delete' value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {{ __('Delete') }}</button>
-                <button type="button" id='node_delete_all' value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {{ __('Delete all sub-categories') }}</button>
-                <button type="button" id='node_delete_move' value="DeleteAndMove" class="btn btn-success"><i class="fa fa-arrow-circle-right"></i> {{ __('Move all sub-categories') }}</button>
-                <button type="button" id='node_delete_move_action' value="DeleteAndMoveAction" class="btn btn-success"><i class="fa fa-trash-alt"></i> <i class="fa fa-arrow-circle-right"></i> {{ __('Move and delete') }}</button>
-                <button type="button" id='node_cancel' value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
+                <button type="button" id="node_delete" value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {{ __('Delete') }}</button>
+                <button type="button" id="node_delete_all" value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {{ __('Delete all sub-categories') }}</button>
+                <button type="button" id="node_delete_move" value="DeleteAndMove" class="btn btn-success"><i class="fa fa-arrow-circle-right"></i> {{ __('Move all sub-categories') }}</button>
+                <button type="button" id="node_delete_move_action" value="DeleteAndMoveAction" class="btn btn-success"><i class="fa fa-trash-alt"></i> <i class="fa fa-arrow-circle-right"></i> {{ __('Move and delete') }}</button>
+                <button type="button" id="node_cancel" value="Cancel" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> {{ __('Cancel') }}</button>
             </div>
         </div>
     </div>
 </div>
-
 {{ adminFooter() }}

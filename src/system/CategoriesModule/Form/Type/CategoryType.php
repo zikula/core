@@ -68,10 +68,12 @@ class CategoryType extends AbstractType
             ])
             ->add('is_locked', CheckboxType::class, [
                 'label' => $this->__('Category is locked'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('is_leaf', CheckboxType::class, [
                 'label' => $this->__('Category is a leaf node'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add($builder->create('value', TextType::class, [
@@ -80,6 +82,7 @@ class CategoryType extends AbstractType
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('status', CheckboxType::class, [
                 'label' => $this->__('Active'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('display_name', CollectionType::class, [

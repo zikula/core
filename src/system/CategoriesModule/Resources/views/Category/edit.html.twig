@@ -5,6 +5,7 @@
 ] %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
+{% set currentLocale = app.request.locale|default('en') %}
 <fieldset>
     <legend>{{ __('Basic properties') }}</legend>
     {{ form_row(form.name) }}
@@ -19,12 +20,14 @@
     <div class="zikula-bootstrap-tab-container">
         <ul class="nav nav-tabs" role="tablist">
             {% for name, code in locales %}
-                <li role="presentation"{% if code == app.request.locale %} class="active"{% endif %}><a href="#{{ code }}" aria-controls="{{ code }}" role="tab" data-toggle="tab">{{ name }}</a></li>
+                <li class="nav-item">
+                    <a href="#{{ code }}" aria-controls="{{ code }}" role="tab" data-toggle="tab" class="nav-link{% if code == currentLocale %} active{% endif %}">{{ name }}</a>
+                </li>
             {% endfor %}
         </ul>
         <div class="tab-content">
             {% for name, code in locales %}
-                <div role="tabpanel" class="tab-pane{% if code == app.request.locale %} active{% endif %}" id="{{ code }}">
+                <div role="tabpanel" class="tab-pane{% if code == currentLocale %} show active{% endif %}" id="{{ code }}">
                     {{ form_row(form.display_name[code], {label: form.display_name.vars.label ~ ' (' ~ code ~ ')' }) }}
                     {{ form_row(form.display_desc[code], {label: form.display_desc.vars.label ~ ' (' ~ code ~ ')' }) }}
                 </div>
@@ -57,13 +60,10 @@
                     <td headers="hActions"><a href="#" class="category_attributes_remove" title="{{ __('Delete') }}"><i class="fa fa-minus-square fa-lg text-danger"></i></a></td>
                 </tr>
             {% endfor %}
-            <div class="hidden">{# hack to hide 'leftover' label #}{{ form_row(form.attributes) }}</div>
             </tbody>
         </table>
     </div>
 </fieldset>
-
-{{ form_row(form.attributes) }}
 {{ form_end(form) }}
 <script>
     {# used in @ZikulaCategoriesModule:js/ZikulaCategoriesModule.Category.Edit.js #}
