@@ -73,7 +73,7 @@ class GroupEntity extends EntityAccess
 
     /**
      * @ORM\ManyToMany(targetEntity="Zikula\UsersModule\Entity\UserEntity", mappedBy="groups", indexBy="uid")
-     * @ORM\JoinTable(
+     * @ORM\JoinTable(name="group_membership",
      *      joinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")}
      *      )
