@@ -49,10 +49,9 @@
             <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</td>
         </tr>
     {% else %}
-        <p class="alert alert-warning">{{ __('There are currently no groups that can be joined.') }}</p>
+        <tr class="table-info"><td colspan="7" class="text-center">{{ __('There are currently no groups that can be joined.') }}</td></tr>
     {% endfor %}
     </tbody>
 </table>
-
 {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_list'}) }}
 {{ moduleFooter() }}

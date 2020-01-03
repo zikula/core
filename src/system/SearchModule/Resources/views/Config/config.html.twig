@@ -13,7 +13,6 @@
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
-
         <fieldset>
             <legend>{{ __('General settings') }}</legend>
             {{ form_row(form.itemsperpage) }}
@@ -26,19 +25,18 @@
         <fieldset>
             <legend>OpenSearch</legend>
             <p class="alert alert-info">
-                {{ __f('%linkStart OpenSearch %linkEnd makes it possible for your site\'s users to use your site\'s search function as a search engine.', {'%linkStart': '<a href="http://en.wikipedia.org/wiki/OpenSearch">', '%linkEnd': '</a>'})|raw }}
+                {{ __f('%linkStart OpenSearch %linkEnd makes it possible for your site\'s users to use your site\'s search function as a search engine.', {'%linkStart': '<a href="https://en.wikipedia.org/wiki/OpenSearch">', '%linkEnd': '</a>'})|raw }}
             </p>
             {{ form_row(form.opensearch_enabled) }}
             {{ form_row(form.opensearch_adult_content) }}
         </fieldset>
 
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
-
         {{ form_end(form) }}
     </div>
 </div>

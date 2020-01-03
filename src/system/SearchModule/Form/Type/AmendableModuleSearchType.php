@@ -57,7 +57,7 @@ class AmendableModuleSearchType extends AbstractType
 
         $builder->add('active', CheckboxType::class, [
             'label' => $this->__('Active'),
-            'label_attr' => ['class' => 'checkbox-inline'],
+            'label_attr' => ['class' => 'switch-custom'],
             'required' => false,
             'data' => $options['active']
         ]);

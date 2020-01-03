@@ -67,6 +67,8 @@
                             {% endfor %}
                         </td>
                     </tr>
+                {% else %}
+                    <tr class="table-info"><td colspan="3" class="text-center">{{ __('No items found.') }}</td></tr>
                 {% endfor %}
                 </tbody>
             </table>

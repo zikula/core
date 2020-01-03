@@ -56,14 +56,17 @@ class ConfigType extends AbstractType
             ])
             ->add('hideclosed', CheckboxType::class, [
                 'label' => $this->__('Hide closed groups'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('hidePrivate', CheckboxType::class, [
                 'label' => $this->__('Hide private groups'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('mailwarning', CheckboxType::class, [
                 'label' => $this->__('Receive e-mail alert when there are new applicants'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('save', SubmitType::class, [

@@ -58,7 +58,7 @@ class ConfigType extends AbstractType
             ])
             ->add('plugins', ChoiceType::class, [
                 'label' => $this->__('Disabled plugins'),
-                'label_attr' => ['class' => 'checkbox-inline'],
+                'label_attr' => ['class' => 'checkbox-custom'],
                 'choices' => $options['plugins'],
                 'expanded' => true,
                 'multiple' => true,
@@ -66,10 +66,12 @@ class ConfigType extends AbstractType
             ])
             ->add('opensearch_enabled', CheckboxType::class, [
                 'label' => $this->__('Enable OpenSearch'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('opensearch_adult_content', CheckboxType::class, [
                 'label' => $this->__('This page contains adult content'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('save', SubmitType::class, [

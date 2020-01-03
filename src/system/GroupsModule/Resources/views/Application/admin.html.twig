@@ -14,21 +14,21 @@
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
-
         <fieldset>
-            <legend>{{ __f('%action application for %user to %group group', {"%action":action|capitalize, "%user":"<strong>"~application.user.uname~"</strong>", "%group":"<strong>"~application.group.name~"</strong>"})|raw }}</legend>
-            <div class="alert alert-info"><h4>{{ __('Application comments') }}</h4>{{ application.application }}</div>
+            <legend>{{ __f('%action application for %user to %group group', {'%action': action|capitalize, '%user': '<strong>' ~ application.user.uname ~ '</strong>', '%group': '<strong>' ~ application.group.name ~ '</strong>'})|raw }}</legend>
+            <div class="alert alert-info">
+                <h4>{{ __('Application comments') }}</h4>
+                {{ application.application }}
+            </div>
             {{ form_row(form.sendtag) }}
             {{ form_row(form.reason) }}
         </fieldset>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
-
         {{ form_end(form) }}
     </div>
 </div>

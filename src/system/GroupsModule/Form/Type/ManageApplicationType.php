@@ -56,11 +56,13 @@ class ManageApplicationType extends AbstractType
             ])
             ->add('sendtag', ChoiceType::class, [
                 'label' => $this->__('Notification type'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'data' => 1,
                 'choices' => [
                     $this->__('None') => 0,
                     $this->__('E-mail') => 1
                 ],
+                'expanded' => true
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'deny' === $options['data']['theAction'] ? $this->__('Deny') : $this->__('Accept'),

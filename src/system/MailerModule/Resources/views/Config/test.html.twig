@@ -37,8 +37,8 @@
 
         {{ notifyDisplayHooks(eventName='mailer.ui_hooks.htmlmail.form_edit', id=null) }}
 
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.test) }}
                 {{ form_widget(form.cancel) }}
             </div>

@@ -1,19 +1,18 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
     <legend>{{ __('Search') }}</legend>
     {{ form_widget(form.q) }}
-    <div class="hidden">
+    <div class="d-none">
         {{ form_row(form.searchType) }}
         {{ form_row(form.searchOrder) }}
         {{ form_row(form.modules) }}
     </div>
-    {% if not properties.displaySearchBtn %}<div class="hidden">{% endif %}
+    {% if not properties.displaySearchBtn %}<div class="d-none">{% endif %}
         {{ form_row(form.search) }}
     {% if not properties.displaySearchBtn %}</div>{% endif %}
 </fieldset>

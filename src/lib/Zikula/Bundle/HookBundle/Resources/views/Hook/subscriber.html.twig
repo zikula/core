@@ -62,7 +62,7 @@
                                     <span>
                                         {{ hookprovider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
                                     </span>
-                                    <a class="detachlink hidden" title="{{ __('Detach') }} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-times"></i></a></span>
+                                    <a class="detachlink d-none" title="{{ __('Detach') }} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-times"></i></a></span>
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ hookprovider.areasToCategories[parea] }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_i" value="{{ parea_md5 }}" />

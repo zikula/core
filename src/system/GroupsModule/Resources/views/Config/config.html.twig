@@ -13,24 +13,20 @@
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
-
         <fieldset>
             <legend>{{ __('General settings') }}</legend>
-
             {{ form_row(form.itemsperpage) }}
             {{ form_row(form.defaultgroup) }}
             {{ form_row(form.hideclosed) }}
             {{ form_row(form.hidePrivate) }}
             {{ form_row(form.mailwarning) }}
         </fieldset>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
-
         {{ form_end(form) }}
     </div>
 </div>

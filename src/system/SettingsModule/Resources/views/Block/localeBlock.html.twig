@@ -1,8 +1,8 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaSettingsModule:js/ZikulaSettingsModule.Block.locale_switcher.js')) }}
 {% form_theme form with [
-'bootstrap_3_horizontal_layout.html.twig',
+    'bootstrap_4_horizontal_layout.html.twig',
 ] %}
-{{ __('Select a locale:') }}
+<p>{{ __('Select a locale:') }}</p>
 {{ form_start(form) }}
 {{ form_widget(form.locale) }}
 {{ form_end(form) }}

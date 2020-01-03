@@ -235,14 +235,11 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
  * bootstrap tab container mods
  */
 .zikula-bootstrap-tab-container .tab-content {
-    padding: 1.5em 1em 0 0;
+    padding: 1.5em 1em 0;
     border: 1px solid #ddd;
     border-top: 0;
     margin-bottom: 1.5em;
     background-color: #fff;
-}
-.zikula-bootstrap-tab-container .nav-tabs li {
-    margin: 0 0 -1px 0;
 }
 
 .sorted-desc:after,

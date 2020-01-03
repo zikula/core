@@ -12,7 +12,7 @@
         </h3>
 
         <p class="alert alert-info">
-            {{ __f('Mailer relies on %swiftmailer', {'%swiftmailer': '<a href="http://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link-alt"></i> SwiftMailer configuration</a>'})|raw }}
+            {{ __f('Mailer relies on %swiftmailer', {'%swiftmailer': '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link-alt"></i> SwiftMailer configuration</a>'})|raw }}
         </p>
 
         {{ form_start(form) }}
@@ -44,8 +44,8 @@
             {{ form_row(form.passwordGmail) }}
         </fieldset>
 
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}
             </div>

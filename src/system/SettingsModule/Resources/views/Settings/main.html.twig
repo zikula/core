@@ -13,19 +13,20 @@
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
-
+        {% set currentLocale = app.request.locale|default('en') %}
         <fieldset>
             <legend>{{ __('Main info') }}</legend>
             <div class="zikula-bootstrap-tab-container">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for language, languageCode in languages %}
-                    <li role="presentation"{% if languageCode == app.request.locale %} class="active"{% endif %}><a href="#main-{{ languageCode|lower }}" aria-controls="main-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
+                    <li class="nav-item">
+                        <a href="#main-{{ languageCode|lower }}" aria-controls="main-{{ languageCode|lower }}" role="tab" data-toggle="tab" class="nav-link{% if languageCode == currentLocale %} active{% endif %}">{{ language }}</a>
+                    </li>
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
-                    {# Tab panes #}
                     {% for language, languageCode in languages %}
-                    <div role="tabpanel" class="tab-pane fade{% if languageCode == app.request.locale %} in active{% endif %}" id="main-{{ languageCode|lower }}">
+                    <div class="tab-pane fade{% if languageCode == currentLocale %} show active{% endif %}" id="main-{{ languageCode|lower }}">
                         {{ form_row(form['sitename_' ~ languageCode]) }}
                         {{ form_row(form['slogan_' ~ languageCode]) }}
                     </div>
@@ -35,7 +36,7 @@
             {{ form_row(form.pagetitle) }}
             {{ form_row(form.adminmail) }}
             <div class="alert alert-danger">
-                <h4 class="col-sm-offset-3 col-sm-9"><i class="fa fa-exclamation-triangle"></i> {{ __('CAUTION') }}</h4>
+                <h4 class="col-md-9 offset-md-3"><i class="fa fa-exclamation-triangle"></i> {{ __('CAUTION') }}</h4>
                 {{ form_row(form.siteoff) }}
                 <div id="settings_siteoff_container">
                     <div data-switch="zikulasettingsmodule_mainsettings[siteoff]" data-switch-value="1">
@@ -49,13 +50,14 @@
             <div class="zikula-bootstrap-tab-container">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for language, languageCode in languages %}
-                    <li role="presentation"{% if languageCode == app.request.locale %} class="active"{% endif %}><a href="#meta-{{ languageCode|lower }}" aria-controls="meta-{{ languageCode|lower }}" role="tab" data-toggle="tab">{{ language }}</a></li>
+                    <li class="nav-item">
+                        <a href="#meta-{{ languageCode|lower }}" aria-controls="meta-{{ languageCode|lower }}" role="tab" data-toggle="tab" class="nav-link{% if languageCode == currentLocale %} active{% endif %}">{{ language }}</a></li>
+                    </li>
                     {% endfor %}
                 </ul>
                 <div class="tab-content">
-                    {# Tab panes #}
                     {% for language, languageCode in languages %}
-                    <div role="tabpanel" class="tab-pane fade{% if languageCode == app.request.locale %} in active{% endif %}" id="meta-{{ languageCode|lower }}">
+                    <div class="tab-pane fade{% if languageCode == currentLocale %} show active{% endif %}" id="meta-{{ languageCode|lower }}">
                         {{ form_row(form['defaultpagetitle_' ~ languageCode]) }}
                         {{ form_row(form['defaultmetadescription_' ~ languageCode]) }}
                     </div>
@@ -79,33 +81,30 @@
             {{ form_row(form.profilemodule) }}
             {{ form_row(form.messagemodule) }}
             {{ form_row(form.ajaxtimeout) }}
-            <div class="col-sm-offset-3 col-sm-9">
-                <em>{{ __('(in milliseconds, default 5000 = 5 seconds)') }}</em>
-                <p class="help-block alert alert-info">{{ __('Notice: Increase this value if mobile appliances experience problems with using the site.') }}</p>
+            <div class="col-md-9 offset-md-3">
+                <small class="form-text text-muted">{{ __('Notice: Increase this value if mobile appliances experience problems with using the site.') }} ({{ __('default 5000 = 5 seconds') }})</small>
             </div>
         </fieldset>
         <fieldset>
             <legend>{{ __('Permalinks settings') }}</legend>
             <p class="alert alert-warning">{{ __("Notice: The following settings will rewrite your permalinks. Sometimes, international characters like 'ñ' and 'ß' may be re-encoded by your browser. Although this is technically the correct action, it may not be aesthetically pleasing.  These settings allow you to replace those characters, using a pair of comma-separated lists. The two fields below should resemble the examples provided: The first element of 'List to search for' will replace the first element in the 'List to replace with' and so on. In the example below, 'À' would be replace with 'A', and 'Á' with 'A'. If you do not want to use this feature, leave both fields blank.") }}</p>
             {{ form_row(form.permasearch) }}
-            <div class="col-sm-offset-3 col-sm-9" style="padding-bottom: .5em;">
+            <div class="col-md-9 offset-md-3 mb-3">
                 <label for="settings_permasearch_default">{{ __('Default') }}</label>
-                <input id="settings_permasearch_default" type="text" class="form-control" readonly="readonly" value="{{ __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü') }}" />
+                <input id="settings_permasearch_default" type="text" class="form-control form-control-sm" readonly="readonly" value="{{ __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü') }}" />
             </div>
             {{ form_row(form.permareplace) }}
-            <div class="col-sm-offset-3 col-sm-9">
+            <div class="col-md-9 offset-md-3 mb-3">
                 <label for="settings_permareplace_default">{{ __('Default') }}</label>
-                <input id="settings_permareplace_default" type="text" class="form-control" readonly="readonly" value="{{ __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue') }}" />
+                <input id="settings_permareplace_default" type="text" class="form-control form-control-sm" readonly="readonly" value="{{ __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue') }}" />
             </div>
         </fieldset>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.cancel) }}
             </div>
         </div>
-
         {{ form_end(form) }}
     </div>
 </div>
