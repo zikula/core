@@ -10,6 +10,7 @@
          verbose="true">
     <php>
         <server name="KERNEL_CLASS" value="ZikulaKernel" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled=1"/>
     </php>
     <testsuites>
         <testsuite name="Zikula Bundle Tests">
