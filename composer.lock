@@ -6752,12 +6752,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "07f0ccfe5a380428788f280c4eab0ea07418c87e"
+                "reference": "1ca629b24227970b7837d476bf2bccd465d42714"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/07f0ccfe5a380428788f280c4eab0ea07418c87e",
-                "reference": "07f0ccfe5a380428788f280c4eab0ea07418c87e",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1ca629b24227970b7837d476bf2bccd465d42714",
+                "reference": "1ca629b24227970b7837d476bf2bccd465d42714",
                 "shasum": ""
             },
             "require": {
@@ -6812,7 +6812,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-03T13:46:28+00:00"
+            "time": "2020-01-03T14:33:49+00:00"
         },
         {
             "name": "zikula/oauth-module",

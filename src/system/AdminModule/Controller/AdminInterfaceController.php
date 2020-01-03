@@ -15,15 +15,18 @@ namespace Zikula\AdminModule\Controller;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Helper\UpdateCheckHelper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
@@ -41,10 +44,10 @@ class AdminInterfaceController extends AbstractController
      *
      * Open the admin container
      */
-    public function headerAction(): Response
+    public function headerAction(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaAdminModule/AdminInterface/header.html.twig', [
-            'caller' => $this->get('request_stack')->getMasterRequest()->attributes->all()
+            'caller' => $requestStack->getMasterRequest()->attributes->all()
         ]);
     }
 
@@ -53,9 +56,11 @@ class AdminInterfaceController extends AbstractController
      *
      * Close the admin container
      */
-    public function footerAction(ExtensionRepositoryInterface $extensionRepository): Response
-    {
-        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+    public function footerAction(
+        RequestStack $requestStack,
+        ExtensionRepositoryInterface $extensionRepository
+    ): Response {
+        $caller = $requestStack->getMasterRequest()->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
         return $this->render('@ZikulaAdminModule/AdminInterface/footer.html.twig', [
@@ -71,6 +76,7 @@ class AdminInterfaceController extends AbstractController
      * Admin breadcrumbs
      */
     public function breadcrumbsAction(
+        RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
         AdminCategoryRepositoryInterface $adminCategoryRepository
@@ -79,7 +85,7 @@ class AdminInterfaceController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
+        $masterRequest = $requestStack->getMasterRequest();
         $caller = $masterRequest->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
@@ -105,17 +111,19 @@ class AdminInterfaceController extends AbstractController
      *
      * Display developer notices
      */
-    public function developernoticesAction(VariableApiInterface $variableApi): Response
-    {
+    public function developernoticesAction(
+        ZikulaHttpKernelInterface $kernel,
+        VariableApiInterface $variableApi
+    ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         $modVars = $variableApi->getAll('ZikulaThemeModule');
         $data = [];
-        $data['mode'] = $this->get('kernel')->getEnvironment();
+        $data['mode'] = $kernel->getEnvironment();
         if ('prod' !== $data['mode']) {
-            $data['debug'] = $this->get('kernel')->isDebug() ? $this->__('Yes') : $this->__('No');
+            $data['debug'] = $kernel->isDebug() ? $this->__('Yes') : $this->__('No');
             $data['legacy'] = [
                 'status' => true,
                 'cssjscombine' => $modVars['cssjscombine'],
@@ -160,14 +168,17 @@ class AdminInterfaceController extends AbstractController
      *
      * Display security analyzer
      */
-    public function securityanalyzerAction(Request $request, VariableApiInterface $variableApi): Response
-    {
+    public function securityanalyzerAction(
+        Request $request,
+        ZikulaHttpKernelInterface $kernel,
+        VariableApiInterface $variableApi
+    ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
         // check for .htaccess in app directory
-        $appDir = $this->get('kernel')->getProjectDir() . '/app';
+        $appDir = $kernel->getProjectDir() . '/app';
         if ($appDir) {
             // check if we have an absolute path which is possibly not within the document root
             $docRoot = $request->server->get('DOCUMENT_ROOT');
@@ -190,7 +201,7 @@ class AdminInterfaceController extends AbstractController
             $app_htaccess = true;
         }
 
-        $hasSecurityCenter = $this->get('kernel')->isBundle('ZikulaSecurityCenterModule');
+        $hasSecurityCenter = $kernel->isBundle('ZikulaSecurityCenterModule');
 
         return $this->render('@ZikulaAdminModule/AdminInterface/securityAnalyzer.html.twig', [
             'security' => [
@@ -211,13 +222,15 @@ class AdminInterfaceController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
-    public function updatecheckAction(UpdateCheckHelper $updateCheckHelper): Response
-    {
+    public function updatecheckAction(
+        RequestStack $requestStack,
+        UpdateCheckHelper $updateCheckHelper
+    ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
+        $masterRequest = $requestStack->getMasterRequest();
 
         return $this->render('@ZikulaAdminModule/AdminInterface/updateCheck.html.twig', [
             'caller' => [
@@ -236,6 +249,8 @@ class AdminInterfaceController extends AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have admin permission for the module
      */
     public function menuAction(
+        RequestStack $requestStack,
+        RouterInterface $router,
         ExtensionRepositoryInterface $extensionRepository,
         LinkContainerCollector $linkContainerCollector,
         CapabilityApiInterface $capabilityApi,
@@ -247,8 +262,8 @@ class AdminInterfaceController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
-        $currentRequest = $this->get('request_stack')->getCurrentRequest();
+        $masterRequest = $requestStack->getMasterRequest();
+        $currentRequest = $requestStack->getCurrentRequest();
 
         // get caller info
         $caller = [];
@@ -309,7 +324,7 @@ class AdminInterfaceController extends AbstractController
 
             // url
             try {
-                $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $this->get('router')->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $router->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
                 $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->__('invalid route') . ')';
@@ -344,7 +359,7 @@ class AdminInterfaceController extends AbstractController
 
             $categorySortOrder = $moduleCategories[$catid]['sortorder'];
             $menuCategories[$categorySortOrder]['title'] = $moduleCategories[$catid]['name'];
-            $menuCategories[$categorySortOrder]['url'] = $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
+            $menuCategories[$categorySortOrder]['url'] = $router->generate('zikulaadminmodule_admin_adminpanel', [
                 'acid' => $moduleCategories[$catid]['cid']
             ]);
             $menuCategories[$categorySortOrder]['description'] = $moduleCategories[$catid]['description'];
@@ -364,7 +379,7 @@ class AdminInterfaceController extends AbstractController
 
             $menuCategories[$moduleCategory->getSortOrder()] = [
                 'title' => $moduleCategory->getName(),
-                'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', [
+                'url' => $router->generate('zikulaadminmodule_admin_adminpanel', [
                     'acid' => $moduleCategory->getCid()
                 ]),
                 'description' => $moduleCategory->getDescription(),

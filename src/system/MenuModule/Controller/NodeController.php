@@ -88,7 +88,7 @@ class NodeController extends AbstractController
                     ]);
                 }
                 $response = [
-                    'result' => $this->get('twig')->render('@ZikulaMenuModule/Menu/edit.html.twig', [
+                    'result' => $this->renderView('@ZikulaMenuModule/Menu/edit.html.twig', [
                         'form' => $form->createView()
                     ]),
                     'action' => $action,

@@ -28,6 +28,7 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterfa
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\CreateCategoryType;
 use Zikula\AdminModule\Form\Type\EditCategoryType;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\LinkContainer\LinkContainerCollector;
@@ -219,6 +220,7 @@ class AdminController extends AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have edit permission for the module
      */
     public function adminpanelAction(
+        ZikulaHttpKernelInterface $kernel,
         AdminCategoryRepositoryInterface $adminCategoryRepository,
         AdminModuleRepositoryInterface $adminModuleRepository,
         CapabilityApiInterface $capabilityApi,
@@ -234,7 +236,7 @@ class AdminController extends AbstractController
             }
         }
 
-        if (!$this->getVar('ignoreinstallercheck') && 'dev' === $this->get('kernel')->getEnvironment()) {
+        if (!$this->getVar('ignoreinstallercheck') && 'dev' === $kernel->getEnvironment()) {
             // check if the Zikula Recovery Console exists
             $zrcExists = file_exists('zrc.php');
             // check if upgrade scripts exist
@@ -441,7 +443,7 @@ class AdminController extends AbstractController
                     || (isset($adminLinks[$category['cid']]) && count($adminLinks[$category['cid']]))
                 ) {
                     $menuOption = [
-                        'url' => $this->get('router')->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $category['cid']]),
+                        'url' => $router->generate('zikulaadminmodule_admin_adminpanel', ['acid' => $category['cid']]),
                         'title' => $category['name'],
                         'description' => $category['description'],
                         'cid' => $category['cid'],
