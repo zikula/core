@@ -1,35 +1,33 @@
 {{ adminHeader() }}
 {{ pageSetVar('title', __('Menu list')) }}
-<div class="container-fluid">
-    <div class="row">
-        <h3><span class="fa fa-list"></span> {{ __('Menus') }}</h3>
-        <table id="menu-list" class="table table-bordered table-striped">
-            <colgroup>
-                <col id="cMenuId" />
-                <col id="cMenuTitle" />
-                <col id="cMenuChildCount" />
-                <col id="cMenuActions" />
-            </colgroup>
-            <thead>
-                <tr>
-                    <th id="hMenuId" scope="col">{{ __('ID') }}</th>
-                    <th id="hMenuTitle" scope="col">{{ __('Title') }}</th>
-                    <th id="hMenuChildCount" scope="col">{{ __('Children') }}</th>
-                    <th id="hMenuActions" scope="col" class="text-right">{{ __('Actions') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for node in rootNodes %}
-                <tr>
-                    <td headers="hMenuId">{{ node.id }}</td>
-                    <td headers="hMenuTitle"><strong>{{ node.title }}</strong></td>
-                    <td headers="hMenuChildCount">{{ _fn('%c direct child', '%c direct children', node.children.count, {'%c': node.children.count}) }}</td>
-                    {% set rowActions = knp_menu_get('zikulaMenuAdminActionsMenu', [], {id: node.id}) %}
-                    <th headers="hMenuActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</th>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+<h3><span class="fa fa-list"></span> {{ __('Menus') }}</h3>
+<table id="menu-list" class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cMenuId" />
+        <col id="cMenuTitle" />
+        <col id="cMenuChildCount" />
+        <col id="cMenuActions" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th id="hMenuId" scope="col">{{ __('ID') }}</th>
+            <th id="hMenuTitle" scope="col">{{ __('Title') }}</th>
+            <th id="hMenuChildCount" scope="col">{{ __('Children') }}</th>
+            <th id="hMenuActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for node in rootNodes %}
+        <tr>
+            <td headers="hMenuId">{{ node.id }}</td>
+            <td headers="hMenuTitle"><strong>{{ node.title }}</strong></td>
+            <td headers="hMenuChildCount">{{ _fn('%c direct child', '%c direct children', node.children.count, {'%c': node.children.count}) }}</td>
+            {% set rowActions = knp_menu_get('zikulaMenuAdminActionsMenu', [], {id: node.id}) %}
+            <th headers="hMenuActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</th>
+        </tr>
+        {% else %}
+        <tr class="table-info"><td colspan="4" class="text-center">{{ __('No items found.') }}</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
 {{ adminFooter() }}

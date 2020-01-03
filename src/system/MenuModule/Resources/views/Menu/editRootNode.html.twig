@@ -1,12 +1,8 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaMenuModule:js/Zikula.Menu.Node.Edit.js')) }}
 {{ adminHeader() }}
 {{ pageSetVar('title', __('Create or Edit Root Node')) }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-plus"> {{ __('Create or edit root node') }}</span>
-        </h3>
-        {{ include('@ZikulaMenuModule/Menu/edit.html.twig') }}
-    </div>
-</div>
+<h3>
+    <span class="fa fa-plus"> {{ __('Create or edit root node') }}</span>
+</h3>
+{{ include('@ZikulaMenuModule/Menu/edit.html.twig') }}
 {{ adminFooter() }}
