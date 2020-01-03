@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\GroupsModule\Entity\GroupEntity;
 
 class SearchUserType extends AbstractType
 {
@@ -50,7 +51,7 @@ class SearchUserType extends AbstractType
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
             ->add('groups', EntityType::class, [
-                'class' => 'ZikulaGroupsModule:GroupEntity',
+                'class' => GroupEntity::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'placeholder' => $this->__('Any group'),
@@ -61,7 +62,9 @@ class SearchUserType extends AbstractType
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day'
+                    'year' => $this->__('Year'),
+                    'month' => $this->__('Month'),
+                    'day' => $this->__('Day')
                 ]
             ])
             ->add('registered_before', DateType::class, [
@@ -69,7 +72,9 @@ class SearchUserType extends AbstractType
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => [
-                    'year' => 'Year', 'month' => 'Month', 'day' => 'Day'
+                    'year' => $this->__('Year'),
+                    'month' => $this->__('Month'),
+                    'day' => $this->__('Day')
                 ]
             ])
             ->add('search', SubmitType::class, [
@@ -80,7 +85,7 @@ class SearchUserType extends AbstractType
             ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
                 'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-danger']
+                'attr' => ['class' => 'btn btn-default']
             ])
         ;
     }

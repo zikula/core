@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\UsersModule\Constant;
 
 class AdminModifyUserType extends AbstractType
@@ -48,7 +49,7 @@ class AdminModifyUserType extends AbstractType
                 'label' => $this->__('User status')
             ])
             ->add('groups', EntityType::class, [
-                'class' => 'ZikulaGroupsModule:GroupEntity',
+                'class' => GroupEntity::class,
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => true,

@@ -71,7 +71,8 @@ class ConfigType extends AbstractType
              */
             ->add(UsersConstant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, CheckboxType::class, [
                 'label' => $this->__('Display graphics on user\'s account page'),
-                'required' => false,
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
             ])
             ->add(UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH, TextType::class, [
                 'label' => $this->__('Path to account page images'),
@@ -99,7 +100,8 @@ class ConfigType extends AbstractType
              */
             ->add(UsersConstant::MODVAR_REGISTRATION_ENABLED, CheckboxType::class, [
                 'label' => $this->__('Allow new user account registrations'),
-                'required' => false,
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON, TextareaType::class, [
                 'label' => $this->__('Statement displayed if registration disabled'),
@@ -119,13 +121,15 @@ class ConfigType extends AbstractType
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED, CheckboxType::class, [
                 'label' => $this->__('User registration is moderated'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'attr' => ['class' => 'registration-moderation-input']
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN, CheckboxType::class, [
                 'label' => $this->__('Newly registered users are logged in automatically'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'help' => $this->__('Users authenticating off site (re-entrant) are logged in automatically regardless of this setting.'),
-                'required' => false,
+                'required' => false
             ])
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, TextType::class, [
                 'label' => $this->__('Reserved user names'),
@@ -174,16 +178,19 @@ class ConfigType extends AbstractType
              */
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS, CheckboxType::class, [
                 'label' => $this->__('Failed login displays inactive status'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'help' => $this->__('If checked, the log-in error message will indicate that the user account is inactive. If not, a generic error message is displayed.'),
             ])
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_VERIFY_STATUS, CheckboxType::class, [
                 'label' => $this->__('Failed login displays verification status'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'help' => $this->__('If checked, the log-in error message will indicate that the registration is pending verification. If not, a generic error message is displayed.'),
             ])
             ->add(UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS, CheckboxType::class, [
                 'label' => $this->__('Failed login displays approval status'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'help' => $this->__('If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.'),
             ])

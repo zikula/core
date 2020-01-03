@@ -1,6 +1,6 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ moduleHeader('user', __('New account registration'), '', true, true) }}
 
@@ -13,24 +13,24 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 
-    {% for additional_template in additional_templates %}
-        {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
-    {% endfor %}
+{% for additional_template in additional_templates %}
+    {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
+{% endfor %}
 
-    {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) }}
+{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_FORM')) }}
 
-    {% set regQuestion = getModVar('ZikulaUsersModule', 'reg_question', '') %}
-    {% if regQuestion is not empty %}
+{% set regQuestion = getModVar('ZikulaUsersModule', 'reg_question', '') %}
+{% if regQuestion is not empty %}
     <fieldset>
         <legend>{{ __('Answer the security question') }}</legend>
         {{ form_row(form.antispamanswer) }}
     </fieldset>
-    {% endif %}
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            {{ form_widget(form.submit) }}
-            {{ form_widget(form.cancel) }}
-            {{ form_widget(form.reset) }}
-        </div>
+{% endif %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.submit) }}
+        {{ form_widget(form.cancel) }}
+        {{ form_widget(form.reset) }}
     </div>
+</div>
 {{ form_end(form) }}

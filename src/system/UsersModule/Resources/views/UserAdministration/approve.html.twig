@@ -1,6 +1,6 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <h3>
@@ -8,21 +8,18 @@
     {{ __f('Approve registration of %sub%', {"%sub%": user.uname}) }}
     {{ pageSetVar('title', __('Approve registration')) }}
 </h3>
-
 <fieldset>
     <legend>{{ __('Account Information') }}</legend>
-    <div class="form-group">
-        <label class="col-sm-3 control-label">{{ __('User name:') }}</label>
+    <div class="form-group row">
+        <label class="col-md-3 col-form-label">{{ __('User name:') }}</label>
         <div class="col-sm-9">
-            <div class="form-control-static">
-                {{ user.uname }}
-            </div>
+            <div class="form-control-plaintext">{{ user.uname }}</div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label">{{ __('E-mail address:') }}</label>
+    <div class="form-group row">
+        <label class="col-sm-3 col-form-label">{{ __('E-mail address:') }}</label>
         <div class="col-sm-9">
-            <div class="form-control-static">
+            <div class="form-control-plaintext">
                 {% if user.email|default %}
                     <a href="mailto:{{ user.email|url_encode }}">{{ user.email }}</a>
                 {% else %}
@@ -42,9 +39,9 @@
 <fieldset>
     <legend>{{ __('Registration Status') }}</legend>
     <div class="form-group">
-        <label class="col-sm-3 control-label">{{ __('Administrator approval:') }}</label>
-        <div class="col-sm-9">
-            <div class="form-control-static">
+        <label class="col-md-3 col-form-label">{{ __('Administrator approval:') }}</label>
+        <div class="col-md-9">
+            <div class="form-control-plaintext">
                 {% if user.isapproved is empty or not user.isapproved %}
                     <span class="fa fa-times fa-fw fa-red"></span>{{ __('Not yet approved') }}
                 {% else %}
@@ -54,16 +51,14 @@
         </div>
     </div>
 </fieldset>
-
-<hr>
+<hr />
 {{ form_start(form) }}
 {{ form_errors(form) }}
-<div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
         {{ form_widget(form.confirm) }}
         {{ form_widget(form.cancel) }}
     </div>
 </div>
 {{ form_end(form) }}
-
 {{ adminFooter() }}

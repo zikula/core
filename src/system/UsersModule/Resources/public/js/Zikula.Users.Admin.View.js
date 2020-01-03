@@ -11,13 +11,13 @@
         var userSearchListTable = $('#user-search-list');
         var userSearchMinChar = $('#user-search-min-char');
 
-        $('#user-search-container').removeClass('hidden');
+        $('#user-search-container').removeClass('d-none');
 
         $('#user-search-discard').click(function (event) {
             $('#user-search').val('');
-            userListTable.removeClass('hidden');
-            userSearchListTable.addClass('hidden');
-            userSearchMinChar.addClass('hidden');
+            userListTable.removeClass('d-none');
+            userSearchListTable.addClass('d-none');
+            userSearchMinChar.addClass('d-none');
             $('.pagination .hide-active').removeClass('hide-active').addClass('active');
         });
 
@@ -34,24 +34,24 @@
             var fragment = $(this).val();
 
             if ('' === fragment) {
-                userListTable.removeClass('hidden');
-                userSearchListTable.addClass('hidden');
-                userSearchMinChar.addClass('hidden');
+                userListTable.removeClass('d-none');
+                userSearchListTable.addClass('d-none');
+                userSearchMinChar.addClass('d-none');
                 $('.pagination .hide-active').removeClass('hide-active').addClass('active');
                 return;
             }
 
-            userListTable.addClass('hidden');
+            userListTable.addClass('d-none');
             $('.pagination .active').removeClass('active').addClass('hide-active');
 
             if (fragment.length < 3) {
                 userSearchListTable.find('tbody').empty();
-                userSearchMinChar.removeClass('hidden');
+                userSearchMinChar.removeClass('d-none');
                 return;
             }
 
-            userSearchListTable.removeClass('hidden');
-            userSearchMinChar.addClass('hidden');
+            userSearchListTable.removeClass('d-none');
+            userSearchMinChar.addClass('d-none');
 
             // take the result from store if it is in the store
             if (resultStore[fragment] != undefined) {

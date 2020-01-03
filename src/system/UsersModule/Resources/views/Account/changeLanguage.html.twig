@@ -1,11 +1,10 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {% if getModVar('ZConfig', 'multilingual')  %}
     {{ moduleHeader('user', __('Language switcher'), '', true) }}
-
-    <div class="well">
+    <fieldset>
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.locale) }}
@@ -16,7 +15,7 @@
             </div>
         </div>
         {{ form_end(form) }}
-    </div>
+    </fieldset>
 {% else %}
     <div class="alert alert-danger">{{ __('Multilingual features are deactivated.') }}</div>
 {% endif %}

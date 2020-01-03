@@ -1,39 +1,35 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
-
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-lock"></span>
-            {{ __('Authentication methods') }}
-            {{ pageSetVar('title', __('Authentication methods')) }}
-        </h3>
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                <div class="alert alert-info">{{ __('Check the methods you wish to activate.') }}</div>
-                <ul class="list-group">
-                {% for name, child in form.children.authenticationMethodsStatus %}
-                    <li class="list-group-item">
-                        {#{ methods[name].DisplayName }}: #}
-                        {#{ form_widget(child) }#}
-                        {{ form_row(child) }}
-                    </li>
-                {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.save) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<h3>
+    <span class="fa fa-lock"></span>
+    {{ __('Authentication methods') }}
+    {{ pageSetVar('title', __('Authentication methods')) }}
+</h3>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        <div class="alert alert-info">{{ __('Check the methods you wish to activate.') }}</div>
+        <ul class="list-group">
+        {% for name, child in form.children.authenticationMethodsStatus %}
+            <li class="list-group-item">
+                {#{ methods[name].DisplayName }}: #}
+                {#{ form_widget(child) }#}
+                {{ form_row(child) }}
+            </li>
+        {% endfor %}
+        </ul>
     </div>
 </div>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
+    </div>
+</div>
+{{ form_end(form) }}
 {{ adminFooter() }}

@@ -1,38 +1,32 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-search"></span>
-            {{ __('Find users') }}
-            {{ pageSetVar('title', __('Find users')) }}
-        </h3>
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <fieldset>
-            <legend>{{ __('Find users') }}</legend>
-            {{ form_row(form.uname) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.groups) }}
-            {{ form_row(form.registered_after) }}
-            {{ form_row(form.registered_before) }}
-        </fieldset>
-        {% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::FORM_SEARCH')) %}
-        {% for data in eventData %}
-            {{ data }}
-        {% endfor %}
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.search) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<h3>
+    <span class="fa fa-search"></span>
+    {{ __('Find users') }}
+    {{ pageSetVar('title', __('Find users')) }}
+</h3>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Find users') }}</legend>
+    {{ form_row(form.uname) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.groups) }}
+    {{ form_row(form.registered_after) }}
+    {{ form_row(form.registered_before) }}
+</fieldset>
+{% set eventData = dispatchEvent(constant('Zikula\\UsersModule\\UserEvents::FORM_SEARCH')) %}
+{% for data in eventData %}
+    {{ data }}
+{% endfor %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.search) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}
-

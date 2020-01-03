@@ -1,7 +1,7 @@
 {% macro draw(links, menu_css, current_path) %}
     {% for link in links %}
         {% if link.role is defined and link.role == 'separator' %}
-            <li role="separator" class="divider"></li>
+            <li role="separator" class="dropdown-divider"></li>
         {% else %}
             <li class="nav-item{% if link.links is defined %} dropdown{% endif %}{% if menu_css.menuItemClass is not empty and current_path != link.url %} {{ menu_css.menuItemClass }}{% endif %}">
                 <a href="{% if link.links is defined %}#{% else %}{{ link.url }}{% endif %}" title="{{ link.title|default('') }}"{% if link.id is defined %} id="{{ link.id }}"{% endif %} class="nav-link{% if link.links is defined %} dropdown-toggle{% endif %}{% if current_path == link.url %} active{% endif %}"{% if link.links is defined %} data-toggle="dropdown"{% endif %}>

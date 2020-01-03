@@ -3,21 +3,24 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ moduleHeader('user', __('Login'), '', true) }}
-{{ form_start(form) }}
-{{ form_errors(form) }}
+<fieldset>
     {{ loginHeader|raw }}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
     {{ form_row(form.rememberme) }}
+
     {% for additional_template in additional_templates %}
         {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
     {% endfor %}
-
     {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\LoginUiHooksSubscriber::LOGIN_FORM')) }}
-
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
             {{ form_widget(form.submit) }}
-            <a class="btn btn-default" role="button" href="{{ path('home') }}">{{ __('Cancel') }}</a>
+            <a href="{{ path('home') }}" class="btn btn-default" role="button">{{ __('Cancel') }}</a>
         </div>
     </div>
+
+    {{ form_end(form) }}
     {{ loginFooter|raw }}
-{{ form_end(form) }}
+</fieldset>
