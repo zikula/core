@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Tests\Engine;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -99,7 +98,7 @@ class ParameterBagTest extends TestCase
      */
     public function testExpectedFailureToRecastToNamespace(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\TypeError::class);
         $this->bag->set('foo.bang', 6);
     }
 

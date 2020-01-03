@@ -17,8 +17,8 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
+use Zikula\BlocksModule\Tests\Helper\Fixture\TestModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\AbstractModule;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class InstallerHelperTest extends TestCase
@@ -60,10 +60,12 @@ class InstallerHelperTest extends TestCase
                     throw new Exception();
                 }
                 $module = $this
-                    ->getMockForAbstractClass(AbstractModule::class);
+                    ->getMockBuilder(TestModule::class)
+                    ->disableOriginalConstructor()
+                    ->getMock();
                 $module
                     ->method('getNamespace')
-                    ->willReturn('Zikula\BlocksModule\Tests\Helper\\' . $moduleName);
+                        ->willReturn('Zikula\BlocksModule\Tests\Helper\\' . $moduleName);
 
                 return $module;
             })

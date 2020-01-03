@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Collector;
 
-use PHPUnit\Framework\TestCase;
-use Zikula\BlocksModule\BlockHandlerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zikula\BlocksModule\Collector\BlockCollector;
+use Zikula\BlocksModule\Tests\Collector\Fixture\ABlock;
+use Zikula\BlocksModule\Tests\Collector\Fixture\BBlock;
+use Zikula\BlocksModule\Tests\Collector\Fixture\CBlock;
 
-class BlockCollectorTest extends TestCase
+class BlockCollectorTest extends KernelTestCase
 {
     /**
      * @var BlockCollector
@@ -26,6 +28,7 @@ class BlockCollectorTest extends TestCase
 
     protected function setUp(): void
     {
+        self::bootKernel();
         $this->collector = new BlockCollector();
     }
 
@@ -35,35 +38,20 @@ class BlockCollectorTest extends TestCase
     public function testAdd(): void
     {
         $this->assertCount(0, $this->collector->getBlocks());
-        $block = $this->getMockBuilder(BlockHandlerInterface::class)
-            ->getMock();
-        $block
-            ->method('getType')
-            ->willReturn('A');
-        $this->collector->add($block);
+        $this->collector->add(self::$container->get(ABlock::class));
         $this->assertCount(1, $this->collector->getBlocks());
-        $block = $this->getMockBuilder(BlockHandlerInterface::class)
-            ->getMock();
-        $block
-            ->method('getType')
-            ->willReturn('B');
-        $this->collector->add($block);
+        $this->collector->add(self::$container->get(BBlock::class));
         $this->assertCount(2, $this->collector->getBlocks());
     }
 
     /**
-     * @covers BlockCollector::add
+     * @covers BlockCollector::get
      */
     public function testGet(): void
     {
-        $block = $this->getMockBuilder(BlockHandlerInterface::class)
-            ->getMock();
-        $block
-            ->method('getType')
-            ->willReturn('A');
-        $this->collector->add($block);
-        $a = $this->collector->getBlocks()[0];
-        $this->assertEquals('A', $a->getType());
+        $this->collector->add(self::$container->get(CBlock::class));
+        $c = $this->collector->get(CBlock::class);
+        $this->assertEquals('C', $c->getType());
     }
 
     /**
@@ -72,19 +60,11 @@ class BlockCollectorTest extends TestCase
     public function testGetBlocks(): void
     {
         $expected = [];
-        $block = $this->getMockBuilder(BlockHandlerInterface::class)
-            ->getMock();
-        $block
-            ->method('getType')
-            ->willReturn('A');
-        $expected['a'] = $block;
+        $block = self::$container->get(ABlock::class);
+        $expected[ABlock::class] = $block;
         $this->collector->add($block);
-        $block = $this->getMockBuilder(BlockHandlerInterface::class)
-            ->getMock();
-        $block
-            ->method('getType')
-            ->willReturn('B');
-        $expected['b'] = $block;
+        $block = self::$container->get(BBlock::class);
+        $expected[BBlock::class] = $block;
         $this->collector->add($block);
         $this->assertEquals($expected, $this->collector->getBlocks());
     }

@@ -31,6 +31,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\Source;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
 use Zikula\Bundle\CoreBundle\Twig\Extension\GettextExtension;
@@ -132,7 +133,7 @@ class TwigFileExtractorTest extends KernelTestCase
                 return $bundle;
             })
         ;
-        $parameterBag = $this->getMockBuilder(ParameterBag::class);
+        $parameterBag = $this->getMockBuilder(ParameterBag::class)->disableOriginalConstructor()->getMock();
 
         $env = new Environment(new FilesystemLoader());
         $zikulaTranslator = new ZikulaIdentityTranslator();

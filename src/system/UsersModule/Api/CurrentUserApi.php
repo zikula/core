@@ -85,7 +85,7 @@ class CurrentUserApi implements CurrentUserApiInterface
             return $this->user->{$method}();
         }
 
-        return '';
+        return null;
     }
 
     /**

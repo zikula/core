@@ -152,7 +152,13 @@ class CategoriesCollectionTransformerTest extends TestCase
 
     protected function generateCategoryAssignment($category, $registryId): AbstractCategoryAssignment
     {
-        $categoryAssignment = $this->getMockForAbstractClass(AbstractCategoryAssignment::class);
+        $categoryAssignment = $this->getMockForAbstractClass(
+            AbstractCategoryAssignment::class,
+            [], '',
+            false,
+            false,
+            true,
+            ['getCategory', 'getCategoryRegistryId']);
         $categoryAssignment->method('getCategory')->willReturn($category);
         $categoryAssignment->method('getCategoryRegistryId')->willReturn($registryId);
 

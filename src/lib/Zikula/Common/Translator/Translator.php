@@ -30,7 +30,7 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
     /**
      * @var ContainerInterface
      */
-    protected $container;
+//    protected $container;
 
     /**
      * @var string
@@ -60,13 +60,13 @@ class Translator extends BaseTranslator implements WarmableInterface, Translator
      * @throws InvalidArgumentException
      */
     public function __construct(
-        ContainerInterface $container,
+//        ContainerInterface $container,
         MessageFormatterInterface $formatter = null,
         string $defaultLocale = 'en',
         array $loaderIds = [],
         array $options = []
     ) {
-        $this->container = $container;
+//        $this->container = $container;
         $this->loaderIds = $loaderIds;
         // check option names
         if ($diff = array_diff(array_keys($options), array_keys($this->options))) {

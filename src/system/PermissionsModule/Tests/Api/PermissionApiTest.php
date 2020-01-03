@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\PermissionsModule\Tests\Api;
 
-use InvalidArgumentException;
+use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -76,12 +77,12 @@ class PermissionApiTest extends TestCase
             ->method('findByUids')
             ->with($this->anything())
             ->willReturnCallback(function (array $uids) {
-                $groups = [];
+                $groups = new ArrayCollection();
                 // getGroups returns [gid => $group, gid => $group, ...]
                 if (in_array(self::RANDOM_USER_ID, $uids, true)) {
-                    $groups = [GroupsConstant::GROUP_ID_USERS => []];
+                    $groups = new ArrayCollection([GroupsConstant::GROUP_ID_USERS => []]);
                 } elseif (in_array(Constant::USER_ID_ADMIN, $uids, true)) {
-                    $groups = [GroupsConstant::GROUP_ID_USERS => [], GroupsConstant::GROUP_ID_ADMIN => []];
+                    $groups = new ArrayCollection([GroupsConstant::GROUP_ID_USERS => [], GroupsConstant::GROUP_ID_ADMIN => []]);
                 }
                 $this->user
                     ->method('getGroups')
@@ -138,7 +139,7 @@ class PermissionApiTest extends TestCase
      * @covers PermissionApi::hasPermission
      * @dataProvider uidProvider
      */
-    public function testHasPermission(string $component, string $instance, int $level, int $userId, array $result): void
+    public function testHasPermission(string $component, string $instance, int $level, int $userId, bool $result): void
     {
         $this->currentUserApi
             ->method('get')
@@ -183,10 +184,10 @@ class PermissionApiTest extends TestCase
 
     /**
      * @covers PermissionApi::accessLevelNames()
-     * @expectedException InvalidArgumentException
      */
     public function testAccessLevelException(): void
     {
+        $this->expectException(Notice::class);
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $api->accessLevelNames(99);
     }

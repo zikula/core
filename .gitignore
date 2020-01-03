@@ -27,3 +27,4 @@
 /src/var/
 !/src/var/cache/.htaccess
 !/src/var/logs/.htaccess
+*.phpunit.result.cache

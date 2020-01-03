@@ -66,7 +66,7 @@ class CurrentUserApiTest extends TestCase
         $user = $this->userRepo->find(42);
         $attributes->set('legs', new UserAttributeEntity($user, 'legs', 2));
         $this->assertEquals($attributes, $api->get('attributes'));
-        $this->assertNull($api->get('foo'));
+        $this->assertEmpty($api->get('foo'));
         $this->assertNull($api->foo());
     }
 
