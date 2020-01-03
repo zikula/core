@@ -27,9 +27,9 @@
         <div class="col-md-9 offset-md-3">
             {% if form.save|default %}{{ form_widget(form.save) }}{% endif %}
             {% if form.cancel|default %}{{ form_widget(form.cancel) }}{% endif %}
+            {{ form_end(form) }}
         </div>
     </div>
-    {{ form_end(form) }}
 </div>
 <script>
     {# used in @ZikulaMenuModule:js/Zikula.Menu.Edit.js #}
