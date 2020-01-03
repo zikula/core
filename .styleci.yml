@@ -59,6 +59,6 @@ disabled:
 
 finder:
   not-path:
-    - "src/system/RoutesModule"
+    - src/system/RoutesModule
   not-name:
-    - "src/system/BlocksModule/Api/BlockFilterApi.php"
+    - "*BlockFilterApi.php"
