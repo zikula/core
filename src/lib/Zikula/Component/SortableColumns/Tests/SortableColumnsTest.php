@@ -156,7 +156,7 @@ class SortableColumnsTest extends TestCase
      * @dataProvider columnDefProvider
      * @covers SortableColumns::generateSortableColumns
      */
-    public function testGenerateSortableColumns(string $col, string $dir, array $columnDef = []): void
+    public function testGenerateSortableColumns(?string $col, string $dir, array $columnDef = []): void
     {
         $this->sortableColumns->setOrderBy($this->sortableColumns->getColumn($col), $dir);
         $this->assertEquals($columnDef, $this->sortableColumns->generateSortableColumns());

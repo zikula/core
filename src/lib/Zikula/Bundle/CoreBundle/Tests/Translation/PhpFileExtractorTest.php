@@ -83,13 +83,20 @@ class PhpFileExtractorTest extends TestCase
             $kernel
                 ->method('getBundles')
                 ->willReturnCallback(function () {
-                    $bundle = $this->getMockForAbstractClass(AbstractBundle::class);
+                    $bundle = $this->getMockForAbstractClass(
+                        AbstractBundle::class, [],
+                        '',
+                        false,
+                        false,
+                        true,
+                        ['getNamespace']
+                    );
                     $bundle
                         ->method('getNamespace')
                         ->willReturn('foo');
-                    $bundle
-                        ->method('getName')
-                        ->willReturn('bar');
+//                    $bundle
+//                        ->method('getName')
+//                        ->willReturn('bar');
 
                     return [$bundle];
                 });
@@ -100,11 +107,11 @@ class PhpFileExtractorTest extends TestCase
         if (class_exists('PhpParser\ParserFactory')) {
             $factory = new ParserFactory();
             $parser = $factory->create(ParserFactory::PREFER_PHP7, $lexer);
-        } else {
-            $parser = new Parser($lexer);
+//        } else {
+//            $parser = new Parser($lexer);
         }
 
-        $ast = $parser->parse(file_get_contents($fileInfo));
+        $ast = $parser->parse(file_get_contents($fileInfo->getPath()));
 
         $catalogue = new MessageCatalogue();
         $extractor->visitPhpFile($fileInfo, $catalogue, $ast);

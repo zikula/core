@@ -75,8 +75,8 @@ class AssetBagTest extends TestCase
         $this->markTestSkipped('Currently skipped due to indeterminate behaviour in PHP 7.');
 
         $bag = new AssetBag();
-        $bag->add(['A' => 3]);
         $bag->add(['B' => 3]);
+        $bag->add(['A' => 3]);
         $bag->add(['C' => 3]);
         $this->assertNotEquals(['A', 'B', 'C'], $bag->all()); // order cannot be assumed with same weight
     }

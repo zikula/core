@@ -89,7 +89,7 @@ class BlockApiTest extends TestCase
      */
     public function testCreateInstanceFromBKey(): void
     {
-        $this->assertEquals($this->fooBlock, $this->api->createInstanceFromBKey('AcmeFooModule:Zikula\BlocksModule\Tests\Api\Fixture\FooBlock'));
+        $this->assertEquals($this->fooBlock, $this->api->createInstanceFromBKey('Zikula\BlocksModule\Tests\Api\Fixture\FooBlock'));
     }
 
     private function setUpBlockPlacements(): void

@@ -52,7 +52,7 @@ class SearchHelper implements SearchableInterface
         // not needed because `active` child object is already added and that is all that is needed.
     }
 
-    public function getResults(array $words, string $searchType = 'AND', array $modVars = []): array
+    public function getResults(array $words, string $searchType = 'AND', ?array $modVars = []): array
     {
         if (!$this->permissionApi->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             return [];

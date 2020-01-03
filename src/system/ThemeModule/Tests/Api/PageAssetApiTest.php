@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\ThemeModule\Tests\Api;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Zikula\ThemeModule\Api\PageAssetApi;
 use Zikula\ThemeModule\Engine\AssetBag;
@@ -44,11 +43,11 @@ class PageAssetApiTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
      * @dataProvider exceptionDataProvider
      */
     public function testException($type, $value): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $this->api->add($type, $value);
     }
 

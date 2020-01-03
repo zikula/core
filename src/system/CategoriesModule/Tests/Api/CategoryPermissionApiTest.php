@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Tests\Api;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Zikula\CategoriesModule\Api\CategoryPermissionApi;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
@@ -31,11 +30,9 @@ class CategoryPermissionApiTest extends TestCase
         $this->assertTrue($api->hasCategoryAccess([]));
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidDataThrowsException(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $permissionApi = new PermissionAlways();
         $api = new CategoryPermissionApi($permissionApi);
         $category = new CategoryEntity();

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Tests\Form\Type;
 
 use DateTime;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,6 +55,8 @@ class CategoriesTypeTest extends TypeTestCase
 
     protected function setUp(): void
     {
+        AnnotationRegistry::registerLoader('class_exists');
+
         $this->em = DoctrineTestHelper::createTestEntityManager();
         $this->emRegistry = $this->createRegistryMock('default', $this->em);
         $this->em->getEventManager()->addEventSubscriber(new TreeListener());
@@ -93,7 +96,7 @@ class CategoriesTypeTest extends TypeTestCase
     protected function getExtensions(): array
     {
         /** @var CategoryRegistryRepositoryInterface $repository */
-        $repository = $this->em->getRepository(CategoryRegistryEntity::class);
+        $repository = $this->emRegistry->getRepository(CategoryRegistryEntity::class);
 
         $request = new Request([], [], [], [], [], [], json_encode([
             'foo' => 'bar'
@@ -104,17 +107,15 @@ class CategoriesTypeTest extends TypeTestCase
 
         $type = new CategoriesType($repository, $requestStack);
 
-        return [
+        return array_merge(parent::getExtensions(), [
             new PreloadedExtension([$type], []),
             new DoctrineOrmExtension($this->emRegistry),
-        ];
+        ]);
     }
 
-    /**
-     * @expectedException InvalidOptionsException
-     */
     public function testClassOptionIsRequired(): void
     {
+        $this->expectException(InvalidOptionsException::class);
         $this->factory->createNamed('name', CategoriesType::class);
     }
 
@@ -425,7 +426,7 @@ class CategoriesTypeTest extends TypeTestCase
         $registry->setCr_date($now);
         $registry->setLu_date($now);
         /** @var CategoryEntity $rootCategory */
-        $rootCategory = $this->em->getRepository(CategoryEntity::class)->find(1);
+        $rootCategory = $this->emRegistry->getRepository(CategoryEntity::class)->find(1);
         $registry->setCategory($rootCategory);
         $this->em->persist($registry);
         $this->em->flush();
@@ -434,7 +435,7 @@ class CategoriesTypeTest extends TypeTestCase
     protected function generateCategories(DateTime $now): void
     {
         /** @var CategoryRepository $repository */
-        $repository = $this->em->getRepository(CategoryEntity::class);
+        $repository = $this->emRegistry->getRepository(CategoryEntity::class);
 
         // root
         $root = new CategoryEntity();

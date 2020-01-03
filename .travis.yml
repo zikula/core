@@ -39,7 +39,9 @@ before_install:
     - php bin/console lint:twig --show-deprecations system/ lib/Zikula/
     # twig linting in themes won't work because the themes are not active bundles
 
-#    - php bin/simple-phpunit
+    - cd ../
+    - php src/bin/simple-phpunit
+    - cd src
 
     # extract en translations
 #    - php -dmemory_limit=2G bin/console translation:extract en --output-format=po --output-dir=app/Resources/translations --enable-extractor=jms_i18n_routing --dir=system --dir=lib/Zikula/Bundle
@@ -58,7 +60,7 @@ install:
     - mysql zk_test < ../test_dbs/core143.sql
     # run the upgrade from the 143 db
     - 'sed -i -E "s/core_installed_version:(.*)/core_installed_version: ''1.4.3''/" app/config/custom_parameters.yml'
-    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/'
+    - php bin/console zikula:upgrade -n --username=admin --password=12345678 --locale=en --router:request_context:host=localhost --router:request_context:scheme=http --router:request_context:base_url='/' -vvv
     # drop the test db
     - mysql -e 'drop database zk_test'
 

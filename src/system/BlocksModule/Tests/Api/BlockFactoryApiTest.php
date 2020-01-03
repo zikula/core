@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\BlocksModule\Tests\Api;
 
-use PHPUnit\Framework\TestCase;
-use RuntimeException;
-use stdClass;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockFactoryApi;
@@ -26,24 +22,17 @@ use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\WrongInterfaceBlock;
 use Zikula\Common\Translator\IdentityTranslator;
 
-class BlockFactoryApiTest extends TestCase
+class BlockFactoryApiTest extends KernelTestCase
 {
     /**
      * @var BlockFactoryApiInterface
      */
     private $api;
 
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     protected function setUp(): void
     {
-        $this->container = new Container();
-        $this->container->set('foo.block', new FooBlock());
-        $this->container->set('zikula_extensions_module.api.variable', new stdClass());
-        $this->api = new BlockFactoryApi($this->container, new IdentityTranslator());
+        self::bootKernel();
+        $this->api = new BlockFactoryApi(self::$container, new IdentityTranslator());
     }
 
     /**
@@ -51,22 +40,18 @@ class BlockFactoryApiTest extends TestCase
      */
     public function testGetBlockDefinedAsService(): void
     {
-        $this->assertEquals($this->container->get('foo.block'), $this->api->getInstance('foo.block'));
+        $this->assertEquals(self::$container->get(FooBlock::class), $this->api->getInstance(FooBlock::class));
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testDoesNotExistException(): void
     {
+        $this->expectException(\RuntimeException::class);
         $this->api->getInstance('BarModule\ZedBlock');
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testWrongInterfaceException(): void
     {
+        $this->expectException(\RuntimeException::class);
         $this->api->getInstance(WrongInterfaceBlock::class);
     }
 
@@ -80,7 +65,6 @@ class BlockFactoryApiTest extends TestCase
         $this->assertEquals('FooType', $blockInstance->getType());
 
         $blockInstance = $this->api->getInstance(BarBlock::class);
-        $this->assertNotEmpty($blockInstance);
         $this->assertInstanceOf(AbstractBlockHandler::class, $blockInstance);
         $this->assertEquals('Bar', $blockInstance->getType());
     }
