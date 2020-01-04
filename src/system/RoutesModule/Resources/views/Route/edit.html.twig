@@ -2,7 +2,7 @@
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends '@ZikulaRoutesModule/' ~ baseTemplate ~ '.html.twig' %}
 {% block title mode == 'create' ? __('Create route') : __('Edit route') %}
-{% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
+{% block admin_page_icon mode == 'create' ? 'plus' : 'edit' %}
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-edit">
         {% form_theme form with [
