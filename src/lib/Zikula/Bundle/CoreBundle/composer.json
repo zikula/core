@@ -21,8 +21,6 @@
         "zikula/profile-module": "dev-master",
         "zikula/oauth-module": "dev-master",
         "zikula/pagelock-module": "dev-master",
-        "zikula/andreas08-theme": "dev-master",
-        "zikula/seabreeze-theme": "dev-master",
         "zikula/filesystem": "1.*",
 
         "symfony/symfony": "5.*",
@@ -60,14 +58,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/zikula/OAuth"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/ZikulaAndreas08Theme"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/zikula/ZikulaSeaBreezeTheme"
         },
         {
             "type": "vcs",

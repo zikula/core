@@ -40,10 +40,13 @@
         - Removed symfony/polyfill-php70
         - Removed symfony/polyfill-util
         - Removed twig/extensions (use new Twig Extra extensions instead)
+        - Removed zikula/andreas08-theme (in favour of different styles in bootstrap theme)
         - Removed zikula/bootstrap-bundle (in favour of direct usage of components/bootstrap)
         - Removed zikula/fontawesome-bundle (in favour of direct usage of components/font-awesome)
+        - Removed zikula/generator-bundle (in favour of symfony/maker-bundle)
         - Removed zikula/jquery-bundle (in favour of direct usage of components/jquery)
         - Removed zikula/jquery-ui-bundle (in favour of direct usage of components/jqueryui)
+        - Removed zikula/seabreeze-theme (in favour of different styles in bootstrap theme)
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
     - Removed the `polyfill` Twig tag (#3925).
@@ -170,12 +173,9 @@
     - twig/twig updated from 1.42.4 to 3.0.1
     - webmozart/assert updated from 1.5.0 to 1.6.0
     - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0 (temporarily using vanputten's fork)
-    - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
-    - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to dev-master
     - zikula/oauth-module updated from 1.0.4 to dev-master
     - zikula/pagelock-module updated from 1.2.3 to dev-master
     - zikula/profile-module updated from 3.0.6 to dev-master
-    - zikula/seabreeze-theme updated from 4.0.3 to dev-master
     - zikula/wizard updated from 2.0 to 3.0.3
 

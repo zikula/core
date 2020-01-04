@@ -6651,56 +6651,6 @@
             "time": "2014-01-20T22:35:06+00:00"
         },
         {
-            "name": "zikula/andreas08-theme",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "c50845d6a29835aea17c485ba8a2898144805361"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/c50845d6a29835aea17c485ba8a2898144805361",
-                "reference": "c50845d6a29835aea17c485ba8a2898144805361",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5"
-            },
-            "type": "zikula-theme",
-            "extra": {
-                "zikula": {
-                    "core-compatibility": ">=3.0.0",
-                    "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme",
-                    "displayname": "Andreas08",
-                    "capabilities": {
-                        "user": true,
-                        "admin": true
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zikula\\Andreas08Theme\\": ""
-                }
-            },
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula",
-                    "homepage": "https://ziku.la/"
-                }
-            ],
-            "description": "Based on the theme Andreas08 by Andreas Viklund",
-            "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
-                "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
-            },
-            "time": "2020-01-04T14:51:30+00:00"
-        },
-        {
             "name": "zikula/filesystem",
             "version": "1.0.0",
             "target-dir": "Zikula/Component/FileSystem",
@@ -6997,56 +6947,6 @@
             "time": "2020-01-04T09:50:51+00:00"
         },
         {
-            "name": "zikula/seabreeze-theme",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "d8ccf92ea3984ce39a63f716ae7efb38671dc552"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/d8ccf92ea3984ce39a63f716ae7efb38671dc552",
-                "reference": "d8ccf92ea3984ce39a63f716ae7efb38671dc552",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5"
-            },
-            "type": "zikula-theme",
-            "extra": {
-                "zikula": {
-                    "core-compatibility": ">=3.0.0",
-                    "class": "Zikula\\SeaBreezeTheme\\ZikulaSeaBreezeTheme",
-                    "displayname": "SeaBreeze",
-                    "capabilities": {
-                        "user": true,
-                        "admin": true
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zikula\\SeaBreezeTheme\\": ""
-                }
-            },
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula",
-                    "homepage": "https://ziku.la/"
-                }
-            ],
-            "description": "The SeaBreeze theme is a browser-oriented theme.",
-            "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/master",
-                "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
-            },
-            "time": "2020-01-04T14:51:18+00:00"
-        },
-        {
             "name": "zikula/wizard",
             "version": "3.0.3",
             "source": {
@@ -7169,8 +7069,6 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "zikula/andreas08-theme": 20,
-        "zikula/seabreeze-theme": 20,
         "prolix/translation-bundle": 20,
         "willdurand/js-translation-bundle": 20,
         "liip/imagine-bundle": 20,
