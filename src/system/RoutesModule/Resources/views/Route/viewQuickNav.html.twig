@@ -9,68 +9,66 @@
         <i class="fa fa-filter" aria-hidden="true"></i> {{ __('Filter') }}
     </a>
     <div id="collapseRouteQuickNav" class="collapse">
-        <fieldset>
-            <h3>{{ __('Quick navigation') }}</h3>
-            {% if workflowStateFilter is defined and workflowStateFilter != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.workflowState) }}
-            {% if workflowStateFilter is defined and workflowStateFilter != true %}
-                </div>
-            {% endif %}
-            {% if schemesFilter is defined and schemesFilter != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.schemes) }}
-            {% if schemesFilter is defined and schemesFilter != true %}
-                </div>
-            {% endif %}
-            {% if methodsFilter is defined and methodsFilter != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.methods) }}
-            {% if methodsFilter is defined and methodsFilter != true %}
-                </div>
-            {% endif %}
-            {% if searchFilter is defined and searchFilter != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.q) }}
-            {% if searchFilter is defined and searchFilter != true %}
-                </div>
-            {% endif %}
-            {% if sorting is defined and sorting != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.sort) }}
-                {{ form_row(quickNavForm.sortdir) }}
-            {% if sorting is defined and sorting != true %}
-                </div>
-            {% endif %}
-            {% if pageSizeSelector is defined and pageSizeSelector != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.num) }}
-            {% if pageSizeSelector is defined and pageSizeSelector != true %}
-                </div>
-            {% endif %}
-            {% if prependBundlePrefixFilter is defined and prependBundlePrefixFilter != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.prependBundlePrefix) }}
-            {% if prependBundlePrefixFilter is defined and prependBundlePrefixFilter != true %}
-                </div>
-            {% endif %}
-            {% if translatableFilter is defined and translatableFilter != true %}
-                <div class="d-none">
-            {% endif %}
-                {{ form_row(quickNavForm.translatable) }}
-            {% if translatableFilter is defined and translatableFilter != true %}
-                </div>
-            {% endif %}
-            {{ form_widget(quickNavForm.updateview) }}
-            <a href="{{ path('zikularoutesmodule_route_' ~ routeArea|default ~ 'view', {tpl: app.request.query.get('tpl', ''), all: app.request.query.get('all', '')}) }}" title="{{ __('Back to default view') }}" class="btn btn-default btn-sm">{{ __('Reset') }}</a>
-        </fieldset>
+        <h3>{{ __('Quick navigation') }}</h3>
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.workflowState) }}
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            </div>
+        {% endif %}
+        {% if schemesFilter is defined and schemesFilter != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.schemes) }}
+        {% if schemesFilter is defined and schemesFilter != true %}
+            </div>
+        {% endif %}
+        {% if methodsFilter is defined and methodsFilter != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.methods) }}
+        {% if methodsFilter is defined and methodsFilter != true %}
+            </div>
+        {% endif %}
+        {% if searchFilter is defined and searchFilter != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.q) }}
+        {% if searchFilter is defined and searchFilter != true %}
+            </div>
+        {% endif %}
+        {% if sorting is defined and sorting != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.sort) }}
+            {{ form_row(quickNavForm.sortdir) }}
+        {% if sorting is defined and sorting != true %}
+            </div>
+        {% endif %}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.num) }}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            </div>
+        {% endif %}
+        {% if prependBundlePrefixFilter is defined and prependBundlePrefixFilter != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.prependBundlePrefix) }}
+        {% if prependBundlePrefixFilter is defined and prependBundlePrefixFilter != true %}
+            </div>
+        {% endif %}
+        {% if translatableFilter is defined and translatableFilter != true %}
+            <div class="d-none">
+        {% endif %}
+            {{ form_row(quickNavForm.translatable) }}
+        {% if translatableFilter is defined and translatableFilter != true %}
+            </div>
+        {% endif %}
+        {{ form_widget(quickNavForm.updateview) }}
+        <a href="{{ path('zikularoutesmodule_route_' ~ routeArea|default ~ 'view', {tpl: app.request.query.get('tpl', ''), all: app.request.query.get('all', '')}) }}" title="{{ __('Back to default view') }}" class="btn btn-default btn-sm">{{ __('Reset') }}</a>
     </div>
     {{ form_end(quickNavForm) }}
 {% endif %}
