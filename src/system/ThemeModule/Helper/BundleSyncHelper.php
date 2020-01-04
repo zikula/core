@@ -170,11 +170,11 @@ class BundleSyncHelper
             if (($dbthemes[$name]['type'] !== $themeinfo['type']) ||
                 ($dbthemes[$name]['description'] !== $themeinfo['description']) ||
                     ($dbthemes[$name]['version'] !== $themeinfo['version']) ||
-                    ($dbthemes[$name]['admin'] !== (int)$themeinfo['admin']) ||
-                    ($dbthemes[$name]['user'] !== (int)$themeinfo['user']) ||
-                    ($dbthemes[$name]['system'] !== (int)$themeinfo['system']) ||
-                    ($dbthemes[$name]['contact'] !== $themeinfo['contact']) ||
-                    ($dbthemes[$name]['xhtml'] !== (int)$themeinfo['xhtml'])) {
+                    ((bool)$dbthemes[$name]['admin'] !== (bool)$themeinfo['admin']) ||
+                    ((bool)$dbthemes[$name]['user'] !== (bool)$themeinfo['user']) ||
+                    ((bool)$dbthemes[$name]['system'] !== (bool)$themeinfo['system']) ||
+                    ((string)$dbthemes[$name]['contact'] !== (string)$themeinfo['contact']) ||
+                    ((bool)$dbthemes[$name]['xhtml'] !== (bool)$themeinfo['xhtml'])) {
                 $themeinfo['id'] = $dbthemes[$name]['id'];
                 // update item
                 /** @var $item ThemeEntity */
