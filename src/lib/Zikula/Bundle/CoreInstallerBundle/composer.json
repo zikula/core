@@ -30,7 +30,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/Guite/symfony-console-form"
+            "url": "https://github.com/Jeroeny/symfony-console-form"
         }
     ],
     "autoload": {

@@ -3484,13 +3484,13 @@
             "version": "dev-symfony-5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Guite/symfony-console-form.git",
-                "reference": "78e6681d36260d545c50c3b544867d1c9f758613"
+                "url": "https://github.com/Jeroeny/symfony-console-form.git",
+                "reference": "c56e1c6339feba531ededc92c0474533419ee105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/symfony-console-form/zipball/78e6681d36260d545c50c3b544867d1c9f758613",
-                "reference": "78e6681d36260d545c50c3b544867d1c9f758613",
+                "url": "https://api.github.com/repos/Jeroeny/symfony-console-form/zipball/c56e1c6339feba531ededc92c0474533419ee105",
+                "reference": "c56e1c6339feba531ededc92c0474533419ee105",
                 "shasum": ""
             },
             "require": {
@@ -3538,9 +3538,9 @@
                 "form"
             ],
             "support": {
-                "source": "https://github.com/Guite/symfony-console-form/tree/symfony-5"
+                "source": "https://github.com/Jeroeny/symfony-console-form/tree/symfony-5"
             },
-            "time": "2019-12-28T13:10:30+00:00"
+            "time": "2020-01-04T09:52:39+00:00"
         },
         {
             "name": "michelf/php-markdown",
