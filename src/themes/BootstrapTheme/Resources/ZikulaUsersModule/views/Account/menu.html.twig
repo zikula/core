@@ -17,7 +17,7 @@
     <li class="list-group-item">
         <a href="{{ link.url }}">
             <div class="media">
-                <div class="media-left">
+                <div class="media-left mr-3">
                 {% if displayGraphics %}
                     {% set imageTitle = link.text|replace({'"': ''}) %}
                     {% if link.icon[:4] == 'http' or not link.module|default %}
@@ -25,13 +25,13 @@
                     {% elseif '.' in link.icon and link.module|default %}
                         {% set icon = '<img title="' ~ imageTitle ~ '" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
                     {% else %}
-                        {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-fw fa-3x fa-'~link.icon~'"></i>' %}
+                        {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-fw fa-2x fa-'~link.icon~'"></i>' %}
                     {% endif %}
                     {{ icon|raw }}
                 {% endif %}
                 </div>
                 <div class="media-body">
-                    <h4><strong>{{ link.text }}</strong></h4>
+                    <h5><strong>{{ link.text }}</strong></h5>
                 </div>
             </div>
         </a>
