@@ -157,16 +157,18 @@
                 {{ pager({rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'zikularoutesmodule_route_' ~ routeArea ~ 'view'}) }}
             {% endif %}
         {% if routeArea == 'admin' %}
-                <fieldset class="form-group row mt-3">
-                    <label for="zikulaRoutesModuleAction" class="col-md-3 col-form-label">{{ __('With selected routes') }}</label>
-                    <div class="col-md-6">
-                        <select id="zikulaRoutesModuleAction" name="action" class="form-control form-control-sm">
-                            <option value="">{{ __('Choose action') }}</option>
-                            <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="submit" value="{{ __('Submit') }}" class="btn btn-primary btn-sm" />
+                <fieldset class="my-3 pt-3">
+                    <div class="row">
+                        <label for="zikulaRoutesModuleAction" class="col-md-3 col-form-label">{{ __('With selected routes') }}</label>
+                        <div class="col-md-6">
+                            <select id="zikulaRoutesModuleAction" name="action" class="form-control form-control-sm">
+                                <option value="">{{ __('Choose action') }}</option>
+                                <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" value="{{ __('Submit') }}" class="btn btn-primary btn-sm" />
+                        </div>
                     </div>
                 </fieldset>
             </div>
