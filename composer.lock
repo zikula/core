@@ -1102,16 +1102,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.10.0",
+            "version": "v2.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "0c9a646775ef549eb0a213a4f9bd4381d9b4d934"
+                "reference": "c2b8e6e82732a64ecde1cddf9e1e06cb8556e3d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/0c9a646775ef549eb0a213a4f9bd4381d9b4d934",
-                "reference": "0c9a646775ef549eb0a213a4f9bd4381d9b4d934",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/c2b8e6e82732a64ecde1cddf9e1e06cb8556e3d8",
+                "reference": "c2b8e6e82732a64ecde1cddf9e1e06cb8556e3d8",
                 "shasum": ""
             },
             "require": {
@@ -1190,7 +1190,7 @@
                 "sqlserver",
                 "sqlsrv"
             ],
-            "time": "2019-11-03T16:50:43+00:00"
+            "time": "2020-01-04T12:56:21+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -1951,12 +1951,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "fe0452d6887a0fa76e2eaf80166e1ea205e7bb81"
+                "reference": "d15890222b6deb08fe44a57fa8e2e6ec2e25eb84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/fe0452d6887a0fa76e2eaf80166e1ea205e7bb81",
-                "reference": "fe0452d6887a0fa76e2eaf80166e1ea205e7bb81",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d15890222b6deb08fe44a57fa8e2e6ec2e25eb84",
+                "reference": "d15890222b6deb08fe44a57fa8e2e6ec2e25eb84",
                 "shasum": ""
             },
             "require": {
@@ -1993,7 +1993,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2019-12-04T15:29:08+00:00"
+            "time": "2020-01-02T11:58:15+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -3490,13 +3490,13 @@
             "version": "dev-symfony-5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Guite/symfony-console-form.git",
-                "reference": "78e6681d36260d545c50c3b544867d1c9f758613"
+                "url": "https://github.com/Jeroeny/symfony-console-form.git",
+                "reference": "c56e1c6339feba531ededc92c0474533419ee105"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/symfony-console-form/zipball/78e6681d36260d545c50c3b544867d1c9f758613",
-                "reference": "78e6681d36260d545c50c3b544867d1c9f758613",
+                "url": "https://api.github.com/repos/Jeroeny/symfony-console-form/zipball/c56e1c6339feba531ededc92c0474533419ee105",
+                "reference": "c56e1c6339feba531ededc92c0474533419ee105",
                 "shasum": ""
             },
             "require": {
@@ -3544,9 +3544,9 @@
                 "form"
             ],
             "support": {
-                "source": "https://github.com/Guite/symfony-console-form/tree/symfony-5"
+                "source": "https://github.com/Jeroeny/symfony-console-form/tree/symfony-5"
             },
-            "time": "2019-12-28T13:10:30+00:00"
+            "time": "2020-01-04T09:52:39+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -4727,7 +4727,7 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "dev-master",
+            "version": "v5.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
@@ -6724,16 +6724,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "8bf508045750f8c951967317957a36332efe024c"
+                "reference": "c50845d6a29835aea17c485ba8a2898144805361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/8bf508045750f8c951967317957a36332efe024c",
-                "reference": "8bf508045750f8c951967317957a36332efe024c",
+                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/c50845d6a29835aea17c485ba8a2898144805361",
+                "reference": "c50845d6a29835aea17c485ba8a2898144805361",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.2.5"
             },
             "type": "zikula-theme",
             "extra": {
@@ -6766,7 +6766,7 @@
                 "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
                 "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
             },
-            "time": "2019-12-23T16:58:15+00:00"
+            "time": "2020-01-04T14:51:30+00:00"
         },
         {
             "name": "zikula/filesystem",
@@ -6803,15 +6803,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "https://ziku.la/"
+                    "homepage": "http://zikula.org/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "info@ziku.la"
+                    "email": "drak@zikula.org"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "https://ziku.la",
+            "homepage": "http://zikula.org",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -6820,12 +6820,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "70bf2070b2724b25eb4f7667825b8fa1dc32aa7d"
+                "reference": "1ca629b24227970b7837d476bf2bccd465d42714"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/70bf2070b2724b25eb4f7667825b8fa1dc32aa7d",
-                "reference": "70bf2070b2724b25eb4f7667825b8fa1dc32aa7d",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1ca629b24227970b7837d476bf2bccd465d42714",
+                "reference": "1ca629b24227970b7837d476bf2bccd465d42714",
                 "shasum": ""
             },
             "require": {
@@ -6880,7 +6880,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2019-12-23T17:25:15+00:00"
+            "time": "2020-01-03T14:33:49+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6888,12 +6888,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "a2703a352c218f7af8744f2e655ab669a82313b1"
+                "reference": "9cc9b3d17fcc580b850d7e157dcde94943c890d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a2703a352c218f7af8744f2e655ab669a82313b1",
-                "reference": "a2703a352c218f7af8744f2e655ab669a82313b1",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/9cc9b3d17fcc580b850d7e157dcde94943c890d9",
+                "reference": "9cc9b3d17fcc580b850d7e157dcde94943c890d9",
                 "shasum": ""
             },
             "require": {
@@ -6941,7 +6941,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2019-12-24T07:13:51+00:00"
+            "time": "2020-01-03T13:47:18+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6949,12 +6949,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "c091411e0e8c6417a0095d76778612ef1894e89f"
+                "reference": "203160bb2f705717f42dc84a1bce9f9da789c7d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/c091411e0e8c6417a0095d76778612ef1894e89f",
-                "reference": "c091411e0e8c6417a0095d76778612ef1894e89f",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/203160bb2f705717f42dc84a1bce9f9da789c7d3",
+                "reference": "203160bb2f705717f42dc84a1bce9f9da789c7d3",
                 "shasum": ""
             },
             "require": {
@@ -6991,7 +6991,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2019-12-30T15:14:06+00:00"
+            "time": "2020-01-02T16:59:50+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6999,12 +6999,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "8ff8f6e605180f52e84e804d8d813ea4cecff1ac"
+                "reference": "3597b04ad1cbc8df347a0c3ac1c811bc9f178e29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8ff8f6e605180f52e84e804d8d813ea4cecff1ac",
-                "reference": "8ff8f6e605180f52e84e804d8d813ea4cecff1ac",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/3597b04ad1cbc8df347a0c3ac1c811bc9f178e29",
+                "reference": "3597b04ad1cbc8df347a0c3ac1c811bc9f178e29",
                 "shasum": ""
             },
             "require": {
@@ -7062,7 +7062,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2019-12-31T09:43:14+00:00"
+            "time": "2020-01-04T09:50:51+00:00"
         },
         {
             "name": "zikula/seabreeze-theme",
@@ -7070,16 +7070,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "9d4dc83db3276fde8c408dbb6671e1eae9b0e53e"
+                "reference": "d8ccf92ea3984ce39a63f716ae7efb38671dc552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/9d4dc83db3276fde8c408dbb6671e1eae9b0e53e",
-                "reference": "9d4dc83db3276fde8c408dbb6671e1eae9b0e53e",
+                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/d8ccf92ea3984ce39a63f716ae7efb38671dc552",
+                "reference": "d8ccf92ea3984ce39a63f716ae7efb38671dc552",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.2.5"
             },
             "type": "zikula-theme",
             "extra": {
@@ -7112,7 +7112,7 @@
                 "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/master",
                 "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
             },
-            "time": "2019-12-23T16:58:08+00:00"
+            "time": "2020-01-04T14:51:18+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -7239,7 +7239,6 @@
         "zikula/pagelock-module": 20,
         "zikula/andreas08-theme": 20,
         "zikula/seabreeze-theme": 20,
-        "sensio/framework-extra-bundle": 20,
         "prolix/translation-bundle": 20,
         "willdurand/js-translation-bundle": 20,
         "liip/imagine-bundle": 20,
