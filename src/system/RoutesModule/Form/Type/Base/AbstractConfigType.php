@@ -137,18 +137,18 @@ abstract class AbstractConfigType extends AbstractType
         ]);
         $builder->add('reset', ResetType::class, [
             'label' => $this->__('Reset'),
-            'icon' => 'fa-refresh',
+            'validate' => false,
+            'icon' => 'fa-sync',
             'attr' => [
-                'class' => 'btn btn-default',
-                'formnovalidate' => 'formnovalidate'
+                'class' => 'btn btn-default'
             ]
         ]);
         $builder->add('cancel', SubmitType::class, [
             'label' => $this->__('Cancel'),
+            'validate' => false,
             'icon' => 'fa-times',
             'attr' => [
-                'class' => 'btn btn-default',
-                'formnovalidate' => 'formnovalidate'
+                'class' => 'btn btn-default'
             ]
         ]);
     }
