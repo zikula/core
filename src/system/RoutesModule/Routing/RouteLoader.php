@@ -95,7 +95,7 @@ class RouteLoader extends Loader
         $this->locale = $locale;
     }
 
-    public function load($resource, $type = null)
+    public function load($resource, string $type = null)
     {
         if (true === $this->loaded) {
             throw new RuntimeException('Do not add the "zikularoutesmodule" loader twice');
@@ -364,7 +364,7 @@ class RouteLoader extends Loader
      *
      * @return boolean
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, string $type = null)
     {
         return 'zikularoutesmodule' === $type;
     }
