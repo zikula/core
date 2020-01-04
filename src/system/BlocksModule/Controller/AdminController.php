@@ -67,8 +67,8 @@ class AdminController extends AbstractController
         $filterForm = $this->createForm(AdminViewFilterType::class, $sessionFilterData, [
             'action' => $this->generateUrl('zikulablocksmodule_admin_view'),
             'method' => 'POST',
-            'moduleChoices' => $blockApi->getModulesContainingBlocks(),
-            'positionChoices' => $positionRepository->getPositionChoiceArray(),
+            'moduleChoices' => array_flip($blockApi->getModulesContainingBlocks()),
+            'positionChoices' => array_flip($positionRepository->getPositionChoiceArray()),
             'localeChoices' => $localeApi->getSupportedLocaleNames(null, $request->getLocale())
         ]);
         $filterFormClone = clone $filterForm;
