@@ -79,7 +79,9 @@
     - Fixed broken JavaScript in ZAuth user modification form (#3992).
 
  - Features:
-    - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
+    - Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
+    - Added all styles from Bootswatch to the Bootstrap theme (#4037).
+    - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
     - Allow zasset syntax for relative assets also for normal bundles.
     - Added Twig function for creating a `RouteUrl` instance (#3802).
