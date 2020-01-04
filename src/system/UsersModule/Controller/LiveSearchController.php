@@ -49,10 +49,14 @@ class LiveSearchController extends AbstractController
         $resultItems = [];
         if (count($results) > 0) {
             foreach ($results as $result) {
+                $avatar = $profileModule->getAvatar($result->getUid(), ['rating' => 'g']);
+                if (!$avatar) {
+                    $avatar = '<img src="' . $request->getSchemeAndHttpHost() . $request->getBasePath() . '/web/modules/zikulausers/images/user.png" alt="user" />';
+                }
                 $resultItems[] = [
                     'uid' => $result->getUid(),
                     'uname' => $result->getUname(),
-                    'avatar' => $profileModule->getAvatar($result->getUid(), ['rating' => 'g'])
+                    'avatar' => $avatar
                 ];
             }
         }

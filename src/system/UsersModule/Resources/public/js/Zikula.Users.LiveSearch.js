@@ -51,7 +51,7 @@ function initUserLiveSearch(fieldName)
     })
     .autocomplete('instance')._renderItem = function(ul, item) {
         return jQuery('<div>', { class: 'suggestion' })
-            .append('<div class="media"><div class="mr-3"><a href="javascript:void(0)">' + item.avatar + '</a></div><div class="media-body"><p>' + item.uname + '</p></div></div>')
+            .append('<div class="media"><div class="media-left"><a href="javascript:void(0)">' + item.avatar + '</a></div><div class="media-body"><p class="media-heading">' + item.uname + '</p></div></div>')
             .appendTo(ul);
     };
 }

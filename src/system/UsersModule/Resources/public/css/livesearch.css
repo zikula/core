@@ -15,7 +15,7 @@
 
 .ui-autocomplete .suggestion {
     margin: 0;
-    padding: 0.2em 0 0.2em 20px;
+    padding: 3px 5px;
     list-style-type: none;
     line-height: 1.4em;
     cursor: pointer;
@@ -25,8 +25,8 @@
     background-color: #fff;
 }
 
-.ui-autocomplete .suggestion {
-    background-image: url('../images/user.png');
+.ui-autocomplete .suggestion .media-left {
+    margin-right: 5px;
 }
 .ui-autocomplete .suggestion img {
     max-width: 20px;
