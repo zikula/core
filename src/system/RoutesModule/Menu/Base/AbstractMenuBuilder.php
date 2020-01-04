@@ -20,13 +20,16 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\RoutesEvents;
 use Zikula\RoutesModule\Event\ConfigureItemActionsMenuEvent;
+use Zikula\RoutesModule\Event\ConfigureViewActionsMenuEvent;
 use Zikula\RoutesModule\Helper\EntityDisplayHelper;
+use Zikula\RoutesModule\Helper\ModelHelper;
 use Zikula\RoutesModule\Helper\PermissionHelper;
-use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
 /**
  * Menu builder base class.
@@ -34,37 +37,47 @@ use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 class AbstractMenuBuilder
 {
     use TranslatorTrait;
-
+    
     /**
      * @var FactoryInterface
      */
     protected $factory;
-
+    
     /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-
+    
     /**
      * @var EntityDisplayHelper
      */
     protected $entityDisplayHelper;
-
+    
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-
+    
+    /**
+     * @var VariableApiInterface
+     */
+    protected $variableApi;
+    
+    /**
+     * @var ModelHelper
+     */
+    protected $modelHelper;
+    
     public function __construct(
         TranslatorInterface $translator,
         FactoryInterface $factory,
@@ -72,7 +85,9 @@ class AbstractMenuBuilder
         RequestStack $requestStack,
         PermissionHelper $permissionHelper,
         EntityDisplayHelper $entityDisplayHelper,
-        CurrentUserApiInterface $currentUserApi
+        CurrentUserApiInterface $currentUserApi,
+        VariableApiInterface $variableApi,
+        ModelHelper $modelHelper
     ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
@@ -81,13 +96,15 @@ class AbstractMenuBuilder
         $this->permissionHelper = $permissionHelper;
         $this->entityDisplayHelper = $entityDisplayHelper;
         $this->currentUserApi = $currentUserApi;
+        $this->variableApi = $variableApi;
+        $this->modelHelper = $modelHelper;
     }
-
+    
     public function setTranslator(TranslatorInterface $translator): void
     {
         $this->translator = $translator;
     }
-
+    
     /**
      * Builds the item actions menu.
      */
@@ -97,20 +114,20 @@ class AbstractMenuBuilder
         if (!isset($options['entity'], $options['area'], $options['context'])) {
             return $menu;
         }
-
+    
         $entity = $options['entity'];
         $routeArea = $options['area'];
         $context = $options['context'];
         $menu->setChildrenAttribute('class', 'list-inline item-actions');
-
+    
         $this->eventDispatcher->dispatch(
             new ConfigureItemActionsMenuEvent($this->factory, $menu, $options),
             RoutesEvents::MENU_ITEMACTIONS_PRE_CONFIGURE
         );
-
+    
         if ($entity instanceof RouteEntity) {
             $routePrefix = 'zikularoutesmodule_route_';
-        
+            
             if ('admin' === $routeArea) {
                 $title = $this->__('Preview', 'zikularoutesmodule');
                 $previewRouteParameters = $entity->createUrlArgs();
@@ -159,7 +176,7 @@ class AbstractMenuBuilder
                     'title',
                     $this->__('Reuse for new route', 'zikularoutesmodule')
                 );
-                $menu[$title]->setAttribute('icon', 'fa fa-copy');
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
             if ('display' === $context) {
                 $title = $this->__('Routes list', 'zikularoutesmodule');
@@ -170,12 +187,95 @@ class AbstractMenuBuilder
                 $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
         }
-
+    
         $this->eventDispatcher->dispatch(
             new ConfigureItemActionsMenuEvent($this->factory, $menu, $options),
             RoutesEvents::MENU_ITEMACTIONS_POST_CONFIGURE
         );
-
+    
+        return $menu;
+    }
+    
+    /**
+     * Builds the view actions menu.
+     */
+    public function createViewActionsMenu(array $options = []): ItemInterface
+    {
+        $menu = $this->factory->createItem('viewActions');
+        if (!isset($options['objectType'], $options['area'])) {
+            return $menu;
+        }
+    
+        $objectType = $options['objectType'];
+        $routeArea = $options['area'];
+        $menu->setChildrenAttribute('class', 'list-inline view-actions');
+    
+        $this->eventDispatcher->dispatch(
+            new ConfigureViewActionsMenuEvent($this->factory, $menu, $options),
+            RoutesEvents::MENU_VIEWACTIONS_PRE_CONFIGURE
+        );
+    
+        $query = $this->requestStack->getMasterRequest()->query;
+        $currentTemplate = $query->getAlnum('tpl', '');
+        if ('route' === $objectType) {
+            $routePrefix = 'zikularoutesmodule_route_';
+            if (!in_array($currentTemplate, [])) {
+                $canBeCreated = $this->modelHelper->canBeCreated($objectType);
+                if ($canBeCreated) {
+                    if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_EDIT)) {
+                        $title = $this->__('Create route', 'zikularoutesmodule');
+                        $menu->addChild($title, [
+                            'route' => $routePrefix . $routeArea . 'edit'
+                        ]);
+                        $menu[$title]->setLinkAttribute('title', $title);
+                        $menu[$title]->setAttribute('icon', 'fa fa-plus');
+                    }
+                }
+                $routeParameters = $query->all();
+                if (1 === $query->getInt('own')) {
+                    $routeParameters['own'] = 1;
+                } else {
+                    unset($routeParameters['own']);
+                }
+                if (1 === $query->getInt('all')) {
+                    unset($routeParameters['all']);
+                    $title = $this->__('Back to paginated view', 'zikularoutesmodule');
+                } else {
+                    $routeParameters['all'] = 1;
+                    $title = $this->__('Show all entries', 'zikularoutesmodule');
+                }
+                $menu->addChild($title, [
+                    'route' => $routePrefix . $routeArea . 'view',
+                    'routeParameters' => $routeParameters
+                ]);
+                $menu[$title]->setLinkAttribute('title', $title);
+                $menu[$title]->setAttribute('icon', 'fa fa-table');
+                if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_EDIT)) {
+                    $routeParameters = $query->all();
+                    if (1 === $query->getInt('own')) {
+                        unset($routeParameters['own']);
+                        $title = $this->__('Show also entries from other users', 'zikularoutesmodule');
+                        $icon = 'users';
+                    } else {
+                        $routeParameters['own'] = 1;
+                        $title = $this->__('Show only own entries', 'zikularoutesmodule');
+                        $icon = 'user';
+                    }
+                    $menu->addChild($title, [
+                        'route' => $routePrefix . $routeArea . 'view',
+                        'routeParameters' => $routeParameters
+                    ]);
+                    $menu[$title]->setLinkAttribute('title', $title);
+                    $menu[$title]->setAttribute('icon', 'fa fa-' . $icon);
+                }
+            }
+        }
+    
+        $this->eventDispatcher->dispatch(
+            new ConfigureViewActionsMenuEvent($this->factory, $menu, $options),
+            RoutesEvents::MENU_VIEWACTIONS_POST_CONFIGURE
+        );
+    
         return $menu;
     }
 }

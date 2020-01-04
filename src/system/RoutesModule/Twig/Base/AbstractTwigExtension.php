@@ -100,7 +100,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
     
         $result = $stateInfo['text'];
         if (true === $uiFeedback) {
-            $result = '<span class="label label-' . $stateInfo['ui'] . '">' . $result . '</span>';
+            $result = '<span class="badge badge-' . $stateInfo['ui'] . '">' . $result . '</span>';
         }
     
         return $result;

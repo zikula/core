@@ -76,7 +76,7 @@ abstract class AbstractConfigType extends AbstractType
         $builder->add('showOnlyOwnEntries', CheckboxType::class, [
             'label' => $this->__('Show only own entries') . ':',
             'label_attr' => [
-                'class' => 'tooltips',
+                'class' => 'tooltips switch-custom',
                 'title' => $this->__('Whether only own entries should be shown on view pages by default or not')
             ],
             'help' => $this->__('Whether only own entries should be shown on view pages by default or not'),
@@ -97,7 +97,7 @@ abstract class AbstractConfigType extends AbstractType
         $builder->add('allowModerationSpecificCreatorForRoute', CheckboxType::class, [
             'label' => $this->__('Allow moderation specific creator for route') . ':',
             'label_attr' => [
-                'class' => 'tooltips',
+                'class' => 'tooltips switch-custom',
                 'title' => $this->__('Whether to allow moderators choosing a user which will be set as creator.')
             ],
             'help' => $this->__('Whether to allow moderators choosing a user which will be set as creator.'),
@@ -111,7 +111,7 @@ abstract class AbstractConfigType extends AbstractType
         $builder->add('allowModerationSpecificCreationDateForRoute', CheckboxType::class, [
             'label' => $this->__('Allow moderation specific creation date for route') . ':',
             'label_attr' => [
-                'class' => 'tooltips',
+                'class' => 'tooltips switch-custom',
                 'title' => $this->__('Whether to allow moderators choosing a custom creation date.')
             ],
             'help' => $this->__('Whether to allow moderators choosing a custom creation date.'),

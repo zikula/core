@@ -144,7 +144,7 @@ abstract class AbstractRouteType extends AbstractType
         $builder->add('schemes', MultiListType::class, [
             'label' => $this->__('Schemes') . ':',
             'label_attr' => [
-                'class' => 'checkbox-inline'
+                'class' => 'checkbox-custom'
             ],
             'empty_data' => [],
             'attr' => [
@@ -168,7 +168,7 @@ abstract class AbstractRouteType extends AbstractType
         $builder->add('methods', MultiListType::class, [
             'label' => $this->__('Methods') . ':',
             'label_attr' => [
-                'class' => 'checkbox-inline'
+                'class' => 'checkbox-custom'
             ],
             'empty_data' => [],
             'attr' => [
@@ -184,6 +184,9 @@ abstract class AbstractRouteType extends AbstractType
         
         $builder->add('prependBundlePrefix', CheckboxType::class, [
             'label' => $this->__('Prepend bundle prefix') . ':',
+            'label_attr' => [
+                'class' => 'switch-custom'
+            ],
             'attr' => [
                 'class' => '',
                 'title' => $this->__('prepend bundle prefix ?')
@@ -193,6 +196,9 @@ abstract class AbstractRouteType extends AbstractType
         
         $builder->add('translatable', CheckboxType::class, [
             'label' => $this->__('Translatable') . ':',
+            'label_attr' => [
+                'class' => 'switch-custom'
+            ],
             'attr' => [
                 'class' => '',
                 'title' => $this->__('translatable ?')

@@ -15,10 +15,12 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Controller;
 
 use Zikula\RoutesModule\Controller\Base\AbstractRouteController;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
@@ -80,6 +82,7 @@ class RouteController extends AbstractRouteController
      */
     public function adminViewAction(
         Request $request,
+        RouterInterface $router,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
@@ -90,6 +93,7 @@ class RouteController extends AbstractRouteController
     ): Response {
         return $this->viewInternal(
             $request,
+            $router,
             $permissionHelper,
             $controllerHelper,
             $viewHelper,
@@ -111,6 +115,7 @@ class RouteController extends AbstractRouteController
      */
     public function viewAction(
         Request $request,
+        RouterInterface $router,
         PermissionHelper $permissionHelper,
         ControllerHelper $controllerHelper,
         ViewHelper $viewHelper,
@@ -121,6 +126,7 @@ class RouteController extends AbstractRouteController
     ): Response {
         return $this->viewInternal(
             $request,
+            $router,
             $permissionHelper,
             $controllerHelper,
             $viewHelper,
@@ -252,12 +258,14 @@ class RouteController extends AbstractRouteController
      */
     public function adminHandleSelectedEntriesAction(
         Request $request,
+        LoggerInterface $logger,
         EntityFactory $entityFactory,
         WorkflowHelper $workflowHelper,
         CurrentUserApiInterface $currentUserApi
     ): RedirectResponse {
         return $this->handleSelectedEntriesActionInternal(
             $request,
+            $logger,
             $entityFactory,
             $workflowHelper,
             $currentUserApi,
@@ -274,12 +282,14 @@ class RouteController extends AbstractRouteController
      */
     public function handleSelectedEntriesAction(
         Request $request,
+        LoggerInterface $logger,
         EntityFactory $entityFactory,
         WorkflowHelper $workflowHelper,
         CurrentUserApiInterface $currentUserApi
     ): RedirectResponse {
         return $this->handleSelectedEntriesActionInternal(
             $request,
+            $logger,
             $entityFactory,
             $workflowHelper,
             $currentUserApi,
