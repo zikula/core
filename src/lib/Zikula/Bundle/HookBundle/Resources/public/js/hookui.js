@@ -5,33 +5,6 @@ var removeItemBeforeResponse = true;
 var cloneDraggedItem = true;
 
 ( function($) {
-    /**
-     * Sets z-odd / z-even on each li after append, move and delete.
-     *
-     * @param   {String} listclass   Class applied to the list of items.
-     * @param   {String} headerclass Class applied to the header of the list.
-     *
-     * @return  void
-     */
-    var recolorListElements = function(listclass, headerclass) {
-        var odd = true;
-
-        $('.' + listclass).children().each(function(index) {
-            var elem = $(this);
-            if (!elem.hasClass(headerclass)) {
-                elem.removeClass('z-odd');
-                elem.removeClass('z-even');
-
-                if (true === odd) {
-                    elem.addClass('z-odd');
-                } else {
-                    elem.addClass('z-even');
-                }
-                odd = !odd;
-            }
-        });
-    };
-
     var initHookAccordion = function(containerId) {
         $('#' + containerId + ' h4').addClass('z-panel-header z-pointer');
         $('#' + containerId).accordion({
@@ -231,9 +204,6 @@ var cloneDraggedItem = true;
 
         // create the dropable area
         createDroppable('sarea_' + sarea_id);
-
-        // recolor
-        recolorListElements(areaListToAttachTo.attr('id'), 'z-itemheader');
     };
 
     /**
@@ -258,9 +228,6 @@ var cloneDraggedItem = true;
         } else {
             areaToDetachFrom.css('height', (areaToDetachFrom.height() - heightOfDetachedArea) + 'px');
         }
-
-        // recolor
-        recolorListElements(areaToDetachFrom.attr('id'), 'z-itemheader');
     };
 
     /**
@@ -290,8 +257,7 @@ var cloneDraggedItem = true;
             url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
             data: parameters
         }).done(function (data) {
-            // update new sort order
-            recolorListElements(listId, $('#' + listId).down(0).attr('id'));
+            // nothing
         }).fail(function (jqXHR, textStatus) {
             alert('Request failed: ' + textStatus);
         });
