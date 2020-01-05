@@ -172,61 +172,39 @@ div.z-admincategorydescription {
 
 .nav-tabs-admin > li > a {
     padding: 5px 10px;
-    color: black;
+    color: #000;
 }
 
 .nav-tabs-admin > li {
     margin: 0 2px -1px 0;
 }
 
-.nav-tabs-admin > .active {
-    font-weight: bold;
+.nav-tabs-admin > li > .active {
+    font-weight: 700;
 }
-
 
 .nav-tabs-admin .popover {
-    width:300px;
-}
-
-#admintabs {
-    margin: 0;
+    width: 300px;
 }
 
 .admintabs-dropover {
-    background-color: orange!important
+    background-color: orange !important;
 }
 
 .admintabs-lock {
-    display: none!important
-}
-
-li.admintabs-add {
-    float: right;
-}
-
-#admintabs-locker {
-    float: right;
-    margin-right: -2px;
+    display: none !important;
 }
 
 #admintabs .dropdown-menu {
-    margin: 0;
-    padding: 0;
     font-size: 95%;
     z-index: 1002; /* modulelinks */
 }
 
-#admintabs .dropdown-menu > li {
-    margin: 0px;
-}
-
 #admintabs .dropdown-menu > li > a {
-    margin: 0px;
-    padding: 7px;
-}
-
-#admintabs .dropdown-menu .icon {
-    padding:0 17px 0 3px
+    margin: 0;
+    padding: 4px 10px;
+    white-space: nowrap;
+    display: block;
 }
 
 /******************************************************************************

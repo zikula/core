@@ -7,11 +7,11 @@
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {% for category in adminMenu %}
             <li class="nav-item dropdown droppable nowrap" data-catid="{{ category.cid }}">
-                <a href="#" class="nav-link dropdown-toggle{% if caller.category.id == category.cid %} active{% endif %}" data-toggle="dropdown"><span class="fa fa-arrows-alt admintabs-lock"></span>
+                <a href="#" class="nav-link dropdown-toggle{% if caller.category.cid == category.cid %} active{% endif %}" data-toggle="dropdown"><span class="fa fa-arrows-alt admintabs-lock"></span>
                     <span>{{ category.title }}</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="admintabs-lock admintabs-makedefault{% if caller.category.id == category.cid %} d-none{% endif %}">
+                    <li class="admintabs-lock admintabs-makedefault{% if caller.category.cid == category.cid %} d-none{% endif %}">
                         <a href="#"><span class="fa fa-fw fa-asterisk"></span> {{ __('Make default category') }}</a>
                     </li>
                     <li class="admintabs-lock admintabs-edit" data-toggle="modal"
@@ -34,7 +34,7 @@
                 </ul>
             </li>
         {% endfor %}
-        <li id="admintabs-locker">
+        <li id="admintabs-locker" class="ml-auto">
             <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top" class="tooltips tooltips-bottom">
                 <span class="fa fa-fw fa-lock"></span>
             </a>
