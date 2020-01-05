@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -119,7 +120,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->addJsTranslation();
 
         // add default stylesheets to cssAssetBag
-        $this->addBootstrapCss();
+        $this->addBootstrapCss($event->getRequest());
         $this->cssAssetBag->add([
             $this->assetHelper->resolve('bundles/core/css/core.css') => 1,
         ]);
@@ -164,7 +165,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         ]);
     }
 
-    private function addBootstrapCss(): void
+    private function addBootstrapCss(Request $request): void
     {
         $bootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
         if ($this->params['installed'] && null !== $this->themeEngine->getTheme()) {
@@ -173,7 +174,8 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
             if (!empty($theme->getConfig()['bootstrapPath'])) {
                 $bootstrapPath = $theme->getConfig()['bootstrapPath'];
             } elseif ('ZikulaBootstrapTheme' === $theme->getName()) {
-                $themeStyle = $this->variableApi->get($theme->getName(), 'theme_style');
+                $themeStyle = $request->hasSession() ? $request->getSession()->get('currentBootstrapStyle', '') : '';
+                $themeStyle = $themeStyle ? $themeStyle : $this->variableApi->get($theme->getName(), 'theme_style');
                 if ('default' !== $themeStyle) {
                     $bootstrapPath = 'bootswatch/dist/' . $themeStyle . '/bootstrap.min.css';
                 }

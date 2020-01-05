@@ -2,7 +2,9 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
+        public: false
+        bind:
+            $bundle: '@Zikula\BootstrapTheme\ZikulaBootstrapTheme'
 
     Zikula\BootstrapTheme\:
         resource: '../../*'

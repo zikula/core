@@ -1,0 +1,5 @@
+zikulabootstraptheme:
+    # define routing support for these controllers
+    resource: "@ZikulaBootstrapTheme/Controller"
+    # enable support for defining routes by annotations
+    type: annotation
