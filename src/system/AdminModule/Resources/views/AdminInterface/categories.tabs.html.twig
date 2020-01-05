@@ -34,14 +34,14 @@
                 </ul>
             </li>
         {% endfor %}
-        <li id="admintabs-locker" class="ml-auto">
-            <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top" class="tooltips tooltips-bottom">
+        <li id="admintabs-locker" class="nav-item ml-auto">
+            <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top" class="nav-link tooltips tooltips-bottom">
                 <span class="fa fa-fw fa-lock"></span>
             </a>
         </li>
-        <li class="admintabs-add admintabs-lock">
+        <li class="nav-item admintabs-add admintabs-lock">
             <a href="{{ path('zikulaadminmodule_admin_newcat') }}" title="{{ __('New module category') }}"
-               class="tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span>
+               class="nav-link tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span>
             </a>
             <div id="admintabs-add-popover" class="d-none">
                 <div class="input-group">
