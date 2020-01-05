@@ -50,7 +50,7 @@ class AjaxController extends AbstractController
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
-        $moduleId = $request->request->get('modid');
+        $moduleId = $request->request->getInt('modid');
         $newParentCat = $request->request->getInt('cat');
 
         /** @var ExtensionEntity $module */

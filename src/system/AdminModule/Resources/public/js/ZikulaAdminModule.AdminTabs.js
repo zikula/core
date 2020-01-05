@@ -8,9 +8,10 @@
 
         $('#admintabs').sortable({
             cursor: 'move',
+            placeholder: 'ui-state-highlight',
             containment: 'parent',
             update: function(event, ui) {
-                var tab = new Array();
+                var tab = [];
                 $('#admintabs li').each( function() {
                    var catid = $(this).data('catid');
                    if (catid !== undefined) {
@@ -136,8 +137,9 @@
 
         $('#modulelist').sortable({
             cursor: 'move',
+            placeholder: 'ui-state-highlight',
             update: function(event, ui) {
-                var modules = new Array();
+                var modules = [];
                 $('#modulelist li').each( function() {
                     var modid = $(this).data('modid');
                     if (modid !== undefined) {
