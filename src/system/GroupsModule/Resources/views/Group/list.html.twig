@@ -46,7 +46,9 @@
                 {{ (group.nbumax == false or group.nbumax == 0) ? __('Unlimited') : group.nbumax }}
             </td>
             {% set rowActions = knp_menu_get('zikulaGroupsUserMenu', [], {group: group}) %}
-            <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</td>
+            <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">
+                {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
+            </td>
         </tr>
     {% else %}
         <tr class="table-info"><td colspan="7" class="text-center">{{ __('There are currently no groups that can be joined.') }}</td></tr>
