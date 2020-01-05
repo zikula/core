@@ -14,7 +14,8 @@
         "psr-4": { "Zikula\\BootstrapTheme\\": "" }
     },
     "require": {
-        "php": ">=7.2.5"
+        "php": ">=7.2.5",
+        "thomaspark/bootswatch": "4.*"
     },
     "extra": {
         "zikula" : {
