@@ -101,7 +101,7 @@ class UserEventListener implements EventSubscriberInterface
         $request = $this->requestStack->getCurrentRequest();
 
         $doClear = false;
-        if (($event instanceof ExceptionEvent) || (KernelEvents::EXCEPTION === $eventName)) {
+        if ($event instanceof ExceptionEvent || KernelEvents::EXCEPTION === $eventName) {
             if (null !== $request) {
                 $doClear = $request->attributes->has('_zkModule') && UsersConstant::MODNAME === $request->attributes->get('_zkModule');
             }
