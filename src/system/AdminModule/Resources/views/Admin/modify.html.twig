@@ -5,14 +5,14 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-pencil-alt"></span>
-    {{ __('Edit module category') }}
+    {% trans %}Edit module category{% endtrans %}
     {{ pageSetVar('title', __('Edit module category')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Module category') }}</legend>
+    <legend>{% trans %}Module category{% endtrans %}</legend>
     {{ form_row(form.cid) }}
     {{ form_row(form.name) }}
     {{ form_row(form.description) }}

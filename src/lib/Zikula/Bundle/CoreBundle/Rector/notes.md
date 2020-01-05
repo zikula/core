@@ -42,6 +42,9 @@ _n() and _fn() should be manually refactored
 ##Extraction
 
 e.g. command: `bin/console translation:update --force en ZikulaBlocksModule`
+ - note setting the prefix to "" (`--prefix=""`) might be useful in creating the first English Translation
+ - yaml seems a lot easier than xliff
+ - can set the domain with `--domain=mySpecialDomain`
 
 
 ##problems with rector Rector\Renaming\Rector\MethodCall\RenameMethodCallRector
@@ -57,3 +60,26 @@ replacing more methods than only `__` and `__f` in (at least):
 24) src/lib/Zikula/Core/Controller/AbstractController.php
 26) src/modules/zikula/legal-module/Listener/UsersUiListener.php
 38) src/system/BlocksModule/AbstractBlockHandler.php
+
+##Actual usage in tempalte for plural+
+
+    {% trans with {'%count%': node.children.count} %}n.direct1.child{% endtrans %}<br>
+    {% trans count node.children.count with {'%count%': node.children.count} %}n.direct2.child{% endtrans %}<br>
+    {% trans count node.children.count with {'%children%': node.children.count} %}(%children%).direct3.child{% endtrans %}<br>
+    {% trans count node.children.count %}n.direct4.child{% endtrans %}<br>
+
+with translations:
+
+    n.direct1.child: "{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}"
+    n.direct2.child: "{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}"
+    n.direct3.child: "{count, plural,\n  one   {one direct child}\n  other {{children} direct children}\n}"
+    n.direct4.child: "{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}"
+
+assuming count=2 produces
+
+    2 direct children
+    2 direct children
+    __(%children%).direct3.child
+    2 direct children
+
+So the fourth option `{% trans count node.children.count %}` seems to be the most efficient

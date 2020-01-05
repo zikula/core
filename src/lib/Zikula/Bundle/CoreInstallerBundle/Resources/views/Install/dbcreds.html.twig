@@ -6,7 +6,7 @@
 {% block content %}
 <div>
     <fieldset>
-    <legend>{{  __('Database information') }}</legend>
+    <legend>{% trans %}Database information{% endtrans %}</legend>
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -51,13 +51,13 @@
             <div class="col-md-9">
                 {{ form_errors(form.database_name) }}
                 {{ form_widget(form.database_name) }}
-                <small class="form-text text-danger">{{ __('Ensure the database is in UTF-8 format.') }}</small>
+                <small class="form-text text-danger">{% trans %}Ensure the database is in UTF-8 format.{% endtrans %}</small>
             </div>
         </div>
         <div class="form-group row">
             <div class="col-md-9 offset-md-3">
-                <p id="db-check" class="d-none"><i class="fa fa-cog fa-spin fa-fw text-success"></i>{{ __('Checking database connection...') }}</p>
-                <input type="submit" id="submit_button" value="{{ __('Next') }}" class="btn btn-success" />
+                <p id="db-check" class="d-none"><i class="fa fa-cog fa-spin fa-fw text-success"></i>{% trans %}Checking database connection...{% endtrans %}</p>
+                <input type="submit" id="submit_button" value="{% trans %}Next{% endtrans %}" class="btn btn-success" />
             </div>
         </div>
 

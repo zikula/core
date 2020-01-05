@@ -1,27 +1,27 @@
 {{ include('@ZikulaUsersModule/Email/header.txt.twig') }}
-{{ __f('Welcome to %sub%!', {'%sub%': getModVar('ZConfig', 'sitename')}) }}
+{% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}Welcome to %sub%!{% endtrans %}
 
-{{ __('Hello!') }}
+{% trans %}Hello!{% endtrans %}
 
-{{ __f('This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {'%email': reginfo.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')}) }}
-{{ __('The information that was registered is as follows:') }}
+{% trans with {'%email': reginfo.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
+{% trans %}The information that was registered is as follows:{% endtrans %}
 
-{{ __('User name') }}: {{ reginfo.uname }}
+{% trans %}User name{% endtrans %}: {{ reginfo.uname }}
 {% if createdpassword is not empty %}
-{{ __('Password') }}: {{ createdpassword }}
+{% trans %}Password{% endtrans %}: {{ createdpassword }}
 {% endif %}
 
-{% if createdpassword is not empty %}{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}{% endif %}
+{% if createdpassword is not empty %}{% trans %}(This is the only time you will receive your password. Please keep it in a safe place.){% endtrans %}{% endif %}
 
 {% if not reginfo.approved %}
-{{ __('Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.') }}
+{% trans %}Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.{% endtrans %}
 {% elseif not createdByAdmin %}
-{{ __('Your account application has been approved. Thank you for your patience during the new account application review process.') }}
+{% trans %}Your account application has been approved. Thank you for your patience during the new account application review process.{% endtrans %}
 {% elseif createdByAdmin %}
-{{ __('The web site administrator has created this new account for you.') }}
+{% trans %}The web site administrator has created this new account for you.{% endtrans %}
 {% endif %}
 
 {% if reginfo.approved %}
-{{ __('You may now log into the web site.') }}
+{% trans %}You may now log into the web site.{% endtrans %}
 {% endif %}
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig') }}

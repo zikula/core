@@ -6,7 +6,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-archive"></span>
-    {{ __('Edit category registry') }}
+    {% trans %}Edit category registry{% endtrans %}
     {{ pageSetVar('title', __('Edit category registry')) }}
 </h3>
 
@@ -28,7 +28,7 @@
                 <th id="hEntity" scope="col"><label>{{ form_label(form.entityname) }}</label></th>
                 <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
                 <th id="hCategory" scope="col"><label>{{ form_label(form.category) }}</label></th>
-                <th id="hActions" scope="col"><label>{{ __('Actions') }}</label></th>
+                <th id="hActions" scope="col"><label>{% trans %}Actions{% endtrans %}</label></th>
             </tr>
         </thead>
         <tbody>
@@ -41,8 +41,8 @@
                 <td headers="hProperty">{{ registry.property }}</td>
                 <td headers="hCategory">{{ registry.category.display_name(app.request.locale|default('en')) }}</td>
                 <td headers="hActions" class="actions">
-                    <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', {id: registry.id}) }}" title="{{ __('Edit') }}" ></a>
-                    <a class="fa fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', {id: registry.id}) }}" title="{{ __('Delete') }}"></a>
+                    <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
+                    <a class="fa fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>
                 </td>
             </tr>
             {% endfor %}

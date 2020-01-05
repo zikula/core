@@ -5,34 +5,34 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-wrench"></span>
-    {{ __('Security settings') }}
+    {% trans %}Security settings{% endtrans %}
     {{ pageSetVar('title', __('Security settings')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Automatic update settings') }}</legend>
+    <legend>{% trans %}Automatic update settings{% endtrans %}</legend>
     {{ form_row(form.updatecheck) }}
     <div data-switch="zikulasecuritycentermodule_config[updatecheck]" data-switch-value="1">
         {{ form_row(form.updatefrequency) }}
     </div>
 </fieldset>
 <fieldset>
-    <legend>{{ __('Host settings') }}</legend>
+    <legend>{% trans %}Host settings{% endtrans %}</legend>
     {{ form_row(form.keyexpiry) }}
     {{ form_row(form.sessionauthkeyua) }}
     {{ form_row(form.secure_domain) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('Cookies settings') }}</legend>
+    <legend>{% trans %}Cookies settings{% endtrans %}</legend>
     {{ form_row(form.signcookies) }}
     <div data-switch="zikulasecuritycentermodule_config[signcookies]" data-switch-value="1">
         {{ form_row(form.signingkey) }}
     </div>
 </fieldset>
 <fieldset>
-    <legend>{{ __('Session settings') }}</legend>
+    <legend>{% trans %}Session settings{% endtrans %}</legend>
     {{ form_row(form.seclevel) }}
     <div data-switch="zikulasecuritycentermodule_config[seclevel]" data-switch-value="Medium">
         {{ form_row(form.secmeddays) }}
@@ -52,12 +52,12 @@
     {{ form_row(form.sessionname) }}
 </fieldset>
 <fieldset id="securitycenter_ids">
-    <legend>{{ __('Intrusion Detection System') }}</legend>
+    <legend>{% trans %}Intrusion Detection System{% endtrans %}</legend>
     {{ form_row(form.useids) }}
     <div data-switch="zikulasecuritycentermodule_config[useids]" data-switch-value="1">
         <p class="col-sm-offset-3 col-sm-9 help-block alert alert-info">
-            {{ __('PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.') }}
-            {{ __('Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.') }}
+            {% trans %}PHPIDS performs many different checks which return an impact value for scoring the treated request. Depending on the sum of all impacts performed actions are selected.{% endtrans %}
+            {% trans %}Read more about this system on the <a href="http://phpids.org" title="PHPIDS homepage">PHPIDS homepage</a>.{% endtrans %}
         </p>
         {{ form_row(form.idssoftblock) }}
         {{ form_row(form.idsmail) }}
@@ -74,7 +74,7 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{{ __('Output filter settings') }}</legend>
+    <legend>{% trans %}Output filter settings{% endtrans %}</legend>
     {{ form_row(form.outputfilter) }}
 </fieldset>
 <div class="form-group row">

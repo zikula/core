@@ -1,17 +1,17 @@
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig')|nl2br }}
-<p>{{ __('Hello!') }}</p>
+<p>{% trans %}Hello!{% endtrans %}</p>
 
 {% if requestedByAdmin %}
-<p>{{ __f('The administrator at %sub% requested that you receive your user name via e-mail.', {'%sub%': getModVar('ZConfig', 'sitename')}) }}</p>
+<p>{% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}The administrator at %sub% requested that you receive your user name via e-mail.{% endtrans %}</p>
 {% else %}
-<p>{{ __f('Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.', {'%1$s': app.request.server.get('REMOTE_ADDR'), '%2$s': getModVar('ZConfig', 'sitename')}) }}</p>
+<p>{% trans with {'%1$s': app.request.server.get('REMOTE_ADDR'), '%2$s': getModVar('ZConfig', 'sitename')} %}Someone with the IP address %1$s has just requested the account information at %2$s associated with this e-mail address.{% endtrans %}</p>
 {% endif %}
 
-<p>{{ __f('The user name for your account is: %user%', {'%user%': uname}) }}</p>
+<p>{% trans with {'%user%': uname} %}The user name for your account is: %user%{% endtrans %}</p>
 
 <p>
-    {% if not requestedByAdmin %}{{ __('If the request was not made by you then you don\'t need to worry.') }} {% endif %}
-    {{ __('You are the only recipient of this message, and your user name has not been sent to any other e-mail address.') }}
-    {% if not requestedByAdmin %} {{ __('You can just delete this message.') }}{% endif %}
+    {% if not requestedByAdmin %}{% trans %}If the request was not made by you then you don\'t need to worry.{% endtrans %} {% endif %}
+    {% trans %}You are the only recipient of this message, and your user name has not been sent to any other e-mail address.{% endtrans %}
+    {% if not requestedByAdmin %} {% trans %}You can just delete this message.{% endtrans %}{% endif %}
 </p>
 {{ include('@ZikulaZAuthModule/Email/footer.txt.twig')|nl2br }}

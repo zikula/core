@@ -5,22 +5,22 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-plus"></span>
-    {{ __f('Edit user account of %uname', {'%uname': form.vars.value.uname}) }}
+    {% trans with {'%uname': form.vars.value.uname} %}Edit user account of %uname{% endtrans %}
     {{ pageSetVar('title', __('Edit user account')) }}
 </h3>
-<div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
+<div class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</div>
 {% if form.vars.value.uid == currentUser.uid %}
-    <div class="alert alert-danger">{{ __('WARNING: You appear to be editing your OWN account.') }}</div>
+    <div class="alert alert-danger">{% trans %}WARNING: You appear to be editing your OWN account.{% endtrans %}</div>
 {% endif %}
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Account information') }}</legend>
+    <legend>{% trans %}Account information{% endtrans %}</legend>
     {{ form_row(form.uname) }}
     {{ form_row(form.email) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('Log-in information') }}</legend>
+    <legend>{% trans %}Log-in information{% endtrans %}</legend>
     {{ form_row(form.setpass, {attr: {'data-toggle': 'collapse', 'data-target': '#' ~ form.setpass.vars.id ~ '_wrap'}}) }}
     <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} show {% endif %}">
         {{ form_row(form.pass) }}

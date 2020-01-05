@@ -1,5 +1,5 @@
 <ol class="breadcrumb">
-    <li class="breadcrumb-item">{{ __('You are in:') }} <a href="{{ path('zikulaadminmodule_admin_adminpanel') }}">{{ __('Administration') }}</a></li>
+    <li class="breadcrumb-item">{% trans %}You are in:{% endtrans %} <a href="{{ path('zikulaadminmodule_admin_adminpanel') }}">{% trans %}Administration{% endtrans %}</a></li>
     <li class="breadcrumb-item"><a href="{{ path('zikulaadminmodule_admin_adminpanel', { 'acid': caller.category.cid }) }}">{{ caller.category.name }}</a></li>
     <li class="breadcrumb-item"><a href="#" class="text-capitalize">{{ caller.info.displayname }}</a></li>
     {% if caller._zkType != 'admin' %}

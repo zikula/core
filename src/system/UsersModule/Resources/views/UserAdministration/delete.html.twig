@@ -5,11 +5,11 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-trash-alt"></span>
-    {{ __('Delete confirmation') }}
+    {% trans %}Delete confirmation{% endtrans %}
     {{ pageSetVar('title', __('Delete confirmation')) }}
 </h3>
 {% for user in users %}
-    <p class="alert alert-danger">{{ __f('Are you sure you want to delete the user (%un)?', {'%un': user.uname}) }}</p>
+    <p class="alert alert-danger">{% trans with {'%un': user.uname} %}Are you sure you want to delete the user (%un)?{% endtrans %}</p>
 {% endfor %}
 {{ form_start(form) }}
 {{ form_errors(form) }}

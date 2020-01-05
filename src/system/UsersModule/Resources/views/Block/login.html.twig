@@ -2,7 +2,7 @@
 {% if collector.activeKeys|length > 1 %}
 <div class="dropdown{% if 'nav' in position %} navbar-right{% endif %}">
     <button class="btn btn-default dropdown-toggle{% if 'nav' in position %} navbar-btn{% endif %}" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <i class="fa fa-key"></i> {{ __('Login with ...') }}
+        <i class="fa fa-key"></i> {% trans %}Login with ...{% endtrans %}
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
         {% for method in collector.activeKeys %}
@@ -10,17 +10,17 @@
         {% endfor %}
         {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
             <li role="separator" class="dropdown-divider"></li>
-            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create a new account{% endtrans %}</a></li>
         {% endif %}
     </ul>
 </div>
 {% else %}
 <div class="btn-group{% if 'nav' in position %} navbar-btn navbar-right{% endif %}">
-    <a class="btn btn-default" href="{{ path(path, {'authenticationMethod': collector.activeKeys|first}) }}"><i class="fa fa-key"></i> {{ __('Login with') }} {{ collector.get(collector.activeKeys|first).DisplayName }}</a>
+    <a class="btn btn-default" href="{{ path(path, {'authenticationMethod': collector.activeKeys|first}) }}"><i class="fa fa-key"></i> {% trans %}Login with{% endtrans %} {{ collector.get(collector.activeKeys|first).DisplayName }}</a>
     {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
         <ul class="dropdown-menu">
-            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create a new account') }}</a></li>
+            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create a new account{% endtrans %}</a></li>
         </ul>
     {% endif %}
 </div>

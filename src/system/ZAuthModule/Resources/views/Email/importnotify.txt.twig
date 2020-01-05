@@ -1,10 +1,10 @@
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig') }}
-{{ __f('Welcome to %1$s (%2$s)!', {'%1$s': getModVar('ZConfig', 'sitename'), '%2$s': url('home')}) }}
+{% trans with {'%1$s': getModVar('ZConfig', 'sitename'), '%2$s': url('home')} %}Welcome to %1$s (%2$s)!{% endtrans %}
 
-{{ __f('Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.', {'%1$s': user.email, '%2$s': getModVar('ZConfig', 'sitename')}) }}
+{% trans with {'%1$s': user.email, '%2$s': getModVar('ZConfig', 'sitename')} %}Hello! This e-mail address (\'%1$s\') has been used to register an account on the \'%2$s\' site.{% endtrans %}
 
-{{ __('Your account details are as follows:') }}
+{% trans %}Your account details are as follows:{% endtrans %}
 
-{{ __f('User name: %sub%', {'%sub%': user.uname}) }}
-{{ __f('Password:  %sub%', {'%sub%': user.unHashedPass}) }}
+{% trans with {'%sub%': user.uname} %}User name: %sub%{% endtrans %}
+{% trans with {'%sub%': user.unHashedPass} %}Password:  %sub%{% endtrans %}
 {{ include('@ZikulaZAuthModule/Email/footer.txt.twig') }}

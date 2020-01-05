@@ -2,7 +2,7 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ pagevars.homepath }}"><i class="fa fa-rocket fa-lg text-success"></i>&nbsp;&nbsp;{{ getModVar('ZConfig', 'sitename') }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#themeNavBarCollapse" aria-controls="themeNavBarCollapse" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#themeNavBarCollapse" aria-controls="themeNavBarCollapse" aria-expanded="false" aria-label="{% trans %}Toggle navigation{% endtrans %}">
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
@@ -17,14 +17,14 @@
                 {% if currentUser.loggedIn %}
                     <div class="btn-group navbar-btn ml-auto">
                         <a href="{{ path('zikulausersmodule_account_menu') }}" class="btn btn-info">
-                            <i class="fa fa-user"></i>&nbsp;&nbsp;{{ __f('Signed in as %username', {'%username': currentUser.uname}) }}
+                            <i class="fa fa-user"></i>&nbsp;&nbsp;{% trans with {'%username': currentUser.uname} %}Signed in as %username{% endtrans %}
                         </a>
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">{{ __('Toggle Dropdown') }}</span>
+                            <span class="sr-only">{% trans %}Toggle Dropdown{% endtrans %}</span>
                         </button>
                         <div class="dropdown-menu">
-                            <a href="{{ path('zikulausersmodule_access_logout') }}" class="dropdown-item">{{ __('Log out') }}</a></li>
-                            <a href="{{ path('zikulausersmodule_account_menu') }}" class="dropdown-item">{{ __('My Account') }}</a></li>
+                            <a href="{{ path('zikulausersmodule_access_logout') }}" class="dropdown-item">{% trans %}Log out{% endtrans %}</a></li>
+                            <a href="{{ path('zikulausersmodule_account_menu') }}" class="dropdown-item">{% trans %}My Account{% endtrans %}</a></li>
                         </div>
                     </div>
                 {% endif %}

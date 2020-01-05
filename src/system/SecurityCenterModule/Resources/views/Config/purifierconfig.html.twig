@@ -2,16 +2,16 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-wrench"></span>
-    {{ __('HTMLPurifier settings') }}
+    {% trans %}HTMLPurifier settings{% endtrans %}
     {{ pageSetVar('title', __('HTMLPurifier settings')) }}
 </h3>
 
-<p class="alert alert-info">{{ __('HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.') }}</p>
+<p class="alert alert-info">{% trans %}HTMLPurifier filtering occurs when a template string or variable is modified with the \'safehtml\' modifier, or when a module asks for similar processing from within its functions.{% endtrans %}</p>
 
 <div class="alert alert-warning">
-    <h4>{{ __('Warning') }}</h4>
-    <p>{{ __('Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.') }}</p>
-    <p><a href="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" title="{{ __('Allowed HTML settings') }}">{{ __('Allowed HTML settings') }}</a> {{ __('will be applied after HTMLPurifier processing is completed.') }}</p>
+    <h4>{% trans %}Warning{% endtrans %}</h4>
+    <p>{% trans %}Setting HTMLPurifier configuration directives incorrectly can render your system unstable and inacessible. No validity checking is performed on any user-supplied settings. Ensure you fully understand each directive and its effects on your system. Ensure that all prerequisites are met and that any additional software or libraries required by each directive are properly installed and available to HTMLPurifier.{% endtrans %}</p>
+    <p><a href="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" title="{% trans %}Allowed HTML settings{% endtrans %}">{% trans %}Allowed HTML settings{% endtrans %}</a> {% trans %}will be applied after HTMLPurifier processing is completed.{% endtrans %}</p>
 </div>
 
 <form action="{{ path('zikulasecuritycentermodule_config_purifierconfig') }}" method="post" enctype="application/x-www-form-urlencoded" role="form">
@@ -32,7 +32,7 @@
                 <div class="col-md-9">
                     <div id="purifierConfig_div_{{ directive.key }}">
                         <input id="purifierConfig_Null_{{ directive.key }}" name="purifierConfig[Null_{{ directive.key }}]" type="checkbox" value="1"{% if directive.value is null %} checked="checked"{% endif %} onclick="{% if directive.type != purifierTypes.bool %}toggleWriteability('{{ idVal }}', checked);{% else %}toggleWriteability('{{ idVal }}_Yes', checked); toggleWriteability('{{ idVal }}_No', checked);{% endif %}" />
-                        <label for="purifierConfig_Null_{{ directive.key }}">{{ __('Use default value (if checked) or override value') }}</label>
+                        <label for="purifierConfig_Null_{{ directive.key }}">{% trans %}Use default value (if checked) or override value{% endtrans %}</label>
                     </div>
                 </div>
             </div>
@@ -57,25 +57,25 @@
                 <div class="col-md-9">
                     <textarea id="{{ idVal }}" class="form-control" name="{{ nameVal }}" cols="50" rows="5"{{ disabledVal }}>{{ directive.value }}</textarea>
                     {% if directive.type in [purifierTypes.list, purifierTypes.lookup] %}
-                        <em class="help-block sub">{{ __('(Place each value on a separate line.)') }}</em>
+                        <em class="help-block sub">{% trans %}(Place each value on a separate line.){% endtrans %}</em>
                     {% elseif directive.type == purifierTypes.hash %}
-                        <em class="help-block sub">{{ __('(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.)') }}</em>
+                        <em class="help-block sub">{% trans %}(Separate each key-value pair with a colon (e.g., key:value). Place each key-value pair on a separate line.){% endtrans %}</em>
                     {% endif %}
                 </div>
             {% elseif directive.type in [purifierTypes.string, purifierTypes.istring, purifierTypes.int, purifierTypes.float] %}
-                <div class="col-md-9">  
+                <div class="col-md-9">
                     <input id="{{ idVal }}" name="{{ nameVal }}" class="form-control" type="text" value="{{ directive.value }}"{{ disabledVal }} />
                 </div>
             {% elseif directive.type == purifierTypes.bool %}
-                <div id="{{ idVal }}" class="col-md-9"> 
+                <div id="{{ idVal }}" class="col-md-9">
                     <input id="{{ idVal }}_Yes" name="{{ nameVal }}" type="radio" value="1"{% if directive.value == true %} checked="checked"{% endif %}{{ disabledVal }} />
-                    <label for="{{ idVal }}_Yes">{{ __('Yes') }}</label>
+                    <label for="{{ idVal }}_Yes">{% trans %}Yes{% endtrans %}</label>
                     <input id="{{ idVal }}_No" name="{{ nameVal }}" type="radio" value="0"{% if directive.value != true %} checked="checked"{% endif %}{{ disabledVal }} />
-                    <label for="{{ idVal }}_No">{{ __('No') }}</label>
+                    <label for="{{ idVal }}_No">{% trans %}No{% endtrans %}</label>
                 </div>
             {% else %}
                 <div class="col-md-9">
-                    <em class="help-block sub">{{ __('(Modification not supported.)') }} {{ __('Value:') }} {# directive.value|serialize #}{{ directive.value }}</em>
+                    <em class="help-block sub">{% trans %}(Modification not supported.){% endtrans %} {% trans %}Value:{% endtrans %} {# directive.value|serialize #}{{ directive.value }}</em>
                 </div>
             {% endif %}
             </div>
@@ -85,9 +85,9 @@
 
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
-            <button class="btn btn-success" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
-            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{{ __('Cancel') }}"><i class="fa fa-times"></i> {{ __('Cancel') }}</a>
-            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_purifierconfig', {reset: 'default'}) }}" title="{{ __('Reset to default values') }}"><i class="fa fa-sync"></i> {{ __('Reset to default values') }}</a>
+            <button class="btn btn-success" title="{% trans %}Save{% endtrans %}"><i class="fa fa-check"></i> {% trans %}Save{% endtrans %}</button>
+            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{% trans %}Cancel{% endtrans %}"><i class="fa fa-times"></i> {% trans %}Cancel{% endtrans %}</a>
+            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_purifierconfig', {reset: 'default'}) }}" title="{% trans %}Reset to default values{% endtrans %}"><i class="fa fa-sync"></i> {% trans %}Reset to default values{% endtrans %}</a>
         </div>
     </div>
 </form>

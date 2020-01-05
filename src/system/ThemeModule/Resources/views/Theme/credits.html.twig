@@ -1,7 +1,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-info-circle"></span>
-    {{ __('Theme credits') }}
+    {% trans %}Theme credits{% endtrans %}
     {{ pageSetVar('title', __('Theme credits')) }}
 </h3>
 
@@ -19,25 +19,25 @@
     <tbody>
         {% for key, field in themeinfo|filter(f => f != '') %}
         <tr>
-            {% if key == 'id' %}<th id="hId" scope="row">{{ __('Internal ID') }}</th><td headers="hId">{{ field }}</td>
-            {% elseif key == 'name' %}<th id="hName" scope="row">{{ __('Name') }}</th><td headers="hName">{{ field }}</td>
-            {% elseif key == 'type' %}<th id="hType" scope="row">{{ __('Type') }}</th><td headers="hType">{{ field }}</td>
-            {% elseif key == 'displayname' %}<th id="hDisplayName" scope="row">{{ __('Display name') }}</th><td headers="hDisplayName">{{ field }}</td>
-            {% elseif key == 'description' %}<th id="hDescription" scope="row">{{ __('Description') }}</th><td headers="hDescription">{{ field }}</td>
-            {% elseif key == 'regid' %}<th id="hRegistrationId" scope="row">{{ __('Registration ID') }}</th><td headers="hRegistrationId">{{ field }}</td>
-            {% elseif key == 'version' %}<th id="hVersion" scope="row">{{ __('Version') }}</th><td headers="hVersion">{{ field }}</td>
-            {% elseif key == 'official' %}<th id="hOfficial" scope="row">{{ __('Official') }}</th><td headers="hOfficial">{{ field|yesNo }}</td>
-            {% elseif key == 'author' %}<th id="hAuthor" scope="row">{{ __('Author') }}</th><td headers="hAuthor">{{ field }}</td>
-            {#{% elseif key == 'contact' %}<th id="hContact" scope="row">{{ __('Contact') }}</th><td headers="hContact">{{ field }}</td>#}
-            {% elseif key == 'admin' %}<th id="hAdminTheme" scope="row">{{ __('Admin panel theme') }}</th><td headers="hAdminTheme">{{ field|yesNo }}</td>
-            {% elseif key == 'user' %}<th id="hUserTheme" scope="row">{{ __('User theme') }}</th><td headers="hUserTheme">{{ field|yesNo }}</td>
-            {% elseif key == 'system' %}<th id="hSystemTheme" scope="row">{{ __('System theme') }}</th><td headers="hSystemTheme">{{ field|yesNo }}</td>
-            {% elseif key == 'state' %}<th id="hState" scope="row">{{ __('State') }}</th><td headers="hState">{% if (field) and field == 1 %}<span class="badge badge-success">{{ __('Active') }}</span>{% else %}<span class="badge badge-danger">{{ __('Inactive') }}</span>{% endif %} </td>
-            {% elseif key == 'credits' %}<th id="hCredits" scope="row">{{ __('Credits') }}</th><td headers="hCredits">{{ field }}</td>
-            {% elseif key == 'changelog' %}<th id="hChangelog" scope="row">{{ __('Change log') }}</th><td headers="hChangelog">{{ field }}</td>
-            {% elseif key == 'help' %}<th id="hHelp" scope="row">{{ __('Help') }}</th><td headers="hHelp">{{ field }}</td>
-            {% elseif key == 'license' %}<th id="hLicense" scope="row">{{ __('License') }}</th><td headers="hLicense">{{ field }}</td>
-            {% elseif key == 'xhtml' %}<th id="hXhtml" scope="row">{{ __('XHTML-capable') }}</th><td headers="hXhtml">{{ field|yesNo }}</td>
+            {% if key == 'id' %}<th id="hId" scope="row">{% trans %}Internal ID{% endtrans %}</th><td headers="hId">{{ field }}</td>
+            {% elseif key == 'name' %}<th id="hName" scope="row">{% trans %}Name{% endtrans %}</th><td headers="hName">{{ field }}</td>
+            {% elseif key == 'type' %}<th id="hType" scope="row">{% trans %}Type{% endtrans %}</th><td headers="hType">{{ field }}</td>
+            {% elseif key == 'displayname' %}<th id="hDisplayName" scope="row">{% trans %}Display name{% endtrans %}</th><td headers="hDisplayName">{{ field }}</td>
+            {% elseif key == 'description' %}<th id="hDescription" scope="row">{% trans %}Description{% endtrans %}</th><td headers="hDescription">{{ field }}</td>
+            {% elseif key == 'regid' %}<th id="hRegistrationId" scope="row">{% trans %}Registration ID{% endtrans %}</th><td headers="hRegistrationId">{{ field }}</td>
+            {% elseif key == 'version' %}<th id="hVersion" scope="row">{% trans %}Version{% endtrans %}</th><td headers="hVersion">{{ field }}</td>
+            {% elseif key == 'official' %}<th id="hOfficial" scope="row">{% trans %}Official{% endtrans %}</th><td headers="hOfficial">{{ field|yesNo }}</td>
+            {% elseif key == 'author' %}<th id="hAuthor" scope="row">{% trans %}Author{% endtrans %}</th><td headers="hAuthor">{{ field }}</td>
+            {#{% elseif key == 'contact' %}<th id="hContact" scope="row">{% trans %}Contact{% endtrans %}</th><td headers="hContact">{{ field }}</td>#}
+            {% elseif key == 'admin' %}<th id="hAdminTheme" scope="row">{% trans %}Admin panel theme{% endtrans %}</th><td headers="hAdminTheme">{{ field|yesNo }}</td>
+            {% elseif key == 'user' %}<th id="hUserTheme" scope="row">{% trans %}User theme{% endtrans %}</th><td headers="hUserTheme">{{ field|yesNo }}</td>
+            {% elseif key == 'system' %}<th id="hSystemTheme" scope="row">{% trans %}System theme{% endtrans %}</th><td headers="hSystemTheme">{{ field|yesNo }}</td>
+            {% elseif key == 'state' %}<th id="hState" scope="row">{% trans %}State{% endtrans %}</th><td headers="hState">{% if (field) and field == 1 %}<span class="badge badge-success">{% trans %}Active{% endtrans %}</span>{% else %}<span class="badge badge-danger">{% trans %}Inactive{% endtrans %}</span>{% endif %} </td>
+            {% elseif key == 'credits' %}<th id="hCredits" scope="row">{% trans %}Credits{% endtrans %}</th><td headers="hCredits">{{ field }}</td>
+            {% elseif key == 'changelog' %}<th id="hChangelog" scope="row">{% trans %}Change log{% endtrans %}</th><td headers="hChangelog">{{ field }}</td>
+            {% elseif key == 'help' %}<th id="hHelp" scope="row">{% trans %}Help{% endtrans %}</th><td headers="hHelp">{{ field }}</td>
+            {% elseif key == 'license' %}<th id="hLicense" scope="row">{% trans %}License{% endtrans %}</th><td headers="hLicense">{{ field }}</td>
+            {% elseif key == 'xhtml' %}<th id="hXhtml" scope="row">{% trans %}XHTML-capable{% endtrans %}</th><td headers="hXhtml">{{ field|yesNo }}</td>
             {% endif %}
         </tr>
         {% endfor %}

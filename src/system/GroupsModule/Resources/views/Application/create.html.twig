@@ -5,12 +5,12 @@
 {{ moduleHeader('user', __('Membership application'), '', true, true, false, true) }}
 <h3>
     <span class="fa fa-key"></span>
-    {{ __('Membership application') }}
+    {% trans %}Membership application{% endtrans %}
 </h3>
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend><i class="fa fa-users"></i> {{ group.name }} {{ __('group') }}</legend>
+    <legend><i class="fa fa-users"></i> {{ group.name }} {% trans %}group{% endtrans %}</legend>
     {{ group.description }}
     {{ form_row(form.application) }}
 </fieldset>

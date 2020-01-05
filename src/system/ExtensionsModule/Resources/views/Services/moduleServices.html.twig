@@ -7,11 +7,11 @@
     {#{moduleheader modname=$currentmodule type='admin' title=$displayName putimage=true image=$image}<h3>#}
     <h3>
         <span class="fa fa-paperclip"></span>
-        {{ __('Module services') }}
+        {% trans %}Module services{% endtrans %}
         {{ pageSetVar('title', __('Module services')) }}
     </h3>
 
-<p class="alert alert-info">{{ __('Module Services are functions provided by the core or other modules for this module.') }}</p>
+<p class="alert alert-info">{% trans %}Module Services are functions provided by the core or other modules for this module.{% endtrans %}</p>
 
 {% if sublinks|length > 0 %}
     <ul class="list-unstyled">
@@ -20,6 +20,6 @@
         {% endfor %}
     </ul>
 {% else %}
-    <p>{{ __('There aren\'t any modules services available.') }}</p>
+    <p>{% trans %}There aren\'t any modules services available.{% endtrans %}</p>
 {% endif %}
 {{ adminFooter() }}

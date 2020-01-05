@@ -6,18 +6,18 @@
 <h3>
     <span class="fa fa-edit"></span>
     {% if form.vars.value.pid %}
-        {{ __('Modify block position') }}
+        {% trans %}Modify block position{% endtrans %}
         {{ pageSetVar('title', __('Modify block position')) }}
     {% else %}
-        {{ __('Create block position') }}
+        {% trans %}Create block position{% endtrans %}
         {{ pageSetVar('title', __('Create block position')) }}
     {% endif %}
 </h3>
 <p class="alert alert-info">
     {% if form.vars.value.pid is empty %}
-        {{ __('After creating this block position, blocks can be assigned to it and the order they are to be displayed can be adjusted.') }}<br />
+        {% trans %}After creating this block position, blocks can be assigned to it and the order they are to be displayed can be adjusted.{% endtrans %}<br />
     {% endif %}
-    {{ __('The theme in use must implement the block position or the assigned blocks will never be displayed.') }}
+    {% trans %}The theme in use must implement the block position or the assigned blocks will never be displayed.{% endtrans %}
 </p>
 {{ showflashes() }}
 {{ form_start(form) }}

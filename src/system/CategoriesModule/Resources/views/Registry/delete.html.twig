@@ -4,15 +4,15 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-trash-alt"></span> {{ __('Delete registry entry') }}
+    <span class="fa fa-trash-alt"></span> {% trans %}Delete registry entry{% endtrans %}
     {{ pageSetVar('title', __('Delete registry entry')) }}
 </h3>
 
 <p class="alert alert-warning">
-    {{ __('Do you really want to delete this registry entry?') }}<br />
-    {{ __('Module') }}: <strong>{{ registry.modname }}</strong><br />
-    {{ __('Entity') }}: <strong>{{ registry.entityname }}</strong><br />
-    {{ __('Property name') }}: <strong>{{ registry.property }}</strong>
+    {% trans %}Do you really want to delete this registry entry?{% endtrans %}<br />
+    {% trans %}Module{% endtrans %}: <strong>{{ registry.modname }}</strong><br />
+    {% trans %}Entity{% endtrans %}: <strong>{{ registry.entityname }}</strong><br />
+    {% trans %}Property name{% endtrans %}: <strong>{{ registry.property }}</strong>
 </p>
 
 {{ form_start(form) }}

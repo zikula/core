@@ -51,36 +51,36 @@
                             <input type="checkbox" class="zikularoutes-mass-toggle" />
                         </th>
                     {% endif %}
-                    <th id="hItemActionsStart" scope="col" class="">{{ __('Actions') }}</th>
+                    <th id="hItemActionsStart" scope="col" class="">{% trans %}Actions{% endtrans %}</th>
                     {% if activateSortable %}
-                        <th id="hSortable" scope="col" class="">{{ __('Sorting') }}</th>
+                        <th id="hSortable" scope="col" class="">{% trans %}Sorting{% endtrans %}</th>
                     {% endif %}
                     <th id="hBundle" scope="col" class="text-left">
-                        <a href="{{ sort.bundle.url }}" title="{{ __f('Sort by %s', {'%s': 'bundle'}) }}" class="{{ sort.bundle.class }}">{{ __('Bundle') }}</a>
+                        <a href="{{ sort.bundle.url }}" title="{% trans with {'%s': 'bundle'} %}Sort by %s{% endtrans %}" class="{{ sort.bundle.class }}">{% trans %}Bundle{% endtrans %}</a>
                     </th>
                     <th id="hPath" scope="col" class="text-left">
-                        <a href="{{ sort.path.url }}" title="{{ __f('Sort by %s', {'%s': 'path'}) }}" class="{{ sort.path.class }}">{{ __('Path') }}</a>
+                        <a href="{{ sort.path.url }}" title="{% trans with {'%s': 'path'} %}Sort by %s{% endtrans %}" class="{{ sort.path.class }}">{% trans %}Path{% endtrans %}</a>
                     </th>
                     <th id="hHost" scope="col" class="text-left">
-                        <a href="{{ sort.host.url }}" title="{{ __f('Sort by %s', {'%s': 'host'}) }}" class="{{ sort.host.class }}">{{ __('Host') }}</a>
+                        <a href="{{ sort.host.url }}" title="{% trans with {'%s': 'host'} %}Sort by %s{% endtrans %}" class="{{ sort.host.class }}">{% trans %}Host{% endtrans %}</a>
                     </th>
                     <th id="hSchemes" scope="col" class="text-left">
-                        <a href="{{ sort.schemes.url }}" title="{{ __f('Sort by %s', {'%s': 'schemes'}) }}" class="{{ sort.schemes.class }}">{{ __('Schemes') }}</a>
+                        <a href="{{ sort.schemes.url }}" title="{% trans with {'%s': 'schemes'} %}Sort by %s{% endtrans %}" class="{{ sort.schemes.class }}">{% trans %}Schemes{% endtrans %}</a>
                     </th>
                     <th id="hMethods" scope="col" class="text-left">
-                        <a href="{{ sort.methods.url }}" title="{{ __f('Sort by %s', {'%s': 'methods'}) }}" class="{{ sort.methods.class }}">{{ __('Methods') }}</a>
+                        <a href="{{ sort.methods.url }}" title="{% trans with {'%s': 'methods'} %}Sort by %s{% endtrans %}" class="{{ sort.methods.class }}">{% trans %}Methods{% endtrans %}</a>
                     </th>
                     <th id="hPrependBundlePrefix" scope="col" class="text-center">
-                        <a href="{{ sort.prependBundlePrefix.url }}" title="{{ __f('Sort by %s', {'%s': 'prepend bundle prefix'}) }}" class="{{ sort.prependBundlePrefix.class }}">{{ __('Prepend bundle prefix') }}</a>
+                        <a href="{{ sort.prependBundlePrefix.url }}" title="{% trans with {'%s': 'prepend bundle prefix'} %}Sort by %s{% endtrans %}" class="{{ sort.prependBundlePrefix.class }}">{% trans %}Prepend bundle prefix{% endtrans %}</a>
                     </th>
                     <th id="hTranslatable" scope="col" class="text-center">
-                        <a href="{{ sort.translatable.url }}" title="{{ __f('Sort by %s', {'%s': 'translatable'}) }}" class="{{ sort.translatable.class }}">{{ __('Translatable') }}</a>
+                        <a href="{{ sort.translatable.url }}" title="{% trans with {'%s': 'translatable'} %}Sort by %s{% endtrans %}" class="{{ sort.translatable.class }}">{% trans %}Translatable{% endtrans %}</a>
                     </th>
                     <th id="hTranslationPrefix" scope="col" class="text-left">
-                        <a href="{{ sort.translationPrefix.url }}" title="{{ __f('Sort by %s', {'%s': 'translation prefix'}) }}" class="{{ sort.translationPrefix.class }}">{{ __('Translation prefix') }}</a>
+                        <a href="{{ sort.translationPrefix.url }}" title="{% trans with {'%s': 'translation prefix'} %}Sort by %s{% endtrans %}" class="{{ sort.translationPrefix.class }}">{% trans %}Translation prefix{% endtrans %}</a>
                     </th>
                     <th id="hDescription" scope="col" class="text-left">
-                        <a href="{{ sort.description.url }}" title="{{ __f('Sort by %s', {'%s': 'description'}) }}" class="{{ sort.description.class }}">{{ __('Description') }}</a>
+                        <a href="{{ sort.description.url }}" title="{% trans with {'%s': 'description'} %}Sort by %s{% endtrans %}" class="{{ sort.description.class }}">{% trans %}Description{% endtrans %}</a>
                     </th>
                 </tr>
                 </thead>
@@ -102,7 +102,7 @@
                     </td>
                     {% if activateSortable %}
                         <td headers="hSortable" class="text-center">
-                            <i class="fa fa-arrows-alt sort-handle pointer" title="{{ __('Drag to reorder') }}"></i>
+                            <i class="fa fa-arrows-alt sort-handle pointer" title="{% trans %}Drag to reorder{% endtrans %}"></i>
                         </td>
                     {% endif %}
                     <td headers="hBundle" class="text-left">
@@ -122,16 +122,16 @@
                     </td>
                     <td headers="hPrependBundlePrefix" class="text-center">
                         {% if route.prependBundlePrefix %}
-                            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                            <i class="fa fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
                         {% else %}
-                            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                            <i class="fa fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
                         {% endif %}
                     </td>
                     <td headers="hTranslatable" class="text-center">
                         {% if route.translatable %}
-                            <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                            <i class="fa fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
                         {% else %}
-                            <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                            <i class="fa fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
                         {% endif %}
                     </td>
                     <td headers="hTranslationPrefix" class="text-left">
@@ -144,7 +144,7 @@
             {% else %}
                 <tr class="table-info">
                     <td colspan="{% if routeArea == 'admin' %}12{% else %}11{% endif %}" class="text-center">
-                {{ __('No custom routes found.') }}
+                {% trans %}No custom routes found.{% endtrans %}
                   </td>
                 </tr>
             {% endfor %}
@@ -159,15 +159,15 @@
         {% if routeArea == 'admin' %}
                 <fieldset class="my-3 pt-3">
                     <div class="row">
-                        <label for="zikulaRoutesModuleAction" class="col-md-3 col-form-label">{{ __('With selected routes') }}</label>
+                        <label for="zikulaRoutesModuleAction" class="col-md-3 col-form-label">{% trans %}With selected routes{% endtrans %}</label>
                         <div class="col-md-6">
                             <select id="zikulaRoutesModuleAction" name="action" class="form-control form-control-sm">
-                                <option value="">{{ __('Choose action') }}</option>
-                                <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                                <option value="">{% trans %}Choose action{% endtrans %}</option>
+                                <option value="delete" title="{% trans %}Delete content permanently.{% endtrans %}">{% trans %}Delete{% endtrans %}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <input type="submit" value="{{ __('Submit') }}" class="btn btn-primary btn-sm" />
+                            <input type="submit" value="{% trans %}Submit{% endtrans %}" class="btn btn-primary btn-sm" />
                         </div>
                     </div>
                 </fieldset>

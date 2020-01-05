@@ -1,14 +1,14 @@
 {{ moduleHeader('user', __('My account'), '', true, true) }}
 
 {% if not currentUser.loggedin %}
-    <p>{{ __('Please select one of the following:') }}</p>
+    <p>{% trans %}Please select one of the following:{% endtrans %}</p>
     <ul>
-        <li><a href="{{ path('zikulausersmodule_access_login') }}">{{ __('I would like to login.') }}</a></li>
+        <li><a href="{{ path('zikulausersmodule_access_login') }}">{% trans %}I would like to login.{% endtrans %}</a></li>
         {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
-            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('I would like to create a new account.') }}</a></li>
+            <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}I would like to create a new account.{% endtrans %}</a></li>
         {% endif %}
-        <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{{ __('I have forgotten my account information (for example, my user name).') }}</a></li>
-        <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{{ __('I have forgotten my password.') }}</a></li>
+        <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{% trans %}I have forgotten my account information (for example, my user name).{% endtrans %}</a></li>
+        <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{% trans %}I have forgotten my password.{% endtrans %}</a></li>
     </ul>
 {% endif %}
 

@@ -1,7 +1,7 @@
 {{ moduleHeader('user', __('Group membership'), '', true, true, false, true) }}
 <h3>
     <span class="fa fa-users"></span>
-    {{ __('Group membership') }} ({{ group.name }})
+    {% trans %}Group membership{% endtrans %} ({{ group.name }})
 </h3>
 <table class="table table-bordered">
     <colgroup>
@@ -15,13 +15,13 @@
     </colgroup>
     <thead>
     <tr>
-        <th id="hName" scope="col">{{ __('Name') }}</th>
-        <th id="hDescription" scope="col">{{ __('Description') }}</th>
-        <th id="hType" scope="col">{{ __('Type') }}</th>
-        <th id="hState" scope="col">{{ __('State') }}</th>
-        <th id="hMembers" scope="col">{{ __('Members') }}</th>
-        <th id="hMaximum" scope="col">{{ __('Maximum membership') }}</th>
-        <th id="hFunctions" scope="col">{{ __('Functions') }}</th>
+        <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+        <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+        <th id="hType" scope="col">{% trans %}Type{% endtrans %}</th>
+        <th id="hState" scope="col">{% trans %}State{% endtrans %}</th>
+        <th id="hMembers" scope="col">{% trans %}Members{% endtrans %}</th>
+        <th id="hMaximum" scope="col">{% trans %}Maximum membership{% endtrans %}</th>
+        <th id="hFunctions" scope="col">{% trans %}Functions{% endtrans %}</th>
     </tr>
     </thead>
     <tbody>
@@ -45,18 +45,18 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hUserName" scope="col">{{ __('User name') }}</th>
-            <th id="hStatus" scope="col">{{ __('Status') }}</th>
+            <th id="hUserName" scope="col">{% trans %}User name{% endtrans %}</th>
+            <th id="hStatus" scope="col">{% trans %}Status{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
         {% for user in group.users %}
         <tr>
             <td headers="hUserName">{{ user.uid|profileLinkByUserId }}</td>
-            <td headers="hStatus"><span class="badge {% if user.uid in usersOnline %}badge-success">{{ __('Online') }}{% else %}badge-danger">{{ __('Offline') }}{% endif %}</span></td>
+            <td headers="hStatus"><span class="badge {% if user.uid in usersOnline %}badge-success">{% trans %}Online{% endtrans %}{% else %}badge-danger">{% trans %}Offline{% endtrans %}{% endif %}</span></td>
         </tr>
         {% else %}
-            <tr class="table-info"><td colspan="4" class="text-center">{{ __('No users found.') }}</td></tr>
+            <tr class="table-info"><td colspan="4" class="text-center">{% trans %}No users found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>

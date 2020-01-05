@@ -1,10 +1,10 @@
 {% set separator=' | ' %}
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
-        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page', 'zikula') }}">&lt;&lt;</a>
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{% trans %}First page', 'zikula{% endtrans %}">&lt;&lt;</a>
         <span>{{ separator }}</span>
 
-        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page', 'zikula') }}">&lt;</a>
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{% trans %}Previous page', 'zikula{% endtrans %}">&lt;</a>
         <span>{{ separator }}</span>
     {% endif %}
 
@@ -40,10 +40,10 @@
     {% endfor %}
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
-        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page', 'zikula') }}">&gt;</a>
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{% trans %}Next page', 'zikula{% endtrans %}">&gt;</a>
         <span>{{ separator }}</span>
 
-        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page', 'zikula') }}">&gt;&gt;</a>
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{% trans %}Last page', 'zikula{% endtrans %}">&gt;&gt;</a>
     {% endif %}
 </div>
 {% set customScript %}

@@ -1,11 +1,11 @@
 <fieldset>
-    <legend>{{ __f('Connect %sub% to other modules', {"%sub%": currentmodule}) }}</legend>
+    <legend>{% trans with {"%sub%": currentmodule} %}Connect %sub% to other modules{% endtrans %}</legend>
     {% set amountOfProviderAreas = providerAreas|length %}
     <div{% if amountOfProviderAreas > 5 %} id="registeredProviderAreas"{% endif %} class="registered_provider_areas">
         <fieldset>
             <legend>
                 {% if amountOfProviderAreas > 5 %}<a href="#" onclick="return false">{% endif %}
-                {{ __f('%sub% module provides the following area:', {'%sub%': currentmodule}) }}
+                {% trans with {'%sub%': currentmodule} %}%sub% module provides the following area:{% endtrans %}
                 {% if amountOfProviderAreas > 5 %}</a>{% endif %}
             </legend>
             <div>
@@ -15,7 +15,7 @@
                 {% endfor %}
                 </ol>
             </div>
-            <div class="alert alert-info">{{ __f('To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.', {'%sub%': currentmodule}) }}</div>
+            <div class="alert alert-info">{% trans with {'%sub%': currentmodule} %}To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.{% endtrans %}</div>
 
             <table class="table table-bordered table-striped" id="subscriberslist">
                 <colgroup>
@@ -25,9 +25,9 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th id="hId" scope="col" class="col-md-1">{{ __('ID') }}</th>
-                        <th id="hName" scope="col" class="col-md-2">{{ __('Display name') }}</th>
-                        <th id="hConnections" scope="col" class="col-md-9">{{ __('Connections') }}</th>
+                        <th id="hId" scope="col" class="col-md-1">{% trans %}ID{% endtrans %}</th>
+                        <th id="hName" scope="col" class="col-md-2">{% trans %}Display name{% endtrans %}</th>
+                        <th id="hConnections" scope="col" class="col-md-9">{% trans %}Connections{% endtrans %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,13 +62,13 @@
                                         </div>
                                     </div>
                                 {% else %}
-                                    {% if not connection_exists %}<span class="small">{{ __f('%1$s module can\'t connect to %2$s module. No connections are supported', {'%1$s': currentmodule, '%2$s': subscriber.name}) }}</span>{% endif %}
+                                    {% if not connection_exists %}<span class="small">{% trans with {'%1$s': currentmodule, '%2$s': subscriber.name} %}%1$s module can\'t connect to %2$s module. No connections are supported{% endtrans %}</span>{% endif %}
                                 {% endif %}
                             {% endfor %}
                         </td>
                     </tr>
                 {% else %}
-                    <tr class="table-info"><td colspan="3" class="text-center">{{ __('No items found.') }}</td></tr>
+                    <tr class="table-info"><td colspan="3" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
                 {% endfor %}
                 </tbody>
             </table>

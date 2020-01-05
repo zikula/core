@@ -5,14 +5,14 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-pencil-alt"></span>
-    {{ __('Edit group') }}
+    {% trans %}Edit group{% endtrans %}
     {{ pageSetVar('title', __('Edit group')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Group data') }}</legend>
+    <legend>{% trans %}Group data{% endtrans %}</legend>
     {{ form_row(form.gid) }}
     {{ form_row(form.name) }}
     {{ form_row(form.gtype) }}

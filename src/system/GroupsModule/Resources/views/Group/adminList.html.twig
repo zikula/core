@@ -1,25 +1,25 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Groups list') }}
+    {% trans %}Groups list{% endtrans %}
     {{ pageSetVar('title', __('Groups list')) }}
 </h3>
 <div class="alert alert-info">
-    <p>{{ __('Types') }}:</p>
+    <p>{% trans %}Types{% endtrans %}:</p>
     <ul>
-        <li>{{ __('Core: Users can only be added by an administrator (ACCESS_EDIT) - groups are not visible to users in public list') }}</li>
-        <li>{{ __('Public: Users can add themselves with no moderation - groups are visible in public list') }}</li>
-        <li>{{ __('Private: Users must apply for membership - groups are not visible to users in public list') }}</li>
+        <li>{% trans %}Core: Users can only be added by an administrator (ACCESS_EDIT) - groups are not visible to users in public list{% endtrans %}</li>
+        <li>{% trans %}Public: Users can add themselves with no moderation - groups are visible in public list{% endtrans %}</li>
+        <li>{% trans %}Private: Users must apply for membership - groups are not visible to users in public list{% endtrans %}</li>
     </ul>
-    <p>{{ __('States') }}:</p>
+    <p>{% trans %}States{% endtrans %}:</p>
     <ul>
-        <li>{{ __('Open: Users may apply/add themselves') }}</li>
-        <li>{{ __('Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting') }}</li>
+        <li>{% trans %}Open: Users may apply/add themselves{% endtrans %}</li>
+        <li>{% trans %}Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting{% endtrans %}</li>
     </ul>
     <br />
     <p>
-        <em>* {{ __('Default user group. Cannot be deleted.') }}</em><br />
-        <em>** {{ __('Primary administrators group. Cannot be deleted.') }}</em>
+        <em>* {% trans %}Default user group. Cannot be deleted.{% endtrans %}</em><br />
+        <em>** {% trans %}Primary administrators group. Cannot be deleted.{% endtrans %}</em>
     </p>
 </div>
 <table id="grouplist" class="table table-bordered table-striped">
@@ -35,14 +35,14 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hId" scope="col">{{ __('Internal ID') }}</th>
-            <th id="hName" scope="col">{{ __('Name') }}</th>
-            <th id="hType" scope="col">{{ __('Type') }}</th>
-            <th id="hDescription" scope="col">{{ __('Description') }}</th>
-            <th id="hState" scope="col">{{ __('State') }}</th>
-            <th id="hMembers" scope="col" class="text-center">{{ __('Members') }}</th>
-            <th id="hMaximum" scope="col" class="text-center">{{ __('Maximum membership') }}</th>
-            <th id="hActions" scope="col">{{ __('Actions') }}</th>
+            <th id="hId" scope="col">{% trans %}Internal ID{% endtrans %}</th>
+            <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+            <th id="hType" scope="col">{% trans %}Type{% endtrans %}</th>
+            <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+            <th id="hState" scope="col">{% trans %}State{% endtrans %}</th>
+            <th id="hMembers" scope="col" class="text-center">{% trans %}Members{% endtrans %}</th>
+            <th id="hMaximum" scope="col" class="text-center">{% trans %}Maximum membership{% endtrans %}</th>
+            <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -86,7 +86,7 @@
     </tbody>
 </table>
 {% if applications %}
-    <a id="applications"></a><h3>{{ __('Pending applications') }}</h3>
+    <a id="applications"></a><h3>{% trans %}Pending applications{% endtrans %}</h3>
     <table class="table table-bordered table-striped">
         <colgroup>
             <col id="cUserId" />
@@ -97,11 +97,11 @@
         </colgroup>
         <thead>
             <tr>
-                <th id="hUserId" scope="col">{{ __('User ID') }}</th>
-                <th id="hUserName" scope="col">{{ __('User name') }}</th>
-                <th id="hGroupName" scope="col">{{ __('Applying to group') }}</th>
-                <th id="hComment" scope="col">{{ __('Comment') }}</th>
-                <th id="hActions" scope="col">{{ __('Actions') }}</th>
+                <th id="hUserId" scope="col">{% trans %}User ID{% endtrans %}</th>
+                <th id="hUserName" scope="col">{% trans %}User name{% endtrans %}</th>
+                <th id="hGroupName" scope="col">{% trans %}Applying to group{% endtrans %}</th>
+                <th id="hComment" scope="col">{% trans %}Comment{% endtrans %}</th>
+                <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -112,12 +112,12 @@
                 <td headers="hGroupName">{{ application.group.name }}</td>
                 <td headers="hComment">{{ application.application }}</td>
                 <td headers="hActions" class="text-right">
-                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'accept' }) }}" title="{{ __f('Accept %username', { '%username': application.user.uname }) }}" class="fa fa-user-plus fa-lg tooltips"></a>&nbsp;
-                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'deny' }) }}" title="{{ __f('Deny %username', { '%username': application.user.uname     }) }}" class="fa fa-user-times fa-lg tooltips"></a>
+                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'accept' }) }}" title="{% trans with { '%username': application.user.uname } %}Accept %username{% endtrans %}" class="fa fa-user-plus fa-lg tooltips"></a>&nbsp;
+                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'deny' }) }}" title="{% trans with { '%username': application.user.uname     } %}Deny %username{% endtrans %}" class="fa fa-user-times fa-lg tooltips"></a>
                 </td>
             </tr>
             {% else %}
-            <tr class="table-info"><td colspan="5" class="text-center">{{ __('No items found.') }}</td></tr>
+            <tr class="table-info"><td colspan="5" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
             {% endfor %}
         </tbody>
     </table>

@@ -2,19 +2,19 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Users list') }}
+    {% trans %}Users list{% endtrans %}
     {{ pageSetVar('title', __('Users list')) }}
 </h3>
 
 <div id="user-search-container" class="form d-none">
     <div class="input-group">
-        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulazauthmodule_useradministration_getusersbyfragmentastable" />
+        <input placeholder="{% trans %}Search{% endtrans %}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulazauthmodule_useradministration_getusersbyfragmentastable" />
         <div class="input-group-append">
             <span class="input-group-text"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
         </div>
     </div>
 </div>
-<p id="user-search-min-char" class="d-none">{{ __('Please enter at least 3 characters') }}</p>
+<p id="user-search-min-char" class="d-none">{% trans %}Please enter at least 3 characters{% endtrans %}</p>
 
 <p id="users-alphafilter">
     {{ pagerabc({posvar: 'letter', forwardvars: 'sortby', printempty: true, route: 'zikulazauthmodule_useradministration_list'}) }}
@@ -32,12 +32,12 @@
         </colgroup>
         <thead>
             <tr>
-                <th id="hUser" scope="col"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{{ __('User name') }}</a></th>
-                <th id="hEmail" scope="col">{{ __('Email') }}</th>
-                <th id="hVerified" scope="col">{{ __('Email verified') }}</th>
-                <th id="hId" scope="col"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{{ __('Internal ID') }}</a></th>
-                <th id="hMethod" scope="col">{{ __('Method') }}</th>
-                <th id="hActions" scope="col">{{ __('Actions') }}</th>
+                <th id="hUser" scope="col"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{% trans %}User name{% endtrans %}</a></th>
+                <th id="hEmail" scope="col">{% trans %}Email{% endtrans %}</th>
+                <th id="hVerified" scope="col">{% trans %}Email verified{% endtrans %}</th>
+                <th id="hId" scope="col"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{% trans %}Internal ID{% endtrans %}</a></th>
+                <th id="hMethod" scope="col">{% trans %}Method{% endtrans %}</th>
+                <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -59,12 +59,12 @@
     </colgroup>
     <thead>
     <tr>
-        <th headers="hSearchUser"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{{ __('User name') }}</a></th>
-        <th headers="hSearchEmail">{{ __('Email') }}</th>
-        <th headers="hSearchVerified">{{ __('Email verified') }}</th>
-        <th headers="hSearchId"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{{ __('Internal ID') }}</a></th>
-        <th headers="hSearchMethod">{{ __('Method') }}</th>
-        <th headers="hSearchActions">{{ __('Actions') }}</th>
+        <th headers="hSearchUser"><a class="{{ sort.uname.class }}" href="{{ sort.uname.url }}">{% trans %}User name{% endtrans %}</a></th>
+        <th headers="hSearchEmail">{% trans %}Email{% endtrans %}</th>
+        <th headers="hSearchVerified">{% trans %}Email verified{% endtrans %}</th>
+        <th headers="hSearchId"><a class="{{ sort.uid.class }}" href="{{ sort.uid.url }}">{% trans %}Internal ID{% endtrans %}</a></th>
+        <th headers="hSearchMethod">{% trans %}Method{% endtrans %}</th>
+        <th headers="hSearchActions">{% trans %}Actions{% endtrans %}</th>
     </tr>
     </thead>
     <tbody>

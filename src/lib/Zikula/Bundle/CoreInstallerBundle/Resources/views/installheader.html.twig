@@ -1,18 +1,18 @@
 <div id="header">
-    <h1>{{ __('Zikula Application Framework') }}</h1>
-    <h2>{{ __('Installer script') }}</h2>
+    <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
+    <h2>{% trans %}Installer script{% endtrans %}</h2>
     <ol class="wizard">
         <li{% if currentstage == 'locale' %} class="active"{% endif %}>
-            <a href="{{ path('install', { 'stage': 'locale' }) }}">{{ __('Select language') }}</a>
+            <a href="{{ path('install', { 'stage': 'locale' }) }}">{% trans %}Select language{% endtrans %}</a>
         </li>
         <li{% if currentstage == 'requirements' %} class="active"{% endif %}>
-            {{ __('Check requirements') }}
+            {% trans %}Check requirements{% endtrans %}
         </li>
         <li{% if currentstage == 'dbcreds' %} class="active"{% endif %}>
-            {{ __('Database information') }}
+            {% trans %}Database information{% endtrans %}
         </li>
         <li{% if currentstage == 'createadmin' %} class="active"{% endif %}>
-            {{ __("Create administrator's account") }}
+            {% trans %}Create administrator's account{% endtrans %}
         </li>
     </ol>
     <p class="installguide">

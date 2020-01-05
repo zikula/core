@@ -1,29 +1,29 @@
 {{ include('@ZikulaUsersModule/Email/header.txt.twig')|nl2br }}
-<h3>{{ __f('Welcome to %sub%!', {'%sub%': getModVar('ZConfig', 'sitename')}) }}</h3>
+<h3>{% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}Welcome to %sub%!{% endtrans %}</h3>
 
 <p>
-    {{ __('Hello!') }}
-    {{ __f('This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {'%email': reginfo.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')}) }}
-    {{ __('The information that was registered is as follows:') }}
+    {% trans %}Hello!{% endtrans %}
+    {% trans with {'%email': reginfo.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')} %}This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
+    {% trans %}The information that was registered is as follows:{% endtrans %}
 </p>
 
-<p>{{ __('User name') }}: {{ reginfo.uname }}<br />
+<p>{% trans %}User name{% endtrans %}: {{ reginfo.uname }}<br />
 {% if createdpassword is not empty %}
-    {{ __('Password') }}: {{ createdpassword }}
+    {% trans %}Password{% endtrans %}: {{ createdpassword }}
 {% endif %}
 </p>
 
-{% if createdpassword is not empty %}<p>{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}</p>{% endif %}
+{% if createdpassword is not empty %}<p>{% trans %}(This is the only time you will receive your password. Please keep it in a safe place.){% endtrans %}</p>{% endif %}
 
 {% if not reginfo.approved %}
-    <p>{{ __('Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.') }}</p>
+    <p>{% trans %}Thank you for your application for a new account. Your application has been forwarded to the site administrator for review. Please expect a message once the review process is complete.{% endtrans %}</p>
 {% elseif not createdByAdmin %}
-    <p>{{ __('Your account application has been approved. Thank you for your patience during the new account application review process.') }}</p>
+    <p>{% trans %}Your account application has been approved. Thank you for your patience during the new account application review process.{% endtrans %}</p>
 {% elseif createdByAdmin %}
-    <p>{{ __('The web site administrator has created this new account for you.') }}</p>
+    <p>{% trans %}The web site administrator has created this new account for you.{% endtrans %}</p>
 {% endif %}
 
 {% if reginfo.approved %}
-    <p>{{ __('You may now log into the web site.') }}</p>
+    <p>{% trans %}You may now log into the web site.{% endtrans %}</p>
 {% endif %}
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig')|nl2br }}

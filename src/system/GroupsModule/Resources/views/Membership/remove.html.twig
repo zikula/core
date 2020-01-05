@@ -5,15 +5,15 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-user-times"></span>
-    {{ __('Remove user from group') }}
+    {% trans %}Remove user from group{% endtrans %}
     {{ pageSetVar('title', __('Remove user from group')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Confirmation prompt') }}</legend>
-    <p class="alert alert-warning">{{ __f('Do you really want to remove user "%username" from group "%groupname"?', { '%username': uname, '%groupname': group.name }) }}</p>
+    <legend>{% trans %}Confirmation prompt{% endtrans %}</legend>
+    <p class="alert alert-warning">{% trans with { '%username': uname, '%groupname': group.name } %}Do you really want to remove user "%username" from group "%groupname"?{% endtrans %}</p>
 
     {{ form_row(form.gid) }}
     {{ form_row(form.uid) }}

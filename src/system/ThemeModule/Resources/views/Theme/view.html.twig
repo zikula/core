@@ -2,10 +2,10 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Themes list') }}
+    {% trans %}Themes list{% endtrans %}
     {{ pageSetVar('title', __('Themes list')) }}
 </h3>
-<p class="alert alert-info">{{ __('Themes control the visual presentation of a site.') }}</p>
+<p class="alert alert-info">{% trans %}Themes control the visual presentation of a site.{% endtrans %}</p>
 <table class="table table-bordered table-striped">
     <colgroup>
         <col id="cName" />
@@ -16,11 +16,11 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hName" scope="col">{{ __('Name') }}</th>
-            <th id="hDescription" scope="col">{{ __('Description') }}</th>
-            <th id="hVersion" scope="col" style="width: 8em">{{ __('Version') }}</th>
-            <th id="hState" scope="col">{{ __('State') }}</th>
-            <th id="hActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+            <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+            <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+            <th id="hVersion" scope="col" style="width: 8em">{% trans %}Version{% endtrans %}</th>
+            <th id="hState" scope="col">{% trans %}State{% endtrans %}</th>
+            <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -28,7 +28,7 @@
         <tr {% if theme.name|lower == currenttheme|lower %}class="success"{% endif %}>
             <td headers="hName">
                 {% set img = '<img src="' ~ getPreviewImagePath(theme.name) ~ '">' %}
-                <a href="{{ path('home', {'theme': theme.name}) }}" title="{{ theme.displayname }}{% if theme.name|lower == currenttheme|lower %} ({{ __('Default theme') }}){% endif %}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{{ img }}' target="_blank">
+                <a href="{{ path('home', {'theme': theme.name}) }}" title="{{ theme.displayname }}{% if theme.name|lower == currenttheme|lower %} ({% trans %}Default theme{% endtrans %}){% endif %}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{{ img }}' target="_blank">
                    {{ theme.displayname }}
                 </a>
                 {% if theme.name|lower == currenttheme|lower %}<span class="required"></span>{% endif %}
@@ -40,32 +40,32 @@
                 {{ theme.version }}
             </td>
             <td headers="hState">
-                <span class="badge badge-{% if theme.state == 1 %}success{% else %}danger{% endif %}">{% if theme.state == 1 %}{{ __('Active') }}{% else %}{{ __('Inactive') }}{% endif %}</span>
+                <span class="badge badge-{% if theme.state == 1 %}success{% else %}danger{% endif %}">{% if theme.state == 1 %}{% trans %}Active{% endtrans %}{% else %}{% trans %}Inactive{% endtrans %}{% endif %}</span>
             </td>
             <td headers="hActions" class="actions">
                 {% set themeArg = {'themeName': theme.name} %}
                 {% if theme.state != 1 %}
-                    <a href="{{ path('zikulathememodule_theme_activate', themeArg) }}"><span class="fa fa-cog tooltips" title="{{ __f('Activate %theme%', {'%theme%': theme.displayname}) }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_activate', themeArg) }}"><span class="fa fa-cog tooltips" title="{% trans with {'%theme%': theme.displayname} %}Activate %theme%{% endtrans %}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.user and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_setasdefault', themeArg) }}"><span class="fa fa-check tooltips" title="{{ __f('Set %theme% as site theme', {'%theme%': theme.displayname}) }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_setasdefault', themeArg) }}"><span class="fa fa-check tooltips" title="{% trans with {'%theme%': theme.displayname} %}Set %theme% as site theme{% endtrans %}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_preview', themeArg) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_preview', themeArg) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{% trans %}Preview{% endtrans %} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 and theme.vars %}
-                    <a href="{{ path('zikulathememodule_var_var', themeArg) }}"><span class="fa fa-pencil-alt tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_var_var', themeArg) }}"><span class="fa fa-pencil-alt tooltips" title="{% trans %}Edit{% endtrans %} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_delete', themeArg) }}"><span class="fa fa-trash-alt tooltips" title="{{ __('Delete or deactivate') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_delete', themeArg) }}"><span class="fa fa-trash-alt tooltips" title="{% trans %}Delete or deactivate{% endtrans %} {{ theme.displayname }}"></span></a>
                 {% endif %}
-                <a href="{{ path('zikulathememodule_theme_credits', themeArg) }}"><span class="fa fa-info-circle tooltips" title="{{ __('Credits for') }} {{ theme.displayname }}"></span></a>
+                <a href="{{ path('zikulathememodule_theme_credits', themeArg) }}"><span class="fa fa-info-circle tooltips" title="{% trans %}Credits for{% endtrans %} {{ theme.displayname }}"></span></a>
             </td>
         </tr>
         {% else %}
-        <tr class="table-info"><td colspan="5" class="text-center">{{ __('No items found.') }}</td></tr>
+        <tr class="table-info"><td colspan="5" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>
-<p><em><span class="required"></span> = {{ __('Default theme') }}</em></p>
+<p><em><span class="required"></span> = {% trans %}Default theme{% endtrans %}</em></p>
 {{ adminFooter() }}

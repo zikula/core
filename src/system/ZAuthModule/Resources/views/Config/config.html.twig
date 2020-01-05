@@ -5,14 +5,14 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-wrench"></span>
-    {{ __('Settings') }}
+    {% trans %}Settings{% endtrans %}
     {{ pageSetVar('title', __('Native authorisation settings')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('User Credential Settings') }}</legend>
+    <legend>{% trans %}User Credential Settings{% endtrans %}</legend>
     {{ form_row(form[constant('MODVAR_PASSWORD_MINIMUM_LENGTH', ZAC)]) }}
     {{ form_row(form[constant('MODVAR_HASH_METHOD', ZAC)]) }}
     {{ form_row(form[constant('MODVAR_PASSWORD_STRENGTH_METER_ENABLED', ZAC)]) }}
@@ -20,7 +20,7 @@
     {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_CHANGE_PASSWORD', ZAC)]) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('Registration Settings') }}</legend>
+    <legend>{% trans %}Registration Settings{% endtrans %}</legend>
     {{ form_row(form[constant('MODVAR_EMAIL_VERIFICATION_REQUIRED', ZAC)]) }}
     {{ form_row(form[constant('MODVAR_EXPIRE_DAYS_REGISTRATION', ZAC)]) }}
     {{ form_row(form[constant('MODVAR_REGISTRATION_ANTISPAM_QUESTION', ZAC)]) }}

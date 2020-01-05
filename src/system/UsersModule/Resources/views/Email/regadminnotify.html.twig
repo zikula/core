@@ -11,13 +11,13 @@
 <p>
 {% set siteLink = '<a href="%1$s">%2$s</a>'|replace({'%1$s': url('home'), '%2$s': getModVar('ZConfig', 'sitename')}) %}
 {% if not reginfo.isApproved %}
-    {{ __f('A new user account has been created but not yet activated on %s.', {'%s': siteLink}) }}
+    {% trans with {'%s': siteLink} %}A new user account has been created but not yet activated on %s.{% endtrans %}
 {% else %}
-    {{ __f('A new user account has been activated on %s.', {'%s': siteLink}) }}
+    {% trans with {'%s': siteLink} %}A new user account has been activated on %s.{% endtrans %}
 {% endif %}
-{% if createdByAdmin %}{{ __('It was created by an administrator or sub-administrator.') }}{% endif %}
-{{ __('The account details are as follows:') }}
+{% if createdByAdmin %}{% trans %}It was created by an administrator or sub-administrator.{% endtrans %}{% endif %}
+{% trans %}The account details are as follows:{% endtrans %}
 </p>
 
-<p>{{ __('User name') }}: '{{ reginfo.uname }}'</p>
+<p>{% trans %}User name{% endtrans %}: '{{ reginfo.uname }}'</p>
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig')|nl2br }}

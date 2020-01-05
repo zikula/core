@@ -15,7 +15,7 @@
 <fieldset>
     <legend>{{ __f('%action application for %user to %group group', {'%action': action|capitalize, '%user': '<strong>' ~ application.user.uname ~ '</strong>', '%group': '<strong>' ~ application.group.name ~ '</strong>'})|raw }}</legend>
     <div class="alert alert-info">
-        <h4>{{ __('Application comments') }}</h4>
+        <h4>{% trans %}Application comments{% endtrans %}</h4>
         {{ application.application }}
     </div>
     {{ form_row(form.sendtag) }}

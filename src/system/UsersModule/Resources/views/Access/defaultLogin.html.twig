@@ -17,7 +17,7 @@
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
             {{ form_widget(form.submit) }}
-            <a href="{{ path('home') }}" class="btn btn-default" role="button">{{ __('Cancel') }}</a>
+            <a href="{{ path('home') }}" class="btn btn-default" role="button">{% trans %}Cancel{% endtrans %}</a>
         </div>
     </div>
 

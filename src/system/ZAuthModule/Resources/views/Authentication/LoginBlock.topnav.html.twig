@@ -2,7 +2,7 @@
 {% if linkOnly %}
     <li class="nav-item">
         <a href="{{ path('zikulausersmodule_access_login') }}" class="nav-link">
-            <i class="fa fa-sign-in-alt"></i> {{ __('Login') }}
+            <i class="fa fa-sign-in-alt"></i> {% trans %}Login{% endtrans %}
         </a>
     </li>
 {% else %}
@@ -23,13 +23,13 @@
             {% else %}
                 <li style="padding-left: 20px">{{ form_row(form.rememberme) }}</li>
             {% endif %}
-            <li><a href="{{ path('zikulausersmodule_access_login') }}">{{ __('Log in page') }}</a></li>
+            <li><a href="{{ path('zikulausersmodule_access_login') }}">{% trans %}Log in page{% endtrans %}</a></li>
             {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
-                <li><a href="{{ path('zikulausersmodule_registration_register') }}">{{ __('Create new account') }}</a></li>
+                <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create new account{% endtrans %}</a></li>
             {% endif %}
             <li role="separator" class="dropdown-divider"></li>
-            <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{{ __('Recover lost username') }}</a></li>
-            <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{{ __('Recover lost password') }}</a></li>
+            <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{% trans %}Recover lost username{% endtrans %}</a></li>
+            <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{% trans %}Recover lost password{% endtrans %}</a></li>
         </ul>
         {{ form_end(form) }}
     </li>

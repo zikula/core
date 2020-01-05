@@ -2,7 +2,7 @@
 {% form_theme form with [
     'bootstrap_4_horizontal_layout.html.twig',
 ] %}
-<p>{{ __('Select a locale:') }}</p>
+<p>{% trans %}Select a locale:{% endtrans %}</p>
 {{ form_start(form) }}
 {{ form_widget(form.locale) }}
 {{ form_end(form) }}

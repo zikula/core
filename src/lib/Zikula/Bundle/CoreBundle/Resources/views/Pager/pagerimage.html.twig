@@ -1,12 +1,12 @@
 {% set separator=' ' %}
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
-        <a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page', 'zikula') }}">
-            <i class="fa fa-backward fa-lg" title="{{ __('First page', 'zikula') }}"></i>
+        <a href="{{ pagerPluginArray.firstUrl }}" title="{% trans %}First page', 'zikula{% endtrans %}">
+            <i class="fa fa-backward fa-lg" title="{% trans %}First page', 'zikula{% endtrans %}"></i>
         </a>
         {{ separator }}
-        <a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page', 'zikula') }}">
-            <i class="fa fa-step-backward fa-lg" title="{{ __('Previous page', 'zikula') }}"></i>
+        <a href="{{ pagerPluginArray.prevUrl }}" title="{% trans %}Previous page', 'zikula{% endtrans %}">
+            <i class="fa fa-step-backward fa-lg" title="{% trans %}Previous page', 'zikula{% endtrans %}"></i>
         </a> {{ separator }}
     {% endif %}
 
@@ -16,12 +16,12 @@
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
         {{ separator }}
-        <a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page', 'zikula') }}">
-            <i class="fa fa-step-forward fa-lg" title="{{ __('Next page', 'zikula') }}"></i>
+        <a href="{{ pagerPluginArray.nextUrl }}" title="{% trans %}Next page', 'zikula{% endtrans %}">
+            <i class="fa fa-step-forward fa-lg" title="{% trans %}Next page', 'zikula{% endtrans %}"></i>
         </a>
         {{ separator }}
-        <a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page', 'zikula') }}">
-            <i class="fa fa-forward fa-lg" title="{{ __('Last page', 'zikula') }}"></i>
+        <a href="{{ pagerPluginArray.lastUrl }}" title="{% trans %}Last page', 'zikula{% endtrans %}">
+            <i class="fa fa-forward fa-lg" title="{% trans %}Last page', 'zikula{% endtrans %}"></i>
         </a>
     {% endif %}
 </div>

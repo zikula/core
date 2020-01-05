@@ -5,36 +5,36 @@
 {{ moduleHeader('user', __('New account registration'), '', true, true) }}
 
 <p id="users_formtop">
-    {{ __('Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.') }}
-    {{ __('During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.') }}
+    {% trans %}Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.{% endtrans %}
+    {% trans %}During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.{% endtrans %}
 </p>
 
 {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED')) %}
-    <p class="alert alert-info">{{ __('Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below.') }}
+    <p class="alert alert-info">{% trans %}Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below.{% endtrans %}
 {% elseif getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_APPROVAL_REQUIRED')) %}
-    <p class="alert alert-info">{{ __('Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below.') }}</p>
+    <p class="alert alert-info">{% trans %}Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below.{% endtrans %}</p>
 {% endif %}
 
-<p class="alert alert-warning">{{ __('The items that are marked with an asterisk (*) are required entries.') }}</p>
+<p class="alert alert-warning">{% trans %}The items that are marked with an asterisk (*) are required entries.{% endtrans %}</p>
 {{ form_start(form) }}
 {{ form_errors(form) }}
     <input id="{{ form.vars.id }}_event_type" type="hidden" name="event_type" value="new_registration" />
     <input id="{{ form.vars.id }}_registration_info" type="hidden" name="registration_info" value="1" />
     <fieldset>
-        <legend>{{ __('Choose a user name') }}</legend>
+        <legend>{% trans %}Choose a user name{% endtrans %}</legend>
         {{ form_row(form.uname) }}
         <div class="form-group row">
-            <small class="form-text text-muted col-md-9 offset-md-3">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</small>
+            <small class="form-text text-muted col-md-9 offset-md-3">{% trans %}Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.{% endtrans %}</small>
         </div>
     </fieldset>
     {% if form.children.email is defined %}{# email may not be defined if authentication is non-local #}
         <fieldset>
-            <legend>{{ __('Enter your e-mail address') }}</legend>
+            <legend>{% trans %}Enter your e-mail address{% endtrans %}</legend>
             {{ form_row(form.email) }}
         </fieldset>
     {% endif %}
     <fieldset>
-        <legend>{{ __('Set a password') }}</legend>
+        <legend>{% trans %}Set a password{% endtrans %}</legend>
         {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
         {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
             <div class="form-group row">
@@ -51,7 +51,7 @@
 
     {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_REGISTRATION_ANTISPAM_QUESTION')) is not empty %}
     <fieldset>
-        <legend>{{ __('Answer the security question') }}</legend>
+        <legend>{% trans %}Answer the security question{% endtrans %}</legend>
         {{ form_row(form.antispamanswer) }}
     </fieldset>
     {% endif %}

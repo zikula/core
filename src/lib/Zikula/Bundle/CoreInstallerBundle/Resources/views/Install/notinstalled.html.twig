@@ -7,25 +7,25 @@
     <div id="cell">
         <div id="content">
             <div id="maincontent">
-                <h1>{{ __("Zikula Application Framework") }}</h1>
-                <h2>{{ __("Zikula Core is not installed!") }}</h2>
+                <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
+                <h2>{% trans %}Zikula Core is not installed!{% endtrans %}</h2>
                 <p>
                     {{ __f('You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking
                     on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.',
                     {'%inst%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}), '%text%': __('installation instructions') }),
                      '%docs%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': 'https://ziku.la', '%text%': __('online documentation') }) } ) | raw }}
                 </p>
-                <noscript><p class="alert alert-warning">{{ __('You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.') }}</p></noscript>
+                <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
                 <div id="installButton" class="row" class="d-none">
                     <div class="col-md-4 offset-md-4">
                         <a class="btn btn-success btn-lg btn-block" href="{{ path('install', {'stage': 'locale' }) }}">
-                            <i class="fa fa-thumbs-up fa-3x float-left"></i> {{ __("Install Zikula!") }}<br />{{ __('Version') }} {{ version }}
+                            <i class="fa fa-thumbs-up fa-3x float-left"></i> {% trans %}Install Zikula!{% endtrans %}<br />{% trans %}Version{% endtrans %} {{ version }}
                         </a>
                     </div>
                 </div>
                 <br />
                 <p class="text-muted">
-                    {{ __('Zikula is free software released under the GPL license!') }}<br />
+                    {% trans %}Zikula is free software released under the GPL license!{% endtrans %}<br />
                     {{ __f('For more information, please visit %link%.', { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" onclick="window.open(this.href);return false;">https://ziku.la</a>'}) | raw }}
                 </p>
             </div>

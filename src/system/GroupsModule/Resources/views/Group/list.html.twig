@@ -1,7 +1,7 @@
 {{ moduleHeader('user', __('Groups'), '', true, true, false, true) }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Groups list') }}
+    {% trans %}Groups list{% endtrans %}
 </h3>
 <table id="grouplist" class="table table-bordered table-striped">
     <colgroup>
@@ -15,13 +15,13 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hName" scope="col">{{ __('Name') }}</th>
-            <th id="hDescription" scope="col">{{ __('Description') }}</th>
-            <th id="hType" scope="col">{{ __('Type') }}</th>
-            <th id="hState" scope="col">{{ __('State') }}</th>
-            <th id="hMembers" scope="col" class="text-center">{{ __('Members') }}</th>
-            <th id="hMaximum" scope="col" class="text-center">{{ __('Maximum membership') }}</th>
-            <th id="hActions" scope="col">{{ __('Actions') }}</th>
+            <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+            <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+            <th id="hType" scope="col">{% trans %}Type{% endtrans %}</th>
+            <th id="hState" scope="col">{% trans %}State{% endtrans %}</th>
+            <th id="hMembers" scope="col" class="text-center">{% trans %}Members{% endtrans %}</th>
+            <th id="hMaximum" scope="col" class="text-center">{% trans %}Maximum membership{% endtrans %}</th>
+            <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -51,7 +51,7 @@
             </td>
         </tr>
     {% else %}
-        <tr class="table-info"><td colspan="7" class="text-center">{{ __('There are currently no groups that can be joined.') }}</td></tr>
+        <tr class="table-info"><td colspan="7" class="text-center">{% trans %}There are currently no groups that can be joined.{% endtrans %}</td></tr>
     {% endfor %}
     </tbody>
 </table>

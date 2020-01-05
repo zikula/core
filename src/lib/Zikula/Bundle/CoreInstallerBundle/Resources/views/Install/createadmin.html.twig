@@ -6,7 +6,7 @@
 {% block content %}
 <div>
     <fieldset>
-        <legend>{{  __("Create administrator's account") }}</legend>
+        <legend>{% trans %}Create administrator's account{% endtrans %}</legend>
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -41,7 +41,7 @@
         </div>
         <div class="form-group row">
             <div class="col-md-9 offset-md-3">
-                <input type="submit" value="{{ __('Next') }}" class="btn btn-success" />
+                <input type="submit" value="{% trans %}Next{% endtrans %}" class="btn btn-success" />
             </div>
         </div>
         {{ form_end(form) }}

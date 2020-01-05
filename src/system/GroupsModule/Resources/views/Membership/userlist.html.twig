@@ -4,9 +4,9 @@
         <td headers="hUserName">{{ user.uname }}</td>
         <td headers="hEmail">{{ user.email }}</td>
         <td headers="hActions" class="actions">
-            <a class="fa fa-fw fa-user-plus tooltips" href="{{ path('zikulagroupsmodule_membership_add', {uid: user.uid, gid: gid, token: csrf_token('membership-add') }) }}" title="{{ __('Add user to this group') }}"></a>
+            <a class="fa fa-fw fa-user-plus tooltips" href="{{ path('zikulagroupsmodule_membership_add', {uid: user.uid, gid: gid, token: csrf_token('membership-add') }) }}" title="{% trans %}Add user to this group{% endtrans %}"></a>
         </td>
     </tr>
 {% else %}
-    <tr class="table-info"><td colspan="4" class="text-center">{{ __('No records found.') }}</td></tr>
+    <tr class="table-info"><td colspan="4" class="text-center">{% trans %}No records found.{% endtrans %}</td></tr>
 {% endfor %}

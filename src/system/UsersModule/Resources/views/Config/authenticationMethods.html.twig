@@ -5,7 +5,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-lock"></span>
-    {{ __('Authentication methods') }}
+    {% trans %}Authentication methods{% endtrans %}
     {{ pageSetVar('title', __('Authentication methods')) }}
 </h3>
 
@@ -13,7 +13,7 @@
 {{ form_errors(form) }}
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">
-        <div class="alert alert-info">{{ __('Check the methods you wish to activate.') }}</div>
+        <div class="alert alert-info">{% trans %}Check the methods you wish to activate.{% endtrans %}</div>
         <ul class="list-group">
         {% for name, child in form.children.authenticationMethodsStatus %}
             <li class="list-group-item">

@@ -12,7 +12,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Permission rules list') }}
+    {% trans %}Permission rules list{% endtrans %}
     {{ pageSetVar('title', __('Permission rules list')) }}
 </h3>
 {% if enableFilter %}
@@ -22,7 +22,7 @@
     ] %}
     {{ form_start(filterForm) }}
     <fieldset>
-        <legend class="mb-0">{{ __('Filter') }}</legend>
+        <legend class="mb-0">{% trans %}Filter{% endtrans %}</legend>
         {{ form_widget(filterForm.filterGroup) }}
         {{ form_widget(filterForm.filterComponent) }}
         {{ form_widget(filterForm.reset) }}
@@ -44,23 +44,23 @@
     <thead>
         <tr>
             <th id="hPosition" scope="col" class="text-left"></th>
-            <th id="hId" scope="col" class="text-left">{{ __('ID') }}</th>
+            <th id="hId" scope="col" class="text-left">{% trans %}ID{% endtrans %}</th>
             <th id="hGroup" scope="col" class="text-left">
-                {{ __('Group') }}
-                <span id="filter-warning-group" class="d-none text-danger"> ({{ __('filtered') }})</span>
+                {% trans %}Group{% endtrans %}
+                <span id="filter-warning-group" class="d-none text-danger"> ({% trans %}filtered{% endtrans %})</span>
             </th>
             <th id="hComponent" scope="col" class="text-left">
-                {{ __('Component') }}
-                <span id="filter-warning-component" class="d-none text-danger"> ({{ __('filtered') }})</span>
+                {% trans %}Component{% endtrans %}
+                <span id="filter-warning-component" class="d-none text-danger"> ({% trans %}filtered{% endtrans %})</span>
             </th>
             <th id="hInstance" scope="col" class="text-left">
-                {{ __('Instance') }}
+                {% trans %}Instance{% endtrans %}
             </th>
             <th id="hLevel" scope="col" class="text-left">
-                {{ __('Permission level') }}
+                {% trans %}Permission level{% endtrans %}
             </th>
             <th id="hActions" scope="col" class="text-left">
-                {{ __('Actions') }}
+                {% trans %}Actions{% endtrans %}
             </th>
         </tr>
     </thead>
@@ -79,13 +79,13 @@
 {{ form_start(permissionCheckForm) }}
 {{ form_errors(permissionCheckForm) }}
 <fieldset>
-    <legend>{{ __('User permission check') }}</legend>
+    <legend>{% trans %}User permission check{% endtrans %}</legend>
     {{ form_row(permissionCheckForm.user) }}
     {{ form_row(permissionCheckForm.component) }}
     {{ form_row(permissionCheckForm.instance) }}
     {{ form_row(permissionCheckForm.level) }}
     <div class="form-group">
-        <div class="form-text col-md-9 offset-md-3 font-weight-bold" id="permission-test-info" data-testing="{{ __('Testing permission...') }}">
+        <div class="form-text col-md-9 offset-md-3 font-weight-bold" id="permission-test-info" data-testing="{% trans %}Testing permission...{% endtrans %}">
         </div>
     </div>
     <div class="form-group row">
@@ -101,15 +101,15 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">{{ __('Permission') }}</h5>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ __('Close') }}</span></button>
+                <h5 class="modal-title" id="editModalLabel">{% trans %}Permission{% endtrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans %}Close{% endtrans %}</span></button>
             </div>
             <div class="modal-body">
                 {# empty #}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa fa-times'></i> {{ __('Close') }}</button>
-                <button id="save-permission" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-check'></i> {{ __('Save') }}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa fa-times'></i> {% trans %}Close{% endtrans %}</button>
+                <button id="save-permission" type="button" class="btn btn-success" data-dismiss="modal"><i class='fa fa-check'></i> {% trans %}Save{% endtrans %}</button>
             </div>
         </div>
     </div>
@@ -118,8 +118,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="instanceInfoModalLabel">{{ __('Permission rule information') }}</h5>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ __('Close') }}</span></button>
+                <h5 class="modal-title" id="instanceInfoModalLabel">{% trans %}Permission rule information{% endtrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{% trans %}Close{% endtrans %}</span></button>
             </div>
             <div class="modal-body">
                 {{ include('@ZikulaPermissionsModule/Permission/instanceinfo.html.twig') }}
@@ -131,12 +131,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <h5 class="modal-title" id="deleteModalLabel">{{ __('Do you really want to delete this permission rule?') }}</h5>
-                <button type="button" class="close" data-dismiss="modal"><span aria-hiddenq="true">&times;</span><span class="sr-only">{{ __('Close') }}</span></button>
+                <h5 class="modal-title" id="deleteModalLabel">{% trans %}Do you really want to delete this permission rule?{% endtrans %}</h5>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hiddenq="true">&times;</span><span class="sr-only">{% trans %}Close{% endtrans %}</span></button>
             </div>
             <div class="modal-footer">
-                <button id="confirm-delete-permission" type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Yes') }}</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('No') }}</button>
+                <button id="confirm-delete-permission" type="button" class="btn btn-danger" data-dismiss="modal">{% trans %}Yes{% endtrans %}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}No{% endtrans %}</button>
             </div>
         </div>
     </div>

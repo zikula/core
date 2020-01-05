@@ -21,13 +21,13 @@
     </div>
     <div id="footer" class="footer">
         <ul>
-            <li><strong>{{ __("Useful resources") }}:</strong></li>
-            <li><a href="{{ path('doc', {'name': 'INSTALL-2.0.md'}) }}">{{ __('Installation guide') }}</a></li>
-            <li><a href="https://github.com/zikula/core/wiki">{{ __('Zikula documentation') }}</a></li>
-            <li><a href="https://zikula.slack.com/">{{ __('Support @ Slack') }}</a></li>
+            <li><strong>{% trans %}Useful resources{% endtrans %}:</strong></li>
+            <li><a href="{{ path('doc', {'name': 'INSTALL-2.0.md'}) }}">{% trans %}Installation guide{% endtrans %}</a></li>
+            <li><a href="https://github.com/zikula/core/wiki">{% trans %}Zikula documentation{% endtrans %}</a></li>
+            <li><a href="https://zikula.slack.com/">{% trans %}Support @ Slack{% endtrans %}</a></li>
             {# custom links for each action go here #}
             {% if currentstage == 'requirements' %}
-            <li class="highlight"><a href="https://en.wikipedia.org/wiki/File_system_permissions>{{ __('File system permissions') }}</a></li>
+            <li class="highlight"><a href="https://en.wikipedia.org/wiki/File_system_permissions>{% trans %}File system permissions{% endtrans %}</a></li>
             {% endif %}
         </ul>
     </div>

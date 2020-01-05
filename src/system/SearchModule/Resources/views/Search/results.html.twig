@@ -11,7 +11,7 @@
     </div>
 {% endif %}
 
-<p>{{ __f('Number of hits: %s', { '%s': resultCount }) }}</p>
+<p>{% trans with { '%s': resultCount } %}Number of hits: %s{% endtrans %}</p>
 
 <dl class="search_results">
     {% for result in results %}
@@ -27,7 +27,7 @@
     <dd>
         {{ result.text|u.truncate(limitSummary, '…')|zikulasearchmodule_highlightWords(q) }}
         {% if result.created is not empty %}
-            <div class="search_created">{{ __f('Created on %s.', { '%s': result.created|format_date('long') }) }}</div>
+            <div class="search_created">{% trans with { '%s': result.created|format_date('long') } %}Created on %s.{% endtrans %}</div>
         {% endif %}
     </dd>
     {% endfor %}

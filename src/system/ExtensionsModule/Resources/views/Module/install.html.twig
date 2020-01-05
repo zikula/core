@@ -5,7 +5,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-plus"></span>
-    {{ __('Install module') }} '{{ extension.displayname }}'
+    {% trans %}Install module{% endtrans %} '{{ extension.displayname }}'
     {{ pageSetVar('title', __('Install module')) }}
 </h3>
 
@@ -20,10 +20,10 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hModule" scope="col">{{ __('Module name') }}</th>
-            <th id="hLevel" scope="col">{{ __('Level') }}</th>
-            <th id="hReason" scope="col">{{ __('Reason') }}</th>
-            <th id="hInstall" scope="col">{{ __('Install') }}</th>
+            <th id="hModule" scope="col">{% trans %}Module name{% endtrans %}</th>
+            <th id="hLevel" scope="col">{% trans %}Level{% endtrans %}</th>
+            <th id="hReason" scope="col">{% trans %}Reason{% endtrans %}</th>
+            <th id="hInstall" scope="col">{% trans %}Install{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -32,10 +32,10 @@
             <td headers="hModule">{{ dependencies[checkbox.vars.name].modname }}</td>
             <td headers="hLevel">
                 {% if dependencies[checkbox.vars.name].status == 1 %}
-                    <span class="badge badge-danger">{{ __('Required') }}</span>
+                    <span class="badge badge-danger">{% trans %}Required{% endtrans %}</span>
                 {% else %}
-                    <span class="badge badge-info">{{ __('Recommended') }}</span>
-                    {% if checkbox.vars.data == false %} <span class="badge badge-danger">{{ __('Not Available in System') }}</span> {% endif %}
+                    <span class="badge badge-info">{% trans %}Recommended{% endtrans %}</span>
+                    {% if checkbox.vars.data == false %} <span class="badge badge-danger">{% trans %}Not Available in System{% endtrans %}</span> {% endif %}
                 {% endif %}
             </td>
             <td headers="hReason">{{ dependencies[checkbox.vars.name].reason }}</td>

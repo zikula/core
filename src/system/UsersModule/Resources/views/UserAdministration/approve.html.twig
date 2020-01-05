@@ -5,19 +5,19 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-plus"></span>
-    {{ __f('Approve registration of %sub%', {"%sub%": user.uname}) }}
+    {% trans with {"%sub%": user.uname} %}Approve registration of %sub%{% endtrans %}
     {{ pageSetVar('title', __('Approve registration')) }}
 </h3>
 <fieldset>
-    <legend>{{ __('Account Information') }}</legend>
+    <legend>{% trans %}Account Information{% endtrans %}</legend>
     <div class="form-group row">
-        <label class="col-md-3 col-form-label">{{ __('User name:') }}</label>
+        <label class="col-md-3 col-form-label">{% trans %}User name:{% endtrans %}</label>
         <div class="col-sm-9">
             <div class="form-control-plaintext">{{ user.uname }}</div>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-3 col-form-label">{{ __('E-mail address:') }}</label>
+        <label class="col-sm-3 col-form-label">{% trans %}E-mail address:{% endtrans %}</label>
         <div class="col-sm-9">
             <div class="form-control-plaintext">
                 {% if user.email|default %}
@@ -37,15 +37,15 @@
 {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\RegistrationUiHooksSubscriber::REGISTRATION_DISPLAY'), user.uid) }}
 
 <fieldset>
-    <legend>{{ __('Registration Status') }}</legend>
+    <legend>{% trans %}Registration Status{% endtrans %}</legend>
     <div class="form-group">
-        <label class="col-md-3 col-form-label">{{ __('Administrator approval:') }}</label>
+        <label class="col-md-3 col-form-label">{% trans %}Administrator approval:{% endtrans %}</label>
         <div class="col-md-9">
             <div class="form-control-plaintext">
                 {% if user.isapproved is empty or not user.isapproved %}
-                    <span class="fa fa-times fa-fw fa-red"></span>{{ __('Not yet approved') }}
+                    <span class="fa fa-times fa-fw fa-red"></span>{% trans %}Not yet approved{% endtrans %}
                 {% else %}
-                    <span class="fa fa-check fa-fw fa-green"></span>{{ __('Approved') }} <span class="small">{{ __('(or approval was not required when the registration was completed)') }}</span>
+                    <span class="fa fa-check fa-fw fa-green"></span>{% trans %}Approved{% endtrans %} <span class="small">{% trans %}(or approval was not required when the registration was completed){% endtrans %}</span>
                 {% endif %}
             </div>
         </div>

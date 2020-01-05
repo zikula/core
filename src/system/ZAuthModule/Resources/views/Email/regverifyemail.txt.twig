@@ -1,34 +1,34 @@
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig') }}
 {% set verificationurl = url('zikulazauthmodule_registration_verify', {'uname': user.uname, 'verifycode': verifycode}) %}
-{{ __f('Welcome to %sub%!', {'%sub%': getModVar('ZConfig', 'sitename')}) }}
+{% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}Welcome to %sub%!{% endtrans %}
 
-{{ __f('Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).', {'%email': user.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')}) }}
+{% trans with {'%email': user.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')} %}Hello! This e-mail address (\'%email\') has been used to register an account on \'%site\' (%url).{% endtrans %}
 
-{{ __('If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.') }}
+{% trans %}If you did not request a new user account at this web site, please either contact our site administrator, or simply disregard this message.{% endtrans %}
 
-{{ __('If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.') }}
-{% if not isApproved %}{{ __('Your request is also waiting for administrator approval.') }}
-{{ __('Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.') }}{% endif %}
+{% trans %}If you did request a new user account, then your request is waiting for you to verify your e-mail address with us.{% endtrans %}
+{% if not isApproved %}{% trans %}Your request is also waiting for administrator approval.{% endtrans %}
+{% trans %}Once both this verification step is complete and an administrator has approved your request, you will be able to log in with your user name.{% endtrans %}{% endif %}
 
-{{ __('Please click on the following link to complete the e-mail address check: ') }}{{ verificationurl }}
+{% trans %}Please click on the following link to complete the e-mail address check: {% endtrans %}{{ verificationurl }}
 
-{{ __('If you are not able to click on the above link, you can copy it into your browser.') }}
+{% trans %}If you are not able to click on the above link, you can copy it into your browser.{% endtrans %}
 
-{{ __('Your verification code is:') }} {{ verifycode }}
+{% trans %}Your verification code is:{% endtrans %} {{ verifycode }}
 
 {% if not isApproved %}
-{{ __('Once verified and your account has been approved, then you will be able to log in.') }}
+{% trans %}Once verified and your account has been approved, then you will be able to log in.{% endtrans %}
 {% else %}
-{{ __('Once verified, you will be able to log in.') }}
+{% trans %}Once verified, you will be able to log in.{% endtrans %}
 {% endif %}
-{{ __('Your account details are as follows:') }}
+{% trans %}Your account details are as follows:{% endtrans %}
 
-{{ __f('User name: %sub%', {'%sub%': user.uname}) }}
+{% trans with {'%sub%': user.uname} %}User name: %sub%{% endtrans %}
 {% if createdpassword|default %}
-{{ __f('Password: %sub%', {'%sub%': createdpassword}) }}
+{% trans with {'%sub%': createdpassword} %}Password: %sub%{% endtrans %}
 {% endif %}
 
-{% if createdpassword|default %}{{ __('(This is the only time you will receive your password. Please keep it in a safe place.)') }}{% endif %}
+{% if createdpassword|default %}{% trans %}(This is the only time you will receive your password. Please keep it in a safe place.){% endtrans %}{% endif %}
 
-{% if not isApproved %}{{ __('Remember: both this verification step and approval from an administrator must be completed before you can log in.') }} {{ __('You will receive an additional e-mail message once an administrator has reviewed your request.') }}{% endif %}
+{% if not isApproved %}{% trans %}Remember: both this verification step and approval from an administrator must be completed before you can log in.{% endtrans %} {% trans %}You will receive an additional e-mail message once an administrator has reviewed your request.{% endtrans %}{% endif %}
 {{ include('@ZikulaZAuthModule/Email/footer.txt.twig') }}

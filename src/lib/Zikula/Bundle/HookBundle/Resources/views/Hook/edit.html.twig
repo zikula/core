@@ -9,21 +9,21 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-paperclip"></span>
-    {{ __('Hooks') }}
+    {% trans %}Hooks{% endtrans %}
     {{ pageSetVar('title', __('Hooks')) }}
 </h3>
 
 <div id="csrfToken" class="d-none" data-token="{{ csrf_token('hook-ui') }}"></div>
 
-<div class="alert alert-info">{{ __('Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.') }}</div>
+<div class="alert alert-info">{% trans %}Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.{% endtrans %}</div>
 {% set showBothPanels = true %}
 {% if showBothPanels %}
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a href="#subscriberTab" role="tab" data-toggle="tab" class="nav-link active">{{ __('Subscription') }}</a>
+            <a href="#subscriberTab" role="tab" data-toggle="tab" class="nav-link active">{% trans %}Subscription{% endtrans %}</a>
         </li>
         <li class="nav-item">
-            <a href="#providerTab" role="tab" data-toggle="tab" class="nav-link">{{ __('Provision') }}</a>
+            <a href="#providerTab" role="tab" data-toggle="tab" class="nav-link">{% trans %}Provision{% endtrans %}</a>
         </li>
     </ul>
 {% endif %}
@@ -56,7 +56,7 @@
     {% endif %}
 
     {% if total_available_subscriber_areas == 0 and not isSubscriber %}
-        <p class="alert alert-warning">{{ __f('There are no subscribers available for %sub%.', {"%sub%": currentmodule}) }}</p>
+        <p class="alert alert-warning">{% trans with {"%sub%": currentmodule} %}There are no subscribers available for %sub%.{% endtrans %}</p>
     {% endif %}
 {% endif %}
 

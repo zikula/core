@@ -5,7 +5,7 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Search') }}</legend>
+    <legend>{% trans %}Search{% endtrans %}</legend>
     {{ form_widget(form.q) }}
     <div class="d-none">
         {{ form_row(form.searchType) }}

@@ -10,10 +10,10 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{{ __('Name') }}</a></th>
-            <th id="hDescription" scope="col">{{ __('Description') }}</th>
-            <th id="hVersion" scope="col">{{ __('Version') }}</th>
-            <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{{ __('State') }}</a></th>
+            <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{% trans %}Name{% endtrans %}</a></th>
+            <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+            <th id="hVersion" scope="col">{% trans %}Version{% endtrans %}</th>
+            <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
             <th id="hActions" scope="col" class="text-right">Actions</th>
         </tr>
     </thead>
@@ -22,7 +22,7 @@
         <tr>
             <td headers="hName">
                 {% if adminRoutes[module.name]|default %}
-                    <a title="{{ __("Go to the module's administration panel") }}" href="{{ adminRoutes[module.name] }}"><i class="fa fa-link"></i></a>
+                    <a title="{% trans %}Go to the module's administration panel{% endtrans %}" href="{{ adminRoutes[module.name] }}"><i class="fa fa-link"></i></a>
                 {% endif %}
                 <strong>{{ module.displayname }}</strong>
                 <a data-toggle="collapse" href="#collapse-{{ module.name }}"><i class="fa fa-caret-down"></i></a>
@@ -32,7 +32,7 @@
                 </ul>
             </td>
             <td headers="hDescription" style="width: 50%">
-                {% if module.name|isCoreModule %}<span class="badge badge-info tooltips" title="{{ __('Core Extension') }}">C</span>{% endif %}
+                {% if module.name|isCoreModule %}<span class="badge badge-info tooltips" title="{% trans %}Core Extension{% endtrans %}">C</span>{% endif %}
                 {{ module.description }}
             </td>
             <td headers="hVersion">{{ module.version }}</td>

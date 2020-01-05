@@ -2,7 +2,7 @@
 <html xml:lang="{{ app.request.locale }}" dir="auto">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset={{ app.request.encodings.0 }}" />
-    <title>{{ __('The site is currently off-line.') }}</title>
+    <title>{% trans %}The site is currently off-line.{% endtrans %}</title>
     <base href="{{ app.request.baseUrl }}" />
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('font-awesome/css/all.min.css') }}">
@@ -10,14 +10,14 @@
 <body>
     <div class="container">
         <div class="jumbotron text-center" style="margin-top: 3em;">
-            <h1>{{ __('The site is currently off-line.') }}</h1>
+            <h1>{% trans %}The site is currently off-line.{% endtrans %}</h1>
             <h2>{{ getModVar('ZConfig', 'siteoffreason') }}</h2>
             {{ showflashes() }}
             <p>
-                <a class="btn btn-xl btn-primary" href="{{ path('zikulausersmodule_access_login') }}"><i class="fa fa-key"></i> {{ __('Administrator log-in') }}</a>
+                <a class="btn btn-xl btn-primary" href="{{ path('zikulausersmodule_access_login') }}"><i class="fa fa-key"></i> {% trans %}Administrator log-in{% endtrans %}</a>
             </p>
             <p>
-                <a href="https://ziku.la"><img src="{{ asset('bundles/core/images/zk-power.png') }}" alt="{{ __('Proudly powered by Zikula') }}" title="{{ __('Proudly powered by Zikula') }}" width="96" height="30" /></a>
+                <a href="https://ziku.la"><img src="{{ asset('bundles/core/images/zk-power.png') }}" alt="{% trans %}Proudly powered by Zikula{% endtrans %}" title="{% trans %}Proudly powered by Zikula{% endtrans %}" width="96" height="30" /></a>
             </p>
         </div>
     </div>

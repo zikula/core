@@ -5,14 +5,14 @@
                 <div class="col-lg-12">
                     <i class="close" data-dismiss="alert">&times;</i>
                     <a class="text-primary" data-toggle="collapse" href="#developernotices_full" aria-expanded="false" aria-controls="developernotices_full">
-                        <strong><i class="fa fa-fw fa-caret-right"></i> {{ __('Developer notices (development mode on)') }}</strong>
+                        <strong><i class="fa fa-fw fa-caret-right"></i> {% trans %}Developer notices (development mode on){% endtrans %}</strong>
                     </a>
                 </div>
                 <div class="collapse" id="developernotices_full">
-                    <h4>{{ __('Dev mode status') }}</h4>
+                    <h4>{% trans %}Dev mode status{% endtrans %}</h4>
                     <ul>
-                        <li>{{ __('Mode') }}: {{ developer.mode }}</li>
-                        <li>{{ __('Debug enabled') }}: {{ developer.debug }}</li>
+                        <li>{% trans %}Mode{% endtrans %}: {{ developer.mode }}</li>
+                        <li>{% trans %}Debug enabled{% endtrans %}: {{ developer.debug }}</li>
                     </ul>
                 </div>
             </div>

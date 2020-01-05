@@ -17,5 +17,5 @@
         {{ form_end(form) }}
     </fieldset>
 {% else %}
-    <div class="alert alert-danger">{{ __('Multilingual features are deactivated.') }}</div>
+    <div class="alert alert-danger">{% trans %}Multilingual features are deactivated.{% endtrans %}</div>
 {% endif %}

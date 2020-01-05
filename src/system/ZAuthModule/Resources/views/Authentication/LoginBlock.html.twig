@@ -8,7 +8,7 @@
     {{ form_errors(form) }}
     <p>{{ form_widget(attribute(form, loginField|default('uname'))) }}</p>
     <p>{{ form_widget(form.pass) }}</p>
-    <p>{{ form_widget(form.rememberme) }} {{ __('Remember me') }}</p>
+    <p>{{ form_widget(form.rememberme) }} {% trans %}Remember me{% endtrans %}</p>
     {{ form_row(form.submit) }}
     {{ form_end(form) }}
     {{ loginFooter|raw }}

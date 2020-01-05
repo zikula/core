@@ -2,7 +2,7 @@
 {{ adminHeader() }}
 {{ pageSetVar('title', __('Create or Edit Root Node')) }}
 <h3>
-    <span class="fa fa-plus"> {{ __('Create or edit root node') }}</span>
+    <span class="fa fa-plus"> {% trans %}Create or edit root node{% endtrans %}</span>
 </h3>
 {{ include('@ZikulaMenuModule/Menu/edit.html.twig') }}
 {{ adminFooter() }}

@@ -1,15 +1,15 @@
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig')|nl2br }}
-<p>{{ __f('Hello! You requested to change your e-mail address for user account \'%uname\' at %site from %email to %newemail.', {'%uname': uname, '%site': getModVar('ZConfig', 'sitename'), '%email': email, '%newemail': newemail}) }}
-   {{ __('You must confirm this change before it will take effect.') }}
+<p>{% trans with {'%uname': uname, '%site': getModVar('ZConfig', 'sitename'), '%email': email, '%newemail': newemail} %}Hello! You requested to change your e-mail address for user account \'%uname\' at %site from %email to %newemail.{% endtrans %}
+   {% trans %}You must confirm this change before it will take effect.{% endtrans %}
 {% set expireDays = getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_EXPIRE_DAYS_CHANGE_EMAIL')) %}
 {% if expireDays > 0 %}
-{{ __f('If you do not confirm this change within the %sub% day(s), the request will be deleted from our system.', {'%sub%': expireDays}) }}
+{% trans with {'%sub%': expireDays} %}If you do not confirm this change within the %sub% day(s), the request will be deleted from our system.{% endtrans %}
 {% endif %}
 </p>
 
-<p>{{ __('You can confirm the e-mail address change by clicking on this link:') }} <a href="{{ url }}">{{ __('Verify my e-mail address change.') }}</a></p>
+<p>{% trans %}You can confirm the e-mail address change by clicking on this link:{% endtrans %} <a href="{{ url }}">{% trans %}Verify my e-mail address change.{% endtrans %}</a></p>
 
-<p>{{ __('(If you cannot click on the link above, you can copy this URL into your browser:') }} {{ url }}</p>
+<p>{% trans %}(If you cannot click on the link above, you can copy this URL into your browser:{% endtrans %} {{ url }}</p>
 
-<p>{{ __('If you did not make this request then you do not need to take any action.') }} {{ __('The e-mail address will not be changed unless the confirmation code is used, and you are the only recipient of this message. You can just delete this message.') }}</p>
+<p>{% trans %}If you did not make this request then you do not need to take any action.{% endtrans %} {% trans %}The e-mail address will not be changed unless the confirmation code is used, and you are the only recipient of this message. You can just delete this message.{% endtrans %}</p>
 {{ include('@ZikulaZAuthModule/Email/footer.txt.twig')|nl2br }}

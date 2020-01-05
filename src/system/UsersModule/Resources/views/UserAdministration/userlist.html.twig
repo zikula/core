@@ -20,24 +20,24 @@
         <td headers="hStatus" class="users_activated">
             {% switch user.activated %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_ACTIVE') %}
-            <span class="badge badge-success">{{ __('Active') }}</span>
+            <span class="badge badge-success">{% trans %}Active{% endtrans %}</span>
             {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_INACTIVE') %}
-            <span class="badge badge-default">{{ __('Inactive') }}</span>
+            <span class="badge badge-default">{% trans %}Inactive{% endtrans %}</span>
             {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_REG') %}
-            <span class="badge badge-warning">{{ __('Pending') }}</span>
+            <span class="badge badge-warning">{% trans %}Pending{% endtrans %}</span>
             {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_DELETE') %}
-            <span class="badge badge-warning">{{ __('Marked for deletion') }}</span>
+            <span class="badge badge-warning">{% trans %}Marked for deletion{% endtrans %}</span>
             {% break %}
             {% default %}
-            <span class="badge badge-danger">{{ __('Status unknown') }}</span>
+            <span class="badge badge-danger">{% trans %}Status unknown{% endtrans %}</span>
             {% endswitch %}
         </td>
         <td headers="hActions" class="actions">
             {% if user.uid == constant('Zikula\\UsersModule\\Constant::USER_ID_ANONYMOUS') %}
-                <a href="{{ path('zikulagroupsmodule_group_adminlist') }}"><span class="badge badge-info tooltips" title="{{ __('This user cannot be edited. Group memberships can be edited in the groups module. Click here.') }}">{{ __('Edit?') }}</span></a>
+                <a href="{{ path('zikulagroupsmodule_group_adminlist') }}"><span class="badge badge-info tooltips" title="{% trans %}This user cannot be edited. Group memberships can be edited in the groups module. Click here.{% endtrans %}">{% trans %}Edit?{% endtrans %}</span></a>
             {% endif %}
             {% for action in actionsHelper.user(user) %}
                 <a class="fa fa-fw fa-{{ action.icon }} tooltips" href="{{ action.url }}" title="{{ action.text }}"></a>
@@ -45,5 +45,5 @@
         </td>
     </tr>
 {% else %}
-    <tr class="info"><td colspan="7" class="text-center">{{ __('No records found.') }}</td></tr>
+    <tr class="info"><td colspan="7" class="text-center">{% trans %}No records found.{% endtrans %}</td></tr>
 {% endfor %}

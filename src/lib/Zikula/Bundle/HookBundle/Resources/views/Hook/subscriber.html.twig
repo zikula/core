@@ -1,7 +1,7 @@
 <div class="row">
 <div id="hookSubscriberAreas" class="col-md-6">
     <fieldset>
-        <legend>{{ __('Attached areas') }}</legend>
+        <legend>{% trans %}Attached areas{% endtrans %}</legend>
         {% for category, areas in subscriberAreasAndCategories %}
             <fieldset class="sareas_category">
                 <legend>{{ category }}</legend>
@@ -21,7 +21,7 @@
                                         <i class="fa fa-arrows"></i>
                                         <span>
                                             {{ areasSortingTitles[parea] }} <span class="small">({{ parea }})</span>
-                                            <a class="detachlink" title="{{ __('Detach') }} {{ areasSortingTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{{ sarea_md5 }}', '{{ sarea }}', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-remove"></i></a>
+                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{{ sarea_md5 }}', '{{ sarea }}', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-remove"></i></a>
                                         </span>
                                         <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_a" value="{{ parea }}" />
                                         <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_c" value="{{ category }}" />
@@ -37,13 +37,13 @@
                 {% endfor %}
             </fieldset>
         {% else %}
-            <p class="alert alert-warning">{{ __f('There are no subscribers available for %sub%.', {"%sub%": currentmodule}) }}</p>
+            <p class="alert alert-warning">{% trans with {"%sub%": currentmodule} %}There are no subscribers available for %sub%.{% endtrans %}</p>
         {% endfor %}
     </fieldset>
 </div>
 <div id="hookProviderAreas" class="col-md-6">
     <fieldset>
-        <legend>{{ __('Available areas') }}</legend>
+        <legend>{% trans %}Available areas{% endtrans %}</legend>
         {% for hookprovider in hookproviders|filter(hp => hp.areas is not empty) %}
             <div class="parea_wrapper">
                 <h4><i class="fa fa-caret-right"></i> {{ hookprovider.displayname }}</h4>
@@ -62,7 +62,7 @@
                                     <span>
                                         {{ hookprovider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
                                     </span>
-                                    <a class="detachlink d-none" title="{{ __('Detach') }} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-times"></i></a></span>
+                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-times"></i></a></span>
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ hookprovider.areasToCategories[parea] }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_i" value="{{ parea_md5 }}" />
@@ -74,7 +74,7 @@
                 </div>
             </div>
         {% else %}
-            <p class="alert alert-warning">{{ __f('There are no providers available for %sub%.', {"%sub%": currentmodule}) }}</p>
+            <p class="alert alert-warning">{% trans with {"%sub%": currentmodule} %}There are no providers available for %sub%.{% endtrans %}</p>
         {% endfor %}
     </fieldset>
 </div>

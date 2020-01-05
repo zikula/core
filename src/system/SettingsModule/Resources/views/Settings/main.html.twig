@@ -5,7 +5,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-wrench"></span>
-    {{ __('Main settings') }}
+    {% trans %}Main settings{% endtrans %}
     {{ pageSetVar('title', __('Main settings')) }}
 </h3>
 
@@ -13,7 +13,7 @@
 {{ form_errors(form) }}
 {% set currentLocale = app.request.locale|default('en') %}
 <fieldset>
-    <legend>{{ __('Main info') }}</legend>
+    <legend>{% trans %}Main info{% endtrans %}</legend>
     <div class="zikula-bootstrap-tab-container">
         <ul class="nav nav-tabs" role="tablist">
             {% for language, languageCode in languages %}
@@ -34,7 +34,7 @@
     {{ form_row(form.pagetitle) }}
     {{ form_row(form.adminmail) }}
     <div class="alert alert-danger">
-        <h4 class="col-md-9 offset-md-3"><i class="fa fa-exclamation-triangle"></i> {{ __('CAUTION') }}</h4>
+        <h4 class="col-md-9 offset-md-3"><i class="fa fa-exclamation-triangle"></i> {% trans %}CAUTION{% endtrans %}</h4>
         {{ form_row(form.siteoff) }}
         <div id="settings_siteoff_container">
             <div data-switch="zikulasettingsmodule_mainsettings[siteoff]" data-switch-value="1">
@@ -44,7 +44,7 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{{ __('Meta tag settings') }}</legend>
+    <legend>{% trans %}Meta tag settings{% endtrans %}</legend>
     <div class="zikula-bootstrap-tab-container">
         <ul class="nav nav-tabs" role="tablist">
             {% for language, languageCode in languages %}
@@ -64,37 +64,37 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend>{{ __('Start page settings') }}</legend>
+    <legend>{% trans %}Start page settings{% endtrans %}</legend>
     {{ form_row(form.startController) }}
     {{ form_row(form.startargs) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('General settings') }}</legend>
+    <legend>{% trans %}General settings{% endtrans %}</legend>
     {{ form_row(form.UseCompression) }}
     {% if zlibEnabled is defined and not zlibEnabled %}
     <div class="col-sm-offset-3 col-sm-9">
-        <p class="alert alert-warning">{{ __('Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case.') }}</p>
+        <p class="alert alert-warning">{% trans %}Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case.{% endtrans %}</p>
     </div>
     {% endif %}
     {{ form_row(form.profilemodule) }}
     {{ form_row(form.messagemodule) }}
     {{ form_row(form.ajaxtimeout) }}
     <div class="col-md-9 offset-md-3">
-        <small class="form-text text-muted">{{ __('Notice: Increase this value if mobile appliances experience problems with using the site.') }} ({{ __('default 5000 = 5 seconds') }})</small>
+        <small class="form-text text-muted">{% trans %}Notice: Increase this value if mobile appliances experience problems with using the site.{% endtrans %} ({% trans %}default 5000 = 5 seconds{% endtrans %})</small>
     </div>
 </fieldset>
 <fieldset>
-    <legend>{{ __('Permalinks settings') }}</legend>
-    <p class="alert alert-warning">{{ __("Notice: The following settings will rewrite your permalinks. Sometimes, international characters like 'ñ' and 'ß' may be re-encoded by your browser. Although this is technically the correct action, it may not be aesthetically pleasing.  These settings allow you to replace those characters, using a pair of comma-separated lists. The two fields below should resemble the examples provided: The first element of 'List to search for' will replace the first element in the 'List to replace with' and so on. In the example below, 'À' would be replace with 'A', and 'Á' with 'A'. If you do not want to use this feature, leave both fields blank.") }}</p>
+    <legend>{% trans %}Permalinks settings{% endtrans %}</legend>
+    <p class="alert alert-warning">{% trans %}Notice: The following settings will rewrite your permalinks. Sometimes, international characters like 'ñ' and 'ß' may be re-encoded by your browser. Although this is technically the correct action, it may not be aesthetically pleasing.  These settings allow you to replace those characters, using a pair of comma-separated lists. The two fields below should resemble the examples provided: The first element of 'List to search for' will replace the first element in the 'List to replace with' and so on. In the example below, 'À' would be replace with 'A', and 'Á' with 'A'. If you do not want to use this feature, leave both fields blank.{% endtrans %}</p>
     {{ form_row(form.permasearch) }}
     <div class="col-md-9 offset-md-3 mb-3">
-        <label for="settings_permasearch_default">{{ __('Default') }}</label>
-        <input id="settings_permasearch_default" type="text" class="form-control form-control-sm" readonly="readonly" value="{{ __('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü') }}" />
+        <label for="settings_permasearch_default">{% trans %}Default{% endtrans %}</label>
+        <input id="settings_permasearch_default" type="text" class="form-control form-control-sm" readonly="readonly" value="{% trans %}À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü{% endtrans %}" />
     </div>
     {{ form_row(form.permareplace) }}
     <div class="col-md-9 offset-md-3 mb-3">
-        <label for="settings_permareplace_default">{{ __('Default') }}</label>
-        <input id="settings_permareplace_default" type="text" class="form-control form-control-sm" readonly="readonly" value="{{ __('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue') }}" />
+        <label for="settings_permareplace_default">{% trans %}Default{% endtrans %}</label>
+        <input id="settings_permareplace_default" type="text" class="form-control form-control-sm" readonly="readonly" value="{% trans %}A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue{% endtrans %}" />
     </div>
 </fieldset>
 <div class="form-group row">

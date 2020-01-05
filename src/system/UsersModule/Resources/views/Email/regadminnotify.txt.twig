@@ -9,12 +9,12 @@
 {{ heading }}
 
 {% if not reginfo.isApproved %}
-{{ __f('A new user account has been created but not yet activated on %s.', {'%s': getModVar('ZConfig', 'sitename')}) }}
+{% trans with {'%s': getModVar('ZConfig', 'sitename')} %}A new user account has been created but not yet activated on %s.{% endtrans %}
 {% else %}
-{{ __f('A new user account has been activated on %s.', {'%s': getModVar('ZConfig', 'sitename')}) }}
+{% trans with {'%s': getModVar('ZConfig', 'sitename')} %}A new user account has been activated on %s.{% endtrans %}
 {% endif %}
-{% if createdByAdmin %}{{ __('It was created by an administrator or sub-administrator.') }}{% endif %}
-{{ __('The account details are as follows:') }}
+{% if createdByAdmin %}{% trans %}It was created by an administrator or sub-administrator.{% endtrans %}{% endif %}
+{% trans %}The account details are as follows:{% endtrans %}
 
-{{ __('User name') }}: '{{ reginfo.uname }}'
+{% trans %}User name{% endtrans %}: '{{ reginfo.uname }}'
 {{ include('@ZikulaUsersModule/Email/footer.txt.twig') }}

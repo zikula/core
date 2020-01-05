@@ -11,9 +11,9 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hSearchKeywords" scope="col">{{ __('Search keywords') }}</th>
-            <th id="hAmountOfSearches" scope="col">{{ __('Number of searches') }}</th>
-            <th id="hDateOfLastSearch" scope="col">{{ __('Date of last search') }}</th>
+            <th id="hSearchKeywords" scope="col">{% trans %}Search keywords{% endtrans %}</th>
+            <th id="hAmountOfSearches" scope="col">{% trans %}Number of searches{% endtrans %}</th>
+            <th id="hDateOfLastSearch" scope="col">{% trans %}Date of last search{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -26,7 +26,7 @@
                 <td headers="hSearchRow{{ loop.index }} hDateOfLastSearch">{{ recentSearch.date.timestamp|format_date('short') }}</td>
             </tr>
         {% else %}
-            <tr class="table-info"><td colspan="3" class="text-center">{{ __('No items found.') }}</td></tr>
+            <tr class="table-info"><td colspan="3" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>

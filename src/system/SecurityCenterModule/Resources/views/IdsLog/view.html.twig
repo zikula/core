@@ -1,16 +1,16 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-archive"></span>
-    {{ __('View IDS log') }}
+    {% trans %}View IDS log{% endtrans %}
     {{ pageSetVar('title', __('View IDS log')) }}
 </h3>
 
 <ul class="nav nav-modulelinks">
     <li class="nav-item">
-        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file') }}" class="nav-link"><i class="fa fa-download"></i> {{ __('Export IDS Log') }}</a>
+        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{% trans %}Download the entire log to a CSV file{% endtrans %}" class="nav-link"><i class="fa fa-download"></i> {% trans %}Export IDS Log{% endtrans %}</a>
     </li>
     <li class="nav-item">
-        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}" class="nav-link"><i class="fa fa-trash-alt"></i> {{ __('Purge IDS Log') }}</a>
+        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{% trans %}Delete the entire log.{% endtrans %}" class="nav-link"><i class="fa fa-trash-alt"></i> {% trans %}Purge IDS Log{% endtrans %}</a>
     </li>
 </ul>
 
@@ -22,7 +22,7 @@
     {{ form_start(filterForm, {attr: {id: 'zikulaSecurityCenterModuleIdsLogFilterForm', class: 'navbar-form', role: 'navigation'}}) }}
     {{ form_errors(filterForm) }}
     <fieldset>
-        <legend>{{ __('Filter') }}</legend>
+        <legend>{% trans %}Filter{% endtrans %}</legend>
         {{ form_row(filterForm.username) }}
         {{ form_row(filterForm.name) }}
         {{ form_row(filterForm.tag) }}
@@ -31,7 +31,7 @@
         {{ form_row(filterForm.ip) }}
         {{ form_row(filterForm.impact) }}
         {% if filter.uid or filter.name or filter.tag or filter.value or filter.page or filter.ip or filter.impact %}
-            <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{{ __('Clear filter') }}"><i class="fa fa-times"></i></a>
+            <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{% trans %}Clear filter{% endtrans %}"><i class="fa fa-times"></i></a>
         {% endif %}
     </fieldset>
     {{ form_end(filterForm) }}
@@ -52,34 +52,34 @@
         <thead>
             <tr>
                 <th id="hName" scope="col" class="text-left">
-                    <a href="{{ sort.name.url }}" title="{{ __f('Sort by %s', {'%s': 'name'}) }}" class="{{ sort.name.class }}">{{ __('Name') }}</a>
+                    <a href="{{ sort.name.url }}" title="{% trans with {'%s': 'name'} %}Sort by %s{% endtrans %}" class="{{ sort.name.class }}">{% trans %}Name{% endtrans %}</a>
                 </th>
                 <th id="hTag" scope="col" class="text-left">
-                    <a href="{{ sort.tag.url }}" title="{{ __f('Sort by %s', {'%s': 'tag'}) }}" class="{{ sort.tag.class }}">{{ __('Tag') }}</a>
+                    <a href="{{ sort.tag.url }}" title="{% trans with {'%s': 'tag'} %}Sort by %s{% endtrans %}" class="{{ sort.tag.class }}">{% trans %}Tag{% endtrans %}</a>
                 </th>
                 <th id="hValue" scope="col" class="text-left">
-                    <a href="{{ sort.value.url }}" title="{{ __f('Sort by %s', {'%s': 'value'}) }}" class="{{ sort.value.class }}">{{ __('Value') }}</a>
+                    <a href="{{ sort.value.url }}" title="{% trans with {'%s': 'value'} %}Sort by %s{% endtrans %}" class="{{ sort.value.class }}">{% trans %}Value{% endtrans %}</a>
                 </th>
                 <th id="hPage" scope="col" class="text-left">
-                    <a href="{{ sort.page.url }}" title="{{ __f('Sort by %s', {'%s': 'page'}) }}" class="{{ sort.page.class }}">{{ __('Page') }}</a>
+                    <a href="{{ sort.page.url }}" title="{% trans with {'%s': 'page'} %}Sort by %s{% endtrans %}" class="{{ sort.page.class }}">{% trans %}Page{% endtrans %}</a>
                 </th>
                 <th id="hUsername" scope="col" class="text-left">
-                    <a href="{{ sort.username.url }}" title="{{ __f('Sort by %s', {'%s': 'user name'}) }}" class="{{ sort.username.class }}">{{ __('User Name') }}</a>
+                    <a href="{{ sort.username.url }}" title="{% trans with {'%s': 'user name'} %}Sort by %s{% endtrans %}" class="{{ sort.username.class }}">{% trans %}User Name{% endtrans %}</a>
                 </th>
                 <th id="hIp" scope="col" class="text-left">
-                    <a href="{{ sort.ip.url }}" title="{{ __f('Sort by %s', {'%s': 'ip address'}) }}" class="{{ sort.ip.class }}">{{ __('IP') }}</a>
+                    <a href="{{ sort.ip.url }}" title="{% trans with {'%s': 'ip address'} %}Sort by %s{% endtrans %}" class="{{ sort.ip.class }}">{% trans %}IP{% endtrans %}</a>
                 </th>
                 <th id="hImpact" scope="col" class="text-left">
-                    <a href="{{ sort.impact.url }}" title="{{ __f('Sort by %s', {'%s': 'impact'}) }}" class="{{ sort.impact.class }}">{{ __('Impact') }}</a>
+                    <a href="{{ sort.impact.url }}" title="{% trans with {'%s': 'impact'} %}Sort by %s{% endtrans %}" class="{{ sort.impact.class }}">{% trans %}Impact{% endtrans %}</a>
                 </th>
                 <th id="hFilters" scope="col" class="text-left">
-                    {{ __('PHPIDS filters used') }}
+                    {% trans %}PHPIDS filters used{% endtrans %}
                 </th>
                 <th id="hDate" scope="col" class="text-left">
-                    <a href="{{ sort.date.url }}+DESC" title="{{ __f('Sort by %s', {'%s': 'date'}) }}" class="{{ sort.date.class }}">{{ __('Date') }}</a>
+                    <a href="{{ sort.date.url }}+DESC" title="{% trans with {'%s': 'date'} %}Sort by %s{% endtrans %}" class="{{ sort.date.class }}">{% trans %}Date{% endtrans %}</a>
                 </th>
                 <th id="hActions" scope="col" class="text-right">
-                    {{ __('Actions') }}
+                    {% trans %}Actions{% endtrans %}
                 </th>
             </tr>
         </thead>
@@ -96,11 +96,11 @@
                     <td headers="hImpact">{{ event.impact }}</td>
                     <td headers="hFilters">
                     {% for filter in event.filters %}
-                        <a id="f_{{ event.id }}_{{ loop.index }}" href="#f_{{ event.id }}_{{ loop.index }}_content" title="{{ __f('PHPIDS filter %s', {'%s': filter.id}) }}" class="eventfilter">{{ filter.id }}</a>{% if not loop.last %}, {% endif %}
+                        <a id="f_{{ event.id }}_{{ loop.index }}" href="#f_{{ event.id }}_{{ loop.index }}_content" title="{% trans with {'%s': filter.id} %}PHPIDS filter %s{% endtrans %}" class="eventfilter">{{ filter.id }}</a>{% if not loop.last %}, {% endif %}
                         <div id="f_{{ event.id }}_{{ loop.index }}_content" style="display: none">
-                            <p><strong>{{ __('Impact') }}:</strong> {{ filter.impact }}</p>
-                            <p><strong>{{ __('Description') }}:</strong> {{ filter.description }}</p>
-                            <p><strong>{{ __('Rule') }}:</strong> {{ filter.rule }}</p>
+                            <p><strong>{% trans %}Impact{% endtrans %}:</strong> {{ filter.impact }}</p>
+                            <p><strong>{% trans %}Description{% endtrans %}:</strong> {{ filter.description }}</p>
+                            <p><strong>{% trans %}Rule{% endtrans %}:</strong> {{ filter.rule }}</p>
                         </div>
                     {% endfor %}
                     </td>
@@ -113,7 +113,7 @@
         </tbody>
     </table>
 {% else %}
-    <p class="alert alert-info text-center">{{ __('No logged intrusions found.') }}</p>
+    <p class="alert alert-info text-center">{% trans %}No logged intrusions found.{% endtrans %}</p>
 {% endif %}
 {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulasecuritycentermodule_idslog_view'}) }}
 {{ adminFooter() }}

@@ -2,7 +2,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-users"></span>
-    {{ __('Group membership') }} ({{ group.name }})
+    {% trans %}Group membership{% endtrans %} ({{ group.name }})
     {{ pageSetVar('title', __('Group membership')) }}
 </h3>
 <table class="table table-bordered table-striped">
@@ -14,10 +14,10 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hUserId" scope="col">{{ __('User ID') }}</th>
-            <th id="hUserName" scope="col">{{ __('User name') }}</th>
-            <th id="hEmail" scope="col">{{ __('Email') }}</th>
-            <th id="hActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+            <th id="hUserId" scope="col">{% trans %}User ID{% endtrans %}</th>
+            <th id="hUserName" scope="col">{% trans %}User name{% endtrans %}</th>
+            <th id="hEmail" scope="col">{% trans %}Email{% endtrans %}</th>
+            <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -28,28 +28,28 @@
             <td headers="hEmail">{{ user.email }}</td>
             <td headers="hActions" class="text-right">
                 {% if user.uid != currentUser.uid %}
-                    <a href="{{ path('zikulagroupsmodule_membership_remove', {gid:group.gid, uid:user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{{ __('Remove user from group') }}"><span class="fa fa-lg fa-user-times"></span></a>
+                    <a href="{{ path('zikulagroupsmodule_membership_remove', {gid:group.gid, uid:user.uid}) }}" id="user-{{ user.uid }}" class="group-membership-removeuser" rel="{{ group.gid }}:{{ user.uid }}" title="{% trans %}Remove user from group{% endtrans %}"><span class="fa fa-lg fa-user-times"></span></a>
                 {% endif %}
             </td>
         </tr>
         {% else %}
-            <tr class="table table-borderedempty"><td colspan="4">{{ __('No users found.') }}</td></tr>
+            <tr class="table table-borderedempty"><td colspan="4">{% trans %}No users found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>
 {#{{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startNum', route: 'zikulagroupsmodule_membership_adminlist'}) }}#}
 
-<h3><i class="fa fa-user-plus"></i> {{ __('Add user to this group') }}</h3>
-<h4>{{ __('Seach by username') }}</h4>
+<h3><i class="fa fa-user-plus"></i> {% trans %}Add user to this group{% endtrans %}</h3>
+<h4>{% trans %}Seach by username{% endtrans %}</h4>
 <div id="user-search-container" class="form d-none">
     <div class="input-group">
-        <input placeholder="{{ __('Search') }}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulagroupsmodule_membership_getusersbyfragmentastable" data-route-params='{"gid": "{{ group.gid }}"}' />
+        <input placeholder="{% trans %}Search{% endtrans %}" id="user-search" class="form-control" size="25" maxlength="25" type="text" value="" data-route="zikulagroupsmodule_membership_getusersbyfragmentastable" data-route-params='{"gid": "{{ group.gid }}"}' />
         <div class="input-group-append">
             <span class="input-group-text"><i class="fa fa-times pointer" id="user-search-discard"></i></span>
         </div>
     </div>
 </div>
-<p id="user-search-min-char" class="d-none">{{ __('Please enter at least 3 characters') }}</p>
+<p id="user-search-min-char" class="d-none">{% trans %}Please enter at least 3 characters{% endtrans %}</p>
 
 {# This table is for ajax search results and is hidden until needed and populated then with the results. #}
 <table id="user-search-list" class="table table-bordered table-striped d-none">
@@ -61,10 +61,10 @@
     </colgroup>
     <thead>
     <tr>
-        <th id="hUserId" scope="col">{{ __('User ID') }}</th>
-        <th id="hUserName" scope="col">{{ __('User name') }}</th>
-        <th id="hEmail" scope="col">{{ __('Email') }}</th>
-        <th id="hActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+        <th id="hUserId" scope="col">{% trans %}User ID{% endtrans %}</th>
+        <th id="hUserName" scope="col">{% trans %}User name{% endtrans %}</th>
+        <th id="hEmail" scope="col">{% trans %}Email{% endtrans %}</th>
+        <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
     </tr>
     </thead>
     <tbody>

@@ -14,8 +14,8 @@
   <link>{{ pagevars.homepath }}</link>
 </image>
 #}
-<managingEditor>{{ __('Administrator') }} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</managingEditor>
-<webMaster>{{ __('Administrator') }} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</webMaster>
+<managingEditor>{% trans %}Administrator{% endtrans %} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</managingEditor>
+<webMaster>{% trans %}Administrator{% endtrans %} {{ getModVar('ZConfig', 'adminmail') }} ({{ getModVar('ZConfig', 'sitename') }})</webMaster>
 {{ maincontent|raw }}
 </channel>
 </rss>

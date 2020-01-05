@@ -1,7 +1,7 @@
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
-        [<a href="{{ pagerPluginArray.firstUrl }}" title="{{ __('First page', 'zikula') }}">{{ __('First page', 'zikula') }}</a>]
-        [<a href="{{ pagerPluginArray.prevUrl }}" title="{{ __('Previous page', 'zikula') }}">{{ __('Previous page', 'zikula') }}</a>]
+        [<a href="{{ pagerPluginArray.firstUrl }}" title="{% trans %}First page', 'zikula{% endtrans %}">{% trans %}First page', 'zikula{% endtrans %}</a>]
+        [<a href="{{ pagerPluginArray.prevUrl }}" title="{% trans %}Previous page', 'zikula{% endtrans %}">{% trans %}Previous page', 'zikula{% endtrans %}</a>]
     {% endif %}
 
     {% for currentItem, currentPage in pagerPluginArray.pages %}
@@ -24,7 +24,7 @@
     {% endfor %}
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
-        [<a href="{{ pagerPluginArray.nextUrl }}" title="{{ __('Next page', 'zikula') }}">{{ __('Next page', 'zikula') }}</a>]
-        [<a href="{{ pagerPluginArray.lastUrl }}" title="{{ __('Last page', 'zikula') }}">{{ __('Last page', 'zikula') }}</a>]
+        [<a href="{{ pagerPluginArray.nextUrl }}" title="{% trans %}Next page', 'zikula{% endtrans %}">{% trans %}Next page', 'zikula{% endtrans %}</a>]
+        [<a href="{{ pagerPluginArray.lastUrl }}" title="{% trans %}Last page', 'zikula{% endtrans %}">{% trans %}Last page', 'zikula{% endtrans %}</a>]
     {% endif %}
 </div>

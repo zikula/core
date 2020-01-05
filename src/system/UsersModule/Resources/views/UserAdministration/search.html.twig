@@ -5,13 +5,13 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-search"></span>
-    {{ __('Find users') }}
+    {% trans %}Find users{% endtrans %}
     {{ pageSetVar('title', __('Find users')) }}
 </h3>
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Find users') }}</legend>
+    <legend>{% trans %}Find users{% endtrans %}</legend>
     {{ form_row(form.uname) }}
     {{ form_row(form.email) }}
     {{ form_row(form.groups) }}

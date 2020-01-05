@@ -7,13 +7,13 @@
 
 {% if noResultsFound %}
     <div class="alert alert-danger">
-        <h4>{{ __('No search results found.') }}</h4>
-        {{ __('You can try the following:') }}
+        <h4>{% trans %}No search results found.{% endtrans %}</h4>
+        {% trans %}You can try the following:{% endtrans %}
         <ul>
-            <li>{{ __('Check that you spelled all words correctly.') }}</li>
-            <li>{{ __('Use different keywords.') }}</li>
-            <li>{{ __('Use keywords that are more general.') }}</li>
-            <li>{{ __('Use fewer words.') }}</li>
+            <li>{% trans %}Check that you spelled all words correctly.{% endtrans %}</li>
+            <li>{% trans %}Use different keywords.{% endtrans %}</li>
+            <li>{% trans %}Use keywords that are more general.{% endtrans %}</li>
+            <li>{% trans %}Use fewer words.{% endtrans %}</li>
         </ul>
     </div>
 {% endif %}

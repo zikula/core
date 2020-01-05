@@ -2,33 +2,33 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Allowed HTML settings') }}
+    {% trans %}Allowed HTML settings{% endtrans %}
     {{ pageSetVar('title', __('Allowed HTML settings')) }}
 </h3>
 
-<p class="alert alert-info">{{ __('Filtering of allowed HTML occurs when a template string or variable is modified with the \'safeHtml\' filter, or when a module asks for similar processing from within its functions.') }}</p>
+<p class="alert alert-info">{% trans %}Filtering of allowed HTML occurs when a template string or variable is modified with the \'safeHtml\' filter, or when a module asks for similar processing from within its functions.{% endtrans %}</p>
 
 <form action="{{ path('zikulasecuritycentermodule_config_allowedhtml') }}" method="post" enctype="application/x-www-form-urlencoded" role="form">
     <fieldset>
-        <legend>{{ __('HTML entities') }}</legend>
+        <legend>{% trans %}HTML entities{% endtrans %}</legend>
 
         <div class="form-group row">
             <div class="col-sm-12">
-                <label>{{ __('Translate embedded HTML entities into real characters') }}</label>
+                <label>{% trans %}Translate embedded HTML entities into real characters{% endtrans %}</label>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input id="securitycenter_htmlentities_yes" type="radio" name="htmlentities" value="1"{% if htmlEntities == 1 %} checked="checked"{% endif %}class="custom-control-input" />
-                    <label class="custom-control-label" for="securitycenter_htmlentities_yes">{{ __('Yes') }}</label>
+                    <label class="custom-control-label" for="securitycenter_htmlentities_yes">{% trans %}Yes{% endtrans %}</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input id="securitycenter_htmlentities_n0" type="radio" name="htmlentities" value="0"{% if htmlEntities != 1 %} checked="checked"{% endif %}class="custom-control-input" />
-                    <label class="custom-control-label" for="securitycenter_htmlentities_n0">{{ __('No') }}</label>
+                    <label class="custom-control-label" for="securitycenter_htmlentities_n0">{% trans %}No{% endtrans %}</label>
                 </div>
             </div>
         </div>
     </fieldset>
 
     <fieldset>
-        <legend>{{ __('HTML tags') }}</legend>
+        <legend>{% trans %}HTML tags{% endtrans %}</legend>
 
         <div class="alert alert-warning">
             <p>{{ __("Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them.")|raw }}</p>
@@ -47,17 +47,17 @@
             </colgroup>
             <thead>
                 <tr>
-                    <th id="hTag" scope="col" class="text-left">{{ __('Tag') }}</th>
+                    <th id="hTag" scope="col" class="text-left">{% trans %}Tag{% endtrans %}</th>
                     <th id="hNotAllowed" scope="col" class="text-left">
-                        <label for="toggle_notallowed" title="{{ __('Check all') }}">{{ __('Not allowed') }}</label>
+                        <label for="toggle_notallowed" title="{% trans %}Check all{% endtrans %}">{% trans %}Not allowed{% endtrans %}</label>
                         <input name="radiotoggle" id="toggle_notallowed" type="radio" value="0" />
                     </th>
                     <th id="hAllowed" scope="col" class="text-left">
-                        <label for="toggle_allowed" title="{{ __('Check all') }}">{{ __('Allowed') }}</label>
+                        <label for="toggle_allowed" title="{% trans %}Check all{% endtrans %}">{% trans %}Allowed{% endtrans %}</label>
                         <input name="radiotoggle" id="toggle_allowed" type="radio" value="1" />
                     </th>
                     <th id="hAllowedWithAttributes" scope="col" class="text-left">
-                        <label for="toggle_allowedwith" title="{{ __('Check all') }}">{{ __('Allowed with attributes') }}</label>
+                        <label for="toggle_allowedwith" title="{% trans %}Check all{% endtrans %}">{% trans %}Allowed with attributes{% endtrans %}</label>
                         <input name="radiotoggle" id="toggle_allowedwith" type="radio" value="2" />
                     </th>
                     <th id="hUsageInfo" scope="col" class="text-left">{{ __('Tag usage (from <a href="https://www.w3schools.com">W3Schools</a>)')|raw }}</th>
@@ -86,8 +86,8 @@
     </fieldset>
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
-            <button class="btn btn-success" title="{{ __('Save') }}"><i class="fa fa-check"></i> {{ __('Save') }}</button>
-            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{{ __('Cancel') }}"><i clas="fa fa-times"></i> {{ __('Cancel') }}</a>
+            <button class="btn btn-success" title="{% trans %}Save{% endtrans %}"><i class="fa fa-check"></i> {% trans %}Save{% endtrans %}</button>
+            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{% trans %}Cancel{% endtrans %}"><i clas="fa fa-times"></i> {% trans %}Cancel{% endtrans %}</a>
         </div>
     </div>
 </form>

@@ -6,13 +6,13 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Verification code') }}</legend>
+    <legend>{% trans %}Verification code{% endtrans %}</legend>
     {{ form_row(form.uname) }}
     {{ form_row(form.verifycode) }}
 </fieldset>
 {% if form.children.pass is defined %}
     <fieldset>
-        <legend>{{ __('Create a password') }}</legend>
+        <legend>{% trans %}Create a password{% endtrans %}</legend>
         {{ form_row(form.pass) }}
         <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
     </fieldset>

@@ -2,10 +2,10 @@
 {{ pageAddAsset('javascript', asset('mmenu/js/mmenu.js'), 100) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js'), 101) }}
 {% import '@ZikulaAdminModule/AdminInterface/mmenuHelper.html.twig' as helper %}
-<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{{ __('Show administration panel') }}"></i></a>
+<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{% trans %}Show administration panel{% endtrans %}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">
-        <h2><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{{ __('Administration') }}"> {{ __('Administration') }}</h2>
+        <h2><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{% trans %}Administration{% endtrans %}"> {% trans %}Administration{% endtrans %}</h2>
         <ul>
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>

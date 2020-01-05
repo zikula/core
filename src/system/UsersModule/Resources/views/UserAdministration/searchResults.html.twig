@@ -4,7 +4,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
-    {{ __('Search results') }}
+    {% trans %}Search results{% endtrans %}
     {{ pageSetVar('title', __('Search results')) }}
 </h3>
 
@@ -29,9 +29,9 @@
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
                 <th id="hDelete" scope="col">&nbsp;</th>
                 {% endif %}
-                <th id="hUser" scope="col">{{ __('User name') }}</th>
-                <th id="hEmail" scope="col">{{ __('Email address') }}</th>
-                <th id="hActions" scope="col" class="text-right">{{ __('Actions') }}</th>
+                <th id="hUser" scope="col">{% trans %}User name{% endtrans %}</th>
+                <th id="hEmail" scope="col">{% trans %}Email address{% endtrans %}</th>
+                <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
@@ -51,10 +51,10 @@
                 </td>
                 <td headers="hActions" class="actions">
                     {% if hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_EDIT') and user.vars.name > 1 %}
-                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.vars.name}) }}" title="{{ __f('Edit %sub%', {"%sub%": user.vars.label}) }}"></a>
+                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulausersmodule_useradministration_modify', {user:user.vars.name}) }}" title="{% trans with {"%sub%": user.vars.label} %}Edit %sub%{% endtrans %}"></a>
                     {% endif %}
                     {% if not excluded and currentUser.uid != user.vars.name and hasPermission('ZikulaUsersModule', user.vars.label~'::'~user.vars.name, 'ACCESS_DELETE') %}
-                        <a class="fa fa-trash-alt fa-fw tooltips" href="{{ path('zikulausersmodule_useradministration_delete', {user:user.vars.name}) }}" title="{{ __f('Delete %sub%', {"%sub%": user.vars.label}) }}"></a>
+                        <a class="fa fa-trash-alt fa-fw tooltips" href="{{ path('zikulausersmodule_useradministration_delete', {user:user.vars.name}) }}" title="{% trans with {"%sub%": user.vars.label} %}Delete %sub%{% endtrans %}"></a>
                     {% endif %}
                 </td>
             </tr>
@@ -63,16 +63,16 @@
     </table>
 
     {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
-    <p><a href="#" id="select-all">{{ __('Select all') }}</a> / <a href="#" id="deselect-all">{{ __('De-select all') }}</a></p>
+    <p><a href="#" id="select-all">{% trans %}Select all{% endtrans %}</a> / <a href="#" id="deselect-all">{% trans %}De-select all{% endtrans %}</a></p>
     {% endif %}
 
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"><i class="fa fa-envelope"></i> {{ __('Mail selected users') }}</button>
+            <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#email-users-form" aria-expanded="false" aria-controls="email-users-form"><i class="fa fa-envelope"></i> {% trans %}Mail selected users{% endtrans %}</button>
             {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
                 {{ form_widget(resultsForm.delete) }}
             {% endif %}
-            <a class="btn btn-default" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fa fa-sync"></i> {{ __('Return to User Administration') }}</a>
+            <a class="btn btn-default" href="{{ path('zikulausersmodule_useradministration_list') }}"><i class="fa fa-sync"></i> {% trans %}Return to User Administration{% endtrans %}</a>
         </div>
     </div>
     {{ form_end(resultsForm) }}
@@ -100,7 +100,7 @@
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
             {{ form_widget(mailForm.send) }}
-            <button type="button" class="btn btn-default" data-toggle="collapse" href="#email-users-form"><i class="fa fa-times"></i> {{ __('Close') }}</button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" href="#email-users-form"><i class="fa fa-times"></i> {% trans %}Close{% endtrans %}</button>
         </div>
     </div>
     {{ form_end(mailForm) }}

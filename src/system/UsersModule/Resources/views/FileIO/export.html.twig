@@ -5,14 +5,14 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-download"></span>
-    {{ __('Export users') }}
+    {% trans %}Export users{% endtrans %}
     {{ pageSetVar('title', __('Export users')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Export options') }}</legend>
+    <legend>{% trans %}Export options{% endtrans %}</legend>
     {{ form_row(form.title) }}
     {{ form_row(form.email) }}
     {{ form_row(form.user_regdate) }}
@@ -20,7 +20,7 @@
     {{ form_row(form.groups) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('File options') }}</legend>
+    <legend>{% trans %}File options{% endtrans %}</legend>
     {{ form_row(form.filename) }}
     {{ form_row(form.delimiter) }}
 </fieldset>

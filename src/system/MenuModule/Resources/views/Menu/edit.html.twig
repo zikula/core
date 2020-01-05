@@ -17,8 +17,8 @@
                     {% endblock %}
                 {% endfor %}
             </ul>
-            <div class="alert alert-info">{{ __('Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.') }}</div>
-            <a href="#" id="add-option" class="btn btn-default btn-sm fa fa-plus"> {{ __('Add Option') }}</a>
+            <div class="alert alert-info">{% trans %}Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.{% endtrans %}</div>
+            <a href="#" id="add-option" class="btn btn-default btn-sm fa fa-plus"> {% trans %}Add Option{% endtrans %}</a>
         </div>
     </div>
     {{ form_row(form.root) }}

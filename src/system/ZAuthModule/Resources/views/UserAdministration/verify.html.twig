@@ -5,7 +5,7 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-user"></span>
-    {{ __f('Confirm verification code is to be sent to %sub%', {'%sub%': mapping.uname}) }}
+    {% trans with {'%sub%': mapping.uname} %}Confirm verification code is to be sent to %sub%{% endtrans %}
     {{ pageSetVar('title', __('Confirm verification code')) }}
 </h3>
 

@@ -13,13 +13,13 @@
                 {% endif %}
                 <div>
                     {# movable icon #}
-                    <span title="{{ __('Drag and drop into a new module category') }}" class="tooltips fa fa-arrows-alt admintabs-lock"></span>
+                    <span title="{% trans %}Drag and drop into a new module category{% endtrans %}" class="tooltips fa fa-arrows-alt admintabs-lock"></span>
                     {# module title #}
                     <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText|raw }}</a>
                     {# dropdown with quick links #}
                     {% if adminLink.links %}
                         <div class="dropdown d-inline">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ __('Functions') }}"></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{% trans %}Functions{% endtrans %}"></a>
                             <ul class="dropdown-menu" role="menu">
                                 {% for item in adminLink.links %}
                                     <li class="dropdown-item">
@@ -37,6 +37,6 @@
         </ul>
         <div class="clearfix"></div>
     {% else %}
-        <p class="bold text-center">{{ __('There are currently no modules in this category.') }}</p>
+        <p class="bold text-center">{% trans %}There are currently no modules in this category.{% endtrans %}</p>
     {% endif %}
     {{ adminFooter() }}

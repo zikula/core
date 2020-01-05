@@ -9,7 +9,7 @@
     {% if not isQuickView %}
         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'display'}) %}
         <div class="dropdown item-actions">
-            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {% trans %}Actions{% endtrans %} <span class="caret"></span></a>
             {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
         </div>
     {% endif %}
@@ -20,73 +20,73 @@
     <div class="zikularoutesmodule-route zikularoutesmodule-display">
         <dl>
             {% if route.bundle is not empty %}
-                <dt>{{ __('Bundle') }}</dt>
+                <dt>{% trans %}Bundle{% endtrans %}</dt>
                 <dd>{{ route.bundle }}</dd>
             {% endif %}
             {% if route.controller is not empty %}
-                <dt>{{ __('Controller') }}</dt>
+                <dt>{% trans %}Controller{% endtrans %}</dt>
                 <dd>{{ route.controller }}</dd>
             {% endif %}
             {% if route.action is not empty %}
-                <dt>{{ __('Action') }}</dt>
+                <dt>{% trans %}Action{% endtrans %}</dt>
                 <dd>{{ route.action }}</dd>
             {% endif %}
             {% if route.path is not empty %}
-                <dt>{{ __('Path') }}</dt>
+                <dt>{% trans %}Path{% endtrans %}</dt>
                 <dd>{{ route.path|zikularoutesmodule_pathToString(route) }}</dd>
             {% endif %}
             {% if route.description is not empty %}
-                <dt>{{ __('Description') }}</dt>
+                <dt>{% trans %}Description{% endtrans %}</dt>
                 <dd>{{ route.description }}</dd>
             {% endif %}
             {#% if route.sort is not empty %}
-                <dt>{{ __('Sort') }}</dt>
+                <dt>{% trans %}Sort{% endtrans %}</dt>
                 <dd>{{ route.sort }}</dd>
             {% endif %#}
-            <dt>{{ __('Prepend bundle prefix') }}</dt>
+            <dt>{% trans %}Prepend bundle prefix{% endtrans %}</dt>
             <dd>{% if route.prependBundlePrefix %}
-                <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                <i class="fa fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
             {% else %}
-                <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                <i class="fa fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
             {% endif %}
             </dd>
-            <dt>{{ __('Translatable') }}</dt>
+            <dt>{% trans %}Translatable{% endtrans %}</dt>
             <dd>{% if route.translatable %}
-                <i class="fa fa-check text-success" title="{{ __('Yes') }}"></i>
+                <i class="fa fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
             {% else %}
-                <i class="fa fa-times text-danger" title="{{ __('No') }}"></i>
+                <i class="fa fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
             {% endif %}
             </dd>
             {% if route.translationPrefix is not empty %}
-                <dt>{{ __('Translation prefix') }}</dt>
+                <dt>{% trans %}Translation prefix{% endtrans %}</dt>
                 <dd>{{ route.translationPrefix }}</dd>
             {% endif %}
             {% if route.schemes is not empty %}
-                <dt>{{ __('Schemes') }}</dt>
+                <dt>{% trans %}Schemes{% endtrans %}</dt>
                 <dd>{{ route.schemes|zikularoutesmodule_listEntry('route', 'schemes') }}</dd>
             {% endif %}
             {% if route.methods is not empty %}
-                <dt>{{ __('Methods') }}</dt>
+                <dt>{% trans %}Methods{% endtrans %}</dt>
                 <dd>{{ route.methods|zikularoutesmodule_listEntry('route', 'methods') }}</dd>
             {% endif %}
             {% if route.defaults is not empty %}
-                <dt>{{ __('Defaults') }}</dt>
+                <dt>{% trans %}Defaults{% endtrans %}</dt>
                 <dd>{{ route.defaults|zikularoutesmodule_arrayToString }}</dd>
             {% endif %}
             {% if route.requirements is not empty %}
-                <dt>{{ __('Requirements') }}</dt>
+                <dt>{% trans %}Requirements{% endtrans %}</dt>
                 <dd>{{ route.requirements|zikularoutesmodule_arrayToString }}</dd>
             {% endif %}
             {% if route.options is not empty %}
-                <dt>{{ __('Options') }}</dt>
+                <dt>{% trans %}Options{% endtrans %}</dt>
                 <dd>{{ route.options|zikularoutesmodule_arrayToString }}</dd>
             {% endif %}
             {% if route.host is not empty %}
-                <dt>{{ __('Host') }}</dt>
+                <dt>{% trans %}Host{% endtrans %}</dt>
                 <dd>{{ route.host }}</dd>
             {% endif %}
             {% if route.condition is not empty %}
-                <dt>{{ __('Condition') }}</dt>
+                <dt>{% trans %}Condition{% endtrans %}</dt>
                 <dd>{{ route.condition }}</dd>
             {% endif %}
 

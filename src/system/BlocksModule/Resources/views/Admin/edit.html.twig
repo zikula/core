@@ -7,10 +7,10 @@
 <h3>
     <span class="fa fa-edit"></span>
     {% if form.vars.value.bid %}
-        {{ __('Modify block') }}
+        {% trans %}Modify block{% endtrans %}
         {{ pageSetVar('title', __('Modify block')) }}
     {% else %}
-        {{ __('Create block') }}
+        {% trans %}Create block{% endtrans %}
         {{ pageSetVar('title', __('Create block')) }}
     {% endif %}
 </h3>
@@ -18,9 +18,9 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Meta') }}</legend>
+    <legend>{% trans %}Meta{% endtrans %}</legend>
     <div class="form-group row">
-        <label class="col-md-3 col-form-label">{{ __('Block Type') }}</label>
+        <label class="col-md-3 col-form-label">{% trans %}Block Type{% endtrans %}</label>
         <div class="col-md-9">
             <p class="form-control-plaintext badge badge-info text-wrap" style="font-size: 130%">{{ moduleName }}/{{ form.vars.value.blocktype }}</p>
         </div>
@@ -31,12 +31,12 @@
 </fieldset>
 {% if form.properties is defined %}
 <fieldset>
-    <legend>{{ __('Properties') }}</legend>
+    <legend>{% trans %}Properties{% endtrans %}</legend>
     {{ include(propertiesFormTemplate, {form: form.properties|default()}, with_context = false, ignore_missing = true) }}
 </fieldset>
 {% endif %}
 <fieldset>
-    <legend>{{ __('Filters') }}</legend>
+    <legend>{% trans %}Filters{% endtrans %}</legend>
     {{ form_row(form.positions) }}
     {{ form_row(form.language) }}
     <div class="form-group row">
@@ -51,7 +51,7 @@
                 {% endfor %}
                 <li class="d-none">{{ form_row(form.filters) }}</li>{# hack to hide repeated display of filters label #}
             </ul>
-            <a href="#" id="add-filter" class="btn btn-secondary btn-sm fa fa-plus"> {{ __('Add filter') }}</a>
+            <a href="#" id="add-filter" class="btn btn-secondary btn-sm fa fa-plus"> {% trans %}Add filter{% endtrans %}</a>
         </div>
     </div>
 </fieldset>

@@ -5,12 +5,12 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-envelope"></span>
-    {{ __('Test mailer settings') }}
+    {% trans %}Test mailer settings{% endtrans %}
     {{ pageSetVar('title', __('Test mailer settings')) }}
 </h3>
 
 <div class="alert alert-info">
-    <h4>{{ __('Current settings from') }} <code>dynamic/generated.yml</code>:</h4>
+    <h4>{% trans %}Current settings from{% endtrans %} <code>dynamic/generated.yml</code>:</h4>
     {{ swiftmailerHtml|raw }}
 </div>
 
@@ -18,7 +18,7 @@
 {{ form_errors(form) }}
 
 <fieldset>
-    <legend>{{ __('Settings test') }}</legend>
+    <legend>{% trans %}Settings test{% endtrans %}</legend>
     {{ form_row(form.fromName) }}
     {{ form_row(form.fromAddress) }}
     {{ form_row(form.toName) }}

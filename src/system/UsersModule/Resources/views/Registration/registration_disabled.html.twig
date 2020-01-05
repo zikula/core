@@ -1,6 +1,6 @@
 {{ moduleHeader('user', __('New account registration'), '', true) }}
 
-<h3>{{ __('Sorry! New user registration is currently disabled.') }}</h3>
+<h3>{% trans %}Sorry! New user registration is currently disabled.{% endtrans %}</h3>
 <div class="alert alert-warning">
     {{ getModVar('ZikulaUsersModule', 'reg_noregreasons')|safeHtml }}
 </div>

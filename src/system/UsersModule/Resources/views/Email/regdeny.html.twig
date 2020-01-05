@@ -1,12 +1,12 @@
 {{ include('@ZikulaUsersModule/Email/header.txt.twig')|nl2br }}
-<h3>{{ __f('A message from %s...', {'%s': getModVar('ZConfig', 'sitename')}) }}</h3>
+<h3>{% trans with {'%s': getModVar('ZConfig', 'sitename')} %}A message from %s...{% endtrans %}</h3>
 
-<p>{{ __f('Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).', {'%email': user.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')}) }}
-{{ __('The information that was registered is as follows:') }}</p>
+<p>{% trans with {'%email': user.email, '%site': getModVar('ZConfig', 'sitename'), '%url': url('home')} %}Recently, this e-mail address (\'%email\') was used to request an account on \'%site\' (%url).{% endtrans %}
+{% trans %}The information that was registered is as follows:{% endtrans %}</p>
 
-<p>{{ __('User name') }}: {{ user.uname }}</p>
+<p>{% trans %}User name{% endtrans %}: {{ user.uname }}</p>
 
-<p>{{ __('Thank you for your application for a new account. At this time we are unable to approve your application.') }}</p>
+<p>{% trans %}Thank you for your application for a new account. At this time we are unable to approve your application.{% endtrans %}</p>
 
 {% if reason is not empty %}
     <p>{{ reason }}</p>

@@ -12,7 +12,7 @@
         {{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
         {{ form_errors(form) }}
         <fieldset>
-            <legend>{{ __('Basic settings') }}</legend>
+            <legend>{% trans %}Basic settings{% endtrans %}</legend>
             {{ form_row(form.bundle) }}
             {{ form_row(form.controller) }}
             {{ form_row(form.action) }}
@@ -26,18 +26,18 @@
             {{ form_row(form.translationPrefix) }}
         </fieldset>
         <fieldset>
-            <legend>{{ __('Route scope') }}</legend>
+            <legend>{% trans %}Route scope{% endtrans %}</legend>
             {{ form_row(form.schemes) }}
             {{ form_row(form.methods) }}
         </fieldset>
         <fieldset>
-            <legend>{{ __('Parameter settings') }}</legend>
+            <legend>{% trans %}Parameter settings{% endtrans %}</legend>
             {{ form_row(form.defaults) }}
             {{ form_row(form.requirements) }}
             {{ form_row(form.options) }}
         </fieldset>
         <fieldset>
-            <legend>{{ __('Advanced settings') }}</legend>
+            <legend>{% trans %}Advanced settings{% endtrans %}</legend>
             {{ form_row(form.host) }}
             {{ form_row(form.condition) }}
         </fieldset>
@@ -48,7 +48,7 @@
 
         {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
             <fieldset id="moderationFieldsSection">
-                <legend>{{ __('Moderation') }} <i class="fa fa-expand"></i></legend>
+                <legend>{% trans %}Moderation{% endtrans %} <i class="fa fa-expand"></i></legend>
                 <div id="moderationFieldsContent">
                     {% if form.moderationSpecificCreator is defined %}
                         {{ form_row(form.moderationSpecificCreator) }}
@@ -100,7 +100,7 @@
                     }
 
                     if (i18n) {
-                        i18n = '/{' + '{{ __('lang') }}' + '}';
+                        i18n = '/{' + '{% trans %}lang{% endtrans %}' + '}';
                     } else {
                         i18n = '';
                     }

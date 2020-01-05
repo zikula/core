@@ -7,7 +7,7 @@
 {{ form_errors(form) }}
 {% set currentLocale = app.request.locale|default('en') %}
 <fieldset>
-    <legend>{{ __('Basic properties') }}</legend>
+    <legend>{% trans %}Basic properties{% endtrans %}</legend>
     {{ form_row(form.name) }}
     {{ form_row(form.parent) }}
     {{ form_row(form.is_locked) }}
@@ -16,7 +16,7 @@
     {{ form_row(form.status) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('Localized output') }}</legend>
+    <legend>{% trans %}Localized output{% endtrans %}</legend>
     <div class="zikula-bootstrap-tab-container">
         <ul class="nav nav-tabs" role="tablist">
             {% for name, code in locales %}
@@ -36,9 +36,9 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend><a href="#category-attributes" data-toggle="collapse">{{ __('Attributes') }} <i class="fa fa-expand"></i></a></legend>
+    <legend><a href="#category-attributes" data-toggle="collapse">{% trans %}Attributes{% endtrans %} <i class="fa fa-expand"></i></a></legend>
     <div class="collapse" id="category-attributes">
-        <p><button id="add-another-attribute" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> {{ __('Add attribute') }}</button></p>
+        <p><button id="add-another-attribute" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> {% trans %}Add attribute{% endtrans %}</button></p>
         <table class="table table-bordered table-striped">
             <colgroup>
                 <col id="cName" />
@@ -47,8 +47,8 @@
             </colgroup>
             <thead>
             <tr>
-                <th id="hName" scope="col">{{ __('Name') }}</th>
-                <th id="hValue" scope="col">{{ __('Value') }}</th>
+                <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+                <th id="hValue" scope="col">{% trans %}Value{% endtrans %}</th>
                 <th id="hActions" scope="col">&nbsp;</th>
             </tr>
             </thead>
@@ -57,7 +57,7 @@
                 <tr>
                     <td headers="hName">{{ form_widget(attribute.name) }}</td>
                     <td headers="hValue">{{ form_widget(attribute.value) }}</td>
-                    <td headers="hActions"><a href="#" class="category_attributes_remove" title="{{ __('Delete') }}"><i class="fa fa-minus-square fa-lg text-danger"></i></a></td>
+                    <td headers="hActions"><a href="#" class="category_attributes_remove" title="{% trans %}Delete{% endtrans %}"><i class="fa fa-minus-square fa-lg text-danger"></i></a></td>
                 </tr>
             {% endfor %}
             </tbody>

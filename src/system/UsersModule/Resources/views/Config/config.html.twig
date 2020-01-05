@@ -5,26 +5,26 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-wrench"></span>
-    {{ __('Settings') }}
+    {% trans %}Settings{% endtrans %}
     {{ pageSetVar('title', __('User settings')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('General Settings') }}</legend>
+    <legend>{% trans %}General Settings{% endtrans %}</legend>
     {{ form_row(form[constant('MODVAR_ANONYMOUS_DISPLAY_NAME', UC)]) }}
     {{ form_row(form[constant('MODVAR_ITEMS_PER_PAGE', UC)]) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('Account Page Settings') }}</legend>
+    <legend>{% trans %}Account Page Settings{% endtrans %}</legend>
     {{ form_row(form[constant('MODVAR_ACCOUNT_DISPLAY_GRAPHICS', UC)]) }}
     {{ form_row(form[constant('MODVAR_ACCOUNT_PAGE_IMAGE_PATH', UC)]) }}
     {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_PAGE', UC)]) }}
     {{ form_row(form[constant('MODVAR_ACCOUNT_ITEMS_PER_ROW', UC)]) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('Registration Settings') }}</legend>
+    <legend>{% trans %}Registration Settings{% endtrans %}</legend>
     {{ form_row(form[constant('MODVAR_REGISTRATION_ENABLED', UC)]) }}
     <div id="registration_disabled_reason" class="collapse show">
         {{ form_row(form[constant('MODVAR_REGISTRATION_DISABLED_REASON', UC)]) }}
@@ -39,7 +39,7 @@
     {{ form_row(form[constant('MODVAR_REGISTRATION_ILLEGAL_DOMAINS', UC)]) }}
 </fieldset>
 <fieldset>
-    <legend>{{ __('User Login Settings') }}</legend>
+    <legend>{% trans %}User Login Settings{% endtrans %}</legend>
     {{ form_row(form[constant('MODVAR_LOGIN_DISPLAY_INACTIVE_STATUS', UC)]) }}
     {{ form_row(form[constant('MODVAR_LOGIN_DISPLAY_VERIFY_STATUS', UC)]) }}
     {{ form_row(form[constant('MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS', UC)]) }}

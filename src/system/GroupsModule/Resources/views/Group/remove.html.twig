@@ -5,15 +5,15 @@
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-trash-alt"></span>
-    {{ __('Delete group') }}
+    {% trans %}Delete group{% endtrans %}
     {{ pageSetVar('title', __('Delete group')) }}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __('Confirmation prompt') }}</legend>
-    <p class="alert alert-warning">{{ __f("Do you really want to delete group '%s'?", {'%s': group.name}) }}</p>
+    <legend>{% trans %}Confirmation prompt{% endtrans %}</legend>
+    <p class="alert alert-warning">{% trans with {'%s': group.name} %}Do you really want to delete group '%s'?{% endtrans %}</p>
 </fieldset>
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">
