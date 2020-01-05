@@ -88,7 +88,7 @@ function zikulaRoutesInitItemActions(context) {
         return;
     }
     
-    containers.find('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
+    containers.find('.dropdown > ul').removeClass('nav').addClass('list-unstyled dropdown-menu');
     containers.find('.dropdown > ul > li').addClass('dropdown-item').css('padding', 0);
     containers.find('.dropdown > ul a').addClass('d-block').css('padding', '3px 5px');
     containers.find('.dropdown > ul a i').addClass('fa-fw mr-1');
