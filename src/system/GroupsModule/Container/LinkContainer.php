@@ -126,7 +126,7 @@ class LinkContainer implements LinkContainerInterface
         $links[] = [
             'url' => $this->router->generate('zikulagroupsmodule_group_list'),
             'text' => $this->translator->__('Group list'),
-            'icon' => 'group'
+            'icon' => 'users'
         ];
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
@@ -152,7 +152,7 @@ class LinkContainer implements LinkContainerInterface
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_list'),
                 'text' => $this->translator->__('Groups manager'),
-                'icon' => 'group'
+                'icon' => 'users'
             ];
         }
 
