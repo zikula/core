@@ -16,10 +16,10 @@
                 {{ showblockposition('topnav') }}
                 {% if currentUser.loggedIn %}
                     <div class="btn-group navbar-btn ml-auto">
-                        <a href="{{ path('zikulausersmodule_account_menu') }}" class="btn btn-outline-secondary">
+                        <a href="{{ path('zikulausersmodule_account_menu') }}" class="btn btn-info">
                             <i class="fa fa-user"></i>&nbsp;&nbsp;{{ __f('Signed in as %username', {'%username': currentUser.uname}) }}
                         </a>
-                        <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">{{ __('Toggle Dropdown') }}</span>
                         </button>
                         <div class="dropdown-menu">
