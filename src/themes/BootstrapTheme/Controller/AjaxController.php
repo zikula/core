@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Core\Controller\AbstractController;
 
 /**
  * Theme specific ajax controller implementation class.
@@ -30,8 +30,10 @@ class AjaxController extends AbstractController
     /**
      * @Route("/changeUserStyle", methods = {"POST"}, options={"expose"=true})
      */
-    public function changeUserStyleAction(Request $request, ZikulaHttpKernelInterface $kernel)
-    {
+    public function changeUserStyleAction(
+        Request $request,
+        ZikulaHttpKernelInterface $kernel
+    ): JsonResponse {
         if (!$request->isXmlHttpRequest()) {
             return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
