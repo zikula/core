@@ -1,5 +1,6 @@
 ##in PHP files:
 
+use Rector (see comments below)
 replace method ->__(message) with ->trans(message)
 replace method ->__f(message, ['key' => $var]) with ->trans(message, ['key' => $var])
 `_n()` and `_fn()` will need to be manually refactored
@@ -7,12 +8,19 @@ replace method ->__f(message, ['key' => $var]) with ->trans(message, ['key' => $
 replace interface Zikula\Common\Translator\TranslatorInterface
     with Symfony\Contracts\Translation\TranslatorInterface
     
-remove use of TranslatorTrait
-    - remove `setTranslator()` method
-    - add `$translator` private property
-    - set `$translator` property in constructor
-    - OR... modify TranslatorTrait and remove old method but leave the rest and not remove it
+alter use of TranslatorTrait
+    - remove old methods
+    - add `trans` method with automatic domain setting (maybe from bundle instead of Translator?)
+    - also auto-set the locale?
 
+look at \Zikula\Core\Controller\AbstractController use of translation (e.g. `decorateTranslator`) is this functional?
+ can we override `$this->trans` calls with module domain automatically?
+
+Maybe still use our own Translator and override `trans` method with our custom domains (use decoration)
+  https://stackoverflow.com/questions/39470596/replacing-the-translator-service-in-symfony-3
+
+Maybe a listener to add something to every template to set the domain?
+    `{% trans_default_domain "custom_domain" %}`
 
 ##in .twig files:
 
@@ -36,7 +44,9 @@ _n() and _fn() should be manually refactored
 e.g. command: `bin/console translation:update --force en ZikulaBlocksModule`
 
 
-##problems
+##problems with rector Rector\Renaming\Rector\MethodCall\RenameMethodCallRector
+replacing more methods than only `__` and `__f` in (at least):
+
 5) src/lib/Zikula/Bundle/CoreBundle/Twig/Extension/GettextExtension.php
 16) src/lib/Zikula/Bundle/FormExtensionBundle/Form/Type/InlineFormDefinitionType.php
 17) src/lib/Zikula/Bundle/HookBundle/Hook/AbstractHookListener.php
