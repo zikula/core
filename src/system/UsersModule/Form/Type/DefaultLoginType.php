@@ -40,8 +40,9 @@ class DefaultLoginType extends AbstractType
         $builder
             ->add('uid', HiddenType::class)
             ->add('rememberme', CheckboxType::class, [
-                'required' => false,
                 'label' => $this->__('Remember me'),
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
             ])
             ->add('submit', SubmitType::class, [
                 'label' => $this->__('Login'),

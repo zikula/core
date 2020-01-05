@@ -69,7 +69,8 @@ class AdminModifyUserType extends AbstractType
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Set password now')
+                'label' => $this->__('Set password now'),
+                'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,

@@ -95,6 +95,7 @@ class MainSettingsType extends AbstractType
             ])
             ->add('siteoff', ChoiceType::class, [
                 'label' => $this->__('Disable site'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'expanded' => true,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -108,7 +109,8 @@ class MainSettingsType extends AbstractType
             ->add('startController', TextType::class, [
                 'label' => $this->__('Start Controller'),
                 'required' => false,
-                'help' => $this->__('FQCN::method, for example Zikula\FooModule\Controller\BarController::mainAction'),
+                'help' => $this->__('FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>'),
+                'help_html' => true,
                 'constraints' => [
                     new ValidController()
                 ]
@@ -116,10 +118,12 @@ class MainSettingsType extends AbstractType
             ->add('startargs', TextType::class, [
                 'label' => $this->__('Start function arguments'),
                 'required' => false,
-                'help' => $this->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>'
+                'help' => $this->__('Separate with & for example:') . ' <code>foo=2&bar=5</code>',
+                'help_html' => true
             ])
             ->add('UseCompression', CheckboxType::class, [
                 'label' => $this->__('Activate compression'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('profilemodule', ChoiceType::class, [
@@ -136,7 +140,7 @@ class MainSettingsType extends AbstractType
             ])
             ->add('ajaxtimeout', IntegerType::class, [
                 'label' => $this->__('Time-out for Ajax connections'),
-                'input_group' => ['right' => $this->__('seconds')]
+                'input_group' => ['right' => $this->__('milliseconds')]
             ])
             ->add(
                 $builder->create('permasearch', TextType::class, [

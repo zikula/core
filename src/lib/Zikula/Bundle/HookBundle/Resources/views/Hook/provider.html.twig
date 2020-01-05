@@ -5,7 +5,7 @@
         <fieldset>
             <legend>
                 {% if amountOfProviderAreas > 5 %}<a href="#" onclick="return false">{% endif %}
-                {{ __f('%sub% module provides the following area:', {"%sub%": currentmodule}) }}
+                {{ __f('%sub% module provides the following area:', {'%sub%': currentmodule}) }}
                 {% if amountOfProviderAreas > 5 %}</a>{% endif %}
             </legend>
             <div>
@@ -15,7 +15,7 @@
                 {% endfor %}
                 </ol>
             </div>
-            <div class="alert alert-info">{{ __f('To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.', {"%sub%": currentmodule}) }}</div>
+            <div class="alert alert-info">{{ __f('To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.', {'%sub%': currentmodule}) }}</div>
 
             <table class="table table-bordered table-striped" id="subscriberslist">
                 <colgroup>
@@ -37,7 +37,6 @@
                         <td headers="hName">{{ subscriber.displayname|default(subscriber.name) }}</td>
                         <td headers="hConnections">
                             {% set connection_exists = false %}
-
                             {% for sarea in subscriber.areas %}{# name=loop_sareas #}
                                 {% set sarea_md5 = sarea|php('md5') %}
                                 {# preliminary check to see if binding is allowed, if no bindings are allowed we don't show this row. Better usability. #}
@@ -46,7 +45,6 @@
                                     {% set total_bindings = total_bindings + 1 %}
                                     {% set connection_exists = true %}
                                 {% endfor %}
-
                                 {% if total_bindings > 0 %}
                                     <div class="row">
                                         <div class="col-md-5">
@@ -69,6 +67,8 @@
                             {% endfor %}
                         </td>
                     </tr>
+                {% else %}
+                    <tr class="table-info"><td colspan="3" class="text-center">{{ __('No items found.') }}</td></tr>
                 {% endfor %}
                 </tbody>
             </table>

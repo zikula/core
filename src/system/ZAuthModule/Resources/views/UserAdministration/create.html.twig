@@ -1,54 +1,48 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
-
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-plus"></span>
-            {{ __('Create new user') }}
-            {{ pageSetVar('title', __('Create new user')) }}
-        </h3>
-        <div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <fieldset>
-            <legend>{{ __('Login method') }}</legend>
-            {{ form_row(form.method) }}
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('Account information') }}</legend>
-            {{ form_row(form.uname) }}
-            {{ form_row(form.email) }}
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('Log-in information') }}</legend>
-            {{ form_row(form.setpass, {'attr': {'data-toggle': 'collapse', 'data-target': '#'~form.setpass.vars.id~'_wrap'}}) }}
-            <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} in {% endif %}">
-                {{ form_row(form.pass) }}
-                <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-                {{ form_row(form.sendpass) }}
-            </div>
-            {{ form_row(form.usernotification) }}
-            {{ form_row(form.adminnotification) }}
-            {{ form_row(form.usermustverify) }}
-        </fieldset>
-        {% for additional_template in additional_templates %}
-            {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
-        {% endfor %}
-        {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.submit) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<h3>
+    <span class="fa fa-plus"></span>
+    {{ __('Create new user') }}
+    {{ pageSetVar('title', __('Create new user')) }}
+</h3>
+<div class="alert alert-warning">{{ __('The items that are marked with an asterisk (\'*\') are required entries.') }}</div>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Login method') }}</legend>
+    {{ form_row(form.method) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Account information') }}</legend>
+    {{ form_row(form.uname) }}
+    {{ form_row(form.email) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Log-in information') }}</legend>
+    {{ form_row(form.setpass, {attr: {'data-toggle': 'collapse', 'data-target': '#' ~ form.setpass.vars.id ~ '_wrap'}}) }}
+    <div id="{{ form.setpass.vars.id }}_wrap" class="collapse{% if form.setpass.vars.data %} show {% endif %}">
+        {{ form_row(form.pass) }}
+        <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
+        {{ form_row(form.sendpass) }}
+    </div>
+    {{ form_row(form.usernotification) }}
+    {{ form_row(form.adminnotification) }}
+    {{ form_row(form.usermustverify) }}
+</fieldset>
+{% for additional_template in additional_templates %}
+    {{ include(additional_template.0, additional_template.1, ignore_missing = true) }}
+{% endfor %}
+{{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.submit) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}
 {% set customScript %}
 <script>
@@ -71,7 +65,7 @@
                 passSecond.prop('required', false);
                 passSecond.parents('.form-group').find('label').removeClass('required');
             };
-            setPassAlert.addClass('collapse in');
+            setPassAlert.addClass('collapse show');
             // ensure wrap is shown on form re-draw
             if (setPassEle.is(':checked')) {
                 setPassWrap.collapse('show');

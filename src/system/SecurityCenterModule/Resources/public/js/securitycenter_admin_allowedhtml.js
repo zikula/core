@@ -13,7 +13,7 @@
         });
         
         $('.notallowed_radio, .allowed_radio, .allowedwith_radio').change( function() {
-            $('#toggle_notallowed, #toggle_allowed, #toggle_allowedwith').prop('checked', true);
+            $('#toggle_notallowed, #toggle_allowed, #toggle_allowedwith').prop('checked', false);
         });
     });
 })(jQuery);

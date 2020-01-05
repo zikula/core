@@ -40,17 +40,8 @@ var ZikulaUsersAdminConfig = {};
         var approvalOrder_state = (isModerated && !isVerified);
         var autoLogin_state = (!isModerated && isVerified);
 
-        if (approvalOrder_state === true) {
-            approvalOrderWrap.show();
-        } else {
-            approvalOrderWrap.hide();
-        }
-
-        if (autoLogin_state === true) {
-            autoLoginWrap.show();
-        } else {
-            autoLoginWrap.hide();
-        }
+        approvalOrderWrap.toggleClass('d-none', true !== approvalOrder_state);
+        autoLoginWrap.toggleClass('d-none', true !== autoLogin_state);
     };
 
     /**
@@ -60,11 +51,7 @@ var ZikulaUsersAdminConfig = {};
         var regQuestion = $('#' + ZikulaUsersAdminConfig.registrationAntispamQuestionId);
         var regAnswerMandatory = $('#' + ZikulaUsersAdminConfig.registrationAntispamAnswerMandatoryId);
 
-        if ($.trim(regQuestion.val()) === '') {
-            regAnswerMandatory.addClass('hide');
-        } else {
-            regAnswerMandatory.removeClass('hide');
-        }
+        regAnswerMandatory.toggleClass('d-none', '' === $.trim(regQuestion.val()));
     };
 
     /**

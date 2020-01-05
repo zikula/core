@@ -5,11 +5,12 @@
         $('#zikula-admin-hiddenpanel-menu').mmenu({
             extensions: ['hiddenpanel-customwidth'],
             'header': {
-                'title': 'Administration',
+                'title': Translator.__('Administration'),
                 'add': true,
                 'update': true
             },
             'searchfield': true
         });
+        $('#zikula-admin-hiddenpanel-menu').removeClass('d-none');
     });
 })(jQuery);

@@ -7,7 +7,7 @@ body {
     padding: 0;
 }
 
-.container{
+.container {
     padding-top:40px;
     margin: 0 auto;
     width: 85%;
@@ -29,7 +29,6 @@ body {
     box-shadow: 4px 4px 20px rgba(0, 0, 0, .5);
     margin: 0 auto;
     padding: 1% 0;
-    border: 1px solid #42403E\9; /* IE6/7/8 */
     color: #444;
     text-align: center;
 }
@@ -117,7 +116,7 @@ h2 {
     text-align: center;
 }
 
-ul#upgradelist,
+ul#upgradeList,
 ul.systemrequirements {
     margin-left: 0;
     padding-left: 0;
@@ -125,7 +124,7 @@ ul.systemrequirements {
     list-style: none;
 }
 
-ul#upgradelist li,
+ul#upgradeList li,
 ul.systemrequirements li {
   background-position: left 2px;
   background-repeat: no-repeat;
@@ -134,12 +133,12 @@ ul.systemrequirements li {
 }
 
 fieldset > legend {
-    font-size:1.4em;
-    line-height:1.2;
+    font-size: 1.4em;
+    line-height: 1.2;
 }
 
-.installguide{
-    font-size:1.2em;
+.installguide {
+    font-size: 1.2em;
 }
 
 /*****************************

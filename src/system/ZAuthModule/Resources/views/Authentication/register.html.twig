@@ -1,5 +1,5 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ moduleHeader('user', __('New account registration'), '', true, true) }}
@@ -23,7 +23,9 @@
     <fieldset>
         <legend>{{ __('Choose a user name') }}</legend>
         {{ form_row(form.uname) }}
-        <em class="help-block small col-sm-offset-3 col-sm-9">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</em>
+        <div class="form-group row">
+            <small class="form-text text-muted col-md-9 offset-md-3">{{ __('Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.') }}</small>
+        </div>
     </fieldset>
     {% if form.children.email is defined %}{# email may not be defined if authentication is non-local #}
         <fieldset>
@@ -34,7 +36,11 @@
     <fieldset>
         <legend>{{ __('Set a password') }}</legend>
         {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
-        <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
+        {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
+            <div class="form-group row">
+                <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
+            </div>
+        {% endif %}
     </fieldset>
 
     {% for additional_template in additional_templates %}
@@ -49,8 +55,8 @@
         {{ form_row(form.antispamanswer) }}
     </fieldset>
     {% endif %}
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
             {{ form_widget(form.submit) }}
             {{ form_widget(form.cancel) }}
             {{ form_widget(form.reset) }}

@@ -70,7 +70,7 @@ class IdsLogFilterType extends AbstractType
         $builder->add($fieldName, ChoiceType::class, [
             'label' => $label,
             'attr' => [
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false,
             'placeholder' => $this->__('All'),

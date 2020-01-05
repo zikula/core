@@ -20,11 +20,7 @@
             placeholder: 'warning',
             update: function(event, ui) {
                 // Make sure to always show a dropzone.
-                if ($('#assignedblocklist tbody tr').length <= 1) {
-                    $('#assignedblocklist .sortable-placeholder').fadeIn();
-                } else {
-                    $('#assignedblocklist .sortable-placeholder').fadeOut();
-                }
+                $('#assignedblocklist .sortable-placeholder').toggleClass('d-none', $('#assignedblocklist tbody tr').length > 1);
 
                 var blockOrder = [];
                 $('#assignedblocklist > tbody > tr').each( function() {
@@ -56,11 +52,7 @@
             placeholder: 'warning',
             update: function(event, ui) {
                 // Make sure to always show a dropzone.
-                if ($('#unassignedblocklist tbody tr').length <= 1) {
-                    $('#unassignedblocklist .sortable-placeholder').fadeIn();
-                } else {
-                    $('#unassignedblocklist .sortable-placeholder').fadeOut();
-                }
+                $('#unassignedblocklist .sortable-placeholder').toggleClass('d-none', $('#unassignedblocklist tbody tr').length > 1);
             }
         }).disableSelection();
     });

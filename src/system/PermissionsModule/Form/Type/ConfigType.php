@@ -52,6 +52,7 @@ class ConfigType extends AbstractType
         $builder
             ->add('lockadmin', CheckboxType::class, [
                 'label' => $this->__('Lock main administration permission rule'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('adminid', IntegerType::class, [
@@ -63,6 +64,7 @@ class ConfigType extends AbstractType
             ])
             ->add('filter', CheckboxType::class, [
                 'label' => $this->__('Enable filtering of group permissions'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('rowview', ChoiceType::class, [

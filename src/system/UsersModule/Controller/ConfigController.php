@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
@@ -42,8 +43,10 @@ class ConfigController extends AbstractController
      *
      * @throws AccessDeniedException Thrown if the user hasn't admin permissions for the module
      */
-    public function configAction(Request $request): array
-    {
+    public function configAction(
+        Request $request,
+        EventDispatcherInterface $eventDispatcher
+    ): array {
         if (!$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -54,7 +57,7 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 $this->setVars($data);
-                $this->get('event_dispatcher')->dispatch(new GenericEvent(null, [], $data), UserEvents::CONFIG_UPDATED);
+                $eventDispatcher->dispatch(new GenericEvent(null, [], $data), UserEvents::CONFIG_UPDATED);
                 $this->addFlash('status', $this->__('Done! Configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
@@ -116,8 +119,8 @@ class ConfigController extends AbstractController
                 $this->addFlash('status', $this->__('Done! Configuration updated.'));
 
                 // clear cache to reflect the updated state (#3936)
-                $this->get('zikula.cache_clearer')->clear('symfony');
-                $this->get('zikula.cache_clearer')->clear('twig');
+                $cacheClearer->clear('symfony');
+                $cacheClearer->clear('twig');
 
                 return $this->redirectToRoute('zikulausersmodule_config_authenticationmethods');
             }

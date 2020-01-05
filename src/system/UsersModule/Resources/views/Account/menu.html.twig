@@ -15,7 +15,7 @@
 {% set displayGraphics = getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS'), constant('Zikula\\UsersModule\\Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS')) %}
 {% set width = 100/getModVar('ZikulaUsersModule', 'accountitemsperrow') %}
 {% for link in accountLinks|default %}
-    <div class="z-accountlink" style="width:{{ width|round(1, 'floor') }}%">
+    <div class="z-accountlink" style="width: {{ width|round(1, 'floor') }}%">
         {% if displayGraphics %}
             {% set imageTitle = link.text|replace({'"': ''}) %}
             {% if link.icon[:4] == 'http' or not link.module|default %}
@@ -23,7 +23,7 @@
             {% elseif '.' in link.icon and link.module|default %}
                 {% set icon = '<img title="' ~ imageTitle ~ '" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
             {% else %}
-                {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-3x fa-'~link.icon~'"></i>' %}
+                {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-2x fa-'~link.icon~'"></i>' %}
             {% endif %}
             <a href="{{ link.url }}">{{ icon|raw }}</a><br />
         {% endif %}

@@ -6,71 +6,70 @@
         var id_prefix = 'node_'; // must match NodeController::$domTreeNodePrefix
         var treeElem = $('#tree_container');
         treeElem.jstree({
-            "core" : {
-                "animation" : 0,
-                "check_callback" : true,
-                "themes" : { "stripes" : true }
+            'core': {
+                'animation': 0,
+                'check_callback': true,
+                'themes': { 'stripes': true }
             },
             'contextmenu': {
                 'items': getContextMenuActions
             },
-            "types" : {
-                "default" : {
-                    "icon" : "fa fa-check-circle"
+            'types': {
+                'default': {
+                    'icon': 'fa fa-check-circle'
                 }
             },
-            "plugins" : [
-                "contextmenu", "dnd", "state", "types", "wholerow"
+            'plugins': [
+                'contextmenu', 'dnd', 'state', 'types', 'wholerow'
             ]
         });
-        // end config
 
         function getContextMenuActions(node) {
             return {
                 editItem: {
-                    label: 'Edit',
+                    label: Translator.__('Edit'),
                     action: function (obj) {
                         performContextMenuAction(node, 'edit');
                     },
                     icon: 'fa fa-edit'
                 },
                 deleteItem: {
-                    label: 'Delete',
+                    label: Translator.__('Delete'),
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
                     icon: 'fa fa-times'
                 },
                 copyItem: {
-                    label: 'Copy',
+                    label: Translator.__('Copy'),
                     action: function (obj) {
                         performContextMenuAction(node, 'copy');
                     },
                     icon: 'fa fa-copy'
                 },
                 // activateItem: {
-                //     label: 'Activate',
+                //     label: Translator.__('Activate'),
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'activate');
                 //     },
                 //     icon: 'fa fa-check-square'
                 // },
                 // deactivateItem: {
-                //     label: 'Deactivate',
+                //     label: Translator.__('Deactivate'),
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'deactivate');
                 //     },
                 //     icon: 'fa fa-square'
                 // },
                 addItemAfter: {
-                    label: 'Add sibling item (after selected)',
+                    label: Translator.__('Add sibling item (after selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
                     icon: 'fa fa-level-up-alt fa-rotate-90'
                 },
                 addItemInto: {
-                    label: 'Add child item (into selected)',
+                    label: Translator.__('Add child item (into selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },
@@ -219,9 +218,9 @@
         function getDeleteMenuAction(node) {
             var childrenCount = node.children.length;
             if (childrenCount > 0) {
-                var info = 'It contains ' + childrenCount + ' direct children.'
+                var info = Translator._fn('It contains %count% direct child.', 'It contains %count% direct children.', childrenCount, {count: childrenCount})
                     + ' '
-                    + "Please choose what to do with this item's children.";
+                    + Translator._n("Please choose what to do with this item's child.", "Please choose what to do with this item's children.", childrenCount);
                 $('#deleteWithChildrenInfo').addClass('alert alert-warning').text(info);
             } else {
                 $('#deleteWithChildrenInfo').removeClass('alert alert-warning').text('');
@@ -229,9 +228,9 @@
             var deleteModal = $('#deleteModal');
 
             if (childrenCount > 0) {
-                deleteModal.find('#node_delete').hide();
-                deleteModal.find('#node_delete_all').show();
-                deleteModal.find('#node_delete_move').show();
+                deleteModal.find('#node_delete').addClass('d-none');
+                deleteModal.find('#node_delete_all').removeClass('d-none');
+                deleteModal.find('#node_delete_move').removeClass('d-none');
             }
             $('#children_move').remove();
 
@@ -257,8 +256,8 @@
                             }).done(function (data) {
                                 var children_move = data.result;
                                 deleteModal.find('.modal-body').append(children_move);
-                                deleteModal.find('#node_delete_move').hide();
-                                deleteModal.find('#node_delete_move_action').show();
+                                deleteModal.find('#node_delete_move').addClass('d-none');
+                                deleteModal.find('#node_delete_move_action').removeClass('d-none');
                             }).fail(function (jqXHR, textStatus) {
                                 alert('Request failed: ' + textStatus);
                             }).always(function () {
@@ -281,10 +280,10 @@
             deleteModal.modal();
             deleteModal.on('hidden.bs.modal', function (e) {
                 // reset modal to initial state
-                deleteModal.find('#node_delete').show();
-                deleteModal.find('#node_delete_all').hide();
-                deleteModal.find('#node_delete_move').hide();
-                deleteModal.find('#node_delete_move_action').hide();
+                deleteModal.find('#node_delete').removeClass('d-none');
+                deleteModal.find('#node_delete_all').addClass('d-none');
+                deleteModal.find('#node_delete_move').addClass('d-none');
+                deleteModal.find('#node_delete_move_action').addClass('d-none');
                 $('#button-spinner').remove();
                 $('#children_move').remove();
             });
@@ -292,7 +291,7 @@
         }
 
         function openEditForm(data, callback) {
-            $('#form_container').show();
+            $('#form_container').removeClass('d-none');
             var editModal = $('#editModal');
             editModal.find('.modal-footer button').unbind('click').click(callback);
 
@@ -301,7 +300,7 @@
         }
 
         function updateEditForm(data) {
-            $('#form_container').replaceWith(data).show();
+            $('#form_container').replaceWith(data).removeClass('d-none');
         }
 
         function closeEditForm() {
@@ -328,7 +327,7 @@
         function redrawTree(treeElem) {
             // treeElem
             // // hide folder icons for leaf nodes
-            //     .find('a.jstree-anchor.leaf > i.fa-folder').hide().end()
+            //     .find('a.jstree-anchor.leaf > i.fa-folder').addClass('d-none').end()
             // // use folder-open icon for already open nodes
             //     .find('li.jstree-open > a.z-tree-fixedparent > i.fa-folder').removeClass('fa-folder').addClass('fa-folder-open');
         }

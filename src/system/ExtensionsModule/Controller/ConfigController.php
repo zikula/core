@@ -61,6 +61,7 @@ class ConfigController extends AbstractController
             ])
             ->add('hardreset', CheckboxType::class, [
                 'label' => $this->__('Reset all extensions to default values'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'mapped' => false,
                 'required' => false
             ])
@@ -99,7 +100,7 @@ class ConfigController extends AbstractController
         }
 
         return [
-            'form' => $form->createView(),
+            'form' => $form->createView()
         ];
     }
 }

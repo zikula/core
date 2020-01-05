@@ -1,20 +1,20 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ pageAddAsset('javascript', zasset('@ZikulaSearchModule:js/ZikulaSearchModule.User.Form.js')) }}
 {{ moduleHeader('user', __('Site search'), true, true) }}
 
 {% if noResultsFound %}
-<div class="alert alert-danger">
-    <h4>{{ __('No search results found.') }}</h4>
-    {{ __('You can try the following:') }}
-    <ul>
-        <li>{{ __('Check that you spelled all words correctly.') }}</li>
-        <li>{{ __('Use different keywords.') }}</li>
-        <li>{{ __('Use keywords that are more general.') }}</li>
-        <li>{{ __('Use fewer words.') }}</li>
-    </ul>
+    <div class="alert alert-danger">
+        <h4>{{ __('No search results found.') }}</h4>
+        {{ __('You can try the following:') }}
+        <ul>
+            <li>{{ __('Check that you spelled all words correctly.') }}</li>
+            <li>{{ __('Use different keywords.') }}</li>
+            <li>{{ __('Use keywords that are more general.') }}</li>
+            <li>{{ __('Use fewer words.') }}</li>
+        </ul>
     </div>
 {% endif %}
 

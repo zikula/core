@@ -1,0 +1,83 @@
+{% extends "bootstrap_4_horizontal_layout.html.twig" %}
+
+{% macro helpBlock(param = null, html = false) %}
+    {% if param|default %}
+        {% if param is iterable %}
+            {% for helpText in param %}
+                <small class="form-text text-muted">{{ html ? helpText|raw : helpText }}</small>
+            {% endfor %}
+        {% else %}
+            <small class="form-text text-muted">{{ html ? param|raw : param }}</small>
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+{% macro alertBlock(param = null) %}
+    {% if param|default and param is iterable %}
+        {% for alertText, type in param %}
+            <div class="alert alert-{{ type }}" role="alert">{{ alertText }}</div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{% block form_label_class -%}
+col-md-3
+{%- endblock form_label_class %}
+
+{% block form_group_class -%}
+col-md-9
+{%- endblock form_group_class %}
+
+{# add input groups to simple inputs #}
+{% block form_widget_simple %}
+    {% if type is not defined or type not in ['file', 'hidden'] %}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
+    {% endif %}
+    {%- set type = type|default('text') -%}
+    {% if input_group|default %}<div class="input-group">{% endif %}
+    {% if input_group|default and input_group.left|default %}
+        <div class="input-group-prepend">
+            <span class="input-group-text">{{ input_group.left|default|raw }}</span>
+        </div>
+    {% endif %}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% if input_group|default and input_group.right|default %}
+        <div class="input-group-append">
+            <span class="input-group-text">{{ input_group.right|default|raw }}</span>
+        </div>
+    {% endif %}
+    {% if input_group|default %}</div>{% endif %}
+{% endblock %}
+
+{# add help text and alerts #}
+{% block form_help -%}
+    {{ _self.helpBlock(help, help_html|default(false)) }}
+    {{ _self.alertBlock(alert) }}
+{%- endblock form_help %}
+
+{# user live search input widget #}
+{% block zikulausersmodule_userlivesearch_widget %}
+    <div id="{{ id }}LiveSearch" class="autocomplete-user hidden">
+        <i class="fa fa-search" title="{{ __('Search user') }}"></i>
+        <noscript><p>{{ __('This function requires JavaScript activated!') }}</p></noscript>
+        <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
+        <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{{ __('Enter a part of the user name to search') }}" class="user-selector" />
+    </div>
+    <small id="{{ id }}Avatar" class="form-text text-muted avatar">
+        {% if value and not inline_usage %}
+            {{ userAvatar(value, { rating: 'g' }) }}
+        {% endif %}
+    </small>
+    {% if not required %}
+        <small class="form-text text-muted"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{{ __('Reset to empty value') }}</a></small>
+    {% endif %}
+    {% if value and not inline_usage %}
+        {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_ADMIN') %}
+            <small class="form-text text-muted"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{{ __('Switch to users administration') }}">{{ __('Manage user') }}</a></small>
+        {% endif %}
+    {% endif %}
+    {# load required assets: jQuery UI + custom search code #}
+    {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
+    {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
+    {{ pageAddAsset('stylesheet', zasset('@ZikulaUsersModule:css/livesearch.css')) }}
+    {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/Zikula.Users.LiveSearch.js')) }}
+{% endblock %}

@@ -1,12 +1,4 @@
-.theme_preview {
-    background-color: #FAFAFA; /*non-CSS3 browsers*/
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#f2f2f2'); /* for IE */
-    background: -webkit-gradient(linear,left top, left bottom,from(#FAFAFA),to(#f2f2f2)); /*webkit*/
-    background: linear-gradient(#FAFAFA, #F2F2F2); /*CSS3*/
-    border: solid 1px #b4b4b4;
-}
 
-.theme_preview img,
 img#theme_credits_preview {
     padding: 5px;
     margin: 10px;
@@ -14,72 +6,8 @@ img#theme_credits_preview {
     background: #fff;
 }
 
-.theme_preview h4 {
-    margin: 10px 0 0 0;
-    padding: 0;
-}
-
 .marktooltip {
     border-bottom: 1px dashed #aaa;
     cursor: pointer;
     text-decoration: none;
-}
-
-div#theme_undefinedblockpositions {
-    /*width: 85%;*/
-}
-
-div#theme_undefinedblockpositions p {
-    display: inline;
-    padding: 0;
-    margin: 0;
-}
-
-div#theme_undefinedblockpositions ul {
-    display: inline;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-div#theme_undefinedblockpositions ul li {
-    display: inline;
-    padding: 0;
-    margin: 0;
-}
-
-div#theme_undefinedblockpositions ul li:after {
-    content: ", ";
-}
-
-div#theme_undefinedblockpositions ul li.last:after {
-    content: ". ";
-}
-
-/* styles for the navigation filter on main page */
-div#mthemes-alphafilter {
-    font-size: xx-small;
-}
-
-img.theme_colorpicker_image {
-    margin-left: 5px;
-}
-
-.zikulathememodule-indented {
-    margin-left: 2.5em;
-}
-
-/* Theme list in user frontend */
-.themes-list {
-    padding: 12px;
-
-}
-
-.themes-list strong {
-    margin-bottom: 12px;
-
-}
-
-.colorpicker {
-    cursor: pointer;
 }

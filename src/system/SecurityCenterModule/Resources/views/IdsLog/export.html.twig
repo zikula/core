@@ -1,42 +1,36 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-download"></span>
-            {{ __('Export IDS log') }}
-            {{ pageSetVar('title', __('Export IDS log')) }}
-        </h3>
+<h3>
+    <span class="fa fa-download"></span>
+    {{ __('Export IDS log') }}
+    {{ pageSetVar('title', __('Export IDS log')) }}
+</h3>
 
-        <div class="navbar navbar-default navbar-modulelinks">
-            <ul class="navbar-nav">
-                <li class="active"><span class="fa fa-download"> {{ __('Export IDS Log') }}</span></li>
-                <li><a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log') }}" class="fa fa-trash-alt"> {{ __('Purge IDS Log') }}</a></li>
-            </ul>
-        </div>
+<ul class="nav nav-modulelinks">
+    <li class="nav-item">
+        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file') }}" class="nav-link active"><i class="fa fa-download"></i> {{ __('Export IDS Log') }}</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}" class="nav-link"><i class="fa fa-trash-alt"></i> {{ __('Purge IDS Log') }}</a>
+    </li>
+</ul>
 
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-
-        <fieldset>
-            <legend>{{ __('Export Options') }}</legend>
-
-            {{ form_row(form.titles) }}
-            {{ form_row(form.file) }}
-            {{ form_row(form.delimiter) }}
-        </fieldset>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.export) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-
-        {{ form_end(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Export Options') }}</legend>
+    {{ form_row(form.titles) }}
+    {{ form_row(form.file) }}
+    {{ form_row(form.delimiter) }}
+</fieldset>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.export) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

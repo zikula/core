@@ -20,19 +20,19 @@
         <td headers="hStatus" class="users_activated">
             {% switch user.activated %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_ACTIVE') %}
-            <span class="label label-success">{{ __('Active') }}</span>
+            <span class="badge badge-success">{{ __('Active') }}</span>
             {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_INACTIVE') %}
-            <span class="label label-default">{{ __('Inactive') }}</span>
+            <span class="badge badge-default">{{ __('Inactive') }}</span>
             {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_REG') %}
-            <span class="label label-warning">{{ __('Pending') }}</span>
+            <span class="badge badge-warning">{{ __('Pending') }}</span>
             {% break %}
             {% case constant('Zikula\\UsersModule\\Constant::ACTIVATED_PENDING_DELETE') %}
-            <span class="label label-warning">{{ __('Marked for deletion') }}</span>
+            <span class="badge badge-warning">{{ __('Marked for deletion') }}</span>
             {% break %}
             {% default %}
-            <span class="label label-danger">{{ __('Status unknown') }}</span>
+            <span class="badge badge-danger">{{ __('Status unknown') }}</span>
             {% endswitch %}
         </td>
         <td headers="hActions" class="actions">

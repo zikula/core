@@ -45,10 +45,12 @@ class ConfigType extends AbstractType
         $builder
             ->add('ignoreinstallercheck', CheckboxType::class, [
                 'label' => $this->__('Ignore check for installer'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('admingraphic', CheckboxType::class, [
                 'label' => $this->__('Display icons'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('displaynametype', ChoiceType::class, [
@@ -114,13 +116,6 @@ class ConfigType extends AbstractType
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
-                ]
-            ])
-            ->add('help', SubmitType::class, [
-                'label' => $this->__('Help'),
-                'icon' => 'fa-question',
-                'attr' => [
-                    'class' => 'btn btn-info'
                 ]
             ])
         ;

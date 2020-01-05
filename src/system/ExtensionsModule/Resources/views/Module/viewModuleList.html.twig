@@ -10,10 +10,10 @@
     </colgroup>
     <thead>
         <tr>
-            <th id="hName" scope="col"><a class='{{ sort.displayname.class }}' href='{{ sort.displayname.url }}'>{{ __('Name') }}</a></th>
+            <th id="hName" scope="col"><a class="{{ sort.displayname.class }}" href="{{ sort.displayname.url }}">{{ __('Name') }}</a></th>
             <th id="hDescription" scope="col">{{ __('Description') }}</th>
             <th id="hVersion" scope="col">{{ __('Version') }}</th>
-            <th id="hState" scope="col"><a class='{{ sort.state.class }}' href='{{ sort.state.url }}'>{{ __('State') }}</a></th>
+            <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{{ __('State') }}</a></th>
             <th id="hActions" scope="col" class="text-right">Actions</th>
         </tr>
     </thead>
@@ -26,13 +26,13 @@
                 {% endif %}
                 <strong>{{ module.displayname }}</strong>
                 <a data-toggle="collapse" href="#collapse-{{ module.name }}"><i class="fa fa-caret-down"></i></a>
-                <ul class="collapse" id="collapse-{{ module.name }}" style="margin-bottom:0">
+                <ul id="collapse-{{ module.name }}" class="collapse mb-0">
                     <li>Internal name: <em>{{ module.name }}</em></li>
                     <li>Url root: <code>/{{ module.url }}</code></li>
                 </ul>
             </td>
             <td headers="hDescription" style="width: 50%">
-                {% if module.name|isCoreModule %}<span class="label label-info tooltips" title="{{ __('Core Extension') }}">C</span>{% endif %}
+                {% if module.name|isCoreModule %}<span class="badge badge-info tooltips" title="{{ __('Core Extension') }}">C</span>{% endif %}
                 {{ module.description }}
             </td>
             <td headers="hVersion">{{ module.version }}</td>
@@ -47,7 +47,6 @@
 </table>
 {{ pager({rowcount:pager.count, limit:pager.limit, route:'zikulaextensionsmodule_module_viewmodulelist'}) }}
 {{ adminFooter() }}
-{# todo move to own file #}
 {% set initScript %}
 <script>
     ( function($) {

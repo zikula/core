@@ -1,28 +1,27 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ moduleHeader('user', __('Account verification'), '', true) }}
-
 {{ form_start(form) }}
 {{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Verification code') }}</legend>
+    {{ form_row(form.uname) }}
+    {{ form_row(form.verifycode) }}
+</fieldset>
+{% if form.children.pass is defined %}
     <fieldset>
-        <legend>{{ __('Verification code') }}</legend>
-        {{ form_row(form.uname) }}
-        {{ form_row(form.verifycode) }}
+        <legend>{{ __('Create a password') }}</legend>
+        {{ form_row(form.pass) }}
+        <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>
     </fieldset>
-    {% if form.children.pass is defined %}
-        <fieldset>
-            <legend>{{ __('Create a password') }}</legend>
-            {{ form_row(form.pass) }}
-            <div id="{{ form.vars.id }}_passmeter" class="col-sm-offset-3 col-sm-9"></div>
-        </fieldset>
-    {% endif %}
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
-            {{ form_widget(form.submit) }}
-        </div>
+{% endif %}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.submit) }}
     </div>
+</div>
 {{ form_end(form) }}
 {% if modvars.use_password_strength_meter and form.pass|default %}
 {{ pageAddAsset('javascript', zasset('@ZikulaZAuthModule:js/Zikula.ZAuth.PassMeter.js')) }}

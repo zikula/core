@@ -1,5 +1,5 @@
 {% extends '@ZikulaCoreInstaller/theme.html.twig' %}
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block title 'Zikula Core Installer :: Enter database information' %}
 
@@ -11,52 +11,52 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
 
-        <div class="form-group">
+        <div class="form-group row">
             {{ form_label(form.database_driver) }}
-            <div class="col-sm-9">
+            <div class="col-md-9">
                 {{ form_errors(form.database_driver) }}
                 {{ form_widget(form.database_driver) }}
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             {{ form_label(form.dbtabletype) }}
-            <div class="col-sm-9">
+            <div class="col-md-9">
                 {{ form_errors(form.dbtabletype) }}
                 {{ form_widget(form.dbtabletype) }}
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             {{ form_label(form.database_host) }}
             <div class="col-sm-9">
                 {{ form_errors(form.database_host) }}
                 {{ form_widget(form.database_host) }}
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             {{ form_label(form.database_user) }}
-            <div class="col-sm-9">
+            <div class="col-md-9">
                 {{ form_errors(form.database_user) }}
                 {{ form_widget(form.database_user) }}
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             {{ form_label(form.database_password) }}
-            <div class="col-sm-9">
+            <div class="col-md-9">
                 {{ form_errors(form.database_password) }}
                 {{ form_widget(form.database_password) }}
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group row">
             {{ form_label(form.database_name) }}
-            <div class="col-sm-9">
+            <div class="col-md-9">
                 {{ form_errors(form.database_name) }}
                 {{ form_widget(form.database_name) }}
-                <p class="help-block"><span class="text-danger">{{ __('Ensure the database is in UTF-8 format.') }}</span></p>
+                <small class="form-text text-danger">{{ __('Ensure the database is in UTF-8 format.') }}</small>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                <p id="db-check" style="display: none;"><i class="fa fa-cog fa-spin fa-fw text-success"></i>{{ __('Checking database connection...') }}</p>
+        <div class="form-group row">
+            <div class="col-md-9 offset-md-3">
+                <p id="db-check" class="d-none"><i class="fa fa-cog fa-spin fa-fw text-success"></i>{{ __('Checking database connection...') }}</p>
                 <input type="submit" id="submit_button" value="{{ __('Next') }}" class="btn btn-success" />
             </div>
         </div>
@@ -87,7 +87,7 @@
         });
 
         $('#submit_button').on('click', function() {
-            $('#db-check').show();
+            $('#db-check').removeClass('d-none');
         });
     });
 </script>

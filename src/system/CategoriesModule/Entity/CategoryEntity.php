@@ -433,12 +433,12 @@ class CategoryEntity extends EntityAccess
         $this->lu_uid = $lu_uid;
     }
 
-    public function getAttributes(): ArrayCollection
+    public function getAttributes(): Collection
     {
         return $this->attributes;
     }
 
-    public function setAttributes(ArrayCollection $attributes): void
+    public function setAttributes(Collection $attributes): void
     {
         $this->attributes = $attributes;
     }

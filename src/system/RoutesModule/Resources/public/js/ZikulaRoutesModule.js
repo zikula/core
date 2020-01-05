@@ -28,8 +28,8 @@ function zikulaRoutesInitQuickNavigation() {
 
     var fieldPrefix = 'zikularoutesmodule_' + objectType.toLowerCase() + 'quicknav_';
     // we can hide the submit button if we have no visible quick search field
-    if (jQuery('#' + fieldPrefix + 'q').length < 1 || jQuery('#' + fieldPrefix + 'q').parent().parent().hasClass('hidden')) {
-        jQuery('#' + fieldPrefix + 'updateview').addClass('hidden');
+    if (jQuery('#' + fieldPrefix + 'q').length < 1 || jQuery('#' + fieldPrefix + 'q').parent().parent().hasClass('d-none')) {
+        jQuery('#' + fieldPrefix + 'updateview').addClass('d-none');
     }
 }
 
@@ -88,10 +88,12 @@ function zikulaRoutesInitItemActions(context) {
         return;
     }
     
-    containers.find('.dropdown > ul').removeClass('list-inline').addClass('list-unstyled dropdown-menu');
-    containers.find('.dropdown > ul a i').addClass('fa-fw');
+    containers.find('.dropdown > ul').removeClass('nav').addClass('list-unstyled dropdown-menu');
+    containers.find('.dropdown > ul > li').addClass('dropdown-item').css('padding', 0);
+    containers.find('.dropdown > ul a').addClass('d-block').css('padding', '3px 5px');
+    containers.find('.dropdown > ul a i').addClass('fa-fw mr-1');
     if (containers.find('.dropdown-toggle').length > 0) {
-        containers.find('.dropdown-toggle').removeClass('hidden').dropdown();
+        containers.find('.dropdown-toggle').removeClass('d-none').dropdown();
     }
 }
 

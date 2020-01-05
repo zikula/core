@@ -1,13 +1,12 @@
 {# purpose of this template: build the form to edit an instance of route #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends '@ZikulaRoutesModule/' ~ baseTemplate ~ '.html.twig' %}
-
 {% block title mode == 'create' ? __('Create route') : __('Edit route') %}
-{% block admin_page_icon mode == 'create' ? 'plus' : 'pencil-square-o' %}
+{% block admin_page_icon mode == 'create' ? 'plus' : 'edit' %}
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-edit">
         {% form_theme form with [
-            '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
+            '@ZikulaRoutesModule/Form/bootstrap_4.html.twig',
             '@ZikulaFormExtension/Form/form_div_layout.html.twig'
         ] %}
         {{ form_start(form, {attr: {id: 'routeEditForm', class: 'zikularoutes-edit-form'}}) }}
@@ -19,7 +18,7 @@
             {{ form_row(form.action) }}
             {{ form_row(form.path) }}
             {{ form_row(form.description) }}
-            <div class="hidden">
+            <div class="d-none">
                 {{ form_row(form.sort) }}
             </div>
             {{ form_row(form.prependBundlePrefix) }}
@@ -63,8 +62,8 @@
 
 
         {# include possible submit actions #}
-        <div class="form-group form-buttons">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group form-buttons row">
+            <div class="col-md-9 offset-md-3">
                 {% for action in actions %}
                     {{ form_widget(attribute(form, action.id)) }}
                     {% if mode == 'create' and action.id == 'submit' and form.submitrepeat is defined %}

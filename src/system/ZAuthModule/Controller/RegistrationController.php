@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -60,6 +61,7 @@ class RegistrationController extends AbstractController
      */
     public function verifyAction(
         Request $request,
+        EventDispatcherInterface $eventDispatcher,
         ValidatorInterface $validator,
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
@@ -83,7 +85,7 @@ class RegistrationController extends AbstractController
         if ($regExpireDays > 0) {
             $deletedUsers = $userVerificationRepository->purgeExpiredRecords($regExpireDays);
             foreach ($deletedUsers as $deletedUser) {
-                $this->get('event_dispatcher')->dispatch(new GenericEvent($deletedUser->getUid()), RegistrationEvents::DELETE_REGISTRATION);
+                $eventDispatcher->dispatch(new GenericEvent($deletedUser->getUid()), RegistrationEvents::DELETE_REGISTRATION);
             }
         }
         $codeValidationErrors = $validator->validate(['uname' => $uname, 'verifycode' => $verifycode], new ValidRegistrationVerification());

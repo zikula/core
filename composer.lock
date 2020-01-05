@@ -125,23 +125,20 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "3.4.1",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "427f4d414fc6ae8385aee02b7efc8e391eb141ad"
+                "reference": "9487105b1b8c1db5bd1879429103deedd6982462"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/427f4d414fc6ae8385aee02b7efc8e391eb141ad",
-                "reference": "427f4d414fc6ae8385aee02b7efc8e391eb141ad",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/9487105b1b8c1db5bd1879429103deedd6982462",
+                "reference": "9487105b1b8c1db5bd1879429103deedd6982462",
                 "shasum": ""
             },
             "require": {
-                "components/jquery": "1.9.1 - 3"
-            },
-            "suggest": {
-                "components/bootstrap-default": "Provide a theme for Bootstrap as components/bootstrap only provides the CSS as file assets"
+                "components/jquery": ">=2"
             },
             "type": "component",
             "extra": {
@@ -152,10 +149,7 @@
                     "files": [
                         "js/*.js",
                         "css/*.css",
-                        "css/*.map",
-                        "fonts/*",
-                        "less/mixins/*.less",
-                        "less/*.less"
+                        "css/*.map"
                     ],
                     "shim": {
                         "deps": [
@@ -184,12 +178,12 @@
                 "css",
                 "framework",
                 "front-end",
-                "less",
                 "mobile-first",
                 "responsive",
+                "sass",
                 "web"
             ],
-            "time": "2019-05-08T19:36:29+00:00"
+            "time": "2019-06-19T16:37:43+00:00"
         },
         {
             "name": "components/font-awesome",
@@ -3816,68 +3810,6 @@
             "time": "2017-04-13T17:21:01+00:00"
         },
         {
-            "name": "oyejorge/less.php",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/oyejorge/less.php.git",
-                "reference": "6a898d7a9d43a5a3e356aafdd8dc687ce71e6932"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oyejorge/less.php/zipball/6a898d7a9d43a5a3e356aafdd8dc687ce71e6932",
-                "reference": "6a898d7a9d43a5a3e356aafdd8dc687ce71e6932",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8.24"
-            },
-            "bin": [
-                "bin/lessc"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Less": "lib/"
-                },
-                "classmap": [
-                    "lessc.inc.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Josh Schmidt",
-                    "homepage": "https://github.com/oyejorge"
-                },
-                {
-                    "name": "Matt Agar",
-                    "homepage": "https://github.com/agar"
-                },
-                {
-                    "name": "Martin Jantošovič",
-                    "homepage": "https://github.com/Mordred"
-                }
-            ],
-            "description": "PHP port of the Javascript version of LESS http://lesscss.org (Originally maintained by Josh Schmidt)",
-            "homepage": "http://lessphp.gpeasy.com",
-            "keywords": [
-                "css",
-                "less",
-                "less.js",
-                "lesscss",
-                "php",
-                "stylesheet"
-            ],
-            "time": "2019-12-05T00:05:03+00:00"
-        },
-        {
             "name": "paragonie/random_compat",
             "version": "v9.99.99",
             "source": {
@@ -5963,6 +5895,47 @@
             "time": "2019-12-19T18:35:20+00:00"
         },
         {
+            "name": "thomaspark/bootswatch",
+            "version": "v4.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thomaspark/bootswatch.git",
+                "reference": "650418cfab54be9bd054ea260c2144b85deecd17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thomaspark/bootswatch/zipball/650418cfab54be9bd054ea260c2144b85deecd17",
+                "reference": "650418cfab54be9bd054ea260c2144b85deecd17",
+                "shasum": ""
+            },
+            "suggest": {
+                "robloach/component-installer": "Allows installation of Components via Composer"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "name": "bootswatch",
+                    "files": [
+                        "README.md",
+                        "LICENSE",
+                        "dist/**/*"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "thomaspark",
+                    "email": "thomas@bootswatch.com"
+                }
+            ],
+            "description": "Themes for Bootstrap",
+            "time": "2019-11-30T21:49:57+00:00"
+        },
+        {
             "name": "tijsverkoyen/css-to-inline-styles",
             "version": "2.2.2",
             "source": {
@@ -6719,56 +6692,6 @@
             "time": "2014-01-20T22:35:06+00:00"
         },
         {
-            "name": "zikula/andreas08-theme",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/ZikulaAndreas08Theme.git",
-                "reference": "c50845d6a29835aea17c485ba8a2898144805361"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaAndreas08Theme/zipball/c50845d6a29835aea17c485ba8a2898144805361",
-                "reference": "c50845d6a29835aea17c485ba8a2898144805361",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5"
-            },
-            "type": "zikula-theme",
-            "extra": {
-                "zikula": {
-                    "core-compatibility": ">=3.0.0",
-                    "class": "Zikula\\Andreas08Theme\\ZikulaAndreas08Theme",
-                    "displayname": "Andreas08",
-                    "capabilities": {
-                        "user": true,
-                        "admin": true
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zikula\\Andreas08Theme\\": ""
-                }
-            },
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula",
-                    "homepage": "https://ziku.la/"
-                }
-            ],
-            "description": "Based on the theme Andreas08 by Andreas Viklund",
-            "support": {
-                "source": "https://github.com/zikula/ZikulaAndreas08Theme/tree/master",
-                "issues": "https://github.com/zikula/ZikulaAndreas08Theme/issues"
-            },
-            "time": "2020-01-04T14:51:30+00:00"
-        },
-        {
             "name": "zikula/filesystem",
             "version": "1.0.0",
             "target-dir": "Zikula/Component/FileSystem",
@@ -6803,15 +6726,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "http://zikula.org/"
+                    "homepage": "https://ziku.la/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "info@ziku.la"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -6820,12 +6743,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "1ca629b24227970b7837d476bf2bccd465d42714"
+                "reference": "0b3bce225229ef50beba9f1c54cd69c778b6e3d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/1ca629b24227970b7837d476bf2bccd465d42714",
-                "reference": "1ca629b24227970b7837d476bf2bccd465d42714",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/0b3bce225229ef50beba9f1c54cd69c778b6e3d1",
+                "reference": "0b3bce225229ef50beba9f1c54cd69c778b6e3d1",
                 "shasum": ""
             },
             "require": {
@@ -6880,7 +6803,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-03T14:33:49+00:00"
+            "time": "2020-01-04T19:14:28+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -7065,56 +6988,6 @@
             "time": "2020-01-04T09:50:51+00:00"
         },
         {
-            "name": "zikula/seabreeze-theme",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zikula/ZikulaSeaBreezeTheme.git",
-                "reference": "d8ccf92ea3984ce39a63f716ae7efb38671dc552"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zikula/ZikulaSeaBreezeTheme/zipball/d8ccf92ea3984ce39a63f716ae7efb38671dc552",
-                "reference": "d8ccf92ea3984ce39a63f716ae7efb38671dc552",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2.5"
-            },
-            "type": "zikula-theme",
-            "extra": {
-                "zikula": {
-                    "core-compatibility": ">=3.0.0",
-                    "class": "Zikula\\SeaBreezeTheme\\ZikulaSeaBreezeTheme",
-                    "displayname": "SeaBreeze",
-                    "capabilities": {
-                        "user": true,
-                        "admin": true
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zikula\\SeaBreezeTheme\\": ""
-                }
-            },
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Zikula",
-                    "homepage": "https://ziku.la/"
-                }
-            ],
-            "description": "The SeaBreeze theme is a browser-oriented theme.",
-            "support": {
-                "source": "https://github.com/zikula/ZikulaSeaBreezeTheme/tree/master",
-                "issues": "https://github.com/zikula/ZikulaSeaBreezeTheme/issues"
-            },
-            "time": "2020-01-04T14:51:18+00:00"
-        },
-        {
             "name": "zikula/wizard",
             "version": "3.0.3",
             "source": {
@@ -7237,16 +7110,13 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "zikula/andreas08-theme": 20,
-        "zikula/seabreeze-theme": 20,
         "prolix/translation-bundle": 20,
         "willdurand/js-translation-bundle": 20,
         "liip/imagine-bundle": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "jms/i18n-routing-bundle": 20,
-        "phpids/phpids": 20,
-        "oyejorge/less.php": 20
+        "phpids/phpids": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

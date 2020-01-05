@@ -1,15 +1,19 @@
 <table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cComponent" />
+        <col id="cInstance" />
+    </colgroup>
     <thead>
     <tr>
-        <th>{{ __('Registered component') }}</th>
-        <th>{{ __('Instance template') }}</th>
+        <th id="hComponent" scope="col">{{ __('Registered component') }}</th>
+        <th id="hInstance" scope="col">{{ __('Instance template') }}</th>
     </tr>
     </thead>
     <tbody>
     {% for component, instance in schema %}
         <tr>
-            <td>{{ component }}</td>
-            <td>{{ instance }}</td>
+            <td headers="hComponent">{{ component }}</td>
+            <td headers="hInstance">{{ instance }}</td>
         </tr>
     {% endfor %}
     </tbody>

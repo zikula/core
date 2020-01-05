@@ -1,58 +1,54 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-plus"></span>
-            {{ __('Install module') }} '{{ extension.displayname }}'
-            {{ pageSetVar('title', __('Install module')) }}
-        </h3>
+<h3>
+    <span class="fa fa-plus"></span>
+    {{ __('Install module') }} '{{ extension.displayname }}'
+    {{ pageSetVar('title', __('Install module')) }}
+</h3>
 
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <table class="table table-bordered table-striped">
-            <colgroup>
-                <col id="cModule" />
-                <col id="cLevel" />
-                <col id="cReason" />
-                <col id="cInstall" />
-            </colgroup>
-            <thead>
-                <tr>
-                    <th id="hModule" scope="col">{{ __('Module name') }}</th>
-                    <th id="hLevel" scope="col">{{ __('Level') }}</th>
-                    <th id="hReason" scope="col">{{ __('Reason') }}</th>
-                    <th id="hInstall" scope="col">{{ __('Install') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for checkbox in form.dependencies %}
-                <tr{% if checkbox.vars.data == false %} class="warning"{% endif %}>
-                    <td headers="hModule">{{ dependencies[checkbox.vars.name].modname }}</td>
-                    <td headers="hLevel">
-                        {% if dependencies[checkbox.vars.name].status == 1 %}
-                            <span class="label label-danger">{{ __('Required') }}</span>
-                        {% else %}
-                            <span class="label label-info">{{ __('Recommended') }}</span>
-                            {% if checkbox.vars.data == false %} <span class="label label-danger">{{ __('Not Available in System') }}</span> {% endif %}
-                        {% endif %}
-                    </td>
-                    <td headers="hReason">{{ dependencies[checkbox.vars.name].reason }}</td>
-                    <td headers="hInstall">{{ form_widget(checkbox, {'disabled': (dependencies[checkbox.vars.name].status == constant('Zikula\Bundle\CoreBundle\Bundle\MetaData::DEPENDENCY_REQUIRED')) or (checkbox.vars.data == false)}) }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.install) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<table class="table table-bordered table-striped">
+    <colgroup>
+        <col id="cModule" />
+        <col id="cLevel" />
+        <col id="cReason" />
+        <col id="cInstall" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th id="hModule" scope="col">{{ __('Module name') }}</th>
+            <th id="hLevel" scope="col">{{ __('Level') }}</th>
+            <th id="hReason" scope="col">{{ __('Reason') }}</th>
+            <th id="hInstall" scope="col">{{ __('Install') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for checkbox in form.dependencies %}
+        <tr{% if checkbox.vars.data == false %} class="table-warning"{% endif %}>
+            <td headers="hModule">{{ dependencies[checkbox.vars.name].modname }}</td>
+            <td headers="hLevel">
+                {% if dependencies[checkbox.vars.name].status == 1 %}
+                    <span class="badge badge-danger">{{ __('Required') }}</span>
+                {% else %}
+                    <span class="badge badge-info">{{ __('Recommended') }}</span>
+                    {% if checkbox.vars.data == false %} <span class="badge badge-danger">{{ __('Not Available in System') }}</span> {% endif %}
+                {% endif %}
+            </td>
+            <td headers="hReason">{{ dependencies[checkbox.vars.name].reason }}</td>
+            <td headers="hInstall">{{ form_widget(checkbox, {'disabled': (dependencies[checkbox.vars.name].status == constant('Zikula\Bundle\CoreBundle\Bundle\MetaData::DEPENDENCY_REQUIRED')) or (checkbox.vars.data == false)}) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.install) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

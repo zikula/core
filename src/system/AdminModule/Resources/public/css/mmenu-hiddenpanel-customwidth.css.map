@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAIC,gDACA;EACC,KAAK,EAAE,GAAoB;EAC3B,SAAS,ECHE,KAAK;EDIhB,SAAS,ECJS,KAAK;;ADQvB,kEACA;EEuBD,SAAS,EAAE,iBAAmB;EAC9B,SAAS,EAAE,sBAAyB;;AFlBpC,oCAAgD;EAG9C,kEACA;IEaF,SAAS,EAAE,mBAAmB;IAC9B,SAAS,EAAE,wBAAyB;AFTpC,oCAAgD;EAG9C,kEACA;IEIF,SAAS,EAAE,mBAAmB;IAC9B,SAAS,EAAE,wBAAyB;AD/BrC,4CAA+C;EAC7C,OAAO,EAAE,IAAI",
-"sources": ["../../../../../vendor/jQuery.mmenu/src/scss/_mixins_sizing.scss","mmenu-hiddenpanel-customwidth.scss","../../../../../vendor/jQuery.mmenu/src/scss/_mixins_general.scss"],
-"names": [],
-"file": "mmenu-hiddenpanel-customwidth.css"
-}

@@ -1,8 +1,4 @@
-{{ include('@ZikulaBootstrapTheme/Include/header.html.twig') }}
-        <div id="bootstrap-theme-main-container">
-            {{ include('@ZikulaBootstrapTheme/Include/admin_menu.html.twig') }}
-            {{ include('@ZikulaBootstrapTheme/Body/' ~ themevars.admin ~ '.html.twig') }}
-            {{ include('@ZikulaBootstrapTheme/Include/footer.html.twig') }}
-        </div><!-- /bootstrap-theme-main-container -->
-    </body>
-</html>
+{{ include('@ZikulaBootstrapTheme/Include/header.html.twig', {admin: true}) }}
+{{ include('@ZikulaBootstrapTheme/Include/topNav.html.twig', {admin: true}) }}
+{{ include('@ZikulaBootstrapTheme/Body/' ~ themevars.admin_template ~ '.html.twig', {admin: true}) }}
+{{ include('@ZikulaBootstrapTheme/Include/footer.html.twig', {admin: true}) }}

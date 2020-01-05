@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Response\PlainResponse;
@@ -118,7 +119,8 @@ class MembershipController extends AbstractController
     public function addAction(
         UserEntity $userEntity,
         GroupEntity $group,
-        string $token
+        string $token,
+        EventDispatcherInterface $eventDispatcher
     ): RedirectResponse {
         if (!$this->hasPermission('ZikulaGroupsModule::', $group->getGid() . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -135,7 +137,7 @@ class MembershipController extends AbstractController
             $this->addFlash('status', $this->__('Done! The user was added to the group.'));
             // Let other modules know that we have updated a group.
             $addUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
-            $this->get('event_dispatcher')->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
+            $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
         }
 
         return $this->redirectToRoute('zikulagroupsmodule_membership_adminlist', ['gid' => $group->getGid()]);
@@ -150,6 +152,7 @@ class MembershipController extends AbstractController
      */
     public function joinAction(
         GroupEntity $group,
+        EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ): RedirectResponse {
@@ -174,7 +177,7 @@ class MembershipController extends AbstractController
             $this->addFlash('success', $this->__f('Joined the "%group" group', ['%group' => $group->getName()]));
             // Let other modules know that we have updated a group.
             $addUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
-            $this->get('event_dispatcher')->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
+            $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
         }
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list');
@@ -194,6 +197,7 @@ class MembershipController extends AbstractController
      */
     public function removeAction(
         Request $request,
+        EventDispatcherInterface $eventDispatcher,
         GroupRepositoryInterface $groupRepository,
         UserRepositoryInterface $userRepository,
         int $gid = 0,
@@ -230,7 +234,7 @@ class MembershipController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('status', $this->__('Done! The user was removed from the group.'));
                 $removeUserEvent = new g(null, ['gid' => $gid, 'uid' => $uid]);
-                $this->get('event_dispatcher')->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
+                $eventDispatcher->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->__('Operation cancelled.'));
@@ -255,6 +259,7 @@ class MembershipController extends AbstractController
      */
     public function leaveAction(
         GroupEntity $group,
+        EventDispatcherInterface $eventDispatcher,
         CurrentUserApiInterface $currentUserApi,
         UserRepositoryInterface $userRepository
     ): RedirectResponse {
@@ -271,7 +276,7 @@ class MembershipController extends AbstractController
         $this->addFlash('success', $this->__f('Left the "%group" group', ['%group' => $group->getName()]));
         // Let other modules know that we have updated a group.
         $removeUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
-        $this->get('event_dispatcher')->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
+        $eventDispatcher->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
 
         return $this->redirectToRoute('zikulagroupsmodule_group_list');
     }

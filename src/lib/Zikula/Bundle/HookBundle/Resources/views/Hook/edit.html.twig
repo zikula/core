@@ -13,28 +13,31 @@
     {{ pageSetVar('title', __('Hooks')) }}
 </h3>
 
-<div id="csrfToken" class="hidden" data-token="{{ csrf_token('hook-ui') }}"></div>
+<div id="csrfToken" class="d-none" data-token="{{ csrf_token('hook-ui') }}"></div>
 
 <div class="alert alert-info">{{ __('Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.') }}</div>
+{% set showBothPanels = true %}
 {% if showBothPanels %}
-    <div role="tabpanel">
-        <ul id="hookTabs" class="nav nav-tabs">
-            <li role="presentation" class="active"><a href="#subscriberTab">{{ __('Subscription') }}</a></li>
-            <li role="presentation"><a href="#providerTab">{{ __('Provision') }}</a></li>
-        </ul>
-    </div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#subscriberTab" role="tab" data-toggle="tab" class="nav-link active">{{ __('Subscription') }}</a>
+        </li>
+        <li class="nav-item">
+            <a href="#providerTab" role="tab" data-toggle="tab" class="nav-link">{{ __('Provision') }}</a>
+        </li>
+    </ul>
 {% endif %}
 {% if showBothPanels %}
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="subscriberTab">
+        <div role="tabpanel" class="tab-pane fade show active" id="subscriberTab">
             <br />
             <div id="hookSubscriber" class="clearfix">
                 {{ include('@ZikulaHook/Hook/subscriber.html.twig') }}
             </div>
         </div>
-        <div role="tabpanel" class="tab-pane" id="providerTab">
+        <div role="tabpanel" class="tab-pane fade" id="providerTab">
             <br />
-            <div id="hookProvider" class="form-horizontal" role="form">
+            <div id="hookProvider">
                 {{ include('@ZikulaHook/Hook/provider.html.twig') }}
             </div>
         </div>
@@ -47,7 +50,7 @@
     {% endif %}
 
     {% if isProvider and providerAreas is not empty and total_available_subscriber_areas > 0 %}
-        <div id="hookProvider" class="form-horizontal" role="form">
+        <div id="hookProvider">
             {{ include('@ZikulaHook/Hook/provider.html.twig') }}
         </div>
     {% endif %}
@@ -59,27 +62,21 @@
 
 {{ adminFooter() }}
 {% if isSubscriber %}
-    {% set hookinit %}
-    <script>
-        var subscriberAreas = [];
-        {% if isSubscriber and subscriberAreas is not empty %}
-        {% for sarea in subscriberAreas %}
-            {% set sarea_md5 = sarea|php('md5') %}
-                subscriberAreas.push('sarea_{{ sarea_md5 }}');
-            {% endfor %}
-        {% endif %}
-        ( function($) {
-            $(document).ready(function() {
-                {% if showBothPanels %}
-                $('#hookTabs a').click(function (e) {
-                    e.preventDefault();
-                    $(this).tab('show');
+    {% set hookInit %}
+        <script>
+            var subscriberAreas = [];
+            {% if isSubscriber and subscriberAreas is not empty %}
+            {% for sarea in subscriberAreas %}
+                {% set sarea_md5 = sarea|php('md5') %}
+                    subscriberAreas.push('sarea_{{ sarea_md5 }}');
+                {% endfor %}
+            {% endif %}
+            ( function($) {
+                $(document).ready(function() {
+                    initHookSubscriber();
                 });
-                {% endif %}
-                initHookSubscriber();
-            });
-        })(jQuery);
-    </script>
+            })(jQuery);
+        </script>
     {% endset %}
-    {{ pageAddAsset('footer', hookinit, 101) }}
+    {{ pageAddAsset('footer', hookInit, 101) }}
 {% endif %}

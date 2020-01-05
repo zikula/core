@@ -62,7 +62,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('sessionrandregenerate', 1);
         $this->setSystemVar('sessionregenerate', 1);
         $this->setSystemVar('sessionregeneratefreq', 10);
-        $this->setSystemVar('sessionipcheck', 0);
         $this->setSystemVar('sessionname', '_zsid');
 
         $this->setSystemVar('filtergetvars', 1);
@@ -248,6 +247,8 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
             case '1.5.2':
+                $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, 'sessionipcheck');
+            case '1.5.3':
                 // current version
         }
 

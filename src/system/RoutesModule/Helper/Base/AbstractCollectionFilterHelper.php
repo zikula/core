@@ -191,7 +191,7 @@ abstract class AbstractCollectionFilterHelper
             return $qb;
         }
     
-        $showOnlyOwnEntries = (bool)$request->query->getInt('own', $this->showOnlyOwnEntries);
+        $showOnlyOwnEntries = (bool)$request->query->getInt('own', (int) $this->showOnlyOwnEntries);
         if ($showOnlyOwnEntries) {
             $qb = $this->addCreatorFilter($qb);
         }

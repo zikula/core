@@ -45,10 +45,12 @@ class LocaleSettingsType extends AbstractType
         $builder
             ->add('multilingual', CheckboxType::class, [
                 'label' => $this->__('Activate multilingual features'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('languageurl', ChoiceType::class, [
                 'label' => $this->__('Prepend language to URL'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'expanded' => true,
                 'choices' => [
                     $this->__('Always') => 1,
@@ -57,6 +59,7 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('language_detect', CheckboxType::class, [
                 'label' => $this->__('Automatically detect language from browser settings'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'help' => $this->__('If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.')
             ])
@@ -72,6 +75,7 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('idnnames', CheckboxType::class, [
                 'label' => $this->__('Allow IDN domain names'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'help' => [
                     $this->__('This only applies to legacy variable validation. The system itself has native IDN support.'),
                     $this->__('Notice: With IDN domains, special characters are allowed in e-mail addresses and URLs.')

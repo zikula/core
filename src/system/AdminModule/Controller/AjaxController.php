@@ -50,7 +50,7 @@ class AjaxController extends AbstractController
             return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
-        $moduleId = $request->request->get('modid');
+        $moduleId = $request->request->getInt('modid');
         $newParentCat = $request->request->getInt('cat');
 
         /** @var ExtensionEntity $module */
@@ -202,7 +202,7 @@ class AjaxController extends AbstractController
         }
 
         //get form values
-        $cid = trim($request->request->getDigits('cid'));
+        $cid = trim($request->request->getInt('cid'));
         $name = trim($request->request->get('name'));
 
         //security checks
@@ -274,7 +274,7 @@ class AjaxController extends AbstractController
         }
 
         //get passed cid
-        $cid = trim($request->request->getDigits('cid'));
+        $cid = trim($request->request->getInt('cid'));
 
         // retrieve the category object
         $item = $adminCategoryRepository->findOneBy(['cid' => $cid]);

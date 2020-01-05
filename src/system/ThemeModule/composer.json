@@ -30,10 +30,9 @@
         "league/html-to-markdown": "^4.8",
         "michelf/php-markdown": "^1.9",
 
-        "oyejorge/less.php": "dev-master",
         "components/jquery": "3.*",
         "components/jqueryui": "1.*",
-        "components/bootstrap": "3.*",
+        "components/bootstrap": "4.*",
         "components/font-awesome": "5.*",
         "dimsemenov/magnific-popup": "1.*",
         "vakata/jstree": "3.*"

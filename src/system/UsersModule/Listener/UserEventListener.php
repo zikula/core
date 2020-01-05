@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\AccessEvents;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -95,12 +96,12 @@ class UserEventListener implements EventSubscriberInterface
      * if it detects session variables containing authentication information which might make it think
      * that a re-attempt is in progress.
      */
-    public function clearUsersNamespace(ExceptionEvent $event, string $eventName): void
+    public function clearUsersNamespace(Event $event, string $eventName): void
     {
         $request = $this->requestStack->getCurrentRequest();
 
         $doClear = false;
-        if (KernelEvents::EXCEPTION === $eventName) {
+        if ($event instanceof ExceptionEvent || KernelEvents::EXCEPTION === $eventName) {
             if (null !== $request) {
                 $doClear = $request->attributes->has('_zkModule') && UsersConstant::MODNAME === $request->attributes->get('_zkModule');
             }

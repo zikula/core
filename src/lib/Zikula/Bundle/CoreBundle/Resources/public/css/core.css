@@ -20,55 +20,33 @@ p + iframe {
 }
 
 /******************************************************************************
-* Generic styles
-******************************************************************************/
-
-.invisible { visibility: hidden !important; }
-.visible { visibility: inherit !important; }
-.top { vertical-align: top !important; }
-.middle { vertical-align: middle !important; }
-.bottom { vertical-align: bottom !important; }
-.nowrap { white-space: nowrap !important; }
-.italic { font-style: italic !important; }
-.bold { font-weight: bold !important; }
-.underline { text-decoration: underline !important; }
-.line-through { text-decoration: line-through !important; }
-.normal { font-weight: normal !important; font-style: normal !important; }
-.gap { margin: 1em 0 !important; padding: 1em 0 !important; }
-.sub { color: #777; font-size: 0.9em;}
-.pointer { cursor: pointer !important;}
-
-/******************************************************************************
 * Module links navbar bootstrap.css overrides
 ******************************************************************************/
-
-.navbar-modulelinks {
-    min-height: inherit;
+.nav-modulelinks {
+    padding: 3px;
+    z-index: inherit;
+    margin-left: 0;
+    background-color: #e9ecef;
+    border-radius: 5px;
 }
 
-.navbar-modulelinks > ul > li {
+.nav-modulelinks > li {
     border-right: 1px solid #aaa;
     display: inline;
     padding: 0;
 }
 
-.navbar-modulelinks > ul > li:last-child {
+.nav-modulelinks > li:last-child {
     border-right-style: none;
 }
 
-.navbar-modulelinks > ul {
-    padding: 3px;
-    z-index: inherit;
-    margin-left: 0;
-}
-
-ul.navbar > li.active > a {
+.nav-modulelinks > li > a.active {
     font-weight: 700;
 }
 
-.navbar-modulelinks .navbar-nav > .open > a,
-.navbar-modulelinks .navbar-nav > .open > a:hover,
-.navbar-modulelinks .navbar-nav > .open > a:focus {
+.nav-modulelinks .open > a,
+.nav-modulelinks .open > a:hover,
+.nav-modulelinks .open > a:focus {
     background-color: transparent;
     background-image: none;
     -webkit-box-shadow: none;
@@ -76,31 +54,21 @@ ul.navbar > li.active > a {
     box-shadow: none;
 }
 
-.navbar-modulelinks .navbar-nav a,
-.navbar-modulelinks .navbar-nav a:hover,
-.navbar-modulelinks .navbar-nav a:focus {
+.nav-modulelinks a,
+.nav-modulelinks a:hover,
+.nav-modulelinks a:focus {
     padding: 5px 10px;
 }
 
-.navbar-nav > li > .dropdown-menu {
+.nav-modulelinks li > .dropdown-menu {
     margin-top: 3px;
-}
-
-.navbar-nav > li > .dropdown-menu li {
-    margin: 0;
-    padding: 0;
-}
-
-.navbar-modulelinks-main {
-    z-index: 1001;
+    font-size: 95%;
 }
 
 /******************************************************************************
 * Form
 ******************************************************************************/
-
-.form-horizontal fieldset,
-.form-inline fieldset {
+fieldset {
     border: 1px #ddd solid;
     margin: 0 0 1em 0;
     padding: 0.5em 1em;
@@ -108,14 +76,10 @@ ul.navbar > li.active > a {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    background: #fafafa; /*non-CSS3 browsers*/
-    background: -webkit-gradient(linear,left top, left bottom,from(#fafafa),to(#f2f2f2)); /*webkit*/
-    background: -moz-linear-gradient(top, #fafafa, #f2f2f2); /*gecko*/
-    background: linear-gradient(#fafafa, #f2f2f2); /*CSS3*/
+    background: linear-gradient(#fafafa, #f2f2f2);
 }
 
-.form-horizontal legend,
-.form-inline legend {
+legend {
     width: auto;
     padding: 0 .2em;
     font-size: 1.25em;
@@ -127,21 +91,27 @@ ul.navbar > li.active > a {
 }
 
 #admintabs-container .nav-tabs > li > a {
-    background-color: #dddddd;
+    background-color: #e9ecef;
+    margin-right: 5px;
+}
+#admintabs-container .nav-tabs > li > a:hover,
+#admintabs-container .nav-tabs > li > a:focus,
+#admintabs-container .nav-tabs > li > a:active,
+#admintabs-container .nav-tabs > li > a.active {
+    background-color: #fafafa;
 }
 
 #admintabs-container .nav-tabs > li {
     margin: 0 0 -1px 0;
 }
 
-.table > thead > tr > th, .table > thead > tr > td {
-    background: linear-gradient(#fafafa, #CFCFCF);
-    font-size: 0.9em;
-    padding: 7px 5px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
-    border-width: 0;
-    vertical-align: middle;
-    text-align: left;
+/******************************************************************************
+* General table styles
+******************************************************************************/
+
+table > thead > tr > th,
+.table > thead > tr > th {
+    vertical-align: top;
 }
 
 /******************************************************************************
@@ -158,10 +128,13 @@ td.actions .tooltip {
     white-space: normal !important;
 }
 
+td.actions ul.list-inline {
+    display: flex;
+}
 td.actions .fa {
     font-size: 1.3em;
     padding-left: 4px;
-    color: #555
+    color: #555;
 }
 
 td.actions .fa-trash-alt {
@@ -236,7 +209,7 @@ td.actions a:hover {
     content: "\00a0";
 }
 
-
+/* TODO remove
 input:invalid, select:invalid, textarea:invalid, .form-error {
     background: #ffe1da;
     border: 1px solid #f34f4f;
@@ -246,19 +219,17 @@ input:invalid, select:invalid, textarea:invalid, .form-error {
     content: "\002A";
     color: red;
 }
+*/
 
 /**
  * bootstrap tab container mods
  */
 .zikula-bootstrap-tab-container .tab-content {
-    padding: 1.5em 1em 0 0;
+    padding: 1.5em 1em 0;
     border: 1px solid #ddd;
     border-top: 0;
     margin-bottom: 1.5em;
     background-color: #fff;
-}
-.zikula-bootstrap-tab-container .nav-tabs li {
-    margin: 0 0 -1px 0;
 }
 
 .sorted-desc:after,

@@ -1,23 +1,11 @@
-{{ pageAddAsset('javascript', asset('mmenu/js/mmenu.js')) }}
-{{ pageAddAsset('stylesheet', asset('mmenu/css/mmenu.css')) }}
-{{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css')) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modal.Fix.js')) }}
-
-{% macro draw(links, caller, module) %}
-    {% for link in links|filter(l => l.url|default) %}
-        <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
-            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
-            {% if link.links is defined %}
-                <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>
-            {% endif %}
-        </li>
-    {% endfor %}
-{% endmacro %}
-
-<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars"></i></a>
-<nav id="zikula-admin-hiddenpanel-menu">
+{{ pageAddAsset('stylesheet', asset('mmenu/css/mmenu.css'), 100) }}
+{{ pageAddAsset('javascript', asset('mmenu/js/mmenu.js'), 100) }}
+{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js'), 101) }}
+{% import '@ZikulaAdminModule/AdminInterface/mmenuHelper.html.twig' as helper %}
+<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{{ __('Show administration panel') }}"></i></a>
+<nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">
-        <h1><img src="{{ zasset('@ZikulaAdminModule:images/admin.png') }}" alt="{{ __('Administration') }}"/> {{ __('Administration') }}</h1>
+        <h2><img src="{{ zasset('@ZikulaAdminModule:images/admin.png') }}" alt="{{ __('Administration') }}"/> {{ __('Administration') }}</h2>
         <ul>
             {% for category in adminMenu %}
                 <li{% if caller.category.cid == category.cid %} class="selected"{% endif %}>
@@ -28,7 +16,7 @@
                                 <li{% if caller.path == module.menutexturl %} class="selected"{% endif %}>
                                     <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}"><img src="/{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}</a>
                                     {% if module.links|length > 0 %}
-                                        <ul class="text-left">{{ _self.draw(module.links, caller, module) }}</ul>
+                                        <ul class="text-left">{{ helper.draw(module.links, caller, module) }}</ul>
                                     {% endif %}
                                 </li>
                             {% endfor %}
@@ -39,21 +27,3 @@
         </ul>
     </div>
 </nav>
-{% set customScript %}
-<script>
-    (function($) {
-        $(document).ready(function() {
-            $('#zikula-admin-hiddenpanel-menu').mmenu({
-                extensions: ['hiddenpanel-customwidth'],
-                'header': {
-                    'title': '{{ __('Administration') }}',
-                    'add': true,
-                    'update': true
-                },
-                'searchfield': true
-            });
-        });
-    })(jQuery);
-</script>
-{% endset %}
-{{ pageAddAsset('footer', customScript) }}

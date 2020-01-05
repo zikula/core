@@ -1,32 +1,25 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-trash-alt"></span>
-            {{ __('Delete module category') }}
-            {{ pageSetVar('title', __('Delete module category')) }}
-        </h3>
+<h3>
+    <span class="fa fa-trash-alt"></span>
+    {{ __('Delete module category') }}
+    {{ pageSetVar('title', __('Delete module category')) }}
+</h3>
 
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-
-        <fieldset>
-            <legend>{{ __('Confirmation prompt') }}</legend>
-            <p class="alert alert-warning">{{ __f("Do you really want to delete module category '%s'?", { '%s': category.name }) }}</p>
-        </fieldset>
-
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.delete) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-
-        {{ form_end(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Confirmation prompt') }}</legend>
+    <p class="alert alert-warning">{{ __f("Do you really want to delete module category '%s'?", {'%s': category.name}) }}</p>
+</fieldset>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.delete) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

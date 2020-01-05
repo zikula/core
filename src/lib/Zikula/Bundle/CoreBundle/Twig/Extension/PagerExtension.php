@@ -418,35 +418,35 @@ class PagerExtension extends AbstractExtension
 
         // begin to fill the output
         $output = '<ul class="' . $params['class'] . '">' . "\n";
-        $style = '';
+        $customClass = '';
         if ($params['printempty']) {
             $active = '';
             if (!empty($params['class_numon'])) {
                 if (!isset($allVars[$pager['posvar']])) {
-                    $style = ' class="' . $params['class_numon'] . '"';
-                    $active = ' class="active"';
+                    $customClass = ' ' . $params['class_numon'];
+                    $active = ' active';
                 } elseif (!empty($params['class_num'])) {
-                    $style = ' class="' . $params['class_num'] . '"';
+                    $customClass = ' ' . $params['class_num'];
                 }
             }
-            $output .= '<li' . $active . '><a href="' . $pagerUrl($pager) . '"' . $style . '> -' . "\n</a></li>";
+            $output .= '<li class="page-item' . $active . '"><a href="' . $pagerUrl($pager) . '" class="page-link ' . $customClass . '"> -' . "\n</a></li>";
         }
 
-        $style = '';
+        $customClass = '';
         foreach (array_keys($pager['names']) as $i) {
             $active = '';
             if (!empty($params['class_numon'])) {
                 if (isset($allVars[$pager['posvar']]) && $pager['values'][$i] === $allVars[$pager['posvar']]) {
-                    $style = ' class="' . $params['class_numon'] . '"';
-                    $active = ' class="active"';
+                    $customClass = ' ' . $params['class_numon'];
+                    $active = ' active';
                 } elseif (!empty($params['class_num'])) {
-                    $style = ' class="' . $params['class_num'] . '"';
+                    $customClass = ' ' . $params['class_num'];
                 } else {
-                    $style = '';
+                    $customClass = '';
                 }
             }
             $pager['args'][$pager['posvar']] = $pager['values'][$i];
-            $output .= '<li' . $active . '><a href="' . $pagerUrl($pager) . '"' . $style . '>' . $pager['names'][$i] . "</a></li>\n";
+            $output .= '<li class="page-item' . $active . '"><a href="' . $pagerUrl($pager) . '" class="page-link ' . $customClass . '">' . $pager['names'][$i] . "</a></li>\n";
         }
         $output .= "</ul>\n";
 

@@ -40,8 +40,10 @@ class TogglePasswordConfirmationType extends AbstractType
         $builder
             ->add('uid', HiddenType::class)
             ->add('toggle', SubmitType::class, [
-                'label' => $options['mustChangePass'] ? $this->__('Yes, cancel the change of password') : $this->__('Yes, force the change of password'),
-                'icon' => $options['mustChangePass'] ? 'fa-times' : 'fa-refresh',
+                'label' => $options['mustChangePass']
+                    ? $this->__('Yes, cancel the change of password')
+                    : $this->__('Yes, force the change of password'),
+                'icon' => $options['mustChangePass'] ? 'fa-times' : 'fa-sync',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [

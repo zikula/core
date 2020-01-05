@@ -89,7 +89,7 @@ class IdsLogController extends AbstractController
         $pageSize = (int)$this->getVar('pagesize', 25);
 
         // offset
-        $startOffset = (int)$request->query->getDigits('startnum', 0);
+        $startOffset = (int)$request->query->getInt('startnum', 0);
 
         // get data
         $items = $repository->getIntrusions($where, $sorting, $pageSize, $startOffset);

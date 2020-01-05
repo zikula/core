@@ -45,18 +45,17 @@ div.zikularoutesmodule-view form.zikularoutesmodule-quicknav {
     border: 1px solid #ccc;
 }
 
-div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset {
-    padding: 3px 10px;
-    margin-bottom: 0;
-}
-
-div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset h3 {
-    margin-top: 0;
+div.zikularoutesmodule-view form.zikularoutesmodule-quicknav h3 {
     display: none;
 }
 
-div.zikularoutesmodule-view form.zikularoutesmodule-quicknav fieldset label {
-    margin-right: 5px;
+div.zikularoutesmodule-view form.zikularoutesmodule-quicknav .form-group {
+    display: inline-block;
+}
+
+div.zikularoutesmodule-view form.zikularoutesmodule-quicknav label {
+    margin: 0 5px;
+    display: inline;
 }
 
 div.zikularoutesmodule-view .avatar img {

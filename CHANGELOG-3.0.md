@@ -3,7 +3,7 @@
 ## 3.0.0 (unreleased)
 
  - BC Breaks:
-    - Minimum PHP version is now 7.2.0 instead of 5.5.9 (#3935).
+    - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
     - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` because bundle inheritance is not supported in Symfony 4 anymore (#3377).
@@ -31,6 +31,7 @@
         - Removed afarkas/webshim (#3925)
         - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
         - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
+        - Removed oyejorge/less.php
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
         - Removed sensio/generator-bundle (in favour of symfony/maker-bundle)
@@ -39,10 +40,13 @@
         - Removed symfony/polyfill-php70
         - Removed symfony/polyfill-util
         - Removed twig/extensions (use new Twig Extra extensions instead)
+        - Removed zikula/andreas08-theme (in favour of different styles in bootstrap theme)
         - Removed zikula/bootstrap-bundle (in favour of direct usage of components/bootstrap)
         - Removed zikula/fontawesome-bundle (in favour of direct usage of components/font-awesome)
+        - Removed zikula/generator-bundle (in favour of symfony/maker-bundle)
         - Removed zikula/jquery-bundle (in favour of direct usage of components/jquery)
         - Removed zikula/jquery-ui-bundle (in favour of direct usage of components/jqueryui)
+        - Removed zikula/seabreeze-theme (in favour of different styles in bootstrap theme)
     - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
     - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
     - Removed the `polyfill` Twig tag (#3925).
@@ -54,6 +58,7 @@
     - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::addAutoloaders visibility set to private
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper renamed to Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
+    - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
@@ -74,7 +79,10 @@
     - Fixed broken JavaScript in ZAuth user modification form (#3992).
 
  - Features:
-    - Utilise autowiring and autoconfiguring functionality from Symfony (#1188).
+    - Utilise autowiring and autoconfiguring functionality from Symfony (#3940).
+    - Migrated all templates to Bootstrap 4 and Font Awesome 5 (#3530, #4037).
+    - Added all styles from Bootswatch to the Bootstrap theme (#4037).
+    - Added option to allow users individually switching between available Bootswatch styles (#4037).
     - Centralised dynamic form field handling from Profile module in FormExtensionsBundle (#3945).
     - Allow zasset syntax for relative assets also for normal bundles.
     - Added Twig function for creating a `RouteUrl` instance (#3802).
@@ -89,6 +97,7 @@
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
+    - components/bootstrap updated from 3.4.1 to 4.3.1
     - components/font-awesome updated from 4.7.0 to 5.11.2
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
     - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
@@ -156,6 +165,7 @@
     - symfony/profiler-pack installed in 1.0.4
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
     - symfony/symfony updated from 3.4.35 to 5.0.2
+    - thomaspark/bootswatch installed in 4.4.1
     - tijsverkoyen/css-to-inline-styles installed in 2.2.2
     - twig/extra-bundle installed in 3.0.1
     - twig/cssinliner-extra installed in 3.0.1
@@ -167,12 +177,9 @@
     - twig/twig updated from 1.42.4 to 3.0.1
     - webmozart/assert updated from 1.5.0 to 1.6.0
     - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0 (temporarily using vanputten's fork)
-    - zikula/andreas08-theme updated from 3.0.2 to 3.1.1
-    - zikula/generator-bundle updated from 2.0.1 to 3.0.1
     - zikula/legal-module updated from 3.1.2 to dev-master
     - zikula/oauth-module updated from 1.0.4 to dev-master
     - zikula/pagelock-module updated from 1.2.3 to dev-master
     - zikula/profile-module updated from 3.0.6 to dev-master
-    - zikula/seabreeze-theme updated from 4.0.3 to dev-master
     - zikula/wizard updated from 2.0 to 3.0.3
 

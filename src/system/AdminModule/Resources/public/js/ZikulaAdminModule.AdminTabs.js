@@ -8,9 +8,10 @@
 
         $('#admintabs').sortable({
             cursor: 'move',
+            placeholder: 'ui-state-highlight',
             containment: 'parent',
             update: function(event, ui) {
-                var tab = new Array();
+                var tab = [];
                 $('#admintabs li').each( function() {
                    var catid = $(this).data('catid');
                    if (catid !== undefined) {
@@ -33,52 +34,54 @@
         *******************************************************************************/
 
         $('.admintabs-add a').popover({
+            container: 'body',
             content: function (ele) {
                 return $('#admintabs-add-popover').html();
             },
-            html: true
+            html: true,
+            sanitize: false
         });
-
-        $(document).on('click', '.admintabs-add a', function (event) {
+        $('.admintabs-add a').click(function (event) {
             event.preventDefault();
-            $('#admintabs-add-name').focus();
         });
-
-        $(document).on('click', '.admintabs-add .fa-times', function (event) {
-            $('.admintabs-add a').popover('hide');
-        });
-
-        $(document).on('click', '.admintabs-add .fa-check', function (event) {
-            $('.admintabs-add a').popover('hide');
-            var name = $('#admintabs-add-name').val();
-            if (name === '') {
-                alert(('You must enter a name for the new category'));
-                return;
-            }
-            $.ajax({
-                url: Routing.generate('zikulaadminmodule_ajax_addcategory'),
-                data: {
-                    name: name
+        $('.admintabs-add a').on('shown.bs.popover', function () {
+            $('.popover.show #admintabs-add-name').focus();
+            $('.popover.show .fa-times').click(function (event) {
+                event.preventDefault();
+                $('.admintabs-add a').popover('hide');
+            });
+            $('.popover.show .fa-check').click(function (event) {
+                event.preventDefault();
+                $('.admintabs-add a').popover('hide');
+                var name = $('#admintabs-add-name').val();
+                if (name === '') {
+                    alert(('You must enter a name for the new category'));
+                    return;
                 }
-            }).done(function (data) {
-                var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
-                    '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
-                    '">'+
-                    '<span class="fa fa-arrows-alt admintabs-unlock"></span> '+
-                    data.name+
-                    ' <span class="fa fa-caret-down"></span>'+
-                    '</a>'+
-                    '<ul class="admintabs-new dropdown-menu"></ul>'+
-                    '</li>'
-                ;
-                $('#admintabs .admintabs-add').before(newtab);
-                for (var i = 0; i < 6; i++) {
-                    $('#admintabs ul:first > li:nth-child('+i+')').clone().appendTo('.admintabs-new')
-                }
-                $('.admintabs-new').removeClass('admintabs-new');
-                $('#admintabs-add a').popover('hide');
-            }).fail(function (jqXHR, textStatus) {
-                alert('Request failed: ' + textStatus);
+                $.ajax({
+                    url: Routing.generate('zikulaadminmodule_ajax_addcategory'),
+                    data: {
+                        name: name
+                    }
+                }).done(function (data) {
+                    var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
+                        '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
+                        '">'+
+                        '<span class="fa fa-arrows-alt admintabs-unlock"></span> '+
+                        data.name+
+                        '</a>'+
+                        '<ul class="admintabs-new dropdown-menu"></ul>'+
+                        '</li>'
+                    ;
+                    $('#admintabs .admintabs-add').before(newtab);
+                    for (var i = 0; i < 6; i++) {
+                        $('#admintabs ul:first > li:nth-child('+i+')').clone().appendTo('.admintabs-new')
+                    }
+                    $('.admintabs-new').removeClass('admintabs-new');
+                    $('#admintabs-add a').popover('hide');
+                }).fail(function (jqXHR, textStatus) {
+                    alert('Request failed: ' + textStatus);
+                });
             });
         });
 
@@ -134,8 +137,9 @@
 
         $('#modulelist').sortable({
             cursor: 'move',
+            placeholder: 'ui-state-highlight',
             update: function(event, ui) {
-                var modules = new Array();
+                var modules = [];
                 $('#modulelist li').each( function() {
                     var modid = $(this).data('modid');
                     if (modid !== undefined) {
@@ -161,32 +165,11 @@
             var containerTop = container.position().top;
             var itemTop = $(this).parent().position().top;
             var availableHeight = container.height() - (itemTop-containerTop);
-            var neededHeight = $(this).parent().find('ul').height()+10;
+            var neededHeight = $(this).parent().find('ul').height() + 10;
             if (neededHeight > availableHeight) {
                 container.height(container.height() + neededHeight - availableHeight + 30);
             }
         });
-
-        /*******************************************************************************
-         * Click and mouse over dropdown hack
-         *******************************************************************************/
-
-        /*$('#admintabs .fa-caret-down').click(function (event) {
-            event.preventDefault();
-            var li =  $(this).parent().parent()
-            var dropdown = li.find('.dropdown-menu');
-            dropdown.stop(true, true).delay(200).fadeIn();
-            li.bind("mouseleave", function() {
-                dropdown.stop(true, true).delay(200).fadeOut();
-            });
-        });
-
-        /*$('ul.nav-mouseover li.dropdown').hover(function() {
-            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn();
-        }, function() {
-            $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut();
-        });
-        */
 
         /*******************************************************************************
          * Lock/Unlock
@@ -222,8 +205,8 @@
                 url: Routing.generate('zikulaadminmodule_ajax_defaultcategory'),
                 data: { cid: catid }
             }).done(function () {
-                $('.admintabs-makedefault').removeClass('hide');
-                elem.addClass('hide');
+                $('.admintabs-makedefault').removeClass('d-none');
+                elem.addClass('d-none');
             }).fail(function (jqXHR, textStatus) {
                 alert('Request failed: ' + textStatus);
             });

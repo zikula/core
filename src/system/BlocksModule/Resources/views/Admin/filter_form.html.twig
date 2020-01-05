@@ -3,9 +3,9 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ form_start(filterForm) }}
-    <fieldset{% if filter_active %} class='filteractive'{% endif %}>
-        {% if filter_active %}{% set filteractive = __('active') %}{% else %}{% set filteractive = __('inactive') %}{% endif %}
-        <legend style="margin-bottom:0">{{ __f("Filter %active%", { '%active%': filteractive } ) }}</legend>
+    <fieldset{% if filter_active %} class="filteractive"{% endif %}>
+        {% set filteractive = filter_active ? __('active') : __('inactive') %}
+        <legend class="mb-0">{{ __f('Filter %active%', {'%active%': filteractive} ) }}</legend>
         <strong>{{ __('Position') }}</strong> {{ form_widget(filterForm.position) }}&nbsp;&nbsp;
         <strong>{{ __('Module') }}</strong> {{ form_widget(filterForm.module) }}&nbsp;&nbsp;
         <strong>{{ __('Language') }}</strong> {{ form_widget(filterForm.language) }}&nbsp;&nbsp;

@@ -1,7 +1,6 @@
 /******************************************************************************
-* Admin area (introduced in Core 1.3)
-* This single container replaces the old 'z-adminbox' and 'z-admincontainer'
-******************************************************************************/
+ * Admin area (introduced in Core 1.3)
+ ******************************************************************************/
 
 #z-maincontent div.z-admin-content {
     background: #fff;
@@ -20,8 +19,6 @@
 * Styling for all general headers in the entire admin box.
 ******************************************************************************/
 
-#z-maincontent div.z-admincontainer h2, /* BC */
-#z-maincontent div.z-admincontainer h3, /* BC */
 #z-maincontent div.z-admin-content h2,
 #z-maincontent div.z-admin-content h3 {
     background: none;
@@ -149,27 +146,6 @@ div#z-updatechecker > i.close {
    margin-top: -2px;
 }
 
-/* Used to style the cancel delete button when asking for a confirmation */
-div.canceldelete-container {
-    margin: 0 auto;
-    color: inherit;
-    background-color: #ffffea;
-    width: 30%;
-    text-align: center;
-    border: 1px solid #cccccc;
-    padding: 10px 0px 10px 0px;
-}
-
-div.canceldelete-container h2 {
-    color: gray;
-    background-color: inherit;
-    display: inline;
-}
-
-div.canceldelete-container img {
-    float: left;
-}
-
 /******************************************************************************
 * Admin category description
 ******************************************************************************/
@@ -191,176 +167,54 @@ div.z-admincategorydescription {
 }
 
 /******************************************************************************
-* Disabled admin function links
-******************************************************************************/
-
-div.z-admincontainer a.z-disabledadminlink, /* BC */
-div.z-adminbox a.z-disabledadminlink,       /* BC */
-div.z-admin-content a.z-disabledadminlink {
-    text-decoration: line-through;
-}
-
-/******************************************************************************
-* Styling for noscript category propertly selector label
-******************************************************************************/
-
-div.property_selector_noscript {
-    display: inline;
-}
-
-/******************************************************************************
-* Backwards compatibility for Zikula 1.2 modules: Header area
-******************************************************************************/
-
-#z-maincontent div.z-adminbox>img {
-    float: left;
-    margin-right: 10px;
-}
-
-#z-maincontent div.z-adminbox h1 {
-    background: none;
-    color: #333;
-    font-size: 24px;
-    font-weight: normal;
-    line-height: 36px;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-}
-
-#z-maincontent div.z-adminbox h1:after {
-    /* clearfix */
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-}
-
-#z-maincontent div.z-adminpageicon {
-    padding-bottom: 10px;
-}
-
-#z-maincontent div.z-adminpageicon img {
-    float: left;
-    margin-right: 5px;
-    max-height: 22px;
-    max-width: 22px;
-    padding-top: 12px;
-}
-
-#z-maincontent div.z-adminpageiconh2 {
-    background: none;
-    border-bottom: 1px solid #EEEEEE;
-    color: #333333;
-    font-size: 18px;
-    font-weight: normal;
-    line-height: 22px;
-    margin: 0 0 10px;
-    padding: 0 0 1px;
-    text-align: left;
-}
-
-#z-maincontent div.z-admincontainer h2* {
-    clear: both;
-}
-
-/******************************************************************************
-* Backwards compatibility for Zikula 1.2 modules:
-* Upper half of the admin box: For immediate template under the tab menu.
-******************************************************************************/
-
-div.z-adminbox {
-    background: #fff;
-    color: #333;
-    width: auto;
-    border: none;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    padding: 10px 1% 5px 1%;
-}
-
-#z-maincontent div.z-adminbox .navbar .navbar-default,
-#z-maincontent div.z-adminbox .z-menu {
-    margin: 0.5em 0 0;
-}
-
-/******************************************************************************
-* Backwards compatibility for Zikula 1.2 modules:
-* Lower half of the admin box: For immediate template under the admin menu.
-******************************************************************************/
-
-div.z-admincontainer {
-    background: #fff;
-    color: #333;
-    width: auto;
-    margin-bottom: 1.25em;
-    border: 1px solid #ccc;
-    border-top: none;
-    padding: 0px 1% 5px 1%;
-}
-
-/******************************************************************************
 * Admin tab
 ******************************************************************************/
 
 .nav-tabs-admin > li > a {
     padding: 5px 10px;
-    color: black;
+    color: #000;
 }
 
 .nav-tabs-admin > li {
     margin: 0 2px -1px 0;
 }
 
-.nav-tabs-admin > .active {
-    font-weight: bold;
+.nav-tabs-admin > li > .active {
+    font-weight: 700;
 }
-
 
 .nav-tabs-admin .popover {
-    width:300px;
-}
-
-#admintabs {
-    margin: 0;
+    width: 300px;
 }
 
 .admintabs-dropover {
-    background-color: orange!important
+    background-color: orange !important;
 }
 
 .admintabs-lock {
-    display: none!important
+    display: none !important;
 }
 
-li.admintabs-add {
-    float: right;
+#admintabs > li {
+    /* required for sortable */
+    float: left;
 }
 
-#admintabs-locker {
-    float: right;
-    margin-right: -2px;
+#admintabs .ui-state-highlight {
+    min-width: 100px;
 }
 
 #admintabs .dropdown-menu {
-    margin: 0;
-    padding: 0;
     font-size: 95%;
     z-index: 1002; /* modulelinks */
 }
 
 #admintabs .dropdown-menu > li {
-    margin: 0px;
+    padding: 0;
 }
-
 #admintabs .dropdown-menu > li > a {
-    margin: 0px;
-    padding: 7px;
-}
-
-#admintabs .dropdown-menu .icon {
-    padding:0 17px 0 3px
+    display: block;
+    padding: 4px 10px;
 }
 
 /******************************************************************************
@@ -368,28 +222,29 @@ li.admintabs-add {
 ******************************************************************************/
 
 #modulelist {
-  padding-left: 0;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
-  list-style: none;
+    padding-left: 0;
+    padding-bottom: 0px;
+    margin-bottom: 20px;
+    list-style: none;
 }
 
 #modulelist > li {
-  float: left;
-  width: 100%;
-  padding: 10px;
-  margin: 0 -1px 10px 0;
-  font-size: 12px;
-  line-height: 1.4;
+    float: left;
+    width: 100%;
+    padding: 10px;
+    margin: 0 -1px 10px 0;
+    font-size: 14px;
+    line-height: 1.4;
 }
 
 #modulelist img {
     float: left;
-    background: inherit;
-    border-color: #D9E0E6 #C8CDD2 #C8CDD2 #D9E0E6;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #ccc;
     padding: 4px;
+}
+
+#modulelist .ui-state-highlight {
+    min-height: 60px;
 }
 
 #modulelist > li > div {
@@ -399,19 +254,26 @@ li.admintabs-add {
 
 #modulelist .dropdown-menu {
     margin: 0;
-    padding: 0;
+    padding: 3px;
     font-size: 95%;
 }
+#modulelist .dropdown-menu > li {
+    padding: 0;
+}
 
+#modulelist .dropdown-menu > li > a {
+    display: block;
+    padding: 2px 7px;
+}
 
 @media (min-width: 550px) {
-  #modulelist > li {
-    width: 50%;
-  }
+    #modulelist > li {
+        width: 50%;
+    }
 }
 
 @media (min-width: 950px) {
-  #modulelist > li {
-    width: 33%;
-  }
+    #modulelist > li {
+        width: 33%;
+    }
 }

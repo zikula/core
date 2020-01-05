@@ -27,7 +27,7 @@ function zikulaRoutesHandleFormSubmit(event) {
 
     // hide form buttons to prevent double submits by accident
     formButtons.each(function (index) {
-        jQuery(this).addClass('hidden');
+        jQuery(this).addClass('d-none');
     });
 
     return true;
@@ -46,13 +46,13 @@ function zikulaRoutesInitEditForm(mode, entityId) {
     editedEntityId = entityId;
 
     if (jQuery('#moderationFieldsSection').length > 0) {
-        jQuery('#moderationFieldsContent').addClass('hidden');
+        jQuery('#moderationFieldsContent').addClass('d-none');
         jQuery('#moderationFieldsSection legend').addClass('pointer').click(function (event) {
-            if (jQuery('#moderationFieldsContent').hasClass('hidden')) {
-                jQuery('#moderationFieldsContent').removeClass('hidden');
+            if (jQuery('#moderationFieldsContent').hasClass('d-none')) {
+                jQuery('#moderationFieldsContent').removeClass('d-none');
                 jQuery(this).find('i').removeClass('fa-expand').addClass('fa-compress');
             } else {
-                jQuery('#moderationFieldsContent').addClass('hidden');
+                jQuery('#moderationFieldsContent').addClass('d-none');
                 jQuery(this).find('i').removeClass('fa-compress').addClass('fa-expand');
             }
         });

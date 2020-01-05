@@ -85,6 +85,7 @@ class AdminCreatedUserType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'label' => $this->__('Set password now'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'alert' => [$this->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
             ])
             ->add('pass', RepeatedType::class, [
@@ -107,6 +108,7 @@ class AdminCreatedUserType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'label' => $this->__('Send password via email'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'alert' => [
                     $this->__('Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.') => 'warning',
                     $this->__('Even if you choose to not send the user\'s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.') => 'info'
@@ -116,17 +118,20 @@ class AdminCreatedUserType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'label' => $this->__('Send welcome message to user'),
+                'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('adminnotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'label' => $this->__('Notify administrators'),
+                'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('usermustverify', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'data' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED),
                 'label' => $this->__('User must verify email address'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'help' => $this->__('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
                 'alert' => [$this->__('It is recommended to force users to verify their email address.') => 'info']
             ])

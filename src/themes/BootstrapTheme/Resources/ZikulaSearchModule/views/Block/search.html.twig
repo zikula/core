@@ -1,18 +1,17 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
-
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <div class="input-group">
     {{ form_widget(form.q) }}
-    <span class="input-group-btn">
-        <button class="btn btn-default" name="{{ form.search.vars.full_name }}" type="submit"><i class="fa fa-search"></i></button>
+    <span class="input-group-addon">
+        <button class="btn btn-outline-secondary" name="{{ form.search.vars.full_name }}" type="submit"><i class="fa fa-search"></i></button>
     </span>
 </div>
-<div class="hidden">
+<div class="d-none">
     {{ form_row(form.searchType) }}
     {{ form_row(form.searchOrder) }}
     {{ form_row(form.modules) }}

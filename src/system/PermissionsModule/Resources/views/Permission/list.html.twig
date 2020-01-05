@@ -1,5 +1,5 @@
 {% set scriptInit %}
-    <script type="text/javascript">
+    <script>
         // some defines
         var adminpermission = {{ adminId }};
         var lockadmin = {{ lockadmin }};
@@ -9,14 +9,12 @@
 {{ pageAddAsset('stylesheet', asset('jquery-ui/themes/base/jquery-ui.min.css')) }}
 {{ pageAddAsset('javascript', asset('jquery-ui/jquery-ui.min.js')) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaPermissionsModule:js/Zikula.Permission.Admin.View.js')) }}
-
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Permission rules list') }}
     {{ pageSetVar('title', __('Permission rules list')) }}
 </h3>
-
 {% if enableFilter %}
     {% form_theme filterForm with [
         '@ZikulaCategoriesModule/Form/filter_layout_customizations.html.twig',
@@ -24,7 +22,7 @@
     ] %}
     {{ form_start(filterForm) }}
     <fieldset>
-        <legend style="margin-bottom:0">{{ __("Filter") }}</legend>
+        <legend class="mb-0">{{ __('Filter') }}</legend>
         {{ form_widget(filterForm.filterGroup) }}
         {{ form_widget(filterForm.filterComponent) }}
         {{ form_widget(filterForm.reset) }}
@@ -32,7 +30,8 @@
     {{ form_end(filterForm) }}
 {% endif %}
 
-<table id="permission-list" class="table table-striped">
+<div class="table-responsive">
+<table id="permission-list" class="table table-sm table-bordered table-striped">
     <colgroup>
         <col id="cPosition" />
         <col id="cId" />
@@ -48,11 +47,11 @@
             <th id="hId" scope="col" class="text-left">{{ __('ID') }}</th>
             <th id="hGroup" scope="col" class="text-left">
                 {{ __('Group') }}
-                <em id="filter-warning-group" style="display: none; color: red; vertical-align: top"> ({{ __('filtered') }})</em>
+                <span id="filter-warning-group" class="d-none text-danger"> ({{ __('filtered') }})</span>
             </th>
             <th id="hComponent" scope="col" class="text-left">
                 {{ __('Component') }}
-                <em id="filter-warning-component" style="display: none; color: red; vertical-align: top"> ({{ __('filtered') }})</em>
+                <span id="filter-warning-component" class="d-none text-danger"> ({{ __('filtered') }})</span>
             </th>
             <th id="hInstance" scope="col" class="text-left">
                 {{ __('Instance') }}
@@ -71,10 +70,11 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 {% form_theme permissionCheckForm with [
-'bootstrap_3_horizontal_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    'bootstrap_4_horizontal_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ form_start(permissionCheckForm) }}
 {{ form_errors(permissionCheckForm) }}
@@ -85,11 +85,11 @@
     {{ form_row(permissionCheckForm.instance) }}
     {{ form_row(permissionCheckForm.level) }}
     <div class="form-group">
-        <div class="help-block col-sm-offset-3 col-sm-9" id="permission-test-info" data-testing="{{ __('Testing permission...') }}">
+        <div class="form-text col-md-9 offset-md-3 font-weight-bold" id="permission-test-info" data-testing="{{ __('Testing permission...') }}">
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
             {{ form_widget(permissionCheckForm.check) }}
             {{ form_widget(permissionCheckForm.reset) }}
         </div>
@@ -98,14 +98,14 @@
 {{ form_end(permissionCheckForm) }}
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">{{ __('Permission') }}</h5>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ __('Close') }}</span></button>
-                <h4 class="modal-title" id="editModalLabel">{{ __('Permission') }}</h4>
             </div>
             <div class="modal-body">
-                empty
+                {# empty #}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa fa-times'></i> {{ __('Close') }}</button>
@@ -114,13 +114,12 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="instanceInfoModal" tabindex="-1" role="dialog" aria-labelledby="instanceInfoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title" id="instanceInfoModalLabel">{{ __('Permission rule information') }}</h5>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">{{ __('Close') }}</span></button>
-                <h4 class="modal-title" id="instanceInfoModalLabel">{{ __('Permission rule information') }}</h4>
             </div>
             <div class="modal-body">
                 {{ include('@ZikulaPermissionsModule/Permission/instanceinfo.html.twig') }}
@@ -128,13 +127,12 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
+                <h5 class="modal-title" id="deleteModalLabel">{{ __('Do you really want to delete this permission rule?') }}</h5>
                 <button type="button" class="close" data-dismiss="modal"><span aria-hiddenq="true">&times;</span><span class="sr-only">{{ __('Close') }}</span></button>
-                <h4 class="modal-title" id="deleteModalLabel">{{ __('Do you really want to delete this permission rule?') }}</h4>
             </div>
             <div class="modal-footer">
                 <button id="confirm-delete-permission" type="button" class="btn btn-danger" data-dismiss="modal">{{ __('Yes') }}</button>
@@ -143,5 +141,4 @@
         </div>
     </div>
 </div>
-
 {{ adminFooter() }}

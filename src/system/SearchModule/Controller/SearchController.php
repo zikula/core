@@ -15,10 +15,13 @@ namespace Zikula\SearchModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Response\PlainResponse;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -39,6 +42,9 @@ class SearchController extends AbstractController
      */
     public function executeAction(
         Request $request,
+        RouterInterface $router,
+        FormFactoryInterface $formFactory,
+        ZikulaHttpKernelInterface $kernel,
         SearchableModuleCollector $collector,
         SearchApiInterface $searchApi,
         int $page = -1
@@ -61,7 +67,7 @@ class SearchController extends AbstractController
             return $this->render('@ZikulaSearchModule/Search/unsearchable.html.twig');
         }
 
-        $moduleFormBuilder = $this->get('form.factory')
+        $moduleFormBuilder = $formFactory
             ->createNamedBuilder('modules', FormType::class, [], [
                 'auto_initialize' => false,
                 'required' => false
@@ -78,7 +84,7 @@ class SearchController extends AbstractController
                 continue;
             }
             $moduleFormBuilder->add($moduleName, AmendableModuleSearchType::class, [
-                'label' => $this->get('kernel')->getModule($moduleName)->getMetaData()->getDisplayName(),
+                'label' => $kernel->getModule($moduleName)->getMetaData()->getDisplayName(),
                 'active' => !$setActiveDefaults || (isset($activeModules[$moduleName]) && (1 === $activeModules[$moduleName]))
             ]);
             $searchableInstance->amendForm($moduleFormBuilder->get($moduleName));
@@ -101,7 +107,7 @@ class SearchController extends AbstractController
                 $templateParameters = array_merge($formData, [
                     'resultCount' => $result['resultCount'],
                     'results' => $result['sqlResult'],
-                    'router' => $this->get('router'),
+                    'router' => $router,
                     'limitSummary' => $this->getVar('limitsummary', 200),
                     'errors' => $searchApiErrors ?? []
                 ]);

@@ -42,27 +42,32 @@ class ExportUsersType extends AbstractType
         $builder
             ->add('title', CheckboxType::class, [
                 'label' => $this->__('Export title row'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('email', CheckboxType::class, [
                 'label' => $this->__('Export email address'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('user_regdate', CheckboxType::class, [
                 'label' => $this->__('Export registration date'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('lastlogin', CheckboxType::class, [
                 'label' => $this->__('Export last login date'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('groups', CheckboxType::class, [
-                'required' => false,
                 'label' => $this->__('Export group memberships'),
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
             ])
             ->add('filename', TextType::class, [
                 'label' => $this->__('CSV filename'),

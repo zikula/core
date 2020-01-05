@@ -16,22 +16,22 @@
             <em>{{ __('Invalid users cannot be migrated unless their data is manually corrected. The errors are posted to the logfile.') }}</em>
         </div>
         <div class="progress" id="progress-bar">
-            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
-                <span class="sr-only">{{  __("Progress bar") }}</span>
+            <div class="progress-bar bg-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0">
+                <span class="sr-only">{{ __('Progress bar') }}</span>
             </div>
         </div>
         <div class="alert alert-info">{{ __f('There are %f users to try to migrate.', {'%f': count}) }}</div>
-        <div class="text-center"><i id='spinner' class="fa fa-cog fa-2x fa-spin fa-fw" style="display: none"></i> <button id="migrate" class="btn btn-lg btn-success">{{ __('Begin migration') }}</button></div>
+        <div class="text-center"><i id="spinner" class="fa fa-cog fa-2x fa-spin fa-fw" class="d-none"></i> <button id="migrate" class="btn btn-lg btn-success">{{ __('Begin migration') }}</button></div>
     </div>
 </div>
 <script>
     (function($) {
         $(document).ready(function() {
-            $("#migrate").on("click", function() {
-                $('#spinner').show();
+            $('#migrate').on('click', function() {
+                $('#spinner').removeClass('d-none');
                 $(this).addClass('disabled');
                 $(this).bind('click', false);
-                migrate()
+                migrate();
             });
             function migrate() {
                 $.ajax({

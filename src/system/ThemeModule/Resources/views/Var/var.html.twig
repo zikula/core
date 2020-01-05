@@ -1,19 +1,15 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-wrench"></span>
-            {{ themeName }} {{ __('Theme config') }}
-            {{ pageSetVar('title', __('Theme configuration')) }}
-        </h3>
-        {{ showflashes() }}
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
-</div>
+<h3>
+    <span class="fa fa-wrench"></span>
+    {{ themeName }} {{ __('Theme config') }}
+    {{ pageSetVar('title', __('Theme configuration')) }}
+</h3>
+{{ showflashes() }}
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
 {{ adminFooter() }}

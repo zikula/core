@@ -1,6 +1,6 @@
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <h3>
@@ -16,8 +16,8 @@
     {{ form_row(form.file) }}
     {{ form_row(form.delimiter) }}
 </fieldset>
-<div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
         {{ form_widget(form.upload) }}
         {{ form_widget(form.cancel) }}
     </div>
@@ -32,7 +32,6 @@
     </dl>
     <dl>
         <dt>{{ __('where:') }}</dt>
-
         <dd>* uname{{ __(' (mandatory) - The user name. This value must be unique.') }}</dd>
         <dd>* pass{{ __f(' (mandatory) - The user password. It must have %sub% characters or more. Preferentially containing letters and numbers.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))}) }}</dd>
         <dd>* email{{ __(' (mandatory) - The user email. If the validation method is based on the user email this value must be unique.') }}</dd>

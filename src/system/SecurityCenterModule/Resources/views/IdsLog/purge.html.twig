@@ -1,40 +1,34 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-trash-alt"></span>
-            {{ __('Purge IDS log') }}
-            {{ pageSetVar('title', __('Purge IDS log')) }}
-        </h3>
+<h3>
+    <span class="fa fa-trash-alt"></span>
+    {{ __('Purge IDS log') }}
+    {{ pageSetVar('title', __('Purge IDS log')) }}
+</h3>
 
-        <div class="navbar navbar-default navbar-modulelinks">
-            <ul class="navbar-nav">
-                <li><a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a csv file') }}" class="fa fa-arrow-alt-circle-down"> {{ __('Export IDS Log') }}</a></li>
-                <li class="active"><span class="fa fa-trash-alt"> {{ __('Purge IDS Log') }}</span></li>
-            </ul>
+<ul class="nav nav-modulelinks">
+    <li class="nav-item">
+        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{{ __('Download the entire log to a CSV file') }}" class="nav-link"><i class="fa fa-download"></i> {{ __('Export IDS Log') }}</a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{{ __('Delete the entire log.') }}" class="nav-link active"><i class="fa fa-trash-alt"></i> {{ __('Purge IDS Log') }}</a>
+    </li>
+</ul>
+
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Confirmation prompt') }}</legend>
+    <p class="alert alert-warning">{{ __('Do you really want to delete the entire IDS log?') }}</p>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            {{ form_widget(form.delete) }}
+            {{ form_widget(form.cancel) }}
         </div>
-
-        <p class="alert alert-warning">{{ __('Do you really want to delete the entire IDS log?') }}</p>
-
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-
-        <fieldset>
-            <legend>{{ __('Confirmation prompt') }}</legend>
-
-            <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
-                    {{ form_widget(form.delete) }}
-                    {{ form_widget(form.cancel) }}
-                </div>
-            </div>
-        </fieldset>
-
-        {{ form_end(form) }}
     </div>
-</div>
+</fieldset>
+{{ form_end(form) }}
 {{ adminFooter() }}

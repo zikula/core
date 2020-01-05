@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\AtomTheme;
 
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
 class ZikulaAtomTheme extends AbstractCoreTheme
@@ -23,7 +24,10 @@ class ZikulaAtomTheme extends AbstractCoreTheme
      */
     public function generateThemedResponse(string $realm, Response $response, string $moduleName = null): Response
     {
-        $output = $this->getContainer()->get('twig')->render('ZikulaAtomTheme::master.html.twig', ['maincontent' => $response->getContent()]);
+        /* @var Environment $twig */
+        $twig = $this->getContainer()->get('twig');
+
+        $output = $twig->render('@ZikulaAtomTheme/master.html.twig', ['maincontent' => $response->getContent()]);
         $newResponse = new Response($output);
         $newResponse->headers->add(['Content-type' => 'application/atom+xml']);
 

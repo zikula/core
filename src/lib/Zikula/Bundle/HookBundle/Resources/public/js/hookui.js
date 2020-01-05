@@ -5,33 +5,6 @@ var removeItemBeforeResponse = true;
 var cloneDraggedItem = true;
 
 ( function($) {
-    /**
-     * Sets z-odd / z-even on each li after append, move and delete.
-     *
-     * @param   {String} listclass   Class applied to the list of items.
-     * @param   {String} headerclass Class applied to the header of the list.
-     *
-     * @return  void
-     */
-    var recolorListElements = function(listclass, headerclass) {
-        var odd = true;
-
-        $('.' + listclass).children().each(function(index) {
-            var elem = $(this);
-            if (!elem.hasClass(headerclass)) {
-                elem.removeClass('z-odd');
-                elem.removeClass('z-even');
-
-                if (true === odd) {
-                    elem.addClass('z-odd');
-                } else {
-                    elem.addClass('z-even');
-                }
-                odd = !odd;
-            }
-        });
-    };
-
     var initHookAccordion = function(containerId) {
         $('#' + containerId + ' h4').addClass('z-panel-header z-pointer');
         $('#' + containerId).accordion({
@@ -52,7 +25,8 @@ var cloneDraggedItem = true;
             .draggable({
                 cursor: 'move',
                 revert: true
-            });
+            })
+        ;
 
         initAreasDroppables();
 
@@ -196,7 +170,7 @@ var cloneDraggedItem = true;
         var newContent = newItem.html();
         newContent = newContent.replace(new RegExp('availablearea_', 'g'), 'attachedarea_');
         newContent = newContent.replace(new RegExp('sarea_identifier', 'g'), sarea_id);
-        newContent = newContent.replace(' hide', '');
+        newContent = newContent.replace(' d-none', '');
         newContent = newContent.replace('##id', sarea_id);
         newContent = newContent.replace('##name', sarea_name);
         newItem.html(newContent);
@@ -217,8 +191,8 @@ var cloneDraggedItem = true;
         );
 
         // hide empty_area if it is visible
-        if (!emptyArea.hasClass('hide')) {
-            emptyArea.addClass('hide');
+        if (!emptyArea.hasClass('d-none')) {
+            emptyArea.addClass('d-none');
         }
 
         // append dragged item to our list
@@ -230,9 +204,6 @@ var cloneDraggedItem = true;
 
         // create the dropable area
         createDroppable('sarea_' + sarea_id);
-
-        // recolor
-        recolorListElements(areaListToAttachTo.attr('id'), 'z-itemheader');
     };
 
     /**
@@ -253,13 +224,10 @@ var cloneDraggedItem = true;
 
         // if there no more areas attached, show empty_area
         if (1 > amountOfAttachedAreas) {
-            $('#sarea_empty_' + sarea_id).removeClass('hide');
+            $('#sarea_empty_' + sarea_id).removeClass('d-none');
         } else {
             areaToDetachFrom.css('height', (areaToDetachFrom.height() - heightOfDetachedArea) + 'px');
         }
-
-        // recolor
-        recolorListElements(areaToDetachFrom.attr('id'), 'z-itemheader');
     };
 
     /**
@@ -289,8 +257,7 @@ var cloneDraggedItem = true;
             url: Routing.generate('zikula_hook_hook_changeproviderareaorder'),
             data: parameters
         }).done(function (data) {
-            // update new sort order
-            recolorListElements(listId, $('#' + listId).down(0).attr('id'));
+            // nothing
         }).fail(function (jqXHR, textStatus) {
             alert('Request failed: ' + textStatus);
         });

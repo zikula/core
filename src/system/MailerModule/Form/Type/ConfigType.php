@@ -91,6 +91,7 @@ class ConfigType extends AbstractType
             ])
             ->add('html', CheckboxType::class, [
                 'label' => $this->__('HTML-formatted messages'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('wordwrap', IntegerType::class, [
@@ -102,6 +103,7 @@ class ConfigType extends AbstractType
             ])
             ->add('enableLogging', CheckboxType::class, [
                 'label' => $this->__('Enable logging of sent mail'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('host', TextType::class, [

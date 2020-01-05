@@ -5,7 +5,7 @@
 {% block content %}
     <div>
         <fieldset>
-            <legend>{{ __("PHP") }}</legend>
+            <legend>{{ __('PHP') }}</legend>
             <ul class="systemrequirements text-left">
                 {% if checks.phpsatisfied %}
                 <li><span class="fa fa-fw fa-check text-success"></span> {{ __f("Your PHP version is %s.", {'%s': checks.phpversion }) }}</li>
@@ -28,7 +28,6 @@
         </fieldset>
 
         {# Use the current path as the link here, because this template is used both in the installer and the upgrader with a different route. #}
-        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn btn-danger btn-lg"><i class="fa fa-fw fa-repeat"></i> {{ __("Check requirements again") }}</a>
-
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn btn-danger btn-lg"><i class="fa fa-fw fa-repeat"></i> {{ __('Check requirements again') }}</a>
     </div>
 {% endblock %}

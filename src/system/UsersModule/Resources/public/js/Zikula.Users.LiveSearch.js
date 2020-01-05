@@ -10,12 +10,12 @@ function initUserLiveSearch(fieldName)
         jQuery('#' + fieldName).val('');
         jQuery('#' + fieldName + 'Selector').val('');
         jQuery('#' + fieldName + 'Avatar').text('');
-    }).removeClass('hidden');
+    }).removeClass('d-none');
 
     if (jQuery('#' + fieldName + 'LiveSearch').length < 1) {
         return;
     }
-    jQuery('#' + fieldName + 'LiveSearch').removeClass('hidden');
+    jQuery('#' + fieldName + 'LiveSearch').removeClass('d-none');
 
     jQuery('#' + fieldName + 'Selector').autocomplete({
         minLength: 1,

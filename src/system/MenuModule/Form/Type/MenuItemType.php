@@ -62,7 +62,7 @@ class MenuItemType extends AbstractType
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => 'Options',
+                'label' => $this->__('Options'),
                 'required' => false
             ])
             ->add('after', HiddenType::class, [

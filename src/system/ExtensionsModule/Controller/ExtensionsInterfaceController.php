@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
@@ -31,10 +32,13 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Module header
      */
-    public function headerAction(ExtensionRepositoryInterface $extensionRepository, Asset $assetHelper): Response
-    {
-        $currentRequest = $this->get('request_stack')->getCurrentRequest();
-        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+    public function headerAction(
+        RequestStack $requestStack,
+        ExtensionRepositoryInterface $extensionRepository,
+        Asset $assetHelper
+    ): Response {
+        $currentRequest = $requestStack->getCurrentRequest();
+        $caller = $requestStack->getMasterRequest()->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
         $adminImagePath = $assetHelper->resolve('@' . $caller['_zkModule'] . ':images/admin.png');
 
@@ -55,10 +59,10 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Module footer
      */
-    public function footerAction(): Response
+    public function footerAction(RequestStack $requestStack): Response
     {
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/footer.html.twig', [
-            'caller' => $this->get('request_stack')->getMasterRequest()->attributes->all()
+            'caller' => $requestStack->getMasterRequest()->attributes->all()
         ]);
     }
 
@@ -77,9 +81,11 @@ class ExtensionsInterfaceController extends AbstractController
      *
      * Admin breadcrumbs
      */
-    public function breadcrumbsAction(ExtensionRepositoryInterface $extensionRepository): Response
-    {
-        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+    public function breadcrumbsAction(
+        RequestStack $requestStack,
+        ExtensionRepositoryInterface $extensionRepository
+    ): Response {
+        $caller = $requestStack->getMasterRequest()->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
 
         return $this->render('@ZikulaExtensionsModule/ExtensionsInterface/breadcrumbs.html.twig', [
@@ -93,14 +99,15 @@ class ExtensionsInterfaceController extends AbstractController
      * Open the admin container
      */
     public function linksAction(
+        RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
         LinkContainerCollector $linkCollector
     ): Response {
         /** @var Request $masterRequest */
-        $masterRequest = $this->get('request_stack')->getMasterRequest();
+        $masterRequest = $requestStack->getMasterRequest();
         /** @var Request $currentRequest */
-        $currentRequest = $this->get('request_stack')->getCurrentRequest();
-        $caller = $this->get('request_stack')->getMasterRequest()->attributes->all();
+        $currentRequest = $requestStack->getCurrentRequest();
+        $caller = $requestStack->getMasterRequest()->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
@@ -122,7 +129,7 @@ class ExtensionsInterfaceController extends AbstractController
         // menu css
         $menu_css = [
             'menuId' => $currentRequest->attributes->get('menuid', ''),
-            'menuClass' => '' !== $currentRequest->attributes->get('menuclass') ? $currentRequest->attributes->get('menuclass') : 'navbar-nav',
+            'menuClass' => $currentRequest->attributes->get('menuclass', ''),
             'menuItemClass' => $currentRequest->attributes->get('itemclass', ''),
             'menuFirstItemClass' => $currentRequest->attributes->get('first', ''),
             'menuLastItemClass' => $currentRequest->attributes->get('last', '')

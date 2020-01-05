@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaCategoriesModule:js/ZikulaCategoriesModule.Registry.Edit.js')) }}
 {% form_theme form with [
-'@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
-'@ZikulaFormExtension/Form/form_div_layout.html.twig'
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 <h3>
@@ -11,67 +11,66 @@
 </h3>
 
 {{ form_start(form) }}
-    <div>
-        <table class="table table-bordered table-striped">
-            <colgroup>
-                <col id="cId" />
-                <col id="cModule" />
-                <col id="cEntity" />
-                <col id="cProperty" />
-                <col id="cCategory" />
-                <col id="cActions" />
-            </colgroup>
-            <thead>
-                <tr>
-                    <th id="hId" scope="col"><label>ID</label></th>
-                    <th id="hModule" scope="col"><label>{{ form_label(form.modname) }}</label></th>
-                    <th id="hEntity" scope="col"><label>{{ form_label(form.entityname) }}</label></th>
-                    <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
-                    <th id="hCategory" scope="col"><label>{{ form_label(form.category) }}</label></th>
-                    <th id="hActions" scope="col"><label>{{ __('Actions') }}</label></th>
-                </tr>
-            </thead>
-            <tbody>
-            {% if form.vars.value.id is empty %}
-                {% for registry in registries %}
-                <tr>
-                    <td headers="hId">{{ registry.id }}</td>
-                    {#modgetinfo assign='dModname' info='displayname' modname=$registry.modname default=$registry.modname#}
-                    <td headers="hModule">{# dModname #}{{ registry.modname }}</td>
-                    <td headers="hEntity">{% if registry.entityname|default %}{{ registry.entityname }}{% endif %}</td>
-                    <td headers="hProperty">{{ registry.property }}</td>
-                    <td headers="hCategory">{{ registry.category.display_name(app.request.locale) }}</td>
-                    <td headers="hActions" class="actions">
-                        <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', { id: registry.id }) }}" title="{{ __('Edit') }}" ></a>
-                        <a class="fa fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', { id: registry.id }) }}" title="{{ __('Delete') }}"></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            {% endif %}
-                <tr>
-                    <td headers="hId"></td>
-                    <td headers="hModule">
-                        {{ form_widget(form.modname) }}
-                    </td>
-                    <td headers="hEntity">
-                        {{ form_widget(form.entityname) }}<i class="fa fa-cog fa-spin fa-fw hidden text-muted" id="entity-loading"></i>
-                    </td>
-                    <td headers="hProperty">
-                        {{ form_widget(form.property) }}
-                    </td>
-                    <td headers="hCategory">
-                        {{ form_widget(form.category) }}
-                    </td>
-                    <td headers="hActions">&nbsp;</td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.save) }}
-                {{ form_widget(form.cancel) }}
-            </div>
+<div>
+    <table class="table table-bordered table-striped">
+        <colgroup>
+            <col id="cId" />
+            <col id="cModule" />
+            <col id="cEntity" />
+            <col id="cProperty" />
+            <col id="cCategory" />
+            <col id="cActions" />
+        </colgroup>
+        <thead>
+            <tr>
+                <th id="hId" scope="col"><label>ID</label></th>
+                <th id="hModule" scope="col"><label>{{ form_label(form.modname) }}</label></th>
+                <th id="hEntity" scope="col"><label>{{ form_label(form.entityname) }}</label></th>
+                <th id="hProperty" scope="col"><label>{{ form_label(form.property) }}</label></th>
+                <th id="hCategory" scope="col"><label>{{ form_label(form.category) }}</label></th>
+                <th id="hActions" scope="col"><label>{{ __('Actions') }}</label></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if form.vars.value.id is empty %}
+            {% for registry in registries %}
+            <tr>
+                <td headers="hId">{{ registry.id }}</td>
+                <td headers="hModule">{# to be improved: use module's display name here #}{{ registry.modname }}</td>
+                <td headers="hEntity">{% if registry.entityname|default %}{{ registry.entityname }}{% endif %}</td>
+                <td headers="hProperty">{{ registry.property }}</td>
+                <td headers="hCategory">{{ registry.category.display_name(app.request.locale|default('en')) }}</td>
+                <td headers="hActions" class="actions">
+                    <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', {id: registry.id}) }}" title="{{ __('Edit') }}" ></a>
+                    <a class="fa fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', {id: registry.id}) }}" title="{{ __('Delete') }}"></a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+            <tr>
+                <td headers="hId"></td>
+                <td headers="hModule">
+                    {{ form_widget(form.modname) }}
+                </td>
+                <td headers="hEntity">
+                    {{ form_widget(form.entityname) }}<i class="fa fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
+                </td>
+                <td headers="hProperty">
+                    {{ form_widget(form.property) }}
+                </td>
+                <td headers="hCategory">
+                    {{ form_widget(form.category) }}
+                </td>
+                <td headers="hActions">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
+            {{ form_widget(form.save) }}
+            {{ form_widget(form.cancel) }}
         </div>
     </div>
+</div>
 {{ form_end(form) }}
 {{ adminFooter() }}

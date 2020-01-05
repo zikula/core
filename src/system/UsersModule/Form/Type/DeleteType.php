@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\UsersModule\Entity\UserEntity;
 
 class DeleteType extends AbstractType
 {
@@ -42,7 +43,7 @@ class DeleteType extends AbstractType
                 'choice_attr' => static function() {
                     return ['class' => 'user-checkboxes'];
                 },
-                'class' => 'ZikulaUsersModule:UserEntity',
+                'class' => UserEntity::class,
                 'choices' => $options['choices'],
                 'expanded' => true,
                 'multiple' => true,

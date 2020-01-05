@@ -43,10 +43,11 @@ class SearchBlockType extends AbstractType
         $builder
             ->add('displaySearchBtn', CheckboxType::class, [
                 'label' => $this->__('Show \'Search now\' button'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('active', ChoiceType::class, [
-                'label_attr' => ['class' => 'checkbox-inline'],
+                'label_attr' => ['class' => 'checkbox-custom'],
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true,

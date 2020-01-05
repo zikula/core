@@ -1,38 +1,25 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
 {{ showflashes() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-wrench"></span>
-            {{ __('Module settings') }}
-            {{ pageSetVar('title', __('Module settings')) }}
-        </h3>
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-        {{ form_row(form.displayname) }}
-        <div class="form-group">
-            {{ form_label(form.url) }}
-            <div class="col-sm-9">
-                <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">/</span>
-                    {{ form_widget(form.url) }}
-                </div>
-                <em class="form-note text-warning">{{ __('WARNING: changing the url affects SEO by breaking existing indexed search results.') }}</em>
-            </div>
-        </div>
-        {{ form_row(form.description) }}
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.save) }}
-                {{ form_widget(form.defaults) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<h3>
+    <span class="fa fa-wrench"></span>
+    {{ __('Module settings') }}
+    {{ pageSetVar('title', __('Module settings')) }}
+</h3>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{{ form_row(form.displayname) }}
+{{ form_row(form.url) }}
+{{ form_row(form.description) }}
+<div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
+        {{ form_widget(form.defaults) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

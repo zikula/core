@@ -1,26 +1,23 @@
 {% extends '@ZikulaCoreInstaller/theme.html.twig' %}
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block title 'Zikula Core Installer :: Select Default Language' %}
 
 {% block content %}
-
     {{ form_start(form) }}
     {{ form_errors(form) }}
 
-    <div class="form-group">
+    <div class="form-group row">
         {{ form_label(form.locale) }}
-        <div class="col-sm-9">
+        <div class="col-md-9">
             {{ form_errors(form.locale) }}
             {{ form_widget(form.locale) }}
         </div>
     </div>
-
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
             <input type="submit" value="{{ __('Next') }}" class="btn btn-success" />
         </div>
     </div>
     {{ form_end(form) }}
-
 {% endblock %}

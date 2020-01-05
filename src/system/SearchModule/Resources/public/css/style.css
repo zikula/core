@@ -2,10 +2,6 @@
     margin-bottom: 1em;
 }
 
-form#search_form ul {
-    list-style: none;
-}
-
 label#search_q_label {
     font-size: 140%;
 }

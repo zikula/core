@@ -1,46 +1,40 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
+<h3>
+    <span class="fa fa-wrench"></span>
+    {{ __('Localisation settings') }}
+    {{ pageSetVar('title', __('Localisation settings')) }}
+</h3>
 {% if not intl_installed|default(false) %}
     <div class="alert alert-danger">
         {{ __f('WARNING: The PHP Extension %ext is not loaded. All functions using this will default to %locale. Seek assistance from your provider to install.', {"%ext": "<code>INTL</code>", "%locale": "<code>EN</code>"})|raw }}
     </div>
 {% endif %}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-wrench"></span>
-            {{ __('Localisation settings') }}
-            {{ pageSetVar('title', __('Localisation settings')) }}
-        </h3>
-
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
-
-        <fieldset>
-            <legend>{{ __('Language system') }}</legend>
-            {{ form_row(form.multilingual) }}
-            {{ form_row(form.languageurl) }}
-            {{ form_row(form.language_i18n) }}
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('Browser') }}</legend>
-            {{ form_row(form.language_detect) }}
-            {{ form_row(form.timezone) }}
-        </fieldset>
-        <fieldset>
-            <legend>{{ __('Variable validation') }}</legend>
-            {{ form_row(form.idnnames) }}
-        </fieldset>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.save) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
+<fieldset>
+    <legend>{{ __('Language system') }}</legend>
+    {{ form_row(form.multilingual) }}
+    {{ form_row(form.languageurl) }}
+    {{ form_row(form.language_i18n) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Browser') }}</legend>
+    {{ form_row(form.language_detect) }}
+    {{ form_row(form.timezone) }}
+</fieldset>
+<fieldset>
+    <legend>{{ __('Variable validation') }}</legend>
+    {{ form_row(form.idnnames) }}
+</fieldset>
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.save) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

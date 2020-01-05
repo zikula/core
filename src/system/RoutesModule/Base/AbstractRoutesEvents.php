@@ -47,6 +47,30 @@ abstract class AbstractRoutesEvents
     public const MENU_ITEMACTIONS_POST_CONFIGURE = 'zikularoutesmodule.itemactionsmenu_post_configure';
     
     /**
+     * The zikularoutesmodule.viewactionsmenu_pre_configure event is thrown before the view actions
+     * menu is built in the menu builder.
+     *
+     * The event listener receives an
+     * Zikula\RoutesModule\Event\ConfigureViewActionsMenuEvent instance.
+     *
+     * @see MenuBuilder::createViewActionsMenu()
+     * @var string
+     */
+    public const MENU_VIEWACTIONS_PRE_CONFIGURE = 'zikularoutesmodule.viewactionsmenu_pre_configure';
+    
+    /**
+     * The zikularoutesmodule.viewactionsmenu_post_configure event is thrown after the view actions
+     * menu has been built in the menu builder.
+     *
+     * The event listener receives an
+     * Zikula\RoutesModule\Event\ConfigureViewActionsMenuEvent instance.
+     *
+     * @see MenuBuilder::createViewActionsMenu()
+     * @var string
+     */
+    public const MENU_VIEWACTIONS_POST_CONFIGURE = 'zikularoutesmodule.viewactionsmenu_post_configure';
+    
+    /**
      * The zikularoutesmodule.route_post_load event is thrown when routes
      * are loaded from the database.
      *

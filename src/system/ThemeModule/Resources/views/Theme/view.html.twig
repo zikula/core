@@ -1,14 +1,11 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaThemeModule:js/ZikulaThemeModule.Admin.View.js')) }}
-
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
     {{ __('Themes list') }}
     {{ pageSetVar('title', __('Themes list')) }}
 </h3>
-
 <p class="alert alert-info">{{ __('Themes control the visual presentation of a site.') }}</p>
-
 <table class="table table-bordered table-striped">
     <colgroup>
         <col id="cName" />
@@ -29,9 +26,9 @@
     <tbody>
         {% for theme in themes %}
         <tr {% if theme.name|lower == currenttheme|lower %}class="success"{% endif %}>
-            <td headers="hName" style="white-space: nowrap">
+            <td headers="hName">
                 {% set img = '<img src="' ~ getPreviewImagePath(theme.name) ~ '">' %}
-                <a href="{{ path('home', {"theme":theme.name}) }}" title="{{ theme.displayname }}{% if theme.name|lower == currenttheme|lower %} ({{ __('Default theme') }}){% endif %}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{{ img }}' target="_blank">
+                <a href="{{ path('home', {'theme': theme.name}) }}" title="{{ theme.displayname }}{% if theme.name|lower == currenttheme|lower %} ({{ __('Default theme') }}){% endif %}" class="marktooltip" data-trigger="hover" data-html="true" data-content='{{ img }}' target="_blank">
                    {{ theme.displayname }}
                 </a>
                 {% if theme.name|lower == currenttheme|lower %}<span class="required"></span>{% endif %}
@@ -39,37 +36,36 @@
             <td headers="hDescription">
                 {{ theme.description|default(theme.displayname) }}
             </td>
-            <td headers="hVersion" style="white-space: nowrap">
+            <td headers="hVersion">
                 {{ theme.version }}
             </td>
-            <td headers="hState" style="white-space: nowrap">
-                <span class="label label-{% if theme.state == 1 %}success{% else %}danger{% endif %}">{% if theme.state == 1 %}{{ __('Active') }}{% else %}{{ __('Inactive') }}{% endif %}</span>
+            <td headers="hState">
+                <span class="badge badge-{% if theme.state == 1 %}success{% else %}danger{% endif %}">{% if theme.state == 1 %}{{ __('Active') }}{% else %}{{ __('Inactive') }}{% endif %}</span>
             </td>
             <td headers="hActions" class="actions">
+                {% set themeArg = {'themeName': theme.name} %}
                 {% if theme.state != 1 %}
-                    <a href="{{ path('zikulathememodule_theme_activate', {"themeName":theme.name}) }}"><span class="fa fa-cog tooltips" title="{{ __f('Activate %theme%', {'%theme%': theme.displayname}) }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_activate', themeArg) }}"><span class="fa fa-cog tooltips" title="{{ __f('Activate %theme%', {'%theme%': theme.displayname}) }}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.user and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_setasdefault', {"themeName":theme.name}) }}"><span class="fa fa-check tooltips" title="{{ __f('Set %theme% as site theme', {'%theme%': theme.displayname}) }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_setasdefault', themeArg) }}"><span class="fa fa-check tooltips" title="{{ __f('Set %theme% as site theme', {'%theme%': theme.displayname}) }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_preview', {"themeName":theme.name}) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_preview', themeArg) }}" title="{{ theme.displayname }}" target="_blank"><span class="fa fa-eye tooltips" title="{{ __('Preview') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.state == 1 and theme.vars %}
-                    <a href="{{ path('zikulathememodule_var_var', {"themeName":theme.name}) }}"><span class="fa fa-pencil-alt tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_var_var', themeArg) }}"><span class="fa fa-pencil-alt tooltips" title="{{ __('Edit') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
                 {% if theme.name != currenttheme and theme.state == 1 %}
-                    <a href="{{ path('zikulathememodule_theme_delete', {"themeName":theme.name}) }}"><span class="fa fa-trash-alt tooltips" title="{{ __('Delete or deactivate') }} {{ theme.displayname }}"></span></a>
+                    <a href="{{ path('zikulathememodule_theme_delete', themeArg) }}"><span class="fa fa-trash-alt tooltips" title="{{ __('Delete or deactivate') }} {{ theme.displayname }}"></span></a>
                 {% endif %}
-                <a href="{{ path('zikulathememodule_theme_credits', {"themeName":theme.name}) }}"><span class="fa fa-info-circle tooltips" title="{{ __('Credits for') }} {{ theme.displayname }}"></span></a>
+                <a href="{{ path('zikulathememodule_theme_credits', themeArg) }}"><span class="fa fa-info-circle tooltips" title="{{ __('Credits for') }} {{ theme.displayname }}"></span></a>
             </td>
         </tr>
         {% else %}
-        <tr class="table table-borderedempty"><td colspan="5">{{ __('No items found.') }}</td></tr>
+        <tr class="table-info"><td colspan="5" class="text-center">{{ __('No items found.') }}</td></tr>
         {% endfor %}
     </tbody>
 </table>
-
-<em><span class="required"></span> = {{ __('Default theme') }}</em>
-
+<p><em><span class="required"></span> = {{ __('Default theme') }}</em></p>
 {{ adminFooter() }}

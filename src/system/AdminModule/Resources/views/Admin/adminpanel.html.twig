@@ -1,9 +1,8 @@
 {{ menu|raw }}
-<div id="z-admincontainer" class="z-admin-content">
+<div class="z-admin-content">
     <h2>{{ category.name }}</h2>
     {{ pageSetVar('title', category.name ~ ' - ' ~ category.description) }}
     <div class="z-admincategorydescription">{{ category.description }}</div>
-
     {% if adminLinks is not empty %}
         <ul id="modulelist">
             {% for adminLink in adminLinks %}
@@ -15,22 +14,23 @@
                 <div>
                     {# movable icon #}
                     <span title="{{ __('Drag and drop into a new module category') }}" class="tooltips fa fa-arrows-alt admintabs-lock"></span>
-
                     {# module title #}
                     <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText|raw }}</a>
-
+                    {# dropdown with quick links #}
                     {% if adminLink.links %}
-                        <div class="dropdown" style="display: inline">
-                            <a class="caret" data-toggle="dropdown" href="#" title="{{ __('Functions') }}"></a>
+                        <div class="dropdown d-inline">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{{ __('Functions') }}"></a>
                             <ul class="dropdown-menu" role="menu">
                                 {% for item in adminLink.links %}
-                                    <li><a href="{{ item.url }}">{% if item.icon is defined %}<i class="fa fa-fw fa-{{ item.icon }}"></i> {% endif %}{{ item.text }}</a></li>
+                                    <li class="dropdown-item">
+                                        <a href="{{ item.url }}">{% if item.icon is defined %}<i class="fa fa-fw fa-{{ item.icon }}"></i> {% endif %}{{ item.text }}</a>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>
                     {% endif %}
                     {# module description #}
-                    <p>{{ adminLink.menuTextTitle }}</p>
+                    <p class="text-muted">{{ adminLink.menuTextTitle }}</p>
                 </div>
             </li>
             {% endfor %}

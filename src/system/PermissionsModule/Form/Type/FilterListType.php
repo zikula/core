@@ -41,13 +41,13 @@ class FilterListType extends AbstractType
             ->add('filterGroup', ChoiceType::class, [
                 'choices' => array_flip($options['groupChoices']),
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterComponent', ChoiceType::class, [
                 'choices' => $options['componentChoices'],
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ]
             ])
             ->add('reset', ButtonType::class, [
@@ -69,7 +69,7 @@ class FilterListType extends AbstractType
     {
         $resolver->setDefaults([
             'attr' => [
-                'class' => 'form form-inline'
+                'class' => 'form-inline'
             ],
             'groupChoices' => [],
             'componentChoices' => []

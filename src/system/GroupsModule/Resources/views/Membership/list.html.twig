@@ -38,7 +38,6 @@
     </tbody>
 </table>
 <br />
-
 <table class="table table-bordered table-striped">
     <colgroup>
         <col id="cUserName" />
@@ -54,10 +53,10 @@
         {% for user in group.users %}
         <tr>
             <td headers="hUserName">{{ user.uid|profileLinkByUserId }}</td>
-            <td headers="hStatus"><span class="label {% if user.uid in usersOnline %}label-success">{{ __('Online') }}{% else %}label-danger">{{ __('Offline') }}{% endif %}</span></td>
+            <td headers="hStatus"><span class="badge {% if user.uid in usersOnline %}badge-success">{{ __('Online') }}{% else %}badge-danger">{{ __('Offline') }}{% endif %}</span></td>
         </tr>
         {% else %}
-            <tr class="table table-borderedempty"><td colspan="4">{{ __('No users found.') }}</td></tr>
+            <tr class="table-info"><td colspan="4" class="text-center">{{ __('No users found.') }}</td></tr>
         {% endfor %}
     </tbody>
 </table>

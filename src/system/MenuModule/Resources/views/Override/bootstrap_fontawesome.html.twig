@@ -1,8 +1,27 @@
 {# https://gist.github.com/nateevans/9958390 #}
 {% extends 'knp_menu.html.twig' %}
 
+
+{% macro setCssClassAttribute(item, type, add) %}
+    {% set getter = 'get' ~ type %}
+    {% set setter = 'set' ~ type %}
+    {% set value = attribute(item, getter, ['class']) %}
+    {% if value is iterable %}
+        {% set value = value|join(' ') %}
+    {% endif %}
+    {% do attribute(item, setter, ['class', value ~ ' ' ~ add]) %}
+{% endmacro %}
+
 {% block item %}
     {% import "knp_menu.html.twig" as macros %}
+    {#
+    As multiple level is not currently supported by bootstrap 4
+    This requires you to install
+    https://github.com/bootstrapthemesco/bootstrap-4-multi-dropdown-navbar
+    And set the the use_multilevel = true
+    #}
+    {% set use_multilevel = false %}
+
     {% if item.displayed %}
         {%- set attributes = item.attributes %}
         {%- set is_dropdown = attributes.dropdown|default(false) %}
@@ -16,8 +35,9 @@
             {{ block('dividerElement') }}
         {%- endif %}
 
+
         {# building the class of the item #}
-        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class'), 'nav-item'] : ['nav-item'] %}
         {%- if matcher.isCurrent(item) %}
             {%- set classes = classes|merge([options.currentClass]) %}
         {%- elseif matcher.isAncestor(item, options.depth) %}
@@ -46,8 +66,8 @@
         {%- endif %}
         {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
 
-        {# displaying the item #}
         <li{{ macros.attributes(attributes) }}>
+            {# displaying the item #}
             {%- if is_dropdown %}
                 {{ block('dropdownElement') }}
             {%- elseif item.uri is not empty and (not item.current or options.currentAsLink) %}
@@ -55,14 +75,81 @@
             {%- else %}
                 {{ block('spanElement') }}
             {%- endif %}
-            {# render the list of children#}
-            {{ block('list') }}
+            {%- if divider_append %}
+                {{ block('dividerElement') }}
+            {%- endif %}
+            {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+                {{ block('dropdownlinks') }}
+            {% endif %}
         </li>
-
-        {%- if divider_append %}
-            {{ block('dividerElement') }}
-        {%- endif %}
     {% endif %}
+{% endblock %}
+
+
+{% block dropdownlinks %}
+    {% if use_multilevel %}
+        <ul class="dropdown-menu">
+    {% else %}
+        <div class="dropdown-menu">
+    {% endif %}
+    {% for item in item.children %}
+        {{ block('renderDropdownlink') }}
+
+        {% if use_multilevel and item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+            {{ block('dropdownlinks') }}
+        {% endif %}
+    {% endfor %}
+    {% if not use_multilevel %}
+        </div>
+    {% else %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block renderDropdownlink %}
+    {% import _self as ownmacro %}
+    {%- set divider_prepend = item.attributes.divider_prepend|default(false) %}
+    {%- set divider_append = item.attributes.divider_append|default(false) %}
+    {%- set attributes = item.attributes|merge({'dropdown': null, 'divider_prepend': null, 'divider_append': null }) %}
+
+    {% if use_multilevel %}
+        <li>
+    {% endif %}
+
+    {%- if divider_prepend %}
+        {{ block('dividerElementDropdown') }}
+    {%- endif %}
+
+    {%- if item.uri is not empty and (not item.current or options.currentAsLink) %}
+        {{ ownmacro.setCssClassAttribute(item, 'LinkAttribute', 'dropdown-item') }}
+        {{ block('linkElement') }}
+    {%- else %}
+        {{ block('spanElementDropdown') }}
+    {%- endif %}
+
+    {%- if divider_append %}
+        {{ block('dividerElementDropdown') }}
+    {%- endif %}
+
+    {% if use_multilevel %}
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block spanElementDropdown %}
+    {% import "knp_menu.html.twig" as macros %}
+    {% import _self as ownmacro %}
+    {{ ownmacro.setCssClassAttribute(item, 'LabelAttribute', 'dropdown-header') }}
+    <div {{ macros.attributes(item.labelAttributes) }}>
+        {% if item.attribute('icon') is not empty  %}
+            <i class="{{ item.attribute('icon') }}"></i>
+        {% endif %}
+        {{ block('label') }}
+    </div>
+{% endblock %}
+
+{% block dividerElementDropdown %}
+    <div class="dropdown-divider"></div>
 {% endblock %}
 
 {% block dividerElement %}
@@ -75,6 +162,8 @@
 
 {% block linkElement %}
     {% import "knp_menu.html.twig" as macros %}
+    {% import _self as ownmacro %}
+    {{ ownmacro.setCssClassAttribute(item, 'LinkAttribute', 'nav-link') }}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
             <i class="{{ item.attribute('icon') }}"></i>
@@ -85,18 +174,20 @@
 
 {% block spanElement %}
     {% import "knp_menu.html.twig" as macros %}
+    {% import _self as ownmacro %}
+    {{ ownmacro.setCssClassAttribute(item, 'LabelAttribute', 'navbar-text') }}
     <span {{ macros.attributes(item.labelAttributes) }}>
         {% if item.attribute('icon') is not empty  %}
             <i class="{{ item.attribute('icon') }}"></i>
         {% endif %}
         {{ block('label') }}
-	</span>
+    </span>
 {% endblock %}
 
 {% block dropdownElement %}
     {% import "knp_menu.html.twig" as macros %}
     {%- set classes = item.linkAttribute('class') is not empty ? [item.linkAttribute('class')] : [] %}
-    {%- set classes = classes|merge(['dropdown-toggle']) %}
+    {%- set classes = classes|merge(['dropdown-toggle', 'nav-link']) %}
     {%- set attributes = item.linkAttributes %}
     {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
     {%- set attributes = attributes|merge({'data-toggle': 'dropdown'}) %}
@@ -111,7 +202,7 @@
 
 {%- block label %}
     {{ item.label|trans(
-    item.getExtra('translation_params', {}),
-    item.getExtra('translation_domain', 'messages')
+        item.getExtra('translation_params', {}),
+        item.getExtra('translation_domain', 'messages')
     ) }}
 {%- endblock %}

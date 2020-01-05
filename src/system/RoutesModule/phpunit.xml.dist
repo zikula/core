@@ -7,16 +7,18 @@
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
-         verbose="true">
-
-<testsuites>
+         verbose="true"
+>
+    <php>
+        <server name="KERNEL_CLASS" value="ZikulaKernel" />
+    </php>
+    <testsuites>
         <testsuite name="ZikulaRoutesModule Test Suite">
             <directory>./Tests</directory>
             <exclude>./Tests/Entity/*/Repository</exclude>
             <exclude>./vendor</exclude>
         </testsuite>
     </testsuites>
-
     <filter>
         <whitelist>
             <directory>./</directory>

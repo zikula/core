@@ -23,7 +23,7 @@
             var newWidget = attributeTable.attr('data-prototype');
             newWidget = newWidget.replace(/__name__/g, attributeCount);
             attributeCount++;
-            var newTr = jQuery('<tr></tr>').html(newWidget);
+            var newTr = jQuery('<tr />').html(newWidget);
             newTr.appendTo(attributeTable);
             newTr.find('a.category_attributes_remove').on('click', removeTr);
         });

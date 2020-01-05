@@ -19,8 +19,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
 use Zikula\Common\Translator\TranslatorInterface;
@@ -48,6 +50,7 @@ class HookController extends AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions over the module
      */
     public function editAction(
+        RequestStack $requestStack,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
         HookDispatcherInterface $dispatcher,
@@ -239,7 +242,7 @@ class HookController extends AbstractController
             $templateParameters['hookproviders'] = [];
         }
         $templateParameters['hookDispatcher'] = $dispatcher;
-        $request = $this->get('request_stack')->getCurrentRequest();
+        $request = $requestStack->getCurrentRequest();
         $request->attributes->set('_zkModule', $moduleName);
         $request->attributes->set('_zkType', 'admin');
         $request->attributes->set('_zkFunc', 'Hooks');
@@ -257,8 +260,9 @@ class HookController extends AbstractController
      * @throws AccessDeniedException Thrown if the user doesn't have admin access to either the subscriber or provider modules
      */
     public function toggleSubscribeAreaStatusAction(
-        TranslatorInterface $translator,
         Request $request,
+        ZikulaHttpKernelInterface $kernel,
+        TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
         HookCollectorInterface $collector,
         HookDispatcherInterface $dispatcher
@@ -279,7 +283,7 @@ class HookController extends AbstractController
         if (null === $subscriber) {
             throw new InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
+        if (!$kernel->isBundle($subscriber->getOwner())) {
             throw new RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
@@ -297,10 +301,10 @@ class HookController extends AbstractController
         if (null === $provider) {
             throw new InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
         }
-        if (!$this->get('kernel')->isBundle($provider->getOwner())) {
+        if (!$kernel->isBundle($provider->getOwner())) {
             throw new RuntimeException($this->__f('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
         }
-        if (!$this->get('zikula_permissions_module.api.permission')->hasPermission($provider->getOwner() . '::', '::', ACCESS_ADMIN)) {
+        if (!$permissionApi->hasPermission($provider->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
@@ -337,9 +341,11 @@ class HookController extends AbstractController
      */
     public function changeProviderAreaOrderAction(
         Request $request,
+        ZikulaHttpKernelInterface $kernel,
         TranslatorInterface $translator,
         PermissionApiInterface $permissionApi,
-        HookCollectorInterface $collector
+        HookCollectorInterface $collector,
+        HookDispatcherInterface $hookDispatcher
     ): JsonResponse {
         $this->setTranslator($translator);
         if (!$this->checkAjaxToken($request)) {
@@ -357,7 +363,7 @@ class HookController extends AbstractController
         if (null === $subscriber) {
             throw new InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
-        if (!$this->get('kernel')->isBundle($subscriber->getOwner())) {
+        if (!$kernel->isBundle($subscriber->getOwner())) {
             throw new RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
@@ -371,7 +377,7 @@ class HookController extends AbstractController
         }
 
         // set sorting
-        $this->get('hook_dispatcher')->setBindOrder($subscriberarea, $providerarea);
+        $hookDispatcher->setBindOrder($subscriberarea, $providerarea);
 
         return $this->json(['result' => true]);
     }

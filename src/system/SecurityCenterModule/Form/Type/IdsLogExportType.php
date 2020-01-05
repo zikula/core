@@ -44,6 +44,7 @@ class IdsLogExportType extends AbstractType
         $builder
             ->add('titles', CheckboxType::class, [
                 'label' => $this->__('Export Title Row'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'empty_data' => 1,
                 'required' => false
             ])

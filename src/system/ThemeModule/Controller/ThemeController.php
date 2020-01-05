@@ -26,7 +26,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -54,6 +56,7 @@ class ThemeController extends AbstractController
      * @throws Exception
      */
     public function viewAction(
+        EventDispatcherInterface $eventDispatcher,
         BundleSyncHelper $syncHelper,
         ThemeEntityRepository $themeRepository,
         VariableApiInterface $variableApi
@@ -62,7 +65,7 @@ class ThemeController extends AbstractController
             throw new AccessDeniedException();
         }
         $vetoEvent = new GenericEvent();
-        $this->get('event_dispatcher')->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
+        $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (!$vetoEvent->isPropagationStopped()) {
             $syncHelper->regenerate();
         }
@@ -181,6 +184,7 @@ class ThemeController extends AbstractController
     public function deleteAction(
         Request $request,
         ThemeEntityRepository $themeRepository,
+        ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
         CacheClearer $cacheClearer,
         string $themeName
@@ -193,6 +197,7 @@ class ThemeController extends AbstractController
             ->add('themeName', HiddenType::class)
             ->add('deletefiles', CheckboxType::class, [
                 'label' => $this->__('Also delete theme files, if possible'),
+                'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
             ])
             ->add('delete', SubmitType::class, [
@@ -221,7 +226,7 @@ class ThemeController extends AbstractController
                 }
                 if ($data['deletefiles']) {
                     $fs = new Filesystem();
-                    $path = realpath($this->get('kernel')->getProjectDir() . '/themes/' . $themeEntity->getDirectory());
+                    $path = realpath($kernel->getProjectDir() . '/themes/' . $themeEntity->getDirectory());
                     try {
                         // attempt to delete files
                         $fs->remove($path);

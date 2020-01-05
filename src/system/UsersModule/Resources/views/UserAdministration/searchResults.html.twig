@@ -1,7 +1,6 @@
 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
     {{ pageAddAsset('javascript', zasset('@ZikulaUsersModule:js/ZikulaUsersModule.Admin.SearchResults.js')) }}
 {% endif %}
-
 {{ adminHeader() }}
 <h3>
     <span class="fa fa-list"></span>
@@ -10,7 +9,7 @@
 </h3>
 
 {% form_theme resultsForm with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 <div>
@@ -80,7 +79,7 @@
 </div>
 
 {% form_theme mailForm with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 <div class="collapse" id="email-users-form">
@@ -98,8 +97,8 @@
             {{ notifyDisplayHooks(constant('Zikula\\UsersModule\\HookSubscriber\\UserManagementUiHooksSubscriber::EDIT_FORM')) }}{# allows admin to hook wysiwyg editor for mail form #}
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-offset-3 col-sm-9">
+    <div class="form-group row">
+        <div class="col-md-9 offset-md-3">
             {{ form_widget(mailForm.send) }}
             <button type="button" class="btn btn-default" data-toggle="collapse" href="#email-users-form"><i class="fa fa-times"></i> {{ __('Close') }}</button>
         </div>

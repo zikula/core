@@ -1,11 +1,5 @@
-#users_register_email {
-    text-transform: lowercase;
-}
-
-#users_register_emailagain {
-    text-transform: lowercase;
-}
-
+#users_register_email,
+#users_register_emailagain,
 #users_register_uname {
     text-transform: lowercase;
 }
@@ -14,7 +8,7 @@
     margin-top: 5px;
     margin-bottom: 5px;
     color: red;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .newuserinfook {
@@ -35,47 +29,8 @@ div.z-accountlink {
     height: 9em;
 }
 
-div.z-accountlink  img {
+div.z-accountlink img {
     border: none;
-}
-
-#percent {
-    margin-top: 0;
-    float: left;
-}
-
-#result {
-    color: green;
-    float: left;
-}
-
-#users_loginblock_loginform {
-    margin: 0;
-    padding: 0;
-}
-
-.users_loginblock_box {
-    margin: 1em 0 0;
-    padding: 0 1em 1em 0;
-}
-
-.users_loginblock_box h5 {
-    font-size: 1em;
-    font-weight: 700;
-    margin: 1em 0 0 0;
-    padding: 0 0 0.5em;
-    text-decoration: underline;
-}
-
-#users_loginblock_loginform ul#user-block-login-tools {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-#users_loginblock_loginform ul#user-block-login-tools li {
-    margin: 0.5em 0;
-    padding: 0;
 }
 
 div.authentication_module_list {
@@ -94,19 +49,4 @@ table.z-datatable td.users_action {
     text-align: center;
     padding: 5px 0;
 
-}
-
-.zikulausersmodule-authentication-select-method-image {
-    max-height: 36px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#zikulausersmodule-login-hooks {
-    margin-bottom: 10px;
-}
-
-#zikulausersmodule-login-event-display {
-    margin-bottom: 10px;
 }

@@ -5,5 +5,7 @@ showdescription:
   default_value: true
   type: 'Symfony\Component\Form\Extension\Core\Type\CheckboxType'
   options:
-    label: "Show item descriptions"
+    label: 'Show item descriptions'
+    label_attr:
+      class: switch-custom
     disabled: true

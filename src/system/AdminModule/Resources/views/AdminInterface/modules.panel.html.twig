@@ -1,22 +1,9 @@
+{{ pageAddAsset('stylesheet', asset('mmenu/css/mmenu.css'), 100) }}
 {{ pageAddAsset('javascript', asset('mmenu/js/mmenu.js'), 100) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js'), 101) }}
-{{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modal.Fix.js'), 102) }}
-{{ pageAddAsset('stylesheet', asset('mmenu/css/mmenu.css'), 100) }}
-{{ pageAddAsset('stylesheet', zasset('@ZikulaAdminModule:css/mmenu-hiddenpanel-customwidth.css'), 101) }}
-
-{% macro draw(links, caller, module) %}
-    {% for link in links|filter(l => l.url|default) %}
-        <li{% if caller._zkModule == module.modname and caller.path == link.url %} class="selected"{% endif %}>
-            <a href="{{ link.url }}" title="{{ link.text }}">{% if link.icon is defined %}<i class="fa fa-fw fa-{{ link.icon }}"></i> {% endif %}{{ link.text }}</a>
-            {% if link.links is defined %}
-                <ul class="text-left">{{ _self.draw(link.links, caller, module) }}</ul>
-            {% endif %}
-        </li>
-    {% endfor %}
-{% endmacro %}
-
-<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{{ __("Show administration panel") }}"></i></a>
-<nav id="zikula-admin-hiddenpanel-menu">
+{% import '@ZikulaAdminModule/AdminInterface/mmenuHelper.html.twig' as helper %}
+<a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{{ __('Show administration panel') }}"></i></a>
+<nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">
         <h2><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{{ __('Administration') }}"> {{ __('Administration') }}</h2>
         <ul>
@@ -27,7 +14,7 @@
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">
-                            {{ _self.draw(module.links, caller, module) }}
+                            {{ helper.draw(module.links, caller, module) }}
                         </ul>
                     {% endif %}
                 </li>

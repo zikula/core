@@ -72,7 +72,7 @@ class BlockFilterApi implements BlockFilterApiInterface
      * Compare variables according to a dynamic comparator.
      *
      * @param mixed $var1
-     * @param mixed$var2
+     * @param mixed $var2
      */
     private function compare($var1, string $comparator, $var2): bool
     {

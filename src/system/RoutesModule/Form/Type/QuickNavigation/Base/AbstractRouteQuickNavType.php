@@ -88,7 +88,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('workflowState', ChoiceType::class, [
             'label' => $this->__('State'),
             'attr' => [
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false,
             'placeholder' => $this->__('All'),
@@ -107,7 +107,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('schemes', MultiListType::class, [
             'label' => $this->__('Schemes'),
             'attr' => [
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false,
             'placeholder' => $this->__('All'),
@@ -126,7 +126,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('methods', MultiListType::class, [
             'label' => $this->__('Methods'),
             'attr' => [
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false,
             'placeholder' => $this->__('All'),
@@ -146,7 +146,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'label' => $this->__('Search'),
             'attr' => [
                 'maxlength' => 255,
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false
         ]);
@@ -162,7 +162,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             ->add('sort', ChoiceType::class, [
                 'label' => $this->__('Sort by'),
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ],
                 'choices' =>             [
                     $this->__('Bundle') => 'bundle',
@@ -190,7 +190,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
                 'label' => $this->__('Sort direction'),
                 'empty_data' => 'asc',
                 'attr' => [
-                    'class' => 'input-sm'
+                    'class' => 'form-control-sm'
                 ],
                 'choices' => [
                     $this->__('Ascending') => 'asc',
@@ -211,7 +211,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'label' => $this->__('Page size'),
             'empty_data' => 20,
             'attr' => [
-                'class' => 'input-sm text-right'
+                'class' => 'form-control-sm text-right'
             ],
             'choices' => [
                 5 => 5,
@@ -235,7 +235,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('prependBundlePrefix', ChoiceType::class, [
             'label' => $this->__('Prepend bundle prefix'),
             'attr' => [
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false,
             'placeholder' => $this->__('All'),
@@ -247,7 +247,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('translatable', ChoiceType::class, [
             'label' => $this->__('Translatable'),
             'attr' => [
-                'class' => 'input-sm'
+                'class' => 'form-control-sm'
             ],
             'required' => false,
             'placeholder' => $this->__('All'),

@@ -46,6 +46,7 @@ class ConfigType extends AbstractType
         $builder
             ->add('updatecheck', ChoiceType::class, [
                 'label' => $this->__('Check for updates'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 1,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -74,6 +75,7 @@ class ConfigType extends AbstractType
             ])
             ->add('sessionauthkeyua', ChoiceType::class, [
                 'label' => $this->__("Bind authkey to user agent ('UserAgent')"),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 0,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -93,6 +95,7 @@ class ConfigType extends AbstractType
             ])
             ->add('signcookies', ChoiceType::class, [
                 'label' => $this->__('Sign cookies'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 1,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -136,10 +139,12 @@ class ConfigType extends AbstractType
                     'maxlength' => 4
                 ],
                 'input_group' => ['right' => '<em>' . $this->__('minutes of inactivity') . '</em>'],
-                'help' => $this->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime')
+                'help' => $this->__f('More information in <a href="%url%" target="_blank">PHP documentation</a>.', ['%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime']),
+                'help_html' => true
             ])
             ->add('sessionstoretofile', ChoiceType::class, [
                 'label' => $this->__('Store sessions'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 0,
                 'choices' => [
                     $this->__('File') => Constant::SESSION_STORAGE_FILE,
@@ -154,7 +159,8 @@ class ConfigType extends AbstractType
                 'empty_data' => '',
                 'required' => false,
                 'alert' => [$this->__("Notice: If you change 'Where to save sessions' to 'File' then you must enter a path in the 'Path for saving session files' box above. The path must be writeable. Leave value empty for default location '%kernel.cache_dir%/sessions'") => 'info'],
-                'help' => $this->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.save-path')
+                'help' => $this->__f('More information in <a href="%url%" target="_blank">PHP documentation</a>.', ['%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.save-path']),
+                'help_html' => true
             ])
             ->add('gc_probability', IntegerType::class, [
                 'label' => $this->__('Garbage collection probability'),
@@ -163,10 +169,12 @@ class ConfigType extends AbstractType
                     'maxlength' => 5
                 ],
                 'input_group' => ['right' => $this->__('/10000')],
-                'help' => $this->__('More information: http://www.php.net/manual/en/session.configuration.php#ini.session.gc-probability')
+                'help' => $this->__f('More information in <a href="%url%" target="_blank">PHP documentation</a>.', ['%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.gc-probability']),
+                'help_html' => true
             ])
             ->add('sessioncsrftokenonetime', ChoiceType::class, [
                 'label' => $this->__('CSRF Token'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 1,
                 'choices' => [
                     $this->__('Per session') => 1,
@@ -178,6 +186,7 @@ class ConfigType extends AbstractType
             ])
             ->add('sessionrandregenerate', ChoiceType::class, [
                 'label' => $this->__('Periodically regenerate session ID'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 1,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -188,6 +197,7 @@ class ConfigType extends AbstractType
             ])
             ->add('sessionregenerate', ChoiceType::class, [
                 'label' => $this->__('Regenerate session ID during log-in and log-out'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 1,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -204,16 +214,6 @@ class ConfigType extends AbstractType
                 ],
                 'input_group' => ['right' => $this->__('% (0 to disable)')]
             ])
-            ->add('sessionipcheck', ChoiceType::class, [
-                'label' => $this->__('IP checks on session (may cause problems for AOL users)'),
-                'empty_data' => 0,
-                'choices' => [
-                    $this->__('Yes') => 1,
-                    $this->__('No') => 0
-                ],
-                'expanded' => true,
-                'multiple' => false
-            ])
             ->add('sessionname', TextType::class, [
                 'label' => $this->__('Session cookie name'),
                 'empty_data' => '_zsid',
@@ -221,6 +221,7 @@ class ConfigType extends AbstractType
             ])
             ->add('useids', ChoiceType::class, [
                 'label' => $this->__('Use PHPIDS'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 0,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -231,6 +232,7 @@ class ConfigType extends AbstractType
             ])
             ->add('idssoftblock', ChoiceType::class, [
                 'label' => $this->__('Block action'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 1,
                 'choices' => [
                     $this->__('Warn only') => 1,
@@ -241,6 +243,7 @@ class ConfigType extends AbstractType
             ])
             ->add('idsmail', ChoiceType::class, [
                 'label' => $this->__('Send email on block action'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 0,
                 'choices' => [
                     $this->__('Yes') => 1,
@@ -251,6 +254,7 @@ class ConfigType extends AbstractType
             ])
             ->add('idsfilter', ChoiceType::class, [
                 'label' => $this->__('Select filter rules to use'),
+                'label_attr' => ['class' => 'radio-custom'],
                 'empty_data' => 'xml',
                 'choices' => [
                     $this->__('XML') => 'xml',
@@ -262,7 +266,8 @@ class ConfigType extends AbstractType
             ->add('idsrulepath', TextType::class, [
                 'label' => $this->__('IDS Rule Path'),
                 'empty_data' => '',
-                'help' => $this->__('Default: Resources/config/phpids_zikula_default.xml')
+                'help' => $this->__('Default: <code>Resources/config/phpids_zikula_default.xml</code>'),
+                'help_html' => true
             ])
             ->add('idsimpactthresholdone', IntegerType::class, [
                 'label' => $this->__('Minimum impact to log intrusion in the database'),

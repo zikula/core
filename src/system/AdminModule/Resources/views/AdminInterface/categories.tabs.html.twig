@@ -6,59 +6,61 @@
 <div class="admintabs-container" id="admintabs-container">
     <ul id="admintabs" class="nav nav-mouseover nav-tabs nav-tabs-admin">
         {% for category in adminMenu %}
-            <li class="dropdown droppable nowrap{% if caller.category.id == category.cid %} active{% endif %}"
-                data-catid="{{ category.cid }}">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown"><span class="fa fa-arrows-alt admintabs-lock"></span>
-                    <span>{{ category.title }}</span> <span class="fa fa-caret-down"></span></a>
+            <li class="nav-item dropdown droppable nowrap" data-catid="{{ category.cid }}">
+                <a href="#" class="nav-link dropdown-toggle{% if caller.category.cid == category.cid %} active{% endif %}" data-toggle="dropdown"><span class="fa fa-arrows-alt admintabs-lock"></span>
+                    <span>{{ category.title }}</span>
+                </a>
                 <ul class="dropdown-menu">
-                    <li class="admintabs-lock admintabs-makedefault{% if caller.category.id == category.cid %} hidden{% endif %}">
+                    <li class="dropdown-item admintabs-lock admintabs-makedefault{% if caller.category.cid == category.cid %} d-none{% endif %}">
                         <a href="#"><span class="fa fa-fw fa-asterisk"></span> {{ __('Make default category') }}</a>
                     </li>
-                    <li class="admintabs-lock admintabs-edit" data-toggle="modal"
+                    <li class="dropdown-item admintabs-lock admintabs-edit" data-toggle="modal"
                         data-target="#admintabs-rename-category-modal">
                         <a href="#"><span class="fa fa-fw fa-pencil-alt"></span> {{ __('Edit category') }}</a>
                     </li>
-                    <li class="admintabs-lock admintabs-delete">
+                    <li class="dropdown-item admintabs-lock admintabs-delete">
                         <a href="#"><span class="fa fa-fw fa-trash-alt fa-red"></span> {{ __('Delete category') }}</a>
                     </li>
-                    <li class="divider admintabs-lock"></li>
-                    <li>
+                    <li class="dropdown-divider admintabs-lock"></li>
+                    <li class="dropdown-item">
                         <a href="{{ category.url }}"><span class="fa fa-fw fa-th-large fa-bluelight"></span> {{ __('Overview') }}</a>
                     </li>
                     {% if category.modules|length > 0 %}
-                        <li class="divider"></li>
+                        <li class="dropdown-divider"></li>
                         {% for item in category.modules %}
-                            <li><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
+                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>
             </li>
         {% endfor %}
-        <li id="admintabs-locker">
-            <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top" class="tooltips tooltips-bottom">
+        <li id="admintabs-locker" class="nav-item ml-auto">
+            <a href="#" title="{{ __('Lock/Unlock editing') }}" data-placement="top" class="nav-link tooltips tooltips-bottom">
                 <span class="fa fa-fw fa-lock"></span>
             </a>
         </li>
-        <li class="admintabs-add admintabs-lock">
+        <li class="nav-item admintabs-add admintabs-lock">
             <a href="{{ path('zikulaadminmodule_admin_newcat') }}" title="{{ __('New module category') }}"
-               class="tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span></a>
-            <div id="admintabs-add-popover" class="hidden">
+               class="nav-link tooltips tooltips-bottom" data-placement="top"><span class="fa fa-plus"></span>
+            </a>
+            <div id="admintabs-add-popover" class="d-none">
                 <div class="input-group">
                     <input type="text" name="name" id="admintabs-add-name" class="form-control" />
-                    <span class="input-group-addon fa fa-times fa-red pointer" style="display: table-cell"></span>
-                    <span class="input-group-addon fa fa-check fa-green pointer" style="display: table-cell"></span>
+                    <div class="input-group-append">
+                        <span class="input-group-text fa fa-times fa-red" style="cursor: pointer"></span>
+                        <span class="input-group-text fa fa-check fa-green" style="cursor: pointer"></span>
+                    </div>
                 </div>
             </div>
         </li>
     </ul>
 </div>
-
 <div class="modal fade" id="admintabs-rename-category-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
+                <h5 class="modal-title">{{ __('Rename category') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{{ __('Rename category') }}</h4>
             </div>
             <div class="modal-body">
                 <input/>

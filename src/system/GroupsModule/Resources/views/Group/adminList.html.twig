@@ -5,20 +5,22 @@
     {{ pageSetVar('title', __('Groups list')) }}
 </h3>
 <div class="alert alert-info">
-    {{ __('Types') }}:
+    <p>{{ __('Types') }}:</p>
     <ul>
         <li>{{ __('Core: Users can only be added by an administrator (ACCESS_EDIT) - groups are not visible to users in public list') }}</li>
         <li>{{ __('Public: Users can add themselves with no moderation - groups are visible in public list') }}</li>
         <li>{{ __('Private: Users must apply for membership - groups are not visible to users in public list') }}</li>
     </ul>
-    {{ __('States') }}:
+    <p>{{ __('States') }}:</p>
     <ul>
         <li>{{ __('Open: Users may apply/add themselves') }}</li>
         <li>{{ __('Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting') }}</li>
     </ul>
     <br />
-    <p class="italic">* {{ __('Default user group. Cannot be deleted.') }}</p>
-    <p class="italic">** {{ __('Primary administrators group. Cannot be deleted.') }}</p>
+    <p>
+        <em>* {{ __('Default user group. Cannot be deleted.') }}</em><br />
+        <em>** {{ __('Primary administrators group. Cannot be deleted.') }}</em>
+    </p>
 </div>
 <table id="grouplist" class="table table-bordered table-striped">
     <colgroup>
@@ -64,7 +66,7 @@
                 <span>{{ groupTypes[group.gtype] }}</span>
             </td>
             <td headers="hDescription" id="groupdescription_{{ group.gid }}">
-                {{ group.description }}&nbsp;
+                {{ group.description }}
             </td>
             <td headers="hState" id="groupstate_{{ group.gid }}">
                 {{ states[group.state] }}
@@ -76,12 +78,13 @@
                 {{ (group.nbumax == false or group.nbumax == 0) ? __('Unlimited') : group.nbumax }}
             </td>
             {% set rowActions = knp_menu_get('zikulaGroupsAdminMenu', [], {group: group}) %}
-            <th headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</th>
+            <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">
+                {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-
 {% if applications %}
     <a id="applications"></a><h3>{{ __('Pending applications') }}</h3>
     <table class="table table-bordered table-striped">
@@ -114,11 +117,10 @@
                 </td>
             </tr>
             {% else %}
-            <tr><td colspan="5">{{ __('No items found.') }}</td></tr>
+            <tr class="table-info"><td colspan="5" class="text-center">{{ __('No items found.') }}</td></tr>
             {% endfor %}
         </tbody>
     </table>
 {% endif %}
-
 {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, posvar: 'startnum', route: 'zikulagroupsmodule_group_adminlist'}) }}
 {{ adminFooter() }}

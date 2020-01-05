@@ -1,49 +1,45 @@
 {% form_theme form with [
-    '@ZikulaFormExtension/Form/bootstrap_3_zikula_admin_layout.html.twig',
+    '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ adminHeader() }}
-<div class="container-fluid">
-    <div class="row">
-        <h3>
-            <span class="fa fa-envelope"></span>
-            {{ __('Test mailer settings') }}
-            {{ pageSetVar('title', __('Test mailer settings')) }}
-        </h3>
+<h3>
+    <span class="fa fa-envelope"></span>
+    {{ __('Test mailer settings') }}
+    {{ pageSetVar('title', __('Test mailer settings')) }}
+</h3>
 
-        <div class="alert alert-info">
-            <h4>{{ __('Current settings from') }} <code>dynamic/generated.yml</code>:</h4>
-            {{ swiftmailerHtml|raw }}
-        </div>
+<div class="alert alert-info">
+    <h4>{{ __('Current settings from') }} <code>dynamic/generated.yml</code>:</h4>
+    {{ swiftmailerHtml|raw }}
+</div>
 
-        {{ form_start(form) }}
-        {{ form_errors(form) }}
+{{ form_start(form) }}
+{{ form_errors(form) }}
 
-        <fieldset>
-            <legend>{{ __('Settings test') }}</legend>
-            {{ form_row(form.fromName) }}
-            {{ form_row(form.fromAddress) }}
-            {{ form_row(form.toName) }}
-            {{ form_row(form.toAddress) }}
-            {{ form_row(form.subject) }}
-            {{ form_row(form.messageType) }}
-            <div data-switch="zikulamailermodule_test[messageType]" data-switch-value="html,multipart">
-                {{ form_row(form.bodyHtml) }}
-            </div>
-            <div data-switch="zikulamailermodule_test[messageType]" data-switch-value="text,multipart">
-                {{ form_row(form.bodyText) }}
-            </div>
-        </fieldset>
+<fieldset>
+    <legend>{{ __('Settings test') }}</legend>
+    {{ form_row(form.fromName) }}
+    {{ form_row(form.fromAddress) }}
+    {{ form_row(form.toName) }}
+    {{ form_row(form.toAddress) }}
+    {{ form_row(form.subject) }}
+    {{ form_row(form.messageType) }}
+    <div data-switch="zikulamailermodule_test[messageType]" data-switch-value="html,multipart">
+        {{ form_row(form.bodyHtml) }}
+    </div>
+    <div data-switch="zikulamailermodule_test[messageType]" data-switch-value="text,multipart">
+        {{ form_row(form.bodyText) }}
+    </div>
+</fieldset>
 
-        {{ notifyDisplayHooks(eventName='mailer.ui_hooks.htmlmail.form_edit', id=null) }}
+{{ notifyDisplayHooks(eventName='mailer.ui_hooks.htmlmail.form_edit', id=null) }}
 
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-9">
-                {{ form_widget(form.test) }}
-                {{ form_widget(form.cancel) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
+<div class="form-group row">
+    <div class="col-md-9 offset-md-3">
+        {{ form_widget(form.test) }}
+        {{ form_widget(form.cancel) }}
     </div>
 </div>
+{{ form_end(form) }}
 {{ adminFooter() }}

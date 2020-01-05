@@ -5,35 +5,35 @@
 {% block content %}
     <div class="zikularoutesmodule-config">
         {% form_theme form with [
-            '@ZikulaRoutesModule/Form/bootstrap_3.html.twig',
+            '@ZikulaRoutesModule/Form/bootstrap_4.html.twig',
             '@ZikulaFormExtension/Form/form_div_layout.html.twig'
         ] %}
         {{ form_start(form) }}
         <div class="zikula-bootstrap-tab-container">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" role="tablist">
                 {% set tabTitle = __('List views') %}
-                <li role="presentation" class="active">
-                    <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                <li class="nav-item" role="presentation">
+                    <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link active">{{ tabTitle }}</a>
                 </li>
                 {% set tabTitle = __('Moderation') %}
-                <li role="presentation">
-                    <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                <li class="nav-item" role="presentation">
+                    <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
                 </li>
-                {#{% set tabTitle = __('Workflows') %}
-                <li role="presentation">
-                    <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+                {#% set tabTitle = __('Workflows') %}
+                <li class="nav-item" role="presentation">
+                    <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
                 </li>#}
             </ul>
 
             {{ form_errors(form) }}
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="tab1" aria-labelledby="vars1Tab">
+                <div role="tabpanel" class="tab-pane fade show active" id="tab1" aria-labelledby="vars1Tab">
                     {% set tabTitle = __('List views') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-
+                    
                         <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
-
+                    
                         {{ form_row(form.routeEntriesPerPage) }}
                         {{ form_row(form.showOnlyOwnEntries) }}
                     </fieldset>
@@ -42,9 +42,9 @@
                     {% set tabTitle = __('Moderation') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-
+                    
                         <p class="alert alert-info">{{ __('Here you can define moderation-related settings.')|nl2br }}</p>
-
+                    
                         {{ form_row(form.allowModerationSpecificCreatorForRoute) }}
                         {{ form_row(form.allowModerationSpecificCreationDateForRoute) }}
                     </fieldset>
@@ -53,9 +53,9 @@
                     {% set tabTitle = __('Workflows') %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
-
+                
                         <p class="alert alert-info">{{ __('Here you can inspect and amend the existing workflows.') }}</p>
-
+                
                         <h4>{{ __('Routes') }}</h4>
                         <p><a href="{{ path('zikula_workflow_editor_index', {workflow: 'zikularoutesmodule_none'}) }}" title="{{ __('Edit workflow for routes') }}" target="_blank"><i class="fa fa-cubes"></i> {{ __('Edit routes workflow') }}</a>
                     </fieldset>
@@ -63,8 +63,8 @@
             </div>
         </div>
 
-        <div class="form-group form-buttons">
-            <div class="col-sm-offset-3 col-sm-9">
+        <div class="form-group form-buttons row">
+            <div class="col-md-9 offset-md-3">
                 {{ form_widget(form.save) }}
                 {{ form_widget(form.reset) }}
                 {{ form_widget(form.cancel) }}
