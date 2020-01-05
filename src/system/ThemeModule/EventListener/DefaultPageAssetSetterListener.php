@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 use Zikula\ThemeModule\Engine\AssetBag;
 use Zikula\ThemeModule\Engine\Engine;
@@ -53,6 +54,11 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private $themeEngine;
 
     /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
      * @var array
      */
     private $params;
@@ -63,6 +69,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         RouterInterface $router,
         Asset $assetHelper,
         Engine $themeEngine,
+        VariableApiInterface $variableApi,
         string $env,
         bool $installed,
         string $bootstrapJavascriptPath,
@@ -74,6 +81,7 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $this->router = $router;
         $this->assetHelper = $assetHelper;
         $this->themeEngine = $themeEngine;
+        $this->variableApi = $variableApi;
         $this->params = [
             'env' => $env,
             'installed' => $installed,
@@ -159,10 +167,16 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
     private function addBootstrapCss(): void
     {
         $bootstrapPath = $this->params['zikula.stylesheet.bootstrap.min.path'];
-        if ($this->params['installed']) {
+        if ($this->params['installed'] && null !== $this->themeEngine->getTheme()) {
+            $theme = $this->themeEngine->getTheme();
             // Check for override of bootstrap css path
-            if (null !== $this->themeEngine->getTheme() && !empty($this->themeEngine->getTheme()->getConfig()['bootstrapPath'])) {
-                $bootstrapPath = $this->themeEngine->getTheme()->getConfig()['bootstrapPath'];
+            if (!empty($theme->getConfig()['bootstrapPath'])) {
+                $bootstrapPath = $theme->getConfig()['bootstrapPath'];
+            } elseif ('ZikulaBootstrapTheme' === $theme->getName()) {
+                $themeStyle = $this->variableApi->get($theme->getName(), 'theme_style');
+                if ('default' !== $themeStyle) {
+                    $bootstrapPath = 'bootswatch/dist/' . $themeStyle . '/bootstrap.min.css';
+                }
             }
         }
 

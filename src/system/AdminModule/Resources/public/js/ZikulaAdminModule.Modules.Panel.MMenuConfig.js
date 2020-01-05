@@ -11,5 +11,6 @@
             },
             'searchfield': true
         });
+        $('#zikula-admin-hiddenpanel-menu').removeClass('d-none');
     });
 })(jQuery);
