@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\RssTheme;
 
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
 class ZikulaRssTheme extends AbstractCoreTheme
@@ -23,7 +24,10 @@ class ZikulaRssTheme extends AbstractCoreTheme
      */
     public function generateThemedResponse(string $realm, Response $response, string $moduleName = null): Response
     {
-        $output = $this->getContainer()->get('twig')->render('ZikulaRssTheme::master.html.twig', ['maincontent' => $response->getContent()]);
+        /* @var Environment $twig */
+        $twig = $this->getContainer()->get('twig');
+
+        $output = $twig->render('@ZikulaRssTheme/master.html.twig', ['maincontent' => $response->getContent()]);
         $newResponse = new Response($output);
         $newResponse->headers->add(['Content-type' => 'application/rss+xml']);
 

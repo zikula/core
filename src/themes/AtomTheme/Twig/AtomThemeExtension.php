@@ -49,11 +49,12 @@ class AtomThemeExtension extends AbstractExtension
     {
         $host = null !== $this->requestStack->getMasterRequest() ? $this->requestStack->getMasterRequest()->getSchemeAndHttpHost() : '';
         $startDate = $this->variableApi->getSystemVar('startdate');
-        $starttimestamp = strtotime($startDate);
-        $startdate = strftime('%Y-%m-%d', $starttimestamp);
+        $startDateParts = explode('/', $startDate);
+        $startTimestamp = strtotime($startDateParts[1] . '-' . $startDateParts[0] . '-01');
+        $startDate = strftime('%Y-%m-%d', $startTimestamp);
         $sitename = Sluggable\Urlizer::urlize($this->variableApi->getSystemVar('sitename'));
 
-        return "tag:{$host},{$startdate}:{$sitename}";
+        return "tag:{$host},{$startDate}:{$sitename}";
     }
 
     public function atomFeedLastUpdated(): string

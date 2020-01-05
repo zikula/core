@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PrinterTheme;
 
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 use Zikula\Common\Translator\Translator;
 
@@ -30,7 +31,10 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
         $mainContent = $this->createFootnotes($mainContent);
         $mainContent .= $this->renderFootnotes();
 
-        $output = $this->getContainer()->get('twig')->render('ZikulaPrinterTheme::master.html.twig', ['maincontent' => $mainContent]);
+        /* @var Environment $twig */
+        $twig = $this->getContainer()->get('twig');
+
+        $output = $twig->render('@ZikulaPrinterTheme/master.html.twig', ['maincontent' => $mainContent]);
 
         return new Response($output);
     }
