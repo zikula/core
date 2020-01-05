@@ -70,3 +70,4 @@ allow_style_change:
     label_attr:
       class: switch-custom
     required: false
+    help: 'Enabling this shows a select dropdown in the page footer'
