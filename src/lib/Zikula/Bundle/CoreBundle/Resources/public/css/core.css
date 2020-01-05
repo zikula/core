@@ -128,7 +128,7 @@ td.actions .tooltip {
     white-space: normal !important;
 }
 
-td.actions ul {
+td.actions ul.list-inline {
     display: flex;
 }
 td.actions .fa {
