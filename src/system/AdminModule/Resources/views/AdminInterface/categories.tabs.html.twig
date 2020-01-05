@@ -11,24 +11,24 @@
                     <span>{{ category.title }}</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="admintabs-lock admintabs-makedefault{% if caller.category.cid == category.cid %} d-none{% endif %}">
+                    <li class="dropdown-item admintabs-lock admintabs-makedefault{% if caller.category.cid == category.cid %} d-none{% endif %}">
                         <a href="#"><span class="fa fa-fw fa-asterisk"></span> {{ __('Make default category') }}</a>
                     </li>
-                    <li class="admintabs-lock admintabs-edit" data-toggle="modal"
+                    <li class="dropdown-item admintabs-lock admintabs-edit" data-toggle="modal"
                         data-target="#admintabs-rename-category-modal">
                         <a href="#"><span class="fa fa-fw fa-pencil-alt"></span> {{ __('Edit category') }}</a>
                     </li>
-                    <li class="admintabs-lock admintabs-delete">
+                    <li class="dropdown-item admintabs-lock admintabs-delete">
                         <a href="#"><span class="fa fa-fw fa-trash-alt fa-red"></span> {{ __('Delete category') }}</a>
                     </li>
                     <li class="dropdown-divider admintabs-lock"></li>
-                    <li>
+                    <li class="dropdown-item">
                         <a href="{{ category.url }}"><span class="fa fa-fw fa-th-large fa-bluelight"></span> {{ __('Overview') }}</a>
                     </li>
                     {% if category.modules|length > 0 %}
                         <li class="dropdown-divider"></li>
                         {% for item in category.modules %}
-                            <li><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
+                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>

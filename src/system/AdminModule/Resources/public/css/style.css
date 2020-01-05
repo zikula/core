@@ -209,11 +209,12 @@ div.z-admincategorydescription {
     z-index: 1002; /* modulelinks */
 }
 
+#admintabs .dropdown-menu > li {
+    padding: 0;
+}
 #admintabs .dropdown-menu > li > a {
-    margin: 0;
-    padding: 4px 10px;
-    white-space: nowrap;
     display: block;
+    padding: 4px 10px;
 }
 
 /******************************************************************************
@@ -256,11 +257,13 @@ div.z-admincategorydescription {
     padding: 3px;
     font-size: 95%;
 }
+#modulelist .dropdown-menu > li {
+    padding: 0;
+}
+
 #modulelist .dropdown-menu > li > a {
-    margin: 0;
-    padding: 2px 7px;
-    white-space: nowrap;
     display: block;
+    padding: 2px 7px;
 }
 
 @media (min-width: 550px) {

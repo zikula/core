@@ -12,11 +12,12 @@ that will be passed along to the theme engine as global variables within your th
 Additionally, dynamically created forms (using the symfony form engine) can be used by creating a yml definition like so:
 
 ```yaml
-home:
+home_template:
     default_value: 3col_w_centerblock
     type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
     options:
-    choices:
+      label: 'Template for home page'
+      choices:
         'One column': 1col
         'Two columns': 2col
         'Two columns with centerblock': 2col_w_centerblock

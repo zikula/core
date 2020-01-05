@@ -59,7 +59,8 @@
                     </td>
                     <td headers="hBlockLanguage">{{ block.language|default( __('All') ) }}</td>
                     <td headers="hBlockState">
-                        <a href="#" class="block-state-switch badge badge-{{ block.active ? 'success' : 'danger' }} tooltips" title="{{ block.active ? __('Click to deactivate block') : __('Click to activate block')  }}" data-bid="{{ block.bid }}">{{ block.active ? __('Active')  : __('Inactive') }}</a>
+                        <a href="#" class="block-state-switch badge badge-success{{ block.active ? '' : ' d-none' }} tooltips" title="{{ __('Click to deactivate block') }}" data-bid="{{ block.bid }}">{{ __('Active') }}</a>
+                        <a href="#" class="block-state-switch badge badge-danger{{ block.active ? ' d-none' : '' }} tooltips" title="{{ __('Click to activate block') }}" data-bid="{{ block.bid }}">{{ __('Inactive') }}</a>
                     </td>
                     <td headers="hBlockActions" class="actions">
                         <a class="fa fa-eye tooltips block-preview" href="{{ path('zikulablocksmodule_block_view', {bid: block.bid}) }}" data-toggle="modal" data-target="#zikulablocksmodule-block-view-modal" data-remote="false" title="{{ __('Preview block') }}"></a>

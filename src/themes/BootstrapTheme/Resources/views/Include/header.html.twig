@@ -23,4 +23,3 @@
 </head>
 <body{% if admin|default %} class="admin-page"{% elseif home|default %} class="home"{% endif %}>
     <div id="themeMainContainer">
-        {{ include('@ZikulaBootstrapTheme/Include/' ~ (admin|default == true ? 'admin' : 'main') ~ '_menu.html.twig') }}
