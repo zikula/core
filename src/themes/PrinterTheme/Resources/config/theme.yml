@@ -2,4 +2,4 @@
 # ZikulaPrinterTheme config
 ##
 master:
-  page: ":master.html.twig"
+  page: "master.html.twig"
