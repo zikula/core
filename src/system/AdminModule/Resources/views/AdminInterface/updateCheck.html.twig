@@ -5,11 +5,7 @@
                 <i class="close" data-dismiss="alert">&times;</i>
                 <a href="#updatecheck_full" title="{{ __('Update checker') }}"
                    data-toggle="collapse" aria-expanded="false" aria-controls="updatecheck_full">
-                    <span class="fa-stack">
-                        <i class="fa fa-sync fa-stack-2x"></i>
-                        <i class="fa fa-info fa-stack-1x"></i>
-                    </span>
-                    <strong> {{ __('Update checker') }}: </strong>
+                    <strong><i class="fa fa-sync"></i> {{ __('Update checker') }}: </strong>
                     {% if updateCheckHelper.versionCompare == -1 %}
                         {# you use not released version #}
                         {{ __('You are currently using an unreleased version of the Zikula Core.') }}
@@ -90,12 +86,9 @@
                 {% else %}
                     <div class="col-md-12 text-center">
                         <p>{{ __('Stable Zikula Core available') }}: {{ updateCheckHelper.updateversion }} </p>
-                        <a href="{{ path(caller._route, caller._route_params|merge({'forceupdatecheck':1})) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ path(caller._route, caller._route_params|merge({'forceupdatecheck': 1})) }}" class="btn btn-primary">
                             {{ __('Check now') }}
-                            <span class="fa-stack">
-                                <i class="fa fa-sync fa-stack-2x"></i>
-                                <i class="fa fa-info fa-stack-1x"></i>
-                            </span>
+                            <i class="fa fa-sync"></i>
                         </a>
                     </div>
                 {% endif %}
