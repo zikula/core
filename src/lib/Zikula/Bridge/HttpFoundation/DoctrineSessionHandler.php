@@ -151,7 +151,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
             $sessionEntity = $this->getSessionEntity($sessionId);
             $sessionEntity->setVars($data);
             $this->userSessionRepository->persistAndFlush($sessionEntity);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             //die('Error: ' . $exception->getMessage());
             return false;
         }
