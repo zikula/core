@@ -54,6 +54,12 @@ col-md-9
     {{ _self.alertBlock(alert) }}
 {%- endblock form_help %}
 
+{# inject custom-select class into dropdown fields #}
+{% block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-select')|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed %}
+
 {# user live search input widget #}
 {% block zikulausersmodule_userlivesearch_widget %}
     <div id="{{ id }}LiveSearch" class="autocomplete-user hidden">
