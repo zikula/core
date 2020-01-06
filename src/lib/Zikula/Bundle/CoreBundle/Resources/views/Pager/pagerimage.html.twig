@@ -11,7 +11,14 @@
     {% endif %}
 
     <span>
-    {{ __f('Page %1$s / %2$s (%3$s - %4$s of %5$s total)', [pagerPluginArray.currentPage, pagerPluginArray.countPages, pagerPluginArray.itemStart, pagerPluginArray.itemEnd, pagerPluginArray.total], 'zikula') }}
+    {% set args = {
+        '%1%': pagerPluginArray.currentPage,
+        '%2%': pagerPluginArray.countPages,
+        '%3%': pagerPluginArray.itemStart,
+        '%4%': pagerPluginArray.itemEnd,
+        '%5%': pagerPluginArray.total,
+    } %}
+    {% trans with args from 'zikula' %}Page %1% / %2% (%3% - %4% of %5% total){% endtrans %}
     </span>
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}

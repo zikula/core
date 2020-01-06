@@ -30,7 +30,7 @@
                                 {% endfor %}
                             {% endif %}
                             <li id="sarea_empty_{{ sarea_md5 }}"{% if areasSorting[category][sarea] is defined %} class="hide"{% endif %}>
-                                <span>{{ __('There aren\'t any areas attached here.<br />Drag an area from the right and drop it here to attach it.')|raw }}</span>
+                                <span>{% trans %}There aren't any areas attached here.{% endtrans %}<br />{% trans %}Drag an area from the right and drop it here to attach it.{% endtrans %}</span>
                             </li>
                         </ol>
                     </div>

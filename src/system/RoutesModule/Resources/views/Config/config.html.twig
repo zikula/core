@@ -1,6 +1,6 @@
 {# purpose of this template: module configuration page #}
 {% extends '@ZikulaRoutesModule/adminBase.html.twig' %}
-{% block title __('Settings') %}
+{% block title 'Settings'|trans %}
 {% block admin_page_icon 'wrench' %}
 {% block content %}
     <div class="zikularoutesmodule-config">
@@ -11,15 +11,15 @@
         {{ form_start(form) }}
         <div class="zikula-bootstrap-tab-container">
             <ul class="nav nav-tabs" role="tablist">
-                {% set tabTitle = __('List views') %}
+                {% set tabTitle = 'List views'|trans %}
                 <li class="nav-item" role="presentation">
                     <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link active">{{ tabTitle }}</a>
                 </li>
-                {% set tabTitle = __('Moderation') %}
+                {% set tabTitle = 'Moderation'|trans %}
                 <li class="nav-item" role="presentation">
                     <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
                 </li>
-                {#% set tabTitle = __('Workflows') %}
+                {#% set tabTitle = 'Workflows'|trans %}
                 <li class="nav-item" role="presentation">
                     <a id="workflowsTab" href="#tabWorkflows" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab" class="nav-link">{{ tabTitle }}</a>
                 </li>#}
@@ -28,29 +28,29 @@
             {{ form_errors(form) }}
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade show active" id="tab1" aria-labelledby="vars1Tab">
-                    {% set tabTitle = __('List views') %}
+                    {% set tabTitle = 'List views'|trans %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
 
-                        <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
+                        <p class="alert alert-info">{% trans %}'Here you can configure parameters for list views.{% endtrans %}</p>
 
                         {{ form_row(form.routeEntriesPerPage) }}
                         {{ form_row(form.showOnlyOwnEntries) }}
                     </fieldset>
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
-                    {% set tabTitle = __('Moderation') %}
+                    {% set tabTitle = 'Moderation'|trans %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
 
-                        <p class="alert alert-info">{{ __('Here you can define moderation-related settings.')|nl2br }}</p>
+                        <p class="alert alert-info">{% trans %}Here you can define moderation-related settings.{% endtrans %}</p>
 
                         {{ form_row(form.allowModerationSpecificCreatorForRoute) }}
                         {{ form_row(form.allowModerationSpecificCreationDateForRoute) }}
                     </fieldset>
                 </div>
                 {#<div role="tabpanel" class="tab-pane fade" id="tabWorkflows" aria-labelledby="workflowsTab">
-                    {% set tabTitle = __('Workflows') %}
+                    {% set tabTitle = 'Workflows'|trans %}
                     <fieldset>
                         <legend>{{ tabTitle }}</legend>
 

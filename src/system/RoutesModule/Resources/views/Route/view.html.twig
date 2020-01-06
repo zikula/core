@@ -1,17 +1,17 @@
 {# purpose of this template: routes list view #}
 {% extends routeArea == 'admin' ? '@ZikulaRoutesModule/adminBase.html.twig' : '@ZikulaRoutesModule/base.html.twig' %}
-{% block title own ? __('My custom routes') : __('Custom routes list') %}
+{% block title own ? 'My custom routes'|trans : 'Custom routes list'|trans %}
 {% block admin_page_icon 'list-alt' %}
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-view">
         <div class="alert alert-warning">
-            {{ __f('Below you see your current routing configuration (see %s for reference).', { '%s': '<a href="http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration">JMSI18nRoutingBundle</a>' })|raw }}
-            {% set title = __('Localisation settings') %}
+            {% trans with { '%s': '<a href="http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration">JMSI18nRoutingBundle</a>'|raw } %}Below you see your current routing configuration (see %s for reference).{% endtrans %}
+            {% set title = 'Localisation settings'|trans %}
             {% set url = path('zikulasettingsmodule_settings_locale') %}
-            {{ __f('You can change your routing configuration in the general settings: %s.', { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>' })|raw }}
-            {% set title = __('reload installed languages') %}
+            {% trans with { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw } %}You can change your routing configuration in the general settings: %s.{% endtrans %}
+            {% set title = 'reload installed languages'|trans %}
             {% set url = path('zikularoutesmodule_update_renew') %}
-            {{ __f('In case one or more installed languages are not listed below, %s.', { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>' })|raw }}
+            {% trans with { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw } %}In case one or more installed languages are not listed below, %s.{% endtrans %}
             {{ jms_i18n_routing|raw }}
         </div>
         {% set viewActions = knp_menu_get('zikulaRoutesMenuViewActions', [], {objectType: 'route', area: routeArea}) %}

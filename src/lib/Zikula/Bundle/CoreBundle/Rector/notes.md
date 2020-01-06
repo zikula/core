@@ -83,3 +83,15 @@ assuming count=2 produces
     2 direct children
 
 So the fourth option `{% trans count node.children.count %}` seems to be the most efficient
+
+##More regex searches and/or replaces
+
+pageSetVar\('(.*?)',\s+__\((.*?)\)\)
+replace with
+pageSetVar\('$1', $2|trans\)
+
+__\((.*?)\)
+replace with
+$1|trans
+
+__f\((.*?)\) 

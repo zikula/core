@@ -10,7 +10,7 @@
 <h3>
     <span class="fa fa-paperclip"></span>
     {% trans %}Hooks{% endtrans %}
-    {{ pageSetVar('title', __('Hooks')) }}
+    {{ pageSetVar('title', 'Hooks'|trans) }}
 </h3>
 
 <div id="csrfToken" class="d-none" data-token="{{ csrf_token('hook-ui') }}"></div>

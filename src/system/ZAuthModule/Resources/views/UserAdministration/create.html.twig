@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-plus"></span>
     {% trans %}Create new user{% endtrans %}
-    {{ pageSetVar('title', __('Create new user')) }}
+    {{ pageSetVar('title', 'Create new user'|trans) }}
 </h3>
 <div class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</div>
 {{ form_start(form) }}

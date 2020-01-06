@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-trash-alt"></span>
     {% trans with {"%sub%": themeName} %}Remove theme %sub%{% endtrans %}
-    {{ pageSetVar('title', __('Remove theme')) }}
+    {{ pageSetVar('title', 'Remove theme'|trans) }}
 </h3>
 
 <p class="alert alert-danger">{% trans with {'%name%': themeName} %}Do you really want to remove the %name% theme?{% endtrans %}</p>

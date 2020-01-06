@@ -12,7 +12,7 @@
         {% set profileLink = obj.createdBy.uid|profileLinkByUserId %}
         <dd class="avatar">{{ userAvatar(obj.createdBy.uid, {rating: 'g'}) }}</dd>
         <dd>
-            {{ __f('Created by %user on %date', {'%user': profileLink, '%date': obj.createdDate|format_datetime('medium', 'short')})|raw }}
+            {% trans with {'%user': profileLink|raw, '%date': obj.createdDate|format_datetime('medium', 'short')|raw } %}Created by %user on %date'{% endtrans %}
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.createdBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
@@ -26,7 +26,7 @@
         {% set profileLink = obj.updatedBy.uid|profileLinkByUserId %}
         <dd class="avatar">{{ userAvatar(obj.updatedBy.uid, {rating: 'g'}) }}</dd>
         <dd>
-            {{ __f('Updated by %user on %date', {'%user': profileLink, '%date': obj.updatedDate|format_datetime('medium', 'short')})|raw }}
+            {% trans with {'%user': profileLink|raw, '%date': obj.updatedDate|format_datetime('medium', 'short')|raw } %}Updated by %user on %date{% endtrans %}
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.updatedBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}

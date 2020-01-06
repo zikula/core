@@ -2,7 +2,7 @@
 <h3>
     <span class="fa fa-list"></span>
     {% trans %}Groups list{% endtrans %}
-    {{ pageSetVar('title', __('Groups list')) }}
+    {{ pageSetVar('title', 'Groups list'|trans) }}
 </h3>
 <div class="alert alert-info">
     <p>{% trans %}Types{% endtrans %}:</p>
@@ -75,7 +75,7 @@
                 {{ group.users.count }}
             </td>
             <td headers="hMaximum" id="groupnbumax_{{ group.gid }}" class="text-center">
-                {{ (group.nbumax == false or group.nbumax == 0) ? __('Unlimited') : group.nbumax }}
+                {{ (group.nbumax == false or group.nbumax == 0) ? 'Unlimited'|trans : group.nbumax }}
             </td>
             {% set rowActions = knp_menu_get('zikulaGroupsAdminMenu', [], {group: group}) %}
             <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">

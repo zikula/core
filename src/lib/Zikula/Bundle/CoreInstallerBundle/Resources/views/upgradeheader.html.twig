@@ -1,9 +1,8 @@
 <div id="header">
     <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
     <h2>{% trans %}Upgrader script{% endtrans %}</h2>
-    <p class="installguide"><em>{{ __f("Please refer to the %s during the process.",
-            { '%s': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({
-                '%url%': path('doc', {'name': 'UPGRADE-2.0.md'}),
-                '%text%': __('upgrade guide') }) } ) | raw }}</em>
+    <p class="installguide">
+        {% set doc_link = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': path('doc', {'name': 'UPGRADE-2.0.md'}), '%text%': 'upgrade guide'|trans }) %}
+        <em>{% trans with { '%doc_link%': doclink|raw } %}Please refer to the %doc_link% during the process.{% endtrans %}</em>
     </p>
 </div>

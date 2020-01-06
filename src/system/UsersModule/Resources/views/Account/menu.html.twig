@@ -1,4 +1,4 @@
-{{ moduleHeader('user', __('My account'), '', true, true) }}
+{{ moduleHeader('user', 'My account'|trans, '', true, true) }}
 
 {% if not currentUser.loggedin %}
     <p>{% trans %}Please select one of the following:{% endtrans %}</p>

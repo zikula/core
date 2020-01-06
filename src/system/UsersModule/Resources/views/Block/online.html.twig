@@ -1,6 +1,6 @@
 <p>
     {% set nummeb = 'count.registered.user'|trans({count: usercount}, 'zikula') %}
-    {% set nummeb = 'count.anonymous.gues'|trans({count: guestcount}, 'zikula') %}
+    {% set numanon = 'count.anonymous.guest'|trans({count: guestcount}, 'zikula') %}
     {% trans with {'%users%': nummeb, '%guests%': numanon, '%time%': since|date('g:i:s a')} from 'zikula' %}%users% and %guests% online since %time%.{% endtrans %}
 </p>
 {% if currentUser.loggedIn %}

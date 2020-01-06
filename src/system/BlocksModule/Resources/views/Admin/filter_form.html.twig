@@ -4,8 +4,8 @@
 ] %}
 {{ form_start(filterForm) }}
     <fieldset{% if filter_active %} class="filteractive"{% endif %}>
-        {% set filteractive = filter_active ? __('active') : __('inactive') %}
-        <legend class="mb-0">{{ __f('Filter %active%', {'%active%': filteractive} ) }}</legend>
+        {% set filteractive = filter_active ? 'active'|trans : 'inactive'|trans %}
+        <legend class="mb-0">{% trans with {'%active%': filteractive} %}Filter %active%{% endtrans %}</legend>
         <strong>{% trans %}Position{% endtrans %}</strong> {{ form_widget(filterForm.position) }}&nbsp;&nbsp;
         <strong>{% trans %}Module{% endtrans %}</strong> {{ form_widget(filterForm.module) }}&nbsp;&nbsp;
         <strong>{% trans %}Language{% endtrans %}</strong> {{ form_widget(filterForm.language) }}&nbsp;&nbsp;

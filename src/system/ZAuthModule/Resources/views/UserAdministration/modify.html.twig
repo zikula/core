@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-plus"></span>
     {% trans with {'%uname': form.vars.value.uname} %}Edit user account of %uname{% endtrans %}
-    {{ pageSetVar('title', __('Edit user account')) }}
+    {{ pageSetVar('title', 'Edit user account'|trans) }}
 </h3>
 <div class="alert alert-warning">{% trans %}The items that are marked with an asterisk (\'*\') are required entries.{% endtrans %}</div>
 {% if form.vars.value.uid == currentUser.uid %}

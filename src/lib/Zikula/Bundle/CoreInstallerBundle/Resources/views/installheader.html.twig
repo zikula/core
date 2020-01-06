@@ -16,9 +16,7 @@
         </li>
     </ol>
     <p class="installguide">
-        <em>{{ __f("Please refer to the %s during the process.",
-            { '%s': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({
-                '%url%': path('doc', {'name': 'INSTALL-2.0.md'}),
-                '%text%': __('installation guide') }) } ) | raw }}</em>
+        {% set doc_link = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}),'%text%': 'installation guide'|trans }) %}
+        <em>{% trans with { '%doc_link%': doc_link|raw } %}Please refer to the %doc_link% during the process.{% endtrans %}</em>
     </p>
 </div>

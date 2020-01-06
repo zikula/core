@@ -3,7 +3,7 @@
 <h3>
     <span class="fa fa-info-circle"></span>
     {% trans %}PHP configuration{% endtrans %}
-    {{ pageSetVar('title', __('PHP configuration')) }}
+    {{ pageSetVar('title', 'PHP configuration'|trans) }}
 </h3>
 <div id="phpinfo">
     {{ phpinfo|raw }}

@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-wrench"></span>
     {% trans %}Settings{% endtrans %}
-    {{ pageSetVar('title', __('Search settings')) }}
+    {{ pageSetVar('title', 'Search settings'|trans) }}
 </h3>
 
 {{ form_start(form) }}
@@ -23,7 +23,8 @@
 <fieldset>
     <legend>OpenSearch</legend>
     <p class="alert alert-info">
-        {{ __f('%linkStart OpenSearch %linkEnd makes it possible for your site\'s users to use your site\'s search function as a search engine.', {'%linkStart': '<a href="https://en.wikipedia.org/wiki/OpenSearch">', '%linkEnd': '</a>'})|raw }}
+        {% set link = '<a href="https://en.wikipedia.org/wiki/OpenSearch">' ~ 'OpenSearch'|trans ~ '</a>' %}
+        {% trans with {'%link%': link } %}%link% makes it possible for your site's users to use your site's search function as a search engine.{% endtrans %}
     </p>
     {{ form_row(form.opensearch_enabled) }}
     {{ form_row(form.opensearch_adult_content) }}

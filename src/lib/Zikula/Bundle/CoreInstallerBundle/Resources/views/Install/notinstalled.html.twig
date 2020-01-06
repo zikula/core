@@ -1,6 +1,6 @@
 {% extends '@ZikulaCoreInstaller/theme.html.twig' %}
 
-{% block title __('Zikula is not installed!') %}
+{% block title 'Zikula is not installed!'|trans %}
 
 {% block body %}
 <div class="container">
@@ -10,10 +10,10 @@
                 <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
                 <h2>{% trans %}Zikula Core is not installed!{% endtrans %}</h2>
                 <p>
-                    {{ __f('You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking
-                    on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.',
-                    {'%inst%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}), '%text%': __('installation instructions') }),
-                     '%docs%': '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>' | replace({'%url%': 'https://ziku.la', '%text%': __('online documentation') }) } ) | raw }}
+                    {% set inst = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}), '%text%': 'installation instructions'|trans }) %}
+                    {% set docs = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
+                    {% trans with { '%inst%': inst, '%docs%': docs } %}'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking
+                    on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
                 <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
                 <div id="installButton" class="row" class="d-none">
@@ -26,7 +26,7 @@
                 <br />
                 <p class="text-muted">
                     {% trans %}Zikula is free software released under the GPL license!{% endtrans %}<br />
-                    {{ __f('For more information, please visit %link%.', { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" onclick="window.open(this.href);return false;">https://ziku.la</a>'}) | raw }}
+                    {% trans with { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" onclick="window.open(this.href);return false;">https://ziku.la</a>'}|raw %}For more information, please visit %link%.{% endtrans %}
                 </p>
             </div>
         </div>

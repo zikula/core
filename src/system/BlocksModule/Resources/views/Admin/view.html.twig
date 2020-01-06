@@ -4,14 +4,14 @@
 <h3>
     <span class="fa fa-list"></span>
     {% trans %}Blocks list{% endtrans %}
-    {{ pageSetVar('title', __('Blocks list')) }}
+    {{ pageSetVar('title', 'Blocks list'|trans) }}
 </h3>
 
 <p class="alert alert-info">
-    {{ __("This is the list of blocks present in your system, you can use the filter to display only certain blocks.
+    {% trans %}This is the list of blocks present in your system, you can use the filter to display only certain blocks.
     The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages.
     To manage the display order of the blocks click the position name in this table or on the 'edit block placements'
-    in the position list table below.") }}
+    in the position list table below.{% endtrans %}
 </p>
 
 {% include '@ZikulaBlocksModule/Admin/filter_form.html.twig' %}
@@ -57,7 +57,7 @@
                         {% endfor %}
                         {% if block.filters|length > 0 %} <i class="fa fa-filter fa-lg text-success float-right" title="{% trans %}This block has filters{% endtrans %}"></i>{% endif %}
                     </td>
-                    <td headers="hBlockLanguage">{{ block.language|default( __('All') ) }}</td>
+                    <td headers="hBlockLanguage">{{ block.language|default( 'All'|trans ) }}</td>
                     <td headers="hBlockState">
                         <a href="#" class="block-state-switch badge badge-success{{ block.active ? '' : ' d-none' }} tooltips" title="{% trans %}Click to deactivate block{% endtrans %}" data-bid="{{ block.bid }}">{% trans %}Active{% endtrans %}</a>
                         <a href="#" class="block-state-switch badge badge-danger{{ block.active ? ' d-none' : '' }} tooltips" title="{% trans %}Click to activate block{% endtrans %}" data-bid="{{ block.bid }}">{% trans %}Inactive{% endtrans %}</a>
@@ -77,11 +77,11 @@
 
 <h3 id="blockpositions">{% trans %}Block positions list{% endtrans %}</h3>
 
-<p class="alert alert-info">{{ __("This is the list of block positions currently existing for your site's pages.
+<p class="alert alert-info">{% trans %}This is the list of block positions currently existing for your site's pages.
 You can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position,
 click on the 'Edit' icon beside that particular position. To reorder the blocks within a block position, click on the
 'Edit placements' (blocks) icon for that position or on the position name in the block list above.
-To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display.") }}</p>
+To delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display.{% endtrans %}</p>
 
 <div class="table-responsive">
     <table class="table table-bordered table-striped">

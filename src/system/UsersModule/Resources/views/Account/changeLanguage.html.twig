@@ -3,7 +3,7 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {% if getModVar('ZConfig', 'multilingual')  %}
-    {{ moduleHeader('user', __('Language switcher'), '', true) }}
+    {{ moduleHeader('user', 'Language switcher'|trans, '', true) }}
     <fieldset>
         {{ form_start(form) }}
         {{ form_errors(form) }}

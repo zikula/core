@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-trash-alt"></span>
     {% trans %}Uninstall module{% endtrans %} '{{ extension.displayname }}'
-    {{ pageSetVar('title', __('Uninstall module')) }}
+    {{ pageSetVar('title', 'Uninstall module'|trans) }}
 </h3>
 
 <p class="alert alert-warning">{% trans with {'%title%': extension.displayname} %}Do you really want to uninstall '%title%'?{% endtrans %}</p>

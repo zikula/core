@@ -3,7 +3,7 @@
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
 {{ pageAddAsset('javascript', zasset('@ZikulaSearchModule:js/ZikulaSearchModule.User.Form.js')) }}
-{{ moduleHeader('user', __('Site search'), true, true) }}
+{{ moduleHeader('user', 'Site search'|trans, true, true) }}
 
 {% if noResultsFound %}
     <div class="alert alert-danger">

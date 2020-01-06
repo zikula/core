@@ -1,7 +1,7 @@
 {# purpose of this template: build the form to edit an instance of route #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends '@ZikulaRoutesModule/' ~ baseTemplate ~ '.html.twig' %}
-{% block title mode == 'create' ? __('Create route') : __('Edit route') %}
+{% block title mode == 'create' ? 'Create route'|trans : 'Edit route'|trans %}
 {% block admin_page_icon mode == 'create' ? 'plus' : 'edit' %}
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-edit">

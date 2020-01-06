@@ -6,11 +6,11 @@
 <h3>
     <span class="fa fa-check"></span>
     {% trans %}Theme confirmation prompt{% endtrans %}
-    {{ pageSetVar('title', __('Theme confirmation prompt')) }}
+    {{ pageSetVar('title', 'Theme confirmation prompt'|trans) }}
 </h3>
 
 <p class="alert alert-danger">
-    {{ __f('Do you really want to set %sub% as the active theme for all site users?', {'%sub%': '<strong>' ~ themeName ~ '</strong>'})|raw }}
+    {% trans with {'%sub%': '<strong>' ~ themeName ~ '</strong>'|raw} %}Do you really want to set %sub% as the active theme for all site users?{% endtrans %}
 </p>
 {{ form_start(form) }}
 {{ form_errors(form) }}

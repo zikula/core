@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-search"></span>
     {% trans %}Find users{% endtrans %}
-    {{ pageSetVar('title', __('Find users')) }}
+    {{ pageSetVar('title', 'Find users'|trans) }}
 </h3>
 {{ form_start(form) }}
 {{ form_errors(form) }}

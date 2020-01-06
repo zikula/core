@@ -5,7 +5,7 @@
 <h3>
     <span class="fa fa-list"></span>
     {% trans %}Search results{% endtrans %}
-    {{ pageSetVar('title', __('Search results')) }}
+    {{ pageSetVar('title', 'Search results'|trans) }}
 </h3>
 
 {% form_theme resultsForm with [
@@ -40,7 +40,7 @@
                 <tr{% if excluded %} class="warning"{% endif %}>
                 {% if hasPermission('ZikulaUsersModule', '::', 'ACCESS_DELETE') %}
                 <td headers="hDelete">
-                    {{ form_widget(user, {title:__f('Delete %n', {'%n': user.vars.label}), disabled:excluded}) }}
+                    {{ form_widget(user, {title: 'Delete %n'|trans({'%n': user.vars.label}), disabled:excluded}) }}
                 </td>
                 {% endif %}
                 <td headers="hUser">{{ user.vars.label }}</td>

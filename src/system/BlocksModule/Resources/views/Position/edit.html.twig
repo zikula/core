@@ -7,10 +7,10 @@
     <span class="fa fa-edit"></span>
     {% if form.vars.value.pid %}
         {% trans %}Modify block position{% endtrans %}
-        {{ pageSetVar('title', __('Modify block position')) }}
+        {{ pageSetVar('title', 'Modify block position'|trans) }}
     {% else %}
         {% trans %}Create block position{% endtrans %}
-        {{ pageSetVar('title', __('Create block position')) }}
+        {{ pageSetVar('title', 'Create block position'|trans) }}
     {% endif %}
 </h3>
 <p class="alert alert-info">

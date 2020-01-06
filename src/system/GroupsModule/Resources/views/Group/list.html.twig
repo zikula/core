@@ -1,4 +1,4 @@
-{{ moduleHeader('user', __('Groups'), '', true, true, false, true) }}
+{{ moduleHeader('user', 'Groups'|trans, '', true, true, false, true) }}
 <h3>
     <span class="fa fa-list"></span>
     {% trans %}Groups list{% endtrans %}
@@ -43,7 +43,7 @@
                 {{ group.users.count }}
             </td>
             <td headers="hMaximum" id="groupnbumax_{{ group.gid }}" class="text-center">
-                {{ (group.nbumax == false or group.nbumax == 0) ? __('Unlimited') : group.nbumax }}
+                {{ (group.nbumax == false or group.nbumax == 0) ? 'Unlimited'|trans : group.nbumax }}
             </td>
             {% set rowActions = knp_menu_get('zikulaGroupsUserMenu', [], {group: group}) %}
             <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">

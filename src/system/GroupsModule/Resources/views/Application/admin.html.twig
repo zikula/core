@@ -1,4 +1,4 @@
-{% set templateTitle = __('Administrate membership application') %}
+{% set templateTitle = 'Administrate membership application'|trans %}
 {% form_theme form with [
     '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
@@ -13,7 +13,7 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{{ __f('%action application for %user to %group group', {'%action': action|capitalize, '%user': '<strong>' ~ application.user.uname ~ '</strong>', '%group': '<strong>' ~ application.group.name ~ '</strong>'})|raw }}</legend>
+    <legend>{% trans with {'%action': action|capitalize, '%user': '<strong>' ~ application.user.uname ~ '</strong>'|raw, '%group': '<strong>' ~ application.group.name ~ '</strong>'|raw} %}%action application for %user to %group group{% endtrans %}</legend>
     <div class="alert alert-info">
         <h4>{% trans %}Application comments{% endtrans %}</h4>
         {{ application.application }}

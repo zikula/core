@@ -6,11 +6,12 @@
 <h3>
     <span class="fa fa-wrench"></span>
     {% trans %}Localisation settings{% endtrans %}
-    {{ pageSetVar('title', __('Localisation settings')) }}
+    {{ pageSetVar('title', 'Localisation settings'|trans) }}
 </h3>
 {% if not intl_installed|default(false) %}
     <div class="alert alert-danger">
-        {{ __f('WARNING: The PHP Extension %ext is not loaded. All functions using this will default to %locale. Seek assistance from your provider to install.', {"%ext": "<code>INTL</code>", "%locale": "<code>EN</code>"})|raw }}
+        {% set args = {"%ext": "<code>INTL</code>"|raw, "%locale": "<code>EN</code>"|raw} %}
+        {% trans with args %}WARNING: The PHP Extension %ext is not loaded. All functions using this will default to %locale. Seek assistance from your provider to install.'{% endtrans %}
     </div>
 {% endif %}
 {{ form_start(form) }}

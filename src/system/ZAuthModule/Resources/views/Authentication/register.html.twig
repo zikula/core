@@ -2,7 +2,7 @@
     '@ZikulaFormExtension/Form/bootstrap_4_zikula_admin_layout.html.twig',
     '@ZikulaFormExtension/Form/form_div_layout.html.twig'
 ] %}
-{{ moduleHeader('user', __('New account registration'), '', true, true) }}
+{{ moduleHeader('user', 'New account registration'|trans, '', true, true) }}
 
 <p id="users_formtop">
     {% trans %}Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.{% endtrans %}
@@ -35,7 +35,7 @@
     {% endif %}
     <fieldset>
         <legend>{% trans %}Set a password{% endtrans %}</legend>
-        {{ form_row(form.pass, {'help': __f('The minimum length for user passwords is %sub% characters.', {"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
+        {{ form_row(form.pass, {'help': 'The minimum length for user passwords is %sub% characters.'|trans({"%sub%": getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_MINIMUM_LENGTH'))} )}) }}
         {% if getModVar('ZikulaZAuthModule', constant('Zikula\\ZAuthModule\\ZAuthConstant::MODVAR_PASSWORD_STRENGTH_METER_ENABLED')) %}
             <div class="form-group row">
                 <div id="{{ form.vars.id }}_passmeter" class="col-md-9 offset-md-3"></div>

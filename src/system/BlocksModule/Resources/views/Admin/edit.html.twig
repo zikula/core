@@ -8,10 +8,10 @@
     <span class="fa fa-edit"></span>
     {% if form.vars.value.bid %}
         {% trans %}Modify block{% endtrans %}
-        {{ pageSetVar('title', __('Modify block')) }}
+        {{ pageSetVar('title', 'Modify block'|trans) }}
     {% else %}
         {% trans %}Create block{% endtrans %}
-        {{ pageSetVar('title', __('Create block')) }}
+        {{ pageSetVar('title', 'Create block'|trans) }}
     {% endif %}
 </h3>
 {{ showflashes() }}

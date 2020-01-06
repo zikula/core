@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-user"></span>
     {% trans with {'%sub%': mapping.uname} %}Confirm verification code is to be sent to %sub%{% endtrans %}
-    {{ pageSetVar('title', __('Confirm verification code')) }}
+    {{ pageSetVar('title', 'Confirm verification code'|trans) }}
 </h3>
 
 {{ form_start(form) }}

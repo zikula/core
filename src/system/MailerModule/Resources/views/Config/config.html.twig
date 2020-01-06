@@ -6,11 +6,12 @@
 <h3>
     <span class="fa fa-wrench"></span>
     {% trans %}Settings{% endtrans %}
-    {{ pageSetVar('title', __('Mailer settings')) }}
+    {{ pageSetVar('title', 'Mailer settings'|trans) }}
 </h3>
 
 <p class="alert alert-info">
-    {{ __f('Mailer relies on %swiftmailer', {'%swiftmailer': '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link-alt"></i> SwiftMailer configuration</a>'})|raw }}
+    {% set link = '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link-alt"></i>' ~ 'SwiftMailer configuration'|trans ~'</a>' %}
+    {% trans with {'%link%' : link|raw } %}Mailer relies on %link%{% endtrans %}
 </p>
 
 {{ form_start(form) }}

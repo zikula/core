@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-trash-alt"></span>
     {% trans %}Delete confirmation{% endtrans %}
-    {{ pageSetVar('title', __('Delete confirmation')) }}
+    {{ pageSetVar('title', 'Delete confirmation'|trans) }}
 </h3>
 {% for user in users %}
     <p class="alert alert-danger">{% trans with {'%un': user.uname} %}Are you sure you want to delete the user (%un)?{% endtrans %}</p>

@@ -2,7 +2,7 @@
 <h3>
     <span class="fa fa-info-circle"></span>
     {% trans %}Theme credits{% endtrans %}
-    {{ pageSetVar('title', __('Theme credits')) }}
+    {{ pageSetVar('title', 'Theme credits'|trans) }}
 </h3>
 
 {% if themeinfo.system is defined and themeinfo.system != 1 %}

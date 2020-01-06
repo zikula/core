@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-wrench"></span>
     {{ themeName }} {% trans %}Theme config{% endtrans %}
-    {{ pageSetVar('title', __('Theme configuration')) }}
+    {{ pageSetVar('title', 'Theme configuration'|trans) }}
 </h3>
 {{ showflashes() }}
 {{ form_start(form) }}

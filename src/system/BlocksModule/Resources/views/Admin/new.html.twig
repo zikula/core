@@ -7,7 +7,7 @@
 <h3>
     <span class="fa fa-plus-square"></span>
     {% trans %}Create block{% endtrans %}
-    {{ pageSetVar('title', __('Create block')) }}
+    {{ pageSetVar('title', 'Create block'|trans) }}
 </h3>
 {{ showflashes() }}
 {{ form_start(form) }}

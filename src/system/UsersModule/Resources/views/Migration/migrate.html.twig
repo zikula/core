@@ -2,7 +2,7 @@
 <h3>
     <span class="fa fa-cogs"></span>
     {% trans %}Migrate Users to ZAuth{% endtrans %}
-    {{ pageSetVar('title', __('Migrate Users to ZAuth')) }}
+    {{ pageSetVar('title', 'Migrate Users to ZAuth'|trans) }}
 </h3>
 <div class="alert alert-info">
     {% trans %}This will migrate all VALID users from the old Users table to the new ZAuth table. Users are automatically migrated when they login, but this will migrate all users at one time.{% endtrans %}

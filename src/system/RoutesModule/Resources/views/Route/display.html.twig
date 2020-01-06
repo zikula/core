@@ -1,10 +1,10 @@
 {# purpose of this template: routes display view #}
 {% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
 {% extends '@ZikulaRoutesModule/' ~ baseTemplate ~ '.html.twig' %}
-{% block pageTitle %}{{ route|zikularoutesmodule_formattedTitle|default(__('Route')) }}{% endblock %}
+{% block pageTitle %}{{ route|zikularoutesmodule_formattedTitle|default('Route'|trans) }}{% endblock %}
 {% block title %}
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
-    {% set templateTitle = route|zikularoutesmodule_formattedTitle|default(__('Route')) %}
+    {% set templateTitle = route|zikularoutesmodule_formattedTitle|default('Route'|trans) %}
     {{ templateTitle }}
     {% if not isQuickView %}
         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'display'}) %}

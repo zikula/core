@@ -2,7 +2,7 @@
 {{ pageAddAsset('stylesheet', zasset('@ZikulaWorkflowBundle:css/style.css'), 99) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/jsPlumb/js/jsplumb.min.js'), 98) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaWorkflowBundle:js/WorkflowEditor.js'), 99) }}
-{{ pageSetVar('title', __('Workflow editor')) }}
+{{ pageSetVar('title', 'Workflow editor'|trans) }}
 {{ showflashes() }}
 <div class="container-fluid">
     <div class="row">
@@ -40,7 +40,7 @@
                 <br />
                 <p>{% trans %}How to use the editor{% endtrans %}:</p>
                 <ul>
-                    <li>{{ __('Click on the <em>Add node</em> button to add new states and transitions.')|raw }}</li>
+                    <li>{% set add_node='<em>' ~ 'Add node'|trans ~ '</em>' %}{% trans with { '%add_node%': add_node } %}Click on the %add_node% button to add new states and transitions.{% endtrans %}</li>
                     <li>{% trans %}Drag from node exchange icons to other nodes to add new connections.{% endtrans %}</li>
                     <li>{% trans %}Double-click on a node to edit it.{% endtrans %}</li>
                     <li>{% trans %}Click on the trash-can icons to delete nodes and their connections.{% endtrans %}</li>

@@ -3,7 +3,7 @@
 <h3>
     <span class="fa fa-list"></span>
     {% trans %}Allowed HTML settings{% endtrans %}
-    {{ pageSetVar('title', __('Allowed HTML settings')) }}
+    {{ pageSetVar('title', 'Allowed HTML settings'|trans) }}
 </h3>
 
 <p class="alert alert-info">{% trans %}Filtering of allowed HTML occurs when a template string or variable is modified with the \'safeHtml\' filter, or when a module asks for similar processing from within its functions.{% endtrans %}</p>
@@ -31,9 +31,11 @@
         <legend>{% trans %}HTML tags{% endtrans %}</legend>
 
         <div class="alert alert-warning">
-            <p>{{ __("Warning! Enabling the &lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt; tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them.")|raw }}</p>
+            {% set tags = '&lt;img&gt;, &lt;span&gt;, &lt;marquee&gt;, &lt;script&gt;, &lt;embed&gt;, &lt;object&gt; or &lt;iframe&gt;' %}
+            <p>{% trans with {'%taglist%':tags|raw} %}Warning! Enabling the %taglist% tags increases the opportunity for attacks against your users that might reveal their personal information. Therefore, you are recommended to keep these tags set to 'Not allowed' unless you are sure that you really understand the consequences of enabling them.{% endtrans %}</p>
             {% if htmlPurifier %}
-                <p>{{ __f('Warning! Using the <a href="%s">HTML Purifier output filter</a> will override settings for some HTML tags (such as &lt;object&gt; and &lt;embed&gt;).', {'%s': configUrl })|raw }}</p>
+                {% set html_pur_link = '<a href="' ~configUrl~ '">' ~ 'HTML Purifier output filter'|trans ~ '</a>' %}
+                <p>{% trans with {'%html_pur_link%': html_pur_link, '%examples%': '&lt;object&gt; and &lt;embed&gt;'|raw} %}'Warning! Using the %html_pur_link% will override settings for some HTML tags (such as %examples%).{% endtrans %}</p>
             {% endif %}
         </div>
 
@@ -60,7 +62,7 @@
                         <label for="toggle_allowedwith" title="{% trans %}Check all{% endtrans %}">{% trans %}Allowed with attributes{% endtrans %}</label>
                         <input name="radiotoggle" id="toggle_allowedwith" type="radio" value="2" />
                     </th>
-                    <th id="hUsageInfo" scope="col" class="text-left">{{ __('Tag usage (from <a href="https://www.w3schools.com">W3Schools</a>)')|raw }}</th>
+                    <th id="hUsageInfo" scope="col" class="text-left">{% trans with {'%link%':'<a href="https://www.w3schools.com">W3Schools</a>'|raw} %}Tag usage (from %link%){% endtrans %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,7 +79,7 @@
                         <input class="allowedwith_radio" type="radio" value="2" name="htmlallow{{ htmlTag }}tag"{% if currentHtmlTags[htmlTag] is defined and currentHtmlTags[htmlTag] == 2 %} checked="checked"{% endif %} />
                     </td>
                     <td headers="hTag{{ htmlTag }} hUsageInfo">
-                        {% if usageTag is not empty %}<a href="{{ usageTag }}">{{ __f('About "&lt;%s&gt;"', {'%s': htmlTag})|raw }}</a>{% endif %}
+                        {% if usageTag is not empty %}<a href="{{ usageTag }}">{% trans %}About{% endtrans %} "&lt;{htmlTag|raw}&gt;"</a>{% endif %}
                     </td>
                 </tr>
             {% endfor %}

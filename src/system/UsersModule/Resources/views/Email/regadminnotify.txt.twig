@@ -1,10 +1,10 @@
 {{ include('@ZikulaUsersModule/Email/header.txt.twig') }}
 {% if not reginfo.isApproved %}
-    {% set heading = __('New registration pending approval') %}
+    {% set heading = 'New registration pending approval'|trans %}
 {% elseif not isVerified %}
-    {% set heading = __('New registration pending e-mail verification') %}
+    {% set heading = 'New registration pending e-mail verification'|trans %}
 {% else %}
-    {% set heading = __('New user activated') %}
+    {% set heading = 'New user activated'|trans %}
 {% endif %}
 {{ heading }}
 

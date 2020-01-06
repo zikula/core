@@ -6,7 +6,7 @@
 <h3>
     <span class="fa fa-plus"></span>
     {% trans with {"%sub%": user.uname} %}Approve registration of %sub%{% endtrans %}
-    {{ pageSetVar('title', __('Approve registration')) }}
+    {{ pageSetVar('title', 'Approve registration'|trans) }}
 </h3>
 <fieldset>
     <legend>{% trans %}Account Information{% endtrans %}</legend>

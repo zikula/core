@@ -2,7 +2,7 @@
 <h3>
     <span class="fa fa-info-circle"></span>
     {% trans %}Incompatible version with the core{% endtrans %} - {{ extension.displayname }}
-    {{ pageSetVar('title', __('Incompatible version')) }}
+    {{ pageSetVar('title', 'Incompatible version'|trans) }}
 </h3>
 <div class="form-group">
     <p><strong>{% trans %}The version of this module is incompatible with the version of the core.{% endtrans %}</strong></p>
@@ -10,7 +10,7 @@
         <li>{{ __f('Current Core version is %version%',
             {'%version%': '<span class="badge badge-success">' ~ pagevars.coredata.version ~ '</span>'})|raw }}</li>
         {% if extension.coreCompatibility is not empty %}
-        <li>{{ __f('The minimum version of the core that this module supports is %s', {"%s": '<span class="badge badge-warning">' ~ extension.coreCompatibility ~ '</span>'})|raw }}</li>
+        <li>{% trans with {"%s": '<span class="badge badge-warning">' ~ extension.coreCompatibility ~ '</span>'|raw} %}The minimum version of the core that this module supports is %s{% endtrans %}</li>
         {% endif %}
     </ul>
 </div>
