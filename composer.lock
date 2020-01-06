@@ -3335,12 +3335,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "7689991a355eab618aa82511b8b4f936d634f91e"
+                "reference": "d22e63816b2e4ae360446015da7d19a9d0ef4c1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/7689991a355eab618aa82511b8b4f936d634f91e",
-                "reference": "7689991a355eab618aa82511b8b4f936d634f91e",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d22e63816b2e4ae360446015da7d19a9d0ef4c1b",
+                "reference": "d22e63816b2e4ae360446015da7d19a9d0ef4c1b",
                 "shasum": ""
             },
             "require": {
@@ -3428,7 +3428,7 @@
                 "symfony",
                 "transformation"
             ],
-            "time": "2020-01-06T07:50:59+00:00"
+            "time": "2020-01-06T11:19:15+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -6920,12 +6920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "3597b04ad1cbc8df347a0c3ac1c811bc9f178e29"
+                "reference": "a00cb18629da3e8dfa4836ed12e6ff31e7c9946f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/3597b04ad1cbc8df347a0c3ac1c811bc9f178e29",
-                "reference": "3597b04ad1cbc8df347a0c3ac1c811bc9f178e29",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a00cb18629da3e8dfa4836ed12e6ff31e7c9946f",
+                "reference": "a00cb18629da3e8dfa4836ed12e6ff31e7c9946f",
                 "shasum": ""
             },
             "require": {
@@ -6983,7 +6983,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-04T09:50:51+00:00"
+            "time": "2020-01-06T12:52:09+00:00"
         },
         {
             "name": "zikula/wizard",
