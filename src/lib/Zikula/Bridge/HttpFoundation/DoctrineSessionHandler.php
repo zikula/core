@@ -147,14 +147,9 @@ class DoctrineSessionHandler extends AbstractSessionHandler
 
     private function updateSessionData(string $sessionId, string $data): bool
     {
-        try {
-            $sessionEntity = $this->getSessionEntity($sessionId);
-            $sessionEntity->setVars($data);
-            $this->userSessionRepository->persistAndFlush($sessionEntity);
-        } catch (\Exception $exception) {
-            //die('Error: ' . $exception->getMessage());
-            return false;
-        }
+        $sessionEntity = $this->getSessionEntity($sessionId);
+        $sessionEntity->setVars($data);
+        $this->userSessionRepository->persistAndFlush($sessionEntity);
 
         return true;
     }
