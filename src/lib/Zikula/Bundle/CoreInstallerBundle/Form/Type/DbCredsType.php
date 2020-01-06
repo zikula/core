@@ -32,7 +32,7 @@ class DbCredsType extends AbstractType
             ->add('database_driver', ChoiceType::class, [
                 'label' => $this->__('Database type'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'choices' => $this->getDbTypes(),
                 'data' => 'mysql'
@@ -40,7 +40,7 @@ class DbCredsType extends AbstractType
             ->add('dbtabletype', ChoiceType::class, [
                 'label' => $this->__('Storage Engine'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'choices' => [
                     'InnoDB' => 'innodb',
@@ -51,7 +51,7 @@ class DbCredsType extends AbstractType
             ->add('database_host', TextType::class, [
                 'label' => $this->__('Database Host'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'data' => 'localhost',
                 'constraints' => [
@@ -61,7 +61,7 @@ class DbCredsType extends AbstractType
             ->add('database_user', TextType::class, [
                 'label' => $this->__('Database Username'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'constraints' => [
                     new NotBlank()
@@ -70,14 +70,14 @@ class DbCredsType extends AbstractType
             ->add('database_password', PasswordType::class, [
                 'label' => $this->__('Database Password'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'required' => false
             ])
             ->add('database_name', TextType::class, [
                 'label' => $this->__('Database Name'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'constraints' => [
                     new NotBlank(),

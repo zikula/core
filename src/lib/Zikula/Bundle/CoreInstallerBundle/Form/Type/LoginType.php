@@ -28,7 +28,7 @@ class LoginType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => $this->__('User Name'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'data' => 'admin',
                 'constraints' => [
@@ -38,7 +38,7 @@ class LoginType extends AbstractType
             ->add('password', PasswordType::class, [
                 'label' => $this->__('Password'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'constraints' => [
                     new NotBlank()

@@ -34,12 +34,7 @@
 </div>
 <script>
     jQuery(document).ready(function( $ ) {
-        $('#footer a').click(function (event) {
-            event.preventDefault();
-            window.open($(this).attr('href'));
-
-            return false;
-        });
+        $('a.external, #footer a').attr('target', '_blank');
     });
 </script>
 {% endblock %}
