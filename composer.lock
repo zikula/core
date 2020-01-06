@@ -6920,12 +6920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "a00cb18629da3e8dfa4836ed12e6ff31e7c9946f"
+                "reference": "3d06ac9b00407734b3d214f10743d56a1aed9d85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/a00cb18629da3e8dfa4836ed12e6ff31e7c9946f",
-                "reference": "a00cb18629da3e8dfa4836ed12e6ff31e7c9946f",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/3d06ac9b00407734b3d214f10743d56a1aed9d85",
+                "reference": "3d06ac9b00407734b3d214f10743d56a1aed9d85",
                 "shasum": ""
             },
             "require": {
@@ -6983,7 +6983,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-06T12:52:09+00:00"
+            "time": "2020-01-06T14:19:47+00:00"
         },
         {
             "name": "zikula/wizard",
