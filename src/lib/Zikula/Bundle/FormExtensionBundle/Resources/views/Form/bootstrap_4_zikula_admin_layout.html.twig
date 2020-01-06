@@ -54,13 +54,26 @@ col-md-9
     {{ _self.alertBlock(alert) }}
 {%- endblock form_help %}
 
+{# inject custom-select class into dropdown fields #}
+{% block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-select')|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed %}
+
+{# inject translatable button label into custom file selectors #}
+{% block file_widget -%}
+    {%- set label_attr = label_attr|merge({'data-browse': __('Choose a file', 'zikula')}) -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) -%}
+    {{- parent() -}}
+{%- endblock file_widget %}
+
 {# user live search input widget #}
 {% block zikulausersmodule_userlivesearch_widget %}
     <div id="{{ id }}LiveSearch" class="autocomplete-user hidden">
-        <i class="fa fa-search" title="{% trans %}Search user{% endtrans %}"></i>
-        <noscript><p>{% trans %}This function requires JavaScript activated!{% endtrans %}</p></noscript>
+        <i class="fa fa-search" title="{% trans from 'zikula' %}Search user{% endtrans %}"></i>
+        <noscript><p>{% trans from 'zikula' %}This function requires JavaScript activated!{% endtrans %}</p></noscript>
         <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
-        <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{% trans %}Enter a part of the user name to search{% endtrans %}" class="user-selector" />
+        <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{% trans from 'zikula' %}Enter a part of the user name to search{% endtrans %}" class="user-selector" />
     </div>
     <small id="{{ id }}Avatar" class="form-text text-muted avatar">
         {% if value and not inline_usage %}
@@ -68,11 +81,11 @@ col-md-9
         {% endif %}
     </small>
     {% if not required %}
-        <small class="form-text text-muted"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{% trans %}Reset to empty value{% endtrans %}</a></small>
+        <small class="form-text text-muted"><a id="{{ id }}ResetVal" href="javascript:void(0);" class="hidden">{% trans from 'zikula' %}Reset to empty value{% endtrans %}</a></small>
     {% endif %}
     {% if value and not inline_usage %}
         {% if hasPermission('ZikulaUsersModule::', '::', 'ACCESS_ADMIN') %}
-            <small class="form-text text-muted"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{% trans %}Switch to users administration{% endtrans %}">{% trans %}Manage user{% endtrans %}</a></small>
+            <small class="form-text text-muted"><a href="{{ path('zikulausersmodule_useradministration_modify', { 'user': value }) }}" title="{% trans from 'zikula' %}Switch to users administration{% endtrans %}">{% trans from 'zikula' %}Manage user{% endtrans %}</a></small>
         {% endif %}
     {% endif %}
     {# load required assets: jQuery UI + custom search code #}

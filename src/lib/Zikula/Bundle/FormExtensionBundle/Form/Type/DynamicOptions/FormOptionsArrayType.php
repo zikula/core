@@ -39,11 +39,12 @@ class FormOptionsArrayType extends AbstractType
         $builder
             ->add('required', CheckboxType::class, [
                 'label' => $this->__('Required'),
-                'required' => false,
+                'label_attr' => ['class' => 'switch-custom'],
+                'required' => false
             ])
             ->add('help', TextType::class, [
                 'label' => $this->__('Help text'),
-                'required' => false,
+                'required' => false
             ])
         ;
     }

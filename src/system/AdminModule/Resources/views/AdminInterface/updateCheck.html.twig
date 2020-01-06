@@ -5,11 +5,7 @@
                 <i class="close" data-dismiss="alert">&times;</i>
                 <a href="#updatecheck_full" title="{% trans %}Update checker{% endtrans %}"
                    data-toggle="collapse" aria-expanded="false" aria-controls="updatecheck_full">
-                    <span class="fa-stack">
-                        <i class="fa fa-sync fa-stack-2x"></i>
-                        <i class="fa fa-info fa-stack-1x"></i>
-                    </span>
-                    <strong> {% trans %}Update checker{% endtrans %}: </strong>
+                    <strong><i class="fa fa-sync">{% trans %}Update checker{% endtrans %}: </strong>
                     {% if updateCheckHelper.versionCompare == -1 %}
                         {# you use not released version #}
                         {% trans %}You are currently using an unreleased version of the Zikula Core.{% endtrans %}
@@ -90,12 +86,9 @@
                 {% else %}
                     <div class="col-md-12 text-center">
                         <p>{% trans %}Stable Zikula Core available{% endtrans %}: {{ updateCheckHelper.updateversion }} </p>
-                        <a href="{{ path(caller._route, caller._route_params|merge({'forceupdatecheck':1})) }}" class="btn btn-sm btn-primary">
+                        <a href="{{ path(caller._route, caller._route_params|merge({'forceupdatecheck': 1})) }}" class="btn btn-primary">
                             {% trans %}Check now{% endtrans %}
-                            <span class="fa-stack">
-                                <i class="fa fa-sync fa-stack-2x"></i>
-                                <i class="fa fa-info fa-stack-1x"></i>
-                            </span>
+                            <i class="fa fa-sync"></i>
                         </a>
                     </div>
                 {% endif %}

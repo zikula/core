@@ -25,7 +25,7 @@ class LocaleType extends AbstractType
             ->add('locale', ChoiceType::class, [
                 'label' => $this->__('Select your default language'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'choices' => $options['choices'],
                 'choice_loader' => null,

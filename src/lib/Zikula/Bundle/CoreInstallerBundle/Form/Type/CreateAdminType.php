@@ -32,7 +32,7 @@ class CreateAdminType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => $this->__('Admin User Name'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'data' => 'admin',
                 'constraints' => [
@@ -49,7 +49,7 @@ class CreateAdminType extends AbstractType
                 'invalid_message' => $this->__('The password fields must match.'),
                 'options' => [
                     'label_attr' => [
-                        'class' => 'col-sm-3'
+                        'class' => 'col-md-3'
                     ],
                     'constraints' => [
                         new NotBlank(),
@@ -63,7 +63,7 @@ class CreateAdminType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => $this->__('Admin Email Address'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'constraints' => [
                     new NotBlank(),

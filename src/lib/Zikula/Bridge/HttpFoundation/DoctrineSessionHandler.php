@@ -73,7 +73,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         $this->storage = $storage;
     }
 
-    protected function doRead($sessionId)
+    protected function doRead(string $sessionId)
     {
         if (!$this->installed) {
             return '';
@@ -88,17 +88,13 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         return !empty($vars) ? $vars : '';
     }
 
-    protected function doWrite($sessionId, $data)
+    protected function doWrite(string $sessionId, string $data)
     {
         if (!$this->installed) {
             return true;
         }
 
-        $sessionEntity = $this->getSessionEntity($sessionId);
-        $sessionEntity->setVars($data);
-        $this->userSessionRepository->persistAndFlush($sessionEntity);
-
-        return true;
+        return $this->updateSessionData($sessionId, $data);
     }
 
     public function gc($maxlifetime)
@@ -114,7 +110,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         return true;
     }
 
-    protected function doDestroy($sessionId)
+    protected function doDestroy(string $sessionId)
     {
         // expire the cookie
         if ('cli' !== PHP_SAPI) {
@@ -146,9 +142,16 @@ class DoctrineSessionHandler extends AbstractSessionHandler
 
     public function updateTimestamp($sessionId, $data)
     {
+        return $this->updateSessionData($sessionId, $data);
+    }
+
+    private function updateSessionData(string $sessionId, string $data): bool
+    {
         $sessionEntity = $this->getSessionEntity($sessionId);
         $sessionEntity->setVars($data);
         $this->userSessionRepository->persistAndFlush($sessionEntity);
+
+        return true;
     }
 
     /**

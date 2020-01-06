@@ -10,13 +10,13 @@
                 <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
                 <h2>{% trans %}Zikula Core requires upgrade!{% endtrans %}</h2>
                 <p>
-                    {% set inst = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': path('doc', {'name': 'UPGRADE-1.4.md'}), '%text%': 'upgrade instructions'|trans }) %}
-                    {% set docs = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
+                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': path('doc', {'name': 'UPGRADE-1.4.md'}), '%text%': 'upgrade instructions'|trans }) %}
+                    {% set docs = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
                     {% trans with { '%inst%': inst, '%docs%': docs } %}'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking
                         on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
                 <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
-                <div id="upgradeButton" class="row" class="d-none">
+                <div id="startButton" class="col-md-4 offset-md-4 d-none">
                     <div class="col-md-4 offset-md-4">
                         <a class="btn btn-success btn-lg btn-block" href="{{ path('upgrade', {'stage': 'init' }) }}">
                             <i class="fa fa-thumbs-up fa-3x float-left"></i> {% trans %}Upgrade Zikula!{% endtrans %}<br />{% trans %}To version{% endtrans %} {{ version }}
@@ -34,7 +34,7 @@
 </div>
 <script>
     jQuery(document).ready(function( $ ) {
-        $('#upgradeButton').removeClass('d-none');
+        $('#startButton').removeClass('d-none');
     });
 </script>
 {% endblock %}

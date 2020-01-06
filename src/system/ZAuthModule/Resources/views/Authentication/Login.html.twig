@@ -8,7 +8,7 @@
     {{ form_start(form) }}
     {{ form_errors(form) }}
 
-    {{ form_widget(attribute(form, loginField|default('uname'))) }}
+    {{ form_row(attribute(form, loginField|default('uname'))) }}
     {{ form_row(form.pass) }}
     {{ form_row(form.rememberme) }}
 

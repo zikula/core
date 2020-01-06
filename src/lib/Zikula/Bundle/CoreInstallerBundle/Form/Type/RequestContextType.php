@@ -26,7 +26,7 @@ class RequestContextType extends AbstractType
             ->add('router:request_context:host', TextType::class, [
                 'label' => $this->__('The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'data' => $this->__('localhost'),
                 'constraints' => [
@@ -36,7 +36,7 @@ class RequestContextType extends AbstractType
             ->add('router:request_context:scheme', ChoiceType::class, [
                 'label' => $this->__('Please enter the scheme of where you install Zikula, can be either "http" or "https"'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ],
                 'choices' => [
                     'http' => 'http',
@@ -47,7 +47,7 @@ class RequestContextType extends AbstractType
             ->add('router:request_context:base_url', TextType::class, [
                 'label' => $this->__('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
                 'label_attr' => [
-                    'class' => 'col-sm-3'
+                    'class' => 'col-md-3'
                 ]
             ])
         ;

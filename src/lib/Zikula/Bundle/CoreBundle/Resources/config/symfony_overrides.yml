@@ -1,13 +1,4 @@
 services:
-    # this is required for our controllers in all Core versions since 1.4.0
-    controller_resolver:
-        class: Zikula\Bundle\CoreBundle\Controller\ControllerResolver
-        arguments:
-            - '@service_container'
-            - '@?logger'
-        tags:
-            - { name: monolog.logger, channel: request }
-
     session.attribute_bag:
         # default class is Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag
         class: Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag

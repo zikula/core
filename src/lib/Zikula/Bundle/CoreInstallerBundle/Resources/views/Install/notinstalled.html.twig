@@ -10,8 +10,8 @@
                 <h1>{% trans %}Zikula Application Framework{% endtrans %}</h1>
                 <h2>{% trans %}Zikula Core is not installed!{% endtrans %}</h2>
                 <p>
-                    {% set inst = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}), '%text%': 'installation instructions'|trans }) %}
-                    {% set docs = '<a href="%url%" onclick="window.open(this.href);return false;">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
+                    {% set inst = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': path('doc', {'name': 'INSTALL-2.0.md'}), '%text%': 'installation instructions'|trans }) %}
+                    {% set docs = '<a href="%url%" class="external">%text%</a>'|replace({'%url%': 'https://ziku.la', '%text%': 'online documentation'|trans }) %}
                     {% trans with { '%inst%': inst, '%docs%': docs } %}'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking
                     on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
@@ -26,14 +26,15 @@
                 <br />
                 <p class="text-muted">
                     {% trans %}Zikula is free software released under the GPL license!{% endtrans %}<br />
-                    {% trans with { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" onclick="window.open(this.href);return false;">https://ziku.la</a>'}|raw %}For more information, please visit %link%.{% endtrans %}
+                    {% trans with { '%link%': '<a href="https://ziku.la/" title="Zikula Homepage" class="external">https://ziku.la</a>'}|raw %}For more information, please visit %link%.{% endtrans %}
                 </p>
             </div>
         </div>
     </div>
 </div>
+<script>
     jQuery(document).ready(function( $ ) {
-        $('#installButton').removeClass('d-none');
+        $('#startButton').removeClass('d-none');
     });
 </script>
 {% endblock %}

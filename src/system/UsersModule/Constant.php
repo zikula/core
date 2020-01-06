@@ -37,11 +37,6 @@ namespace Zikula\UsersModule
         public const USER_ID_ADMIN = 2;
 
         /**
-         * The namespace of the module to use for session variables.
-         */
-        public const SESSION_VAR_NAMESPACE = 'Zikula_Module_UsersModule';
-
-        /**
          * This key is used to 'disguise' the purpose of passing the UID in the session.
          */
         public const FORCE_PASSWORD_SESSION_UID_KEY = 'l56F2fe7ZBbLm6ruQhgU';
