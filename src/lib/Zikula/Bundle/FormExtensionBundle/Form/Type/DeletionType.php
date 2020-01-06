@@ -48,10 +48,10 @@ class DeletionType extends AbstractType
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->__('Cancel'),
+                'validate' => false,
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn btn-default',
-                    'formnovalidate' => 'formnovalidate'
+                    'class' => 'btn btn-default'
                 ]
             ])
         ;
