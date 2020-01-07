@@ -1,2 +1,0 @@
-msgid "foo.bar.baz"
-msgstr ""

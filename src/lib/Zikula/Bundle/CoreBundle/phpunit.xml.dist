@@ -15,10 +15,6 @@
     <testsuites>
         <testsuite name="CoreBundle Test Suite">
             <directory>./Tests/</directory>
-            <exclude>./Tests/Functional/TranslationTest.php</exclude>
-            <exclude>./Tests/Translation/JsFileExtractorTest.php</exclude>
-            <exclude>./Tests/Translation/PhpFileExtractorTest.php</exclude>
-            <exclude>./Tests/Translation/TwigFileExtractorTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>
