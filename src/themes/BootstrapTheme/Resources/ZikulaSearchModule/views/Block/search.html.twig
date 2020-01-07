@@ -6,8 +6,8 @@
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <div class="input-group">
-    {{ form_widget(form.q) }}
-    <span class="input-group-addon">
+    {{ form_widget(form.q, {attr: {class: 'btn btn-outline-secondary'}}) }}
+    <span class="input-group-append">
         <button class="btn btn-outline-secondary" name="{{ form.search.vars.full_name }}" type="submit"><i class="fa fa-search"></i></button>
     </span>
 </div>

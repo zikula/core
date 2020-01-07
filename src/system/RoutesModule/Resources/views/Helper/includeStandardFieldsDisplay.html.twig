@@ -12,7 +12,7 @@
         {% set profileLink = obj.createdBy.uid|profileLinkByUserId %}
         <dd class="avatar">{{ userAvatar(obj.createdBy.uid, {rating: 'g'}) }}</dd>
         <dd>
-            {% trans with {'%user': profileLink|raw, '%date': obj.createdDate|format_datetime('medium', 'short')|raw } %}Created by %user on %date'{% endtrans %}
+            {{ 'Created by %user% on %date%'|trans({'%user%': profileLink|raw, '%date%': obj.createdDate|format_datetime('medium', 'short')}) }}
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.createdBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
@@ -26,11 +26,11 @@
         {% set profileLink = obj.updatedBy.uid|profileLinkByUserId %}
         <dd class="avatar">{{ userAvatar(obj.updatedBy.uid, {rating: 'g'}) }}</dd>
         <dd>
-            {% trans with {'%user': profileLink|raw, '%date': obj.updatedDate|format_datetime('medium', 'short')|raw } %}Updated by %user on %date{% endtrans %}
+            {{ 'Updated by %user% on %date%'|trans({'%user%': profileLink|raw, '%date%': obj.updatedDate|format_datetime('medium', 'short')}) }}
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.updatedBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
-                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.updatedBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fa fa-envelope"></i></a>
+                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName': obj.updatedBy.uname} %}Send private message to %userName{% endtrans %}"><i class="fa fa-envelope"></i></a>
                 {% endif %}
             {% endif %}
         </dd>

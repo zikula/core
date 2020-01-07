@@ -395,7 +395,7 @@ class HookController extends AbstractController
             return false;
         }
 
-        $sessionName = $this->container->getParameter('zikula.session.name');
+        $sessionName = $this->getParameter('zikula.session.name');
         $sessionId = $request->cookies->get($sessionName);
 
         if ($sessionId !== $request->getSession()->getId()) {

@@ -21,6 +21,40 @@ BlockHandler classes must implement `Zikula\BlocksModule\BlockHandlerInterface` 
 a need to tag these classes in your services file as they are auto-tagged. Also - as above, the classname should be
 used as the service name.
 
+## Translations
+
+All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
+
+### PHP files
+
+**TBD**
+
+### Twig template files
+
+Some examples for how to convert translations in templates:
+
+```twig
+1. Simple:
+Old: {{ __('Hello') }}
+New: {% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
+
+2. With parameters
+Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
+New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
+
+3. With plural forms
+Old: {% set amountOfMembers = _fn('%amount% registered user', '%amount% registered users', users|length, {'%amount%': users|length}) %}
+New: {% set amountOfMembers = '{0} No registered user|{1} One registered user|]1,Inf[ %amount% registered users'|trans({'%amount%': users|length, '%count%': users|length}) %}
+```
+
+See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples.
+
+### JavaScript files
+
+**TBD**
+
+See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
+
 ## Twig
 
 ### Classes

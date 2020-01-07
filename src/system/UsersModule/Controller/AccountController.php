@@ -94,7 +94,7 @@ class AccountController extends AbstractController
         ;
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $locale = $this->container->getParameter('locale');
+            $locale = $this->getParameter('locale');
             if ($form->get('submit')->isClicked()) {
                 $data = $form->getData();
                 $locale = !empty($data['locale']) ? $data['locale'] : $locale;
