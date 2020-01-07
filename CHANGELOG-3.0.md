@@ -130,7 +130,7 @@
     - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
     - league/commonmark installed in 1.1.2
     - league/html-to-markdown installed in 4.9.1
-    - liip/imagine-bundle updated from 1.9.1 to 2.2.0 (temporarily using dev-symfony5 instead)
+    - liip/imagine-bundle updated from 1.9.1 to 2.3.0
     - lorenzo/pinky installed in 1.0.5
     - matthiasnoback/symfony-console-form updated from 2.3.0 to 3.6.0 (temporarily using Jeroeny/dev-symfony-5 instead)
     - michelf/php-markdown updated from 1.7.0 to 1.9.0
