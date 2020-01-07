@@ -36,7 +36,7 @@ Some examples for how to convert translations in templates:
 ```twig
 1. Simple:
 Old: {{ __('Hello') }}
-New: {% trans %}Hello{% endtrans %}` or `{{ 'Hello'|trans }}
+New: {% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
 
 2. With parameters
 Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
