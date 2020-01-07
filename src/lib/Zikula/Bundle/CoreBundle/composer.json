@@ -40,7 +40,10 @@
         "doctrine/doctrine-bundle": "2.*",
         "antishov/doctrine-extensions-bundle": "1.*",
         "gedmo/doctrine-extensions": "2.*",
-        "liip/imagine-bundle": "dev-symfony5"
+        "liip/imagine-bundle": "2.*",
+
+        "rector/rector": ">=0.6.5"
+
     },
     "repositories": [
         {
