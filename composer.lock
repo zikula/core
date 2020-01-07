@@ -3382,16 +3382,16 @@
         },
         {
             "name": "liip/imagine-bundle",
-            "version": "dev-symfony5",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "d22e63816b2e4ae360446015da7d19a9d0ef4c1b"
+                "reference": "06740a0a0e9c0054d3e0589472fd19b975784c52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/d22e63816b2e4ae360446015da7d19a9d0ef4c1b",
-                "reference": "d22e63816b2e4ae360446015da7d19a9d0ef4c1b",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/06740a0a0e9c0054d3e0589472fd19b975784c52",
+                "reference": "06740a0a0e9c0054d3e0589472fd19b975784c52",
                 "shasum": ""
             },
             "require": {
@@ -3479,7 +3479,7 @@
                 "symfony",
                 "transformation"
             ],
-            "time": "2020-01-06T11:19:15+00:00"
+            "time": "2020-01-07T13:29:56+00:00"
         },
         {
             "name": "lorenzo/pinky",
@@ -3760,6 +3760,155 @@
             "time": "2019-12-20T14:22:59+00:00"
         },
         {
+            "name": "nette/application",
+            "version": "v3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/application.git",
+                "reference": "aa975f06c6f303512de6399b7320d48750b96832"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/application/zipball/aa975f06c6f303512de6399b7320d48750b96832",
+                "reference": "aa975f06c6f303512de6399b7320d48750b96832",
+                "shasum": ""
+            },
+            "require": {
+                "nette/component-model": "^3.0",
+                "nette/http": "^3.0.2",
+                "nette/routing": "~3.0.0",
+                "nette/utils": "^3.1",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "latte/latte": "<2.4",
+                "nette/di": "<3.0-stable",
+                "nette/forms": "<3.0",
+                "tracy/tracy": "<2.5"
+            },
+            "require-dev": {
+                "latte/latte": "^2.5.1",
+                "mockery/mockery": "^1.0",
+                "nette/di": "^v3.0",
+                "nette/forms": "^3.0",
+                "nette/robot-loader": "^3.2",
+                "nette/security": "^3.0",
+                "nette/tester": "^2.0.1",
+                "phpstan/phpstan-nette": "^0.12",
+                "tracy/tracy": "^2.6"
+            },
+            "suggest": {
+                "latte/latte": "Allows using Latte in templates",
+                "nette/forms": "Allows to use Nette\\Application\\UI\\Form"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ],
+                "files": [
+                    "src/compatibility.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🏆 Nette Application: a full-stack component-based MVC kernel for PHP that helps you write powerful and modern web applications. Write less, have cleaner code and your work will bring you joy.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "Forms",
+                "component-based",
+                "control",
+                "framework",
+                "mvc",
+                "mvp",
+                "nette",
+                "presenter",
+                "routing",
+                "seo"
+            ],
+            "time": "2020-01-05T22:31:46+00:00"
+        },
+        {
+            "name": "nette/component-model",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/component-model.git",
+                "reference": "3153441f3d64bbdac300e75b8e5dde36590f7e01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/component-model/zipball/3153441f3d64bbdac300e75b8e5dde36590f7e01",
+                "reference": "3153441f3d64bbdac300e75b8e5dde36590f7e01",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^2.5 || ^3.0",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "nette/application": "<2.4",
+                "nette/nette": "<2.2"
+            },
+            "require-dev": {
+                "nette/tester": "^2.0",
+                "tracy/tracy": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "⚛ Nette Component Model",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "components",
+                "nette"
+            ],
+            "time": "2019-02-20T07:13:15+00:00"
+        },
+        {
             "name": "nette/finder",
             "version": "v2.5.2",
             "source": {
@@ -3823,6 +3972,78 @@
             "time": "2020-01-03T20:35:40+00:00"
         },
         {
+            "name": "nette/http",
+            "version": "v3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/http.git",
+                "reference": "1df063526343299ea7fccdf90de6575db3559ff5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/http/zipball/1df063526343299ea7fccdf90de6575db3559ff5",
+                "reference": "1df063526343299ea7fccdf90de6575db3559ff5",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^3.0",
+                "php": ">=7.1"
+            },
+            "conflict": {
+                "nette/di": "<3.0.0-stable"
+            },
+            "require-dev": {
+                "nette/di": "^3.0",
+                "nette/tester": "^2.0",
+                "tracy/tracy": "^2.4"
+            },
+            "suggest": {
+                "ext-fileinfo": "to detect type of uploaded files",
+                "nette/security": "allows use Nette\\Http\\UserStorage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🌐 Nette Http: abstraction for HTTP request, response and session. Provides careful data sanitization and utility for URL and cookies manipulation.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "cookies",
+                "http",
+                "nette",
+                "proxy",
+                "request",
+                "response",
+                "security",
+                "session",
+                "url"
+            ],
+            "time": "2019-10-31T15:07:40+00:00"
+        },
+        {
             "name": "nette/robot-loader",
             "version": "v3.2.1",
             "source": {
@@ -3884,6 +4105,63 @@
                 "trait"
             ],
             "time": "2019-12-26T22:32:02+00:00"
+        },
+        {
+            "name": "nette/routing",
+            "version": "v3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/routing.git",
+                "reference": "603c697f3df7ed214795d4e8e8c58fbf981232b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/routing/zipball/603c697f3df7ed214795d4e8e8c58fbf981232b1",
+                "reference": "603c697f3df7ed214795d4e8e8c58fbf981232b1",
+                "shasum": ""
+            },
+            "require": {
+                "nette/http": "^3.0",
+                "nette/utils": "^3.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "nette/tester": "^2.0",
+                "tracy/tracy": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0",
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "Nette Routing: two-ways URL conversion",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "nette"
+            ],
+            "time": "2019-02-13T15:57:18+00:00"
         },
         {
             "name": "nette/utils",
@@ -4310,23 +4588,23 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.10.0",
+            "version": "0.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "e32091bd8bfd971b0f455b7489903e08b18b5887"
+                "reference": "7da36630c8279d0e290ff3e60f79f1bef1bc0772"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/e32091bd8bfd971b0f455b7489903e08b18b5887",
-                "reference": "e32091bd8bfd971b0f455b7489903e08b18b5887",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7da36630c8279d0e290ff3e60f79f1bef1bc0772",
+                "reference": "7da36630c8279d0e290ff3e60f79f1bef1bc0772",
                 "shasum": ""
             },
             "require": {
                 "nyholm/nsa": "^1.1",
                 "php": "^7.1",
                 "php-translation/extractor": "^2.0",
-                "php-translation/symfony-storage": "^2.0",
+                "php-translation/symfony-storage": "^2.1",
                 "symfony/finder": "^3.4 || ^4.3 || ^5.0",
                 "symfony/framework-bundle": "^3.4 || ^4.3 || ^5.0",
                 "symfony/intl": "^3.4 || ^4.3 || ^5.0",
@@ -4390,10 +4668,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.10.0",
+                "source": "https://github.com/php-translation/symfony-bundle/tree/0.11.0",
                 "issues": "https://github.com/php-translation/symfony-bundle/issues"
             },
-            "time": "2019-12-26T15:54:38+00:00"
+            "time": "2020-01-07T09:32:27+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -5022,16 +5300,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "v0.6.6",
+            "version": "v0.6.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "817187005d9d6322d68254995bb8ac3998ccf3fe"
+                "reference": "68ee48606a6bf8b047f89297bde601d22507ebab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/817187005d9d6322d68254995bb8ac3998ccf3fe",
-                "reference": "817187005d9d6322d68254995bb8ac3998ccf3fe",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/68ee48606a6bf8b047f89297bde601d22507ebab",
+                "reference": "68ee48606a6bf8b047f89297bde601d22507ebab",
                 "shasum": ""
             },
             "require": {
@@ -5046,25 +5324,27 @@
                 "ondram/ci-detector": "^3.1",
                 "php": "^7.2",
                 "phpstan/phpdoc-parser": "^0.4",
-                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan": "^0.12.4",
                 "phpstan/phpstan-phpunit": "^0.12",
                 "sebastian/diff": "^3.0",
                 "symfony/console": "^4.4|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0",
                 "symfony/finder": "^4.4|^5.0",
                 "symfony/process": "^4.4|^5.0",
-                "symplify/package-builder": "^7.1",
-                "symplify/set-config-resolver": "^7.1"
+                "symplify/auto-bind-parameter": "^7.2",
+                "symplify/autowire-array-parameter": "^7.2",
+                "symplify/package-builder": "^7.2",
+                "symplify/set-config-resolver": "^7.2"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.16",
                 "jetbrains/phpstorm-stubs": "^2019.2",
                 "ocramius/package-versions": "^1.4|^1.5",
                 "phpunit/phpunit": "^8.4",
-                "symplify/changelog-linker": "^7.1",
-                "symplify/easy-coding-standard": "^7.1",
-                "symplify/monorepo-builder": "^7.1",
-                "symplify/phpstan-extensions": "^7.1",
+                "symplify/changelog-linker": "^7.2",
+                "symplify/easy-coding-standard": "^7.2",
+                "symplify/monorepo-builder": "^7.2",
+                "symplify/phpstan-extensions": "^7.2",
                 "thecodingmachine/phpstan-strict-rules": "^0.12",
                 "tracy/tracy": "^2.7"
             },
@@ -5139,7 +5419,8 @@
                     "Rector\\PhpDeglobalize\\": "packages/PhpDeglobalize/src",
                     "Rector\\Phalcon\\": "packages/Phalcon/src",
                     "Rector\\DoctrineGedmoToKnplabs\\": "packages/DoctrineGedmoToKnplabs/src",
-                    "Rector\\MinimalScope\\": "packages/MinimalScope/src"
+                    "Rector\\MinimalScope\\": "packages/MinimalScope/src",
+                    "Rector\\Polyfill\\": "packages/Polyfill/src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -5166,7 +5447,7 @@
                 "instant refactoring",
                 "instant upgrades"
             ],
-            "time": "2020-01-04T15:24:36+00:00"
+            "time": "2020-01-07T12:06:00+00:00"
         },
         {
             "name": "robloach/component-installer",
@@ -6603,6 +6884,90 @@
             "time": "2019-12-19T18:35:20+00:00"
         },
         {
+            "name": "symplify/auto-bind-parameter",
+            "version": "v7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Symplify/AutoBindParameter.git",
+                "reference": "77a7ee1026a3977fff160559b59fb22a3c9ed605"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Symplify/AutoBindParameter/zipball/77a7ee1026a3977fff160559b59fb22a3c9ed605",
+                "reference": "77a7ee1026a3977fff160559b59fb22a3c9ed605",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^3.0",
+                "php": "^7.2",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/http-kernel": "^4.4|^5.0",
+                "symplify/package-builder": "^7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symplify\\AutoBindParameter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Auto bind parameters for your Symfony applications",
+            "time": "2020-01-05T09:06:02+00:00"
+        },
+        {
+            "name": "symplify/autowire-array-parameter",
+            "version": "v7.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Symplify/AutowireArrayParameter.git",
+                "reference": "31a7d8008c97e1d8a5e2e962792b9b8aa722cc84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Symplify/AutowireArrayParameter/zipball/31a7d8008c97e1d8a5e2e962792b9b8aa722cc84",
+                "reference": "31a7d8008c97e1d8a5e2e962792b9b8aa722cc84",
+                "shasum": ""
+            },
+            "require": {
+                "nette/application": "^3.0",
+                "nette/utils": "^3.0",
+                "php": "^7.2",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symplify/package-builder": "^7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "7.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symplify\\AutowireArrayParameter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Autowire array parameters for your Symfony applications",
+            "time": "2020-01-05T09:06:02+00:00"
+        },
+        {
             "name": "symplify/package-builder",
             "version": "v7.2.0",
             "source": {
@@ -7762,12 +8127,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "80c1924c2592b3f56f5618922d9b837b9e310d49"
+                "reference": "95624baef0a4fc29d7d624daba0e126c1cf3b0a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/80c1924c2592b3f56f5618922d9b837b9e310d49",
-                "reference": "80c1924c2592b3f56f5618922d9b837b9e310d49",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/95624baef0a4fc29d7d624daba0e126c1cf3b0a3",
+                "reference": "95624baef0a4fc29d7d624daba0e126c1cf3b0a3",
                 "shasum": ""
             },
             "require": {
@@ -7825,7 +8190,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-07T00:22:19+00:00"
+            "time": "2020-01-07T07:44:05+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -7952,7 +8317,6 @@
         "zikula/pagelock-module": 20,
         "prolix/translation-bundle": 20,
         "willdurand/js-translation-bundle": 20,
-        "liip/imagine-bundle": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "jms/i18n-routing-bundle": 20,
