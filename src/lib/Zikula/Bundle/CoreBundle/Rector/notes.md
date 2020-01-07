@@ -95,3 +95,7 @@ replace with
 $1|trans
 
 __f\((.*?)\) 
+
+__\('(.*?)', '(.*?)'\)
+replace with 
+'$1'|trans([], '$2')
