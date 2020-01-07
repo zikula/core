@@ -7,8 +7,7 @@
 <div class="form-group">
     <p><strong>{% trans %}The version of this module is incompatible with the version of the core.{% endtrans %}</strong></p>
     <ul>
-        <li>{{ __f('Current Core version is %version%',
-            {'%version%': '<span class="badge badge-success">' ~ pagevars.coredata.version ~ '</span>'})|raw }}</li>
+        <li>{% trans with {'%version%': '<span class="badge badge-success">' ~ pagevars.coredata.version ~ '</span>'|raw} %}Current Core version is %version%{% endtrans %}</li>
         {% if extension.coreCompatibility is not empty %}
         <li>{% trans with {"%s": '<span class="badge badge-warning">' ~ extension.coreCompatibility ~ '</span>'|raw} %}The minimum version of the core that this module supports is %s{% endtrans %}</li>
         {% endif %}

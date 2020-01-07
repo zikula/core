@@ -62,7 +62,7 @@ col-md-9
 
 {# inject translatable button label into custom file selectors #}
 {% block file_widget -%}
-    {%- set label_attr = label_attr|merge({'data-browse': __('Choose a file', 'zikula')}) -%}
+    {%- set label_attr = label_attr|merge({'data-browse': 'Choose a file'|trans({}, 'zikula')}) -%}
     {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-file-input')|trim}) -%}
     {{- parent() -}}
 {%- endblock file_widget %}
