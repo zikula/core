@@ -9,12 +9,12 @@
         <legend>{% trans %}Creation and update{% endtrans %}</legend>
         <ul>
         {% if obj.createdBy|default and obj.createdBy.uid > 0 %}
-            <li>{% trans with {'%user': obj.createdBy.uname} %}Created by %user{% endtrans %}</li>
-            <li>{% trans with {'%date': obj.createdDate|format_datetime('medium', 'short')} %}Created on %date{% endtrans %}</li>
+            <li>{% trans with {'%user%': obj.createdBy.uname} %}Created by %user%{% endtrans %}</li>
+            <li>{% trans with {'%date%': obj.createdDate|format_datetime('medium', 'short')} %}Created on %date%{% endtrans %}</li>
         {% endif %}
         {% if obj.updatedBy|default and obj.updatedBy.uid > 0 %}
-            <li>{% trans with {'%user': obj.updatedBy.uname} %}Updated by %user{% endtrans %}</li>
-            <li>{% trans with {'%date': obj.updatedDate|format_datetime('medium', 'short')} %}Updated on %date{% endtrans %}</li>
+            <li>{% trans with {'%user%': obj.updatedBy.uname} %}Updated by %user%{% endtrans %}</li>
+            <li>{% trans with {'%date%': obj.updatedDate|format_datetime('medium', 'short')} %}Updated on %date%{% endtrans %}</li>
         {% endif %}
         </ul>
     {% if tabs|default(false) == true %}

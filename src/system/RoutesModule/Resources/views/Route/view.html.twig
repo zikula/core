@@ -5,13 +5,15 @@
 {% block content %}
     <div class="zikularoutesmodule-route zikularoutesmodule-view">
         <div class="alert alert-warning">
-            {% trans with { '%s': '<a href="http://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration">JMSI18nRoutingBundle</a>'|raw } %}Below you see your current routing configuration (see %s for reference).{% endtrans %}
+            {% set title = 'JMSI18nRoutingBundle' %}
+            {% set url = 'https://jmsyst.com/bundles/JMSI18nRoutingBundle/master/configuration' %}
+            {% trans with {'%link%': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw} %}Below you see your current routing configuration (see %link% for reference).{% endtrans %}
             {% set title = 'Localisation settings'|trans %}
             {% set url = path('zikulasettingsmodule_settings_locale') %}
-            {% trans with { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw } %}You can change your routing configuration in the general settings: %s.{% endtrans %}
+            {% trans with {'%link%': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw} %}You can change your routing configuration in the general settings: %link%.{% endtrans %}
             {% set title = 'reload installed languages'|trans %}
             {% set url = path('zikularoutesmodule_update_renew') %}
-            {% trans with { '%s': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw } %}In case one or more installed languages are not listed below, %s.{% endtrans %}
+            {% trans with {'%action%': '<a href="' ~ url ~ '">' ~ title ~ '</a>'|raw} %}In case one or more installed languages are not listed below, %action%.{% endtrans %}
             {{ jms_i18n_routing|raw }}
         </div>
         {% set viewActions = knp_menu_get('zikulaRoutesMenuViewActions', [], {objectType: 'route', area: routeArea}) %}
@@ -25,7 +27,7 @@
         {% endif %}
             {% set activateSortable = routeArea == 'admin' and sort.sort.class == 'sorted-asc' %}
             <div class="table-responsive">
-            <table{% if activateSortable and items|length > 1 %} id="sortableTable" data-object-type="route" data-min="{{ items|first.sort }}" data-max="{{ items|last.sort }}"{% endif %} class="table table-striped table-bordered table-hover table-condensed">
+            <table{% if activateSortable and items|length > 1 %} id="sortableTable" data-object-type="route" data-min="{{ items|first.sort }}" data-max="{{ items|last.sort }}"{% endif %} class="table table-striped table-bordered table-hover table-sm">
                 <colgroup>
                     {% if routeArea == 'admin' %}
                         <col id="cSelect" />
@@ -56,31 +58,31 @@
                         <th id="hSortable" scope="col" class="">{% trans %}Sorting{% endtrans %}</th>
                     {% endif %}
                     <th id="hBundle" scope="col" class="text-left">
-                        <a href="{{ sort.bundle.url }}" title="{% trans with {'%s': 'bundle'} %}Sort by %s{% endtrans %}" class="{{ sort.bundle.class }}">{% trans %}Bundle{% endtrans %}</a>
+                        <a href="{{ sort.bundle.url }}" title="'Sort by %s'|trans({'%s': 'bundle'})|e('html_attr') }}" class="{{ sort.bundle.class }}">{% trans %}Bundle{% endtrans %}</a>
                     </th>
                     <th id="hPath" scope="col" class="text-left">
-                        <a href="{{ sort.path.url }}" title="{% trans with {'%s': 'path'} %}Sort by %s{% endtrans %}" class="{{ sort.path.class }}">{% trans %}Path{% endtrans %}</a>
+                        <a href="{{ sort.path.url }}" title="'Sort by %s'|trans({'%s': 'path'})|e('html_attr') }}" class="{{ sort.path.class }}">{% trans %}Path{% endtrans %}</a>
                     </th>
                     <th id="hHost" scope="col" class="text-left">
-                        <a href="{{ sort.host.url }}" title="{% trans with {'%s': 'host'} %}Sort by %s{% endtrans %}" class="{{ sort.host.class }}">{% trans %}Host{% endtrans %}</a>
+                        <a href="{{ sort.host.url }}" title="'Sort by %s'|trans({'%s': 'host'})|e('html_attr') }}" class="{{ sort.host.class }}">{% trans %}Host{% endtrans %}</a>
                     </th>
                     <th id="hSchemes" scope="col" class="text-left">
-                        <a href="{{ sort.schemes.url }}" title="{% trans with {'%s': 'schemes'} %}Sort by %s{% endtrans %}" class="{{ sort.schemes.class }}">{% trans %}Schemes{% endtrans %}</a>
+                        <a href="{{ sort.schemes.url }}" title="'Sort by %s'|trans({'%s': 'schemes'})|e('html_attr') }}" class="{{ sort.schemes.class }}">{% trans %}Schemes{% endtrans %}</a>
                     </th>
                     <th id="hMethods" scope="col" class="text-left">
-                        <a href="{{ sort.methods.url }}" title="{% trans with {'%s': 'methods'} %}Sort by %s{% endtrans %}" class="{{ sort.methods.class }}">{% trans %}Methods{% endtrans %}</a>
+                        <a href="{{ sort.methods.url }}" title="'Sort by %s'|trans({'%s': 'methods'})|e('html_attr') }}" class="{{ sort.methods.class }}">{% trans %}Methods{% endtrans %}</a>
                     </th>
                     <th id="hPrependBundlePrefix" scope="col" class="text-center">
-                        <a href="{{ sort.prependBundlePrefix.url }}" title="{% trans with {'%s': 'prepend bundle prefix'} %}Sort by %s{% endtrans %}" class="{{ sort.prependBundlePrefix.class }}">{% trans %}Prepend bundle prefix{% endtrans %}</a>
+                        <a href="{{ sort.prependBundlePrefix.url }}" title="'Sort by %s'|trans({'%s': 'prepend bundle prefix'})|e('html_attr') }}" class="{{ sort.prependBundlePrefix.class }}">{% trans %}Prepend bundle prefix{% endtrans %}</a>
                     </th>
                     <th id="hTranslatable" scope="col" class="text-center">
-                        <a href="{{ sort.translatable.url }}" title="{% trans with {'%s': 'translatable'} %}Sort by %s{% endtrans %}" class="{{ sort.translatable.class }}">{% trans %}Translatable{% endtrans %}</a>
+                        <a href="{{ sort.translatable.url }}" title="'Sort by %s'|trans({'%s': 'translatable'})|e('html_attr') }}" class="{{ sort.translatable.class }}">{% trans %}Translatable{% endtrans %}</a>
                     </th>
                     <th id="hTranslationPrefix" scope="col" class="text-left">
-                        <a href="{{ sort.translationPrefix.url }}" title="{% trans with {'%s': 'translation prefix'} %}Sort by %s{% endtrans %}" class="{{ sort.translationPrefix.class }}">{% trans %}Translation prefix{% endtrans %}</a>
+                        <a href="{{ sort.translationPrefix.url }}" title="'Sort by %s'|trans({'%s': 'translation prefix'})|e('html_attr') }}" class="{{ sort.translationPrefix.class }}">{% trans %}Translation prefix{% endtrans %}</a>
                     </th>
                     <th id="hDescription" scope="col" class="text-left">
-                        <a href="{{ sort.description.url }}" title="{% trans with {'%s': 'description'} %}Sort by %s{% endtrans %}" class="{{ sort.description.class }}">{% trans %}Description{% endtrans %}</a>
+                        <a href="{{ sort.description.url }}" title="'Sort by %s'|trans({'%s': 'description'})|e('html_attr') }}" class="{{ sort.description.class }}">{% trans %}Description{% endtrans %}</a>
                     </th>
                 </tr>
                 </thead>
@@ -96,13 +98,13 @@
                     <td id="itemActions{{ route.getKey() }}Start" headers="hItemActionsStart" class="actions nowrap">
                         {% set itemActions = knp_menu_get('zikulaRoutesMenuItemActions', [], {entity: route, area: routeArea, context: 'view'}) %}
                         <div class="dropdown item-actions">
-                            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                            <a id="itemActions{{ route.getKey() }}DropDownToggleStart" role="button" data-toggle="dropdown" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i></a>
                             {{ knp_menu_render(itemActions, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                         </div>
                     </td>
                     {% if activateSortable %}
                         <td headers="hSortable" class="text-center">
-                            <i class="fa fa-arrows-alt sort-handle pointer" title="{% trans %}Drag to reorder{% endtrans %}"></i>
+                            <i class="fa fa-arrows-alt sort-handle pointer" title="{{ 'Drag to reorder'|trans|e('html_attr') }}"></i>
                         </td>
                     {% endif %}
                     <td headers="hBundle" class="text-left">
@@ -122,9 +124,9 @@
                     </td>
                     <td headers="hPrependBundlePrefix" class="text-center">
                         {% if route.prependBundlePrefix %}
-                            <i class="fa fa-check text-success" title="{% trans %}Yes{% endtrans %}"></i>
+                            <i class="fa fa-check text-success" title="{{ 'Yes'|trans|e('html_attr') }}"></i>
                         {% else %}
-                            <i class="fa fa-times text-danger" title="{% trans %}No{% endtrans %}"></i>
+                            <i class="fa fa-times text-danger" title="{{ 'No'|trans|e('html_attr') }}"></i>
                         {% endif %}
                     </td>
                     <td headers="hTranslatable" class="text-center">
@@ -163,11 +165,11 @@
                         <div class="col-md-6">
                             <select id="zikulaRoutesModuleAction" name="action" class="form-control form-control-sm">
                                 <option value="">{% trans %}Choose action{% endtrans %}</option>
-                                <option value="delete" title="{% trans %}Delete content permanently.{% endtrans %}">{% trans %}Delete{% endtrans %}</option>
+                                <option value="delete" title="{{ 'Delete content permanently.'|trans|e('html_attr') }}">{% trans %}Delete{% endtrans %}</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <input type="submit" value="{% trans %}Submit{% endtrans %}" class="btn btn-primary btn-sm" />
+                            <input type="submit" value="{{ 'Submit'|trans|e('html_attr') }}" class="btn btn-primary btn-sm" />
                         </div>
                     </div>
                 </fieldset>
