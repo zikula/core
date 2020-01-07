@@ -15,22 +15,24 @@
         {{ form_errors(form) }}
         {{ form_widget(attribute(form, loginField|default('uname'))) }}
         {{ form_widget(form.pass) }}
-        <button type="button" class="btn btn-success btn-sm dropdown-toggle ml-auto" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-        {{ form_widget(form.submit, {attr: {class: 'btn btn-success btn-sm'}}) }}
-        <ul class="dropdown-menu">
-            {% if getModVar('ZConfig', 'seclevel') == 'high' %}
-                {{ form_row(form.rememberme, {attr: {class: 'hidden-row'} }) }}
-            {% else %}
-                <li style="padding-left: 20px">{{ form_row(form.rememberme) }}</li>
-            {% endif %}
-            <li><a href="{{ path('zikulausersmodule_access_login') }}">{% trans %}Log in page{% endtrans %}</a></li>
-            {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
-                <li><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create new account{% endtrans %}</a></li>
-            {% endif %}
-            <li role="separator" class="dropdown-divider"></li>
-            <li><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{% trans %}Recover lost username{% endtrans %}</a></li>
-            <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{% trans %}Recover lost password{% endtrans %}</a></li>
-        </ul>
+        <div class="btn-group">
+            <button type="button" class="btn btn-success btn-sm dropdown-toggle ml-auto rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+            {{ form_widget(form.submit, {attr: {class: 'btn btn-success btn-sm dropdown-toggle-split rounded-0'}}) }}
+            <ul class="dropdown-menu dropdown-menu-right">
+                {% if getModVar('ZConfig', 'seclevel') == 'high' %}
+                    <li class="dropdown-item">{{ form_row(form.rememberme) }}</li>
+                {% else %}
+                    <li class="dropdown-item" style="padding-left: 20px">{{ form_row(form.rememberme) }}</li>
+                {% endif %}
+                <li class="dropdown-item"><a href="{{ path('zikulausersmodule_access_login') }}">{% trans %}Log in page{% endtrans %}</a></li>
+                {% if getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_REGISTRATION_ENABLED'), constant('Zikula\\UsersModule\\Constant::DEFAULT_REGISTRATION_ENABLED')) %}
+                    <li class="dropdown-item"><a href="{{ path('zikulausersmodule_registration_register') }}">{% trans %}Create new account{% endtrans %}</a></li>
+                {% endif %}
+                <li role="separator" class="dropdown-divider"></li>
+                <li class="dropdown-item"><a href="{{ path('zikulazauthmodule_account_lostusername') }}">{% trans %}Recover lost username{% endtrans %}</a></li>
+                <li class="dropdown-item"><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{% trans %}Recover lost password{% endtrans %}</a></li>
+            </ul>
+        </div>
         {{ form_end(form) }}
     </li>
 {% endif %}
