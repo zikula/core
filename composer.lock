@@ -125,16 +125,16 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "4.3.1",
+            "version": "4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "9487105b1b8c1db5bd1879429103deedd6982462"
+                "reference": "983313252725392091d8d2952276cbdcd4060014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/9487105b1b8c1db5bd1879429103deedd6982462",
-                "reference": "9487105b1b8c1db5bd1879429103deedd6982462",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/983313252725392091d8d2952276cbdcd4060014",
+                "reference": "983313252725392091d8d2952276cbdcd4060014",
                 "shasum": ""
             },
             "require": {
@@ -148,6 +148,7 @@
                     ],
                     "files": [
                         "js/*.js",
+                        "js/*.map",
                         "css/*.css",
                         "css/*.map"
                     ],
@@ -164,16 +165,16 @@
             ],
             "authors": [
                 {
-                    "name": "Jacob Thornton",
-                    "email": "jacobthornton@gmail.com"
-                },
-                {
                     "name": "Mark Otto",
                     "email": "markdotto@gmail.com"
+                },
+                {
+                    "name": "Jacob Thornton",
+                    "email": "jacobthornton@gmail.com"
                 }
             ],
             "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "http://getbootstrap.com",
+            "homepage": "https://getbootstrap.com",
             "keywords": [
                 "css",
                 "framework",
@@ -183,20 +184,20 @@
                 "sass",
                 "web"
             ],
-            "time": "2019-06-19T16:37:43+00:00"
+            "time": "2020-01-08T10:19:13+00:00"
         },
         {
             "name": "components/font-awesome",
-            "version": "5.11.2",
+            "version": "5.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa"
+                "reference": "d8646ec635a00b06cc219b7dffed3418444975cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/f4f114c4ab37d101e6a15370769bc0af681792fa",
-                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/d8646ec635a00b06cc219b7dffed3418444975cc",
+                "reference": "d8646ec635a00b06cc219b7dffed3418444975cc",
                 "shasum": ""
             },
             "type": "component",
@@ -218,7 +219,7 @@
                 "OFL-1.1"
             ],
             "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
-            "time": "2019-11-13T10:33:06+00:00"
+            "time": "2020-01-08T10:17:47+00:00"
         },
         {
             "name": "components/jquery",
@@ -1706,16 +1707,16 @@
         },
         {
             "name": "doctrine/reflection",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/reflection.git",
-                "reference": "02538d3f95e88eb397a5f86274deb2c6175c2ab6"
+                "reference": "bc420ead87fdfe08c03ecc3549db603a45b06d4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/reflection/zipball/02538d3f95e88eb397a5f86274deb2c6175c2ab6",
-                "reference": "02538d3f95e88eb397a5f86274deb2c6175c2ab6",
+                "url": "https://api.github.com/repos/doctrine/reflection/zipball/bc420ead87fdfe08c03ecc3549db603a45b06d4c",
+                "reference": "bc420ead87fdfe08c03ecc3549db603a45b06d4c",
                 "shasum": ""
             },
             "require": {
@@ -1723,13 +1724,15 @@
                 "ext-tokenizer": "*",
                 "php": "^7.1"
             },
+            "conflict": {
+                "doctrine/common": "<2.9"
+            },
             "require-dev": {
-                "doctrine/coding-standard": "^4.0",
-                "doctrine/common": "^2.8",
-                "phpstan/phpstan": "^0.9.2",
-                "phpstan/phpstan-phpunit": "^0.9.4",
-                "phpunit/phpunit": "^7.0",
-                "squizlabs/php_codesniffer": "^3.0"
+                "doctrine/coding-standard": "^5.0",
+                "doctrine/common": "^2.10",
+                "phpstan/phpstan": "^0.11.0",
+                "phpstan/phpstan-phpunit": "^0.11.0",
+                "phpunit/phpunit": "^7.0"
             },
             "type": "library",
             "extra": {
@@ -1748,16 +1751,16 @@
             ],
             "authors": [
                 {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
                     "name": "Roman Borschel",
                     "email": "roman@code-factory.org"
                 },
                 {
                     "name": "Benjamin Eberlei",
                     "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
                 },
                 {
                     "name": "Jonathan Wage",
@@ -1772,25 +1775,26 @@
                     "email": "ocramius@gmail.com"
                 }
             ],
-            "description": "Doctrine Reflection component",
+            "description": "The Doctrine Reflection project is a simple library used by the various Doctrine projects which adds some additional functionality on top of the reflection functionality that comes with PHP. It allows you to get the reflection information about classes, methods and properties statically.",
             "homepage": "https://www.doctrine-project.org/projects/reflection.html",
             "keywords": [
-                "reflection"
+                "reflection",
+                "static"
             ],
-            "time": "2018-06-14T14:45:07+00:00"
+            "time": "2020-01-08T19:53:19+00:00"
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.13",
+            "version": "2.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "834593d5900615639208417760ba6a17299e2497"
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
-                "reference": "834593d5900615639208417760ba6a17299e2497",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
                 "shasum": ""
             },
             "require": {
@@ -1834,7 +1838,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-30T08:14:25+00:00"
+            "time": "2020-01-05T14:11:20+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -5300,16 +5304,16 @@
         },
         {
             "name": "rector/rector",
-            "version": "v0.6.7",
+            "version": "v0.6.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rectorphp/rector.git",
-                "reference": "68ee48606a6bf8b047f89297bde601d22507ebab"
+                "reference": "9ae98079ff0af96031f983986ad9f47a72b211be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rectorphp/rector/zipball/68ee48606a6bf8b047f89297bde601d22507ebab",
-                "reference": "68ee48606a6bf8b047f89297bde601d22507ebab",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/9ae98079ff0af96031f983986ad9f47a72b211be",
+                "reference": "9ae98079ff0af96031f983986ad9f47a72b211be",
                 "shasum": ""
             },
             "require": {
@@ -5447,7 +5451,7 @@
                 "instant refactoring",
                 "instant upgrades"
             ],
-            "time": "2020-01-07T12:06:00+00:00"
+            "time": "2020-01-08T14:07:11+00:00"
         },
         {
             "name": "robloach/component-installer",
@@ -8077,16 +8081,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "4be9809a5364bba983046766414ab587427ed97e"
+                "reference": "f8e85814ce521ef6d53aaeacb8f20862cb49070e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/4be9809a5364bba983046766414ab587427ed97e",
-                "reference": "4be9809a5364bba983046766414ab587427ed97e",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/f8e85814ce521ef6d53aaeacb8f20862cb49070e",
+                "reference": "f8e85814ce521ef6d53aaeacb8f20862cb49070e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.2.5"
             },
             "type": "zikula-module",
             "extra": {
@@ -8119,7 +8123,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2020-01-06T23:38:38+00:00"
+            "time": "2020-01-08T08:21:25+00:00"
         },
         {
             "name": "zikula/profile-module",

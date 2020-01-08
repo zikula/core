@@ -29,6 +29,8 @@ interface UserSessionRepositoryInterface extends ObjectRepository, Selectable
 
     public function countGuestsSince(DateTime $dateTime): int;
 
+    public function clearUnsavedData(): void;
+
     public function persistAndFlush(UserSessionEntity $entity): void;
 
     public function removeAndFlush(string $id): void;

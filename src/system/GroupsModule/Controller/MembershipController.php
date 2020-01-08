@@ -304,7 +304,7 @@ class MembershipController extends AbstractController
 
         return $this->render('@ZikulaGroupsModule/Membership/userlist.html.twig', [
             'users' => $users,
-            'gid' => $request->request->get('gid')
+            'gid' => $request->query->get('gid')
         ], new PlainResponse());
     }
 

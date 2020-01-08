@@ -72,6 +72,11 @@ class UserSessionRepository extends ServiceEntityRepository implements UserSessi
         return (int)$query->getSingleScalarResult();
     }
 
+    public function clearUnsavedData(): void
+    {
+        $this->_em->clear();
+    }
+
     public function persistAndFlush(UserSessionEntity $entity): void
     {
         $this->_em->persist($entity);

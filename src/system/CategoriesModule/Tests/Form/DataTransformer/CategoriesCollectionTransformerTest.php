@@ -15,6 +15,7 @@ namespace Zikula\CategoriesModule\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bridge\Doctrine\Test\DoctrineTestHelper;
 use Symfony\Component\Form\DataTransformerInterface;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
@@ -144,7 +145,8 @@ class CategoriesCollectionTransformerTest extends TestCase
     {
         $options = [
             'entityCategoryClass' => CategoryAssignmentEntity::class,
-            'multiple' => $multiple
+            'multiple' => $multiple,
+            'em' => DoctrineTestHelper::createTestEntityManager()
         ];
 
         return new CategoriesCollectionTransformer($options);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\CategoriesModule\Form\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,12 +43,19 @@ class CategoriesType extends AbstractType
      */
     private $requestStack;
 
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
     public function __construct(
         CategoryRegistryRepositoryInterface $categoryRegistryRepository,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        EntityManagerInterface $entityManager
     ) {
         $this->categoryRegistryRepository = $categoryRegistryRepository;
         $this->requestStack = $requestStack;
+        $this->entityManager = $entityManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -92,6 +100,10 @@ class CategoriesType extends AbstractType
             }
 
             $builder->add('registry_' . $registry->getId(), EntityType::class, $registryOptions);
+        }
+
+        if (null === $options['em']) {
+            $options['em'] = $this->entityManager;
         }
 
         $builder->addViewTransformer(new CategoriesCollectionTransformer($options), true);
