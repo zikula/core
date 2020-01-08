@@ -25,12 +25,12 @@ class NativeEitherAuthenticationMethod extends AbstractNativeAuthenticationMetho
 
     public function getDisplayName(): string
     {
-        return $this->translator->__('Native Uname or Email');
+        return $this->translator->trans('Native Uname or Email');
     }
 
     public function getDescription(): string
     {
-        return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their username or email address.');
+        return $this->translator->trans('Allow a user to authenticate and login via Zikula\'s native user database with their username or email address.');
     }
 
     public function getLoginFormClassName(): string

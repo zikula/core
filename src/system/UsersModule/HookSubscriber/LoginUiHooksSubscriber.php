@@ -47,7 +47,7 @@ class LoginUiHooksSubscriber implements HookSubscriberInterface
 
     public function getTitle(): string
     {
-        return $this->translator->__('Login form and block hooks');
+        return $this->translator->trans('Login form and block hooks');
     }
 
     public function getAreaName(): string

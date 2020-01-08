@@ -67,17 +67,17 @@ class LinkContainer implements LinkContainerInterface
 
         $links[] = [
             'url' => $this->router->generate('zikulasettingsmodule_settings_main'),
-            'text' => $this->translator->__('Main settings'),
+            'text' => $this->translator->trans('Main settings'),
             'icon' => 'wrench'
         ];
         $links[] = [
             'url' => $this->router->generate('zikulasettingsmodule_settings_locale'),
-            'text' => $this->translator->__('Localisation settings'),
+            'text' => $this->translator->trans('Localisation settings'),
             'icon' => 'globe'
         ];
         $links[] = [
             'url' => $this->router->generate('zikulasettingsmodule_settings_phpinfo'),
-            'text' => $this->translator->__('PHP configuration'),
+            'text' => $this->translator->trans('PHP configuration'),
             'icon' => 'info-circle'
         ];
 

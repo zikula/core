@@ -55,7 +55,7 @@ class PageVarExtension extends AbstractExtension
     public function pageSetVar(string $name, string $value): void
     {
         if (empty($name) || empty($value)) {
-            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->trans('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         $this->pageVars->set($name, $value);
@@ -64,7 +64,7 @@ class PageVarExtension extends AbstractExtension
     public function pageGetVar(string $name, string $default = '')
     {
         if (empty($name)) {
-            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->trans('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->pageVars->get($name, $default);

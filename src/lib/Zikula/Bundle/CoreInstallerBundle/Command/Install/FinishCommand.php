@@ -63,20 +63,20 @@ class FinishCommand extends AbstractCoreInstallerCommand
         $io = new SymfonyStyle($input, $output);
 
         if (true === $this->installed) {
-            $io->error($this->translator->__('Zikula already appears to be installed.'));
+            $io->error($this->translator->trans('Zikula already appears to be installed.'));
 
             return 1;
         }
 
-        $io->section($this->translator->__('*** INSTALLING ***'));
-        $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
+        $io->section($this->translator->trans('*** INSTALLING ***'));
+        $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
 
         // install!
         $ajaxStage = new AjaxInstallerStage();
         $ajaxStage->setTranslator($this->translator);
         $this->stageHelper->handleAjaxStage($ajaxStage, $io);
 
-        $io->success($this->translator->__('INSTALL COMPLETE!'));
+        $io->success($this->translator->trans('INSTALL COMPLETE!'));
 
         return 0;
     }

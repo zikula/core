@@ -81,7 +81,7 @@ class LoggerListener
             return;
         }
 
-        $userName = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uname') : $this->translator->__('Guest');
+        $userName = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uname') : $this->translator->trans('Guest');
 
         $this->loggableListener->setUsername($userName);
     }

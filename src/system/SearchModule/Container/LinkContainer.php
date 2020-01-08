@@ -82,14 +82,14 @@ class LinkContainer implements LinkContainerInterface
 
         $links[] = [
             'url' => $this->router->generate('zikulasearchmodule_search_execute'),
-            'text' => $this->translator->__('Frontend'),
+            'text' => $this->translator->trans('Frontend'),
             'icon' => 'search'
         ];
 
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulasearchmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'icon' => 'wrench'
             ];
         }
@@ -107,7 +107,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulasearchmodule_config_config'),
-                'text' => $this->translator->__('Backend'),
+                'text' => $this->translator->trans('Backend'),
                 'icon' => 'wrench'
             ];
         }
@@ -115,13 +115,13 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulasearchmodule_search_execute'),
-                'text' => $this->translator->__('New search'),
+                'text' => $this->translator->trans('New search'),
                 'icon' => 'search'
             ];
             if ($this->currentUserApi->isLoggedIn() && $this->statRepo->countStats() > 0) {
                 $links[] = [
                     'url' => $this->router->generate('zikulasearchmodule_search_recent'),
-                    'text' => $this->translator->__('Recent searches list'),
+                    'text' => $this->translator->trans('Recent searches list'),
                     'icon' => 'list'
                 ];
             }

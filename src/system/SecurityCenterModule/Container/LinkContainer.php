@@ -75,30 +75,30 @@ class LinkContainer implements LinkContainerInterface
 
         $links[] = [
             'url' => $this->router->generate('zikulasecuritycentermodule_config_config'),
-            'text' => $this->translator->__('Settings'),
+            'text' => $this->translator->trans('Settings'),
             'icon' => 'wrench'
         ];
         $links[] = [
             'url' => $this->router->generate('zikulasecuritycentermodule_config_allowedhtml'),
-            'text' => $this->translator->__('Allowed HTML settings'),
+            'text' => $this->translator->trans('Allowed HTML settings'),
             'icon' => 'list'
         ];
         $links[] = [
             'url' => $this->router->generate('zikulasecuritycentermodule_idslog_view'),
-            'text' => $this->translator->__('View IDS log'),
+            'text' => $this->translator->trans('View IDS log'),
             'icon' => 'align-justify',
             'links' => [
                 [
                     'url' => $this->router->generate('zikulasecuritycentermodule_idslog_view'),
-                    'text' => $this->translator->__('View IDS log')
+                    'text' => $this->translator->trans('View IDS log')
                 ],
                 [
                     'url' => $this->router->generate('zikulasecuritycentermodule_idslog_export'),
-                    'text' => $this->translator->__('Export IDS log')
+                    'text' => $this->translator->trans('Export IDS log')
                 ],
                 [
                     'url' => $this->router->generate('zikulasecuritycentermodule_idslog_purge'),
-                    'text' => $this->translator->__('Purge IDS log')
+                    'text' => $this->translator->trans('Purge IDS log')
                 ]
             ]
         ];
@@ -107,7 +107,7 @@ class LinkContainer implements LinkContainerInterface
         if (1 === $outputfilter) {
             $links[] = [
                 'url' => $this->router->generate('zikulasecuritycentermodule_config_purifierconfig'),
-                'text' => $this->translator->__('HTMLPurifier settings'),
+                'text' => $this->translator->trans('HTMLPurifier settings'),
                 'icon' => 'wrench'
             ];
         }

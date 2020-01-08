@@ -54,7 +54,7 @@ class ModVarExtension extends AbstractExtension
     public function getModVar(string $module, string $name, $default = null)
     {
         if (empty($module) || empty($name)) {
-            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->trans('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->variableApi->get($module, $name, $default);
@@ -67,7 +67,7 @@ class ModVarExtension extends AbstractExtension
     public function getSystemVar(string $name, $default = null)
     {
         if (empty($name)) {
-            throw new InvalidArgumentException($this->translator->__('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
+            throw new InvalidArgumentException($this->translator->trans('Empty argument at') . ':' . __FILE__ . '::' . __LINE__);
         }
 
         return $this->variableApi->getSystemVar($name, $default);

@@ -61,7 +61,7 @@ replacing more methods than only `__` and `__f` in (at least):
 26) src/modules/zikula/legal-module/Listener/UsersUiListener.php
 38) src/system/BlocksModule/AbstractBlockHandler.php
 
-##Actual usage in tempalte for plural+
+##Actual usage in template for plural+
 
     {% trans with {'%count%': node.children.count} %}n.direct1.child{% endtrans %}<br>
     {% trans count node.children.count with {'%count%': node.children.count} %}n.direct2.child{% endtrans %}<br>

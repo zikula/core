@@ -25,12 +25,12 @@ class NativeUnameAuthenticationMethod extends AbstractNativeAuthenticationMethod
 
     public function getDisplayName(): string
     {
-        return $this->translator->__('Native Uname');
+        return $this->translator->trans('Native Uname');
     }
 
     public function getDescription(): string
     {
-        return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their username.');
+        return $this->translator->trans('Allow a user to authenticate and login via Zikula\'s native user database with their username.');
     }
 
     public function getLoginFormClassName(): string

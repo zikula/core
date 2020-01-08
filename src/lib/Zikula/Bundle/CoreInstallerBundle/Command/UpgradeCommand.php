@@ -125,15 +125,15 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (version_compare($this->currentInstalledVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
-            $output->writeln($this->translator->__f('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $this->currentInstalledVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+            $output->writeln($this->translator->trans('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $this->currentInstalledVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
 
             return 1;
         }
 
         $io = new SymfonyStyle($input, $output);
-        $io->title($this->translator->__('Zikula Upgrader Script'));
-        $io->section($this->translator->__f('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
-        $io->text($this->translator->__f('Upgrading Zikula in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
+        $io->title($this->translator->trans('Zikula Upgrader Script'));
+        $io->section($this->translator->trans('*** UPGRADING TO ZIKULA CORE %version% ***', ['%version%' => ZikulaKernel::VERSION]));
+        $io->text($this->translator->trans('Upgrading Zikula in %env% environment.', ['%env%' => $this->kernel->getEnvironment()]));
 
         $warnings = $this->controllerHelper->initPhp();
         if (!empty($warnings)) {
@@ -191,7 +191,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
 
         error_reporting($reportingLevel);
 
-        $io->success($this->translator->__('UPGRADE COMPLETE!'));
+        $io->success($this->translator->trans('UPGRADE COMPLETE!'));
 
         return 0;
     }
@@ -203,7 +203,7 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
         }
         $count = $this->migrationHelper->countUnMigratedUsers();
         if ($count > 0) {
-            $io->text($this->translator->__('Beginning user migration...'));
+            $io->text($this->translator->trans('Beginning user migration...'));
             $userMigrationMaxuid = (int)$this->migrationHelper->getMaxUnMigratedUid();
             $progressBar = new ProgressBar($output, (int)ceil($count / MigrationHelper::BATCH_LIMIT));
             $progressBar->start();
@@ -214,9 +214,9 @@ class UpgradeCommand extends AbstractCoreInstallerCommand
                 $progressBar->advance();
             } while ($lastUid < $userMigrationMaxuid);
             $progressBar->finish();
-            $io->success($this->translator->__('User migration complete!'));
+            $io->success($this->translator->trans('User migration complete!'));
         } else {
-            $io->text($this->translator->__('There was no need to migrate any users.'));
+            $io->text($this->translator->trans('There was no need to migrate any users.'));
         }
     }
 }

@@ -89,7 +89,7 @@ class ExtensionStateHelper
                 break;
             case Constant::STATE_UPGRADED:
                 if (Constant::STATE_UNINITIALISED === $extension->getState()) {
-                    throw new RuntimeException($this->translator->__('Error! Invalid module state transition.'));
+                    throw new RuntimeException($this->translator->trans('Error! Invalid module state transition.'));
                 }
                 break;
         }

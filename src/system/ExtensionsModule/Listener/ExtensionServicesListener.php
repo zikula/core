@@ -73,7 +73,7 @@ class ExtensionServicesListener implements EventSubscriberInterface
         if (!empty($sublinks)) {
             $event->data[] = [
                 'url' => $this->router->generate('zikulaextensionsmodule_services_moduleservices', ['moduleName' => $event['modname']]),
-                'text' => $this->translator->__('Services'),
+                'text' => $this->translator->trans('Services'),
                 'icon' => 'cogs',
                 'links' => $sublinks
             ];

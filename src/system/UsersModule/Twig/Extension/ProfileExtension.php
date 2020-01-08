@@ -173,7 +173,7 @@ class ProfileExtension extends AbstractExtension
         }
 
         if (empty($title)) {
-            $title = $this->translator->__('Profile') . ': ' . $userDisplayName;
+            $title = $this->translator->trans('Profile') . ': ' . $userDisplayName;
         }
 
         return '<a' . $class . ' title="' . htmlspecialchars($title, ENT_QUOTES) . '" href="' . $href . '">' . $show . '</a>';

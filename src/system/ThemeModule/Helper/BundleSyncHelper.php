@@ -121,7 +121,7 @@ class BundleSyncHelper
                 if ($this->composerValidationHelper->isValid()) {
                     $bundleThemes[$bundle->getName()] = $themeVersionArray;
                 } else {
-                    $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    $this->session->getFlashBag()->add('error', $this->translator->trans('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
                     foreach ($this->composerValidationHelper->getErrors() as $error) {
                         $this->session->getFlashBag()->add('error', $error);
                     }

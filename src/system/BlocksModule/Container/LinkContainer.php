@@ -64,7 +64,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
                 'url' => $this->router->generate('zikulablocksmodule_admin_view'),
-                'text' => $this->translator->__('Blocks list'),
+                'text' => $this->translator->trans('Blocks list'),
                 'icon' => 'table'
             ];
         }
@@ -72,20 +72,20 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
                 'url' => $this->router->generate('zikulablocksmodule_block_new'),
-                'text' => $this->translator->__('Create new block'),
+                'text' => $this->translator->trans('Create new block'),
                 'icon' => 'plus'
             ];
 
             $links[] = [
                 'url' => $this->router->generate('zikulablocksmodule_position_edit'),
-                'text' => $this->translator->__('Create new block position'),
+                'text' => $this->translator->trans('Create new block position'),
                 'icon' => 'plus'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulablocksmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'icon' => 'wrench'
             ];
         }

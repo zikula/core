@@ -92,10 +92,10 @@ class StartCommand extends AbstractCoreInstallerCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $io->title($this->translator->__('Zikula Installer Script'));
+        $io->title($this->translator->trans('Zikula Installer Script'));
 
         if (true === $this->installed) {
-            $io->error($this->translator->__('Zikula already appears to be installed.'));
+            $io->error($this->translator->trans('Zikula already appears to be installed.'));
 
             return 1;
         }
@@ -114,8 +114,8 @@ class StartCommand extends AbstractCoreInstallerCommand
         }
 
         if ($input->isInteractive()) {
-            $io->comment($this->translator->__f('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
-            $io->comment($this->translator->__f('Please follow the instructions to install Zikula %version%.', ['%version%' => ZikulaKernel::VERSION]));
+            $io->comment($this->translator->trans('Configuring Zikula installation in %env% environment.', ['%env%' => $this->environment]));
+            $io->comment($this->translator->trans('Please follow the instructions to install Zikula %version%.', ['%version%' => ZikulaKernel::VERSION]));
         }
 
         // get the settings from user input
@@ -139,18 +139,18 @@ class StartCommand extends AbstractCoreInstallerCommand
         $settings = array_merge($settings, $data);
 
         if ($input->isInteractive()) {
-            $io->success($this->translator->__('Configuration successful. Please verify your parameters below:'));
-            $io->comment($this->translator->__('(Admin credentials have been encoded to make them json-safe.)'));
+            $io->success($this->translator->trans('Configuration successful. Please verify your parameters below:'));
+            $io->comment($this->translator->trans('(Admin credentials have been encoded to make them json-safe.)'));
         }
 
         $this->printSettings($settings, $io);
         $io->newLine();
 
         if ($input->isInteractive()) {
-            $confirmation = $io->confirm($this->translator->__('Start installation?'), true);
+            $confirmation = $io->confirm($this->translator->trans('Start installation?'), true);
 
             if (!$confirmation) {
-                $io->error($this->translator->__('Installation aborted'));
+                $io->error($this->translator->trans('Installation aborted'));
 
                 return 3;
             }
@@ -159,7 +159,7 @@ class StartCommand extends AbstractCoreInstallerCommand
         // write the parameters to custom_parameters.yml
         $this->parameterHelper->initializeParameters($settings);
 
-        $io->success($this->translator->__('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
+        $io->success($this->translator->trans('First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'));
 
         return 0;
     }

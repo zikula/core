@@ -55,7 +55,7 @@ class RegistrationUiHooksSubscriber implements HookSubscriberInterface
 
     public function getTitle(): string
     {
-        return $this->translator->__('Registration management hooks');
+        return $this->translator->trans('Registration management hooks');
     }
 
     public function getAreaName(): string

@@ -44,7 +44,7 @@ class MenuItemEntityTransformer implements DataTransformerInterface
 
         $entity = $this->repo->find($value);
         if (null === $entity) {
-            throw new TransformationFailedException($this->translator->__('That entity does not exist!'));
+            throw new TransformationFailedException($this->translator->trans('That entity does not exist!'));
         }
 
         return $entity;

@@ -43,7 +43,7 @@ class UiHooksSubscriber implements HookSubscriberInterface
 
     public function getTitle(): string
     {
-        return $this->translator->__('HTML Block content hook');
+        return $this->translator->trans('HTML Block content hook');
     }
 
     public function getAreaName(): string

@@ -54,7 +54,7 @@ class ValidUnameValidator extends ConstraintValidator
             ]),
             new Regex([
                 'pattern' => '/^' . UsersConstant::UNAME_VALIDATION_PATTERN . '$/uD',
-                'message' => $this->translator->__('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')
+                'message' => $this->translator->trans('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')
             ])
         ]);
         if (count($errors) > 0) {

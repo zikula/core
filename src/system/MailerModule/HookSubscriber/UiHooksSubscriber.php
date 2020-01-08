@@ -41,7 +41,7 @@ class UiHooksSubscriber implements HookSubscriberInterface
 
     public function getTitle(): string
     {
-        return $this->translator->__('HTML mail hook');
+        return $this->translator->trans('HTML mail hook');
     }
 
     public function getAreaName(): string

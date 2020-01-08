@@ -107,7 +107,7 @@ class MailHelper
         if (!empty($passwordCreatedForUser) || ($userNotification && $userEntity->isApproved())) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
             if (!$mailSent) {
-                $mailErrors[] = $this->translator->__('Warning! The welcoming email for the new registration could not be sent.');
+                $mailErrors[] = $this->translator->trans('Warning! The welcoming email for the new registration could not be sent.');
             }
         }
         if ($adminNotification) {
@@ -119,7 +119,7 @@ class MailHelper
 
                 $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs);
                 if (!$mailSent) {
-                    $mailErrors[] = $this->translator->__('Warning! The notification email for the new registration could not be sent.');
+                    $mailErrors[] = $this->translator->trans('Warning! The notification email for the new registration could not be sent.');
                 }
             }
         }
@@ -161,7 +161,7 @@ class MailHelper
         if ($userNotification || !empty($passwordCreatedForUser)) {
             $mailSent = $this->sendNotification($userEntity->getEmail(), 'welcome', $rendererArgs);
             if (!$mailSent) {
-                $mailErrors[] = $this->translator->__('Warning! The welcoming email for the newly created user could not be sent.');
+                $mailErrors[] = $this->translator->trans('Warning! The welcoming email for the newly created user could not be sent.');
             }
         }
         if ($adminNotification) {
@@ -171,10 +171,10 @@ class MailHelper
                 $authMapping = $this->authenticationMappingRepository->getByZikulaId($userEntity->getUid());
                 $rendererArgs['isVerified'] = null === $authMapping || $authMapping->isVerifiedEmail();
 
-                $subject = $this->translator->__f('New registration: %s', ['%s' => $userEntity->getUname()]);
+                $subject = $this->translator->trans('New registration: %s', ['%s' => $userEntity->getUname()]);
                 $mailSent = $this->sendNotification($notificationEmail, 'regadminnotify', $rendererArgs, $subject);
                 if (!$mailSent) {
-                    $mailErrors[] = $this->translator->__('Warning! The notification email for the newly created user could not be sent.');
+                    $mailErrors[] = $this->translator->trans('Warning! The notification email for the newly created user could not be sent.');
                 }
             }
         }
@@ -275,22 +275,22 @@ class MailHelper
         switch ($notificationType) {
             case 'regadminnotify':
                 if (!$templateArgs['reginfo']->isApproved()) {
-                    return $this->translator->__f('New registration pending approval: %s', ['%s' => $templateArgs['reginfo']['uname']]);
+                    return $this->translator->trans('New registration pending approval: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
                 if (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
-                    return $this->translator->__f('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);
+                    return $this->translator->trans('New registration pending e-mail verification: %s', ['%s' => $templateArgs['reginfo']['uname']]);
                 }
 
-                return $this->translator->__f('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
+                return $this->translator->trans('New user activated: %s', ['%s' => $templateArgs['reginfo']['uname']]);
 
             case 'regdeny':
-                return $this->translator->__f('Your recent request at %s.', ['%s' => $siteName]);
+                return $this->translator->trans('Your recent request at %s.', ['%s' => $siteName]);
 
             case 'welcome':
-                return $this->translator->__f('Welcome to %1$s, %2$s!', ['%1$s' => $siteName, '%2$s' => $templateArgs['reginfo']['uname']]);
+                return $this->translator->trans('Welcome to %1$s, %2$s!', ['%1$s' => $siteName, '%2$s' => $templateArgs['reginfo']['uname']]);
 
             default:
-                return $this->translator->__f('A message from %s.', ['%s' => $siteName]);
+                return $this->translator->trans('A message from %s.', ['%s' => $siteName]);
         }
     }
 }

@@ -154,7 +154,7 @@ class PurifierHelper
                 $fs->mkdir($cacheDirectory);
             }
         } catch (IOExceptionInterface $e) {
-            $this->session->getFlashBag()->add('error', $this->translator->__f('An error occurred while creating HTML Purifier cache directory at %path', ['%path' => $e->getPath()]));
+            $this->session->getFlashBag()->add('error', $this->translator->trans('An error occurred while creating HTML Purifier cache directory at %path', ['%path' => $e->getPath()]));
         }
 
         return $config;

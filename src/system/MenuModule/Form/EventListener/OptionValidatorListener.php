@@ -57,7 +57,7 @@ class OptionValidatorListener implements EventSubscriberInterface
                                 $option['value'] = false;
                                 break;
                             default:
-                                $error = $this->translator->__f('%k must be either (string) "%t" or "%f").', ['%k' => $option['key'], '%t' => 'true', '%f' => 'false']);
+                                $error = $this->translator->trans('%k must be either (string) "%t" or "%f").', ['%k' => $option['key'], '%t' => 'true', '%f' => 'false']);
                                 $form->addError(new FormError($error));
                         }
                         break;
@@ -65,7 +65,7 @@ class OptionValidatorListener implements EventSubscriberInterface
                         $option['value'] = str_replace("'", '"', $option['value']);
                         $json = json_decode($option['value'], true);
                         if (null === $json) {
-                            $error = $this->translator->__f('%k must have a value that can be json_decoded.', ['%k' => $option['key']]);
+                            $error = $this->translator->trans('%k must have a value that can be json_decoded.', ['%k' => $option['key']]);
                             $form->addError(new FormError($error));
                         }
                         break;

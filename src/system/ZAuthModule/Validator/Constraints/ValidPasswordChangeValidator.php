@@ -50,18 +50,18 @@ class ValidPasswordChangeValidator extends ConstraintValidator
             $currentPass = $userEntity->getPass();
             // is oldpass correct?
             if (empty($data['oldpass']) || !$this->passwordApi->passwordsMatch($data['oldpass'], $currentPass)) {
-                $this->context->buildViolation($this->translator->__('Old password is incorrect.'))
+                $this->context->buildViolation($this->translator->trans('Old password is incorrect.'))
                     ->atPath('oldpass')
                     ->addViolation();
             }
             // oldpass == newpass?
             if (isset($data['pass']) && $data['oldpass'] === $data['pass']) {
-                $this->context->buildViolation($this->translator->__('Your new password cannot match your current password.'))
+                $this->context->buildViolation($this->translator->trans('Your new password cannot match your current password.'))
                     ->atPath('pass')
                     ->addViolation();
             }
         } else {
-            $this->context->buildViolation($this->translator->__('Could not find user to update.'))
+            $this->context->buildViolation($this->translator->trans('Could not find user to update.'))
                 ->atPath('oldpass')
                 ->addViolation();
         }

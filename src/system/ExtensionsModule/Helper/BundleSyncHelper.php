@@ -133,7 +133,7 @@ class BundleSyncHelper
         $scanner->setTranslator($this->translator);
         $scanner->scan($directories, 5);
         foreach ($scanner->getInvalid() as $invalidName) {
-            $this->session->getFlashBag()->add('warning', $this->translator->__f('WARNING: %name has an invalid composer.json file which could not be decoded.', ['%name' => $invalidName]));
+            $this->session->getFlashBag()->add('warning', $this->translator->trans('WARNING: %name has an invalid composer.json file which could not be decoded.', ['%name' => $invalidName]));
         }
         $newModules = $scanner->getModulesMetaData();
 
@@ -163,7 +163,7 @@ class BundleSyncHelper
                     $bundles[$bundle->getName()] = $bundleVersionArray;
                     $bundles[$bundle->getName()]['oldnames'] = $bundleVersionArray['oldnames'] ?? '';
                 } else {
-                    $this->session->getFlashBag()->add('error', $this->translator->__f('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
+                    $this->session->getFlashBag()->add('error', $this->translator->trans('Cannot load %extension because the composer file is invalid.', ['%extension' => $bundle->getName()]));
                     foreach ($this->composerValidationHelper->getErrors() as $error) {
                         $this->session->getFlashBag()->add('error', $error);
                     }
@@ -195,7 +195,7 @@ class BundleSyncHelper
             foreach ($fieldNames as $fieldName) {
                 $key = mb_strtolower($modInfo[$fieldName]);
                 if (isset($moduleValues[$fieldName][$key])) {
-                    throw new FatalErrorException($this->translator->__f('Fatal Error: Two extensions share the same %field. [%ext1%] and [%ext2%]', ['%field' => $fieldName, '%ext1%' => $modInfo['name'], '%ext2%' => $moduleValues['name'][mb_strtolower($modInfo['name'])]]));
+                    throw new FatalErrorException($this->translator->trans('Fatal Error: Two extensions share the same %field. [%ext1%] and [%ext2%]', ['%field' => $fieldName, '%ext1%' => $modInfo['name'], '%ext2%' => $moduleValues['name'][mb_strtolower($modInfo['name'])]]));
                 }
                 $moduleValues[$fieldName][$key] = $dir;
             }
@@ -306,7 +306,7 @@ class BundleSyncHelper
 
             $lostModule = $this->extensionRepository->get($name); // must obtain Entity because value from $extensionsFromDB is only an array
             if (!$lostModule) {
-                throw new RuntimeException($this->translator->__f('Error! Could not load data for module %s.', [$name]));
+                throw new RuntimeException($this->translator->trans('Error! Could not load data for module %s.', [$name]));
             }
             $lostModuleState = $lostModule->getState();
             if ((Constant::STATE_INVALID === $lostModuleState)

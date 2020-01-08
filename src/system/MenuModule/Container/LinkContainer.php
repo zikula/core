@@ -63,12 +63,12 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulamenumodule_menu_list'),
-                'text' => $this->translator->__('Menu list'),
+                'text' => $this->translator->trans('Menu list'),
                 'icon' => 'list'
             ];
             $links[] = [
                 'url' => $this->router->generate('zikulamenumodule_menu_edit'),
-                'text' => $this->translator->__('New menu'),
+                'text' => $this->translator->trans('New menu'),
                 'icon' => 'plus'
             ];
         }

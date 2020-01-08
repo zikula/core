@@ -80,7 +80,7 @@ class UserEventListener implements EventSubscriberInterface
                 $session->set('authenticationMethod', $event->getArgument('authenticationMethod'));
                 $session->set(UsersConstant::FORCE_PASSWORD_SESSION_UID_KEY, $user->getUid());
 
-                $session->getFlashBag()->add('error', $this->translator->__("Your log-in request was not completed. You must change your web site account's password first."));
+                $session->getFlashBag()->add('error', $this->translator->trans("Your log-in request was not completed. You must change your web site account's password first."));
             }
         }
     }

@@ -50,36 +50,36 @@ class ExtensionsExtension extends AbstractExtension
     {
         switch ($extensionEntity->getState()) {
             case Constant::STATE_INACTIVE:
-                $status = $this->translator->__('Inactive');
+                $status = $this->translator->trans('Inactive');
                 $statusclass = 'warning';
                 break;
             case Constant::STATE_ACTIVE:
-                $status = $this->translator->__('Active');
+                $status = $this->translator->trans('Active');
                 $statusclass = 'success';
                 break;
             case Constant::STATE_MISSING:
-                $status = $this->translator->__('Files missing');
+                $status = $this->translator->trans('Files missing');
                 $statusclass = 'danger';
                 break;
             case Constant::STATE_UPGRADED:
-                $status = $this->translator->__('New version');
+                $status = $this->translator->trans('New version');
                 $statusclass = 'danger';
                 break;
             case Constant::STATE_INVALID:
-                $status = $this->translator->__('Invalid structure');
+                $status = $this->translator->trans('Invalid structure');
                 $statusclass = 'danger';
                 break;
             case Constant::STATE_NOTALLOWED:
-                $status = $this->translator->__('Not allowed');
+                $status = $this->translator->trans('Not allowed');
                 $statusclass = 'danger';
                 break;
             case Constant::STATE_UNINITIALISED:
             default:
                 if ($extensionEntity->getState() > 10) {
-                    $status = $this->translator->__('Incompatible');
+                    $status = $this->translator->trans('Incompatible');
                     $statusclass = 'info';
                 } else {
-                    $status = $this->translator->__('Not installed');
+                    $status = $this->translator->trans('Not installed');
                     $statusclass = 'primary';
                 }
                 break;

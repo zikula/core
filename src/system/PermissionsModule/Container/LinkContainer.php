@@ -64,7 +64,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulapermissionsmodule_permission_list'),
-                'text' => $this->translator->__('Permission rules list'),
+                'text' => $this->translator->trans('Permission rules list'),
                 'id' => 'permissions_view',
                 'icon' => 'list'
             ];
@@ -73,7 +73,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
                 'url' => '#',
-                'text' => $this->translator->__('Create new permission rule'),
+                'text' => $this->translator->trans('Create new permission rule'),
                 'icon' => 'plus',
                 'class' => 'create-new-permission'
             ];
@@ -81,7 +81,7 @@ class LinkContainer implements LinkContainerInterface
 
         $links[] = [
             'url' => '#',
-            'text' => $this->translator->__('Permission rules information'),
+            'text' => $this->translator->trans('Permission rules information'),
             'icon' => 'info',
             'id' => 'view-instance-info'
         ];
@@ -89,7 +89,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulapermissionsmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'id' => 'permissions_modifyconfig',
                 'icon' => 'wrench'
             ];

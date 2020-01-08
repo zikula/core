@@ -99,21 +99,21 @@ class ModuleHelper
     {
         reset(ZikulaKernel::$coreModules);
         $systemModulesCategories = [
-            'ZikulaExtensionsModule' => $this->translator->__('System'),
-            'ZikulaPermissionsModule' => $this->translator->__('Users'),
-            'ZikulaGroupsModule' => $this->translator->__('Users'),
-            'ZikulaBlocksModule' => $this->translator->__('Layout'),
-            'ZikulaUsersModule' => $this->translator->__('Users'),
-            'ZikulaZAuthModule' => $this->translator->__('Users'),
-            'ZikulaThemeModule' => $this->translator->__('Layout'),
-            'ZikulaSecurityCenterModule' => $this->translator->__('Security'),
-            'ZikulaCategoriesModule' => $this->translator->__('Content'),
-            'ZikulaMailerModule' => $this->translator->__('System'),
-            'ZikulaSearchModule' => $this->translator->__('Content'),
-            'ZikulaAdminModule' => $this->translator->__('System'),
-            'ZikulaSettingsModule' => $this->translator->__('System'),
-            'ZikulaRoutesModule' => $this->translator->__('System'),
-            'ZikulaMenuModule' => $this->translator->__('Content'),
+            'ZikulaExtensionsModule' => $this->translator->trans('System'),
+            'ZikulaPermissionsModule' => $this->translator->trans('Users'),
+            'ZikulaGroupsModule' => $this->translator->trans('Users'),
+            'ZikulaBlocksModule' => $this->translator->trans('Layout'),
+            'ZikulaUsersModule' => $this->translator->trans('Users'),
+            'ZikulaZAuthModule' => $this->translator->trans('Users'),
+            'ZikulaThemeModule' => $this->translator->trans('Layout'),
+            'ZikulaSecurityCenterModule' => $this->translator->trans('Security'),
+            'ZikulaCategoriesModule' => $this->translator->trans('Content'),
+            'ZikulaMailerModule' => $this->translator->trans('System'),
+            'ZikulaSearchModule' => $this->translator->trans('Content'),
+            'ZikulaAdminModule' => $this->translator->trans('System'),
+            'ZikulaSettingsModule' => $this->translator->trans('System'),
+            'ZikulaRoutesModule' => $this->translator->trans('System'),
+            'ZikulaMenuModule' => $this->translator->trans('Content'),
         ];
 
         foreach (ZikulaKernel::$coreModules as $systemModule => $bundleClass) {
@@ -190,7 +190,7 @@ class ModuleHelper
             case '1.4.3':
                 $this->installModule('ZikulaMenuModule');
                 $this->reSyncAndActivateModules();
-                $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+                $this->setModuleCategory('ZikulaMenuModule', $this->translator->trans('Content'));
             case '1.4.4':
                 // nothing
             case '1.4.5':
@@ -199,7 +199,7 @@ class ModuleHelper
                 if (!$schemaManager->tablesExist(['menu_items'])) {
                     $this->installModule('ZikulaMenuModule');
                     $this->reSyncAndActivateModules();
-                    $this->setModuleCategory('ZikulaMenuModule', $this->translator->__('Content'));
+                    $this->setModuleCategory('ZikulaMenuModule', $this->translator->trans('Content'));
                 }
             case '1.4.6':
                 // nothing needed
@@ -231,7 +231,7 @@ class ModuleHelper
                             $fs->mirror($src . '/userdata', $src . '/web/uploads');
                         }
                     } catch (\Exception $exception) {
-                        $this->container->get('session')->getFlashBag()->add('info', $this->translator->__('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
+                        $this->container->get('session')->getFlashBag()->add('info', $this->translator->trans('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
                     }
                 }
                 // remove legacy blocks

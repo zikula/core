@@ -111,7 +111,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException($this->container->get(Translator::class)->__f('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
+            throw new AbortStageException($this->container->get(Translator::class)->trans('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
         }
         // clear container cache
         $this->container->get(CacheClearer::class)->clear('symfony.config');

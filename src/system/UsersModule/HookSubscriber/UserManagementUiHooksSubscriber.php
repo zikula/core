@@ -55,7 +55,7 @@ class UserManagementUiHooksSubscriber implements HookSubscriberInterface
 
     public function getTitle(): string
     {
-        return $this->translator->__('User management hooks');
+        return $this->translator->trans('User management hooks');
     }
 
     public function getAreaName(): string

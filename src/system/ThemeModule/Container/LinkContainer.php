@@ -67,7 +67,7 @@ class LinkContainer implements LinkContainerInterface
 
         $links[] = [
             'url' => $this->router->generate('zikulathememodule_theme_view'),
-            'text' => $this->translator->__('Themes list'),
+            'text' => $this->translator->trans('Themes list'),
             'icon' => 'list'
         ];
 

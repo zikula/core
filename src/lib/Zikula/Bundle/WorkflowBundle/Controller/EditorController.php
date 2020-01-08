@@ -65,7 +65,7 @@ class EditorController extends AbstractController
             $workflowName = $workflowType . '.' . $request->query->get('workflow', '');
         }
         if (!$container->has($workflowName)) {
-            throw new NotFoundHttpException($translator->__f('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
+            throw new NotFoundHttpException($translator->trans('Workflow "%workflow%" not found.', ['%workflow%' => $workflowName]));
         }
 
         $workflow = $container->get($workflowName);

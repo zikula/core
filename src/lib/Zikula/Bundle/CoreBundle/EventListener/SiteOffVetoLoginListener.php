@@ -88,7 +88,7 @@ class SiteOffVetoLoginListener implements EventSubscriberInterface
             if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
                 $session->remove('authenticationMethod');
             }
-            $event->setArgument('flash', $this->translator->__('Admin credentials required when site is disabled.'));
+            $event->setArgument('flash', $this->translator->trans('Admin credentials required when site is disabled.'));
             $event->setArgument('returnUrl', $this->router->generate('home'));
         }
     }

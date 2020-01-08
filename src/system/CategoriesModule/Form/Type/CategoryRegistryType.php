@@ -89,7 +89,7 @@ class CategoryRegistryType extends AbstractType
         $formModifier = function(FormInterface $form, string $modName = null) use ($translator) {
             $entities = null === $modName ? [] : $this->entitySelectionBuilder->buildFor($modName);
             $form->add('entityname', ChoiceType::class, [
-                'label' => $translator->__('Entity'),
+                'label' => $translator->trans('Entity'),
                 'choices' => $entities
             ]);
         };

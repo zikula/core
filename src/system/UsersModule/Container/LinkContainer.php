@@ -95,31 +95,31 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_list'),
-                'text' => $this->translator->__('Users list'),
+                'text' => $this->translator->trans('Users list'),
                 'icon' => 'list'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'icon' => 'wrench'
             ];
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_config_authenticationmethods'),
-                'text' => $this->translator->__('Authentication methods'),
+                'text' => $this->translator->trans('Authentication methods'),
                 'icon' => 'lock'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_fileio_export'),
-                'text' => $this->translator->__('Export users'),
+                'text' => $this->translator->trans('Export users'),
                 'icon' => 'download',
             ];
             $links[] = [
                 'url' => $this->router->generate('zikulausersmodule_useradministration_search'),
-                'text' => $this->translator->__('Find/Mail/Delete users'),
+                'text' => $this->translator->trans('Find/Mail/Delete users'),
                 'icon' => 'search'
             ];
         }
@@ -135,21 +135,21 @@ class LinkContainer implements LinkContainerInterface
         $links = [];
         $links[] = [
             'icon' => 'fa fa-user-circle',
-            'text' => $this->translator->__('Account menu'),
+            'text' => $this->translator->trans('Account menu'),
             'url' => $this->router->generate('zikulausersmodule_account_menu')
         ];
 
         if (!$this->currentUser->isLoggedIn()) {
             $links[] = [
                 'icon' => 'sign-in-alt',
-                'text' => $this->translator->__('Log in'),
+                'text' => $this->translator->trans('Log in'),
                 'url' => $this->router->generate('zikulausersmodule_access_login')
             ];
 
             if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
                 $links[] = [
                     'icon' => 'plus',
-                    'text'  => $this->translator->__('New account'),
+                    'text'  => $this->translator->trans('New account'),
                     'url'   => $this->router->generate('zikulausersmodule_registration_register')
                 ];
             }
@@ -173,7 +173,7 @@ class LinkContainer implements LinkContainerInterface
             if (count($locales) > 1) {
                 $links[] = [
                     'url'   => $this->router->generate('zikulausersmodule_account_changelanguage'),
-                    'text' => $this->translator->__('Language switcher'),
+                    'text' => $this->translator->trans('Language switcher'),
                     'icon'  => 'language'
                 ];
             }
@@ -181,7 +181,7 @@ class LinkContainer implements LinkContainerInterface
 
         $links[] = [
             'url'   => $this->router->generate('zikulausersmodule_access_logout'),
-            'text' => $this->translator->__('Log out'),
+            'text' => $this->translator->trans('Log out'),
             'icon'  => 'power-off text-danger'
         ];
 

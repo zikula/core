@@ -68,7 +68,7 @@ class DocController
         if (file_exists($this->basePath . '/' . $name)) {
             $content = file_get_contents($this->basePath . '/' . $name);
         } else {
-            $content = $this->translator->__f('The file you requested (%s) could not be found.', ['%s' => $name]);
+            $content = $this->translator->trans('The file you requested (%s) could not be found.', ['%s' => $name]);
         }
         $content = MarkdownExtra::defaultTransform($content);
         $templateParams = [

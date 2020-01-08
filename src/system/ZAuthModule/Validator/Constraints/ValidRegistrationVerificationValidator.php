@@ -59,19 +59,19 @@ class ValidRegistrationVerificationValidator extends ConstraintValidator
     {
         $userEntity = $this->userRepository->findOneBy(['uname' => $data['uname']]);
         if (!$userEntity) {
-            $this->context->buildViolation($this->translator->__('Invalid username.'))
+            $this->context->buildViolation($this->translator->trans('Invalid username.'))
                 ->atPath('uname')
                 ->addViolation();
         }
         $verifyChg = $this->userVerificationRepository->findOneBy(['uid' => $userEntity->getUid(), 'changetype' => ZAuthConstant::VERIFYCHGTYPE_REGEMAIL]);
         if (!$verifyChg) {
-            $this->context->buildViolation($this->translator->__('Invalid username.'))
+            $this->context->buildViolation($this->translator->trans('Invalid username.'))
                 ->atPath('uname')
                 ->addViolation();
         } else {
             $codesMatch = $this->passwordApi->passwordsMatch($data['verifycode'], $verifyChg['verifycode']);
             if (!$codesMatch) {
-                $this->context->buildViolation($this->translator->__('The code is invalid for this username.'))
+                $this->context->buildViolation($this->translator->trans('The code is invalid for this username.'))
                     ->atPath('verifycode')
                     ->addViolation();
             }

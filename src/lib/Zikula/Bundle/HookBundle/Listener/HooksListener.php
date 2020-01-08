@@ -93,7 +93,7 @@ class HooksListener implements EventSubscriberInterface
         }
         $event->data[] = [
             'url' => $this->router->generate('zikula_hook_hook_edit', ['moduleName' => $event['modname']]),
-            'text' => $this->translator->__('Hooks'),
+            'text' => $this->translator->trans('Hooks'),
             'icon' => 'paperclip'
         ];
     }

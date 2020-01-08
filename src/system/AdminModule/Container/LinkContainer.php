@@ -67,21 +67,21 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_view'),
-                'text' => $this->translator->__('Module categories list'),
+                'text' => $this->translator->trans('Module categories list'),
                 'icon' => 'list'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_newcat'),
-                'text' => $this->translator->__('Create new module category'),
+                'text' => $this->translator->trans('Create new module category'),
                 'icon' => 'plus'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'icon' => 'wrench'
             ];
         }
@@ -99,7 +99,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulaadminmodule_admin_adminpanel'),
-                'text' => $this->translator->__('Administration panel'),
+                'text' => $this->translator->trans('Administration panel'),
                 'icon' => 'wrench'
             ];
         }

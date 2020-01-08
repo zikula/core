@@ -79,9 +79,9 @@ class MessageExtension extends AbstractExtension
             return $url;
         }
         $class = !empty($class) ? ' class="' . htmlspecialchars($class, ENT_QUOTES) . '"' : '';
-        $text = !empty($text) ? htmlspecialchars($text, ENT_QUOTES) : $this->translator->__('Inbox');
+        $text = !empty($text) ? htmlspecialchars($text, ENT_QUOTES) : $this->translator->trans('Inbox');
 
-        return '<a' . $class . ' title="' . $this->translator->__('Messages inbox') . '" href="' . $url . '">' . $text . '</a>';
+        return '<a' . $class . ' title="' . $this->translator->trans('Messages inbox') . '" href="' . $url . '">' . $text . '</a>';
     }
 
     /**
@@ -109,7 +109,7 @@ class MessageExtension extends AbstractExtension
             $text = null !== $user ? $user->getUname() : '';
         }
 
-        return '<a' . $class . ' title="' . $this->translator->__('Send a message to this user') . '" href="' . $url . '">' . $text . '</a>';
+        return '<a' . $class . ' title="' . $this->translator->trans('Send a message to this user') . '" href="' . $url . '">' . $text . '</a>';
     }
 
     /**

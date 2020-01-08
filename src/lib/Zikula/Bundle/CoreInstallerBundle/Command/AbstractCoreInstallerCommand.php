@@ -116,14 +116,14 @@ abstract class AbstractCoreInstallerCommand extends Command
     private function errorCodeToMessage(string $key): string
     {
         $messages = [
-            'phpsatisfied' => $this->translator->__f('You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.', ['%actual' => PHP_VERSION, '%required' => ZikulaKernel::PHP_MINIMUM_VERSION]),
-            'datetimezone' => $this->translator->__('date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.'),
-            'pdo' => $this->translator->__("Your PHP installation doesn't have the PDO extension loaded."),
-            'phptokens' => $this->translator->__("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
-            'mbstring' => $this->translator->__('Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.'),
-            'pcreUnicodePropertiesEnabled' => $this->translator->__("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
-            'json_encode' => $this->translator->__('Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.'),
-            'config_personal_config_php' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => 'config/personal_config.php'])/*,
+            'phpsatisfied' => $this->translator->trans('You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.', ['%actual' => PHP_VERSION, '%required' => ZikulaKernel::PHP_MINIMUM_VERSION]),
+            'datetimezone' => $this->translator->trans('date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.'),
+            'pdo' => $this->translator->trans("Your PHP installation doesn't have the PDO extension loaded."),
+            'phptokens' => $this->translator->trans("You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula's output system."),
+            'mbstring' => $this->translator->trans('Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.'),
+            'pcreUnicodePropertiesEnabled' => $this->translator->trans("Your PHP installation's PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the '--enable-unicode-properties' option."),
+            'json_encode' => $this->translator->trans('Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.'),
+            'config_personal_config_php' => $this->translator->trans("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", ['%s' => 'config/personal_config.php'])/*,
             'custom_parameters_yml' => $this->translator->__f("'%s' has been found. This is not OK: please rename this file before continuing the installation process.", "app/config/custom_parameters.yml")*/
         ];
         if (array_key_exists($key, $messages)) {
@@ -131,7 +131,7 @@ abstract class AbstractCoreInstallerCommand extends Command
         }
 
         // remaining keys are filenames
-        return $this->translator->__f("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%s' => $key]);
+        return $this->translator->trans("You have a problem! '%s' is not writeable. Please ensure that the permissions are set correctly for the installation process.", ['%s' => $key]);
     }
 
     protected function printSettings($givenSettings, SymfonyStyle $io): void
@@ -143,6 +143,6 @@ abstract class AbstractCoreInstallerCommand extends Command
             }
             $rows[] = [$name, $givenSetting];
         }
-        $io->table([$this->translator->__('Parameter'), $this->translator->__('Value')], $rows);
+        $io->table([$this->translator->trans('Parameter'), $this->translator->trans('Value')], $rows);
     }
 }

@@ -86,21 +86,21 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_adminlist'),
-                'text' => $this->translator->__('Groups list'),
+                'text' => $this->translator->trans('Groups list'),
                 'icon' => 'list'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_create'),
-                'text' => $this->translator->__('New group'),
+                'text' => $this->translator->trans('New group'),
                 'icon' => 'plus'
             ];
         }
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'icon' => 'wrench'
             ];
         }
@@ -109,7 +109,7 @@ class LinkContainer implements LinkContainerInterface
         if (($appCount > 0) && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_adminlist') . '#applications',
-                'text' => $this->translator->__f('%n Pending applications', ['%n' => $appCount]),
+                'text' => $this->translator->trans('%n Pending applications', ['%n' => $appCount]),
                 'icon' => 'exclamation-triangle'
             ];
         }
@@ -125,13 +125,13 @@ class LinkContainer implements LinkContainerInterface
         $links = [];
         $links[] = [
             'url' => $this->router->generate('zikulagroupsmodule_group_list'),
-            'text' => $this->translator->__('Group list'),
+            'text' => $this->translator->trans('Group list'),
             'icon' => 'users'
         ];
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_adminlist'),
-                'text' => $this->translator->__('Groups admin'),
+                'text' => $this->translator->trans('Groups admin'),
                 'icon' => 'wrench'
             ];
         }
@@ -151,7 +151,7 @@ class LinkContainer implements LinkContainerInterface
         if (count($groups) > 0) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_list'),
-                'text' => $this->translator->__('Groups manager'),
+                'text' => $this->translator->trans('Groups manager'),
                 'icon' => 'users'
             ];
         }

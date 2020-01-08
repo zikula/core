@@ -175,7 +175,7 @@ class FilterListener implements EventSubscriberInterface
             }
         } catch (Exception $exception) {
             // sth went wrong - maybe the filter rules weren't found
-            throw new Exception($this->translator->__f('An error occured during executing PHPIDS: %s', ['%s' => $exception->getMessage()]));
+            throw new Exception($this->translator->trans('An error occured during executing PHPIDS: %s', ['%s' => $exception->getMessage()]));
         }
     }
 
@@ -349,25 +349,25 @@ class FilterListener implements EventSubscriberInterface
         if ($usedImpact > $impactThresholdTwo && $this->getSystemVar('idsmail')) {
             // mail admin
             // prepare mail text
-            $mailBody = $this->translator->__('The following attack has been detected by PHPIDS') . "\n\n";
-            $mailBody .= isset($ipAddress) ? $this->translator->__f('IP: %s', ['%s' => $ipAddress]) . "\n" : '';
-            $mailBody .= isset($currentUid) ? $this->translator->__f('UserID: %s', ['%s' => $currentUid]) . "\n" : '';
+            $mailBody = $this->translator->trans('The following attack has been detected by PHPIDS') . "\n\n";
+            $mailBody .= isset($ipAddress) ? $this->translator->trans('IP: %s', ['%s' => $ipAddress]) . "\n" : '';
+            $mailBody .= isset($currentUid) ? $this->translator->trans('UserID: %s', ['%s' => $currentUid]) . "\n" : '';
             $currentDate = new DateTime();
-            $mailBody .= $this->translator->__f('Date: %s', ['%s' => $currentDate->format('%b %d, %Y')]) . "\n";
+            $mailBody .= $this->translator->trans('Date: %s', ['%s' => $currentDate->format('%b %d, %Y')]) . "\n";
             if (1 === $idsImpactMode) {
-                $mailBody .= $this->translator->__f('Request Impact: %d', ['%d' => $requestImpact]) . "\n";
+                $mailBody .= $this->translator->trans('Request Impact: %d', ['%d' => $requestImpact]) . "\n";
             } else {
-                $mailBody .= $this->translator->__f('Session Impact: %d', ['%d' => $sessionImpact]) . "\n";
+                $mailBody .= $this->translator->trans('Session Impact: %d', ['%d' => $sessionImpact]) . "\n";
             }
-            $mailBody .= $this->translator->__f('Affected tags: %s', ['%s' => implode(' ', $result->getTags())]) . "\n";
+            $mailBody .= $this->translator->trans('Affected tags: %s', ['%s' => implode(' ', $result->getTags())]) . "\n";
 
             $attackedParameters = '';
             foreach ($result as $event) {
                 $attackedParameters .= $event->getName() . '=' . urlencode($event->getValue()) . ', ';
             }
 
-            $mailBody .= $this->translator->__f('Affected parameters: %s', ['%s' => trim($attackedParameters)]) . "\n";
-            $mailBody .= isset($currentPage) ? $this->translator->__f('Request URI: %s', ['%s' => urlencode($currentPage)]) : '';
+            $mailBody .= $this->translator->trans('Affected parameters: %s', ['%s' => trim($attackedParameters)]) . "\n";
+            $mailBody .= isset($currentPage) ? $this->translator->trans('Request URI: %s', ['%s' => urlencode($currentPage)]) : '';
 
             // prepare other mail arguments
             $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));
@@ -377,9 +377,9 @@ class FilterListener implements EventSubscriberInterface
             $message = new Swift_Message();
 
             $message->setFrom([$adminMail => $siteName]);
-            $message->setTo([$adminMail => $this->translator->__('Site Administrator')]);
+            $message->setTo([$adminMail => $this->translator->trans('Site Administrator')]);
 
-            $subject = $this->translator->__('Intrusion attempt detected by PHPIDS');
+            $subject = $this->translator->trans('Intrusion attempt detected by PHPIDS');
             $this->mailer->sendMessage($message, $subject, $mailBody);
         }
 
@@ -388,9 +388,9 @@ class FilterListener implements EventSubscriberInterface
 
             if ($this->getSystemVar('idssoftblock')) {
                 // warn only for debugging the ruleset
-                throw new RuntimeException($this->translator->__('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
+                throw new RuntimeException($this->translator->trans('Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'));
             }
-            throw new AccessDeniedException($this->translator->__('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null);
+            throw new AccessDeniedException($this->translator->trans('Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'), null);
         }
 
         if ($usedImpact > $impactThresholdFour && null !== $session) {

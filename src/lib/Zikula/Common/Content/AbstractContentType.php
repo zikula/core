@@ -116,42 +116,6 @@ abstract class AbstractContentType implements ContentTypeInterface
     }
 
     /**
-     * Performs a singular translation.
-     */
-    public function __(string $msg, string $locale = null): string
-    {
-        /** @Ignore */
-        return $this->translator->__($msg, $this->domain, $locale);
-    }
-
-    /**
-     * Performs a plural translation.
-     */
-    public function _n(string $m1, string $m2, int $number, string $locale = null): string
-    {
-        /** @Ignore */
-        return $this->translator->_n($m1, $m2, $number, $this->domain, $locale);
-    }
-
-    /**
-     * Performs a format singular translation.
-     */
-    public function __f(string $msg, array $parameters = [], string $locale = null): string
-    {
-        /** @Ignore */
-        return $this->translator->__f($msg, $parameters, $this->domain, $locale);
-    }
-
-    /**
-     * Performs a format plural translation.
-     */
-    public function _fn(string $m1, string $m2, int $number, array $parameters = [], string $locale = null): string
-    {
-        /** @Ignore */
-        return $this->translator->_fn($m1, $m2, $number, $parameters, $this->domain, $locale);
-    }
-
-    /**
      * Returns content item instance.
      *
      * @return \Zikula\ContentModule\Entity\ContentItemEntity

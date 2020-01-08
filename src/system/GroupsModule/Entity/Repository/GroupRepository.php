@@ -112,8 +112,8 @@ class GroupRepository extends ServiceEntityRepository implements GroupRepository
     public function getGroupNamesById(bool $includeAll = true, bool $includeUnregistered = true): array
     {
         $groups = [];
-        $groups[PermissionApi::ALL_GROUPS] = $this->translator->__('All groups');
-        $groups[PermissionApi::UNREGISTERED_USER_GROUP] = $this->translator->__('Unregistered');
+        $groups[PermissionApi::ALL_GROUPS] = $this->translator->trans('All groups');
+        $groups[PermissionApi::UNREGISTERED_USER_GROUP] = $this->translator->trans('Unregistered');
 
         $entities = $this->findAll();
         foreach ($entities as $group) {

@@ -72,7 +72,7 @@ class CoreExtension extends AbstractExtension
             return $string;
         }
 
-        return (bool)$string ? $this->translator->__('Yes') : $this->translator->__('No');
+        return (bool)$string ? $this->translator->trans('Yes') : $this->translator->trans('No');
     }
 
     /**
@@ -117,6 +117,6 @@ class CoreExtension extends AbstractExtension
         if (function_exists($callable)) {
             return call_user_func_array($callable, $parameters);
         }
-        throw new InvalidArgumentException($this->translator->__('Function does not exist or is not callable.'));
+        throw new InvalidArgumentException($this->translator->trans('Function does not exist or is not callable.'));
     }
 }

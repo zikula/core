@@ -94,7 +94,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_list'),
-                'text' => $this->translator->__('Users list'),
+                'text' => $this->translator->trans('Users list'),
                 'icon' => 'list'
             ];
         }
@@ -106,15 +106,15 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', $createUserAccessLevel)) {
             $submenulinks[] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_create'),
-                'text' => $this->translator->__('Create new user'),
+                'text' => $this->translator->trans('Create new user'),
             ];
             $submenulinks[] = [
                 'url' => $this->router->generate('zikulazauthmodule_fileio_import'),
-                'text' => $this->translator->__('Import users')
+                'text' => $this->translator->trans('Import users')
             ];
             $links[] = [
                 'url' => $this->router->generate('zikulazauthmodule_useradministration_create'),
-                'text' => $this->translator->__('New users'),
+                'text' => $this->translator->trans('New users'),
                 'icon' => 'plus',
                 'links' => $submenulinks
             ];
@@ -122,7 +122,7 @@ class LinkContainer implements LinkContainerInterface
         if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikulazauthmodule_config_config'),
-                'text' => $this->translator->__('Settings'),
+                'text' => $this->translator->trans('Settings'),
                 'icon' => 'wrench'
             ];
         }
@@ -138,22 +138,22 @@ class LinkContainer implements LinkContainerInterface
         $links = $this->getAccount();
         array_unshift($links, [
             'url'   => $this->router->generate('zikulausersmodule_account_menu'),
-            'text' => $this->translator->__('Account menu'),
+            'text' => $this->translator->trans('Account menu'),
             'icon'  => 'fa fa-user-circle'
         ]);
         $links[] = [
             'icon' => 'key',
             'links' => [
                 [
-                    'text' => $this->translator->__('Recover Lost User Name'),
+                    'text' => $this->translator->trans('Recover Lost User Name'),
                     'url' => $this->router->generate('zikulazauthmodule_account_lostusername')
                 ],
                 [
-                    'text' => $this->translator->__('Recover Lost Password'),
+                    'text' => $this->translator->trans('Recover Lost Password'),
                     'url' => $this->router->generate('zikulazauthmodule_account_lostpassword')
                 ]
             ],
-            'text' => $this->translator->__('Recover account information or password'),
+            'text' => $this->translator->trans('Recover account information or password'),
             'url' => $this->router->generate('zikulausersmodule_account_menu'),
         ];
 
@@ -174,12 +174,12 @@ class LinkContainer implements LinkContainerInterface
         if (isset($userMapping)) {
             $links[] = [
                 'url'   => $this->router->generate('zikulazauthmodule_account_changepassword'),
-                'text' => $this->translator->__('Change password'),
+                'text' => $this->translator->trans('Change password'),
                 'icon'  => 'key text-success'
             ];
             $links[] = [
                 'url'   => $this->router->generate('zikulazauthmodule_account_changeemail'),
-                'text' => $this->translator->__('Change e-mail address'),
+                'text' => $this->translator->trans('Change e-mail address'),
                 'icon'  => 'at'
             ];
         }

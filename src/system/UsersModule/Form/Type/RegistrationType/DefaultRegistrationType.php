@@ -52,7 +52,7 @@ class DefaultRegistrationType extends AbstractType
                 'attr' => ['class' => 'btn btn-danger']
             ])
             ->add('reset', SubmitType::class, [
-                'label' => $this->translator->__('Reset'),
+                'label' => $this->translator->trans('Reset'),
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']
             ])

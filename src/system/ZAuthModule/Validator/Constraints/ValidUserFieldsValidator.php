@@ -54,7 +54,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         // Validate uname and pass are not the same.
         /** @var AuthenticationMappingEntity $authenticationMappingEntity */
         if ($authenticationMappingEntity->getUname() === $authenticationMappingEntity->getPass()) {
-            $this->context->buildViolation($this->translator->__('The password cannot be the same as the user name. Please choose a different password.'))
+            $this->context->buildViolation($this->translator->trans('The password cannot be the same as the user name. Please choose a different password.'))
                 ->atPath('pass')
                 ->addViolation();
         }
@@ -70,7 +70,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->__f('The user name you entered (%u) has already been registered.', ['%u' => $authenticationMappingEntity->getUname()]))
+            $this->context->buildViolation($this->translator->trans('The user name you entered (%u) has already been registered.', ['%u' => $authenticationMappingEntity->getUname()]))
                 ->atPath('uname')
                 ->addViolation();
         }
@@ -100,7 +100,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $vCount = (int)$query->getSingleScalarResult();
 
         if ($uCount + $vCount > 0) {
-            $this->context->buildViolation($this->translator->__('The email address you entered has already been registered.'))
+            $this->context->buildViolation($this->translator->trans('The email address you entered has already been registered.'))
                 ->atPath('email')
                 ->addViolation();
         }

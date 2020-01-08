@@ -25,12 +25,12 @@ class NativeEmailAuthenticationMethod extends AbstractNativeAuthenticationMethod
 
     public function getDisplayName(): string
     {
-        return $this->translator->__('Native Email');
+        return $this->translator->trans('Native Email');
     }
 
     public function getDescription(): string
     {
-        return $this->translator->__('Allow a user to authenticate and login via Zikula\'s native user database with their email address.');
+        return $this->translator->trans('Allow a user to authenticate and login via Zikula\'s native user database with their email address.');
     }
 
     public function getLoginFormClassName(): string

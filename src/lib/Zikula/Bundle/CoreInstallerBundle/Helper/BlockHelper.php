@@ -70,7 +70,7 @@ class BlockHelper
         $menuModuleEntity = $this->entityManager->getRepository(ExtensionEntity::class)
             ->findOneBy(['name' => 'ZikulaMenuModule']);
         $blockEntity = new BlockEntity();
-        $mainMenuString = $this->translator->__('Main menu');
+        $mainMenuString = $this->translator->trans('Main menu');
         $blockEntity->setTitle($mainMenuString);
         $blockEntity->setBkey(MenuBlock::class);
         $blockEntity->setBlocktype('Menu');

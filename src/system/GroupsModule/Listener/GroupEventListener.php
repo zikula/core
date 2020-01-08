@@ -71,7 +71,7 @@ class GroupEventListener implements EventSubscriberInterface
     {
         $applicationEntity = $event->getSubject();
         $formData = $event->getArguments();
-        $title = $this->translator->__f('Regarding your %s group membership application', ['%s' => $applicationEntity->getGroup()->getName()]);
+        $title = $this->translator->trans('Regarding your %s group membership application', ['%s' => $applicationEntity->getGroup()->getName()]);
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
 
@@ -91,7 +91,7 @@ class GroupEventListener implements EventSubscriberInterface
             return;
         }
         $applicationEntity = $event->getSubject();
-        $body = $this->translator->__f('A new application has been created by %user to %group. Please attend to this request at %url', [
+        $body = $this->translator->trans('A new application has been created by %user to %group. Please attend to this request at %url', [
             '%user' => $applicationEntity->getUser()->getUname(),
             '%group' => $applicationEntity->getGroup()->getName(),
             '%url' => $this->router->generate('zikulagroupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
@@ -102,6 +102,6 @@ class GroupEventListener implements EventSubscriberInterface
         $message = new Swift_Message();
         $message->setFrom([$adminMail => $siteName]);
         $message->setTo([$adminMail => $siteName]);
-        $this->mailer->sendMessage($message, $this->translator->__('New group application'), $body);
+        $this->mailer->sendMessage($message, $this->translator->trans('New group application'), $body);
     }
 }

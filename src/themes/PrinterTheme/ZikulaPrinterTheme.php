@@ -68,7 +68,7 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
             return $text;
         }
 
-        $text .= '<div><strong>' . $translator->__('Links') . '</strong>';
+        $text .= '<div><strong>' . $translator->trans('Links') . '</strong>';
         $text .= '<ol>';
         $this->links = array_unique($this->links);
         foreach ($this->links as $key => $link) {
