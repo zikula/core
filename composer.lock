@@ -7952,12 +7952,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "5d26d94f029e40420da427dd81b201f24d016cc6"
+                "reference": "91329392f965ba05533203556e03cfa611f53458"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/5d26d94f029e40420da427dd81b201f24d016cc6",
-                "reference": "5d26d94f029e40420da427dd81b201f24d016cc6",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/91329392f965ba05533203556e03cfa611f53458",
+                "reference": "91329392f965ba05533203556e03cfa611f53458",
                 "shasum": ""
             },
             "require": {
@@ -8012,7 +8012,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-06T23:33:47+00:00"
+            "time": "2020-01-08T21:36:41+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -8020,12 +8020,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "8d28495dd2c1c15b4d25f0a54d461728c2775e71"
+                "reference": "0b7c2638cc5d304073e87c1be48796540aa5f481"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/8d28495dd2c1c15b4d25f0a54d461728c2775e71",
-                "reference": "8d28495dd2c1c15b4d25f0a54d461728c2775e71",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/0b7c2638cc5d304073e87c1be48796540aa5f481",
+                "reference": "0b7c2638cc5d304073e87c1be48796540aa5f481",
                 "shasum": ""
             },
             "require": {
@@ -8073,7 +8073,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2020-01-07T00:22:37+00:00"
+            "time": "2020-01-08T21:31:33+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -8131,12 +8131,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "95624baef0a4fc29d7d624daba0e126c1cf3b0a3"
+                "reference": "426e9fa9c0ebba5e10b21240e279de81aab59012"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/95624baef0a4fc29d7d624daba0e126c1cf3b0a3",
-                "reference": "95624baef0a4fc29d7d624daba0e126c1cf3b0a3",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/426e9fa9c0ebba5e10b21240e279de81aab59012",
+                "reference": "426e9fa9c0ebba5e10b21240e279de81aab59012",
                 "shasum": ""
             },
             "require": {
@@ -8194,7 +8194,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-07T07:44:05+00:00"
+            "time": "2020-01-08T21:34:58+00:00"
         },
         {
             "name": "zikula/wizard",
