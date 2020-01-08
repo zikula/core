@@ -321,7 +321,7 @@ class ModuleController extends AbstractController
             $extensionStateHelper->updateState($id, Constant::STATE_TRANSITIONAL);
             $cacheClearer->clear('symfony');
 
-            return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $id]);
+            return $this->redirectToRoute('zikulaextensionsmodule_module_install', ['id' => $id, 'token' => $token]);
         }
         $unsatisfiedDependencies = $dependencyHelper->getUnsatisfiedExtensionDependencies($extension);
         $form = $this->createForm(ExtensionInstallType::class, [
