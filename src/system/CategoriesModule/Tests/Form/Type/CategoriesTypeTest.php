@@ -105,7 +105,7 @@ class CategoriesTypeTest extends TypeTestCase
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $type = new CategoriesType($repository, $requestStack);
+        $type = new CategoriesType($repository, $requestStack, $this->em);
 
         return array_merge(parent::getExtensions(), [
             new PreloadedExtension([$type], []),

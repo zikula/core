@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
@@ -29,8 +30,15 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
      */
     private $entityCategoryClass;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     private $multiple;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
 
     public function __construct(array $options)
     {
@@ -40,6 +48,7 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         }
         $this->entityCategoryClass = (string)$options['entityCategoryClass'];
         $this->multiple = (bool)($options['multiple'] ?? false);
+        $this->entityManager = $options['em'];
     }
 
     public function reverseTransform($value)
@@ -74,10 +83,17 @@ class CategoriesCollectionTransformer implements DataTransformerInterface
         /** @var AbstractCategoryAssignment $categoryAssignmentEntity */
         foreach ($value as $categoryAssignmentEntity) {
             $registryKey = 'registry_' . $categoryAssignmentEntity->getCategoryRegistryId();
+            $category = $categoryAssignmentEntity->getCategory();
+            if (false !== mb_strpos(get_class($category), 'DoctrineProxy')) {
+                //$this->entityManager->detach($category);
+                $category = $this->entityManager->find(CategoryEntity::class, $category->getId());
+                //$this->entityManager->persist($category);
+            }
+
             if ($this->multiple) {
-                $data[$registryKey][] = $categoryAssignmentEntity->getCategory();
+                $data[$registryKey][] = $category;
             } else {
-                $data[$registryKey] = $categoryAssignmentEntity->getCategory();
+                $data[$registryKey] = $category;
             }
         }
 
