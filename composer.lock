@@ -6870,16 +6870,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "4be9809a5364bba983046766414ab587427ed97e"
+                "reference": "f8e85814ce521ef6d53aaeacb8f20862cb49070e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/4be9809a5364bba983046766414ab587427ed97e",
-                "reference": "4be9809a5364bba983046766414ab587427ed97e",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/f8e85814ce521ef6d53aaeacb8f20862cb49070e",
+                "reference": "f8e85814ce521ef6d53aaeacb8f20862cb49070e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.0"
+                "php": ">=7.2.5"
             },
             "type": "zikula-module",
             "extra": {
@@ -6912,7 +6912,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2020-01-06T23:38:38+00:00"
+            "time": "2020-01-08T08:21:25+00:00"
         },
         {
             "name": "zikula/profile-module",
