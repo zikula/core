@@ -101,7 +101,7 @@ class ExtensionStateHelper
         // clear the cache before calling events
         $this->cacheClearer->clear('symfony');
 
-        if (isset($eventName)) {
+        if (isset($eventName) && $this->kernel->isBundle($extension->getName())) {
             $moduleBundle = $this->kernel->getModule($extension->getName());
             $event = new ModuleStateEvent($moduleBundle, $extension->toArray());
             $this->dispatcher->dispatch($event, $eventName);
