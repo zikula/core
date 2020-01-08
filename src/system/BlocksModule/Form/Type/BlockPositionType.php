@@ -19,8 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class BlockPositionType extends AbstractType

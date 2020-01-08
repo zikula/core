@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
 use InvalidArgumentException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 
 class ModVarExtension extends AbstractExtension

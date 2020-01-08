@@ -20,8 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**

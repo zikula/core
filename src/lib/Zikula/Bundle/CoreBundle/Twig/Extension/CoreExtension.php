@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use InvalidArgumentException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Zikula\Bundle\CoreBundle\Twig\TokenParser\SwitchTokenParser;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CoreExtension extends AbstractExtension
 {

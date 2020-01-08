@@ -21,8 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\LocaleType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**

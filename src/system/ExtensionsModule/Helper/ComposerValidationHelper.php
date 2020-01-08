@@ -17,8 +17,8 @@ use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 use stdClass;
 use Symfony\Component\Finder\SplFileInfo;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 
 class ComposerValidationHelper
 {
