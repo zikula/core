@@ -15,11 +15,11 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\BlocksModuleInstaller;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\MenuModule\Block\MenuBlock;
 

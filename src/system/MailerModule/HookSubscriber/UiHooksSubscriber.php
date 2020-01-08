@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Zikula\MailerModule\HookSubscriber;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\HookBundle\Category\UiHooksCategory;
 use Zikula\Bundle\HookBundle\HookSubscriberInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UiHooksSubscriber implements HookSubscriberInterface
 {

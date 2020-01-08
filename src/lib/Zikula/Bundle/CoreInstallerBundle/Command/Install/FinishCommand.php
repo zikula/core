@@ -16,10 +16,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command\Install;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FinishCommand extends AbstractCoreInstallerCommand
 {

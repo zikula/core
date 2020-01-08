@@ -19,8 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\BlocksModule\Api\BlockApi;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\BlocksModule\Api\BlockApi;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class AdminViewFilterType extends AbstractType

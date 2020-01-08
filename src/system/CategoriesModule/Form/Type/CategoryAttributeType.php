@@ -17,8 +17,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**

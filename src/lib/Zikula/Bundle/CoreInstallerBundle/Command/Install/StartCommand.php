@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\CreateAdminType;
@@ -25,7 +26,6 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand

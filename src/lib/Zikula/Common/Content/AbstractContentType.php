@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\Common\Content;
 
 use Exception;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ThemeModule\Engine\Asset;
 
 /**

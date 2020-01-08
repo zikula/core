@@ -15,8 +15,8 @@ namespace Zikula\BlocksModule;
 
 use LogicException;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Twig\Environment;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;

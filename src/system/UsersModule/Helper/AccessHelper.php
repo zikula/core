@@ -15,8 +15,8 @@ namespace Zikula\UsersModule\Helper;
 
 use DateTime;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;

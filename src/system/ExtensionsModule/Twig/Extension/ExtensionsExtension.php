@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Zikula\ExtensionsModule\Twig\Extension;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 

@@ -15,9 +15,9 @@ namespace Zikula\ExtensionsModule\Helper;
 
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;
