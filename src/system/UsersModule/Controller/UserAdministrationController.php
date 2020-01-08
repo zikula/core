@@ -360,7 +360,8 @@ class UserAdministrationController extends AbstractController
                     $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::DELETE_PROCESS, new ProcessHook($deletedUser->getUid()));
                     $userRepository->removeAndFlush($deletedUser);
                 }
-                $this->addFlash('success', $this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]));
+                $this->addFlash('success', $this
+                    ->getTranslator()->trans('plural_n.users.deleted'/* User deleted!|n users deleted!*/, ['%count%' => count($deletedUsers)]));
 
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');
             }
