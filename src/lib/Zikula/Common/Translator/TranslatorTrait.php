@@ -33,7 +33,7 @@ trait TranslatorTrait
      */
     public function __(string $msg, string $domain = null, string $locale = null): string
     {
-        return $this->translator->trans($msg, $domain, $locale);
+        return $this->translator->trans($msg, [], $domain, $locale);
     }
 
     /**
