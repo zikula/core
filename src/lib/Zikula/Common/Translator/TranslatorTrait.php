@@ -28,7 +28,6 @@ trait TranslatorTrait
     }
 
     /**
-     * @remove
      * Singular translation for modules.
      */
     public function __(string $msg, string $domain = null, string $locale = null): string
@@ -37,7 +36,6 @@ trait TranslatorTrait
     }
 
     /**
-     * @remove
      * Plural translations for modules.
      */
     public function _n(string $m1, string $m2, int $number, string $domain = null, string $locale = null): string
@@ -46,7 +44,6 @@ trait TranslatorTrait
     }
 
     /**
-     * @remove
      * Format translations for modules.
      */
     public function __f(string $msg, array $parameters = [], string $domain = null, string $locale = null): string
@@ -55,7 +52,6 @@ trait TranslatorTrait
     }
 
     /**
-     * @remove
      * Format plural translations for modules.
      */
     public function _fn(string $m1, string $m2, int $number, array $parameters = [], string $domain = null, string $locale = null): string
