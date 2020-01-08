@@ -21,7 +21,7 @@
         <tr>
             <td headers="hMenuId">{{ node.id }}</td>
             <td headers="hMenuTitle"><strong>{{ node.title }}</strong></td>
-            <td headers="hMenuChildCount">{% trans count node.children.count %}n.direct.child{% endtrans %}</td>
+            <td headers="hMenuChildCount">{% trans count node.children.count %}plural_n.direct.child{# one direct child|n direct children #}{% endtrans %}</td>
             {% set rowActions = knp_menu_get('zikulaMenuAdminActionsMenu', [], {id: node.id}) %}
             <th headers="hMenuActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</th>
         </tr>
