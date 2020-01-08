@@ -15,9 +15,9 @@ namespace Zikula\BlocksModule\Api;
 
 use Psr\Container\ContainerInterface;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\BlockHandlerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class BlockFactoryApi

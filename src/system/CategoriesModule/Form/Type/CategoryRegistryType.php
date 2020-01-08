@@ -23,9 +23,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**

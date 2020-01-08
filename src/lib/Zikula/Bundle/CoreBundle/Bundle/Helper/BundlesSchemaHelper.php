@@ -16,10 +16,10 @@ namespace Zikula\Bundle\CoreBundle\Bundle\Helper;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Table;
 use InvalidArgumentException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BundlesSchemaHelper
 {

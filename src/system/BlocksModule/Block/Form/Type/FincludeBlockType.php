@@ -22,8 +22,8 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Zikula\BlocksModule\Block\FincludeBlock;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\BlocksModule\Block\FincludeBlock;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class FincludeBlockType extends AbstractType

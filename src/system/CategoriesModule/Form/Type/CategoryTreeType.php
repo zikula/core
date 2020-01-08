@@ -18,9 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**

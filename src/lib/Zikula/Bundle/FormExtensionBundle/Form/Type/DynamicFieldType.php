@@ -41,6 +41,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
@@ -50,7 +51,6 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayT
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\MoneyFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;

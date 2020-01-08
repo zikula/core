@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Common\Translator\Translator;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;

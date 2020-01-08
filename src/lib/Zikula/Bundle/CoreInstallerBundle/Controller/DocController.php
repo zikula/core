@@ -16,9 +16,9 @@ namespace Zikula\Bundle\CoreInstallerBundle\Controller;
 use Michelf\MarkdownExtra;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\Response\PlainResponse;
 
 /**

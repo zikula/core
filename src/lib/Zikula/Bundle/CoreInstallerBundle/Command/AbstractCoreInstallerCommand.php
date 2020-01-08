@@ -16,8 +16,8 @@ namespace Zikula\Bundle\CoreInstallerBundle\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 
 abstract class AbstractCoreInstallerCommand extends Command
 {

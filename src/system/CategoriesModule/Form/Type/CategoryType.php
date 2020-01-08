@@ -25,10 +25,10 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
