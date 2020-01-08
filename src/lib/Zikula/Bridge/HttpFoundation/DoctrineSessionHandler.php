@@ -116,6 +116,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
         if ('cli' !== PHP_SAPI) {
             setcookie(session_name(), '', 0, ini_get('session.cookie_path'));
         }
+        $this->userSessionRepository->clearUnsavedData();
         $this->userSessionRepository->removeAndFlush($sessionId);
 
         return true;
@@ -147,6 +148,7 @@ class DoctrineSessionHandler extends AbstractSessionHandler
 
     private function updateSessionData(string $sessionId, string $data): bool
     {
+        $this->userSessionRepository->clearUnsavedData();
         $sessionEntity = $this->getSessionEntity($sessionId);
         $sessionEntity->setVars($data);
         $this->userSessionRepository->persistAndFlush($sessionEntity);
