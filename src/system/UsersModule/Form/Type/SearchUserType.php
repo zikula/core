@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\GroupsModule\Entity\GroupEntity;
 
@@ -41,12 +41,12 @@ class SearchUserType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->__('User name'),
+                'label' => $this->trans('User name'),
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
             ->add('email', TextType::class, [
-                'label' => $this->__('Email address'),
+                'label' => $this->trans('Email address'),
                 'required' => false,
                 'input_group' => ['left' => '%', 'right' => '%']
             ])
@@ -54,36 +54,36 @@ class SearchUserType extends AbstractType
                 'class' => GroupEntity::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'placeholder' => $this->__('Any group'),
-                'label' => $this->__('Group membership'),
+                'placeholder' => $this->trans('Any group'),
+                'label' => $this->trans('Group membership'),
                 'required' => false
             ])
             ->add('registered_after', DateType::class, [
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => [
-                    'year' => $this->__('Year'),
-                    'month' => $this->__('Month'),
-                    'day' => $this->__('Day')
+                    'year' => $this->trans('Year'),
+                    'month' => $this->trans('Month'),
+                    'day' => $this->trans('Day')
                 ]
             ])
             ->add('registered_before', DateType::class, [
-                'label' => $this->__('Registration date before'),
+                'label' => $this->trans('Registration date before'),
                 'required' => false,
                 'format' => 'yyyy-MM-dd',
                 'placeholder' => [
-                    'year' => $this->__('Year'),
-                    'month' => $this->__('Month'),
-                    'day' => $this->__('Day')
+                    'year' => $this->trans('Year'),
+                    'month' => $this->trans('Month'),
+                    'day' => $this->trans('Day')
                 ]
             ])
             ->add('search', SubmitType::class, [
-                'label' => $this->__('Search'),
+                'label' => $this->trans('Search'),
                 'icon' => 'fa-search',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

@@ -37,7 +37,7 @@ abstract class AbstractAjaxController extends AbstractController
         EntityFactory $entityFactory
     ): JsonResponse {
         if (!$request->isXmlHttpRequest()) {
-            return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
         
         if (!$this->hasPermission('ZikulaRoutesModule::Ajax', '::', ACCESS_EDIT)) {
@@ -50,7 +50,7 @@ abstract class AbstractAjaxController extends AbstractController
         $max = $request->request->getInt('max');
         
         if (!is_array($itemIds) || 2 > count($itemIds) || 1 > $max || $max <= $min) {
-            return $this->json($this->__('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Error: invalid input.'), JsonResponse::HTTP_BAD_REQUEST);
         }
         
         $repository = $entityFactory->getRepository($objectType);
@@ -76,7 +76,7 @@ abstract class AbstractAjaxController extends AbstractController
         
         // return response
         return $this->json([
-            'message' => $this->__('The setting has been successfully changed.')
+            'message' => $this->trans('The setting has been successfully changed.')
         ]);
     }
 }

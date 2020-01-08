@@ -15,7 +15,7 @@ namespace Zikula\Bundle\CoreBundle\Tests\Twig;
 
 use Twig\Test\IntegrationTestCase;
 use Zikula\Bundle\CoreBundle\Twig\Extension\CoreExtension;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IntegrationTest extends IntegrationTestCase
 {

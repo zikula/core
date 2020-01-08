@@ -15,7 +15,7 @@ namespace Zikula\MenuModule\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 
 class MenuItemEntityTransformer implements DataTransformerInterface

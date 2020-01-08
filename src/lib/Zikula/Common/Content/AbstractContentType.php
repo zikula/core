@@ -16,7 +16,7 @@ namespace Zikula\Common\Content;
 use Exception;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ThemeModule\Engine\Asset;
 
 /**
@@ -159,7 +159,7 @@ abstract class AbstractContentType implements ContentTypeInterface
 
     public function getTitle(): string
     {
-        return '- ' . $this->__('no title defined') . ' -';
+        return '- ' . $this->trans('no title defined') . ' -';
     }
 
     public function getDescription(): string
@@ -290,7 +290,7 @@ abstract class AbstractContentType implements ContentTypeInterface
         $template = '@' . $this->getBundleName() . '/ContentType/' . lcfirst($this->getName()) . $suffix . '.html.twig';
 
         if (!$this->twigLoader->exists($template)) {
-            throw new Exception($this->__f('Error! Could not resolve %template% template.', ['%template%' => $template]));
+            throw new Exception($this->trans('Error! Could not resolve %template% template.', ['%template%' => $template]));
         }
 
         return $template;

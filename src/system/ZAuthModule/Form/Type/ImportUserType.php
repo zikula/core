@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class ImportUserType extends AbstractType
@@ -40,8 +40,8 @@ class ImportUserType extends AbstractType
     {
         $builder
             ->add('file', FileType::class, [
-                'label' => $this->__f('CSV file (Max. %sub%)', ['%sub%' => ini_get('post_max_size')]),
-                'help' => $this->__('The file must be utf8 encoded'),
+                'label' => $this->trans('CSV file (Max. %sub%)', ['%sub%' => ini_get('post_max_size')]),
+                'help' => $this->trans('The file must be utf8 encoded'),
                 'constraints' => [
                     new File([
                         'mimeTypes' => [
@@ -60,7 +60,7 @@ class ImportUserType extends AbstractType
                 ]
             ])
             ->add('delimiter', ChoiceType::class, [
-                'label' => $this->__('CSV delimiter'),
+                'label' => $this->trans('CSV delimiter'),
                 'choices' => [
                     ',' => ',',
                     ';' => ';',
@@ -68,12 +68,12 @@ class ImportUserType extends AbstractType
                 ]
             ])
             ->add('upload', SubmitType::class, [
-                'label' => $this->__('Upload'),
+                'label' => $this->trans('Upload'),
                 'icon' => 'fa-upload',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

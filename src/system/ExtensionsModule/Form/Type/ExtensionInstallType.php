@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -45,14 +45,14 @@ class ExtensionInstallType extends AbstractType
                 'entry_type' => CheckboxType::class,
             ])
             ->add('install', SubmitType::class, [
-                'label' => $this->__('Install'),
+                'label' => $this->trans('Install'),
                 'icon' => 'fa-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

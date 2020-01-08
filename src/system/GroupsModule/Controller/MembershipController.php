@@ -130,11 +130,11 @@ class MembershipController extends AbstractController
         }
 
         if ($userEntity->getGroups()->contains($group)) {
-            $this->addFlash('warning', $this->__('The selected user is already a member of this group.'));
+            $this->addFlash('warning', $this->trans('The selected user is already a member of this group.'));
         } else {
             $userEntity->addGroup($group);
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('status', $this->__('Done! The user was added to the group.'));
+            $this->addFlash('status', $this->trans('Done! The user was added to the group.'));
             // Let other modules know that we have updated a group.
             $addUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
             $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
@@ -160,7 +160,7 @@ class MembershipController extends AbstractController
             throw new AccessDeniedException();
         }
         if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException($this->__('Sorry! You must register for a user account on this site before you can join a group.'));
+            throw new AccessDeniedException($this->trans('Sorry! You must register for a user account on this site before you can join a group.'));
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
@@ -174,7 +174,7 @@ class MembershipController extends AbstractController
         } else {
             $userEntity->addGroup($group);
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', $this->__f('Joined the "%group" group', ['%group' => $group->getName()]));
+            $this->addFlash('success', $this->trans('Joined the "%group" group', ['%group' => $group->getName()]));
             // Let other modules know that we have updated a group.
             $addUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
             $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
@@ -209,18 +209,18 @@ class MembershipController extends AbstractController
             $uid = $postVars['uid'] ?? 0;
         }
         if ($gid < 1 || $uid < 1) {
-            throw new InvalidArgumentException($this->__('Invalid Group ID or User ID.'));
+            throw new InvalidArgumentException($this->trans('Invalid Group ID or User ID.'));
         }
         if (!$this->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
         }
         $group = $groupRepository->find($gid);
         if (!$group) {
-            throw new InvalidArgumentException($this->__('Invalid Group ID.'));
+            throw new InvalidArgumentException($this->trans('Invalid Group ID.'));
         }
         $user = $userRepository->find($uid);
         if (!$user) {
-            throw new InvalidArgumentException($this->__('Invalid User ID.'));
+            throw new InvalidArgumentException($this->trans('Invalid User ID.'));
         }
 
         $form = $this->createForm(RemoveUserType::class, [
@@ -232,12 +232,12 @@ class MembershipController extends AbstractController
             if ($form->get('remove')->isClicked()) {
                 $user->removeGroup($group);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->__('Done! The user was removed from the group.'));
+                $this->addFlash('status', $this->trans('Done! The user was removed from the group.'));
                 $removeUserEvent = new g(null, ['gid' => $gid, 'uid' => $uid]);
                 $eventDispatcher->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_membership_adminlist', ['gid' => $group->getGid()]);
@@ -267,13 +267,13 @@ class MembershipController extends AbstractController
             throw new AccessDeniedException();
         }
         if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException($this->__('Sorry! You must be logged in before you can leave a group.'));
+            throw new AccessDeniedException($this->trans('Sorry! You must be logged in before you can leave a group.'));
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $userEntity->removeGroup($group);
         $this->getDoctrine()->getManager()->flush();
-        $this->addFlash('success', $this->__f('Left the "%group" group', ['%group' => $group->getName()]));
+        $this->addFlash('success', $this->trans('Left the "%group" group', ['%group' => $group->getName()]));
         // Let other modules know that we have updated a group.
         $removeUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
         $eventDispatcher->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);
@@ -316,21 +316,21 @@ class MembershipController extends AbstractController
         bool $alreadyGroupMember
     ): string {
         $messages = [];
-        $messages[] = $this->__('Sorry!, You cannot apply to join the requested group');
+        $messages[] = $this->trans('Sorry!, You cannot apply to join the requested group');
         if ($groupTypeIsPrivate) {
-            $messages[] = $this->__('This group is a private group');
+            $messages[] = $this->trans('This group is a private group');
         }
         if ($groupTypeIsCore) {
-            $messages[] = $this->__('This group is a core-only group');
+            $messages[] = $this->trans('This group is a core-only group');
         }
         if ($groupStateIsClosed) {
-            $messages[] = $this->__('This group is closed.');
+            $messages[] = $this->trans('This group is closed.');
         }
         if ($groupCountIsLimit) {
-            $messages[] = $this->__('This group is has reached its membership limit.');
+            $messages[] = $this->trans('This group is has reached its membership limit.');
         }
         if ($alreadyGroupMember) {
-            $messages[] = $this->__('You are already a member of this group.');
+            $messages[] = $this->trans('You are already a member of this group.');
         }
 
         return implode('<br />', $messages);

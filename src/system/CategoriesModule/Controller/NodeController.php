@@ -47,10 +47,10 @@ class NodeController extends AbstractController
         CategoryEntity $category = null
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
-            return $this->json($this->__('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
         $mode = $request->request->get('mode', 'edit');
 
@@ -63,7 +63,7 @@ class NodeController extends AbstractController
                 $newCategory->setName($category->getName() . 'copy');
                 $displayNames = [];
                 foreach ($newCategory->getDisplay_name() as $locale => $displayName) {
-                    $displayNames[$locale] = $displayName . ' ' . $this->__('copy');
+                    $displayNames[$locale] = $displayName . ' ' . $this->trans('copy');
                 }
                 $newCategory->setDisplay_name($displayNames);
                 $action = 'edit';
@@ -198,7 +198,7 @@ class NodeController extends AbstractController
         CategoryProcessingHelper $processingHelper
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaCategoriesModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);

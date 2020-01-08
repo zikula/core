@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Common\Translator\Translator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -70,17 +70,17 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $router = $this->container->get('router');
         if ($this->sendEmailToAdmin($request) > 0) {
             if ($request->hasSession() && ($session = $request->getSession())) {
-                $session->getFlashBag()->add('success', $this->__('Congratulations! Zikula has been successfully installed.'));
-                $session->getFlashBag()->add('info', $this->__f(
+                $session->getFlashBag()->add('success', $this->trans('Congratulations! Zikula has been successfully installed.'));
+                $session->getFlashBag()->add('info', $this->trans(
                     'Session are currently configured to use the filesystem. It is recommended that you change this to use the database. Click %here% to configure.',
-                    ['%here%' => '<a href="' . $router->generate('zikulasecuritycentermodule_config_config') . '">' . $this->__('Security Center') . '</a>']
+                    ['%here%' => '<a href="' . $router->generate('zikulasecuritycentermodule_config_config') . '">' . $this->trans('Security Center') . '</a>']
                 ));
             }
 
             return new RedirectResponse($router->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));
         }
         if ($request->hasSession() && ($session = $request->getSession())) {
-            $session->getFlashBag()->add('warning', $this->__('Email settings are not yet configured. Please configure them below.'));
+            $session->getFlashBag()->add('warning', $this->trans('Email settings are not yet configured. Please configure them below.'));
         }
 
         return new RedirectResponse($router->generate('zikulamailermodule_config_config', [], RouterInterface::ABSOLUTE_URL));
@@ -93,7 +93,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $url = $request->getSchemeAndHttpHost() . $request->getBasePath();
         $locale = $request->getLocale();
 
-        $subject = $this->__('Zikula installation completed!');
+        $subject = $this->trans('Zikula installation completed!');
         $body = <<<EOF
 <html lang="${locale}">
 <head>

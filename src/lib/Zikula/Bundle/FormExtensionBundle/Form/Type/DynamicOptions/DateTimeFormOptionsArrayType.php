@@ -27,29 +27,29 @@ class DateTimeFormOptionsArrayType extends FormOptionsArrayType
 
         $builder
             ->add('html5', CheckboxType::class, [
-                'label' => $this->__('Html5'),
+                'label' => $this->trans('Html5'),
                 'required' => false
             ])
             ->add('widget', ChoiceType::class, [
-                'label' => $this->__('Widget'),
+                'label' => $this->trans('Widget'),
                 'choices' => [
-                    $this->__('Choice') => 'choice',
-                    $this->__('Text') => 'text',
-                    $this->__('Single Text') => 'single_text'
+                    $this->trans('Choice') => 'choice',
+                    $this->trans('Text') => 'text',
+                    $this->trans('Single Text') => 'single_text'
                 ]
             ])
             ->add('input', ChoiceType::class, [
-                'label' => $this->__('Input'),
+                'label' => $this->trans('Input'),
                 'choices' => [
-                    $this->__('String') => 'string',
-                    $this->__('DateTime Object') => 'datetime',
-                    $this->__('Array') => 'array',
-                    $this->__('Timestamp') => 'timestamp'
+                    $this->trans('String') => 'string',
+                    $this->trans('DateTime Object') => 'datetime',
+                    $this->trans('Array') => 'array',
+                    $this->trans('Timestamp') => 'timestamp'
                 ]
             ])
             ->add('format', TextType::class, [
-                'label' => $this->__('Format'),
-                'help' => $this->__('e.g. yyyy-MM-dd'),
+                'label' => $this->trans('Format'),
+                'help' => $this->trans('e.g. yyyy-MM-dd'),
                 'required' => false
             ])
             ->add('model_timezone', TimezoneType::class)

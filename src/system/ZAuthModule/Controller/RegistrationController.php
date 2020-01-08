@@ -90,7 +90,7 @@ class RegistrationController extends AbstractController
         }
         $codeValidationErrors = $validator->validate(['uname' => $uname, 'verifycode' => $verifycode], new ValidRegistrationVerification());
         if (count($codeValidationErrors) > 0) {
-            $this->addFlash('warning', $this->__('The code provided is invalid or this user has never registered or has fully completed registration.'));
+            $this->addFlash('warning', $this->trans('The code provided is invalid or this user has never registered or has fully completed registration.'));
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
@@ -130,9 +130,9 @@ class RegistrationController extends AbstractController
                         $this->addFlash('error', implode('<br />', $notificationErrors));
                     }
                     if ('' === $userEntity->getApproved_By()) {
-                        $this->addFlash('status', $this->__('Done! Your account has been verified, and is awaiting administrator approval.'));
+                        $this->addFlash('status', $this->trans('Done! Your account has been verified, and is awaiting administrator approval.'));
                     } else {
-                        $this->addFlash('status', $this->__('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.'));
+                        $this->addFlash('status', $this->trans('Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.'));
                     }
                     break;
                 case UsersConstant::ACTIVATED_ACTIVE:
@@ -141,11 +141,11 @@ class RegistrationController extends AbstractController
                         $this->addFlash('error', implode('<br />', $notificationErrors));
                     }
                     $accessHelper->login($userEntity);
-                    $this->addFlash('status', $this->__('Done! Your account has been verified. You have been logged in.'));
+                    $this->addFlash('status', $this->trans('Done! Your account has been verified. You have been logged in.'));
                     break;
                 default:
-                    $this->addFlash('status', $this->__('Done! Your account has been verified.'));
-                    $this->addFlash('status', $this->__('Your new account is not active yet. Please contact the site administrator for more information.'));
+                    $this->addFlash('status', $this->trans('Done! Your account has been verified.'));
+                    $this->addFlash('status', $this->trans('Your new account is not active yet. Please contact the site administrator for more information.'));
                     break;
             }
 

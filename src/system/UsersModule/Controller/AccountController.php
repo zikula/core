@@ -74,19 +74,19 @@ class AccountController extends AbstractController
         $installedLanguages = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
         $form = $this->createFormBuilder()
             ->add('locale', ChoiceType::class, [
-                'label' => $this->__('Choose language'),
+                'label' => $this->trans('Choose language'),
                 'choices' => $installedLanguages,
-                'placeholder' => $this->__('Site default'),
+                'placeholder' => $this->trans('Site default'),
                 'required' => false,
                 'data' => $currentUserApi->get('locale')
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])
@@ -107,10 +107,10 @@ class AccountController extends AbstractController
                 }
                 Locale::setDefault($locale);
                 $langText = Languages::getName($locale);
-                $this->addFlash('success', $this->__f('Language changed to %lang', ['%lang' => $langText], 'zikula', $locale));
+                $this->addFlash('success', $this->trans('Language changed to %lang', ['%lang' => $langText], 'zikula', $locale));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulausersmodule_account_menu', ['_locale' => $locale]);

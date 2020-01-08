@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class SearchType extends AbstractType
@@ -42,7 +42,7 @@ class SearchType extends AbstractType
         $builder
             ->setMethod('GET')
             ->add('q', SearchInputType::class, [
-                'label' => $this->__('Search keywords'),
+                'label' => $this->trans('Search keywords'),
                 'attr' => [
                     'maxlength' => 255,
                     'min' => 1,
@@ -52,28 +52,28 @@ class SearchType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => $this->__('Error! You did not enter any keywords to search for.')
+                        'message' => $this->trans('Error! You did not enter any keywords to search for.')
                     ])
                 ]
             ])
             ->add('searchType', ChoiceType::class, [
-                'label' => $this->__('Keyword settings'),
+                'label' => $this->trans('Keyword settings'),
                 'choices' => [
-                    $this->__('All Words') => 'AND',
-                    $this->__('Any Words') => 'OR',
-                    $this->__('Exact phrase') => 'EXACT'
+                    $this->trans('All Words') => 'AND',
+                    $this->trans('Any Words') => 'OR',
+                    $this->trans('Exact phrase') => 'EXACT'
                 ]
             ])
             ->add('searchOrder', ChoiceType::class, [
-                'label' => $this->__('Order of results'),
+                'label' => $this->trans('Order of results'),
                 'choices' => [
-                    $this->__('Newest first') => 'newest',
-                    $this->__('Oldest first') => 'oldest',
-                    $this->__('Alphabetical') => 'alphabetical'
+                    $this->trans('Newest first') => 'newest',
+                    $this->trans('Oldest first') => 'oldest',
+                    $this->trans('Alphabetical') => 'alphabetical'
                 ]
             ])
             ->add('search', SubmitType::class, [
-                'label' => $this->__('Search now'),
+                'label' => $this->trans('Search now'),
                 'icon' => 'fa-search',
                 'attr' => [
                     'class' => 'btn btn-success'

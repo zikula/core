@@ -159,7 +159,7 @@ class UserAdministrationController extends AbstractController
             throw new AccessDeniedException();
         }
         if (UsersConstant::USER_ID_ANONYMOUS === $user->getUid()) {
-            throw new AccessDeniedException($this->__("Error! You can't edit the guest account."));
+            throw new AccessDeniedException($this->trans("Error! You can't edit the guest account."));
         }
 
         $form = $this->createForm(AdminModifyUserType::class, $user);
@@ -194,10 +194,10 @@ class UserAdministrationController extends AbstractController
 
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($user->getUid()));
 
-                $this->addFlash('status', $this->__("Done! Saved user's account information."));
+                $this->addFlash('status', $this->trans("Done! Saved user's account information."));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulausersmodule_useradministration_list');
@@ -233,18 +233,18 @@ class UserAdministrationController extends AbstractController
             'user' => $user->getUid(),
             'force' => $forceVerification
         ], [
-            'buttonLabel' => $this->__('Approve')
+            'buttonLabel' => $this->trans('Approve')
         ]);
         $redirectToRoute = 'zikulausersmodule_useradministration_list';
 
         if (!$forceVerification) {
             if ($user->isApproved()) {
-                $this->addFlash('error', $this->__f('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
+                $this->addFlash('error', $this->trans('Warning! Nothing to do! %sub% is already approved.', ['%sub%' => $user->getUname()]));
 
                 return $this->redirectToRoute($redirectToRoute);
             }
             if (!$user->isApproved() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_ADMIN)) {
-                $this->addFlash('error', $this->__f('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
+                $this->addFlash('error', $this->trans('Error! %sub% cannot be approved.', ['%sub%' => $user->getUname()]));
 
                 return $this->redirectToRoute($redirectToRoute);
             }
@@ -263,10 +263,10 @@ class UserAdministrationController extends AbstractController
                 if ($notificationErrors) {
                     $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
-                $this->addFlash('status', $this->__f('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
+                $this->addFlash('status', $this->trans('Done! %sub% has been approved.', ['%sub%' => $user->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute($redirectToRoute);
@@ -324,11 +324,11 @@ class UserAdministrationController extends AbstractController
         ]);
         $deleteConfirmationForm->handleRequest($request);
         if ($users instanceof ArrayCollection && $users->isEmpty() && !$deleteConfirmationForm->isSubmitted()) {
-            throw new InvalidArgumentException($this->__('No users selected.'));
+            throw new InvalidArgumentException($this->trans('No users selected.'));
         }
         if ($deleteConfirmationForm->isSubmitted()) {
             if ($deleteConfirmationForm->get('cancel')->isClicked()) {
-                $this->addFlash('success', $this->__('Operation cancelled.'));
+                $this->addFlash('success', $this->trans('Operation cancelled.'));
 
                 return $this->redirectToRoute('zikulausersmodule_useradministration_list');
             }
@@ -338,7 +338,7 @@ class UserAdministrationController extends AbstractController
             foreach ($userIds as $k => $uid) {
                 if (in_array($uid, [UsersConstant::USER_ID_ANONYMOUS, UsersConstant::USER_ID_ADMIN, $currentUserApi->get('uid')], true)) {
                     unset($userIds[$k]);
-                    $this->addFlash('danger', $this->__f('You are not allowed to delete Uid %uid', ['%uid' => $uid]));
+                    $this->addFlash('danger', $this->trans('You are not allowed to delete Uid %uid', ['%uid' => $uid]));
                     continue;
                 }
                 $event = new GenericEvent(null, ['id' => $uid], new ValidationProviders());
@@ -428,15 +428,15 @@ class UserAdministrationController extends AbstractController
             $data = $mailForm->getData();
             $users = $userRepository->query(['uid' => ['operator' => 'in', 'operand' => explode(',', $data['userIds'])]]);
             if (empty($users)) {
-                throw new InvalidArgumentException($this->__('No users found.'));
+                throw new InvalidArgumentException($this->trans('No users found.'));
             }
             if ($mailHelper->mailUsers($users, $data)) {
-                $this->addFlash('success', $this->__('Mail sent!'));
+                $this->addFlash('success', $this->trans('Mail sent!'));
             } else {
-                $this->addFlash('error', $this->__('Could not send mail.'));
+                $this->addFlash('error', $this->trans('Could not send mail.'));
             }
         } else {
-            $this->addFlash('error', $this->__('Could not send mail.'));
+            $this->addFlash('error', $this->trans('Could not send mail.'));
         }
 
         return $this->redirectToRoute('zikulausersmodule_useradministration_search');
@@ -470,18 +470,18 @@ class UserAdministrationController extends AbstractController
 
         // current user not allowed to deactivate self
         if (UsersConstant::ACTIVATED_ACTIVE !== $userBeingModified->getActivated()) {
-            $this->addFlash('info', $this->__('You are not allowed to alter your own active state.'));
+            $this->addFlash('info', $this->trans('You are not allowed to alter your own active state.'));
             $userBeingModified->setActivated(UsersConstant::ACTIVATED_ACTIVE);
         }
         // current user not allowed to remove self from default group
         $defaultGroup = $variableApi->get('ZikulaGroupsModule', 'defaultgroup', 1);
         if (!$userBeingModified->getGroups()->containsKey($defaultGroup)) {
-            $this->addFlash('info', $this->__('You are not allowed to remove yourself from the default group.'));
+            $this->addFlash('info', $this->trans('You are not allowed to remove yourself from the default group.'));
             $userBeingModified->getGroups()->add($originalGroups[$defaultGroup]);
         }
         // current user not allowed to remove self from admin group if currently a member
         if (isset($originalGroups[Constant::GROUP_ID_ADMIN]) && !$userBeingModified->getGroups()->containsKey(Constant::GROUP_ID_ADMIN)) {
-            $this->addFlash('info', $this->__('You are not allowed to remove yourself from the primary administrator group.'));
+            $this->addFlash('info', $this->trans('You are not allowed to remove yourself from the primary administrator group.'));
             $userBeingModified->getGroups()->add($originalGroups[Constant::GROUP_ID_ADMIN]);
         }
     }

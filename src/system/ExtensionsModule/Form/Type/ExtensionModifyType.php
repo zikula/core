@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
@@ -45,32 +45,32 @@ class ExtensionModifyType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('displayname', TextType::class, [
-                'label' => $this->__('Display name')
+                'label' => $this->trans('Display name')
             ])
             ->add('url', TextType::class, [
-                'label' => $this->__('URL'),
+                'label' => $this->trans('URL'),
                 'input_group' => ['left' => '/'],
-                'help' => $this->__('WARNING: changing the url affects SEO by breaking existing indexed search results.')
+                'help' => $this->trans('WARNING: changing the url affects SEO by breaking existing indexed search results.')
             ])
             ->add('description', TextType::class, [
-                'label' => $this->__('Description')
+                'label' => $this->trans('Description')
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
                 ]
             ])
             ->add('defaults', SubmitType::class, [
-                'label' => $this->__('Reload Defaults'),
+                'label' => $this->trans('Reload Defaults'),
                 'icon' => 'fa-sync',
                 'attr' => [
                     'class' => 'btn btn-default'

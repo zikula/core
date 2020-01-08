@@ -49,7 +49,7 @@ class UpdateController extends AbstractController
 
         $cacheClearer->clear('symfony.routing');
 
-        $this->addFlash('status', $this->__('Done! Routes reloaded.'));
+        $this->addFlash('status', $this->trans('Done! Routes reloaded.'));
 
         // reload **all** JS routes
         $this->dumpJsRoutes($routeDumperHelper);
@@ -78,7 +78,7 @@ class UpdateController extends AbstractController
         // Renew the routing settings.
         $multilingualRoutingHelper->reloadMultilingualRoutingSettings();
 
-        $this->addFlash('status', $this->__('Done! Routing settings renewed.'));
+        $this->addFlash('status', $this->trans('Done! Routing settings renewed.'));
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }
@@ -116,9 +116,9 @@ class UpdateController extends AbstractController
         $result = $routeDumperHelper->dumpJsRoutes($lang);
 
         if ('' === $result) {
-            $this->addFlash('status', $this->__f('Done! Exposed JS Routes dumped to %s.', ['%s' => 'web/js/fos_js_routes.js']));
+            $this->addFlash('status', $this->trans('Done! Exposed JS Routes dumped to %s.', ['%s' => 'web/js/fos_js_routes.js']));
         } else {
-            $this->addFlash('error', $this->__f('Error! There was an error dumping exposed JS Routes: %s', ['%s' => $result]));
+            $this->addFlash('error', $this->trans('Error! There was an error dumping exposed JS Routes: %s', ['%s' => $result]));
         }
     }
 }

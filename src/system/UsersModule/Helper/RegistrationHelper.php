@@ -16,7 +16,7 @@ namespace Zikula\UsersModule\Helper;
 use DateTime;
 use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -109,7 +109,7 @@ class RegistrationHelper
             // Add user to default group @todo refactor with Groups module
             $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');
             if (!$defaultGroup) {
-                throw new RuntimeException($this->__('Warning! The user account was created, but there was a problem adding the account to the default group.'));
+                throw new RuntimeException($this->trans('Warning! The user account was created, but there was a problem adding the account to the default group.'));
             }
             if (!$userEntity->getGroups()->containsKey($defaultGroup)) {
                 /** @var GroupEntity $defaultGroupEntity */

@@ -53,27 +53,27 @@ class ConfigController extends AbstractController
 
         $form = $this->createFormBuilder($this->getVars())
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $this->__('Items per page'),
+                'label' => $this->trans('Items per page'),
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThan(0)
                 ]
             ])
             ->add('hardreset', CheckboxType::class, [
-                'label' => $this->__('Reset all extensions to default values'),
+                'label' => $this->trans('Reset all extensions to default values'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'mapped' => false,
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -90,10 +90,10 @@ class ConfigController extends AbstractController
                     $bundleSyncHelper->syncExtensions($extensionsInFileSystem, true);
                     $cacheClearer->clear('symfony.routing');
                 }
-                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');

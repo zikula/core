@@ -17,7 +17,7 @@ namespace Zikula\RoutesModule\Twig\Base;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;

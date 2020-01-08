@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class FilterListType extends AbstractType
@@ -51,7 +51,7 @@ class FilterListType extends AbstractType
                 ]
             ])
             ->add('reset', ButtonType::class, [
-                'label' => $this->__('Reset'),
+                'label' => $this->trans('Reset'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default btn-sm'

@@ -58,6 +58,6 @@ class FincludeBlock extends AbstractBlockHandler
 
     public function getType(): string
     {
-        return $this->__('File Include');
+        return $this->trans('File Include');
     }
 }

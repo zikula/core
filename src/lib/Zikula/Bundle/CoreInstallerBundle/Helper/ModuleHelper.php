@@ -21,7 +21,7 @@ use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Common\Translator\Translator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;

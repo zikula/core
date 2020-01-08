@@ -19,7 +19,7 @@ use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -95,7 +95,7 @@ class RouteDumperHelper
             try {
                 unlink($targetPath);
             } catch (Exception $exception) {
-                $errors .= $this->translator->__f("Error: Could not delete '%path' because %msg", [
+                $errors .= $this->translator->trans("Error: Could not delete '%path' because %msg", [
                     '%path' => $targetPath,
                     '%msg' => $exception->getMessage()
                 ]);

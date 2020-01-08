@@ -23,7 +23,7 @@ use Swift_Message;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -260,7 +260,7 @@ class MailerApi implements MailerApiInterface
 
             $this->eventDispatcher->dispatch($event, MailerEvents::SEND_MESSAGE_FAILURE);
 
-            //throw new RuntimeException($this->__('Error! A problem occurred while sending the e-mail message.'));
+            //throw new RuntimeException($this->trans('Error! A problem occurred while sending the e-mail message.'));
 
             return false;
         }

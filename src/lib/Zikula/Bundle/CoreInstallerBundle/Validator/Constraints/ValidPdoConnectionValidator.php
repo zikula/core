@@ -17,7 +17,7 @@ use PDO;
 use PDOException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class ValidPdoConnectionValidator extends ConstraintValidator
@@ -38,7 +38,7 @@ class ValidPdoConnectionValidator extends ConstraintValidator
     {
         if ('' === $object['database_host'] || '' === $object['database_name'] || '' === $object['database_user']) {
             $this->context
-                ->buildViolation($this->__('Error! Please enter your database credentials.'))
+                ->buildViolation($this->trans('Error! Please enter your database credentials.'))
                 ->addViolation()
             ;
 
@@ -56,18 +56,18 @@ class ValidPdoConnectionValidator extends ConstraintValidator
             $tables = $dbh->query($sql);
             if (!is_object($tables)) {
                 $this->context
-                    ->buildViolation($this->__('Error! Determination existing tables failed.') . ' SQL: ' . $sql)
+                    ->buildViolation($this->trans('Error! Determination existing tables failed.') . ' SQL: ' . $sql)
                     ->addViolation()
                 ;
             } elseif ($tables->rowCount() > 0) {
                 $this->context
-                    ->buildViolation($this->__('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
+                    ->buildViolation($this->trans('Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'))
                     ->addViolation()
                 ;
             }
         } catch (PDOException $exception) {
             $this->context
-                ->buildViolation($this->__('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ') . $exception->getMessage())
+                ->buildViolation($this->trans('Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ') . $exception->getMessage())
                 ->addViolation()
             ;
         }

@@ -93,7 +93,7 @@ class FileIOController extends AbstractController
                 return $response;
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 

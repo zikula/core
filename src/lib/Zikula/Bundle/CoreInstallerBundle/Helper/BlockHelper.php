@@ -19,7 +19,7 @@ use Zikula\BlocksModule\BlocksModuleInstaller;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\MenuModule\Block\MenuBlock;
 

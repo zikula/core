@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class DefaultLoginType extends AbstractType
@@ -40,12 +40,12 @@ class DefaultLoginType extends AbstractType
         $builder
             ->add('uid', HiddenType::class)
             ->add('rememberme', CheckboxType::class, [
-                'label' => $this->__('Remember me'),
+                'label' => $this->trans('Remember me'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Login'),
+                'label' => $this->trans('Login'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])

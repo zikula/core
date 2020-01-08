@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Helper;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;

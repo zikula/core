@@ -21,7 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPasswordChange;
@@ -48,31 +48,31 @@ class ChangePasswordType extends AbstractType
             ->add('authenticationMethod', HiddenType::class)
             ->add('oldpass', PasswordType::class, [
                 'required' => false,
-                'label' => $this->__('Old password'),
+                'label' => $this->trans('Old password'),
                 'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => $this->__('New password'),
-                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'label' => $this->trans('New password'),
+                    'help' => $this->trans('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
-                    'label' => $this->__('Repeat new password')
+                    'label' => $this->trans('Repeat new password')
                 ],
-                'invalid_message' => $this->__('The passwords must match!'),
+                'invalid_message' => $this->trans('The passwords must match!'),
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

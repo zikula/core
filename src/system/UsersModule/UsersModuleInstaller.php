@@ -175,7 +175,7 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE                => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW                 => UsersConstant::DEFAULT_ACCOUNT_ITEMS_PER_ROW,
             UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH               => UsersConstant::DEFAULT_ACCOUNT_PAGE_IMAGE_PATH,
-            UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->__(/* Anonymous (guest) account display name */'Guest'),
+            UsersConstant::MODVAR_ANONYMOUS_DISPLAY_NAME                => $this->trans(/* Anonymous (guest) account display name */'Guest'),
             UsersConstant::MODVAR_ITEMS_PER_PAGE                        => UsersConstant::DEFAULT_ITEMS_PER_PAGE,
             UsersConstant::MODVAR_LOGIN_DISPLAY_APPROVAL_STATUS         => UsersConstant::DEFAULT_LOGIN_DISPLAY_APPROVAL_STATUS,
             UsersConstant::MODVAR_LOGIN_DISPLAY_DELETE_STATUS           => UsersConstant::DEFAULT_LOGIN_DISPLAY_DELETE_STATUS,
@@ -184,11 +184,11 @@ class UsersModuleInstaller extends AbstractExtensionInstaller
             UsersConstant::MODVAR_REGISTRATION_ADMIN_NOTIFICATION_EMAIL => '',
             UsersConstant::MODVAR_REGISTRATION_APPROVAL_REQUIRED        => UsersConstant::DEFAULT_REGISTRATION_APPROVAL_REQUIRED,
             UsersConstant::MODVAR_REGISTRATION_AUTO_LOGIN               => UsersConstant::DEFAULT_REGISTRATION_AUTO_LOGIN,
-            UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->__(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
+            UsersConstant::MODVAR_REGISTRATION_DISABLED_REASON          => $this->trans(/* registration disabled reason (default value, */'Sorry! New user registration is currently disabled.'),
             UsersConstant::MODVAR_REGISTRATION_ENABLED                  => UsersConstant::DEFAULT_REGISTRATION_ENABLED,
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_AGENTS           => '',
             UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS          => '',
-            UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->__(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
+            UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES           => $this->trans(/* illegal username list */'root, webmaster, admin, administrator, nobody, anonymous, username'),
         ];
     }
 

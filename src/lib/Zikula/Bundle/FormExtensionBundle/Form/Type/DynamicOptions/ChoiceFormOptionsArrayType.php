@@ -25,16 +25,16 @@ class ChoiceFormOptionsArrayType extends FormOptionsArrayType
 
         $builder
             ->add('multiple', CheckboxType::class, [
-                'label' => $this->__('Multiple'),
+                'label' => $this->trans('Multiple'),
                 'required' => false
             ])
             ->add('expanded', CheckboxType::class, [
-                'label' => $this->__('Expanded'),
+                'label' => $this->trans('Expanded'),
                 'required' => false
             ])
             ->add('choices', TextType::class, [
-                'label' => $this->__('Choices'),
-                'help' => $this->__('A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"')
+                'label' => $this->trans('Choices'),
+                'help' => $this->trans('A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"')
             ])
         ;
     }

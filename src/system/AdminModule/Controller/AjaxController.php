@@ -47,7 +47,7 @@ class AjaxController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $moduleId = $request->request->getInt('modid');
@@ -56,7 +56,7 @@ class AjaxController extends AbstractController
         /** @var ExtensionEntity $module */
         $module = $extensionRepository->find($moduleId);
         if (!$module) {
-            return $this->json($this->__f('Error! Could not get module name for id %s.', ['%s' => $moduleId]), Response::HTTP_NOT_FOUND);
+            return $this->json($this->trans('Error! Could not get module name for id %s.', ['%s' => $moduleId]), Response::HTTP_NOT_FOUND);
         }
 
         // get the module name
@@ -96,7 +96,7 @@ class AjaxController extends AbstractController
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         // get form information
@@ -104,19 +104,19 @@ class AjaxController extends AbstractController
 
         // make sure name is set.
         if ('' === $name) {
-            return $this->json($this->__('Error! No category name given.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Error! No category name given.'), Response::HTTP_BAD_REQUEST);
         }
 
         // Security check
         if (!$this->hasPermission('ZikulaAdminModule::Category', "${name}::", ACCESS_ADD)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         // check if category with same name exists
         $items = $adminCategoryRepository->findBy([], ['sortorder' => 'ASC']);
         foreach ($items as $cat) {
             if ($name === $cat['name']) {
-                return $this->json($this->__('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
+                return $this->json($this->trans('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
             }
         }
 
@@ -150,29 +150,29 @@ class AjaxController extends AbstractController
 
         //check user has permission to delete this
         if (!$this->hasPermission('ZikulaAdminModule::Category', "::${cid}", ACCESS_DELETE)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         // retrieve the category object
         $item = $adminCategoryRepository->findOneBy(['cid' => $cid]);
         if (null === $item) {
-            return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
+            return $this->json($this->trans('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
         if (!$this->hasPermission('ZikulaAdminModule::Category', $item['name'] . '::' . $item['cid'], ACCESS_DELETE)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         // Avoid deletion of the default category
         $defaultcategory = $this->getVar('defaultcategory');
         if ($cid === $defaultcategory) {
-            return new JsonResponse($this->__('Error! You cannot delete the default module category used in the administration panel.'), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->trans('Error! You cannot delete the default module category used in the administration panel.'), Response::HTTP_BAD_REQUEST);
         }
 
         // Avoid deletion of the start category
         $startcategory = $this->getVar('startcategory');
         if ($cid === $startcategory) {
-            return new JsonResponse($this->__('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($this->trans('Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'), Response::HTTP_BAD_REQUEST);
         }
 
         // move all modules from the category to be deleted into the default category.
@@ -198,7 +198,7 @@ class AjaxController extends AbstractController
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //get form values
@@ -207,12 +207,12 @@ class AjaxController extends AbstractController
 
         //security checks
         if (!$this->hasPermission('ZikulaAdminModule::Category', $name . '::' . $cid, ACCESS_EDIT)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //make sure cid and category name (cat) are both set
         if (!isset($cid, $name) || '' === $cid || '' === $name) {
-            return $this->json($this->__('No category name or id set.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('No category name or id set.'), Response::HTTP_BAD_REQUEST);
         }
 
         //check if category with same name exists
@@ -237,13 +237,13 @@ class AjaxController extends AbstractController
             }
 
             //a different category has the same name, not allowed.
-            return $this->json($this->__('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Error! A category by this name already exists.'), Response::HTTP_BAD_REQUEST);
         }
 
         // retrieve the category object
         $item = $adminCategoryRepository->findOneBy(['cid' => $cid]);
         if (null === $item) {
-            return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
+            return $this->json($this->trans('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
         // update the category using the info from the database and from the form.
@@ -270,7 +270,7 @@ class AjaxController extends AbstractController
     ): JsonResponse {
         //check user has permission to change the initially selected category
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         //get passed cid
@@ -279,7 +279,7 @@ class AjaxController extends AbstractController
         // retrieve the category object
         $item = $adminCategoryRepository->findOneBy(['cid' => $cid]);
         if (false === $item) {
-            return $this->json($this->__('Error! No such category found.'), Response::HTTP_NOT_FOUND);
+            return $this->json($this->trans('Error! No such category found.'), Response::HTTP_NOT_FOUND);
         }
 
         // make category the initially selected one
@@ -287,12 +287,12 @@ class AjaxController extends AbstractController
         if ($makeDefault) {
             // Success
             return $this->json([
-                'response' => $this->__f('Category "%s" was successfully made default.', ['%s' => $item['name']])
+                'response' => $this->trans('Category "%s" was successfully made default.', ['%s' => $item['name']])
             ]);
         }
 
         //unknown error
-        return $this->json($this->__('Error! Could not make this category default.'), Response::HTTP_BAD_REQUEST);
+        return $this->json($this->trans('Error! Could not make this category default.'), Response::HTTP_BAD_REQUEST);
     }
 
     /**
@@ -305,7 +305,7 @@ class AjaxController extends AbstractController
         AdminCategoryRepositoryInterface $adminCategoryRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $data = $request->request->get('admintabs');
@@ -332,7 +332,7 @@ class AjaxController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('Access forbidden.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('Access forbidden.'), Response::HTTP_FORBIDDEN);
         }
 
         $data = $request->request->get('modules');

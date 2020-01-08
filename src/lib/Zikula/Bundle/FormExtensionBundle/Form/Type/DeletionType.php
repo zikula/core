@@ -16,7 +16,7 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -40,14 +40,14 @@ class DeletionType extends AbstractType
     {
         $builder
             ->add('delete', SubmitType::class, [
-                'label' => $this->__('Delete'),
+                'label' => $this->trans('Delete'),
                 'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'validate' => false,
                 'icon' => 'fa-times',
                 'attr' => [

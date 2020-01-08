@@ -140,7 +140,7 @@ class AccessController extends AbstractController
                 }
             }
         } else {
-            throw new LogicException($this->__('Invalid authentication method.'));
+            throw new LogicException($this->trans('Invalid authentication method.'));
         }
         $user = null;
         if (isset($uid)) {
@@ -176,7 +176,7 @@ class AccessController extends AbstractController
         }
         // login failed
         // implement auto-register setting here. If true, do so and proceed. #2915
-        $this->addFlash('error', $this->__('Login failed.'));
+        $this->addFlash('error', $this->trans('Login failed.'));
         if (null !== $session) {
             $session->remove('authenticationMethod');
         }
@@ -247,7 +247,7 @@ class AccessController extends AbstractController
                 ]);
                 $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
             } else {
-                $this->addFlash('error', $this->__('Error! You have not been logged out.'));
+                $this->addFlash('error', $this->trans('Error! You have not been logged out.'));
             }
         }
 

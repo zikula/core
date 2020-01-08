@@ -58,10 +58,10 @@ class ConfigController extends AbstractController
                 $data = $form->getData();
                 $this->setVars($data);
                 $eventDispatcher->dispatch(new GenericEvent(null, [], $data), UserEvents::CONFIG_UPDATED);
-                $this->addFlash('status', $this->__('Done! Configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 
@@ -113,10 +113,10 @@ class ConfigController extends AbstractController
                 if (!in_array(true, $data['authenticationMethodsStatus'], true)) {
                     // do not allow all methods to be inactive.
                     $data['authenticationMethodsStatus']['native_uname'] = true;
-                    $this->addFlash('info', $this->__f('All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).', ['%m' => $allMethods['native_uname']->getDisplayName()]));
+                    $this->addFlash('info', $this->trans('All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).', ['%m' => $allMethods['native_uname']->getDisplayName()]));
                 }
                 $variableApi->set(VariableApi::CONFIG, 'authenticationMethodsStatus', $data['authenticationMethodsStatus']);
-                $this->addFlash('status', $this->__('Done! Configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
 
                 // clear cache to reflect the updated state (#3936)
                 $cacheClearer->clear('symfony');
@@ -125,7 +125,7 @@ class ConfigController extends AbstractController
                 return $this->redirectToRoute('zikulausersmodule_config_authenticationmethods');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 

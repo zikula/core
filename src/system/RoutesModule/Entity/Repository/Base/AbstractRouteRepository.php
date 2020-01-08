@@ -21,7 +21,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\CollectionFilterHelper;
@@ -113,7 +113,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         CurrentUserApiInterface $currentUserApi
     ): void {
         if (0 === $userId || 0 === $newUserId) {
-            throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($translator->trans('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -146,7 +146,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         CurrentUserApiInterface $currentUserApi
     ): void {
         if (0 === $userId || 0 === $newUserId) {
-            throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($translator->trans('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -178,7 +178,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         CurrentUserApiInterface $currentUserApi
     ): void {
         if (0 === $userId) {
-            throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($translator->trans('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -209,7 +209,7 @@ abstract class AbstractRouteRepository extends SortableRepository
         CurrentUserApiInterface $currentUserApi
     ): void {
         if (0 === $userId) {
-            throw new InvalidArgumentException($translator->__('Invalid user identifier received.'));
+            throw new InvalidArgumentException($translator->trans('Invalid user identifier received.'));
         }
     
         $qb = $this->getEntityManager()->createQueryBuilder();

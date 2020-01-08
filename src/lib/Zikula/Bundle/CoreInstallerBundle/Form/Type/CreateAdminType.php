@@ -30,7 +30,7 @@ class CreateAdminType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => $this->__('Admin User Name'),
+                'label' => $this->trans('Admin User Name'),
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -40,13 +40,13 @@ class CreateAdminType extends AbstractType
                     new Length(['min' => 5]),
                     new Regex([
                         'pattern' => '#' . UsersConstant::UNAME_VALIDATION_PATTERN . '#',
-                        'message' => $this->__('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
+                        'message' => $this->trans('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
                     ])
                 ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => $this->__('The password fields must match.'),
+                'invalid_message' => $this->trans('The password fields must match.'),
                 'options' => [
                     'label_attr' => [
                         'class' => 'col-md-3'
@@ -57,11 +57,11 @@ class CreateAdminType extends AbstractType
                     ]
                 ],
                 'required' => true,
-                'first_options'  => ['label' => $this->__('Admin Password')],
-                'second_options' => ['label' => $this->__('Repeat Password')]
+                'first_options'  => ['label' => $this->trans('Admin Password')],
+                'second_options' => ['label' => $this->trans('Repeat Password')]
             ])
             ->add('email', EmailType::class, [
-                'label' => $this->__('Admin Email Address'),
+                'label' => $this->trans('Admin Email Address'),
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],

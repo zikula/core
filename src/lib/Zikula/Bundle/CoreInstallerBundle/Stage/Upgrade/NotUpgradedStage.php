@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
 use Zikula\Common\Translator\Translator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;

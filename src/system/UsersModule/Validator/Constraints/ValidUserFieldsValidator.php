@@ -15,7 +15,7 @@ namespace Zikula\UsersModule\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Entity\Repository\UserRepository;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 

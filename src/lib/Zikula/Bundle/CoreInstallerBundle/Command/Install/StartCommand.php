@@ -25,7 +25,7 @@ use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\RequestContextType;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ParameterHelper;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class StartCommand extends AbstractCoreInstallerCommand

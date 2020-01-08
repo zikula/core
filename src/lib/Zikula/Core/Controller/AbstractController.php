@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Throwable;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\AbstractBundle;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -32,6 +32,11 @@ abstract class AbstractController extends BaseController
 {
     use TranslatorTrait;
     use ExtensionVariablesTrait;
+
+    /**
+     * @var AbstractBundle
+     */
+    private $bundle;
 
     /**
      * @var string
@@ -52,12 +57,12 @@ abstract class AbstractController extends BaseController
         VariableApiInterface $variableApi,
         TranslatorInterface $translator
     ) {
+        $this->bundle = $bundle;
         $this->name = $bundle->getName();
         $this->permissionApi = $permissionApi;
         $this->extensionName = $this->name; // for ExtensionVariablesTrait
         $this->variableApi = $variableApi; // for ExtensionVariablesTrait
         $this->setTranslator($translator);
-        $this->translator->setDomain($bundle->getTranslationDomain());
         $this->boot($bundle);
     }
 
@@ -99,7 +104,7 @@ abstract class AbstractController extends BaseController
      */
     protected function decorateTranslator(array $parameters): array
     {
-        $parameters['domain'] = $this->translator->getDomain();
+        $parameters['domain'] = $this->bundle->getTranslationDomain();
 
         return $parameters;
     }
@@ -110,7 +115,7 @@ abstract class AbstractController extends BaseController
      */
     public function createNotFoundException(string $message = 'Not Found.', Throwable $previous = null): NotFoundHttpException
     {
-        $message = $message ?? $this->__('Page not found');
+        $message = $message ?? $this->trans('Page not found');
 
         return new NotFoundHttpException($message, $previous);
     }

@@ -30,7 +30,7 @@ use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\MigrationHelper;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Upgrade\AjaxUpgraderStage;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class UpgradeCommand extends AbstractCoreInstallerCommand

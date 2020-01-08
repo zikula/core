@@ -17,7 +17,7 @@ use RuntimeException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\Event\ModuleStateEvent;

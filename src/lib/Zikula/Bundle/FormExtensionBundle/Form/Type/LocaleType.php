@@ -16,7 +16,7 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -49,7 +49,7 @@ class LocaleType extends AbstractType
             'choices' => $this->localeApi->getSupportedLocaleNames(),
             'label' => 'Locale',
             'required' => false,
-            'placeholder' => $this->__('All'),
+            'placeholder' => $this->trans('All'),
             'attr' => ['class' => 'locale-switcher-block']
         ]);
     }

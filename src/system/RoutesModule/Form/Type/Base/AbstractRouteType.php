@@ -24,7 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Form\Type\Field\ArrayType;
@@ -78,62 +78,62 @@ abstract class AbstractRouteType extends AbstractType
      */
     public function addEntityFields(FormBuilderInterface $builder, array $options = []): void
     {
-        
+
         $builder->add('bundle', TextType::class, [
-            'label' => $this->__('Bundle') . ':',
+            'label' => $this->trans('Bundle') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the bundle of the route.')
+                'title' => $this->trans('Enter the bundle of the route.')
             ],
             'required' => true,
         ]);
-        
+
         $builder->add('controller', TextType::class, [
-            'label' => $this->__('Controller') . ':',
+            'label' => $this->trans('Controller') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the controller of the route.')
+                'title' => $this->trans('Enter the controller of the route.')
             ],
             'required' => true,
         ]);
-        
+
         $builder->add('action', TextType::class, [
-            'label' => $this->__('Action') . ':',
+            'label' => $this->trans('Action') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the action of the route.')
+                'title' => $this->trans('Enter the action of the route.')
             ],
             'required' => true,
         ]);
-        
+
         $builder->add('path', TextType::class, [
-            'label' => $this->__('Path') . ':',
+            'label' => $this->trans('Path') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the path of the route.')
+                'title' => $this->trans('Enter the path of the route.')
             ],
             'required' => true,
         ]);
-        
+
         $builder->add('host', TextType::class, [
-            'label' => $this->__('Host') . ':',
+            'label' => $this->trans('Host') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the host of the route.')
+                'title' => $this->trans('Enter the host of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'schemes');
         $choices = [];
         $choiceAttributes = [];
@@ -142,14 +142,14 @@ abstract class AbstractRouteType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('schemes', MultiListType::class, [
-            'label' => $this->__('Schemes') . ':',
+            'label' => $this->trans('Schemes') . ':',
             'label_attr' => [
                 'class' => 'checkbox-custom'
             ],
             'empty_data' => [],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Choose the schemes.')
+                'title' => $this->trans('Choose the schemes.')
             ],
             'required' => true,
             'choices' => $choices,
@@ -157,7 +157,7 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => true
         ]);
-        
+
         $listEntries = $this->listHelper->getEntries('route', 'methods');
         $choices = [];
         $choiceAttributes = [];
@@ -166,14 +166,14 @@ abstract class AbstractRouteType extends AbstractType
             $choiceAttributes[$entry['text']] = ['title' => $entry['title']];
         }
         $builder->add('methods', MultiListType::class, [
-            'label' => $this->__('Methods') . ':',
+            'label' => $this->trans('Methods') . ':',
             'label_attr' => [
                 'class' => 'checkbox-custom'
             ],
             'empty_data' => [],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Choose the methods.')
+                'title' => $this->trans('Choose the methods.')
             ],
             'required' => true,
             'choices' => $choices,
@@ -181,104 +181,104 @@ abstract class AbstractRouteType extends AbstractType
             'multiple' => true,
             'expanded' => true
         ]);
-        
+
         $builder->add('prependBundlePrefix', CheckboxType::class, [
-            'label' => $this->__('Prepend bundle prefix') . ':',
+            'label' => $this->trans('Prepend bundle prefix') . ':',
             'label_attr' => [
                 'class' => 'switch-custom'
             ],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('prepend bundle prefix ?')
+                'title' => $this->trans('prepend bundle prefix ?')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('translatable', CheckboxType::class, [
-            'label' => $this->__('Translatable') . ':',
+            'label' => $this->trans('Translatable') . ':',
             'label_attr' => [
                 'class' => 'switch-custom'
             ],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('translatable ?')
+                'title' => $this->trans('translatable ?')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('translationPrefix', TextType::class, [
-            'label' => $this->__('Translation prefix') . ':',
+            'label' => $this->trans('Translation prefix') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the translation prefix of the route.')
+                'title' => $this->trans('Enter the translation prefix of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('defaults', ArrayType::class, [
-            'label' => $this->__('Defaults') . ':',
-            'help' => $this->__('Enter one entry per line.'),
+            'label' => $this->trans('Defaults') . ':',
+            'help' => $this->trans('Enter one entry per line.'),
             'empty_data' => [],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Enter the defaults of the route.')
+                'title' => $this->trans('Enter the defaults of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('requirements', ArrayType::class, [
-            'label' => $this->__('Requirements') . ':',
-            'help' => $this->__('Enter one entry per line.'),
+            'label' => $this->trans('Requirements') . ':',
+            'help' => $this->trans('Enter one entry per line.'),
             'empty_data' => [],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Enter the requirements of the route.')
+                'title' => $this->trans('Enter the requirements of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('options', ArrayType::class, [
-            'label' => $this->__('Options') . ':',
-            'help' => $this->__('Enter one entry per line.'),
+            'label' => $this->trans('Options') . ':',
+            'help' => $this->trans('Enter one entry per line.'),
             'empty_data' => [],
             'attr' => [
                 'class' => '',
-                'title' => $this->__('Enter the options of the route.')
+                'title' => $this->trans('Enter the options of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('condition', TextType::class, [
-            'label' => $this->__('Condition') . ':',
+            'label' => $this->trans('Condition') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the condition of the route.')
+                'title' => $this->trans('Enter the condition of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('description', TextType::class, [
-            'label' => $this->__('Description') . ':',
+            'label' => $this->trans('Description') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->__('Enter the description of the route.')
+                'title' => $this->trans('Enter the description of the route.')
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('sort', IntegerType::class, [
-            'label' => $this->__('Sort') . ':',
+            'label' => $this->trans('Sort') . ':',
             'empty_data' => 0,
             'attr' => [
                 'maxlength' => 11,
                 'class' => '',
-                'title' => $this->__('Enter the sort of the route.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->trans('Enter the sort of the route.') . ' ' . $this->trans('Only digits are allowed.')
             ],
             'required' => false,
         ]);
@@ -300,7 +300,7 @@ abstract class AbstractRouteType extends AbstractType
             if ('create' === $options['mode'] && 'submit' === $action['id']) {
                 // add additional button to submit item and return to create form
                 $builder->add('submitrepeat', SubmitType::class, [
-                    'label' => $this->__('Submit and repeat'),
+                    'label' => $this->trans('Submit and repeat'),
                     'icon' => 'fa-repeat',
                     'attr' => [
                         'class' => $action['buttonClass']
@@ -309,7 +309,7 @@ abstract class AbstractRouteType extends AbstractType
             }
         }
         $builder->add('reset', ResetType::class, [
-            'label' => $this->__('Reset'),
+            'label' => $this->trans('Reset'),
             'icon' => 'fa-sync',
             'attr' => [
                 'class' => 'btn btn-default',
@@ -317,7 +317,7 @@ abstract class AbstractRouteType extends AbstractType
             ]
         ]);
         $builder->add('cancel', SubmitType::class, [
-            'label' => $this->__('Cancel'),
+            'label' => $this->trans('Cancel'),
             'validate' => false,
             'icon' => 'fa-times',
             'attr' => [

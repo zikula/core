@@ -25,7 +25,7 @@ class RegexibleFormOptionsArrayType extends FormOptionsArrayType
 
         $builder
             ->add('constraints', TextType::class, [
-                'label' => $this->__('Regex validation string constraint'),
+                'label' => $this->trans('Regex validation string constraint'),
                 'required' => false
             ])
         ;

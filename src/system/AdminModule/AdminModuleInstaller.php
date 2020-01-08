@@ -89,33 +89,33 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
     {
         $records = [
             [
-                'name' => $this->__('System'),
-                'description' => $this->__('Core modules at the heart of operation of the site.'),
+                'name' => $this->trans('System'),
+                'description' => $this->trans('Core modules at the heart of operation of the site.'),
                 'sortorder' => 0
             ],
             [
-                'name' => $this->__('Layout'),
-                'description' => $this->__("Layout modules for controlling the site's look and feel."),
+                'name' => $this->trans('Layout'),
+                'description' => $this->trans("Layout modules for controlling the site's look and feel."),
                 'sortorder' => 1
             ],
             [
-                'name' => $this->__('Users'),
-                'description' => $this->__('Modules for controlling user membership, access rights and profiles.'),
+                'name' => $this->trans('Users'),
+                'description' => $this->trans('Modules for controlling user membership, access rights and profiles.'),
                 'sortorder' => 2
             ],
             [
-                'name' => $this->__('Content'),
-                'description' => $this->__('Modules for providing content to your users.'),
+                'name' => $this->trans('Content'),
+                'description' => $this->trans('Modules for providing content to your users.'),
                 'sortorder' => 3
             ],
             [
-                'name' => $this->__('Uncategorised'),
-                'description' => $this->__('Newly-installed or uncategorized modules.'),
+                'name' => $this->trans('Uncategorised'),
+                'description' => $this->trans('Newly-installed or uncategorized modules.'),
                 'sortorder' => 4
             ],
             [
-                'name' => $this->__('Security'),
-                'description' => $this->__('Modules for managing the site\'s security.'),
+                'name' => $this->trans('Security'),
+                'description' => $this->trans('Modules for managing the site\'s security.'),
                 'sortorder' => 5
             ]
         ];

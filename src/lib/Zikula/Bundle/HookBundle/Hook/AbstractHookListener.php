@@ -15,7 +15,7 @@ namespace Zikula\Bundle\HookBundle\Hook;
 
 use ReflectionObject;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**

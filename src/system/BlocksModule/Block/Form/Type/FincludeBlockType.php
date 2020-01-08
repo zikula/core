@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Zikula\BlocksModule\Block\FincludeBlock;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class FincludeBlockType extends AbstractType
@@ -50,7 +50,7 @@ class FincludeBlockType extends AbstractType
                         'mimeTypes' => ['text/html', 'text/plain'],
                     ])
                 ],
-                'label' => $this->__('File Path'),
+                'label' => $this->trans('File Path'),
                 'attr' => ['placeholder' => '/full/path/to/file.txt']
             ])
             ->add('typo', ChoiceType::class, [
@@ -59,7 +59,7 @@ class FincludeBlockType extends AbstractType
                     'Text' => FincludeBlock::FILETYPE_TEXT,
                     'PHP' => FincludeBlock::FILETYPE_PHP
                 ],
-                'label' => $this->__('File type')
+                'label' => $this->trans('File type')
             ])
         ;
     }

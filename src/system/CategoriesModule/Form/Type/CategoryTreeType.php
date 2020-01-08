@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -81,7 +81,7 @@ class CategoryTreeType extends AbstractType
                 $isMultiple = $options['multiple'];
                 $translator = $options['translator'];
 
-                $label = $isMultiple ? $translator->__('Categories') : $translator->__('Category');
+                $label = $isMultiple ? $translator->trans('Categories') : $translator->trans('Category');
             }
 
             return $label;
@@ -92,7 +92,7 @@ class CategoryTreeType extends AbstractType
                     $isMultiple = $options['multiple'];
                     $translator = $options['translator'];
 
-                    $placeholder = $isMultiple ? $translator->__('Choose categories') : $translator->__('Choose a category');
+                    $placeholder = $isMultiple ? $translator->trans('Choose categories') : $translator->trans('Choose a category');
                 }
             }
 

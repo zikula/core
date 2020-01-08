@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class FormOptionsArrayType extends AbstractType
@@ -38,12 +38,12 @@ class FormOptionsArrayType extends AbstractType
     {
         $builder
             ->add('required', CheckboxType::class, [
-                'label' => $this->__('Required'),
+                'label' => $this->trans('Required'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('help', TextType::class, [
-                'label' => $this->__('Help text'),
+                'label' => $this->trans('Help text'),
                 'required' => false
             ])
         ;

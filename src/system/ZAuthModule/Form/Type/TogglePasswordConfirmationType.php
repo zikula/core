@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class TogglePasswordConfirmationType extends AbstractType
@@ -41,13 +41,13 @@ class TogglePasswordConfirmationType extends AbstractType
             ->add('uid', HiddenType::class)
             ->add('toggle', SubmitType::class, [
                 'label' => $options['mustChangePass']
-                    ? $this->__('Yes, cancel the change of password')
-                    : $this->__('Yes, force the change of password'),
+                    ? $this->trans('Yes, cancel the change of password')
+                    : $this->trans('Yes, force the change of password'),
                 'icon' => $options['mustChangePass'] ? 'fa-times' : 'fa-sync',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

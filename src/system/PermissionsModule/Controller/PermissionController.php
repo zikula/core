@@ -55,7 +55,7 @@ class PermissionController extends AbstractController
         $groups = $groupsRepository->getGroupNamesById();
         $permissions = $permissionRepository->getFilteredPermissions();
         $components = $permissionRepository->getAllComponents();
-        $components = [$this->__('All components') => '-1'] + $components;
+        $components = [$this->trans('All components') => '-1'] + $components;
         $permissionLevels = $permissionApi->accessLevelNames();
 
         $filterForm = $this->createForm(FilterListType::class, [], [
@@ -188,7 +188,7 @@ class PermissionController extends AbstractController
             && '.*' === $permissionEntity->getComponent()
             && '.*' === $permissionEntity->getInstance()
         ) {
-            throw new FatalErrorException($this->__('Notice: You cannot delete the main administration permission rule.'));
+            throw new FatalErrorException($this->trans('Notice: You cannot delete the main administration permission rule.'));
         }
 
         $this->getDoctrine()->getManager()->remove($permissionEntity);
@@ -224,7 +224,7 @@ class PermissionController extends AbstractController
         $permissionCheckForm->handleRequest($request);
         $data = $permissionCheckForm->getData();
 
-        $result = $this->__('Permission check result:') . ' ';
+        $result = $this->trans('Permission check result:') . ' ';
         if (!empty($data['user'])) {
             $user = $userRepository->findOneBy(['uname' => $data['user']]);
             $uid = isset($user) ? $user->getUid() : Constant::USER_ID_ANONYMOUS;
@@ -233,17 +233,17 @@ class PermissionController extends AbstractController
         }
 
         if (false === $uid) {
-            $result .= '<span class="text-danger">' . $this->__('unknown user.') . '</span>';
+            $result .= '<span class="text-danger">' . $this->trans('unknown user.') . '</span>';
         } else {
             $granted = $this->hasPermission($data['component'], $data['instance'], $data['level'], $uid);
 
             $result .= '<span class="' . ($granted ? 'text-success' : 'text-danger') . '">';
-            $result .= (0 === $uid) ? $this->__('unregistered user') : $data['user'];
+            $result .= (0 === $uid) ? $this->trans('unregistered user') : $data['user'];
             $result .= ': ';
             if ($granted) {
-                $result .= $this->__('permission granted.');
+                $result .= $this->trans('permission granted.');
             } else {
-                $result .= $this->__('permission not granted.');
+                $result .= $this->trans('permission not granted.');
             }
             $result .= '</span>';
         }

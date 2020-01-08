@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
@@ -55,7 +55,7 @@ class EditGroupType extends AbstractType
         $builder
             ->add('gid', HiddenType::class)
             ->add('name', TextType::class, [
-                'label' => $this->__('Name'),
+                'label' => $this->trans('Name'),
                 'attr' => [
                     'maxlength' => 30
                 ],
@@ -64,19 +64,19 @@ class EditGroupType extends AbstractType
                 ]
             ])
             ->add('gtype', ChoiceType::class, [
-                'label' => $this->__('Type'),
+                'label' => $this->trans('Type'),
                 'choices' => $typeChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', ChoiceType::class, [
-                'label' => $this->__('State'),
+                'label' => $this->trans('State'),
                 'choices' => $stateChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('nbumax', IntegerType::class, [
-                'label' => $this->__('Maximum membership'),
+                'label' => $this->trans('Maximum membership'),
                 'attr' => [
                     'maxlength' => 10,
                     'min' => 0
@@ -84,17 +84,17 @@ class EditGroupType extends AbstractType
                 'required' => false
             ])
             ->add('description', TextareaType::class, [
-                'label' => $this->__('Description'),
+                'label' => $this->trans('Description'),
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

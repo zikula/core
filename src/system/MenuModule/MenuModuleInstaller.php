@@ -80,7 +80,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
 
         $home = new MenuItemEntity();
         $home->setParent($root);
-        $home->setTitle($this->__('Home'));
+        $home->setTitle($this->trans('Home'));
         $home->setOptions([
             'route' => 'home',
             'attributes' => [
@@ -90,7 +90,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
 
         $search = new MenuItemEntity();
         $search->setParent($root);
-        $search->setTitle($this->__('Site search'));
+        $search->setTitle($this->trans('Site search'));
         $search->setOptions([
             'route' => 'zikulasearchmodule_search_execute',
             'attributes' => [

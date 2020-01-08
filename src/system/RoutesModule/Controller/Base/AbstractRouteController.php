@@ -40,7 +40,7 @@ use Zikula\RoutesModule\Helper\WorkflowHelper;
  */
 abstract class AbstractRouteController extends AbstractController
 {
-    
+
     /**
      * This is the default action handling the main area called without defining arguments.
      *
@@ -57,15 +57,15 @@ abstract class AbstractRouteController extends AbstractController
         if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         return $this->redirectToRoute('zikularoutesmodule_route_' . $templateParameters['routeArea'] . 'view');
     }
-    
-    
+
+
     /**
      * This action provides an item list overview.
      *
@@ -90,18 +90,18 @@ abstract class AbstractRouteController extends AbstractController
         if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
         $request->query->set('pos', $pos);
-        
+
         $routeName = 'zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'view';
         $sortableColumns = new SortableColumns($router, $routeName, 'sort', 'sortdir');
-        
+
         $sortableColumns->addColumns([
             new Column('bundle'),
             new Column('controller'),
@@ -121,25 +121,25 @@ abstract class AbstractRouteController extends AbstractController
             new Column('updatedBy'),
             new Column('updatedDate'),
         ]);
-        
+
         $templateParameters = $controllerHelper->processViewActionParameters(
             $objectType,
             $sortableColumns,
             $templateParameters
         );
-        
+
         // filter by permissions
         $templateParameters['items'] = $permissionHelper->filterCollection(
             $objectType,
             $templateParameters['items'],
             $permLevel
         );
-        
+
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'view', $templateParameters);
     }
-    
-    
+
+
     /**
      * This action provides a item detail view.
      *
@@ -160,33 +160,33 @@ abstract class AbstractRouteController extends AbstractController
             $route = $entityFactory->getRepository('route')->selectById($id);
         }
         if (null === $route) {
-            throw new NotFoundHttpException($this->__('No such route found.'));
+            throw new NotFoundHttpException($this->trans('No such route found.'));
         }
-        
+
         $objectType = 'route';
         // permission check
         $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_READ;
         if (!$permissionHelper->hasEntityPermission($route, $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : '',
             $objectType => $route
         ];
-        
+
         $templateParameters = $controllerHelper->processDisplayActionParameters(
             $objectType,
             $templateParameters
         );
-        
+
         // fetch and return the appropriate template
         $response = $viewHelper->processTemplate($objectType, 'display', $templateParameters);
-        
+
         return $response;
     }
-    
-    
+
+
     /**
      * This action provides a handling of edit requests.
      *
@@ -208,26 +208,26 @@ abstract class AbstractRouteController extends AbstractController
         if (!$permissionHelper->hasComponentPermission($objectType, $permLevel)) {
             throw new AccessDeniedException();
         }
-        
+
         $templateParameters = [
             'routeArea' => $isAdmin ? 'admin' : ''
         ];
-        
+
         $templateParameters = $controllerHelper->processEditActionParameters($objectType, $templateParameters);
-        
+
         // delegate form processing to the form handler
         $result = $formHandler->processForm($templateParameters);
         if ($result instanceof RedirectResponse) {
             return $result;
         }
-        
+
         $templateParameters = $formHandler->getTemplateParameters();
-        
+
         // fetch and return the appropriate template
         return $viewHelper->processTemplate($objectType, 'edit', $templateParameters);
     }
-    
-    
+
+
     /**
      * Process status changes for multiple items.
      *
@@ -245,19 +245,19 @@ abstract class AbstractRouteController extends AbstractController
         bool $isAdmin = false
     ): RedirectResponse {
         $objectType = 'route';
-        
+
         // Get parameters
         $action = $request->request->get('action');
         $items = $request->request->get('items');
         if (!is_array($items) || !count($items)) {
             return $this->redirectToRoute('zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'index');
         }
-        
+
         $action = strtolower($action);
-        
+
         $repository = $entityFactory->getRepository($objectType);
         $userName = $currentUserApi->get('uname');
-        
+
         // process each item
         foreach ($items as $itemId) {
             // check if item exists, and get record instance
@@ -265,7 +265,7 @@ abstract class AbstractRouteController extends AbstractController
             if (null === $entity) {
                 continue;
             }
-        
+
             // check if $action can be applied to this entity (may depend on it's current workflow state)
             $allowedActions = $workflowHelper->getActionsForObject($entity);
             $actionIds = array_keys($allowedActions);
@@ -273,7 +273,7 @@ abstract class AbstractRouteController extends AbstractController
                 // action not allowed, skip this object
                 continue;
             }
-        
+
             $success = false;
             try {
                 // execute the workflow action
@@ -281,7 +281,7 @@ abstract class AbstractRouteController extends AbstractController
             } catch (Exception $exception) {
                 $this->addFlash(
                     'error',
-                    $this->__f(
+                    $this->trans(
                         'Sorry, but an error occured during the %action% action.',
                         ['%action%' => $action]
                     ) . '  ' . $exception->getMessage()
@@ -299,13 +299,13 @@ abstract class AbstractRouteController extends AbstractController
                     ]
                 );
             }
-        
+
             if (!$success) {
                 continue;
             }
-        
+
             if ('delete' === $action) {
-                $this->addFlash('status', $this->__('Done! Item deleted.'));
+                $this->addFlash('status', $this->trans('Done! Item deleted.'));
                 $logger->notice(
                     '{app}: User {user} deleted the {entity} with id {id}.',
                     [
@@ -316,7 +316,7 @@ abstract class AbstractRouteController extends AbstractController
                     ]
                 );
             } else {
-                $this->addFlash('status', $this->__('Done! Item updated.'));
+                $this->addFlash('status', $this->trans('Done! Item updated.'));
                 $logger->notice(
                     '{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.',
                     [
@@ -329,8 +329,8 @@ abstract class AbstractRouteController extends AbstractController
                 );
             }
         }
-        
+
         return $this->redirectToRoute('zikularoutesmodule_route_' . ($isAdmin ? 'admin' : '') . 'index');
     }
-    
+
 }

@@ -84,10 +84,10 @@ class ConfigController extends AbstractController
                 }
                 unset($formData['plugins']);
                 $this->setVars($formData);
-                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 

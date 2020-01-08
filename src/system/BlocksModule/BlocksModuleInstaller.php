@@ -84,7 +84,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                 }
 
                 // check if request is available (#2073)
-                $templateWarning = $this->__('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
+                $templateWarning = $this->trans('Warning: Block template locations modified, you may need to fix your template overrides if you have any.');
                 if (
                     is_object($this->container->get('request'))
                     && method_exists($this->container->get('request'), 'getSession')
@@ -169,7 +169,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
                         'Locale',
                         'a:0:{}'
                     ]);
-                    $this->addFlash('success', $this->__('All instances of LangBlock have been converted to LocaleBlock.'));
+                    $this->addFlash('success', $this->trans('All instances of LangBlock have been converted to LocaleBlock.'));
                 }
                 $this->entityManager->getConnection()->executeQuery("UPDATE group_perms SET component = REPLACE(component, 'Languageblock', 'LocaleBlock') WHERE component LIKE 'Languageblock%'");
             case '3.9.7':
@@ -206,14 +206,14 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
     {
         // create the default block positions - left, right and center for the traditional 3 column layout
         $positions = [
-            'left' => $this->__('Left blocks'),
-            'right' => $this->__('Right blocks'),
-            'center' => $this->__('Center blocks'),
-            'search' => $this->__('Search block'),
-            'header' => $this->__('Header block'),
-            'footer' => $this->__('Footer block'),
-            'topnav' => $this->__('Top navigation block'),
-            'bottomnav' => $this->__('Bottom navigation block')
+            'left' => $this->trans('Left blocks'),
+            'right' => $this->trans('Right blocks'),
+            'center' => $this->trans('Center blocks'),
+            'search' => $this->trans('Search block'),
+            'header' => $this->trans('Header block'),
+            'footer' => $this->trans('Footer block'),
+            'topnav' => $this->trans('Top navigation block'),
+            'bottomnav' => $this->trans('Bottom navigation block')
         ];
         foreach ($positions as $name => $description) {
             $positions[$name] = new BlockPositionEntity();
@@ -223,7 +223,7 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
         }
         $this->entityManager->flush();
 
-        $hellomessage = $this->__('<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework built on top of Symfony.</p><p>With Zikula you get:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="https://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site\'s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site\'s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
+        $hellomessage = $this->trans('<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework built on top of Symfony.</p><p>With Zikula you get:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="https://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site\'s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site\'s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>');
 
         $blocks = [];
         $extensionRepo = $this->entityManager->getRepository(ExtensionEntity::class);
@@ -235,8 +235,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'blocktype' => 'Search',
             'language' => '',
             'module' => $searchModuleEntity,
-            'title' => $this->__('Search box'),
-            'description' => $this->__('Search block'),
+            'title' => $this->trans('Search box'),
+            'description' => $this->trans('Search block'),
             'properties' => [
                 'displaySearchBtn' => true,
                 'active' => ['ZikulaUsersModule' => 1]
@@ -248,8 +248,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'blocktype' => 'Html',
             'language' => '',
             'module' => $blocksModuleEntity,
-            'title' => $this->__('This site is powered by Zikula!'),
-            'description' => $this->__('HTML block'),
+            'title' => $this->trans('This site is powered by Zikula!'),
+            'description' => $this->trans('HTML block'),
             'properties' => ['content' => $hellomessage],
             'position' => $positions['center']
         ];
@@ -258,8 +258,8 @@ class BlocksModuleInstaller extends AbstractExtensionInstaller
             'blocktype' => 'Login',
             'language' => '',
             'module' => $usersModuleEntity,
-            'title' => $this->__('User log-in'),
-            'description' => $this->__('Login block'),
+            'title' => $this->trans('User log-in'),
+            'description' => $this->trans('Login block'),
             'position' => $positions['topnav'],
             'order' => 1,
             'filters' => [[

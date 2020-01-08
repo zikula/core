@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class BlockPositionType extends AbstractType
@@ -42,18 +42,18 @@ class BlockPositionType extends AbstractType
         $builder
             ->add('pid', HiddenType::class)
             ->add('name', TextType::class, [
-                'help' => $this->__('Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).')
+                'help' => $this->trans('Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).')
             ])
             ->add('description', TextType::class)
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

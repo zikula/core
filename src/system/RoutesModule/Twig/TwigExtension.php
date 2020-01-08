@@ -100,13 +100,13 @@ class TwigExtension extends AbstractTwigExtension
         $path = preg_replace_callback('#{(.*?)}#', function ($matches) use ($defaults, $requirements) {
             $title = '';
             if (isset($defaults[$matches[1]])) {
-                $title .= $this->__f('Default: %s', ['%s' => htmlspecialchars($defaults[$matches[1]])]);
+                $title .= $this->trans('Default: %s', ['%s' => htmlspecialchars($defaults[$matches[1]])]);
             }
             if (isset($requirements[$matches[1]])) {
                 if ('' !== $title) {
                     $title .= ' | ';
                 }
-                $title .= $this->__f('Requirement: %s', ['%s' => htmlspecialchars($requirements[$matches[1]])]);
+                $title .= $this->trans('Requirement: %s', ['%s' => htmlspecialchars($requirements[$matches[1]])]);
             }
             if ('' === $title) {
                 return $matches[0];

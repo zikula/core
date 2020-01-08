@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\GroupsModule\Helper;
 
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -67,9 +67,9 @@ class CommonHelper
 
         if (!isset($gtypeLabels)) {
             $gtypeLabels = [
-                self::GTYPE_CORE => $this->__('Core'),
-                self::GTYPE_PUBLIC => $this->__('Public'),
-                self::GTYPE_PRIVATE => $this->__('Private')
+                self::GTYPE_CORE => $this->trans('Core'),
+                self::GTYPE_PUBLIC => $this->trans('Public'),
+                self::GTYPE_PRIVATE => $this->trans('Private')
             ];
         }
 
@@ -85,8 +85,8 @@ class CommonHelper
 
         if (!isset($stateLabels)) {
             $stateLabels = [
-                self::STATE_CLOSED => $this->__('Closed'),
-                self::STATE_OPEN => $this->__('Open')
+                self::STATE_CLOSED => $this->trans('Closed'),
+                self::STATE_OPEN => $this->trans('Open')
             ];
         }
 

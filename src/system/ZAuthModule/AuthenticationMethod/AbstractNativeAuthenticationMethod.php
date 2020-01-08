@@ -16,7 +16,7 @@ namespace Zikula\ZAuthModule\AuthenticationMethod;
 use Exception;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\AuthenticationMethodInterface\NonReEntrantAuthenticationMethodInterface;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;

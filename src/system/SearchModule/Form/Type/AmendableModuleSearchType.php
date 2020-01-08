@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
@@ -56,7 +56,7 @@ class AmendableModuleSearchType extends AbstractType
         }
 
         $builder->add('active', CheckboxType::class, [
-            'label' => $this->__('Active'),
+            'label' => $this->trans('Active'),
             'label_attr' => ['class' => 'switch-custom'],
             'required' => false,
             'data' => $options['active']

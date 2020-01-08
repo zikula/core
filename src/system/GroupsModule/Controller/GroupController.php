@@ -135,10 +135,10 @@ class GroupController extends AbstractController
                 $this->getDoctrine()->getManager()->persist($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
                 $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_CREATE);
-                $this->addFlash('status', $this->__('Done! Created the group.'));
+                $this->addFlash('status', $this->trans('Done! Created the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
@@ -176,10 +176,10 @@ class GroupController extends AbstractController
                 $this->getDoctrine()->getManager()->persist($groupEntity); // this isn't technically required
                 $this->getDoctrine()->getManager()->flush();
                 $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_UPDATE);
-                $this->addFlash('status', $this->__('Done! Updated the group.'));
+                $this->addFlash('status', $this->trans('Done! Updated the group.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
@@ -212,14 +212,14 @@ class GroupController extends AbstractController
         // get the user default group - we do not allow its deletion
         $defaultGroup = $this->getVar('defaultgroup', 1);
         if ($groupEntity->getGid() === $defaultGroup) {
-            $this->addFlash('error', $this->__('Error! You cannot delete the default user group.'));
+            $this->addFlash('error', $this->trans('Error! You cannot delete the default user group.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
 
         // get the primary admin group - we do not allow its deletion
         if (Constant::GROUP_ID_ADMIN === $groupEntity->getGid()) {
-            $this->addFlash('error', $this->__('Error! You cannot delete the primary administration group.'));
+            $this->addFlash('error', $this->trans('Error! You cannot delete the primary administration group.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
         }
@@ -233,9 +233,9 @@ class GroupController extends AbstractController
                 $this->getDoctrine()->getManager()->remove($groupEntity);
                 $this->getDoctrine()->getManager()->flush();
                 $eventDispatcher->dispatch(new GenericEvent($groupEntity), GroupEvents::GROUP_DELETE);
-                $this->addFlash('status', $this->__('Done! Group deleted.'));
+                $this->addFlash('status', $this->trans('Done! Group deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');

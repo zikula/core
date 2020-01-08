@@ -16,7 +16,7 @@ namespace Zikula\ExtensionsModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 
 class ExtensionServicesListener implements EventSubscriberInterface

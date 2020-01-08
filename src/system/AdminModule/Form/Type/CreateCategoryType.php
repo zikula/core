@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -44,24 +44,24 @@ class CreateCategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->__('Name'),
+                'label' => $this->trans('Name'),
                 'attr' => [
                     'maxlength' => 50
                 ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => $this->__('Description'),
+                'label' => $this->trans('Description'),
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

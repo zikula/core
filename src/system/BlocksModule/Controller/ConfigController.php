@@ -45,19 +45,19 @@ class ConfigController extends AbstractController
 
         $form = $this->createFormBuilder($this->getVars())
             ->add('collapseable', CheckboxType::class, [
-                'label' => $this->__('Enable block collapse icons'),
+                'label' => $this->trans('Enable block collapse icons'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -69,10 +69,10 @@ class ConfigController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
-                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

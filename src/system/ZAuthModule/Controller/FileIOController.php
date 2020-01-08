@@ -55,13 +55,13 @@ class FileIOController extends AbstractController
                 $data = $form->getData();
                 $importErrors = $ioHelper->importUsersFromFile($data['file'], $data['delimiter']);
                 if (empty($importErrors)) {
-                    $this->addFlash('status', $this->__('Done! Users imported.'));
+                    $this->addFlash('status', $this->trans('Done! Users imported.'));
                 } else {
                     $this->addFlash('error', $importErrors);
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             $this->redirectToRoute('zikulazauthmodule_useradministration_list');

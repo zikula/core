@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class EitherLoginType extends AbstractType
@@ -40,20 +40,20 @@ class EitherLoginType extends AbstractType
     {
         $builder
             ->add('either', TextType::class, [
-                'label' => $this->__('User name or Email'),
+                'label' => $this->trans('User name or Email'),
                 'input_group' => ['left' => '<i class="fa fa-fw fa-sign-in-alt"></i>']
             ])
             ->add('pass', PasswordType::class, [
-                'label' => $this->__('Password'),
+                'label' => $this->trans('Password'),
                 'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
-                'label' => $this->__('Remember me'),
+                'label' => $this->trans('Remember me'),
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Login'),
+                'label' => $this->trans('Login'),
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success']
             ])

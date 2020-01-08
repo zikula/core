@@ -82,13 +82,13 @@ class ConfigController extends AbstractController
                 $variableApi->set('ZikulaPermissionsModule', 'rowedit', $rowEdit);
 
                 if (true === $error) {
-                    $this->addFlash('error', $this->__('Error! Could not save configuration: unknown permission rule ID.'));
+                    $this->addFlash('error', $this->trans('Error! Could not save configuration: unknown permission rule ID.'));
                 } else {
-                    $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                    $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulapermissionsmodule_permission_list');

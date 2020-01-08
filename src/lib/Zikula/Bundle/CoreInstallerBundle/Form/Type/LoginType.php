@@ -26,7 +26,7 @@ class LoginType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => $this->__('User Name'),
+                'label' => $this->trans('User Name'),
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -36,7 +36,7 @@ class LoginType extends AbstractType
                 ]
             ])
             ->add('password', PasswordType::class, [
-                'label' => $this->__('Password'),
+                'label' => $this->trans('Password'),
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],

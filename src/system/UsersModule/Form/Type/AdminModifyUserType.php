@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\UsersModule\Constant;
@@ -42,11 +42,11 @@ class AdminModifyUserType extends AbstractType
         $builder
             ->add('activated', ChoiceType::class, [
                 'choices' => [
-                    $this->__('Active') => Constant::ACTIVATED_ACTIVE,
-                    $this->__('Inactive') => Constant::ACTIVATED_INACTIVE,
-                    $this->__('Pending') => Constant::ACTIVATED_PENDING_REG
+                    $this->trans('Active') => Constant::ACTIVATED_ACTIVE,
+                    $this->trans('Inactive') => Constant::ACTIVATED_INACTIVE,
+                    $this->trans('Pending') => Constant::ACTIVATED_PENDING_REG
                 ],
-                'label' => $this->__('User status')
+                'label' => $this->trans('User status')
             ])
             ->add('groups', EntityType::class, [
                 'class' => GroupEntity::class,
@@ -55,12 +55,12 @@ class AdminModifyUserType extends AbstractType
                 'multiple' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

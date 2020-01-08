@@ -16,7 +16,7 @@ namespace Zikula\CategoriesModule\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UniqueNameForPositionValidator extends ConstraintValidator
 {

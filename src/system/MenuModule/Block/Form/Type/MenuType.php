@@ -19,7 +19,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class MenuType extends AbstractType
@@ -40,15 +40,15 @@ class MenuType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->__('Menu name'),
+                'label' => $this->trans('Menu name'),
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('options', TextType::class, [
                 'required' => false,
-                'invalid_message' => $this->__('Could not json_decode the string you entered.'),
-                'alert' => [$this->__('This must be a json_encoded string of option key-value pairs.') => 'warning']
+                'invalid_message' => $this->trans('Could not json_decode the string you entered.'),
+                'alert' => [$this->trans('This must be a json_encoded string of option key-value pairs.') => 'warning']
             ])
         ;
         $builder->get('options')
@@ -62,7 +62,7 @@ class MenuType extends AbstractType
                     }
                     $json = str_replace("'", '"', $text);
                     if (null === json_decode($json, true)) {
-                        throw new TransformationFailedException($this->__('Could not json_decode the string you entered.'));
+                        throw new TransformationFailedException($this->trans('Could not json_decode the string you entered.'));
                     }
 
                     return $json;

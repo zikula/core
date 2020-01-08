@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class PermissionCheckType extends AbstractType
@@ -40,31 +40,31 @@ class PermissionCheckType extends AbstractType
     {
         $builder
             ->add('user', TextType::class, [
-                'label' => $this->__('User name'),
+                'label' => $this->trans('User name'),
                 'required' => false
             ])
             ->add('component', TextType::class, [
-                'label' => $this->__('Component to check'),
+                'label' => $this->trans('Component to check'),
                 'data' => '.*'
             ])
             ->add('instance', TextType::class, [
-                'label' => $this->__('Instance to check'),
+                'label' => $this->trans('Instance to check'),
                 'data' => '.*'
             ])
             ->add('level', ChoiceType::class, [
-                'label' => $this->__('Permission level'),
+                'label' => $this->trans('Permission level'),
                 'choices' => array_flip($options['permissionLevels']),
                 'data' => ACCESS_READ
             ])
             ->add('check', ButtonType::class, [
-                'label' => $this->__('Check permission'),
+                'label' => $this->trans('Check permission'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]
             ])
             ->add('reset', ButtonType::class, [
-                'label' => $this->__('Reset'),
+                'label' => $this->trans('Reset'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-warning'

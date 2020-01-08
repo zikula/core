@@ -24,7 +24,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 
@@ -48,12 +48,12 @@ class LostPasswordType extends AbstractType
             $builder
                 ->add('uname', TextType::class, [
                     'required' => false,
-                    'label' => $this->__('User name'),
+                    'label' => $this->trans('User name'),
                     'input_group' => ['left' => '<i class="fa fa-user"></i>'],
                 ])
                 ->add('email', EmailType::class, [
                     'required' => false,
-                    'label' => $this->__('Email Address'),
+                    'label' => $this->trans('Email Address'),
                     'input_group' => ['left' => '<i class="fa fa-at"></i>'],
                 ])
             ;
@@ -62,14 +62,14 @@ class LostPasswordType extends AbstractType
                 ->add('pass', RepeatedType::class, [
                     'type' => PasswordType::class,
                     'first_options' => [
-                        'label' => $this->__('Create new password'),
+                        'label' => $this->trans('Create new password'),
                         'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                     ],
                     'second_options' => [
-                        'label' => $this->__('Repeat new password'),
+                        'label' => $this->trans('Repeat new password'),
                         'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                     ],
-                    'invalid_message' => $this->__('The passwords must match!'),
+                    'invalid_message' => $this->trans('The passwords must match!'),
                     'constraints' => [
                         new NotNull(),
                         new ValidPassword()
@@ -79,7 +79,7 @@ class LostPasswordType extends AbstractType
         }
         $builder
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Submit'),
+                'label' => $this->trans('Submit'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])

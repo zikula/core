@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
@@ -28,12 +28,12 @@ abstract class AbstractEntityDisplayHelper
      * @var TranslatorInterface
      */
     protected $translator;
-    
+
     /**
      * @var ListEntriesHelper Helper service for managing list entries
      */
     protected $listEntriesHelper;
-    
+
     public function __construct(
         TranslatorInterface $translator,
         ListEntriesHelper $listEntriesHelper
@@ -41,7 +41,7 @@ abstract class AbstractEntityDisplayHelper
         $this->translator = $translator;
         $this->listEntriesHelper = $listEntriesHelper;
     }
-    
+
     /**
      * Returns the formatted title for a given entity.
      */
@@ -50,21 +50,21 @@ abstract class AbstractEntityDisplayHelper
         if ($entity instanceof RouteEntity) {
             return $this->formatRoute($entity);
         }
-    
+
         return '';
     }
-    
+
     /**
      * Returns the formatted title for a given entity.
      */
     protected function formatRoute(RouteEntity $entity): string
     {
-        return $this->translator->__f('%path% (%sort%)', [
+        return $this->translator->trans('%path% (%sort%)', [
             '%path%' => $entity->getPath(),
             '%sort%' => $entity->getSort()
         ]);
     }
-    
+
     /**
      * Returns name of the field used as title / name for entities of this repository.
      */
@@ -73,10 +73,10 @@ abstract class AbstractEntityDisplayHelper
         if ('route' === $objectType) {
             return 'bundle';
         }
-    
+
         return '';
     }
-    
+
     /**
      * Returns name of the field used for describing entities of this repository.
      */
@@ -85,10 +85,10 @@ abstract class AbstractEntityDisplayHelper
         if ('route' === $objectType) {
             return 'controller';
         }
-    
+
         return '';
     }
-    
+
     /**
      * Returns name of the date(time) field to be used for representing the start
      * of this object. Used for providing meta data to the tag module.
@@ -98,7 +98,7 @@ abstract class AbstractEntityDisplayHelper
         if ('route' === $objectType) {
             return 'createdDate';
         }
-    
+
         return '';
     }
 }

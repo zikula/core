@@ -49,10 +49,10 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
 
         // Multilingual support
         foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $lang) {
-            $this->setSystemVar('sitename_' . $lang, $this->__('Site name'));
-            $this->setSystemVar('slogan_' . $lang, $this->__('Site description'));
-            $this->setSystemVar('defaultpagetitle_' . $lang, $this->__('Site name'));
-            $this->setSystemVar('defaultmetadescription_' . $lang, $this->__('Site description'));
+            $this->setSystemVar('sitename_' . $lang, $this->trans('Site name'));
+            $this->setSystemVar('slogan_' . $lang, $this->trans('Site description'));
+            $this->setSystemVar('defaultpagetitle_' . $lang, $this->trans('Site name'));
+            $this->setSystemVar('defaultmetadescription_' . $lang, $this->trans('Site description'));
         }
 
         $this->setSystemVar(SettingsConstant::SYSTEM_VAR_PROFILE_MODULE);
@@ -60,9 +60,9 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('languageurl', 0);
         $this->setSystemVar('ajaxtimeout', 5000);
         //! this is a comma-separated list of special characters to search for in permalinks
-        $this->setSystemVar('permasearch', $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+        $this->setSystemVar('permasearch', $this->trans('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
         //! this is a comma-separated list of special characters to replace in permalinks
-        $this->setSystemVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+        $this->setSystemVar('permareplace', $this->trans('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
 
         $locale = $this->container->getParameter('locale');
         $this->setSystemVar('locale', $locale);
@@ -83,11 +83,11 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
             case '2.9.8':
                 $permasearch = $this->getSystemVar('permasearch');
                 if (empty($permasearch)) {
-                    $this->setSystemVar('permasearch', $this->__('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
+                    $this->setSystemVar('permasearch', $this->trans('À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü'));
                 }
                 $permareplace = $this->getSystemVar('permareplace');
                 if (empty($permareplace)) {
-                    $this->setSystemVar('permareplace', $this->__('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
+                    $this->setSystemVar('permareplace', $this->trans('A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue'));
                 }
                 $locale = $this->getSystemVar('locale');
                 if (empty($locale)) {

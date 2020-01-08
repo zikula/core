@@ -65,7 +65,7 @@ class PendingContentBlock extends AbstractBlockHandler
 
     public function getType(): string
     {
-        return $this->__('Pending Content');
+        return $this->trans('Pending Content');
     }
 
     /**

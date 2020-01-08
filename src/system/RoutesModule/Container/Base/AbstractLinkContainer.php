@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Container\Base;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\RoutesModule\Helper\ControllerHelper;
@@ -79,8 +79,8 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             if ($this->permissionHelper->hasPermission(ACCESS_READ)) {
                 $links[] = [
                     'url' => $this->router->generate('zikularoutesmodule_route_index'),
-                    'text' => $this->__('Frontend'),
-                    'title' => $this->__('Switch to user area.'),
+                    'text' => $this->trans('Frontend'),
+                    'title' => $this->trans('Switch to user area.'),
                     'icon' => 'home'
                 ];
             }
@@ -88,28 +88,28 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
             if ($this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
                 $links[] = [
                     'url' => $this->router->generate('zikularoutesmodule_route_adminindex'),
-                    'text' => $this->__('Backend'),
-                    'title' => $this->__('Switch to administration area.'),
+                    'text' => $this->trans('Backend'),
+                    'title' => $this->trans('Switch to administration area.'),
                     'icon' => 'wrench'
                 ];
             }
         }
-        
+
         if (
             in_array('route', $allowedObjectTypes, true)
             && $this->permissionHelper->hasComponentPermission('route', $permLevel)
         ) {
             $links[] = [
                 'url' => $this->router->generate('zikularoutesmodule_route_' . $routeArea . 'view'),
-                'text' => $this->__('Routes'),
-                'title' => $this->__('Routes list')
+                'text' => $this->trans('Routes'),
+                'title' => $this->trans('Routes list')
             ];
         }
         if ('admin' === $routeArea && $this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikularoutesmodule_config_config'),
-                'text' => $this->__('Settings'),
-                'title' => $this->__('Manage settings for this application'),
+                'text' => $this->trans('Settings'),
+                'title' => $this->trans('Manage settings for this application'),
                 'icon' => 'wrench'
             ];
         }

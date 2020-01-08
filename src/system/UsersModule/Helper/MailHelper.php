@@ -19,7 +19,7 @@ use Swift_Message;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;

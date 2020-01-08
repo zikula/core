@@ -19,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Zikula\Bundle\CoreInstallerBundle\Command\AbstractCoreInstallerCommand;
 use Zikula\Bundle\CoreInstallerBundle\Helper\StageHelper;
 use Zikula\Bundle\CoreInstallerBundle\Stage\Install\AjaxInstallerStage;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FinishCommand extends AbstractCoreInstallerCommand
 {

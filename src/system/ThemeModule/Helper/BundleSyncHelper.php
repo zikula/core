@@ -20,7 +20,7 @@ use Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;

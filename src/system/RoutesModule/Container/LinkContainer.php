@@ -35,29 +35,29 @@ class LinkContainer extends AbstractLinkContainer
 
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_route_adminview'),
-            'text' => $this->__('Routes'),
-            'title' => $this->__('Route list')
+            'text' => $this->trans('Routes'),
+            'title' => $this->trans('Route list')
         ];
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_update_reload'),
-            'text' => $this->__('Reload routes'),
-            'title' => $this->__('Reload routes')
+            'text' => $this->trans('Reload routes'),
+            'title' => $this->trans('Reload routes')
         ];
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_update_renew'),
-            'text' => $this->__('Reload multilingual routing settings'),
-            'title' => $this->__('Reload multilingual routing settings')
+            'text' => $this->trans('Reload multilingual routing settings'),
+            'title' => $this->trans('Reload multilingual routing settings')
         ];
         $links[] = [
             'url' => $this->router->generate('zikularoutesmodule_update_dumpjsroutes'),
-            'text' => $this->__('Dump exposed js routes to file'),
-            'title' => $this->__('Dump exposed js routes to file')
+            'text' => $this->trans('Dump exposed js routes to file'),
+            'title' => $this->trans('Dump exposed js routes to file')
         ];
         if ($this->permissionHelper->hasPermission(ACCESS_ADMIN)) {
             $links[] = [
                 'url' => $this->router->generate('zikularoutesmodule_config_config'),
-                'text' => $this->__('Configuration'),
-                'title' => $this->__('Manage settings for this application'),
+                'text' => $this->trans('Configuration'),
+                'title' => $this->trans('Manage settings for this application'),
                 'icon' => 'wrench'
             ];
         }

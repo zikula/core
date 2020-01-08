@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -44,52 +44,52 @@ class ConfigType extends AbstractType
     {
         $builder
             ->add('ignoreinstallercheck', CheckboxType::class, [
-                'label' => $this->__('Ignore check for installer'),
+                'label' => $this->trans('Ignore check for installer'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('admingraphic', CheckboxType::class, [
-                'label' => $this->__('Display icons'),
+                'label' => $this->trans('Display icons'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('displaynametype', ChoiceType::class, [
-                'label' => $this->__('Form of display for module names'),
+                'label' => $this->trans('Form of display for module names'),
                 'empty_data' => 1,
                 'choices' => [
-                    $this->__('Display name') => 1,
-                    $this->__('Internal name') => 2,
-                    $this->__('Show both internal name and display name') => 3
+                    $this->trans('Display name') => 1,
+                    $this->trans('Internal name') => 2,
+                    $this->trans('Show both internal name and display name') => 3
                 ]
             ])
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $this->__('Modules per page in module categories list'),
+                'label' => $this->trans('Modules per page in module categories list'),
                 'empty_data' => 5,
                 'attr' => [
                     'maxlength' => 3
                 ]
             ])
             ->add('modulesperrow', IntegerType::class, [
-                'label' => $this->__('Modules per row in admin panel'),
+                'label' => $this->trans('Modules per row in admin panel'),
                 'empty_data' => 5,
                 'attr' => [
                     'maxlength' => 3
                 ]
             ])
             ->add('admintheme', ChoiceType::class, [
-                'label' => $this->__('Theme to use'),
+                'label' => $this->trans('Theme to use'),
                 'required' => false,
                 'empty_data' => null,
                 'choices' => $this->formatThemeSelector($options['themes']),
-                'placeholder' => $this->__('Use site\'s theme')
+                'placeholder' => $this->trans('Use site\'s theme')
             ])
             ->add('startcategory', ChoiceType::class, [
-                'label' => $this->__('Initially selected category'),
+                'label' => $this->trans('Initially selected category'),
                 'empty_data' => null,
                 'choices' => $options['categories']
             ])
             ->add('defaultcategory', ChoiceType::class, [
-                'label' => $this->__('Default category for newly-added modules'),
+                'label' => $this->trans('Default category for newly-added modules'),
                 'empty_data' => null,
                 'choices' => $options['categories']
             ])
@@ -105,14 +105,14 @@ class ConfigType extends AbstractType
 
         $builder
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

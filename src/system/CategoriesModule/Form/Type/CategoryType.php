@@ -28,7 +28,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -53,13 +53,13 @@ class CategoryType extends AbstractType
         $translator = $this->translator;
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->__('Name'),
+                'label' => $this->trans('Name'),
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('parent', CategoryTreeType::class, [
-                'label' => $this->__('Parent'),
+                'label' => $this->trans('Parent'),
                 'includeRoot' => true,
                 'includeLeaf' => false,
                 'constraints' => [
@@ -67,32 +67,32 @@ class CategoryType extends AbstractType
                 ]
             ])
             ->add('is_locked', CheckboxType::class, [
-                'label' => $this->__('Category is locked'),
+                'label' => $this->trans('Category is locked'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('is_leaf', CheckboxType::class, [
-                'label' => $this->__('Category is a leaf node'),
+                'label' => $this->trans('Category is a leaf node'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add($builder->create('value', TextType::class, [
-                'label' => $this->__('Value'),
+                'label' => $this->trans('Value'),
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('status', CheckboxType::class, [
-                'label' => $this->__('Active'),
+                'label' => $this->trans('Active'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('display_name', CollectionType::class, [
                 'entry_type' => TextType::class,
-                'label' => $this->__('Display name'),
+                'label' => $this->trans('Display name'),
                 'required' => false
             ])
             ->add('display_desc', CollectionType::class, [
                 'entry_type' => TextareaType::class,
-                'label' => $this->__('Display description'),
+                'label' => $this->trans('Display description'),
                 'required' => false
             ])
             ->add('attributes', CollectionType::class, [
@@ -101,7 +101,7 @@ class CategoryType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'label' => $this->__('Category attributes'),
+                'label' => $this->trans('Category attributes'),
                 'required' => false
             ])
             ->add('after', HiddenType::class, [
@@ -120,7 +120,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->__(/** @Ignore */$name, 'zikula', $code);
+                        $displayName[$code] = $translator->trans(/** @Ignore */$name, 'zikula', $code);
                     }
                     if (!isset($displayDesc[$code])) {
                         $displayDesc[$code] = '';
@@ -142,7 +142,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->__(/** @Ignore */$name, 'zikula', $code);
+                        $displayName[$code] = $translator->trans(/** @Ignore */$name, 'zikula', $code);
                     }
                 }
                 $category->setDisplay_name($displayName);

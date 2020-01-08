@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
@@ -55,16 +55,16 @@ class AdminCreatedUserType extends AbstractType
     {
         $builder
             ->add('method', ChoiceType::class, [
-                'label' => $this->__('Login method'),
+                'label' => $this->trans('Login method'),
                 'choices' => [
-                    $this->__('User name or email') => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
-                    $this->__('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
-                    $this->__('Email') => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
+                    $this->trans('User name or email') => ZAuthConstant::AUTHENTICATION_METHOD_EITHER,
+                    $this->trans('User name') => ZAuthConstant::AUTHENTICATION_METHOD_UNAME,
+                    $this->trans('Email') => ZAuthConstant::AUTHENTICATION_METHOD_EMAIL
                 ]
             ])
             ->add('uname', TextType::class, [
-                'label' => $this->__('User name'),
-                'help' => $this->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'label' => $this->trans('User name'),
+                'help' => $this->trans('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'constraints' => [
                     new ValidUname()
                 ]
@@ -72,11 +72,11 @@ class AdminCreatedUserType extends AbstractType
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->__('Email'),
-                    'help' => $this->__('If login method is Email, then this value must be unique for the site.'),
+                    'label' => $this->trans('Email'),
+                    'help' => $this->trans('If login method is Email, then this value must be unique for the site.'),
                 ],
-                'second_options' => ['label' => $this->__('Repeat Email')],
-                'invalid_message' => $this->__('The emails  must match!'),
+                'second_options' => ['label' => $this->trans('Repeat Email')],
+                'invalid_message' => $this->trans('The emails  must match!'),
                 'constraints' => [
                     new ValidEmail()
                 ]
@@ -84,22 +84,22 @@ class AdminCreatedUserType extends AbstractType
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Set password now'),
+                'label' => $this->trans('Set password now'),
                 'label_attr' => ['class' => 'switch-custom'],
-                'alert' => [$this->__('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
+                'alert' => [$this->trans('If unchecked, the user\'s e-mail address will be verified. The user will create a password at that time.') => 'info']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => $this->__('Create new password'),
+                    'label' => $this->trans('Create new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
-                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'help' => $this->trans('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
-                    'label' => $this->__('Repeat new password'),
+                    'label' => $this->trans('Repeat new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],
-                'invalid_message' => $this->__('The passwords must match!'),
+                'invalid_message' => $this->trans('The passwords must match!'),
                 'constraints' => [
                     new ValidPassword()
                 ]
@@ -107,41 +107,41 @@ class AdminCreatedUserType extends AbstractType
             ->add('sendpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Send password via email'),
+                'label' => $this->trans('Send password via email'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'alert' => [
-                    $this->__('Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.') => 'warning',
-                    $this->__('Even if you choose to not send the user\'s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.') => 'info'
+                    $this->trans('Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.') => 'warning',
+                    $this->trans('Even if you choose to not send the user\'s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.') => 'info'
                 ]
             ])
             ->add('usernotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Send welcome message to user'),
+                'label' => $this->trans('Send welcome message to user'),
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('adminnotification', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Notify administrators'),
+                'label' => $this->trans('Notify administrators'),
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('usermustverify', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
                 'data' => $this->variableApi->get('ZikulaZAuthModule', ZAuthConstant::MODVAR_EMAIL_VERIFICATION_REQUIRED, ZAuthConstant::DEFAULT_EMAIL_VERIFICATION_REQUIRED),
-                'label' => $this->__('User must verify email address'),
+                'label' => $this->trans('User must verify email address'),
                 'label_attr' => ['class' => 'switch-custom'],
-                'help' => $this->__('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
-                'alert' => [$this->__('It is recommended to force users to verify their email address.') => 'info']
+                'help' => $this->trans('Notice: This overrides the \'Verify e-mail address during registration\' setting in \'Settings\'.'),
+                'alert' => [$this->trans('It is recommended to force users to verify their email address.') => 'info']
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

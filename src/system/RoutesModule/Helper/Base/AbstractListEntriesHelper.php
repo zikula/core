@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Helper\Base;
 
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -165,29 +165,29 @@ abstract class AbstractListEntriesHelper
         $states = [];
         $states[] = [
             'value'   => 'approved',
-            'text'    => $this->__('Approved'),
-            'title'   => $this->__('Content has been approved and is available online.'),
+            'text'    => $this->trans('Approved'),
+            'title'   => $this->trans('Content has been approved and is available online.'),
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'trashed',
-            'text'    => $this->__('Trashed'),
-            'title'   => $this->__('Content has been marked as deleted, but is still persisted in the database.'),
+            'text'    => $this->trans('Trashed'),
+            'title'   => $this->trans('Content has been marked as deleted, but is still persisted in the database.'),
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => '!approved',
-            'text'    => $this->__('All except approved'),
-            'title'   => $this->__('Shows all items except these which are approved'),
+            'text'    => $this->trans('All except approved'),
+            'title'   => $this->trans('Shows all items except these which are approved'),
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => '!trashed',
-            'text'    => $this->__('All except trashed'),
-            'title'   => $this->__('Shows all items except these which are trashed'),
+            'text'    => $this->trans('All except trashed'),
+            'title'   => $this->trans('Shows all items except these which are trashed'),
             'image'   => '',
             'default' => false
         ];
@@ -203,14 +203,14 @@ abstract class AbstractListEntriesHelper
         $states = [];
         $states[] = [
             'value'   => 'http',
-            'text'    => $this->__('Http'),
+            'text'    => $this->trans('Http'),
             'title'   => '',
             'image'   => '',
             'default' => true
         ];
         $states[] = [
             'value'   => 'https',
-            'text'    => $this->__('Https'),
+            'text'    => $this->trans('Https'),
             'title'   => '',
             'image'   => '',
             'default' => true
@@ -227,42 +227,42 @@ abstract class AbstractListEntriesHelper
         $states = [];
         $states[] = [
             'value'   => 'GET',
-            'text'    => $this->__('GET'),
+            'text'    => $this->trans('GET'),
             'title'   => '',
             'image'   => '',
             'default' => true
         ];
         $states[] = [
             'value'   => 'POST',
-            'text'    => $this->__('POST'),
+            'text'    => $this->trans('POST'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'HEAD',
-            'text'    => $this->__('HEAD'),
+            'text'    => $this->trans('HEAD'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'PUT',
-            'text'    => $this->__('PUT'),
+            'text'    => $this->trans('PUT'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'DELETE',
-            'text'    => $this->__('DELETE'),
+            'text'    => $this->trans('DELETE'),
             'title'   => '',
             'image'   => '',
             'default' => false
         ];
         $states[] = [
             'value'   => 'OPTIONS',
-            'text'    => $this->__('OPTIONS'),
+            'text'    => $this->trans('OPTIONS'),
             'title'   => '',
             'image'   => '',
             'default' => false

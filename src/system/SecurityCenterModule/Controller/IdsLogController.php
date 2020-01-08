@@ -184,15 +184,15 @@ class IdsLogController extends AbstractController
                 }
 
                 $titles = [
-                    $this->__('Name'),
-                    $this->__('Tag'),
-                    $this->__('Value'),
-                    $this->__('Page'),
-                    $this->__('User Name'),
-                    $this->__('IP'),
-                    $this->__('Impact'),
-                    $this->__('PHPIDS filters used'),
-                    $this->__('Date')
+                    $this->trans('Name'),
+                    $this->trans('Tag'),
+                    $this->trans('Value'),
+                    $this->trans('Page'),
+                    $this->trans('User Name'),
+                    $this->trans('IP'),
+                    $this->trans('Impact'),
+                    $this->trans('PHPIDS filters used'),
+                    $this->trans('Date')
                 ];
 
                 // get data
@@ -230,7 +230,7 @@ class IdsLogController extends AbstractController
                 return $response;
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
 
                 return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');
             }
@@ -264,9 +264,9 @@ class IdsLogController extends AbstractController
                 // delete all entries
                 $repository->truncateTable();
 
-                $this->addFlash('status', $this->__('Done! Purged IDS Log.'));
+                $this->addFlash('status', $this->trans('Done! Purged IDS Log.'));
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');
@@ -300,12 +300,12 @@ class IdsLogController extends AbstractController
 
         // sanity check
         if (!is_numeric($id)) {
-            throw new InvalidArgumentException($this->__f("Error! Received a non-numeric object ID '%s'.", ['%s' => $id]));
+            throw new InvalidArgumentException($this->trans("Error! Received a non-numeric object ID '%s'.", ['%s' => $id]));
         }
 
         $intrusion = $repository->find($id);
         if (!$intrusion) {
-            $this->addFlash('error', $this->__f('Error! Invalid %s received.', ['%s' => "object ID [${id}]"]));
+            $this->addFlash('error', $this->trans('Error! Invalid %s received.', ['%s' => "object ID [${id}]"]));
         } else {
             // delete object
             $this->getDoctrine()->getManager()->remove($intrusion);

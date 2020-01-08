@@ -16,7 +16,7 @@ namespace Zikula\ZAuthModule\Helper;
 use Swift_Message;
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MailerModule\Api\ApiInterface\MailerApiInterface;
 

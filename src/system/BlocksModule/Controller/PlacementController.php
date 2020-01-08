@@ -81,7 +81,7 @@ class PlacementController extends AbstractController
     public function changeBlockOrderAction(Request $request): JsonResponse
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('No permission for this action.'), Response::HTTP_FORBIDDEN);
         }
 
         $blockorder = $request->request->get('blockorder', []); // [7, 1]

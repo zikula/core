@@ -123,36 +123,36 @@ class AdminInterfaceController extends AbstractController
         $data = [];
         $data['mode'] = $kernel->getEnvironment();
         if ('prod' !== $data['mode']) {
-            $data['debug'] = $kernel->isDebug() ? $this->__('Yes') : $this->__('No');
+            $data['debug'] = $kernel->isDebug() ? $this->trans('Yes') : $this->trans('No');
             $data['legacy'] = [
                 'status' => true,
                 'cssjscombine' => $modVars['cssjscombine'],
                 'render' => [
                     'compile_check' => [
                         'state' => $modVars['render_compile_check'],
-                        'title' => $this->__('Compile check')
+                        'title' => $this->trans('Compile check')
                     ],
                     'force_compile' => [
                         'state' => $modVars['render_force_compile'],
-                        'title' => $this->__('Force compile')
+                        'title' => $this->trans('Force compile')
                     ],
                     'cache' => [
                         'state' => $modVars['render_cache'],
-                        'title' => $this->__('Caching')
+                        'title' => $this->trans('Caching')
                     ]
                 ],
                 'theme' => [
                     'compile_check' => [
                         'state' => $modVars['compile_check'],
-                        'title' => $this->__('Compile check')
+                        'title' => $this->trans('Compile check')
                     ],
                     'force_compile' => [
                         'state' => $modVars['force_compile'],
-                        'title' => $this->__('Force compile')
+                        'title' => $this->trans('Force compile')
                     ],
                     'cache' => [
                         'state' => $modVars['enablecache'],
-                        'title' => $this->__('Caching')
+                        'title' => $this->trans('Caching')
                     ]
                 ]
             ];
@@ -327,7 +327,7 @@ class AdminInterfaceController extends AbstractController
                 $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $router->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->__('invalid route') . ')';
+                $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
             }
 
             $moduleName = (string)$adminModule['name'];

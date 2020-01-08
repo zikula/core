@@ -18,7 +18,7 @@ use Exception;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Symfony\Component\Workflow\Registry;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
@@ -34,37 +34,37 @@ abstract class AbstractWorkflowHelper
      * @var TranslatorInterface
      */
     protected $translator;
-    
+
     /**
      * @var Registry
      */
     protected $workflowRegistry;
-    
+
     /**
      * @var LoggerInterface
      */
     protected $logger;
-    
+
     /**
      * @var CurrentUserApiInterface
      */
     protected $currentUserApi;
-    
+
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-    
+
     /**
      * @var ListEntriesHelper
      */
     protected $listEntriesHelper;
-    
+
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-    
+
     public function __construct(
         TranslatorInterface $translator,
         Registry $registry,
@@ -82,7 +82,7 @@ abstract class AbstractWorkflowHelper
         $this->listEntriesHelper = $listEntriesHelper;
         $this->permissionHelper = $permissionHelper;
     }
-    
+
     /**
      * This method returns a list of possible object states.
      */
@@ -91,28 +91,28 @@ abstract class AbstractWorkflowHelper
         $states = [];
         $states[] = [
             'value' => 'initial',
-            'text' => $this->translator->__('Initial'),
+            'text' => $this->translator->trans('Initial'),
             'ui' => 'danger'
         ];
         $states[] = [
             'value' => 'approved',
-            'text' => $this->translator->__('Approved'),
+            'text' => $this->translator->trans('Approved'),
             'ui' => 'success'
         ];
         $states[] = [
             'value' => 'trashed',
-            'text' => $this->translator->__('Trashed'),
+            'text' => $this->translator->trans('Trashed'),
             'ui' => 'danger'
         ];
         $states[] = [
             'value' => 'deleted',
-            'text' => $this->translator->__('Deleted'),
+            'text' => $this->translator->trans('Deleted'),
             'ui' => 'danger'
         ];
-    
+
         return $states;
     }
-    
+
     /**
      * This method returns information about a certain state.
      */
@@ -127,10 +127,10 @@ abstract class AbstractWorkflowHelper
             $result = $singleState;
             break;
         }
-    
+
         return $result;
     }
-    
+
     /**
      * Retrieve the available actions for a given entity object.
      */
@@ -139,7 +139,7 @@ abstract class AbstractWorkflowHelper
         $workflow = $this->workflowRegistry->get($entity);
         $wfActions = $workflow->getEnabledTransitions($entity);
         $currentState = $entity->getWorkflowState();
-    
+
         $actions = [];
         foreach ($wfActions as $action) {
             $actionId = $action->getName();
@@ -149,10 +149,10 @@ abstract class AbstractWorkflowHelper
                 'buttonClass' => $this->getButtonClassForAction($actionId)
             ];
         }
-    
+
         return $actions;
     }
-    
+
     /**
      * Returns a translatable title for a certain action.
      */
@@ -161,32 +161,32 @@ abstract class AbstractWorkflowHelper
         $title = '';
         switch ($actionId) {
             case 'submit':
-                $title = $this->translator->__('Submit');
+                $title = $this->translator->trans('Submit');
                 break;
             case 'trash':
-                $title = $this->translator->__('Trash');
+                $title = $this->translator->trans('Trash');
                 break;
             case 'recover':
-                $title = $this->translator->__('Recover');
+                $title = $this->translator->trans('Recover');
                 break;
             case 'delete':
-                $title = $this->translator->__('Delete');
+                $title = $this->translator->trans('Delete');
                 break;
         }
-    
+
         if ('' === $title) {
             if ('update' === $actionId) {
-                $title = $this->translator->__('Update');
+                $title = $this->translator->trans('Update');
             } elseif ('trash' === $actionId) {
-                $title = $this->translator->__('Trash');
+                $title = $this->translator->trans('Trash');
             } elseif ('recover' === $actionId) {
-                $title = $this->translator->__('Recover');
+                $title = $this->translator->trans('Recover');
             }
         }
-    
+
         return $title;
     }
-    
+
     /**
      * Returns a button class for a certain action.
      */
@@ -207,18 +207,18 @@ abstract class AbstractWorkflowHelper
                 $buttonClass = 'danger';
                 break;
         }
-    
+
         if ('' === $buttonClass && 'update' === $actionId) {
             $buttonClass = 'success';
         }
-    
+
         if (empty($buttonClass)) {
             $buttonClass = 'default';
         }
-    
+
         return 'btn btn-' . $buttonClass;
     }
-    
+
     /**
      * Executes a certain workflow action for a given entity object.
      */
@@ -228,11 +228,11 @@ abstract class AbstractWorkflowHelper
         if (!$workflow->can($entity, $actionId)) {
             return false;
         }
-    
+
         // get entity manager
         $entityManager = $this->entityFactory->getEntityManager();
         $logArgs = ['app' => 'ZikulaRoutesModule', 'user' => $this->currentUserApi->get('uname')];
-    
+
         $result = false;
         try {
             if ('delete' === $actionId) {
@@ -247,7 +247,7 @@ abstract class AbstractWorkflowHelper
             $workflow->apply($entity, $actionId);
             // then we flush again to save the new workflow state of the entity
             $entityManager->flush();
-    
+
             $result = true;
             if ('delete' === $actionId) {
                 $this->logger->notice('{app}: User {user} deleted an entity.', $logArgs);
@@ -262,7 +262,7 @@ abstract class AbstractWorkflowHelper
             }
             throw new RuntimeException($exception->getMessage());
         }
-    
+
         if (false !== $result && !$recursive) {
             $entities = $entity->getRelatedObjectsToPersist();
             foreach ($entities as $rel) {
@@ -271,7 +271,7 @@ abstract class AbstractWorkflowHelper
                 }
             }
         }
-    
+
         return false !== $result;
     }
 }

@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\HookDispatcherInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
@@ -275,16 +275,16 @@ class HookController extends AbstractController
         // get subscriberarea from POST
         $subscriberArea = $request->request->get('subscriberarea', '');
         if (empty($subscriberArea)) {
-            throw new InvalidArgumentException($this->__('No subscriber area passed.'));
+            throw new InvalidArgumentException($this->trans('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
         $subscriber = $collector->getSubscriber($subscriberArea);
         if (null === $subscriber) {
-            throw new InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
+            throw new InvalidArgumentException($this->trans('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$kernel->isBundle($subscriber->getOwner())) {
-            throw new RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
+            throw new RuntimeException($this->trans('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -293,16 +293,16 @@ class HookController extends AbstractController
         // get providerarea from POST
         $providerArea = $request->request->get('providerarea', '');
         if (empty($providerArea)) {
-            throw new InvalidArgumentException($this->__('No provider area passed.'));
+            throw new InvalidArgumentException($this->trans('No provider area passed.'));
         }
 
         // get provider module based on area and do some checks
         $provider = $collector->getProvider($providerArea);
         if (null === $provider) {
-            throw new InvalidArgumentException($this->__f('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
+            throw new InvalidArgumentException($this->trans('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
         }
         if (!$kernel->isBundle($provider->getOwner())) {
-            throw new RuntimeException($this->__f('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
+            throw new RuntimeException($this->trans('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
         }
         if (!$permissionApi->hasPermission($provider->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -355,16 +355,16 @@ class HookController extends AbstractController
         // get subscriberarea from POST
         $subscriberarea = $request->request->get('subscriberarea', '');
         if (empty($subscriberarea)) {
-            throw new InvalidArgumentException($this->__('No subscriber area passed.'));
+            throw new InvalidArgumentException($this->trans('No subscriber area passed.'));
         }
 
         // get subscriber module based on area and do some checks
         $subscriber = $collector->getSubscriber($subscriberarea);
         if (null === $subscriber) {
-            throw new InvalidArgumentException($this->__f('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
+            throw new InvalidArgumentException($this->trans('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$kernel->isBundle($subscriber->getOwner())) {
-            throw new RuntimeException($this->__f('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
+            throw new RuntimeException($this->trans('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -373,7 +373,7 @@ class HookController extends AbstractController
         // get providers' areas from POST
         $providerarea = $request->request->get('providerarea', '');
         if (!is_array($providerarea) || count($providerarea) < 1) {
-            throw new InvalidArgumentException($this->__('Providers\' areas order is not an array.'));
+            throw new InvalidArgumentException($this->trans('Providers\' areas order is not an array.'));
         }
 
         // set sorting

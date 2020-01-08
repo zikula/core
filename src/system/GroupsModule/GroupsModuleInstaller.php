@@ -68,7 +68,7 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
                 $usersGroup = $this->container->get(GroupRepository::class)->find(GroupsConstant::GROUP_ID_USERS);
                 $anonymousUser->getGroups()->removeElement($usersGroup);
                 $this->entityManager->flush();
-                $this->addFlash('info', $this->__('NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.'));
+                $this->addFlash('info', $this->trans('NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.'));
             case '2.4.2':
             // future upgrade routines
         }
@@ -91,14 +91,14 @@ class GroupsModuleInstaller extends AbstractExtensionInstaller
         $records = [
             [
                 'gid' => GroupsConstant::GROUP_ID_USERS,
-                'name' => $this->__('Users'),
-                'description' => $this->__('By default, all users are made members of this group.'),
+                'name' => $this->trans('Users'),
+                'description' => $this->trans('By default, all users are made members of this group.'),
                 'users' => [UsersConstant::USER_ID_ADMIN]
             ],
             [
                 'gid' => GroupsConstant::GROUP_ID_ADMIN,
-                'name' => $this->__('Administrators'),
-                'description' => $this->__('Group of administrators of this site.'),
+                'name' => $this->trans('Administrators'),
+                'description' => $this->trans('Group of administrators of this site.'),
                 'users' => [UsersConstant::USER_ID_ADMIN]
             ]
         ];

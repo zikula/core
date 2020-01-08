@@ -52,14 +52,14 @@ abstract class AbstractConfigController extends AbstractController
                 $appSettings = $form->getData();
                 $appSettings->save();
         
-                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
                 $userName = $currentUserApi->get('uname');
                 $logger->notice(
                     '{app}: User {user} updated the configuration.',
                     ['app' => 'ZikulaContentModule', 'user' => $userName]
                 );
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         
             // redirect to config page again (to show with GET request)

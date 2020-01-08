@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule\Api;
 
 use InvalidArgumentException;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Entity\RepositoryInterface\PermissionRepositoryInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;

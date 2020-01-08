@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -43,36 +43,36 @@ class IdsLogExportType extends AbstractType
     {
         $builder
             ->add('titles', CheckboxType::class, [
-                'label' => $this->__('Export Title Row'),
+                'label' => $this->trans('Export Title Row'),
                 'label_attr' => ['class' => 'switch-custom'],
                 'empty_data' => 1,
                 'required' => false
             ])
             ->add('file', TextType::class, [
-                'label' => $this->__('CSV filename'),
+                'label' => $this->trans('CSV filename'),
                 'required' => false
             ])
             ->add('delimiter', ChoiceType::class, [
-                'label' => $this->__('CSV delimiter'),
+                'label' => $this->trans('CSV delimiter'),
                 'empty_data' => 1,
                 'choices' => [
-                    $this->__('Comma') . ' (,)' => 1,
-                    $this->__('Semicolon') . ' (;)' => 2,
-                    $this->__('Colon') . ' (:)' => 3,
-                    $this->__('Tab') => 4
+                    $this->trans('Comma') . ' (,)' => 1,
+                    $this->trans('Semicolon') . ' (;)' => 2,
+                    $this->trans('Colon') . ' (:)' => 3,
+                    $this->trans('Tab') => 4
                 ],
                 'multiple' => false,
                 'expanded' => false
             ])
             ->add('export', SubmitType::class, [
-                'label' => $this->__('Export'),
+                'label' => $this->trans('Export'),
                 'icon' => 'fa-download',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

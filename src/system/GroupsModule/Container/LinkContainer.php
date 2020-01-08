@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Container;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\GroupsModule\Entity\Repository\GroupApplicationRepository;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;

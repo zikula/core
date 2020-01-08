@@ -39,7 +39,7 @@ abstract class AbstractModuleDispatchListener implements EventSubscriberInterfac
      * Inject router and translator services and format data like this:
      *     `$event->data[] = [
      *         'url' => $router->generate('zikularoutesmodule_user_index'),
-     *         'text' => $translator->__('Link text')
+     *         'text' => $translator->trans('Link text')
      *     ];`
      *
      * You can access general data available in the event.

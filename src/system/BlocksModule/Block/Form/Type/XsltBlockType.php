@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class XsltBlockType extends AbstractType
@@ -46,10 +46,10 @@ class XsltBlockType extends AbstractType
                     new Url()
                 ],
                 'required' => false,
-                'label' => $this->__('Document URL')
+                'label' => $this->trans('Document URL')
             ])
             ->add('doccontents', TextareaType::class, [
-                'label' => $this->__('Document contents'),
+                'label' => $this->trans('Document contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -60,10 +60,10 @@ class XsltBlockType extends AbstractType
                     new Url()
                 ],
                 'required' => false,
-                'label' => $this->__('Style sheet URL')
+                'label' => $this->trans('Style sheet URL')
             ])
             ->add('stylecontents', TextareaType::class, [
-                'label' => $this->__('Style sheet contents'),
+                'label' => $this->trans('Style sheet contents'),
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -91,16 +91,16 @@ class XsltBlockType extends AbstractType
     public function validateOrFields($data, ExecutionContextInterface $context): void
     {
         if (empty($data['docurl']) && empty($data['doccontents'])) {
-            $context->addViolation($this->__('Either the Document URL or the Document contents must contain a value.'));
+            $context->addViolation($this->trans('Either the Document URL or the Document contents must contain a value.'));
         }
         if (!empty($data['docurl']) && !empty($data['doccontents'])) {
-            $context->addViolation($this->__('Either the Document URL of the Document contents can contain a value, not both.'));
+            $context->addViolation($this->trans('Either the Document URL of the Document contents can contain a value, not both.'));
         }
         if (empty($data['styleurl']) && empty($data['stylecontents'])) {
-            $context->addViolation($this->__('Either the Style sheet URL or the Style sheet contents must contain a value.'));
+            $context->addViolation($this->trans('Either the Style sheet URL or the Style sheet contents must contain a value.'));
         }
         if (!empty($data['styleurl']) && !empty($data['stylecontents'])) {
-            $context->addViolation($this->__('Either the Style sheet URL or the Style sheet contents can contain a value, not both.'));
+            $context->addViolation($this->trans('Either the Style sheet URL or the Style sheet contents can contain a value, not both.'));
         }
     }
 }

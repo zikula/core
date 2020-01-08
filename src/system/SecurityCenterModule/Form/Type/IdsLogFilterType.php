@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -41,13 +41,13 @@ class IdsLogFilterType extends AbstractType
     {
         $builder->setMethod('GET');
 
-        $this->addFilterField($builder, $options, 'uid', $this->__('User Name'));
-        $this->addFilterField($builder, $options, 'name', $this->__('Name'));
-        $this->addFilterField($builder, $options, 'tag', $this->__('Tag'));
-        $this->addFilterField($builder, $options, 'value', $this->__('Value'));
-        $this->addFilterField($builder, $options, 'page', $this->__('Page'));
-        $this->addFilterField($builder, $options, 'ip', $this->__('IP Address'));
-        $this->addFilterField($builder, $options, 'impact', $this->__('Impact'));
+        $this->addFilterField($builder, $options, 'uid', $this->trans('User Name'));
+        $this->addFilterField($builder, $options, 'name', $this->trans('Name'));
+        $this->addFilterField($builder, $options, 'tag', $this->trans('Tag'));
+        $this->addFilterField($builder, $options, 'value', $this->trans('Value'));
+        $this->addFilterField($builder, $options, 'page', $this->trans('Page'));
+        $this->addFilterField($builder, $options, 'ip', $this->trans('IP Address'));
+        $this->addFilterField($builder, $options, 'impact', $this->trans('Impact'));
     }
 
     /**
@@ -73,7 +73,7 @@ class IdsLogFilterType extends AbstractType
                 'class' => 'form-control-sm'
             ],
             'required' => false,
-            'placeholder' => $this->__('All'),
+            'placeholder' => $this->trans('All'),
             'choices' => $choices,
             'multiple' => false,
             'expanded' => false

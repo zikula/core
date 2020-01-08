@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
@@ -47,8 +47,8 @@ class AdminModifyUserType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->__('User name'),
-                'help' => $this->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'label' => $this->trans('User name'),
+                'help' => $this->trans('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'constraints' => [
                     new ValidUname()
                 ]
@@ -56,12 +56,12 @@ class AdminModifyUserType extends AbstractType
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->__('Email'),
+                    'label' => $this->trans('Email'),
                 ],
                 'second_options' => [
-                    'label' => $this->__('Repeat Email')
+                    'label' => $this->trans('Repeat Email')
                 ],
-                'invalid_message' => $this->__('The emails must match!'),
+                'invalid_message' => $this->trans('The emails must match!'),
                 'constraints' => [
                     new ValidEmail()
                 ]
@@ -69,34 +69,34 @@ class AdminModifyUserType extends AbstractType
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->__('Set password now'),
+                'label' => $this->trans('Set password now'),
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
                     'required' => false,
-                    'label' => $this->__('Create new password'),
+                    'label' => $this->trans('Create new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
-                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'help' => $this->trans('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
                     'required' => false,
-                    'label' => $this->__('Repeat new password'),
+                    'label' => $this->trans('Repeat new password'),
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],
-                'invalid_message' => $this->__('The passwords must match!'),
+                'invalid_message' => $this->trans('The passwords must match!'),
                 'constraints' => [
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

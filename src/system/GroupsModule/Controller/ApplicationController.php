@@ -77,10 +77,10 @@ class ApplicationController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $applicationProcessedEvent = new GenericEvent($groupApplicationEntity, $formData);
                 $eventDispatcher->dispatch($applicationProcessedEvent, GroupEvents::GROUP_APPLICATION_PROCESSED);
-                $this->addFlash('success', $this->__f('Application processed (%action %user)', ['%action' => $action, '%user' => $groupApplicationEntity->getUser()->getUname()]));
+                $this->addFlash('success', $this->trans('Application processed (%action %user)', ['%action' => $action, '%user' => $groupApplicationEntity->getUser()->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('success', $this->__('Operation cancelled.'));
+                $this->addFlash('success', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
@@ -114,7 +114,7 @@ class ApplicationController extends AbstractController
             throw new AccessDeniedException();
         }
         if (!$currentUserApi->isLoggedIn()) {
-            throw new AccessDeniedException($this->__('Error! You must register for a user account on this site before you can apply for membership of a group.'));
+            throw new AccessDeniedException($this->trans('Error! You must register for a user account on this site before you can apply for membership of a group.'));
         }
         /** @var UserEntity $userEntity */
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
@@ -129,7 +129,7 @@ class ApplicationController extends AbstractController
         }
         $existingApplication = $applicationRepository->findOneBy(['group' => $group, 'user' => $userEntity]);
         if ($existingApplication) {
-            $this->addFlash('info', $this->__('You already have a pending application. Please wait until the administrator notifies you.'));
+            $this->addFlash('info', $this->trans('You already have a pending application. Please wait until the administrator notifies you.'));
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
@@ -146,10 +146,10 @@ class ApplicationController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $newApplicationEvent = new GenericEvent($groupApplicationEntity);
                 $eventDispatcher->dispatch($newApplicationEvent, GroupEvents::GROUP_NEW_APPLICATION);
-                $this->addFlash('status', $this->__('Done! The application has been sent. You will be notified by email when the application is processed.'));
+                $this->addFlash('status', $this->trans('Done! The application has been sent. You will be notified by email when the application is processed.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Application cancelled.'));
+                $this->addFlash('status', $this->trans('Application cancelled.'));
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
@@ -168,18 +168,18 @@ class ApplicationController extends AbstractController
         bool $alreadyGroupMember
     ) {
         $messages = [];
-        $messages[] = $this->__('Sorry!, You cannot apply to join the requested group');
+        $messages[] = $this->trans('Sorry!, You cannot apply to join the requested group');
         if ($groupTypeIsCore) {
-            $messages[] = $this->__('This group is a core-only group');
+            $messages[] = $this->trans('This group is a core-only group');
         }
         if ($groupStateIsClosed) {
-            $messages[] = $this->__('This group is closed.');
+            $messages[] = $this->trans('This group is closed.');
         }
         if ($groupCountIsLimit) {
-            $messages[] = $this->__('This group is has reached its membership limit.');
+            $messages[] = $this->trans('This group is has reached its membership limit.');
         }
         if ($alreadyGroupMember) {
-            $messages[] = $this->__('You are already a member of this group.');
+            $messages[] = $this->trans('You are already a member of this group.');
         }
 
         return implode('<br />', $messages);

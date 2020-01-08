@@ -26,7 +26,7 @@ interface HookInterface
     public function getCategory(): string;
 
     /**
-     * Translated string to display as a title in the hook UI, e.g. return $translator->__('FooHook FormAware Provider');
+     * Translated string to display as a title in the hook UI, e.g. return $translator->trans('FooHook FormAware Provider');
      */
     public function getTitle(): string;
 

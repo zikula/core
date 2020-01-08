@@ -15,7 +15,7 @@ namespace Zikula\GroupsModule\Entity\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Entity\RepositoryInterface\GroupRepositoryInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;

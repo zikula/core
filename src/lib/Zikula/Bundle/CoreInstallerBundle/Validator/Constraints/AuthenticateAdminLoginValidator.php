@@ -17,7 +17,7 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\ZAuthModule\Api\ApiInterface\PasswordApiInterface;
@@ -67,21 +67,21 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
                 WHERE uname = ?
             ', [$object['username']]);
         } catch (Exception $exception) {
-            $this->context->buildViolation($this->__('Error! There was a problem with the database connection.'))
+            $this->context->buildViolation($this->trans('Error! There was a problem with the database connection.'))
                 ->addViolation()
             ;
         }
 
         if (empty($user) || $user['uid'] <= 1 || !$this->passwordApi->passwordsMatch($object['password'], $user['pass'])) {
             $this->context
-                ->buildViolation($this->__('Error! Could not login with provided credentials. Please try again.'))
+                ->buildViolation($this->trans('Error! Could not login with provided credentials. Please try again.'))
                 ->addViolation()
             ;
         } else {
             $granted = $this->permissionApi->hasPermission('.*', '.*', ACCESS_ADMIN, (int) $user['uid']);
             if (!$granted) {
                 $this->context
-                    ->buildViolation($this->__('Error! You logged in to an account without Admin permissions'))
+                    ->buildViolation($this->trans('Error! You logged in to an account without Admin permissions'))
                     ->addViolation()
                 ;
             }

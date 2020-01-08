@@ -60,7 +60,7 @@ class CategoryController extends AbstractController
         );
         $form = $this->createFormBuilder()
             ->add('category', CategoryTreeType::class, [
-                'label' => $this->__('New Parent'),
+                'label' => $this->trans('New Parent'),
                 'includeLeaf' => false,
             ])->getForm();
 
@@ -106,14 +106,14 @@ class CategoryController extends AbstractController
     private function createTitleAttribute(array $node, string $displayName, string $locale): string
     {
         $title = [];
-        $title[] = $this->__('ID') . ': ' . $node['id'];
-        $title[] = $this->__('Name') . ': ' . $node['name'];
-        $title[] = $this->__('Display name') . ': ' . $displayName;
-        $title[] = $this->__('Description') . ': ' . ($node['display_desc'][$locale] ?? '');
-        $title[] = $this->__('Value') . ': ' . $node['value'];
-        $title[] = $this->__('Active') . ': ' . ('A' === $node['status'] ? 'Yes' : 'No');
-        $title[] = $this->__('Leaf') . ': ' . ($node['is_leaf'] ? 'Yes' : 'No');
-        $title[] = $this->__('Locked') . ': ' . ($node['is_locked'] ? 'Yes' : 'No');
+        $title[] = $this->trans('ID') . ': ' . $node['id'];
+        $title[] = $this->trans('Name') . ': ' . $node['name'];
+        $title[] = $this->trans('Display name') . ': ' . $displayName;
+        $title[] = $this->trans('Description') . ': ' . ($node['display_desc'][$locale] ?? '');
+        $title[] = $this->trans('Value') . ': ' . $node['value'];
+        $title[] = $this->trans('Active') . ': ' . ('A' === $node['status'] ? 'Yes' : 'No');
+        $title[] = $this->trans('Leaf') . ': ' . ($node['is_leaf'] ? 'Yes' : 'No');
+        $title[] = $this->trans('Locked') . ': ' . ($node['is_locked'] ? 'Yes' : 'No');
 
         return implode('<br />', $title);
     }

@@ -24,7 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -60,8 +60,8 @@ class RegistrationType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->__('User name'),
-                'help' => $this->__('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'label' => $this->trans('User name'),
+                'help' => $this->trans('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
                 'attr' => [
                     'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
                 ],
@@ -70,42 +70,42 @@ class RegistrationType extends AbstractType
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->__('Email'),
-                    'help' => $this->__('You will use your e-mail address to identify yourself when you log in.'),
+                    'label' => $this->trans('Email'),
+                    'help' => $this->trans('You will use your e-mail address to identify yourself when you log in.'),
                 ],
                 'second_options' => [
-                    'label' => $this->__('Repeat Email')
+                    'label' => $this->trans('Repeat Email')
                 ],
-                'invalid_message' => $this->__('The emails  must match!'),
+                'invalid_message' => $this->trans('The emails  must match!'),
                 'constraints' => [new ValidEmail()]
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => $this->__('Password'),
-                    'help' => $this->__f('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'label' => $this->trans('Password'),
+                    'help' => $this->trans('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
                 ],
                 'second_options' => [
-                    'label' => $this->__('Repeat Password')
+                    'label' => $this->trans('Repeat Password')
                 ],
-                'invalid_message' => $this->__('The passwords must match!'),
+                'invalid_message' => $this->trans('The passwords must match!'),
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-plus',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', ButtonType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])
             ->add('reset', ResetType::class, [
-                'label' => $this->__('Reset'),
+                'label' => $this->trans('Reset'),
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']
             ])
@@ -115,7 +115,7 @@ class RegistrationType extends AbstractType
                 'mapped' => false,
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),
-                'help' => $this->__('Asking this question helps us prevent automated scripts from accessing private areas of the site.')
+                'help' => $this->trans('Asking this question helps us prevent automated scripts from accessing private areas of the site.')
             ]);
         }
     }

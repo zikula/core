@@ -139,7 +139,7 @@ class ConfigController extends AbstractController
 
                     if (false === $storeTypeCanBeWritten) {
                         // an error occured - we do not change the way of storing session data
-                        $this->addFlash('error', $this->__('Error! Session path not writeable!'));
+                        $this->addFlash('error', $this->trans('Error! Session path not writeable!'));
                         $sessionSavePath = '';
                     }
                 }
@@ -226,7 +226,7 @@ class ConfigController extends AbstractController
                 if (is_readable($idsRulePath)) {
                     $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
-                    $this->addFlash('error', $this->__f('Error! PHPIDS rule file %s does not exist or is not readable.', ['%s' => $idsRulePath]));
+                    $this->addFlash('error', $this->trans('Error! PHPIDS rule file %s does not exist or is not readable.', ['%s' => $idsRulePath]));
                     $validates = false;
                 }
 
@@ -284,20 +284,20 @@ class ConfigController extends AbstractController
 
                 // the module configuration has been updated successfuly
                 if ($validates) {
-                    $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                    $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
                 }
 
                 // we need to auto logout the user if essential session settings have been changed
                 if (true === $causeLogout) {
                     $accessHelper->logout();
-                    $this->addFlash('status', $this->__('Session handling variables have changed. You must log in again.'));
+                    $this->addFlash('status', $this->trans('Session handling variables have changed. You must log in again.'));
                     $returnPage = urlencode($router->generate('zikulasecuritycentermodule_config_config'));
 
                     return $this->redirectToRoute('zikulausersmodule_access_login', ['returnUrl' => $returnPage]);
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulasecuritycentermodule_config_config');
@@ -421,7 +421,7 @@ class ConfigController extends AbstractController
             $cacheClearer->clear('legacy');
 
             // the module configuration has been updated successfuly
-            $this->addFlash('status', $this->__('Done! Saved HTMLPurifier configuration.'));
+            $this->addFlash('status', $this->trans('Done! Saved HTMLPurifier configuration.'));
 
             return $this->redirectToRoute('zikulasecuritycentermodule_config_purifierconfig');
         }
@@ -430,7 +430,7 @@ class ConfigController extends AbstractController
 
         if (isset($reset) && 'default' === $reset) {
             $purifierConfig = $purifierHelper->getPurifierConfig(['forcedefault' => true]);
-            $this->addFlash('status', $this->__('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
+            $this->addFlash('status', $this->trans('Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'));
         } else {
             $purifierConfig = $purifierHelper->getPurifierConfig(['forcedefault' => false]);
         }
@@ -572,7 +572,7 @@ class ConfigController extends AbstractController
             $cacheClearer->clear('symfony');
             $cacheClearer->clear('legacy');
 
-            $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+            $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
 
             return $this->redirectToRoute('zikulasecuritycentermodule_config_allowedhtml');
         }

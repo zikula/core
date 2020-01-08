@@ -16,7 +16,7 @@ namespace Zikula\Bundle\HookBundle\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;

@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
 use Zikula\Common\Translator\IdentityTranslator;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\PermissionsModule\Api\PermissionApi;
@@ -168,16 +168,16 @@ class PermissionApiTest extends TestCase
     {
         $api = new PermissionApi($this->permRepo, $this->userRepo, $this->currentUserApi, $this->translator);
         $accessNames = [
-            ACCESS_INVALID => $this->translator->__('Invalid'),
-            ACCESS_NONE => $this->translator->__('No access'),
-            ACCESS_OVERVIEW => $this->translator->__('Overview access'),
-            ACCESS_READ => $this->translator->__('Read access'),
-            ACCESS_COMMENT => $this->translator->__('Comment access'),
-            ACCESS_MODERATE => $this->translator->__('Moderate access'),
-            ACCESS_EDIT => $this->translator->__('Edit access'),
-            ACCESS_ADD => $this->translator->__('Add access'),
-            ACCESS_DELETE => $this->translator->__('Delete access'),
-            ACCESS_ADMIN => $this->translator->__('Admin access'),
+            ACCESS_INVALID => $this->translator->trans('Invalid'),
+            ACCESS_NONE => $this->translator->trans('No access'),
+            ACCESS_OVERVIEW => $this->translator->trans('Overview access'),
+            ACCESS_READ => $this->translator->trans('Read access'),
+            ACCESS_COMMENT => $this->translator->trans('Comment access'),
+            ACCESS_MODERATE => $this->translator->trans('Moderate access'),
+            ACCESS_EDIT => $this->translator->trans('Edit access'),
+            ACCESS_ADD => $this->translator->trans('Add access'),
+            ACCESS_DELETE => $this->translator->trans('Delete access'),
+            ACCESS_ADMIN => $this->translator->trans('Admin access'),
         ];
         $this->assertEquals($accessNames, $api->accessLevelNames());
     }

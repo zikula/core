@@ -113,10 +113,10 @@ class AdminController extends AbstractController
                 $adminCategory = $form->getData();
                 $this->getDoctrine()->getManager()->persist($adminCategory);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->__('Done! Created new category.'));
+                $this->addFlash('status', $this->trans('Done! Created new category.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -152,10 +152,10 @@ class AdminController extends AbstractController
                     throw new AccessDeniedException();
                 }
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->__('Done! Saved category.'));
+                $this->addFlash('status', $this->trans('Done! Saved category.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -189,9 +189,9 @@ class AdminController extends AbstractController
                 $category = $form->getData();
                 $this->getDoctrine()->getManager()->remove($category);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->__('Done! Category deleted.'));
+                $this->addFlash('status', $this->trans('Done! Category deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -325,7 +325,7 @@ class AdminController extends AbstractController
                     $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
-                    $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->__('invalid route') . ')';
+                    $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
                 }
 
                 $moduleName = (string)$adminModule['name'];
@@ -390,7 +390,7 @@ class AdminController extends AbstractController
                 $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
-                $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->__('invalid route') . ')';
+                $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
             }
 
             $moduleId = (int)$adminModule['id'];

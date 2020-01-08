@@ -35,7 +35,7 @@ class AjaxController extends AbstractController
         ZikulaHttpKernelInterface $kernel
     ): JsonResponse {
         if (!$request->isXmlHttpRequest()) {
-            return $this->json($this->__('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Only ajax access is allowed!'), Response::HTTP_BAD_REQUEST);
         }
 
         $themeBundle = $kernel->getBundle('ZikulaBootstrapTheme');

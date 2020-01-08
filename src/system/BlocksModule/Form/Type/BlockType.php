@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -66,7 +66,7 @@ class BlockType extends AbstractType
             ->add($builder->create('language', ChoiceType::class, [
                 'choices' => $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'required' => false,
-                'placeholder' => $this->__('All')
+                'placeholder' => $this->trans('All')
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('positions', EntityType::class, [
                 'class' => BlockPositionEntity::class,
@@ -78,18 +78,18 @@ class BlockType extends AbstractType
                 'entry_type' => BlockFilterType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => $this->__('Custom filters'),
+                'label' => $this->trans('Custom filters'),
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

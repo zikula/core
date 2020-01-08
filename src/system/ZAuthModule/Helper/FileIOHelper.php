@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
@@ -132,13 +132,13 @@ class FileIOHelper
         // read the choosen file
         ini_set('auto_detect_line_endings', true); // allows for macintosh line endings ("/r")
         if (!$lines = file($file->getPathname())) {
-            return $this->__('Error! It has not been possible to read the import file.');
+            return $this->trans('Error! It has not been possible to read the import file.');
         }
         $expectedFields = ['uname', 'pass', 'email', 'activated', 'sendmail', 'groups'];
         $firstLineArray = explode($delimiter, str_replace('"', '', trim($lines[0])));
         foreach ($firstLineArray as $field) {
             if (!in_array(mb_strtolower(trim($field)), $expectedFields, true)) {
-                return $this->__f('Error! The import file does not have the expected field %s in the first row. Please check your import file.', ['%s' => $field]);
+                return $this->trans('Error! The import file does not have the expected field %s in the first row. Please check your import file.', ['%s' => $field]);
             }
         }
         unset($lines[0]);
@@ -153,7 +153,7 @@ class FileIOHelper
 
             // check if the line has all the needed values
             if (count($lineArray) !== count($firstLineArray)) {
-                return $this->__f('Error! The number of parameters in line %s is not correct. Please check your import file.', ['%s' => $counter]);
+                return $this->trans('Error! The number of parameters in line %s is not correct. Please check your import file.', ['%s' => $counter]);
             }
             $importValues[] = array_combine($firstLineArray, $lineArray);
 
@@ -182,13 +182,13 @@ class FileIOHelper
             $importValues[$counter - 1]['activated'] = isset($importValues[$counter - 1]['activated']) ? (int)$importValues[$counter - 1]['activated'] : UsersConstant::ACTIVATED_ACTIVE;
             $activated = $importValues[$counter - 1]['activated'];
             if ((UsersConstant::ACTIVATED_INACTIVE !== $activated) && (UsersConstant::ACTIVATED_ACTIVE !== $activated)) {
-                return $this->locateErrors($this->__('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.'), 'activated', $counter);
+                return $this->locateErrors($this->trans('Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.'), 'activated', $counter);
             }
 
             // validate sendmail
             $importValues[$counter - 1]['sendmail'] = isset($importValues[$counter - 1]['sendmail']) ? (int)$importValues[$counter - 1]['sendmail'] : 0;
             if ($importValues[$counter - 1]['sendmail'] < 0 || $importValues[$counter - 1]['sendmail'] > 1) {
-                return $this->locateErrors($this->__('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.'), 'sendmail', $counter);
+                return $this->locateErrors($this->trans('Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.'), 'sendmail', $counter);
             }
 
             // check groups and set defaultGroup as default if there are not groups defined
@@ -196,7 +196,7 @@ class FileIOHelper
             $groupsArray = explode('|', $importValues[$counter - 1]['groups']);
             foreach ($groupsArray as $group) {
                 if (!in_array($group, $allGroupsArray, true)) {
-                    return $this->locateErrors($this->__f('Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.', ['%gid%' => $group]), 'groups', $counter);
+                    return $this->locateErrors($this->trans('Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.', ['%gid%' => $group]), 'groups', $counter);
                 }
             }
 
@@ -204,12 +204,12 @@ class FileIOHelper
         }
 
         if (empty($importValues)) {
-            return $this->__('Error! The import file does not have values.');
+            return $this->trans('Error! The import file does not have values.');
         }
 
         // The values in import file are ready. Proceed creating users
         if (!$this->createUsers($importValues)) {
-            return $this->__('Error! The creation of users has failed.');
+            return $this->trans('Error! The creation of users has failed.');
         }
         // send email if indicated
         foreach ($importValues as $importValue) {

@@ -15,7 +15,7 @@ namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;

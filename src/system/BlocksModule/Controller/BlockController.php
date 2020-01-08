@@ -50,10 +50,10 @@ class BlockController extends AbstractController
             ->add('bkey', ChoiceType::class, [
                 'placeholder' => 'Choose a block type',
                 'choices' => array_flip($blockApi->getAvailableBlockTypes()),
-                'label' => $this->__('Block type')
+                'label' => $this->trans('Block type')
             ])
             ->add('choose', SubmitType::class, [
-                'label' => $this->__('Choose'),
+                'label' => $this->trans('Choose'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
@@ -131,12 +131,12 @@ class BlockController extends AbstractController
 
                 $em->persist($blockEntity);
                 $em->flush();
-                $this->addFlash('status', $this->__('Block saved!'));
+                $this->addFlash('status', $this->trans('Block saved!'));
 
                 return $this->redirectToRoute('zikulablocksmodule_admin_view');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
 
                 return $this->redirectToRoute('zikulablocksmodule_admin_view');
             }
@@ -170,9 +170,9 @@ class BlockController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($blockEntity);
                 $em->flush();
-                $this->addFlash('status', $this->__('Done! Block deleted.'));
+                $this->addFlash('status', $this->trans('Done! Block deleted.'));
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');
@@ -194,11 +194,11 @@ class BlockController extends AbstractController
     public function toggleblockAction(Request $request): JsonResponse
     {
         if (!$this->hasPermission('ZikulaBlocksModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('No permission for this action.'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('No permission for this action.'), Response::HTTP_FORBIDDEN);
         }
         $bid = $request->request->getInt('bid', -1);
         if (-1 === $bid) {
-            return $this->json($this->__('No block ID passed.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('No block ID passed.'), Response::HTTP_BAD_REQUEST);
         }
         $em = $this->getDoctrine()->getManager();
         $block = $em->find('ZikulaBlocksModule:BlockEntity', $bid);

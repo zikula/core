@@ -16,7 +16,7 @@ namespace Zikula\PermissionsModule\Twig\Extension;
 use InvalidArgumentException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class PermissionsExtension extends AbstractExtension

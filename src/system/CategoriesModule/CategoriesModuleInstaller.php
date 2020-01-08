@@ -163,7 +163,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => '__SYSTEM__',
-            'display_name' => $this->localize($this->__('Category root')),
+            'display_name' => $this->localize($this->trans('Category root')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -174,7 +174,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => 'Modules',
-            'display_name' => $this->localize($this->__('Modules')),
+            'display_name' => $this->localize($this->trans('Modules')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -185,7 +185,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => 'General',
-            'display_name' => $this->localize($this->__('General')),
+            'display_name' => $this->localize($this->trans('General')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -196,7 +196,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => 'Publication Status (extended)',
-            'display_name' => $this->localize($this->__('Publication status (extended)')),
+            'display_name' => $this->localize($this->trans('Publication status (extended)')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -207,7 +207,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'P',
             'name' => 'Pending',
-            'display_name' => $this->localize($this->__('Pending')),
+            'display_name' => $this->localize($this->trans('Pending')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'P']
@@ -219,7 +219,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'C',
             'name' => 'Checked',
-            'display_name' => $this->localize($this->__('Checked')),
+            'display_name' => $this->localize($this->trans('Checked')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'C']
@@ -231,7 +231,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'A',
             'name' => 'Approved',
-            'display_name' => $this->localize($this->__('Approved')),
+            'display_name' => $this->localize($this->trans('Approved')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'A']
@@ -243,7 +243,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'O',
             'name' => 'On-line',
-            'display_name' => $this->localize($this->__('On-line')),
+            'display_name' => $this->localize($this->trans('On-line')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'O']
@@ -255,7 +255,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'R',
             'name' => 'Rejected',
-            'display_name' => $this->localize($this->__('Rejected')),
+            'display_name' => $this->localize($this->trans('Rejected')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'R']
@@ -267,7 +267,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => 'ActiveStatus',
-            'display_name' => $this->localize($this->__('Activity status')),
+            'display_name' => $this->localize($this->trans('Activity status')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -278,7 +278,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'A',
             'name' => 'Active',
-            'display_name' => $this->localize($this->__('Active')),
+            'display_name' => $this->localize($this->trans('Active')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'A']
@@ -290,7 +290,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'I',
             'name' => 'Inactive',
-            'display_name' => $this->localize($this->__('Inactive')),
+            'display_name' => $this->localize($this->trans('Inactive')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'I']
@@ -302,7 +302,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => 'Publication status (basic)',
-            'display_name' => $this->localize($this->__('Publication status (basic)')),
+            'display_name' => $this->localize($this->trans('Publication status (basic)')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -313,7 +313,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'P',
             'name' => 'Pending',
-            'display_name' => $this->localize($this->__('Pending')),
+            'display_name' => $this->localize($this->trans('Pending')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'P']
@@ -325,7 +325,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => 'A',
             'name' => 'Approved',
-            'display_name' => $this->localize($this->__('Approved')),
+            'display_name' => $this->localize($this->trans('Approved')),
             'display_desc' => $this->localize(),
             'status' => 'A',
             'attributes' => ['code' => 'A']
@@ -337,7 +337,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => false,
             'value' => '',
             'name' => 'Global',
-            'display_name' => $this->localize($this->__('Global')),
+            'display_name' => $this->localize($this->trans('Global')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -348,7 +348,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Blogging',
-            'display_name' => $this->localize($this->__('Blogging')),
+            'display_name' => $this->localize($this->trans('Blogging')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -359,7 +359,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Music and audio',
-            'display_name' => $this->localize($this->__('Music and audio')),
+            'display_name' => $this->localize($this->trans('Music and audio')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -370,7 +370,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Art and photography',
-            'display_name' => $this->localize($this->__('Art and photography')),
+            'display_name' => $this->localize($this->trans('Art and photography')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -381,7 +381,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Writing and thinking',
-            'display_name' => $this->localize($this->__('Writing and thinking')),
+            'display_name' => $this->localize($this->trans('Writing and thinking')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -392,7 +392,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Communications and media',
-            'display_name' => $this->localize($this->__('Communications and media')),
+            'display_name' => $this->localize($this->trans('Communications and media')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -403,7 +403,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Travel and culture',
-            'display_name' => $this->localize($this->__('Travel and culture')),
+            'display_name' => $this->localize($this->trans('Travel and culture')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -414,7 +414,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Science and technology',
-            'display_name' => $this->localize($this->__('Science and technology')),
+            'display_name' => $this->localize($this->trans('Science and technology')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -425,7 +425,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Sport and activities',
-            'display_name' => $this->localize($this->__('Sport and activities')),
+            'display_name' => $this->localize($this->trans('Sport and activities')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -436,7 +436,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
             'is_leaf' => true,
             'value' => '',
             'name' => 'Business and work',
-            'display_name' => $this->localize($this->__('Business and work')),
+            'display_name' => $this->localize($this->trans('Business and work')),
             'display_desc' => $this->localize(),
             'status' => 'A'
         ];
@@ -448,7 +448,7 @@ class CategoriesModuleInstaller extends AbstractExtensionInstaller
     {
         $values = [];
         foreach ($this->container->get(LocaleApi::class)->getSupportedLocales() as $code) {
-            $values[$code] = $this->__(/** @Ignore */$value, 'zikula', $code);
+            $values[$code] = $this->trans(/** @Ignore */$value, 'zikula', $code);
         }
 
         return $values;

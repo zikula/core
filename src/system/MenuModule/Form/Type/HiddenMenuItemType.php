@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\MenuModule\Entity\RepositoryInterface\MenuItemRepositoryInterface;
 use Zikula\MenuModule\Form\DataTransformer\MenuItemEntityTransformer;
@@ -53,7 +53,7 @@ class HiddenMenuItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'invalid_message' => $this->__('The selected item does not exist')
+            'invalid_message' => $this->trans('The selected item does not exist')
         ]);
     }
 

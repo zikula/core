@@ -46,10 +46,10 @@ class ConfigController extends AbstractController
             if ($form->get('save')->isClicked()) {
                 $data = $form->getData();
                 $this->setVars($data);
-                $this->addFlash('status', $this->__('Done! Configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 

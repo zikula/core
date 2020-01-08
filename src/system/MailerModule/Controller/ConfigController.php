@@ -110,10 +110,10 @@ class ConfigController extends AbstractController
                 }
                 $configDumper->setConfiguration('swiftmailer', $config);
 
-                $this->addFlash('status', $this->__('Done! Module configuration updated.'));
+                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 
@@ -190,16 +190,16 @@ class ConfigController extends AbstractController
                     // check our result and return the correct error code
                     if (true === $result) {
                         // Success
-                        $this->addFlash('status', $this->__('Done! Message sent.'));
+                        $this->addFlash('status', $this->trans('Done! Message sent.'));
                     } else {
-                        $this->addFlash('error', $this->__('It looks like the message could not be sent properly.'));
+                        $this->addFlash('error', $this->trans('It looks like the message could not be sent properly.'));
                     }
                 } catch (RuntimeException $exception) {
-                    $this->addFlash('error', $this->__('The message could not be sent properly.'));
+                    $this->addFlash('error', $this->trans('The message could not be sent properly.'));
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->__('Operation cancelled.'));
+                $this->addFlash('status', $this->trans('Operation cancelled.'));
             }
         }
 

@@ -18,7 +18,7 @@ use JsonSchema\Validator;
 use stdClass;
 use Symfony\Component\Finder\SplFileInfo;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ComposerValidationHelper
 {

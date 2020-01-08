@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\CategoriesModule\Builder\EntitySelectionBuilder;
 use Zikula\CategoriesModule\Entity\CategoryRegistryEntity;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -56,28 +56,28 @@ class CategoryRegistryType extends AbstractType
     {
         $builder
             ->add('modname', ChoiceType::class, [
-                'label' => $this->__('Module'),
+                'label' => $this->trans('Module'),
                 'choices' => $options['categorizableModules'],
-                'placeholder' => $this->__('Select module')
+                'placeholder' => $this->trans('Select module')
             ])
             ->add('property', TextType::class, [
-                'label' => $this->__('Property name'),
+                'label' => $this->trans('Property name'),
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('category', CategoryTreeType::class, [
-                'label' => $this->__('Category')
+                'label' => $this->trans('Category')
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->__('Save'),
+                'label' => $this->trans('Save'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

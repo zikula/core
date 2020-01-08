@@ -1,8 +1,8 @@
 ##in PHP files:
 
 use Rector (see comments below)
-replace method ->__(message) with ->trans(message)
-replace method ->__f(message, ['key' => $var]) with ->trans(message, ['key' => $var])
+replace method ->trans(message) with ->trans(message)
+replace method ->trans(message, ['key' => $var]) with ->trans(message, ['key' => $var])
 `_n()` and `_fn()` will need to be manually refactored
 
 replace interface Zikula\Common\Translator\TranslatorInterface

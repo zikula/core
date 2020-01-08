@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Helper;
 
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\ZAuthModule\Entity\AuthenticationMappingEntity;

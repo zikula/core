@@ -17,7 +17,7 @@ use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\BlockHandlerInterface;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class BlockFactoryApi

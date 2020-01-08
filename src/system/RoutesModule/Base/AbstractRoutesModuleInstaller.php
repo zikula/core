@@ -42,7 +42,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->create($this->entities);
         } catch (Exception $exception) {
-            $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+            $this->addFlash('error', $this->trans('Doctrine Exception') . ': ' . $exception->getMessage());
             $this->logger->error(
                 '{app}: Could not create the database tables during installation. Error details: {errorMessage}.',
                 ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]
@@ -73,7 +73,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
                 try {
                     $this->schemaTool->update($this->entities);
                 } catch (Exception $exception) {
-                    $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+                    $this->addFlash('error', $this->trans('Doctrine Exception') . ': ' . $exception->getMessage());
                     $this->logger->error(
                         '{app}: Could not update the database tables during the upgrade.'
                             . ' Error details: {errorMessage}.',
@@ -94,7 +94,7 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
         try {
             $this->schemaTool->drop($this->entities);
         } catch (Exception $exception) {
-            $this->addFlash('error', $this->__('Doctrine Exception') . ': ' . $exception->getMessage());
+            $this->addFlash('error', $this->trans('Doctrine Exception') . ': ' . $exception->getMessage());
             $this->logger->error(
                 '{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.',
                 ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]

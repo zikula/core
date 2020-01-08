@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -50,7 +50,7 @@ class DeleteType extends AbstractType
                 'choice_label' => 'uname'
             ])
             ->add('delete', SubmitType::class, [
-                'label' => $this->__('Delete selected users'),
+                'label' => $this->trans('Delete selected users'),
                 'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'

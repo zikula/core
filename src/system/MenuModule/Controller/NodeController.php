@@ -43,10 +43,10 @@ class NodeController extends AbstractController
         MenuItemEntity $menuItemEntity = null
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         if (!in_array($action, ['edit', 'delete', 'deleteandmovechildren', 'copy', 'activate', 'deactivate'])) {
-            return $this->json($this->__('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
+            return $this->json($this->trans('Data provided was inappropriate.'), Response::HTTP_BAD_REQUEST);
         }
         $mode = $request->request->get('mode', 'edit');
 
@@ -121,7 +121,7 @@ class NodeController extends AbstractController
         MenuItemRepository $menuItemRepository
     ): JsonResponse {
         if (!$this->hasPermission('ZikulaMenuModule::', '::', ACCESS_ADMIN)) {
-            return $this->json($this->__('No permission for this action'), Response::HTTP_FORBIDDEN);
+            return $this->json($this->trans('No permission for this action'), Response::HTTP_FORBIDDEN);
         }
         $node = $request->request->get('node');
         $entityId = str_replace($this->domTreeNodePrefix, '', $node['id']);

@@ -22,7 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -46,15 +46,15 @@ class TestType extends AbstractType
     {
         $builder
             ->add('fromName', TextType::class, [
-                'label' => $this->__('Sender\'s name'),
+                'label' => $this->trans('Sender\'s name'),
                 'disabled' => true
             ])
             ->add('fromAddress', EmailType::class, [
-                'label' => $this->__('Sender\'s e-mail address'),
+                'label' => $this->trans('Sender\'s e-mail address'),
                 'disabled' => true
             ])
             ->add('toName', TextType::class, [
-                'label' => $this->__('Recipient\'s name'),
+                'label' => $this->trans('Recipient\'s name'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -63,7 +63,7 @@ class TestType extends AbstractType
                 ]
             ])
             ->add('toAddress', EmailType::class, [
-                'label' => $this->__('Recipient\'s e-mail address'),
+                'label' => $this->trans('Recipient\'s e-mail address'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -73,7 +73,7 @@ class TestType extends AbstractType
                 ]
             ])
             ->add('subject', TextType::class, [
-                'label' => $this->__('Subject'),
+                'label' => $this->trans('Subject'),
                 'attr' => [
                     'maxlength' => 50
                 ],
@@ -82,7 +82,7 @@ class TestType extends AbstractType
                 ]
             ])
             ->add('messageType', ChoiceType::class, [
-                'label' => $this->__('Message type'),
+                'label' => $this->trans('Message type'),
                 'empty_data' => 'text',
                 'choices' => [
                     'Plain-text message' => 'text',
@@ -92,22 +92,22 @@ class TestType extends AbstractType
                 'expanded' => false
             ])
             ->add('bodyHtml', TextareaType::class, [
-                'label' => $this->__('HTML-formatted message'),
+                'label' => $this->trans('HTML-formatted message'),
                 'required' => false
             ])
             ->add('bodyText', TextareaType::class, [
-                'label' => $this->__('Plain-text message'),
+                'label' => $this->trans('Plain-text message'),
                 'required' => false
             ])
             ->add('test', SubmitType::class, [
-                'label' => $this->__('Send test email'),
+                'label' => $this->trans('Send test email'),
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->__('Cancel'),
+                'label' => $this->trans('Cancel'),
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

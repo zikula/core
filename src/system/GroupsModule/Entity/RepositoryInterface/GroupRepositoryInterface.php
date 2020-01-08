@@ -15,7 +15,7 @@ namespace Zikula\GroupsModule\Entity\RepositoryInterface;
 
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Persistence\ObjectRepository;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 interface GroupRepositoryInterface extends ObjectRepository, Selectable
 {

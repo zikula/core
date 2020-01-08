@@ -16,7 +16,7 @@ namespace Zikula\Bundle\CoreInstallerBundle\Helper;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\StageInterface;
 

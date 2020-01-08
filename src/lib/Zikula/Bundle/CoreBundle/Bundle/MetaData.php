@@ -16,7 +16,7 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 use ArrayAccess;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
-use Zikula\Common\Translator\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class MetaData implements ArrayAccess
@@ -152,7 +152,7 @@ class MetaData implements ArrayAccess
     {
         $this->confirmTranslator();
 
-        $description = $this->__(/** @Ignore */$this->description);
+        $description = $this->trans(/** @Ignore */$this->description);
 
         return empty($description) ? $this->description : $description;
     }
@@ -171,7 +171,7 @@ class MetaData implements ArrayAccess
     {
         $this->confirmTranslator();
 
-        $display_name = $this->__(/** @Ignore */$this->displayName);
+        $display_name = $this->trans(/** @Ignore */$this->displayName);
 
         return empty($display_name) ? $this->displayName : $display_name;
     }
@@ -185,7 +185,7 @@ class MetaData implements ArrayAccess
     {
         if ($translated) {
             $this->confirmTranslator();
-            $url = $this->__(/** @Ignore */$this->url);
+            $url = $this->trans(/** @Ignore */$this->url);
 
             return empty($url) ? $this->url : $url;
         }

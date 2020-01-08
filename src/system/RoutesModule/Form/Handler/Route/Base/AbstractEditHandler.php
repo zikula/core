@@ -33,20 +33,20 @@ abstract class AbstractEditHandler extends EditHandler
         $this->objectType = 'route';
         $this->objectTypeCapital = 'Route';
         $this->objectTypeLower = 'route';
-        
+
         $this->hasPageLockSupport = true;
-    
+
         $result = parent::processForm($templateParameters);
         if ($result instanceof RedirectResponse) {
             return $result;
         }
-    
+
         if ('create' === $this->templateParameters['mode'] && !$this->modelHelper->canBeCreated($this->objectType)) {
             $request = $this->requestStack->getCurrentRequest();
             if ($request->hasSession() && ($session = $request->getSession())) {
                 $session->getFlashBag()->add(
                     'error',
-                    $this->__('Sorry, but you can not create the route yet as other items are required which must be created before!')
+                    $this->trans('Sorry, but you can not create the route yet as other items are required which must be created before!')
                 );
             }
             $logArgs = [
@@ -59,23 +59,23 @@ abstract class AbstractEditHandler extends EditHandler
                     . ' as other items are required which must be created before.',
                 $logArgs
             );
-    
+
             return new RedirectResponse($this->getRedirectUrl(['commandName' => '']), 302);
         }
-    
+
         $entityData = $this->entityRef->toArray();
-    
+
         // assign data to template as array (for additions like standard fields)
         $this->templateParameters[$this->objectTypeLower] = $entityData;
-    
+
         return $result;
     }
-    
+
     protected function createForm(): ?FormInterface
     {
         return $this->formFactory->create(RouteType::class, $this->entityRef, $this->getFormOptions());
     }
-    
+
     protected function getFormOptions(): array
     {
         $options = [
@@ -93,14 +93,14 @@ abstract class AbstractEditHandler extends EditHandler
                 false
             ),
         ];
-    
+
         return $options;
     }
 
     protected function getRedirectCodes(): array
     {
         $codes = parent::getRedirectCodes();
-    
+
         // user index page of route area
         $codes[] = 'userIndex';
         // admin index page of route area
@@ -117,8 +117,8 @@ abstract class AbstractEditHandler extends EditHandler
         $codes[] = 'userDisplay';
         // admin detail page of treated route
         $codes[] = 'adminDisplay';
-    
-    
+
+
         return $codes;
     }
 
@@ -135,21 +135,21 @@ abstract class AbstractEditHandler extends EditHandler
             // return to referer
             return $this->returnTo;
         }
-    
+
         $routeArea = array_key_exists('routeArea', $this->templateParameters)
             ? $this->templateParameters['routeArea']
             : ''
         ;
         $routePrefix = 'zikularoutesmodule_' . $this->objectTypeLower . '_' . $routeArea;
-    
+
         // redirect to the list of routes
         $url = $this->router->generate($routePrefix . 'view');
-    
+
         if ($objectIsPersisted) {
             // redirect to the detail page of treated route
             $url = $this->router->generate($routePrefix . 'display', $this->entityRef->createUrlArgs());
         }
-    
+
         return $url;
     }
 
@@ -159,7 +159,7 @@ abstract class AbstractEditHandler extends EditHandler
         if (false === $result) {
             return $result;
         }
-    
+
         // build $args for BC (e.g. used by redirect handling)
         foreach ($this->templateParameters['actions'] as $action) {
             if ($this->form->get($action['id'])->isClicked()) {
@@ -174,32 +174,32 @@ abstract class AbstractEditHandler extends EditHandler
             $args['commandName'] = 'submit';
             $this->repeatCreateAction = true;
         }
-    
+
         return new RedirectResponse($this->getRedirectUrl($args), 302);
     }
-    
+
     protected function getDefaultMessage(array $args = [], bool $success = false): string
     {
         if (false === $success) {
             return parent::getDefaultMessage($args, $success);
         }
-    
+
         switch ($args['commandName']) {
             case 'submit':
                 if ('create' === $this->templateParameters['mode']) {
-                    $message = $this->__('Done! Route created.');
+                    $message = $this->trans('Done! Route created.');
                 } else {
-                    $message = $this->__('Done! Route updated.');
+                    $message = $this->trans('Done! Route updated.');
                 }
                 break;
             case 'delete':
-                $message = $this->__('Done! Route deleted.');
+                $message = $this->trans('Done! Route deleted.');
                 break;
             default:
-                $message = $this->__('Done! Route updated.');
+                $message = $this->trans('Done! Route updated.');
                 break;
         }
-    
+
         return $message;
     }
 
@@ -211,9 +211,9 @@ abstract class AbstractEditHandler extends EditHandler
         // get treated entity reference from persisted member var
         /** @var RouteEntity $entity */
         $entity = $this->entityRef;
-    
+
         $action = $args['commandName'];
-    
+
         $success = false;
         try {
             // execute the workflow action
@@ -223,7 +223,7 @@ abstract class AbstractEditHandler extends EditHandler
             if ($request->hasSession() && ($session = $request->getSession())) {
                 $session->getFlashBag()->add(
                     'error',
-                    $this->__f(
+                    $this->trans(
                         'Sorry, but an error occured during the %action% action. Please apply the changes again!',
                         ['%action%' => $action]
                     ) . ' ' . $exception->getMessage()
@@ -242,14 +242,14 @@ abstract class AbstractEditHandler extends EditHandler
                 $logArgs
             );
         }
-    
+
         $this->addDefaultMessage($args, $success);
-    
+
         if ($success && 'create' === $this->templateParameters['mode']) {
             // store new identifier
             $this->idValue = $entity->getKey();
         }
-    
+
         return $success;
     }
 
@@ -261,7 +261,7 @@ abstract class AbstractEditHandler extends EditHandler
         if ($this->repeatCreateAction) {
             return $this->repeatReturnUrl;
         }
-    
+
         $request = $this->requestStack->getCurrentRequest();
         if ($request->hasSession() && ($session = $request->getSession())) {
             if ($session->has('zikularoutesmodule' . $this->objectTypeCapital . 'Referer')) {
@@ -269,16 +269,16 @@ abstract class AbstractEditHandler extends EditHandler
                 $session->remove('zikularoutesmodule' . $this->objectTypeCapital . 'Referer');
             }
         }
-    
+
         // normal usage, compute return url from given redirect code
         if (!in_array($this->returnTo, $this->getRedirectCodes(), true)) {
             // invalid return code, so return the default url
             return $this->getDefaultReturnUrl($args);
         }
-    
+
         $routeArea = 0 === strpos($this->returnTo, 'admin') ? 'admin' : '';
         $routePrefix = 'zikularoutesmodule_' . $this->objectTypeLower . '_' . $routeArea;
-    
+
         // parse given redirect code and return corresponding url
         switch ($this->returnTo) {
             case 'userIndex':
@@ -298,7 +298,7 @@ abstract class AbstractEditHandler extends EditHandler
                 ) {
                     return $this->router->generate($routePrefix . 'display', $this->entityRef->createUrlArgs());
                 }
-    
+
                 return $this->getDefaultReturnUrl($args);
             default:
                 return $this->getDefaultReturnUrl($args);
