@@ -1,6 +1,6 @@
 <p>
-    {% set nummeb = 'count.registered.user'|trans({count: usercount}, 'zikula') %}
-    {% set numanon = 'count.anonymous.guest'|trans({count: guestcount}, 'zikula') %}
+    {% set nummeb = 'plural_n.registered.user'|trans({count: usercount}, 'zikula') %}{# one registered user|n registered users #}
+    {% set numanon = 'plural_n.anonymous.guest'|trans({count: guestcount}, 'zikula') %}{# one anonymous guest|n anonymous guests #}
     {% trans with {'%users%': nummeb, '%guests%': numanon, '%time%': since|date('g:i:s a')} from 'zikula' %}%users% and %guests% online since %time%.{% endtrans %}
 </p>
 {% if currentUser.loggedIn %}

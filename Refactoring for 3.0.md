@@ -38,16 +38,27 @@ Some examples for how to convert translations in templates:
 Old: {{ __('Hello') }}
 New: {% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
 
-2. With parameters
+2. With simple substitution parameters
 Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
 New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
 
-3. With plural forms
+3. With plural forms and advanced substitution (see note below)
 Old: {% set amountOfMembers = _fn('%amount% registered user', '%amount% registered users', users|length, {'%amount%': users|length}) %}
-New: {% set amountOfMembers = '{0} No registered user|{1} One registered user|]1,Inf[ %amount% registered users'|trans({'%amount%': users|length, '%count%': users|length}) %}
+New: {% trans count users|length %}plural_n.registered.user{# one registered user|n registered users #}{% endtrans %}
+```
+the `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.
+The comments `{# ... #}` are examples of what the translation should appear like in English. Unfortunately, we don't know how to communicate
+this comment in the translation file at this time.
+
+The translation of this would look something like:
+```yaml
+#messages+intl-icu.en.yaml
+plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}"
 ```
 
-See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples.
+See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
+More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat]
+(https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
 
 ### JavaScript files
 
