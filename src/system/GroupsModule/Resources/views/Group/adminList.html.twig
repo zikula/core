@@ -112,8 +112,8 @@
                 <td headers="hGroupName">{{ application.group.name }}</td>
                 <td headers="hComment">{{ application.application }}</td>
                 <td headers="hActions" class="text-right">
-                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'accept' }) }}" title="{% trans with { '%username': application.user.uname } %}Accept %username{% endtrans %}" class="fa fa-user-plus fa-lg tooltips"></a>&nbsp;
-                    <a href="{{ path('zikulagroupsmodule_application_admin', { app_id: application.appId, action: 'deny' }) }}" title="{% trans with { '%username': application.user.uname     } %}Deny %username{% endtrans %}" class="fa fa-user-times fa-lg tooltips"></a>
+                    <a href="{{ path('zikulagroupsmodule_application_admin', {app_id: application.appId, action: 'accept'}) }}" title="{% trans with {'%username%': application.user.uname} %}Accept %username%{% endtrans %}" class="fa fa-user-plus fa-lg tooltips"></a>&nbsp;
+                    <a href="{{ path('zikulagroupsmodule_application_admin', {app_id: application.appId, action: 'deny'}) }}" title="{% trans with {'%username%': application.user.uname} %}Deny %username%{% endtrans %}" class="fa fa-user-times fa-lg tooltips"></a>
                 </td>
             </tr>
             {% else %}
