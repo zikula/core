@@ -125,16 +125,16 @@
         },
         {
             "name": "components/bootstrap",
-            "version": "4.3.1",
+            "version": "4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/bootstrap.git",
-                "reference": "9487105b1b8c1db5bd1879429103deedd6982462"
+                "reference": "983313252725392091d8d2952276cbdcd4060014"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/bootstrap/zipball/9487105b1b8c1db5bd1879429103deedd6982462",
-                "reference": "9487105b1b8c1db5bd1879429103deedd6982462",
+                "url": "https://api.github.com/repos/components/bootstrap/zipball/983313252725392091d8d2952276cbdcd4060014",
+                "reference": "983313252725392091d8d2952276cbdcd4060014",
                 "shasum": ""
             },
             "require": {
@@ -148,6 +148,7 @@
                     ],
                     "files": [
                         "js/*.js",
+                        "js/*.map",
                         "css/*.css",
                         "css/*.map"
                     ],
@@ -164,16 +165,16 @@
             ],
             "authors": [
                 {
-                    "name": "Jacob Thornton",
-                    "email": "jacobthornton@gmail.com"
-                },
-                {
                     "name": "Mark Otto",
                     "email": "markdotto@gmail.com"
+                },
+                {
+                    "name": "Jacob Thornton",
+                    "email": "jacobthornton@gmail.com"
                 }
             ],
             "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-            "homepage": "http://getbootstrap.com",
+            "homepage": "https://getbootstrap.com",
             "keywords": [
                 "css",
                 "framework",
@@ -183,20 +184,20 @@
                 "sass",
                 "web"
             ],
-            "time": "2019-06-19T16:37:43+00:00"
+            "time": "2020-01-08T10:19:13+00:00"
         },
         {
             "name": "components/font-awesome",
-            "version": "5.11.2",
+            "version": "5.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/components/font-awesome.git",
-                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa"
+                "reference": "d8646ec635a00b06cc219b7dffed3418444975cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/components/font-awesome/zipball/f4f114c4ab37d101e6a15370769bc0af681792fa",
-                "reference": "f4f114c4ab37d101e6a15370769bc0af681792fa",
+                "url": "https://api.github.com/repos/components/font-awesome/zipball/d8646ec635a00b06cc219b7dffed3418444975cc",
+                "reference": "d8646ec635a00b06cc219b7dffed3418444975cc",
                 "shasum": ""
             },
             "type": "component",
@@ -218,7 +219,7 @@
                 "OFL-1.1"
             ],
             "description": "Font Awesome, the iconic SVG, font, and CSS framework.",
-            "time": "2019-11-13T10:33:06+00:00"
+            "time": "2020-01-08T10:17:47+00:00"
         },
         {
             "name": "components/jquery",
@@ -1781,16 +1782,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.13",
+            "version": "2.1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "834593d5900615639208417760ba6a17299e2497"
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
-                "reference": "834593d5900615639208417760ba6a17299e2497",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
                 "shasum": ""
             },
             "require": {
@@ -1834,7 +1835,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-12-30T08:14:25+00:00"
+            "time": "2020-01-05T14:11:20+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",

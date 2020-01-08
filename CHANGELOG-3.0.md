@@ -98,8 +98,8 @@
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
-    - components/bootstrap updated from 3.4.1 to 4.3.1
-    - components/font-awesome updated from 4.7.0 to 5.11.2
+    - components/bootstrap updated from 3.4.1 to 4.4.1
+    - components/font-awesome updated from 4.7.0 to 5.12.0
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
     - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
     - composer/spdx-licenses installed in 1.5.2
@@ -116,7 +116,7 @@
     - doctrine/orm updated from 2.5.14 to 2.7.0
     - doctrine/persistence installed in 1.3.3
     - doctrine/reflection installed in 1.0.0
-    - egulias/email-validator installed in 2.1.13
+    - egulias/email-validator installed in 2.1.14
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
     - erusev/parsedown installed in 1.7.4
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.1
