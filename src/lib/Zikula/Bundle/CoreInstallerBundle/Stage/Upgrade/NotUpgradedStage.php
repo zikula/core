@@ -38,7 +38,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->translator = $this->container->get(TranslatorInterface::class);
+        $this->translator = $this->container->get('translator');
     }
 
     public function getName(): string

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\PrinterTheme;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme;
 
@@ -62,7 +61,7 @@ class ZikulaPrinterTheme extends AbstractCoreTheme
      */
     private function renderFootnotes(): string
     {
-        $translator = $this->getContainer()->get(TranslatorInterface::class);
+        $translator = $this->getContainer()->get('translator');
         $text = '';
         if (empty($this->links)) {
             return $text;

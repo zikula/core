@@ -55,7 +55,7 @@ abstract class AbstractController
     {
         $this->container = $container;
         $this->controllerHelper = $container->get(ControllerHelper::class);
-        $this->translator = $container->get(TranslatorInterface::class);
+        $this->translator = $container->get('translator');
     }
 
     protected function renderResponse(string $view, array $parameters = [], Response $response = null): Response
