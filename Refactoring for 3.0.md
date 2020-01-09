@@ -54,6 +54,9 @@ You can still use `Zikula\Common\Translator\TranslatorTrait`, but it has only on
 public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
 ```
 
+### JavaScript files
+Follows basically the same rules as translations in PHP files shown above. See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
+
 ### Twig template files
 Some examples for how to convert translations in templates:
 
@@ -89,9 +92,6 @@ plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  oth
 ```
 
 More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat](https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
-
-### JavaScript files
-Follows basically the same rules as translations in PHP files shown above. See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
 
 ## Twig
 
