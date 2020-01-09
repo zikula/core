@@ -1,24 +1,24 @@
-'Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.': '__Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.'
-'Add Option': '__Add Option'
+'Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.': 'Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.'
+'Add Option': 'Add Option'
 'Delete Root': '__Delete Root'
-'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?': '__Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?'
-Menus: __Menus
-ID: __ID
-Title: __Title
-Children: __Children
-Actions: __Actions
-'No items found.': '__No items found.'
-Menu: __Menu
-'MenuItemName (menuItemId). The id is needed for permissions.': '__MenuItemName (menuItemId). The id is needed for permissions.'
-'Edit item': '__Edit item'
-Close: __Close
-Save: __Save
-Cancel: __Cancel
-'Confirmation prompt': '__Confirmation prompt'
-'Do you really want to delete this item?': '__Do you really want to delete this item?'
-Delete: __Delete
-'Delete all children': '__Delete all children'
-'Move all children': '__Move all children'
-'Move and delete': '__Move and delete'
-'Create or edit root node': '__Create or edit root node'
+'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?': 'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?'
+Menus: Menus
+ID: ID
+Title: Title
+Children: Children
+Actions: Actions
+'No items found.': 'No items found.'
+Menu: Menu
+'MenuItemName (menuItemId). The id is needed for permissions.': 'MenuItemName (menuItemId). The id is needed for permissions.'
+'Edit item': 'Edit item'
+Close: Close
+Save: Save
+Cancel: Cancel
+'Confirmation prompt': 'Confirmation prompt'
+'Do you really want to delete this item?': 'Do you really want to delete this item?'
+Delete: Delete
+'Delete all children': 'Delete all children'
+'Move all children': 'Move all children'
+'Move and delete': 'Move and delete'
+'Create or edit root node': 'Create or edit root node'
 n.direct.child: "{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}"

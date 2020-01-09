@@ -77,8 +77,8 @@
             <td headers="hMaximum" id="groupnbumax_{{ group.gid }}" class="text-center">
                 {{ (group.nbumax == false or group.nbumax == 0) ? 'Unlimited'|trans : group.nbumax }}
             </td>
-            {% set rowActions = knp_menu_get('zikulaGroupsAdminMenu', [], {group: group}) %}
-            <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions text-right">
+            <td headers="hActions" id="groupaction_{{ group.gid }}" class="actions">
+                {% set rowActions = knp_menu_get('zikulaGroupsAdminMenu', [], {group: group}) %}
                 {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
             </td>
         </tr>
