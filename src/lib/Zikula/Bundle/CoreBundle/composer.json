@@ -32,6 +32,7 @@
         "sensiolabs/security-checker" : "6.*",
 
         "prolix/translation-bundle": "dev-master",
+        "symfony/polyfill-intl-messageformatter": "1.*",
         "php-translation/symfony-bundle": "0.*",
         "nikic/php-parser": "4.*",
         "willdurand/js-translation-bundle": "4.4.x-dev",

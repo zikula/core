@@ -22,8 +22,10 @@
             <td headers="hMenuId">{{ node.id }}</td>
             <td headers="hMenuTitle"><strong>{{ node.title }}</strong></td>
             <td headers="hMenuChildCount">{% trans count node.children.count %}plural_n.direct.child{# one direct child|n direct children #}{% endtrans %}</td>
-            {% set rowActions = knp_menu_get('zikulaMenuAdminActionsMenu', [], {id: node.id}) %}
-            <th headers="hMenuActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</th>
+            <td headers="hMenuActions" class="actions">
+                {% set rowActions = knp_menu_get('zikulaMenuAdminActionsMenu', [], {id: node.id}) %}
+                {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
+            </td>
         </tr>
         {% else %}
         <tr class="table-info"><td colspan="4" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>

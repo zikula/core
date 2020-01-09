@@ -14,7 +14,7 @@
             <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
             <th id="hVersion" scope="col">{% trans %}Version{% endtrans %}</th>
             <th id="hState" scope="col"><a class="{{ sort.state.class }}" href="{{ sort.state.url }}">{% trans %}State{% endtrans %}</a></th>
-            <th id="hActions" scope="col" class="text-right">Actions</th>
+            <th id="hActions" scope="col" class="text-right">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -39,8 +39,10 @@
             <td class="nowrap">
                 {{ stateLabel(module, upgradedExtensions) }}
             </td>
-            {% set rowActions = knp_menu_get('zikulaExtensionsAdminMenu', [], {extension: module}) %}
-            <th headers="hActions" class="actions text-right">{{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}</th>
+            <td headers="hActions" class="actions">
+                {% set rowActions = knp_menu_get('zikulaExtensionsAdminMenu', [], {extension: module}) %}
+                {{ knp_menu_render(rowActions, {template: '@ZikulaMenuModule/Override/actions.html.twig'}) }}
+            </td>
         </tr>
     {% endfor %}
     </tbody>

@@ -130,6 +130,7 @@ td.actions .tooltip {
 
 td.actions ul.list-inline {
     display: flex;
+    justify-content: flex-end;
 }
 td.actions .fa {
     font-size: 1.3em;
