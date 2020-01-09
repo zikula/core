@@ -2,7 +2,7 @@
 
 (function($) {
 
-    // use bootstrap noConflict. See http://getbootstrap.com/javascript/#js-noconflict
+    // use bootstrap noConflict. See https://getbootstrap.com/docs/4.4/getting-started/javascript/#no-conflict
     $.fn.bootstrapBtn = $.fn.button.noConflict();
 
     /**
@@ -11,13 +11,12 @@
      * Usage: <a data-toggle="confirmation" data-title="..." data-text="..." href="...">...</a>
      */
     $(document).on('click.bs.modal.data-api', '[data-toggle="confirmation"]', function (e) {
-        
         e.preventDefault();
-        
+
         var $this = $(this);
         var title = $this.data('title') || '';
         var text  = $this.data('text') || '';
-        
+
         if (0 === $('#confimationModal').length) {
             var Modal = '<div class="modal fade" id="confimationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">' + title + '</h5><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></div><div class="modal-body">' + text + '</div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-dismiss="modal">' + Zikula.__('No') + '</button><button id="confirmationOkButton" type="button" class="btn btn-primary" data-dismiss="modal">' + Zikula.__('Yes') + '</button></div></div></div></div>';
             $(document.body).append(Modal);
@@ -25,7 +24,7 @@
                 window.location = $this.attr('href');
             });
         }
-        
+
         $('#confimationModal').modal({}, this).on('hide', function () {
             $this.is(':visible') && $this.focus();
         });
