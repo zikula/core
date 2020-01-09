@@ -16,10 +16,10 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\Bundle\CoreInstallerBundle\Form\Type\LocaleType;
-use Zikula\Common\Translator\Translator;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\FormHandlerInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
@@ -111,7 +111,7 @@ class LocaleStage implements StageInterface, FormHandlerInterface, InjectContain
         try {
             $this->yamlManager->setParameters($params);
         } catch (IOException $e) {
-            throw new AbortStageException($this->container->get(Translator::class)->trans('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
+            throw new AbortStageException($this->container->get(TranslatorInterface::class)->trans('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
         }
         // clear container cache
         $this->container->get(CacheClearer::class)->clear('symfony.config');

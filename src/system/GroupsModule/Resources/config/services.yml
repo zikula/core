@@ -20,7 +20,7 @@ services:
     Zikula\GroupsModule\Entity\Repository\GroupRepository:
         public: true # used in GroupsModuleInstaller from the container
         calls:
-            - setTranslator: ['@Zikula\Common\Translator\Translator']
+            - setTranslator: ['@Symfony\Contracts\Translation\TranslatorInterface']
 
     Zikula\GroupsModule\Menu\MenuBuilder:
         tags:

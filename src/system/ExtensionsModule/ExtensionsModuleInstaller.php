@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule;
 
 use Exception;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Common\Translator\Translator;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -100,7 +100,7 @@ class ExtensionsModuleInstaller extends AbstractExtensionInstaller
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
         if (!empty($this->container)) {
-            $metaData->setTranslator($this->container->get(Translator::class));
+            $metaData->setTranslator($this->container->get(TranslatorInterface::class));
         }
         $meta = $metaData->getFilteredVersionInfoArray();
         $meta['state'] = Constant::STATE_ACTIVE;

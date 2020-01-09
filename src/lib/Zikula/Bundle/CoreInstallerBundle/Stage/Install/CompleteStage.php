@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -37,7 +36,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->setTranslator($container->get(Translator::class));
+        $this->setTranslator($container->get(TranslatorInterface::class));
     }
 
     public function setTranslator(TranslatorInterface $translator)

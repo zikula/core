@@ -18,7 +18,6 @@ use LogicException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\Helper\SchemaHelper;
 use Zikula\ExtensionsModule\Api\VariableApi;
@@ -78,7 +77,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         $this->name = $bundle->getName();
         if ($this->container) {
             // both here and in `setContainer` so either method can be called first.
-            $this->container->get(Translator::class)->setDomain($this->bundle->getTranslationDomain());
+            $this->container->get(TranslatorInterface::class)->setDomain($this->bundle->getTranslationDomain());
         }
     }
 
@@ -89,7 +88,7 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         if (null === $container) {
             return;
         }
-        $this->setTranslator($container->get(Translator::class));
+        $this->setTranslator($container->get(TranslatorInterface::class));
         $this->entityManager = $container->get('doctrine')->getManager();
         $this->schemaTool = $container->get(SchemaHelper::class);
         $this->variableApi = $container->get(VariableApi::class); // for ExtensionVariablesTrait

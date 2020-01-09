@@ -19,9 +19,9 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Common\Translator\Translator;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Engine\Asset;
@@ -146,7 +146,7 @@ abstract class AbstractBundle extends Bundle
         $jsonContent = $scanner->decode($jsonPath);
         $metaData = new MetaData($jsonContent);
         if (!empty($this->container)) {
-            $metaData->setTranslator($this->container->get(Translator::class));
+            $metaData->setTranslator($this->container->get(TranslatorInterface::class));
         }
         if (!empty($this->container) && $this->container->getParameter('installed')) {
             // overwrite composer.json settings with dynamic values from extension repository

@@ -6728,15 +6728,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "https://ziku.la/"
+                    "homepage": "http://zikula.org/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "info@ziku.la"
+                    "email": "drak@zikula.org"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "https://ziku.la",
+            "homepage": "http://zikula.org",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {

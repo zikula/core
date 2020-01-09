@@ -21,7 +21,6 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\Bundle\CoreBundle\Bundle\AbstractCoreModule;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreBundle\YamlDumper;
-use Zikula\Common\Translator\Translator;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
@@ -46,11 +45,13 @@ class ModuleHelper
     private $yamlHelper;
 
     public function __construct(
-        ContainerInterface $container
+        ContainerInterface $container,
+        TranslatorInterface $translator,
+        ParameterHelper $parameterHelper
     ) {
         $this->container = $container;
-        $this->translator = $container->get(Translator::class);
-        $this->yamlHelper = $container->get(ParameterHelper::class)->getYamlHelper();
+        $this->translator = $translator;
+        $this->yamlHelper = $parameterHelper->getYamlHelper();
     }
 
     public function installModule(string $moduleName): bool

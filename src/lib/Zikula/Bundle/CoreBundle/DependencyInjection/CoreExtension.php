@@ -24,7 +24,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Validator\Validation;
-use Zikula\Common\Translator\Translator;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
 
 /**
@@ -44,86 +43,86 @@ class CoreExtension extends Extension
             ->addTag('zikula.link_container')
         ;
 
-        $configuration = $this->getConfiguration($configs, $container);
-        $config = $this->processConfiguration($configuration, $configs);
+//        $configuration = $this->getConfiguration($configs, $container);
+//        $config = $this->processConfiguration($configuration, $configs);
 
-        $this->registerTranslatorConfiguration($config['translator'], $container);
+//        $this->registerTranslatorConfiguration($config['translator'], $container);
     }
 
     /**
      * Loads the translator configuration.
      */
-    protected function registerTranslatorConfiguration(array $config, ContainerBuilder $container): void
-    {
-        $translatorServiceDefinition = $container->findDefinition(Translator::class);
-        $translatorServiceDefinition->addMethodCall('setFallbackLocales', [
-            $config['fallbacks']
-        ]);
-        $container->setParameter('translator.logging', $config['logging']);
+//    protected function registerTranslatorConfiguration(array $config, ContainerBuilder $container): void
+//    {
+//        $translatorServiceDefinition = $container->findDefinition(Translator::class);
+//        $translatorServiceDefinition->addMethodCall('setFallbackLocales', [
+//            $config['fallbacks']
+//        ]);
+//        $container->setParameter('translator.logging', $config['logging']);
+//
+//        // Discover translation directories
+//        $translationsFolder = '/Resources/translations';
+//        $dirs = [];
+//        if (class_exists(Validation::class)) {
+//            $r = new ReflectionClass(Validation::class);
+//            $dirs[] = dirname($r->getFileName()) . $translationsFolder;
+//        }
+//        if (class_exists(Form::class)) {
+//            $r = new ReflectionClass(Form::class);
+//            $dirs[] = dirname($r->getFileName()) . $translationsFolder;
+//        }
+//        if (class_exists(AuthenticationException::class)) {
+//            $r = new ReflectionClass(AuthenticationException::class);
+//            $dirs[] = dirname($r->getFileName()) . '/..' . $translationsFolder;
+//        }
+//
+//        $appResourcesPath = $container->getParameter('kernel.project_dir') . '/app/Resources/';
+//
+//        $overridePath = $appResourcesPath . '%s/translations';
+//        foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
+//            $reflection = new ReflectionClass($class);
+//            if (is_dir($dir = dirname($reflection->getFileName()) . $translationsFolder)) {
+//                $dirs[] = $dir;
+//            }
+//
+//            if (is_dir($dir = sprintf($overridePath, $bundle))) {
+//                $dirs[] = $dir;
+//            }
+//        }
+//
+//        if (is_dir($dir = $appResourcesPath . 'translations')) {
+//            $dirs[] = $dir;
+//        }
+//
+//        // Register translation resources
+//        if ($dirs) {
+//            foreach ($dirs as $dir) {
+//                $container->addResource(new DirectoryResource($dir));
+//            }
+//
+//            $finder = Finder::create()->files()
+//                ->filter(static function(SplFileInfo $file) {
+//                    return 2 === mb_substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
+//                })
+//                ->in($dirs);
+//
+//            foreach ($finder as $file) {
+//                // filename is domain.locale.format
+//                list($domain, $locale, $format) = explode('.', $file->getBasename(), 3);
+//                $translatorServiceDefinition->addMethodCall('addResource', [
+//                    $format,
+//                    (string)$file,
+//                    $locale,
+//                    $domain
+//                ]);
+//            }
+//        }
+//    }
 
-        // Discover translation directories
-        $translationsFolder = '/Resources/translations';
-        $dirs = [];
-        if (class_exists(Validation::class)) {
-            $r = new ReflectionClass(Validation::class);
-            $dirs[] = dirname($r->getFileName()) . $translationsFolder;
-        }
-        if (class_exists(Form::class)) {
-            $r = new ReflectionClass(Form::class);
-            $dirs[] = dirname($r->getFileName()) . $translationsFolder;
-        }
-        if (class_exists(AuthenticationException::class)) {
-            $r = new ReflectionClass(AuthenticationException::class);
-            $dirs[] = dirname($r->getFileName()) . '/..' . $translationsFolder;
-        }
-
-        $appResourcesPath = $container->getParameter('kernel.project_dir') . '/app/Resources/';
-
-        $overridePath = $appResourcesPath . '%s/translations';
-        foreach ($container->getParameter('kernel.bundles') as $bundle => $class) {
-            $reflection = new ReflectionClass($class);
-            if (is_dir($dir = dirname($reflection->getFileName()) . $translationsFolder)) {
-                $dirs[] = $dir;
-            }
-
-            if (is_dir($dir = sprintf($overridePath, $bundle))) {
-                $dirs[] = $dir;
-            }
-        }
-
-        if (is_dir($dir = $appResourcesPath . 'translations')) {
-            $dirs[] = $dir;
-        }
-
-        // Register translation resources
-        if ($dirs) {
-            foreach ($dirs as $dir) {
-                $container->addResource(new DirectoryResource($dir));
-            }
-
-            $finder = Finder::create()->files()
-                ->filter(static function(SplFileInfo $file) {
-                    return 2 === mb_substr_count($file->getBasename(), '.') && preg_match('/\.\w+$/', $file->getBasename());
-                })
-                ->in($dirs);
-
-            foreach ($finder as $file) {
-                // filename is domain.locale.format
-                list($domain, $locale, $format) = explode('.', $file->getBasename(), 3);
-                $translatorServiceDefinition->addMethodCall('addResource', [
-                    $format,
-                    (string)$file,
-                    $locale,
-                    $domain
-                ]);
-            }
-        }
-    }
-
-    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
-    {
-        return new Configuration($container->getParameter('kernel.debug'));
-    }
+//    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+//    {
+//        return new Configuration($container->getParameter('kernel.debug'));
+//    }
 
     public function getNamespace(): string
     {

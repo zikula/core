@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Zikula\Common\Translator\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
 use Zikula\Component\Wizard\WizardCompleteInterface;
@@ -55,7 +55,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function getResponse(Request $request): Response
     {
         if ($request->hasSession() && ($session = $request->getSession())) {
-            $session->getFlashBag()->add('success', $this->container->get(Translator::class)->trans('Congratulations! Upgrade Complete.'));
+            $session->getFlashBag()->add('success', $this->container->get(TranslatorInterface::class)->trans('Congratulations! Upgrade Complete.'));
         }
 
         return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));

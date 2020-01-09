@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\CoreInstallerBundle\Controller\UpgraderController;
-use Zikula\Common\Translator\Translator;
 use Zikula\Component\Wizard\AbortStageException;
 use Zikula\Component\Wizard\InjectContainerInterface;
 use Zikula\Component\Wizard\StageInterface;
@@ -39,7 +38,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->translator = $this->container->get(Translator::class);
+        $this->translator = $this->container->get(TranslatorInterface::class);
     }
 
     public function getName(): string

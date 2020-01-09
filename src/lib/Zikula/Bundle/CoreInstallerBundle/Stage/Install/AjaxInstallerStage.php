@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
-use Zikula\Common\Translator\Translator;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;
 
@@ -27,7 +26,7 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
     public function __construct(ContainerInterface $container = null)
     {
         if (isset($container)) {
-            $this->setTranslator($container->get(Translator::class));
+            $this->setTranslator($container->get(TranslatorInterface::class));
         }
     }
 

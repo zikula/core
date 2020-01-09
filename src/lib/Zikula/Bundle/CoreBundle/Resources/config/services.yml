@@ -90,32 +90,3 @@ services:
     Zikula\Core\Doctrine\Helper\SchemaHelper:
         public: true
         lazy: true
-
-#    Zikula\Common\Translator\TranslatorInterface: '@Zikula\Common\Translator\Translator'
-
-    # public because AbstractBundle, AbstractController and AbstractExtensionInstaller access this using container
-#    Zikula\Common\Translator\Translator:
-#        public: true
-#        arguments:
-#          $defaultLocale: '%kernel.default_locale%'
-#          $loaderIds: {}
-#          $options: { cache_dir: "%kernel.cache_dir%/translations", debug: '%kernel.debug%' }
-
-    Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor:
-        arguments:
-            $docParser: '@jms_translation.doc_parser'
-        tags: ['jms_translation.file_visitor']
-
-    Zikula\Bundle\CoreBundle\Translation\ZikulaTwigFileExtractor:
-        tags: ['jms_translation.file_visitor']
-
-    Zikula\Bundle\CoreBundle\Translation\ZikulaJsFileExtractor:
-        tags: ['jms_translation.file_visitor']
-
-    Zikula\Bundle\CoreBundle\Translation\Dumper\PotDumper:
-        tags:
-            - { name: jms_translation.dumper, format: pot }
-
-    Zikula\Bundle\CoreBundle\Translation\SymfonyLoader\MockPotFileLoader:
-        tags:
-            - { name: translation.loader, alias: pot }

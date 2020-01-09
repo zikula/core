@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreInstallerBundle\Helper\ControllerHelper;
-use Zikula\Common\Translator\Translator;
 use Zikula\Core\Response\PlainResponse;
 
 /**
@@ -56,7 +55,7 @@ abstract class AbstractController
     {
         $this->container = $container;
         $this->controllerHelper = $container->get(ControllerHelper::class);
-        $this->translator = $container->get(Translator::class);
+        $this->translator = $container->get(TranslatorInterface::class);
     }
 
     protected function renderResponse(string $view, array $parameters = [], Response $response = null): Response
