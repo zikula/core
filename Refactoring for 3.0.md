@@ -75,6 +75,8 @@ Old: {% set amountOfMembers = _fn('%amount% registered user', '%amount% register
 New: {% trans count users|length %}plural_n.registered.user{# one registered user|n registered users #}{% endtrans %}
 ```
 
+See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
+
 ### About plural forms
 The `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.
 The comments `{# ... #}` are examples of what the translation should appear like in English. Unfortunately, we don't know how to communicate
@@ -86,7 +88,6 @@ The translation of this would look something like:
 plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}"
 ```
 
-See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
 More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat](https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
 
 ### JavaScript files
