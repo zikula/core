@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use LogicException;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Core\Doctrine\Helper\SchemaHelper;
 use Zikula\ExtensionsModule\Api\VariableApi;

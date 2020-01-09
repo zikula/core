@@ -24,7 +24,6 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class MenuBuilder
 {
-
     use TranslatorTrait;
 
     /**
@@ -47,8 +46,7 @@ class MenuBuilder
         FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
         CsrfTokenManagerInterface $csrfTokenManager
-    )
-    {
+    ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
@@ -131,8 +129,7 @@ class MenuBuilder
                         ]
                     ])->setAttribute('icon', 'fa fa-cog')
                         ->setLinkAttribute('class', 'text-success');
-                }
-                else {
+                } else {
                     $menu->addChild($this->trans('Core compatibility information: %s', ['%s' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_compatibility',
                         'routeParameters' => ['id' => $id]
@@ -145,7 +142,7 @@ class MenuBuilder
         if (!in_array($extension->getState(), [
             Constant::STATE_UNINITIALISED,
             Constant::STATE_INVALID
-        ], TRUE)) {
+        ], true)) {
             $menu->addChild($this->trans('Edit %s', ['%s' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $id]

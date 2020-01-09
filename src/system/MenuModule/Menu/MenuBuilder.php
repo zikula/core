@@ -22,7 +22,6 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class MenuBuilder
 {
-
     use TranslatorTrait;
 
     /**
@@ -39,8 +38,7 @@ class MenuBuilder
         TranslatorInterface $translator,
         FactoryInterface $factory,
         CapabilityApiInterface $capabilityApi
-    )
-    {
+    ) {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->capabilityApi = $capabilityApi;
@@ -55,7 +53,7 @@ class MenuBuilder
         $title = $this->trans('Home');
         $menu->addChild($title, ['route' => 'home'])
             ->setAttribute('icon', 'fa fa-list')
-            ->setAttribute('dropdown', TRUE);
+            ->setAttribute('dropdown', true);
 
         $adminModules = $this->capabilityApi->getExtensionsCapableOf('admin');
         /** @var ExtensionEntity[] $adminModules */
