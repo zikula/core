@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace Zikula\Common\Translator;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Contracts\Translation\TranslatorTrait as SymfonyTranslatorTrait;
 
 /**
  * Class TranslatorTrait
  */
 trait TranslatorTrait
 {
-    use SymfonyTranslatorTrait;
-
     /**
      * @var TranslatorInterface
      */
     private $translator;
+
+    public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+    {
+        return $this->translator->trans($id, $parameters, $domain, $locale);
+    }
 
     public function getTranslator(): TranslatorInterface
     {
