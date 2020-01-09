@@ -22,15 +22,39 @@ a need to tag these classes in your services file as they are auto-tagged. Also 
 used as the service name.
 
 ## Translations
-
 All custom Zikula translation mechanisms have been removed in favour of Symfony's native translation system.
 
 ### PHP files
+Some examples for how to convert translations in PHP files:
 
-**TBD**
+```php
+// import
+use Zikula\Common\Translator\TranslatorInterface;       // old
+use Symfony\Contracts\Translation\TranslatorInterface;  // new
+
+// 1. Simple:
+$this->__('Hello')      // old
+$this->trans('Hello')   // new
+
+// 2. With simple substitution parameters
+$this->__f('Hello %userName%', ['%userName%' => 'Mark Smith'])      // old
+$this->trans('Hello %userName%', ['%userName%' => 'Mark Smith'])    // new
+
+// 3. With explicit domain
+$this->__('Hello', 'acmefoomodule')             // old
+$this->trans('Hello', [], 'acmefoomodule')      // new
+
+// 4. With plural forms and advanced substitution (see note below)
+$this->_fn('User deleted!', '%n users deleted!', count($deletedUsers), ['%n' => count($deletedUsers)]);
+$this->getTranslator()->trans('plural_n.users.deleted'/* User deleted!|n users deleted!*/, ['%count%' => count($deletedUsers)]);
+```
+
+You can still use `Zikula\Common\Translator\TranslatorTrait`, but it has only one method left now:
+```php
+public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
+```
 
 ### Twig template files
-
 Some examples for how to convert translations in templates:
 
 ```twig
@@ -42,11 +66,17 @@ New: {% trans %}Hello{% endtrans %} or {{ 'Hello'|trans }}
 Old: {{ __f('Hello %userName%', {'%userName%': 'Mark Smith'}) }}
 New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
 
-3. With plural forms and advanced substitution (see note below)
+3. With explicit domain and locale
+Old: {{ __('Hello', 'acmefoomodule', 'fr') }}
+New: {% trans with {} from 'acmefoomodule' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoomodule', 'fr' }}
+
+4. With plural forms and advanced substitution (see note below)
 Old: {% set amountOfMembers = _fn('%amount% registered user', '%amount% registered users', users|length, {'%amount%': users|length}) %}
 New: {% trans count users|length %}plural_n.registered.user{# one registered user|n registered users #}{% endtrans %}
 ```
-the `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.
+
+### About plural forms
+The `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.
 The comments `{# ... #}` are examples of what the translation should appear like in English. Unfortunately, we don't know how to communicate
 this comment in the translation file at this time.
 
@@ -57,8 +87,7 @@ plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  oth
 ```
 
 See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
-More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat]
-(https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
+More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat](https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
 
 ### JavaScript files
 

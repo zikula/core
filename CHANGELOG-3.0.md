@@ -6,7 +6,7 @@
     - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
     - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
-    - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` because bundle inheritance is not supported in Symfony 4 anymore (#3377).
+    - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
     - Interface extensions and amendments
         - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
         - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
@@ -60,6 +60,7 @@
     - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
     - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `%kernel.cache_dir%` directly or `sys_get_temp_dir()`.
+    - Removed custom translation system (#4042).
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
@@ -115,7 +116,7 @@
     - doctrine/lexer updated from 1.0.2 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.7.0
     - doctrine/persistence installed in 1.3.3
-    - doctrine/reflection installed in 1.0.0
+    - doctrine/reflection installed in 1.1.0
     - egulias/email-validator installed in 2.1.14
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
     - erusev/parsedown installed in 1.7.4
