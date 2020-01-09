@@ -75,10 +75,6 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
     {
         $this->bundle = $bundle;
         $this->name = $bundle->getName();
-        if ($this->container) {
-            // both here and in `setContainer` so either method can be called first.
-            $this->container->get('translator')->setDomain($this->bundle->getTranslationDomain());
-        }
     }
 
     public function setContainer(ContainerInterface $container = null)
@@ -92,9 +88,6 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         $this->entityManager = $container->get('doctrine')->getManager();
         $this->schemaTool = $container->get(SchemaHelper::class);
         $this->variableApi = $container->get(VariableApi::class); // for ExtensionVariablesTrait
-        if ($this->bundle) {
-            $this->translator->setDomain($this->bundle->getTranslationDomain());
-        }
     }
 
     public function setTranslator(TranslatorInterface $translator)
