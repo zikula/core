@@ -90,11 +90,6 @@ abstract class AbstractExtensionInstaller implements ExtensionInstallerInterface
         $this->variableApi = $container->get(VariableApi::class); // for ExtensionVariablesTrait
     }
 
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Convenience shortcut to add a session flash message.
      */

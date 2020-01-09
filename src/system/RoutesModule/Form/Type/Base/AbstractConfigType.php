@@ -38,11 +38,6 @@ abstract class AbstractConfigType extends AbstractType
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addListViewsFields($builder, $options);
@@ -56,7 +51,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addListViewsFields(FormBuilderInterface $builder, array $options = []): void
     {
-        
+
         $builder->add('routeEntriesPerPage', IntegerType::class, [
             'label' => $this->trans('Route entries per page') . ':',
             'label_attr' => [
@@ -72,7 +67,7 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => true,
         ]);
-        
+
         $builder->add('showOnlyOwnEntries', CheckboxType::class, [
             'label' => $this->trans('Show only own entries') . ':',
             'label_attr' => [
@@ -93,7 +88,7 @@ abstract class AbstractConfigType extends AbstractType
      */
     public function addModerationFields(FormBuilderInterface $builder, array $options = []): void
     {
-        
+
         $builder->add('allowModerationSpecificCreatorForRoute', CheckboxType::class, [
             'label' => $this->trans('Allow moderation specific creator for route') . ':',
             'label_attr' => [
@@ -107,7 +102,7 @@ abstract class AbstractConfigType extends AbstractType
             ],
             'required' => false,
         ]);
-        
+
         $builder->add('allowModerationSpecificCreationDateForRoute', CheckboxType::class, [
             'label' => $this->trans('Allow moderation specific creation date for route') . ':',
             'label_attr' => [

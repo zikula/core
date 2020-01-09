@@ -25,9 +25,4 @@ class AbstractType extends BaseAbstractType
     {
         $this->setTranslator($translator);
     }
-
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
 }

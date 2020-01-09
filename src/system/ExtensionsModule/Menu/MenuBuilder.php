@@ -24,6 +24,7 @@ use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class MenuBuilder
 {
+
     use TranslatorTrait;
 
     /**
@@ -46,7 +47,8 @@ class MenuBuilder
         FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
         CsrfTokenManagerInterface $csrfTokenManager
-    ) {
+    )
+    {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
@@ -71,9 +73,12 @@ class MenuBuilder
                     $csrfToken = $this->getCsrfToken('deactivate-extension');
                     $menu->addChild($this->trans('Deactivate %s', ['%s' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_deactivate',
-                        'routeParameters' => ['id' => $id, 'token' => $csrfToken]
+                        'routeParameters' => [
+                            'id' => $id,
+                            'token' => $csrfToken
+                        ]
                     ])->setAttribute('icon', 'fa fa-minus-circle')
-                    ->setLinkAttribute('class', 'text-danger');
+                        ->setLinkAttribute('class', 'text-danger');
                     // or set style text-color #0c00
                 }
                 break;
@@ -120,10 +125,14 @@ class MenuBuilder
                     $csrfToken = $this->getCsrfToken('install-extension');
                     $menu->addChild($this->trans('Install %s', ['%s' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_install',
-                        'routeParameters' => ['id' => $id, 'token' => $csrfToken]
+                        'routeParameters' => [
+                            'id' => $id,
+                            'token' => $csrfToken
+                        ]
                     ])->setAttribute('icon', 'fa fa-cog')
                         ->setLinkAttribute('class', 'text-success');
-                } else {
+                }
+                else {
                     $menu->addChild($this->trans('Core compatibility information: %s', ['%s' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_compatibility',
                         'routeParameters' => ['id' => $id]
@@ -133,7 +142,10 @@ class MenuBuilder
                 break;
         }
 
-        if (!in_array($extension->getState(), [Constant::STATE_UNINITIALISED, Constant::STATE_INVALID], true)) {
+        if (!in_array($extension->getState(), [
+            Constant::STATE_UNINITIALISED,
+            Constant::STATE_INVALID
+        ], TRUE)) {
             $menu->addChild($this->trans('Edit %s', ['%s' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $id]
@@ -147,10 +159,5 @@ class MenuBuilder
     private function getCsrfToken(string $tokenId): string
     {
         return $this->csrfTokenManager->getToken($tokenId)->getValue();
-    }
-
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
     }
 }

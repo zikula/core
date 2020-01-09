@@ -422,9 +422,4 @@ class HookController extends AbstractController
 
         return $extensions;
     }
-
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
 }

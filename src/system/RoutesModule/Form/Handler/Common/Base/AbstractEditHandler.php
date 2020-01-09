@@ -225,11 +225,6 @@ abstract class AbstractEditHandler
         $this->workflowHelper = $workflowHelper;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Initialise form handler.
      *

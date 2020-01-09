@@ -91,11 +91,6 @@ class MailerApi implements MailerApiInterface
         $this->dataValues = array_merge($mailerParams, $modVars);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function sendMessage(
         Swift_Message $message,
         string $subject = null,

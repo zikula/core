@@ -39,11 +39,6 @@ class HiddenMenuItemType extends AbstractType
         $this->repository = $repository;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new MenuItemEntityTransformer($this->repository, $this->translator);

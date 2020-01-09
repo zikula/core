@@ -51,11 +51,6 @@ class RegistrationType extends AbstractType
         $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

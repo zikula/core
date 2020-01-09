@@ -61,11 +61,6 @@ abstract class AbstractRouteType extends AbstractType
         $this->listHelper = $listHelper;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder, $options);

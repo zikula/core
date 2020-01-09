@@ -47,11 +47,6 @@ class CategoryRegistryType extends AbstractType
         $this->entitySelectionBuilder = $entitySelectionBuilder;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

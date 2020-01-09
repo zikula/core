@@ -43,11 +43,6 @@ class CategoryTreeType extends AbstractType
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new CategoryTreeTransformer($this->categoryRepository);

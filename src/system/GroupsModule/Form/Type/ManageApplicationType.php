@@ -34,11 +34,6 @@ class ManageApplicationType extends AbstractType
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $reason = 'accept' === $options['data']['theAction']

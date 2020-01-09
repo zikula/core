@@ -53,11 +53,6 @@ class CommonHelper
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Return the standard set of labels for group types.
      */

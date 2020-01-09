@@ -41,11 +41,6 @@ class EditGroupType extends AbstractType
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $groupsCommon = new CommonHelper($this->translator);

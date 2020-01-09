@@ -108,11 +108,6 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
         return mb_substr($fqCn, $pos + 1, -5);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Adds a flash message to the current session for type.
      *

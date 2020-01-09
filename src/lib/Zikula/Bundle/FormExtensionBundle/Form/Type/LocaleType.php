@@ -38,11 +38,6 @@ class LocaleType extends AbstractType
         $this->localeApi = $localeApi;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

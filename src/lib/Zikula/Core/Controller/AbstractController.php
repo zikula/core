@@ -138,11 +138,6 @@ abstract class AbstractController extends BaseController
         return $this->name;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Convenience shortcut to check if user has requested permissions.
      */

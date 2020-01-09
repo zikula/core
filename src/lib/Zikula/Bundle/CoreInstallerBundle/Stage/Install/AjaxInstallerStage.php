@@ -30,11 +30,6 @@ class AjaxInstallerStage implements AjaxStageInterface, InjectContainerInterface
         }
     }
 
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function getName(): string
     {
         return 'ajaxinstaller';

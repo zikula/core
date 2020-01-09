@@ -31,11 +31,6 @@ class DefaultRegistrationType extends AbstractType
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

@@ -29,11 +29,6 @@ class ValidPdoConnectionValidator extends ConstraintValidator
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function validate($object, Constraint $constraint)
     {
         if ('' === $object['database_host'] || '' === $object['database_name'] || '' === $object['database_user']) {

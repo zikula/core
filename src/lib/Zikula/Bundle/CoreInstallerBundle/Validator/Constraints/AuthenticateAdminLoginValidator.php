@@ -53,11 +53,6 @@ class AuthenticateAdminLoginValidator extends ConstraintValidator
         $this->passwordApi = $passwordApi;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function validate($object, Constraint $constraint)
     {
         try {

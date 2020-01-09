@@ -22,6 +22,7 @@ use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 
 class MenuBuilder
 {
+
     use TranslatorTrait;
 
     /**
@@ -38,7 +39,8 @@ class MenuBuilder
         TranslatorInterface $translator,
         FactoryInterface $factory,
         CapabilityApiInterface $capabilityApi
-    ) {
+    )
+    {
         $this->setTranslator($translator);
         $this->factory = $factory;
         $this->capabilityApi = $capabilityApi;
@@ -53,7 +55,7 @@ class MenuBuilder
         $title = $this->trans('Home');
         $menu->addChild($title, ['route' => 'home'])
             ->setAttribute('icon', 'fa fa-list')
-            ->setAttribute('dropdown', true);
+            ->setAttribute('dropdown', TRUE);
 
         $adminModules = $this->capabilityApi->getExtensionsCapableOf('admin');
         /** @var ExtensionEntity[] $adminModules */
@@ -74,23 +76,18 @@ class MenuBuilder
         $menu = $this->factory->createItem('menuModuleAdminActionsMenu');
         $menu->setChildrenAttribute('class', 'list-inline');
         $menu->addChild($this->trans('Edit Children'), [
-                'route' => 'zikulamenumodule_menu_view',
-                'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-child');
+            'route' => 'zikulamenumodule_menu_view',
+            'routeParameters' => $options,
+        ])->setAttribute('icon', 'fa fa-child');
         $menu->addChild($this->trans('Edit Menu Root'), [
-                'route' => 'zikulamenumodule_menu_edit',
-                'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-tree');
+            'route' => 'zikulamenumodule_menu_edit',
+            'routeParameters' => $options,
+        ])->setAttribute('icon', 'fa fa-tree');
         $menu->addChild($this->trans('Delete'), [
-                'route' => 'zikulamenumodule_menu_delete',
-                'routeParameters' => $options,
-            ])->setAttribute('icon', 'fa fa-trash-alt');
+            'route' => 'zikulamenumodule_menu_delete',
+            'routeParameters' => $options,
+        ])->setAttribute('icon', 'fa fa-trash-alt');
 
         return $menu;
-    }
-
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
     }
 }

@@ -74,11 +74,6 @@ class RegistrationHelper
         $this->setTranslator($translator);
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Create a new user or registration.
      */

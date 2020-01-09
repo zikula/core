@@ -39,11 +39,6 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $this->setTranslator($container->get('translator'));
     }
 
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function getName(): string
     {
         return 'complete';

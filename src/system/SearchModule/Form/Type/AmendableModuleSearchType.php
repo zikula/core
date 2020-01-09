@@ -44,11 +44,6 @@ class AmendableModuleSearchType extends AbstractType
         $this->permissionApi = $permissionApi;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (!$this->permissionApi->hasPermission($builder->getName() . '::', '::', ACCESS_READ)) {

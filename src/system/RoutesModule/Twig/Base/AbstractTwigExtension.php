@@ -31,27 +31,27 @@ use Zikula\RoutesModule\Helper\WorkflowHelper;
 abstract class AbstractTwigExtension extends AbstractExtension
 {
     use TranslatorTrait;
-    
+
     /**
      * @var VariableApiInterface
      */
     protected $variableApi;
-    
+
     /**
      * @var EntityDisplayHelper
      */
     protected $entityDisplayHelper;
-    
+
     /**
      * @var WorkflowHelper
      */
     protected $workflowHelper;
-    
+
     /**
      * @var ListEntriesHelper
      */
     protected $listHelper;
-    
+
     public function __construct(
         TranslatorInterface $translator,
         VariableApiInterface $variableApi,
@@ -65,12 +65,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
         $this->workflowHelper = $workflowHelper;
         $this->listHelper = $listHelper;
     }
-    
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-    
+
     public function getFunctions()
     {
         return [
@@ -78,7 +73,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
             new TwigFunction('zikularoutesmodule_templateSelector', [$this, 'getTemplateSelector'])
         ];
     }
-    
+
     public function getFilters()
     {
         return [
@@ -87,7 +82,7 @@ abstract class AbstractTwigExtension extends AbstractExtension
             new TwigFilter('zikularoutesmodule_objectState', [$this, 'getObjectState'], ['is_safe' => ['html']])
         ];
     }
-    
+
     /**
      * The zikularoutesmodule_objectState filter displays the name of a given object's workflow state.
      * Examples:
@@ -97,16 +92,16 @@ abstract class AbstractTwigExtension extends AbstractExtension
     public function getObjectState(string $state = 'initial', bool $uiFeedback = true): string
     {
         $stateInfo = $this->workflowHelper->getStateInfo($state);
-    
+
         $result = $stateInfo['text'];
         if (true === $uiFeedback) {
             $result = '<span class="badge badge-' . $stateInfo['ui'] . '">' . $result . '</span>';
         }
-    
+
         return $result;
     }
-    
-    
+
+
     /**
      * The zikularoutesmodule_listEntry filter displays the name
      * or names for a given list item.
@@ -122,14 +117,14 @@ abstract class AbstractTwigExtension extends AbstractExtension
         if ((empty($value) && '0' !== $value) || empty($objectType) || empty($fieldName)) {
             return $value;
         }
-    
+
         return $this->listHelper->resolve($value, $objectType, $fieldName, $delimiter);
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     /**
      * The zikularoutesmodule_formattedTitle filter outputs a formatted title for a given entity.
      * Example:

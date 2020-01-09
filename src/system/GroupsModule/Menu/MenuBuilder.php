@@ -179,9 +179,4 @@ class MenuBuilder
 
         return $menu;
     }
-
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
 }

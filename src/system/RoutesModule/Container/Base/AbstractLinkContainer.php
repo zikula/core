@@ -55,11 +55,6 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
         $this->permissionHelper = $permissionHelper;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
     {
         $contextArgs = ['api' => 'linkContainer', 'action' => 'getLinks'];

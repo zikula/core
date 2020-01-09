@@ -46,11 +46,6 @@ class BlockType extends AbstractType
         $this->localeApi = $localeApi;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

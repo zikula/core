@@ -38,11 +38,6 @@ abstract class AbstractListEntryValidator extends ConstraintValidator
         $this->listEntriesHelper = $listEntriesHelper;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function validate($value, Constraint $constraint)
     {
         if (null === $value) {

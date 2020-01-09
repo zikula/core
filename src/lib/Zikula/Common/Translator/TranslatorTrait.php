@@ -27,13 +27,20 @@ trait TranslatorTrait
 
     public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
     {
-        return $this->translator->trans($id, $parameters, $domain, $locale);
+        return $this->getTranslator()->trans($id, $parameters, $domain, $locale);
     }
 
     public function getTranslator(): TranslatorInterface
     {
+        if (null === $this->translator) {
+            throw new \ErrorException('Translator must be set in __TRAIT__ before it can be used.');
+        }
+
         return $this->translator;
     }
 
-    abstract public function setTranslator(TranslatorInterface $translator): void;
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 }

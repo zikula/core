@@ -264,11 +264,6 @@ class MetaData implements ArrayAccess
         return $dependencies;
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     private function confirmTranslator(): void
     {
         if (!isset($this->translator)) {

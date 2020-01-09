@@ -111,11 +111,6 @@ class FileIOHelper
         $this->groupRepository = $groupRepository;
     }
 
-    public function setTranslator($translator): void
-    {
-        $this->translator = $translator;
-    }
-
     public function importUsersFromFile(UploadedFile $file, string $delimiter = ','): string
     {
         $defaultGroup = $this->variableApi->get('ZikulaGroupsModule', 'defaultgroup');

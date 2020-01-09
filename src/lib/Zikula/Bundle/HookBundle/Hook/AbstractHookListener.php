@@ -70,11 +70,6 @@ abstract class AbstractHookListener
         }
     }
 
-    public function setTranslator(TranslatorInterface $translator): void
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * Get reflection of this object.
      */
