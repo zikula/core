@@ -15,8 +15,8 @@ namespace Zikula\ExtensionsModule\Tests\Helper;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Translation\IdentityTranslator;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Common\Translator\IdentityTranslator;
 use Zikula\ExtensionsModule\Helper\ComposerValidationHelper;
 use Zikula\ExtensionsModule\ZikulaExtensionsModule;
 

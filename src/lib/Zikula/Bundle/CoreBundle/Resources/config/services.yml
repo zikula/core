@@ -91,15 +91,15 @@ services:
         public: true
         lazy: true
 
-    Zikula\Common\Translator\TranslatorInterface: '@Zikula\Common\Translator\Translator'
+#    Zikula\Common\Translator\TranslatorInterface: '@Zikula\Common\Translator\Translator'
 
     # public because AbstractBundle, AbstractController and AbstractExtensionInstaller access this using container
-    Zikula\Common\Translator\Translator:
-        public: true
-        arguments:
-          $defaultLocale: '%kernel.default_locale%'
-          $loaderIds: {}
-          $options: { cache_dir: "%kernel.cache_dir%/translations", debug: '%kernel.debug%' }
+#    Zikula\Common\Translator\Translator:
+#        public: true
+#        arguments:
+#          $defaultLocale: '%kernel.default_locale%'
+#          $loaderIds: {}
+#          $options: { cache_dir: "%kernel.cache_dir%/translations", debug: '%kernel.debug%' }
 
     Zikula\Bundle\CoreBundle\Translation\ZikulaPhpFileExtractor:
         arguments:

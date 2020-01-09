@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Tests\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Translation\IdentityTranslator;
 use Zikula\BlocksModule\AbstractBlockHandler;
 use Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface;
 use Zikula\BlocksModule\Api\BlockFactoryApi;
 use Zikula\BlocksModule\Tests\Api\Fixture\BarBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\FooBlock;
 use Zikula\BlocksModule\Tests\Api\Fixture\WrongInterfaceBlock;
-use Zikula\Common\Translator\IdentityTranslator;
 
 class BlockFactoryApiTest extends KernelTestCase
 {
