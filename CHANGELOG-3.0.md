@@ -160,6 +160,7 @@
     - symfony/polyfill-intl-grapheme installed in 1.13.1
     - symfony/polyfill-intl-icu updated from 1.11.0 to 1.13.1
     - symfony/polyfill-intl-idn updated from 1.11.0 to 1.13.1
+    - symfony/polyfill-intl-messageformatter installed in 1.13.1
     - symfony/polyfill-intl-normalizer installed in 1.13.1
     - symfony/polyfill-mbstring updated from v1.12.0 to v1.13.1
     - symfony/polyfill-php72 installed in 1.13.1
