@@ -6,7 +6,9 @@ imports:
 
 framework:
     #esi:             ~
-    translator:      { fallbacks: en }
+    default_locale:  "%locale%"
+    translator:
+        default_path: '%kernel.project_dir%/translations'
     secret:          "%secret%"
     router:
         resource: "%kernel.project_dir%/app/config/routing.yml"
@@ -20,7 +22,6 @@ framework:
         packages:
             zikula_default:
                 base_path: ''
-    default_locale:  "%locale%"
     session:
         name: "%zikula.session.name%"
         handler_id: "%zikula.session.handler_id%"
