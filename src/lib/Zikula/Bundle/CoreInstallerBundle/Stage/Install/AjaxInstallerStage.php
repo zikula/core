@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Stage\Install;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreInstallerBundle\Stage\AjaxStageInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\Component\Wizard\InjectContainerInterface;

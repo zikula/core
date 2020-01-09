@@ -16,7 +16,6 @@ namespace Zikula\Bundle\CoreBundle\Bundle;
 use ArrayAccess;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class MetaData implements ArrayAccess
