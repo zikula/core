@@ -41,6 +41,8 @@ _n() and _fn() should be manually refactored
 
 ##Extraction
 
+bin/console translation:update --force --prefix="" --output-format="yaml" en
+
 e.g. command: `bin/console translation:update --force en ZikulaBlocksModule`
  - note setting the prefix to "" (`--prefix=""`) might be useful in creating the first English Translation
  - yaml seems a lot easier than xliff
