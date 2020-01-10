@@ -90,7 +90,7 @@ class ConfigType extends AbstractType
                 ],
                 'expanded' => false,
                 'multiple' => false,
-                'help' => 'More information in <a href="%url%" target="_blank">PHP documentation</a>.',
+                'help' => 'More information in <a href=\'%url%\' target="_blank">PHP documentation</a>.',
                 'help_translation_parameters' => [
                     '%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.cookie-lifetime'
                 ],
@@ -111,7 +111,7 @@ class ConfigType extends AbstractType
                     'maxlength' => 4
                 ],
                 'input_group' => ['right' => '<em>minutes of inactivity</em>'],
-                'help' => 'More information in <a href="%url%" target="_blank">PHP documentation</a>.',
+                'help' => 'More information in <a href=\'%url%\' target="_blank">PHP documentation</a>.',
                 'help_translation_parameters' => [
                     '%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime'
                 ],
@@ -134,7 +134,7 @@ class ConfigType extends AbstractType
                 'empty_data' => '',
                 'required' => false,
                 'alert' => ["Notice: If you change 'Where to save sessions' to 'File' then you must enter a path in the 'Path for saving session files' box above. The path must be writeable. Leave value empty for default location '%kernel.cache_dir%/sessions'" => 'info'],
-                'help' => 'More information in <a href="%url%" target="_blank">PHP documentation</a>.',
+                'help' => 'More information in <a href=\'%url%\' target="_blank">PHP documentation</a>.',
                 'help_translation_parameters' => [
                     '%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.save-path'
                 ],
