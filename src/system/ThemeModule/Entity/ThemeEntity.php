@@ -93,7 +93,7 @@ class ThemeEntity extends EntityAccess
      * is theme an admin capable theme
      *
      * @ORM\Column(type="smallint")
-     * @var int
+     * @var bool
      */
     private $admin;
 
@@ -101,7 +101,7 @@ class ThemeEntity extends EntityAccess
      * is theme an user capable theme
      *
      * @ORM\Column(type="smallint")
-     * @var int
+     * @var bool
      */
     private $user;
 
@@ -109,7 +109,7 @@ class ThemeEntity extends EntityAccess
      * is theme an system theme
      *
      * @ORM\Column(name="`system`", type="smallint")
-     * @var int
+     * @var bool
      */
     private $system;
 
@@ -125,7 +125,7 @@ class ThemeEntity extends EntityAccess
      * is theme xhtml compliant
      *
      * @ORM\Column(type="smallint")
-     * @var int
+     * @var bool
      * @deprecated
      */
     private $xhtml;
