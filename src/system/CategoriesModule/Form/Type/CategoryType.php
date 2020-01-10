@@ -25,15 +25,29 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * CategoryType form type class.
  */
 class CategoryType extends AbstractType
 {
+    use TranslatorTrait;
+
+    /**
+     * @var CategoryRepositoryInterface
+     */
+    private $categoryRepository;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $this->translator;
@@ -88,6 +102,7 @@ class CategoryType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
                 'label' => 'Category attributes',
+                'label_attr' => ['class' => 'sr-only'],
                 'required' => false
             ])
             ->add('after', HiddenType::class, [
