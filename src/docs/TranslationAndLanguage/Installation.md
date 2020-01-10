@@ -1,16 +1,16 @@
 # Installation of translations
 
-Translations must be located in `app/Resources/translations`
+Translations must be located in `translations`
 
 Files should be be `<domain>.<locale>.po`
 
 e.g.
 
-    app/Resources/translations/messages.de.po
-    app/Resources/translations/routes.de.po
-    app/Resources/translations/validators.de.po
-    app/Resources/translations/zikula.de.po
-    app/Resources/translations/zikula_javascript.de.po
+    translations/messages.de.po
+    translations/routes.de.po
+    translations/validators.de.po
+    translations/zikula.de.po
+    translations/zikula_javascript.de.po
 
 After the files have been placed, you must 'install' them by going to 
 

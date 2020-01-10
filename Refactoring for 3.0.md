@@ -53,6 +53,7 @@ You can still use `Zikula\Common\Translator\TranslatorTrait`, but it has only on
 ```php
 public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
 ```
+You can/should remove the `setTranslator` method from your using class though.
 
 ### JavaScript files
 Follows basically the same rules as translations in PHP files shown above. See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
