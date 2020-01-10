@@ -60,7 +60,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
             } else {
                 $k = $v;
             }
-            $newArray[trim($k)] = trim($v);
+            $newArray[trim($v)] = trim($k);
         }
 
         return $newArray;
