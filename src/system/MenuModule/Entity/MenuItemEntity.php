@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Knp\Menu\NodeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -33,29 +34,35 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(length=64)
+     * @Assert\Length(min="0", max="64", allowEmptyString="false")
+     * @var string
      */
     private $title;
 
     /**
      * @Gedmo\TreeLeft
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $lft;
 
     /**
      * @Gedmo\TreeLevel
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $lvl;
 
     /**
      * @Gedmo\TreeRight
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $rgt;
 
@@ -63,6 +70,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
      * @Gedmo\TreeRoot
      * @ORM\ManyToOne(targetEntity="MenuItemEntity")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
+     * @var self
      */
     private $root;
 
@@ -70,6 +78,7 @@ class MenuItemEntity extends EntityAccess implements NodeInterface
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="MenuItemEntity", inversedBy="children")
      * @ORM\JoinColumn(referencedColumnName="id", onDelete="CASCADE")
+     * @var self
      */
     private $parent;
 

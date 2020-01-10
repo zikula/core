@@ -31,6 +31,7 @@ class GroupApplicationEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $app_id;
 
@@ -54,6 +55,7 @@ class GroupApplicationEntity extends EntityAccess
      * Details of the application
      *
      * @ORM\Column(type="text")
+     * @var string
      */
     private $application;
 
@@ -61,6 +63,7 @@ class GroupApplicationEntity extends EntityAccess
      * Status of the application
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $status;
 

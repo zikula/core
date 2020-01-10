@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -38,6 +39,7 @@ class UserVerificationEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
@@ -45,6 +47,7 @@ class UserVerificationEntity extends EntityAccess
      * Change type: a code indicating what type of change action created this record.
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $changetype;
 
@@ -52,6 +55,7 @@ class UserVerificationEntity extends EntityAccess
      * User ID: Primary ID of the user record to which this verification record is related. Foreign key to users table.
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $uid;
 
@@ -61,6 +65,8 @@ class UserVerificationEntity extends EntityAccess
      * Only after the verification code is received back from the user (thus, verifying the new e-mail address) is the new e-mail address saved to the user's account record.
      *
      * @ORM\Column(type="string", length=60)
+     * @Assert\Length(min="0", max="60", allowEmptyString="true")
+     * @var string
      */
     private $newemail;
 
@@ -68,6 +74,8 @@ class UserVerificationEntity extends EntityAccess
      * Verification Code: The verification code last sent to the user to verify the requested action, as a salted hash of the value sent.
      *
      * @ORM\Column(type="string", length=138)
+     * @Assert\Length(min="0", max="138", allowEmptyString="true")
+     * @var string
      */
     private $verifycode;
 
@@ -75,6 +83,7 @@ class UserVerificationEntity extends EntityAccess
      * Date/Time created: The date and time the verification record was created, as a UTC date/time, used to expire the record.
      *
      * @ORM\Column(type="datetime")
+     * @var DateTime
      */
     private $created_dt;
 

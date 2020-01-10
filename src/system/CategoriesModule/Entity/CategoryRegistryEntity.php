@@ -16,6 +16,7 @@ namespace Zikula\CategoriesModule\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -33,7 +34,7 @@ class CategoryRegistryEntity extends EntityAccess
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer
+     * @var int
      */
     private $id;
 
@@ -41,6 +42,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The module name owning this entry
      *
      * @ORM\Column(type="string", length=60)
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
      * @var string
      */
     private $modname;
@@ -49,6 +51,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The name of the entity
      *
      * @ORM\Column(type="string", length=60)
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
      * @var string
      */
     private $entityname;
@@ -57,6 +60,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The property of the entity
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string
      */
     private $property;
@@ -112,6 +116,7 @@ class CategoryRegistryEntity extends EntityAccess
      * The status of the entity
      *
      * @ORM\Column(type="string", length=1)
+     * @Assert\Length(min="0", max="1", allowEmptyString="false")
      * @var string
      */
     protected $obj_status = 'A';

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\AdminModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -30,6 +31,7 @@ class AdminCategoryEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $cid;
 
@@ -37,6 +39,8 @@ class AdminCategoryEntity extends EntityAccess
      * The category name
      *
      * @ORM\Column(type="string", length=32)
+     * @Assert\Length(min="0", max="32", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
@@ -44,6 +48,8 @@ class AdminCategoryEntity extends EntityAccess
      * The category description
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @var string
      */
     private $description;
 
@@ -51,6 +57,7 @@ class AdminCategoryEntity extends EntityAccess
      * The sort order of the category
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $sortorder;
 

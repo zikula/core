@@ -6791,15 +6791,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "http://zikula.org/"
+                    "homepage": "https://ziku.la/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "info@ziku.la"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -6876,12 +6876,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "3c25073d60f983fff590bcc6ddffe8d14192dfe0"
+                "reference": "820d30ba743fb67d488890f3fa7a23180c72194c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/3c25073d60f983fff590bcc6ddffe8d14192dfe0",
-                "reference": "3c25073d60f983fff590bcc6ddffe8d14192dfe0",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/820d30ba743fb67d488890f3fa7a23180c72194c",
+                "reference": "820d30ba743fb67d488890f3fa7a23180c72194c",
                 "shasum": ""
             },
             "require": {
@@ -6929,7 +6929,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2020-01-09T23:40:46+00:00"
+            "time": "2020-01-10T08:49:35+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6937,12 +6937,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "e0f467274af12571a5465813599dad48212136dc"
+                "reference": "0023af57c26101f3b3ec8244a2f463e35684906d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/e0f467274af12571a5465813599dad48212136dc",
-                "reference": "e0f467274af12571a5465813599dad48212136dc",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/0023af57c26101f3b3ec8244a2f463e35684906d",
+                "reference": "0023af57c26101f3b3ec8244a2f463e35684906d",
                 "shasum": ""
             },
             "require": {
@@ -6979,7 +6979,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2020-01-08T22:16:11+00:00"
+            "time": "2020-01-10T08:49:13+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -6987,12 +6987,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "3967d70e1c3f91249695771cd1e7e1fe3c452f13"
+                "reference": "1e67ae959d51bf76dcd575dabb16177f64a0577c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/3967d70e1c3f91249695771cd1e7e1fe3c452f13",
-                "reference": "3967d70e1c3f91249695771cd1e7e1fe3c452f13",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/1e67ae959d51bf76dcd575dabb16177f64a0577c",
+                "reference": "1e67ae959d51bf76dcd575dabb16177f64a0577c",
                 "shasum": ""
             },
             "require": {
@@ -7050,7 +7050,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-09T23:42:16+00:00"
+            "time": "2020-01-10T08:48:40+00:00"
         },
         {
             "name": "zikula/wizard",

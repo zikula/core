@@ -16,6 +16,7 @@ namespace Zikula\SearchModule\Entity;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -29,38 +30,36 @@ class SearchStatEntity extends EntityAccess
     /**
      * id of the previous search
      *
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int
      */
     private $id;
 
     /**
      * search terms of the previous search
      *
-     * @var string
-     *
      * @ORM\Column(name="search", type="string", length=50, nullable=false)
+     * @Assert\Length(min="0", max="50", allowEmptyString="false")
+     * @var string
      */
     private $search;
 
     /**
      * Number of times previous search has been run
      *
-     * @var integer
-     *
      * @ORM\Column(name="scount", type="integer", nullable=false)
+     * @Assert\NotNull
+     * @var int
      */
     private $scount;
 
     /**
      * Timestamp of last time this search was run
      *
-     * @var DateTime
-     *
      * @ORM\Column(name="date", type="date", nullable=true)
+     * @var DateTime
      */
     private $date;
 

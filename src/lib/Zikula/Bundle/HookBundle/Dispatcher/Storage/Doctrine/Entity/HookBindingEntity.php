@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -25,53 +26,51 @@ use Zikula\Core\Doctrine\EntityAccess;
 class HookBindingEntity extends EntityAccess
 {
     /**
-     * @var int
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int
      */
     private $id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="sowner", type="string", length=40, nullable=false)
+     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @var string
      */
     private $sowner;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="powner", type="string", length=40, nullable=false)
+     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @var string
      */
     private $powner;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
+     * @Assert\Length(min="0", max="512", allowEmptyString="false")
+     * @var string
      */
     private $sareaid;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
+     * @Assert\Length(min="0", max="512", allowEmptyString="false")
+     * @var string
      */
     private $pareaid;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="category", type="string", length=20, nullable=false)
+     * @Assert\Length(min="0", max="20", allowEmptyString="false")
+     * @var string
      */
     private $category;
 
     /**
-     * @var int
-     *
      * @ORM\Column(name="sortorder", type="smallint", nullable=false)
+     * @var int
      */
     private $sortorder;
 

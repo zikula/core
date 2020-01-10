@@ -50,6 +50,7 @@ class BlockPlacementEntity extends EntityAccess
      * The sort order of the block within the position
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $sortorder;
 

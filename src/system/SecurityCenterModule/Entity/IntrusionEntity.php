@@ -15,6 +15,7 @@ namespace Zikula\SecurityCenterModule\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -29,43 +30,46 @@ class IntrusionEntity extends EntityAccess
     /**
      * ID of the entity
      *
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int
      */
     private $id;
 
     /**
      * Name of the entity
      *
-     * @var string
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
+     * @Assert\Length(min="0", max="128", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
     /**
      * Tag
      *
-     * @var string
      * @ORM\Column(name="tag", type="string", length=40, nullable=true)
+     * @Assert\Length(min="0", max="40", allowEmptyString="true")
+     * @var string
      */
     private $tag;
 
     /**
      * Value
      *
-     * @var string
      * @ORM\Column(name="value", type="text", nullable=false)
+     * @Assert\NotNull
+     * @var string
      */
     private $value;
 
     /**
      * Page called when intrusion was detected
      *
-     * @var string
      * @ORM\Column(name="page", type="text", nullable=false)
+     * @Assert\NotNull
+     * @var string
      */
     private $page;
 
@@ -80,32 +84,36 @@ class IntrusionEntity extends EntityAccess
     /**
      * Ip address of the intrustion
      *
-     * @var string
      * @ORM\Column(name="ip", type="string", length=40, nullable=false)
+     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @var string
      */
     private $ip;
 
     /**
      * Impact
      *
-     * @var integer
      * @ORM\Column(name="impact", type="integer", nullable=false)
+     * @Assert\NotNull
+     * @var int
      */
     private $impact;
 
     /**
      * Filters
      *
-     * @var string
      * @ORM\Column(name="filters", type="text", nullable=false)
+     * @Assert\NotNull
+     * @var string
      */
     private $filters;
 
     /**
      * Timestamp of the intrusion
      *
-     * @var DateTime
      * @ORM\Column(name="date", type="datetime", nullable=false)
+     * @Assert\NotNull
+     * @var DateTime
      */
     private $date;
 

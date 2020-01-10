@@ -16,6 +16,7 @@ namespace Zikula\SearchModule\Entity;
 use DateTime;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\UrlInterface;
 
 /**
@@ -29,83 +30,77 @@ class SearchResultEntity
     /**
      * ID of the search
      *
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int
      */
     private $id;
 
     /**
      * title of the search
      *
-     * @var string
-     *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $title;
 
     /**
      * the matching search text
      *
-     * @var string
-     *
      * @ORM\Column(name="text", type="text", nullable=true)
+     * @var string
      */
     private $text;
 
     /**
      * the module providing the search hit
      *
-     * @var string
-     *
      * @ORM\Column(name="module", type="string", length=100, nullable=true)
+     * @Assert\Length(min="0", max="100", allowEmptyString="true")
+     * @var string
      */
     private $module;
 
     /**
      * additional information about this search result
      *
-     * @var array
-     *
      * @ORM\Column(name="extra", type="array")
+     * @var array
      */
     private $extra = [];
 
     /**
      * creation timestamp of this search hit
      *
-     * @var DateTime
-     *
      * @ORM\Column(name="created", type="datetime", nullable=true)
+     * @var DateTime
      */
     private $created;
 
     /**
      * Last found timestamp of this search hit
      *
-     * @var DateTime
-     *
      * @ORM\Column(name="found", type="datetime", nullable=true)
+     * @var DateTime
      */
     private $found;
 
     /**
      * Session id associated
      *
-     * @var string
-     *
      * @ORM\Column(name="sesid", type="string", length=50, nullable=true)
+     * @Assert\Length(min="0", max="50", allowEmptyString="true")
+     * @var string
      */
     private $sesid;
 
     /**
      * Url for found item
      *
-     * @var UrlInterface
-     *
      * @ORM\Column(type="object", nullable=true)
+     * @var UrlInterface
      */
     private $url;
 

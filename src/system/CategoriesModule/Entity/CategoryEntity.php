@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -38,25 +39,28 @@ class CategoryEntity extends EntityAccess
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
      * @Gedmo\TreeLeft
      * @ORM\Column(name="lft", type="integer")
+     * @var int
      */
     private $lft;
 
     /**
      * @Gedmo\TreeLevel
      * @ORM\Column(name="lvl", type="integer")
+     * @var int
      */
     private $lvl;
 
     /**
      * @Gedmo\TreeRight
      * @ORM\Column(name="rgt", type="integer")
+     * @var int
      */
     private $rgt;
 
@@ -64,6 +68,7 @@ class CategoryEntity extends EntityAccess
      * @Gedmo\TreeRoot
      * @ORM\ManyToOne(targetEntity="CategoryEntity")
      * @ORM\JoinColumn(name="tree_root", referencedColumnName="id", onDelete="CASCADE")
+     * @var self
      */
     private $root;
 
@@ -73,7 +78,7 @@ class CategoryEntity extends EntityAccess
      * @Gedmo\TreeParent
      * @ORM\ManyToOne(targetEntity="CategoryEntity", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-     * @var CategoryEntity
+     * @var self
      */
     private $parent;
 
@@ -106,6 +111,7 @@ class CategoryEntity extends EntityAccess
      * The name of the category
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string
      */
     private $name;
@@ -114,6 +120,7 @@ class CategoryEntity extends EntityAccess
      * The value of the category
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
      * @var string
      */
     private $value;
@@ -138,6 +145,7 @@ class CategoryEntity extends EntityAccess
      * The status of the category
      *
      * @ORM\Column(type="string", length=1)
+     * @Assert\Length(min="0", max="1", allowEmptyString="false")
      * @var string
      */
     private $status;

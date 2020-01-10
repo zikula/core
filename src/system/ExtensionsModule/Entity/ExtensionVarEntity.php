@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -28,24 +29,27 @@ class ExtensionVarEntity extends EntityAccess
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min="0", max="64", allowEmptyString="false")
      * @var string
      */
     private $modname;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min="0", max="64", allowEmptyString="false")
      * @var string
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", length=512)
+     * @Assert\Length(min="0", max="512", allowEmptyString="false")
      * @var string
      */
     private $value;

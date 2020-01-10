@@ -15,6 +15,7 @@ namespace Zikula\UsersModule\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -35,6 +36,8 @@ class UserSessionEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="string", length=60)
      * @ORM\GeneratedValue(strategy="NONE")
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @var string
      */
     private $sessid;
 
@@ -42,6 +45,8 @@ class UserSessionEntity extends EntityAccess
      * IP Address: The user's IP address for the session.
      *
      * @ORM\Column(type="string", length=40)
+     * @Assert\Length(min="0", max="40", allowEmptyString="false")
+     * @var string
      */
     private $ipaddr;
 
@@ -51,6 +56,7 @@ class UserSessionEntity extends EntityAccess
      * If Zikula is moved to a new database server with a different time zone configuration, then these dates/times will be interpreted based on the new time zone, not the original one!
      *
      * @ORM\Column(type="datetime")
+     * @var DateTime
      */
     private $lastused;
 
@@ -58,6 +64,7 @@ class UserSessionEntity extends EntityAccess
      * User ID: Primary ID of the user record to which this session record is related. Foreign key to users table.
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $uid;
 
@@ -65,6 +72,7 @@ class UserSessionEntity extends EntityAccess
      * Remember Me?: Whether the last successful login by the user (which creted this session record) used the "remember me" option to remain logged in between visits.
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $remember;
 
@@ -72,6 +80,7 @@ class UserSessionEntity extends EntityAccess
      * Session Variables: Per-user/per-session variables. (Serialized)
      *
      * @ORM\Column(type="text")
+     * @var string
      */
     private $vars;
 

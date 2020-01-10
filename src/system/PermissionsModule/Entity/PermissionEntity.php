@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -30,6 +31,7 @@ class PermissionEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $pid;
 
@@ -37,6 +39,7 @@ class PermissionEntity extends EntityAccess
      * group id for the rule
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $gid;
 
@@ -44,6 +47,7 @@ class PermissionEntity extends EntityAccess
      * the place of the rule in the sequence
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $sequence;
 
@@ -51,6 +55,7 @@ class PermissionEntity extends EntityAccess
      * the realm assoiciated with this rule
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $realm;
 
@@ -58,6 +63,8 @@ class PermissionEntity extends EntityAccess
      * the component part of the rule
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $component;
 
@@ -65,6 +72,8 @@ class PermissionEntity extends EntityAccess
      * the instance part of the rule
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $instance;
 
@@ -72,6 +81,7 @@ class PermissionEntity extends EntityAccess
      * the access level of the rule
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $level;
 
@@ -79,6 +89,8 @@ class PermissionEntity extends EntityAccess
      * the bond of the rule
      *
      * @ORM\Column(type="integer")
+     * @var int
+     * @deprecated
      */
     private $bond;
 
@@ -163,11 +175,17 @@ class PermissionEntity extends EntityAccess
         $this->level = $level;
     }
 
+    /**
+     * @deprecated
+     */
     public function getBond(): int
     {
         return $this->bond;
     }
 
+    /**
+     * @deprecated
+     */
     public function setBond(int $bond): void
     {
         $this->bond = $bond;

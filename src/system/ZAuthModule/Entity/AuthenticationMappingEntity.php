@@ -15,6 +15,7 @@ namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Zikula\Core\Doctrine\EntityAccess;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 
 /**
@@ -28,33 +29,42 @@ class AuthenticationMappingEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $method;
 
     /**
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $uid;
 
     /**
-     * @ZAuthAssert\ValidUname()
      * @ORM\Column(type="string")
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @ZAuthAssert\ValidUname()
+     * @var string
      */
     private $uname;
 
     /**
-     * @ZAuthAssert\ValidEmail()
      * @ORM\Column(type="string")
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @ZAuthAssert\ValidEmail()
+     * @var string
      */
     private $email;
 
     /**
      * @ORM\Column(type="boolean")
+     * @var bool
      */
     private $verifiedEmail;
 
@@ -62,8 +72,10 @@ class AuthenticationMappingEntity extends EntityAccess
      * Password: User's password for logging in.
      * This value is salted and hashed. The salt is stored in this field, delimited from the hash with a dollar sign character ($).
      *
-     * @ZAuthAssert\ValidPassword()
      * @ORM\Column(type="string")
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @ZAuthAssert\ValidPassword()
+     * @var string
      */
     private $pass;
 

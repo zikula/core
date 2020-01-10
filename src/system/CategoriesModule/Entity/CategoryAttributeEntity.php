@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\CategoriesModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -41,6 +42,8 @@ class CategoryAttributeEntity extends EntityAccess
      *
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
+     * @Assert\Length(min="0", max="80", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
@@ -48,6 +51,7 @@ class CategoryAttributeEntity extends EntityAccess
      * The value of the attribute
      *
      * @ORM\Column(type="text")
+     * @var string
      */
     private $value;
 

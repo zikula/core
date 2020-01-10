@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -25,67 +26,65 @@ use Zikula\Core\Doctrine\EntityAccess;
 class HookRuntimeEntity extends EntityAccess
 {
     /**
-     * @var int
-     *
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @var int
      */
     private $id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="sowner", type="string", length=60, nullable=false)
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @var string
      */
     private $sowner;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="powner", type="string", length=60, nullable=false)
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @var string
      */
     private $powner;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="sareaid", type="string", length=512, nullable=false)
+     * @Assert\Length(min="0", max="512", allowEmptyString="false")
+     * @var string
      */
     private $sareaid;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="pareaid", type="string", length=512, nullable=false)
+     * @Assert\Length(min="0", max="512", allowEmptyString="false")
+     * @var string
      */
     private $pareaid;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="eventname", type="string", length=120, nullable=false)
+     * @Assert\Length(min="0", max="120", allowEmptyString="false")
+     * @var string
      */
     private $eventname;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="classname", type="string", length=120, nullable=false)
+     * @Assert\Length(min="0", max="120", allowEmptyString="false")
+     * @var string
      */
     private $classname;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="method", type="string", length=60, nullable=false)
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @var string
      */
     private $method;
 
     /**
-     * @var int
-     *
      * @ORM\Column(name="priority", type="integer", nullable=false)
+     * @var int
      */
     private $priority;
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
 
@@ -31,6 +32,7 @@ class ThemeEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $id;
 
@@ -38,6 +40,8 @@ class ThemeEntity extends EntityAccess
      * theme name
      *
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min="0", max="64", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
@@ -45,6 +49,7 @@ class ThemeEntity extends EntityAccess
      * theme type
      *
      * @ORM\Column(name="`type`", type="smallint")
+     * @var int
      */
     private $type;
 
@@ -52,6 +57,8 @@ class ThemeEntity extends EntityAccess
      * display name for theme
      *
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min="0", max="64", allowEmptyString="false")
+     * @var string
      */
     private $displayname;
 
@@ -59,6 +66,8 @@ class ThemeEntity extends EntityAccess
      * theme description
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @var string
      */
     private $description;
 
@@ -66,6 +75,8 @@ class ThemeEntity extends EntityAccess
      * theme version
      *
      * @ORM\Column(type="string", length=10)
+     * @Assert\Length(min="0", max="10", allowEmptyString="false")
+     * @var string
      */
     private $version;
 
@@ -73,6 +84,8 @@ class ThemeEntity extends EntityAccess
      * contact for theme
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @var string
      */
     private $contact;
 
@@ -80,6 +93,7 @@ class ThemeEntity extends EntityAccess
      * is theme an admin capable theme
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $admin;
 
@@ -87,6 +101,7 @@ class ThemeEntity extends EntityAccess
      * is theme an user capable theme
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $user;
 
@@ -94,6 +109,7 @@ class ThemeEntity extends EntityAccess
      * is theme an system theme
      *
      * @ORM\Column(name="`system`", type="smallint")
+     * @var int
      */
     private $system;
 
@@ -101,6 +117,7 @@ class ThemeEntity extends EntityAccess
      * state of the theme
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $state;
 
@@ -108,6 +125,8 @@ class ThemeEntity extends EntityAccess
      * is theme xhtml compliant
      *
      * @ORM\Column(type="smallint")
+     * @var int
+     * @deprecated
      */
     private $xhtml;
 
@@ -239,11 +258,17 @@ class ThemeEntity extends EntityAccess
         $this->state = $state;
     }
 
+    /**
+     * @deprecated
+     */
     public function getXhtml(): bool
     {
         return (bool)$this->xhtml;
     }
 
+    /**
+     * @deprecated
+     */
     public function setXhtml(bool $xhtml): void
     {
         $this->xhtml = $xhtml;

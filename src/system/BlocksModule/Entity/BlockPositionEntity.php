@@ -33,6 +33,7 @@ class BlockPositionEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $pid;
 
@@ -42,14 +43,16 @@ class BlockPositionEntity extends EntityAccess
      * @Assert\Regex("/^[a-zA-Z0-9\-\_]+$/")
      * @Assert\Length(max="255", allowEmptyString="false")
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $name;
 
     /**
      * The description of the block position
      *
-     * @Assert\Length(max="255", allowEmptyString="true")
+     * @Assert\Length(max="255", allowEmptyString="false")
      * @ORM\Column(type="string", length=255)
+     * @var string
      */
     private $description;
 
@@ -57,7 +60,8 @@ class BlockPositionEntity extends EntityAccess
      * @ORM\OneToMany(
      *     targetEntity="Zikula\BlocksModule\Entity\BlockPlacementEntity",
      *     mappedBy="position",
-     *     cascade={"remove"})
+     *     cascade={"remove"}
+     * )
      * @ORM\OrderBy({"sortorder" = "ASC"})
      */
     private $placements;

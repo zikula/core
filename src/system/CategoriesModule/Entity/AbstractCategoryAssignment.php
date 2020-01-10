@@ -27,13 +27,13 @@ abstract class AbstractCategoryAssignment extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer", name="registryId")
-     * @var integer
+     * @var int
      */
     private $categoryRegistryId;
 

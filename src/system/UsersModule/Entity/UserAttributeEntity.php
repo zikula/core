@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -33,6 +34,7 @@ class UserAttributeEntity extends EntityAccess
      * @ORM\Id
      * @ORM\ManyToOne(targetEntity="UserEntity", inversedBy="attributes")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="uid", onDelete="CASCADE")
+     * @var int
      */
     private $user;
 
@@ -41,6 +43,8 @@ class UserAttributeEntity extends EntityAccess
      *
      * @ORM\Id
      * @ORM\Column(type="string", length=80)
+     * @Assert\Length(min="0", max="80", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
@@ -48,11 +52,13 @@ class UserAttributeEntity extends EntityAccess
      * the value for the attribute
      *
      * @ORM\Column(type="text")
+     * @var string
      */
     private $value;
 
     /**
      * non-persisted property
+     *
      * @var string
      */
     private $extra;

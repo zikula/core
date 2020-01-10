@@ -42,22 +42,27 @@ class UserEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $uid;
 
     /**
      * User Name: Primary user display name.
      *
-     * @ZikulaAssert\ValidUname()
      * @ORM\Column(type="string", length=25)
+     * @Assert\Length(min="0", max="25", allowEmptyString="false")
+     * @ZikulaAssert\ValidUname()
+     * @var string
      */
     private $uname;
 
     /**
      * E-mail Address: For user notifications.
      *
-     * @ZikulaAssert\ValidEmail()
      * @ORM\Column(type="string", length=60)
+     * @Assert\Length(min="0", max="60", allowEmptyString="false")
+     * @ZikulaAssert\ValidEmail()
+     * @var string
      */
     private $email;
 
@@ -73,6 +78,7 @@ class UserEntity extends EntityAccess
      *
      * @Assert\Choice(callback = "getActivatedValues")
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $activated;
 
@@ -86,8 +92,9 @@ class UserEntity extends EntityAccess
      * If SQL date/time functions must be used, then care should be taken to ensure that either the function is time zone neutral,
      * or that the function and its relationship to time zone settings is completely understood.
      *
-     * @Assert\DateTime()
      * @ORM\Column(type="utcdatetime")
+     * @Assert\DateTime()
+     * @var DateTime
      */
     private $approved_date;
 
@@ -96,8 +103,9 @@ class UserEntity extends EntityAccess
      * If this is the same as the user account's uid, then moderation was not in use at the time the request for a new account was made.
      * If this is -1, the the user account that approved the request has since been deleted. If this is 0, the user account has not yet been approved.
      *
-     * @Assert\Type(type="integer")
      * @ORM\Column(type="integer")
+     * @Assert\Type(type="integer")
+     * @var int
      */
     private $approved_by;
 
@@ -112,8 +120,9 @@ class UserEntity extends EntityAccess
      * then this will be the date and time the user made the registration request UNTIL the registration process is complete, and then it is updated as above.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
-     * @Assert\DateTime()
      * @ORM\Column(type="utcdatetime")
+     * @Assert\DateTime()
+     * @var DateTime
      */
     private $user_regdate;
 
@@ -121,8 +130,9 @@ class UserEntity extends EntityAccess
      * Last Login Date/Time: Date/time user last successfully logged into the site.
      * NOTE: This is stored as an SQL datetime, using the UTC time zone. The date/time is NEITHER server local time nor user local time. SEE WARNING under approved_date, above.
      *
-     * @Assert\DateTime()
      * @ORM\Column(type="utcdatetime")
+     * @Assert\DateTime()
+     * @var DateTime
      */
     private $lastlogin;
 
@@ -130,8 +140,10 @@ class UserEntity extends EntityAccess
      * User's timezone, as supported by PHP (listed at http://us2.php.net/manual/en/timezones.php), and as expressed by the Olson tz database.
      * Optional, if blank then the system default timezone should be used. [FUTURE USE]
      *
-     * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=30)
+     * @Assert\Type(type="string")
+     * @Assert\Length(min="0", max="30", allowEmptyString="true")
+     * @var string
      */
     private $tz;
 
@@ -141,6 +153,8 @@ class UserEntity extends EntityAccess
      *
      * @Assert\Type(type="string")
      * @ORM\Column(type="string", length=5)
+     * @Assert\Length(min="0", max="5", allowEmptyString="true")
+     * @var string
      */
     private $locale;
 
@@ -151,7 +165,8 @@ class UserEntity extends EntityAccess
      *                mappedBy="user",
      *                cascade={"all"},
      *                orphanRemoval=true,
-     *                indexBy="name")
+     *                indexBy="name"
+     * )
      */
     private $attributes;
 
@@ -160,7 +175,7 @@ class UserEntity extends EntityAccess
      * @ORM\JoinTable(name="group_membership",
      *      joinColumns={@ORM\JoinColumn(name="uid", referencedColumnName="uid")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="gid", referencedColumnName="gid")}
-     *      )
+     * )
      */
     private $groups;
 

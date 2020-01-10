@@ -16,6 +16,7 @@ namespace Zikula\GroupsModule\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\UsersModule\Entity\UserEntity;
 
@@ -33,6 +34,7 @@ class GroupEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $gid;
 
@@ -40,6 +42,8 @@ class GroupEntity extends EntityAccess
      * group name
      *
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $name;
 
@@ -47,6 +51,7 @@ class GroupEntity extends EntityAccess
      * group type
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $gtype;
 
@@ -54,6 +59,8 @@ class GroupEntity extends EntityAccess
      * group description
      *
      * @ORM\Column(type="string", length=200)
+     * @Assert\Length(min="0", max="200", allowEmptyString="false")
+     * @var string
      */
     private $description;
 
@@ -61,6 +68,7 @@ class GroupEntity extends EntityAccess
      * state of the group
      *
      * @ORM\Column(type="smallint")
+     * @var int
      */
     private $state;
 
@@ -68,6 +76,7 @@ class GroupEntity extends EntityAccess
      * maximum membership count
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $nbumax;
 

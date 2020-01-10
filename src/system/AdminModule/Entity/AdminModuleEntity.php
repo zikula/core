@@ -30,6 +30,7 @@ class AdminModuleEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $amid;
 
@@ -37,6 +38,7 @@ class AdminModuleEntity extends EntityAccess
      * The module id
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $mid;
 
@@ -44,6 +46,7 @@ class AdminModuleEntity extends EntityAccess
      * The category id
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $cid;
 
@@ -51,6 +54,7 @@ class AdminModuleEntity extends EntityAccess
      * The sort order for this module
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $sortorder;
 

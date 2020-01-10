@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Core\Doctrine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -27,12 +28,13 @@ abstract class AbstractEntityAttribute extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
-     * @var integer
+     * @var int
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
      * @var string
      */
     protected $name;

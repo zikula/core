@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Zikula\Core\Doctrine\EntityAccess;
 
 /**
@@ -28,43 +29,47 @@ class ExtensionDependencyEntity extends EntityAccess
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @var integer
+     * @var int
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
-     * @var integer
+     * @var int
      */
     private $modid;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\Length(min="0", max="64", allowEmptyString="false")
      * @var string
      */
     private $modname;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\Length(min="0", max="10", allowEmptyString="true")
      * @var string
      */
     private $minversion;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Assert\Length(min="0", max="10", allowEmptyString="true")
      * @var string
      */
     private $maxversion;
 
     /**
      * @ORM\Column(type="integer", length=64)
-     * @var integer
+     * @var int
      */
     private $status;
 
     /**
      * Non-persisted data
-     * The reason of a dependency is not saved into the database to avoid multilingual problems but loaded from Version.php.
+     * The reason of a dependency is not saved into the database to avoid multilingual problems
+     * but loaded from composer.json.
      * @var string
      */
     private $reason = false;

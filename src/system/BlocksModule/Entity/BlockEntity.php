@@ -36,6 +36,7 @@ class BlockEntity extends EntityAccess
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @var int
      */
     private $bid;
 
@@ -44,12 +45,16 @@ class BlockEntity extends EntityAccess
      *
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $bkey;
 
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="false")
+     * @var string
      */
     private $blocktype;
 
@@ -57,6 +62,8 @@ class BlockEntity extends EntityAccess
      * The block title
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="0", max="255", allowEmptyString="true")
+     * @var string
      */
     private $title;
 
@@ -64,6 +71,7 @@ class BlockEntity extends EntityAccess
      * The block description
      *
      * @ORM\Column(type="text")
+     * @var string
      */
     private $description;
 
@@ -71,6 +79,7 @@ class BlockEntity extends EntityAccess
      * A serialized array of block properties
      *
      * @ORM\Column(type="array")
+     * @var string
      */
     private $properties;
 
@@ -94,6 +103,7 @@ class BlockEntity extends EntityAccess
      * The active status of the block
      *
      * @ORM\Column(type="integer")
+     * @var int
      */
     private $active;
 
@@ -108,6 +118,8 @@ class BlockEntity extends EntityAccess
      * The language of the block
      *
      * @ORM\Column(type="string", length=30)
+     * @Assert\Length(min="0", max="30", allowEmptyString="true")
+     * @var string
      */
     private $language;
 
