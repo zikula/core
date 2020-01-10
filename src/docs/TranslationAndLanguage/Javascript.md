@@ -16,24 +16,6 @@ Translator.trans(key, params, domain, locale);
 Translator.transChoice(key, count, params, domain, locale);
 ```
 
-Additionally, Zikula adds standard zikula translation functions:
-
-```js
-var myText = Translator.__('Foo bar baz');
-var myStrReplaceText = Translator.__f('Free %stuff%', {stuff: 'beer'});
-var myPluralText = Translator._n('%count% apple', '%count% apples', count);
-var myPluralReplaceText = Translator._fn('%count% %desc% apple', '%count% %desc% apples', 5, {desc: 'fresh'});
-```
-
-The methods are defined like so:
-
-```js
-Translator.__(key, domain, locale);
-Translator.__f(key, params, domain, locale);
-Translator._n(singular, plural, count, domain, locale);
-Translator._fn(singular, plural, count, params, domain, locale);
-```
-
 ## Extraction from Javascript files
 
 Zikula also provides an Extractor for both native Symfony and Zikula translation functions. This is run automatically
@@ -48,7 +30,7 @@ var myText = Translator.__('Foo bar baz', 'my_special_domain');
 
 In this case, the extractor will export these strings to its own translation file:
 
-    /MyModule/Resources/translatiosn/my_special_domain.js
+    /MyModule/Resources/translations/my_special_domain.js
 
 Then, your extension **must** manually include each of these files in the required template like so:
 

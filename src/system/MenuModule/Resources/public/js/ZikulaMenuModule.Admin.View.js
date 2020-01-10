@@ -27,49 +27,49 @@
         function getContextMenuActions(node) {
             return {
                 editItem: {
-                    label: Translator.__('Edit'),
+                    label: Translator.trans('Edit'),
                     action: function (obj) {
                         performContextMenuAction(node, 'edit');
                     },
                     icon: 'fa fa-edit'
                 },
                 deleteItem: {
-                    label: Translator.__('Delete'),
+                    label: Translator.trans('Delete'),
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
                     icon: 'fa fa-times'
                 },
                 copyItem: {
-                    label: Translator.__('Copy'),
+                    label: Translator.trans('Copy'),
                     action: function (obj) {
                         performContextMenuAction(node, 'copy');
                     },
                     icon: 'fa fa-copy'
                 },
                 // activateItem: {
-                //     label: Translator.__('Activate'),
+                //     label: Translator.trans('Activate'),
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'activate');
                 //     },
                 //     icon: 'fa fa-check-square'
                 // },
                 // deactivateItem: {
-                //     label: Translator.__('Deactivate'),
+                //     label: Translator.trans('Deactivate'),
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'deactivate');
                 //     },
                 //     icon: 'fa fa-square'
                 // },
                 addItemAfter: {
-                    label: Translator.__('Add sibling item (after selected)'),
+                    label: Translator.trans('Add sibling item (after selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
                     icon: 'fa fa-level-up-alt fa-rotate-90'
                 },
                 addItemInto: {
-                    label: Translator.__('Add child item (into selected)'),
+                    label: Translator.trans('Add child item (into selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },

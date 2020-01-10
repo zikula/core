@@ -17,7 +17,7 @@ function initStyleSwitcher() {
             if (true === data.result) {
                 window.location.reload();
             } else {
-                alert(Translator.__('Sorry, the style could not be changed properly. Please try again.'));
+                alert(Translator.trans('Sorry, the style could not be changed properly. Please try again.'));
             }
         });
     });

@@ -5,7 +5,7 @@
         $('#zikula-admin-hiddenpanel-menu').mmenu({
             extensions: ['hiddenpanel-customwidth'],
             'header': {
-                'title': Translator.__('Administration'),
+                'title': Translator.trans('Administration'),
                 'add': true,
                 'update': true
             },

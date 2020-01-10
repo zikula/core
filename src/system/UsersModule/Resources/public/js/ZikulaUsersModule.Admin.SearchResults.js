@@ -18,7 +18,7 @@
                 idValues.push($(this).val());
             });
             if (idValues.length === 0) {
-                alert(Translator.__('No users checked! Please select at least one user.'));
+                alert(Translator.trans('No users checked! Please select at least one user.'));
             } else {
                 // set selected values into mailForm and submit the form
                 $('#zikulausersmodule_mail_userIds').val(idValues);

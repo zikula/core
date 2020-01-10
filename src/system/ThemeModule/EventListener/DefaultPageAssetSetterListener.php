@@ -160,7 +160,6 @@ class DefaultPageAssetSetterListener implements EventSubscriberInterface
         $jsScript = $this->router->generate('bazinga_jstranslation_js', ['domain' => 'zikula_javascript'], RouterInterface::ABSOLUTE_URL);
         $this->jsAssetBag->add([
             $this->assetHelper->resolve('bundles/bazingajstranslation/js/translator.min.js') => AssetBag::WEIGHT_JS_TRANSLATOR,
-            $this->assetHelper->resolve('bundles/core/js/Zikula.Translator.js') => AssetBag::WEIGHT_ZIKULA_JS_TRANSLATOR,
             $jsScript => AssetBag::WEIGHT_JS_TRANSLATIONS,
         ]);
     }

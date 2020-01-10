@@ -33,7 +33,7 @@ function initUserLiveSearch(fieldName)
             jQuery('#' + fieldName + 'LiveSearch .empty-message').remove();
             if (ui.content.length === 0) {
                 jQuery('#' + fieldName + 'LiveSearch').append(
-                    jQuery('<div>', { class: 'empty-message' }).text(Translator.__('No results found!'))
+                    jQuery('<div>', { class: 'empty-message' }).text(Translator.trans('No results found!'))
                 );
             }
         },
