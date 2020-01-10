@@ -116,9 +116,9 @@ class UpdateController extends AbstractController
         $result = $routeDumperHelper->dumpJsRoutes($lang);
 
         if ('' === $result) {
-            $this->addFlash('status', $this->trans('Done! Exposed JS Routes dumped to %s.', ['%s' => 'web/js/fos_js_routes.js']));
+            $this->addFlash('status', $this->trans('Done! Exposed JS Routes dumped to %path%.', ['%path%' => 'web/js/fos_js_routes.js']));
         } else {
-            $this->addFlash('error', $this->trans('Error! There was an error dumping exposed JS Routes: %s', ['%s' => $result]));
+            $this->addFlash('error', $this->trans('Error! There was an error dumping exposed JS Routes: %result%', ['%result%' => $result]));
         }
     }
 }

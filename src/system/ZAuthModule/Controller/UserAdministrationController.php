@@ -377,7 +377,7 @@ class UserAdministrationController extends AbstractController
             'requestedByAdmin' => true
         ]);
         if ($mailSent) {
-            $this->addFlash('status', $this->trans('Done! The password recovery verification link for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
+            $this->addFlash('status', $this->trans('Done! The password recovery verification link for %userName% has been sent via e-mail.', ['%userName%' => $mapping->getUname()]));
         }
 
         return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
@@ -401,7 +401,7 @@ class UserAdministrationController extends AbstractController
         ]);
 
         if ($mailSent) {
-            $this->addFlash('status', $this->trans('Done! The user name for %s has been sent via e-mail.', ['%s' => $mapping->getUname()]));
+            $this->addFlash('status', $this->trans('Done! The user name for %userName% has been sent via e-mail.', ['%userName%' => $mapping->getUname()]));
         }
 
         return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
@@ -438,10 +438,10 @@ class UserAdministrationController extends AbstractController
             if ($form->get('toggle')->isClicked()) {
                 if ($user->getAttributes()->containsKey(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY) && (bool)$user->getAttributes()->get(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY)) {
                     $user->getAttributes()->remove(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY);
-                    $this->addFlash('success', $this->trans('Done! A password change will no longer be required for %uname.', ['%uname' => $user->getUname()]));
+                    $this->addFlash('success', $this->trans('Done! A password change will no longer be required for %userName%.', ['%userName%' => $user->getUname()]));
                 } else {
                     $user->setAttribute(ZAuthConstant::REQUIRE_PASSWORD_CHANGE_KEY, true);
-                    $this->addFlash('success', $this->trans('Done! A password change will be required the next time %uname logs in.', ['%uname' => $user->getUname()]));
+                    $this->addFlash('success', $this->trans('Done! A password change will be required the next time %userName% logs in.', ['%userName%' => $user->getUname()]));
                 }
                 $this->getDoctrine()->getManager()->flush();
             }

@@ -295,17 +295,10 @@ class IdsLogController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        // get parameters
-        $id = (int)$request->query->get('id', 0);
-
-        // sanity check
-        if (!is_numeric($id)) {
-            throw new InvalidArgumentException($this->trans("Error! Received a non-numeric object ID '%s'.", ['%s' => $id]));
-        }
-
+        $id = $request->query->getInt('id', 0);
         $intrusion = $repository->find($id);
         if (!$intrusion) {
-            $this->addFlash('error', $this->trans('Error! Invalid %s received.', ['%s' => "object ID [${id}]"]));
+            $this->addFlash('error', $this->trans('Error! Invalid %identifier% received.', ['%identifier%' => "object ID [${id}]"]));
         } else {
             // delete object
             $this->getDoctrine()->getManager()->remove($intrusion);

@@ -56,7 +56,7 @@ class AjaxController extends AbstractController
         /** @var ExtensionEntity $module */
         $module = $extensionRepository->find($moduleId);
         if (!$module) {
-            return $this->json($this->trans('Error! Could not get module name for id %s.', ['%s' => $moduleId]), Response::HTTP_NOT_FOUND);
+            return $this->json($this->trans('Error! Could not get module name for id %moduleId%.', ['%moduleId%' => $moduleId]), Response::HTTP_NOT_FOUND);
         }
 
         // get the module name
@@ -287,7 +287,7 @@ class AjaxController extends AbstractController
         if ($makeDefault) {
             // Success
             return $this->json([
-                'response' => $this->trans('Category "%s" was successfully made default.', ['%s' => $item['name']])
+                'response' => $this->trans('Category "%name%" was successfully made default.', ['%name%' => $item['name']])
             ]);
         }
 

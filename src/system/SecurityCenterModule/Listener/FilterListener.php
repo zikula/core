@@ -175,7 +175,7 @@ class FilterListener implements EventSubscriberInterface
             }
         } catch (Exception $exception) {
             // sth went wrong - maybe the filter rules weren't found
-            throw new Exception($this->translator->trans('An error occured during executing PHPIDS: %s', ['%s' => $exception->getMessage()]));
+            throw new Exception($this->translator->trans('An error occured during executing PHPIDS: %message%', ['%message%' => $exception->getMessage()]));
         }
     }
 
@@ -350,24 +350,24 @@ class FilterListener implements EventSubscriberInterface
             // mail admin
             // prepare mail text
             $mailBody = $this->translator->trans('The following attack has been detected by PHPIDS') . "\n\n";
-            $mailBody .= isset($ipAddress) ? $this->translator->trans('IP: %s', ['%s' => $ipAddress]) . "\n" : '';
-            $mailBody .= isset($currentUid) ? $this->translator->trans('UserID: %s', ['%s' => $currentUid]) . "\n" : '';
+            $mailBody .= isset($ipAddress) ? $this->translator->trans('IP: %ip%', ['%ip%' => $ipAddress]) . "\n" : '';
+            $mailBody .= isset($currentUid) ? $this->translator->trans('UserID: %userId%', ['%userId%' => $currentUid]) . "\n" : '';
             $currentDate = new DateTime();
-            $mailBody .= $this->translator->trans('Date: %s', ['%s' => $currentDate->format('%b %d, %Y')]) . "\n";
+            $mailBody .= $this->translator->trans('Date: %date%', ['%date%' => $currentDate->format('%b %d, %Y')]) . "\n";
             if (1 === $idsImpactMode) {
-                $mailBody .= $this->translator->trans('Request Impact: %d', ['%d' => $requestImpact]) . "\n";
+                $mailBody .= $this->translator->trans('Request impact: %impact%', ['%impact%' => $requestImpact]) . "\n";
             } else {
-                $mailBody .= $this->translator->trans('Session Impact: %d', ['%d' => $sessionImpact]) . "\n";
+                $mailBody .= $this->translator->trans('Session impact: %impact%', ['%impact%' => $sessionImpact]) . "\n";
             }
-            $mailBody .= $this->translator->trans('Affected tags: %s', ['%s' => implode(' ', $result->getTags())]) . "\n";
+            $mailBody .= $this->translator->trans('Affected tags: %tags%', ['%tags%' => implode(' ', $result->getTags())]) . "\n";
 
             $attackedParameters = '';
             foreach ($result as $event) {
                 $attackedParameters .= $event->getName() . '=' . urlencode($event->getValue()) . ', ';
             }
 
-            $mailBody .= $this->translator->trans('Affected parameters: %s', ['%s' => trim($attackedParameters)]) . "\n";
-            $mailBody .= isset($currentPage) ? $this->translator->trans('Request URI: %s', ['%s' => urlencode($currentPage)]) : '';
+            $mailBody .= $this->translator->trans('Affected parameters: %parameters%', ['%parameters%' => trim($attackedParameters)]) . "\n";
+            $mailBody .= isset($currentPage) ? $this->translator->trans('Request URI: %uri%', ['%uri%' => urlencode($currentPage)]) : '';
 
             // prepare other mail arguments
             $siteName = $this->getSystemVar('sitename', $this->getSystemVar('sitename_en'));

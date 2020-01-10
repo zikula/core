@@ -71,7 +71,7 @@ class GroupEventListener implements EventSubscriberInterface
     {
         $applicationEntity = $event->getSubject();
         $formData = $event->getArguments();
-        $title = $this->translator->trans('Regarding your %s group membership application', ['%s' => $applicationEntity->getGroup()->getName()]);
+        $title = $this->translator->trans('Regarding your %groupName% group membership application', ['%groupName%' => $applicationEntity->getGroup()->getName()]);
         $siteName = $this->variableApi->getSystemVar('sitename');
         $adminMail = $this->variableApi->getSystemVar('adminmail');
 
@@ -91,10 +91,10 @@ class GroupEventListener implements EventSubscriberInterface
             return;
         }
         $applicationEntity = $event->getSubject();
-        $body = $this->translator->trans('A new application has been created by %user to %group. Please attend to this request at %url', [
-            '%user' => $applicationEntity->getUser()->getUname(),
-            '%group' => $applicationEntity->getGroup()->getName(),
-            '%url' => $this->router->generate('zikulagroupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
+        $body = $this->translator->trans('A new application has been created by %userName% to %groupName%. Please attend to this request at %url%', [
+            '%userName%' => $applicationEntity->getUser()->getUname(),
+            '%groupName%' => $applicationEntity->getGroup()->getName(),
+            '%url%' => $this->router->generate('zikulagroupsmodule_group_adminlist', [], RouterInterface::ABSOLUTE_URL)
         ]);
         $adminMail = $this->variableApi->getSystemVar('adminmail');
         $siteName = $this->variableApi->getSystemVar('sitename');

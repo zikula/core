@@ -50,11 +50,11 @@ class RouteType extends AbstractRouteType
         ksort($moduleChoices);
 
         $builder->add('bundle', ChoiceType::class, [
-            'label' => $this->trans('Bundle') . ':',
+            'label' => 'Bundle:',
             'empty_data' => '',
             'attr' => [
                 'class' => '',
-                'title' => $this->trans('Enter the bundle of the route')
+                'title' => 'Enter the bundle of the route'
             ],
             'required' => true,
             'choices' => $moduleChoices,
@@ -64,76 +64,84 @@ class RouteType extends AbstractRouteType
         ]);
 
         $builder->add('controller', TextType::class, [
-            'label' => $this->trans('Controller') . ':',
+            'label' => 'Controller:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->trans('Enter the controller of the route')
+                'title' => 'Enter the controller of the route'
             ],
             'required' => true,
-            'help' => $this->trans('Insert the name of the controller, which was called "type" in earlier versions of Zikula.')
+            'help' => 'Insert the name of the controller, which was called "type" in earlier versions of Zikula.'
         ]);
 
         $builder->add('action', TextType::class, [
-            'label' => $this->trans('Action') . ':',
+            'label' => 'Action:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->trans('Enter the action of the route')
+                'title' => 'Enter the action of the route'
             ],
             'required' => true,
-            'help' => $this->trans('Insert the name of the action, which was called "func" in earlier versions of Zikula.')
+            'help' => 'Insert the name of the action, which was called "func" in earlier versions of Zikula.'
         ]);
 
         $builder->add('path', TextType::class, [
-            'label' => $this->trans('Path') . ':',
+            'label' => 'Path:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->trans('Enter the path of the route')
+                'title' => 'Enter the path of the route'
             ],
             'required' => true,
-            'help' => $this->trans('The path must start with a "/" and can be a regular expression. Example: "/login"'),
+            'help' => 'The path must start with a "/" and can be a regular expression. Example: "/login"',
             'input_group' => ['left' => '<span id="pathPrefix"></span>']
         ]);
 
         $builder->add('host', TextType::class, [
-            'label' => $this->trans('Host') . ':',
+            'label' => 'Host:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->trans('Enter the host of the route')
+                'title' => 'Enter the host of the route'
             ],
             'required' => false,
-            'help' => $this->trans('Advanced setting, see %s', ['%s' => 'https://symfony.com/doc/current/routing/hostname_pattern.html'])
+            'help' => 'Advanced setting, see <a href=\'%url%\' target="_blank">Symfony documentation</a>.',
+            'help_translation_parameters' => [
+                '%url%' => 'https://symfony.com/doc/current/routing/hostname_pattern.html'
+            ],
+            'help_html' => true
         ]);
 
         $builder->add('condition', TextType::class, [
-            'label' => $this->trans('Condition') . ':',
+            'label' => 'Condition:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->trans('Enter the condition of the route')
+                'title' => 'Enter the condition of the route'
             ],
             'required' => false,
-            'help' => $this->trans('Advanced setting, see %s', ['%s' => 'https://symfony.com/doc/current/routing/conditions.html'])
+            'help' => 'Advanced setting, see <a href=\'%url%\' target="_blank">Symfony documentation</a>.',
+            'help_translation_parameters' => [
+                '%url%' => 'https://symfony.com/doc/current/routing/conditions.html'
+            ],
+            'help_html' => true
         ]);
 
         $builder->add('description', TextType::class, [
-            'label' => $this->trans('Description') . ':',
+            'label' => 'Description:',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => '',
-                'title' => $this->trans('Enter the description of the route')
+                'title' => 'Enter the description of the route'
             ],
             'required' => false,
-            'help' => $this->trans('Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.')
+            'help' => 'Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.'
         ]);
     }
 

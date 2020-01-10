@@ -109,7 +109,7 @@ class LinkContainer implements LinkContainerInterface
         if (($appCount > 0) && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_EDIT)) {
             $links[] = [
                 'url' => $this->router->generate('zikulagroupsmodule_group_adminlist') . '#applications',
-                'text' => $this->translator->trans('%n Pending applications', ['%n' => $appCount]),
+                'text' => $this->translator->trans('%amount% pending applications', ['%amount%' => $appCount]),
                 'icon' => 'exclamation-triangle'
             ];
         }

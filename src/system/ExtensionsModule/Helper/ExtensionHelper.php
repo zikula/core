@@ -104,10 +104,10 @@ class ExtensionHelper
     public function install(ExtensionEntity $extension): bool
     {
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
-            throw new RuntimeException($this->translator->trans('Error! Not allowed to install %s.', ['%s' => $extension->getName()]));
+            throw new RuntimeException($this->translator->trans('Error! Not allowed to install %extension%.', ['%extension%' => $extension->getName()]));
         }
         if (10 < $extension->getState()) {
-            throw new RuntimeException($this->translator->trans('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getName()]));
+            throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getName()]));
         }
 
         $bundle = $this->container->get('kernel')->getBundle($extension->getName());
@@ -133,10 +133,10 @@ class ExtensionHelper
     public function upgrade(ExtensionEntity $extension): bool
     {
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
-            throw new RuntimeException($this->translator->trans('Error! Not allowed to upgrade %s.', ['%s' => $extension->getDisplayname()]));
+            throw new RuntimeException($this->translator->trans('Error! Not allowed to upgrade %extension%.', ['%extension%' => $extension->getDisplayname()]));
         }
         if (10 < $extension->getState()) {
-            throw new RuntimeException($this->translator->trans('Error! %s is not compatible with this version of Zikula.', ['%s' => $extension->getDisplayname()]));
+            throw new RuntimeException($this->translator->trans('Error! %extension% is not compatible with this version of Zikula.', ['%extension%' => $extension->getDisplayname()]));
         }
 
         /** @var AbstractModule $bundle */
@@ -183,10 +183,10 @@ class ExtensionHelper
     {
         if (Constant::STATE_NOTALLOWED === $extension->getState()
             || ZikulaKernel::isCoreModule($extension->getName())) {
-            throw new RuntimeException($this->translator->trans('Error! No permission to uninstall %s.', ['%s' => $extension->getDisplayname()]));
+            throw new RuntimeException($this->translator->trans('Error! No permission to uninstall %extension%.', ['%extension%' => $extension->getDisplayname()]));
         }
         if (Constant::STATE_UNINITIALISED === $extension->getState()) {
-            throw new RuntimeException($this->translator->trans('Error! %s is not yet installed, therefore it cannot be uninstalled.', ['%s' => $extension->getDisplayname()]));
+            throw new RuntimeException($this->translator->trans('Error! %extension% is not yet installed, therefore it cannot be uninstalled.', ['%extension%' => $extension->getDisplayname()]));
         }
 
         // allow event to prevent extension removal
@@ -283,7 +283,7 @@ class ExtensionHelper
         $className = $bundle->getInstallerClass();
         $reflectionInstaller = new ReflectionClass($className);
         if (!$reflectionInstaller->isSubclassOf(ExtensionInstallerInterface::class)) {
-            throw new RuntimeException($this->translator->trans('%s must implement ExtensionInstallerInterface', ['%s' => $className]));
+            throw new RuntimeException($this->translator->trans('%extension% must implement ExtensionInstallerInterface', ['%extension%' => $className]));
         }
         /** @var ExtensionInstallerInterface $installer */
         $installer = $reflectionInstaller->newInstance();

@@ -47,7 +47,7 @@ class BlockFactoryApi implements BlockFactoryApiInterface
     public function getInstance(string $blockClassName): BlockHandlerInterface
     {
         if (!class_exists($blockClassName)) {
-            throw new RuntimeException($this->translator->trans('Block class %c does not exist.', ['%c' => $blockClassName]));
+            throw new RuntimeException($this->translator->trans('Block class %className% does not exist.', ['%className%' => $blockClassName]));
         }
         if (!is_subclass_of($blockClassName, BlockHandlerInterface::class)) {
             throw new RuntimeException(sprintf('Block class %s must implement Zikula\BlocksModule\BlockHandlerInterface.', $blockClassName));
@@ -58,7 +58,7 @@ class BlockFactoryApi implements BlockFactoryApiInterface
         }
 
         if (!$this->container->has($blockClassName)) {
-            throw new RuntimeException($this->translator->trans('Block class %c not found in container.', ['%c' => $blockClassName]));
+            throw new RuntimeException($this->translator->trans('Block class %className% not found in container.', ['%className%' => $blockClassName]));
         }
 
         return $this->container->get($blockClassName);

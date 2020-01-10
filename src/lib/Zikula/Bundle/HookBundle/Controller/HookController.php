@@ -281,10 +281,10 @@ class HookController extends AbstractController
         // get subscriber module based on area and do some checks
         $subscriber = $collector->getSubscriber($subscriberArea);
         if (null === $subscriber) {
-            throw new InvalidArgumentException($this->trans('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
+            throw new InvalidArgumentException($this->trans('Module "%name%" is not a valid subscriber.', ['%name%' => $subscriber->getOwner()]));
         }
         if (!$kernel->isBundle($subscriber->getOwner())) {
-            throw new RuntimeException($this->trans('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
+            throw new RuntimeException($this->trans('Subscriber module "%name%" is not available.', ['%name%' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -299,10 +299,10 @@ class HookController extends AbstractController
         // get provider module based on area and do some checks
         $provider = $collector->getProvider($providerArea);
         if (null === $provider) {
-            throw new InvalidArgumentException($this->trans('Module "%s" is not a valid provider.', ['%s' => $provider->getOwner()]));
+            throw new InvalidArgumentException($this->trans('Module "%name%" is not a valid provider.', ['%name%' => $provider->getOwner()]));
         }
         if (!$kernel->isBundle($provider->getOwner())) {
-            throw new RuntimeException($this->trans('Provider module "%s" is not available.', ['%s' => $provider->getOwner()]));
+            throw new RuntimeException($this->trans('Provider module "%name%" is not available.', ['%name%' => $provider->getOwner()]));
         }
         if (!$permissionApi->hasPermission($provider->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -361,10 +361,10 @@ class HookController extends AbstractController
         // get subscriber module based on area and do some checks
         $subscriber = $collector->getSubscriber($subscriberarea);
         if (null === $subscriber) {
-            throw new InvalidArgumentException($this->trans('Module "%s" is not a valid subscriber.', ['%s' => $subscriber->getOwner()]));
+            throw new InvalidArgumentException($this->trans('Module "%name%" is not a valid subscriber.', ['%name%' => $subscriber->getOwner()]));
         }
         if (!$kernel->isBundle($subscriber->getOwner())) {
-            throw new RuntimeException($this->trans('Subscriber module "%s" is not available.', ['%s' => $subscriber->getOwner()]));
+            throw new RuntimeException($this->trans('Subscriber module "%name%" is not available.', ['%name%' => $subscriber->getOwner()]));
         }
         if (!$permissionApi->hasPermission($subscriber->getOwner() . '::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();

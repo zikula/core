@@ -159,12 +159,12 @@ class ModuleController extends AbstractController
         /** @var ExtensionEntity $extension */
         $extension = $extensionRepository->find($id);
         if (Constant::STATE_NOTALLOWED === $extension->getState()) {
-            $this->addFlash('error', $this->trans('Error! Activation of module %s not allowed.', ['%s' => $extension->getName()]));
+            $this->addFlash('error', $this->trans('Error! Activation of module %name% not allowed.', ['%name%' => $extension->getName()]));
         } else {
             // Update state
             $extensionStateHelper->updateState($id, Constant::STATE_ACTIVE);
             $cacheClearer->clear('symfony.routing');
-            $this->addFlash('status', $this->trans('Done! Activated %s module.', ['%s' => $extension->getName()]));
+            $this->addFlash('status', $this->trans('Done! Activated %name% module.', ['%name%' => $extension->getName()]));
         }
 
         return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
@@ -196,7 +196,7 @@ class ModuleController extends AbstractController
         $extension = $extensionRepository->find($id);
         if (null !== $extension) {
             if (ZikulaKernel::isCoreModule($extension->getName())) {
-                $this->addFlash('error', $this->trans('Error! You cannot deactivate this extension [%s]. It is a mandatory core extension, and is required by the system.', ['%s' => $extension->getName()]));
+                $this->addFlash('error', $this->trans('Error! You cannot deactivate the %name% module. It is a mandatory core extension, and is required by the system.', ['%name%' => $extension->getName()]));
             } else {
                 // Update state
                 $extensionStateHelper->updateState($id, Constant::STATE_INACTIVE);
@@ -340,25 +340,25 @@ class ModuleController extends AbstractController
                     $dependencyExtensionEntity = $extensionRepository->get($unsatisfiedDependencies[$dependencyId]->getModname());
                     if (isset($dependencyExtensionEntity)) {
                         if (!$extensionHelper->install($dependencyExtensionEntity)) {
-                            $this->addFlash('error', $this->trans('Failed to install dependency %s!', ['%s' => $dependencyExtensionEntity->getName()]));
+                            $this->addFlash('error', $this->trans('Failed to install dependency "%name%"!', ['%name%' => $dependencyExtensionEntity->getName()]));
 
                             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');
                         }
                         $extensionsInstalled[] = $dependencyExtensionEntity->getId();
-                        $this->addFlash('status', $this->trans('Installed dependency %s.', ['%s' => $dependencyExtensionEntity->getName()]));
+                        $this->addFlash('status', $this->trans('Installed dependency "%name%".', ['%name%' => $dependencyExtensionEntity->getName()]));
                     } else {
-                        $this->addFlash('warning', $this->trans('Warning: could not install selected dependency %s', ['%s' => $unsatisfiedDependencies[$dependencyId]->getModname()]));
+                        $this->addFlash('warning', $this->trans('Warning: could not install selected dependency "%name%".', ['%name%' => $unsatisfiedDependencies[$dependencyId]->getModname()]));
                     }
                 }
                 if ($extensionHelper->install($extension)) {
-                    $this->addFlash('status', $this->trans('Done! Installed %s.', ['%s' => $extension->getName()]));
+                    $this->addFlash('status', $this->trans('Done! Installed "%name%".', ['%name%' => $extension->getName()]));
                     $extensionsInstalled[] = $id;
                     $cacheClearer->clear('symfony');
 
                     return $this->redirectToRoute('zikulaextensionsmodule_module_postinstall', ['extensions' => json_encode($extensionsInstalled)]);
                 }
                 $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);
-                $this->addFlash('error', $this->trans('Initialization of %s failed!', ['%s' => $extension->getName()]));
+                $this->addFlash('error', $this->trans('Initialization of "%name%" failed!', ['%name%' => $extension->getName()]));
             }
             if ($form->get('cancel')->isClicked()) {
                 $extensionStateHelper->updateState($id, Constant::STATE_UNINITIALISED);

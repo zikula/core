@@ -174,7 +174,7 @@ class MembershipController extends AbstractController
         } else {
             $userEntity->addGroup($group);
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', $this->trans('Joined the "%group" group', ['%group' => $group->getName()]));
+            $this->addFlash('success', $this->trans('Joined the "%groupName%" group', ['%groupName%' => $group->getName()]));
             // Let other modules know that we have updated a group.
             $addUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
             $eventDispatcher->dispatch($addUserEvent, GroupEvents::GROUP_ADD_USER);
@@ -273,7 +273,7 @@ class MembershipController extends AbstractController
         $userEntity = $userRepository->find($currentUserApi->get('uid'));
         $userEntity->removeGroup($group);
         $this->getDoctrine()->getManager()->flush();
-        $this->addFlash('success', $this->trans('Left the "%group" group', ['%group' => $group->getName()]));
+        $this->addFlash('success', $this->trans('Left the "%groupName%" group', ['%groupName%' => $group->getName()]));
         // Let other modules know that we have updated a group.
         $removeUserEvent = new GenericEvent(['gid' => $group->getGid(), 'uid' => $userEntity->getUid()]);
         $eventDispatcher->dispatch($removeUserEvent, GroupEvents::GROUP_REMOVE_USER);

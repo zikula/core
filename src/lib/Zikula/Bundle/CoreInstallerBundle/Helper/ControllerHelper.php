@@ -53,28 +53,28 @@ class ControllerHelper
         $warnings = [];
         if (false === ini_set('default_charset', 'UTF-8')) {
             $currentSetting = ini_get('default_charset');
-            $warnings[] = $this->translator->trans('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
-                '%1$s' => 'ini_set',
-                '%2$s' => 'default_charset',
-                '%3$s' => 'UTF-8',
-                '%4$s' => $currentSetting
+            $warnings[] = $this->translator->trans('Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.', [
+                '%command%' => 'ini_set',
+                '%setting%' => 'default_charset',
+                '%requiredValue%' => 'UTF-8',
+                '%currentValue%' => $currentSetting
             ]);
         }
         if (false === mb_regex_encoding('UTF-8')) {
             $currentSetting = mb_regex_encoding();
-            $warnings[] = $this->translator->trans('Could not set %1$s to the value of %2$s. The install or upgrade process may fail at your current setting of %3$s.', [
-                '%1$s' => 'mb_regex_encoding',
-                '%2$s' => 'UTF-8',
-                '%3$s' => $currentSetting
+            $warnings[] = $this->translator->trans('Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.', [
+                '%setting%' => 'mb_regex_encoding',
+                '%requiredValue%' => 'UTF-8',
+                '%currentValue%' => $currentSetting
             ]);
         }
         if (false === ini_set('memory_limit', '128M')) {
             $currentSetting = ini_get('memory_limit');
-            $warnings[] = $this->translator->trans('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
-                '%1$s' => 'ini_set',
-                '%2$s' => 'memory_limit',
-                '%3$s' => '128M',
-                '%4$s' => $currentSetting
+            $warnings[] = $this->translator->trans('Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.', [
+                '%command%' => 'ini_set',
+                '%setting%' => 'memory_limit',
+                '%requiredValue%' => '128M',
+                '%currentValue%' => $currentSetting
             ]);
         }
         if (false === ini_set('max_execution_time', '86400')) {
@@ -82,11 +82,11 @@ class ControllerHelper
             $currentSetting = ini_get('max_execution_time');
             if ($currentSetting > 0) {
                 // 0 = unlimited time
-                $warnings[] = $this->translator->trans('Could not use %1$s to set the %2$s to the value of %3$s. The install or upgrade process may fail at your current setting of %4$s.', [
-                    '%1$s' => 'ini_set',
-                    '%2$s' => 'max_execution_time',
-                    '%3$s' => '86400',
-                    '%4$s' => $currentSetting
+                $warnings[] = $this->translator->trans('Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.', [
+                    '%command%' => 'ini_set',
+                    '%setting%' => 'max_execution_time',
+                    '%requiredValue%' => '86400',
+                    '%currentValue%' => $currentSetting
                 ]);
             }
         }
@@ -140,7 +140,7 @@ class ControllerHelper
         try {
             $yamlManager->setParameters($params);
         } catch (IOException $exception) {
-            throw new AbortStageException($this->translator->trans('Cannot write parameters to %s file.', ['%s' => 'custom_parameters.yml']));
+            throw new AbortStageException($this->translator->trans('Cannot write parameters to %fileName% file.', ['%fileName%' => 'custom_parameters.yml']));
         }
     }
 }

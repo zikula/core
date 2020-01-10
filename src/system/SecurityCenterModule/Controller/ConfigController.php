@@ -196,7 +196,7 @@ class ConfigController extends AbstractController
                 if (is_readable($idsRulePath)) {
                     $variableApi->set(VariableApi::CONFIG, 'idsrulepath', $idsRulePath);
                 } else {
-                    $this->addFlash('error', $this->trans('Error! PHPIDS rule file %s does not exist or is not readable.', ['%s' => $idsRulePath]));
+                    $this->addFlash('error', $this->trans('Error! PHPIDS rule file %filePath% does not exist or is not readable.', ['%filePath%' => $idsRulePath]));
                     $validates = false;
                 }
 

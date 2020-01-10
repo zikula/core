@@ -125,7 +125,7 @@ class EditHandler extends AbstractEditHandler
                 $message = $this->trans('It looks like you created or updated a route with a path which already exists. This is an error in most cases.');
                 $hasCriticalErrors = true;
             } else {
-                $message = $this->trans('The path of the route you created or updated looks similar to the following already existing path: %s Are you sure you haven\'t just introduced a conflict?', ['%s' => $error['path']]);
+                $message = $this->trans('The path of the route you created or updated looks similar to the following already existing path: %errorPath% Are you sure you haven\'t just introduced a conflict?', ['%errorPath%' => $error['path']]);
             }
             $request = $this->requestStack->getCurrentRequest();
             if ($request->hasSession() && ($session = $request->getSession())) {

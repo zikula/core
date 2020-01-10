@@ -78,7 +78,7 @@ class AccountController extends AbstractController
                     'requestedByAdmin' => false
                 ]);
                 if ($sent) {
-                    $this->addFlash('status', $this->trans('Done! The account information for %s has been sent via e-mail.', ['%s' => $data['email']]));
+                    $this->addFlash('status', $this->trans('Done! The account information for %email% has been sent via e-mail.', ['%email%' => $data['email']]));
                 } else {
                     $this->addFlash('error', $this->trans('Unable to send email to the requested address. Please contact a site administrator for assistance.'));
                 }
@@ -146,9 +146,9 @@ class AccountController extends AbstractController
                             'requestedByAdmin' => false
                         ]);
                         if ($sent) {
-                            $this->addFlash('status', $this->trans('Done! The confirmation link for %s has been sent via e-mail.', ['%s' => $data[$field]]));
+                            $this->addFlash('status', $this->trans('Done! The confirmation link for %identifier% has been sent via e-mail.', ['%identifier%' => $data[$field]]));
                         } else {
-                            $this->addFlash('error', $this->trans('Unable to send email to the requested %s. Please try your %o or contact a site administrator for assistance.', ['%s' => $map[$field], '%o' => $map[$inverse]]));
+                            $this->addFlash('error', $this->trans('Unable to send email to the requested %identifier%. Please try your %otherIdentifier% or contact a site administrator for assistance.', ['%identifier%' => $map[$field], '%otherIdentifier%' => $map[$inverse]]));
                         }
                         break;
                     case UsersConstant::ACTIVATED_INACTIVE:
@@ -171,12 +171,14 @@ class AccountController extends AbstractController
             } elseif (1 < count($mapping)) {
                 $this->addFlash('error', $this->trans('There are too many users registered with that address. Please contact a site administrator for assistance.'));
             } else {
+                $message = $this->trans('A user with this %property% does not exist at this site.', ['%property%' => $map[$field]]);
+
                 $hasRegistration = $variableApi->get(UsersConstant::MODNAME, UsersConstant::MODVAR_REGISTRATION_ENABLED, UsersConstant::DEFAULT_REGISTRATION_ENABLED);
                 if ($hasRegistration) {
-                    $this->addFlash('error', $this->trans('A user with this %s does not exist at this site.', ['%s' => $map[$field]]) . ' ' . $this->trans('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $router->generate('zikulausersmodule_registration_register')]));
-                } else {
-                    $this->addFlash('error', $this->trans('A user with this %s does not exist at this site.', ['%s' => $map[$field]]));
+                    $message .= ' ' . $this->trans('Do you want to <a href="%registerLink%">register</a>?', ['%registerLink%' => $router->generate('zikulausersmodule_registration_register')]);
                 }
+
+                $this->addFlash('error', $message);
             }
             if (!empty($redirectToRoute)) {
                 return $this->redirectToRoute($redirectToRoute);
@@ -357,14 +359,14 @@ class AccountController extends AbstractController
 
         // check if verification record is already deleted
         if (null === $verificationRecord) {
-            $this->addFlash('error', $this->trans('Error! Your e-mail has not been found. After your request you have %s days to confirm the new e-mail address.', ['%s' => $emailExpireDays]));
+            $this->addFlash('error', $this->trans('Error! Your e-mail has not been found. After your request you have %days% days to confirm the new e-mail address.', ['%days%' => $emailExpireDays]));
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }
 
         $validCode = $passwordApi->passwordsMatch($code, $verificationRecord->getVerifycode());
         if (!$validCode) {
-            $this->addFlash('error', $this->trans('Error! Your e-mail has not been found. After your request you have %s days to confirm the new e-mail address.', ['%s' => $emailExpireDays]));
+            $this->addFlash('error', $this->trans('Error! Your e-mail has not been found. After your request you have %days% days to confirm the new e-mail address.', ['%days%' => $emailExpireDays]));
 
             return $this->redirectToRoute('zikulausersmodule_account_menu');
         }

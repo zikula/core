@@ -54,7 +54,7 @@ class ValidGroupNameValidator extends ConstraintValidator
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->trans('The group name you entered (%u) has already been registered.', ['%u' => $data->getName()]))
+            $this->context->buildViolation($this->translator->trans('The group name you entered (%groupName%) does already exist.', ['%groupName%' => $data->getName()]))
                 ->atPath('name')
                 ->addViolation()
             ;

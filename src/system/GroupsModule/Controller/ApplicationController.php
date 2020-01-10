@@ -77,7 +77,7 @@ class ApplicationController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $applicationProcessedEvent = new GenericEvent($groupApplicationEntity, $formData);
                 $eventDispatcher->dispatch($applicationProcessedEvent, GroupEvents::GROUP_APPLICATION_PROCESSED);
-                $this->addFlash('success', $this->trans('Application processed (%action %user)', ['%action' => $action, '%user' => $groupApplicationEntity->getUser()->getUname()]));
+                $this->addFlash('success', $this->trans('Application processed (%action% %user%)', ['%action%' => $action, '%user%' => $groupApplicationEntity->getUser()->getUname()]));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('success', $this->trans('Operation cancelled.'));

@@ -55,12 +55,12 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
     {
         $currentVersion = $this->container->getParameter(ZikulaKernel::CORE_INSTALLED_VERSION_PARAM);
         if (version_compare($currentVersion, UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION, '<')) {
-            throw new AbortStageException($this->translator->trans('The current installed version of Zikula is reporting (%1$s). You must upgrade to version (%2$s) before you can use this upgrade.', ['%1$s' => $currentVersion, '%2$s' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
+            throw new AbortStageException($this->translator->trans('The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.', ['%currentVersion%' => $currentVersion, '%minimumVersion%' => UpgraderController::ZIKULACORE_MINIMUM_UPGRADE_VERSION]));
         }
         // make sure selected language is installed
         $DBLocale = $this->fetchDBLocale();
         if (!in_array($DBLocale, $this->container->get(LocaleApi::class)->getSupportedLocales(), true)) {
-            $variableApi = $this->container->get('zikula_extensions_module.api.variable');
+            $variableApi = $this->container->get(VariableApi::class);
             $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
             $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
         }

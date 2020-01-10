@@ -107,7 +107,7 @@ class AccountController extends AbstractController
                 }
                 Locale::setDefault($locale);
                 $langText = Languages::getName($locale);
-                $this->addFlash('success', $this->trans('Language changed to %lang', ['%lang' => $langText], 'zikula', $locale));
+                $this->addFlash('success', $this->trans('Language changed to %lang%', ['%lang%' => $langText], 'zikula', $locale));
             }
             if ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', $this->trans('Operation cancelled.'));

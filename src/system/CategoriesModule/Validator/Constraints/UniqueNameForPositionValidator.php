@@ -40,7 +40,7 @@ class UniqueNameForPositionValidator extends ConstraintValidator
     {
         $existing = $this->categoryRepository->countForContext($category->getName(), $category->getParent()->getId(), $category->getId());
         if ($existing > 0) {
-            $this->context->buildViolation($this->translator->trans('Category %s must be unique under parent', ['%s' => $category->getName()]))
+            $this->context->buildViolation($this->translator->trans('Category "%name%" must be unique under parent', ['%name%' => $category->getName()]))
                 ->addViolation();
         }
     }

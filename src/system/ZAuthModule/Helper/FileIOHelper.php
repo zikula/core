@@ -278,7 +278,7 @@ class FileIOHelper
         } else {
             $errorString .= $errors;
         }
-        $errorString .= $this->translator->trans('%type error in line %s', ['%type' => ucwords($type), '%s' => $line]);
+        $errorString .= $this->translator->trans('%type% error in line %line%', ['%type%' => ucwords($type), '%line%' => $line]);
 
         return $errorString;
     }

@@ -95,9 +95,9 @@ class RouteDumperHelper
             try {
                 unlink($targetPath);
             } catch (Exception $exception) {
-                $errors .= $this->translator->trans("Error: Could not delete '%path' because %msg", [
-                    '%path' => $targetPath,
-                    '%msg' => $exception->getMessage()
+                $errors .= $this->translator->trans('Error: Could not delete "%path%" because %message%.', [
+                    '%path%' => $targetPath,
+                    '%message%' => $exception->getMessage()
                 ]);
             }
         }
