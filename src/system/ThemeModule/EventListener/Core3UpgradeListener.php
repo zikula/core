@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Common\ColumnExistsTrait;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 
 class Core3UpgradeListener implements EventSubscriberInterface
 {
+    use ColumnExistsTrait;
+
     public static function getSubscribedEvents()
     {
         return [
