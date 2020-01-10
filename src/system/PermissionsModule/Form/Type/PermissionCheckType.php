@@ -19,47 +19,38 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class PermissionCheckType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('user', TextType::class, [
-                'label' => $this->trans('User name'),
+                'label' => 'User name',
                 'required' => false
             ])
             ->add('component', TextType::class, [
-                'label' => $this->trans('Component to check'),
+                'label' => 'Component to check',
                 'data' => '.*'
             ])
             ->add('instance', TextType::class, [
-                'label' => $this->trans('Instance to check'),
+                'label' => 'Instance to check',
                 'data' => '.*'
             ])
             ->add('level', ChoiceType::class, [
-                'label' => $this->trans('Permission level'),
+                'label' => 'Permission level',
                 'choices' => array_flip($options['permissionLevels']),
                 'data' => ACCESS_READ
             ])
             ->add('check', ButtonType::class, [
-                'label' => $this->trans('Check permission'),
+                'label' => 'Check permission',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]
             ])
             ->add('reset', ButtonType::class, [
-                'label' => $this->trans('Reset'),
+                'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-warning'

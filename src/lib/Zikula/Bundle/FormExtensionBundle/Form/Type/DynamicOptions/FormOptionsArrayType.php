@@ -17,28 +17,19 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class FormOptionsArrayType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('required', CheckboxType::class, [
-                'label' => $this->trans('Required'),
+                'label' => 'Required',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('help', TextType::class, [
-                'label' => $this->trans('Help text'),
+                'label' => 'Help text',
                 'required' => false
             ])
         ;

@@ -48,12 +48,12 @@ class BlockController extends AbstractController
     {
         $form = $this->createFormBuilder()
             ->add('bkey', ChoiceType::class, [
+                'label' => 'Block type',
                 'placeholder' => 'Choose a block type',
-                'choices' => array_flip($blockApi->getAvailableBlockTypes()),
-                'label' => $this->trans('Block type')
+                'choices' => array_flip($blockApi->getAvailableBlockTypes())
             ])
             ->add('choose', SubmitType::class, [
-                'label' => $this->trans('Choose'),
+                'label' => 'Choose',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'

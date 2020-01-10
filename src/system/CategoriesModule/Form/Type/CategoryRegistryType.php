@@ -30,7 +30,7 @@ use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Class CategoryRegistryType
- * @see http://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
+ * @see https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
  */
 class CategoryRegistryType extends AbstractType
 {
@@ -51,28 +51,28 @@ class CategoryRegistryType extends AbstractType
     {
         $builder
             ->add('modname', ChoiceType::class, [
-                'label' => $this->trans('Module'),
+                'label' => 'Module',
                 'choices' => $options['categorizableModules'],
-                'placeholder' => $this->trans('Select module')
+                'placeholder' => 'Select module'
             ])
             ->add('property', TextType::class, [
-                'label' => $this->trans('Property name'),
+                'label' => 'Property name',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('category', CategoryTreeType::class, [
-                'label' => $this->trans('Category')
+                'label' => 'Category'
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

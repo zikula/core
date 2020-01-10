@@ -20,24 +20,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class SearchType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->setMethod('GET')
             ->add('q', SearchInputType::class, [
-                'label' => $this->trans('Search keywords'),
+                'label' => 'Search keywords',
                 'attr' => [
                     'maxlength' => 255,
                     'min' => 1,
@@ -47,28 +38,28 @@ class SearchType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => $this->trans('Error! You did not enter any keywords to search for.')
+                        'message' => 'Error! You did not enter any keywords to search for.'
                     ])
                 ]
             ])
             ->add('searchType', ChoiceType::class, [
-                'label' => $this->trans('Keyword settings'),
+                'label' => 'Keyword settings',
                 'choices' => [
-                    $this->trans('All Words') => 'AND',
-                    $this->trans('Any Words') => 'OR',
-                    $this->trans('Exact phrase') => 'EXACT'
+                    'All words' => 'AND',
+                    'Any words' => 'OR',
+                    'Exact phrase' => 'EXACT'
                 ]
             ])
             ->add('searchOrder', ChoiceType::class, [
-                'label' => $this->trans('Order of results'),
+                'label' => 'Order of results',
                 'choices' => [
-                    $this->trans('Newest first') => 'newest',
-                    $this->trans('Oldest first') => 'oldest',
-                    $this->trans('Alphabetical') => 'alphabetical'
+                    'Newest first' => 'newest',
+                    'Oldest first' => 'oldest',
+                    'Alphabetical' => 'alphabetical'
                 ]
             ])
             ->add('search', SubmitType::class, [
-                'label' => $this->trans('Search now'),
+                'label' => 'Search now',
                 'icon' => 'fa-search',
                 'attr' => [
                     'class' => 'btn btn-success'

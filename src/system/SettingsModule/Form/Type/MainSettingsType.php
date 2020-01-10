@@ -78,68 +78,68 @@ class MainSettingsType extends AbstractType
         $builder
             ->add(
                 $builder->create('pagetitle', TextType::class, [
-                    'label' => $this->trans('Page title structure'),
+                    'label' => 'Page title structure',
                     'required' => false,
-                    'help' => $this->trans('Possible tags: %pagetitle%, %sitename%, %modulename%')
+                    'help' => 'Possible tags: %pagetitle%, %sitename%, %modulename%'
                 ])
                 ->addModelTransformer($pageTitleLocalizationTransformer)
             )
             ->add('adminmail', EmailType::class, [
-                'label' => $this->trans('Admin\'s e-mail address'),
+                'label' => 'Admin\'s e-mail address',
                 'constraints' => new Email()
             ])
             ->add('siteoff', ChoiceType::class, [
-                'label' => $this->trans('Disable site'),
+                'label' => 'Disable site',
                 'label_attr' => ['class' => 'radio-custom'],
                 'expanded' => true,
                 'choices' => [
-                    $this->trans('Yes') => 1,
-                    $this->trans('No') => 0,
+                    'Yes' => 1,
+                    'No' => 0
                 ],
             ])
             ->add('siteoffreason', TextareaType::class, [
-                'label' => $this->trans('Reason for disabling site'),
+                'label' => 'Reason for disabling site',
                 'required' => false
             ])
             ->add('startController', TextType::class, [
-                'label' => $this->trans('Start Controller'),
+                'label' => 'Start controller',
                 'required' => false,
-                'help' => $this->trans('FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>'),
+                'help' => 'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>',
                 'help_html' => true,
                 'constraints' => [
                     new ValidController()
                 ]
             ])
             ->add('startargs', TextType::class, [
-                'label' => $this->trans('Start function arguments'),
+                'label' => 'Start function arguments',
                 'required' => false,
-                'help' => $this->trans('Separate with & for example:') . ' <code>foo=2&bar=5</code>',
+                'help' => 'Separate with & for example: <code>foo=2&bar=5</code>',
                 'help_html' => true
             ])
             ->add('UseCompression', CheckboxType::class, [
-                'label' => $this->trans('Activate compression'),
+                'label' => 'Activate compression',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('profilemodule', ChoiceType::class, [
-                'label' => $this->trans('Module used for managing user profiles'),
+                'label' => 'Module used for managing user profiles',
                 'choices' => $options['profileModules'],
-                'placeholder' => $this->trans('No profile module'),
+                'placeholder' => 'No profile module',
                 'required' => false
             ])
             ->add('messagemodule', ChoiceType::class, [
-                'label' => $this->trans('Module used for private messaging'),
+                'label' => 'Module used for private messaging',
                 'choices' => $options['messageModules'],
-                'placeholder' => $this->trans('No message module'),
+                'placeholder' => 'No message module',
                 'required' => false
             ])
             ->add('ajaxtimeout', IntegerType::class, [
-                'label' => $this->trans('Time-out for Ajax connections'),
-                'input_group' => ['right' => $this->trans('milliseconds')]
+                'label' => 'Time-out for ajax connections',
+                'input_group' => ['right' => 'milliseconds']
             ])
             ->add(
                 $builder->create('permasearch', TextType::class, [
-                    'label' => $this->trans('List to search for'),
+                    'label' => 'List to search for',
                     'constraints' => new Callback([
                         'callback' => function($data, ExecutionContextInterface $context) {
                             if (mb_ereg(',$', $data)) {
@@ -152,19 +152,19 @@ class MainSettingsType extends AbstractType
             )
             ->add(
                 $builder->create('permareplace', TextType::class, [
-                    'label' => $this->trans('List to replace with')
+                    'label' => 'List to replace with'
                 ])
                 ->addModelTransformer($spaceReplaceCallbackTransformer)
             )
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -174,16 +174,16 @@ class MainSettingsType extends AbstractType
         foreach ($options['languages'] as $language => $languageCode) {
             $builder
                 ->add('sitename_' . $languageCode, TextType::class, [
-                    'label' => $this->trans('Site name')
+                    'label' => 'Site name'
                 ])
                 ->add('slogan_' . $languageCode, TextType::class, [
-                    'label' => $this->trans('Description line')
+                    'label' => 'Description line'
                 ])
                 ->add('defaultpagetitle_' . $languageCode, TextType::class, [
-                    'label' => $this->trans('Default page title')
+                    'label' => 'Default page title'
                 ])
                 ->add('defaultmetadescription_' . $languageCode, TextType::class, [
-                    'label' => $this->trans('Default meta description')
+                    'label' => 'Default meta description'
                 ])
             ;
         }

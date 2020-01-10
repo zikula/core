@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -30,7 +31,7 @@ class CreateAdminType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => $this->trans('Admin User Name'),
+                'label' => 'Admin user name',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -40,13 +41,13 @@ class CreateAdminType extends AbstractType
                     new Length(['min' => 5]),
                     new Regex([
                         'pattern' => '#' . UsersConstant::UNAME_VALIDATION_PATTERN . '#',
-                        'message' => $this->trans('Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _')
+                        'message' => 'Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _'
                     ])
                 ]
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => $this->trans('The password fields must match.'),
+                'invalid_message' => 'The password fields must match.',
                 'options' => [
                     'label_attr' => [
                         'class' => 'col-md-3'
@@ -57,11 +58,11 @@ class CreateAdminType extends AbstractType
                     ]
                 ],
                 'required' => true,
-                'first_options'  => ['label' => $this->trans('Admin Password')],
-                'second_options' => ['label' => $this->trans('Repeat Password')]
+                'first_options'  => ['label' => 'Admin password'],
+                'second_options' => ['label' => 'Repeat password']
             ])
             ->add('email', EmailType::class, [
-                'label' => $this->trans('Admin Email Address'),
+                'label' => 'Admin email address',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],

@@ -22,8 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
@@ -31,19 +29,12 @@ use Zikula\ZAuthModule\Validator\Constraints\ValidUserFields;
 
 class AdminModifyUserType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->trans('User name'),
-                'help' => $this->trans('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'label' => 'User name',
+                'help' => 'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.',
                 'constraints' => [
                     new ValidUname()
                 ]
@@ -51,12 +42,12 @@ class AdminModifyUserType extends AbstractType
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->trans('Email'),
+                    'label' => 'Email',
                 ],
                 'second_options' => [
-                    'label' => $this->trans('Repeat Email')
+                    'label' => 'Repeat email'
                 ],
-                'invalid_message' => $this->trans('The emails must match!'),
+                'invalid_message' => 'The emails must match!',
                 'constraints' => [
                     new ValidEmail()
                 ]
@@ -64,34 +55,37 @@ class AdminModifyUserType extends AbstractType
             ->add('setpass', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => $this->trans('Set password now'),
+                'label' => 'Set password now',
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
                     'required' => false,
-                    'label' => $this->trans('Create new password'),
+                    'label' => 'Create new password',
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
-                    'help' => $this->trans('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'help' => 'Minimum password length: %amount% characters.',
+                    'help_translation_parameters' => [
+                        '%amount%' => $options['minimumPasswordLength']
+                    ]
                 ],
                 'second_options' => [
                     'required' => false,
-                    'label' => $this->trans('Repeat new password'),
+                    'label' => 'Repeat new password',
                     'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
                 ],
-                'invalid_message' => $this->trans('The passwords must match!'),
+                'invalid_message' => 'The passwords must match!',
                 'constraints' => [
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

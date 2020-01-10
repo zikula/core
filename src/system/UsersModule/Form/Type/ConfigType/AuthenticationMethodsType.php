@@ -18,18 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class AuthenticationMethodsType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -38,12 +29,12 @@ class AuthenticationMethodsType extends AbstractType
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

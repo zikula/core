@@ -47,8 +47,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('updatefrequency', 7);
         $this->setSystemVar('updatelastchecked', 0);
         $this->setSystemVar('updateversion', ZikulaKernel::VERSION);
-        $this->setSystemVar('keyexpiry', 0);
-        $this->setSystemVar('sessionauthkeyua', 0);
         $this->setSystemVar('secure_domain');
         $this->setSystemVar('signcookies', 1);
         $this->setSystemVar('signingkey', sha1((string) (random_int(0, time()))));
@@ -58,8 +56,6 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('sessionstoretofile', Constant::SESSION_STORAGE_FILE);
         $this->setSystemVar('sessionsavepath');
         $this->setSystemVar('gc_probability', 100);
-        $this->setSystemVar('sessioncsrftokenonetime', 1); // 1 means use same token for entire session
-        $this->setSystemVar('sessionrandregenerate', 1);
         $this->setSystemVar('sessionregenerate', 1);
         $this->setSystemVar('sessionregeneratefreq', 10);
         $this->setSystemVar('sessionname', '_zsid');
@@ -247,7 +243,19 @@ class SecurityCenterModuleInstaller extends AbstractExtensionInstaller
                 $zikulaSessionSavePath = empty($sessionSavePath) ? '%kernel.cache_dir%/sessions' : $sessionSavePath;
                 $configDumper->setParameter('zikula.session.save_path', $zikulaSessionSavePath);
             case '1.5.2':
-                $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, 'sessionipcheck');
+                $varsToRemove = [
+                    'sessioncsrftokenonetime',
+                    'sessionipcheck',
+                    'keyexpiry',
+                    'sessionauthkeyua',
+                    'gc_probability',
+                    'sessionrandregenerate',
+                    'sessionregenerate',
+                    'sessionregeneratefreq'
+                ];
+                foreach ($varsToRemove as $varName) {
+                    $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, $varName);
+                }
             case '1.5.3':
                 // current version
         }

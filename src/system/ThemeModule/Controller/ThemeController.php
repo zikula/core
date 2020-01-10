@@ -131,14 +131,14 @@ class ThemeController extends AbstractController
         $form = $this->createFormBuilder(['themeName' => $themeName])
             ->add('themeName', HiddenType::class)
             ->add('accept', SubmitType::class, [
-                'label' => $this->trans('Accept'),
+                'label' => 'Accept',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
@@ -196,19 +196,19 @@ class ThemeController extends AbstractController
         $form = $this->createFormBuilder(['themeName' => $themeName, 'deletefiles' => false])
             ->add('themeName', HiddenType::class)
             ->add('deletefiles', CheckboxType::class, [
-                'label' => $this->trans('Also delete theme files, if possible'),
+                'label' => 'Also delete theme files, if possible',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
             ])
             ->add('delete', SubmitType::class, [
-                'label' => $this->trans('Delete'),
+                'label' => 'Delete',
                 'icon' => 'fa-trash-alt',
                 'attr' => [
                     'class' => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

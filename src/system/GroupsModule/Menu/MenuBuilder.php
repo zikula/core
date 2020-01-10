@@ -104,14 +104,14 @@ class MenuBuilder
         $routeParams = ['gid' => $gid];
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild($this->trans('Edit ":name" group', [':name' => $group->getName()]), [
+        $menu->addChild($this->trans('Edit "%name%" group', ['%name%' => $group->getName()]), [
             'route' => 'zikulagroupsmodule_group_edit',
             'routeParameters' => $routeParams,
         ])->setAttribute('icon', 'fa fa-pencil-alt');
         if (Constant::GROUP_ID_ADMIN !== $gid
             && $defaultGroup !== $gid
             && $this->permissionApi->hasPermission('ZikulaGroupsModule::', $gid . '::', ACCESS_DELETE)) {
-            $menu->addChild($this->trans('Delete ":name" group', [':name' => $group->getName()]), [
+            $menu->addChild($this->trans('Delete "%name%" group', ['%name%' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_group_remove',
                 'routeParameters' => $routeParams,
             ])->setAttribute('icon', 'fa fa-trash-alt');
@@ -142,14 +142,14 @@ class MenuBuilder
             && (CommonHelper::GTYPE_PUBLIC === $group->getGtype()
                 || (CommonHelper::GTYPE_PRIVATE === $group->getGtype() && isset($currentUser) && $group->getUsers()->contains($currentUser)))
         ) {
-            $menu->addChild($this->trans('View membership of ":name" group', [':name' => $group->getName()]), [
+            $menu->addChild($this->trans('View membership of "%name%" group', ['%name%' => $group->getName()]), [
                 'route' => 'zikulagroupsmodule_membership_list',
                 'routeParameters' => ['gid' => $gid],
             ])->setAttribute('icon', 'fa fa-users');
         }
         if (isset($currentUser)) {
             if ($group->getUsers()->contains($currentUser)) {
-                $menu->addChild($this->trans('Leave ":name" group', [':name' => $group->getName()]), [
+                $menu->addChild($this->trans('Leave "%name%" group', ['%name%' => $group->getName()]), [
                     'route' => 'zikulagroupsmodule_membership_leave',
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-times text-danger');
@@ -158,13 +158,13 @@ class MenuBuilder
                 if ($existingApplication) {
                     $menu->addChild($this->trans('Applied!'));
                 } else {
-                    $menu->addChild($this->trans('Apply to membership of ":name" group', [':name' => $group->getName()]), [
+                    $menu->addChild($this->trans('Apply to membership of "%name%" group', ['%name%' => $group->getName()]), [
                         'route' => 'zikulagroupsmodule_application_create',
                         'routeParameters' => ['gid' => $gid],
                     ])->setAttribute('icon', 'fa fa-paper-plane');
                 }
             } elseif (CommonHelper::STATE_CLOSED !== $group->getState()) {
-                $menu->addChild($this->trans('Join ":name" group', [':name' => $group->getName()]), [
+                $menu->addChild($this->trans('Join "%name%" group', ['%name%' => $group->getName()]), [
                     'route' => 'zikulagroupsmodule_membership_join',
                     'routeParameters' => ['gid' => $gid],
                 ])->setAttribute('icon', 'fa fa-user-plus text-success');

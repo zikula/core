@@ -17,27 +17,18 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class LostUserNameType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => $this->trans('Email Address'),
+                'label' => 'Email address',
                 'input_group' => ['left' => '<i class="fa fa-at"></i>'],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Submit'),
+                'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])

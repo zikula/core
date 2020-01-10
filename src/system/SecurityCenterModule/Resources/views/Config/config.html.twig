@@ -20,8 +20,6 @@
 </fieldset>
 <fieldset>
     <legend>{% trans %}Host settings{% endtrans %}</legend>
-    {{ form_row(form.keyexpiry) }}
-    {{ form_row(form.sessionauthkeyua) }}
     {{ form_row(form.secure_domain) }}
 </fieldset>
 <fieldset>
@@ -44,11 +42,6 @@
     <div data-switch="zikulasecuritycentermodule_config[sessionstoretofile]" data-switch-value="1" class="form-group">
         {{ form_row(form.sessionsavepath) }}
     </div>
-    {{ form_row(form.gc_probability) }}
-    {{ form_row(form.sessioncsrftokenonetime) }}
-    {{ form_row(form.sessionrandregenerate) }}
-    {{ form_row(form.sessionregenerate) }}
-    {{ form_row(form.sessionregeneratefreq) }}
     {{ form_row(form.sessionname) }}
 </fieldset>
 <fieldset id="securitycenter_ids">

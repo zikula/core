@@ -18,37 +18,28 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\UsersModule\Validator\Constraints\ValidEmail;
 
 class ChangeEmailType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->trans('New email address'),
+                    'label' => 'New email address',
                 ],
                 'second_options' => [
-                    'label' => $this->trans('Repeat new email address')
+                    'label' => 'Repeat new email address'
                 ],
-                'invalid_message' => $this->trans('The emails  must match!'),
+                'invalid_message' => 'The emails must match!',
                 'constraints' => [
                     new ValidEmail()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Submit'),
+                'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])

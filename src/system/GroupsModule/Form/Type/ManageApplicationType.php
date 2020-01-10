@@ -19,55 +19,47 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Application management form type class.
  */
 class ManageApplicationType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $reason = 'accept' === $options['data']['theAction']
-            ? $this->trans('Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.')
-            : $this->trans('Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.');
+            ? 'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.'
+            : 'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.'
+        ;
         $builder
             ->add('theAction', HiddenType::class)
             ->add('application', HiddenType::class, [
                 'property_path' => '[application].app_id'
             ])
             ->add('reason', TextareaType::class, [
-                'label' => $this->trans('Email content'),
+                'label' => 'Email content',
                 'data' => $reason,
                 'required' => false
             ])
             ->add('sendtag', ChoiceType::class, [
-                'label' => $this->trans('Notification type'),
+                'label' => 'Notification type',
                 'label_attr' => ['class' => 'radio-custom'],
                 'data' => 1,
                 'choices' => [
-                    $this->trans('None') => 0,
-                    $this->trans('E-mail') => 1
+                    'None' => 0,
+                    'E-mail' => 1
                 ],
                 'expanded' => true
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'deny' === $options['data']['theAction'] ? $this->trans('Deny') : $this->trans('Accept'),
+                'label' => 'deny' === $options['data']['theAction'] ? 'Deny' : 'Accept',
                 'icon' => 'deny' === $options['data']['theAction'] ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

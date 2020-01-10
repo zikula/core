@@ -53,27 +53,27 @@ class ConfigController extends AbstractController
 
         $form = $this->createFormBuilder($this->getVars())
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $this->trans('Items per page'),
+                'label' => 'Items per page',
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThan(0)
                 ]
             ])
             ->add('hardreset', CheckboxType::class, [
-                'label' => $this->trans('Reset all extensions to default values'),
+                'label' => 'Reset all extensions to default values',
                 'label_attr' => ['class' => 'switch-custom'],
                 'mapped' => false,
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

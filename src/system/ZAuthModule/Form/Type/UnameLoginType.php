@@ -19,36 +19,27 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class UnameLoginType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->trans('User name'),
+                'label' => 'User name',
                 'input_group' => ['left' => '<i class="fa fa-fw fa-user"></i>']
             ])
             ->add('pass', PasswordType::class, [
-                'label' => $this->trans('Password'),
+                'label' => 'Password',
                 'input_group' => ['left' => '<i class="fa fa-fw fa-key"></i>']
             ])
             ->add('rememberme', CheckboxType::class, [
                 'required' => false,
-                'label' => $this->trans('Remember me'),
+                'label' => 'Remember me',
                 'label_attr' => ['class' => 'switch-custom']
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Login'),
+                'label' => 'Login',
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success']
             ])

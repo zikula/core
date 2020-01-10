@@ -18,35 +18,28 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class FilterListType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('filterGroup', ChoiceType::class, [
+                'label' => 'Filter group',
                 'choices' => array_flip($options['groupChoices']),
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterComponent', ChoiceType::class, [
+                'label' => 'Filter component',
                 'choices' => $options['componentChoices'],
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('reset', ButtonType::class, [
-                'label' => $this->trans('Reset'),
+                'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default btn-sm'

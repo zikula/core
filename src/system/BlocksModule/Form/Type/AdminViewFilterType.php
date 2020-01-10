@@ -19,61 +19,56 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Api\BlockApi;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class AdminViewFilterType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('sort-field', HiddenType::class)
             ->add('sort-direction', HiddenType::class)
             ->add('position', ChoiceType::class, [
+                'label' => 'Position',
                 'choices' => $options['positionChoices'],
                 'required' => false,
-                'placeholder' => $this->trans('All'),
+                'placeholder' => 'All',
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('module', ChoiceType::class, [
+                'label' => 'Module',
                 'choices' => $options['moduleChoices'],
                 'required' => false,
-                'placeholder' => $this->trans('All'),
+                'placeholder' => 'All',
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('language', ChoiceType::class, [
+                'label' => 'Language',
                 'choices' => $options['localeChoices'],
                 'required' => false,
-                'placeholder' => $this->trans('All'),
+                'placeholder' => 'All',
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('active', ChoiceType::class, [
+                'label' => 'Active',
                 'choices' => [
-                    $this->trans('Active') => BlockApi::BLOCK_ACTIVE,
-                    $this->trans('Inactive') => BlockApi::BLOCK_INACTIVE,
+                    'Active' => BlockApi::BLOCK_ACTIVE,
+                    'Inactive' => BlockApi::BLOCK_INACTIVE,
                 ],
                 'required' => false,
-                'placeholder' => $this->trans('All'),
+                'placeholder' => 'All',
                 'attr' => [
                     'class' => 'form-control-sm'
                 ]
             ])
             ->add('filterButton', SubmitType::class, [
-                'label' => $this->trans('Filter'),
+                'label' => 'Filter',
                 'icon' => 'fa-filter fa-lg',
                 'attr' => [
                     'class' => 'btn btn-default btn-sm'
@@ -96,7 +91,7 @@ class AdminViewFilterType extends AbstractType
             'moduleChoices' => [],
             'positionChoices' => [],
             'localeChoices' => [
-                $this->trans('English') => 'en'
+                'English' => 'en'
             ]
         ]);
     }

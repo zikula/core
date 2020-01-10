@@ -22,27 +22,20 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class BlockType extends AbstractType
 {
-    use TranslatorTrait;
-
     /**
      * @var LocaleApiInterface
      */
     private $localeApi;
 
-    public function __construct(
-        TranslatorInterface $translator,
-        LocaleApiInterface $localeApi
-    ) {
-        $this->setTranslator($translator);
+    public function __construct(LocaleApiInterface $localeApi)
+    {
         $this->localeApi = $localeApi;
     }
 
@@ -53,38 +46,43 @@ class BlockType extends AbstractType
             ->add('bkey', HiddenType::class)
             ->add('blocktype', HiddenType::class)
             ->add($builder->create('title', TextType::class, [
+                'label' => 'Title',
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('description', TextType::class, [
+                'label' => 'Description',
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add($builder->create('language', ChoiceType::class, [
+                'label' => 'Language',
                 'choices' => $this->localeApi->getSupportedLocaleNames(null, $options['locale']),
                 'required' => false,
-                'placeholder' => $this->trans('All')
+                'placeholder' => 'All'
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('positions', EntityType::class, [
+                'label' => 'Positions',
                 'class' => BlockPositionEntity::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'required' => false,
             ])
             ->add('filters', CollectionType::class, [
+                'label' => 'Filters',
                 'entry_type' => BlockFilterType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => $this->trans('Custom filters'),
+                'label' => 'Custom filters',
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

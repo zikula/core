@@ -18,28 +18,21 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Category tree form type class.
  */
 class CategoryTreeType extends AbstractType
 {
-    use TranslatorTrait;
-
     /**
      * @var CategoryRepositoryInterface
      */
     private $categoryRepository;
 
-    public function __construct(
-        TranslatorInterface $translator,
-        CategoryRepositoryInterface $categoryRepository
-    ) {
-        $this->setTranslator($translator);
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    {
         $this->categoryRepository = $categoryRepository;
     }
 

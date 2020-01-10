@@ -87,15 +87,6 @@ class ConfigController extends AbstractController
                 $updateFrequency = $formData['updatefrequency'] ?? 7;
                 $variableApi->set(VariableApi::CONFIG, 'updatefrequency', $updateFrequency);
 
-                $keyExpiry = $formData['keyexpiry'] ?? 0;
-                if ($keyExpiry < 0 || $keyExpiry > 3600) {
-                    $keyExpiry = 0;
-                }
-                $variableApi->set(VariableApi::CONFIG, 'keyexpiry', $keyExpiry);
-
-                $sessionAuthKeyUA = $formData['sessionauthkeyua'] ?? 0;
-                $variableApi->set(VariableApi::CONFIG, 'sessionauthkeyua', $sessionAuthKeyUA);
-
                 $secureDomain = $formData['secure_domain'] ?? '';
                 $variableApi->set(VariableApi::CONFIG, 'secure_domain', $secureDomain);
 
@@ -152,27 +143,6 @@ class ConfigController extends AbstractController
                     // logout if going from one storage to another one
                     $causeLogout = true;
                 }
-
-                $gcProbability = $formData['gc_probability'] ?? 100;
-                if ($gcProbability < 1 || $gcProbability > 10000) {
-                    $gcProbability = 7;
-                }
-                $variableApi->set(VariableApi::CONFIG, 'gc_probability', $gcProbability);
-
-                $sessionCsrfTokenOneTime = $formData['sessioncsrftokenonetime'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'sessioncsrftokenonetime', $sessionCsrfTokenOneTime);
-
-                $sessionRandRegenerate = $formData['sessionrandregenerate'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'sessionrandregenerate', $sessionRandRegenerate);
-
-                $sessionRegenerate = $formData['sessionregenerate'] ?? 1;
-                $variableApi->set(VariableApi::CONFIG, 'sessionregenerate', $sessionRegenerate);
-
-                $sessionRegenerateFrequency = $formData['sessionregeneratefreq'] ?? 10;
-                if ($sessionRegenerateFrequency < 1 || $sessionRegenerateFrequency > 100) {
-                    $sessionRegenerateFrequency = 10;
-                }
-                $variableApi->set(VariableApi::CONFIG, 'sessionregeneratefreq', $sessionRegenerateFrequency);
 
                 $newSessionName = $formData['sessionname'] ?? $sessionName;
                 if (mb_strlen($newSessionName) < 3) {

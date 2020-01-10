@@ -1,24 +1,5 @@
 {% extends "bootstrap_4_horizontal_layout.html.twig" %}
 
-{% macro helpBlock(param = null, html = false) %}
-    {% if param|default %}
-        {% if param is iterable %}
-            {% for helpText in param %}
-                <small class="form-text text-muted">{{ html ? helpText|raw : helpText }}</small>
-            {% endfor %}
-        {% else %}
-            <small class="form-text text-muted">{{ html ? param|raw : param }}</small>
-        {% endif %}
-    {% endif %}
-{% endmacro %}
-{% macro alertBlock(param = null) %}
-    {% if param|default and param is iterable %}
-        {% for alertText, type in param %}
-            <div class="alert alert-{{ type }}" role="alert">{{ alertText }}</div>
-        {% endfor %}
-    {% endif %}
-{% endmacro %}
-
 {% block form_label_class -%}
 col-md-3
 {%- endblock form_label_class %}
@@ -33,13 +14,22 @@ col-md-9
         {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-control')|trim}) -%}
     {% endif %}
     {%- set type = type|default('text') -%}
+    {{ block('input_group_start') }}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {{ block('input_group_end') }}
+{% endblock %}
+
+{# input group start block #}
+{% block input_group_start %}
     {% if input_group|default %}<div class="input-group">{% endif %}
     {% if input_group|default and input_group.left|default %}
         <div class="input-group-prepend">
             <span class="input-group-text">{{ input_group.left|default|raw }}</span>
         </div>
     {% endif %}
-    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}
+{# input group end block #}
+{% block input_group_end %}
     {% if input_group|default and input_group.right|default %}
         <div class="input-group-append">
             <span class="input-group-text">{{ input_group.right|default|raw }}</span>
@@ -48,16 +38,60 @@ col-md-9
     {% if input_group|default %}</div>{% endif %}
 {% endblock %}
 
+{% macro singleHelpText(help, html = false, parameters = {}, domain = false) %}
+    {%- if domain|default -%}
+        {%- if html|default -%}
+            {{- help|trans(parameters, domain)|raw -}}
+        {%- else -%}
+            {{- help|trans(parameters, domain) -}}
+        {%- endif -%}
+    {%- else -%}
+        {%- if html|default -%}
+            {{- help|trans(parameters)|raw -}}
+        {%- else -%}
+            {{- help|trans(parameters) -}}
+        {%- endif -%}
+    {%- endif -%}
+{% endmacro %}
+{% macro alertBlock(param = null, domain = false) %}
+    {% if param|default and param is iterable %}
+        {% for alertText, type in param %}
+            <div class="alert alert-{{ type }}" role="alert">
+                {%- if domain|default -%}
+                    {{ alertText|trans({}, domain) }}
+                {%- else -%}
+                    {{ alertText|trans() }}
+                {%- endif -%}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
 {# add help text and alerts #}
 {% block form_help -%}
-    {{ _self.helpBlock(help, help_html|default(false)) }}
-    {{ _self.alertBlock(alert) }}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' form-text text-muted')|trim}) -%}
+        {% if help is iterable %}
+            {% for helpText in help %}
+                <small id="{{ id }}_help_{{ loop.index }}"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+                    {{ _self.singleHelpText(helpText, help_html, help_translation_parameters, translation_domain) }}
+                </small>
+            {% endfor %}
+        {% else %}
+            <small id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+                {{ _self.singleHelpText(help, help_html, help_translation_parameters, translation_domain) }}
+            </small>
+        {% endif %}
+    {%- endif -%}
+    {{ _self.alertBlock(alert, translation_domain) }}
 {%- endblock form_help %}
 
 {# inject custom-select class into dropdown fields #}
 {% block choice_widget_collapsed -%}
+    {{ block('input_group_start') }}
     {%- set attr = attr|merge({class: (attr.class|default('') ~ ' custom-select')|trim}) -%}
     {{- parent() -}}
+    {{ block('input_group_end') }}
 {%- endblock choice_widget_collapsed %}
 
 {# inject translatable button label into custom file selectors #}

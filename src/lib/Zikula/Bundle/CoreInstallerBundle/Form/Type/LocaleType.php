@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,13 +24,13 @@ class LocaleType extends AbstractType
     {
         $builder
             ->add('locale', ChoiceType::class, [
-                'label' => $this->trans('Select your default language'),
+                'label' => 'Select your default language',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
                 'choices' => $options['choices'],
                 'choice_loader' => null,
-                'data' => $options['choice'],
+                'data' => $options['choice']
             ])
         ;
     }

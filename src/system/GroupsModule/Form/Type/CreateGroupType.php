@@ -22,8 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\GroupsModule\Helper\CommonHelper;
 use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
@@ -33,22 +31,24 @@ use Zikula\GroupsModule\Validator\Constraints\ValidGroupName;
  */
 class CreateGroupType extends AbstractType
 {
-    use TranslatorTrait;
+    /**
+     * @var CommonHelper
+     */
+    private $groupsCommon;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(CommonHelper $commonHelper)
     {
-        $this->setTranslator($translator);
+        $this->groupsCommon = $commonHelper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $groupsCommon = new CommonHelper($this->translator);
-        $typeChoices = array_flip($groupsCommon->gtypeLabels());
-        $stateChoices = array_flip($groupsCommon->stateLabels());
+        $typeChoices = array_flip($this->groupsCommon->gtypeLabels());
+        $stateChoices = array_flip($this->groupsCommon->stateLabels());
 
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->trans('Name'),
+                'label' => 'Name',
                 'attr' => [
                     'maxlength' => 30
                 ],
@@ -57,37 +57,37 @@ class CreateGroupType extends AbstractType
                 ]
             ])
             ->add('gtype', ChoiceType::class, [
-                'label' => $this->trans('Type'),
+                'label' => 'Type',
                 'choices' => $typeChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('state', ChoiceType::class, [
-                'label' => $this->trans('State'),
+                'label' => 'State',
                 'choices' => $stateChoices,
                 'expanded' => false,
                 'multiple' => false
             ])
             ->add('nbumax', IntegerType::class, [
-                'label' => $this->trans('Maximum membership'),
+                'label' => 'Maximum membership',
                 'attr' => [
                     'maxlength' => 10
                 ],
                 'required' => false,
-                'help' => $this->trans('Set as 0 for unlimited.')
+                'help' => 'Set as 0 for unlimited.'
             ])
             ->add('description', TextareaType::class, [
-                'label' => $this->trans('Description'),
+                'label' => 'Description',
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

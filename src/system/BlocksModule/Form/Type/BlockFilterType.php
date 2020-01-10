@@ -35,12 +35,15 @@ class BlockFilterType extends AbstractType
     {
         $builder
             ->add('attribute', ChoiceType::class, [
+                'label' => 'Attribute',
                 'choices' => $this->blockFilterApi->getFilterAttributeChoices()
             ])
             ->add('queryParameter', TextType::class, [
+                'label' => 'Query parameter',
                 'required' => false
             ])
             ->add('comparator', ChoiceType::class, [
+                'label' => 'Comparator',
                 'choices' => [
                     '==' => '==',
                     '!=' => '!=',
@@ -53,6 +56,7 @@ class BlockFilterType extends AbstractType
                 ]
             ])
             ->add('value', TextType::class, [
+                'label' => 'Value',
                 'required' => false
             ])
         ;

@@ -20,59 +20,50 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $this->trans('Items per page'),
+                'label' => 'Items per page',
                 'attr' => [
                     'maxlength' => 3,
                     'min' => 1
                 ]
             ])
             ->add('defaultgroup', ChoiceType::class, [
-                'label' => $this->trans('Initial user group'),
+                'label' => 'Initial user group',
                 'choices' => $options['groups'],
             ])
             ->add('hideclosed', CheckboxType::class, [
-                'label' => $this->trans('Hide closed groups'),
+                'label' => 'Hide closed groups',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('hidePrivate', CheckboxType::class, [
-                'label' => $this->trans('Hide private groups'),
+                'label' => 'Hide private groups',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('mailwarning', CheckboxType::class, [
-                'label' => $this->trans('Receive e-mail alert when there are new applicants'),
+                'label' => 'Receive e-mail alert when there are new applicants',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

@@ -24,8 +24,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
@@ -36,18 +34,13 @@ use Zikula\ZAuthModule\ZAuthConstant;
 
 class RegistrationType extends AbstractType
 {
-    use TranslatorTrait;
-
     /**
      * @var array
      */
     private $zAuthModVars;
 
-    public function __construct(
-        TranslatorInterface $translator,
-        VariableApiInterface $variableApi
-    ) {
-        $this->setTranslator($translator);
+    public function __construct(VariableApiInterface $variableApi)
+    {
         $this->zAuthModVars = $variableApi->getAll('ZikulaZAuthModule');
     }
 
@@ -55,8 +48,8 @@ class RegistrationType extends AbstractType
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->trans('User name'),
-                'help' => $this->trans('User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'),
+                'label' => 'User name',
+                'help' => 'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.',
                 'attr' => [
                     'maxlength' => UsersConstant::UNAME_VALIDATION_MAX_LENGTH
                 ],
@@ -65,42 +58,45 @@ class RegistrationType extends AbstractType
             ->add('email', RepeatedType::class, [
                 'type' => EmailType::class,
                 'first_options' => [
-                    'label' => $this->trans('Email'),
-                    'help' => $this->trans('You will use your e-mail address to identify yourself when you log in.'),
+                    'label' => 'Email',
+                    'help' => 'You will use your e-mail address to identify yourself when you log in.',
                 ],
                 'second_options' => [
-                    'label' => $this->trans('Repeat Email')
+                    'label' => 'Repeat email'
                 ],
-                'invalid_message' => $this->trans('The emails  must match!'),
+                'invalid_message' => 'The emails must match!',
                 'constraints' => [new ValidEmail()]
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'first_options' => [
-                    'label' => $this->trans('Password'),
-                    'help' => $this->trans('Minimum password length: %amount% characters.', ['%amount%' => $options['minimumPasswordLength']])
+                    'label' => 'Password',
+                    'help' => 'Minimum password length: %amount% characters.',
+                    'help_translation_parameters' => [
+                        '%amount%' => $options['minimumPasswordLength']
+                    ]
                 ],
                 'second_options' => [
-                    'label' => $this->trans('Repeat Password')
+                    'label' => 'Repeat password'
                 ],
-                'invalid_message' => $this->trans('The passwords must match!'),
+                'invalid_message' => 'The passwords must match!',
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-plus',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', ButtonType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-danger']
             ])
             ->add('reset', ResetType::class, [
-                'label' => $this->trans('Reset'),
+                'label' => 'Reset',
                 'icon' => 'fa-refresh',
                 'attr' => ['class' => 'btn btn-primary']
             ])
@@ -110,7 +106,7 @@ class RegistrationType extends AbstractType
                 'mapped' => false,
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),
-                'help' => $this->trans('Asking this question helps us prevent automated scripts from accessing private areas of the site.')
+                'help' => 'Asking this question helps us prevent automated scripts from accessing private areas of the site.'
             ]);
         }
     }

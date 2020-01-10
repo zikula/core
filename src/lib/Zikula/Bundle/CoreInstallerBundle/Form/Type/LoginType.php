@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +27,7 @@ class LoginType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => $this->trans('User Name'),
+                'label' => 'User name',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -36,7 +37,7 @@ class LoginType extends AbstractType
                 ]
             ])
             ->add('password', PasswordType::class, [
-                'label' => $this->trans('Password'),
+                'label' => 'Password',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],

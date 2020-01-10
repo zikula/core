@@ -23,39 +23,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ZAuthModule\Validator\Constraints\ValidPassword;
 use Zikula\ZAuthModule\Validator\Constraints\ValidRegistrationVerification;
 
 class VerifyRegistrationType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('uname', TextType::class, [
-                'label' => $this->trans('User name'),
+                'label' => 'User name',
                 'constraints' => [
                     new NotBlank(),
                     new Type(['type' => 'string'])
                 ]
             ])
             ->add('verifycode', TextType::class, [
-                'label' => $this->trans('Verification code'),
+                'label' => 'Verification code',
                 'constraints' => [
                     new NotBlank(),
                     new Type(['type' => 'string'])
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Submit'),
+                'label' => 'Submit',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
@@ -63,9 +54,9 @@ class VerifyRegistrationType extends AbstractType
         if ($options['setpass']) {
             $builder->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => $this->trans('Password')],
-                'second_options' => ['label' => $this->trans('Repeat Password')],
-                'invalid_message' => $this->trans('The passwords must match!'),
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Repeat password'],
+                'invalid_message' => 'The passwords must match!',
                 'constraints' => [
                     new NotNull(),
                     new ValidPassword()

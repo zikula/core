@@ -63,21 +63,21 @@ class VarController extends AbstractController
         }
         $formBuilder
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check fa-lg',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('toDefault', SubmitType::class, [
-                'label' => $this->trans('Set to defaults'),
+                'label' => 'Set to defaults',
                 'icon' => 'fa-refresh fa-lg',
                 'attr' => [
                     'class' => 'btn btn-primary'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times fa-lg',
                 'attr' => [
                     'class' => 'btn btn-danger'

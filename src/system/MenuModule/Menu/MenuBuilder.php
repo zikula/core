@@ -73,11 +73,11 @@ class MenuBuilder
     {
         $menu = $this->factory->createItem('menuModuleAdminActionsMenu');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild($this->trans('Edit Children'), [
+        $menu->addChild($this->trans('Edit children'), [
             'route' => 'zikulamenumodule_menu_view',
             'routeParameters' => $options,
         ])->setAttribute('icon', 'fa fa-child');
-        $menu->addChild($this->trans('Edit Menu Root'), [
+        $menu->addChild($this->trans('Edit menu root'), [
             'route' => 'zikulamenumodule_menu_edit',
             'routeParameters' => $options,
         ])->setAttribute('icon', 'fa fa-tree');

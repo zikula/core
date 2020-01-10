@@ -52,18 +52,18 @@ class MenuBuilder
         $adminPermId = $this->variableApi->get('ZikulaPermissionsModule', 'adminid', 1);
         $menu = $this->factory->createItem('adminActions');
         $menu->setChildrenAttribute('class', 'list-inline');
-        $menu->addChild($this->trans('Insert permission rule before %s', ['%s' => $permission->getPid()]), [
+        $menu->addChild($this->trans('Insert permission rule before %pid%', ['%pid%' => $permission->getPid()]), [
                 'uri' => '#'
             ])->setAttribute('icon', 'fa fa-plus')
             ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips']);
 
         if (!$lockAdmin || $adminPermId !== $permission->getPid()) {
-            $menu->addChild($this->trans('Edit permission %s', ['%s' => $permission->getPid()]), [
+            $menu->addChild($this->trans('Edit permission %pid%', ['%pid%' => $permission->getPid()]), [
                 'uri' => '#'
             ])->setAttribute('icon', 'fa fa-pencil-alt')
                 ->setLinkAttributes(['class' => 'edit-permission pointer tooltips']);
 
-            $menu->addChild($this->trans('Delete permission %s', ['%s' => $permission->getPid()]), [
+            $menu->addChild($this->trans('Delete permission %pid%', ['%pid%' => $permission->getPid()]), [
                 'uri' => '#'
             ])->setAttribute('icon', 'fa fa-trash-alt')
                 ->setLinkAttributes(['class' => 'delete-permission pointer tooltips']);

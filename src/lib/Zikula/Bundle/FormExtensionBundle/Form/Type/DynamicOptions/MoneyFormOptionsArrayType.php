@@ -22,13 +22,11 @@ class MoneyFormOptionsArrayType extends FormOptionsArrayType
     {
         parent::buildForm($builder, $options);
 
-        $builder
-            ->add('currency', TextType::class, [
-                'empty_data' => 'EUR',
-                'label' => $this->trans('Currency'),
-                'required' => false,
-                'help' => $this->trans('Any 3 letter ISO 4217 code. Default: EUR')
-            ])
-        ;
+        $builder->add('currency', TextType::class, [
+            'empty_data' => 'EUR',
+            'label' => 'Currency',
+            'required' => false,
+            'help' => 'Any 3 letter ISO 4217 code. Default: EUR'
+        ]);
     }
 }

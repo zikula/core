@@ -20,39 +20,30 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Configuration form type class.
  */
 class ConfigType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('itemsperpage', IntegerType::class, [
-                'label' => $this->trans('Items per page'),
+                'label' => 'Items per page',
                 'attr' => [
                     'maxlength' => 3,
                     'min' => 1
                 ]
             ])
             ->add('limitsummary', IntegerType::class, [
-                'label' => $this->trans('Number of characters to display in item summaries'),
+                'label' => 'Number of characters to display in item summaries',
                 'attr' => [
                     'maxlength' => 5
                 ]
             ])
             ->add('plugins', ChoiceType::class, [
-                'label' => $this->trans('Disabled plugins'),
+                'label' => 'Disabled plugins',
                 'label_attr' => ['class' => 'checkbox-custom'],
                 'choices' => $options['plugins'],
                 'expanded' => true,
@@ -60,24 +51,24 @@ class ConfigType extends AbstractType
                 'required' => false
             ])
             ->add('opensearch_enabled', CheckboxType::class, [
-                'label' => $this->trans('Enable OpenSearch'),
+                'label' => 'Enable OpenSearch',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('opensearch_adult_content', CheckboxType::class, [
-                'label' => $this->trans('This page contains adult content'),
+                'label' => 'This page contains adult content',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'

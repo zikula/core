@@ -25,36 +25,27 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * CategoryType form type class.
  */
 class CategoryType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $translator = $this->translator;
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->trans('Name'),
+                'label' => 'Name',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('parent', CategoryTreeType::class, [
-                'label' => $this->trans('Parent'),
+                'label' => 'Parent',
                 'includeRoot' => true,
                 'includeLeaf' => false,
                 'constraints' => [
@@ -62,32 +53,32 @@ class CategoryType extends AbstractType
                 ]
             ])
             ->add('is_locked', CheckboxType::class, [
-                'label' => $this->trans('Category is locked'),
+                'label' => 'Category is locked',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('is_leaf', CheckboxType::class, [
-                'label' => $this->trans('Category is a leaf node'),
+                'label' => 'Category is a leaf node',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add($builder->create('value', TextType::class, [
-                'label' => $this->trans('Value'),
+                'label' => 'Value',
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
             ->add('status', CheckboxType::class, [
-                'label' => $this->trans('Active'),
+                'label' => 'Active',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('display_name', CollectionType::class, [
                 'entry_type' => TextType::class,
-                'label' => $this->trans('Display name'),
+                'label' => 'Display name',
                 'required' => false
             ])
             ->add('display_desc', CollectionType::class, [
                 'entry_type' => TextareaType::class,
-                'label' => $this->trans('Display description'),
+                'label' => 'Display description',
                 'required' => false
             ])
             ->add('attributes', CollectionType::class, [
@@ -96,7 +87,7 @@ class CategoryType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,
-                'label' => $this->trans('Category attributes'),
+                'label' => 'Category attributes',
                 'required' => false
             ])
             ->add('after', HiddenType::class, [

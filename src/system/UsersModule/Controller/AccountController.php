@@ -74,19 +74,19 @@ class AccountController extends AbstractController
         $installedLanguages = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
         $form = $this->createFormBuilder()
             ->add('locale', ChoiceType::class, [
-                'label' => $this->trans('Choose language'),
+                'label' => 'Choose language',
                 'choices' => $installedLanguages,
-                'placeholder' => $this->trans('Site default'),
+                'placeholder' => 'Site default',
                 'required' => false,
                 'data' => $currentUserApi->get('locale')
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

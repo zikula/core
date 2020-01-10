@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
 use PDO;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -30,7 +31,7 @@ class DbCredsType extends AbstractType
     {
         $builder
             ->add('database_driver', ChoiceType::class, [
-                'label' => $this->trans('Database type'),
+                'label' => 'Database type',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -38,7 +39,7 @@ class DbCredsType extends AbstractType
                 'data' => 'mysql'
             ])
             ->add('dbtabletype', ChoiceType::class, [
-                'label' => $this->trans('Storage Engine'),
+                'label' => 'Storage engine',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -49,7 +50,7 @@ class DbCredsType extends AbstractType
                 'data' => 'innodb'
             ])
             ->add('database_host', TextType::class, [
-                'label' => $this->trans('Database Host'),
+                'label' => 'Database host',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -59,7 +60,7 @@ class DbCredsType extends AbstractType
                 ]
             ])
             ->add('database_user', TextType::class, [
-                'label' => $this->trans('Database Username'),
+                'label' => 'Database user name',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -68,14 +69,14 @@ class DbCredsType extends AbstractType
                 ]
             ])
             ->add('database_password', PasswordType::class, [
-                'label' => $this->trans('Database Password'),
+                'label' => 'Database password',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
                 'required' => false
             ])
             ->add('database_name', TextType::class, [
-                'label' => $this->trans('Database Name'),
+                'label' => 'Database name',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -84,7 +85,7 @@ class DbCredsType extends AbstractType
                     new Length(['max' => 64]),
                     new Regex([
                         'pattern' => '/^[\w-]*$/',
-                        'message' => $this->trans('Error! Invalid database name. Please use only letters, numbers, "-" or "_".')
+                        'message' => 'Error! Invalid database name. Please use only letters, numbers, "-" or "_".'
                     ])
                 ]
             ])

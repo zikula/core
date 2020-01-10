@@ -27,29 +27,29 @@ class DateTimeFormOptionsArrayType extends FormOptionsArrayType
 
         $builder
             ->add('html5', CheckboxType::class, [
-                'label' => $this->trans('Html5'),
+                'label' => 'Html5',
                 'required' => false
             ])
             ->add('widget', ChoiceType::class, [
-                'label' => $this->trans('Widget'),
+                'label' => 'Widget',
                 'choices' => [
-                    $this->trans('Choice') => 'choice',
-                    $this->trans('Text') => 'text',
-                    $this->trans('Single Text') => 'single_text'
+                    'Choice' => 'choice',
+                    'Text' => 'text',
+                    'Single Text' => 'single_text'
                 ]
             ])
             ->add('input', ChoiceType::class, [
-                'label' => $this->trans('Input'),
+                'label' => 'Input',
                 'choices' => [
-                    $this->trans('String') => 'string',
-                    $this->trans('DateTime Object') => 'datetime',
-                    $this->trans('Array') => 'array',
-                    $this->trans('Timestamp') => 'timestamp'
+                    'String' => 'string',
+                    'DateTime object' => 'datetime',
+                    'Array' => 'array',
+                    'Timestamp' => 'timestamp'
                 ]
             ])
             ->add('format', TextType::class, [
-                'label' => $this->trans('Format'),
-                'help' => $this->trans('e.g. yyyy-MM-dd'),
+                'label' => 'Format',
+                'help' => 'e.g. yyyy-MM-dd',
                 'required' => false
             ])
             ->add('model_timezone', TimezoneType::class)

@@ -17,30 +17,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\CategoriesModule\Entity\CategoryAttributeEntity;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * CategoryAttributeType form type class.
  */
 class CategoryAttributeType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->trans('Name'),
+                'label' => 'Name',
             ])
             ->add('value', TextType::class, [
-                'label' => $this->trans('Value'),
+                'label' => 'Value',
                 'required' => false
             ])
         ;

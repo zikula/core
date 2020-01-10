@@ -21,8 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;
@@ -30,17 +28,11 @@ use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
 
 class MenuItemType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title', TextType::class, [
+                'label' => 'Title',
                 'constraints' => [
                     new NotBlank()
                 ]
@@ -57,7 +49,7 @@ class MenuItemType extends AbstractType
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,
-                'label' => $this->trans('Options'),
+                'label' => 'Options',
                 'required' => false
             ])
             ->add('after', HiddenType::class, [
@@ -72,7 +64,7 @@ class MenuItemType extends AbstractType
         ;
         if ($options['includeRoot']) {
             $builder->add('root', EntityType::class, [
-                'label' => $this->trans('Root'),
+                'label' => 'Root',
                 'class' => MenuItemEntity::class,
                 'choice_label' => 'title'
             ]);
@@ -81,9 +73,10 @@ class MenuItemType extends AbstractType
         }
         if ($options['includeParent']) {
             $builder->add('parent', EntityType::class, [
+                'label' => 'Parent',
                 'class' => MenuItemEntity::class,
                 'choice_label' => 'title',
-                'placeholder' => $this->trans('No parent'),
+                'placeholder' => 'No parent',
                 'empty_data' => null,
                 'required' => false,
             ]);

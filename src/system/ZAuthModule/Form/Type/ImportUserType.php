@@ -19,24 +19,18 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class ImportUserType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('file', FileType::class, [
-                'label' => $this->trans('CSV file (Max. %sub%)', ['%sub%' => ini_get('post_max_size')]),
-                'help' => $this->trans('The file must be utf8 encoded'),
+                'label' => 'CSV file (Max. %maxSize%)',
+                'label_translation_parameters' => [
+                    '%maxSize%' => ini_get('post_max_size')
+                ],
+                'help' => 'The file must be utf8 encoded',
                 'constraints' => [
                     new File([
                         'mimeTypes' => [
@@ -55,7 +49,7 @@ class ImportUserType extends AbstractType
                 ]
             ])
             ->add('delimiter', ChoiceType::class, [
-                'label' => $this->trans('CSV delimiter'),
+                'label' => 'CSV delimiter',
                 'choices' => [
                     ',' => ',',
                     ';' => ';',
@@ -63,12 +57,12 @@ class ImportUserType extends AbstractType
                 ]
             ])
             ->add('upload', SubmitType::class, [
-                'label' => $this->trans('Upload'),
+                'label' => 'Upload',
                 'icon' => 'fa-upload',
                 'attr' => ['class' => 'btn btn-success']
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreInstallerBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,17 +25,17 @@ class RequestContextType extends AbstractType
     {
         $builder
             ->add('router:request_context:host', TextType::class, [
-                'label' => $this->trans('The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'),
+                'label' => 'The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
-                'data' => $this->trans('localhost'),
+                'data' => 'localhost',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('router:request_context:scheme', ChoiceType::class, [
-                'label' => $this->trans('Please enter the scheme of where you install Zikula, can be either "http" or "https"'),
+                'label' => 'Please enter the scheme of where you install Zikula, can be either "http" or "https"',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
@@ -45,7 +46,7 @@ class RequestContextType extends AbstractType
                 'data' => 'http'
             ])
             ->add('router:request_context:base_url', TextType::class, [
-                'label' => $this->trans('Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'),
+                'label' => 'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir',
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ]

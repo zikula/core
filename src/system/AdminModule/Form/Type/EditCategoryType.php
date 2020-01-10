@@ -20,45 +20,36 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Category editing form type class.
  */
 class EditCategoryType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('cid', HiddenType::class)
             ->add('name', TextType::class, [
-                'label' => $this->trans('Name'),
+                'label' => 'Name',
                 'attr' => [
                     'maxlength' => 50
                 ]
             ])
             ->add('description', TextareaType::class, [
-                'label' => $this->trans('Description'),
+                'label' => 'Description',
                 'required' => false
             ])
             ->add('save', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn btn-default'
