@@ -34,7 +34,9 @@ class Core3UpgradeListener implements EventSubscriberInterface
         if (!version_compare($event->getArgument('currentVersion'), '3.0.0', '<')) {
             return;
         }
-        $sql = 'ALTER TABLE `themes` DROP COLUMN `xhtml`';
-        $this->conn->executeQuery($sql);
+        if ($this->columnExists('themes', 'xhtml')) {
+            $sql = 'ALTER TABLE `themes` DROP COLUMN `xhtml`';
+            $this->conn->executeQuery($sql);
+        }
     }
 }

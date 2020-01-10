@@ -34,7 +34,9 @@ class Core3UpgradeListener implements EventSubscriberInterface
         if (!version_compare($event->getArgument('currentVersion'), '3.0.0', '<')) {
             return;
         }
-        $sql = 'ALTER TABLE `group_perms` DROP COLUMN `bond`';
-        $this->conn->executeQuery($sql);
+        if ($this->columnExists('group_perms', 'bond')) {
+            $sql = 'ALTER TABLE `group_perms` DROP COLUMN `bond`';
+            $this->conn->executeQuery($sql);
+        }
     }
 }
