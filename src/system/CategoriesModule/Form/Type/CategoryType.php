@@ -38,11 +38,6 @@ class CategoryType extends AbstractType
 {
     use TranslatorTrait;
 
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    private $categoryRepository;
-
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
@@ -121,7 +116,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->trans(/** @Ignore */$name, 'zikula', $code);
+                        $displayName[$code] = $translator->trans(/** @Ignore */$name, [], 'zikula', $code);
                     }
                     if (!isset($displayDesc[$code])) {
                         $displayDesc[$code] = '';
@@ -143,7 +138,7 @@ class CategoryType extends AbstractType
 
                 foreach ($options['locales'] as $code) {
                     if (!isset($displayName[$code]) || !$displayName[$code]) {
-                        $displayName[$code] = $translator->trans(/** @Ignore */$name, 'zikula', $code);
+                        $displayName[$code] = $translator->trans(/** @Ignore */$name, [], 'zikula', $code);
                     }
                 }
                 $category->setDisplay_name($displayName);
