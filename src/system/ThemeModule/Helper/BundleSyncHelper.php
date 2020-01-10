@@ -156,6 +156,9 @@ class BundleSyncHelper
             if (!empty($dbthemes[$name])) {
                 continue;
             }
+            if (isset($themeinfo['xhtml'])) {
+                unset($themeinfo['xhtml']);
+            }
             // add item to db
             $item = new ThemeEntity();
             $item->merge($themeinfo);
