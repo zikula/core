@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\ZAuthModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
 use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\Core\Doctrine\EntityAccess;
 use Zikula\ZAuthModule\Validator\Constraints as ZAuthAssert;
 
 /**
