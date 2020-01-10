@@ -31,7 +31,7 @@ class ChoiceValuesTransformer implements DataTransformerInterface
         $strings = [];
         if (is_array($value)) {
             foreach ($value as $k => $v) {
-                $strings[] = $k === $v ? $v : $k . ':' . $v;
+                $strings[] = $k === $v ? $v : $v . ':' . $k;
             }
         }
 
