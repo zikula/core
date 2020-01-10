@@ -23,16 +23,24 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\FormExtensionBundle\DynamicFieldsContainerInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Form type for embedding dynamic fields.
  */
 class InlineFormDefinitionType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
      * @var DynamicFieldsContainerInterface
      */
     private $dynamicFieldsContainer;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options = [])
     {

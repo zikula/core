@@ -89,7 +89,7 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 ];
             }
         }
-
+        
         if (
             in_array('route', $allowedObjectTypes, true)
             && $this->permissionHelper->hasComponentPermission('route', $permLevel)

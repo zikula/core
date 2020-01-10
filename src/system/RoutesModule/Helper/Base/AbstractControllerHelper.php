@@ -31,37 +31,37 @@ use Zikula\RoutesModule\Helper\PermissionHelper;
 abstract class AbstractControllerHelper
 {
     use TranslatorTrait;
-
+    
     /**
      * @var RequestStack
      */
     protected $requestStack;
-
+    
     /**
      * @var FormFactoryInterface
      */
     protected $formFactory;
-
+    
     /**
      * @var VariableApiInterface
      */
     protected $variableApi;
-
+    
     /**
      * @var EntityFactory
      */
     protected $entityFactory;
-
+    
     /**
      * @var CollectionFilterHelper
      */
     protected $collectionFilterHelper;
-
+    
     /**
      * @var PermissionHelper
      */
     protected $permissionHelper;
-
+    
     public function __construct(
         TranslatorInterface $translator,
         RequestStack $requestStack,
@@ -79,7 +79,7 @@ abstract class AbstractControllerHelper
         $this->collectionFilterHelper = $collectionFilterHelper;
         $this->permissionHelper = $permissionHelper;
     }
-
+    
     /**
      * Returns an array of all allowed object types in ZikulaRoutesModule.
      *
@@ -91,13 +91,13 @@ abstract class AbstractControllerHelper
         if (!in_array($context, $allowedContexts, true)) {
             $context = 'controllerAction';
         }
-
+    
         $allowedObjectTypes = [];
         $allowedObjectTypes[] = 'route';
-
+    
         return $allowedObjectTypes;
     }
-
+    
     /**
      * Returns the default object type in ZikulaRoutesModule.
      */
@@ -107,10 +107,10 @@ abstract class AbstractControllerHelper
         if (!in_array($context, $allowedContexts, true)) {
             $context = 'controllerAction';
         }
-
+    
         return 'route';
     }
-
+    
     /**
      * Processes the parameters for a view action.
      * This includes handling pagination, quick navigation forms and other aspects.
@@ -124,18 +124,18 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
             throw new Exception($this->trans('Error! Invalid object type received.'));
         }
-
+    
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
             throw new Exception($this->trans('Error! Controller helper needs a request.'));
         }
         $repository = $this->entityFactory->getRepository($objectType);
-
+    
         // parameter for used sorting field
         list ($sort, $sortdir) = $this->determineDefaultViewSorting($objectType);
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = strtolower($sortdir);
-
+    
         $templateParameters['all'] = 'csv' === $request->getRequestFormat() ? 1 : $request->query->getInt('all');
         $showOnlyOwnEntriesSetting = (bool)$request->query->getInt(
             'own',
@@ -143,7 +143,7 @@ abstract class AbstractControllerHelper
         );
         $showOnlyOwnEntriesSetting = $showOnlyOwnEntriesSetting ? 1 : 0;
         $templateParameters['own'] = $showOnlyOwnEntriesSetting;
-
+    
         $resultsPerPage = 0;
         if (1 !== $templateParameters['all']) {
             // the number of items displayed on a page for pagination
@@ -154,14 +154,14 @@ abstract class AbstractControllerHelper
         }
         $templateParameters['num'] = $resultsPerPage;
         $templateParameters['tpl'] = $request->query->getAlnum('tpl');
-
+    
         $templateParameters = $this->addTemplateParameters(
             $objectType,
             $templateParameters,
             'controllerAction',
             $contextArgs
         );
-
+    
         $quickNavFormType = 'Zikula\RoutesModule\Form\Type\QuickNavigation\\'
             . ucfirst($objectType) . 'QuickNavType'
         ;
@@ -192,7 +192,7 @@ abstract class AbstractControllerHelper
         $sortableColumns->setOrderBy($sortableColumns->getColumn($sort), strtoupper($sortdir));
         $resultsPerPage = $templateParameters['num'];
         $request->query->set('own', $templateParameters['own']);
-
+    
         $urlParameters = $templateParameters;
         foreach ($urlParameters as $parameterName => $parameterValue) {
             if (
@@ -203,9 +203,9 @@ abstract class AbstractControllerHelper
             }
             unset($urlParameters[$parameterName]);
         }
-
+    
         $sortableColumns->setAdditionalUrlParameters($urlParameters);
-
+    
         $where = '';
         if (1 === $templateParameters['all']) {
             // retrieve item list without pagination
@@ -213,7 +213,7 @@ abstract class AbstractControllerHelper
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $request->query->getInt('pos', 1);
-
+    
             // retrieve item list with pagination
             list($entities, $objectCount) = $repository->selectWherePaginated(
                 $where,
@@ -222,21 +222,21 @@ abstract class AbstractControllerHelper
                 $resultsPerPage,
                 false
             );
-
+    
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [
                 'amountOfItems' => $objectCount,
                 'itemsPerPage' => $resultsPerPage
             ];
         }
-
+    
         $templateParameters['sort'] = $sort;
         $templateParameters['sortdir'] = $sortdir;
         $templateParameters['items'] = $entities;
-
+    
         $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
         $templateParameters['quickNavForm'] = $quickNavForm->createView();
-
+    
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
         // set current sorting in route parameters (e.g. for the pager)
@@ -244,10 +244,10 @@ abstract class AbstractControllerHelper
         $routeParams['sort'] = $sort;
         $routeParams['sortdir'] = $sortdir;
         $request->attributes->set('_route_params', $routeParams);
-
+    
         return $templateParameters;
     }
-
+    
     /**
      * Determines the default sorting criteria.
      */
@@ -258,7 +258,7 @@ abstract class AbstractControllerHelper
             return ['', 'ASC'];
         }
         $repository = $this->entityFactory->getRepository($objectType);
-
+    
         $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields(), true)) {
             $sort = $repository->getDefaultSortingField();
@@ -273,10 +273,10 @@ abstract class AbstractControllerHelper
             $sort = str_replace(' DESC', '', $sort);
             $sortdir = 'desc';
         }
-
+    
         return [$sort, $sortdir];
     }
-
+    
     /**
      * Processes the parameters for a display action.
      */
@@ -288,10 +288,10 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
             throw new Exception($this->trans('Error! Invalid object type received.'));
         }
-
+    
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
     }
-
+    
     /**
      * Processes the parameters for an edit action.
      */
@@ -303,10 +303,10 @@ abstract class AbstractControllerHelper
         if (!in_array($objectType, $this->getObjectTypes('controllerAction', $contextArgs), true)) {
             throw new Exception($this->trans('Error! Invalid object type received.'));
         }
-
+    
         return $this->addTemplateParameters($objectType, $templateParameters, 'controllerAction', $contextArgs);
     }
-
+    
     /**
      * Returns an array of additional template variables which are specific to the object type.
      */
@@ -320,7 +320,7 @@ abstract class AbstractControllerHelper
         if (!in_array($context, $allowedContexts, true)) {
             $context = 'controllerAction';
         }
-
+    
         if ('controllerAction' === $context) {
             if (!isset($args['action'])) {
                 $routeName = $this->requestStack->getCurrentRequest()->get('_route');
@@ -335,7 +335,7 @@ abstract class AbstractControllerHelper
             }
         }
         $parameters['permissionHelper'] = $this->permissionHelper;
-
+    
         return $parameters;
     }
 }

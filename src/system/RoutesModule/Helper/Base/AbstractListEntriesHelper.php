@@ -23,12 +23,12 @@ use Zikula\Common\Translator\TranslatorTrait;
 abstract class AbstractListEntriesHelper
 {
     use TranslatorTrait;
-
+    
     public function __construct(TranslatorInterface $translator)
     {
         $this->setTranslator($translator);
     }
-
+    
     /**
      * Return the name or names for a given list item.
      */
@@ -41,13 +41,13 @@ abstract class AbstractListEntriesHelper
         if ((empty($value) && '0' !== $value) || empty($objectType) || empty($fieldName)) {
             return $value;
         }
-
+    
         $isMulti = $this->hasMultipleSelection($objectType, $fieldName);
         $values = $isMulti ? $this->extractMultiList($value) : [];
-
+    
         $options = $this->getEntries($objectType, $fieldName);
         $result = '';
-
+    
         if (true === $isMulti) {
             foreach ($options as $option) {
                 if (!in_array($option['value'], $values, true)) {
@@ -67,11 +67,11 @@ abstract class AbstractListEntriesHelper
                 break;
             }
         }
-
+    
         return $result;
     }
-
-
+    
+    
     /**
      * Extract concatenated multi selection.
      */
@@ -87,11 +87,11 @@ abstract class AbstractListEntriesHelper
             // keys must start with 0, otherwise the dropdownlist form plugin gets confused
             array_shift($listValues);
         }
-
+    
         return $listValues;
     }
-
-
+    
+    
     /**
      * Determine whether a certain dropdown field has a multi selection or not.
      */
@@ -100,7 +100,7 @@ abstract class AbstractListEntriesHelper
         if (empty($objectType) || empty($fieldName)) {
             return false;
         }
-
+    
         $result = false;
         switch ($objectType) {
             case 'route':
@@ -117,11 +117,11 @@ abstract class AbstractListEntriesHelper
                 }
                 break;
         }
-
+    
         return $result;
     }
-
-
+    
+    
     /**
      * Get entries for a certain dropdown field.
      */
@@ -130,7 +130,7 @@ abstract class AbstractListEntriesHelper
         if (empty($objectType) || empty($fieldName)) {
             return [];
         }
-
+    
         $entries = [];
         switch ($objectType) {
             case 'route':
@@ -147,11 +147,11 @@ abstract class AbstractListEntriesHelper
                 }
                 break;
         }
-
+    
         return $entries;
     }
-
-
+    
+    
     /**
      * Get 'workflow state' list entries.
      */
@@ -186,10 +186,10 @@ abstract class AbstractListEntriesHelper
             'image'   => '',
             'default' => false
         ];
-
+    
         return $states;
     }
-
+    
     /**
      * Get 'schemes' list entries.
      */
@@ -210,10 +210,10 @@ abstract class AbstractListEntriesHelper
             'image'   => '',
             'default' => true
         ];
-
+    
         return $states;
     }
-
+    
     /**
      * Get 'methods' list entries.
      */
@@ -262,7 +262,7 @@ abstract class AbstractListEntriesHelper
             'image'   => '',
             'default' => false
         ];
-
+    
         return $states;
     }
 }

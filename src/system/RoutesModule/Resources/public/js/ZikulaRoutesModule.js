@@ -40,7 +40,7 @@ function zikulaRoutesSimpleAlert(anchorElement, title, content, alertId, cssClas
     var alertBox;
 
     alertBox = ' \
-        <div id="' + alertId + '" class="alert alert-' + cssClass + ' fade"> \
+        <div id="' + alertId + '" class="alert alert-' + cssClass + ' fade show"> \
           <button type="button" class="close" data-dismiss="alert">&times;</button> \
           <h4>' + title + '</h4> \
           <p>' + content + '</p> \
@@ -129,7 +129,7 @@ function zikulaRoutesInitSortable() {
                 }
             }).done(function (data) {
                 /*if (data.message) {
-                    zikulaRoutesSimpleAlert(jQuery('#sortableTable'), Translator.__('Success'), data.message, 'sortingDoneAlert', 'success');
+                    zikulaRoutesSimpleAlert(jQuery('#sortableTable'), Translator.trans('Success'), data.message, 'sortingDoneAlert', 'success');
                 }*/
                 window.location.reload();
             });
