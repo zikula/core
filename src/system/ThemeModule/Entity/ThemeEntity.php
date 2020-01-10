@@ -122,15 +122,6 @@ class ThemeEntity extends EntityAccess
     private $state;
 
     /**
-     * is theme xhtml compliant
-     *
-     * @ORM\Column(type="smallint")
-     * @var bool
-     * @deprecated
-     */
-    private $xhtml;
-
-    /**
      * constructor
      */
     public function __construct()
@@ -145,7 +136,6 @@ class ThemeEntity extends EntityAccess
         $this->user = 0;
         $this->system = 0;
         $this->state = ThemeEntityRepository::STATE_INACTIVE;
-        $this->xhtml = 1;
     }
 
     public function getId(): ?int
@@ -256,21 +246,5 @@ class ThemeEntity extends EntityAccess
     public function setState(int $state): void
     {
         $this->state = $state;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getXhtml(): bool
-    {
-        return (bool)$this->xhtml;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setXhtml(bool $xhtml): void
-    {
-        $this->xhtml = $xhtml;
     }
 }

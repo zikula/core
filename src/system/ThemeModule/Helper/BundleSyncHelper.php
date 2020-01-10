@@ -167,14 +167,15 @@ class BundleSyncHelper
             if (!isset($dbthemes[$name])) {
                 continue;
             }
-            if (($dbthemes[$name]['type'] !== $themeinfo['type']) ||
+            if (
+                ($dbthemes[$name]['type'] !== $themeinfo['type']) ||
                 ($dbthemes[$name]['description'] !== $themeinfo['description']) ||
-                    ($dbthemes[$name]['version'] !== $themeinfo['version']) ||
-                    ((bool)$dbthemes[$name]['admin'] !== (bool)$themeinfo['admin']) ||
-                    ((bool)$dbthemes[$name]['user'] !== (bool)$themeinfo['user']) ||
-                    ((bool)$dbthemes[$name]['system'] !== (bool)$themeinfo['system']) ||
-                    ((string)$dbthemes[$name]['contact'] !== (string)$themeinfo['contact']) ||
-                    ((bool)$dbthemes[$name]['xhtml'] !== (bool)$themeinfo['xhtml'])) {
+                ($dbthemes[$name]['version'] !== $themeinfo['version']) ||
+                ((bool)$dbthemes[$name]['admin'] !== (bool)$themeinfo['admin']) ||
+                ((bool)$dbthemes[$name]['user'] !== (bool)$themeinfo['user']) ||
+                ((bool)$dbthemes[$name]['system'] !== (bool)$themeinfo['system']) ||
+                ((string)$dbthemes[$name]['contact'] !== (string)$themeinfo['contact'])
+            ) {
                 $themeinfo['id'] = $dbthemes[$name]['id'];
                 // update item
                 /** @var $item ThemeEntity */

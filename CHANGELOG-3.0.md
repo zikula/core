@@ -4,10 +4,9 @@
 
  - BC Breaks:
     - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
-    - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
-    - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
     - Interface extensions and amendments
+        - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
         - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
         - `Zikula\BlocksModule\Api\ApiInterface\BlockApiInterface` has dropped `getModuleBlockPath()` method.
         - `Zikula\BlocksModule\Api\ApiInterface\BlockFactoryApiInterface` has changed signature of `getInstance()` method.
@@ -22,10 +21,14 @@
         - `Zikula\UsersModule\MessageModule\MessageModuleInterface` requires a new method `getBundleName()` to be implemented.
         - `Zikula\UsersModule\ProfileModule\ProfileModuleInterface` requires a new method `getBundleName()` to be implemented.
     - `Zikula\BlocksModule\AbstractBlockHandler` is not container aware anymore.
-    - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
+    - Entity changes
+      - `Zikula\ExtensionsModule\Entity\ExtensionEntity` has renamed `core_min` to `coreCompatibility` and removed `core_max` property (#3649).
+      - `Zikula\PermissionsModule\Entity\PermissionEntity` removed the `bond` property.
+      - `Zikula\ThemeModule\Entity\ThemeEntity` removed the `xhtml` property.
+      - `Zikula\SearchModule\Entity\SearchResultEntity` has changed the `extra` field from `text` to `array`. The `setExtra()` method takes care of that though.
+    - Removed `Zikula\Core\Response\Ajax\*Response` classes (#3772). Use Symfony's `JsonResponse` with appropriate status codes instead.
     - Removed all classes from the `Zikula\Core\Token` namespace. If you need custom CSRF tokens use [isCsrfTokenValid()](https://symfony.com/doc/current/security/csrf.html#generating-and-checking-csrf-tokens-manually) instead (#3206).
     - The `Zikula\Bundle\HookBundle\ServiceIdTrait` trait has been removed.
-    - The `extra` field in `Zikula\SearchModule\Entity\SearchResultEntity` has changed from `text` to `array`. The `setExtra()` method takes care of that though.
     - Dropped vendors:
         - Removed afarkas/html5shiv
         - Removed afarkas/webshim (#3925)
@@ -47,8 +50,8 @@
         - Removed zikula/jquery-bundle (in favour of direct usage of components/jquery)
         - Removed zikula/jquery-ui-bundle (in favour of direct usage of components/jqueryui)
         - Removed zikula/seabreeze-theme (in favour of different styles in bootstrap theme)
-    - kriswallsmith/assetic downgraded from 1.4.0 to 1.0.5
-    - stof/doctrine-extensions-bundle has been replaced by antishov/doctrine-extensions-bundle
+        - Replaced by stof/doctrine-extensions-bundle by antishov/doctrine-extensions-bundle
+        - Downgraded kriswallsmith/assetic from 1.4.0 to 1.0.5
     - Removed the `polyfill` Twig tag (#3925).
     - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
     - Removed `ZikulaKernel::VERSION_SUB` constant.
@@ -61,8 +64,6 @@
     - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
     - Removed custom translation system (#4042).
-    - Deprecated the `bond` property of `Zikula\PermissionsModule\Entity\PermissionEntity`.
-    - Deprecated the `xhtml` property of `Zikula\ThemeModule\Entity\ThemeEntity`.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.

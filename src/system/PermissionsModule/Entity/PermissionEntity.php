@@ -85,15 +85,6 @@ class PermissionEntity extends EntityAccess
      */
     private $level;
 
-    /**
-     * the bond of the rule
-     *
-     * @ORM\Column(type="integer")
-     * @var int
-     * @deprecated
-     */
-    private $bond;
-
     public function __construct()
     {
         $this->gid = 0;
@@ -102,7 +93,6 @@ class PermissionEntity extends EntityAccess
         $this->component = '';
         $this->instance = '';
         $this->level = 0;
-        $this->bond = 0;
     }
 
     public function getPid(): ?int
@@ -173,21 +163,5 @@ class PermissionEntity extends EntityAccess
     public function setLevel(int $level): void
     {
         $this->level = $level;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getBond(): int
-    {
-        return $this->bond;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function setBond(int $bond): void
-    {
-        $this->bond = $bond;
     }
 }

@@ -34,8 +34,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
-                'level' => ACCESS_ADMIN,
-                'bond' => 0,
+                'level' => ACCESS_ADMIN
             ],
             [
                 'gid' => PermissionApi::ALL_GROUPS, // -1
@@ -43,8 +42,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'realm' => 0,
                 'component' => 'ExtendedMenublock::',
                 'instance' => '1:1:',
-                'level' => ACCESS_NONE,
-                'bond' => 0,
+                'level' => ACCESS_NONE
             ],
             [
                 'gid' => Constant::GROUP_ID_USERS, // 1
@@ -52,8 +50,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
-                'level' => ACCESS_COMMENT,
-                'bond' => 0,
+                'level' => ACCESS_COMMENT
             ],
             [
                 'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
@@ -61,8 +58,7 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'realm' => 0,
                 'component' => 'ExtendedMenublock::',
                 'instance' => '1:(1|2|3):',
-                'level' => ACCESS_NONE,
-                'bond' => 0,
+                'level' => ACCESS_NONE
             ],
             [
                 'gid' => PermissionApi::UNREGISTERED_USER_GROUP, // 0
@@ -70,9 +66,8 @@ class StubPermissionRepository implements PermissionRepositoryInterface
                 'realm' => 0,
                 'component' => '.*',
                 'instance' => '.*',
-                'level' => ACCESS_READ,
-                'bond' => 0,
-            ],
+                'level' => ACCESS_READ
+            ]
         ];
         foreach ($datas as $data) {
             $entity = new PermissionEntity();

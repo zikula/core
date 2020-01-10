@@ -37,7 +37,6 @@
             {% elseif key == 'changelog' %}<th id="hChangelog" scope="row">{% trans %}Change log{% endtrans %}</th><td headers="hChangelog">{{ field }}</td>
             {% elseif key == 'help' %}<th id="hHelp" scope="row">{% trans %}Help{% endtrans %}</th><td headers="hHelp">{{ field }}</td>
             {% elseif key == 'license' %}<th id="hLicense" scope="row">{% trans %}License{% endtrans %}</th><td headers="hLicense">{{ field }}</td>
-            {% elseif key == 'xhtml' %}<th id="hXhtml" scope="row">{% trans %}XHTML-capable{% endtrans %}</th><td headers="hXhtml">{{ field|yesNo }}</td>
             {% endif %}
         </tr>
         {% endfor %}

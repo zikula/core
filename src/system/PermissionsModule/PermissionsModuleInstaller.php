@@ -55,7 +55,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
                 $record['component'] = 'ZikulaThemeModule::ThemeChange';
                 $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
                 $record['level']     = ACCESS_COMMENT; // 300
-                $record['bond']      = 0;
                 $this->entityManager->persist($record);
                 $lastPerm->setSequence($record->getSequence() + 1);
                 $this->entityManager->flush();
@@ -88,7 +87,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_ADMIN; // 800
-        $record['bond']      = 0;
         $this->entityManager->persist($record);
 
         // allow access to non-html themes
@@ -99,7 +97,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record['component'] = 'ZikulaThemeModule::ThemeChange';
         $record['instance']  = ':(ZikulaRssTheme|ZikulaPrinterTheme|ZikulaAtomTheme):';
         $record['level']     = ACCESS_COMMENT; // 300
-        $record['bond']      = 0;
         $this->entityManager->persist($record);
 
         // give user group comment access to everything as second priority
@@ -110,7 +107,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_COMMENT; // 300
-        $record['bond']      = 0;
         $this->entityManager->persist($record);
 
         // allow unregistered users only read access to everything as lowest priority
@@ -121,7 +117,6 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $record['component'] = '.*';
         $record['instance']  = '.*';
         $record['level']     = ACCESS_READ; // 200
-        $record['bond']      = 0;
         $this->entityManager->persist($record);
 
         $this->entityManager->flush();
