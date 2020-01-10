@@ -964,3 +964,27 @@ Themes: Themes
 'Provider module "%s" is not available.': 'Provider module "%s" is not available.'
 'Providers'' areas order is not an array.': 'Providers'' areas order is not an array.'
 'Workflow "%workflow%" not found.': 'Workflow "%workflow%" not found.'
+'Deactivate %moduleName%': 'Deactivate %moduleName%'
+'Activate %moduleName%': 'Activate %moduleName%'
+'Uninstall %moduleName%': 'Uninstall %moduleName%'
+'Upgrade %moduleName%': 'Upgrade %moduleName%'
+'Remove %moduleName%': 'Remove %moduleName%'
+'Install %moduleName%': 'Install %moduleName%'
+'Core compatibility information: %moduleName%': 'Core compatibility information: %moduleName%'
+'Edit %moduleName%': 'Edit %moduleName%'
+Core: Core
+Public: Public
+Private: Private
+Closed: Closed
+Open: Open
+'Edit "%name%" group': 'Edit "%name%" group'
+'Delete "%name%" group': 'Delete "%name%" group'
+'View membership of "%name%" group': 'View membership of "%name%" group'
+'Leave "%name%" group': 'Leave "%name%" group'
+'Apply to membership of "%name%" group': 'Apply to membership of "%name%" group'
+'Join "%name%" group': 'Join "%name%" group'
+'Edit children': 'Edit children'
+'Edit menu root': 'Edit menu root'
+'Insert permission rule before %pid%': 'Insert permission rule before %pid%'
+'Edit permission %pid%': 'Edit permission %pid%'
+'Delete permission %pid%': 'Delete permission %pid%'
