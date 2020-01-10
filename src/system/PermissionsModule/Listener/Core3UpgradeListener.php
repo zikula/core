@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Zikula\PermissionsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Common\ColumnExistsTrait;
 use Zikula\Core\CoreEvents;
 use Zikula\Core\Event\GenericEvent;
 
