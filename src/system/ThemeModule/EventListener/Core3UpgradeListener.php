@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Zikula\PermissionsModule\Listener;
+namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Common\ColumnExistsTrait;
