@@ -2,16 +2,13 @@ body {
     font-size: 16px;
     line-height: 1.6em;
     color: #444;
-    background-color: #ffffff;
+    background-color: #fff;
     margin: 0;
     padding: 0;
 }
 
 .container {
-    padding-top:40px;
-    margin: 0 auto;
-    width: 85%;
-    min-width: 840px;
+    padding-top: 40px;
 }
 
 #cell {
@@ -108,9 +105,9 @@ h2 {
 }
 
 #maincontent h2 {
-    color: #444444;
+    color: #444;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 700;
     margin: 0.5em 0;
     padding: 5px 0;
     text-align: center;
