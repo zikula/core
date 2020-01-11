@@ -29,7 +29,6 @@ use Zikula\Core\AbstractBundle;
  *
  * Asset paths must begin with `@` in order to be processed (and possibly overridden) by this class.
  * Assets that do not contain `@` are passed through to the standard symfony asset management.
- * Assets from the `/web` directory cannot be overridden.
  *
  * Overrides are in this order:
  *  1) app/Resources/$bundleName/public/* @todo
@@ -80,16 +79,16 @@ class Asset
         [$bundleName, $originalPath] = explode(':', $path);
         $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
 
-        // if file exists in /web, then use it first
-        $httpRootDir = str_replace($this->router->getContext()->getBaseUrl(), '', $this->kernel->getProjectDir());
-        $webPath = $this->assetPackages->getUrl($path);
-        if (false !== realpath($httpRootDir . $webPath)) {
-            return $webPath;
-        }
-
         $projectDir = $this->kernel->getProjectDir();
         // try to find the asset in the global override path. @todo update for Symfony 5 structure #4028
-        if (false === $fullPath = realpath($projectDir . '/app/Resources/' . substr($bundleName, -1) . '/public/' . $originalPath)) {
+        if (false === $fullPath = realpath($projectDir . '/app/Resources/' . mb_substr($bundleName, 1) . '/public/' . $originalPath)) {
+            // if file exists in /web, then use it first
+            $httpRootDir = str_replace($this->router->getContext()->getBaseUrl(), '', $projectDir);
+            $webPath = $this->assetPackages->getUrl($path);
+            if (false !== realpath($httpRootDir . $webPath)) {
+                return $webPath;
+            }
+
             // try to locate the asset in the bundle directory
             $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
         }
