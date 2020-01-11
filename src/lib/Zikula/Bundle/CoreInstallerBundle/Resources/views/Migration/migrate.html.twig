@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
         <h3>
-            <span class="fa fa-cogs"></span>
+            <span class="fas fa-cogs"></span>
             {% trans %}Migrate Users to ZAuth{% endtrans %}
             {{ pageSetVar('title', 'Migrate Users to ZAuth'|trans ) }}
         </h3>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="alert alert-info">{% trans with {'%f': count} %}There are %f users to try to migrate.{% endtrans %}</div>
-        <div class="text-center"><i id="spinner" class="fa fa-cog fa-2x fa-spin fa-fw" class="d-none"></i> <button id="migrate" class="btn btn-lg btn-success">{% trans %}Begin migration{% endtrans %}</button></div>
+        <div class="text-center"><i id="spinner" class="fas fa-cog fa-2x fa-spin fa-fw" class="d-none"></i> <button id="migrate" class="btn btn-lg btn-success">{% trans %}Begin migration{% endtrans %}</button></div>
     </div>
 </div>
 <script>

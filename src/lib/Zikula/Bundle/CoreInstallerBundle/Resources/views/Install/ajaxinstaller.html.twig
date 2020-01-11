@@ -23,25 +23,27 @@
         <a href="#install-fieldset" id="beginInstall" class="btn btn-lg btn-success">{% trans %}Begin Installer{% endtrans %}</a>
     </div>
 
-    <fieldset id="install-fieldset">
-        <legend>{% trans %}Installing Modules and Helpers{% endtrans %}</legend>
-        <div class="row">
+    <div class="card" id="install-fieldset">
+        <div class="card-header">
+            <strong>{% trans %}Installing Modules and Helpers{% endtrans %}</strong>
+        </div>
+        <div class="card-body">
             <ul id="ajaxList" class="fa-ul text-left">
                 {% for stage in stages %}
-                <li id="{{ stage.name }}" class="text-muted col-xs-12 col-sm-5 col-sm-offset-1 pull-left">
-                    <span class="fa-li"><i fa fa-circle-o"></i></span>
+                <li id="{{ stage.name }}" class="text-muted col-md-5 offset-md-1 float-left">
+                    <span class="fa-li"><i class="far fa-circle"></i></span>
                     <span class="pre">{{ stage.pre }}</span>
-                    <span class="during d-none">{{ stage.during }} </span>
+                    <span class="during d-none">{{ stage.during }}</span>
                     <span class="success d-none">{{ stage.success }}</span>
                     <span class="fail d-none">{{ stage.fail }}</span>
                 </li>
                 {% endfor %}
             </ul>
         </div>
-    </fieldset>
+    </div>
 
     <div class="text-center">
-        <a id="continueButton" href="{{ url('install', {'stage': 'complete'}) }}" class="btn btn-lg btn-success d-none">{% trans %}Finish{% endtrans %} <i class="fa fa-angle-double-right"></i></a></div>
+        <a id="continueButton" href="{{ url('install', {'stage': 'complete'}) }}" class="btn btn-lg btn-success d-none">{% trans %}Finish{% endtrans %} <i class="fas fa-angle-double-right"></i></a></div>
 </div>
 {# create a javascript array of all the stages #}
 <script>

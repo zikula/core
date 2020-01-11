@@ -16,10 +16,10 @@
                     on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.{% endtrans %}
                 </p>
                 <noscript><p class="alert alert-warning">{% trans %}You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.{% endtrans %}</p></noscript>
-                <div id="installButton" class="row" class="d-none">
+                <div id="installButton" class="row">
                     <div class="col-md-4 offset-md-4">
                         <a class="btn btn-success btn-lg btn-block" href="{{ path('install', {'stage': 'locale' }) }}">
-                            <i class="fa fa-thumbs-up fa-3x float-left"></i> {% trans %}Install Zikula!{% endtrans %}<br />{% trans %}Version{% endtrans %} {{ version }}
+                            <i class="fas fa-thumbs-up fa-3x float-left"></i> {% trans %}Install Zikula!{% endtrans %}<br />{% trans %}Version{% endtrans %} {{ version }}
                         </a>
                     </div>
                 </div>

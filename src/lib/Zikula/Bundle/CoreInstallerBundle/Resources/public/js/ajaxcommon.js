@@ -68,13 +68,13 @@ jQuery( document ).ready(function( $ ) {
     function indicateStageSuccessful(listitem) {
         listitem.removeClass('text-primary').addClass('text-success');
         listitem.children('.success').removeClass('d-none');
-        listitem.find('i').addClass('fa-check-circle'); // spinner
+        listitem.find('i').addClass('fa-check-circle'); // complete & successful
     }
 
     function indicateStageFailure(listitem) {
         listitem.removeClass('text-primary').addClass('text-danger');
         listitem.children('.fail').removeClass('d-none');
-        listitem.find('i').addClass('fa-times-circle'); // spinner
+        listitem.find('i').addClass('fa-times-circle'); // complete with failure
     }
 
     function getNextStage(stagename) {

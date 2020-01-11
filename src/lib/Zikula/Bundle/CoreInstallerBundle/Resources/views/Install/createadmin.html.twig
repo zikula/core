@@ -4,9 +4,11 @@
 {% block title "Zikula Core Installer :: Create administrator's account" %}
 
 {% block content %}
-<div>
-    <fieldset>
-        <legend>{% trans %}Create administrator's account{% endtrans %}</legend>
+<div class="card">
+    <div class="card-header">
+        <strong>{% trans %}Create administrator's account{% endtrans %}</strong>
+    </div>
+    <div class="card-body">
 
         {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -45,7 +47,7 @@
             </div>
         </div>
         {{ form_end(form) }}
-    </fieldset>
+    </div>
 </div>
 <script>
     $(document).ready(function() {
