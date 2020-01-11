@@ -16,6 +16,7 @@ namespace Zikula\ThemeModule\Engine;
 use InvalidArgumentException;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Routing\RouterInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\AbstractBundle;
 
@@ -31,7 +32,7 @@ use Zikula\Core\AbstractBundle;
  * Assets from the `/web` directory cannot be overridden.
  *
  * Overrides are in this order:
- *  1) app/Resources/$bundleName/public/*
+ *  1) app/Resources/$bundleName/public/* @todo
  *  2) $theme/Resources/$bundleName/public/*
  *  3) $bundleName/Resources/public/*
  */
@@ -47,18 +48,19 @@ class Asset
      */
     private $assetPackages;
 
-    public function __construct(ZikulaHttpKernelInterface $kernel, Packages $assetPackages)
-    {
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    public function __construct(
+        ZikulaHttpKernelInterface $kernel,
+        Packages $assetPackages,
+        RouterInterface $router
+    ) {
         $this->kernel = $kernel;
         $this->assetPackages = $assetPackages;
-    }
-
-    /**
-     * Get the path to the site root.
-     */
-    public function getSiteRoot(): string
-    {
-        return realpath($this->kernel->getProjectDir());
+        $this->router = $router;
     }
 
     /**
@@ -66,57 +68,58 @@ class Asset
      */
     public function resolve(string $path): string
     {
-        // for straight asset paths
+        // return immediately for straight asset paths
+        // doesn't check if file exists
         if ('@' !== $path[0]) {
             if (0 === mb_strpos($path, '/')) {
                 $path = mb_substr($path, 1);
             }
 
             return $this->assetPackages->getUrl($path);
-        }
-
-        // Maps to AcmeBundle/Resources/public/$assetPath
-        // @AcmeBundle:css/foo.css
-        // @AcmeBundle:jss/foo.js
-        // @AcmeBundle:images/foo.png
-        $parts = explode(':', $path);
-        if (2 !== count($parts)) {
-            throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
-        }
-
-        $root = $this->getSiteRoot();
-
-        // distribution
-        $baseDirectory = '';
-
-        if ('/src' === mb_substr($root, -4)) {
-            // git clone with "/src" sub folder
-            $baseDirectory = '/src';
-            $root = mb_substr($root, 0, -4);
+        } else {
+            [$bundleName, $originalPath] = explode(':', $path);
+            $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
         }
 
         // if file exists in /web, then use it first
-        $bundle = $this->kernel->getBundle(mb_substr($parts[0], 1));
-        if ($bundle instanceof Bundle) {
-            $relativeAssetPath = '/' . $parts[1];
-            if ($bundle instanceof AbstractBundle) {
-                $relativeAssetPath = $bundle->getRelativeAssetPath() . $relativeAssetPath;
-            } else {
-                $relativeAssetPath = mb_strtolower('Bundles/' . mb_substr($bundle->getName(), 0, -mb_strlen('Bundle'))) . $relativeAssetPath;
-            }
-
-            $webPath = $this->assetPackages->getUrl($relativeAssetPath);
-            $filePath = realpath($root . $webPath);
-            if (false !== $filePath) {
-                return $webPath;
-            }
+        $httpRootDir = str_replace($this->router->getContext()->getBaseUrl(), '', $this->kernel->getProjectDir());
+        $webPath = $this->assetPackages->getUrl($path);
+        if (false !== realpath($httpRootDir . $webPath)) {
+            return $webPath;
         }
 
-        // TODO second argument is not available anymore (see #4028)
-        $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1]/*, 'app/Resources'*/);
-        $resultPath = false !== mb_strpos($fullPath, $root) ? str_replace($root, '', $fullPath) : $fullPath;
+        // try to locate the asset in the bundle directory or global override
+        $projectDir = $this->kernel->getProjectDir();
+        $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
+        if (false === realpath($fullPath)) {
+            // try to find the asset in the global override path.  @todo update for Symfony 5 structure
+            $fullPath = $this->kernel->locateResource('app/Resources/public/' . $originalPath);
+        }
+        $resultPath = false !== mb_strpos($fullPath, $projectDir) ? str_replace($projectDir, '', $fullPath) : $fullPath;
         $resultPath = str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
 
         return $this->assetPackages->getUrl($resultPath, 'zikula_default');
+    }
+
+    /**
+     * Maps zasset path argument
+     * e.g. "@AcmeBundle:css/foo.css" to `AcmeBundle/Resources/public/css/foo.css`
+     */
+    private function mapZikulaAssetPath(?string $bundleName, ?string $path): string
+    {
+        if (!isset($bundleName) || !isset($path)) {
+            throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
+        }
+        $bundle = $this->kernel->getBundle(mb_substr($bundleName, 1));
+        if ($bundle instanceof Bundle) {
+            $path = '/' . $path;
+            if ($bundle instanceof AbstractBundle) {
+                $path = $bundle->getRelativeAssetPath() . $path;
+            } else {
+                $path = mb_strtolower('Bundles/' . mb_substr($bundle->getName(), 0, -mb_strlen('Bundle'))) . $path;
+            }
+        }
+
+        return $path;
     }
 }
