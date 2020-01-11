@@ -87,15 +87,18 @@ class Asset
             return $webPath;
         }
 
-        // try to locate the asset in the bundle directory or global override
-        $projectDir = $this->kernel->getProjectDir();
+        // try to find the asset in the global override path. @todo update for Symfony 5 structure #4028
+        //$fullPath = $this->kernel->locateResource('app/Resources/public/' . $originalPath);
+        //if (false === realpath($fullPath)) {
+        // try to locate the asset in the bundle directory
         $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
-        if (false === realpath($fullPath)) {
-            // try to find the asset in the global override path.  @todo update for Symfony 5 structure
-            $fullPath = $this->kernel->locateResource('app/Resources/public/' . $originalPath);
-        }
+        //}
+
+        $projectDir = $this->kernel->getProjectDir();
+        $basePath = str_replace($httpRootDir, '', $projectDir);
+
         $resultPath = false !== mb_strpos($fullPath, $projectDir) ? str_replace($projectDir, '', $fullPath) : $fullPath;
-        $resultPath = str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
+        $resultPath = $basePath . str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
 
         return $this->assetPackages->getUrl($resultPath, 'zikula_default');
     }
