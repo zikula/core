@@ -87,16 +87,14 @@ class Asset
             return $webPath;
         }
 
-        // try to find the asset in the global override path. @todo update for Symfony 5 structure #4028
-        //$fullPath = $this->kernel->locateResource('app/Resources/public/' . $originalPath);
-        //if (false === realpath($fullPath)) {
-        // try to locate the asset in the bundle directory
-        $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
-        //}
-
         $projectDir = $this->kernel->getProjectDir();
-        $basePath = str_replace($httpRootDir, '', $projectDir);
+        // try to find the asset in the global override path. @todo update for Symfony 5 structure #4028
+        if (false === $fullPath = realpath($projectDir . '/app/Resources/' . substr($bundleName, -1) . '/public/' . $originalPath)) {
+            // try to locate the asset in the bundle directory
+            $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
+        }
 
+        $basePath = $this->router->getContext()->getBaseUrl();
         $resultPath = false !== mb_strpos($fullPath, $projectDir) ? str_replace($projectDir, '', $fullPath) : $fullPath;
         $resultPath = $basePath . str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
 
