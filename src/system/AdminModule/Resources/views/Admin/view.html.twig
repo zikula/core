@@ -31,7 +31,7 @@
                 </td>
                 <td headers="category{{ category.cid}} hIcon" class="text-center">
                     {% if category.icon %}
-                        <i class="{{ category.icon|e('html') }}"></i>
+                        <i class="{{ category.icon|e('html_attr') }}"></i>
                     {% else %}
                         {% trans %}None{% endtrans %}
                     {% endif %}

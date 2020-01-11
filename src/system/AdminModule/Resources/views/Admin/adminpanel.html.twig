@@ -1,7 +1,7 @@
 {{ menu|raw }}
 <div class="z-admin-content">
     <h2>
-        <i class="fa-fw {% if category.icon %}{{ category.icon|e('html') }}{% else %}fas fa-file{% endif %}"></i>
+        <i class="fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i>
         {{ category.name }}
     </h2>
     {{ pageSetVar('title', category.name ~ ' - ' ~ category.description) }}
