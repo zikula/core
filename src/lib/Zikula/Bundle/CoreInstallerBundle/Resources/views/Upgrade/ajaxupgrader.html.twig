@@ -20,12 +20,14 @@
     </div>
 
     <div class="text-center">
-        <a href="#upgrade-fieldset" id="beginUpgrade" class="btn btn-lg btn-success">{% trans %}Begin Upgrader{% endtrans %}<br />{% trans %}be patient!{% endtrans %} <i class="far fa-clock"></i></a>
+        <a href="#upgrade-card" id="beginUpgrade" class="btn btn-lg btn-success">{% trans %}Begin Upgrader{% endtrans %}<br />{% trans %}be patient!{% endtrans %} <i class="far fa-clock"></i></a>
     </div>
 
-    <fieldset id="upgrade-fieldset">
-        <legend>{% trans %}Upgrading Modules and Helpers{% endtrans %}</legend>
-        <div class="row">
+    <div class="card" id="upgrade-card">
+        <div class="card-header">
+            <strong>{% trans %}Upgrading Modules and Helpers{% endtrans %}</strong>
+        </div>
+        <div class="card-body">
             <ul id="ajaxList" class="fa-ul text-left">
                 {% for stage in stages %}
                 <li id="{{ stage.name }}" class="text-muted col-sm-12 col-md-5 offset-md-1 float-left">
@@ -38,7 +40,7 @@
                 {% endfor %}
             </ul>
         </div>
-    </fieldset>
+    </div>
 
     <div class="text-center">
         <a id="continueButton" href="{{ url('upgrade', {'stage': 'complete'}) }}" class="btn btn-lg btn-success d-none">{% trans %}Finish{% endtrans %} <i class="fas fa-angle-double-right"></i></a>

@@ -129,11 +129,6 @@ ul.systemrequirements li {
   padding-left: 25px;
 }
 
-fieldset > legend {
-    font-size: 1.4em;
-    line-height: 1.2;
-}
-
 .installguide {
     font-size: 1.2em;
 }
@@ -148,7 +143,7 @@ fieldset > legend {
 }
 
 .wizard a {
-    color: black;    
+    color: black;
 }
 
 .wizard li:first-child {
