@@ -89,7 +89,7 @@ class Asset
 
         $projectDir = $this->kernel->getProjectDir();
         // try to find the asset in the global override path. @todo update for Symfony 5 structure #4028
-        if (false === $fullPath = realpath($projectDir . '/app/Resources/' . substr($bundleName, -1) . '/public/' . $originalPath)) {
+        if (false === $fullPath = realpath($projectDir . '/app/Resources/' . mb_substr($bundleName, -1) . '/public/' . $originalPath)) {
             // try to locate the asset in the bundle directory
             $fullPath = $this->kernel->locateResource($bundleName . '/Resources/public/' . $originalPath);
         }
