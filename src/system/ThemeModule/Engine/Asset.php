@@ -76,10 +76,9 @@ class Asset
             }
 
             return $this->assetPackages->getUrl($path);
-        } else {
-            [$bundleName, $originalPath] = explode(':', $path);
-            $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
         }
+        [$bundleName, $originalPath] = explode(':', $path);
+        $path = $this->mapZikulaAssetPath($bundleName, $originalPath);
 
         // if file exists in /web, then use it first
         $httpRootDir = str_replace($this->router->getContext()->getBaseUrl(), '', $this->kernel->getProjectDir());
