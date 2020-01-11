@@ -119,43 +119,10 @@ class AdminInterfaceController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $modVars = $variableApi->getAll('ZikulaThemeModule');
         $data = [];
         $data['mode'] = $kernel->getEnvironment();
         if ('prod' !== $data['mode']) {
             $data['debug'] = $kernel->isDebug() ? $this->trans('Yes') : $this->trans('No');
-            $data['legacy'] = [
-                'status' => true,
-                'cssjscombine' => $modVars['cssjscombine'],
-                'render' => [
-                    'compile_check' => [
-                        'state' => $modVars['render_compile_check'],
-                        'title' => $this->trans('Compile check')
-                    ],
-                    'force_compile' => [
-                        'state' => $modVars['render_force_compile'],
-                        'title' => $this->trans('Force compile')
-                    ],
-                    'cache' => [
-                        'state' => $modVars['render_cache'],
-                        'title' => $this->trans('Caching')
-                    ]
-                ],
-                'theme' => [
-                    'compile_check' => [
-                        'state' => $modVars['compile_check'],
-                        'title' => $this->trans('Compile check')
-                    ],
-                    'force_compile' => [
-                        'state' => $modVars['force_compile'],
-                        'title' => $this->trans('Force compile')
-                    ],
-                    'cache' => [
-                        'state' => $modVars['enablecache'],
-                        'title' => $this->trans('Caching')
-                    ]
-                ]
-            ];
         }
 
         return $this->render('@ZikulaAdminModule/AdminInterface/developerNotices.html.twig', [
@@ -224,6 +191,7 @@ class AdminInterfaceController extends AbstractController
      */
     public function updatecheckAction(
         RequestStack $requestStack,
+        ZikulaHttpKernelInterface $kernel,
         UpdateCheckHelper $updateCheckHelper
     ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
@@ -233,6 +201,7 @@ class AdminInterfaceController extends AbstractController
         $masterRequest = $requestStack->getMasterRequest();
 
         return $this->render('@ZikulaAdminModule/AdminInterface/updateCheck.html.twig', [
+            'mode' => $kernel->getEnvironment(),
             'caller' => [
                 '_route' => $masterRequest->attributes->get('_route'),
                 '_route_params' => $masterRequest->attributes->get('_route_params')

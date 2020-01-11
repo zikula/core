@@ -1,20 +1,14 @@
 {% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
     {% if developer.mode != 'prod' %}
-        <div id="developernotices" class="alert alert-info">
-            <div class="row">
-                <div class="col-lg-12">
-                    <i class="close" data-dismiss="alert">&times;</i>
-                    <a class="text-primary" data-toggle="collapse" href="#developernotices_full" aria-expanded="false" aria-controls="developernotices_full">
-                        <strong><i class="fa fa-fw fa-caret-right"></i> {% trans %}Developer notices (development mode on){% endtrans %}</strong>
-                    </a>
-                </div>
-                <div class="collapse" id="developernotices_full">
-                    <h4>{% trans %}Dev mode status{% endtrans %}</h4>
-                    <ul>
-                        <li>{% trans %}Mode{% endtrans %}: {{ developer.mode }}</li>
-                        <li>{% trans %}Debug enabled{% endtrans %}: {{ developer.debug }}</li>
-                    </ul>
-                </div>
+        <div id="developernotices" class="alert">
+            <div class="col-lg-12">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item list-group-item-secondary flex-fill">{% trans %}Developer Info{% endtrans %}:</li>
+                    <li class="list-group-item list-group-item-warning flex-fill">{% trans %}Mode{% endtrans %}: {{ developer.mode }}</li>
+                    <li class="list-group-item list-group-item-{% if developer.debug %}success{% else %}danger{% endif %} flex-fill">
+                        {% trans %}Debug enabled{% endtrans %}: <span class="badge badge-{% if developer.debug %}success{% else %}danger{% endif %}">{{ developer.debug }}</span>
+                    </li>
+                </ul>
             </div>
         </div>
     {% endif %}

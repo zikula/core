@@ -1,4 +1,4 @@
-{% if hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') and updateCheckHelper.enabled %}
+{% if mode == 'prod' and updateCheckHelper.enabled and hasPermission('ZikulaAdminModule::', '::', 'ACCESS_ADMIN') %}
     <div id="updatecheck" class="alert alert-success">
         <div class="row">
             <div class="col-md-12">
