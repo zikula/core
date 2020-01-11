@@ -89,10 +89,10 @@ class Asset
         // distribution
         $baseDirectory = '';
 
-        if ('/src' === substr($root, -4)) {
+        if ('/src' === mb_substr($root, -4)) {
             // git clone with "/src" sub folder
             $baseDirectory = '/src';
-            $root = substr($root, 0, -4);
+            $root = mb_substr($root, 0, -4);
         }
 
         // if file exists in /web, then use it first
