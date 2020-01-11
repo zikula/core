@@ -31,7 +31,7 @@ class CombinedAssetController extends AbstractController
         string $type,
         string $key
     ): Response {
-        $lifetimeInSeconds = abs(new DateTime($this->getParameter('zikula_asset_manager.lifetime'))) - (new DateTime())->getTimestamp();
+        $lifetimeInSeconds = abs(date_format(new DateTime($this->getParameter('zikula_asset_manager.lifetime')), 'U')) - (new DateTime())->getTimestamp();
         $cacheService = new FilesystemAdapter(
             'combined_assets',
             $lifetimeInSeconds,
