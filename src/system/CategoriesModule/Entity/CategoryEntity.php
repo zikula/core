@@ -151,6 +151,15 @@ class CategoryEntity extends EntityAccess
     private $status;
 
     /**
+     * The category icon
+     *
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min="0", max="50", allowEmptyString="true")
+     * @var string
+     */
+    private $icon;
+
+    /**
      * Any attributes of this category
      *
      * @ORM\OneToMany(targetEntity="CategoryAttributeEntity",
@@ -216,6 +225,7 @@ class CategoryEntity extends EntityAccess
         $this->display_name = $values;
         $this->display_desc = $values;
         $this->status = 'A';
+        $this->icon = '';
 
         $this->attributes = new ArrayCollection();
     }
@@ -399,6 +409,16 @@ class CategoryEntity extends EntityAccess
             $status = $status ? 'A' : 'I';
         }
         $this->status = $status;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): void
+    {
+        $this->icon = $icon ?? '';
     }
 
     public function getCr_date(): DateTime

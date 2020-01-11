@@ -1,6 +1,6 @@
 # Zikula Core Roadmap
 
-Zikula manages its releases through a time-based model and follows the [Semantic Versioning](http://semver.org/) strategy. 
+Zikula manages its releases through a time-based model and follows the [Semantic Versioning](https://semver.org/) strategy. 
 A new Zikula patch version comes out about once per month. The Core-1.5 branch and the Core-2.0 branch
 are synced so that patch releases for both occur simultaneously.
 
@@ -24,18 +24,18 @@ are synced so that patch releases for both occur simultaneously.
 ## Our Backward compatibility promise
 Ensuring smooth upgrades of your projects is our first priority.
 That's why we promise you backward compatibility (BC) for all minor Zikula releases. You probably recognize this
-strategy as [Semantic Versioning](http://semver.org/). In short, Semantic Versioning means that only major releases
+strategy as [Semantic Versioning](https://semver.org/). In short, Semantic Versioning means that only major releases
 (such as 3.0, 4.0 etc.) are allowed to break backward compatibility. Minor releases (such as 2.1, 2.2 etc.) may
 introduce new features, but must do so without breaking the existing API of that release branch.
 
-## CAUTION
 This promise was introduced with Zikula Core-1.5 and 2.0 and does not apply to previous versions of Zikula.
+
 However, backward compatibility comes in many different flavors. In fact, almost every change that we make to the Core
 can potentially break an application. For example, if we add a new method to a class, this will break an application which
 extended this class and added the same method, but with a different method signature.
 
 Also, not every BC break has the same impact on application code. While some BC breaks require you to make significant
-changes to your classes or your architecture, others are fixed as easily as changing the name of a method.
+changes to your classes or your architecture, others are fixed by changing the name of a method.
 
 Zikula includes the Symfony framework which contains the same [Promise](https://symfony.com/doc/current/contributing/code/bc.html).
 The Zikula team works to maintain this exact same promise while including Value Added Code to the Symfony Framework.

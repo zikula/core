@@ -30,11 +30,13 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\PercentType;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
+use Symfony\Component\Form\Extension\Core\Type\WeekType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -155,13 +157,16 @@ class DynamicFieldType extends AbstractType
                 'Text' => TextType::class,
                 'Textarea' => TextareaType::class,
                 'Email' => EmailType::class,
+                'Icon' => IconType::class,
                 'Integer' => IntegerType::class,
                 'Money' => MoneyType::class,
                 'Number' => NumberType::class,
                 'Password' => PasswordType::class,
                 'Percent' => PercentType::class,
+                'Phone number' => TelType::class,
                 'Url' => UrlType::class,
                 'Range' => RangeType::class,
+                'Week number' => WeekType::class,
             ],
             'Choice fields' => [
                 'Choice' => ChoiceType::class,

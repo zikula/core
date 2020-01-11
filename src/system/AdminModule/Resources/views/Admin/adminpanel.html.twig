@@ -1,6 +1,9 @@
 {{ menu|raw }}
 <div class="z-admin-content">
-    <h2>{{ category.name }}</h2>
+    <h2>
+        <i class="fa-fw {% if category.icon %}{{ category.icon|e('html') }}{% else %}fas fa-file{% endif %}"></i>
+        {{ category.name }}
+    </h2>
     {{ pageSetVar('title', category.name ~ ' - ' ~ category.description) }}
     <div class="z-admincategorydescription">{{ category.description }}</div>
     {% if adminLinks is not empty %}

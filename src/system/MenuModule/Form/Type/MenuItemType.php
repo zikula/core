@@ -21,6 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
 use Zikula\MenuModule\Form\EventListener\KeyValueFixerListener;
@@ -28,6 +30,13 @@ use Zikula\MenuModule\Form\EventListener\OptionValidatorListener;
 
 class MenuItemType extends AbstractType
 {
+    use TranslatorTrait;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->setTranslator($translator);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

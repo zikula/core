@@ -363,6 +363,7 @@ class AdminInterfaceController extends AbstractController
                 'acid' => $moduleCategories[$catid]['cid']
             ]);
             $menuCategories[$categorySortOrder]['description'] = $moduleCategories[$catid]['description'];
+            $menuCategories[$categorySortOrder]['icon'] = $moduleCategories[$catid]['icon'];
             $menuCategories[$categorySortOrder]['cid'] = $moduleCategories[$catid]['cid'];
             $menuCategories[$categorySortOrder]['modules'][$adminModule['name']] = $module;
         }

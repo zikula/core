@@ -2486,6 +2486,42 @@
             "time": "2015-03-20T14:31:23+00:00"
         },
         {
+            "name": "itsjavi/fontawesome-iconpicker",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/farbelous/fontawesome-iconpicker.git",
+                "reference": "ca4d2f2b03140af422ea9e15160494e887844d39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/farbelous/fontawesome-iconpicker/zipball/ca4d2f2b03140af422ea9e15160494e887844d39",
+                "reference": "ca4d2f2b03140af422ea9e15160494e887844d39",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Javi Aguilar",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Font Awesome Icon Picker plugin for Twitter Bootstrap",
+            "homepage": "https://farbelous.github.io/fontawesome-iconpicker/",
+            "keywords": [
+                "FontAwesome",
+                "bootstrap",
+                "iconpicker",
+                "picker",
+                "popover"
+            ],
+            "time": "2018-11-04T00:40:48+00:00"
+        },
+        {
             "name": "jakeasmith/http_build_url",
             "version": "1.0.1",
             "source": {

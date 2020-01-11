@@ -99,6 +99,7 @@
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
     - Added CLI Commands to manage extension installation, upgrade & uninstall (#3517)
+    - Added ability to choose a Font Awesome icon for admin categories and categories (#3598)
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
@@ -127,6 +128,7 @@
     - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.38
     - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
     - imagine/imagine updated from 0.7.1 to 1.3.3
+    - itsjavi/fontawesome-iconpicker installed in 3.2.0
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
     - jms/translation-bundle updated from 1.3.2 to 1.4.4 (temporarily using prolix/1.4.11 instead)
     - jquery.mmenu updated from 7.3.3 to mmenu.js 8.4.5

@@ -12,6 +12,8 @@
     <thead>
         <tr>
             <th id="hName" scope="col">{% trans %}Name{% endtrans %}</th>
+            <th id="hDescription" scope="col">{% trans %}Description{% endtrans %}</th>
+            <th id="hIcon" scope="col" class="text-center">{% trans %}Icon{% endtrans %}</th>
             <th id="hActions" scope="col">{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
@@ -21,10 +23,22 @@
             {% set accessEdit = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_EDIT') %}
             {% set accessDelete = hasPermission('ZikulaAdminModule::', permissionInstance, 'ACCESS_DELETE') %}
             <tr>
-                <td headers="hName"><a href="{{ path('zikulaadminmodule_admin_adminpanel', { acid: category.cid }) }}">{{ category.name }}</a></td>
-                <td headers="hActions" class="actions">
+                <th id="category{{ category.cid}}" headers="hName" scope="col">
+                    <a href="{{ path('zikulaadminmodule_admin_adminpanel', { acid: category.cid }) }}">{{ category.name }}</a>
+                </th>
+                <td headers="category{{ category.cid}} hDescription">
+                    {{ category.description|u.truncate(200, '…') }}
+                </td>
+                <td headers="category{{ category.cid}} hIcon" class="text-center">
+                    {% if category.icon %}
+                        <i class="{{ category.icon|e('html') }}"></i>
+                    {% else %}
+                        {% trans %}None{% endtrans %}
+                    {% endif %}
+                </td>
+                <td headers="category{{ category.cid}} hActions" class="actions">
                     {% if accessEdit %}
-                        <a href="{{ path('zikulaadminmodule_admin_modify', {cid: category.cid}) }}" title="{% trans %}Edit{% endtrans %}" class="tooltips fa fa-wrench"></a>
+                        <a href="{{ path('zikulaadminmodule_admin_modify', {cid: category.cid}) }}" title="{% trans %}Edit{% endtrans %}" class="tooltips fa fa-pencil-alt"></a>
                     {% endif %}
                     {% if accessDelete %}
                         <a href="{{ path('zikulaadminmodule_admin_delete', {cid: category.cid}) }}" title="{% trans %}Delete{% endtrans %}" class="tooltips fa fa-trash-alt"></a>
@@ -32,7 +46,7 @@
                 </td>
             </tr>
         {% else %}
-            <tr class="table-info"><td colspan="2" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
+            <tr class="table-info"><td colspan="4" class="text-center">{% trans %}No items found.{% endtrans %}</td></tr>
         {% endfor %}
     </tbody>
 </table>

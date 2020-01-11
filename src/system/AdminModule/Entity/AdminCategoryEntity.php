@@ -54,6 +54,15 @@ class AdminCategoryEntity extends EntityAccess
     private $description;
 
     /**
+     * The category icon
+     *
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min="0", max="50", allowEmptyString="true")
+     * @var string
+     */
+    private $icon;
+
+    /**
      * The sort order of the category
      *
      * @ORM\Column(type="integer")
@@ -68,6 +77,7 @@ class AdminCategoryEntity extends EntityAccess
     {
         $this->name = '';
         $this->description = '';
+        $this->icon = '';
         $this->sortorder = 99;
     }
 
@@ -99,6 +109,16 @@ class AdminCategoryEntity extends EntityAccess
     public function setDescription(string $description): void
     {
         $this->description = $description ?? '';
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
+    }
+
+    public function setIcon(string $icon): void
+    {
+        $this->icon = $icon ?? '';
     }
 
     public function getSortorder(): int

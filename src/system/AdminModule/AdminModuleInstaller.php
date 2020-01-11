@@ -91,31 +91,37 @@ class AdminModuleInstaller extends AbstractExtensionInstaller
             [
                 'name' => $this->trans('System'),
                 'description' => $this->trans('Core modules at the heart of operation of the site.'),
+                'icon' => 'fas fa-cogs',
                 'sortorder' => 0
             ],
             [
                 'name' => $this->trans('Layout'),
                 'description' => $this->trans("Layout modules for controlling the site's look and feel."),
+                'icon' => 'fas fa-palette',
                 'sortorder' => 1
             ],
             [
                 'name' => $this->trans('Users'),
                 'description' => $this->trans('Modules for controlling user membership, access rights and profiles.'),
+                'icon' => 'fas fa-users-cog',
                 'sortorder' => 2
             ],
             [
                 'name' => $this->trans('Content'),
                 'description' => $this->trans('Modules for providing content to your users.'),
+                'icon' => 'fas fa-file-contract',
                 'sortorder' => 3
             ],
             [
                 'name' => $this->trans('Uncategorised'),
                 'description' => $this->trans('Newly-installed or uncategorized modules.'),
+                'icon' => 'fas fa-cubes',
                 'sortorder' => 4
             ],
             [
                 'name' => $this->trans('Security'),
                 'description' => $this->trans('Modules for managing the site\'s security.'),
+                'icon' => 'fas fa-shield-alt',
                 'sortorder' => 5
             ]
         ];

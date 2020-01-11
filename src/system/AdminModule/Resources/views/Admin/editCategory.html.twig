@@ -4,17 +4,25 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-file-plus"></span>
-    {% trans %}Create new module category{% endtrans %}
-    {{ pageSetVar('title', 'Create new module category'|trans) }}
+    {% if form.vars.value.cid %}
+        <span class="fa fa-pencil-alt"></span>
+        {% trans %}Edit module category{% endtrans %}
+        {{ pageSetVar('title', 'Edit module category'|trans) }}
+    {% else %}
+        <span class="fa fa-file-plus"></span>
+        {% trans %}Create new module category{% endtrans %}
+        {{ pageSetVar('title', 'Create new module category'|trans) }}
+    {% endif %}
 </h3>
 
 {{ form_start(form) }}
 {{ form_errors(form) }}
 <fieldset>
-    <legend>{% trans %}New module category{% endtrans %}</legend>
+    <legend>{% trans %}Module category{% endtrans %}</legend>
+    {{ form_row(form.cid) }}
     {{ form_row(form.name) }}
     {{ form_row(form.description) }}
+    {{ form_row(form.icon) }}
 </fieldset>
 <div class="form-group row">
     <div class="col-md-9 offset-md-3">

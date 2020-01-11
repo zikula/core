@@ -210,7 +210,7 @@
                     treeElem.jstree(true).create_node(parentNode, data.node, indexOfOriginalNode);
                     break;
                 case 'edit':
-                    $('#editModal').find('.modal-body').html(data.result);
+                    updateEditForm(data.result);
                     openEditForm(data, function (event) {
                         event.preventDefault();
                         // var mode = data.action;
@@ -243,8 +243,10 @@
                                 var editedNode;
                                 if ('edit' === data.mode) {
                                     // rename the existing node
+                                    var newName = nodeData.display_name[Translator.locale];
+                                    newName = newName ? newName : nodeData.name;
                                     editedNode = treeElem.jstree('get_node', nodeData.id);
-                                    treeElem.jstree(true).rename_node(editedNode, nodeData.display_name[Translator.locale]);
+                                    treeElem.jstree(true).rename_node(editedNode, newName);
                                 } else {
                                     var selectedNode = treeElem.jstree('get_selected', true)[0], selectedNodeIndex = $('#' + selectedNode.id).index();
                                     var parentNode = treeElem.jstree('get_node', id_prefix + nodeData.parent);
@@ -271,9 +273,9 @@
         function getDeleteMenuAction(node) {
             var childrenCount = node.children.length;
             if (childrenCount > 0) {
-                var info = Translator._fn('It contains %count% direct child.', 'It contains %count% direct children.', childrenCount, {count: childrenCount})
+                var info = Translator.transChoice('{1}It contains one direct child.|]1,Inf]It contains %count% direct children.', childrenCount, {count: childrenCount})
                     + ' '
-                    + Translator._n("Please choose what to do with this item's child.", "Please choose what to do with this item's children.", childrenCount);
+                    + Translator.transChoice("{1}Please choose what to do with this item's child.|]1,Inf]Please choose what to do with this item's children.", childrenCount, {count: childrenCount});
                 $('#deleteWithChildrenInfo').addClass('alert alert-danger').text(info);
             } else {
                 $('#deleteWithChildrenInfo').removeClass('alert alert-danger').text('');
@@ -302,7 +304,7 @@
                         break;
                     case 'DeleteAndMove':
                         $('#node_delete_all').addClass('d-none');
-                        $('#categorySelector').removeClass('d-none');
+                        $('#categorySelector').addClass('show');
                         $('#node_delete_move_action').removeClass('d-none');
                         $(this).addClass('d-none');
                         break;
@@ -321,7 +323,7 @@
 
             deleteModal.modal();
             deleteModal.on('hidden.bs.modal', function (e) {
-                $('#categorySelector').addClass('d-none');
+                $('#categorySelector').removeClass('show');
                 $(this).find('.modal-dialog').addClass('modal-lg');
                 $('#button-spinner').remove();
             });
@@ -329,7 +331,6 @@
         }
 
         function openEditForm(data, callback) {
-            $('#form_container').removeClass('d-none');
             var editModal = $('#editModal');
             editModal.find('.modal-footer button').unbind('click').click(callback);
 
@@ -338,7 +339,10 @@
         }
 
         function updateEditForm(data) {
-            $('#form_container').replaceWith(data).removeClass('d-none');
+            $('#editModal').find('.modal-body').html(data);
+            if ('function' === typeof initFontAwesomeIconPicker) {
+                initFontAwesomeIconPicker();
+            }
         }
 
         function closeEditForm() {

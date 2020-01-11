@@ -202,7 +202,7 @@ class AjaxController extends AbstractController
         }
 
         //get form values
-        $cid = trim($request->request->getInt('cid'));
+        $cid = $request->request->getInt('cid');
         $name = trim($request->request->get('name'));
 
         //security checks

@@ -27,6 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\NullToEmptyTransformer;
+use Zikula\Bundle\FormExtensionBundle\Form\Type\IconType;
 use Zikula\CategoriesModule\Entity\CategoryEntity;
 use Zikula\CategoriesModule\Validator\Constraints\UniqueNameForPosition;
 use Zikula\Common\Translator\TranslatorTrait;
@@ -75,6 +76,10 @@ class CategoryType extends AbstractType
                 'label' => 'Value',
                 'required' => false
             ])->addModelTransformer(new NullToEmptyTransformer()))
+            ->add('icon', IconType::class, [
+                'label' => 'Icon',
+                'required' => false
+            ])
             ->add('status', CheckboxType::class, [
                 'label' => 'Active',
                 'label_attr' => ['class' => 'switch-custom'],

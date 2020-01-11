@@ -71,7 +71,9 @@
             <div class="modal-body">
                 <p>{% trans %}Do you really want to delete this category?{% endtrans %}
                 <p id="deleteWithChildrenInfo"></p>
-                <div id="categorySelector" class="collapse">{{ form_start(categorySelector) }}{{ form_widget(categorySelector.category) }}{{ form_end(categorySelector) }}</div>
+                <div id="categorySelector" class="collapse">
+                    {{ form_start(categorySelector) }}{{ form_widget(categorySelector.category) }}{{ form_end(categorySelector) }}
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" id="node_delete" value="Delete" class="btn btn-danger"><i class="fa fa-trash-alt"></i> {% trans %}Delete{% endtrans %}</button>
@@ -84,3 +86,4 @@
     </div>
 </div>
 {{ adminFooter() }}
+{{ include('@ZikulaFormExtension/Form/icon_picker.html.twig') }}{# need to preload for editing inside modal #}

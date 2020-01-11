@@ -26,8 +26,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
-use Zikula\AdminModule\Form\Type\CreateCategoryType;
-use Zikula\AdminModule\Form\Type\EditCategoryType;
+use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
@@ -93,7 +92,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/newcategory")
      * @Theme("admin")
-     * @Template("@ZikulaAdminModule/Admin/newcat.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/editCategory.html.twig")
      *
      * Displays and handles a form for the user to input the details of the new category.
      *
@@ -106,7 +105,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(CreateCategoryType::class, new AdminCategoryEntity());
+        $form = $this->createForm(AdminCategoryType::class, new AdminCategoryEntity());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
@@ -130,7 +129,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/modifycategory/{cid}", requirements={"cid" = "^[1-9]\d*$"})
      * @Theme("admin")
-     * @Template("@ZikulaAdminModule/Admin/modify.html.twig")
+     * @Template("@ZikulaAdminModule/Admin/editCategory.html.twig")
      *
      * Displays and handles a modify category form.
      *
@@ -143,7 +142,7 @@ class AdminController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createForm(EditCategoryType::class, $category);
+        $form = $this->createForm(AdminCategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
