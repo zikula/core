@@ -58,7 +58,7 @@ class Asset
      */
     public function getSiteRoot(): string
     {
-        return realpath($this->kernel->getProjectDir() . "/../../");
+        return realpath($this->kernel->getProjectDir());
     }
 
     /**
@@ -84,6 +84,17 @@ class Asset
             throw new InvalidArgumentException('No bundle name resolved, must be like "@AcmeBundle:css/foo.css"');
         }
 
+        $root = $this->getSiteRoot();
+
+        // distribution
+        $baseDirectory = '';
+
+        if ('/src' === substr($root, -4)) {
+            // git clone with "/src" sub folder
+            $baseDirectory = '/src';
+            $root = substr($root, 0, -4);
+        }
+
         // if file exists in /web, then use it first
         $bundle = $this->kernel->getBundle(mb_substr($parts[0], 1));
         if ($bundle instanceof Bundle) {
@@ -95,15 +106,14 @@ class Asset
             }
 
             $webPath = $this->assetPackages->getUrl($relativeAssetPath);
-            $filePath = realpath($this->kernel->getProjectDir() . '/../..' . $webPath);
+            $filePath = realpath($root . $webPath);
             if (false !== $filePath) {
                 return $webPath;
             }
         }
 
-        $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1], 'app/Resources');
-        $root = $this->getSiteRoot();
-
+        // TODO second argument is not available anymore (see #4028)
+        $fullPath = $this->kernel->locateResource($parts[0] . '/Resources/public/' . $parts[1]/*, 'app/Resources'*/);
         $resultPath = false !== mb_strpos($fullPath, $root) ? str_replace($root, '', $fullPath) : $fullPath;
         $resultPath = str_replace(DIRECTORY_SEPARATOR, '/', $resultPath);
 
