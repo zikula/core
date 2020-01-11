@@ -8,7 +8,9 @@
         {% for category in adminMenu %}
             <li class="nav-item dropdown droppable nowrap" data-catid="{{ category.cid }}">
                 <a href="#" class="nav-link dropdown-toggle{% if caller.category.cid == category.cid %} active{% endif %}" data-toggle="dropdown"><span class="fa fa-arrows-alt admintabs-lock"></span>
-                    <span>{{ category.title }}</span>
+                    <span>
+                        <i class="text-muted fa-fw {% if category.icon %}{{ category.icon|e('html_attr') }}{% else %}fas fa-file{% endif %}"></i> {{ category.title }}
+                    </span>
                 </a>
                 <ul class="dropdown-menu">
                     <li class="dropdown-item admintabs-lock admintabs-makedefault{% if caller.category.cid == category.cid %} d-none{% endif %}">
