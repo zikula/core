@@ -85,6 +85,10 @@
     border-bottom: 1px solid #eee;
 }
 
+#z-maincontent .z-admin-content .nav.nav-modulelinks {
+    margin-bottom: 10px;
+}
+
 /******************************************************************************
 * Styling for status security analyzer, update checker and more
 ******************************************************************************/
