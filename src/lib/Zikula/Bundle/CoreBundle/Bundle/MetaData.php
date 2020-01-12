@@ -287,8 +287,7 @@ class MetaData implements ArrayAccess
             // It would be better to add capabilities to DB and move to inverse in legacy code and refactor later checks. refs #3644
             'user' => $capabilities['user'] ?? true,
             'admin' => $capabilities['admin'] ?? true,
-            'system' => $capabilities['system'] ?? false,
-            'xhtml' => $capabilities['xhtml'] ?? true, // this is not truly valid in 2.0
+            'system' => $capabilities['system'] ?? false
         ];
     }
 
