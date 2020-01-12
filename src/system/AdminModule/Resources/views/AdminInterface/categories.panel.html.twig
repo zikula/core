@@ -5,7 +5,7 @@
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{% trans %}Show administration panel{% endtrans %}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">
-        <h2><img src="{{ zasset('@ZikulaAdminModule:images/admin.png') }}" alt="{% trans %}Administration{% endtrans %}"/> {% trans %}Administration{% endtrans %}</h2>
+        <h2><i class="fas fa-object-group fa-fw"></i> {% trans %}Administration{% endtrans %}</h2>
         <ul>
             {% for category in adminMenu %}
                 <li{% if caller.category.cid == category.cid %} class="selected"{% endif %}>

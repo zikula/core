@@ -64,6 +64,7 @@
     - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
     - Removed custom translation system (#4042).
+    - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.

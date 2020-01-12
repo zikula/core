@@ -277,12 +277,6 @@ class AdminInterfaceController extends AbstractController
 
             $moduleName = (string)$adminModule['name'];
             $links = $linkContainerCollector->getLinks($moduleName, 'admin');
-            try {
-                $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
-            } catch (Exception $exception) {
-                // use default icon
-                $adminIconPath = $assetHelper->resolve('bundles/core/images/admin.png');
-            }
 
             $module = [
                 'menutexturl' => $menuTextUrl,

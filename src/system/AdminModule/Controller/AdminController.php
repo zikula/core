@@ -332,14 +332,13 @@ class AdminController extends AbstractController
 
                 $moduleName = (string)$adminModule['name'];
                 $links = $linkContainerCollector->getLinks($moduleName, 'admin');
-                $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,
                     'menuText' => $menuText,
                     'menuTextTitle' => $adminModule['description'],
                     'moduleName' => $adminModule['name'],
-                    'adminIcon' => $adminIconPath,
+                    'adminIcon' => $adminModule['capabilities']['admin']['icon'],
                     'id' => $adminModule['id'],
                     'order' => $sortOrder,
                     'links' => $links
@@ -409,8 +408,6 @@ class AdminController extends AbstractController
                 break;
             }
 
-            $adminIconPath = $assetHelper->resolve('@' . $adminModule['name'] . ':images/admin.png');
-
             $adminLinks[$catid][] = [
                 'menuTextUrl' => $menuTextUrl,
                 'menuText' => $menuText,
@@ -418,7 +415,7 @@ class AdminController extends AbstractController
                 'moduleName' => $adminModule['name'],
                 'order' => $sortOrder,
                 'id' => $adminModule['id'],
-                'icon' => $adminIconPath
+                'icon' => $adminModule['capabilities']['admin']['icon']
             ];
         }
 
