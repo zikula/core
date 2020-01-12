@@ -17,7 +17,10 @@
                         <ul class="text-left">
                             {% for module in category.modules %}
                                 <li{% if caller.path == module.menutexturl %} class="selected"{% endif %}>
-                                    <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}"><img src="/{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext }}</a>
+                                    <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}">
+                                        <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-2x align-middle text-info"></i>
+                                        {{ module.menutext }}
+                                    </a>
                                     {% if module.links|length > 0 %}
                                         <ul class="text-left">{{ helper.draw(module.links, caller, module) }}</ul>
                                     {% endif %}

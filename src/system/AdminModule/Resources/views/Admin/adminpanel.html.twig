@@ -12,7 +12,7 @@
             <li data-modid="{{ adminLink.id }}" class="draggable">
                 {# module icon #}
                 {% if getModVar('ZikulaAdminModule', 'admingraphic') == 1 %}
-                <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}"><i class="fa-fw {{ adminLink.adminIcon }} fa-4x" title="{{ adminLink.menuText }}"></i></a>
+                <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}"><i class="fa-fw {{ adminLink.adminIcon|default('fas fa-layer-group') }} fa-4x" title="{{ adminLink.menuText }}"></i></a>
                 {% endif %}
                 <div>
                     {# movable icon #}
