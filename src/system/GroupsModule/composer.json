@@ -25,7 +25,7 @@
             "capabilities": {
                 "admin": {
                     "route": "zikulagroupsmodule_group_adminlist",
-                    "icon": "far fa-users"
+                    "icon": "fas fa-users"
                 },
                 "user": {"route": "zikulagroupsmodule_group_list"}
             },

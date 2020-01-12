@@ -241,10 +241,13 @@ div.z-admincategorydescription {
     line-height: 1.4;
 }
 
-#modulelist img {
+#modulelist i {
     float: left;
+    display: block;
     border: 1px solid #ccc;
     padding: 4px;
+    margin-right: 5px;
+    width: 90px;
 }
 
 #modulelist .ui-state-highlight {

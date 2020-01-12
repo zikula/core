@@ -338,7 +338,7 @@ class AdminController extends AbstractController
                     'menuText' => $menuText,
                     'menuTextTitle' => $adminModule['description'],
                     'moduleName' => $adminModule['name'],
-                    'adminIcon' => $adminModule['capabilities']['admin']['icon'],
+                    'adminIcon' => $adminModule['capabilities']['admin']['icon'] ?? '',
                     'id' => $adminModule['id'],
                     'order' => $sortOrder,
                     'links' => $links
@@ -415,7 +415,7 @@ class AdminController extends AbstractController
                 'moduleName' => $adminModule['name'],
                 'order' => $sortOrder,
                 'id' => $adminModule['id'],
-                'icon' => $adminModule['capabilities']['admin']['icon']
+                'icon' => $adminModule['capabilities']['admin']['icon'] ?? ''
             ];
         }
 
