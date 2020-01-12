@@ -210,17 +210,10 @@ td.actions a:hover {
     content: "\00a0";
 }
 
-/* TODO remove
-input:invalid, select:invalid, textarea:invalid, .form-error {
-    background: #ffe1da;
-    border: 1px solid #f34f4f;
-}
-
-.required:after {
+label.required:after {
     content: "\002A";
     color: red;
 }
-*/
 
 /**
  * bootstrap tab container mods
