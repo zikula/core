@@ -124,7 +124,6 @@ class SettingsController extends AbstractController
                 'language_detect' => (bool)$variableApi->getSystemVar('language_detect'),
                 'language_i18n' => $variableApi->getSystemVar('language_i18n'),
                 'timezone' => $variableApi->getSystemVar('timezone'),
-                'idnnames' => (bool)$variableApi->getSystemVar('idnnames'),
             ], [
                 'languages' => $localeApi->getSupportedLocaleNames(null, $request->getLocale()),
                 'locale' => $request->getLocale()

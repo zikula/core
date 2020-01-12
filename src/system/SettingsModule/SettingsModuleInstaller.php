@@ -68,8 +68,6 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
         $this->setSystemVar('locale', $locale);
         $this->setSystemVar('language_i18n', $locale);
 
-        $this->setSystemVar('idnnames', 1);
-
         // Initialisation successful
         return true;
     }
@@ -127,11 +125,13 @@ class SettingsModuleInstaller extends AbstractExtensionInstaller
                 $variableApi->del(VariableApi::CONFIG, 'shorturlsstripentrypoint');
                 $variableApi->del(VariableApi::CONFIG, 'shorturls');
                 $variableApi->del(VariableApi::CONFIG, 'shorturlsdefaultmodule');
-            case '2.9.14': // ship with Core-1.5.0
+            case '2.9.14': // ship with Core-1.5.0 + Core-2.x
                 $variableApi = $this->container->get(VariableApi::class);
                 $variableApi->del(VariableApi::CONFIG, 'Version_Sub');
-            case '2.9.15': // ship with Core-3.0.0
                 $this->setSystemVar('startController'); // reset to blank because of new format FQCN::method
+            case '2.9.15':
+                $this->container->get(VariableApi::class)->del(VariableApi::CONFIG, 'idnnames');
+            case '2.9.16': // ship with Core-3.0.0
                 // current version
         }
 
