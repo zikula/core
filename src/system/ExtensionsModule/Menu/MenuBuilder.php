@@ -141,7 +141,8 @@ class MenuBuilder
 
         if (!in_array($extension->getState(), [
             Constant::STATE_UNINITIALISED,
-            Constant::STATE_INVALID
+            Constant::STATE_INVALID,
+            Constant::STATE_MISSING,
         ], true)) {
             $menu->addChild($this->trans('Edit %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
