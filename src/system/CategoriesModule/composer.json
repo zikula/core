@@ -25,7 +25,7 @@
             "capabilities": {
                 "admin": {
                     "route": "zikulacategoriesmodule_category_list",
-                    "icon": "fas fa-tree"
+                    "icon": "fas fa-sitemap"
                 }
             },
             "securityschema": {
