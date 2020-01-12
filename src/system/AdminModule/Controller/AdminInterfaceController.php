@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\AdminModule\Controller;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
