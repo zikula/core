@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Base;
 
 use Exception;
-use Psr\Log\LoggerInterface;
 use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\RoutesModule\Entity\RouteEntity;
 
@@ -24,11 +23,6 @@ use Zikula\RoutesModule\Entity\RouteEntity;
  */
 abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     /**
      * @var string[]
      */
@@ -43,10 +37,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->create($this->entities);
         } catch (Exception $exception) {
             $this->addFlash('error', $this->trans('Doctrine Exception') . ': ' . $exception->getMessage());
-            $this->logger->error(
-                '{app}: Could not create the database tables during installation. Error details: {errorMessage}.',
-                ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]
-            );
     
             return false;
         }
@@ -74,11 +64,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
                     $this->schemaTool->update($this->entities);
                 } catch (Exception $exception) {
                     $this->addFlash('error', $this->trans('Doctrine Exception') . ': ' . $exception->getMessage());
-                    $this->logger->error(
-                        '{app}: Could not update the database tables during the upgrade.'
-                            . ' Error details: {errorMessage}.',
-                        ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]
-                    );
     
                     return false;
                 }
@@ -95,10 +80,6 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
             $this->schemaTool->drop($this->entities);
         } catch (Exception $exception) {
             $this->addFlash('error', $this->trans('Doctrine Exception') . ': ' . $exception->getMessage());
-            $this->logger->error(
-                '{app}: Could not remove the database tables during uninstallation. Error details: {errorMessage}.',
-                ['app' => 'ZikulaRoutesModule', 'errorMessage' => $exception->getMessage()]
-            );
     
             return false;
         }
@@ -108,13 +89,5 @@ abstract class AbstractRoutesModuleInstaller extends AbstractExtensionInstaller
     
         // uninstallation successful
         return true;
-    }
-    
-    /**
-     * @required
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }
