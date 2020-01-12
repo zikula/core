@@ -72,12 +72,12 @@ class TwigExtension extends AbstractTwigExtension
         if ($route->getTranslatable()) {
             $languages = $container->get(LocaleApi::class)->getSupportedLocales();
             $isRequiredLangParameter = $this->variableApi->getSystemVar('languageurl', 0);
-            if (!$isRequiredLangParam) {
+            if (!$isRequiredLangParameter) {
                 $defaultLanguage = $this->variableApi->getSystemVar('language_i18n');
                 unset($languages[array_search($defaultLanguage, $languages, true)]);
             }
             if (count($languages) > 0) {
-                $prefix = ($isRequiredLangParam ? '/' : '{/') . implode('|', $languages) . ($isRequiredLangParam ? '' : '}');
+                $prefix = ($isRequiredLangParameter ? '/' : '{/') . implode('|', $languages) . ($isRequiredLangParameter ? '' : '}');
             }
         }
 

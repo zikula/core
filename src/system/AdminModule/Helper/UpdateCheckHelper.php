@@ -30,11 +30,6 @@ class UpdateCheckHelper
     private $variableApi;
 
     /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
      * @var bool
      */
     private $enabled;
@@ -77,7 +72,6 @@ class UpdateCheckHelper
     public function __construct(VariableApiInterface $variableApi, RequestStack $requestStack)
     {
         $this->variableApi = $variableApi;
-        $this->requestStack = $requestStack;
 
         $this->enabled = (bool)$variableApi->getSystemVar('updatecheck');
         $this->currentVersion = ZikulaKernel::VERSION;

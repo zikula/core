@@ -17,8 +17,6 @@ use Gedmo\Loggable\LoggableListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 
@@ -49,8 +47,6 @@ class LoggerListener
 
     public function __construct(
         LoggableListener $loggableListener,
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
         TranslatorInterface $translator,
         CurrentUserApiInterface $currentUserApi,
         bool $installed

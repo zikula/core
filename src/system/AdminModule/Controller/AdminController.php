@@ -27,6 +27,7 @@ use Zikula\AdminModule\Entity\AdminCategoryEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterface;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\AdminCategoryType;
+use Zikula\AdminModule\Helper\AdminLinksHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
@@ -218,6 +219,7 @@ class AdminController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository,
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
+        AdminLinksHelper $adminLinksHelper,
         Asset $assetHelper,
         LinkContainerCollector $linkContainerCollector,
         int $acid = null
@@ -254,6 +256,7 @@ class AdminController extends AbstractController
                 $adminModuleRepository,
                 $capabilityApi,
                 $router,
+                $adminLinksHelper,
                 $assetHelper,
                 $acid
             )->getContent()
@@ -343,8 +346,7 @@ class AdminController extends AbstractController
                 ];
             }
         }
-        usort($adminLinks, 'Zikula\AdminModule\Controller\AdminController::sortAdminModsByOrder');
-        $templateParameters['adminLinks'] = $adminLinks;
+        $templateParameters['adminLinks'] = $adminLinksHelper->sortAdminModsByOrder($adminLinks);
 
         return $templateParameters;
     }
@@ -360,6 +362,7 @@ class AdminController extends AbstractController
         AdminModuleRepositoryInterface $adminModuleRepository,
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
+        AdminLinksHelper $adminLinksHelper,
         Asset $assetHelper,
         int $acid = null
     ): Response {
@@ -419,8 +422,8 @@ class AdminController extends AbstractController
             ];
         }
 
-        foreach ($adminLinks as &$item) {
-            usort($item, 'Zikula\AdminModule\Controller\AdminController::sortAdminModsByOrder');
+        foreach ($adminLinks as $categoryId => $links) {
+            $adminLinks[$categoryId] = $adminLinksHelper->sortAdminModsByOrder($links);
         }
 
         $menuOptions = [];
@@ -486,23 +489,5 @@ class AdminController extends AbstractController
         return $this->render('@ZikulaAdminModule/Admin/footer.html.twig', [
             'symfonyversion' => Kernel::VERSION
         ]);
-    }
-
-    /**
-     * Helper function to sort modules.
-     */
-    private static function sortAdminModsByOrder(array $a, array $b): int
-    {
-        if ((int)$a['order'] === (int)$b['order']) {
-            return strcmp($a['moduleName'], $b['moduleName']);
-        }
-        if ((int)$a['order'] > (int)$b['order']) {
-            return 1;
-        }
-        if ((int)$a['order'] < (int)$b['order']) {
-            return -1;
-        }
-
-        return 0;
     }
 }
