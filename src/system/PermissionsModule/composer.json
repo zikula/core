@@ -23,7 +23,7 @@
             "capabilities": {
                 "admin": {
                     "route": "zikulapermissionsmodule_permission_list",
-                    "icon": "fas fa-user-lock"
+                    "icon": "fas fa-key"
                 }
             },
             "displayname": "Permissions",
