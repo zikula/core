@@ -30,7 +30,7 @@
                     {% if category.modules|length > 0 %}
                         <li class="dropdown-divider"></li>
                         {% for item in category.modules %}
-                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><img src="{{ item.icon }}" width="15" height="15" alt="{{ item.menutext|e('html_attr') }}" style="margin-right: 6px">{{ item.menutext|raw }}</a></li>
+                            <li class="dropdown-item"><a href="{{ item.menutexturl }}" title="{{ item.menutext|e('html_attr') }}"><i class="{{ item.icon|default('fas fa-layer-group')|raw }} fa-fw align-middle"></i> {{ item.menutext|raw }}</a></li>
                         {% endfor %}
                     {% endif %}
                 </ul>
