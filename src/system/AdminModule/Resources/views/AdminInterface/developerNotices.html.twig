@@ -4,9 +4,9 @@
             <div class="col-lg-12">
                 <ul class="list-group list-group-horizontal">
                     <li class="list-group-item list-group-item-secondary flex-fill">{% trans %}Developer Info{% endtrans %}:</li>
-                    <li class="list-group-item list-group-item-warning flex-fill">{% trans %}Mode{% endtrans %}: {{ developer.mode }}</li>
-                    <li class="list-group-item list-group-item-{% if developer.debug %}success{% else %}danger{% endif %} flex-fill">
-                        {% trans %}Debug enabled{% endtrans %}: <span class="badge badge-{% if developer.debug %}success{% else %}danger{% endif %}">{{ developer.debug }}</span>
+                    <li class="list-group-item list-group-item-warning flex-fill">{% trans %}Mode{% endtrans %}: <span class="badge badge-warning">{{ developer.mode }}</span></li>
+                    <li class="list-group-item list-group-item-{% if developer.debug %}danger{% else %}success{% endif %} flex-fill">
+                        {% trans %}Debug enabled{% endtrans %}: <span class="badge badge-{% if developer.debug %}danger{% else %}success{% endif %}">{{ developer.debug|yesNo }}</span>
                     </li>
                 </ul>
             </div>

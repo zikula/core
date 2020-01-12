@@ -122,7 +122,7 @@ class AdminInterfaceController extends AbstractController
         $data = [];
         $data['mode'] = $kernel->getEnvironment();
         if ('prod' !== $data['mode']) {
-            $data['debug'] = $kernel->isDebug() ? $this->trans('Yes') : $this->trans('No');
+            $data['debug'] = $kernel->isDebug();
         }
 
         return $this->render('@ZikulaAdminModule/AdminInterface/developerNotices.html.twig', [
