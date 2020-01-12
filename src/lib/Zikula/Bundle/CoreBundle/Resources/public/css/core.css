@@ -211,7 +211,7 @@ td.actions a:hover {
 }
 
 label.required:after {
-    content: "\002A";
+    content: " \002A";
     color: red;
 }
 label.required.custom-control-label:after {
