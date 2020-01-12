@@ -10,7 +10,7 @@
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
                     <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}">
-                        <i class="{{ module.icon|default('fas fa-layer-group')|e('html_attr') }} fa-fw fa-2x align-middle text-info"></i> {{ module.menutext|raw }}
+                        <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-2x align-middle text-info"></i> {{ module.menutext|raw }}
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">
