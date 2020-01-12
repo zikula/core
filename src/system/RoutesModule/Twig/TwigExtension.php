@@ -71,8 +71,7 @@ class TwigExtension extends AbstractTwigExtension
 
         if ($route->getTranslatable()) {
             $languages = $container->get(LocaleApi::class)->getSupportedLocales();
-            // TODO migrate this legacy call
-            $isRequiredLangParam = true;//ZLanguage::isRequiredLangParam();
+            $isRequiredLangParameter = $this->variableApi->getSystemVar('languageurl', 0);
             if (!$isRequiredLangParam) {
                 $defaultLanguage = $this->variableApi->getSystemVar('language_i18n');
                 unset($languages[array_search($defaultLanguage, $languages, true)]);
