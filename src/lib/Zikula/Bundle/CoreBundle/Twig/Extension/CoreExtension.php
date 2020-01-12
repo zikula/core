@@ -66,9 +66,9 @@ class CoreExtension extends AbstractExtension
         return $array;
     }
 
-    public function yesNo(string $string): string
+    public function yesNo($string): string
     {
-        if (null !== $string && !in_array($string, ['', '0', '1'], true)) {
+        if (null !== $string && !in_array($string, [true, false, '', '0', '1'], true)) {
             return $string;
         }
 

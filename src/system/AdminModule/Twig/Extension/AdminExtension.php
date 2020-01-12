@@ -17,7 +17,6 @@ use Symfony\Component\HttpKernel\Fragment\FragmentHandler;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminBreadcrumbsFunction;
-use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminDeveloperNoticesFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminFooterFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminHeaderFunction;
 use Zikula\AdminModule\Twig\Extension\SimpleFunction\AdminMenuFunction;
@@ -49,7 +48,6 @@ class AdminExtension extends AbstractExtension
             new TwigFunction('adminHeader', [new AdminHeaderFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminBreadcrumbs', [new AdminBreadcrumbsFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminUpdateCheck', [new AdminUpdateCheckFunction($this->handler), 'display'], ['is_safe' => ['html']]),
-            new TwigFunction('adminDeveloperNotices', [new AdminDeveloperNoticesFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminSecurityAnalyzer', [new AdminSecurityAnalyzerFunction($this->handler), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminMenu', [new AdminMenuFunction($this->handler, $this->permissionApi), 'display'], ['is_safe' => ['html']]),
             new TwigFunction('adminPanelMenu', [$this, 'adminPanelMenu'], ['is_safe' => ['html']]),

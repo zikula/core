@@ -10,7 +10,7 @@ maker:
     root_namespace: 'Zikula\ExtensionsModule'
 
 web_profiler:
-    toolbar: true
+    toolbar: "%debug%"
     intercept_redirects: false
     excluded_ajax_paths:  '^/((index|app(_[\w]+)?)\.php/)?_wdt'
 

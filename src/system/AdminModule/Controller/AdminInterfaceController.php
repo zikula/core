@@ -107,30 +107,6 @@ class AdminInterfaceController extends AbstractController
     }
 
     /**
-     * @Route("/developernotices")
-     *
-     * Display developer notices
-     */
-    public function developernoticesAction(
-        ZikulaHttpKernelInterface $kernel,
-        VariableApiInterface $variableApi
-    ): Response {
-        if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
-            throw new AccessDeniedException();
-        }
-
-        $data = [];
-        $data['mode'] = $kernel->getEnvironment();
-        if ('prod' !== $data['mode']) {
-            $data['debug'] = $kernel->isDebug() ? $this->trans('Yes') : $this->trans('No');
-        }
-
-        return $this->render('@ZikulaAdminModule/AdminInterface/developerNotices.html.twig', [
-            'developer' => $data
-        ]);
-    }
-
-    /**
      * @Route("/securityanalyzer")
      *
      * Display security analyzer
