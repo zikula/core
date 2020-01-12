@@ -196,8 +196,9 @@ class BundleSyncHelper
                 $key = mb_strtolower($modInfo[$fieldName]);
                 if (isset($moduleValues[$fieldName][$key])) {
                     $message = $this->translator->trans('Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
-                        '%field%' => $fieldName, '%ext1%' => $modInfo['name'],
-                        '%ext2%' => $moduleValues['name'][mb_strtolower($modInfo['name'])]
+                        '%field%' => $fieldName,
+                        '%ext1%' => $modInfo['name'],
+                        '%ext2%' => $moduleValues[$fieldName][$key]
                     ]);
                     throw new FatalErrorException($message, 500, error_get_last());
                 }
