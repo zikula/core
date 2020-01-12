@@ -24,7 +24,10 @@
             "displayname": "Zikula Native Authorization",
             "url": "zauth",
             "capabilities": {
-                "admin": {"route": "zikulazauthmodule_useradministration_list"}
+                "admin": {
+                    "route": "zikulazauthmodule_useradministration_list",
+                    "icon": "fas fa-user-lock"
+                }
             },
             "securityschema": {
                 "ZikulaZAuthModule::": "::"

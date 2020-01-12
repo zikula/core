@@ -26,7 +26,10 @@
             "displayname": "Extensions",
             "oldnames": [],
             "capabilities": {
-                "admin": {"route": "zikulaextensionsmodule_module_viewmodulelist"}
+                "admin": {
+                    "route": "zikulaextensionsmodule_module_viewmodulelist",
+                    "icon": "fas fa-plug fa-rotate-90"
+                }
             },
             "securityschema": {
                 "ZikulaExtensionsModule::": "::",

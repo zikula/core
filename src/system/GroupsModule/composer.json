@@ -23,7 +23,10 @@
             "displayname": "Groups",
             "url": "groups",
             "capabilities": {
-                "admin": {"route": "zikulagroupsmodule_group_adminlist"},
+                "admin": {
+                    "route": "zikulagroupsmodule_group_adminlist",
+                    "icon": "far fa-users"
+                },
                 "user": {"route": "zikulagroupsmodule_group_list"}
             },
             "securityschema": {

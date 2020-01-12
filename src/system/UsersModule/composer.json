@@ -24,7 +24,10 @@
             "displayname": "Users Module",
             "oldnames": [],
             "capabilities": {
-                "admin": {"route": "zikulausersmodule_useradministration_list"},
+                "admin": {
+                    "route": "zikulausersmodule_useradministration_list",
+                    "icon": "fas fa-users-cog"
+                },
                 "user": {"route": "zikulausersmodule_account_menu"}
             },
             "securityschema": {

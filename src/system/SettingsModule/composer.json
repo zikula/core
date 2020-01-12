@@ -24,7 +24,10 @@
             "displayname": "General settings",
             "oldnames": [],
             "capabilities": {
-                "admin": {"route": "zikulasettingsmodule_settings_main"}
+                "admin": {
+                    "route": "zikulasettingsmodule_settings_main",
+                    "icon": "fas fa-tools"
+                }
             },
             "securityschema": {
                 "ZikulaSettingsModule::": "::",

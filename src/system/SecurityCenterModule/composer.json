@@ -24,7 +24,10 @@
             "displayname": "Security Center",
             "url": "securitycenter",
             "capabilities": {
-                "admin": {"route": "zikulasecuritycentermodule_config_config"}
+                "admin": {
+                    "route": "zikulasecuritycentermodule_config_config",
+                    "icon": "fas fa-shield-alt"
+                }
             },
             "securityschema": {
                 "ZikulaSecurityCenterModule::": "::"

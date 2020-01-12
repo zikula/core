@@ -34,7 +34,10 @@
             "url": "routes",
             "capabilities": {
                 "user": {"route": "zikularoutesmodule_route_index"},
-                "admin": {"route": "zikularoutesmodule_route_adminindex"}
+                "admin": {
+                    "route": "zikularoutesmodule_route_adminindex",
+                    "icon": "fas fa-map-marked-alt"
+                }
             },
             "securityschema": {
                 "ZikulaRoutesModule::": "::",

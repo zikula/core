@@ -24,7 +24,10 @@
             "displayname": "Mailer Module",
             "url": "mailer",
             "capabilities": {
-                "admin": {"route": "zikulamailermodule_config_config"}
+                "admin": {
+                    "route": "zikulamailermodule_config_config",
+                    "icon": "fas fa-envelope"
+                }
             },
             "securityschema": {
                 "ZikulaMailerModule::": "::"

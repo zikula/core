@@ -23,7 +23,10 @@
             "displayname": "Categories",
             "url": "categories",
             "capabilities": {
-                "admin": {"route": "zikulacategoriesmodule_category_list"}
+                "admin": {
+                    "route": "zikulacategoriesmodule_category_list",
+                    "icon": "fas fa-tree"
+                }
             },
             "securityschema": {
                 "ZikulaCategoriesModule::": "::",

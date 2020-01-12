@@ -30,7 +30,10 @@
             "displayname": "Administration panel",
             "url": "adminpanel",
             "capabilities": {
-                "admin": {"route": "zikulaadminmodule_admin_view"}
+                "admin": {
+                    "route": "zikulaadminmodule_admin_view",
+                    "icon": "far fa-object-group"
+                }
             },
             "securityschema": {
                 "ZikulaAdminModule::": "::",

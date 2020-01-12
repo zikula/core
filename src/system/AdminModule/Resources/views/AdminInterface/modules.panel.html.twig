@@ -5,12 +5,12 @@
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fa fa-bars" title="{% trans %}Show administration panel{% endtrans %}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">
-        <h2><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{% trans %}Administration{% endtrans %}"> {% trans %}Administration{% endtrans %}</h2>
+        <h2 class="pl-4 pt-1"><img src="{{ asset('bundles/core/images/logo.gif') }}" style="height: 28px" alt="{% trans %}Administration{% endtrans %}"> {% trans %}Administration{% endtrans %}</h2>
         <ul>
             {% for module in adminMenu %}
                 <li{% if caller._zkModule == module.modname %} class="selected"{% endif %}>
                     <a href="{{ module.menutexturl }}" title="{{ module.menutext|e('html_attr') }}">
-                        <img src="{{ module.icon }}" alt="{{ module.menutext|e('html_attr') }}" style="height: 18px" /> {{ module.menutext|raw }}
+                        <i class="{{ module.icon|default('fas fa-layer-group')|e('html_attr') }} fa-fw fa-2x align-middle text-info"></i> {{ module.menutext|raw }}
                     </a>
                     {% if module.links|length > 0 %}
                         <ul class="text-left">

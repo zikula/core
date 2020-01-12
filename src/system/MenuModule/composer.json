@@ -23,7 +23,10 @@
             "core-compatibility": ">=3.0.0",
             "displayname": "Menu Module",
             "capabilities": {
-                "admin": {"route": "zikulamenumodule_menu_list"}
+                "admin": {
+                    "route": "zikulamenumodule_menu_list",
+                    "icon": "fas fa-compass"
+                }
             },
             "url": "menu",
             "securityschema": {

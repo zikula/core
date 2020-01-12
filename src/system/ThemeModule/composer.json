@@ -46,7 +46,10 @@
             "displayname": "Theme Module",
             "oldnames": [],
             "capabilities": {
-                "admin": {"route": "zikulathememodule_theme_view"},
+                "admin": {
+                    "route": "zikulathememodule_theme_view",
+                    "icon": "fas fa-palette"
+                },
                 "user": {"route": "zikulathememodule_user_index"}
             },
             "securityschema": {

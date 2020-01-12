@@ -21,7 +21,10 @@
             "class": "Zikula\\PermissionsModule\\ZikulaPermissionsModule",
             "core-compatibility": ">=3.0.0",
             "capabilities": {
-                "admin": {"route": "zikulapermissionsmodule_permission_list"}
+                "admin": {
+                    "route": "zikulapermissionsmodule_permission_list",
+                    "icon": "fas fa-user-lock"
+                }
             },
             "displayname": "Permissions",
             "url": "permissions",

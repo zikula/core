@@ -23,7 +23,10 @@
             "displayname": "Site search",
             "url": "search",
             "capabilities": {
-                "admin": {"route": "zikulasearchmodule_config_config"},
+                "admin": {
+                    "route": "zikulasearchmodule_config_config",
+                    "icon": "fas fa-search"
+                },
                 "user": {"route": "zikulasearchmodule_search_execute"}
             },
             "securityschema": {
