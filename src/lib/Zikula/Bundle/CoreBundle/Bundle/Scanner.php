@@ -112,11 +112,16 @@ class Scanner
         return $this->getMetaData('zikula-theme', $indexByShortName);
     }
 
-    private function getMetaData(string $type, bool $indexByShortName): array
+    public function getExtensionsMetaData(): array
+    {
+        return $this->getMetaData('zikula-extension');
+    }
+
+    private function getMetaData(string $type, bool $indexByShortName = false): array
     {
         $array = [];
         foreach ($this->jsons as $json) {
-            if ($json['type'] !== $type) {
+            if ('zikula-extension' !== $type && $json['type'] !== $type) {
                 continue;
             }
             $indexField = $indexByShortName ? $json['extra']['zikula']['short-name'] : $json['name'];

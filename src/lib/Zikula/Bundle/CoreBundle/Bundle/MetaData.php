@@ -285,9 +285,9 @@ class MetaData implements ArrayAccess
             'version' => $this->getVersion(),
 //            'capabilities' => $this->getCapabilities(),
             // It would be better to add capabilities to DB and move to inverse in legacy code and refactor later checks. refs #3644
-            'user' => $capabilities['user'] ?? true,
-            'admin' => $capabilities['admin'] ?? true,
-            'system' => $capabilities['system'] ?? false
+            'user' => $capabilities['user'] ?? true, // remove
+            'admin' => $capabilities['admin'] ?? true, // remove
+            'system' => $capabilities['system'] ?? false, // remove
         ];
     }
 

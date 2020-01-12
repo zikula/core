@@ -59,7 +59,6 @@ class ModuleController extends AbstractController
     /**
      * @Route("/list/{pos}")
      * @Theme("admin")
-     * @Template("@ZikulaExtensionsModule/Module/viewModuleList.html.twig")
      *
      * @throws AccessDeniedException Thrown if the user doesn't have admin permissions for the module
      */
@@ -70,7 +69,7 @@ class ModuleController extends AbstractController
         BundleSyncHelper $bundleSyncHelper,
         RouterInterface $router,
         int $pos = 1
-    ): array {
+    ): Response {
         if (!$this->hasPermission('ZikulaExtensionsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
@@ -104,25 +103,16 @@ class ModuleController extends AbstractController
             if (Constant::STATE_ACTIVE !== $module['state'] || !isset($module['capabilities']['admin']) || empty($module['capabilities']['admin'])) {
                 continue;
             }
-
-            $adminCapabilityInfo = $module['capabilities']['admin'];
-            $adminUrl = '';
-            if (isset($adminCapabilityInfo['route'])) {
+            if (isset($module['capabilities']['admin']['route'])) {
                 try {
-                    $adminUrl = $router->generate($adminCapabilityInfo['route']);
+                    $adminRoutes[$module['name']] = $router->generate($module['capabilities']['admin']['route']);
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     // do nothing, just skip this link
                 }
-            } elseif (isset($adminCapabilityInfo['url'])) {
-                $adminUrl = $adminCapabilityInfo['url'];
-            }
-
-            if (!empty($adminUrl)) {
-                $adminRoutes[$module['name']] = $adminUrl;
             }
         }
 
-        return [
+        return $this->render('@ZikulaExtensionsModule/Module/viewModuleList.html.twig', [
             'sort' => $sortableColumns->generateSortableColumns(),
             'pager' => [
                 'limit' => $this->getVar('itemsperpage'),
@@ -131,7 +121,7 @@ class ModuleController extends AbstractController
             'modules' => $pagedResult,
             'adminRoutes' => $adminRoutes,
             'upgradedExtensions' => $upgradedExtensions
-        ];
+        ]);
     }
 
     /**

@@ -121,7 +121,7 @@ class BundleSyncHelper
      */
     public function scanForBundles(array $directories = []): array
     {
-        $directories = empty($directories) ? ['system', 'modules'] : $directories;
+        $directories = empty($directories) ? ['system', 'modules', 'themes'] : $directories;
 
         // sync the filesystem and the bundles table
         $this->bundlesSchemaHelper->load();
@@ -136,17 +136,18 @@ class BundleSyncHelper
             $this->session->getFlashBag()->add('warning', $this->translator->trans('WARNING: %extension% has an invalid composer.json file which could not be decoded.', ['%extension%' => $invalidName]));
         }
         $newModules = $scanner->getModulesMetaData();
+        $extensions = $scanner->getExtensionsMetaData();
 
         // scan for all bundle-type bundles (psr-4) in either /system or /bundles
         /** @var MetaData $bundleMetaData */
-        foreach ($newModules as $name => $bundleMetaData) {
+        foreach ($extensions as $name => $bundleMetaData) {
             foreach ($bundleMetaData->getPsr4() as $ns => $path) {
                 $this->kernel->getAutoloader()->addPsr4($ns, $path);
             }
 
             $bundleClass = $bundleMetaData->getClass();
 
-            /** @var $bundle AbstractModule */
+            /** @var $bundle \Zikula\Core\AbstractBundle */
             $bundle = new $bundleClass();
             $bundleMetaData->setTranslator($this->translator);
             $bundleVersionArray = $bundleMetaData->getFilteredVersionInfoArray();
@@ -194,7 +195,7 @@ class BundleSyncHelper
         foreach ($extensions as $dir => $modInfo) {
             foreach ($fieldNames as $fieldName) {
                 $key = mb_strtolower($modInfo[$fieldName]);
-                if (isset($moduleValues[$fieldName][$key])) {
+                if (!empty($moduleValues[$fieldName][$key]) && !empty($modInfo[$fieldName])) {
                     $message = $this->translator->trans('Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]', [
                         '%field%' => $fieldName,
                         '%ext1%' => $modInfo['name'],
