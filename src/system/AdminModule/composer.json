@@ -32,7 +32,7 @@
             "capabilities": {
                 "admin": {
                     "route": "zikulaadminmodule_admin_view",
-                    "icon": "far fa-object-group"
+                    "icon": "fas fa-object-group"
                 }
             },
             "securityschema": {
