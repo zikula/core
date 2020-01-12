@@ -18,7 +18,7 @@ namespace Zikula\AdminModule\Helper;
  */
 class AdminLinksHelper
 {
-    public function sortAdminModsByOrder(iterable $adminLinks = []): iterable
+    public function sortAdminModsByOrder(array $adminLinks = []): array
     {
         usort($adminLinks, function (array $a, array $b) {
             if ((int)$a['order'] === (int)$b['order']) {
