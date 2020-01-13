@@ -75,7 +75,7 @@ class MenuBuilder
                             'id' => $id,
                             'token' => $csrfToken
                         ]
-                    ])->setAttribute('icon', 'fa fa-minus-circle')
+                    ])->setAttribute('icon', 'fas fa-minus-circle')
                         ->setLinkAttribute('class', 'text-danger');
                     // or set style text-color #0c00
                 }
@@ -85,13 +85,13 @@ class MenuBuilder
                 $menu->addChild($this->trans('Activate %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_activate',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-plus-square')
+                ])->setAttribute('icon', 'fas fa-plus-square')
                     ->setLinkAttribute('class', 'text-success');
                 $csrfToken = $this->getCsrfToken('uninstall-extension');
                 $menu->addChild($this->trans('Uninstall %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-trash-alt')
+                ])->setAttribute('icon', 'fas fa-trash-alt')
                     ->setLinkAttribute('style', 'color: #c00');
                 break;
             case Constant::STATE_MISSING:
@@ -102,7 +102,7 @@ class MenuBuilder
                 $menu->addChild($this->trans('Upgrade %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_upgrade',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-sync')
+                ])->setAttribute('icon', 'fas fa-sync')
                     ->setLinkAttribute('style', 'color: #00c');
                 break;
             case Constant::STATE_INVALID:
@@ -114,7 +114,7 @@ class MenuBuilder
                 $menu->addChild($this->trans('Remove %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
-                ])->setAttribute('icon', 'fa fa-trash-alt')
+                ])->setAttribute('icon', 'fas fa-trash-alt')
                     ->setLinkAttribute('style', 'color: #c00');
                 break;
             case Constant::STATE_UNINITIALISED:
@@ -127,13 +127,13 @@ class MenuBuilder
                             'id' => $id,
                             'token' => $csrfToken
                         ]
-                    ])->setAttribute('icon', 'fa fa-cog')
+                    ])->setAttribute('icon', 'fas fa-cog')
                         ->setLinkAttribute('class', 'text-success');
                 } else {
                     $menu->addChild($this->trans('Core compatibility information: %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                         'route' => 'zikulaextensionsmodule_module_compatibility',
                         'routeParameters' => ['id' => $id]
-                    ])->setAttribute('icon', 'fa fa-info-circle')
+                    ])->setAttribute('icon', 'fas fa-info-circle')
                         ->setLinkAttribute('style', 'color: #000');
                 }
                 break;
@@ -147,7 +147,7 @@ class MenuBuilder
             $menu->addChild($this->trans('Edit %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $id]
-            ])->setAttribute('icon', 'fa fa-wrench')
+            ])->setAttribute('icon', 'fas fa-wrench')
                 ->setLinkAttribute('style', 'color: #000');
         }
 

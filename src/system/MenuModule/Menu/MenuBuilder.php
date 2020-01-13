@@ -52,7 +52,7 @@ class MenuBuilder
 
         $title = $this->trans('Home');
         $menu->addChild($title, ['route' => 'home'])
-            ->setAttribute('icon', 'fa fa-list')
+            ->setAttribute('icon', 'fas fa-list')
             ->setAttribute('dropdown', true);
 
         $adminModules = $this->capabilityApi->getExtensionsCapableOf('admin');
@@ -62,7 +62,7 @@ class MenuBuilder
                 $menu[$title]->addChild($adminModule->getDisplayname(), [
                     'route' => $adminModule->getCapabilities()['admin']['route'],
                     'routeParameters' => []
-                ])->setAttribute('icon', 'fa fa-star');
+                ])->setAttribute('icon', 'fas fa-star');
             }
         }
 
@@ -76,15 +76,15 @@ class MenuBuilder
         $menu->addChild($this->trans('Edit children'), [
             'route' => 'zikulamenumodule_menu_view',
             'routeParameters' => $options,
-        ])->setAttribute('icon', 'fa fa-child');
+        ])->setAttribute('icon', 'fas fa-child');
         $menu->addChild($this->trans('Edit menu root'), [
             'route' => 'zikulamenumodule_menu_edit',
             'routeParameters' => $options,
-        ])->setAttribute('icon', 'fa fa-tree');
+        ])->setAttribute('icon', 'fas fa-tree');
         $menu->addChild($this->trans('Delete'), [
             'route' => 'zikulamenumodule_menu_delete',
             'routeParameters' => $options,
-        ])->setAttribute('icon', 'fa fa-trash-alt');
+        ])->setAttribute('icon', 'fas fa-trash-alt');
 
         return $menu;
     }

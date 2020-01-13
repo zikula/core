@@ -10,14 +10,14 @@
             if ($('#z-developernotices ul').is(':visible')) {
                 ul.slideUp();
                 ul.addClass('d-none');
-                span.removeClass('fa fa-caret-down');
-                span.addClass('fa fa-caret-right');
+                span.removeClass('fas fa-caret-down');
+                span.addClass('fas fa-caret-right');
             } else {
                 ul.hide();
                 ul.removeClass('d-none');
                 ul.slideDown();
-                span.removeClass('fa fa-caret-right');
-                span.addClass('fa fa-caret-down');
+                span.removeClass('fas fa-caret-right');
+                span.addClass('fas fa-caret-down');
             } 
         });
     });

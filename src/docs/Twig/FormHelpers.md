@@ -32,7 +32,7 @@ Help text can be a simple text value. Input groups must be an array with the pos
 ```php
 ->add('foo', TextType::class, [
     'help' => 'Foo help text.',
-    'input_group' => ['left' => '<i class="fa fa-rocket"></i>', 'right' => 'some text']
+    'input_group' => ['left' => '<i class="fas fa-rocket"></i>', 'right' => 'some text']
 ])
 ```
 

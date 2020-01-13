@@ -7,7 +7,7 @@
             var data;
 
             $("[id$='_fieldInfo_formOptions']")
-                .html('<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>');
+                .html('<i class="fas fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"></i>');
             form = $(this).closest('form');
             data = {};
             data[formTypeField.attr('name')] = formTypeField.val();

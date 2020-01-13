@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/securitycenter_admin_allowedhtml.js')) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-list"></span>
+    <span class="fas fa-list"></span>
     {% trans %}Allowed HTML settings{% endtrans %}
     {{ pageSetVar('title', 'Allowed HTML settings'|trans) }}
 </h3>
@@ -88,8 +88,8 @@
     </fieldset>
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
-            <button class="btn btn-success" title="{% trans %}Save{% endtrans %}"><i class="fa fa-check"></i> {% trans %}Save{% endtrans %}</button>
-            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{% trans %}Cancel{% endtrans %}"><i clas="fa fa-times"></i> {% trans %}Cancel{% endtrans %}</a>
+            <button class="btn btn-success" title="{% trans %}Save{% endtrans %}"><i class="fas fa-check"></i> {% trans %}Save{% endtrans %}</button>
+            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{% trans %}Cancel{% endtrans %}"><i clas="fas fa-times"></i> {% trans %}Cancel{% endtrans %}</a>
         </div>
     </div>
 </form>

@@ -11,17 +11,17 @@
                         <input type="hidden" id="sarea_{{ sarea_md5 }}_a" value="{{ sarea }}" />
                         <input type="hidden" id="sarea_{{ sarea_md5 }}_c" value="{{ subscriberAreasToCategories[sarea] }}" />
                         <input type="hidden" id="sarea_{{ sarea_md5 }}_i" value="{{ sarea_md5 }}" />
-                        <h4><i class="fa fa-caret-right"></i> {{ subscriberAreasToTitles[sarea] }} <span class="small">({{ sarea }})</span></h4>
+                        <h4><i class="fas fa-caret-right"></i> {{ subscriberAreasToTitles[sarea] }} <span class="small">({{ sarea }})</span></h4>
                         <ol id="sarea_{{ sarea_md5 }}_list" class="">
                             {% if areasSorting[category][sarea] is defined %}
                                 {% for parea in areasSorting[category][sarea] %}
                                     {% set parea_md5 = parea|php('md5') %}
                                     {% set attached_area_identifier = parea_md5 ~ '-' ~ sarea_md5 %}
                                     <li id="attachedarea_{{ attached_area_identifier }}" class="clearfix z-sortable list-group-item ui-draggable" style="cursor: move; left: 0; top: 0; opacity: 1; position: relative">
-                                        <i class="fa fa-arrows"></i>
+                                        <i class="fas fa-arrows"></i>
                                         <span>
                                             {{ areasSortingTitles[parea] }} <span class="small">({{ parea }})</span>
-                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{{ sarea_md5 }}', '{{ sarea }}', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-remove"></i></a>
+                                            <a class="detachlink" title="{% trans %}Detach{% endtrans %} {{ areasSortingTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('{{ sarea_md5 }}', '{{ sarea }}', '{{ parea_md5 }}', '{{ parea }}');"><i class="fas fa-remove"></i></a>
                                         </span>
                                         <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_a" value="{{ parea }}" />
                                         <input type="hidden" id="attachedarea_{{ attached_area_identifier }}_c" value="{{ category }}" />
@@ -46,7 +46,7 @@
         <legend>{% trans %}Available areas{% endtrans %}</legend>
         {% for hookprovider in hookproviders|filter(hp => hp.areas is not empty) %}
             <div class="parea_wrapper">
-                <h4><i class="fa fa-caret-right"></i> {{ hookprovider.displayname }}</h4>
+                <h4><i class="fas fa-caret-right"></i> {{ hookprovider.displayname }}</h4>
                 <div class="panel-content">
                     {% for category, areas in hookprovider.areasAndCategories %}
                     <fieldset class="pareas_category">
@@ -58,11 +58,11 @@
                                 {% set parea_md5 = parea|php('md5') %}
                                 {% set available_area_identifier = parea_md5 ~ '-sarea_identifier' %}
                                 <li id="availablearea_{{ available_area_identifier }}" class="z-draggable clearfix list-group-item">
-                                    <i class="fa fa-long-arrow-left"></i>
+                                    <i class="fas fa-long-arrow-left"></i>
                                     <span>
                                         {{ hookprovider.areasToTitles[parea]|default('Area') }} <span class="small">({{ parea }})
                                     </span>
-                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fa fa-times"></i></a></span>
+                                    <a class="detachlink d-none" title="{% trans %}Detach{% endtrans %} {{ hookprovider.areasToTitles[parea] }}" href="javascript:void(0)" onclick="unbindProviderAreaFromSubscriberArea('##id', '##name', '{{ parea_md5 }}', '{{ parea }}');"><i class="fas fa-times"></i></a></span>
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_a" value="{{ parea }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_c" value="{{ hookprovider.areasToCategories[parea] }}" />
                                     <input type="hidden" id="availablearea_{{ available_area_identifier }}_i" value="{{ parea_md5 }}" />

@@ -1,7 +1,7 @@
 {{ pageAddAsset('javascript', zasset('@ZikulaSecurityCenterModule:js/securitycenter_admin_purifierconfig.js')) }}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-wrench"></span>
+    <span class="fas fa-wrench"></span>
     {% trans %}HTMLPurifier settings{% endtrans %}
     {{ pageSetVar('title', 'HTMLPurifier settings'|trans) }}
 </h3>
@@ -85,9 +85,9 @@
 
     <div class="form-group row">
         <div class="col-md-9 offset-md-3">
-            <button class="btn btn-success" title="{% trans %}Save{% endtrans %}"><i class="fa fa-check"></i> {% trans %}Save{% endtrans %}</button>
-            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{% trans %}Cancel{% endtrans %}"><i class="fa fa-times"></i> {% trans %}Cancel{% endtrans %}</a>
-            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_purifierconfig', {reset: 'default'}) }}" title="{% trans %}Reset to default values{% endtrans %}"><i class="fa fa-sync"></i> {% trans %}Reset to default values{% endtrans %}</a>
+            <button class="btn btn-success" title="{% trans %}Save{% endtrans %}"><i class="fas fa-check"></i> {% trans %}Save{% endtrans %}</button>
+            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_config') }}" title="{% trans %}Cancel{% endtrans %}"><i class="fas fa-times"></i> {% trans %}Cancel{% endtrans %}</a>
+            <a class="btn btn-default" href="{{ path('zikulasecuritycentermodule_config_purifierconfig', {reset: 'default'}) }}" title="{% trans %}Reset to default values{% endtrans %}"><i class="fas fa-sync"></i> {% trans %}Reset to default values{% endtrans %}</a>
         </div>
     </div>
 </form>

@@ -63,7 +63,7 @@ class AdminModifyUserType extends AbstractType
                 'first_options' => [
                     'required' => false,
                     'label' => 'Create new password',
-                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>'],
+                    'input_group' => ['left' => '<i class="fas fa-asterisk"></i>'],
                     'help' => 'Minimum password length: %amount% characters.',
                     'help_translation_parameters' => [
                         '%amount%' => $options['minimumPasswordLength']
@@ -72,7 +72,7 @@ class AdminModifyUserType extends AbstractType
                 'second_options' => [
                     'required' => false,
                     'label' => 'Repeat new password',
-                    'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                    'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
                 ],
                 'invalid_message' => 'The passwords must match!',
                 'constraints' => [

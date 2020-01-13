@@ -5,7 +5,7 @@
 {{ adminHeader() }}
 {{ pageSetVar('title', 'Delete Root'|trans) }}
 <h3>
-    <span class="fa fa-trash-alt"> {% trans %}Delete Root{% endtrans %}</span>
+    <span class="fas fa-trash-alt"> {% trans %}Delete Root{% endtrans %}</span>
 </h3>
 <div class="alert alert-danger">{% trans with {'%menu%': form.vars.value.entity.title} %}Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?{% endtrans %}</div>
 {{ form_start(form) }}

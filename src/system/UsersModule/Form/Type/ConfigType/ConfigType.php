@@ -100,7 +100,7 @@ class ConfigType extends AbstractType
                 'label' => 'E-mail address to notify of registrations',
                 'required' => false,
                 'help' => 'A notification is sent to this e-mail address for each registration. Leave blank for no notifications.',
-                'input_group' => ['left' => '<i class="fa fa-at"></i>'],
+                'input_group' => ['left' => '<i class="fas fa-at"></i>'],
                 'constraints' => [
                     new Type('string')
                 ]

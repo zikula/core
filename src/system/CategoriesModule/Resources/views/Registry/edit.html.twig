@@ -5,7 +5,7 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-archive"></span>
+    <span class="fas fa-archive"></span>
     {% trans %}Edit category registry{% endtrans %}
     {{ pageSetVar('title', 'Edit category registry'|trans) }}
 </h3>
@@ -41,8 +41,8 @@
                 <td headers="hProperty">{{ registry.property }}</td>
                 <td headers="hCategory">{{ registry.category.display_name(app.request.locale|default('en')) }}</td>
                 <td headers="hActions" class="actions">
-                    <a class="fa fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
-                    <a class="fa fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>
+                    <a class="fas fa-pencil-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_edit', {id: registry.id}) }}" title="{% trans %}Edit{% endtrans %}" ></a>
+                    <a class="fas fa-trash-alt tooltips" href="{{ path('zikulacategoriesmodule_registry_delete', {id: registry.id}) }}" title="{% trans %}Delete{% endtrans %}"></a>
                 </td>
             </tr>
             {% endfor %}
@@ -53,7 +53,7 @@
                     {{ form_widget(form.modname) }}
                 </td>
                 <td headers="hEntity">
-                    {{ form_widget(form.entityname) }}<i class="fa fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
+                    {{ form_widget(form.entityname) }}<i class="fas fa-cog fa-spin fa-fw d-none text-muted" id="entity-loading"></i>
                 </td>
                 <td headers="hProperty">
                     {{ form_widget(form.property) }}

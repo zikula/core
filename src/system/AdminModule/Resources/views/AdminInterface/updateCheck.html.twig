@@ -5,7 +5,7 @@
                 <i class="close" data-dismiss="alert">&times;</i>
                 <a href="#updatecheck_full" title="{% trans %}Update checker{% endtrans %}"
                    data-toggle="collapse" aria-expanded="false" aria-controls="updatecheck_full">
-                    <strong><i class="fa fa-sync"></i> {% trans %}Update checker{% endtrans %}: </strong>
+                    <strong><i class="fas fa-sync"></i> {% trans %}Update checker{% endtrans %}: </strong>
                     {% if updateCheckHelper.versionCompare == -1 %}
                         {# you use not released version #}
                         {% trans %}You are currently using an unreleased version of the Zikula Core.{% endtrans %}
@@ -22,16 +22,16 @@
                 <div class="alert col-md-12">
                     <span class="col-md-4">
                         {# % if updateCheckHelper.enabled % #}
-                            <i class="fa fa-check"></i> {% trans %}Update checker is enabled{% endtrans %}
+                            <i class="fas fa-check"></i> {% trans %}Update checker is enabled{% endtrans %}
                         {# % else % #}
-                        {#    <i class="fa fa-times"></i> {% trans %}Update checker is disabled{% endtrans %} #}
+                        {#    <i class="fas fa-times"></i> {% trans %}Update checker is disabled{% endtrans %} #}
                         {# % endif % #}
                     </span>
                     <span class="col-md-4">
-                        <i class="fa fa-calendar-alt"></i> {% trans %}Check interval{% endtrans %}: {{ updateCheckHelper.checkInterval }} {% trans %}days{% endtrans %}
+                        <i class="fas fa-calendar-alt"></i> {% trans %}Check interval{% endtrans %}: {{ updateCheckHelper.checkInterval }} {% trans %}days{% endtrans %}
                     </span>
                     <span class="col-md-4">
-                        <i class="fa fa-calendar-check"></i> {% trans %}Last checked{% endtrans %}: {{ updateCheckHelper.lastChecked|date('F j, Y, g:i a') }}
+                        <i class="fas fa-calendar-check"></i> {% trans %}Last checked{% endtrans %}: {{ updateCheckHelper.lastChecked|date('F j, Y, g:i a') }}
                     </span>
                 </div>
                 {% if updateCheckHelper.releases %}
@@ -61,7 +61,7 @@
                                             {% endif %}
                                             <a href="#release_{{ loop.index }}" class="pull-right" role="button"
                                                data-toggle="collapse" aria-expanded="false" aria-controls="release_{{ loop.index }}">
-                                                <i class="fa fa-info"> </i>
+                                                <i class="fas fa-info"> </i>
                                             </a>
                                             <div class="collapse clearfix" id="release_{{ loop.index }}">
                                                 <div class="col-md-6">
@@ -71,7 +71,7 @@
                                                     {% for asset in release.assets %}
                                                         <p>
                                                             <a href="{{ asset.browser_download_url }}" class="text-success">
-                                                                <i class="fa fa-cloud-download-alt"></i> {{ asset.name }}
+                                                                <i class="fas fa-cloud-download-alt"></i> {{ asset.name }}
                                                             </a>
                                                         </p>
                                                     {% endfor %}
@@ -88,7 +88,7 @@
                         <p>{% trans %}Stable Zikula Core available{% endtrans %}: {{ updateCheckHelper.updateversion }} </p>
                         <a href="{{ path(caller._route, caller._route_params|merge({'forceupdatecheck': 1})) }}" class="btn btn-primary">
                             {% trans %}Check now{% endtrans %}
-                            <i class="fa fa-sync"></i>
+                            <i class="fas fa-sync"></i>
                         </a>
                     </div>
                 {% endif %}

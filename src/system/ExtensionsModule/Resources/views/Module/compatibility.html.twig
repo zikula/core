@@ -1,6 +1,6 @@
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-info-circle"></span>
+    <span class="fas fa-info-circle"></span>
     {% trans %}Incompatible version with the core{% endtrans %} - {{ extension.displayname }}
     {{ pageSetVar('title', 'Incompatible version'|trans) }}
 </h3>
@@ -15,7 +15,7 @@
 </div>
 <div class="form-group">
     <div class="col-md-9 offset-md-3">
-        <a class="btn btn-primary" href="{{ path('zikulaextensionsmodule_module_viewmodulelist') }}"><i class="fa fa-check"></i> {% trans %}Ok{% endtrans %}</a>
+        <a class="btn btn-primary" href="{{ path('zikulaextensionsmodule_module_viewmodulelist') }}"><i class="fas fa-check"></i> {% trans %}Ok{% endtrans %}</a>
     </div>
 </div>
 {{ adminFooter() }}

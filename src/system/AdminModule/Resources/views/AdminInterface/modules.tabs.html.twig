@@ -3,7 +3,7 @@
 {% macro draw(links) %}
     {% for link in links|filter(l => l.url|default) %}
         <li class="dropdown-item">
-            <a href="{{ link.url }}" title="{{ link.text|e('html_attr') }}">{% if link.icon is defined %}<i class="fa fa-fw fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
+            <a href="{{ link.url }}" title="{{ link.text|e('html_attr') }}">{% if link.icon is defined %}<i class="fas fa-fw fa-{{ link.icon }}"></i> {% endif %}{{ link.text|raw }}</a>
             {% if link.links is defined %}
                 <ul class="dropdown-toggle">{{ _self.draw(link.links) }}</ul>
             {% endif %}
@@ -16,7 +16,7 @@
         {% for module in adminMenu %}
             <li class="dropdown droppable nowrap{% if caller._zkModule == module.modname %} active{% endif %}">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" title="{{ module.menutext|e('html_attr') }}">
-                    <span class="fa fa-arrows-alt admintabs-lock"></span>
+                    <span class="fas fa-arrows-alt admintabs-lock"></span>
                     <span><img src="{{ app.request.basePath }}/{{ module.icon }}" alt="icon" style="height: 18px"/></span>
                 </a>
                 {% if module.links|length > 0 %}

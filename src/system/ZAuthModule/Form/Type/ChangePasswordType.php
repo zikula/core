@@ -35,7 +35,7 @@ class ChangePasswordType extends AbstractType
             ->add('oldpass', PasswordType::class, [
                 'required' => false,
                 'label' => 'Old password',
-                'input_group' => ['left' => '<i class="fa fa-asterisk"></i>']
+                'input_group' => ['left' => '<i class="fas fa-asterisk"></i>']
             ])
             ->add('pass', RepeatedType::class, [
                 'type' => PasswordType::class,

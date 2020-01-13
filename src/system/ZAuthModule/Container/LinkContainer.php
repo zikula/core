@@ -139,7 +139,7 @@ class LinkContainer implements LinkContainerInterface
         array_unshift($links, [
             'url'   => $this->router->generate('zikulausersmodule_account_menu'),
             'text' => $this->translator->trans('Account menu'),
-            'icon'  => 'fa fa-user-circle'
+            'icon'  => 'fas fa-user-circle'
         ]);
         $links[] = [
             'icon' => 'key',

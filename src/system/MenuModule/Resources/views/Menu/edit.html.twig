@@ -9,16 +9,16 @@
     <div class="form-group row">
         {{ form_label(form.options) }}
         <div class="col-md-9">
-            <ul class="list-unstyled" id="options" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.options.vars.prototype.key)|e }} {{ form_widget(form.options.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-option fa fa-trash-alt fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
+            <ul class="list-unstyled" id="options" data-prototype="&lt;li class=&quot;form-inline&quot;&gt;{{ form_widget(form.options.vars.prototype.key)|e }} {{ form_widget(form.options.vars.prototype.value)|e }}&nbsp;&nbsp;&lt;a href=&quot;#&quot; class=&quot;delete-option fas fa-trash-alt fa-lg text-danger&quot;&gt;&lt;/a&gt;&lt;/li&gt;">
                 {% for keyValuePair in form.options %}
                     {% form_theme form _self %}
                     {% block _options_entry_widget %}
-                        <li class="form-inline">{{ form_widget(keyValuePair.key) }} {{ form_widget(keyValuePair.value) }}&nbsp;&nbsp;<a href="#" class="delete-option fa fa-trash-alt fa-lg text-danger"></a></li>
+                        <li class="form-inline">{{ form_widget(keyValuePair.key) }} {{ form_widget(keyValuePair.value) }}&nbsp;&nbsp;<a href="#" class="delete-option fas fa-trash-alt fa-lg text-danger"></a></li>
                     {% endblock %}
                 {% endfor %}
             </ul>
             <div class="alert alert-info">{% trans %}Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.{% endtrans %}</div>
-            <a href="#" id="add-option" class="btn btn-default btn-sm fa fa-plus"> {% trans %}Add Option{% endtrans %}</a>
+            <a href="#" id="add-option" class="btn btn-default btn-sm fas fa-plus"> {% trans %}Add Option{% endtrans %}</a>
         </div>
     </div>
     {{ form_row(form.root) }}
