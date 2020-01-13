@@ -173,7 +173,7 @@ class MetaData implements ArrayAccess
 
         $displayName = $this->trans(/** @Ignore */$this->displayName);
 
-        return empty($$displayName) ? $this->displayName : $$displayName;
+        return empty($displayName) ? $this->displayName : $displayName;
     }
 
     public function setDisplayName(string $name): void

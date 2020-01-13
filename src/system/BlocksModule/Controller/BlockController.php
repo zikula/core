@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Zikula\BlocksModule\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -119,7 +117,6 @@ class BlockController extends AbstractController
                 $em->persist($blockEntity);
                 $em->flush();
                 $this->addFlash('status', 'Done! Block saved.');
-
             } elseif ($form->get('cancel')->isClicked()) {
                 $this->addFlash('status', 'Operation cancelled.');
             }

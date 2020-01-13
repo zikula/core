@@ -124,8 +124,10 @@ class ConfigType extends AbstractType
                 'required' => false,
                 /** @Ignore */
                 'help' => [
-                    /** @Translate */'Separate each user name with a comma.',
-                    /** @Translate */'Each user name on this list is not allowed to be chosen by someone registering for a new account.'
+                    /** @Translate */
+                    'Separate each user name with a comma.',
+                    /** @Translate */
+                    'Each user name on this list is not allowed to be chosen by someone registering for a new account.'
                 ],
                 'constraints' => [
                     new Type('string'),
@@ -152,9 +154,11 @@ class ConfigType extends AbstractType
                 'required' => false,
                 /** @Ignore */
                 'help' => [
-                    /** @Translate */'Separate each domain with a comma.',
-                    /** @Translate */'Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'
-                    ],
+                    /** @Translate */
+                    'Separate each domain with a comma.',
+                    /** @Translate */
+                    'Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'
+                ],
                 'constraints' => [
                     new Type('string'),
                     new Regex([

@@ -27,13 +27,17 @@ jobs:
         composer install
 
     - name: Update translations
+      # this would require installation - worth it?
+      #run: |
+      #  cd src
+      #  php -dmemory_limit=2G bin/console translation:extract zikula en
+      #  php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaAtomTheme extension en
+      #  php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaBootstrapTheme extension en
+      #  php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaPrinterTheme extension en
+      #  php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaRssTheme extension en
       run: |
         cd src
         php -dmemory_limit=2G bin/console translation:extract zikula en
-        php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaAtomTheme extension en
-        php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaBootstrapTheme extension en
-        php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaPrinterTheme extension en
-        php -dmemory_limit=2G bin/console translation:extract --bundle=ZikulaRssTheme extension en
 
     # see https://github.com/peter-evans/create-pull-request
     - name: Commit changes and create/update pull request
