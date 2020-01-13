@@ -1995,16 +1995,16 @@
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
-            "version": "2.5.1",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "81cf14bf3db5e6fe3ef0442fc762891422005d3b"
+                "reference": "ce486b619a440d186edf7f303df4822fbee1d1ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/81cf14bf3db5e6fe3ef0442fc762891422005d3b",
-                "reference": "81cf14bf3db5e6fe3ef0442fc762891422005d3b",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/ce486b619a440d186edf7f303df4822fbee1d1ae",
+                "reference": "ce486b619a440d186edf7f303df4822fbee1d1ae",
                 "shasum": ""
             },
             "require": {
@@ -2053,7 +2053,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2019-12-02T08:01:22+00:00"
+            "time": "2020-01-12T22:12:55+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -6844,12 +6844,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "68293038f68bb8f462dea5dd67c799f0827e2cea"
+                "reference": "cf8efd929ee6a8b3b038479bd88c9f176998a69b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/68293038f68bb8f462dea5dd67c799f0827e2cea",
-                "reference": "68293038f68bb8f462dea5dd67c799f0827e2cea",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/cf8efd929ee6a8b3b038479bd88c9f176998a69b",
+                "reference": "cf8efd929ee6a8b3b038479bd88c9f176998a69b",
                 "shasum": ""
             },
             "require": {
@@ -6867,7 +6867,8 @@
                     ],
                     "capabilities": {
                         "admin": {
-                            "route": "zikulalegalmodule_config_config"
+                            "route": "zikulalegalmodule_config_config",
+                            "icon": "fas fa-gavel"
                         },
                         "user": {
                             "route": "zikulalegalmodule_user_termsofuse"
@@ -6904,7 +6905,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-10T20:05:07+00:00"
+            "time": "2020-01-13T00:06:00+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6912,12 +6913,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "57941d04314f9d84428e52d00afd7b75e91f1dd1"
+                "reference": "d970c3fc5e4ee5977b889d1435066ee24818dcb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/57941d04314f9d84428e52d00afd7b75e91f1dd1",
-                "reference": "57941d04314f9d84428e52d00afd7b75e91f1dd1",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/d970c3fc5e4ee5977b889d1435066ee24818dcb5",
+                "reference": "d970c3fc5e4ee5977b889d1435066ee24818dcb5",
                 "shasum": ""
             },
             "require": {
@@ -6936,7 +6937,8 @@
                     "displayname": "OAuthModule",
                     "capabilities": {
                         "admin": {
-                            "route": "zikulaoauthmodule_config_settings"
+                            "route": "zikulaoauthmodule_config_settings",
+                            "icon": "fas fa-network-wired"
                         }
                     },
                     "url": "oauth",
@@ -6965,7 +6967,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2020-01-10T20:04:42+00:00"
+            "time": "2020-01-13T00:06:24+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6973,12 +6975,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "c5babed9493ee05e4fa52adf667c35c0ae2882f6"
+                "reference": "8356d6f1d4c427b35e0f4564d98e49721db786c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/c5babed9493ee05e4fa52adf667c35c0ae2882f6",
-                "reference": "c5babed9493ee05e4fa52adf667c35c0ae2882f6",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/8356d6f1d4c427b35e0f4564d98e49721db786c6",
+                "reference": "8356d6f1d4c427b35e0f4564d98e49721db786c6",
                 "shasum": ""
             },
             "require": {
@@ -6991,6 +6993,11 @@
                     "core-compatibility": ">=3.0.0",
                     "displayname": "Page lock",
                     "url": "pagelock",
+                    "capabilities": {
+                        "admin": {
+                            "icon": "fas fa-lock"
+                        }
+                    },
                     "securityschema": {
                         "ZikulaPageLockModule::": "::"
                     }
@@ -7015,7 +7022,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2020-01-10T20:05:03+00:00"
+            "time": "2020-01-13T00:06:39+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -7023,12 +7030,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "c487da66626a32ba5a9a1b823891b176975c1d7d"
+                "reference": "8435cba5b316e686d96ee02dff0acd589473269c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/c487da66626a32ba5a9a1b823891b176975c1d7d",
-                "reference": "c487da66626a32ba5a9a1b823891b176975c1d7d",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/8435cba5b316e686d96ee02dff0acd589473269c",
+                "reference": "8435cba5b316e686d96ee02dff0acd589473269c",
                 "shasum": ""
             },
             "require": {
@@ -7046,7 +7053,8 @@
                     ],
                     "capabilities": {
                         "admin": {
-                            "route": "zikulaprofilemodule_property_list"
+                            "route": "zikulaprofilemodule_property_list",
+                            "icon": "fas fa-id-card"
                         },
                         "user": {
                             "route": "zikulaprofilemodule_profile_display"
@@ -7086,7 +7094,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-10T20:05:06+00:00"
+            "time": "2020-01-13T00:07:38+00:00"
         },
         {
             "name": "zikula/wizard",
