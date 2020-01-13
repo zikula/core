@@ -58,7 +58,6 @@ class AccessHelper
 
     public function loginAllowed(UserEntity $user): bool
     {
-        $flashBag = null;
         $request = $this->requestStack->getCurrentRequest();
         $session = null !== $request && $request->hasSession() ? $request->getSession() : null;
 
