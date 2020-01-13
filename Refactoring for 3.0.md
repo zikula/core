@@ -6,7 +6,7 @@
 
 Add the following capability for defining the (default) admin icon:
 
-```yaml
+```json
     ...
     "extra": {
         "zikula": {
