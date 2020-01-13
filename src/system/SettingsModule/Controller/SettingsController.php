@@ -80,10 +80,9 @@ class SettingsController extends AbstractController
                 foreach ($data as $name => $value) {
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
-                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulasettingsmodule_settings_main');
@@ -146,10 +145,9 @@ class SettingsController extends AbstractController
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     $session->set('_locale', $data['language_i18n']);
                 }
-                $this->addFlash('status', $this->trans('Done! Localization configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Localization configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulasettingsmodule_settings_locale');

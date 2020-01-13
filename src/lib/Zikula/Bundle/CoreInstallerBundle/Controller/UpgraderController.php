@@ -53,7 +53,7 @@ class UpgraderController extends AbstractController
         // check php
         $ini_warnings = $this->controllerHelper->initPhp();
         if (null !== $session && 0 < count($ini_warnings)) {
-            $session->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
+            $session->getFlashBag()->add('warning', implode('<hr />', $ini_warnings));
         }
 
         $yamlDumper = new YamlDumper($this->container->get('kernel')->getProjectDir() . '/app/config', 'custom_parameters.yml');

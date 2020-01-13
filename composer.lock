@@ -350,16 +350,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.2.5",
+            "version": "1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "62e8fc2dc550e5d6d8c9360c7721662670f58149"
+                "reference": "47fe531de31fca4a1b997f87308e7d7804348f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/62e8fc2dc550e5d6d8c9360c7721662670f58149",
-                "reference": "62e8fc2dc550e5d6d8c9360c7721662670f58149",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/47fe531de31fca4a1b997f87308e7d7804348f7e",
+                "reference": "47fe531de31fca4a1b997f87308e7d7804348f7e",
                 "shasum": ""
             },
             "require": {
@@ -402,7 +402,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2019-12-11T14:44:42+00:00"
+            "time": "2020-01-13T10:02:55+00:00"
         },
         {
             "name": "composer/composer",
@@ -410,12 +410,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "ec32c03915b95dafe4313d14f981e008b14db6f4"
+                "reference": "f5dab18b7d392ce17c17aa0c29f0a2559aca3390"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/ec32c03915b95dafe4313d14f981e008b14db6f4",
-                "reference": "ec32c03915b95dafe4313d14f981e008b14db6f4",
+                "url": "https://api.github.com/repos/composer/composer/zipball/f5dab18b7d392ce17c17aa0c29f0a2559aca3390",
+                "reference": "f5dab18b7d392ce17c17aa0c29f0a2559aca3390",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-10T21:50:13+00:00"
+            "time": "2020-01-13T17:21:57+00:00"
         },
         {
             "name": "composer/installers",
@@ -608,24 +608,23 @@
         },
         {
             "name": "composer/semver",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
+                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
-                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "url": "https://api.github.com/repos/composer/semver/zipball/c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
+                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5 || ^5.0.5",
-                "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
+                "phpunit/phpunit": "^4.5 || ^5.0.5"
             },
             "type": "library",
             "extra": {
@@ -666,7 +665,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2019-03-19T17:25:45+00:00"
+            "time": "2020-01-13T12:06:48+00:00"
         },
         {
             "name": "composer/spdx-licenses",
@@ -1999,12 +1998,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "ce486b619a440d186edf7f303df4822fbee1d1ae"
+                "reference": "165b3f4ae1f798ec320b9942f6db921f7b568bed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/ce486b619a440d186edf7f303df4822fbee1d1ae",
-                "reference": "ce486b619a440d186edf7f303df4822fbee1d1ae",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/165b3f4ae1f798ec320b9942f6db921f7b568bed",
+                "reference": "165b3f4ae1f798ec320b9942f6db921f7b568bed",
                 "shasum": ""
             },
             "require": {
@@ -3987,16 +3986,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.11.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "7da36630c8279d0e290ff3e60f79f1bef1bc0772"
+                "url": "https://github.com/Guite/symfony-bundle.git",
+                "reference": "a24efdd4bf99f8281fd7037ae4a34d0ad05cb2a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7da36630c8279d0e290ff3e60f79f1bef1bc0772",
-                "reference": "7da36630c8279d0e290ff3e60f79f1bef1bc0772",
+                "url": "https://api.github.com/repos/Guite/symfony-bundle/zipball/a24efdd4bf99f8281fd7037ae4a34d0ad05cb2a2",
+                "reference": "a24efdd4bf99f8281fd7037ae4a34d0ad05cb2a2",
                 "shasum": ""
             },
             "require": {
@@ -4067,10 +4066,9 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.11.0",
-                "issues": "https://github.com/php-translation/symfony-bundle/issues"
+                "source": "https://github.com/Guite/symfony-bundle/tree/master"
             },
-            "time": "2020-01-07T09:32:27+00:00"
+            "time": "2020-01-13T17:50:13+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -4157,75 +4155,6 @@
             "description": "PHPIDS (PHP-Intrusion Detection System) is a simple to use, well structured, fast and state-of-the-art security layer for your PHP based web application",
             "homepage": "http://phpids.org",
             "time": "2014-09-03T11:39:39+00:00"
-        },
-        {
-            "name": "prolix/translation-bundle",
-            "version": "dev-master",
-            "target-dir": "JMS/TranslationBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Guite/JMSTranslationBundle.git",
-                "reference": "47883110f984d8eee63faaaecfdd22dc25c11073"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Guite/JMSTranslationBundle/zipball/47883110f984d8eee63faaaecfdd22dc25c11073",
-                "reference": "47883110f984d8eee63faaaecfdd22dc25c11073",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^1.4 || ^2.0 || ^3.0 || ^4.0",
-                "php": "^5.3.3 || ^7.0",
-                "symfony/console": "^2.3 || ^3.0 || ^4.0  || ^5.0",
-                "symfony/framework-bundle": "^2.3 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/validator": "^2.3 || ^3.0 || ^4.0  || ^5.0",
-                "twig/twig": "3.0.*"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-                "nyholm/nsa": "1.1.*",
-                "phpunit/phpunit": "^4.8 || ^5.0",
-                "psr/log": "^1.1",
-                "sensio/framework-extra-bundle": "^2.3 || ^3.0 || ^4.0 || ^5.5",
-                "symfony/expression-language": "^2.6 || ^3.0 || ^4.0 || ^5.0",
-                "symfony/symfony": "^2.3 || ^3.0 || ^4.0 || ^5.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.4-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "JMS\\TranslationBundle": ""
-                }
-            },
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Puts the Symfony Translation Component on steroids",
-            "homepage": "http://jmsyst.com/bundles/JMSTranslationBundle",
-            "keywords": [
-                "extract",
-                "extraction",
-                "i18n",
-                "interface",
-                "multilanguage",
-                "translation",
-                "ui",
-                "webinterface"
-            ],
-            "support": {
-                "source": "https://github.com/Guite/JMSTranslationBundle/tree/master"
-            },
-            "time": "2019-12-28T12:39:16+00:00"
         },
         {
             "name": "psr/cache",
@@ -4653,16 +4582,16 @@
         },
         {
             "name": "seld/phar-utils",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/phar-utils.git",
-                "reference": "7009b5139491975ef6486545a39f3e6dad5ac30a"
+                "reference": "84715761c35808076b00908a20317a3a8a67d17e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/7009b5139491975ef6486545a39f3e6dad5ac30a",
-                "reference": "7009b5139491975ef6486545a39f3e6dad5ac30a",
+                "url": "https://api.github.com/repos/Seldaek/phar-utils/zipball/84715761c35808076b00908a20317a3a8a67d17e",
+                "reference": "84715761c35808076b00908a20317a3a8a67d17e",
                 "shasum": ""
             },
             "require": {
@@ -4693,7 +4622,7 @@
             "keywords": [
                 "phra"
             ],
-            "time": "2015-10-13T18:44:15+00:00"
+            "time": "2020-01-13T10:41:09+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -6913,12 +6842,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "d970c3fc5e4ee5977b889d1435066ee24818dcb5"
+                "reference": "a1e24de8b2969fef5aa1b75b1bb64e16abd0ca59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/d970c3fc5e4ee5977b889d1435066ee24818dcb5",
-                "reference": "d970c3fc5e4ee5977b889d1435066ee24818dcb5",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a1e24de8b2969fef5aa1b75b1bb64e16abd0ca59",
+                "reference": "a1e24de8b2969fef5aa1b75b1bb64e16abd0ca59",
                 "shasum": ""
             },
             "require": {
@@ -6967,7 +6896,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2020-01-13T00:06:24+00:00"
+            "time": "2020-01-13T12:02:10+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -7219,7 +7148,7 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "prolix/translation-bundle": 20,
+        "php-translation/symfony-bundle": 20,
         "willdurand/js-translation-bundle": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,

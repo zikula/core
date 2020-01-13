@@ -18,30 +18,27 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 
 class ApproveRegistrationConfirmationType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('user', HiddenType::class)
             ->add('force', HiddenType::class)
             ->add('confirm', SubmitType::class, [
-                'label' => !empty($options['buttonLabel']) ? $options['buttonLabel'] : $this->trans('Confirm'),
+                /** @Ignore */
+                'label' => !empty($options['buttonLabel'])
+                    ? $options['buttonLabel']
+                    : /** @Translate */'Confirm'
+                ,
                 'icon' => 'fa-check',
                 'attr' => ['class' => 'btn btn-success'],
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => ['class' => 'btn btn-default']
             ])

@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\CoreInstallerBundle\Validator\Constraints\ValidPdoConnection;
 
 class DbCredsType extends AbstractType
@@ -35,7 +36,7 @@ class DbCredsType extends AbstractType
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
-                'choices' => $this->getDbTypes(),
+                'choices' => /** @Ignore */$this->getDbTypes(),
                 'data' => 'mysql'
             ])
             ->add('dbtabletype', ChoiceType::class, [

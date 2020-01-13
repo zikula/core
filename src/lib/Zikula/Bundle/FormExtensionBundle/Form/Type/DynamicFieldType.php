@@ -43,6 +43,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\Bundle\FormExtensionBundle\Event\FormTypeChoiceEvent;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\ChoiceValuesTransformer;
 use Zikula\Bundle\FormExtensionBundle\Form\DataTransformer\RegexConstraintTransformer;
@@ -52,6 +54,7 @@ use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\FormOptionsArrayT
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\MoneyFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DynamicOptions\RegexibleFormOptionsArrayType;
 use Zikula\Bundle\FormExtensionBundle\FormTypesChoices;
+use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ThemeModule\Api\ApiInterface\PageAssetApiInterface;
 use Zikula\ThemeModule\Engine\Asset;
 
@@ -60,6 +63,8 @@ use Zikula\ThemeModule\Engine\Asset;
  */
 class DynamicFieldType extends AbstractType
 {
+    use TranslatorTrait;
+
     /**
      * @var EventDispatcherInterface
      */
@@ -76,10 +81,12 @@ class DynamicFieldType extends AbstractType
     private $assetHelper;
 
     public function __construct(
+        TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         PageAssetApiInterface $pageAssetApi,
         Asset $assetHelper
     ) {
+        $this->setTranslator($translator);
         $this->eventDispatcher = $eventDispatcher;
         $this->pageAssetApi = $pageAssetApi;
         $this->assetHelper = $assetHelper;
@@ -89,7 +96,7 @@ class DynamicFieldType extends AbstractType
     {
         $builder->add('formType', ChoiceType::class, [
             'label' => 'Field type',
-            'choices' => $this->getChoices(),
+            'choices' => /** @Ignore */$this->getChoices(),
             'placeholder' => 'Select'
         ]);
 
@@ -153,38 +160,38 @@ class DynamicFieldType extends AbstractType
     private function getChoices(): FormTypesChoices
     {
         $choices = new FormTypesChoices([
-            'Text fields' => [
-                'Text' => TextType::class,
-                'Textarea' => TextareaType::class,
-                'Email' => EmailType::class,
-                'Icon' => IconType::class,
-                'Integer' => IntegerType::class,
-                'Money' => MoneyType::class,
-                'Number' => NumberType::class,
-                'Password' => PasswordType::class,
-                'Percent' => PercentType::class,
-                'Phone number' => TelType::class,
-                'Url' => UrlType::class,
-                'Range' => RangeType::class,
-                'Week number' => WeekType::class,
+            $this->trans('Text fields') => [
+                $this->trans('Text') => TextType::class,
+                $this->trans('Textarea') => TextareaType::class,
+                $this->trans('Email') => EmailType::class,
+                $this->trans('Icon') => IconType::class,
+                $this->trans('Integer') => IntegerType::class,
+                $this->trans('Money') => MoneyType::class,
+                $this->trans('Number') => NumberType::class,
+                $this->trans('Password') => PasswordType::class,
+                $this->trans('Percent') => PercentType::class,
+                $this->trans('Phone number') => TelType::class,
+                $this->trans('Url') => UrlType::class,
+                $this->trans('Range') => RangeType::class,
+                $this->trans('Week number') => WeekType::class,
             ],
-            'Choice fields' => [
-                'Choice' => ChoiceType::class,
-                'Country' => CountryType::class,
-                'Language' => LanguageType::class,
-                'Locale' => LocaleType::class,
-                'Timezone' => TimezoneType::class,
-                'Currency' => CurrencyType::class,
+            $this->trans('Choice fields') => [
+                $this->trans('Choice') => ChoiceType::class,
+                $this->trans('Country') => CountryType::class,
+                $this->trans('Language') => LanguageType::class,
+                $this->trans('Locale') => LocaleType::class,
+                $this->trans('Timezone') => TimezoneType::class,
+                $this->trans('Currency') => CurrencyType::class,
             ],
-            'Date and time fields' => [
-                'Date' => DateType::class,
-                'DateTime' => DateTimeType::class,
-                'Time' => TimeType::class,
-                'Birthday' => BirthdayType::class,
+            $this->trans('Date and time fields') => [
+                $this->trans('Date') => DateType::class,
+                $this->trans('DateTime') => DateTimeType::class,
+                $this->trans('Time') => TimeType::class,
+                $this->trans('Birthday') => BirthdayType::class,
             ],
-            'Other fields' => [
-                'Checkbox' => CheckboxType::class,
-                'Radio' => RadioType::class,
+            $this->trans('Other fields') => [
+                $this->trans('Checkbox') => CheckboxType::class,
+                $this->trans('Radio') => RadioType::class,
             ]
         ]);
 

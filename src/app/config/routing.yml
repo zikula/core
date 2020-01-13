@@ -19,6 +19,9 @@ workflow_editor:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 
+_translation:
+    resource: routes/php_translation.yaml
+
 # Note: if you want to add routes for a native Symfony bundle
 # insert them here and not below the "Routing" entry
 

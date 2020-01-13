@@ -41,10 +41,10 @@ class XsltBlockType extends AbstractType
                     new Url()
                 ],
                 'required' => false,
-                'label' => $this->trans('Document URL')
+                'label' => 'Document URL'
             ])
             ->add('doccontents', TextareaType::class, [
-                'label' => $this->trans('Document contents'),
+                'label' => 'Document contents',
                 'required' => false,
                 'attr' => [
                     'rows' => 15
@@ -55,10 +55,10 @@ class XsltBlockType extends AbstractType
                     new Url()
                 ],
                 'required' => false,
-                'label' => $this->trans('Style sheet URL')
+                'label' => 'Style sheet URL'
             ])
             ->add('stylecontents', TextareaType::class, [
-                'label' => $this->trans('Style sheet contents'),
+                'label' => 'Style sheet contents',
                 'required' => false,
                 'attr' => [
                     'rows' => 15

@@ -1,7 +1,20 @@
-'Language changed to %lang%': 'Language changed to %lang%'
-'Welcome to %siteName%!': 'Welcome to %siteName%!'
-'Reset your password at %siteName%': 'Reset your password at %siteName%'
-'''%siteName%'' account information': '''%siteName%'' account information'
-'Verify your e-mail address for %siteName%.': 'Verify your e-mail address for %siteName%.'
-'Verify your request to change your e-mail address at %siteName%': 'Verify your request to change your e-mail address at %siteName%'
-'A message from %siteName%.': 'A message from %siteName%.'
+'Choose a file': null
+'Search user': null
+'This function requires JavaScript activated!': null
+'Enter a part of the user name to search': null
+'Reset to empty value': null
+'Switch to users administration': null
+'Manage user': null
+'Page %1% / %2% (%3% - %4% of %5% total)': null
+'Welcome to %siteName%!': null
+'Reset your password at %siteName%': null
+'''%siteName%'' account information': null
+'Verify your e-mail address for %siteName%.': null
+'Verify your request to change your e-mail address at %siteName%': null
+'A message from %siteName%.': null
+plural_n.registered.user: null
+plural_n.anonymous.guest: null
+'%users% and %guests% online since %time%.': null
+'You are logged-in as %sub%.': null
+'You can %registerlink%': null
+'Language changed to %lang%': null

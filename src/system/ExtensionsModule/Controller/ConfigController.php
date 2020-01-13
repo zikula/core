@@ -14,17 +14,13 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Form\Type\ConfigType;
 use Zikula\ExtensionsModule\Helper\BundleSyncHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -51,36 +47,7 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder($this->getVars())
-            ->add('itemsperpage', IntegerType::class, [
-                'label' => 'Items per page',
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThan(0)
-                ]
-            ])
-            ->add('hardreset', CheckboxType::class, [
-                'label' => 'Reset all extensions to default values',
-                'label_attr' => ['class' => 'switch-custom'],
-                'mapped' => false,
-                'required' => false
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Save',
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(ConfigType::class, $this->getVars());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
@@ -90,10 +57,10 @@ class ConfigController extends AbstractController
                     $bundleSyncHelper->syncExtensions($extensionsInFileSystem, true);
                     $cacheClearer->clear('symfony.routing');
                 }
-                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaextensionsmodule_module_viewmodulelist');

@@ -24,6 +24,9 @@ use Zikula\Component\Wizard\WizardCompleteInterface;
 
 class CompleteStage implements StageInterface, WizardCompleteInterface, InjectContainerInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     private $container;
 
     public function __construct(ContainerInterface $container)
@@ -54,7 +57,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
     public function getResponse(Request $request): Response
     {
         if ($request->hasSession() && ($session = $request->getSession())) {
-            $session->getFlashBag()->add('success', $this->container->get('translator')->trans('Congratulations! Upgrade Complete.'));
+            $session->getFlashBag()->add('success', 'Congratulations! Upgrade Complete.');
         }
 
         return new RedirectResponse($this->container->get('router')->generate('zikulaadminmodule_admin_adminpanel', [], RouterInterface::ABSOLUTE_URL));

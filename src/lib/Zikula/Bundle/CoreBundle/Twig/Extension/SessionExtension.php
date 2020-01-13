@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Zikula\Bundle\CoreBundle\Twig\Extension;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use Zikula\Bundle\CoreBundle\Twig;
@@ -25,9 +27,17 @@ class SessionExtension extends AbstractExtension
      */
     private $session;
 
-    public function __construct(SessionInterface $session)
-    {
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(
+        SessionInterface $session,
+        TranslatorInterface $translator
+    ) {
         $this->session = $session;
+        $this->translator = $translator;
     }
 
     public function getFunctions()
@@ -38,7 +48,7 @@ class SessionExtension extends AbstractExtension
     }
 
     /**
-     * Display flash messages in twig template. Defaults to bootstrap alert classes.
+     * Display flash messages in twig template. Defaults to Bootstrap alert classes.
      *
      * <pre>
      *  {{ showflashes() }}
@@ -48,7 +58,7 @@ class SessionExtension extends AbstractExtension
     public function showFlashes(array $params = []): string
     {
         $result = '';
-        $total_messages = [];
+        $totalMessages = [];
         $messageTypeMap = [
             'error' => 'danger',
             'warning' => 'warning',
@@ -60,25 +70,32 @@ class SessionExtension extends AbstractExtension
 
         foreach ($messageTypeMap as $messageType => $bootstrapClass) {
             $messages = $this->session->getFlashBag()->get($messageType);
-            if (count($messages) > 0) {
-                // Set class for the messages.
-                $class = !empty($params['class']) ? $params['class'] : "alert alert-${bootstrapClass}";
-                $total_messages += $messages;
-                // Build output of the messages.
-                if (empty($params['tag']) || ('span' !== $params['tag'])) {
-                    $params['tag'] = 'div';
-                }
-                $result .= '<' . $params['tag'] . ' class="' . $class . '"';
-                if (!empty($params['style'])) {
-                    $result .= ' style="' . $params['style'] . '"';
-                }
-                $result .= '>';
-                $result .= implode('<hr />', $messages);
-                $result .= '</' . $params['tag'] . '>';
+            if (1 > count($messages)) {
+                continue;
             }
+
+            $translatedMessages = [];
+            foreach ($messages as $message) {
+                $translatedMessages[] = $this->translator->trans(/** @Ignore */$message);
+            }
+
+            // set class for the messages
+            $class = !empty($params['class']) ? $params['class'] : "alert alert-${bootstrapClass}";
+            $totalMessages += $messages;
+            // build output of the messages
+            if (empty($params['tag']) || ('span' !== $params['tag'])) {
+                $params['tag'] = 'div';
+            }
+            $result .= '<' . $params['tag'] . ' class="' . $class . '"';
+            if (!empty($params['style'])) {
+                $result .= ' style="' . $params['style'] . '"';
+            }
+            $result .= '>';
+            $result .= implode('<hr />', $translatedMessages);
+            $result .= '</' . $params['tag'] . '>';
         }
 
-        if (empty($total_messages)) {
+        if (empty($totalMessages)) {
             return '';
         }
 

@@ -113,10 +113,9 @@ class ConfigController extends AbstractController
                     $adminModuleHelper->setAdminModuleCategory($adminModule, $category);
                 }
 
-                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');

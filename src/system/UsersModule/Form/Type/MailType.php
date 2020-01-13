@@ -22,46 +22,37 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class MailType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('userIds', HiddenType::class)
             ->add('from', TextType::class, [
-                'label' => $this->trans('Sender name'),
+                'label' => 'Sender name',
             ])
             ->add('replyto', EmailType::class, [
-                'label' => $this->trans('Replyto email address'),
+                'label' => 'Replyto email address',
             ])
             ->add('subject', TextType::class, [
-                'label' => $this->trans('Subject'),
+                'label' => 'Subject',
             ])
             ->add('format', ChoiceType::class, [
                 'choices' => [
-                    $this->trans('Text') => 'text',
-                    $this->trans('Html') => 'html',
+                    'Text' => 'text',
+                    'Html' => 'html',
                 ],
-                'label' => $this->trans('Format'),
+                'label' => 'Format',
             ])
             ->add('message', TextareaType::class, [
-                'label' => $this->trans('Message'),
+                'label' => 'Message',
             ])
             ->add('batchsize', IntegerType::class, [
-                'label' => $this->trans('Send mail in batches of'),
+                'label' => 'Send mail in batches of',
             ])
             ->add('send', SubmitType::class, [
-                'label' => $this->trans('Send Mail'),
+                'label' => 'Send mail',
                 'icon' => 'fa-angle-double-right',
                 'attr' => ['class' => 'btn btn-success']
             ])

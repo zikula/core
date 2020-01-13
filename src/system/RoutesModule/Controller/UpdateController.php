@@ -49,7 +49,7 @@ class UpdateController extends AbstractController
 
         $cacheClearer->clear('symfony.routing');
 
-        $this->addFlash('status', $this->trans('Done! Routes reloaded.'));
+        $this->addFlash('status', 'Done! Routes reloaded.');
 
         // reload **all** JS routes
         $this->dumpJsRoutes($routeDumperHelper);
@@ -78,7 +78,7 @@ class UpdateController extends AbstractController
         // Renew the routing settings.
         $multilingualRoutingHelper->reloadMultilingualRoutingSettings();
 
-        $this->addFlash('status', $this->trans('Done! Routing settings renewed.'));
+        $this->addFlash('status', 'Done! Routing settings renewed.');
 
         return $this->redirectToRoute('zikularoutesmodule_route_adminview');
     }

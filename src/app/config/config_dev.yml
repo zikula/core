@@ -1,5 +1,6 @@
 imports:
     - { resource: config.yml }
+    - { resource: "packages/dev/php_translation.yaml" }
 
 framework:
     router:   { resource: "%kernel.project_dir%/app/config/routing_dev.yml" }

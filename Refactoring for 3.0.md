@@ -77,7 +77,113 @@ You can still use `Zikula\Common\Translator\TranslatorTrait`, but it has only on
 ```php
 public function trans(string $id, array $parameters = [], string $domain = null, string $locale = null): string
 ```
-You can/should remove the `setTranslator` method from your using class though.
+You can/should remove the `setTranslator` method from your class which uses the trait. It is not needed anymore.
+
+#### Automatic translations
+You should remove all translation calls from the following elements:
+
+- Strings inside form type classes:
+  - Form field labels
+  - Choice labels
+  - Placeholders
+  - String values for `empty_value` attribute
+  - Invalid messages
+  - Single help messages
+- Flash messages (`$this->addFlash()` as well as `getFlashBag()->add()`); except when substitution parameters are used.
+
+They will be picked up by the extractor nevertheless.
+
+More information about how translation of form messages work can be found [here](https://symfony.com/blog/new-in-symfony-4-3-improved-form-translation).
+
+#### Using the extractor
+
+To extract translations use the console command `translation:extract`. To see all of it's option, do this:
+```
+php bin/console translation:extract -h
+# or
+php bin/console translation:extract --help
+```
+
+Example for Zikula core:
+```
+php bin/console translation:extract zikula en
+```
+
+Note `zikula` is the name of our configuration.
+
+Example for a module or a theme:
+```
+php bin/console translation:extract -b AcmeFooModule extension en
+# or
+php bin/console translation:extract --bundle AcmeFooModule extension en
+
+# or with more memory:
+php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooModule extension en
+```
+
+You can always check the status of your translation using the `translation:status` command.
+Check the available options using `-h` or `--help` like shown above.
+
+#### Translation annotations
+
+To influence the extraction behaviour you can utilise some annotations from the `Translation\Extractor\Annotation` namespace.
+Import them like any other php class:
+```php
+use Translation\Extractor\Annotation\Desc;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
+```
+
+##### `@Desc`
+The `@Desc` annotation allows specifying a default translation for a key.
+
+Examples:
+
+```php
+$builder->add('title', 'text', [
+    /** @Desc("Title:") */
+    'label' => 'post.form.title',
+]);
+
+/** @Desc("We have changed the permalink because the post '%slug%' already exists.") */
+$errors[] = $this->translator->trans(
+    'post.form.permalink.error.exists', ['%slug%' => $slug]
+);
+```
+
+##### `@Ignore`
+The `@Ignore` annotation allows ignoring extracting translation subjects which are not a string, but a variable.
+You can use it for example for `trans()` calls, form labels and form choices.
+
+Examples:
+
+**TODO this needs further tests, see [this issue](https://github.com/php-translation/extractor/issues/146)**
+```php
+echo $this->translator->trans(/** @Ignore */$description);
+
+$builder->add('modulecategory' . $module['name'], ChoiceType::class, [
+    /** @Ignore */
+    'label' => $module['displayname'],
+    'empty_data' => null,
+    'choices' => /** @Ignore */$options['categories']
+]);
+```
+
+##### `@Translate`
+With the `/** @Translate */` you can explicitly add phrases to the dictionary. This helps to extract strings
+which would have been skipped otherwise.
+
+Examples:
+
+```php
+$placeholder = /** @Translate */'delivery.user.not_chosen';
+```
+
+It can be also used to force specific domain:
+
+```php
+$errorMessage = /** @Translate(domain="validators") */'error.user_email.not_unique';
+```
 
 ### JavaScript files
 Follows basically the same rules as translations in PHP files shown above. See [BazingaJsTranslation docs](https://github.com/willdurand/BazingaJsTranslationBundle/blob/master/Resources/doc/index.md#the-js-translator) for further details and examples.
@@ -104,6 +210,13 @@ New: {% trans count users|length %}plural_n.registered.user{# one registered use
 ```
 
 See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
+
+There is also a `desc` filter for specifying a default translation for a key (same as the `@Desc` annotation shown above). Use it like this:
+
+```twig
+{{ 'post.form.title'|trans|desc('Title:') }}
+{{ 'welcome.message'|trans({'%userName%': 'John Smith'})|desc('Welcome %userName%!') }}
+```
 
 ### About plural forms
 The `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.

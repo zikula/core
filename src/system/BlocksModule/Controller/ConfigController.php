@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Zikula\BlocksModule\Form\Type\ConfigType;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 
@@ -43,36 +44,14 @@ class ConfigController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder($this->getVars())
-            ->add('collapseable', CheckboxType::class, [
-                'label' => 'Enable block collapse icons',
-                'label_attr' => ['class' => 'switch-custom'],
-                'required' => false
-            ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Save',
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(ConfigType::class, $this->getVars());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('save')->isClicked()) {
                 $this->setVars($form->getData());
-                $this->addFlash('status', $this->trans('Done! Module configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

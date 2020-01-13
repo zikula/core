@@ -35,11 +35,11 @@ class ZikulaKernel extends Kernel
             Zikula\Bundle\FormExtensionBundle\ZikulaFormExtensionBundle::class,
             Zikula\Bundle\HookBundle\ZikulaHookBundle::class,
             JMS\I18nRoutingBundle\JMSI18nRoutingBundle::class,
-            JMS\TranslationBundle\JMSTranslationBundle::class,
             FOS\JsRoutingBundle\FOSJsRoutingBundle::class,
             Matthias\SymfonyConsoleForm\Bundle\SymfonyConsoleFormBundle::class,
             Knp\Bundle\MenuBundle\KnpMenuBundle::class,
             Liip\ImagineBundle\LiipImagineBundle::class,
+            Translation\Bundle\TranslationBundle::class,
             Bazinga\Bundle\JsTranslationBundle\BazingaJsTranslationBundle::class,
             Zikula\Bundle\WorkflowBundle\ZikulaWorkflowBundle::class,
         ];

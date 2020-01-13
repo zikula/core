@@ -77,10 +77,15 @@ class ApplicationController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $applicationProcessedEvent = new GenericEvent($groupApplicationEntity, $formData);
                 $eventDispatcher->dispatch($applicationProcessedEvent, GroupEvents::GROUP_APPLICATION_PROCESSED);
-                $this->addFlash('success', $this->trans('Application processed (%action% %user%)', ['%action%' => $action, '%user%' => $groupApplicationEntity->getUser()->getUname()]));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('success', $this->trans('Operation cancelled.'));
+                $this->addFlash(
+                    'success',
+                    $this->trans(
+                        'Application processed (%action% %user%)',
+                        ['%action%' => $action, '%user%' => $groupApplicationEntity->getUser()->getUname()]
+                    )
+                );
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('success', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_adminlist');
@@ -123,13 +128,16 @@ class ApplicationController extends AbstractController
         $groupCountIsLimit = 0 < $group->getNbumax() && $group->getUsers()->count() > $group->getNbumax();
         $alreadyGroupMember = $group->getUsers()->contains($userEntity);
         if ($groupTypeIsCore || $groupStateIsClosed || $groupCountIsLimit || $alreadyGroupMember) {
-            $this->addFlash('error', $this->getSpecificGroupMessage($groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember));
+            $this->addFlash(
+                'error',
+                $this->getSpecificGroupMessage($groupTypeIsCore, $groupStateIsClosed, $groupCountIsLimit, $alreadyGroupMember)
+            );
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
         $existingApplication = $applicationRepository->findOneBy(['group' => $group, 'user' => $userEntity]);
         if ($existingApplication) {
-            $this->addFlash('info', $this->trans('You already have a pending application. Please wait until the administrator notifies you.'));
+            $this->addFlash('info', 'You already have a pending application. Please wait until the administrator notifies you.');
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');
         }
@@ -146,10 +154,9 @@ class ApplicationController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $newApplicationEvent = new GenericEvent($groupApplicationEntity);
                 $eventDispatcher->dispatch($newApplicationEvent, GroupEvents::GROUP_NEW_APPLICATION);
-                $this->addFlash('status', $this->trans('Done! The application has been sent. You will be notified by email when the application is processed.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Application cancelled.'));
+                $this->addFlash('status', 'Done! The application has been sent. You will be notified by email when the application is processed.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Application cancelled.');
             }
 
             return $this->redirectToRoute('zikulagroupsmodule_group_list');

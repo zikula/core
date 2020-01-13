@@ -71,7 +71,7 @@ class ModuleListener implements EventSubscriberInterface
             $this->variableApi->set(VariableApi::CONFIG, 'startargs');
             $request = $this->requestStack->getCurrentRequest();
             if (null !== $request && $request->hasSession() && ($session = $request->getSession())) {
-                $session->getFlashBag()->add('info', $this->translator->trans('The startController was reset to a static frontpage.'));
+                $session->getFlashBag()->add('info', 'The startController was reset to a static frontpage.');
             }
         }
     }

@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 class PermissionCheckType extends AbstractType
 {
@@ -39,7 +40,7 @@ class PermissionCheckType extends AbstractType
             ])
             ->add('level', ChoiceType::class, [
                 'label' => 'Permission level',
-                'choices' => array_flip($options['permissionLevels']),
+                'choices' => /** @Ignore */array_flip($options['permissionLevels']),
                 'data' => ACCESS_READ
             ])
             ->add('check', ButtonType::class, [

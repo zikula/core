@@ -192,12 +192,12 @@ class UserAdministrationController extends AbstractController
                     $notificationErrors = $mailHelper->createAndSendUserMail($user, $form['usernotification']->getData(), $form['adminnotification']->getData(), $passToSend);
                 }
                 if (!empty($notificationErrors)) {
-                    $this->addFlash('error', $this->trans('Errors creating user!'));
+                    $this->addFlash('error', 'Errors creating user!');
                     $this->addFlash('error', implode('<br />', $notificationErrors));
                 }
                 $mapping->setUid($user->getUid());
                 if (!$authMethod->register($mapping->toArray())) {
-                    $this->addFlash('error', $this->trans('The create process failed for an unknown reason.'));
+                    $this->addFlash('error', 'The create process failed for an unknown reason.');
                     $userRepository->removeAndFlush($user);
                     $eventDispatcher->dispatch(new GenericEvent($user->getUid()), RegistrationEvents::DELETE_REGISTRATION);
 
@@ -210,17 +210,17 @@ class UserAdministrationController extends AbstractController
                 $eventDispatcher->dispatch(new GenericEvent($user), RegistrationEvents::REGISTRATION_SUCCEEDED);
 
                 if (UsersConstant::ACTIVATED_PENDING_REG === $user->getActivated()) {
-                    $this->addFlash('status', $this->trans('Done! Created new registration application.'));
+                    $this->addFlash('status', 'Done! Created new registration application.');
                 } elseif (null !== $user->getActivated()) {
-                    $this->addFlash('status', $this->trans('Done! Created new user account.'));
+                    $this->addFlash('status', 'Done! Created new user account.');
                 } else {
-                    $this->addFlash('error', $this->trans('Warning! New user information has been saved, however there may have been an issue saving it properly.'));
+                    $this->addFlash('error', 'Warning! New user information has been saved, however there may have been an issue saving it properly.');
                 }
 
                 return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
         }
 
@@ -294,10 +294,9 @@ class UserAdministrationController extends AbstractController
                 $eventDispatcher->dispatch($formDataEvent, UserEvents::EDIT_FORM_HANDLE);
                 $hookDispatcher->dispatch(UserManagementUiHooksSubscriber::EDIT_PROCESS, new ProcessHook($mapping->getUid()));
 
-                $this->addFlash('status', $this->trans("Done! Saved user's account information."));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', "Done! Saved user's account information.");
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
@@ -343,7 +342,7 @@ class UserAdministrationController extends AbstractController
                 }
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulazauthmodule_useradministration_list');
@@ -444,9 +443,8 @@ class UserAdministrationController extends AbstractController
                     $this->addFlash('success', $this->trans('Done! A password change will be required the next time %userName% logs in.', ['%userName%' => $user->getUname()]));
                 }
                 $this->getDoctrine()->getManager()->flush();
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('info', $this->trans('Operation cancelled.'));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('info', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulazauthmodule_useradministration_list');

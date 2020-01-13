@@ -142,7 +142,7 @@ class MenuController extends AbstractController
             return $this->redirectToRoute('zikulamenumodule_menu_list');
         }
         if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
-            $this->addFlash('status', $this->trans('Operation cancelled.'));
+            $this->addFlash('status', 'Operation cancelled.');
 
             return $this->redirectToRoute('zikulamenumodule_menu_list');
         }
@@ -168,16 +168,15 @@ class MenuController extends AbstractController
             'entity' => $menuItemEntity
         ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->get('delete')->isClicked()) {
-            $menuItemEntity = $form->get('entity')->getData();
-            $this->getDoctrine()->getManager()->remove($menuItemEntity);
-            $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('status', $this->trans('Menu removed!'));
-
-            return $this->redirectToRoute('zikulamenumodule_menu_list');
-        }
-        if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
-            $this->addFlash('status', $this->trans('Operation cancelled.'));
+        if ($form->isSubmitted()) {
+            if ($form->isSubmitted() && $form->get('delete')->isClicked()) {
+                $menuItemEntity = $form->get('entity')->getData();
+                $this->getDoctrine()->getManager()->remove($menuItemEntity);
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('status', 'Done! Menu removed.');
+            } elseif ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
+            }
 
             return $this->redirectToRoute('zikulamenumodule_menu_list');
         }

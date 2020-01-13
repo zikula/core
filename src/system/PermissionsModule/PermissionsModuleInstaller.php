@@ -58,9 +58,14 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
                 $this->entityManager->persist($record);
                 $lastPerm->setSequence($record->getSequence() + 1);
                 $this->entityManager->flush();
-                //$this->addFlash('success', $this->trans('A permission rule was added to allow users access to "utility" themes. Please check the sequence.'));
+                //$this->addFlash('success', 'A permission rule was added to allow users access to "utility" themes. Please check the sequence.');
 
             case '1.1.2':
+            case '1.2.0':
+            case '1.2.1':
+                $this->delVar('rowview');
+                $this->delVar('rowedit');
+            case '1.2.2':
             // future upgrade routines
         }
 
@@ -124,7 +129,5 @@ class PermissionsModuleInstaller extends AbstractExtensionInstaller
         $this->setVar('lockadmin', 1);
         $this->setVar('adminid', 1);
         $this->setVar('filter', 1);
-        $this->setVar('rowview', 25);
-        $this->setVar('rowedit', 35);
     }
 }

@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Locale settings form type.
@@ -51,7 +52,7 @@ class LocaleSettingsType extends AbstractType
             ])
             ->add('language_i18n', ChoiceType::class, [
                 'label' => 'Default language to use for this site',
-                'choices' => $options['languages']
+                'choices' => /** @Ignore */$options['languages']
             ])
             ->add('timezone', TimezoneType::class, [
                 'label' => 'Time zone for anonymous guests',

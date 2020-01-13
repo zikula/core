@@ -60,7 +60,7 @@ class CategoryController extends AbstractController
         );
         $form = $this->createFormBuilder()
             ->add('category', CategoryTreeType::class, [
-                'label' => 'New parent',
+                'label' => $this->trans('New parent'),
                 'includeLeaf' => false,
             ])->getForm();
 

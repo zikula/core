@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\SettingsModule\Validator\Constraints\ValidController;
 
@@ -123,13 +124,13 @@ class MainSettingsType extends AbstractType
             ])
             ->add('profilemodule', ChoiceType::class, [
                 'label' => 'Module used for managing user profiles',
-                'choices' => $options['profileModules'],
+                'choices' => /** @Ignore */$options['profileModules'],
                 'placeholder' => 'No profile module',
                 'required' => false
             ])
             ->add('messagemodule', ChoiceType::class, [
                 'label' => 'Module used for private messaging',
-                'choices' => $options['messageModules'],
+                'choices' => /** @Ignore */$options['messageModules'],
                 'placeholder' => 'No message module',
                 'required' => false
             ])

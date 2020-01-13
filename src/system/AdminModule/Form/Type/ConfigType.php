@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Configuration form type class.
@@ -66,26 +67,27 @@ class ConfigType extends AbstractType
                 'label' => 'Theme to use',
                 'required' => false,
                 'empty_data' => null,
-                'choices' => $this->formatThemeSelector($options['themes']),
+                'choices' => /** @Ignore */$this->formatThemeSelector($options['themes']),
                 'placeholder' => 'Use site\'s theme'
             ])
             ->add('startcategory', ChoiceType::class, [
                 'label' => 'Initially selected category',
                 'empty_data' => null,
-                'choices' => $options['categories']
+                'choices' => /** @Ignore */$options['categories']
             ])
             ->add('defaultcategory', ChoiceType::class, [
                 'label' => 'Default category for newly-added modules',
                 'empty_data' => null,
-                'choices' => $options['categories']
+                'choices' => /** @Ignore */$options['categories']
             ])
         ;
 
         foreach ($options['modules'] as $module) {
             $builder->add('modulecategory' . $module['name'], ChoiceType::class, [
+                /** @Ignore */
                 'label' => $module['displayname'],
                 'empty_data' => null,
-                'choices' => $options['categories']
+                'choices' => /** @Ignore */$options['categories']
             ]);
         }
 

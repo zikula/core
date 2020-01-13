@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 class LocaleType extends AbstractType
 {
@@ -28,7 +29,7 @@ class LocaleType extends AbstractType
                 'label_attr' => [
                     'class' => 'col-md-3'
                 ],
-                'choices' => $options['choices'],
+                'choices' => /** @Ignore */$options['choices'],
                 'choice_loader' => null,
                 'data' => $options['choice']
             ])

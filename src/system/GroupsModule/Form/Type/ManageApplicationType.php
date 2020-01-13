@@ -19,6 +19,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 
 /**
  * Application management form type class.
@@ -52,7 +54,8 @@ class ManageApplicationType extends AbstractType
                 'expanded' => true
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'deny' === $options['data']['theAction'] ? 'Deny' : 'Accept',
+                /** @Ignore */
+                'label' => 'deny' === $options['data']['theAction'] ? /** @Translate */'Deny' : /** @Translate */'Accept',
                 'icon' => 'deny' === $options['data']['theAction'] ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
                     'class' => 'btn btn-success'

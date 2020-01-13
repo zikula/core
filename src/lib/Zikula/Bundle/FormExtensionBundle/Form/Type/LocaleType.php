@@ -16,6 +16,7 @@ namespace Zikula\Bundle\FormExtensionBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 /**
@@ -38,7 +39,7 @@ class LocaleType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'choices' => $this->localeApi->getSupportedLocaleNames(),
+            'choices' => /** @Ignore */$this->localeApi->getSupportedLocaleNames(),
             'label' => 'Locale',
             'required' => false,
             'placeholder' => 'All',

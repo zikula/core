@@ -33,8 +33,6 @@ application "Routes" targets ZK30 {
     writeModelToDocs true
     generateTechnicalDocumentation false
     skipFiles "
-        .styleci.yml,
-        .travis.yml,
         CHANGELOG.md,
         Container/LinkContainer.php,
         Entity/Factory/EntityInitialiser.php,

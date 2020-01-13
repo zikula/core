@@ -10,12 +10,8 @@ _profiler:
     resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
     prefix:   /_profiler
 
-# This would need the JMSDiExtraBundle
-# http://jmsyst.com/bundles/JMSTranslationBundle/master/webinterface#installation
-#JMSTranslationBundle_ui:
-#    resource: @JMSTranslationBundle/Controller/
-#    type:     annotation
-#    prefix:   /_trans
+_translation:
+    resource: routes/dev/php_translation.yaml
 
 _main:
     resource: routing.yml

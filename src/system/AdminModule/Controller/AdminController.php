@@ -113,10 +113,9 @@ class AdminController extends AbstractController
                 $adminCategory = $form->getData();
                 $this->getDoctrine()->getManager()->persist($adminCategory);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! Created new category.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Created new category.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -152,10 +151,9 @@ class AdminController extends AbstractController
                     throw new AccessDeniedException();
                 }
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! Saved category.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Saved category.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');
@@ -189,9 +187,9 @@ class AdminController extends AbstractController
                 $category = $form->getData();
                 $this->getDoctrine()->getManager()->remove($category);
                 $this->getDoctrine()->getManager()->flush();
-                $this->addFlash('status', $this->trans('Done! Category deleted.'));
+                $this->addFlash('status', 'Done! Category deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulaadminmodule_admin_view');

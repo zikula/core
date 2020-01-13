@@ -31,9 +31,8 @@
         "elao/web-profiler-extra-bundle" : "2.*",
         "sensiolabs/security-checker" : "6.*",
 
-        "prolix/translation-bundle": "dev-master",
         "symfony/polyfill-intl-messageformatter": "1.*",
-        "php-translation/symfony-bundle": "0.*",
+        "php-translation/symfony-bundle": "dev-master",
         "nikic/php-parser": "4.*",
         "willdurand/js-translation-bundle": "4.4.x-dev",
 
@@ -62,15 +61,11 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/Guite/JMSTranslationBundle"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/php-translation/symfony-bundle"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/vanputten/BazingaJsTranslationBundle"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Guite/symfony-bundle"
         },
         {
             "type": "vcs",

@@ -1,0 +1,32 @@
+# for all configuration options look at the reference
+# https://php-translation.readthedocs.io/en/latest/symfony/configuration-reference.html
+translation:
+    #locales: [en]
+    locales: "%jms_i18n_routing.locales%"
+    configs:
+        #app: # default values
+        #    dirs: ["%kernel.project_dir%/templates", "%kernel.project_dir%/src"]
+        #    output_dir: "%kernel.project_dir%/translations"
+        #    excluded_names: ["*TestCase.php", "*Test.php"]
+        #    excluded_dirs: [cache, data, logs]
+        zikula:
+            dirs: ["%kernel.project_dir%/lib", "%kernel.project_dir%/system"]
+            output_dir: "%kernel.project_dir%/translations"
+            # TODO update after https://github.com/php-translation/extractor/issues/146 has been solved
+            excluded_names: ["*TestCase.php", "*Test.php", "TranslatorTrait.php", "SessionExtension.php", "MetaData.php", "CategoryType.php", "CategoriesModuleInstaller.php", "RouteLoader.php", "ZikulaPatternGenerationStrategy.php"]
+            #excluded_names: ["*TestCase.php", "*Test.php"]
+            excluded_dirs: [vendor, cache, data, log]
+            output_format: yaml # One of "php"; "yml"; "xlf"; "po"
+        extension:
+            excluded_names: ["*TestCase.php", "*Test.php"]
+            excluded_dirs: [vendor]
+            output_format: yaml # One of "php"; "yml"; "xlf"; "po"
+
+    # edit translations directly in the context of a page
+    edit_in_place:
+        # https://php-translation.readthedocs.io/en/latest/symfony/edit-in-place.html
+        enabled: true
+        #config_name: app
+        config_name: zikula # the configuration to use
+        activator: php_translation.edit_in_place.activator
+        show_untranslatable: true # show untranslatable messages with a corresponding icon

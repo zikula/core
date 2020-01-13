@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\RoutesModule\Form\Type\Field\MultiListType;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 
@@ -202,6 +203,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
             'attr' => [
                 'class' => 'form-control-sm text-right'
             ],
+            /** @Ignore */
             'choices' => [
                 5 => 5,
                 10 => 10,

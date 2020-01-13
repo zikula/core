@@ -50,7 +50,7 @@ class InstallerController extends AbstractController
         // check php
         $ini_warnings = $this->controllerHelper->initPhp();
         if (null !== $session && 0 < count($ini_warnings)) {
-            $session->getFlashBag()->add('warning', implode('<hr>', $ini_warnings));
+            $session->getFlashBag()->add('warning', implode('<hr />', $ini_warnings));
         }
 
         $request->setLocale($this->container->getParameter('locale'));

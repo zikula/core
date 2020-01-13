@@ -34,6 +34,7 @@
         - Removed afarkas/webshim (#3925)
         - Removed bootstrap-plus/bootstrap-jqueryui (use jQuery UI directly)
         - Removed doctrine/doctrine-cache-bundle (in favour of [Symfony/Cache](https://symfony.com/doc/current/components/cache.html))
+        - Removed jms/translation-bundle (in favour of php-translation/*)
         - Removed oyejorge/less.php
         - Removed ramsey/array_column
         - Removed sensio/distribution-bundle (in favour of Flex)
@@ -99,15 +100,17 @@
     - Support arrays and longer strings in the `extra` field of search results (#3619, #3900).
     - More user-friendly response messages during account information recovery (#3723).
     - Scalar type hints have been added to all method arguments and return values; corresponding docblocks have been dropped (#3960).
-    - Added CLI Commands to manage extension installation, upgrade & uninstall (#3517)
-    - Added ability to choose a Font Awesome icon for admin categories and categories (#3598)
+    - Added CLI Commands to manage extension installation, upgrade and uninstall (#3517).
+    - Added ability to choose a Font Awesome icon for admin categories and categories (#3598).
+    - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
     - components/bootstrap updated from 3.4.1 to 4.4.1
     - components/font-awesome updated from 4.7.0 to 5.12.0
-    - composer/ca-bundle updated from 1.2.4 to 1.2.5
+    - composer/ca-bundle updated from 1.2.4 to 1.2.6
     - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
+    - composer/semver updated from 1.5.0 to 1.5.1
     - composer/spdx-licenses installed in 1.5.2
     - composer/xdebug-handler installed in 1.4.0
     - doctrine/annotations updated from 1.2.7 to 1.8.0
@@ -131,7 +134,6 @@
     - imagine/imagine updated from 0.7.1 to 1.3.3
     - itsjavi/fontawesome-iconpicker installed in 3.2.0
     - jms/i18n-routing-bundle updated from 2.0.0 to 3.0.3 (temporarily using remmel/i18n-routing-bundle dev-master instead)
-    - jms/translation-bundle updated from 1.3.2 to 1.4.4 (temporarily using prolix/1.4.11 instead)
     - jquery.mmenu updated from 7.3.3 to mmenu.js 8.4.5
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 3.1.0
@@ -148,12 +150,12 @@
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - php-translation/common installed in 3.0.0
     - php-translation/extractor installed in 2.0.0
-    - php-translation/symfony-bundle installed in 0.11.0
+    - php-translation/symfony-bundle installed in 0.11.0 (temporarily using Guite/dev-master instead)
     - php-translation/symfony-storage installed in 2.1.0
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2
-    - seld/phar-utils installed in 1.0.1
+    - seld/phar-utils installed in 1.0.2
     - sensio/framework-extra-bundle updated from 3.0.29 to 5.5.3
     - sensiolabs/security-checker updated from 5.0.3 to 6.0.3
     - swiftmailer/swiftmailer updated from 5.4.12 to 6.2.3
