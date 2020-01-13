@@ -125,7 +125,7 @@
     - egulias/email-validator installed in 2.1.14
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
     - erusev/parsedown installed in 1.7.4
-    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.1
+    - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
     - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.38
     - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
     - imagine/imagine updated from 0.7.1 to 1.3.3
