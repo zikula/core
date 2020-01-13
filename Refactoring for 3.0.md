@@ -2,6 +2,30 @@
 
 ## Modules
 
+### Composer file
+
+Add the following capability for defining the (default) admin icon:
+
+```yaml
+    ...
+    "extra": {
+        "zikula": {
+            ...
+            "capabilities": {
+                ...
+                "admin": {
+                    ...
+                    "icon": "fas fa-star"
+                },
+                ...
+            },
+        },
+    },
+
+```
+
+You can remove the old `admin.png` file afterwards.
+
 ### Interfaces
 
 In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said
