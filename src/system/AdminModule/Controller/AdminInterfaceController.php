@@ -268,7 +268,12 @@ class AdminInterfaceController extends AbstractController
 
             // url
             try {
-                $menuTextUrl = isset($adminModule['capabilities']['admin']['route']) ? $router->generate($adminModule['capabilities']['admin']['route']) : $adminModule['capabilities']['admin']['url'];
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
+                    ? $router->generate($adminModule['capabilities']['admin']['route'])
+                    : '';
+                if ('' === $menuTextUrl) {
+                    $menuTextUrl = $adminModule['capabilities']['admin']['url'] ?? '';
+                }
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
                 $menuText .= ' (<i class="fa fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
