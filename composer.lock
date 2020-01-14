@@ -3990,12 +3990,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guite/symfony-bundle.git",
-                "reference": "a24efdd4bf99f8281fd7037ae4a34d0ad05cb2a2"
+                "reference": "5c856904bbcb16f2dc4d9214085441c669dcd3da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/symfony-bundle/zipball/a24efdd4bf99f8281fd7037ae4a34d0ad05cb2a2",
-                "reference": "a24efdd4bf99f8281fd7037ae4a34d0ad05cb2a2",
+                "url": "https://api.github.com/repos/Guite/symfony-bundle/zipball/5c856904bbcb16f2dc4d9214085441c669dcd3da",
+                "reference": "5c856904bbcb16f2dc4d9214085441c669dcd3da",
                 "shasum": ""
             },
             "require": {
@@ -4068,7 +4068,7 @@
             "support": {
                 "source": "https://github.com/Guite/symfony-bundle/tree/master"
             },
-            "time": "2020-01-13T17:50:13+00:00"
+            "time": "2020-01-14T06:52:48+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
