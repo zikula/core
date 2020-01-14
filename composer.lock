@@ -410,12 +410,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "6c795dedc0c72ffd2e16b43ef04a839f534eb66b"
+                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/6c795dedc0c72ffd2e16b43ef04a839f534eb66b",
-                "reference": "6c795dedc0c72ffd2e16b43ef04a839f534eb66b",
+                "url": "https://api.github.com/repos/composer/composer/zipball/dbcf592ea22553d90cf27e81501fe279345473f6",
+                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-14T08:36:53+00:00"
+            "time": "2020-01-14T15:33:39+00:00"
         },
         {
             "name": "composer/installers",
@@ -6608,16 +6608,16 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "4.4.x-dev",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vanputten/BazingaJsTranslationBundle.git",
-                "reference": "d795253d36119cfc8fab02e06389ec0f22eb3934"
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
+                "reference": "159397515e67dd071a530cf8e238434808e6f1f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vanputten/BazingaJsTranslationBundle/zipball/d795253d36119cfc8fab02e06389ec0f22eb3934",
-                "reference": "d795253d36119cfc8fab02e06389ec0f22eb3934",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/159397515e67dd071a530cf8e238434808e6f1f7",
+                "reference": "159397515e67dd071a530cf8e238434808e6f1f7",
                 "shasum": ""
             },
             "require": {
@@ -6636,7 +6636,7 @@
                 "phpunit/phpunit": "^4.8|~5.7|~6.5",
                 "symfony/asset": "~3.4|~4.0|~5.0",
                 "symfony/browser-kit": "~3.4|~4.0|~5.0",
-                "symfony/phpunit-bridge": "^3.4.24|^4.0|^5.0",
+                "symfony/phpunit-bridge": "^5.0",
                 "symfony/twig-bundle": "~3.4|~4.0|~5.0",
                 "symfony/yaml": "~3.4|~4.0|~5.0"
             },
@@ -6651,6 +6651,7 @@
                     "Bazinga\\Bundle\\JsTranslationBundle\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6666,10 +6667,7 @@
                 "symfony",
                 "translation"
             ],
-            "support": {
-                "source": "https://github.com/vanputten/BazingaJsTranslationBundle/tree/4.4"
-            },
-            "time": "2019-12-11T13:32:00+00:00"
+            "time": "2020-01-14T17:02:24+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -7138,7 +7136,6 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
-        "willdurand/js-translation-bundle": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "jms/i18n-routing-bundle": 20,
