@@ -22,7 +22,6 @@ use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
