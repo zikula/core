@@ -61,8 +61,7 @@ class AjaxController extends AbstractController
 
         // get the module name
         $displayname = $module->getDisplayName();
-        $url = $module['capabilities']['admin']['url']
-            ?? $router->generate($module['capabilities']['admin']['route']);
+        $url = $router->generate($module['capabilities']['admin']['route']);
         $oldCategory = $adminCategoryRepository->getModuleCategory($moduleId);
         $sortOrder = $adminModuleRepository->countModulesByCategory($newParentCat);
 
