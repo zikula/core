@@ -4,7 +4,7 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-plus"></span>
+    <span class="fas fa-plus"></span>
     {% trans with {"%sub%": user.uname} %}Approve registration of %sub%{% endtrans %}
     {{ pageSetVar('title', 'Approve registration'|trans) }}
 </h3>
@@ -43,9 +43,9 @@
         <div class="col-md-9">
             <div class="form-control-plaintext">
                 {% if user.isapproved is empty or not user.isapproved %}
-                    <span class="fa fa-times fa-fw fa-red"></span>{% trans %}Not yet approved{% endtrans %}
+                    <span class="fas fa-times fa-fw fa-red"></span>{% trans %}Not yet approved{% endtrans %}
                 {% else %}
-                    <span class="fa fa-check fa-fw fa-green"></span>{% trans %}Approved{% endtrans %} <span class="small">{% trans %}(or approval was not required when the registration was completed){% endtrans %}</span>
+                    <span class="fas fa-check fa-fw fa-green"></span>{% trans %}Approved{% endtrans %} <span class="small">{% trans %}(or approval was not required when the registration was completed){% endtrans %}</span>
                 {% endif %}
             </div>
         </div>

@@ -32,7 +32,7 @@ As above for the standard NavBar, you must set the `childrenAttributes` as
 
 On the displayed parent (the actual first child)
 you must set an option for `attributes` with a value of *at least* `{"dropdown":true}`. You can
-add an icon or other attributes as you need like so: `{"icon":"fa fa-list","dropdown":true}`
+add an icon or other attributes as you need like so: `{"icon":"fas fa-list","dropdown":true}`
 
 For each grand-child, no special options are required. options like *route* or *URI* and
 *attributes* are still functional.

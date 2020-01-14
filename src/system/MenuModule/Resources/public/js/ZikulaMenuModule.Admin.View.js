@@ -16,7 +16,7 @@
             },
             'types': {
                 'default': {
-                    'icon': 'fa fa-check-circle'
+                    'icon': 'fas fa-check-circle'
                 }
             },
             'plugins': [
@@ -31,49 +31,49 @@
                     action: function (obj) {
                         performContextMenuAction(node, 'edit');
                     },
-                    icon: 'fa fa-edit'
+                    icon: 'fas fa-edit'
                 },
                 deleteItem: {
                     label: Translator.trans('Delete'),
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
-                    icon: 'fa fa-times'
+                    icon: 'fas fa-times'
                 },
                 copyItem: {
                     label: Translator.trans('Copy'),
                     action: function (obj) {
                         performContextMenuAction(node, 'copy');
                     },
-                    icon: 'fa fa-copy'
+                    icon: 'fas fa-copy'
                 },
                 // activateItem: {
                 //     label: Translator.trans('Activate'),
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'activate');
                 //     },
-                //     icon: 'fa fa-check-square'
+                //     icon: 'fas fa-check-square'
                 // },
                 // deactivateItem: {
                 //     label: Translator.trans('Deactivate'),
                 //     action: function (obj) {
                 //         performContextMenuAction(node, 'deactivate');
                 //     },
-                //     icon: 'fa fa-square'
+                //     icon: 'fas fa-square'
                 // },
                 addItemAfter: {
                     label: Translator.trans('Add sibling item (after selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
-                    icon: 'fa fa-level-up-alt fa-rotate-90'
+                    icon: 'fas fa-level-up-alt fa-rotate-90'
                 },
                 addItemInto: {
                     label: Translator.trans('Add child item (into selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },
-                    icon: 'fa fa-long-arrow-alt-right'
+                    icon: 'fas fa-long-arrow-alt-right'
                 }
             };
         }
@@ -87,7 +87,7 @@
             var nodeId = $(node).attr('id');
             var entityId;
             // append spinner
-            $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
+            $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fas fa-spinner fa-spin fa-lg text-primary"></i>');
 
             var pars = {};
             switch (action) {
@@ -246,7 +246,7 @@
                     case 'DeleteAndMoveChildren':
                         if (!$('#children_move').length) {
                             // present dialog to determine new parent
-                            $(this).prepend('<i id="button-spinner" class="fa fa-cog fa-spin fa-lg text-danger"></i> ');
+                            $(this).prepend('<i id="button-spinner" class="fas fa-cog fa-spin fa-lg text-danger"></i> ');
                             $.ajax({
                                 type: 'POST',
                                 url: Routing.generate('zikulacategoriesmodule_ajax_deletedialog'),

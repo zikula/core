@@ -4,13 +4,13 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-wrench"></span>
+    <span class="fas fa-wrench"></span>
     {% trans %}Settings{% endtrans %}
     {{ pageSetVar('title', 'Mailer settings'|trans) }}
 </h3>
 
 <p class="alert alert-info">
-    {% set link = '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fa fa-external-link-alt"></i>' ~ 'SwiftMailer configuration'|trans ~'</a>' %}
+    {% set link = '<a href="https://symfony.com/doc/current/reference/configuration/swiftmailer.html"><i class="fas fa-external-link-alt"></i>' ~ 'SwiftMailer configuration'|trans ~'</a>' %}
     {% trans with {'%link%' : link|raw } %}Mailer relies on %link%{% endtrans %}
 </p>
 

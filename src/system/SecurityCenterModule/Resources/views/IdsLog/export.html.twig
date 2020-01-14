@@ -4,17 +4,17 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-download"></span>
+    <span class="fas fa-download"></span>
     {% trans %}Export IDS log{% endtrans %}
     {{ pageSetVar('title', 'Export IDS log'|trans) }}
 </h3>
 
 <ul class="nav nav-modulelinks">
     <li class="nav-item">
-        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{% trans %}Download the entire log to a CSV file{% endtrans %}" class="nav-link active"><i class="fa fa-download"></i> {% trans %}Export IDS Log{% endtrans %}</a>
+        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{% trans %}Download the entire log to a CSV file{% endtrans %}" class="nav-link active"><i class="fas fa-download"></i> {% trans %}Export IDS Log{% endtrans %}</a>
     </li>
     <li class="nav-item">
-        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{% trans %}Delete the entire log.{% endtrans %}" class="nav-link"><i class="fa fa-trash-alt"></i> {% trans %}Purge IDS Log{% endtrans %}</a>
+        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{% trans %}Delete the entire log.{% endtrans %}" class="nav-link"><i class="fas fa-trash-alt"></i> {% trans %}Purge IDS Log{% endtrans %}</a>
     </li>
 </ul>
 

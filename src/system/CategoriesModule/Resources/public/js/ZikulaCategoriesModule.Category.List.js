@@ -32,7 +32,7 @@
             'plugins': [ 'contextmenu', 'dnd', 'search', 'state', 'types' ],
             'types' : {
                 'default' : {
-                    'icon': 'fa fa-folder'
+                    'icon': 'fas fa-folder'
                 },
                 'leaf' : {
                     'icon': false
@@ -72,49 +72,49 @@
                     action: function (obj) {
                         performContextMenuAction(node, 'edit');
                     },
-                    icon: 'fa fa-edit'
+                    icon: 'fas fa-edit'
                 },
                 deleteItem: {
                     label: Translator.trans('Delete'),
                     action: function (obj) {
                         getDeleteMenuAction(node);
                     },
-                    icon: 'fa fa-times'
+                    icon: 'fas fa-times'
                 },
                 copyItem: {
                     label: Translator.trans('Copy'),
                     action: function (obj) {
                         performContextMenuAction(node, 'copy');
                     },
-                    icon: 'fa fa-copy'
+                    icon: 'fas fa-copy'
                 },
                 activateItem: {
                     label: Translator.trans('Activate'),
                     action: function (obj) {
                         performContextMenuAction(node, 'activate');
                     },
-                    icon: 'fa fa-check-square'
+                    icon: 'fas fa-check-square'
                 },
                 deactivateItem: {
                     label: Translator.trans('Deactivate'),
                     action: function (obj) {
                         performContextMenuAction(node, 'deactivate');
                     },
-                    icon: 'fa fa-square'
+                    icon: 'fas fa-square'
                 },
                 addItemAfter: {
                     label: Translator.trans('Add sibling item (after selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addafter');
                     },
-                    icon: 'fa fa-level-up-alt fa-rotate-90'
+                    icon: 'fas fa-level-up-alt fa-rotate-90'
                 },
                 addItemInto: {
                     label: Translator.trans('Add child item (into selected)'),
                     action: function (obj) {
                         performContextMenuAction(node, 'addchild');
                     },
-                    icon: 'fa fa-long-arrow-alt-right'
+                    icon: 'fas fa-long-arrow-alt-right'
                 }
             };
             if (treeElem.jstree('is_disabled', node, true)) {
@@ -139,7 +139,7 @@
                 var nodeId = $(node).attr('id');
                 entityId = nodeId.replace(id_prefix, '');
                 // append spinner
-                $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fa fa-spinner fa-spin fa-lg text-primary"></i>');
+                $('#' + nodeId).find('a').first().after('<i id="temp-spinner" class="fas fa-spinner fa-spin fa-lg text-primary"></i>');
             }
 
             var pars = {};

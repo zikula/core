@@ -23,7 +23,7 @@
                     icon = 'compress';
                 }
                 nextElement.addClass(classes);
-                $(this).html(titleText + ' <a role="button" data-toggle="collapse" href="#' + nextId + '"><i class="fa fa-' + icon + ' small block-expander"></i></a>');
+                $(this).html(titleText + ' <a role="button" data-toggle="collapse" href="#' + nextId + '"><i class="fas fa-' + icon + ' small block-expander"></i></a>');
             }
         });
         $('.collapse').on('hide.bs.collapse', function() {

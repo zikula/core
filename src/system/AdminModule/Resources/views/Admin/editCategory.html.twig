@@ -5,11 +5,11 @@
 {{ adminHeader() }}
 <h3>
     {% if form.vars.value.cid %}
-        <span class="fa fa-pencil-alt"></span>
+        <span class="fas fa-pencil-alt"></span>
         {% trans %}Edit module category{% endtrans %}
         {{ pageSetVar('title', 'Edit module category'|trans) }}
     {% else %}
-        <span class="fa fa-file-plus"></span>
+        <span class="fas fa-file-plus"></span>
         {% trans %}Create new module category{% endtrans %}
         {{ pageSetVar('title', 'Create new module category'|trans) }}
     {% endif %}

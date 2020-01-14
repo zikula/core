@@ -1,16 +1,16 @@
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-archive"></span>
+    <span class="fas fa-archive"></span>
     {% trans %}View IDS log{% endtrans %}
     {{ pageSetVar('title', 'View IDS log'|trans) }}
 </h3>
 
 <ul class="nav nav-modulelinks">
     <li class="nav-item">
-        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{% trans %}Download the entire log to a CSV file{% endtrans %}" class="nav-link"><i class="fa fa-download"></i> {% trans %}Export IDS Log{% endtrans %}</a>
+        <a href="{{ path('zikulasecuritycentermodule_idslog_export') }}" title="{% trans %}Download the entire log to a CSV file{% endtrans %}" class="nav-link"><i class="fas fa-download"></i> {% trans %}Export IDS Log{% endtrans %}</a>
     </li>
     <li class="nav-item">
-        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{% trans %}Delete the entire log.{% endtrans %}" class="nav-link"><i class="fa fa-trash-alt"></i> {% trans %}Purge IDS Log{% endtrans %}</a>
+        <a href="{{ path('zikulasecuritycentermodule_idslog_purge') }}" title="{% trans %}Delete the entire log.{% endtrans %}" class="nav-link"><i class="fas fa-trash-alt"></i> {% trans %}Purge IDS Log{% endtrans %}</a>
     </li>
 </ul>
 
@@ -31,7 +31,7 @@
         {{ form_row(filterForm.ip) }}
         {{ form_row(filterForm.impact) }}
         {% if filter.uid or filter.name or filter.tag or filter.value or filter.page or filter.ip or filter.impact %}
-            <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{% trans %}Clear filter{% endtrans %}"><i class="fa fa-times"></i></a>
+            <a href="{{ path('zikulasecuritycentermodule_idslog_view') }}" title="{% trans %}Clear filter{% endtrans %}"><i class="fas fa-times"></i></a>
         {% endif %}
     </fieldset>
     {{ form_end(filterForm) }}
@@ -106,7 +106,7 @@
                     </td>
                     <td headers="hDate">{{ event.date|format_date('medium') }}</td>
                     <td headers="hActions" class="text-right">
-                        <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', {id: event.id, token: csrfToken}) }}"><i class="fa fa-times"></i></a>
+                        <a href="{{ path('zikulasecuritycentermodule_idslog_deleteentry', {id: event.id, token: csrfToken}) }}"><i class="fas fa-times"></i></a>
                     </td>
                 </tr>
             {% endfor %}

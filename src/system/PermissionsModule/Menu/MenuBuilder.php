@@ -54,24 +54,24 @@ class MenuBuilder
         $menu->setChildrenAttribute('class', 'list-inline');
         $menu->addChild($this->trans('Insert permission rule before %pid%', ['%pid%' => $permission->getPid()]), [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-plus')
+            ])->setAttribute('icon', 'fas fa-plus')
             ->setLinkAttributes(['class' => 'create-new-permission insertBefore pointer tooltips']);
 
         if (!$lockAdmin || $adminPermId !== $permission->getPid()) {
             $menu->addChild($this->trans('Edit permission %pid%', ['%pid%' => $permission->getPid()]), [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-pencil-alt')
+            ])->setAttribute('icon', 'fas fa-pencil-alt')
                 ->setLinkAttributes(['class' => 'edit-permission pointer tooltips']);
 
             $menu->addChild($this->trans('Delete permission %pid%', ['%pid%' => $permission->getPid()]), [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-trash-alt')
+            ])->setAttribute('icon', 'fas fa-trash-alt')
                 ->setLinkAttributes(['class' => 'delete-permission pointer tooltips']);
         }
 
         $menu->addChild($this->trans('Check a users permission'), [
                 'uri' => '#'
-            ])->setAttribute('icon', 'fa fa-key')
+            ])->setAttribute('icon', 'fas fa-key')
             ->setLinkAttributes(['class' => 'test-permission pointer tooltips']);
 
         return $menu;

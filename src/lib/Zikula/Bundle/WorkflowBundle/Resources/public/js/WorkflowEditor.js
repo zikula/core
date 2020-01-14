@@ -185,7 +185,7 @@ function initDiagramEventListeners() {
 }
 
 var addNodeTools = function(node) {
-    node.append('<p class="node-tools"><i class="ep fa fa-exchange" title="' + Translator.trans('Add connection') + '"></i><i class="fa fa-trash-alt pointer" title="' + Translator.trans('Remove element') + '"></i></p>');
+    node.append('<p class="node-tools"><i class="ep fas fa-exchange" title="' + Translator.trans('Add connection') + '"></i><i class="fas fa-trash-alt pointer" title="' + Translator.trans('Remove element') + '"></i></p>');
     node.find('i.fa-trash-alt').click(function (event) {
         plumbInstance.remove(node.attr('id'));
         regenerateOutput();
@@ -376,7 +376,7 @@ jsPlumb.ready(function () {
 /*                          overlays:[
     ["Custom", {
       create:function(component) {
-        return jQuery("<select id='myDropDown'><option value='foo'>foo</option><option value='bar'>bar</option></select>");                
+        return jQuery("<select id='myDropDown'><option value='foo'>foo</option><option value='bar'>bar</option></select>");
       },
       location:0.7,
       id:"customOverlay"

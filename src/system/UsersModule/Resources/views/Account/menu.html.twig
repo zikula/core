@@ -23,7 +23,7 @@
             {% elseif '.' in link.icon and link.module|default %}
                 {% set icon = '<img title="' ~ imageTitle ~ '" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
             {% else %}
-                {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-2x fa-'~link.icon~'"></i>' %}
+                {% set icon = '<i title="' ~ imageTitle ~ '" class="fas fa-2x fa-'~link.icon~'"></i>' %}
             {% endif %}
             <a href="{{ link.url }}">{{ icon|raw }}</a><br />
         {% endif %}

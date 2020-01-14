@@ -67,7 +67,7 @@
                     var newtab = '<li class="dropdown droppable nowrap" data-catid='+data.id+'>'+
                         '<a class="dropdown-toggle" href="#" data-toggle="dropdown"'+
                         '">'+
-                        '<span class="fa fa-arrows-alt admintabs-unlock"></span> '+
+                        '<span class="fas fa-arrows-alt admintabs-unlock"></span> '+
                         data.name+
                         '</a>'+
                         '<ul class="admintabs-new dropdown-menu"></ul>'+

@@ -4,7 +4,7 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-plus"></span>
+    <span class="fas fa-plus"></span>
     {% trans with {'%uname': form.vars.value.uname} %}Edit user account of %uname{% endtrans %}
     {{ pageSetVar('title', 'Edit user account'|trans) }}
 </h3>
@@ -54,11 +54,11 @@
 </div>
 <fieldset>
     <legend>
-        <i class="fa fa-cog"></i> {% trans with {'%s': form.vars.value.uname} %}Other actions for %s{% endtrans %}
+        <i class="fas fa-cog"></i> {% trans with {'%s': form.vars.value.uname} %}Other actions for %s{% endtrans %}
     </legend>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            <a class="btn btn-danger" href="{{ path('zikulausersmodule_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fa fa-trash-alt"></i> {% trans %}Delete user account{% endtrans %}</a>
+            <a class="btn btn-danger" href="{{ path('zikulausersmodule_useradministration_delete', {'user': form.vars.value.uid}) }}"><i class="fas fa-trash-alt"></i> {% trans %}Delete user account{% endtrans %}</a>
         </div>
     </div>
 </fieldset>

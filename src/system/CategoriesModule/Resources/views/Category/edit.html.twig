@@ -37,9 +37,9 @@
     </div>
 </fieldset>
 <fieldset>
-    <legend><a href="#category-attributes" data-toggle="collapse">{% trans %}Attributes{% endtrans %} <i class="fa fa-expand"></i></a></legend>
+    <legend><a href="#category-attributes" data-toggle="collapse">{% trans %}Attributes{% endtrans %} <i class="fas fa-expand"></i></a></legend>
     <div class="collapse" id="category-attributes">
-        <p><button id="add-another-attribute" class="btn btn-success btn-sm"><i class="fa fa-plus"></i> {% trans %}Add attribute{% endtrans %}</button></p>
+        <p><button id="add-another-attribute" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> {% trans %}Add attribute{% endtrans %}</button></p>
         <table class="table table-bordered table-striped">
             <colgroup>
                 <col id="cName" />
@@ -53,12 +53,12 @@
                 <th id="hActions" scope="col">&nbsp;</th>
             </tr>
             </thead>
-            <tbody id="attribute-table" data-prototype="&lt;td headers=&quot;hName&quot;&gt;{{ form_widget(form.attributes.vars.prototype.name)|e }}&lt;/td&gt;&lt;td headers=&quot;hValue&quot;&gt;{{ form_widget(form.attributes.vars.prototype.value)|e }}&lt;/td&gt&lt;td headers=&quot;hActions&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;category_attributes_remove&quot; title=&quot;Delete&quot;&gt;&lt;i class=&quot;fa fa-minus-square fa-lg text-danger&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/td&gt;">
+            <tbody id="attribute-table" data-prototype="&lt;td headers=&quot;hName&quot;&gt;{{ form_widget(form.attributes.vars.prototype.name)|e }}&lt;/td&gt;&lt;td headers=&quot;hValue&quot;&gt;{{ form_widget(form.attributes.vars.prototype.value)|e }}&lt;/td&gt&lt;td headers=&quot;hActions&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;category_attributes_remove&quot; title=&quot;Delete&quot;&gt;&lt;i class=&quot;fas fa-minus-square fa-lg text-danger&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/td&gt;">
             {% for attribute in form.attributes %}
                 <tr>
                     <td headers="hName">{{ form_widget(attribute.name) }}</td>
                     <td headers="hValue">{{ form_widget(attribute.value) }}</td>
-                    <td headers="hActions"><a href="#" class="category_attributes_remove" title="{% trans %}Delete{% endtrans %}"><i class="fa fa-minus-square fa-lg text-danger"></i></a></td>
+                    <td headers="hActions"><a href="#" class="category_attributes_remove" title="{% trans %}Delete{% endtrans %}"><i class="fas fa-minus-square fa-lg text-danger"></i></a></td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -116,7 +116,7 @@ col-md-9
 {# user live search input widget #}
 {% block zikulausersmodule_userlivesearch_widget %}
     <div id="{{ id }}LiveSearch" class="autocomplete-user d-none">
-        <i class="fa fa-search" title="{% trans from 'zikula' %}Search user{% endtrans %}"></i>
+        <i class="fas fa-search" title="{% trans from 'zikula' %}Search user{% endtrans %}"></i>
         <noscript><p>{% trans from 'zikula' %}This function requires JavaScript activated!{% endtrans %}</p></noscript>
         <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
         <input type="text" id="{{ id }}Selector" name="{{ id }}Selector" autocomplete="off" value="{{ user_name|e('html_attr') }}" title="{% trans from 'zikula' %}Enter a part of the user name to search{% endtrans %}" class="user-selector" />

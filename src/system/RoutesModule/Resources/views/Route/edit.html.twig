@@ -48,7 +48,7 @@
 
         {% if form.moderationSpecificCreator is defined or form.moderationSpecificCreationDate is defined %}
             <fieldset id="moderationFieldsSection">
-                <legend>{% trans %}Moderation{% endtrans %} <i class="fa fa-expand"></i></legend>
+                <legend>{% trans %}Moderation{% endtrans %} <i class="fas fa-expand"></i></legend>
                 <div id="moderationFieldsContent">
                     {% if form.moderationSpecificCreator is defined %}
                         {{ form_row(form.moderationSpecificCreator) }}

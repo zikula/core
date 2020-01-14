@@ -4,7 +4,7 @@
 ] %}
 {{ adminHeader() }}
 <h3>
-    <span class="fa fa-wrench"></span>
+    <span class="fas fa-wrench"></span>
     {% trans %}Main settings{% endtrans %}
     {{ pageSetVar('title', 'Main settings'|trans) }}
 </h3>
@@ -34,7 +34,7 @@
     {{ form_row(form.pagetitle) }}
     {{ form_row(form.adminmail) }}
     <div class="alert alert-danger">
-        <h4 class="col-md-9 offset-md-3"><i class="fa fa-exclamation-triangle"></i> {% trans %}CAUTION{% endtrans %}</h4>
+        <h4 class="col-md-9 offset-md-3"><i class="fas fa-exclamation-triangle"></i> {% trans %}CAUTION{% endtrans %}</h4>
         {{ form_row(form.siteoff) }}
         <div id="settings_siteoff_container">
             <div data-switch="zikulasettingsmodule_mainsettings[siteoff]" data-switch-value="1">

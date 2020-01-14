@@ -51,7 +51,7 @@
                                             {{ subscriber.areasToTitles[sarea]|default('Area') }} <span class="small">({{ sarea }})</span>
                                         </div>
                                         <div class="col-md-1 text-right">
-                                            <span class="fa fa-paperclip"></span>
+                                            <span class="fas fa-paperclip"></span>
                                         </div>
                                         <div class="col-md-6">
                                             {% for parea in providerAreas|filter(p => hookDispatcher.isAllowedBindingBetweenAreas(sarea, p)) %}

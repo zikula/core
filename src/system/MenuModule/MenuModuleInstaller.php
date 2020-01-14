@@ -84,7 +84,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $home->setOptions([
             'route' => 'home',
             'attributes' => [
-                'icon' => 'fa fa-home'
+                'icon' => 'fas fa-home'
             ]
         ]);
 
@@ -94,7 +94,7 @@ class MenuModuleInstaller extends AbstractExtensionInstaller
         $search->setOptions([
             'route' => 'zikulasearchmodule_search_execute',
             'attributes' => [
-                'icon' => 'fa fa-search'
+                'icon' => 'fas fa-search'
             ]
         ]);
 

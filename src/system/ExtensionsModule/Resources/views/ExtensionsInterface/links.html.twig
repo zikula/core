@@ -5,7 +5,7 @@
         {% else %}
             <li class="nav-item{% if link.links is defined %} dropdown{% endif %}{% if menu_css.menuItemClass is not empty and current_path != link.url %} {{ menu_css.menuItemClass }}{% endif %}">
                 <a href="{% if link.links is defined %}#{% else %}{{ link.url }}{% endif %}" title="{{ link.title|default('') }}"{% if link.id is defined %} id="{{ link.id }}"{% endif %} class="nav-link{% if link.links is defined %} dropdown-toggle{% endif %}{% if current_path == link.url %} active{% endif %}"{% if link.links is defined %} data-toggle="dropdown"{% endif %}>
-                    {% if link.icon|default %}<i class="fa fa-{{ link.icon }}"></i> {% endif %}
+                    {% if link.icon|default %}<i class="fas fa-{{ link.icon }}"></i> {% endif %}
                     {{ link.text }}
                 </a>
                 {% if link.links is defined %}

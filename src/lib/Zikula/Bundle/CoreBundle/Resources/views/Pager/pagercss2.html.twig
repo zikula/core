@@ -6,11 +6,11 @@
 <div class="{{ pagerPluginArray.class }}">
     {% if pagerPluginArray.currentPage > 1 %}
         <a href="{{ pagerPluginArray.prevUrl }}" class="skip">
-            <i class="fa fa-chevron-left fa-lg" title="{% trans %}Previous page', 'zikula{% endtrans %}"></i>
+            <i class="fas fa-chevron-left fa-lg" title="{% trans %}Previous page', 'zikula{% endtrans %}"></i>
         </a>
     {% else %}
         <span class="skip">
-            <i class="fa fa-chevron-left text-muted fa-lg" title="{% trans %}No previous page', 'zikula{% endtrans %}"></i>
+            <i class="fas fa-chevron-left text-muted fa-lg" title="{% trans %}No previous page', 'zikula{% endtrans %}"></i>
         </span>
     {% endif %}
     <span>{{ separator }}</span>
@@ -43,11 +43,11 @@
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}
         <a href="{{ pagerPluginArray.nextUrl }}" class="skip">
-            <i class="fa fa-chevron-right fa-lg" title="{% trans %}Next page', 'zikula{% endtrans %}"></i>
+            <i class="fas fa-chevron-right fa-lg" title="{% trans %}Next page', 'zikula{% endtrans %}"></i>
         </a>
     {% else %}
         <span class="skip">
-            <i class="fa fa-chevron-right text-muted fa-lg" title="{% trans %}No further pages', 'zikula{% endtrans %}"></i>
+            <i class="fas fa-chevron-right text-muted fa-lg" title="{% trans %}No further pages', 'zikula{% endtrans %}"></i>
         </span>
     {% endif %}
 </div>

@@ -10,10 +10,10 @@
             <div class="jtk-main">
                 <h2>{% trans %}Workflow editor{% endtrans %}</h2>
                 <div id="tools" class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-secondary" id="decreaseZoomLevel" title="{% trans %}Decrease zoom level{% endtrans %}"><i class="fa fa-search-minus"></i></button>
-                    <button type="button" class="btn btn-secondary" id="resetZoomLevel" title="{% trans %}Reset zoom level{% endtrans %}"><i class="fa fa-search"></i></button>
-                    <button type="button" class="btn btn-secondary" id="increaseZoomLevel" title="{% trans %}Increase zoom level{% endtrans %}"><i class="fa fa-search-plus"></i></button>
-                    <button type="button" class="btn btn-secondary" id="addNode" title="{% trans %}Add node{% endtrans %}"><i class="fa fa-plus"></i> {% trans %}Add node{% endtrans %}</button>
+                    <button type="button" class="btn btn-secondary" id="decreaseZoomLevel" title="{% trans %}Decrease zoom level{% endtrans %}"><i class="fas fa-search-minus"></i></button>
+                    <button type="button" class="btn btn-secondary" id="resetZoomLevel" title="{% trans %}Reset zoom level{% endtrans %}"><i class="fas fa-search"></i></button>
+                    <button type="button" class="btn btn-secondary" id="increaseZoomLevel" title="{% trans %}Increase zoom level{% endtrans %}"><i class="fas fa-search-plus"></i></button>
+                    <button type="button" class="btn btn-secondary" id="addNode" title="{% trans %}Add node{% endtrans %}"><i class="fas fa-plus"></i> {% trans %}Add node{% endtrans %}</button>
                 </div>
                 <div class="jtk-canvas canvas-wide jtk-surface jtk-surface-nopan" id="canvas">
                     {% for place in workflow.getPlaces() %}
