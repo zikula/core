@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Container;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class LinkContainer implements LinkContainerInterface
@@ -35,14 +39,35 @@ class LinkContainer implements LinkContainerInterface
      */
     private $permissionApi;
 
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
     public function __construct(
         TranslatorInterface $translator,
         RouterInterface $router,
-        PermissionApiInterface $permissionApi
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        RequestStack $requestStack,
+        ZikulaHttpKernelInterface $kernel
     ) {
         $this->translator = $translator;
         $this->router = $router;
         $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->requestStack = $requestStack;
+        $this->kernel = $kernel;
     }
 
     public function getLinks(string $type = LinkContainerInterface::TYPE_ADMIN): array
@@ -65,15 +90,49 @@ class LinkContainer implements LinkContainerInterface
             return $links;
         }
 
+        $i10nLinks = [];
+        $i10nLinks[] = [
+            'url' => $this->router->generate('zikulasettingsmodule_settings_locale'),
+            'text' => $this->translator->trans('Localisation settings'),
+            'icon' => 'spell-check'
+        ];
+        if (true === (bool)$this->variableApi->getSystemVar('multilingual')) {
+            if ('dev' === $this->kernel->getEnvironment()) {
+                $request = $this->requestStack->getCurrentRequest();
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    if ($session->has(EditInPlaceActivator::KEY)) {
+                        $i10nLinks[] = [
+                            'url' => $this->router->generate('zikulasettingsmodule_settings_toggleeditinplace'),
+                            'text' => $this->translator->trans('Disable edit in place') . ' (experimental)',
+                            'icon' => 'ban'
+                        ];
+                    } else {
+                        $i10nLinks[] = [
+                            'url' => $this->router->generate('zikulasettingsmodule_settings_toggleeditinplace'),
+                            'text' => $this->translator->trans('Enable edit in place') . ' (experimental)',
+                            'title' => $this->translator->trans('Edit translations directly in the context of a page'),
+                            'icon' => 'user-edit'
+                        ];
+                    }
+                }
+                $i10nLinks[] = [
+                    'url' => $this->router->generate('translation_index'),
+                    'text' => $this->translator->trans('Translation WebUI') . ' (experimental)',
+                    'title' => $this->translator->trans('Web interface to add, edit and remove translations'),
+                    'icon' => 'language'
+                ];
+            }
+        }
+
         $links[] = [
             'url' => $this->router->generate('zikulasettingsmodule_settings_main'),
             'text' => $this->translator->trans('Main settings'),
             'icon' => 'wrench'
         ];
         $links[] = [
-            'url' => $this->router->generate('zikulasettingsmodule_settings_locale'),
-            'text' => $this->translator->trans('Localisation settings'),
-            'icon' => 'globe'
+            'text' => $this->translator->trans('Localisation'),
+            'icon' => 'globe',
+            'links' => $i10nLinks
         ];
         $links[] = [
             'url' => $this->router->generate('zikulasettingsmodule_settings_phpinfo'),

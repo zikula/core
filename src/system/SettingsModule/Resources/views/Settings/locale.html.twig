@@ -10,8 +10,8 @@
 </h3>
 {% if not intl_installed|default(false) %}
     <div class="alert alert-danger">
-        {% set args = {"%ext": "<code>INTL</code>"|raw, "%locale": "<code>EN</code>"|raw} %}
-        {% trans with args %}WARNING: The PHP Extension %ext is not loaded. All functions using this will default to %locale. Seek assistance from your provider to install.'{% endtrans %}
+        {% set args = {'%ext%': '<code>INTL</code>'|raw, '%locale%': '<code>EN</code>'|raw} %}
+        {% trans with args %}WARNING: The PHP Extension %ext% is not loaded. All functions using this will default to %locale%. Seek assistance from your provider to install.{% endtrans %}
     </div>
 {% endif %}
 {{ form_start(form) }}

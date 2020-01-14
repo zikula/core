@@ -35,7 +35,7 @@ In this case, the extractor will export these strings to its own translation fil
 Then, your extension **must** manually include each of these files in the required template like so:
 
 ```twig
-{{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain:my_special_domain}), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
+{{ pageAddAsset('javascript', url('bazinga_jstranslation_js', {domain: 'my_special_domain'}), constant('Zikula\\ThemeModule\\Engine\\AssetBag::WEIGHT_JS_TRANSLATIONS')) }}
 ```
 
 ## Javascripts in Twig templates

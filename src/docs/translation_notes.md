@@ -8,9 +8,6 @@ alter use of TranslatorTrait
 look at \Zikula\Core\Controller\AbstractController use of translation (e.g. `decorateTranslator`) is this functional?
  can we override `$this->trans` calls with module domain automatically?
 
-Maybe still use our own Translator and override `trans` method with our custom domains (use decoration)
-  https://stackoverflow.com/questions/39470596/replacing-the-translator-service-in-symfony-3
-
 Maybe a listener to add something to every template to set the domain?
     `{% trans_default_domain "custom_domain" %}`
 

@@ -31,11 +31,6 @@ framework:
         cookie_samesite: lax
     fragments:       ~
 
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
-
 # Doctrine Configuration
 doctrine:
     dbal:

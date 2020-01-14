@@ -21,12 +21,3 @@ translation:
             excluded_names: ["*TestCase.php", "*Test.php"]
             excluded_dirs: [vendor]
             output_format: yaml # One of "php"; "yml"; "xlf"; "po"
-
-    # edit translations directly in the context of a page
-    edit_in_place:
-        # https://php-translation.readthedocs.io/en/latest/symfony/edit-in-place.html
-        enabled: true
-        #config_name: app
-        config_name: zikula # the configuration to use
-        activator: php_translation.edit_in_place.activator
-        show_untranslatable: true # show untranslatable messages with a corresponding icon
