@@ -53,7 +53,7 @@ class ValidAntiSpamAnswerValidator extends ConstraintValidator
         $errors = $this->validator->validate($value, [
             new EqualTo([
                 'value' => $correctAnswer,
-                'message' => $this->translator->trans('You did not provide the correct answer for the security question. Try %answer%!', ['%answer%' => $correctAnswer])
+                'message' => $this->translator->trans('You did not provide the correct answer for the security question. Try %answer%!', ['%answer%' => $correctAnswer], 'validators')
             ])
         ]);
         if (count($errors) > 0) {

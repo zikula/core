@@ -203,10 +203,6 @@ New: {% trans with {'%userName%': 'Mark Smith'} %}Hello %userName%{% endtrans %}
 3. With explicit domain and locale
 Old: {{ __('Hello', 'acmefoomodule', 'fr') }}
 New: {% trans with {} from 'acmefoomodule' into 'fr' %}Hello{% endtrans %} or {{ 'Hello'|trans({}, 'acmefoomodule', 'fr' }}
-
-4. With plural forms and advanced substitution (see note below)
-Old: {% set amountOfMembers = _fn('%amount% registered user', '%amount% registered users', users|length, {'%amount%': users|length}) %}
-New: {% trans count users|length %}plural_n.registered.user{# one registered user|n registered users #}{% endtrans %}
 ```
 
 See [Symfony docs](https://symfony.com/doc/current/translation/templates.html) for further details and examples of simple translation.
@@ -219,9 +215,13 @@ There is also a `desc` filter for specifying a default translation for a key (sa
 ```
 
 ### About plural forms
+Here is an example using plural forms, advanced substitution and the `desc` filter:
+```twig
+Old: {% set amountOfUsers = _fn('%amount% registered user', '%amount% registered users', users|length, {'%amount%': users|length}) %}
+New: {% set amountOfUsers = 'plural_n.registered.user'|trans({count: users|length})|desc('{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}') %}
+```
+
 The `plural_n` portion of the translation key is simply a convention established to note that this key requires plural translation.
-The comments `{# ... #}` are examples of what the translation should appear like in English. Unfortunately, we don't know how to communicate
-this comment in the translation file at this time.
 
 The translation of this would look something like:
 ```yaml

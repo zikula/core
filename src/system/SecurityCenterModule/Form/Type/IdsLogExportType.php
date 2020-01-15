@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * IDS Log export form type class.
@@ -70,5 +71,12 @@ class IdsLogExportType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_idslogexport';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translation_domain' => 'security'
+        ]);
     }
 }

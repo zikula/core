@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\SecurityCenterModule\Constant;
 
 /**
@@ -270,5 +271,12 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_config';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translation_domain' => 'security'
+        ]);
     }
 }

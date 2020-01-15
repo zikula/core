@@ -18,7 +18,7 @@
         '%4%': pagerPluginArray.itemEnd,
         '%5%': pagerPluginArray.total,
     } %}
-    {% trans with args from 'zikula' %}Page %1% / %2% (%3% - %4% of %5% total){% endtrans %}
+    {% trans with args %}Page %1% / %2% (%3% - %4% of %5% total){% endtrans %}
     </span>
 
     {% if pagerPluginArray.currentPage < pagerPluginArray.countPages %}

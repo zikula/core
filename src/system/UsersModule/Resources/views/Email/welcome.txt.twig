@@ -1,3 +1,4 @@
+{% trans_default_domain 'mail' %}
 {{ include('@ZikulaUsersModule/Email/header.txt.twig') }}
 {% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}Welcome to %sub%!{% endtrans %}
 

@@ -1,3 +1,4 @@
+{% trans_default_domain 'mail' %}
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig') }}
 {% set verificationurl = url('zikulazauthmodule_registration_verify', {'uname': user.uname, 'verifycode': verifycode}) %}
 {% trans with {'%sub%': getModVar('ZConfig', 'sitename')} %}Welcome to %sub%!{% endtrans %}

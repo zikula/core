@@ -85,7 +85,8 @@ class IdsLogFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'repository' => null
+            'repository' => null,
+            'translation_domain' => 'security'
         ]);
     }
 }
