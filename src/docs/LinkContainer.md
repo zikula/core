@@ -16,9 +16,9 @@ See the `LinkContainerInterface` and `LinkContainerCollector` for more informati
 Links in the module's LinkContainer should be and array structured like so:
 ```php
 [
-    'url'   => $this->router->generate('acmefoomodule_bar_baz'),
+    'url'  => $this->router->generate('acmefoomodule_bar_baz'),
     'text' => $this->translator->__('link text'),
-    'icon'  => 'user'
+    'icon' => 'user'
 ]
 ```
 
@@ -32,9 +32,9 @@ will attempt to resolve the full value to an image file placed in the module's `
 For example:
 ```php
 [
-    'url'   => $this->router->generate('acmefoomodule_bar_baz'),
+    'url'  => $this->router->generate('acmefoomodule_bar_baz'),
     'text' => $this->translator->__('link text'),
-    'icon'  => 'myimage.png'
+    'icon' => 'myimage.png'
 ]
 ```
 
