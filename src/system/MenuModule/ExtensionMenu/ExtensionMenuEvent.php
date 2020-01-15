@@ -18,7 +18,9 @@ use Knp\Menu\ItemInterface;
 class ExtensionMenuEvent
 {
     private $bundleName;
+
     private $menuType;
+
     private $menu;
 
     public function __construct(string $bundleName, string $menuType, ItemInterface $menu)

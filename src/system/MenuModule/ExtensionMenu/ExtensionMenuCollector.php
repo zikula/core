@@ -57,6 +57,7 @@ class ExtensionMenuCollector
 
             return $menu;
         }
+
         return null;
     }
 
