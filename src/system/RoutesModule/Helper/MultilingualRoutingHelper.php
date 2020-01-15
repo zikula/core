@@ -19,6 +19,7 @@ use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class MultilingualRoutingHelper
@@ -109,10 +110,15 @@ class MultilingualRoutingHelper
             : 0
         ;
 
+        $strategy = $isRequiredLangParameter
+            ? ZikulaPatternGenerationStrateg::STRATEGY_PREFIX
+            : ZikulaPatternGenerationStrateg::STRATEGY_PREFIX_EXCEPT_DEFAULT
+        ;
+
         $this->configDumper->setConfiguration('jms_i18n_routing', [
             'default_locale' => $defaultLocale,
             'locales' => $supportedLocales,
-            'strategy' => $isRequiredLangParameter ? 'prefix' : 'prefix_except_default'
+            'strategy' => $strategy
         ]);
 
         $this->cacheClearer->clear('symfony');
