@@ -111,8 +111,8 @@ class MultilingualRoutingHelper
         ;
 
         $strategy = $isRequiredLangParameter
-            ? ZikulaPatternGenerationStrateg::STRATEGY_PREFIX
-            : ZikulaPatternGenerationStrateg::STRATEGY_PREFIX_EXCEPT_DEFAULT
+            ? ZikulaPatternGenerationStrategy::STRATEGY_PREFIX
+            : ZikulaPatternGenerationStrategy::STRATEGY_PREFIX_EXCEPT_DEFAULT
         ;
 
         $this->configDumper->setConfiguration('jms_i18n_routing', [
