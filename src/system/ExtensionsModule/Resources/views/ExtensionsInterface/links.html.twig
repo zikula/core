@@ -17,6 +17,10 @@
         {% endif %}
     {% endfor %}
 {% endmacro %}
+{% if extensionMenu|default %}
+    {{ knp_menu_render(extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+{% elseif links|default %}{# @todo remove this and the macro above #}
 <ul{% if menu_css.menuId is not empty %} id="{{ menu_css.menuId }}"{% endif %} class="nav nav-modulelinks{% if menu_css.menuClass is not empty %} {{ menu_css.menuClass }}{% endif %}">
     {{ _self.draw(links, menu_css, current_path, 1) }}
 </ul>
+{% endif %}

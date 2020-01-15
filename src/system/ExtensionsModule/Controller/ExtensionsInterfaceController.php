@@ -18,8 +18,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\LinkContainer\LinkContainerCollector;
+use Zikula\Core\LinkContainer\LinkContainerCollector; // @todo remove
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\ThemeModule\Engine\Asset;
 
 /**
@@ -99,7 +100,8 @@ class ExtensionsInterfaceController extends AbstractController
     public function linksAction(
         RequestStack $requestStack,
         ExtensionRepositoryInterface $extensionRepository,
-        LinkContainerCollector $linkCollector
+        LinkContainerCollector $linkCollector, // @todo remove
+        ExtensionMenuCollector $extensionMenuCollector
     ): Response {
         /** @var Request $masterRequest */
         $masterRequest = $requestStack->getMasterRequest();
@@ -121,7 +123,9 @@ class ExtensionsInterfaceController extends AbstractController
             // passed to currentRequest most important
             $links_type = '' !== $currentRequest->attributes->get('type') ? $currentRequest->attributes->get('type') : $links_type;
             // get the menu links
-            $links = $linkCollector->getLinks($modname, $links_type);
+            $links = $linkCollector->getLinks($modname, $links_type); // @todo remove
+            $extensionMenu = $extensionMenuCollector->get($modname, $links_type);
+            $extensionMenu->setChildrenAttribute('class', 'nav nav-modulelinks');
         }
 
         // menu css
@@ -140,7 +144,8 @@ class ExtensionsInterfaceController extends AbstractController
         return $this->render($template, [
             'caller' => $caller,
             'menu_css' => $menu_css,
-            'links' => $links,
+            'links' => $links, // @todo remove
+            'extensionMenu' => $extensionMenu,
             'current_path' => $masterRequest->getPathInfo()
         ]);
     }
