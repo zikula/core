@@ -56,11 +56,11 @@ class LocaleApi implements LocaleApiInterface
             $files = $finder->files()
                 ->in([$translationPath])
                 ->depth(0)
-                ->name('*.yaml')
+                ->name(['*.csv', '*.dat', '*.ini', '*.mo', '*.php', '*.po', '*.qt', '*.xlf', '*.json', '*.yaml', '*.yml'])
                 ->notName('*.template.*')
             ;
             foreach ($files as $file) {
-                $fileName = $file->getBasename('.yaml');
+                $fileName = $file->getBasename($file->getExtension());
                 if (false === mb_strpos($fileName, '.')) {
                     continue;
                 }
