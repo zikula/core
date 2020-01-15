@@ -35,7 +35,7 @@
         "symfony/polyfill-intl-messageformatter": "1.*",
         "php-translation/symfony-bundle": "0.*",
         "nikic/php-parser": "4.*",
-        "willdurand/js-translation-bundle": "4.4.x-dev",
+        "willdurand/js-translation-bundle": "3.*",
 
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "2.*",
@@ -67,10 +67,6 @@
         {
             "type": "vcs",
             "url": "https://github.com/php-translation/symfony-bundle"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/vanputten/BazingaJsTranslationBundle"
         },
         {
             "type": "vcs",
