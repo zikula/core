@@ -123,7 +123,7 @@
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
     - doctrine/lexer updated from 1.0.2 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.7.0
-    - doctrine/persistence installed in 1.3.3
+    - doctrine/persistence installed in 1.3.5
     - doctrine/reflection installed in 1.1.0
     - egulias/email-validator installed in 2.1.14
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
@@ -138,7 +138,7 @@
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 3.1.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-    - league/commonmark installed in 1.2.0
+    - league/commonmark installed in 1.2.1
     - league/html-to-markdown installed in 4.9.1
     - liip/imagine-bundle updated from 1.9.1 to 2.3.0
     - lorenzo/pinky installed in 1.0.5
