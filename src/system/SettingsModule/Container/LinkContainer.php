@@ -117,7 +117,7 @@ class LinkContainer implements LinkContainerInterface
                 }
                 $i10nLinks[] = [
                     'url' => $this->router->generate('translation_index'),
-                    'text' => $this->translator->trans('Translation WebUI') . ' (experimental)',
+                    'text' => $this->translator->trans('Translation UI') . ' (experimental)',
                     'title' => $this->translator->trans('Web interface to add, edit and remove translations'),
                     'icon' => 'language'
                 ];
