@@ -185,7 +185,7 @@
     - twig/string-extra installed in 3.0.1
     - twig/twig updated from 1.42.4 to 3.0.1
     - webmozart/assert updated from 1.5.0 to 1.6.0
-    - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0 (temporarily using vanputten's fork)
+    - willdurand/js-translation-bundle updated from 2.6.6 to 3.0.0
     - zikula/legal-module updated from 3.1.2 to dev-master
     - zikula/oauth-module updated from 1.0.4 to dev-master
     - zikula/pagelock-module updated from 1.2.3 to dev-master
