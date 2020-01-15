@@ -214,6 +214,9 @@ There is also a `desc` filter for specifying a default translation for a key (sa
 {{ 'welcome.message'|trans({'%userName%': 'John Smith'})|desc('Welcome %userName%!') }}
 ```
 
+### Translation domains
+Earlier we used the bundle name as translation domain. The new translation system uses different configurations for different bundles though. You are encouraged to use multiple translation domains now. They should cover different semantical topics and act as a context for translators, like for example `mail`, `messages`, `navigation`, `validators` and `admin`).
+
 ### About plural forms
 Here is an example using plural forms, advanced substitution and the `desc` filter:
 ```twig
