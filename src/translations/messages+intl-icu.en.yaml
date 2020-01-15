@@ -1062,12 +1062,6 @@ Download: null
 'Warning! The user account was created, but there was a problem adding the account to the default group.': null
 'Approve %sub%': null
 'New registration: %userName%': null
-'New registration pending approval: %userName%': null
-'New registration pending email verification: %userName%': null
-'New user activated: %userName%': null
-'Your recent request at %siteName%.': null
-'Welcome to %siteName%, %userName%!': null
-'A message from %siteName%.': null
 'Login denied: Your account has been disabled. Please contact a site administrator for more information.': null
 'Login denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.': null
 'Login denied: Your request to register with this site is pending or awaiting verification.': null

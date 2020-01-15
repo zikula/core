@@ -77,3 +77,8 @@ Password: null
 'Warning! The notification email for the new registration could not be sent.': null
 'Warning! The welcoming email for the newly created user could not be sent.': null
 'Warning! The notification email for the newly created user could not be sent.': null
+'New registration pending approval: %userName%': null
+'New registration pending email verification: %userName%': null
+'New user activated: %userName%': null
+'Your recent request at %siteName%.': null
+'Welcome to %siteName%, %userName%!': null

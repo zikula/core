@@ -275,22 +275,22 @@ class MailHelper
         switch ($notificationType) {
             case 'regadminnotify':
                 if (!$templateArgs['reginfo']->isApproved()) {
-                    return $this->translator->trans('New registration pending approval: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], [], 'mail');
+                    return $this->translator->trans('New registration pending approval: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], 'mail');
                 }
                 if (isset($templateArgs['isVerified']) && !$templateArgs['isVerified']) {
-                    return $this->translator->trans('New registration pending email verification: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], [], 'mail');
+                    return $this->translator->trans('New registration pending email verification: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], 'mail');
                 }
 
-                return $this->translator->trans('New user activated: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], [], 'mail');
+                return $this->translator->trans('New user activated: %userName%', ['%userName%' => $templateArgs['reginfo']['uname']], 'mail');
 
             case 'regdeny':
-                return $this->translator->trans('Your recent request at %siteName%.', ['%siteName%' => $siteName], [], 'mail');
+                return $this->translator->trans('Your recent request at %siteName%.', ['%siteName%' => $siteName], 'mail');
 
             case 'welcome':
-                return $this->translator->trans('Welcome to %siteName%, %userName%!', ['%siteName%' => $siteName, '%userName%' => $templateArgs['reginfo']['uname']], [], 'mail');
+                return $this->translator->trans('Welcome to %siteName%, %userName%!', ['%siteName%' => $siteName, '%userName%' => $templateArgs['reginfo']['uname']], 'mail');
 
             default:
-                return $this->translator->trans('A message from %siteName%.', ['%siteName%' => $siteName], [], 'mail');
+                return $this->translator->trans('A message from %siteName%.', ['%siteName%' => $siteName], 'mail');
         }
     }
 }
