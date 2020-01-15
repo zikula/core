@@ -41,11 +41,6 @@ abstract class AbstractBundle extends Bundle
         return '@' . $this->name . '/Resources/config/routing.yml';
     }
 
-    public function getTranslationDomain(): string
-    {
-        return mb_strtolower($this->getName());
-    }
-
     /**
      * Gets the translation path.
      */

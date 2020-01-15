@@ -4,15 +4,6 @@
 
 The translator service can be obtained from container.
 Service is pre-configured to automatically detect current locale, domain is by default set to `'messages'`.
-Example from AbstractController obtaining translator and setting new domain.
-
-```php
-//access translator service
-$translator = $bundle->getContainer()->get('translator');
-
-// set domain 
-$translator->setDomain($bundle->getTranslationDomain());
-```
 
 ## AbstractController
 
@@ -22,16 +13,16 @@ Zikula Translator is automatically added in AbstractController and you can acces
 $this->translator
 ```
 
-Translation examples
+Translation example
 
 ```php
-//Symfony native notation
 $translated = $this->translator->trans('Hello World');
-//Zikula translation method
-$translated = $this->translator->__('Page');
-...
-//shortcut methods also available for native zikula methods e.g.:
-$translated = $this->__('Page');
+```
+
+When using `\Zikula\Common\Translation\TranslatorTrait` also a shortcut method becomes available:
+
+```php
+$translated = $this->trans('Page');
 ```
 
 ## Twig

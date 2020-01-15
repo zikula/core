@@ -78,37 +78,6 @@ abstract class AbstractController extends BaseController
         }
     }
 
-    public function renderView(string $view, array $parameters = []): string
-    {
-        $parameters = $this->decorateTranslator($parameters);
-
-        return parent::renderView($view, $parameters);
-    }
-
-    public function render(string $view, array $parameters = [], Response $response = null): Response
-    {
-        $parameters = $this->decorateTranslator($parameters);
-
-        return parent::render($view, $parameters, $response);
-    }
-
-    public function stream(string $view, array $parameters = [], StreamedResponse $response = null): StreamedResponse
-    {
-        $parameters = $this->decorateTranslator($parameters);
-
-        return parent::stream($view, $parameters, $response);
-    }
-
-    /**
-     * Decorate translator.
-     */
-    protected function decorateTranslator(array $parameters): array
-    {
-        $parameters['domain'] = $this->bundle->getTranslationDomain();
-
-        return $parameters;
-    }
-
     /**
      * Returns a NotFoundHttpException; this will result in a 404 response code.
      * Usage example: throw $this->createNotFoundException();
