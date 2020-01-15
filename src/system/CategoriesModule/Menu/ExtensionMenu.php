@@ -61,7 +61,7 @@ class ExtensionMenu implements ExtensionMenuInterface
             ])->setAttribute('icon', 'fas fa-archive');
         }
 
-        return $menu->count() === 0 ? null : $menu;
+        return 0 === $menu->count() ? null : $menu;
     }
 
     public function getBundleName(): string

@@ -97,7 +97,7 @@ class ExtensionMenu implements ExtensionMenuInterface
             ->setAttribute('icon', 'fas fa-exclamation-triangle');
         }
 
-        return $menu->count() === 0 ? null : $menu;
+        return 0 === $menu->count() ? null : $menu;
     }
 
     private function getUser(): ?ItemInterface
@@ -113,7 +113,7 @@ class ExtensionMenu implements ExtensionMenuInterface
             ])->setAttribute('icon', 'fas fa-wrench');
         }
 
-        return $menu->count() === 0 ? null : $menu;
+        return 0 === $menu->count() ? null : $menu;
     }
 
     private function getAccount(): ?ItemInterface
