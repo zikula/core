@@ -51,16 +51,16 @@ class LocaleApi implements LocaleApiInterface
 
         $this->supportedLocales[] = 'en';
         $finder = new Finder();
-        $translationPath = $this->kernel->getProjectDir() . '/app/Resources/translations';
+        $translationPath = $this->kernel->getProjectDir() . '/translations';
         if (is_dir($translationPath)) {
             $files = $finder->files()
                 ->in([$translationPath])
                 ->depth(0)
-                ->name('*.po')
+                ->name('*.yaml')
                 ->notName('*.template.*')
             ;
             foreach ($files as $file) {
-                $fileName = $file->getBasename('.po');
+                $fileName = $file->getBasename('.yaml');
                 if (false === mb_strpos($fileName, '.')) {
                     continue;
                 }
