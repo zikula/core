@@ -61,7 +61,6 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         $DBLocale = $this->fetchDBLocale();
         if (!in_array($DBLocale, $this->container->get(LocaleApi::class)->getSupportedLocales(), true)) {
             $variableApi = $this->container->get(VariableApi::class);
-            $variableApi->set(VariableApi::CONFIG, 'language_i18n', 'en');
             $variableApi->set(VariableApi::CONFIG, 'locale', 'en');
         }
 
@@ -83,7 +82,7 @@ class NotUpgradedStage implements StageInterface, InjectContainerInterface
         $serializedValue = $conn->fetchColumn("
             SELECT value
             FROM module_vars
-            WHERE name = 'language_i18n'
+            WHERE name = 'locale'
             AND modname = 'ZConfig'
         ");
         if ($serializedValue) {

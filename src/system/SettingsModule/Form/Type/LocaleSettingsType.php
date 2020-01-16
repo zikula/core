@@ -50,7 +50,7 @@ class LocaleSettingsType extends AbstractType
                 'required' => false,
                 'help' => 'If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.'
             ])
-            ->add('language_i18n', ChoiceType::class, [
+            ->add('locale', ChoiceType::class, [
                 'label' => 'Default language to use for this site',
                 'choices' => /** @Ignore */$options['languages']
             ])

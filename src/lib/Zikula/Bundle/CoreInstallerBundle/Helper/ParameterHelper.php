@@ -107,7 +107,7 @@ class ParameterHelper
         $yamlHelper = $this->getYamlHelper();
         $params = $this->decodeParameters($yamlHelper->getParameters());
         $this->variableApi->getAll(VariableApi::CONFIG); // forces initialization of API
-        $this->variableApi->set(VariableApi::CONFIG, 'language_i18n', $params['locale']);
+        $this->variableApi->set(VariableApi::CONFIG, 'locale', $params['locale']);
         // Set the System Identifier as a unique string.
         if (!$this->variableApi->get(VariableApi::CONFIG, 'system_identifier')) {
             $this->variableApi->set(VariableApi::CONFIG, 'system_identifier', str_replace('.', '', uniqid((string) (random_int(1000000000, 9999999999)), true)));

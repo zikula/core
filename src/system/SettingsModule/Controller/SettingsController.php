@@ -119,7 +119,7 @@ class SettingsController extends AbstractController
                 'multilingual' => (bool)$variableApi->getSystemVar('multilingual'),
                 'languageurl' => $variableApi->getSystemVar('languageurl'),
                 'language_detect' => (bool)$variableApi->getSystemVar('language_detect'),
-                'language_i18n' => $variableApi->getSystemVar('language_i18n'),
+                'locale' => $variableApi->getSystemVar('locale'),
                 'timezone' => $variableApi->getSystemVar('timezone'),
             ], [
                 'languages' => $localeApi->getSupportedLocaleNames(null, $request->getLocale()),
@@ -137,12 +137,11 @@ class SettingsController extends AbstractController
                 foreach ($data as $name => $value) {
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
-                $variableApi->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
 
                 // resets config/dynamic/generated.yml and custom_parameters.yml
                 $multilingualRoutingHelper->reloadMultilingualRoutingSettings();
                 if ($request->hasSession() && ($session = $request->getSession())) {
-                    $session->set('_locale', $data['language_i18n']);
+                    $session->set('_locale', $data['locale']);
                 }
                 $this->addFlash('status', 'Done! Localization configuration updated.');
             } elseif ($form->get('cancel')->isClicked()) {

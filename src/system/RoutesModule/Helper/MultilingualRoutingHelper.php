@@ -89,14 +89,13 @@ class MultilingualRoutingHelper
 
         // update the custom_parameters.yml file
         $defaultLocale = $this->installed
-            ? $this->variableApi->getSystemVar('language_i18n', $this->locale)
+            ? $this->variableApi->getSystemVar('locale', $this->locale)
             : $this->locale
         ;
         if (!in_array($defaultLocale, $supportedLocales, true)) {
             // if the current default locale is not available, use the first available.
             $defaultLocale = array_values($supportedLocales)[0];
             if ($this->installed) {
-                $this->variableApi->set(VariableApi::CONFIG, 'language_i18n', $defaultLocale);
                 $this->variableApi->set(VariableApi::CONFIG, 'locale', $defaultLocale);
             }
         }
