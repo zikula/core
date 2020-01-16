@@ -57,7 +57,11 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
+        // ensures that locales without regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), false);
+        // ensures that locales with regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
+
         $profileModules = $profileModuleCollector->getKeys();
         $messageModules = $messageModuleCollector->getKeys();
 
@@ -112,6 +116,11 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
+        // ensures that locales without regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), false);
+        // ensures that locales with regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
+
         $form = $this->createForm(LocaleSettingsType::class,
             [
                 'multilingual' => (bool)$variableApi->getSystemVar('multilingual'),
@@ -120,7 +129,7 @@ class SettingsController extends AbstractController
                 'locale' => $variableApi->getSystemVar('locale'),
                 'timezone' => $variableApi->getSystemVar('timezone'),
             ], [
-                'languages' => $localeApi->getSupportedLocaleNames(null, $request->getLocale()),
+                'languages' => $installedLanguageNames,
                 'locale' => $request->getLocale()
             ]
         );
