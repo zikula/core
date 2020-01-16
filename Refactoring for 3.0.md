@@ -111,14 +111,16 @@ php bin/console translation:extract zikula en
 
 Note `zikula` is the name of our configuration.
 
-Example for a module or a theme:
+Examples for a module or a theme:
 ```
 php bin/console translation:extract -b AcmeFooModule extension en
-# or
 php bin/console translation:extract --bundle AcmeFooModule extension en
+php bin/console translation:extract -b AcmeFooModule acmefoomodule en
+php bin/console translation:extract --bundle AcmeFooModule acmefoomodule en
 
 # or with more memory:
 php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooModule extension en
+php -dmemory_limit=2G bin/console translation:extract --bundle AcmeFooModule acmefoomodule en
 ```
 
 You can always check the status of your translation using the `translation:status` command.
