@@ -79,9 +79,10 @@ class TranslationConfigHelper
             $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
         }
         foreach ($this->kernel->getThemes() as $bundle) {
+            /* lets include them as they need translation as all other themes, too (/system is included in "zikula" config while /themes is not)
             if (in_array($bundle->getName(), ['ZikulaBootstrapTheme', 'ZikulaAtomTheme', 'ZikulaPrinterTheme', 'ZikulaRssTheme'], true)) {
                 continue;
-            }
+            }*/
             $bundleConfig = $configTemplate;
             $bundleConfig['external_translations_dir'] = $bundle->getPath() . '/Resources/translations';
             $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
