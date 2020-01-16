@@ -2,10 +2,6 @@
 # generated.yml
 # It's here to give an initial configuration (until Zikula is installed).
 
-jms_i18n_routing:
-    default_locale: en
-    locales: [en]
-    strategy: prefix_except_default
 swiftmailer:
     transport: smtp
     username: ''
@@ -17,6 +13,8 @@ swiftmailer:
     delivery_addresses: []
     disable_delivery: false
 parameters:
+    localisation.locales: [en]
+    localisation.locales_with_regions: '%localisation.locales%'
     zikula.session.name: _zsid
     zikula.session.handler_id: session.handler.native_file #default symfony value
     zikula.session.storage_id: zikula_core.bridge.http_foundation.zikula_session_storage_file #'session.storage.native' default symfony value

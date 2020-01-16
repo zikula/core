@@ -22,7 +22,6 @@ use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
@@ -107,8 +106,7 @@ class SettingsController extends AbstractController
     public function localeAction(
         Request $request,
         LocaleApiInterface $localeApi,
-        VariableApiInterface $variableApi,
-        MultilingualRoutingHelper $multilingualRoutingHelper
+        VariableApiInterface $variableApi
     ) {
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -139,7 +137,9 @@ class SettingsController extends AbstractController
                 }
 
                 // resets config/dynamic/generated.yml and custom_parameters.yml
-                $multilingualRoutingHelper->reloadMultilingualRoutingSettings();
+                $localeApi->getSupportedLocales(false);
+                $localeApi->getSupportedLocales(true);
+
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     $session->set('_locale', $data['locale']);
                 }

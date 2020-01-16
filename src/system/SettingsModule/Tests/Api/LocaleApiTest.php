@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Api\LocaleApi;
+use Zikula\SettingsModule\Helper\LocaleConfigHelper;
 
 class LocaleApiTest extends TestCase
 {
@@ -95,7 +96,8 @@ class LocaleApiTest extends TestCase
         $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
         $kernel->method('getProjectDir')->willReturn(__DIR__ . $dir);
         $requestStack = $this->getMockBuilder(RequestStack::class)->getMock();
+        $localeConfigHelper = $this->getMockBuilder(LocaleConfigHelper::class)->getMock();
 
-        return new LocaleApi($kernel, $requestStack);
+        return new LocaleApi($kernel, $requestStack, $localeConfigHelper, 'en', true);
     }
 }

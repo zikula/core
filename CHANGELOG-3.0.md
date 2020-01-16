@@ -103,6 +103,8 @@
     - Added CLI Commands to manage extension installation, upgrade and uninstall (#3517).
     - Added ability to choose a Font Awesome icon for admin categories and categories (#3598).
     - Added support for creating and changing translations on-site using "Edit in Place" and/or a WebUI (#4012, #2425).
+    - `LocaleApi` is now able to work with regions, too (#4012, #2425).
+    - New and removed locales are automatically reflected in the configuration (#4012, #2425).
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
@@ -139,7 +141,7 @@
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 3.1.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-    - league/commonmark installed in 1.2.1
+    - league/commonmark installed in 1.2.2
     - league/html-to-markdown installed in 4.9.1
     - liip/imagine-bundle updated from 1.9.1 to 2.3.0
     - lorenzo/pinky installed in 1.0.5

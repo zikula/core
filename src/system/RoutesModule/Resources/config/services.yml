@@ -33,7 +33,7 @@ services:
     Zikula\RoutesModule\Helper\MultilingualRoutingHelper:
         public: true
         arguments:
-          $locale: '%locale%'
+          $defaultLocale: '%locale%'
           $installed: '%installed%'
 
     Zikula\RoutesModule\Helper\RouteDumperHelper:

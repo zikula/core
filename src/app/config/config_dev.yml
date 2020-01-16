@@ -1,9 +1,9 @@
 imports:
     - { resource: config.yml }
-    - { resource: "packages/dev/php_translation.yaml" }
+    - { resource: 'packages/dev/php_translation.yaml' }
 
 framework:
-    router:   { resource: "%kernel.project_dir%/app/config/routing_dev.yml" }
+    router:   { resource: '%kernel.project_dir%/app/config/routing_dev.yml' }
     profiler: { only_exceptions: false }
 
 maker:
@@ -11,7 +11,7 @@ maker:
     root_namespace: 'Zikula\ExtensionsModule'
 
 web_profiler:
-    toolbar: "%debug%"
+    toolbar: '%debug%'
     intercept_redirects: false
     excluded_ajax_paths:  '^/((index|app(_[\w]+)?)\.php/)?_wdt'
 
@@ -19,9 +19,9 @@ monolog:
     handlers:
         main:
             type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
-            channels: ["!event"]
+            channels: ['!event']
         firephp:
             type:  firephp
             level: info

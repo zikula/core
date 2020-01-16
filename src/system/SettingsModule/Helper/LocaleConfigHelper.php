@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Zikula package.
  *
@@ -9,18 +11,21 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
-namespace Zikula\RoutesModule\Helper;
+namespace Zikula\SettingsModule\Helper;
 
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy;
 
-class MultilingualRoutingHelper
+class LocaleConfigHelper
 {
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
     /**
      * @var VariableApiInterface
      */
@@ -47,12 +52,14 @@ class MultilingualRoutingHelper
     private $installed;
 
     public function __construct(
+        ZikulaHttpKernelInterface $kernel,
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
         string $defaultLocale = 'en',
         bool $installed = false
     ) {
+        $this->kernel = $kernel;
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
@@ -60,33 +67,28 @@ class MultilingualRoutingHelper
         $this->installed = $installed;
     }
 
-    /**
-     * Reloads the multilingual routing settings by reading system variables
-     * and checking installed languages.
-     */
-    public function reloadMultilingualRoutingSettings(): bool
+    public function updateConfiguration(array $locales, bool $includeRegions = true)
     {
+        if (!$this->installed) {
+            return;
+        }
+
         $defaultLocale = $this->installed
             ? $this->variableApi->getSystemVar('locale', $this->defaultLocale)
             : $this->defaultLocale
         ;
+        if (!in_array($defaultLocale, $locales, true)) {
+            // if the current default locale is not available, use the first available.
+            $defaultLocale = array_values($locales)[0];
+            $this->variableApi->set(VariableApi::CONFIG, 'locale', $defaultLocale);
+        }
+        // update locale parameter in custom_parameters.yml
+        $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/app/config');
+        $yamlManager->setParameter('locale', $defaultLocale);
 
-        $isRequiredLangParameter = $this->installed
-            ? $this->variableApi->getSystemVar('languageurl', 0)
-            : 0
-        ;
-
-        $strategy = $isRequiredLangParameter
-            ? ZikulaPatternGenerationStrategy::STRATEGY_PREFIX
-            : ZikulaPatternGenerationStrategy::STRATEGY_PREFIX_EXCEPT_DEFAULT
-        ;
-
-        $this->configDumper->setConfiguration('jms_i18n_routing', [
-            'strategy' => $strategy
-        ]);
+        $parameterName = $includeRegions ? 'localisation.locales_with_regions' : 'localisation.locales';
+        $this->configDumper->setParameter($parameterName, $locales);
 
         $this->cacheClearer->clear('symfony');
-
-        return true;
     }
 }
