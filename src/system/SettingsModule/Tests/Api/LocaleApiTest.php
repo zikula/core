@@ -21,11 +21,23 @@ use Zikula\SettingsModule\Api\LocaleApi;
 
 class LocaleApiTest extends TestCase
 {
-    public function testGetSupportedLocales(): void
+    public function testGetSupportedLocalesWithoutRegions(): void
     {
         $api = $this->getApi();
-        $supportedLocales = $api->getSupportedLocales();
+        $supportedLocales = $api->getSupportedLocales(false);
         foreach (['en', 'ru', 'de'] as $loc) {
+            $this->assertContains($loc, $supportedLocales);
+        }
+        foreach (['de_DE'] as $loc) {
+            $this->assertNotContains($loc, $supportedLocales);
+        }
+    }
+
+    public function testGetSupportedLocalesWithRegions(): void
+    {
+        $api = $this->getApi();
+        $supportedLocales = $api->getSupportedLocales(true);
+        foreach (['en', 'ru', 'de', 'de_DE'] as $loc) {
             $this->assertContains($loc, $supportedLocales);
         }
     }
@@ -38,19 +50,38 @@ class LocaleApiTest extends TestCase
             'German' => 'de',
             'Russian' => 'ru'
         ];
-        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'en'));
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'en', false));
         $expected = [
             'Englisch' => 'en',
             'Deutsch' => 'de',
             'Russisch' => 'ru'
         ];
-        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'de'));
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'de', false));
         $expected = [
             'inglese' => 'en',
             'tedesco' => 'de',
             'russo' => 'ru'
         ];
-        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'it'));
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'it', false));
+    }
+
+    public function testGetSupportedLocaleNamesWithRegions(): void
+    {
+        $api = $this->getApi();
+        $expected = [
+            'English' => 'en',
+            'German' => 'de',
+            'German (Germany)' => 'de_DE',
+            'Russian' => 'ru'
+        ];
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'en', true));
+        $expected = [
+            'Englisch' => 'en',
+            'Deutsch' => 'de',
+            'Deutsch (Deutschland)' => 'de_DE',
+            'Russisch' => 'ru'
+        ];
+        $this->assertEquals($expected, $api->getSupportedLocaleNames(null, 'de', true));
     }
 
     public function testEmpty(): void

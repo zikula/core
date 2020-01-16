@@ -43,7 +43,7 @@ class LocaleApi implements LocaleApiInterface
         $this->requestStack = $requestStack;
     }
 
-    public function getSupportedLocales(): array
+    public function getSupportedLocales(bool $includeRegions = true): array
     {
         if (!empty($this->supportedLocales)) {
             return $this->supportedLocales;
@@ -65,6 +65,10 @@ class LocaleApi implements LocaleApiInterface
                     continue;
                 }
                 list(, $locale) = explode('.', $fileName);
+                if (!$includeRegions && false !== mb_strpos($locale, '_')) {
+                    $localeParts = explode('_', $locale);
+                    $locale = $localeParts[0];
+                }
                 if (!in_array($locale, $this->supportedLocales, true)) {
                     $this->supportedLocales[] = $locale;
                 }
@@ -74,12 +78,13 @@ class LocaleApi implements LocaleApiInterface
         return $this->supportedLocales;
     }
 
-    public function getSupportedLocaleNames(string $region = null, string $displayLocale = null): array
+    public function getSupportedLocaleNames(string $region = null, string $displayLocale = null, bool $includeRegions = true): array
     {
-        $locales = $this->getSupportedLocales();
+        $locales = $this->getSupportedLocales($includeRegions);
         $namedLocales = [];
         foreach ($locales as $locale) {
-            $namedLocales[Locales::getName($locale, $displayLocale)] = $locale;
+            $localeName = Locales::getName($locale, $displayLocale);
+            $namedLocales[$localeName] = $locale;
         }
 
         return $namedLocales;

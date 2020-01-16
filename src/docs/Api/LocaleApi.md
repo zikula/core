@@ -9,15 +9,13 @@ The class makes the following methods available:
 ```php
 /**
  * Get array of supported locales
- *
- * @return array
  */
-public function getSupportedLocales();
+public function getSupportedLocales($includeRegions = true): array;
 
 /**
  * Get array of supported locales with their translated name
  */
-public function getSupportedLocaleNames(string $region = null, string $displayLocale = null): array;
+public function getSupportedLocaleNames(string $region = null, string $displayLocale = null, $includeRegions = true): array;
 
 /**
  * Detect languages preferred by browser and make best match to available provided languages.

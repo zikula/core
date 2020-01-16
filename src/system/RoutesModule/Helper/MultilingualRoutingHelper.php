@@ -85,7 +85,7 @@ class MultilingualRoutingHelper
      */
     public function reloadMultilingualRoutingSettings()
     {
-        $supportedLocales = $this->localeApi->getSupportedLocales();
+        $supportedLocales = $this->localeApi->getSupportedLocales(false);
 
         // update the custom_parameters.yml file
         $defaultLocale = $this->installed
