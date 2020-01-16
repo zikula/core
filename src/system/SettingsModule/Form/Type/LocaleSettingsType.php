@@ -60,8 +60,8 @@ class LocaleSettingsType extends AbstractType
                 'help_translation_parameters' => [
                     '%tz%' => date_default_timezone_get() . ' (' . date('T') . ')'
                 ],
-                'choice_translation_locale' => $options['locale'],
-                'intl' => true
+                'choice_translation_locale' => extension_loaded('intl') ? $options['locale'] : null,
+                'intl' => extension_loaded('intl')
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Save',

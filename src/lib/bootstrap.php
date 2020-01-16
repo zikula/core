@@ -32,7 +32,9 @@ if (isset($parameters['umask']) && null !== $parameters['umask']) {
 }
 
 // set default locale for Intl classes
-Locale::setDefault($parameters['locale']);
+if (extension_loaded('intl')) {
+    Locale::setDefault($parameters['locale']);
+}
 
 // Globally ignore @type annotation. Necessary to be able to use the extended array documentation syntax.
 AnnotationReader::addGlobalIgnoredName('type');
