@@ -16,7 +16,6 @@ namespace Zikula\SettingsModule\Helper;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Bundle\CoreBundle\YamlDumper;
 
 class TranslationConfigHelper
 {
