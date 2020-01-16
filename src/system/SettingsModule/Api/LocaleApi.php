@@ -116,6 +116,7 @@ class LocaleApi implements LocaleApiInterface
             $localeName = Locales::getName($locale, $displayLocale);
             $namedLocales[$localeName] = $locale;
         }
+        ksort($namedLocales);
 
         return $namedLocales;
     }

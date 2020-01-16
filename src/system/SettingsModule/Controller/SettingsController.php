@@ -57,10 +57,10 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        // ensures that locales without regions are up to date
-        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), false);
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
+        // ensures that locales without regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), false);
 
         $profileModules = $profileModuleCollector->getKeys();
         $messageModules = $messageModuleCollector->getKeys();
