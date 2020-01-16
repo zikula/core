@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "ec32c03915b95dafe4313d14f981e008b14db6f4"
+                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/ec32c03915b95dafe4313d14f981e008b14db6f4",
-                "reference": "ec32c03915b95dafe4313d14f981e008b14db6f4",
+                "url": "https://api.github.com/repos/composer/composer/zipball/dbcf592ea22553d90cf27e81501fe279345473f6",
+                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-10T21:50:13+00:00"
+            "time": "2020-01-14T15:33:39+00:00"
         },
         {
             "name": "composer/installers",
@@ -609,24 +609,23 @@
         },
         {
             "name": "composer/semver",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
+                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
-                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
+                "url": "https://api.github.com/repos/composer/semver/zipball/c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
+                "reference": "c6bea70230ef4dd483e6bbcab6005f682ed3a8de",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5 || ^5.0.5",
-                "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
+                "phpunit/phpunit": "^4.5 || ^5.0.5"
             },
             "type": "library",
             "extra": {
@@ -667,7 +666,7 @@
                 "validation",
                 "versioning"
             ],
-            "time": "2019-03-19T17:25:45+00:00"
+            "time": "2020-01-13T12:06:48+00:00"
         },
         {
             "name": "composer/spdx-licenses",
@@ -1625,16 +1624,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "1.3.4",
+            "version": "1.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "ff7e08b0f814be2cd20c52dc3c8a262579376b94"
+                "reference": "be70c016fdcd44a428405ee062ebcdd01a6867cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/ff7e08b0f814be2cd20c52dc3c8a262579376b94",
-                "reference": "ff7e08b0f814be2cd20c52dc3c8a262579376b94",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/be70c016fdcd44a428405ee062ebcdd01a6867cd",
+                "reference": "be70c016fdcd44a428405ee062ebcdd01a6867cd",
                 "shasum": ""
             },
             "require": {
@@ -1704,7 +1703,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2020-01-09T19:49:17+00:00"
+            "time": "2020-01-14T18:44:12+00:00"
         },
         {
             "name": "doctrine/reflection",
@@ -2000,12 +1999,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "ce486b619a440d186edf7f303df4822fbee1d1ae"
+                "reference": "165b3f4ae1f798ec320b9942f6db921f7b568bed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/ce486b619a440d186edf7f303df4822fbee1d1ae",
-                "reference": "ce486b619a440d186edf7f303df4822fbee1d1ae",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/165b3f4ae1f798ec320b9942f6db921f7b568bed",
+                "reference": "165b3f4ae1f798ec320b9942f6db921f7b568bed",
                 "shasum": ""
             },
             "require": {
@@ -2902,16 +2901,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "2533c389fd2a7573d4f7be279b1c33cf941c8dfc"
+                "reference": "74e08793c41c72c8ed7a22df803f2ffcaf77efb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/2533c389fd2a7573d4f7be279b1c33cf941c8dfc",
-                "reference": "2533c389fd2a7573d4f7be279b1c33cf941c8dfc",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/74e08793c41c72c8ed7a22df803f2ffcaf77efb7",
+                "reference": "74e08793c41c72c8ed7a22df803f2ffcaf77efb7",
                 "shasum": ""
             },
             "require": {
@@ -2969,7 +2968,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2020-01-09T22:41:09+00:00"
+            "time": "2020-01-15T03:32:39+00:00"
         },
         {
             "name": "league/html-to-markdown",
@@ -3988,16 +3987,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.11.0",
+            "version": "0.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "7da36630c8279d0e290ff3e60f79f1bef1bc0772"
+                "reference": "9566ef4cc2a253dae4c73b4727662ae2f77525c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/7da36630c8279d0e290ff3e60f79f1bef1bc0772",
-                "reference": "7da36630c8279d0e290ff3e60f79f1bef1bc0772",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/9566ef4cc2a253dae4c73b4727662ae2f77525c4",
+                "reference": "9566ef4cc2a253dae4c73b4727662ae2f77525c4",
                 "shasum": ""
             },
             "require": {
@@ -4039,7 +4038,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.10-dev"
+                    "dev-master": "0.11-dev"
                 }
             },
             "autoload": {
@@ -4050,14 +4049,7 @@
                     "/Tests/"
                 ]
             },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-ci": [
-                    "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml Tests/Unit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4067,11 +4059,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.11.0",
-                "issues": "https://github.com/php-translation/symfony-bundle/issues"
-            },
-            "time": "2020-01-07T09:32:27+00:00"
+            "time": "2020-01-14T09:52:50+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -6690,16 +6678,16 @@
         },
         {
             "name": "willdurand/js-translation-bundle",
-            "version": "4.4.x-dev",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/vanputten/BazingaJsTranslationBundle.git",
-                "reference": "d795253d36119cfc8fab02e06389ec0f22eb3934"
+                "url": "https://github.com/willdurand/BazingaJsTranslationBundle.git",
+                "reference": "159397515e67dd071a530cf8e238434808e6f1f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vanputten/BazingaJsTranslationBundle/zipball/d795253d36119cfc8fab02e06389ec0f22eb3934",
-                "reference": "d795253d36119cfc8fab02e06389ec0f22eb3934",
+                "url": "https://api.github.com/repos/willdurand/BazingaJsTranslationBundle/zipball/159397515e67dd071a530cf8e238434808e6f1f7",
+                "reference": "159397515e67dd071a530cf8e238434808e6f1f7",
                 "shasum": ""
             },
             "require": {
@@ -6718,7 +6706,7 @@
                 "phpunit/phpunit": "^4.8|~5.7|~6.5",
                 "symfony/asset": "~3.4|~4.0|~5.0",
                 "symfony/browser-kit": "~3.4|~4.0|~5.0",
-                "symfony/phpunit-bridge": "^3.4.24|^4.0|^5.0",
+                "symfony/phpunit-bridge": "^5.0",
                 "symfony/twig-bundle": "~3.4|~4.0|~5.0",
                 "symfony/yaml": "~3.4|~4.0|~5.0"
             },
@@ -6733,6 +6721,7 @@
                     "Bazinga\\Bundle\\JsTranslationBundle\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -6748,10 +6737,7 @@
                 "symfony",
                 "translation"
             ],
-            "support": {
-                "source": "https://github.com/vanputten/BazingaJsTranslationBundle/tree/4.4"
-            },
-            "time": "2019-12-11T13:32:00+00:00"
+            "time": "2020-01-14T17:02:24+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -6845,12 +6831,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "c73b506521653b696b9a4887bb07cabc2462e194"
+                "reference": "2dd8ea8e23f2aeb17aca1a61dcd8daf60e3a6731"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/c73b506521653b696b9a4887bb07cabc2462e194",
-                "reference": "c73b506521653b696b9a4887bb07cabc2462e194",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/2dd8ea8e23f2aeb17aca1a61dcd8daf60e3a6731",
+                "reference": "2dd8ea8e23f2aeb17aca1a61dcd8daf60e3a6731",
                 "shasum": ""
             },
             "require": {
@@ -6906,7 +6892,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-13T04:07:51+00:00"
+            "time": "2020-01-13T21:23:47+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6914,12 +6900,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "a1e24de8b2969fef5aa1b75b1bb64e16abd0ca59"
+                "reference": "f92176d560135183ae280249214ba467c14ee188"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/a1e24de8b2969fef5aa1b75b1bb64e16abd0ca59",
-                "reference": "a1e24de8b2969fef5aa1b75b1bb64e16abd0ca59",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/f92176d560135183ae280249214ba467c14ee188",
+                "reference": "f92176d560135183ae280249214ba467c14ee188",
                 "shasum": ""
             },
             "require": {
@@ -6968,7 +6954,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2020-01-13T12:02:10+00:00"
+            "time": "2020-01-13T21:23:57+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6976,12 +6962,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/PageLock.git",
-                "reference": "c939f9e8e8aed507e8b4591762f0968cd63ce3df"
+                "reference": "a28550db83ad15205adeb8a3edc62db3a935302d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/c939f9e8e8aed507e8b4591762f0968cd63ce3df",
-                "reference": "c939f9e8e8aed507e8b4591762f0968cd63ce3df",
+                "url": "https://api.github.com/repos/zikula-modules/PageLock/zipball/a28550db83ad15205adeb8a3edc62db3a935302d",
+                "reference": "a28550db83ad15205adeb8a3edc62db3a935302d",
                 "shasum": ""
             },
             "require": {
@@ -7023,7 +7009,7 @@
                 "source": "https://github.com/zikula-modules/PageLock/tree/master",
                 "issues": "https://github.com/zikula-modules/PageLock/issues"
             },
-            "time": "2020-01-13T04:07:27+00:00"
+            "time": "2020-01-15T20:17:56+00:00"
         },
         {
             "name": "zikula/profile-module",
@@ -7031,12 +7017,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "9ed5d845c19fcddf975211b4230c6e5d3cfd359c"
+                "reference": "48e4ee8bacfb6252fc6983868159f245832c3e23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/9ed5d845c19fcddf975211b4230c6e5d3cfd359c",
-                "reference": "9ed5d845c19fcddf975211b4230c6e5d3cfd359c",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/48e4ee8bacfb6252fc6983868159f245832c3e23",
+                "reference": "48e4ee8bacfb6252fc6983868159f245832c3e23",
                 "shasum": ""
             },
             "require": {
@@ -7095,7 +7081,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-13T04:07:36+00:00"
+            "time": "2020-01-13T21:24:14+00:00"
         },
         {
             "name": "zikula/wizard",
@@ -7221,7 +7207,6 @@
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
         "prolix/translation-bundle": 20,
-        "willdurand/js-translation-bundle": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "jms/i18n-routing-bundle": 20,
