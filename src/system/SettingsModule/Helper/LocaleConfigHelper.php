@@ -68,7 +68,7 @@ class LocaleConfigHelper
         $this->installed = $installed;
     }
 
-    public function updateConfiguration(array $locales, bool $includeRegions = true)
+    public function updateConfiguration(array $locales = [])
     {
         if (!$this->installed) {
             return;
@@ -86,7 +86,7 @@ class LocaleConfigHelper
             $yamlManager->setParameter('locale', $defaultLocale);
         }
 
-        $parameterName = $includeRegions ? 'localisation.locales_with_regions' : 'localisation.locales';
+        $parameterName = 'localisation.locales';
         $storedLocales = $this->configDumper->getParameter($parameterName);
         if (is_array($storedLocales)) {
             $diff = array_diff($storedLocales, $locales);

@@ -59,8 +59,6 @@ class SettingsController extends AbstractController
 
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
-        // ensures that locales without regions are up to date
-        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), false);
 
         $profileModules = $profileModuleCollector->getKeys();
         $messageModules = $messageModuleCollector->getKeys();
@@ -116,8 +114,6 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        // ensures that locales without regions are up to date
-        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), false);
         // ensures that locales with regions are up to date
         $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
 
@@ -144,9 +140,7 @@ class SettingsController extends AbstractController
                 foreach ($data as $name => $value) {
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
-
                 // resets config/dynamic/generated.yml and custom_parameters.yml
-                $localeApi->getSupportedLocales(false);
                 $localeApi->getSupportedLocales(true);
 
                 if ($request->hasSession() && ($session = $request->getSession())) {
