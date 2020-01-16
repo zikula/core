@@ -26,6 +26,7 @@ use Translation\Bundle\Service\StorageManager;
 use Translation\Bundle\Service\StorageService;
 use Translation\SymfonyStorage\FileStorage;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
 class TranslationUiListener implements EventSubscriberInterface
 {
@@ -35,15 +36,22 @@ class TranslationUiListener implements EventSubscriberInterface
     private $permissionApi;
 
     /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
+    /**
      * @var StorageManager
      */
     private $storageManager;
 
     public function __construct(
         PermissionApiInterface $permissionApi,
+        LocaleApiInterface $localeApi,
         StorageManager $storageManager
     ) {
         $this->permissionApi = $permissionApi;
+        $this->localeApi = $localeApi;
         $this->storageManager = $storageManager;
     }
 
@@ -82,6 +90,9 @@ class TranslationUiListener implements EventSubscriberInterface
             // remove when https://github.com/php-translation/symfony-bundle/issues/385 is solved
             $request->headers->set('X-Requested-With', 'XMLHttpRequest');
         }
+
+        // update locale configuration parameters if needed
+        $this->localeApi->getSupportedLocales(true);
 
         // inject correct value for output format
         // remove when https://github.com/php-translation/symfony-storage/issues/48 is solved
