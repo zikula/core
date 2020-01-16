@@ -30,12 +30,13 @@ class TogglePasswordConfirmationType extends AbstractType
                     ? 'Yes, cancel the change of password'
                     : 'Yes, force the change of password',
                 'icon' => $options['mustChangePass'] ? 'fa-times' : 'fa-sync',
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'icon' => 'fa-times'
             ])
         ;
     }

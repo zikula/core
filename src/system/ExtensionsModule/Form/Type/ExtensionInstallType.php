@@ -34,15 +34,12 @@ class ExtensionInstallType extends AbstractType
                 'label' => 'Install',
                 'icon' => 'fa-plus',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }

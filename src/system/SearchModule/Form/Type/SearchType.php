@@ -62,7 +62,7 @@ class SearchType extends AbstractType
                 'label' => 'Search now',
                 'icon' => 'fa-search',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
         ;

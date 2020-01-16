@@ -84,12 +84,13 @@ class ExportUsersType extends AbstractType
             ->add('download', SubmitType::class, [
                 'label' => $this->trans('Download'),
                 'icon' => 'fa-download',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->trans('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'icon' => 'fa-times'
             ])
         ;
     }

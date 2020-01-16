@@ -307,17 +307,13 @@ abstract class AbstractRouteType extends AbstractType
             'label' => $this->trans('Reset'),
             'icon' => 'fa-sync',
             'attr' => [
-                'class' => 'btn btn-default',
                 'formnovalidate' => 'formnovalidate'
             ]
         ]);
         $builder->add('cancel', SubmitType::class, [
             'label' => $this->trans('Cancel'),
             'validate' => false,
-            'icon' => 'fa-times',
-            'attr' => [
-                'class' => 'btn btn-default'
-            ]
+            'icon' => 'fa-times'
         ]);
     }
 

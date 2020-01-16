@@ -71,7 +71,7 @@ class AdminViewFilterType extends AbstractType
                 'label' => 'Filter',
                 'icon' => 'fa-filter fa-lg',
                 'attr' => [
-                    'class' => 'btn btn-default btn-sm'
+                    'class' => 'btn-sm'
                 ]
             ])
         ;

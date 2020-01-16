@@ -48,8 +48,8 @@ class DeleteType extends AbstractType
                 'label' => $this->trans('Delete selected users'),
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn btn-danger'
-                ],
+                    'class' => 'btn-danger'
+                ]
             ])
         ;
     }

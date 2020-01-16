@@ -55,15 +55,12 @@ class ManageApplicationType extends AbstractType
                 'label' => 'deny' === $options['data']['theAction'] ? 'Deny' : 'Accept',
                 'icon' => 'deny' === $options['data']['theAction'] ? 'fa-user-times' : 'fa-user-plus',
                 'attr' => [
-                    'class' => 'btn btn-success'
+                    'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }
