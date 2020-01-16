@@ -93,18 +93,15 @@ class RegistrationType extends AbstractType
                     'class' => 'btn-success'
                 ]
             ])
+            ->add('reset', ResetType::class, [
+                'label' => 'Reset',
+                'icon' => 'fa-refresh',
+            ])
             ->add('cancel', ButtonType::class, [
                 'label' => 'Cancel',
                 'icon' => 'fa-times',
                 'attr' => [
                     'class' => 'btn-danger'
-                ]
-            ])
-            ->add('reset', ResetType::class, [
-                'label' => 'Reset',
-                'icon' => 'fa-refresh',
-                'attr' => [
-                    'class' => 'btn-primary'
                 ]
             ])
         ;

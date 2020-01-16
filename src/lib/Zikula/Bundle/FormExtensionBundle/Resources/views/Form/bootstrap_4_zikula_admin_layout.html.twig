@@ -101,6 +101,16 @@ col-md-9
     {{- parent() -}}
 {%- endblock file_widget %}
 
+{# default to btn-secondary instead of btn-primary #}
+{% block submit_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-secondary'))|trim}) -%}
+    {{- parent() -}}
+{%- endblock submit_widget %}
+{% block reset_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn-warning'))|trim}) -%}
+    {{- parent() -}}
+{%- endblock reset_widget %}
+
 {# font awesome icon picker #}
 {% block zikula_icon_widget %}
     <div class="input-group">
