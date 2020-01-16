@@ -2901,16 +2901,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "74e08793c41c72c8ed7a22df803f2ffcaf77efb7"
+                "reference": "34cf4ddb3892c715ae785c880e6691d839cff88d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/74e08793c41c72c8ed7a22df803f2ffcaf77efb7",
-                "reference": "74e08793c41c72c8ed7a22df803f2ffcaf77efb7",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/34cf4ddb3892c715ae785c880e6691d839cff88d",
+                "reference": "34cf4ddb3892c715ae785c880e6691d839cff88d",
                 "shasum": ""
             },
             "require": {
@@ -2968,7 +2968,7 @@
                 "markdown",
                 "parser"
             ],
-            "time": "2020-01-15T03:32:39+00:00"
+            "time": "2020-01-16T01:18:13+00:00"
         },
         {
             "name": "league/html-to-markdown",
