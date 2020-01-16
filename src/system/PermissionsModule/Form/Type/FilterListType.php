@@ -43,7 +43,7 @@ class FilterListType extends AbstractType
                 'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn btn-default btn-sm'
+                    'class' => 'btn-default btn-sm'
                 ]
             ])
         ;

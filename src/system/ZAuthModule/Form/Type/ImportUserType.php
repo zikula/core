@@ -59,12 +59,13 @@ class ImportUserType extends AbstractType
             ->add('upload', SubmitType::class, [
                 'label' => 'Upload',
                 'icon' => 'fa-upload',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'icon' => 'fa-times'
             ])
         ;
     }

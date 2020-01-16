@@ -212,11 +212,11 @@ abstract class AbstractWorkflowHelper
             $buttonClass = 'success';
         }
     
-        if (empty($buttonClass)) {
-            $buttonClass = 'default';
+        if (!empty($buttonClass)) {
+            $buttonClass = 'btn-' . $buttonClass;
         }
     
-        return 'btn btn-' . $buttonClass;
+        return $buttonClass;
     }
     
     /**

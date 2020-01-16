@@ -124,24 +124,20 @@ abstract class AbstractConfigType extends AbstractType
             'label' => 'Update configuration',
             'icon' => 'fa-check',
             'attr' => [
-                'class' => 'btn btn-success'
+                'class' => 'btn-success'
             ]
         ]);
         $builder->add('reset', ResetType::class, [
             'label' => 'Reset',
             'icon' => 'fa-sync',
             'attr' => [
-                'class' => 'btn btn-default',
                 'formnovalidate' => 'formnovalidate'
             ]
         ]);
         $builder->add('cancel', SubmitType::class, [
             'label' => 'Cancel',
             'validate' => false,
-            'icon' => 'fa-times',
-            'attr' => [
-                'class' => 'btn btn-default'
-            ]
+            'icon' => 'fa-times'
         ]);
     }
 

@@ -40,8 +40,8 @@ class DeleteType extends AbstractType
                 'label' => 'Delete selected users',
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn btn-danger'
-                ],
+                    'class' => 'btn-danger'
+                ]
             ])
         ;
     }

@@ -47,14 +47,14 @@ class PermissionCheckType extends AbstractType
                 'label' => 'Check permission',
                 'icon' => 'fa-check',
                 'attr' => [
-                    'class' => 'btn btn-primary'
+                    'class' => 'btn-primary'
                 ]
             ])
             ->add('reset', ButtonType::class, [
                 'label' => 'Reset',
                 'icon' => 'fa-times',
                 'attr' => [
-                    'class' => 'btn btn-warning'
+                    'class' => 'btn-warning'
                 ]
             ])
         ;

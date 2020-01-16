@@ -48,7 +48,9 @@ class VerifyRegistrationType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
         if ($options['setpass']) {
