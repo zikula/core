@@ -18,6 +18,7 @@ use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\YamlDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
+use Zikula\ExtensionsModule\Api\VariableApi;
 
 class LocaleConfigHelper
 {
@@ -87,9 +88,11 @@ class LocaleConfigHelper
 
         $parameterName = $includeRegions ? 'localisation.locales_with_regions' : 'localisation.locales';
         $storedLocales = $this->configDumper->getParameter($parameterName);
-        $diff = array_diff($storedLocales, $locales);
-        if (count($diff) > 0) {
-            $this->configDumper->setParameter($parameterName, $locales);
+        if (is_array($storedLocales)) {
+            $diff = array_diff($storedLocales, $locales);
+            if (count($diff) > 0) {
+                $this->configDumper->setParameter($parameterName, $locales);
+            }
         }
 
         $this->cacheClearer->clear('symfony');

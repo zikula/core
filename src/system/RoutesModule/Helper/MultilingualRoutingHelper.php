@@ -16,7 +16,6 @@ namespace Zikula\RoutesModule\Helper;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
-use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\RoutesModule\Translation\ZikulaPatternGenerationStrategy;
 
 class MultilingualRoutingHelper
@@ -37,11 +36,6 @@ class MultilingualRoutingHelper
     private $cacheClearer;
 
     /**
-     * @var string
-     */
-    private $defaultLocale;
-
-    /**
      * @var bool
      */
     private $installed;
@@ -50,13 +44,11 @@ class MultilingualRoutingHelper
         VariableApiInterface $variableApi,
         DynamicConfigDumper $configDumper,
         CacheClearer $cacheClearer,
-        string $defaultLocale = 'en',
         bool $installed = false
     ) {
         $this->variableApi = $variableApi;
         $this->configDumper = $configDumper;
         $this->cacheClearer = $cacheClearer;
-        $this->defaultLocale = $defaultLocale;
         $this->installed = $installed;
     }
 
@@ -66,11 +58,6 @@ class MultilingualRoutingHelper
      */
     public function reloadMultilingualRoutingSettings(): bool
     {
-        $defaultLocale = $this->installed
-            ? $this->variableApi->getSystemVar('locale', $this->defaultLocale)
-            : $this->defaultLocale
-        ;
-
         $isRequiredLangParameter = $this->installed
             ? $this->variableApi->getSystemVar('languageurl', 0)
             : 0
