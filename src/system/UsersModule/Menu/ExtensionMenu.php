@@ -15,8 +15,12 @@ namespace Zikula\UsersModule\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
+use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
+use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant as UsersConstant;
 
 class ExtensionMenu implements ExtensionMenuInterface
 {
@@ -30,12 +34,33 @@ class ExtensionMenu implements ExtensionMenuInterface
      */
     private $permissionApi;
 
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var CurrentUserApiInterface
+     */
+    private $currentUser;
+
+    /**
+     * @var LocaleApiInterface
+     */
+    private $localeApi;
+
     public function __construct(
         FactoryInterface $factory,
-        PermissionApiInterface $permissionApi
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        CurrentUserApiInterface $currentUserApi,
+        LocaleApiInterface $localeApi
     ) {
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->currentUser = $currentUserApi;
+        $this->localeApi = $localeApi;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
@@ -46,27 +71,36 @@ class ExtensionMenu implements ExtensionMenuInterface
         if (self::TYPE_ACCOUNT === $type) {
             return $this->getAccount();
         }
+        if (self::TYPE_USER === $type) {
+            return $this->getUser();
+        }
 
         return null;
     }
 
     private function getAdmin(): ?ItemInterface
     {
-        $menu = $this->factory->createItem('adminAdminMenu');
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            $menu->addChild('Module categories list', [
-                'route' => 'zikulaadminmodule_admin_view',
+        $menu = $this->factory->createItem('usersAdminMenu');
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
+            $menu->addChild('Users list', [
+                'route' => 'zikulausersmodule_useradministration_list',
             ])->setAttribute('icon', 'fas fa-list');
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Create new module category', [
-                'route' => 'zikulaadminmodule_admin_newcat',
-            ])->setAttribute('icon', 'fas fa-plus');
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
             $menu->addChild('Settings', [
-                'route' => 'zikulaadminmodule_config_config',
+                'route' => 'zikulausersmodule_config_config',
             ])->setAttribute('icon', 'fas fa-wrench');
+            $menu->addChild('Authentication methods', [
+                'route' => 'zikulausersmodule_config_authenticationmethods',
+            ])->setAttribute('icon', 'fas fa-lock');
+        }
+        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_MODERATE)) {
+            $menu->addChild('Export users', [
+                'route' => 'zikulausersmodule_fileio_export',
+            ])->setAttribute('icon', 'fas fa-download');
+            $menu->addChild('Find/Mail/Delete users', [
+                'route' => 'zikulausersmodule_useradministration_search',
+            ])->setAttribute('icon', 'fas fa-search');
         }
 
         return 0 === $menu->count() ? null : $menu;
@@ -74,12 +108,42 @@ class ExtensionMenu implements ExtensionMenuInterface
 
     private function getAccount(): ?ItemInterface
     {
-        $menu = $this->factory->createItem('adminAccountMenu');
+        if (!$this->currentUser->isLoggedIn()) {
+            return null;
+        }
+        $menu = $this->factory->createItem('usersAccountMenu');
 
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Administration panel', [
-                'route' => 'zikulaadminmodule_admin_adminpanel',
-            ])->setAttribute('icon', 'fas fa-wrench');
+        if ($this->variableApi->getSystemVar('multilingual')) {
+            $locales = $this->localeApi->getSupportedLocales();
+            if (count($locales) > 1) {
+                $menu->addChild('Language switcher', [
+                    'route' => 'zikulausersmodule_account_changelanguage',
+                ])->setAttribute('icon', 'fas fa-language');
+            }
+        }
+        $menu->addChild('Log out', [
+            'route' => 'zikulausersmodule_access_logout',
+        ])->setAttribute('icon', 'fas fa-power-off')
+        ->setAttribute('class', 'text-danger');
+
+        return 0 === $menu->count() ? null : $menu;
+    }
+
+    private function getUser(): ?ItemInterface
+    {
+        $menu = $this->factory->createItem('usersUserMenu');
+        $menu->addChild('Account menu', [
+            'route' => 'zikulausersmodule_account_menu',
+        ])->setAttribute('icon', 'fas fa-user-circle');
+        if (!$this->currentUser->isLoggedIn()) {
+            $menu->addChild('Log in', [
+                'route' => 'zikulausersmodule_access_login',
+            ])->setAttribute('icon', 'fas fa-sign-in-alt');
+            if ($this->variableApi->get($this->getBundleName(), UsersConstant::MODVAR_REGISTRATION_ENABLED)) {
+                $menu->addChild('New account', [
+                    'route' => 'zikulausersmodule_registration_register',
+                ])->setAttribute('icon', 'fas fa-plus');
+            }
         }
 
         return 0 === $menu->count() ? null : $menu;

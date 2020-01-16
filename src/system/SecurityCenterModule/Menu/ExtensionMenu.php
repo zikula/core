@@ -15,6 +15,7 @@ namespace Zikula\SecurityCenterModule\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
@@ -30,12 +31,19 @@ class ExtensionMenu implements ExtensionMenuInterface
      */
     private $permissionApi;
 
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
     public function __construct(
         FactoryInterface $factory,
-        PermissionApiInterface $permissionApi
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi
     ) {
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
@@ -43,42 +51,41 @@ class ExtensionMenu implements ExtensionMenuInterface
         if (self::TYPE_ADMIN === $type) {
             return $this->getAdmin();
         }
-        if (self::TYPE_ACCOUNT === $type) {
-            return $this->getAccount();
-        }
 
         return null;
     }
 
     private function getAdmin(): ?ItemInterface
     {
-        $menu = $this->factory->createItem('adminAdminMenu');
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_READ)) {
-            $menu->addChild('Module categories list', [
-                'route' => 'zikulaadminmodule_admin_view',
-            ])->setAttribute('icon', 'fas fa-list');
+        $menu = $this->factory->createItem('securityAdminMenu');
+        if (!$this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
+            return null;
         }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Create new module category', [
-                'route' => 'zikulaadminmodule_admin_newcat',
-            ])->setAttribute('icon', 'fas fa-plus');
-        }
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADD)) {
-            $menu->addChild('Settings', [
-                'route' => 'zikulaadminmodule_config_config',
-            ])->setAttribute('icon', 'fas fa-wrench');
-        }
+        $menu->addChild('Settings', [
+            'route' => 'zikulasecuritycentermodule_config_config',
+        ])->setAttribute('icon', 'fas fa-wrench');
+        $menu->addChild('Allowed HTML settings', [
+            'route' => 'zikulasecuritycentermodule_config_allowedhtml',
+        ])->setAttribute('icon', 'fas fa-list');
+        $menu->addChild('View IDS log', [
+            'route' => 'zikulasecuritycentermodule_idslog_view',
+        ])->setAttribute('icon', 'fas fa-clipboard-list')
+        ->setAttribute('class', 'align-justify')
+            ->setAttribute('dropdown', true);
+        $menu['View IDS log']->addChild('View IDS log', [
+            'route' => 'zikulasecuritycentermodule_idslog_view'
+        ]);
+        $menu['View IDS log']->addChild('Export IDS log', [
+            'route' => 'zikulasecuritycentermodule_idslog_view'
+        ]);
+        $menu['View IDS log']->addChild('Purge IDS log', [
+            'route' => 'zikulasecuritycentermodule_idslog_purge'
+        ]);
 
-        return 0 === $menu->count() ? null : $menu;
-    }
-
-    private function getAccount(): ?ItemInterface
-    {
-        $menu = $this->factory->createItem('adminAccountMenu');
-
-        if ($this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {
-            $menu->addChild('Administration panel', [
-                'route' => 'zikulaadminmodule_admin_adminpanel',
+        $outputfilter = $this->variableApi->getSystemVar('outputfilter');
+        if (1 === $outputfilter) {
+            $menu->addChild('HTMLPurifier settings', [
+                'route' => 'zikulasecuritycentermodule_config_purifierconfig',
             ])->setAttribute('icon', 'fas fa-wrench');
         }
 
