@@ -73,21 +73,24 @@ class LocaleConfigHelper
             return;
         }
 
-        $defaultLocale = $this->installed
-            ? $this->variableApi->getSystemVar('locale', $this->defaultLocale)
-            : $this->defaultLocale
-        ;
+        $defaultLocale = $this->variableApi->getSystemVar('locale', $this->defaultLocale);
         if (!in_array($defaultLocale, $locales, true)) {
             // if the current default locale is not available, use the first available.
             $defaultLocale = array_values($locales)[0];
             $this->variableApi->set(VariableApi::CONFIG, 'locale', $defaultLocale);
         }
-        // update locale parameter in custom_parameters.yml
-        $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/app/config');
-        $yamlManager->setParameter('locale', $defaultLocale);
+        if ($defaultLocale !== $this->defaultLocale) {
+            // update locale parameter in custom_parameters.yml
+            $yamlManager = new YamlDumper($this->kernel->getProjectDir() . '/app/config');
+            $yamlManager->setParameter('locale', $defaultLocale);
+        }
 
         $parameterName = $includeRegions ? 'localisation.locales_with_regions' : 'localisation.locales';
-        $this->configDumper->setParameter($parameterName, $locales);
+        $storedLocales = $this->configDumper->getParameter($parameterName);
+        $diff = array_diff($storedLocales, $locales);
+        if (count($diff) > 0) {
+            $this->configDumper->setParameter($parameterName, $locales);
+        }
 
         $this->cacheClearer->clear('symfony');
     }

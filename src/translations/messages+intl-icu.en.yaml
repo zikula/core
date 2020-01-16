@@ -1,3 +1,8 @@
+'Translation UI': null
+'Configs:': null
+'Zikula Core': null
+Modules: null
+Themes: null
 'no title defined': null
 'Error! Could not resolve %template% template.': null
 'Workflow editor': null
@@ -879,7 +884,6 @@ Overview: null
 days: null
 'Last checked': null
 Releases: null
-'Zikula Core': null
 'Currently used version': null
 'Latest stable relese': null
 'Stable Zikula Core available': null
@@ -1359,8 +1363,13 @@ Incompatible: null
 Services: null
 'List views': null
 Moderation: null
+Workflows: null
 'Here you can configure parameters for list views.': null
 'Here you can define moderation-related settings.': null
+'Here you can inspect and amend the existing workflows.': null
+Routes: null
+'Edit workflow for routes': null
+'Edit routes workflow': null
 'Creation and update': null
 Creation: null
 'Created by %user% on %date%': null
@@ -1371,7 +1380,6 @@ Creation: null
 'Created on %date%': null
 'Updated by %user%': null
 'Updated on %date%': null
-Routes: null
 'Welcome to the route section of the Routes application.': null
 'My custom routes': null
 'Custom routes list': null
@@ -1585,7 +1593,6 @@ Browser: null
 'Disable edit in place': null
 'Enable edit in place': null
 'Edit translations directly in the context of a page': null
-'Translation UI': null
 'Web interface to add, edit and remove translations': null
 Localisation: null
 Always: null

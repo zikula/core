@@ -44,7 +44,7 @@ class DynamicConfigDumper extends YamlDumper
     protected function dumpFile(array $configuration = []): void
     {
         $flags = Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE; // for #2889
-        $yaml = "#This is a dynamically generated configuration file. Do not touch!\n\n" . Yaml::dump($configuration, 2, 4, $flags);
+        $yaml = "#This is a dynamically generated configuration file. Do not touch!\n\n" . Yaml::dump($configuration, 4, 4, $flags);
         $this->fs->dumpFile($this->fullPath, $yaml);
     }
 }

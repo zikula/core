@@ -239,23 +239,6 @@ class ExtensionHelper
     }
 
     /**
-     * Based on the state of the extension, either install, upgrade or activate the extension.
-     */
-    public function enableExtension(ExtensionEntity $extension): bool
-    {
-        switch ($extension->getState()) {
-            case Constant::STATE_UNINITIALISED:
-                return $this->install($extension);
-            case Constant::STATE_UPGRADED:
-                return $this->upgrade($extension);
-            case Constant::STATE_INACTIVE:
-                return $this->stateHelper->updateState($extension->getId(), Constant::STATE_ACTIVE);
-            default:
-                return false;
-        }
-    }
-
-    /**
      * Run the console command assets:install.
      *
      * @throws Exception

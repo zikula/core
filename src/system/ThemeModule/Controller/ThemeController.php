@@ -31,6 +31,7 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\SettingsModule\Helper\TranslationConfigHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Engine;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
@@ -58,7 +59,8 @@ class ThemeController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         BundleSyncHelper $syncHelper,
         ThemeEntityRepository $themeRepository,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        TranslationConfigHelper $translationConfigHelper
     ): array {
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -67,6 +69,11 @@ class ThemeController extends AbstractController
         $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (!$vetoEvent->isPropagationStopped()) {
             $syncHelper->regenerate();
+
+            // NOTE the following call should be moved into an event listener
+            // see Zikula\SettingsModule\Listener\ExtensionInstallerListener
+            // refs #3644
+            $translationConfigHelper->updateConfiguration();
         }
 
         $themes = $themeRepository->get(ThemeEntityRepository::FILTER_ALL, ThemeEntityRepository::STATE_ALL);
