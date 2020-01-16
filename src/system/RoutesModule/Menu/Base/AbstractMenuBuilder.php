@@ -136,7 +136,7 @@ class AbstractMenuBuilder
                     'title',
                     $this->trans('Open preview page')
                 );
-                $menu[$title]->setAttribute('icon', 'fas fa-search-plus');
+                $menu[$title]->setAttribute('icon', 'fa fa-search-plus');
             }
             if ('display' !== $context) {
                 $title = $this->trans('Details');
@@ -149,7 +149,7 @@ class AbstractMenuBuilder
                     'title',
                     str_replace('"', '', $entityTitle)
                 );
-                $menu[$title]->setAttribute('icon', 'fas fa-eye');
+                $menu[$title]->setAttribute('icon', 'fa fa-eye');
             }
             if ($this->permissionHelper->mayEdit($entity)) {
                 $title = $this->trans('Edit');
@@ -161,7 +161,7 @@ class AbstractMenuBuilder
                     'title',
                     $this->trans('Edit this route')
                 );
-                $menu[$title]->setAttribute('icon', 'fas fa-edit');
+                $menu[$title]->setAttribute('icon', 'fa fa-edit');
                 $title = $this->trans('Reuse');
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
@@ -171,7 +171,7 @@ class AbstractMenuBuilder
                     'title',
                     $this->trans('Reuse for new route')
                 );
-                $menu[$title]->setAttribute('icon', 'fas fa-files-o');
+                $menu[$title]->setAttribute('icon', 'fa fa-files-o');
             }
             if ('display' === $context) {
                 $title = $this->trans('Routes list');
@@ -179,7 +179,7 @@ class AbstractMenuBuilder
                     'route' => $routePrefix . $routeArea . 'view'
                 ]);
                 $menu[$title]->setLinkAttribute('title', $title);
-                $menu[$title]->setAttribute('icon', 'fas fa-reply');
+                $menu[$title]->setAttribute('icon', 'fa fa-reply');
             }
         }
     
@@ -223,7 +223,7 @@ class AbstractMenuBuilder
                             'route' => $routePrefix . $routeArea . 'edit'
                         ]);
                         $menu[$title]->setLinkAttribute('title', $title);
-                        $menu[$title]->setAttribute('icon', 'fas fa-plus');
+                        $menu[$title]->setAttribute('icon', 'fa fa-plus');
                     }
                 }
                 $routeParameters = $query->all();
@@ -244,7 +244,7 @@ class AbstractMenuBuilder
                     'routeParameters' => $routeParameters
                 ]);
                 $menu[$title]->setLinkAttribute('title', $title);
-                $menu[$title]->setAttribute('icon', 'fas fa-table');
+                $menu[$title]->setAttribute('icon', 'fa fa-table');
                 if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_EDIT)) {
                     $routeParameters = $query->all();
                     if (1 === $query->getInt('own')) {
@@ -261,7 +261,7 @@ class AbstractMenuBuilder
                         'routeParameters' => $routeParameters
                     ]);
                     $menu[$title]->setLinkAttribute('title', $title);
-                    $menu[$title]->setAttribute('icon', 'fas fa-' . $icon);
+                    $menu[$title]->setAttribute('icon', 'fa fa-' . $icon);
                 }
             }
         }

@@ -5,8 +5,8 @@
     ] %}
     {{ form_start(quickNavForm, {attr: {id: 'zikulaRoutesModuleRouteQuickNavForm', class: 'zikularoutesmodule-quicknav form-inline', role: 'navigation'}}) }}
     {{ form_errors(quickNavForm) }}
-    <a href="#collapseRouteQuickNav" role="button" data-toggle="collapse" class="btn btn-default" aria-expanded="false" aria-controls="collapseRouteQuickNav">
-        <i class="fas fa-filter" aria-hidden="true"></i> {% trans %}Filter{% endtrans %}
+    <a href="#collapseRouteQuickNav" role="button" data-toggle="collapse" class="btn btn-secondary" aria-expanded="false" aria-controls="collapseRouteQuickNav">
+        <i class="fa fa-filter" aria-hidden="true"></i> {% trans %}Filter{% endtrans %}
     </a>
     <div id="collapseRouteQuickNav" class="collapse">
         <h3>{% trans %}Quick navigation{% endtrans %}</h3>
@@ -68,7 +68,7 @@
             </div>
         {% endif %}
         {{ form_widget(quickNavForm.updateview) }}
-        <a href="{{ path('zikularoutesmodule_route_' ~ routeArea|default ~ 'view', {tpl: app.request.query.get('tpl', ''), all: app.request.query.get('all', '')}) }}" title="{% trans %}Back to default view{% endtrans %}" class="btn btn-default btn-sm">{% trans %}Reset{% endtrans %}</a>
+        <a href="{{ path('zikularoutesmodule_route_' ~ routeArea|default ~ 'view', {tpl: app.request.query.get('tpl', ''), all: app.request.query.get('all', '')}) }}" title="{% trans %}Back to default view{% endtrans %}" class="btn btn-secondary btn-sm">{% trans %}Reset{% endtrans %}</a>
     </div>
     {{ form_end(quickNavForm) }}
 {% endif %}

@@ -58,7 +58,7 @@ abstract class AbstractRouteQuickNavType extends AbstractType
         $builder->add('updateview', SubmitType::class, [
             'label' => 'OK',
             'attr' => [
-                'class' => 'btn-sm'
+                'class' => 'btn-secondary btn-sm'
             ]
         ]);
     }

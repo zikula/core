@@ -16,7 +16,7 @@
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.createdBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
-                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.createdBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fas fa-envelope"></i></a>
+                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.createdBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fa fa-envelope"></i></a>
                 {% endif %}
             {% endif %}
         </dd>
@@ -30,7 +30,7 @@
             {% if currentUser.loggedIn %}
                 {% set sendMessageUrl = obj.updatedBy.uid|messageSendLink(urlOnly=true) %}
                 {% if sendMessageUrl != '#' %}
-                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.updatedBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fas fa-envelope"></i></a>
+                    <a href="{{ sendMessageUrl }}" title="{% trans with {'%userName%': obj.updatedBy.uname} %}Send private message to %userName%{% endtrans %}"><i class="fa fa-envelope"></i></a>
                 {% endif %}
             {% endif %}
         </dd>
