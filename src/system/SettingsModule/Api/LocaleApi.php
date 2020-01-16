@@ -15,7 +15,7 @@ namespace Zikula\SettingsModule\Api;
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Intl\Languages;
+use Symfony\Component\Intl\Locales;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -79,8 +79,7 @@ class LocaleApi implements LocaleApiInterface
         $locales = $this->getSupportedLocales();
         $namedLocales = [];
         foreach ($locales as $locale) {
-            // no way to set region
-            $namedLocales[Languages::getName($locale, $displayLocale)] = $locale;
+            $namedLocales[Locales::getName($locale, $displayLocale)] = $locale;
         }
 
         return $namedLocales;
