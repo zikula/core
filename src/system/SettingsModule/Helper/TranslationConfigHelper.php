@@ -68,23 +68,31 @@ class TranslationConfigHelper
         $configTemplate = [
             'excluded_names' => ['*TestCase.php', '*Test.php'],
             'excluded_dirs' => ['vendor'],
-            'output_format' => 'yaml'
+            'output_format' => 'yaml',
+            'local_file_storage_options' => [
+                'default_output_format' => 'yaml'
+            ]
         ];
         foreach ($this->kernel->getModules() as $bundle) {
             if ($this->kernel->isCoreModule($bundle->getName())) {
                 continue;
             }
             $bundleConfig = $configTemplate;
-            $bundleConfig['external_translations_dir'] = $bundle->getPath() . '/Resources/translations';
+            $translationDirectory = $bundle->getPath() . '/Resources/translations';
+            $bundleConfig['output_dir'] = $translationDirectory;
+            $bundleConfig['external_translations_dir'] = $translationDirectory;
             $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
         }
         foreach ($this->kernel->getThemes() as $bundle) {
-            /* lets include them as they need translation as all other themes, too (/system is included in "zikula" config while /themes is not)
-            if (in_array($bundle->getName(), ['ZikulaBootstrapTheme', 'ZikulaAtomTheme', 'ZikulaPrinterTheme', 'ZikulaRssTheme'], true)) {
+            // lets include core themes as they need translation as all other themes, too
+            // (/system is included in "zikula" config while /themes is not)
+            /*if (in_array($bundle->getName(), ['ZikulaBootstrapTheme', 'ZikulaAtomTheme', 'ZikulaPrinterTheme', 'ZikulaRssTheme'], true)) {
                 continue;
             }*/
             $bundleConfig = $configTemplate;
-            $bundleConfig['external_translations_dir'] = $bundle->getPath() . '/Resources/translations';
+            $translationDirectory = $bundle->getPath() . '/Resources/translations';
+            $bundleConfig['output_dir'] = $translationDirectory;
+            $bundleConfig['external_translations_dir'] = $translationDirectory;
             $transConfigNew['configs'][mb_strtolower($bundle->getName())] = $bundleConfig;
         }
 

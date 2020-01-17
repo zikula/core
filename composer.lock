@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6"
+                "reference": "b9d00153d9431d75496b048a6a4dcd4d278b1eaf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/dbcf592ea22553d90cf27e81501fe279345473f6",
-                "reference": "dbcf592ea22553d90cf27e81501fe279345473f6",
+                "url": "https://api.github.com/repos/composer/composer/zipball/b9d00153d9431d75496b048a6a4dcd4d278b1eaf",
+                "reference": "b9d00153d9431d75496b048a6a4dcd4d278b1eaf",
                 "shasum": ""
             },
             "require": {
@@ -483,7 +483,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2020-01-14T15:33:39+00:00"
+            "time": "2020-01-17T13:52:07+00:00"
         },
         {
             "name": "composer/installers",
@@ -3987,16 +3987,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.11.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "dd41bc970939aff9d86e9adf96fcdb6ec92afc51"
+                "url": "https://github.com/Guite/symfony-bundle.git",
+                "reference": "656b6bf9f3c71d0e5056b099c94489ad2028a30f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/dd41bc970939aff9d86e9adf96fcdb6ec92afc51",
-                "reference": "dd41bc970939aff9d86e9adf96fcdb6ec92afc51",
+                "url": "https://api.github.com/repos/Guite/symfony-bundle/zipball/656b6bf9f3c71d0e5056b099c94489ad2028a30f",
+                "reference": "656b6bf9f3c71d0e5056b099c94489ad2028a30f",
                 "shasum": ""
             },
             "require": {
@@ -4049,7 +4049,14 @@
                     "/Tests/"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-ci": [
+                    "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml Tests/Unit"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -4059,20 +4066,23 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "time": "2020-01-17T10:31:35+00:00"
+            "support": {
+                "source": "https://github.com/Guite/symfony-bundle/tree/master"
+            },
+            "time": "2020-01-17T12:45:18+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
-            "version": "2.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/php-translation/symfony-storage.git",
-                "reference": "7ace69c5e9bc2744d121012fa2bb658477e673c5"
+                "url": "https://github.com/Guite/symfony-storage.git",
+                "reference": "654530961437f7776b8a840fb465fca824907fd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/7ace69c5e9bc2744d121012fa2bb658477e673c5",
-                "reference": "7ace69c5e9bc2744d121012fa2bb658477e673c5",
+                "url": "https://api.github.com/repos/Guite/symfony-storage/zipball/654530961437f7776b8a840fb465fca824907fd7",
+                "reference": "654530961437f7776b8a840fb465fca824907fd7",
                 "shasum": ""
             },
             "require": {
@@ -4096,7 +4106,19 @@
                     "Translation\\SymfonyStorage\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Translation\\SymfonyStorage\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-ci": [
+                    "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -4107,7 +4129,10 @@
                 }
             ],
             "description": "A translation file storage using Symfony translation component.",
-            "time": "2019-12-30T11:41:01+00:00"
+            "support": {
+                "source": "https://github.com/Guite/symfony-storage/tree/master"
+            },
+            "time": "2020-01-17T13:06:28+00:00"
         },
         {
             "name": "phpids/phpids",
@@ -7137,6 +7162,8 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
+        "php-translation/symfony-bundle": 20,
+        "php-translation/symfony-storage": 20,
         "symfony/requirements-checker": 20,
         "matthiasnoback/symfony-console-form": 20,
         "jms/i18n-routing-bundle": 20,

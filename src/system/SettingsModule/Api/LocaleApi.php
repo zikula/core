@@ -114,7 +114,7 @@ class LocaleApi implements LocaleApiInterface
                 }
             }
             if ($syncConfig) {
-                $this->localeConfigHelper->updateConfiguration($this->supportedLocales[$this->sectionKey], $includeRegions);
+                $this->localeConfigHelper->updateConfiguration($this->supportedLocales[$this->sectionKey]);
             }
         }
 

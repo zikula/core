@@ -22,9 +22,6 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
-use Translation\Bundle\Service\StorageManager;
-use Translation\Bundle\Service\StorageService;
-use Translation\SymfonyStorage\FileStorage;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 
@@ -40,19 +37,12 @@ class TranslationUiListener implements EventSubscriberInterface
      */
     private $localeApi;
 
-    /**
-     * @var StorageManager
-     */
-    private $storageManager;
-
     public function __construct(
         PermissionApiInterface $permissionApi,
-        LocaleApiInterface $localeApi,
-        StorageManager $storageManager
+        LocaleApiInterface $localeApi
     ) {
         $this->permissionApi = $permissionApi;
         $this->localeApi = $localeApi;
-        $this->storageManager = $storageManager;
     }
 
     public static function getSubscribedEvents()
@@ -87,32 +77,6 @@ class TranslationUiListener implements EventSubscriberInterface
 
         // update locale configuration parameters if needed
         $this->localeApi->getSupportedLocales(true);
-
-        // inject correct value for output format
-        // remove when https://github.com/php-translation/symfony-storage/issues/48 is solved
-        try {
-            $configName = $request->attributes->get('configName', '');
-            /** @var StorageService $storage */
-            $storage = $this->storageManager->getStorage($configName);
-            $reflection = new ReflectionClass(StorageService::class);
-            $localStoragesProperty = $reflection->getProperty('localStorages');
-            $localStoragesProperty->setAccessible(true);
-            $localStorages = $localStoragesProperty->getValue($storage);
-            foreach ($localStorages as $localStorage) {
-                if (!($localStorage instanceof FileStorage)) {
-                    continue;
-                }
-                $reflection = new ReflectionClass(FileStorage::class);
-                $optionsProperty = $reflection->getProperty('options');
-                $optionsProperty->setAccessible(true);
-                $options = $optionsProperty->getValue($localStorage);
-                $options['default_output_format'] = 'yaml';
-                $optionsProperty->setValue($localStorage, $options);
-                break;
-            }
-        } catch (ReflectionException $exception) {
-            // nothing
-        }
     }
 
     public function addDummyClosingBody(ResponseEvent $event): void

@@ -112,7 +112,7 @@
     - components/bootstrap updated from 3.4.1 to 4.4.1
     - components/font-awesome updated from 4.7.0 to 5.12.0
     - composer/ca-bundle updated from 1.2.4 to 1.2.6
-    - composer/composer installed in 1.9.1 (temporarily using dev-master 6034c2a)
+    - composer/composer installed in 1.9.1 (temporarily using dev-master b9d0015)
     - composer/semver updated from 1.5.0 to 1.5.1
     - composer/spdx-licenses installed in 1.5.2
     - composer/xdebug-handler installed in 1.4.0
@@ -153,8 +153,8 @@
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - php-translation/common installed in 3.0.0
     - php-translation/extractor installed in 2.0.0
-    - php-translation/symfony-bundle installed in 0.11.2
-    - php-translation/symfony-storage installed in 2.1.0
+    - php-translation/symfony-bundle installed in 0.11.2 (temporarily using Guite/dev-master)
+    - php-translation/symfony-storage installed in 2.1.0 (temporarily using Guite/dev-master)
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2
@@ -178,7 +178,7 @@
     - symfony/polyfill-php73 installed in 1.13.1
     - symfony/profiler-pack installed in 1.0.4
     - symfony/swiftmailer-bundle updated from 2.4.3 to 3.4.0
-    - symfony/symfony updated from 3.4.35 to 5.0.2
+    - symfony/symfony updated from 3.4.35 to 5.0.2 (temporarily [this patch](https://github.com/symfony/symfony/pull/35370) is required in addition!)
     - thomaspark/bootswatch installed in 4.4.1
     - tijsverkoyen/css-to-inline-styles installed in 2.2.2
     - twig/extra-bundle installed in 3.0.1

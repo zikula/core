@@ -35,7 +35,11 @@ translation:
             #excluded_names: ['*TestCase.php', '*Test.php']
             excluded_dirs: [vendor, cache, data, log]
             output_format: yaml
+            local_file_storage_options:
+                default_output_format: yaml
         extension:
             excluded_names: ['*TestCase.php', '*Test.php']
             excluded_dirs: [vendor]
             output_format: yaml
+            local_file_storage_options:
+                default_output_format: yaml

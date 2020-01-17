@@ -240,7 +240,7 @@ plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  oth
 More advanced translation like plurals and other substitutions require using the Symfony ICU MessageFormatter. See [How to Translate Messages using the ICU MessageFormat](https://symfony.com/doc/current/translation/message_format.html). This requires a specific name format on the translation file and other adjustments.
 
 ### UI-based translations
-Zikula 3 introduces two new (*experimental*) abilities for creating and changing translations.
+Zikula 3 introduces two new abilities for creating and changing translations.
 
 Both can be accessed in the Settings module at the localisation settings if the environment is set to `dev`.
 
@@ -250,7 +250,7 @@ Allows to edit translations directly in the context of a page ([demo](https://ph
 Edit in place has some limitations you should be aware of:
 
 - It always works for the current locale only; so in order to update translation for multiple languages you need to switch your site's language.
-- It can only work with one single configuration. By default this is set to `zikula`, so it works for the core. If you want to use it for a module or a theme, you need to create a corresponding configuration in `/app/config/packages/php_translation.yaml` and use this in `/app/config/packages/dev/php_translation.yaml` at `translation.edit_in_place.config_name`.
+- It can only work with one single configuration. By default this is set to `zikula`, so it works for the core. If you want to use it for a module or a theme, you need to lookup the corresponding configuration name (e.g. `zikulabootstraptheme`) in `/app/config/dynamic/generated.yml` and use this in `/app/config/packages/dev/php_translation.yaml` at `translation.edit_in_place.config_name`.
 
 You can utilise HTML formatting options when your translation keys end with the `.html` suffix ([screenshot](https://php-translation.readthedocs.io/en/latest/_images/demo-html-editor.png)).
 

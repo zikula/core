@@ -103,13 +103,13 @@ class LinkContainer implements LinkContainerInterface
                     if ($session->has(EditInPlaceActivator::KEY)) {
                         $i10nLinks[] = [
                             'url' => $this->router->generate('zikulasettingsmodule_settings_toggleeditinplace'),
-                            'text' => $this->translator->trans('Disable edit in place') . ' (experimental)',
+                            'text' => $this->translator->trans('Disable edit in place'),
                             'icon' => 'ban'
                         ];
                     } else {
                         $i10nLinks[] = [
                             'url' => $this->router->generate('zikulasettingsmodule_settings_toggleeditinplace'),
-                            'text' => $this->translator->trans('Enable edit in place') . ' (experimental)',
+                            'text' => $this->translator->trans('Enable edit in place'),
                             'title' => $this->translator->trans('Edit translations directly in the context of a page'),
                             'icon' => 'user-edit'
                         ];

@@ -89,8 +89,9 @@ class LocaleConfigHelper
         $parameterName = 'localisation.locales';
         $storedLocales = $this->configDumper->getParameter($parameterName);
         if (is_array($storedLocales)) {
-            $diff = array_diff($storedLocales, $locales);
-            if (count($diff) > 0) {
+            $diff1 = array_diff($storedLocales, $locales);
+            $diff2 = array_diff($locales, $storedLocales);
+            if (0 < count($diff1) || 0 < count($diff2)) {
                 $this->configDumper->setParameter($parameterName, $locales);
             }
         }
