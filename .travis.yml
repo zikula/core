@@ -22,8 +22,6 @@ before_install:
     # disable xdebug
     - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi;
     # install intl extension
-    - sudo apt-get install php$(phpenv version-name)-intl
-    - sudo phpenmod intl
     # "extension = intl.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
     # load memcache.so
