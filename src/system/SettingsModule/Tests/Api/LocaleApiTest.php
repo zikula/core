@@ -96,7 +96,10 @@ class LocaleApiTest extends TestCase
         $kernel = $this->getMockBuilder(ZikulaHttpKernelInterface::class)->getMock();
         $kernel->method('getProjectDir')->willReturn(__DIR__ . $dir);
         $requestStack = $this->getMockBuilder(RequestStack::class)->getMock();
-        $localeConfigHelper = $this->getMockBuilder(LocaleConfigHelper::class)->getMock();
+        $localeConfigHelper = $this->getMockBuilder(LocaleConfigHelper::class)
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         return new LocaleApi($kernel, $requestStack, $localeConfigHelper, 'en', true);
     }
