@@ -22,7 +22,9 @@ before_install:
     # disable xdebug
     - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi;
     # install intl extension
-    - echo "extension = intl.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - sudo apt-get install php$(phpenv version-name)-intl
+    - sudo phpenmod intl
+    # "extension = intl.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
     # load memcache.so
     #- pecl install -f memcached-3.1.3 && echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
