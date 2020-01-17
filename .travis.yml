@@ -20,7 +20,7 @@ services:
 
 before_install:
     # disable xdebug
-    - phpenv config-rm xdebug.ini
+    - if [[ "$TRAVIS_PHP_VERSION" != "nightly" ]]; then phpenv config-rm xdebug.ini; fi;
     # install intl extension
     - sudo apt-get install libicu60 libicu-dev
     - pecl install intl
