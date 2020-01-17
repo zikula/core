@@ -1624,16 +1624,16 @@
         },
         {
             "name": "doctrine/persistence",
-            "version": "1.3.5",
+            "version": "1.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/persistence.git",
-                "reference": "be70c016fdcd44a428405ee062ebcdd01a6867cd"
+                "reference": "5dd3ac5eebef2d0b074daa4440bb18f93132dee4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/persistence/zipball/be70c016fdcd44a428405ee062ebcdd01a6867cd",
-                "reference": "be70c016fdcd44a428405ee062ebcdd01a6867cd",
+                "url": "https://api.github.com/repos/doctrine/persistence/zipball/5dd3ac5eebef2d0b074daa4440bb18f93132dee4",
+                "reference": "5dd3ac5eebef2d0b074daa4440bb18f93132dee4",
                 "shasum": ""
             },
             "require": {
@@ -1641,7 +1641,7 @@
                 "doctrine/cache": "^1.0",
                 "doctrine/collections": "^1.0",
                 "doctrine/event-manager": "^1.0",
-                "doctrine/reflection": "^1.0",
+                "doctrine/reflection": "^1.1",
                 "php": "^7.1"
             },
             "conflict": {
@@ -1703,7 +1703,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2020-01-14T18:44:12+00:00"
+            "time": "2020-01-16T22:06:23+00:00"
         },
         {
             "name": "doctrine/reflection",
@@ -3987,16 +3987,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.11.1",
+            "version": "0.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "9566ef4cc2a253dae4c73b4727662ae2f77525c4"
+                "reference": "dd41bc970939aff9d86e9adf96fcdb6ec92afc51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/9566ef4cc2a253dae4c73b4727662ae2f77525c4",
-                "reference": "9566ef4cc2a253dae4c73b4727662ae2f77525c4",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/dd41bc970939aff9d86e9adf96fcdb6ec92afc51",
+                "reference": "dd41bc970939aff9d86e9adf96fcdb6ec92afc51",
                 "shasum": ""
             },
             "require": {
@@ -4059,7 +4059,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "time": "2020-01-14T09:52:50+00:00"
+            "time": "2020-01-17T10:31:35+00:00"
         },
         {
             "name": "php-translation/symfony-storage",

@@ -85,12 +85,6 @@ class TranslationUiListener implements EventSubscriberInterface
             throw new AccessDeniedException();
         }
 
-        if (in_array($routeName, ['translation_edit_in_place_update', 'translation_create', 'translation_edit', 'translation_delete'], true)) {
-            // ensure $request->isXmlHttpRequest() returns true in Theme module's event listeners
-            // remove when https://github.com/php-translation/symfony-bundle/issues/385 is solved
-            $request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        }
-
         // update locale configuration parameters if needed
         $this->localeApi->getSupportedLocales(true);
 
@@ -151,6 +145,9 @@ class TranslationUiListener implements EventSubscriberInterface
 
     private function isRequestRelevantForEditInPlace(Request $request): bool
     {
+        if ($request->isXmlHttpRequest()) {
+            return false;
+        }
         $format = $request->getRequestFormat();
         if ('html' !== $format) {
             return false;

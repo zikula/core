@@ -104,7 +104,18 @@ class LocaleApi implements LocaleApiInterface
 
         // ensure config file is still in sync
         if (true === $includeRegions) {
-            $this->localeConfigHelper->updateConfiguration($this->supportedLocales[$this->sectionKey], $includeRegions);
+            $syncConfig = true;
+            if (null !== $this->requestStack) {
+                $request = $this->requestStack->getCurrentRequest();
+                if ($request->isXmlHttpRequest()) {
+                    $syncConfig = false;
+                } elseif ($request !== $this->requestStack->getMasterRequest()) {
+                    $syncConfig = false;
+                }
+            }
+            if ($syncConfig) {
+                $this->localeConfigHelper->updateConfiguration($this->supportedLocales[$this->sectionKey], $includeRegions);
+            }
         }
 
         return $this->supportedLocales[$this->sectionKey];
