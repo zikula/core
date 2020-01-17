@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\SettingsModule\Listener;
 
-use ReflectionClass;
-use ReflectionException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
