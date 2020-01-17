@@ -51,13 +51,13 @@ class ExtensionMenu implements ExtensionMenuInterface
     private $mappingRepository;
 
     public function __construct(
-        RouterInterface $router,
+        FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
         VariableApiInterface $variableApi,
         CurrentUserApiInterface $currentUserApi,
         AuthenticationMappingRepositoryInterface $mappingRepository
     ) {
-        $this->router = $router;
+        $this->factory = $factory;
         $this->permissionApi = $permissionApi;
         $this->variableApi = $variableApi;
         $this->currentUser = $currentUserApi;
