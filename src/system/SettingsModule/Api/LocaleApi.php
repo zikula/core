@@ -107,7 +107,9 @@ class LocaleApi implements LocaleApiInterface
             $syncConfig = true;
             if (null !== $this->requestStack) {
                 $request = $this->requestStack->getCurrentRequest();
-                if ($request->isXmlHttpRequest()) {
+                if (null === $request) {
+                    $syncConfig = false;
+                } elseif ($request->isXmlHttpRequest()) {
                     $syncConfig = false;
                 } elseif ($request !== $this->requestStack->getMasterRequest()) {
                     $syncConfig = false;
