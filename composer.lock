@@ -3894,16 +3894,16 @@
         },
         {
             "name": "php-translation/common",
-            "version": "3.0.0",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/common.git",
-                "reference": "dbf73744a22121b85e369ac73ae658c80dd888b7"
+                "reference": "b786f49d7f222ca345b0e4c32d4a205a845b0e27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/common/zipball/dbf73744a22121b85e369ac73ae658c80dd888b7",
-                "reference": "dbf73744a22121b85e369ac73ae658c80dd888b7",
+                "url": "https://api.github.com/repos/php-translation/common/zipball/b786f49d7f222ca345b0e4c32d4a205a845b0e27",
+                "reference": "b786f49d7f222ca345b0e4c32d4a205a845b0e27",
                 "shasum": ""
             },
             "require": {
@@ -3931,7 +3931,7 @@
                 }
             ],
             "description": "Common translation stuff",
-            "time": "2019-12-30T10:58:18+00:00"
+            "time": "2020-01-18T09:48:23+00:00"
         },
         {
             "name": "php-translation/extractor",
