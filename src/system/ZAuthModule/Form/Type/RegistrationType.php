@@ -88,17 +88,20 @@ class RegistrationType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Save',
                 'icon' => 'fa-plus',
-                'attr' => ['class' => 'btn btn-success']
-            ])
-            ->add('cancel', ButtonType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-danger']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('reset', ResetType::class, [
                 'label' => 'Reset',
                 'icon' => 'fa-refresh',
-                'attr' => ['class' => 'btn btn-primary']
+            ])
+            ->add('cancel', ButtonType::class, [
+                'label' => 'Cancel',
+                'icon' => 'fa-times',
+                'attr' => [
+                    'class' => 'btn-danger'
+                ]
             ])
         ;
         if (!empty($options['antiSpamQuestion'])) {

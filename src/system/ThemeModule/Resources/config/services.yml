@@ -101,6 +101,7 @@ services:
           $options: []
         calls:
           - setEventDispatcher: ['@event_dispatcher']
+          - addGlobal: ['app', '@twig.app_variable']
           - addGlobal: ['pagevars', '@zikula_core.common.theme.pagevars']
           - addGlobal: ['themevars', '@zikula_core.common.theme.themevars']
           - addGlobal: ['currentUser', '@Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface']

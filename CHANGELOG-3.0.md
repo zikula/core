@@ -104,6 +104,7 @@
 
  - Vendor updates:
     - antishov/doctrine-extensions-bundle updated from 1.2.2 to 1.4.2
+    - behat/transliterator updated from 1.2.0 to 1.3.0
     - components/bootstrap updated from 3.4.1 to 4.4.1
     - components/font-awesome updated from 4.7.0 to 5.12.0
     - composer/ca-bundle updated from 1.2.4 to 1.2.5
@@ -136,7 +137,7 @@
     - justinrainbow/json-schema updated from 4.1.0 to 5.2.9
     - knplabs/knp-menu updated from 2.2.0 to 3.1.0
     - knplabs/knp-menu-bundle updated from 2.1.3 to 3.0.0
-    - league/commonmark installed in 1.2.1
+    - league/commonmark installed in 1.2.2
     - league/html-to-markdown installed in 4.9.1
     - liip/imagine-bundle updated from 1.9.1 to 2.3.0
     - lorenzo/pinky installed in 1.0.5

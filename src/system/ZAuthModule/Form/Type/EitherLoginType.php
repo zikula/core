@@ -41,7 +41,9 @@ class EitherLoginType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => 'Login',
                 'icon' => 'fa-angle-double-right',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }

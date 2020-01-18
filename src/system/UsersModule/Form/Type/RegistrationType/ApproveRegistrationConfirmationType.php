@@ -38,12 +38,13 @@ class ApproveRegistrationConfirmationType extends AbstractType
             ->add('confirm', SubmitType::class, [
                 'label' => !empty($options['buttonLabel']) ? $options['buttonLabel'] : $this->trans('Confirm'),
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success'],
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->trans('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'icon' => 'fa-times'
             ])
         ;
     }

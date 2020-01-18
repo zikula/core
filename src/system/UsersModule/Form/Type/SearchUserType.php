@@ -75,12 +75,13 @@ class SearchUserType extends AbstractType
             ->add('search', SubmitType::class, [
                 'label' => $this->trans('Search'),
                 'icon' => 'fa-search',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->trans('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
+                'icon' => 'fa-times'
             ])
         ;
     }

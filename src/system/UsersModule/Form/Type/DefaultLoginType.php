@@ -42,7 +42,9 @@ class DefaultLoginType extends AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => $this->trans('Login'),
                 'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }

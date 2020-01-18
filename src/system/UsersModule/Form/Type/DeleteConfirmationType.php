@@ -37,15 +37,12 @@ class DeleteConfirmationType extends AbstractType
                 'label' => $this->trans('Confirm deletion'),
                 'icon' => 'fa-trash-alt',
                 'attr' => [
-                    'class' => 'btn btn-danger'
+                    'class' => 'btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
                 'label' => $this->trans('Cancel'),
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
+                'icon' => 'fa-times'
             ])
         ;
     }

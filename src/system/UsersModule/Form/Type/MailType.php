@@ -63,7 +63,9 @@ class MailType extends AbstractType
             ->add('send', SubmitType::class, [
                 'label' => $this->trans('Send Mail'),
                 'icon' => 'fa-angle-double-right',
-                'attr' => ['class' => 'btn btn-success']
+                'attr' => [
+                    'class' => 'btn-success'
+                ]
             ])
         ;
     }
