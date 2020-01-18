@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\UsersModule\Helper\AccountLinksHelper;
+//use Zikula\UsersModule\Helper\AccountLinksHelper;
 
 class AccountLinksBlock extends AbstractBlockHandler
 {
@@ -39,11 +39,10 @@ class AccountLinksBlock extends AbstractBlockHandler
         ]);
     }
 
-    /**
-     * @required
-     */
-    public function setAccountLinksHelper(AccountLinksHelper $accountLinksHelper): void
-    {
-        $this->accountLinksHelper = $accountLinksHelper;
-    }
+//    /**
+//     */
+//    public function setAccountLinksHelper(AccountLinksHelper $accountLinksHelper): void
+//    {
+//        $this->accountLinksHelper = $accountLinksHelper;
+//    }
 }
