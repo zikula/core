@@ -77,6 +77,7 @@ class ExtensionMenu implements ExtensionMenuInterface
 
         return null;
     }
+
     private function getAdmin(): ?ItemInterface
     {
         $menu = $this->factory->createItem('zauthAdminMenu');
