@@ -28,11 +28,9 @@ translation:
     configs:
         zikula:
             dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/lib', '%kernel.project_dir%/system']
-            #dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/src']
+            #dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/src'] # default value
             output_dir: '%kernel.project_dir%/translations'
-            # TODO update after https://github.com/php-translation/extractor/issues/146 has been solved
-            excluded_names: ['*TestCase.php', '*Test.php', 'TranslatorTrait.php', 'SessionExtension.php', 'MetaData.php', 'CategoryType.php', 'CategoriesModuleInstaller.php', 'RouteLoader.php', 'ZikulaPatternGenerationStrategy.php']
-            #excluded_names: ['*TestCase.php', '*Test.php']
+            excluded_names: ['*TestCase.php', '*Test.php']
             excluded_dirs: [vendor, cache, data, log]
             output_format: yaml
             local_file_storage_options:

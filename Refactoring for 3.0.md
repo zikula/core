@@ -162,7 +162,6 @@ You can use it for example for `trans()` calls, form labels and form choices.
 
 Examples:
 
-**TODO this needs further tests, see [this issue](https://github.com/php-translation/extractor/issues/146)**
 ```php
 echo $this->translator->trans(/** @Ignore */$description);
 

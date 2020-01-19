@@ -3936,16 +3936,16 @@
         },
         {
             "name": "php-translation/extractor",
-            "version": "2.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/extractor.git",
-                "reference": "439717ddc43a333ce49feb99074df2db8ba93071"
+                "reference": "c5d58cf2f0bc416512769554d7b5943c2502a92f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/extractor/zipball/439717ddc43a333ce49feb99074df2db8ba93071",
-                "reference": "439717ddc43a333ce49feb99074df2db8ba93071",
+                "url": "https://api.github.com/repos/php-translation/extractor/zipball/c5d58cf2f0bc416512769554d7b5943c2502a92f",
+                "reference": "c5d58cf2f0bc416512769554d7b5943c2502a92f",
                 "shasum": ""
             },
             "require": {
@@ -3984,7 +3984,7 @@
                 }
             ],
             "description": "Extract translations form the source code",
-            "time": "2019-12-26T14:02:26+00:00"
+            "time": "2020-01-18T10:35:04+00:00"
         },
         {
             "name": "php-translation/symfony-bundle",
@@ -7153,6 +7153,7 @@
         "zikula/profile-module": 20,
         "zikula/oauth-module": 20,
         "zikula/pagelock-module": 20,
+        "php-translation/extractor": 20,
         "php-translation/symfony-bundle": 20,
         "php-translation/symfony-storage": 20,
         "symfony/requirements-checker": 20,
