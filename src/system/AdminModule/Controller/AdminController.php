@@ -322,7 +322,9 @@ class AdminController extends AbstractController
                 }
 
                 try {
-                    $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
+                    $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
+                        ? $router->generate($adminModule['capabilities']['admin']['route'])
+                        : '';
                 } catch (RouteNotFoundException $routeNotFoundException) {
                     $menuTextUrl = 'javascript:void(0)';
                     $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';
@@ -386,7 +388,9 @@ class AdminController extends AbstractController
 
             $menuText = $adminModule['displayname'];
             try {
-                $menuTextUrl = $router->generate($adminModule['capabilities']['admin']['route']);
+                $menuTextUrl = isset($adminModule['capabilities']['admin']['route'])
+                    ? $router->generate($adminModule['capabilities']['admin']['route'])
+                    : '';
             } catch (RouteNotFoundException $routeNotFoundException) {
                 $menuTextUrl = 'javascript:void(0)';
                 $menuText .= ' (<i class="fas fa-exclamation-triangle"></i> ' . $this->trans('invalid route') . ')';

@@ -87,6 +87,8 @@ class PurifierHelper
         $def = $config->getHTMLDefinition(true);
         $def->addAttribute('iframe', 'allowfullscreen', 'Bool');
 
+        $this->ensureCacheDirectoryExists($config->get('Cache.SerializerPath'));
+
         return $config;
     }
 
@@ -147,6 +149,11 @@ class PurifierHelper
         $cacheDirectory = $this->kernel->getCacheDir() . '/purifier';
         $config->set('Cache.SerializerPath', $cacheDirectory);
 
+        return $config;
+    }
+
+    private function ensureCacheDirectoryExists(string $cacheDirectory): void
+    {
         $fs = new Filesystem();
 
         try {
@@ -162,7 +169,5 @@ class PurifierHelper
                 )
             );
         }
-
-        return $config;
     }
 }
