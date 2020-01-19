@@ -17,8 +17,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\HookBundle\Collector\HookCollectorInterface;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\LinkContainer\LinkContainerInterface;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuEvent;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 /**
@@ -61,40 +61,28 @@ class HooksListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'zikula.link_collector' => 'linkCollectorResponder'
+            ExtensionMenuEvent::class => 'addHookMenu'
         ];
     }
 
-    /**
-     * Respond to zikula.link_collector events.
-     *
-     * Create a BC Layer for the zikula.link_collector event to gather Hook-related links.
-     *
-     * @param GenericEvent $event
-     */
-    public function linkCollectorResponder(GenericEvent $event): void
+    public function addHookMenu(ExtensionMenuEvent $event): void
     {
-        $event->setArgument('modname', $event->getSubject());
-        $event->setArgument('modfunc', [1 => 'getLinks']);
-        $event->setArgument('api', true);
-
         // return if not collection admin links
-        if (LinkContainerInterface::TYPE_ADMIN !== $event->getArgument('type')) {
+        if (ExtensionMenuInterface::TYPE_ADMIN !== $event->getMenuType()) {
             return;
         }
-        if (!$this->permissionsApi->hasPermission($event['modname'] . '::Hooks', '::', ACCESS_ADMIN)) {
+        if (!$this->permissionsApi->hasPermission($event->getBundleName() . '::Hooks', '::', ACCESS_ADMIN)) {
             return;
         }
         // return if module is not subscriber or provider capable
-        if (!$this->hookCollector->isCapable($event['modname'], HookCollectorInterface::HOOK_SUBSCRIBER)
-            && !$this->hookCollector->isCapable($event['modname'], HookCollectorInterface::HOOK_PROVIDER)
+        if (!$this->hookCollector->isCapable($event->getBundleName(), HookCollectorInterface::HOOK_SUBSCRIBER)
+            && !$this->hookCollector->isCapable($event->getBundleName(), HookCollectorInterface::HOOK_PROVIDER)
         ) {
             return;
         }
-        $event->data[] = [
-            'url' => $this->router->generate('zikula_hook_hook_edit', ['moduleName' => $event['modname']]),
-            'text' => $this->translator->trans('Hooks'),
-            'icon' => 'paperclip'
-        ];
+        $event->getMenu()->addChild('Hooks', [
+            'route' => 'zikula_hook_hook_edit',
+            'routeParameters' => ['moduleName' => $event->getBundleName()]
+            ])->setAttribute('icon', 'fas fa-paperclip');
     }
 }

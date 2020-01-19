@@ -31,8 +31,9 @@ use Zikula\AdminModule\Helper\AdminLinksHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Asset;
 
@@ -221,7 +222,7 @@ class AdminController extends AbstractController
         RouterInterface $router,
         AdminLinksHelper $adminLinksHelper,
         Asset $assetHelper,
-        LinkContainerCollector $linkContainerCollector,
+        ExtensionMenuCollector $extensionMenuCollector,
         int $acid = null
     ) {
         if (!$this->hasPermission('::', '::', ACCESS_EDIT)) {
@@ -331,7 +332,7 @@ class AdminController extends AbstractController
                 }
 
                 $moduleName = (string)$adminModule['name'];
-                $links = $linkContainerCollector->getLinks($moduleName, 'admin');
+                $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,
@@ -341,7 +342,7 @@ class AdminController extends AbstractController
                     'adminIcon' => $adminModule['capabilities']['admin']['icon'] ?? '',
                     'id' => $adminModule['id'],
                     'order' => $sortOrder,
-                    'links' => $links
+                    'extensionMenu' => $extensionMenu
                 ];
             }
         }
@@ -362,7 +363,6 @@ class AdminController extends AbstractController
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         AdminLinksHelper $adminLinksHelper,
-        Asset $assetHelper,
         int $acid = null
     ): Response {
         $acid = empty($acid) ? $this->getVar('startcategory') : $acid;
