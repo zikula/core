@@ -27,7 +27,6 @@ services:
 
     Zikula\Core\:
         resource: '../../../../Core/*'
-        exclude: '../../../../Core/Tests'
 
     Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
 
