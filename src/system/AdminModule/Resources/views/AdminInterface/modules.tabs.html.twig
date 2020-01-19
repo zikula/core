@@ -19,10 +19,8 @@
                     <span class="fas fa-arrows-alt admintabs-lock"></span>
                     <span><img src="{{ app.request.basePath }}/{{ module.icon }}" alt="icon" style="height: 18px"/></span>
                 </a>
-                {% if module.links|length > 0 %}
-                    <ul class="dropdown-menu">
-                        {{ _self.draw(module.links) }}
-                    </ul>
+                {% if module.extensionMenu|default %}
+                    {{ knp_menu_render(module.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                 {% endif %}
             </li>
         {% endfor %}

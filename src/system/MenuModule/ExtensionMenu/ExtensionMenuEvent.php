@@ -23,7 +23,7 @@ class ExtensionMenuEvent
 
     private $menu;
 
-    public function __construct(string $bundleName, string $menuType, ItemInterface $menu)
+    public function __construct(string $bundleName, string $menuType, ?ItemInterface $menu)
     {
         $this->bundleName = $bundleName;
         $this->menuType = $menuType;
@@ -40,7 +40,7 @@ class ExtensionMenuEvent
         return $this->menuType;
     }
 
-    public function getMenu(): ItemInterface
+    public function getMenu(): ?ItemInterface
     {
         return $this->menu;
     }

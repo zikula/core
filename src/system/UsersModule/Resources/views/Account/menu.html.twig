@@ -12,10 +12,10 @@
     </ul>
 {% endif %}
 
-{% set displayGraphics = getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS'), constant('Zikula\\UsersModule\\Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS')) %}
-{% set width = 100/getModVar('ZikulaUsersModule', 'accountitemsperrow') %}
+{#{% set displayGraphics = getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS'), constant('Zikula\\UsersModule\\Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS')) %}#}
+{#{% set width = 100/getModVar('ZikulaUsersModule', 'accountitemsperrow') %}#}
 
-<span>HI</span>
+<div>HI</div>
 {% for menu in accountMenus|default %}
     {{ knp_menu_render(menu) }} {#, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }} #}
 {% endfor %}

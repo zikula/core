@@ -21,8 +21,8 @@
                                         <i class="{{ module.icon|default('fas fa-layer-group') }} fa-fw fa-2x align-middle text-info"></i>
                                         {{ module.menutext }}
                                     </a>
-                                    {% if module.links|length > 0 %}
-                                        <ul class="text-left">{{ helper.draw(module.links, caller, module) }}</ul>
+                                    {% if module.extensionMenu|default %}
+                                        {{ knp_menu_render(module.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                                     {% endif %}
                                 </li>
                             {% endfor %}
