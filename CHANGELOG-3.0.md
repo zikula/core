@@ -116,19 +116,19 @@
     - doctrine/collections updated from 1.3.0 to 1.6.4
     - doctrine/common updated from 2.6.2 to 2.12.0
     - doctrine/dbal updated from 2.5.13 to 2.10.1
-    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.6
+    - doctrine/doctrine-bundle updated from 1.6.13 to 2.0.7
     - doctrine/event-manager installed in 1.1.0
     - doctrine/inflector updated from 1.1.0 to 1.3.1
     - doctrine/instantiator updated from 1.0.5 to 1.3.0
     - doctrine/lexer updated from 1.0.2 to 1.2.0
     - doctrine/orm updated from 2.5.14 to 2.7.0
-    - doctrine/persistence installed in 1.3.5
+    - doctrine/persistence installed in 1.3.6
     - doctrine/reflection installed in 1.1.0
     - egulias/email-validator installed in 2.1.14
     - elao/web-profiler-extra-bundle updated from 2.3.6 to dev-master 4329dde
     - erusev/parsedown installed in 1.7.4
     - friendsofsymfony/jsrouting-bundle updated from 1.6.3 to 2.5.3
-    - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.38
+    - gedmo/doctrine-extensions updated from 2.4.37 to 2.4.39
     - guzzlehttp/guzzle updated from 6.4.1 to 6.5.2
     - imagine/imagine updated from 0.7.1 to 1.3.3
     - itsjavi/fontawesome-iconpicker installed in 3.2.0
@@ -148,9 +148,9 @@
     - nikic/php-parser updated from 1.4.1 to 4.3.0
     - nyholm/nsa installed in 1.1.0
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
-    - php-translation/common installed in 3.0.0
+    - php-translation/common installed in 3.0.1
     - php-translation/extractor installed in 2.0.0
-    - php-translation/symfony-bundle installed in 0.11.0
+    - php-translation/symfony-bundle installed in 0.11.2
     - php-translation/symfony-storage installed in 2.1.0
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
