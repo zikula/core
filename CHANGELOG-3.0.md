@@ -65,6 +65,7 @@
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
     - Removed custom translation system (#4042).
     - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
+    - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
