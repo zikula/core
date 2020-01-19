@@ -62,10 +62,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/Guite/symfony-bundle"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/Guite/symfony-storage"
         },
         {
