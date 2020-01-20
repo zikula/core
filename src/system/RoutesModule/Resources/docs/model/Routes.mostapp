@@ -34,7 +34,6 @@ application "Routes" targets ZK30 {
     generateTechnicalDocumentation false
     skipFiles "
         CHANGELOG.md,
-        Container/LinkContainer.php,
         Entity/Factory/EntityInitialiser.php,
         Entity/Repository/RouteRepository.php,
         Form/Handler/Route/EditHandler.php,
@@ -42,6 +41,7 @@ application "Routes" targets ZK30 {
         Helper/ViewHelper.php,
         Listener/EntityLifecycleListener.php,
         Listener/InstallerListener.php,
+        Menu/ExtensionMenu.php,
         README.md,
         Resources/workflows/none.yml,
         RoutesModuleInstaller.php,
