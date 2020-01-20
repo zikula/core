@@ -105,23 +105,23 @@ class ExtensionsInterfaceController extends AbstractController
         $masterRequest = $requestStack->getMasterRequest();
         /** @var Request $currentRequest */
         $currentRequest = $requestStack->getCurrentRequest();
-        $caller = $requestStack->getMasterRequest()->attributes->all();
+        $caller = $masterRequest->attributes->all();
         $caller['info'] = $extensionRepository->get($caller['_zkModule']);
         // your own links array
         $links = '' !== $currentRequest->attributes->get('links') ? $currentRequest->attributes->get('links') : '';
         // you can pass module name you want to get links for but
-        $modname = '' !== $currentRequest->attributes->get('modname') ? $currentRequest->attributes->get('modname') : $caller['_zkModule'];
+        $moduleName = '' !== $currentRequest->attributes->get('modname') ? $currentRequest->attributes->get('modname') : $caller['_zkModule'];
 
         // no own links array
         if (empty($links)) {
             // define type - default
-            $links_type = 'user';
+            $linksType = 'user';
             // detect from masterRequest
-            $links_type = '' !== $masterRequest->attributes->get('type') ? $masterRequest->attributes->get('type') : $links_type;
+            $linksType = '' !== $masterRequest->attributes->get('type') ? $masterRequest->attributes->get('type') : $linksType;
             // passed to currentRequest most important
-            $links_type = '' !== $currentRequest->attributes->get('type') ? $currentRequest->attributes->get('type') : $links_type;
+            $linksType = '' !== $currentRequest->attributes->get('type') ? $currentRequest->attributes->get('type') : $linksType;
             // get the menu links
-            $extensionMenu = $extensionMenuCollector->get($modname, $links_type);
+            $extensionMenu = $extensionMenuCollector->get($moduleName, $linksType);
             if (isset($extensionMenu)) {
                 $extensionMenu->setChildrenAttribute('class', 'nav nav-modulelinks');
             }
