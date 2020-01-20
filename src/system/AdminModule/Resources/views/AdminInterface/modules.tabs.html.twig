@@ -19,7 +19,7 @@
                     <span class="fas fa-arrows-alt admintabs-lock"></span>
                     <span><img src="{{ app.request.basePath }}/{{ module.icon }}" alt="icon" style="height: 18px"/></span>
                 </a>
-                {% if module.extensionMenu|default %}
+                {% if module.extensionMenu|default %}{#<ul class="dropdown-menu">#}
                     {{ knp_menu_render(module.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                 {% endif %}
             </li>
