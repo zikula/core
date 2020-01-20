@@ -22,6 +22,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 
 /**
  * Configuration form type class.
@@ -31,32 +33,31 @@ class ConfigType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transportChoices = [
-            'Sendmail message transfer agent' => 'sendmail',
-            'Google gmail' => 'gmail',
-            'SMTP mail transfer protocol' => 'smtp',
-            'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
+            /** @Translate */'Sendmail message transfer agent' => 'sendmail',
+            /** @Translate */'Google gmail' => 'gmail',
+            /** @Translate */'SMTP mail transfer protocol' => 'smtp',
+            /** @Translate */'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
         ];
         $transportAlert = null;
 
         // see https://swiftmailer.symfony.com/docs/sending.html
         if (!function_exists('proc_open')) {
             $transportChoices = [
-                'Google gmail' => 'gmail',
-                'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
+                /** @Translate */'Google gmail' => 'gmail',
+                /** @Translate */'Development/debug mode (Do not send any email)' => 'test'/*'null'*/
             ];
             $transportAlert = [
-                'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.' => 'warning'
+                /** @Translate */'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.' => 'warning'
             ];
         }
 
-        $transportOptions = [
-            'label' => 'Mail transport',
-            'choices' => $transportChoices,
-            'alert' => $transportAlert
-        ];
-
         $builder
-            ->add('transport', ChoiceType::class, $transportOptions)
+            ->add('transport', ChoiceType::class, [
+                'label' => 'Mail transport',
+                'choices' => /** @Ignore */$transportChoices,
+                /** @Ignore */
+                'alert' => $transportAlert
+            ])
             ->add('charset', TextType::class, [
                 'label' => 'Character set',
                 'attr' => [

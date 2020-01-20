@@ -24,7 +24,13 @@ col-md-9
     {% if input_group|default %}<div class="input-group">{% endif %}
     {% if input_group|default and input_group.left|default %}
         <div class="input-group-prepend">
-            <span class="input-group-text">{{ input_group.left|default|raw }}</span>
+            <span class="input-group-text">
+                {%- if translation_domain|default -%}
+                    {{ input_group.left|trans({}, translation_domain) }}
+                {%- else -%}
+                    {{ input_group.left|trans() }}
+                {%- endif -%}
+            </span>
         </div>
     {% endif %}
 {% endblock %}
@@ -32,7 +38,13 @@ col-md-9
 {% block input_group_end %}
     {% if input_group|default and input_group.right|default %}
         <div class="input-group-append">
-            <span class="input-group-text">{{ input_group.right|default|raw }}</span>
+            <span class="input-group-text">
+                {%- if translation_domain|default -%}
+                    {{ input_group.right|trans({}, translation_domain) }}
+                {%- else -%}
+                    {{ input_group.right|trans() }}
+                {%- endif -%}
+            </span>
         </div>
     {% endif %}
     {% if input_group|default %}</div>{% endif %}
