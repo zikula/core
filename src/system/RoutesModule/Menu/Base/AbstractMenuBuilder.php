@@ -18,8 +18,6 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
@@ -36,8 +34,6 @@ use Zikula\RoutesModule\Helper\PermissionHelper;
  */
 class AbstractMenuBuilder
 {
-    use TranslatorTrait;
-    
     /**
      * @var FactoryInterface
      */
@@ -79,7 +75,6 @@ class AbstractMenuBuilder
     protected $modelHelper;
     
     public function __construct(
-        TranslatorInterface $translator,
         FactoryInterface $factory,
         EventDispatcherInterface $eventDispatcher,
         RequestStack $requestStack,
@@ -89,7 +84,6 @@ class AbstractMenuBuilder
         VariableApiInterface $variableApi,
         ModelHelper $modelHelper
     ) {
-        $this->setTranslator($translator);
         $this->factory = $factory;
         $this->eventDispatcher = $eventDispatcher;
         $this->requestStack = $requestStack;
@@ -124,7 +118,7 @@ class AbstractMenuBuilder
             $routePrefix = 'zikularoutesmodule_route_';
             
             if ('admin' === $routeArea) {
-                $title = $this->trans('Preview');
+                $title = 'Preview';
                 $previewRouteParameters = $entity->createUrlArgs();
                 $previewRouteParameters['preview'] = 1;
                 $menu->addChild($title, [
@@ -134,12 +128,12 @@ class AbstractMenuBuilder
                 $menu[$title]->setLinkAttribute('target', '_blank');
                 $menu[$title]->setLinkAttribute(
                     'title',
-                    $this->trans('Open preview page')
+                    'Open preview page'
                 );
                 $menu[$title]->setAttribute('icon', 'fas fa-search-plus');
             }
             if ('display' !== $context) {
-                $title = $this->trans('Details');
+                $title = 'Details';
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'display',
                     'routeParameters' => $entity->createUrlArgs()
@@ -152,29 +146,29 @@ class AbstractMenuBuilder
                 $menu[$title]->setAttribute('icon', 'fas fa-eye');
             }
             if ($this->permissionHelper->mayEdit($entity)) {
-                $title = $this->trans('Edit');
+                $title = 'Edit';
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => $entity->createUrlArgs()
                 ]);
                 $menu[$title]->setLinkAttribute(
                     'title',
-                    $this->trans('Edit this route')
+                    'Edit this route'
                 );
                 $menu[$title]->setAttribute('icon', 'fas fa-edit');
-                $title = $this->trans('Reuse');
+                $title = 'Reuse';
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'edit',
                     'routeParameters' => ['astemplate' => $entity->getKey()]
                 ]);
                 $menu[$title]->setLinkAttribute(
                     'title',
-                    $this->trans('Reuse for new route')
+                    'Reuse for new route'
                 );
                 $menu[$title]->setAttribute('icon', 'fas fa-files-o');
             }
             if ('display' === $context) {
-                $title = $this->trans('Routes list');
+                $title = 'Routes list';
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view'
                 ]);
@@ -218,7 +212,7 @@ class AbstractMenuBuilder
                 $canBeCreated = $this->modelHelper->canBeCreated($objectType);
                 if ($canBeCreated) {
                     if ($this->permissionHelper->hasComponentPermission($objectType, ACCESS_EDIT)) {
-                        $title = $this->trans('Create route');
+                        $title = 'Create route';
                         $menu->addChild($title, [
                             'route' => $routePrefix . $routeArea . 'edit'
                         ]);
@@ -234,10 +228,10 @@ class AbstractMenuBuilder
                 }
                 if (1 === $query->getInt('all')) {
                     unset($routeParameters['all']);
-                    $title = $this->trans('Back to paginated view');
+                    $title = 'Back to paginated view';
                 } else {
                     $routeParameters['all'] = 1;
-                    $title = $this->trans('Show all entries');
+                    $title = 'Show all entries';
                 }
                 $menu->addChild($title, [
                     'route' => $routePrefix . $routeArea . 'view',
@@ -249,11 +243,11 @@ class AbstractMenuBuilder
                     $routeParameters = $query->all();
                     if (1 === $query->getInt('own')) {
                         unset($routeParameters['own']);
-                        $title = $this->trans('Show also entries from other users');
+                        $title = 'Show also entries from other users';
                         $icon = 'users';
                     } else {
                         $routeParameters['own'] = 1;
-                        $title = $this->trans('Show only own entries');
+                        $title = 'Show only own entries';
                         $icon = 'user';
                     }
                     $menu->addChild($title, [
