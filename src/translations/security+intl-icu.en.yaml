@@ -69,8 +69,8 @@ All: null
 'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': null
 'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': null
 'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': null
-'<em>days (if ''Remember me'' is activated)</em>': null
-'<em>minutes of inactivity</em>': null
+'days (if ''Remember me'' is activated)': null
+'minutes of inactivity': null
 Monthly: null
 Weekly: null
 Daily: null

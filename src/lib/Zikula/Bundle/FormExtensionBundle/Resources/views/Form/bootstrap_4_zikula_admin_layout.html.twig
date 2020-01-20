@@ -26,9 +26,9 @@ col-md-9
         <div class="input-group-prepend">
             <span class="input-group-text">
                 {%- if translation_domain|default -%}
-                    {{ input_group.left|trans({}, translation_domain) }}
+                    {{ input_group.left|trans({}, translation_domain)|raw }}
                 {%- else -%}
-                    {{ input_group.left|trans() }}
+                    {{ input_group.left|trans()|raw }}
                 {%- endif -%}
             </span>
         </div>
@@ -40,9 +40,9 @@ col-md-9
         <div class="input-group-append">
             <span class="input-group-text">
                 {%- if translation_domain|default -%}
-                    {{ input_group.right|trans({}, translation_domain) }}
+                    {{ input_group.right|trans({}, translation_domain)|raw }}
                 {%- else -%}
-                    {{ input_group.right|trans() }}
+                    {{ input_group.right|trans()|raw }}
                 {%- endif -%}
             </span>
         </div>
