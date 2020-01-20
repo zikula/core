@@ -49,6 +49,8 @@ class ExtensionMenuCollector
                 $menu = $this->extensionMenus[$bundleName]->get($type);
             } catch (\Exception $exception) {
                 // do nothing
+                //throw $exception;
+                return null;
             }
 
             // fire event here to add more menu items like hooks, moduleServices, etc

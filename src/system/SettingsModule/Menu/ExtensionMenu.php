@@ -78,53 +78,47 @@ class ExtensionMenu implements ExtensionMenuInterface
             return null;
         }
 
-        $i10nLinks = [];
-        $i10nLinks[] = [
-            'url' => $this->router->generate('zikulasettingsmodule_settings_locale'),
-            'text' => $this->translator->trans('Localisation settings'),
-            'icon' => 'spell-check'
-        ];
+        $menu = $this->factory->createItem('settingsAdminMenu');
+        $menu->addChild('Main settings', [
+            'route' => 'zikulasettingsmodule_settings_main',
+        ])->setAttribute('icon', 'fas fa-wrench');
+
+        $menu->addChild('Localisation', [
+            'uri' => '#'
+        ])
+            ->setAttribute('icon', 'fas fa-globe')
+            ->setAttribute('dropdown', true)
+        ;
+
+        $menu['Localisation']->addChild('Localisation settings', [
+            'route' => 'zikulasettingsmodule_settings_locale',
+        ])->setAttribute('icon', 'fas fa-spell-check');
+
         if (true === (bool)$this->variableApi->getSystemVar('multilingual')) {
             if ('dev' === $this->kernel->getEnvironment()) {
                 $request = $this->requestStack->getCurrentRequest();
                 if ($request->hasSession() && ($session = $request->getSession())) {
                     if ($session->has(EditInPlaceActivator::KEY)) {
-                        $i10nLinks[] = [
-                            'url' => $this->router->generate('zikulasettingsmodule_settings_toggleeditinplace'),
-                            'text' => $this->translator->trans('Disable edit in place'),
-                            'icon' => 'ban'
-                        ];
+                        $menu['Localisation']->addChild('Disable edit in place', [
+                            'route' => 'zikulasettingsmodule_settings_toggleeditinplace',
+                        ])->setAttribute('icon', 'fas fa-ban');
                     } else {
-                        $i10nLinks[] = [
-                            'url' => $this->router->generate('zikulasettingsmodule_settings_toggleeditinplace'),
-                            'text' => $this->translator->trans('Enable edit in place'),
-                            'title' => $this->translator->trans('Edit translations directly in the context of a page'),
-                            'icon' => 'user-edit'
-                        ];
+                        $menu['Localisation']->addChild('Enable edit in place', [
+                            'route' => 'zikulasettingsmodule_settings_toggleeditinplace',
+                        ])
+                            ->setAttribute('icon', 'fas fa-user-edit')
+                            ->setLinkAttribute('title', 'Edit translations directly in the context of a page')
+                        ;
                     }
                 }
-                $i10nLinks[] = [
-                    'url' => $this->router->generate('translation_index'),
-                    'text' => $this->translator->trans('Translation UI'),
-                    'title' => $this->translator->trans('Web interface to add, edit and remove translations'),
-                    'icon' => 'language'
-                ];
+                $menu['Localisation']->addChild('Translation UI', [
+                    'route' => 'translation_index',
+                ])
+                    ->setAttribute('icon', 'fas fa-language')
+                    ->setLinkAttribute('title', 'Web interface to add, edit and remove translations')
+                ;
             }
         }
-
-        $menu = $this->factory->createItem('settingsAdminMenu');
-        $menu->addChild('Main settings', [
-            'route' => 'zikulasettingsmodule_settings_main',
-        ])->setAttribute('icon', 'fas fa-wrench');
-        $menu->addChild('Localisation settings', [
-            'route' => 'zikulasettingsmodule_settings_locale',
-        ])->setAttribute('icon', 'fas fa-globe');
-
-        $links[] = [
-            'text' => $this->translator->trans('Localisation'),
-            'icon' => 'globe',
-            'links' => $i10nLinks
-        ];
 
         $menu->addChild('PHP configuration', [
             'route' => 'zikulasettingsmodule_settings_phpinfo',
