@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Zikula\RoutesModule\Menu;
 
-use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 use Zikula\RoutesModule\Menu\Base\AbstractExtensionMenu;
