@@ -485,12 +485,10 @@ OR: null
 'Verification code': null
 'Create a password': null
 'Invalid username.': null
-'New users': null
-'Account menu': null
-'Recover Lost User Name': null
-'Recover Lost Password': null
-'Recover account information or password': null
-'Change e-mail address': null
+'If unchecked, the user''s e-mail address will be verified. The user will create a password at that time.': null
+'Sending a password via email is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.': null
+'Even if you choose to not send the user''s password via e-mail, other email messages may be sent to the user as part of the registration process.': null
+'It is recommended to force users to verify their email address.': null
 'User name or email': null
 'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.': null
 'If login method is Email, then this value must be unique for the site.': null
@@ -524,6 +522,10 @@ Upload: null
 Reset: null
 'Old password': null
 'New password': null
+'Changing this setting will affect all requests to change e-mail addresses currently pending verification.': null
+'Changing this setting will affect all password change requests currently pending verification.': null
+'If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.': null
+days: null
 SHA1: null
 SHA256: null
 'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than five.': null
@@ -640,10 +642,6 @@ OpenSearch: null
 'Use different keywords.': null
 'Use keywords that are more general.': null
 'Use fewer words.': null
-Frontend: null
-Backend: null
-'New search': null
-'Recent searches list': null
 'All words': null
 'Any words': null
 'Exact phrase': null
@@ -661,11 +659,6 @@ Active: null
 'This page contains adult content': null
 'Show ''Search now'' button': null
 active: null
-'Allowed HTML settings': null
-'View IDS log': null
-'Export IDS log': null
-'Purge IDS log': null
-'HTMLPurifier settings': null
 'User Name': null
 Tag: null
 Page: null
@@ -768,8 +761,6 @@ Clear: null
 'HTML block': null
 'User log-in': null
 'Login block': null
-'Create new block': null
-'Create new block position': null
 Filter: null
 'Block type': null
 Choose: null
@@ -831,7 +822,6 @@ plural_n.direct.child: null
 'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?': null
 'Create or Edit Root Node': null
 'Create or edit root node': null
-'New menu': null
 '%key% must be either (string) "%true%" or "%false%").': null
 '%key% must have a value that can be json_decoded.': null
 'That entity does not exist!': null
@@ -846,6 +836,7 @@ entity: null
 value: null
 key: null
 'Could not json_decode the string you entered.': null
+'This must be a json_encoded string of option key-value pairs.': null
 'Menu name': null
 options: null
 'No permission for this action': null
@@ -881,7 +872,6 @@ Overview: null
 'A new version of the Zikula core is available. Please download the new Zikula core.': null
 'Update checker is enabled': null
 'Check interval': null
-days: null
 'Last checked': null
 Releases: null
 'Currently used version': null
@@ -914,7 +904,6 @@ Functions: null
 Uncategorised: null
 'Newly-installed or uncategorized modules.': null
 'Modules for managing the site''s security.': null
-'Administration panel': null
 'Internal name': null
 'Show both internal name and display name': null
 'Ignore check for installer': null
@@ -1005,10 +994,7 @@ plural_n.anonymous.guest: "{count, plural,\n  one   {one anonymous guest}\n  oth
 'You are an anonymous guest.'', ''zikula': null
 'register here': null
 'You can %registerLink%': null
-'Find/Mail/Delete users': null
-'Log in': null
-'New account': null
-'Log out': null
+'%': null
 'Registration date before': null
 registered_after: null
 'Any group': null
@@ -1140,11 +1126,6 @@ group: null
 'By default, all users are made members of this group.': null
 Administrators: null
 'Group of administrators of this site.': null
-'New group': null
-'%amount% pending applications': null
-'Group list': null
-'Groups admin': null
-'Groups manager': null
 Remove: null
 'Set as 0 for unlimited.': null
 'Comment to attach to your application': null
@@ -1189,14 +1170,6 @@ Open: null
 'This group is a private group': null
 'All groups': null
 Unregistered: null
-'Edit "%name%" group': null
-'Delete "%name%" group': null
-'View membership of "%name%" group': null
-'Leave "%name%" group': null
-Applied!: null
-'Apply to membership of "%name%" group': null
-'Join "%name%" group': null
-'Log in or register': null
 'Regarding your %groupName% group membership application': null
 'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%': null
 'New group application': null
@@ -1219,8 +1192,6 @@ Collapse: null
 'Do you really want to delete this category?': null
 'Delete all sub-categories': null
 'Move all sub-categories': null
-'Category tree': null
-'Category registry': null
 Category: null
 'Select module': null
 Categories: null
@@ -1263,7 +1234,6 @@ categoryAssignments: null
 'Mailer relies on %link%': null
 'SMTP settings': null
 'Gmail settings': null
-'Test current settings': null
 'Plain-text message': null
 'HTML-formatted message': null
 'Multi-part message': null
@@ -1273,8 +1243,11 @@ categoryAssignments: null
 'Recipient''s e-mail address': null
 'Message type': null
 'Send test email': null
+'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.': null
 'Google gmail': null
 'Development/debug mode (Do not send any email)': null
+'Sendmail message transfer agent': null
+'SMTP mail transfer protocol': null
 8bit: null
 7bit: null
 binary: null
@@ -1299,7 +1272,6 @@ Encoding: null
 'SMTP password': null
 'Gmail user name': null
 'Gmail password': null
-transport: null
 'HTML mail hook': null
 'Done! Message sent.': null
 'It looks like the message could not be sent properly.': null
@@ -1331,8 +1303,8 @@ Extension: null
 'Module services': null
 'Module Services are functions provided by the core or other modules for this module.': null
 'There aren\''t any modules services available.': null
-'Extension List': null
 dependencies: null
+/: null
 'WARNING: changing the url affects SEO by breaking existing indexed search results.': null
 URL: null
 'Reload defaults': null
@@ -1374,24 +1346,11 @@ URL: null
 Incompatible: null
 'Not installed': null
 'Empty argument at': null
-'Deactivate %moduleName%': null
-'Activate %moduleName%': null
-'Uninstall %moduleName%': null
-'Upgrade %moduleName%': null
-'Remove %moduleName%': null
-'Install %moduleName%': null
-'Core compatibility information: %moduleName%': null
-'Edit %moduleName%': null
 Services: null
 'List views': null
 Moderation: null
-Workflows: null
 'Here you can configure parameters for list views.': null
 'Here you can define moderation-related settings.': null
-'Here you can inspect and amend the existing workflows.': null
-Routes: null
-'Edit workflow for routes': null
-'Edit routes workflow': null
 'Creation and update': null
 Creation: null
 'Created by %user% on %date%': null
@@ -1402,6 +1361,7 @@ Creation: null
 'Created on %date%': null
 'Updated by %user%': null
 'Updated on %date%': null
+Routes: null
 'Welcome to the route section of the Routes application.': null
 'My custom routes': null
 'Custom routes list': null
@@ -1440,15 +1400,6 @@ Defaults: null
 Requirements: null
 Condition: null
 'Doctrine Exception': null
-'Route list': null
-'Reload routes': null
-'Reload multilingual routing settings': null
-'Dump exposed js routes to file': null
-Configuration: null
-'Manage settings for this application': null
-'Switch to user area.': null
-'Switch to administration area.': null
-'Routes list': null
 'Insert the name of the controller, which was called "type" in earlier versions of Zikula.': null
 'Insert the name of the action, which was called "func" in earlier versions of Zikula.': null
 'The path must start with a "/" and can be a regular expression. Example: "/login"': null
@@ -1542,16 +1493,6 @@ OPTIONS: null
 'Default: %value%': null
 'Requirement: %value%': null
 'Invalid user identifier received.': null
-Preview: null
-'Open preview page': null
-Details: null
-'Edit this route': null
-Reuse: null
-'Reuse for new route': null
-'Back to paginated view': null
-'Show all entries': null
-'Show also entries from other users': null
-'Show only own entries': null
 'Theme credits': null
 'Registration ID': null
 Official: null
@@ -1570,6 +1511,7 @@ License: null
 'Default theme': null
 'Activate %theme%': null
 'Set %theme% as site theme': null
+Preview: null
 'Delete or deactivate': null
 'Credits for': null
 'Remove theme %sub%': null
@@ -1612,11 +1554,6 @@ Browser: null
 'Select a locale:': null
 'Site name': null
 'Site description': null
-'Disable edit in place': null
-'Enable edit in place': null
-'Edit translations directly in the context of a page': null
-'Web interface to add, edit and remove translations': null
-Localisation: null
 Always: null
 'Only for non-default languages': null
 'If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.': null
@@ -1631,6 +1568,7 @@ Always: null
 '%modulename%': null
 'Error! In your permalink settings, strings cannot be terminated with a comma.': null
 'Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.': null
+milliseconds: null
 'Possible tags: %pagetitle%, %sitename%, %modulename%': null
 'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': null
 'Separate with & for example: <code>foo=2&bar=5</code>': null
@@ -1670,8 +1608,6 @@ Permission: null
 'Do you really want to delete this permission rule?': null
 'Registered component': null
 'Instance template': null
-'Create new permission rule': null
-'Permission rules information': null
 'Filter group': null
 'Filter component': null
 'Component to check': null
@@ -1698,7 +1634,3 @@ Invalid: null
 'unregistered user': null
 'permission granted.': null
 'permission not granted.': null
-'Insert permission rule before %pid%': null
-'Edit permission %pid%': null
-'Delete permission %pid%': null
-'Check a users permission': null

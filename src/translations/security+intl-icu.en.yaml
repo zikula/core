@@ -65,6 +65,12 @@ Rule: null
 'Export IDS log': null
 'Export Options': null
 All: null
+'Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the ''Secure host name'' box, make sure you include a trailing slash at the end of the address.': null
+'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': null
+'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': null
+'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': null
+'<em>days (if ''Remember me'' is activated)</em>': null
+'<em>minutes of inactivity</em>': null
 Monthly: null
 Weekly: null
 Daily: null

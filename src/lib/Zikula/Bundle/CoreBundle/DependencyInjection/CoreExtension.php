@@ -30,6 +30,7 @@ class CoreExtension extends Extension
         $loader->load('symfony_overrides.yml');
         $loader->load('session.yml');
         $loader->load('services.yml');
+        $loader->load('translation.yml');
     }
 
     public function getNamespace(): string
