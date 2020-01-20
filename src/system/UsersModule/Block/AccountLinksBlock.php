@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace Zikula\UsersModule\Block;
 
 use Zikula\BlocksModule\AbstractBlockHandler;
-use Zikula\UsersModule\Helper\AccountLinksHelper;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 
 class AccountLinksBlock extends AbstractBlockHandler
 {
     /**
-     * @var AccountLinksHelper
+     * @var ExtensionMenuCollector
      */
-    private $accountLinksHelper;
+    private $extensionMenuCollector;
 
     public function display(array $properties): string
     {
@@ -29,21 +30,21 @@ class AccountLinksBlock extends AbstractBlockHandler
             return '';
         }
 
-        $accountLinks = $this->accountLinksHelper->getAllAccountLinks();
+        $extensionMenus = $this->extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
         if (empty($accountLinks)) {
             return '';
         }
 
         return $this->renderView('@ZikulaUsersModule/Block/accountLinks.html.twig', [
-            'accountLinks' => $accountLinks
+            'extensionMenus' => $extensionMenus
         ]);
     }
 
     /**
      * @required
      */
-    public function setAccountLinksHelper(AccountLinksHelper $accountLinksHelper): void
+    public function setExtensionModuleCollector(ExtensionMenuCollector $extensionMenuCollector): void
     {
-        $this->accountLinksHelper = $accountLinksHelper;
+        $this->extensionMenuCollector = $extensionMenuCollector;
     }
 }

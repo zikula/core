@@ -23,13 +23,9 @@
                     {% if adminLink.links %}
                         <div class="dropdown d-inline">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{% trans %}Functions{% endtrans %}"></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {% for item in adminLink.links %}
-                                    <li class="dropdown-item">
-                                        <a href="{{ item.url }}">{% if item.icon is defined %}<i class="fas fa-fw fa-{{ item.icon }}"></i> {% endif %}{{ item.text }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            {% if adminLink.extensionMenu|default %}{#<ul class="dropdown-menu" role="menu"><li class="dropdown-item">#}
+                                {{ knp_menu_render(adminLink.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
+                            {% endif %}
                         </div>
                     {% endif %}
                     {# module description #}

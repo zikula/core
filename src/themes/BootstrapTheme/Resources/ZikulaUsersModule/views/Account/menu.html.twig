@@ -11,32 +11,37 @@
         <li><a href="{{ path('zikulazauthmodule_account_lostpassword') }}">{% trans %}I have forgotten my password.{% endtrans %}</a></li>
     </ul>
 {% endif %}
-<ul class="list-group">
-    {% set displayGraphics = getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS'), constant('Zikula\\UsersModule\\Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS')) %}
-    {% for link in accountLinks %}
-    <li class="list-group-item">
-        <a href="{{ link.url }}">
-            <div class="media">
-                <div class="media-left mr-3">
-                {% if displayGraphics %}
-                    {% set imageTitle = link.text|replace({'"': ''}) %}
-                    {% if link.icon[:4] == 'http' or not link.module|default %}
-                        {% set icon = '<img title="' ~ imageTitle ~ '" src="'~link.icon~'" />' %}
-                    {% elseif '.' in link.icon and link.module|default %}
-                        {% set icon = '<img title="' ~ imageTitle ~ '" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}
-                    {% else %}
-                        {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-fw fa-2x fa-'~link.icon~'"></i>' %}
-                    {% endif %}
-                    {{ icon|raw }}
-                {% endif %}
-                </div>
-                <div class="media-body">
-                    <h5><strong>{{ link.text }}</strong></h5>
-                </div>
-            </div>
-        </a>
-    </li>
+
+{% for menu in accountMenus|default %}
+    {{ knp_menu_render(menu, {template: '@ZikulaMenuModule/Override/largeIcons.html.twig'}) }}
 {% endfor %}
-</ul>
+
+{#<ul class="list-group">#}
+{#    {% set displayGraphics = getModVar('ZikulaUsersModule', constant('Zikula\\UsersModule\\Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS'), constant('Zikula\\UsersModule\\Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS')) %}#}
+{#    {% for link in accountLinks %}#}
+{#    <li class="list-group-item">#}
+{#        <a href="{{ link.url }}">#}
+{#            <div class="media">#}
+{#                <div class="media-left mr-3">#}
+{#                {% if displayGraphics %}#}
+{#                    {% set imageTitle = link.text|replace({'"': ''}) %}#}
+{#                    {% if link.icon[:4] == 'http' or not link.module|default %}#}
+{#                        {% set icon = '<img title="' ~ imageTitle ~ '" src="'~link.icon~'" />' %}#}
+{#                    {% elseif '.' in link.icon and link.module|default %}#}
+{#                        {% set icon = '<img title="' ~ imageTitle ~ '" src="'~zasset('@'~link.module~':images/'~link.icon)~'" />' %}#}
+{#                    {% else %}#}
+{#                        {% set icon = '<i title="' ~ imageTitle ~ '" class="fa fa-fw fa-2x fa-'~link.icon~'"></i>' %}#}
+{#                    {% endif %}#}
+{#                    {{ icon|raw }}#}
+{#                {% endif %}#}
+{#                </div>#}
+{#                <div class="media-body">#}
+{#                    <h5><strong>{{ link.text }}</strong></h5>#}
+{#                </div>#}
+{#            </div>#}
+{#        </a>#}
+{#    </li>#}
+{#{% endfor %}#}
+{#</ul>#}
 
 {{ moduleFooter() }}

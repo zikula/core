@@ -66,6 +66,7 @@
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
     - Removed custom translation system (#4042).
     - Removed use of `admin.png` and replaced by adding icon class to `composer.json` >> `extra/zikula/capabilities/admin/icon: "fas fa-user"`
+    - Replaced `LinkContainer` with `ExtensionMenu` for collecting module menus (admin, user, account). See companion docs.
 
  - Fixes:
     - Check if verification record is already deleted when confirming a changed mail address.
@@ -154,7 +155,7 @@
     - php-translation/common installed in 3.0.1
     - php-translation/extractor installed in 2.0.0 (temporarily using dev-master)
     - php-translation/symfony-bundle installed in 0.11.2 (temporarily using dev-master)
-    - php-translation/symfony-storage installed in 2.1.0 (temporarily using Guite/dev-master)
+    - php-translation/symfony-storage installed in 2.1.0 (temporarily using dev-master)
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
     - seld/jsonlint installed in 1.7.2

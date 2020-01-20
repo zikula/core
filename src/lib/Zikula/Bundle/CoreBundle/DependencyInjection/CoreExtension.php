@@ -17,7 +17,6 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Zikula\Core\LinkContainer\LinkContainerInterface;
 
 /**
  * CoreExtension class.
@@ -31,10 +30,6 @@ class CoreExtension extends Extension
         $loader->load('symfony_overrides.yml');
         $loader->load('session.yml');
         $loader->load('services.yml');
-
-        $container->registerForAutoconfiguration(LinkContainerInterface::class)
-            ->addTag('zikula.link_container')
-        ;
     }
 
     public function getNamespace(): string

@@ -63,10 +63,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/Guite/symfony-storage"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/Guite/WebProfilerExtraBundle"
         }
     ],

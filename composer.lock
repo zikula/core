@@ -4067,13 +4067,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Guite/symfony-storage.git",
-                "reference": "654530961437f7776b8a840fb465fca824907fd7"
+                "url": "https://github.com/php-translation/symfony-storage.git",
+                "reference": "caa23d034d425bad74f1de11a42a1c8a228670c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guite/symfony-storage/zipball/654530961437f7776b8a840fb465fca824907fd7",
-                "reference": "654530961437f7776b8a840fb465fca824907fd7",
+                "url": "https://api.github.com/repos/php-translation/symfony-storage/zipball/caa23d034d425bad74f1de11a42a1c8a228670c8",
+                "reference": "caa23d034d425bad74f1de11a42a1c8a228670c8",
                 "shasum": ""
             },
             "require": {
@@ -4097,19 +4097,7 @@
                     "Translation\\SymfonyStorage\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Translation\\SymfonyStorage\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-ci": [
-                    "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4120,10 +4108,7 @@
                 }
             ],
             "description": "A translation file storage using Symfony translation component.",
-            "support": {
-                "source": "https://github.com/Guite/symfony-storage/tree/master"
-            },
-            "time": "2020-01-17T13:06:28+00:00"
+            "time": "2020-01-19T19:30:46+00:00"
         },
         {
             "name": "phpids/phpids",
@@ -6778,12 +6763,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "126020f3d8dd936262669bbda71bc5f98a3220b5"
+                "reference": "feb0b1e4b54b3a9319dae2b310cb509ca97dcf5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/126020f3d8dd936262669bbda71bc5f98a3220b5",
-                "reference": "126020f3d8dd936262669bbda71bc5f98a3220b5",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/feb0b1e4b54b3a9319dae2b310cb509ca97dcf5a",
+                "reference": "feb0b1e4b54b3a9319dae2b310cb509ca97dcf5a",
                 "shasum": ""
             },
             "require": {
@@ -6839,7 +6824,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-16T15:12:56+00:00"
+            "time": "2020-01-20T07:15:52+00:00"
         },
         {
             "name": "zikula/oauth-module",
@@ -6847,12 +6832,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula/OAuth.git",
-                "reference": "0aa319d1d3f9914317e636b5d6368ec48e53431d"
+                "reference": "4a16ce7465e0b379a0b1ffa98d679966bbdb15b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula/OAuth/zipball/0aa319d1d3f9914317e636b5d6368ec48e53431d",
-                "reference": "0aa319d1d3f9914317e636b5d6368ec48e53431d",
+                "url": "https://api.github.com/repos/zikula/OAuth/zipball/4a16ce7465e0b379a0b1ffa98d679966bbdb15b4",
+                "reference": "4a16ce7465e0b379a0b1ffa98d679966bbdb15b4",
                 "shasum": ""
             },
             "require": {
@@ -6901,7 +6886,7 @@
                 "source": "https://github.com/zikula/OAuth/tree/master",
                 "issues": "https://github.com/zikula/OAuth/issues"
             },
-            "time": "2020-01-16T15:11:36+00:00"
+            "time": "2020-01-20T00:54:32+00:00"
         },
         {
             "name": "zikula/pagelock-module",
@@ -6964,12 +6949,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Profile.git",
-                "reference": "f62be60cebca4721b12781b5035646319474397b"
+                "reference": "52f418a98799512f3b0348fe1d358a0005040d70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/f62be60cebca4721b12781b5035646319474397b",
-                "reference": "f62be60cebca4721b12781b5035646319474397b",
+                "url": "https://api.github.com/repos/zikula-modules/Profile/zipball/52f418a98799512f3b0348fe1d358a0005040d70",
+                "reference": "52f418a98799512f3b0348fe1d358a0005040d70",
                 "shasum": ""
             },
             "require": {
@@ -7028,7 +7013,7 @@
                 "source": "https://github.com/zikula-modules/Profile/tree/master",
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
-            "time": "2020-01-16T15:12:30+00:00"
+            "time": "2020-01-20T01:06:04+00:00"
         },
         {
             "name": "zikula/wizard",
