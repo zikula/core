@@ -64,7 +64,7 @@ abstract class AbstractExtensionMenu implements ExtensionMenuInterface
         }
 
         $routeArea = self::TYPE_ADMIN === $type ? 'admin' : '';
-        if (LinkContainerInterface::TYPE_ADMIN === $type) {
+        if (self::TYPE_ADMIN === $type) {
             if ($this->permissionHelper->hasPermission(ACCESS_READ)) {
                 $menu->addChild('Frontend', [
                     'route' => 'zikularoutesmodule_route_index',
