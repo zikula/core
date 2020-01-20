@@ -35,7 +35,6 @@ use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
-use Zikula\ThemeModule\Engine\Asset;
 
 /**
  * NOTE: intentionally no class level route setting here
@@ -219,7 +218,6 @@ class AdminController extends AbstractController
         CapabilityApiInterface $capabilityApi,
         RouterInterface $router,
         AdminLinksHelper $adminLinksHelper,
-        Asset $assetHelper,
         ExtensionMenuCollector $extensionMenuCollector,
         int $acid = null
     ) {
@@ -256,7 +254,6 @@ class AdminController extends AbstractController
                 $capabilityApi,
                 $router,
                 $adminLinksHelper,
-                $assetHelper,
                 $acid
             )->getContent()
         ];
