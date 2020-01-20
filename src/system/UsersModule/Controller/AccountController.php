@@ -15,8 +15,6 @@ namespace Zikula\UsersModule\Controller;
 
 use Locale;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Intl\Languages;
@@ -25,10 +23,10 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
-use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
+use Zikula\UsersModule\Form\Type\ChangeLanguageType;
 
 /**
  * @Route("/account")
@@ -45,13 +43,11 @@ class AccountController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         ExtensionMenuCollector $extensionMenuCollector
     ): array {
-        if ($currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        if (!$currentUserApi->isLoggedIn() || !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        if ($currentUserApi->isLoggedIn()) {
-            $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-        }
+        $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
 
         return ['accountMenus' => $accountMenus];
     }
@@ -65,33 +61,14 @@ class AccountController extends AbstractController
     public function changeLanguageAction(
         Request $request,
         CurrentUserApiInterface $currentUserApi,
-        UserRepositoryInterface $userRepository,
-        LocaleApiInterface $localeApi
+        UserRepositoryInterface $userRepository
     ) {
         if (!$currentUserApi->isLoggedIn()) {
             throw new AccessDeniedException();
         }
-        $installedLanguages = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
-        $form = $this->createFormBuilder()
-            ->add('locale', ChoiceType::class, [
-                'label' => 'Choose language',
-                'choices' => $installedLanguages,
-                'placeholder' => 'Site default',
-                'required' => false,
-                'data' => $currentUserApi->get('locale')
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Save',
-                'icon' => 'fa-check',
-                'attr' => ['class' => 'btn btn-success']
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => ['class' => 'btn btn-default']
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(ChangeLanguageType::class, [
+            'locale' => $currentUserApi->get('locale')
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $locale = $this->getParameter('locale');
@@ -107,10 +84,9 @@ class AccountController extends AbstractController
                 }
                 Locale::setDefault($locale);
                 $langText = Languages::getName($locale);
-                $this->addFlash('success', $this->trans('Language changed to %lang%', ['%lang%' => $langText], 'zikula', $locale));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('success', $this->trans('Language changed to %lang%', ['%lang%' => $langText], 'messages', $locale));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulausersmodule_account_menu', ['_locale' => $locale]);
