@@ -171,7 +171,6 @@ class AbstractMenuBuilder
                 $menu->addChild('Routes list', [
                     'route' => $routePrefix . $routeArea . 'view'
                 ])
-                    ->setLinkAttribute('title', $title)
                     ->setAttribute('icon', 'fas fa-reply')
                 ;
             }
