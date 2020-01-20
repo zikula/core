@@ -43,13 +43,11 @@ class AccountController extends AbstractController
         CurrentUserApiInterface $currentUserApi,
         ExtensionMenuCollector $extensionMenuCollector
     ): array {
-        if ($currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
+        if (!$currentUserApi->isLoggedIn() || !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        if ($currentUserApi->isLoggedIn()) {
-            $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-        }
+        $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
 
         return ['accountMenus' => $accountMenus];
     }
