@@ -22,3 +22,7 @@ services:
 
     Zikula\MenuModule\Voter\RequestVoter:
         tags: ['knp_menu.voter']
+
+    Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector:
+        arguments:
+            $extensionMenus: !tagged_iterator zikula.extension_menu

@@ -27,11 +27,11 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface
 use Zikula\AdminModule\Helper\UpdateCheckHelper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Core\Controller\AbstractController;
-use Zikula\Core\LinkContainer\LinkContainerCollector;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\ThemeModule\Engine\Asset;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 
 /**
  * @Route("/admininterface")
@@ -196,11 +196,10 @@ class AdminInterfaceController extends AbstractController
         RequestStack $requestStack,
         RouterInterface $router,
         ExtensionRepositoryInterface $extensionRepository,
-        LinkContainerCollector $linkContainerCollector,
+        ExtensionMenuCollector $extensionMenuCollector,
         CapabilityApiInterface $capabilityApi,
         AdminModuleRepositoryInterface $adminModuleRepository,
-        AdminCategoryRepositoryInterface $adminCategoryRepository,
-        Asset $assetHelper
+        AdminCategoryRepositoryInterface $adminCategoryRepository
     ): Response {
         if (!$this->hasPermission('ZikulaAdminModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
@@ -280,7 +279,7 @@ class AdminInterfaceController extends AbstractController
             }
 
             $moduleName = (string)$adminModule['name'];
-            $links = $linkContainerCollector->getLinks($moduleName, 'admin');
+            $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
 
             $module = [
                 'menutexturl' => $menuTextUrl,
@@ -289,7 +288,7 @@ class AdminInterfaceController extends AbstractController
                 'modname' => $adminModule['name'],
                 'order' => $order,
                 'id' => $adminModule['id'],
-                'links' => $links,
+                'extensionMenu' => $extensionMenu,
                 'icon' => $adminModule['capabilities']['admin']['icon'] ?? '',
             ];
 

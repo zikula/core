@@ -27,7 +27,6 @@ services:
 
     Zikula\Core\:
         resource: '../../../../Core/*'
-        exclude: '../../../../Core/Tests'
 
     Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
 
@@ -53,10 +52,6 @@ services:
           $kernelContainerClass: '%kernel.container_class%'
           $fosJsRoutesExtractor: '@fos_js_routing.extractor'
           $routingLocales: '%jms_i18n_routing.locales%'
-
-    Zikula\Core\LinkContainer\LinkContainerCollector:
-        arguments:
-          $linkContainers: !tagged_iterator zikula.link_container
 
     Zikula\Bundle\CoreBundle\EventListener\BlameListener:
         arguments:

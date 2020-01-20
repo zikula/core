@@ -23,11 +23,12 @@ use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
+use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
-use Zikula\UsersModule\Helper\AccountLinksHelper;
 
 /**
  * @Route("/account")
@@ -42,18 +43,17 @@ class AccountController extends AbstractController
      */
     public function menuAction(
         CurrentUserApiInterface $currentUserApi,
-        AccountLinksHelper $accountLinksHelper
+        ExtensionMenuCollector $extensionMenuCollector
     ): array {
         if ($currentUserApi->isLoggedIn() && !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
-        $accountLinks = [];
         if ($currentUserApi->isLoggedIn()) {
-            $accountLinks = $accountLinksHelper->getAllAccountLinks();
+            $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
         }
 
-        return ['accountLinks' => $accountLinks];
+        return ['accountMenus' => $accountMenus];
     }
 
     /**
