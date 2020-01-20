@@ -154,7 +154,7 @@
     - paragonie/random_compat updated from 2.0.18 to 9.99.99
     - php-translation/common installed in 3.0.1
     - php-translation/extractor installed in 2.0.0 (temporarily using dev-master)
-    - php-translation/symfony-bundle installed in 0.11.2 (temporarily using dev-master)
+    - php-translation/symfony-bundle installed in 0.11.3
     - php-translation/symfony-storage installed in 2.1.0 (temporarily using dev-master)
     - psr/event-dispatcher installed in 1.0.0
     - ralouphie/getallheaders updated from 2.0.5 to 3.0.3
