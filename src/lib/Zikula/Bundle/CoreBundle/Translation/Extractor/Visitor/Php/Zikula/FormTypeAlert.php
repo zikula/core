@@ -18,6 +18,9 @@ use PhpParser\NodeVisitor;
 use Translation\Extractor\Visitor\Php\Symfony\AbstractFormType;
 use Translation\Extractor\Visitor\Php\Symfony\FormTrait;
 
+/**
+ * This class extracts "alert" array keys from form type classes.
+ */
 final class FormTypeAlert extends AbstractFormType implements NodeVisitor
 {
     use FormTrait;
