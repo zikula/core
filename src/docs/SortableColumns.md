@@ -27,16 +27,15 @@ $templateParameters['sort'] = $sortableColumns->generateSortableColumns();
 
 ```twig
 <tr>
-    <th><a class='{{ sort.pageid.class }}' href='{{ sort.pageid.url }}'>{{ __('ID') }}</a></th>
-    <th><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{{ __('Title') }}</a></th>
-    <th><a class='{{ sort.cr_date.class }}' href='{{ sort.cr_date.url }}'>{{ __('Created') }}</a></th>
+    <th><a class='{{ sort.pageid.class }}' href='{{ sort.pageid.url }}'>{% trans %}ID{% endtrans %}</a></th>
+    <th><a class='{{ sort.title.class }}' href='{{ sort.title.url }}'>{% trans %}Title{% endtrans %}</a></th>
+    <th><a class='{{ sort.cr_date.class }}' href='{{ sort.cr_date.url }}'>{% trans %}Created{% endtrans %}</a></th>
 </tr>
 ```
 
-## Added in Core-1.4.2
-
-Additional shortcut methods `$sortableColumns->addColumns()` and `$sortableColumns->setOrderByFromRequest()` 
-were added in Core-1.4.2.
+Additional shortcut methods are available: 
+  - `$sortableColumns->addColumns()`
+  - `$sortableColumns->setOrderByFromRequest()`
 
 ```php
 $sortableColumns->addColumns([new Column('pageid'), new Column('title'), new Column('cr_date')]);

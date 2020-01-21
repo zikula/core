@@ -22,6 +22,7 @@
         "zikula/oauth-module": "dev-master",
         "zikula/pagelock-module": "dev-master",
         "zikula/filesystem": "1.*",
+        "zikula/sortable-columns": "1.*",
 
         "symfony/symfony": "5.*",
         "symfony/monolog-bundle": "3.*",
