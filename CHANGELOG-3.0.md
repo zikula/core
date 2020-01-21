@@ -5,6 +5,7 @@
  - BC Breaks:
     - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
+    - The `Zikula\Core` and `Zikula\Common` namespaces moved into `Zikula\Bundle\CoreBundle`.
     - Interface extensions and amendments
         - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
         - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.

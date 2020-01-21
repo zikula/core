@@ -32,7 +32,7 @@ The class makes the following methods available:
 
 The class is fully tested.
 
-In classes extending `\Zikula\Core\Controller\AbstractController` the following convenience method is available:
+In classes extending `\Zikula\Bundle\CoreBundle\Controller\AbstractController` the following convenience method is available:
 
 ```php
 /**

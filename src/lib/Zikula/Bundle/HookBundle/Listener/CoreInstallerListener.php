@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
 use Zikula\Bundle\HookBundle\HookBundleInstaller;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
 
 /**
  * Class CoreInstallerListener

@@ -54,7 +54,7 @@ If it's ok simply commit the form data, then trigger a `process_edit` Zikula_Pro
 new \Zikula\Bundle\HookBundle\Hook\ProcessHook($name, $id, $url);
 ```
 
-The URL should be an instance of `Zikula\Core\UrlInterface` which describes how to get the newly created object.
+The URL should be an instance of `Zikula\Bundle\CoreBundle\UrlInterface` which describes how to get the newly created object.
 For this reason you must determine the ID of the object before you issue a `Zikula\Bundle\HookBundle\Hook\ProcessHook`.
 
 If the data is not ok, then redisplay the template.

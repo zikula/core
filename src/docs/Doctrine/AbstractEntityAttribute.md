@@ -1,6 +1,6 @@
 # AbstractEntityAttribute
 
-The `Zikula\Core\Doctrine\Entity\AbstractEntityAttribute` class provides a base class for implementing attribute support
+The `Zikula\Bundle\CoreBundle\Doctrine\Entity\AbstractEntityAttribute` class provides a base class for implementing attribute support
 for your entities.
 
 ## Preconditions
@@ -12,7 +12,7 @@ In this guide we will use a *User* entity::
 namespace Acme\YourModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * @ORM\Entity
@@ -43,7 +43,7 @@ class UserEntity extends EntityAccess
 
 ## Entities
 
-The attributes module provides the following abstract class: `Zikula\Core\Doctrine\Entity\AbstractEntityAttribute`.
+The core bundle provides the following abstract class: `Zikula\Bundle\CoreBundle\Doctrine\Entity\AbstractEntityAttribute`.
 You need to create a subclass of that class specific to the entity you would like
 to add attributes support to. In this guide we create a `UserAttributeEntity` class.
 **UserEntity** is the name of the entity and **Attribute** is our attributes specific suffix:
@@ -53,8 +53,8 @@ namespace Acme\YourModule\Entity;
 
 use Acme\YourModule\Entity\UserEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
-use Zikula\Core\Doctrine\Entity\AbstractEntityAttribute;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\Entity\AbstractEntityAttribute;
 
 /**
  * @ORM\Entity

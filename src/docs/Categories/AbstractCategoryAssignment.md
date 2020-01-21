@@ -34,7 +34,7 @@ In this guide we will use a `UserEntity`.
 namespace Acme\YourModule\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 
 /**
  * @ORM\Entity
@@ -75,7 +75,7 @@ namespace Acme\YourModule\Entity;
 
 use Acme\YourModule\Entity\UserEntity;
 use Doctrine\ORM\Mapping as ORM;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\CategoriesModule\Entity\AbstractCategoryAssignment;
 
 /**

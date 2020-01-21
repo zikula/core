@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
-use Zikula\Core\Response\PlainResponse;
+use Zikula\Bundle\CoreBundle\Response\PlainResponse;
 
 /**
  * Class DocController

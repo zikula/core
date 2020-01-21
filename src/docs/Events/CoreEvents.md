@@ -1,6 +1,6 @@
 # Core events
 
-The `\Zikula\Core\CoreEvents` provides these events:
+The `\Zikula\Bundle\CoreBundle\CoreEvents` provides these events:
 
 ```php
 /**

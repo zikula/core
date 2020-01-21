@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\HookBundle\Hook;
 
-use Zikula\Core\UrlInterface;
+use Zikula\Bundle\CoreBundle\UrlInterface;
 
 /**
  * DisplayHook class.

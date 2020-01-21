@@ -16,17 +16,11 @@ services:
     Zikula\Bundle\CoreBundle\Controller\:
         resource: '../../Controller/*Controller.php'
 
-    Zikula\Common\:
-        resource: '../../../../Common/*'
-
     Zikula\Component\:
         resource: '../../../../Component/*'
 
     Zikula\Composer\:
         resource: '../../../../Composer/*'
-
-    Zikula\Core\:
-        resource: '../../../../Core/*'
 
     Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
 
@@ -36,6 +30,11 @@ services:
     Zikula\Bundle\CoreBundle\DataCollector\ZikulaVersionDataCollector:
         tags:
             - { name: data_collector, template: '@Core/Collector/ZikulaVersion.html.twig', id: 'zikula_version', priority: 300 }
+
+    # public because AbstractExtensionInstaller accesses this using container
+    Zikula\Bundle\CoreBundle\Doctrine\Helper\SchemaHelper:
+        public: true
+        lazy: true
 
     # public because used in \Zikula\SecurityCenterModule\SecurityCenterModuleInstaller::upgrade
     # and \Zikula\MailerModule\MailerModuleInstaller::upgrade from the container
@@ -80,8 +79,3 @@ services:
 
     Michelf\:
         resource: '../../../../../../vendor/michelf/php-markdown/Michelf/*'
-
-    # public because AbstractExtensionInstaller accesses this using container
-    Zikula\Core\Doctrine\Helper\SchemaHelper:
-        public: true
-        lazy: true

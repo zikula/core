@@ -17,7 +17,7 @@ use ArrayAccess;
 use Exception;
 use Symfony\Component\HttpKernel\Exception\PreconditionRequiredHttpException;
 use Translation\Extractor\Annotation\Ignore;
-use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
 class MetaData implements ArrayAccess
 {

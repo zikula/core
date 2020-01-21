@@ -77,7 +77,7 @@ public function delAll(string $extensionName): bool;
 
 The class is fully tested.
 
-In classes extending `\Zikula\Core\Controller\AbstractController` several convenience methods are available:
+In classes extending `\Zikula\Bundle\CoreBundle\Controller\AbstractController` several convenience methods are available:
 
 ```php
 /**

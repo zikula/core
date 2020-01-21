@@ -15,7 +15,7 @@ namespace Zikula\Bundle\HookBundle\Hook;
 
 use ArrayObject;
 use InvalidArgumentException;
-use Zikula\Common\Collection\Container;
+use Zikula\Bundle\CoreBundle\Collection\Container;
 
 /**
  * Hook validation collection
