@@ -15,15 +15,12 @@ namespace Zikula\Common\Content;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Abstract content type edit form type class.
  */
 abstract class AbstractContentFormType extends AbstractType
 {
-    use TranslatorTrait;
-
     public function getBlockPrefix()
     {
         return 'zikula_contenttype_abstract';
