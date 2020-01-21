@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Knp\Menu;
 
-use Knp\Menu\ItemInterface;
 use PhpParser\Node;
 use PhpParser\NodeVisitor;
-use Translation\Extractor\Visitor\Php\BasePHPVisitor;
 
 /**
  * This class extracts knp menu item link titles:

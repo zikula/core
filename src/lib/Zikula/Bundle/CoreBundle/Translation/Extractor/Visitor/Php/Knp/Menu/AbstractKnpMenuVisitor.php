@@ -32,7 +32,7 @@ abstract class AbstractKnpMenuVisitor extends BasePHPVisitor implements NodeVisi
     /**
      * @var string|bool
      */
-    private $domain = null;
+    private $domain;
 
     /**
      * @var SourceLocation[]
