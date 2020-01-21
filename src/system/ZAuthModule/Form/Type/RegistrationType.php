@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Validator\Constraints\ValidUname;
@@ -107,6 +108,7 @@ class RegistrationType extends AbstractType
         if (!empty($options['antiSpamQuestion'])) {
             $builder->add('antispamanswer', TextType::class, [
                 'mapped' => false,
+                /** @Ignore */
                 'label' => $options['antiSpamQuestion'],
                 'constraints' => new ValidAntiSpamAnswer(),
                 'help' => 'Asking this question helps us prevent automated scripts from accessing private areas of the site.'

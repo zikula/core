@@ -3,38 +3,33 @@ imports:
     - { resource: security.yml }
     - { resource: imagine.yml }
     - { resource: workflow.yml }
+    - { resource: 'packages/php_translation.yaml' }
 
 framework:
     #esi:             ~
-    default_locale:  "%locale%"
-    translator:
-        default_path: '%kernel.project_dir%/translations'
-    secret:          "%secret%"
+    translator:      { fallbacks: en }
+    secret:          '%secret%'
     router:
-        resource: "%kernel.project_dir%/app/config/routing.yml"
-        strict_requirements: "%kernel.debug%"
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: '%kernel.debug%'
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
     assets:
         base_path: web/
-        version: "%assets_version%"
+        version: '%assets_version%'
         packages:
             zikula_default:
                 base_path: ''
+    default_locale: '%locale%'
     session:
-        name: "%zikula.session.name%"
-        handler_id: "%zikula.session.handler_id%"
-        storage_id: "%zikula.session.storage_id%"
-        save_path: "%zikula.session.save_path%"
+        name: '%zikula.session.name%'
+        handler_id: '%zikula.session.handler_id%'
+        storage_id: '%zikula.session.storage_id%'
+        save_path: '%zikula.session.save_path%'
         cookie_httponly: true
         cookie_samesite: lax
     fragments:       ~
-
-# Twig Configuration
-twig:
-    debug:            "%kernel.debug%"
-    strict_variables: "%kernel.debug%"
 
 # Doctrine Configuration
 doctrine:
@@ -45,19 +40,19 @@ doctrine:
                 class:     "Zikula\\Core\\Doctrine\\DBAL\\Type\\UTCDateTimeType"
         connections:
             default:
-                driver:   "%database_driver%"
-                host:     "%database_host%"
-                port:     "%database_port%"
-                dbname:   "%database_name%"
-                user:     "%database_user%"
-                password: "%database_password%"
+                driver:   '%database_driver%'
+                host:     '%database_host%'
+                port:     '%database_port%'
+                dbname:   '%database_name%'
+                user:     '%database_user%'
+                password: '%database_password%'
                 charset:  UTF8
-                path:     "%database_path%"
-                server_version: "%database_server_version%"
+                path:     '%database_path%'
+                server_version: '%database_server_version%'
 
     orm:
         proxy_namespace: DoctrineProxy
-        proxy_dir: "%kernel.cache_dir%/doctrine/orm/DoctrineProxy"
+        proxy_dir: '%kernel.cache_dir%/doctrine/orm/DoctrineProxy'
         default_entity_manager: default
         auto_generate_proxy_classes: true
         entity_managers:
@@ -71,37 +66,37 @@ doctrine:
                     zikula_hookstorage:
                         type: annotation
                         prefix: Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity
-                        dir: "%kernel.project_dir%/lib/Zikula/Bundle/HookBundle/Dispatcher/Storage/Doctrine/Entity"
+                        dir: '%kernel.project_dir%/lib/Zikula/Bundle/HookBundle/Dispatcher/Storage/Doctrine/Entity'
                         alias: ZikulaHookStorage # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_translatable:
                         type: annotation
                         prefix: Gedmo\Translatable\Entity
-                        dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity"
+                        dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Translatable/Entity'
                         alias: GedmoTranslatable # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_translator:
                         type: annotation
                         prefix: Gedmo\Translator\Entity
-                        dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity"
+                        dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Translator/Entity'
                         alias: GedmoTranslator # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_loggable:
                         type: annotation
                         prefix: Gedmo\Loggable\Entity
-                        dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+                        dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity'
                         alias: GedmoLoggable # this one is optional and will default to the name set for the mapping
                         is_bundle: false
                     gedmo_tree:
                         type: annotation
                         prefix: Gedmo\Tree\Entity
-                        dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity"
+                        dir: '%kernel.project_dir%/vendor/gedmo/doctrine-extensions/lib/Gedmo/Tree/Entity'
                         alias: GedmoTree # this one is optional and will default to the name set for the mapping
                         is_bundle: false
 
 stof_doctrine_extensions:
     default_locale: en_US
-    #default_locale: "%locale%"
+    #default_locale: '%locale%'
     persist_default_translation: false
     translation_fallback: true
     orm:
@@ -130,19 +125,21 @@ stof_doctrine_extensions:
         reference_integrity:  Gedmo\ReferenceIntegrity\ReferenceIntegrityListener
 
 jms_i18n_routing:
+    default_locale: '%locale%'
+    locales: '%localisation.locales%'
     strategy: prefix_except_default
     cookie:
         enabled: false
 
 bazinga_js_translation:
     default_domain: zikula_javascript
-    locale_fallback: "%jms_i18n_routing.default_locale%"
-    active_locales: "%jms_i18n_routing.locales%"
+    locale_fallback: '%jms_i18n_routing.default_locale%'
+    active_locales: '%jms_i18n_routing.locales%'
 
 parameters:
     container.dumper.inline_class_loader: true
     # all paths below are resolved as assets (in /web)
     # stylesheet and javascript component locations
-    zikula.javascript.bootstrap.min.path: "/bootstrap/js/bootstrap.bundle.min.js"
-    zikula.stylesheet.bootstrap.min.path: "/bootstrap/css/bootstrap.min.css"
-    zikula.stylesheet.fontawesome.min.path: "/font-awesome/css/all.min.css"
+    zikula.javascript.bootstrap.min.path: '/bootstrap/js/bootstrap.bundle.min.js'
+    zikula.stylesheet.bootstrap.min.path: '/bootstrap/css/bootstrap.min.css'
+    zikula.stylesheet.fontawesome.min.path: '/font-awesome/css/all.min.css'

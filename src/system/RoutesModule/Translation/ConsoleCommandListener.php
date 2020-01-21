@@ -49,8 +49,14 @@ class ConsoleCommandListener implements EventSubscriberInterface
 
         $this->extractTranslationHelper->setBundleName('');
 
-        if ($event->getInput()->hasParameterOption('--bundle')) {
+        $bundle = null;
+        if ($event->getInput()->hasParameterOption('-b')) {
+            $bundle = $event->getInput()->getParameterOption('-b');
+        } elseif ($event->getInput()->hasParameterOption('--bundle')) {
             $bundle = $event->getInput()->getParameterOption('--bundle');
+        }
+
+        if (null !== $bundle) {
             if ('@' === $bundle[0]) {
                 $bundle = substr($bundle, 1);
             }

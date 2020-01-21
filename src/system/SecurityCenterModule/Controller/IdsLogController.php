@@ -230,7 +230,7 @@ class IdsLogController extends AbstractController
                 return $response;
             }
             if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
 
                 return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');
             }
@@ -264,9 +264,9 @@ class IdsLogController extends AbstractController
                 // delete all entries
                 $repository->truncateTable();
 
-                $this->addFlash('status', $this->trans('Done! Purged IDS Log.'));
+                $this->addFlash('status', 'Done! Purged IDS log.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulasecuritycentermodule_idslog_view');

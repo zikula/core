@@ -131,8 +131,6 @@ abstract class AbstractBlockHandler implements BlockHandlerInterface
      */
     public function renderView(string $view, array $parameters = []): string
     {
-        $parameters['domain'] = $this->bundle->getTranslationDomain();
-
         return $this->twig->render($view, $parameters);
     }
 

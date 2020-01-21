@@ -16,16 +16,12 @@ namespace Zikula\ExtensionsModule\Menu;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
 class MenuBuilder
 {
-    use TranslatorTrait;
-
     /**
      * @var FactoryInterface
      */
@@ -42,12 +38,10 @@ class MenuBuilder
     private $csrfTokenManager;
 
     public function __construct(
-        TranslatorInterface $translator,
         FactoryInterface $factory,
         PermissionApiInterface $permissionApi,
         CsrfTokenManagerInterface $csrfTokenManager
     ) {
-        $this->setTranslator($translator);
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
         $this->csrfTokenManager = $csrfTokenManager;
@@ -69,7 +63,7 @@ class MenuBuilder
             case Constant::STATE_ACTIVE:
                 if (!ZikulaKernel::isCoreModule($extension->getName())) {
                     $csrfToken = $this->getCsrfToken('deactivate-extension');
-                    $menu->addChild($this->trans('Deactivate %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                    $menu->addChild('Deactivate extension', [
                         'route' => 'zikulaextensionsmodule_module_deactivate',
                         'routeParameters' => [
                             'id' => $id,
@@ -82,13 +76,13 @@ class MenuBuilder
                 break;
             case Constant::STATE_INACTIVE:
                 $csrfToken = $this->getCsrfToken('activate-extension');
-                $menu->addChild($this->trans('Activate %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                $menu->addChild('Activate extension', [
                     'route' => 'zikulaextensionsmodule_module_activate',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-plus-square')
                     ->setLinkAttribute('class', 'text-success');
                 $csrfToken = $this->getCsrfToken('uninstall-extension');
-                $menu->addChild($this->trans('Uninstall %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                $menu->addChild('Uninstall extension', [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-trash-alt')
@@ -99,7 +93,7 @@ class MenuBuilder
                 break;
             case Constant::STATE_UPGRADED:
                 $csrfToken = $this->getCsrfToken('upgrade-extension');
-                $menu->addChild($this->trans('Upgrade %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                $menu->addChild('Upgrade extension', [
                     'route' => 'zikulaextensionsmodule_module_upgrade',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-sync')
@@ -111,7 +105,7 @@ class MenuBuilder
                 break;
             case Constant::STATE_NOTALLOWED:
                 $csrfToken = $this->getCsrfToken('uninstall-extension');
-                $menu->addChild($this->trans('Remove %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                $menu->addChild('Remove extension', [
                     'route' => 'zikulaextensionsmodule_module_uninstall',
                     'routeParameters' => ['id' => $id, 'token' => $csrfToken]
                 ])->setAttribute('icon', 'fas fa-trash-alt')
@@ -121,7 +115,7 @@ class MenuBuilder
             default:
                 if ($extension->getState() < 10) {
                     $csrfToken = $this->getCsrfToken('install-extension');
-                    $menu->addChild($this->trans('Install %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                    $menu->addChild('Install extension', [
                         'route' => 'zikulaextensionsmodule_module_install',
                         'routeParameters' => [
                             'id' => $id,
@@ -130,7 +124,7 @@ class MenuBuilder
                     ])->setAttribute('icon', 'fas fa-cog')
                         ->setLinkAttribute('class', 'text-success');
                 } else {
-                    $menu->addChild($this->trans('Core compatibility information: %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+                    $menu->addChild('Core compatibility information', [
                         'route' => 'zikulaextensionsmodule_module_compatibility',
                         'routeParameters' => ['id' => $id]
                     ])->setAttribute('icon', 'fas fa-info-circle')
@@ -144,7 +138,7 @@ class MenuBuilder
             Constant::STATE_INVALID,
             Constant::STATE_MISSING,
         ], true)) {
-            $menu->addChild($this->trans('Edit %moduleName%', ['%moduleName%' => $extension->getDisplayname()]), [
+            $menu->addChild('Edit extension', [
                 'route' => 'zikulaextensionsmodule_module_modify',
                 'routeParameters' => ['id' => $id]
             ])->setAttribute('icon', 'fas fa-wrench')

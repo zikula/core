@@ -72,7 +72,7 @@ class ValidUnameValidator extends ConstraintValidator
             ]),
             new Regex([
                 'pattern' => '/^' . UsersConstant::UNAME_VALIDATION_PATTERN . '$/uD',
-                'message' => $this->translator->trans('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.')
+                'message' => $this->translator->trans('The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.', [], 'validators')
             ])
         ]);
         if (count($errors) > 0) {
@@ -89,7 +89,7 @@ class ValidUnameValidator extends ConstraintValidator
             $replace = ['', '|', ''];
             $illegalUserNames = preg_replace($pattern, $replace, preg_quote($illegalUserNames, '/'));
             if (preg_match("/^({$illegalUserNames})/iD", $value)) {
-                $this->context->buildViolation($this->translator->trans('The user name you entered is reserved. It cannot be used.'))
+                $this->context->buildViolation($this->translator->trans('The user name you entered is reserved. It cannot be used.', [], 'validators'))
                     ->setParameter('%string%', $value)
                     ->addViolation();
             }

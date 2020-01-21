@@ -1,7 +1,6 @@
 {{ pageAddAsset('stylesheet', asset('mmenu/css/mmenu.css'), 100) }}
 {{ pageAddAsset('javascript', asset('mmenu/js/mmenu.js'), 100) }}
 {{ pageAddAsset('javascript', zasset('@ZikulaAdminModule:js/ZikulaAdminModule.Modules.Panel.MMenuConfig.js'), 101) }}
-{% import '@ZikulaAdminModule/AdminInterface/mmenuHelper.html.twig' as helper %}
 <a href="#zikula-admin-hiddenpanel-menu"><i class="fas fa-bars" title="{% trans %}Show administration panel{% endtrans %}"></i></a>
 <nav id="zikula-admin-hiddenpanel-menu" class="d-none">
     <div class="text-left">

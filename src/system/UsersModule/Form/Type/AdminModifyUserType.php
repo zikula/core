@@ -18,30 +18,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\UsersModule\Constant;
 
 class AdminModifyUserType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('activated', ChoiceType::class, [
                 'choices' => [
-                    $this->trans('Active') => Constant::ACTIVATED_ACTIVE,
-                    $this->trans('Inactive') => Constant::ACTIVATED_INACTIVE,
-                    $this->trans('Pending') => Constant::ACTIVATED_PENDING_REG
+                    'Active' => Constant::ACTIVATED_ACTIVE,
+                    'Inactive' => Constant::ACTIVATED_INACTIVE,
+                    'Pending' => Constant::ACTIVATED_PENDING_REG
                 ],
-                'label' => $this->trans('User status')
+                'label' => 'User status'
             ])
             ->add('groups', EntityType::class, [
                 'class' => GroupEntity::class,
@@ -50,14 +41,14 @@ class AdminModifyUserType extends AbstractType
                 'multiple' => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->trans('Save'),
+                'label' => 'Save',
                 'icon' => 'fa-check',
                 'attr' => [
                     'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times'
             ])
         ;

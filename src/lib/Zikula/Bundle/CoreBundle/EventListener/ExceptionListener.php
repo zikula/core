@@ -98,7 +98,10 @@ class ExceptionListener implements EventSubscriberInterface
             && null !== $event->getRequest()->getSession() ? $event->getRequest()->getSession() : null;
         if (!$userLoggedIn) {
             if (null !== $session) {
-                $message = ('Access Denied.' === $message) ? $this->translator->trans('You do not have permission. You must login first.') : $message;
+                $message = 'Access Denied.' === $message
+                    ? $this->translator->trans('You do not have permission. You must login first.')
+                    : $message
+                ;
                 $session->getFlashBag()->add('error', $message);
             }
 
@@ -107,7 +110,10 @@ class ExceptionListener implements EventSubscriberInterface
             $route = $this->router->generate('zikulausersmodule_access_login', $params, RouterInterface::ABSOLUTE_URL);
         } else {
             if (null !== $session) {
-                $message = ('Access Denied.' === $message) ? $this->translator->trans('You do not have permission for that action.') : $message;
+                $message = 'Access Denied.' === $message
+                    ? $this->translator->trans('You do not have permission for that action.')
+                    : $message
+                ;
                 $session->getFlashBag()->add('error', $message);
             }
 

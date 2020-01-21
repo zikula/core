@@ -37,7 +37,7 @@ class DefaultRouteExclusionStrategy extends BaseDefaultRouteExclusionStrategy
         }
 
         $module = $route->getDefault('_zkModule');
-        if (null !== $module && !empty($this->extractTranslationHelper->getBundleName())) {
+        if (!empty($this->extractTranslationHelper->getBundleName())) {
             return $module !== $this->extractTranslationHelper->getBundleName();
         }
 

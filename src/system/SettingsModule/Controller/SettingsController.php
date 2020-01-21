@@ -18,12 +18,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
 use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\ExtensionsModule\Entity\ExtensionEntity;
-use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
-use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\SettingsModule\Api\ApiInterface\LocaleApiInterface;
 use Zikula\SettingsModule\Form\Type\LocaleSettingsType;
 use Zikula\SettingsModule\Form\Type\MainSettingsType;
@@ -52,15 +50,16 @@ class SettingsController extends AbstractController
         Request $request,
         LocaleApiInterface $localeApi,
         VariableApiInterface $variableApi,
-        ExtensionRepositoryInterface $extensionRepository,
-        MessageModuleCollector $messageModuleCollector,
-        ProfileModuleCollector $profileModuleCollector
+        ProfileModuleCollector $profileModuleCollector,
+        MessageModuleCollector $messageModuleCollector
     ) {
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
 
-        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale());
+        // ensures that locales with regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
+
         $profileModules = $profileModuleCollector->getKeys();
         $messageModules = $messageModuleCollector->getKeys();
 
@@ -69,8 +68,8 @@ class SettingsController extends AbstractController
         $form = $this->createForm(MainSettingsType::class,
             $variables, [
                 'languages' => $installedLanguageNames,
-                'profileModules' => $this->formatModuleArrayForSelect($extensionRepository, $profileModules),
-                'messageModules' => $this->formatModuleArrayForSelect($extensionRepository, $messageModules)
+                'profileModules' => $profileModules,
+                'messageModules' => $messageModules
             ]
         );
         $form->handleRequest($request);
@@ -80,10 +79,9 @@ class SettingsController extends AbstractController
                 foreach ($data as $name => $value) {
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
-                $this->addFlash('status', $this->trans('Done! Configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulasettingsmodule_settings_main');
@@ -110,22 +108,24 @@ class SettingsController extends AbstractController
     public function localeAction(
         Request $request,
         LocaleApiInterface $localeApi,
-        VariableApiInterface $variableApi,
-        MultilingualRoutingHelper $multilingualRoutingHelper
+        VariableApiInterface $variableApi
     ) {
         if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
             throw new AccessDeniedException();
         }
+
+        // ensures that locales with regions are up to date
+        $installedLanguageNames = $localeApi->getSupportedLocaleNames(null, $request->getLocale(), true);
 
         $form = $this->createForm(LocaleSettingsType::class,
             [
                 'multilingual' => (bool)$variableApi->getSystemVar('multilingual'),
                 'languageurl' => $variableApi->getSystemVar('languageurl'),
                 'language_detect' => (bool)$variableApi->getSystemVar('language_detect'),
-                'language_i18n' => $variableApi->getSystemVar('language_i18n'),
+                'locale' => $variableApi->getSystemVar('locale'),
                 'timezone' => $variableApi->getSystemVar('timezone'),
             ], [
-                'languages' => $localeApi->getSupportedLocaleNames(null, $request->getLocale()),
+                'languages' => $installedLanguageNames,
                 'locale' => $request->getLocale()
             ]
         );
@@ -140,16 +140,15 @@ class SettingsController extends AbstractController
                 foreach ($data as $name => $value) {
                     $variableApi->set(VariableApi::CONFIG, $name, $value);
                 }
-                $variableApi->set(VariableApi::CONFIG, 'locale', $data['language_i18n']); // @todo which variable are we using?
+                // resets config/dynamic/generated.yml and custom_parameters.yml
+                $localeApi->getSupportedLocales(true);
 
-                $multilingualRoutingHelper->reloadMultilingualRoutingSettings(); // resets config/dynamic/generated.yml & custom_parameters.yml
                 if ($request->hasSession() && ($session = $request->getSession())) {
-                    $session->set('_locale', $data['language_i18n']);
+                    $session->set('_locale', $data['locale']);
                 }
-                $this->addFlash('status', $this->trans('Done! Localization configuration updated.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Localization configuration updated.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulasettingsmodule_settings_locale');
@@ -179,7 +178,11 @@ class SettingsController extends AbstractController
         ob_start();
         phpinfo();
         $phpinfo = ob_get_clean();
-        $phpinfo = str_replace('module_Zend Optimizer', 'module_Zend_Optimizer', preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo));
+        $phpinfo = str_replace(
+            'module_Zend Optimizer',
+            'module_Zend_Optimizer',
+            preg_replace('%^.*<body>(.*)</body>.*$%ms', '$1', $phpinfo)
+        );
 
         return [
             'phpinfo' => $phpinfo
@@ -187,21 +190,33 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * Prepare an array of module names and displaynames for dropdown usage.
+     * @Route("/toggleeditinplace")
+     * @Theme("admin")
+     *
+     * Toggles the "Edit in place" translation functionality.
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have admin access to the module
      */
-    private function formatModuleArrayForSelect(
-        ExtensionRepositoryInterface $extensionRepository,
-        array $modules = []
-    ): array {
-        $return = [];
-        foreach ($modules as $module) {
-            if (!($module instanceof ExtensionEntity)) {
-                $module = $extensionRepository->get($module);
-            }
-            $return[$module->getDisplayname()] = $module->getName();
+    public function toggleEditInPlaceAction(
+        Request $request,
+        EditInPlaceActivator $activator
+    ): RedirectResponse {
+        if (!$this->hasPermission('ZikulaSettingsModule::', '::', ACCESS_ADMIN)) {
+            throw new AccessDeniedException();
         }
-        ksort($return);
 
-        return $return;
+        if ($request->hasSession() && ($session = $request->getSession())) {
+            if ($session->has(EditInPlaceActivator::KEY)) {
+                $activator->deactivate();
+                $this->addFlash('status', 'Done! Disabled edit in place translations.');
+            } else {
+                $activator->activate();
+                $this->addFlash('status', 'Done! Enabled edit in place translations.');
+            }
+        } else {
+            $this->addFlash('error', 'Could not change the setting due to missing session access.');
+        }
+
+        return $this->redirectToRoute('zikulasettingsmodule_settings_locale');
     }
 }

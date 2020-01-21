@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Configuration form type class.
@@ -45,7 +46,7 @@ class ConfigType extends AbstractType
             ->add('plugins', ChoiceType::class, [
                 'label' => 'Disabled plugins',
                 'label_attr' => ['class' => 'checkbox-custom'],
-                'choices' => $options['plugins'],
+                'choices' => /** @Ignore */$options['plugins'],
                 'expanded' => true,
                 'multiple' => true,
                 'required' => false

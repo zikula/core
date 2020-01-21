@@ -1,3 +1,4 @@
+{% trans_default_domain 'mail' %}
 {{ include('@ZikulaZAuthModule/Email/header.txt.twig')|nl2br }}
 <p>{% trans with {'%1$s': getModVar('ZConfig', 'sitename'), '%2$s': url('home')} %}Welcome to %1$s (%2$s)!{% endtrans %}</p>
 

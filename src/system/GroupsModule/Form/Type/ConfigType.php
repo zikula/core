@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Translation\Extractor\Annotation\Ignore;
 
 /**
  * Configuration form type class.
@@ -38,7 +39,7 @@ class ConfigType extends AbstractType
             ])
             ->add('defaultgroup', ChoiceType::class, [
                 'label' => 'Initial user group',
-                'choices' => $options['groups'],
+                'choices' => /** @Ignore */$options['groups'],
             ])
             ->add('hideclosed', CheckboxType::class, [
                 'label' => 'Hide closed groups',

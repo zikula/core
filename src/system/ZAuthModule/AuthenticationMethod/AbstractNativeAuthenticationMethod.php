@@ -97,7 +97,7 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
 
         $request = $this->requestStack->getCurrentRequest();
         if ($request->hasSession() && ($session = $request->getSession())) {
-            $session->getFlashBag()->add('error', $this->translator->trans('Login failed.'));
+            $session->getFlashBag()->add('error', 'Login failed.');
         }
 
         return null;
@@ -124,7 +124,10 @@ abstract class AbstractNativeAuthenticationMethod implements NonReEntrantAuthent
                 // the error is probably only because of duplicate email... so....
                 $request = $this->requestStack->getCurrentRequest();
                 if ($request->hasSession() && ($session = $request->getSession())) {
-                    $session->getFlashBag()->add('error', $this->translator->trans('The email you are trying to authenticate with is in use by another user. You can only login by username.'));
+                    $session->getFlashBag()->add(
+                        'error',
+                        'The email you are trying to authenticate with is in use by another user. You can only login by username.'
+                    );
                 }
                 $mapping = null;
             } else {

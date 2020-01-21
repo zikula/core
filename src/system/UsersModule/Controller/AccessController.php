@@ -176,7 +176,7 @@ class AccessController extends AbstractController
         }
         // login failed
         // implement auto-register setting here. If true, do so and proceed. #2915
-        $this->addFlash('error', $this->trans('Login failed.'));
+        $this->addFlash('error', 'Login failed.');
         if (null !== $session) {
             $session->remove('authenticationMethod');
         }
@@ -247,7 +247,7 @@ class AccessController extends AbstractController
                 ]);
                 $eventDispatcher->dispatch($event, AccessEvents::LOGOUT_SUCCESS);
             } else {
-                $this->addFlash('error', $this->trans('Error! You have not been logged out.'));
+                $this->addFlash('error', 'Error! You have not been logged out.');
             }
         }
 

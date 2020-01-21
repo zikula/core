@@ -1,953 +1,1720 @@
-'Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.': 'Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.'
-'Add Option': 'Add Option'
-'Delete Root': 'Delete Root'
-'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?': 'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?'
-Menus: Menus
-ID: ID
-Title: Title
-Children: Children
-Actions: Actions
-'No items found.': 'No items found.'
-Menu: Menu
-'MenuItemName (menuItemId). The id is needed for permissions.': 'MenuItemName (menuItemId). The id is needed for permissions.'
-'Edit item': 'Edit item'
-Close: Close
-Save: Save
-Cancel: Cancel
-'Confirmation prompt': 'Confirmation prompt'
-'Do you really want to delete this item?': 'Do you really want to delete this item?'
-Delete: Delete
-'Delete all children': 'Delete all children'
-'Move all children': 'Move all children'
-'Move and delete': 'Move and delete'
-'Create or edit root node': 'Create or edit root node'
-n.direct.child: "{count, plural,\n  one   {one direct child}\n  other {# direct children}\n}"
-'Yes': 'Yes'
-'No': 'No'
-'Function does not exist or is not callable.': 'Function does not exist or is not callable.'
-Inactive: Inactive
-Active: Active
-'Files missing': 'Files missing'
-'New version': 'New version'
-'Invalid structure': 'Invalid structure'
-'Not allowed': 'Not allowed'
-Incompatible: Incompatible
-'Not installed': 'Not installed'
-'Empty argument at': 'Empty argument at'
-Inbox: Inbox
-'Messages inbox': 'Messages inbox'
-'Send a message to this user': 'Send a message to this user'
-Profile: Profile
-'You do not have permission. You must login first.': 'You do not have permission. You must login first.'
-'You do not have permission for that action.': 'You do not have permission for that action.'
-'Admin credentials required when site is disabled.': 'Admin credentials required when site is disabled.'
-'Zikula already appears to be installed.': 'Zikula already appears to be installed.'
-'*** INSTALLING ***': '*** INSTALLING ***'
-'Configuring Zikula installation in %env% environment.': 'Configuring Zikula installation in %env% environment.'
-'INSTALL COMPLETE!': 'INSTALL COMPLETE!'
-'Zikula Installer Script': 'Zikula Installer Script'
-'Please follow the instructions to install Zikula %version%.': 'Please follow the instructions to install Zikula %version%.'
-'Configuration successful. Please verify your parameters below:': 'Configuration successful. Please verify your parameters below:'
-'(Admin credentials have been encoded to make them json-safe.)': '(Admin credentials have been encoded to make them json-safe.)'
-'Start installation?': 'Start installation?'
-'Installation aborted': 'Installation aborted'
-'First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.': 'First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.'
-'Zikula Upgrader Script': 'Zikula Upgrader Script'
-'*** UPGRADING TO ZIKULA CORE %version% ***': '*** UPGRADING TO ZIKULA CORE %version% ***'
-'Upgrading Zikula in %env% environment.': 'Upgrading Zikula in %env% environment.'
-'UPGRADE COMPLETE!': 'UPGRADE COMPLETE!'
-'Beginning user migration...': 'Beginning user migration...'
-'User migration complete!': 'User migration complete!'
-'There was no need to migrate any users.': 'There was no need to migrate any users.'
-'Admin User Name': 'Admin User Name'
-'Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _': 'Error! Usernames can only consist of a combination of letters, numbers and may only contain the symbols . and _'
-'The password fields must match.': 'The password fields must match.'
-'Admin Password': 'Admin Password'
-'Repeat Password': 'Repeat Password'
-'Admin Email Address': 'Admin Email Address'
-'Database type': 'Database type'
-'Storage Engine': 'Storage Engine'
-'Database Host': 'Database Host'
-'Database Username': 'Database Username'
-'Database Password': 'Database Password'
-'Database Name': 'Database Name'
-'Error! Invalid database name. Please use only letters, numbers, "-" or "_".': 'Error! Invalid database name. Please use only letters, numbers, "-" or "_".'
-'Select your default language': 'Select your default language'
-'User Name': 'User Name'
-Password: Password
-'The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.': 'The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.'
-localhost: localhost
-'Please enter the scheme of where you install Zikula, can be either "http" or "https"': 'Please enter the scheme of where you install Zikula, can be either "http" or "https"'
-'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir': 'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir'
-'Main menu': 'Main menu'
-System: System
-Users: Users
-Layout: Layout
-Security: Security
-Content: Content
-'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.': 'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'
-'Reinitialize parameters': 'Reinitialize parameters'
-'Reinitializing parameters': 'Reinitializing parameters'
-'Reinitialized parameters': 'Reinitialized parameters'
-'There was an error reinitialize parameters': 'There was an error reinitialize parameters'
-Login: Login
-'Logging in as admin': 'Logging in as admin'
-'Logged in as admin': 'Logged in as admin'
-'There was an error logging in as admin': 'There was an error logging in as admin'
-'Fire upgrade event': 'Fire upgrade event'
-'Firing upgrade event': 'Firing upgrade event'
-'Fired upgrade event': 'Fired upgrade event'
-'There was an error firing the upgrade event': 'There was an error firing the upgrade event'
-'Upgrade modules': 'Upgrade modules'
-'Upgrading modules': 'Upgrading modules'
-'Modules upgraded': 'Modules upgraded'
-'There was an error upgrading the modules': 'There was an error upgrading the modules'
-'Regenerate themes': 'Regenerate themes'
-'Regenerating themes': 'Regenerating themes'
-'Themes regenerated': 'Themes regenerated'
-'There was an error regenerating the themes': 'There was an error regenerating the themes'
-'Upgrade from Core %oldVersion% to Core %newVersion%': 'Upgrade from Core %oldVersion% to Core %newVersion%'
-'Upgrading to Core %version%': 'Upgrading to Core %version%'
-'Upgraded to Core %version%': 'Upgraded to Core %version%'
-'There was an error upgrading to Core %version%': 'There was an error upgrading to Core %version%'
-'Finalize parameters': 'Finalize parameters'
-'Finalizing parameters': 'Finalizing parameters'
-'Parameters finalized': 'Parameters finalized'
-'There was an error finalizing the parameters': 'There was an error finalizing the parameters'
-'Clear caches': 'Clear caches'
-'Clearing caches': 'Clearing caches'
-'Caches cleared': 'Caches cleared'
-'There was an error clearing caches': 'There was an error clearing caches'
-Finish: Finish
-'Error! There was a problem with the database connection.': 'Error! There was a problem with the database connection.'
-'Error! Could not login with provided credentials. Please try again.': 'Error! Could not login with provided credentials. Please try again.'
-'Error! You logged in to an account without Admin permissions': 'Error! You logged in to an account without Admin permissions'
-'Error! Please enter your database credentials.': 'Error! Please enter your database credentials.'
-'Error! Determination existing tables failed.': 'Error! Determination existing tables failed.'
-'Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.': 'Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.'
-'Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ': 'Error! Could not connect to the database. Please check that you have entered the correct database information and try again. '
-'Field type': 'Field type'
-Select: Select
-'Field options': 'Field options'
-'Text Fields': 'Text Fields'
-Text: Text
-Textarea: Textarea
-Email: Email
-Integer: Integer
-Money: Money
-Number: Number
-Percent: Percent
-Url: Url
-Range: Range
-'Choice Fields': 'Choice Fields'
-Choice: Choice
-Country: Country
-Language: Language
-Locale: Locale
-Timezone: Timezone
-Currency: Currency
-'Date and Time Fields': 'Date and Time Fields'
-Date: Date
-DateTime: DateTime
-Time: Time
-Birthday: Birthday
-'Other Fields': 'Other Fields'
-Checkbox: Checkbox
-Radio: Radio
-Multiple: Multiple
-Expanded: Expanded
-Choices: Choices
-'A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"': 'A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"'
-Html5: Html5
-Widget: Widget
-'Single Text': 'Single Text'
-Input: Input
-String: String
-'DateTime Object': 'DateTime Object'
-Array: Array
-Timestamp: Timestamp
-Format: Format
-'e.g. yyyy-MM-dd': 'e.g. yyyy-MM-dd'
-Required: Required
-'Help text': 'Help text'
-'Any 3 letter ISO 4217 code. Default: EUR': 'Any 3 letter ISO 4217 code. Default: EUR'
-'Regex validation string constraint': 'Regex validation string constraint'
-All: All
-Hooks: Hooks
-'invalid route': 'invalid route'
-'Module categories list': 'Module categories list'
-'Create new module category': 'Create new module category'
-Settings: Settings
-'Administration panel': 'Administration panel'
-'Done! Created new category.': 'Done! Created new category.'
-'Operation cancelled.': 'Operation cancelled.'
-'Done! Saved category.': 'Done! Saved category.'
-'Done! Category deleted.': 'Done! Category deleted.'
-'Compile check': 'Compile check'
-'Force compile': 'Force compile'
-Caching: Caching
-'Access forbidden.': 'Access forbidden.'
-'Error! No category name given.': 'Error! No category name given.'
-'Error! A category by this name already exists.': 'Error! A category by this name already exists.'
-'Error! No such category found.': 'Error! No such category found.'
-'Error! You cannot delete the default module category used in the administration panel.': 'Error! You cannot delete the default module category used in the administration panel.'
-'Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.': 'Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.'
-'No category name or id set.': 'No category name or id set.'
-'Error! Could not make this category default.': 'Error! Could not make this category default.'
-'Done! Module configuration updated.': 'Done! Module configuration updated.'
-'Ignore check for installer': 'Ignore check for installer'
-'Display icons': 'Display icons'
-'Form of display for module names': 'Form of display for module names'
-'Display name': 'Display name'
-'Internal name': 'Internal name'
-'Show both internal name and display name': 'Show both internal name and display name'
-'Modules per page in module categories list': 'Modules per page in module categories list'
-'Modules per row in admin panel': 'Modules per row in admin panel'
-'Theme to use': 'Theme to use'
-'Use site''s theme': 'Use site''s theme'
-'Initially selected category': 'Initially selected category'
-'Default category for newly-added modules': 'Default category for newly-added modules'
-Name: Name
-Description: Description
-'File Include': 'File Include'
-'File Path': 'File Path'
-'File type': 'File type'
-'For Html files please select the Html file type.': 'For Html files please select the Html file type.'
-'Document URL': 'Document URL'
-'Document contents': 'Document contents'
-'Style sheet URL': 'Style sheet URL'
-'Style sheet contents': 'Style sheet contents'
-'Either the Document URL or the Document contents must contain a value.': 'Either the Document URL or the Document contents must contain a value.'
-'Either the Document URL of the Document contents can contain a value, not both.': 'Either the Document URL of the Document contents can contain a value, not both.'
-'Either the Style sheet URL or the Style sheet contents must contain a value.': 'Either the Style sheet URL or the Style sheet contents must contain a value.'
-'Either the Style sheet URL or the Style sheet contents can contain a value, not both.': 'Either the Style sheet URL or the Style sheet contents can contain a value, not both.'
-'Pending Content': 'Pending Content'
-'Blocks list': 'Blocks list'
-'Create new block': 'Create new block'
-'Create new block position': 'Create new block position'
-'Block type': 'Block type'
-Choose: Choose
-'Block saved!': 'Block saved!'
-'Done! Block deleted.': 'Done! Block deleted.'
-'No permission for this action.': 'No permission for this action.'
-'No block ID passed.': 'No block ID passed.'
-'Enable block collapse icons': 'Enable block collapse icons'
-'Position saved!': 'Position saved!'
-'Done! Position deleted.': 'Done! Position deleted.'
-Filter: Filter
-English: English
-'Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).': 'Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).'
-'Custom filters': 'Custom filters'
-'HTML Block content hook': 'HTML Block content hook'
-'Category tree': 'Category tree'
-'Category registry': 'Category registry'
-'New Parent': 'New Parent'
-Value: Value
-Leaf: Leaf
-Locked: Locked
-'No permission for this action': 'No permission for this action'
-'Data provided was inappropriate.': 'Data provided was inappropriate.'
-copy: copy
-'Registry updated': 'Registry updated'
-'Done! Registry entry deleted.': 'Done! Registry entry deleted.'
-Module: Module
-'Select module': 'Select module'
-'Property name': 'Property name'
-Category: Category
-Entity: Entity
-Categories: Categories
-'Choose categories': 'Choose categories'
-'Choose a category': 'Choose a category'
-Parent: Parent
-'Category is locked': 'Category is locked'
-'Category is a leaf node': 'Category is a leaf node'
-'Display description': 'Display description'
-'Category attributes': 'Category attributes'
-'Extension List': 'Extension List'
-'Items per page': 'Items per page'
-'Reset all extensions to default values': 'Reset all extensions to default values'
-'Done! Deactivated module.': 'Done! Deactivated module.'
-'Default values reloaded. Save to confirm.': 'Default values reloaded. Save to confirm.'
-'Done! Extension updated.': 'Done! Extension updated.'
-'%name% upgraded to new version and activated.': '%name% upgraded to new version and activated.'
-'Extension upgrade failed!': 'Extension upgrade failed!'
-'Error! The requested extension cannot be uninstalled because its files are missing!': 'Error! The requested extension cannot be uninstalled because its files are missing!'
-'Error: Could not uninstall dependent extensions.': 'Error: Could not uninstall dependent extensions.'
-'Done! Uninstalled extension.': 'Done! Uninstalled extension.'
-'Extension removal failed! (note: blocks and dependents may have been removed)': 'Extension removal failed! (note: blocks and dependents may have been removed)'
-Install: Install
-URL: URL
-'WARNING: changing the url affects SEO by breaking existing indexed search results.': 'WARNING: changing the url affects SEO by breaking existing indexed search results.'
-'Reload Defaults': 'Reload Defaults'
-'Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.': 'Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.'
-'Error found in composer file of %component% (%filePath%) in property "%property%": %error%.': 'Error found in composer file of %component% (%filePath%) in property "%property%": %error%.'
-'Error! Invalid module state transition.': 'Error! Invalid module state transition.'
-Services: Services
-'Groups list': 'Groups list'
-'New group': 'New group'
-'Group list': 'Group list'
-'Groups admin': 'Groups admin'
-'Groups manager': 'Groups manager'
-'Error! You must register for a user account on this site before you can apply for membership of a group.': 'Error! You must register for a user account on this site before you can apply for membership of a group.'
-'You already have a pending application. Please wait until the administrator notifies you.': 'You already have a pending application. Please wait until the administrator notifies you.'
-'Done! The application has been sent. You will be notified by email when the application is processed.': 'Done! The application has been sent. You will be notified by email when the application is processed.'
-'Application cancelled.': 'Application cancelled.'
-'Sorry!, You cannot apply to join the requested group': 'Sorry!, You cannot apply to join the requested group'
-'This group is a core-only group': 'This group is a core-only group'
-'This group is closed.': 'This group is closed.'
-'This group is has reached its membership limit.': 'This group is has reached its membership limit.'
-'You are already a member of this group.': 'You are already a member of this group.'
-'Done! Created the group.': 'Done! Created the group.'
-'Done! Updated the group.': 'Done! Updated the group.'
-'Error! You cannot delete the default user group.': 'Error! You cannot delete the default user group.'
-'Error! You cannot delete the primary administration group.': 'Error! You cannot delete the primary administration group.'
-'Done! Group deleted.': 'Done! Group deleted.'
-'The selected user is already a member of this group.': 'The selected user is already a member of this group.'
-'Done! The user was added to the group.': 'Done! The user was added to the group.'
-'Sorry! You must register for a user account on this site before you can join a group.': 'Sorry! You must register for a user account on this site before you can join a group.'
-'Invalid Group ID or User ID.': 'Invalid Group ID or User ID.'
-'Invalid Group ID.': 'Invalid Group ID.'
-'Invalid User ID.': 'Invalid User ID.'
-'Done! The user was removed from the group.': 'Done! The user was removed from the group.'
-'Sorry! You must be logged in before you can leave a group.': 'Sorry! You must be logged in before you can leave a group.'
-'This group is a private group': 'This group is a private group'
-'All groups': 'All groups'
-Unregistered: Unregistered
-'Initial user group': 'Initial user group'
-'Hide closed groups': 'Hide closed groups'
-'Hide private groups': 'Hide private groups'
-'Receive e-mail alert when there are new applicants': 'Receive e-mail alert when there are new applicants'
-Type: Type
-State: State
-'Maximum membership': 'Maximum membership'
-'Set as 0 for unlimited.': 'Set as 0 for unlimited.'
-'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.': 'Congratulations! Your group application has been accepted. You have been granted all the privileges assigned to the group of which you are now member.'
-'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.': 'Sorry! This is a message to inform you with regret that your application for membership of the requested private group has been rejected.'
-'Email content': 'Email content'
-'Notification type': 'Notification type'
-None: None
-E-mail: E-mail
-Deny: Deny
-Accept: Accept
-'Comment to attach to your application': 'Comment to attach to your application'
-Apply: Apply
-Remove: Remove
-'New group application': 'New group application'
-'Group membership': 'Group membership'
-Applied!: Applied!
-'Log in or register': 'Log in or register'
-'Test current settings': 'Test current settings'
-'Done! Message sent.': 'Done! Message sent.'
-'It looks like the message could not be sent properly.': 'It looks like the message could not be sent properly.'
-'The message could not be sent properly.': 'The message could not be sent properly.'
-'Sendmail message transfer agent': 'Sendmail message transfer agent'
-'Google gmail': 'Google gmail'
-'SMTP mail transfer protocol': 'SMTP mail transfer protocol'
-'Development/debug mode (Do not send any email)': 'Development/debug mode (Do not send any email)'
-'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.': 'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.'
-'Mail transport': 'Mail transport'
-'Character set': 'Character set'
-Encoding: Encoding
-'HTML-formatted messages': 'HTML-formatted messages'
-'Word wrap': 'Word wrap'
-'Enable logging of sent mail': 'Enable logging of sent mail'
-'SMTP host server': 'SMTP host server'
-'SMTP port': 'SMTP port'
-'SMTP encryption method': 'SMTP encryption method'
-'SMTP authentication type': 'SMTP authentication type'
-'SMTP user name': 'SMTP user name'
-'SMTP password': 'SMTP password'
-'Gmail user name': 'Gmail user name'
-'Gmail password': 'Gmail password'
-'Sender''s name': 'Sender''s name'
-'Sender''s e-mail address': 'Sender''s e-mail address'
-'Recipient''s name': 'Recipient''s name'
-'Recipient''s e-mail address': 'Recipient''s e-mail address'
-Subject: Subject
-'Message type': 'Message type'
-'HTML-formatted message': 'HTML-formatted message'
-'Plain-text message': 'Plain-text message'
-'Send test email': 'Send test email'
-'HTML mail hook': 'HTML mail hook'
-'Menu name': 'Menu name'
-'Could not json_decode the string you entered.': 'Could not json_decode the string you entered.'
-'This must be a json_encoded string of option key-value pairs.': 'This must be a json_encoded string of option key-value pairs.'
-'Menu list': 'Menu list'
-'New menu': 'New menu'
-'Menu removed!': 'Menu removed!'
-'The selected item does not exist': 'The selected item does not exist'
-Options: Options
-Root: Root
-'No parent': 'No parent'
-Home: Home
-'Edit Children': 'Edit Children'
-'Edit Menu Root': 'Edit Menu Root'
-Invalid: Invalid
-'No access': 'No access'
-'Overview access': 'Overview access'
-'Read access': 'Read access'
-'Comment access': 'Comment access'
-'Moderate access': 'Moderate access'
-'Edit access': 'Edit access'
-'Add access': 'Add access'
-'Delete access': 'Delete access'
-'Admin access': 'Admin access'
-'Permission rules list': 'Permission rules list'
-'Create new permission rule': 'Create new permission rule'
-'Permission rules information': 'Permission rules information'
-'Error! Could not save configuration: unknown permission rule ID.': 'Error! Could not save configuration: unknown permission rule ID.'
-'All components': 'All components'
-'Notice: You cannot delete the main administration permission rule.': 'Notice: You cannot delete the main administration permission rule.'
-'Permission check result:': 'Permission check result:'
-'unknown user.': 'unknown user.'
-'unregistered user': 'unregistered user'
-'permission granted.': 'permission granted.'
-'permission not granted.': 'permission not granted.'
-'Lock main administration permission rule': 'Lock main administration permission rule'
-'ID of main administration permission rule': 'ID of main administration permission rule'
-'Enable filtering of group permissions': 'Enable filtering of group permissions'
-Reset: Reset
-'User name': 'User name'
-'Component to check': 'Component to check'
-'Instance to check': 'Instance to check'
-'Permission level': 'Permission level'
-'Check permission': 'Check permission'
-Group: Group
-Component: Component
-Instance: Instance
-Level: Level
-'Check a users permission': 'Check a users permission'
-Routes: Routes
-'Route list': 'Route list'
-'Reload routes': 'Reload routes'
-'Reload multilingual routing settings': 'Reload multilingual routing settings'
-'Dump exposed js routes to file': 'Dump exposed js routes to file'
-Configuration: Configuration
-'Manage settings for this application': 'Manage settings for this application'
-'Done! Routes reloaded.': 'Done! Routes reloaded.'
-'Done! Routing settings renewed.': 'Done! Routing settings renewed.'
-'It looks like you created or updated a route with a path which already exists. This is an error in most cases.': 'It looks like you created or updated a route with a path which already exists. This is an error in most cases.'
-Bundle: Bundle
-'Enter the bundle of the route': 'Enter the bundle of the route'
-Controller: Controller
-'Enter the controller of the route': 'Enter the controller of the route'
-'Insert the name of the controller, which was called "type" in earlier versions of Zikula.': 'Insert the name of the controller, which was called "type" in earlier versions of Zikula.'
-Action: Action
-'Enter the action of the route': 'Enter the action of the route'
-'Insert the name of the action, which was called "func" in earlier versions of Zikula.': 'Insert the name of the action, which was called "func" in earlier versions of Zikula.'
-Path: Path
-'Enter the path of the route': 'Enter the path of the route'
-'The path must start with a "/" and can be a regular expression. Example: "/login"': 'The path must start with a "/" and can be a regular expression. Example: "/login"'
-Host: Host
-'Enter the host of the route': 'Enter the host of the route'
-Condition: Condition
-'Enter the condition of the route': 'Enter the condition of the route'
-'Enter the description of the route': 'Enter the description of the route'
-'Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.': 'Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.'
-'Show ''Search now'' button': 'Show ''Search now'' button'
-Frontend: Frontend
-Backend: Backend
-'New search': 'New search'
-'Recent searches list': 'Recent searches list'
-'Number of characters to display in item summaries': 'Number of characters to display in item summaries'
-'Disabled plugins': 'Disabled plugins'
-'Enable OpenSearch': 'Enable OpenSearch'
-'This page contains adult content': 'This page contains adult content'
-'Search keywords': 'Search keywords'
-'Error! You did not enter any keywords to search for.': 'Error! You did not enter any keywords to search for.'
-'Keyword settings': 'Keyword settings'
-'All Words': 'All Words'
-'Any Words': 'Any Words'
-'Exact phrase': 'Exact phrase'
-'Order of results': 'Order of results'
-'Newest first': 'Newest first'
-'Oldest first': 'Oldest first'
-Alphabetical: Alphabetical
-'Search now': 'Search now'
-'Allowed HTML settings': 'Allowed HTML settings'
-'View IDS log': 'View IDS log'
-'Export IDS log': 'Export IDS log'
-'Purge IDS log': 'Purge IDS log'
-'HTMLPurifier settings': 'HTMLPurifier settings'
-'Error! Session path not writeable!': 'Error! Session path not writeable!'
-'Session handling variables have changed. You must log in again.': 'Session handling variables have changed. You must log in again.'
-'Done! Saved HTMLPurifier configuration.': 'Done! Saved HTMLPurifier configuration.'
-'Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page': 'Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page'
-Tag: Tag
-Page: Page
-IP: IP
-Impact: Impact
-'PHPIDS filters used': 'PHPIDS filters used'
-'Done! Purged IDS Log.': 'Done! Purged IDS Log.'
-'Check for updates': 'Check for updates'
-'How often': 'How often'
-Monthly: Monthly
-Weekly: Weekly
-Daily: Daily
-'Secure host name': 'Secure host name'
-'Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the ''Secure host name'' box, make sure you include a trailing slash at the end of the address.': 'Notice: If you use a different host name for HTTPS secure sessions and you insert an address in the ''Secure host name'' box, make sure you include a trailing slash at the end of the address.'
-'Sign cookies': 'Sign cookies'
-'Signing key': 'Signing key'
-'Security level': 'Security level'
-'High (user is logged-out after X minutes of inactivity)': 'High (user is logged-out after X minutes of inactivity)'
-'Medium (user is logged-out after X minutes of inactivity, unless ''Remember me'' checkbox is activated during log-in)': 'Medium (user is logged-out after X minutes of inactivity, unless ''Remember me'' checkbox is activated during log-in)'
-'Low (user stays logged-in until he logs-out)': 'Low (user stays logged-in until he logs-out)'
-'Automatically log user out after': 'Automatically log user out after'
-'days (if ''Remember me'' is activated)': 'days (if ''Remember me'' is activated)'
-'Expire session after': 'Expire session after'
-'minutes of inactivity': 'minutes of inactivity'
-'Store sessions': 'Store sessions'
-File: File
-'Database (recommended)': 'Database (recommended)'
-'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.': 'Notice: If you change this setting, you will be logged-out immediately and will have to log back in again.'
-'Path for saving session files': 'Path for saving session files'
-'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions''': 'Notice: If you change ''Where to save sessions'' to ''File'' then you must enter a path in the ''Path for saving session files'' box above. The path must be writeable. Leave value empty for default location ''%kernel.cache_dir%/sessions'''
-'Session cookie name': 'Session cookie name'
-'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.': 'Notice: If you change the ''Session cookie name'' setting, all registered users who are currently logged-in will then be logged-out automatically, and they will have to log back in again.'
-'Use PHPIDS': 'Use PHPIDS'
-'Block action': 'Block action'
-'Warn only': 'Warn only'
-Block: Block
-'Send email on block action': 'Send email on block action'
-'Select filter rules to use': 'Select filter rules to use'
-XML: XML
-JSON: JSON
-'IDS Rule Path': 'IDS Rule Path'
-'Default: <code>Resources/config/phpids_zikula_default.xml</code>': 'Default: <code>Resources/config/phpids_zikula_default.xml</code>'
-'Minimum impact to log intrusion in the database': 'Minimum impact to log intrusion in the database'
-'Minimum impact to email the administrator': 'Minimum impact to email the administrator'
-'Minimum impact to block the request': 'Minimum impact to block the request'
-'Minimum impact to kick the user (destroy the session)': 'Minimum impact to kick the user (destroy the session)'
-'Select the way the impact thresholds are used in Zikula': 'Select the way the impact thresholds are used in Zikula'
-'React on impact per request (uses the values from above)': 'React on impact per request (uses the values from above)'
-'React on impact sum per session [loose] (uses the values from above * 10)': 'React on impact sum per session [loose] (uses the values from above * 10)'
-'React on impact sum per session [strict] (uses the values from above * 5)': 'React on impact sum per session [strict] (uses the values from above * 5)'
-'Define which fields contain HTML and need preparation': 'Define which fields contain HTML and need preparation'
-'(Place each value on a separate line.)': '(Place each value on a separate line.)'
-'Define which fields contain JSON data and should be treated as such': 'Define which fields contain JSON data and should be treated as such'
-'Define which fields should not be monitored': 'Define which fields should not be monitored'
-'Select output filter': 'Select output filter'
-'Use internal output filter only': 'Use internal output filter only'
-'Use ''HTML Purifier'' + internal mechanism as output filter': 'Use ''HTML Purifier'' + internal mechanism as output filter'
-'Export Title Row': 'Export Title Row'
-'CSV filename': 'CSV filename'
-'CSV delimiter': 'CSV delimiter'
-Comma: Comma
-Semicolon: Semicolon
-Colon: Colon
-Tab: Tab
-Export: Export
-'IP Address': 'IP Address'
-'An error occurred while creating HTML Purifier cache directory at %path': 'An error occurred while creating HTML Purifier cache directory at %path'
-'The following attack has been detected by PHPIDS': 'The following attack has been detected by PHPIDS'
-'Site Administrator': 'Site Administrator'
-'Intrusion attempt detected by PHPIDS': 'Intrusion attempt detected by PHPIDS'
-'Malicious request code / a hacking attempt was detected. This request has NOT been blocked!': 'Malicious request code / a hacking attempt was detected. This request has NOT been blocked!'
-'Malicious request code / a hacking attempt was detected. Thus this request has been blocked.': 'Malicious request code / a hacking attempt was detected. Thus this request has been blocked.'
-'Main settings': 'Main settings'
-'Localisation settings': 'Localisation settings'
-'PHP configuration': 'PHP configuration'
-'Done! Configuration updated.': 'Done! Configuration updated.'
-'Done! Localization configuration updated.': 'Done! Localization configuration updated.'
-'Activate multilingual features': 'Activate multilingual features'
-'Prepend language to URL': 'Prepend language to URL'
-Always: Always
-'Only for non-default languages': 'Only for non-default languages'
-'Automatically detect language from browser settings': 'Automatically detect language from browser settings'
-'If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.': 'If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.'
-'Default language to use for this site': 'Default language to use for this site'
-'Time zone for anonymous guests': 'Time zone for anonymous guests'
-'Server time zone is %tz': 'Server time zone is %tz'
-'%pagetitle%': '%pagetitle%'
-'%sitename%': '%sitename%'
-'%modulename%': '%modulename%'
-'Page title structure': 'Page title structure'
-'Possible tags: %pagetitle%, %sitename%, %modulename%': 'Possible tags: %pagetitle%, %sitename%, %modulename%'
-'Admin''s e-mail address': 'Admin''s e-mail address'
-'Disable site': 'Disable site'
-'Reason for disabling site': 'Reason for disabling site'
-'Start Controller': 'Start Controller'
-'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': 'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>'
-'Start function arguments': 'Start function arguments'
-'Separate with & for example:': 'Separate with & for example:'
-'Activate compression': 'Activate compression'
-'Module used for managing user profiles': 'Module used for managing user profiles'
-'No profile module': 'No profile module'
-'Module used for private messaging': 'Module used for private messaging'
-'No message module': 'No message module'
-'Time-out for Ajax connections': 'Time-out for Ajax connections'
-milliseconds: milliseconds
-'List to search for': 'List to search for'
-'Error! In your permalink settings, strings cannot be terminated with a comma.': 'Error! In your permalink settings, strings cannot be terminated with a comma.'
-'List to replace with': 'List to replace with'
-'Site name': 'Site name'
-'Description line': 'Description line'
-'Default page title': 'Default page title'
-'Default meta description': 'Default meta description'
-'Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.': 'Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.'
-'The startController was reset to a static frontpage.': 'The startController was reset to a static frontpage.'
-'Themes list': 'Themes list'
-'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.': 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.'
-'Done! Changed default theme.': 'Done! Changed default theme.'
-'Also delete theme files, if possible': 'Also delete theme files, if possible'
-'Sorry! No such theme found.': 'Sorry! No such theme found.'
-'Files removed as requested.': 'Files removed as requested.'
-'Could not remove files as requested.': 'Could not remove files as requested.'
-'The files must be removed manually.': 'The files must be removed manually.'
-'Done! Deleted the theme.': 'Done! Deleted the theme.'
-'Done! Deactivated the theme.': 'Done! Deactivated the theme.'
-'%theme% has no configuration.': '%theme% has no configuration.'
-'Set to defaults': 'Set to defaults'
-'Done! Theme configuration updated.': 'Done! Theme configuration updated.'
-'Done! Theme configuration updated to default values.': 'Done! Theme configuration updated to default values.'
-'Users list': 'Users list'
-'Authentication methods': 'Authentication methods'
-'Export users': 'Export users'
-'Find/Mail/Delete users': 'Find/Mail/Delete users'
-'Account menu': 'Account menu'
-'Log in': 'Log in'
-'New account': 'New account'
-'Language switcher': 'Language switcher'
-'Log out': 'Log out'
-'Invalid authentication method.': 'Invalid authentication method.'
-'Login failed.': 'Login failed.'
-'Error! You have not been logged out.': 'Error! You have not been logged out.'
-'Choose language': 'Choose language'
-'Site default': 'Site default'
-'All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).': 'All methods cannot be inactive. At least one methods must be enabled. (%m has been enabled).'
-'The registration process failed.': 'The registration process failed.'
-'Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.': 'Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.'
-'Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.': 'Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.'
-'Done! Your account has been created.': 'Done! Your account has been created.'
-'Done! Your account has been created and you may now log in.': 'Done! Your account has been created and you may now log in.'
-'Error! You can''t edit the guest account.': 'Error! You can''t edit the guest account.'
-'Done! Saved user''s account information.': 'Done! Saved user''s account information.'
-Approve: Approve
-'Warning! Nothing to do! %sub% is already approved.': 'Warning! Nothing to do! %sub% is already approved.'
-'Error! %sub% cannot be approved.': 'Error! %sub% cannot be approved.'
-'Done! %sub% has been approved.': 'Done! %sub% has been approved.'
-'No users selected.': 'No users selected.'
-'You are not allowed to delete Uid %uid': 'You are not allowed to delete Uid %uid'
-plural_n.users.deleted: plural_n.users.deleted
-'No users found.': 'No users found.'
-'Mail sent!': 'Mail sent!'
-'Could not send mail.': 'Could not send mail.'
-'You are not allowed to alter your own active state.': 'You are not allowed to alter your own active state.'
-'You are not allowed to remove yourself from the default group.': 'You are not allowed to remove yourself from the default group.'
-'You are not allowed to remove yourself from the primary administrator group.': 'You are not allowed to remove yourself from the primary administrator group.'
-Pending: Pending
-'User status': 'User status'
-'Name displayed for anonymous user': 'Name displayed for anonymous user'
-'Anonymous users are visitors to your site who have not logged in.': 'Anonymous users are visitors to your site who have not logged in.'
-'Number of users displayed per page': 'Number of users displayed per page'
-'When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.': 'When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.'
-'Display graphics on user''s account page': 'Display graphics on user''s account page'
-'Path to account page images': 'Path to account page images'
-'Number of links per page': 'Number of links per page'
-'Allow new user account registrations': 'Allow new user account registrations'
-'Statement displayed if registration disabled': 'Statement displayed if registration disabled'
-'E-mail address to notify of registrations': 'E-mail address to notify of registrations'
-'A notification is sent to this e-mail address for each registration. Leave blank for no notifications.': 'A notification is sent to this e-mail address for each registration. Leave blank for no notifications.'
-'User registration is moderated': 'User registration is moderated'
-'Newly registered users are logged in automatically': 'Newly registered users are logged in automatically'
-'Users authenticating off site (re-entrant) are logged in automatically regardless of this setting.': 'Users authenticating off site (re-entrant) are logged in automatically regardless of this setting.'
-'Reserved user names': 'Reserved user names'
-'Separate each user name with a comma.': 'Separate each user name with a comma.'
-'Each user name on this list is not allowed to be chosen by someone registering for a new account.': 'Each user name on this list is not allowed to be chosen by someone registering for a new account.'
-'The value provided does not appear to be a valid list of user names. The list should consist of one or more user names made up of lowercase letters, numbers, underscores, periods, or dashes. Separate each user name with a comma. For example: ''root, administrator, superuser'' (the quotes should not appear in the list). Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).': 'The value provided does not appear to be a valid list of user names. The list should consist of one or more user names made up of lowercase letters, numbers, underscores, periods, or dashes. Separate each user name with a comma. For example: ''root, administrator, superuser'' (the quotes should not appear in the list). Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).'
-'Banned user agents': 'Banned user agents'
-'Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.': 'Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.'
-'The contents of this field does not appear to be a valid comma separated list. The list should consist of one or more string values separated by commas. For example: ''first example, 2nd example, tertiary example'' (the quotes should not appear in the list). One optional space following the comma is ignored for readability. Any other spaces (those appearing before the comma, and any additional spaces beyond the single optional space) will be considered to be part of the string value. Commas cannot be part of the string value. Empty values (two commas together, or separated only by a space) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).': 'The contents of this field does not appear to be a valid comma separated list. The list should consist of one or more string values separated by commas. For example: ''first example, 2nd example, tertiary example'' (the quotes should not appear in the list). One optional space following the comma is ignored for readability. Any other spaces (those appearing before the comma, and any additional spaces beyond the single optional space) will be considered to be part of the string value. Commas cannot be part of the string value. Empty values (two commas together, or separated only by a space) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).'
-'Banned e-mail address domains': 'Banned e-mail address domains'
-'Separate each domain with a comma.': 'Separate each domain with a comma.'
-'Each item on this list is an e-mail address domain (the part after the ''@''). E-mail addresses on new registrations or on an existing user''s change of e-mail address requests are not allowed to have any domain on this list.': 'Each item on this list is an e-mail address domain (the part after the ''@''). E-mail addresses on new registrations or on an existing user''s change of e-mail address requests are not allowed to have any domain on this list.'
-'The contents of this field does not appear to be a valid list of e-mail address domains. The list should consist of one or more e-mail address domains (the part after the ''@''), separated by commas. For example: ''gmail.com, example.org, acme.co.uk'' (the quotes should not appear in the list). Do not include the ''@'' itself. Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).': 'The contents of this field does not appear to be a valid list of e-mail address domains. The list should consist of one or more e-mail address domains (the part after the ''@''), separated by commas. For example: ''gmail.com, example.org, acme.co.uk'' (the quotes should not appear in the list). Do not include the ''@'' itself. Spaces surrounding commas are ignored, however extra spaces before or after the list are not and will result in an error. Empty values (two commas together, or separated only by spaces) are not allowed. The list is optional, and if no values are to be defined then the list should be completely empty (no extra spaces, commas, or any other characters).'
-'Failed login displays inactive status': 'Failed login displays inactive status'
-'If checked, the log-in error message will indicate that the user account is inactive. If not, a generic error message is displayed.': 'If checked, the log-in error message will indicate that the user account is inactive. If not, a generic error message is displayed.'
-'Failed login displays verification status': 'Failed login displays verification status'
-'If checked, the log-in error message will indicate that the registration is pending verification. If not, a generic error message is displayed.': 'If checked, the log-in error message will indicate that the registration is pending verification. If not, a generic error message is displayed.'
-'Failed login displays approval status': 'Failed login displays approval status'
-'If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.': 'If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.'
-'Remember me': 'Remember me'
-'Confirm deletion': 'Confirm deletion'
-'Delete selected users': 'Delete selected users'
-'Export title row': 'Export title row'
-'Export email address': 'Export email address'
-'Export registration date': 'Export registration date'
-'Export last login date': 'Export last login date'
-'Export group memberships': 'Export group memberships'
-'A simple name with three letter suffix, e.g. `myfile.csv`': 'A simple name with three letter suffix, e.g. `myfile.csv`'
-Download: Download
-'Sender name': 'Sender name'
-'Replyto email address': 'Replyto email address'
-Html: Html
-Message: Message
-'Send mail in batches of': 'Send mail in batches of'
-'Send Mail': 'Send Mail'
-Confirm: Confirm
-'Email address': 'Email address'
-'Any group': 'Any group'
-Year: Year
-Month: Month
-Day: Day
-'Registration date before': 'Registration date before'
-Search: Search
-'Login Denied: Your account has been disabled. Please contact a site administrator for more information.': 'Login Denied: Your account has been disabled. Please contact a site administrator for more information.'
-'Login Denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.': 'Login Denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.'
-'Login Denied: Your request to register with this site is pending or awaiting verification.': 'Login Denied: Your request to register with this site is pending or awaiting verification.'
-'Login Denied!': 'Login Denied!'
-'Approve %sub%': 'Approve %sub%'
-'Edit %sub%': 'Edit %sub%'
-'Delete %sub%': 'Delete %sub%'
-'Warning! The welcoming email for the new registration could not be sent.': 'Warning! The welcoming email for the new registration could not be sent.'
-'Warning! The notification email for the new registration could not be sent.': 'Warning! The notification email for the new registration could not be sent.'
-'Warning! The welcoming email for the newly created user could not be sent.': 'Warning! The welcoming email for the newly created user could not be sent.'
-'Warning! The notification email for the newly created user could not be sent.': 'Warning! The notification email for the newly created user could not be sent.'
-'Warning! The user account was created, but there was a problem adding the account to the default group.': 'Warning! The user account was created, but there was a problem adding the account to the default group.'
-'Login form and block hooks': 'Login form and block hooks'
-'Registration management hooks': 'Registration management hooks'
-'User management hooks': 'User management hooks'
-'Users pending approval': 'Users pending approval'
-'Sorry! The domain of the e-mail address you specified is banned.': 'Sorry! The domain of the e-mail address you specified is banned.'
-'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.': 'The value does not appear to be a valid user name. A valid user name consists of lowercase letters, numbers, underscores, periods or dashes.'
-'The user name you entered is reserved. It cannot be used.': 'The user name you entered is reserved. It cannot be used.'
-'Native Uname or Email': 'Native Uname or Email'
-'Allow a user to authenticate and login via Zikula''s native user database with their username or email address.': 'Allow a user to authenticate and login via Zikula''s native user database with their username or email address.'
-'Native Email': 'Native Email'
-'Allow a user to authenticate and login via Zikula''s native user database with their email address.': 'Allow a user to authenticate and login via Zikula''s native user database with their email address.'
-'Native Uname': 'Native Uname'
-'Allow a user to authenticate and login via Zikula''s native user database with their username.': 'Allow a user to authenticate and login via Zikula''s native user database with their username.'
-'Create new user': 'Create new user'
-'Import users': 'Import users'
-'New users': 'New users'
-'Recover Lost User Name': 'Recover Lost User Name'
-'Recover Lost Password': 'Recover Lost Password'
-'Recover account information or password': 'Recover account information or password'
-'Change password': 'Change password'
-'Change e-mail address': 'Change e-mail address'
-'Unable to send email to the requested address. Please contact a site administrator for assistance.': 'Unable to send email to the requested address. Please contact a site administrator for assistance.'
-'There are too many users registered with that address. Please contact a site administrator for assistance.': 'There are too many users registered with that address. Please contact a site administrator for assistance.'
-'A user with this address does not exist at this site.': 'A user with this address does not exist at this site.'
-'Do you want to <a href="%registerLink%">register</a>?': 'Do you want to <a href="%registerLink%">register</a>?'
-username: username
-'email address': 'email address'
-'Sorry! Your account is marked as inactive. Please contact a site administrator for more information.': 'Sorry! Your account is marked as inactive. Please contact a site administrator for more information.'
-'Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.': 'Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.'
-'Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.': 'Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.'
-'Your request could not be processed due to missing arguments.': 'Your request could not be processed due to missing arguments.'
-'Your request could not be processed.': 'Your request could not be processed.'
-'Your request could not be processed due to invalid arguments.': 'Your request could not be processed due to invalid arguments.'
-'User not found. Please contact a site administrator for assistance.': 'User not found. Please contact a site administrator for assistance.'
-'Your request could not be processed due to invalid arguments. Maybe your link is expired?': 'Your request could not be processed due to invalid arguments. Maybe your link is expired?'
-'There is no authentication method activated.': 'There is no authentication method activated.'
-'Your change has been successfully saved. You are now logged in with your new password.': 'Your change has been successfully saved. You are now logged in with your new password.'
-'Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.': 'Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.'
-'Error! There was a problem saving your new e-mail address or sending you a verification message.': 'Error! There was a problem saving your new e-mail address or sending you a verification message.'
-'Done! Changed your e-mail address.': 'Done! Changed your e-mail address.'
-'Password successfully changed.': 'Password successfully changed.'
-'Done! Users imported.': 'Done! Users imported.'
-'The code provided is invalid or this user has never registered or has fully completed registration.': 'The code provided is invalid or this user has never registered or has fully completed registration.'
-'Done! Your account has been verified, and is awaiting administrator approval.': 'Done! Your account has been verified, and is awaiting administrator approval.'
-'Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.': 'Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.'
-'Done! Your account has been verified. You have been logged in.': 'Done! Your account has been verified. You have been logged in.'
-'Done! Your account has been verified.': 'Done! Your account has been verified.'
-'Your new account is not active yet. Please contact the site administrator for more information.': 'Your new account is not active yet. Please contact the site administrator for more information.'
-'Errors creating user!': 'Errors creating user!'
-'The create process failed for an unknown reason.': 'The create process failed for an unknown reason.'
-'Done! Created new registration application.': 'Done! Created new registration application.'
-'Done! Created new user account.': 'Done! Created new user account.'
-'Warning! New user information has been saved, however there may have been an issue saving it properly.': 'Warning! New user information has been saved, however there may have been an issue saving it properly.'
-'Sorry! There was a problem sending a verification code to %sub%.': 'Sorry! There was a problem sending a verification code to %sub%.'
-'Done! Verification code sent to %sub%.': 'Done! Verification code sent to %sub%.'
-'Login method': 'Login method'
-'User name or email': 'User name or email'
-'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.': 'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.'
-'If login method is Email, then this value must be unique for the site.': 'If login method is Email, then this value must be unique for the site.'
-'Repeat Email': 'Repeat Email'
-'The emails  must match!': 'The emails  must match!'
-'Set password now': 'Set password now'
-'If unchecked, the user''s e-mail address will be verified. The user will create a password at that time.': 'If unchecked, the user''s e-mail address will be verified. The user will create a password at that time.'
-'Create new password': 'Create new password'
-'Minimum password length: %amount% characters.': 'Minimum password length: %amount% characters.'
-'Repeat new password': 'Repeat new password'
-'The passwords must match!': 'The passwords must match!'
-'Send password via email': 'Send password via email'
-'Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.': 'Sending a password via e-mail is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.'
-'Even if you choose to not send the user''s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.': 'Even if you choose to not send the user''s password via e-mail, other e-mail messages may be sent to the user as part of the registration process.'
-'Send welcome message to user': 'Send welcome message to user'
-'Notify administrators': 'Notify administrators'
-'User must verify email address': 'User must verify email address'
-'Notice: This overrides the ''Verify e-mail address during registration'' setting in ''Settings''.': 'Notice: This overrides the ''Verify e-mail address during registration'' setting in ''Settings''.'
-'It is recommended to force users to verify their email address.': 'It is recommended to force users to verify their email address.'
-'The emails must match!': 'The emails must match!'
-'New email address': 'New email address'
-'Repeat new email address': 'Repeat new email address'
-Submit: Submit
-'Old password': 'Old password'
-'New password': 'New password'
-'Minimum length for user passwords': 'Minimum length for user passwords'
-'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.': 'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than zero.'
-'Password hashing method': 'Password hashing method'
-'The default hashing method is ''SHA256''.': 'The default hashing method is ''SHA256''.'
-'Show password strength meter': 'Show password strength meter'
-'E-mail address verifications expire in': 'E-mail address verifications expire in'
-'Enter the number of days a user''s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.': 'Enter the number of days a user''s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.'
-days: days
-'Changing this setting will affect all requests to change e-mail addresses currently pending verification.': 'Changing this setting will affect all requests to change e-mail addresses currently pending verification.'
-'Password reset requests expire in': 'Password reset requests expire in'
-'This setting only affects users who have not established security question responses. Enter the number of days a user''s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.': 'This setting only affects users who have not established security question responses. Enter the number of days a user''s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.'
-'Changing this setting will affect all password change requests currently pending verification.': 'Changing this setting will affect all password change requests currently pending verification.'
-'Registrations pending verification expire in': 'Registrations pending verification expire in'
-'Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).': 'Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).'
-'If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.': 'If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.'
-'New users must verify their email address on registration.': 'New users must verify their email address on registration.'
-'Spam protection question': 'Spam protection question'
-'You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.': 'You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.'
-'Spam protection answer': 'Spam protection answer'
-'Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.': 'Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.'
-'User name or Email': 'User name or Email'
-'CSV file (Max. %sub%)': 'CSV file (Max. %sub%)'
-'The file must be utf8 encoded': 'The file must be utf8 encoded'
-Upload: Upload
-'Email Address': 'Email Address'
-'You will use your e-mail address to identify yourself when you log in.': 'You will use your e-mail address to identify yourself when you log in.'
-'Asking this question helps us prevent automated scripts from accessing private areas of the site.': 'Asking this question helps us prevent automated scripts from accessing private areas of the site.'
-'Confirm sending code': 'Confirm sending code'
-'Yes, cancel the change of password': 'Yes, cancel the change of password'
-'Yes, force the change of password': 'Yes, force the change of password'
-'Verification code': 'Verification code'
-'Send an e-mail verification code for %sub%': 'Send an e-mail verification code for %sub%'
-'Send a new e-mail verification code for %sub%': 'Send a new e-mail verification code for %sub%'
-'Send user name to %sub%': 'Send user name to %sub%'
-'Send password recovery e-mail to %sub%': 'Send password recovery e-mail to %sub%'
-'Cancel required change of password for %sub%': 'Cancel required change of password for %sub%'
-'Require %sub% to change password at next login': 'Require %sub% to change password at next login'
-'Error! It has not been possible to read the import file.': 'Error! It has not been possible to read the import file.'
-'Error! The import file does not have the expected field %s in the first row. Please check your import file.': 'Error! The import file does not have the expected field %s in the first row. Please check your import file.'
-'Error! The number of parameters in line %s is not correct. Please check your import file.': 'Error! The number of parameters in line %s is not correct. Please check your import file.'
-'Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.': 'Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.'
-'Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.': 'Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.'
-'Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.': 'Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.'
-'Error! The import file does not have values.': 'Error! The import file does not have values.'
-'Error! The creation of users has failed.': 'Error! The creation of users has failed.'
-'Your log-in request was not completed. You must change your web site account''s password first.': 'Your log-in request was not completed. You must change your web site account''s password first.'
-'Old password is incorrect.': 'Old password is incorrect.'
-'Your new password cannot match your current password.': 'Your new password cannot match your current password.'
-'Could not find user to update.': 'Could not find user to update.'
-'Invalid username.': 'Invalid username.'
-'The code is invalid for this username.': 'The code is invalid for this username.'
-'The password cannot be the same as the user name. Please choose a different password.': 'The password cannot be the same as the user name. Please choose a different password.'
-'The email address you entered has already been registered.': 'The email address you entered has already been registered.'
-'Only ajax access is allowed!': 'Only ajax access is allowed!'
-Extensions: Extensions
-Blocks: Blocks
-Groups: Groups
-Permissions: Permissions
-Themes: Themes
-'No subscriber area passed.': 'No subscriber area passed.'
-'No provider area passed.': 'No provider area passed.'
-'Providers'' areas order is not an array.': 'Providers'' areas order is not an array.'
-'Workflow "%workflow%" not found.': 'Workflow "%workflow%" not found.'
-'Deactivate %moduleName%': 'Deactivate %moduleName%'
-'Activate %moduleName%': 'Activate %moduleName%'
-'Uninstall %moduleName%': 'Uninstall %moduleName%'
-'Upgrade %moduleName%': 'Upgrade %moduleName%'
-'Remove %moduleName%': 'Remove %moduleName%'
-'Install %moduleName%': 'Install %moduleName%'
-'Core compatibility information: %moduleName%': 'Core compatibility information: %moduleName%'
-'Edit %moduleName%': 'Edit %moduleName%'
-Core: Core
-Public: Public
-Private: Private
-Closed: Closed
-Open: Open
-'Edit "%name%" group': 'Edit "%name%" group'
-'Delete "%name%" group': 'Delete "%name%" group'
-'View membership of "%name%" group': 'View membership of "%name%" group'
-'Leave "%name%" group': 'Leave "%name%" group'
-'Apply to membership of "%name%" group': 'Apply to membership of "%name%" group'
-'Join "%name%" group': 'Join "%name%" group'
-'Edit children': 'Edit children'
-'Edit menu root': 'Edit menu root'
-'Insert permission rule before %pid%': 'Insert permission rule before %pid%'
-'Edit permission %pid%': 'Edit permission %pid%'
-'Delete permission %pid%': 'Delete permission %pid%'
-'Default: %value%': 'Default: %value%'
-'Requirement: %value%': 'Requirement: %value%'
-'The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.': 'The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.'
-'The file you requested (%name%) could not be found.': 'The file you requested (%name%) could not be found.'
-'Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': 'Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.'
-'Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': 'Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.'
-'Cannot write parameters to %fileName% file.': 'Cannot write parameters to %fileName% file.'
-'Error! Could not get module name for id %moduleId%.': 'Error! Could not get module name for id %moduleId%.'
-'Category "%name%" was successfully made default.': 'Category "%name%" was successfully made default.'
-'Block class %className% does not exist.': 'Block class %className% does not exist.'
-'Block class %className% not found in container.': 'Block class %className% not found in container.'
-'Category "%name%" must be unique under parent': 'Category "%name%" must be unique under parent'
-'Error! Activation of module %name% not allowed.': 'Error! Activation of module %name% not allowed.'
-'Done! Activated %name% module.': 'Done! Activated %name% module.'
-'Error! You cannot deactivate the %name% module. It is a mandatory core extension, and is required by the system.': 'Error! You cannot deactivate the %name% module. It is a mandatory core extension, and is required by the system.'
-'Failed to install dependency "%name%"!': 'Failed to install dependency "%name%"!'
-'Installed dependency "%name%".': 'Installed dependency "%name%".'
-'Warning: could not install selected dependency "%name%".': 'Warning: could not install selected dependency "%name%".'
-'Done! Installed "%name%".': 'Done! Installed "%name%".'
-'Initialization of "%name%" failed!': 'Initialization of "%name%" failed!'
-'WARNING: %extension% has an invalid composer.json file which could not be decoded.': 'WARNING: %extension% has an invalid composer.json file which could not be decoded.'
-'Cannot load %extension% because the composer file is invalid.': 'Cannot load %extension% because the composer file is invalid.'
-'Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]': 'Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]'
-'Error! Could not load data for %extension%.': 'Error! Could not load data for %extension%.'
-'Error! Not allowed to install %extension%.': 'Error! Not allowed to install %extension%.'
-'Error! %extension% is not compatible with this version of Zikula.': 'Error! %extension% is not compatible with this version of Zikula.'
-'Error! Not allowed to upgrade %extension%.': 'Error! Not allowed to upgrade %extension%.'
-'Error! No permission to uninstall %extension%.': 'Error! No permission to uninstall %extension%.'
-'Error! %extension% is not yet installed, therefore it cannot be uninstalled.': 'Error! %extension% is not yet installed, therefore it cannot be uninstalled.'
-'%extension% must implement ExtensionInstallerInterface': '%extension% must implement ExtensionInstallerInterface'
-'%amount% pending applications': '%amount% pending applications'
-'Application processed (%action% %user%)': 'Application processed (%action% %user%)'
-'Joined the "%groupName%" group': 'Joined the "%groupName%" group'
-'Left the "%groupName%" group': 'Left the "%groupName%" group'
-'Regarding your %groupName% group membership application': 'Regarding your %groupName% group membership application'
-'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%': 'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%'
-'The group name you entered (%groupName%) does already exist.': 'The group name you entered (%groupName%) does already exist.'
-'%key% must be either (string) "%true%" or "%false%").': '%key% must be either (string) "%true%" or "%false%").'
-'%key% must have a value that can be json_decoded.': '%key% must have a value that can be json_decoded.'
-'Done! Exposed JS Routes dumped to %path%.': 'Done! Exposed JS Routes dumped to %path%.'
-'Error! There was an error dumping exposed JS Routes: %result%': 'Error! There was an error dumping exposed JS Routes: %result%'
-'The path of the route you created or updated looks similar to the following already existing path: %errorPath% Are you sure you haven''t just introduced a conflict?': 'The path of the route you created or updated looks similar to the following already existing path: %errorPath% Are you sure you haven''t just introduced a conflict?'
-'Error: Could not delete "%path%" because %message%.': 'Error: Could not delete "%path%" because %message%.'
-'Error! PHPIDS rule file %filePath% does not exist or is not readable.': 'Error! PHPIDS rule file %filePath% does not exist or is not readable.'
-'Error! Invalid %identifier% received.': 'Error! Invalid %identifier% received.'
-'An error occured during executing PHPIDS: %message%': 'An error occured during executing PHPIDS: %message%'
-'IP: %ip%': 'IP: %ip%'
-'UserID: %userId%': 'UserID: %userId%'
-'Date: %date%': 'Date: %date%'
-'Request impact: %impact%': 'Request impact: %impact%'
-'Session impact: %impact%': 'Session impact: %impact%'
-'Affected tags: %tags%': 'Affected tags: %tags%'
-'Affected parameters: %parameters%': 'Affected parameters: %parameters%'
-'Request URI: %uri%': 'Request URI: %uri%'
-'Cannot load %extension because the composer file is invalid.': 'Cannot load %extension because the composer file is invalid.'
-'New registration: %userName%': 'New registration: %userName%'
-'New registration pending approval: %userName%': 'New registration pending approval: %userName%'
-'New registration pending email verification: %userName%': 'New registration pending email verification: %userName%'
-'New user activated: %userName%': 'New user activated: %userName%'
-'Your recent request at %siteName%.': 'Your recent request at %siteName%.'
-'Welcome to %siteName%, %userName%!': 'Welcome to %siteName%, %userName%!'
-'A message from %siteName%.': 'A message from %siteName%.'
-'The user name you entered (%userName%) has already been registered.': 'The user name you entered (%userName%) has already been registered.'
-'Done! The account information for %email% has been sent via e-mail.': 'Done! The account information for %email% has been sent via e-mail.'
-'Done! The confirmation link for %identifier% has been sent via e-mail.': 'Done! The confirmation link for %identifier% has been sent via e-mail.'
-'Unable to send email to the requested %identifier%. Please try your %otherIdentifier% or contact a site administrator for assistance.': 'Unable to send email to the requested %identifier%. Please try your %otherIdentifier% or contact a site administrator for assistance.'
-'A user with this %property% does not exist at this site.': 'A user with this %property% does not exist at this site.'
-'Error! Your e-mail has not been found. After your request you have %days% days to confirm the new e-mail address.': 'Error! Your e-mail has not been found. After your request you have %days% days to confirm the new e-mail address.'
-'Done! The password recovery verification link for %userName% has been sent via e-mail.': 'Done! The password recovery verification link for %userName% has been sent via e-mail.'
-'Done! The user name for %userName% has been sent via e-mail.': 'Done! The user name for %userName% has been sent via e-mail.'
-'Done! A password change will no longer be required for %userName%.': 'Done! A password change will no longer be required for %userName%.'
-'Done! A password change will be required the next time %userName% logs in.': 'Done! A password change will be required the next time %userName% logs in.'
-'%type% error in line %line%': '%type% error in line %line%'
-'You did not provide the correct answer for the security question. Try %answer%!': 'You did not provide the correct answer for the security question. Try %answer%!'
-'The email address you entered (%email%) has already been registered.': 'The email address you entered (%email%) has already been registered.'
-'Module "%name%" is not a valid subscriber.': 'Module "%name%" is not a valid subscriber.'
-'Subscriber module "%name%" is not available.': 'Subscriber module "%name%" is not available.'
-'Module "%name%" is not a valid provider.': 'Module "%name%" is not a valid provider.'
-'Provider module "%name%" is not available.': 'Provider module "%name%" is not available.'
+'Translation UI': null
+'Configs:': null
+'Zikula Core': null
+Modules: null
+Themes: null
+'no title defined': null
+'Error! Could not resolve %template% template.': null
+'Workflow editor': null
+'Decrease zoom level': null
+'Reset zoom level': null
+'Increase zoom level': null
+'Add node': null
+'How to use the editor': null
+'Click on the %add_node% button to add new states and transitions.': null
+'Drag from node exchange icons to other nodes to add new connections.': null
+'Double-click on a node to edit it.': null
+'Click on the trash-can icons to delete nodes and their connections.': null
+'Click on a connection to delete it.': null
+'Workflow settings': null
+Name: null
+Type: null
+Workflow: null
+'State Machine': null
+'Marking store': null
+Method: null
+'State field': null
+'Supported entities (one per line)': null
+YAML: null
+XML: null
+Caution: null
+'when upgrading an existing workflow consider that objects could be in a state which does not exist anymore. You need to update your database to update these objects in order to avoid problems.': null
+'Edit node': null
+Close: null
+State: null
+Transition: null
+Update: null
+'Workflow "%workflow%" not found.': null
+'Choose a file': null
+'Search user': null
+'This function requires JavaScript activated!': null
+'Enter a part of the user name to search': null
+'Reset to empty value': null
+'Switch to users administration': null
+'Manage user': null
+'Text fields': null
+Text: null
+Textarea: null
+Email: null
+Icon: null
+Integer: null
+Money: null
+Number: null
+Password: null
+Percent: null
+'Phone number': null
+Url: null
+Range: null
+'Week number': null
+'Choice fields': null
+Choice: null
+Country: null
+Language: null
+Locale: null
+Timezone: null
+Currency: null
+'Date and time fields': null
+Date: null
+DateTime: null
+Time: null
+Birthday: null
+'Other fields': null
+Checkbox: null
+Radio: null
+'Field type': null
+'Field options': null
+javascript: null
+Select: null
+All: null
+Required: null
+'Help text': null
+'Regex validation string constraint': null
+'Any 3 letter ISO 4217 code. Default: EUR': null
+'A comma-delineated list. either "value, value, value" or "key:value, key:value, key:value"': null
+Multiple: null
+Expanded: null
+Choices: null
+'Single Text': null
+String: null
+'DateTime object': null
+Array: null
+Timestamp: null
+'e.g. yyyy-MM-dd': null
+Html5: null
+Widget: null
+Input: null
+Format: null
+model_timezone: null
+Delete: null
+Cancel: null
+'First page'', ''zikula': null
+'Previous page'', ''zikula': null
+'Next page'', ''zikula': null
+'Last page'', ''zikula': null
+'No previous page'', ''zikula': null
+'No further pages'', ''zikula': null
+'Page %1% / %2% (%3% - %4% of %5% total)': null
+'The site is currently off-line.': null
+'Administrator log-in': null
+'Proudly powered by Zikula': null
+Guest: null
+'You do not have permission. You must login first.': null
+'You do not have permission for that action.': null
+'Admin credentials required when site is disabled.': null
+'Yes': null
+'No': null
+'Function does not exist or is not callable.': null
+'Useful resources': null
+'Installation guide': null
+'Zikula documentation': null
+'Support @ Slack': null
+'File system permissions': null
+'Zikula is upgrading!': null
+'Progress bar': null
+'Begin Upgrader': null
+'be patient!': null
+'Upgrading Modules and Helpers': null
+Finish: null
+'Zikula is not upgraded!': null
+'Zikula Application Framework': null
+'Zikula Core requires upgrade!': null
+'upgrade instructions': null
+'online documentation': null
+"'You are seeing this message because Zikula requires upgrade. You can upgrade Zikula by clicking\n                        on the upgrade button, but before doing so please read the %inst%. Further information can be found in the %docs%.": null
+'You have JavaScript disabled. Please activate it to proceed or use the CLI script instead.': null
+'Upgrade Zikula!': null
+'To version': null
+'Zikula is free software released under the GPL license!': null
+'For more information, please visit %link%.': null
+'Upgrader script': null
+'upgrade guide': null
+'Please refer to the %doc_link% during the process.': null
+'Migrating Users...': null
+'Migrate Users to ZAuth': null
+'This will migrate all VALID users from the old Users table to the new ZAuth table.': null
+'This could potentially take a long time if there are many users that must be migrated. They will be migrated in batches of 25 to reduce the risk of timeouts.': null
+'Invalid users cannot be migrated unless their data is manually corrected. The errors are posted to the logfile.': null
+'There are %f users to try to migrate.': null
+'Begin migration': null
+'Zikula Core Installer': null
+'Database information': null
+'Ensure the database is in UTF-8 format.': null
+'Checking database connection...': null
+Next: null
+'Your PHP version is %s.': null
+'You have got a problem! Your PHP version is %s, which does not satisfy the Zikula system requirement of version %phpmin or later.': null
+'PDO extension loaded.': null
+'Your PHP installation doesn''t have the PDO extension loaded.': null
+'Your PHP installation''s PCRE library has Unicode property support enabled.': null
+'Your PHP installation''s PCRE library does not have Unicode property support enabled. Zikula needs this to handle multi-byte character sets in regular expressions. The PCRE library used with PHP must be compiled with the ''--enable-unicode-properties'' option.': null
+'Check requirements again': null
+'Zikula is not installed!': null
+'Zikula Core is not installed!': null
+'installation instructions': null
+"'You are seeing this message because Zikula is not yet installed. You can install Zikula by clicking\n                    on the install button, but before doing so please read the %inst%. Further information can be found in the %docs%.": null
+'Install Zikula!': null
+Version: null
+'Create administrator''s account': null
+'Zikula is already installed!': null
+'Zikula Core is already installed!': null
+"Zikula Core is already installed so the installer has been disabled. If you need to run the installer\n                    a second time, you must reset config.php to its original state and clear the database tables before\n                    running the installer again.": null
+'Click here to visit your homepage': null
+'Further information can be found in the %doc_url%.': null
+'Zikula is installing!': null
+'Begin Installer': null
+'Installing Modules and Helpers': null
+'Installer script': null
+'Select language': null
+'Check requirements': null
+'installation guide': null
+'You have got a problem! Your PHP version is %actual, which does not satisfy the Zikula system requirement of version %required or later.': null
+'date.timezone is currently not set.  It needs to be set to a valid timezone in your php.ini such as timezone like UTC, GMT+5, Europe/Berlin.': null
+'You have got a problem! Your PHP installation does not have the token functions available, but they are necessary for Zikula''s output system.': null
+'Your PHP installation does not have the multi-byte string functions available. Zikula needs this to handle multi-byte character sets.': null
+'Your PHP installation does not have the JSON functions available. Zikula needs this to handle AJAX requests.': null
+'''%s'' has been found. This is not OK: please rename this file before continuing the installation process.': null
+'You have a problem! ''%s'' is not writeable. Please ensure that the permissions are set correctly for the installation process.': null
+Parameter: null
+Value: null
+'The currently installed version of Zikula (%currentVersion%) is too old. You must upgrade to version %minimumVersion% before you can use this upgrade.': null
+'Zikula Upgrader Script': null
+'*** UPGRADING TO ZIKULA CORE %version% ***': null
+'Upgrading Zikula in %env% environment.': null
+'UPGRADE COMPLETE!': null
+'Beginning user migration...': null
+'User migration complete!': null
+'There was no need to migrate any users.': null
+'Zikula Installer Script': null
+'Zikula already appears to be installed.': null
+'Configuring Zikula installation in %env% environment.': null
+'Please follow the instructions to install Zikula %version%.': null
+'Configuration successful. Please verify your parameters below:': null
+'(Admin credentials have been encoded to make them json-safe.)': null
+'Start installation?': null
+'Installation aborted': null
+'First stage of installation complete. Run `php bin/console zikula:install:finish` to complete the installation.': null
+'*** INSTALLING ***': null
+'INSTALL COMPLETE!': null
+'Error! There was a problem with the database connection.': null
+'Error! Could not login with provided credentials. Please try again.': null
+'Error! You logged in to an account without Admin permissions': null
+'Error! Please enter your database credentials.': null
+'Error! Determination existing tables failed.': null
+'Error! The database exists and contains tables. Please delete all tables before proceeding or select a new database.': null
+'Error! Could not connect to the database. Please check that you have entered the correct database information and try again. ': null
+'Admin user name': null
+'Admin password': null
+'Repeat password': null
+'Admin email address': null
+password: null
+English: null
+'Select your default language': null
+InnoDB: null
+MyISAM: null
+'Database type': null
+'Storage engine': null
+'Database host': null
+'Database user name': null
+'Database password': null
+'Database name': null
+'User name': null
+http: null
+https: null
+'The root domain where you install Zikula, e.g. "example.com". Do not include subdirectories.': null
+'Please enter the scheme of where you install Zikula, can be either "http" or "https"': null
+'Please enter the url path of the directory where you install Zikula, leave empty if you install it at the top level. Example: /my/sub-dir': null
+'Congratulations! Upgrade Complete.': null
+'Reinitialize parameters': null
+'Reinitializing parameters': null
+'Reinitialized parameters': null
+'There was an error reinitialize parameters': null
+Login: null
+'Logging in as admin': null
+'Logged in as admin': null
+'There was an error logging in as admin': null
+'Fire upgrade event': null
+'Firing upgrade event': null
+'Fired upgrade event': null
+'There was an error firing the upgrade event': null
+'Upgrade modules': null
+'Upgrading modules': null
+'Modules upgraded': null
+'There was an error upgrading the modules': null
+'Regenerate themes': null
+'Regenerating themes': null
+'Themes regenerated': null
+'There was an error regenerating the themes': null
+'Upgrade from Core %oldVersion% to Core %newVersion%': null
+'Upgrading to Core %version%': null
+'Upgraded to Core %version%': null
+'There was an error upgrading to Core %version%': null
+'Finalize parameters': null
+'Finalizing parameters': null
+'Parameters finalized': null
+'There was an error finalizing the parameters': null
+'Clear caches': null
+'Clearing caches': null
+'Caches cleared': null
+'There was an error clearing caches': null
+'The installed language could not be detected.': null
+'Congratulations! Zikula has been successfully installed.': null
+'Session are currently configured to use the filesystem. It is recommended that you change this to use the database. Click %here% to configure.': null
+'Security Center': null
+'Email settings are not yet configured. Please configure them below.': null
+'Zikula installation completed!': null
+'Symfony Bundles': null
+'Persisting Symfony Bundles': null
+'Symfony Bundles persisted': null
+'There was an error persisting the Symfony Bundles': null
+'Fire install event': null
+'Firing install event': null
+'Fired install event': null
+'There was an error firing the install event': null
+'Zikula Extension Module': null
+'Installing Zikula Extensions Module': null
+'Zikula Extensions Module installed': null
+'There was an error installing Zikula Extensions Module': null
+'Zikula Settings Module': null
+'Installing Zikula Settings Module': null
+'Zikula Settings Module installed': null
+'There was an error installing Zikula Settings Module': null
+'Zikula Theme Module': null
+'Installing Zikula Theme Module': null
+'Zikula Theme Module installed': null
+'There was an error installing Zikula Theme Module': null
+'Zikula Administration Module': null
+'Installing Zikula Administration Module': null
+'Zikula Administration Module installed': null
+'There was an error installing Zikula Administration Module': null
+'Zikula Permissions Module': null
+'Installing Zikula Permissions Module': null
+'Zikula Permissions Module installed': null
+'There was an error installing Zikula Permissions Module': null
+'Zikula Users Module': null
+'Installing Zikula Users Module': null
+'Zikula Users Module installed': null
+'There was an error installing Zikula Users Module': null
+'Zikula ZAuth Module': null
+'Installing Zikula ZAuth Module': null
+'Zikula ZAuth Module installed': null
+'There was an error installing Zikula ZAuth Module': null
+'Zikula Groups Module': null
+'Installing Zikula Groups Module': null
+'Zikula Groups Module installed': null
+'There was an error installing Zikula Groups Module': null
+'Zikula Blocks Module': null
+'Installing Zikula Blocks Module': null
+'Zikula Blocks Module installed': null
+'There was an error installing Zikula Blocks Module': null
+'Zikula Security Module': null
+'Installing Zikula Security Module': null
+'Zikula Security Module installed': null
+'There was an error installing Zikula Security Module': null
+'Zikula Categories Module': null
+'Installing Zikula Categories Module': null
+'Zikula Categories Module installed': null
+'There was an error installing Zikula Categories Module': null
+'Zikula Mailer Module': null
+'Installing Zikula Mailer Module': null
+'Zikula Mailer Module installed': null
+'There was an error installing Zikula Mailer Module': null
+'Zikula Search Module': null
+'Installing Zikula Search Module': null
+'Zikula Search Module installed': null
+'There was an error installing Zikula Search Module': null
+'Zikula Routes Module': null
+'Installing Zikula Routes Module': null
+'Zikula Routes Module installed': null
+'There was an error installing Zikula Routes Module': null
+'Zikula Menu Module': null
+'Installing Zikula Menu Module': null
+'Zikula Menu Module installed': null
+'There was an error installing Zikula Menu Module': null
+'Activate system modules': null
+'Activating system modules': null
+'System modules activated': null
+'There was an error activating system modules': null
+'Module categorization': null
+'Moving modules to their default categories': null
+'Modules moved to their default categories': null
+'There was an error moving modules to their default categories': null
+'Create blocks': null
+'Creating default blocks': null
+'Default blocks created': null
+'There was an error creating default blocks': null
+'Create admin account': null
+'Creating admin account': null
+'Admin account created': null
+'There was an error creating admin account': null
+'Protect configuration files': null
+'Protecting configuration files': null
+'Configuration files protected': null
+'There was an error protecting configuration files': null
+'Install assets': null
+'Installing assets to /web': null
+'Assets installed': null
+'Failed to install assets': null
+'Cannot write parameters to %fileName% file.': null
+'Could not use %command% to set the %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': null
+'Could not set %setting% to the value of %requiredValue%. The install or upgrade process may fail at your current setting of %currentValue%.': null
+System: null
+Users: null
+Layout: null
+Security: null
+Content: null
+'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.': null
+'Main menu': null
+'The file you requested (%name%) could not be found.': null
+'Attached areas': null
+Detach: null
+'There aren''t any areas attached here.': null
+'Drag an area from the right and drop it here to attach it.': null
+'There are no subscribers available for %sub%.': null
+'Available areas': null
+'There are no providers available for %sub%.': null
+'Connect %sub% to other modules': null
+'%sub% module provides the following area:': null
+'To connect %sub% to one of the modules from the list below, click on the checkbox(es) next to the corresponding area.': null
+ID: null
+'Display name': null
+Connections: null
+'%1$s module can\''t connect to %2$s module. No connections are supported': null
+'No items found.': null
+Hooks: null
+'Drag items from the right column to the left column to connect the hooks. Only areas with the same category can be connected.': null
+Subscription: null
+Provision: null
+'No subscriber area passed.': null
+'Module "%name%" is not a valid subscriber.': null
+'Subscriber module "%name%" is not available.': null
+'No provider area passed.': null
+'Module "%name%" is not a valid provider.': null
+'Provider module "%name%" is not available.': null
+'Providers'' areas order is not an array.': null
+'Page not found': null
+Settings: null
+'Native authorisation settings': null
+'User Credential Settings': null
+'Registration Settings': null
+'Remember me': null
+'Log in page': null
+'Create new account': null
+'Recover lost username': null
+'Recover lost password': null
+'User login': null
+'New account registration': null
+'Registering for a user account is easy. Registration can give you access to content and to features of this site that are not available to unregistered guests.': null
+'During your visits, we recommended that you set your browser to accept cookies from this site. Various features of the site use cookies, and may not function properly (or may not function at all) if cookies are disabled.': null
+'Before you will be able to log in, you must verify your e-mail address. You will receive an e-mail asking to verify your e-mail address after submitting the information below.': null
+'Before you will be able to log in, an administrator must approve your registration request. You will receive an e-mail after an administrator has reviewed the information you submit below.': null
+'The items that are marked with an asterisk (*) are required entries.': null
+'Choose a user name': null
+'Your user name is used to identify you to other users on the site. You still need to set one up, even though you will not be using it to log in.': null
+'Enter your e-mail address': null
+'Set a password': null
+'The minimum length for user passwords is %sub% characters.': null
+'Answer the security question': null
+'No records found.': null
+'Create new user': null
+'The items that are marked with an asterisk (\''*\'') are required entries.': null
+'Login method': null
+'Account information': null
+'Log-in information': null
+'Cancel forced password change for %1s': null
+'Cancel forced password change': null
+'Force a change of password for %1s': null
+'Force password change': null
+'Do you want to cancel the forced password change for %1s?': null
+'Do you want to force a password change during the next login attempt for %1s?': null
+'Confirmation prompt': null
+'Edit user account of %uname': null
+'Edit user account': null
+'WARNING: You appear to be editing your OWN account.': null
+'Users list': null
+Search: null
+'Please enter at least 3 characters': null
+'Email verified': null
+'Internal ID': null
+Actions: null
+'Confirm verification code is to be sent to %sub%': null
+'Confirm verification code': null
+'Import users': null
+'Select the CSV file': null
+'About the CSV file': null
+'The first row of the CSV file must contain the field names. It must be like this:': null
+'where:': null
+' (mandatory) - The user name. This value must be unique.': null
+' (mandatory) - The user password. It must have %sub% characters or more. Preferentially containing letters and numbers.': null
+' (mandatory) - The user email. If the validation method is based on the user email this value must be unique.': null
+' - Type 0 if user is not active, 1 if the user must be active. The default value is 1.': null
+' - Type 1 if the system must send the password to the user via email and 0 otherwise. The default value is 1. The module Mailer must be active and correctly configured. The email is sent only if user activated value is upper than 0.': null
+' - The identities of the groups where the user must belong separated by the character |. If you do not specify any group, the default group is %sub%.': null
+'An example of a valid CSV file': null
+'albert,12secure09,albert@example.org,1,1,2': null
+'george,lesssecure,george@example.org,1,0,1|5': null
+'robert,hispassword,robert@example.org,,,': null
+'Another example of a valid CSV file': null
+'albert,12secure09,albert@example.org': null
+'george,lesssecure,george@example.org': null
+'robert,hispassword,robert@example.org': null
+'Account information recovery': null
+'Please complete the form below to reset your password.': null
+'Create a new password.': null
+'Please enter your e-mail address below and click the submit button. You will be sent an e-mail with your account information.': null
+'Email address manager': null
+'Notice: Please enter your new e-mail address, the same address again for verification, and then click save. The site uses this address to send you mail (when you request a new password, for instance). Your currently-recorded e-mail address is %email%.': null
+'You will receive an e-mail to your new e-mail address to confirm the change.': null
+'Please enter your user name or e-mail address below and click the submit button. You will be sent an e-mail with further instructions.': null
+OR: null
+'Change password': null
+'Before logging in, the site administrator has asked that you change the password for your account.': null
+'If you leave this page without successfully changing your password, then you will not be logged in.': null
+'To change your password, please enter your current password, and then enter a new password (you must enter the new password twice to ensure that you have typed it correctly).': null
+'Once you have successfully changed your password, the log-in process will complete.': null
+'Account verification': null
+'Verification code': null
+'Create a password': null
+'Invalid username.': null
+'If unchecked, the user''s e-mail address will be verified. The user will create a password at that time.': null
+'Sending a password via email is considered unsafe. It is recommended that you provide the password to the user using a secure method of communication.': null
+'Even if you choose to not send the user''s password via e-mail, other email messages may be sent to the user as part of the registration process.': null
+'It is recommended to force users to verify their email address.': null
+'User name or email': null
+'User names can contain letters, numbers, underscores, periods, spaces and/or dashes.': null
+'If login method is Email, then this value must be unique for the site.': null
+'Minimum password length: %amount% characters.': null
+'Notice: This overrides the ''Verify e-mail address during registration'' setting in ''Settings''.': null
+'Repeat Email': null
+'Set password now': null
+'Create new password': null
+'Repeat new password': null
+'Send password via email': null
+'Send welcome message to user': null
+'Notify administrators': null
+'User must verify email address': null
+Save: null
+pass: null
+email: null
+'Email address': null
+Submit: null
+'New email address': null
+'Repeat new email address': null
+',': null
+;: null
+':': null
+'The file must be utf8 encoded': null
+'CSV file (Max. %maxSize%)': null
+'CSV delimiter': null
+Upload: null
+'You will use your e-mail address to identify yourself when you log in.': null
+'Asking this question helps us prevent automated scripts from accessing private areas of the site.': null
+'Repeat email': null
+Reset: null
+'Old password': null
+'New password': null
+'Changing this setting will affect all requests to change e-mail addresses currently pending verification.': null
+'Changing this setting will affect all password change requests currently pending verification.': null
+'If registration is moderated and applications must be approved before verification, then registrations will not expire until the specified number of days after approval.': null
+days: null
+SHA1: null
+SHA256: null
+'This affects both passwords created during registration, as well as passwords modified by users or administrators. Enter an integer greater than five.': null
+'The default hashing method is ''SHA256''.': null
+'Enter the number of days a user''s request to change e-mail addresses should be kept while waiting for verification. Enter zero (0) for no expiration.': null
+'This setting only affects users who have not established security question responses. Enter the number of days a user''s request to reset a password should be kept while waiting for verification. Enter zero (0) for no expiration.': null
+'Enter the number of days a registration record should be kept while waiting for e-mail address verification. (Unverified registrations will be deleted the specified number of days after sending an e-mail verification message.) Enter zero (0) for no expiration (no automatic deletion).': null
+'You can set a question to be answered at registration time, to protect the site against spam automated registrations by bots and scripts.': null
+'Registering users will have to provide this response when answering the spam protection question. It is required if a spam protection question is provided.': null
+'Minimum length for user passwords': null
+'Password hashing method': null
+'Show password strength meter': null
+'Email address verifications expire in': null
+'Password reset requests expire in': null
+'Registrations pending verification expire in': null
+'New users must verify their email address on registration.': null
+'Spam protection question': null
+'Spam protection answer': null
+'Confirm sending code': null
+'Native Uname': null
+'Allow a user to authenticate and login via Zikula''s native user database with their username.': null
+'Native Uname or Email': null
+'Allow a user to authenticate and login via Zikula''s native user database with their username or email address.': null
+'Native Email': null
+'Allow a user to authenticate and login via Zikula''s native user database with their email address.': null
+'Login failed.': null
+'The email you are trying to authenticate with is in use by another user. You can only login by username.': null
+'Error! It has not been possible to read the import file.': null
+'Error! The import file does not have the expected field %s in the first row. Please check your import file.': null
+'Error! The number of parameters in line %s is not correct. Please check your import file.': null
+'Error! The CSV is not valid: the "activated" column must contain 0 or 1 only.': null
+'Error! The CSV is not valid: the "sendmail" column must contain 0 or 1 only.': null
+'Sorry! The identity of the group %gid% is not not valid. Perhaps it does not exist. Please check your import file.': null
+'Error! The import file does not have values.': null
+'Error! The creation of users has failed.': null
+'%type% error in line %line%': null
+'Send an e-mail verification code for %sub%': null
+'Send a new e-mail verification code for %sub%': null
+'Send user name to %sub%': null
+'Send password recovery e-mail to %sub%': null
+'Cancel required change of password for %sub%': null
+'Require %sub% to change password at next login': null
+'Edit %sub%': null
+'Done! Configuration updated.': null
+'Operation cancelled.': null
+'Done! The account information for %email% has been sent via e-mail.': null
+'Unable to send email to the requested address. Please contact a site administrator for assistance.': null
+'There are too many users registered with that address. Please contact a site administrator for assistance.': null
+'A user with this address does not exist at this site.': null
+'Do you want to <a href="%registerLink%">register</a>?': null
+username: null
+'email address': null
+'Done! The confirmation link for %identifier% has been sent via e-mail.': null
+'Unable to send email to the requested %identifier%. Please try your %otherIdentifier% or contact a site administrator for assistance.': null
+'Sorry! Your account is marked as inactive. Please contact a site administrator for more information.': null
+'Sorry! Your account has not completed the registration process. Please contact a site administrator for more information.': null
+'Sorry! An active account could not be located with that information. Correct your entry and try again. If you have recently registered a new account with this site, we may be waiting for you to verify your e-mail address, or we might not have approved your registration request yet.': null
+'A user with this %property% does not exist at this site.': null
+'Your request could not be processed due to missing arguments.': null
+'Your request could not be processed.': null
+'Your request could not be processed due to invalid arguments.': null
+'User not found. Please contact a site administrator for assistance.': null
+'Your request could not be processed due to invalid arguments. Maybe your link is expired?': null
+'There is no authentication method activated.': null
+'Your change has been successfully saved. You are now logged in with your new password.': null
+'Done! You will receive an e-mail to your new e-mail address to confirm the change. You must follow the instructions in that message in order to verify your new address.': null
+'Error! There was a problem saving your new e-mail address or sending you a verification message.': null
+'Error! Your e-mail has not been found. After your request you have %days% days to confirm the new e-mail address.': null
+'Done! Changed your e-mail address.': null
+'Password successfully changed.': null
+'The code provided is invalid or this user has never registered or has fully completed registration.': null
+'Done! Your account has been verified, and is awaiting administrator approval.': null
+'Done! Your account has been verified. Your registration request is still pending completion. Please contact the site administrator for more information.': null
+'Done! Your account has been verified. You have been logged in.': null
+'Done! Your account has been verified.': null
+'Your new account is not active yet. Please contact the site administrator for more information.': null
+'Errors creating user!': null
+'The create process failed for an unknown reason.': null
+'Done! Created new registration application.': null
+'Done! Created new user account.': null
+'Warning! New user information has been saved, however there may have been an issue saving it properly.': null
+'Error! You can''t edit the guest account.': null
+'Done! Saved user''s account information.': null
+'Sorry! There was a problem sending a verification code to %sub%.': null
+'Done! Verification code sent to %sub%.': null
+'Done! The password recovery verification link for %userName% has been sent via e-mail.': null
+'Done! The user name for %userName% has been sent via e-mail.': null
+'Done! A password change will no longer be required for %userName%.': null
+'Done! A password change will be required the next time %userName% logs in.': null
+'Done! Users imported.': null
+'New users': null
+'Change e-mail address': null
+'Account menu': null
+'Recover account information or password': null
+'Recover Lost User Name': null
+'Recover Lost Password': null
+'Your log-in request was not completed. You must change your web site account''s password first.': null
+'Search settings': null
+'General settings': null
+'Disable search plug-ins': null
+OpenSearch: null
+'%link% makes it possible for your site''s users to use your site''s search function as a search engine.': null
+'Active modules': null
+'There are no active modules to search. Please activate at %link': null
+'Search Config': null
+'Recent searches': null
+'Search keywords': null
+'Number of searches': null
+'Date of last search': null
+'Search results': null
+'Number of hits: %s': null
+'Created on %s.': null
+'Search data copyright %s, all rights reserved.': null
+'Site unsearchable': null
+'The site administrator has not configured any data as searchable.': null
+'Site search': null
+'No search results found.': null
+'You can try the following:': null
+'Check that you spelled all words correctly.': null
+'Use different keywords.': null
+'Use keywords that are more general.': null
+'Use fewer words.': null
+'All words': null
+'Any words': null
+'Exact phrase': null
+'Newest first': null
+'Oldest first': null
+Alphabetical: null
+'Keyword settings': null
+'Order of results': null
+'Search now': null
+Active: null
+'Items per page': null
+'Number of characters to display in item summaries': null
+'Disabled plugins': null
+'Enable OpenSearch': null
+'This page contains adult content': null
+'Show ''Search now'' button': null
+active: null
+'User page': null
+'Admin page': null
+'New search': null
+'Recent searches list': null
+'User Name': null
+Tag: null
+Page: null
+'IP Address': null
+Impact: null
+'An error occurred while creating HTML Purifier cache directory at %path': null
+'Error! Session path not writeable!': null
+'Error! PHPIDS rule file %filePath% does not exist or is not readable.': null
+'Session handling variables have changed. You must log in again.': null
+'Done! Saved HTMLPurifier configuration.': null
+'Default values for HTML Purifier were successfully loaded. Please store them using the "Save" button at the bottom of this page': null
+IP: null
+'PHPIDS filters used': null
+'Done! Purged IDS log.': null
+'Error! Invalid %identifier% received.': null
+'Allowed HTML settings': null
+'View IDS log': null
+'Export IDS log': null
+'Purge IDS log': null
+'HTMLPurifier settings': null
+'An error occured during executing PHPIDS: %message%': null
+'The following attack has been detected by PHPIDS': null
+'IP: %ip%': null
+'UserID: %userId%': null
+'Date: %date%': null
+'Request impact: %impact%': null
+'Session impact: %impact%': null
+'Affected tags: %tags%': null
+'Affected parameters: %parameters%': null
+'Request URI: %uri%': null
+'Site Administrator': null
+'Intrusion attempt detected by PHPIDS': null
+'Malicious request code / a hacking attempt was detected. This request has NOT been blocked!': null
+'Malicious request code / a hacking attempt was detected. Thus this request has been blocked.': null
+'Block settings': null
+'Modify block position': null
+'Create block position': null
+'After creating this block position, blocks can be assigned to it and the order they are to be displayed can be adjusted.': null
+'The theme in use must implement the block position or the assigned blocks will never be displayed.': null
+'Delete block position': null
+'Do you really want to delete position ''%name%''?': null
+'Block placements': null
+'Notice: Use drag and drop to arrange the blocks in this position into your desired order. The new block order will be saved automatically.': null
+'Blocks placed in the ''%name%'' position': null
+'WARNING: The "%name%" block position is not available in the current default theme.': null
+'Block ID': null
+'Title, Description': null
+Module: null
+'No blocks placed in this position yet.': null
+'Click to deactivate this block': null
+Inactive: null
+'Blocks not placed in ''%name%'' position': null
+'All blocks placed.': null
+'Blocks list': null
+"This is the list of blocks present in your system, you can use the filter to display only certain blocks.\n    The order in which blocks are listed here is not necessarily the order in which they are displayed in site pages.\n    To manage the display order of the blocks click the position name in this table or on the 'edit block placements'\n    in the position list table below.": null
+'Sort by ID': null
+'Sort by title': null
+Title: null
+Description: null
+'Sort by type': null
+Positions: null
+'Sort by language': null
+'Sort by state': null
+'Position not available in current default theme.': null
+'This block has filters': null
+'Click to deactivate block': null
+'Click to activate block': null
+'Preview block': null
+'Edit block': null
+'Delete block': null
+'Block positions list': null
+"This is the list of block positions currently existing for your site's pages.\nYou can create a new block position by clicking 'Create block position' in the menu. To edit the settings for a block position,\nclick on the 'Edit' icon beside that particular position. To reorder the blocks within a block position, click on the\n'Edit placements' (blocks) icon for that position or on the position name in the block list above.\nTo delete a block position, click on the 'Delete' icon and confirm the action in the confirmation prompt that will display.": null
+'Twig tag': null
+'Edit block placements': null
+'Edit block position': null
+'Marked positions are not available in the current default theme.': null
+'Block View': null
+'Modify block': null
+'Create block': null
+Meta: null
+'Block Type': null
+Properties: null
+Filters: null
+'Add filter': null
+'Select a block type.': null
+'Do you really want to delete block ''%title%''?': null
+inactive: null
+'Filter %active%': null
+Position: null
+Clear: null
+'There is currently no pending content.': null
+'Warning: Block template locations modified, you may need to fix your template overrides if you have any.': null
+'All instances of LangBlock have been converted to LocaleBlock.': null
+'Left blocks': null
+'Right blocks': null
+'Center blocks': null
+'Search block': null
+'Header block': null
+'Footer block': null
+'Top navigation block': null
+'Bottom navigation block': null
+'<p><a href="https://ziku.la">Zikula</a> is an Open Source Content Application Framework built on top of Symfony.</p><p>With Zikula you get:</p><ul><li><strong>Power:</strong> You get the all the features of <a href="https://symfony.com">Symfony</a> PLUS: </li><li><strong>User Management:</strong> Built in User and Group management with Rights/Roles control</li><li><strong>Front end control:</strong> You can customise all aspects of the site''s appearance through themes, with support for <a href="http://jquery.com">jQuery</a>, <a href="http://getbootstrap.com">Bootstrap</a> and many other modern technologies</li><li><strong>Internationalization (i18n):</strong> You can mark content as being suitable for either a single language or for all languages, and can control all aspects of localisation of your site</li><li><strong>Extensibility:</strong> you get a standard application-programming interface (API) that lets you easily extend your site''s functionality through modules</li><li><strong>More:</strong> Admin UI, global categories, site-wide search, content blocks, menu creation, and more!</li><li><strong>Support:</strong> you can get help and support from the Zikula community of webmasters and developers at <a href="https://ziku.la">ziku.la</a>, <a href="https://github.com/zikula/core">Github</a> and <a href="https://zikula.slack.com/">Slack</a>.</li></ul><p>Enjoy using Zikula!</p><p><strong>The Zikula team</strong></p><p><em>Note: Zikula is Free Open Source Software (FOSS) licensed under the GNU General Public License.</em></p>': null
+'Search box': null
+'This site is powered by Zikula!': null
+'HTML block': null
+'User log-in': null
+'Login block': null
+Filter: null
+'Block type': null
+Choose: null
+'Choose a block type': null
+'Custom filters': null
+'Characters allowed: a-z, A-Z, 0-9, dash (-) and underscore (_).': null
+'==': null
+'!=': null
+'>=': null
+'<=': null
+'>': null
+'<': null
+in_array: null
+'!in_array': null
+Attribute: null
+'Query parameter': null
+Comparator: null
+'Enable block collapse icons': null
+'Block class %className% does not exist.': null
+'Block class %className% not found in container.': null
+'HTML Block content hook': null
+content: null
+'For Html files please select the Html file type.': null
+HTML: null
+PHP: null
+'File path': null
+'File type': null
+/full/path/to/file.txt: null
+'Either the Document URL or the Document contents must contain a value.': null
+'Either the Document URL of the Document contents can contain a value, not both.': null
+'Either the Style sheet URL or the Style sheet contents must contain a value.': null
+'Either the Style sheet URL or the Style sheet contents can contain a value, not both.': null
+'Document URL': null
+'Document contents': null
+'Style sheet URL': null
+'Style sheet contents': null
+'Pending Content': null
+'File Include': null
+'No permission for this action.': null
+'Done! Position saved.': null
+'Done! Position deleted.': null
+'Done! Block saved.': null
+'Done! Block deleted.': null
+'No block ID passed.': null
+'Create new block': null
+'Create new block position': null
+Menu: null
+'MenuItemName (menuItemId). The id is needed for permissions.': null
+'Edit item': null
+'Do you really want to delete this item?': null
+'Delete all children': null
+'Move all children': null
+'Move and delete': null
+'Options with an asterisk (*) must have a value of a json_encoded string of option key-value pairs. Options with a plus (+) must have a boolean value.': null
+'Add Option': null
+'Menu list': null
+Menus: null
+Children: null
+plural_n.direct.child: null
+'Delete Root': null
+'Are you sure you want to delete this menu (%menu%) AND ALL ITS CHILDREN?': null
+'Create or Edit Root Node': null
+'Create or edit root node': null
+'%key% must be either (string) "%true%" or "%false%").': null
+'%key% must have a value that can be json_decoded.': null
+'That entity does not exist!': null
+Options: null
+Root: null
+Parent: null
+label: null
+root: null
+parent: null
+'No parent': null
+entity: null
+value: null
+key: null
+'Could not json_decode the string you entered.': null
+'This must be a json_encoded string of option key-value pairs.': null
+'Menu name': null
+options: null
+'No permission for this action': null
+'Data provided was inappropriate.': null
+'Done! Menu removed.': null
+Home: null
+list: null
+foo: null
+bar: null
+'user list': null
+new: null
+'bar admin': null
+'bar acct': null
+'New menu': null
+'Edit children': null
+'Edit menu root': null
+'Security analyser warnings': null
+'Security warnings': null
+'There is no ''.htaccess'' file in the application directory ''/app'', but one should be present.': null
+'If properly installed, a site will include an \''.htaccess\'' file in the site\''s \''app\'' folder. However, some methods used for transferring the package\''s files to a web space may lead to this file not being transferred. In this case, you are strongly recommended to create one (and to ensure that \''.htaccess\'' files exist in certain other directories, too).': null
+'The update check is not enabled, but preferably should be.': null
+'Security center module is not activated, but preferably should be.': null
+'When a site is originally installed, the Security center is installed and activated by default. You will see the above message if the Security center has been deactivated. You are recommended to leave the Security center activated, as it enhances a site''s security.': null
+'PHPIDS with the Security Center is not activated, but preferably should be.': null
+'PHPIDS is a feature of the Security center module that enhances the security of a site, and the Security analyser has detected that it is not enabled. You are recommended to ensure that it is enabled. You will also see this message if the Security center module is not installed or is not activated. For more information about this, please consult the Security center on-line help.': null
+'PHPIDS is activated, but requests are NOT blocked.': null
+'PHPIDS is enabled and you have set the Block action to ''Warn only''. Thus requests are not blocked. This is useful only for debugging the PHPIDS ruleset in order to verify correct operation.': null
+'You are in:': null
+Administration: null
+'Make default category': null
+'Edit category': null
+'Delete category': null
+Overview: null
+'Lock/Unlock editing': null
+'New module category': null
+'Rename category': null
+'Save changes': null
+'Update checker': null
+'You are currently using an unreleased version of the Zikula Core.': null
+'You are using the latest stable version of the Zikula core.': null
+'A new version of the Zikula core is available. Please download the new Zikula core.': null
+'Update checker is enabled': null
+'Check interval': null
+'Last checked': null
+Releases: null
+'Currently used version': null
+'Latest stable relese': null
+'Stable Zikula Core available': null
+'Check now': null
+'Show administration panel': null
+'Administration settings': null
+'Warning! Only enable the above option if this site is isolated from the Internet, otherwise security could be endangered if you omit to remove the Installer script from the site root and are not prompted to do so.': null
+'Display settings': null
+'Modules categorisation': null
+'Edit module category': null
+'Create new module category': null
+'Module category': null
+'Module categories list': null
+None: null
+Edit: null
+Stop!: null
+'The Zikula recovery console tool (file ''zrc.php'') is present in the site webroot, but must be removed before you can access the site admin panel.': null
+Continue: null
+'Delete module category': null
+'Do you really want to delete module category ''%s''?': null
+'Drag and drop into a new module category': null
+Functions: null
+'There are currently no modules in this category.': null
+'Core modules at the heart of operation of the site.': null
+'Layout modules for controlling the site''s look and feel.': null
+'Modules for controlling user membership, access rights and profiles.': null
+'Modules for providing content to your users.': null
+Uncategorised: null
+'Newly-installed or uncategorized modules.': null
+'Modules for managing the site''s security.': null
+'Internal name': null
+'Show both internal name and display name': null
+'Ignore check for installer': null
+'Display icons': null
+'Form of display for module names': null
+'Modules per page in module categories list': null
+'Modules per row in admin panel': null
+'Theme to use': null
+'Initially selected category': null
+'Default category for newly-added modules': null
+'Use site''s theme': null
+'invalid route': null
+'Access forbidden.': null
+'Error! Could not get module name for id %moduleId%.': null
+'Error! No category name given.': null
+'Error! A category by this name already exists.': null
+'Error! No such category found.': null
+'Error! You cannot delete the default module category used in the administration panel.': null
+'Error! This module category is currently set as the category that is initially displayed when you visit the administration panel. You must first select a different category for initial display. Afterwards, you will be able to delete the category you have just attempted to remove.': null
+'No category name or id set.': null
+'Category "%name%" was successfully made default.': null
+'Error! Could not make this category default.': null
+'Done! Created new category.': null
+'Done! Saved category.': null
+'Done! Category deleted.': null
+'Administration panel': null
+'Authentication methods': null
+'Check the methods you wish to activate.': null
+'User settings': null
+'General Settings': null
+'Account Page Settings': null
+'User Login Settings': null
+'Choose a login authentication method': null
+Pending: null
+'Marked for deletion': null
+'Status unknown': null
+'This user cannot be edited. Group memberships can be edited in the groups module. Click here.': null
+'Edit?': null
+'Approve registration of %sub%': null
+'Approve registration': null
+'Account Information': null
+'User name:': null
+'E-mail address:': null
+'Registration Status': null
+'Administrator approval:': null
+'Not yet approved': null
+Approved: null
+'(or approval was not required when the registration was completed)': null
+'Find users': null
+'WARNING: You appear to be editing your OWN account. You will not be able to modify active status, some group memberships or delete yourself.': null
+'Setting a user theme is no longer available.': null
+'Group membership': null
+Group: null
+Member: null
+'Other actions for %s': null
+'Delete user account': null
+'Registration date': null
+'Last login': null
+'Users groups': null
+Status: null
+'Delete confirmation': null
+'Are you sure you want to delete the user (%un)?': null
+'Delete %n': null
+'Delete %sub%': null
+'Select all': null
+'De-select all': null
+'Mail selected users': null
+'Return to User Administration': null
+'Export users': null
+'Export options': null
+'File options': null
+'Language switcher': null
+'Multilingual features are deactivated.': null
+'My account': null
+'Please select one of the following:': null
+'I would like to login.': null
+'I would like to create a new account.': null
+'I have forgotten my account information (for example, my user name).': null
+'I have forgotten my password.': null
+'This will migrate all VALID users from the old Users table to the new ZAuth table. Users are automatically migrated when they login, but this will migrate all users at one time.': null
+'This action MUST be complete before upgrading to Core-2.0.': null
+'This action cannot be undone.': null
+'Begin Migration': null
+'Sorry! New user registration is currently disabled.': null
+plural_n.registered.user: "{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}"
+plural_n.anonymous.guest: "{count, plural,\n  one   {one anonymous guest}\n  other {# anonymous guests}\n}"
+'%users% and %guests% online since %time%.': null
+'You are logged-in as %sub%.': null
+'You are an anonymous guest.'', ''zikula': null
+'register here': null
+'You can %registerLink%': null
+'%': null
+'Registration date before': null
+registered_after: null
+'Any group': null
+'Delete selected users': null
+users: null
+'Confirm deletion': null
+Html: null
+'Sender name': null
+'Replyto email address': null
+Subject: null
+Message: null
+'Send mail in batches of': null
+'Send mail': null
+authenticationMethodsStatus: null
+'Anonymous users are visitors to your site who have not logged in.': null
+'When lists are displayed (for example, lists of users, lists of registrations) this option controls how many items are displayed at one time.': null
+'A notification is sent to this e-mail address for each registration. Leave blank for no notifications.': null
+'Users authenticating off site (re-entrant) are logged in automatically regardless of this setting.': null
+'Separate each user agent string with a comma. Each item on this list is a browser user agent identification string. If a user attempts to register a new account using a browser whose user agent string begins with one on this list, then the user is not allowed to begin the registration process.': null
+'If checked, the log-in error message will indicate that the user account is inactive. If not, a generic error message is displayed.': null
+'If checked, the log-in error message will indicate that the registration is pending verification. If not, a generic error message is displayed.': null
+'If checked, the log-in error message will indicate that the registration is pending approval. If not, a generic error message is displayed.': null
+'Name displayed for anonymous user': null
+'Number of users displayed per page': null
+'Display graphics on user''s account page': null
+'Path to account page images': null
+'Number of links per page': null
+'Allow new user account registrations': null
+'Statement displayed if registration disabled': null
+'E-mail address to notify of registrations': null
+'User registration is moderated': null
+'Newly registered users are logged in automatically': null
+'Reserved user names': null
+'Banned user agents': null
+'Banned e-mail address domains': null
+'Failed login displays inactive status': null
+'Failed login displays verification status': null
+'Failed login displays approval status': null
+'User status': null
+groups: null
+'Choose language': null
+'Site default': null
+tab: null
+'A simple name with three letter suffix, e.g. `myfile.csv`': null
+'Export title row': null
+'Export email address': null
+'Export registration date': null
+'Export last login date': null
+'Export group memberships': null
+'CSV filename': null
+Download: null
+'Registration management hooks': null
+'User management hooks': null
+'Login form and block hooks': null
+'Warning! The user account was created, but there was a problem adding the account to the default group.': null
+'Approve %sub%': null
+'New registration: %userName%': null
+'Login denied: Your account has been disabled. Please contact a site administrator for more information.': null
+'Login denied: Your account has been disabled and is scheduled for removal. Please contact a site administrator for more information.': null
+'Login denied: Your request to register with this site is pending or awaiting verification.': null
+'Login denied!': null
+'root, webmaster, admin, administrator, nobody, anonymous, username': null
+'All methods cannot be inactive. At least one methods must be enabled (%method% has been enabled).': null
+'Language changed to %lang%': null
+'The registration process failed.': null
+'Sorry! The user agent you are using (the browser or other software you are using to access this site) is banned from the registration process.': null
+'Done! Your registration request has been saved and is pending. Please check your e-mail periodically for a message from us.': null
+'Done! Your account has been created.': null
+'Done! Your account has been created and you may now log in.': null
+Approve: null
+'Warning! Nothing to do! %sub% is already approved.': null
+'Error! %sub% cannot be approved.': null
+'Done! %sub% has been approved.': null
+'No users selected.': null
+'You are not allowed to delete user id %uid%': null
+plural_n.users.deleted: null
+'No users found.': null
+'Done! Mail sent.': null
+'Could not send mail.': null
+'You are not allowed to alter your own active state.': null
+'You are not allowed to remove yourself from the default group.': null
+'You are not allowed to remove yourself from the primary administrator group.': null
+'Invalid authentication method.': null
+'Error! You have not been logged out.': null
+Inbox: null
+'Messages inbox': null
+'Send a message to this user': null
+Profile: null
+'Find/Mail/Delete users': null
+'Log out': null
+'Log in': null
+'New account': null
+'Users pending approval': null
+'Group settings': null
+'Add user to this group': null
+'User ID': null
+'Remove user from group': null
+'Seach by username': null
+Members: null
+'Maximum membership': null
+Unlimited: null
+Online: null
+Offline: null
+'Do you really want to remove user "%username" from group "%groupname"?': null
+'Create new group': null
+'Group data': null
+'Edit group': null
+'Groups list': null
+Types: null
+'Core: Users can only be added by an administrator (ACCESS_EDIT) - groups are not visible to users in public list': null
+'Public: Users can add themselves with no moderation - groups are visible in public list': null
+'Private: Users must apply for membership - groups are not visible to users in public list': null
+States: null
+'Open: Users may apply/add themselves': null
+'Closed: only the core or administrator (ACCESS_EDIT) may add users. closed groups may be hidden by config setting': null
+'Default user group. Cannot be deleted.': null
+'Primary administrators group. Cannot be deleted.': null
+'Pending applications': null
+'Applying to group': null
+Comment: null
+'Accept %username%': null
+'Deny %username%': null
+Groups: null
+'There are currently no groups that can be joined.': null
+'Delete group': null
+'Do you really want to delete group ''%s''?': null
+'Membership application': null
+group: null
+'Administrate membership application': null
+'%action application for %user to %group group': null
+'Application comments': null
+'NOTICE: The old type of "anonymous" user has been removed from the Users group. This may require manual adjustment of your permission schema.': null
+'By default, all users are made members of this group.': null
+Administrators: null
+'Group of administrators of this site.': null
+Remove: null
+'Set as 0 for unlimited.': null
+'Comment to attach to your application': null
+Apply: null
+'Initial user group': null
+'Hide closed groups': null
+'Hide private groups': null
+'Receive e-mail alert when there are new applicants': null
+E-mail: null
+'Email content': null
+'Notification type': null
+Core: null
+Public: null
+Private: null
+Closed: null
+Open: null
+'Application processed (%action% %user%)': null
+'Error! You must register for a user account on this site before you can apply for membership of a group.': null
+'You already have a pending application. Please wait until the administrator notifies you.': null
+'Done! The application has been sent. You will be notified by email when the application is processed.': null
+'Application cancelled.': null
+'Sorry!, You cannot apply to join the requested group': null
+'This group is a core-only group': null
+'This group is closed.': null
+'This group is has reached its membership limit.': null
+'You are already a member of this group.': null
+'Done! Created the group.': null
+'Done! Updated the group.': null
+'Error! You cannot delete the default user group.': null
+'Error! You cannot delete the primary administration group.': null
+'Done! Group deleted.': null
+'The selected user is already a member of this group.': null
+'Done! The user was added to the group.': null
+'Sorry! You must register for a user account on this site before you can join a group.': null
+'Joined the "%groupName%" group': null
+'Invalid Group ID or User ID.': null
+'Invalid Group ID.': null
+'Invalid User ID.': null
+'Done! The user was removed from the group.': null
+'Sorry! You must be logged in before you can leave a group.': null
+'Left the "%groupName%" group': null
+'This group is a private group': null
+'All groups': null
+Unregistered: null
+'New group': null
+'%amount% pending applications': null
+'Group list': null
+'Groups admin': null
+'Groups manager': null
+'View membership of group': null
+'Leave group': null
+Applied!: null
+'Apply to membership of group': null
+'Join group': null
+'Log in or register': null
+'Regarding your %groupName% group membership application': null
+'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%': null
+'New group application': null
+'Edit category registry': null
+'Delete registry entry': null
+'Do you really want to delete this registry entry?': null
+Entity: null
+'Property name': null
+'Basic properties': null
+'Localized output': null
+Attributes: null
+'Add attribute': null
+'Categories list': null
+'You can arrange categories list using drag and drop. New order will be saved automatically.': null
+'Right click on selected category to open context menu.': null
+'Quick search': null
+Expand: null
+Collapse: null
+'New Category': null
+'Do you really want to delete this category?': null
+'Delete all sub-categories': null
+'Move all sub-categories': null
+Category: null
+'Select module': null
+Categories: null
+'Choose categories': null
+'Choose a category': null
+'Category is locked': null
+'Category is a leaf node': null
+'Display description': null
+'Category attributes': null
+'Category root': null
+General: null
+'Publication status (extended)': null
+Checked: null
+On-line: null
+Rejected: null
+'Activity status': null
+'Publication status (basic)': null
+Global: null
+Blogging: null
+'Music and audio': null
+'Art and photography': null
+'Writing and thinking': null
+'Communications and media': null
+'Travel and culture': null
+'Science and technology': null
+'Sport and activities': null
+'Business and work': null
+'New parent': null
+Leaf: null
+Locked: null
+copy: null
+'Done! Registry updated.': null
+'Done! Registry entry deleted.': null
+categoryAssignments: null
+'Category tree': null
+'Category registry': null
+'Test mailer settings': null
+'Current settings from': null
+'Settings test': null
+'Mailer settings': null
+'SwiftMailer configuration': null
+'Mailer relies on %link%': null
+'SMTP settings': null
+'Gmail settings': null
+'Plain-text message': null
+'HTML-formatted message': null
+'Multi-part message': null
+'Sender''s name': null
+'Sender''s e-mail address': null
+'Recipient''s name': null
+'Recipient''s e-mail address': null
+'Message type': null
+'Send test email': null
+'Mail transport mechanisms SMTP and SENDMAIL were disabled because your PHP does not allow the "proc_*" function. Either you need to remove it from the "disabled_functions" directive in your "php.ini" file or recompile your PHP entirely. Afterwards restart your webserver.': null
+'Google gmail': null
+'Development/debug mode (Do not send any email)': null
+'Sendmail message transfer agent': null
+'SMTP mail transfer protocol': null
+8bit: null
+7bit: null
+binary: null
+base64: null
+quoted-printable: null
+SSL: null
+TLS: null
+Plain: null
+Cram-MD5: null
+'Default: ''%value%''': null
+'Mail transport': null
+'Character set': null
+Encoding: null
+'HTML-formatted messages': null
+'Word wrap': null
+'Enable logging of sent mail': null
+'SMTP host server': null
+'SMTP port': null
+'SMTP encryption method': null
+'SMTP authentication type': null
+'SMTP user name': null
+'SMTP password': null
+'Gmail user name': null
+'Gmail password': null
+'HTML mail hook': null
+'Done! Message sent.': null
+'It looks like the message could not be sent properly.': null
+'The message could not be sent properly.': null
+'Test current settings': null
+'Extensions list': null
+'Go to the module''s administration panel': null
+'Core Extension': null
+'Incompatible version with the core': null
+'Incompatible version': null
+'The version of this module is incompatible with the version of the core.': null
+'Current Core version is %version%': null
+'The minimum version of the core that this module supports is %s': null
+Ok: null
+'Module settings': null
+'Install module': null
+'Module name': null
+Level: null
+Reason: null
+Install: null
+Recommended: null
+'Not Available in System': null
+'Uninstall module': null
+'Do you really want to uninstall ''%title%''?': null
+'Warning! Uninstalling this module will also permanently remove all data associated with it, including all data held by other modules that are hooked to this module.': null
+'Warning! Removing this module will also remove the following blocks': null
+'Warning! Other modules present in the system require this module. If you uninstall this module then these modules that require it will also be uninstalled.': null
+Extension: null
+'Extension settings': null
+'Module services': null
+'Module Services are functions provided by the core or other modules for this module.': null
+'There aren\''t any modules services available.': null
+dependencies: null
+/: null
+'WARNING: changing the url affects SEO by breaking existing indexed search results.': null
+URL: null
+'Reload defaults': null
+'Reset all extensions to default values': null
+'WARNING: %extension% has an invalid composer.json file which could not be decoded.': null
+'Cannot load %extension% because the composer file is invalid.': null
+'Fatal Error: Two extensions share the same %field%. [%ext1%] and [%ext2%]': null
+'Error! Could not load data for %extension%.': null
+'Error! Invalid module state transition.': null
+'Error! Not allowed to install %extension%.': null
+'Error! %extension% is not compatible with this version of Zikula.': null
+'Error! Not allowed to upgrade %extension%.': null
+'Error! No permission to uninstall %extension%.': null
+'Error! %extension% is not yet installed, therefore it cannot be uninstalled.': null
+'%extension% must implement ExtensionInstallerInterface': null
+'Unable to decode composer file of %component% (%filePath%): %error%. Ensure the composer.json file has a valid syntax.': null
+'Error found in composer file of %component% (%filePath%) in property "%property%": %error%.': null
+'Error! Activation of module %name% not allowed.': null
+'Done! Activated %name% module.': null
+'Error! You cannot deactivate the %name% module. It is a mandatory core extension, and is required by the system.': null
+'Done! Deactivated module.': null
+'Default values reloaded. Save to confirm.': null
+'Done! Extension updated.': null
+'Failed to install dependency "%name%"!': null
+'Installed dependency "%name%".': null
+'Warning: could not install selected dependency "%name%".': null
+'Done! Installed "%name%".': null
+'Initialization of "%name%" failed!': null
+'%name% upgraded to new version and activated.': null
+'Extension upgrade failed!': null
+'Error! The requested extension cannot be uninstalled because its files are missing!': null
+'Error: Could not uninstall dependent extensions.': null
+'Done! Uninstalled extension.': null
+'Extension removal failed! (note: blocks and dependents may have been removed)': null
+'Files missing': null
+'New version': null
+'Invalid structure': null
+'Not allowed': null
+Incompatible: null
+'Not installed': null
+'Empty argument at': null
+'Extension List': null
+'Deactivate extension': null
+'Activate extension': null
+'Uninstall extension': null
+'Upgrade extension': null
+'Remove extension': null
+'Install extension': null
+'Core compatibility information': null
+'Edit extension': null
+Services: null
+'List views': null
+Moderation: null
+'Here you can configure parameters for list views.': null
+'Here you can define moderation-related settings.': null
+'Creation and update': null
+Creation: null
+'Created by %user% on %date%': null
+'Send private message to %userName%': null
+'Last update': null
+'Updated by %user% on %date%': null
+'Created by %user%': null
+'Created on %date%': null
+'Updated by %user%': null
+'Updated on %date%': null
+Routes: null
+'Welcome to the route section of the Routes application.': null
+'My custom routes': null
+'Custom routes list': null
+'Below you see your current routing configuration (see %link% for reference).': null
+'Localisation settings': null
+'You can change your routing configuration in the general settings: %link%.': null
+'reload installed languages': null
+'In case one or more installed languages are not listed below, %action%.': null
+Sorting: null
+Bundle: null
+Path: null
+Host: null
+Schemes: null
+Methods: null
+'Prepend bundle prefix': null
+Translatable: null
+'Translation prefix': null
+'Drag to reorder': null
+'No custom routes found.': null
+'With selected routes': null
+'Choose action': null
+'Delete content permanently.': null
+'Create route': null
+'Edit route': null
+'Basic settings': null
+'Route scope': null
+'Parameter settings': null
+'Advanced settings': null
+lang: null
+'Quick navigation': null
+'Back to default view': null
+Route: null
+Controller: null
+Action: null
+Defaults: null
+Requirements: null
+Condition: null
+'Doctrine Exception': null
+'Insert the name of the controller, which was called "type" in earlier versions of Zikula.': null
+'Insert the name of the action, which was called "func" in earlier versions of Zikula.': null
+'The path must start with a "/" and can be a regular expression. Example: "/login"': null
+'Advanced setting, see <a href=''%url%'' target="_blank">Symfony documentation</a>.': null
+'Insert a brief description of the route, to explain why you created it. It is only shown in the admin interface.': null
+'Bundle:': null
+'Controller:': null
+'Action:': null
+'Path:': null
+'Host:': null
+'Condition:': null
+'Description:': null
+'The amount of routes shown per page': null
+'Whether only own entries should be shown on view pages by default or not': null
+'Whether to allow moderators choosing a user which will be set as creator.': null
+'Whether to allow moderators choosing a custom creation date.': null
+'Route entries per page:': null
+'Show only own entries:': null
+'Allow moderation specific creator for route:': null
+'Allow moderation specific creation date for route:': null
+'Update configuration': null
+'Enter one entry per line.': null
+'Schemes:': null
+'Methods:': null
+'Prepend bundle prefix:': null
+'Translatable:': null
+'Translation prefix:': null
+'Defaults:': null
+'Requirements:': null
+'Options:': null
+'Sort:': null
+'Submit and repeat': null
+Sort: null
+'Creation date': null
+Creator: null
+'Update date': null
+Updater: null
+Ascending: null
+Descending: null
+OK: null
+'Sort by': null
+'Sort direction': null
+'Page size': null
+'No such item found.': null
+'Error! Could not determine workflow actions.': null
+'Done! Item created.': null
+'Error! Creation attempt failed.': null
+'Done! Item updated.': null
+'Error! Update attempt failed.': null
+'Done! Item deleted.': null
+'Error! Deletion attempt failed.': null
+'It looks like you created or updated a route with a path which already exists. This is an error in most cases.': null
+'The path of the route you created or updated looks similar to the following already existing path: %errorPath% Are you sure you haven''t just introduced a conflict?': null
+'Sorry, but you can not create the route yet as other items are required which must be created before!': null
+'Done! Route created.': null
+'Done! Route updated.': null
+'Done! Route deleted.': null
+'Sorry, but an error occured during the %action% action. Please apply the changes again!': null
+'Error! Invalid object type received.': null
+'Error! Controller helper needs a request.': null
+Initial: null
+Trashed: null
+Deleted: null
+Trash: null
+Recover: null
+'Content has been approved and is available online.': null
+'Content has been marked as deleted, but is still persisted in the database.': null
+'All except approved': null
+'Shows all items except these which are approved': null
+'All except trashed': null
+'Shows all items except these which are trashed': null
+Http: null
+Https: null
+GET: null
+POST: null
+HEAD: null
+PUT: null
+DELETE: null
+OPTIONS: null
+'%path% (%sort%)': null
+'Error: Could not delete "%path%" because %message%.': null
+'No such route found.': null
+'Sorry, but an error occured during the %action% action.': null
+'Only ajax access is allowed!': null
+'Error: invalid input.': null
+'The setting has been successfully changed.': null
+'Done! Routes reloaded.': null
+'Done! Routing settings renewed.': null
+'Done! Exposed JS Routes dumped to %path%.': null
+'Error! There was an error dumping exposed JS Routes: %result%': null
+'Default: %value%': null
+'Requirement: %value%': null
+'Invalid user identifier received.': null
+'Reload routes': null
+'Reload multilingual routing settings': null
+'Dump exposed js routes to file': null
+Configuration: null
+'Route list': null
+'Manage settings for this application': null
+Preview: null
+Details: null
+Reuse: null
+'Routes list': null
+'Back to paginated view': null
+'Show all entries': null
+'Show also entries from other users': null
+'Show only own entries': null
+'Open preview page': null
+'Edit this route': null
+'Reuse for new route': null
+Frontend: null
+Backend: null
+'Switch to user area.': null
+'Switch to administration area.': null
+'Theme credits': null
+'Registration ID': null
+Official: null
+Author: null
+'Admin panel theme': null
+'User theme': null
+'System theme': null
+Credits: null
+'Change log': null
+Help: null
+License: null
+'Theme confirmation prompt': null
+'Do you really want to set %sub% as the active theme for all site users?': null
+'Themes list': null
+'Themes control the visual presentation of a site.': null
+'Default theme': null
+'Activate %theme%': null
+'Set %theme% as site theme': null
+'Delete or deactivate': null
+'Credits for': null
+'Remove theme %sub%': null
+'Remove theme': null
+'Do you really want to remove the %name% theme?': null
+'Theme config': null
+'Theme configuration': null
+Accept: null
+'Also delete theme files, if possible': null
+'Cannot load %extension because the composer file is invalid.': null
+'%theme% has no configuration.': null
+'Set to defaults': null
+'Done! Theme configuration updated.': null
+'Done! Theme configuration updated to default values.': null
+'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.': null
+'Done! Changed default theme.': null
+'Sorry! No such theme found.': null
+'Files removed as requested.': null
+'Could not remove files as requested.': null
+'The files must be removed manually.': null
+'Done! Deleted the theme.': null
+'Done! Deactivated the theme.': null
+'Main settings': null
+'Main info': null
+CAUTION: null
+'Meta tag settings': null
+'Start page settings': null
+'Notice: The PHP Zlib extension is not enabled on your host. This setting will not do anything in this case.': null
+'Notice: Increase this value if mobile appliances experience problems with using the site.': null
+'default 5000 = 5 seconds': null
+'Permalinks settings': null
+'Notice: The following settings will rewrite your permalinks. Sometimes, international characters like ''ñ'' and ''ß'' may be re-encoded by your browser. Although this is technically the correct action, it may not be aesthetically pleasing.  These settings allow you to replace those characters, using a pair of comma-separated lists. The two fields below should resemble the examples provided: The first element of ''List to search for'' will replace the first element in the ''List to replace with'' and so on. In the example below, ''À'' would be replace with ''A'', and ''Á'' with ''A''. If you do not want to use this feature, leave both fields blank.': null
+Default: null
+'À,Á,Â,Ã,Å,à,á,â,ã,å,Ò,Ó,Ô,Õ,Ø,ò,ó,ô,õ,ø,È,É,Ê,Ë,è,é,ê,ë,Ç,ç,Ì,Í,Î,Ï,ì,í,î,ï,Ù,Ú,Û,ù,ú,û,ÿ,Ñ,ñ,ß,ä,Ä,ö,Ö,ü,Ü': null
+'A,A,A,A,A,a,a,a,a,a,O,O,O,O,O,o,o,o,o,o,E,E,E,E,e,e,e,e,C,c,I,I,I,I,i,i,i,i,U,U,U,u,u,u,y,N,n,ss,ae,Ae,oe,Oe,ue,Ue': null
+'WARNING: The PHP Extension %ext% is not loaded. All functions using this will default to %locale%. Seek assistance from your provider to install.': null
+'Language system': null
+Browser: null
+'PHP configuration': null
+'Select a locale:': null
+'Site name': null
+'Site description': null
+Always: null
+'Only for non-default languages': null
+'If this is checked, Zikula tries to serve the language requested by browser (if that language available and allowed by the multi-lingual settings). If users set their personal language preference, then this setting will be overriden by their personal preference.': null
+'Server time zone is %tz%': null
+'Activate multilingual features': null
+'Prepend language to URL': null
+'Automatically detect language from browser settings': null
+'Default language to use for this site': null
+'Time zone for anonymous guests': null
+'%pagetitle%': null
+'%sitename%': null
+'%modulename%': null
+'Error! In your permalink settings, strings cannot be terminated with a comma.': null
+'Error! In your permalink settings, the search list and the replacement list for permalink cleansing have a different number of comma-separated elements. If you have 3 elements in the search list then there must be 3 elements in the replacement list.': null
+milliseconds: null
+'Possible tags: %pagetitle%, %sitename%, %modulename%': null
+'FQCN::method, for example <code>Zikula\FooModule\Controller\BarController::mainAction</code>': null
+'Separate with & for example: <code>foo=2&bar=5</code>': null
+'Page title structure': null
+'Admin''s e-mail address': null
+'Disable site': null
+'Reason for disabling site': null
+'Start controller': null
+'Start function arguments': null
+'Activate compression': null
+'Module used for managing user profiles': null
+'Module used for private messaging': null
+'Time-out for ajax connections': null
+'List to search for': null
+'List to replace with': null
+'Description line': null
+'Default page title': null
+'Default meta description': null
+'No profile module': null
+'No message module': null
+'Done! Localization configuration updated.': null
+'Done! Disabled edit in place translations.': null
+'Done! Enabled edit in place translations.': null
+'Could not change the setting due to missing session access.': null
+Localisation: null
+'Disable edit in place': null
+'Enable edit in place': null
+'Edit translations directly in the context of a page': null
+'Web interface to add, edit and remove translations': null
+'The startController was reset to a static frontpage.': null
+'Permission settings': null
+'This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.': null
+'Permission rules list': null
+filtered: null
+Component: null
+Instance: null
+'Permission level': null
+'User permission check': null
+'Testing permission...': null
+Permission: null
+'Permission rule information': null
+'Do you really want to delete this permission rule?': null
+'Registered component': null
+'Instance template': null
+'Filter group': null
+'Filter component': null
+'Component to check': null
+'Instance to check': null
+'Check permission': null
+'Lock main administration permission rule': null
+'ID of main administration permission rule': null
+'Enable filtering of group permissions': null
+Invalid: null
+'No access': null
+'Overview access': null
+'Read access': null
+'Comment access': null
+'Moderate access': null
+'Edit access': null
+'Add access': null
+'Delete access': null
+'Admin access': null
+'Error! Could not save configuration: unknown permission rule ID.': null
+'All components': null
+'Notice: You cannot delete the main administration permission rule.': null
+'Permission check result:': null
+'unknown user.': null
+'unregistered user': null
+'permission granted.': null
+'permission not granted.': null
+'Create new permission rule': null
+'Permission rules information': null
+'Insert permission rule before this one': null
+'Edit this permission rule': null
+'Delete this permission rule': null
+'Check a users permission': null

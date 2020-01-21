@@ -5,8 +5,11 @@ framework:
     test: ~
     session:
         storage_id: session.storage.mock_file
-    profiler:
-        enabled: false
+    # keep profiler enabled because some tests may fail
+    # when container can not be compiled
+    # because a controller injects the Profiler class
+    #profiler:
+    #    enabled: false
 
 web_profiler:
     toolbar: false

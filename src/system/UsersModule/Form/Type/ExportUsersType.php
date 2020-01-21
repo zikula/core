@@ -20,60 +20,51 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
 
 class ExportUsersType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title', CheckboxType::class, [
-                'label' => $this->trans('Export title row'),
+                'label' => 'Export title row',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('email', CheckboxType::class, [
-                'label' => $this->trans('Export email address'),
+                'label' => 'Export email address',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('user_regdate', CheckboxType::class, [
-                'label' => $this->trans('Export registration date'),
+                'label' => 'Export registration date',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('lastlogin', CheckboxType::class, [
-                'label' => $this->trans('Export last login date'),
+                'label' => 'Export last login date',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false,
                 'data' => true
             ])
             ->add('groups', CheckboxType::class, [
-                'label' => $this->trans('Export group memberships'),
+                'label' => 'Export group memberships',
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
             ->add('filename', TextType::class, [
-                'label' => $this->trans('CSV filename'),
-                'help' => $this->trans('A simple name with three letter suffix, e.g. `myfile.csv`'),
+                'label' => 'CSV filename',
+                'help' => 'A simple name with three letter suffix, e.g. `myfile.csv`',
                 'data' => 'user.csv',
                 'constraints' => [
                     new Regex(['pattern' => '/^[\w,\s-]+\.[A-Za-z]{3}$/'])
                 ]
             ])
             ->add('delimiter', ChoiceType::class, [
-                'label' => $this->trans('CSV delimiter'),
+                'label' => 'CSV delimiter',
                 'choices' => [
                     ',' => ',',
                     ';' => ';',
@@ -82,14 +73,14 @@ class ExportUsersType extends AbstractType
                 ]
             ])
             ->add('download', SubmitType::class, [
-                'label' => $this->trans('Download'),
+                'label' => 'Download',
                 'icon' => 'fa-download',
                 'attr' => [
                     'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times'
             ])
         ;

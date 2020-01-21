@@ -15,7 +15,7 @@ jms_i18n_routing:
 ```
 
 As you see, the available languages need to be inserted dynamically, as the user might install additional languages
-after the he installed Zikula. The configuration can be changed using the following PHP call:
+after he installed Zikula. The configuration can be changed using the following PHP call:
 
 ```php
 $configDumper->setConfiguration('jms_i18n_routing',

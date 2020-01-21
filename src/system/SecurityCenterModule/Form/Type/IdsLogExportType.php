@@ -19,55 +19,47 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * IDS Log export form type class.
  */
 class IdsLogExportType extends AbstractType
 {
-    use TranslatorTrait;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->setTranslator($translator);
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('titles', CheckboxType::class, [
-                'label' => $this->trans('Export Title Row'),
+                'label' => 'Export title row',
                 'label_attr' => ['class' => 'switch-custom'],
                 'empty_data' => 1,
                 'required' => false
             ])
             ->add('file', TextType::class, [
-                'label' => $this->trans('CSV filename'),
+                'label' => 'CSV filename',
                 'required' => false
             ])
             ->add('delimiter', ChoiceType::class, [
-                'label' => $this->trans('CSV delimiter'),
+                'label' => 'CSV delimiter',
                 'empty_data' => 1,
                 'choices' => [
-                    $this->trans('Comma') . ' (,)' => 1,
-                    $this->trans('Semicolon') . ' (;)' => 2,
-                    $this->trans('Colon') . ' (:)' => 3,
-                    $this->trans('Tab') => 4
+                    'Comma (,)' => 1,
+                    'Semicolon (;)' => 2,
+                    'Colon (:)' => 3,
+                    'Tab' => 4
                 ],
                 'multiple' => false,
                 'expanded' => false
             ])
             ->add('export', SubmitType::class, [
-                'label' => $this->trans('Export'),
+                'label' => 'Export',
                 'icon' => 'fa-download',
                 'attr' => [
                     'class' => 'btn-success'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
-                'label' => $this->trans('Cancel'),
+                'label' => 'Cancel',
                 'icon' => 'fa-times'
             ])
         ;
@@ -76,5 +68,12 @@ class IdsLogExportType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_idslogexport';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translation_domain' => 'security'
+        ]);
     }
 }

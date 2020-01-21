@@ -2,10 +2,6 @@
 # generated.yml
 # It's here to give an initial configuration (until Zikula is installed).
 
-jms_i18n_routing:
-    default_locale: en
-    locales: [en]
-    strategy: prefix_except_default
 swiftmailer:
     transport: smtp
     username: ''
@@ -17,6 +13,7 @@ swiftmailer:
     delivery_addresses: []
     disable_delivery: false
 parameters:
+    localisation.locales: [en]
     zikula.session.name: _zsid
     zikula.session.handler_id: session.handler.native_file #default symfony value
     zikula.session.storage_id: zikula_core.bridge.http_foundation.zikula_session_storage_file #'session.storage.native' default symfony value
@@ -27,3 +24,20 @@ parameters:
         mainsiteurl: ~
         based_on_domains: ~
         protected.systemvars: []
+translation:
+    configs:
+        zikula:
+            dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/lib', '%kernel.project_dir%/system']
+            #dirs: ['%kernel.project_dir%/templates', '%kernel.project_dir%/src'] # default value
+            output_dir: '%kernel.project_dir%/translations'
+            excluded_names: ['*TestCase.php', '*Test.php']
+            excluded_dirs: [vendor, cache, data, log]
+            output_format: yaml
+            local_file_storage_options:
+                default_output_format: yaml
+        extension:
+            excluded_names: ['*TestCase.php', '*Test.php']
+            excluded_dirs: [vendor]
+            output_format: yaml
+            local_file_storage_options:
+                default_output_format: yaml

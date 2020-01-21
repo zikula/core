@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\SecurityCenterModule\Constant;
 
 /**
@@ -102,7 +103,7 @@ class ConfigType extends AbstractType
                 'attr' => [
                     'maxlength' => 3
                 ],
-                'input_group' => ['right' => '<em>days (if \'Remember me\' is activated)</em>']
+                'input_group' => ['right' => 'days (if \'Remember me\' is activated)']
             ])
             ->add('secinactivemins', IntegerType::class, [
                 'label' => 'Expire session after',
@@ -110,7 +111,7 @@ class ConfigType extends AbstractType
                 'attr' => [
                     'maxlength' => 4
                 ],
-                'input_group' => ['right' => '<em>minutes of inactivity</em>'],
+                'input_group' => ['right' => 'minutes of inactivity'],
                 'help' => 'More information in <a href=\'%url%\' target="_blank">PHP documentation</a>.',
                 'help_translation_parameters' => [
                     '%url%' => 'https://www.php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime'
@@ -267,5 +268,12 @@ class ConfigType extends AbstractType
     public function getBlockPrefix()
     {
         return 'zikulasecuritycentermodule_config';
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'translation_domain' => 'security'
+        ]);
     }
 }

@@ -22,6 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\MenuModule\Entity\MenuItemEntity;
 use Zikula\MenuModule\Form\DataTransformer\KeyValueTransformer;
@@ -50,7 +51,7 @@ class MenuItemType extends AbstractType
                 'entry_type' => KeyValuePairType::class,
                 'entry_options'  => [
                     'key_options' => [
-                        'choices' => $this->getKeyChoices()
+                        'choices' => /** @Ignore */$this->getKeyChoices()
                     ],
                     'value_options' => [
                         'required' => false,

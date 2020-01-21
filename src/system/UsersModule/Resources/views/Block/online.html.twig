@@ -1,16 +1,16 @@
 <p>
-    {% set nummeb = 'plural_n.registered.user'|trans({count: usercount}, 'zikula') %}{# one registered user|n registered users #}
-    {% set numanon = 'plural_n.anonymous.guest'|trans({count: guestcount}, 'zikula') %}{# one anonymous guest|n anonymous guests #}
-    {% trans with {'%users%': nummeb, '%guests%': numanon, '%time%': since|date('g:i:s a')} from 'zikula' %}%users% and %guests% online since %time%.{% endtrans %}
+    {% set amountOfUsers = 'plural_n.registered.user'|trans({count: usercount})|desc('{count, plural,\n  one   {one registered user}\n  other {# registered users}\n}') %}
+    {% set amountOfGuests = 'plural_n.anonymous.guest'|trans({count: guestcount})|desc('{count, plural,\n  one   {one anonymous guest}\n  other {# anonymous guests}\n}') %}
+    {% trans with {'%users%': amountOfUsers, '%guests%': amountOfGuests, '%time%': since|date('g:i:s a')} %}%users% and %guests% online since %time%.{% endtrans %}
 </p>
 {% if currentUser.loggedIn %}
-    <p>{% trans with {'%sub%': '<strong>' ~ currentUser.uname ~ '</strong>'|raw} from 'zikula' %}You are logged-in as %sub%.{% endtrans %}</p>
+    <p>{% trans with {'%sub%': '<strong>' ~ currentUser.uname ~ '</strong>'|raw} %}You are logged-in as %sub%.{% endtrans %}</p>
 {% else %}
     {% set url = path('zikulausersmodule_registration_register') %}
     <p>{% trans %}You are an anonymous guest.', 'zikula{% endtrans %}
     {% if registerallowed == 1 %}
         {% set url = '<a href="' ~ url ~ '">' ~ 'register here'|trans ~ '</a>' %}
-        {% trans with {'%registerlink%': url} from 'zikula' %}You can %registerlink%{% endtrans %}
+        {% trans with {'%registerLink%': url} %}You can %registerLink%{% endtrans %}
     {% endif %}
     </p>
 {% endif %}

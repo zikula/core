@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use ZikulaKernel;
 
 /**
@@ -29,8 +30,6 @@ class ZikulaPatternGenerationStrategy implements PatternGenerationStrategyInterf
     public const STRATEGY_PREFIX = 'prefix';
 
     public const STRATEGY_PREFIX_EXCEPT_DEFAULT = 'prefix_except_default';
-
-    public const STRATEGY_CUSTOM = 'custom';
 
     /**
      * @var string

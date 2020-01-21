@@ -232,7 +232,10 @@ class ModuleHelper
                             $fs->mirror($src . '/userdata', $src . '/web/uploads');
                         }
                     } catch (\Exception $exception) {
-                        $this->container->get('session')->getFlashBag()->add('info', $this->translator->trans('Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'));
+                        $this->container->get('session')->getFlashBag()->add(
+                            'info',
+                            'Attempt to copy files from `userdata` to `web/uploads` failed. You must manually copy the contents.'
+                        );
                     }
                 }
                 // remove legacy blocks

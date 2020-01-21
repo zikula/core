@@ -63,7 +63,7 @@ class CompleteStage implements StageInterface, WizardCompleteInterface, InjectCo
         $router = $this->container->get('router');
         if ($this->sendEmailToAdmin($request) > 0) {
             if ($request->hasSession() && ($session = $request->getSession())) {
-                $session->getFlashBag()->add('success', $this->trans('Congratulations! Zikula has been successfully installed.'));
+                $session->getFlashBag()->add('success', 'Congratulations! Zikula has been successfully installed.');
                 $session->getFlashBag()->add('info', $this->trans(
                     'Session are currently configured to use the filesystem. It is recommended that you change this to use the database. Click %here% to configure.',
                     ['%here%' => '<a href="' . $router->generate('zikulasecuritycentermodule_config_config') . '">' . $this->trans('Security Center') . '</a>']

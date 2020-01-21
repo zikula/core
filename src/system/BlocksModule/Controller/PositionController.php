@@ -60,10 +60,9 @@ class PositionController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($positionEntity);
                 $em->flush();
-                $this->addFlash('status', $this->trans('Position saved!'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Position saved.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');
@@ -97,9 +96,9 @@ class PositionController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($positionEntity);
                 $em->flush();
-                $this->addFlash('status', $this->trans('Done! Position deleted.'));
+                $this->addFlash('status', 'Done! Position deleted.');
             } elseif ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulablocksmodule_admin_view');

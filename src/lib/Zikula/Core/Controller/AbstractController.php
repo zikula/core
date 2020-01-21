@@ -16,7 +16,6 @@ namespace Zikula\Core\Controller;
 use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as BaseController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -76,37 +75,6 @@ abstract class AbstractController extends BaseController
         if (file_exists($bootstrap)) {
             include_once $bootstrap;
         }
-    }
-
-    public function renderView(string $view, array $parameters = []): string
-    {
-        $parameters = $this->decorateTranslator($parameters);
-
-        return parent::renderView($view, $parameters);
-    }
-
-    public function render(string $view, array $parameters = [], Response $response = null): Response
-    {
-        $parameters = $this->decorateTranslator($parameters);
-
-        return parent::render($view, $parameters, $response);
-    }
-
-    public function stream(string $view, array $parameters = [], StreamedResponse $response = null): StreamedResponse
-    {
-        $parameters = $this->decorateTranslator($parameters);
-
-        return parent::stream($view, $parameters, $response);
-    }
-
-    /**
-     * Decorate translator.
-     */
-    protected function decorateTranslator(array $parameters): array
-    {
-        $parameters['domain'] = $this->bundle->getTranslationDomain();
-
-        return $parameters;
     }
 
     /**

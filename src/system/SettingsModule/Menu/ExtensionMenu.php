@@ -15,6 +15,10 @@ namespace Zikula\SettingsModule\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Translation\Bundle\EditInPlace\Activator as EditInPlaceActivator;
+use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\PermissionsModule\Api\ApiInterface\PermissionApiInterface;
 
@@ -30,12 +34,33 @@ class ExtensionMenu implements ExtensionMenuInterface
      */
     private $permissionApi;
 
+    /**
+     * @var VariableApiInterface
+     */
+    private $variableApi;
+
+    /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var ZikulaHttpKernelInterface
+     */
+    private $kernel;
+
     public function __construct(
         FactoryInterface $factory,
-        PermissionApiInterface $permissionApi
+        PermissionApiInterface $permissionApi,
+        VariableApiInterface $variableApi,
+        RequestStack $requestStack,
+        ZikulaHttpKernelInterface $kernel
     ) {
         $this->factory = $factory;
         $this->permissionApi = $permissionApi;
+        $this->variableApi = $variableApi;
+        $this->requestStack = $requestStack;
+        $this->kernel = $kernel;
     }
 
     public function get(string $type = self::TYPE_ADMIN): ?ItemInterface
@@ -57,9 +82,44 @@ class ExtensionMenu implements ExtensionMenuInterface
         $menu->addChild('Main settings', [
             'route' => 'zikulasettingsmodule_settings_main',
         ])->setAttribute('icon', 'fas fa-wrench');
-        $menu->addChild('Localisation settings', [
+
+        $menu->addChild('Localisation', [
+            'uri' => '#'
+        ])
+            ->setAttribute('icon', 'fas fa-globe')
+            ->setAttribute('dropdown', true)
+        ;
+
+        $menu['Localisation']->addChild('Localisation settings', [
             'route' => 'zikulasettingsmodule_settings_locale',
-        ])->setAttribute('icon', 'fas fa-globe');
+        ])->setAttribute('icon', 'fas fa-spell-check');
+
+        if (true === (bool)$this->variableApi->getSystemVar('multilingual')) {
+            if ('dev' === $this->kernel->getEnvironment()) {
+                $request = $this->requestStack->getCurrentRequest();
+                if ($request->hasSession() && ($session = $request->getSession())) {
+                    if ($session->has(EditInPlaceActivator::KEY)) {
+                        $menu['Localisation']->addChild('Disable edit in place', [
+                            'route' => 'zikulasettingsmodule_settings_toggleeditinplace',
+                        ])->setAttribute('icon', 'fas fa-ban');
+                    } else {
+                        $menu['Localisation']->addChild('Enable edit in place', [
+                            'route' => 'zikulasettingsmodule_settings_toggleeditinplace',
+                        ])
+                            ->setAttribute('icon', 'fas fa-user-edit')
+                            ->setLinkAttribute('title', 'Edit translations directly in the context of a page')
+                        ;
+                    }
+                }
+                $menu['Localisation']->addChild('Translation UI', [
+                    'route' => 'translation_index',
+                ])
+                    ->setAttribute('icon', 'fas fa-language')
+                    ->setLinkAttribute('title', 'Web interface to add, edit and remove translations')
+                ;
+            }
+        }
+
         $menu->addChild('PHP configuration', [
             'route' => 'zikulasettingsmodule_settings_phpinfo',
         ])->setAttribute('icon', 'fas fa-info-circle');

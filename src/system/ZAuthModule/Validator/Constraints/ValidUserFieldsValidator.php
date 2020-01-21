@@ -57,7 +57,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         // Validate uname and pass are not the same.
         /** @var AuthenticationMappingEntity $authenticationMappingEntity */
         if ($userName === $authenticationMappingEntity->getPass()) {
-            $this->context->buildViolation($this->translator->trans('The password cannot be the same as the user name. Please choose a different password.'))
+            $this->context->buildViolation($this->translator->trans('The password cannot be the same as the user name. Please choose a different password.', [], 'validators'))
                 ->atPath('pass')
                 ->addViolation();
         }
@@ -73,7 +73,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $userName]))
+            $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $userName], 'validators'))
                 ->atPath('uname')
                 ->addViolation();
         }
@@ -88,7 +88,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         ;
         // when updating an existing User, the existing Uid must be excluded.
         if (null !== $authenticationMappingEntity->getUid()) {
-            $qb->andWhere('m.uid <> :excludedUid')
+            $qb->andWhere('m.uid != :excludedUid')
                 ->setParameter('excludedUid', $authenticationMappingEntity->getUid());
         }
         $uCount = (int)$qb->getQuery()->getSingleScalarResult();
@@ -103,7 +103,7 @@ class ValidUserFieldsValidator extends ConstraintValidator
         $vCount = (int)$query->getSingleScalarResult();
 
         if ($uCount + $vCount > 0) {
-            $this->context->buildViolation($this->translator->trans('The email address you entered (%email%) has already been registered.', ['%email%' => $emailAddress]))
+            $this->context->buildViolation($this->translator->trans('The email address you entered (%email%) has already been registered.', ['%email%' => $emailAddress], 'validators'))
                 ->atPath('email')
                 ->addViolation();
         }

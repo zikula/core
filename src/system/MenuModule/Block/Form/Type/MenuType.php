@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Translate;
 use Zikula\Common\Translator\TranslatorTrait;
 
 class MenuType extends AbstractType
@@ -35,15 +36,15 @@ class MenuType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => $this->trans('Menu name'),
+                'label' => 'Menu name',
                 'constraints' => [
                     new NotBlank()
                 ]
             ])
             ->add('options', TextType::class, [
                 'required' => false,
-                'invalid_message' => $this->trans('Could not json_decode the string you entered.'),
-                'alert' => [$this->trans('This must be a json_encoded string of option key-value pairs.') => 'warning']
+                'invalid_message' => 'Could not json_decode the string you entered.',
+                'alert' => [/** @Translate */'This must be a json_encoded string of option key-value pairs.' => 'warning']
             ])
         ;
         $builder->get('options')

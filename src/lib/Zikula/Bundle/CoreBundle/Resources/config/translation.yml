@@ -1,0 +1,25 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Knp\Menu\ItemLabel:
+        tags:
+            - { name: php_translation.visitor, type: php }
+
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Knp\Menu\LinkTitle:
+        tags:
+            - { name: php_translation.visitor, type: php }
+
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Zikula\FormTypeAlert:
+        tags:
+            - { name: php_translation.visitor, type: php }
+
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Zikula\FormTypeInputGroup:
+        tags:
+            - { name: php_translation.visitor, type: php }
+
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Routes\ZikulaRouteTranslationExtractor:
+        tags:
+            - { name: php_translation.visitor, type: php }

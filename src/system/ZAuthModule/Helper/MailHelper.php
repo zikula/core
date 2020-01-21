@@ -101,22 +101,22 @@ class MailHelper
         $siteName = $this->variableApi->getSystemVar('sitename');
         switch ($notificationType) {
             case 'importnotify':
-                return $this->translator->trans('Welcome to %siteName%!', ['%siteName%' => $siteName], 'zikula');
+                return $this->translator->trans('Welcome to %siteName%!', ['%siteName%' => $siteName], 'mail');
 
             case 'lostpassword':
-                return $this->translator->trans('Reset your password at %siteName%', ['%siteName%' => $siteName], 'zikula');
+                return $this->translator->trans('Reset your password at %siteName%', ['%siteName%' => $siteName], 'mail');
 
             case 'lostuname':
-                return $this->translator->trans('\'%siteName%\' account information', ['%siteName%' => $siteName], 'zikula');
+                return $this->translator->trans('\'%siteName%\' account information', ['%siteName%' => $siteName], 'mail');
 
             case 'regverifyemail':
-                return $this->translator->trans('Verify your e-mail address for %siteName%.', ['%siteName%' => $siteName], 'zikula');
+                return $this->translator->trans('Verify your e-mail address for %siteName%.', ['%siteName%' => $siteName], 'mail');
 
             case 'userverifyemail':
-                return $this->translator->trans('Verify your request to change your e-mail address at %siteName%', ['%siteName%' => $siteName], 'zikula');
+                return $this->translator->trans('Verify your request to change your e-mail address at %siteName%', ['%siteName%' => $siteName], 'mail');
 
             default:
-                return $this->translator->trans('A message from %siteName%.', ['%siteName%' => $siteName], 'zikula');
+                return $this->translator->trans('A message from %siteName%.', ['%siteName%' => $siteName], 'mail');
         }
     }
 }

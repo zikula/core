@@ -48,12 +48,12 @@ class ValidUserFieldsValidator extends ConstraintValidator
             ->setParameter('uname', $data['uname']);
         // when updating an existing User, the existing Uid must be excluded.
         if (isset($data['uid']) && is_numeric($data['uid'])) {
-            $qb->andWhere('u.uid <> :excludedUid')
+            $qb->andWhere('u.uid != :excludedUid')
                 ->setParameter('excludedUid', $data['uid']);
         }
 
         if ((int)$qb->getQuery()->getSingleScalarResult() > 0) {
-            $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $data['uname']]))
+            $this->context->buildViolation($this->translator->trans('The user name you entered (%userName%) has already been registered.', ['%userName%' => $data['uname']], 'validators'))
                 ->atPath('uname')
                 ->addViolation();
         }

@@ -17,9 +17,6 @@ use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,9 +31,12 @@ use Zikula\Core\Event\GenericEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\ExtensionEvents;
+use Zikula\SettingsModule\Helper\TranslationConfigHelper;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\ThemeModule\Engine\Engine;
 use Zikula\ThemeModule\Entity\Repository\ThemeEntityRepository;
+use Zikula\ThemeModule\Form\Type\DeleteThemeType;
+use Zikula\ThemeModule\Form\Type\SetDefaultThemeType;
 use Zikula\ThemeModule\Helper\BundleSyncHelper;
 
 /**
@@ -59,7 +59,8 @@ class ThemeController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         BundleSyncHelper $syncHelper,
         ThemeEntityRepository $themeRepository,
-        VariableApiInterface $variableApi
+        VariableApiInterface $variableApi,
+        TranslationConfigHelper $translationConfigHelper
     ): array {
         if (!$this->hasPermission('ZikulaThemeModule::', '::', ACCESS_EDIT)) {
             throw new AccessDeniedException();
@@ -68,6 +69,11 @@ class ThemeController extends AbstractController
         $eventDispatcher->dispatch($vetoEvent, ExtensionEvents::REGENERATE_VETO);
         if (!$vetoEvent->isPropagationStopped()) {
             $syncHelper->regenerate();
+
+            // NOTE the following call should be moved into an event listener
+            // see Zikula\SettingsModule\Listener\ExtensionInstallerListener
+            // refs #3644
+            $translationConfigHelper->updateConfiguration();
         }
 
         $themes = $themeRepository->get(ThemeEntityRepository::FILTER_ALL, ThemeEntityRepository::STATE_ALL);
@@ -84,7 +90,7 @@ class ThemeController extends AbstractController
     public function previewAction(Engine $engine, string $themeName): Response
     {
         $engine->setActiveTheme($themeName);
-        $this->addFlash('warning', $this->trans('Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.'));
+        $this->addFlash('warning', 'Please note that blocks may appear out of place or even missing in a theme preview because position names are not consistent from theme to theme.');
 
         return $this->forward('Zikula\Bundle\CoreBundle\Controller\MainController::homeAction');
     }
@@ -128,24 +134,7 @@ class ThemeController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder(['themeName' => $themeName])
-            ->add('themeName', HiddenType::class)
-            ->add('accept', SubmitType::class, [
-                'label' => 'Accept',
-                'icon' => 'fa-check',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(SetDefaultThemeType::class, ['themeName' => $themeName]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('accept')->isClicked()) {
@@ -154,10 +143,9 @@ class ThemeController extends AbstractController
                 $variableApi->set(VariableApi::CONFIG, 'Default_Theme', $data['themeName']);
                 $cacheClearer->clear('twig');
                 $cacheClearer->clear('symfony.config');
-                $this->addFlash('status', $this->trans('Done! Changed default theme.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+                $this->addFlash('status', 'Done! Changed default theme.');
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulathememodule_theme_view');
@@ -193,29 +181,7 @@ class ThemeController extends AbstractController
             throw new AccessDeniedException();
         }
 
-        $form = $this->createFormBuilder(['themeName' => $themeName, 'deletefiles' => false])
-            ->add('themeName', HiddenType::class)
-            ->add('deletefiles', CheckboxType::class, [
-                'label' => 'Also delete theme files, if possible',
-                'label_attr' => ['class' => 'switch-custom'],
-                'required' => false,
-            ])
-            ->add('delete', SubmitType::class, [
-                'label' => 'Delete',
-                'icon' => 'fa-trash-alt',
-                'attr' => [
-                    'class' => 'btn btn-danger'
-                ]
-            ])
-            ->add('cancel', SubmitType::class, [
-                'label' => 'Cancel',
-                'icon' => 'fa-times',
-                'attr' => [
-                    'class' => 'btn btn-default'
-                ]
-            ])
-            ->getForm()
-        ;
+        $form = $this->createForm(DeleteThemeType::class, ['themeName' => $themeName, 'deletefiles' => false]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('delete')->isClicked()) {
@@ -230,7 +196,7 @@ class ThemeController extends AbstractController
                     try {
                         // attempt to delete files
                         $fs->remove($path);
-                        $this->addFlash('status', $this->trans('Files removed as requested.'));
+                        $this->addFlash('status', 'Files removed as requested.');
                     } catch (IOException $e) {
                         $this->addFlash('danger', $this->trans('Could not remove files as requested.') . ' (' . $e->getMessage() . ') ' . $this->trans('The files must be removed manually.'));
                     }
@@ -246,9 +212,8 @@ class ThemeController extends AbstractController
                 $cacheClearer->clear('twig');
                 $cacheClearer->clear('symfony.config');
                 $this->addFlash('status', $data['deletefiles'] ? $this->trans('Done! Deleted the theme.') : $this->trans('Done! Deactivated the theme.'));
-            }
-            if ($form->get('cancel')->isClicked()) {
-                $this->addFlash('status', $this->trans('Operation cancelled.'));
+            } elseif ($form->get('cancel')->isClicked()) {
+                $this->addFlash('status', 'Operation cancelled.');
             }
 
             return $this->redirectToRoute('zikulathememodule_theme_view');

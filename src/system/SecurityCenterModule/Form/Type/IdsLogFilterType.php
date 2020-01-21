@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Translation\Extractor\Annotation\Ignore;
 use Zikula\Common\Translator\TranslatorTrait;
 
 /**
@@ -63,13 +64,14 @@ class IdsLogFilterType extends AbstractType
         }
 
         $builder->add($fieldName, ChoiceType::class, [
+            /** @Ignore */
             'label' => $label,
             'attr' => [
                 'class' => 'form-control-sm'
             ],
             'required' => false,
-            'placeholder' => $this->trans('All'),
-            'choices' => $choices,
+            'placeholder' => 'All',
+            'choices' => /** @Ignore */$choices,
             'multiple' => false,
             'expanded' => false
         ]);
@@ -83,7 +85,8 @@ class IdsLogFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'repository' => null
+            'repository' => null,
+            'translation_domain' => 'security'
         ]);
     }
 }

@@ -45,7 +45,7 @@ class FincludeBlockType extends AbstractType
                         'mimeTypes' => ['text/html', 'text/plain'],
                     ])
                 ],
-                'label' => $this->trans('File Path'),
+                'label' => 'File path',
                 'attr' => ['placeholder' => '/full/path/to/file.txt']
             ])
             ->add('typo', ChoiceType::class, [
@@ -54,7 +54,7 @@ class FincludeBlockType extends AbstractType
                     'Text' => FincludeBlock::FILETYPE_TEXT,
                     'PHP' => FincludeBlock::FILETYPE_PHP
                 ],
-                'label' => $this->trans('File type')
+                'label' => 'File type'
             ])
         ;
     }
@@ -78,7 +78,7 @@ class FincludeBlockType extends AbstractType
     public function validateFileAgainstMimeType($data, ExecutionContextInterface $context): void
     {
         if (0 !== $data['typo'] && 'text/html' === mime_content_type($data['filo'])) {
-            $context->addViolation($this->translator->trans('For Html files please select the Html file type.'));
+            $context->addViolation($this->trans('For Html files please select the Html file type.'));
         }
     }
 }

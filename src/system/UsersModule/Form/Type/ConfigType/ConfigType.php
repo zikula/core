@@ -25,6 +25,8 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
+use Translation\Extractor\Annotation\Ignore;
+use Translation\Extractor\Annotation\Translate;
 use Zikula\UsersModule\Constant as UsersConstant;
 
 class ConfigType extends AbstractType
@@ -120,8 +122,11 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_UNAMES, TextType::class, [
                 'label' => 'Reserved user names',
                 'required' => false,
+                /** @Ignore */
                 'help' => [
+                    /** @Translate */
                     'Separate each user name with a comma.',
+                    /** @Translate */
                     'Each user name on this list is not allowed to be chosen by someone registering for a new account.'
                 ],
                 'constraints' => [
@@ -147,10 +152,13 @@ class ConfigType extends AbstractType
             ->add(UsersConstant::MODVAR_REGISTRATION_ILLEGAL_DOMAINS, TextareaType::class, [
                 'label' => 'Banned e-mail address domains',
                 'required' => false,
+                /** @Ignore */
                 'help' => [
+                    /** @Translate */
                     'Separate each domain with a comma.',
+                    /** @Translate */
                     'Each item on this list is an e-mail address domain (the part after the \'@\'). E-mail addresses on new registrations or on an existing user\'s change of e-mail address requests are not allowed to have any domain on this list.'
-                    ],
+                ],
                 'constraints' => [
                     new Type('string'),
                     new Regex([
