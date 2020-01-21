@@ -98,6 +98,9 @@ You should remove all translation calls from the following elements:
   - Input group addons
   - Alert messages
 - Flash messages (`$this->addFlash()` as well as `getFlashBag()->add()`); except when substitution parameters are used.
+- Knp menu entries:
+  - Labels (`$menu->addChild('foo')` as well as `$menu['foo']->setLabel('bar')`)
+  - Link titles (`setLinkAttribute('title', 'my.title')`)
 
 They will be picked up by the extractor nevertheless.
 

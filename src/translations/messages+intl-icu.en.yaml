@@ -616,6 +616,12 @@ username: null
 'Done! A password change will no longer be required for %userName%.': null
 'Done! A password change will be required the next time %userName% logs in.': null
 'Done! Users imported.': null
+'New users': null
+'Change e-mail address': null
+'Account menu': null
+'Recover account information or password': null
+'Recover Lost User Name': null
+'Recover Lost Password': null
 'Your log-in request was not completed. You must change your web site account''s password first.': null
 'Search settings': null
 'General settings': null
@@ -659,6 +665,10 @@ Active: null
 'This page contains adult content': null
 'Show ''Search now'' button': null
 active: null
+'User page': null
+'Admin page': null
+'New search': null
+'Recent searches list': null
 'User Name': null
 Tag: null
 Page: null
@@ -674,6 +684,11 @@ IP: null
 'PHPIDS filters used': null
 'Done! Purged IDS log.': null
 'Error! Invalid %identifier% received.': null
+'Allowed HTML settings': null
+'View IDS log': null
+'Export IDS log': null
+'Purge IDS log': null
+'HTMLPurifier settings': null
 'An error occured during executing PHPIDS: %message%': null
 'The following attack has been detected by PHPIDS': null
 'IP: %ip%': null
@@ -805,6 +820,8 @@ PHP: null
 'Done! Block saved.': null
 'Done! Block deleted.': null
 'No block ID passed.': null
+'Create new block': null
+'Create new block position': null
 Menu: null
 'MenuItemName (menuItemId). The id is needed for permissions.': null
 'Edit item': null
@@ -843,6 +860,14 @@ options: null
 'Data provided was inappropriate.': null
 'Done! Menu removed.': null
 Home: null
+list: null
+foo: null
+bar: null
+'user list': null
+new: null
+'bar admin': null
+'bar acct': null
+'New menu': null
 'Edit children': null
 'Edit menu root': null
 'Security analyser warnings': null
@@ -929,6 +954,7 @@ Uncategorised: null
 'Done! Created new category.': null
 'Done! Saved category.': null
 'Done! Category deleted.': null
+'Administration panel': null
 'Authentication methods': null
 'Check the methods you wish to activate.': null
 'User settings': null
@@ -1083,6 +1109,10 @@ Inbox: null
 'Messages inbox': null
 'Send a message to this user': null
 Profile: null
+'Find/Mail/Delete users': null
+'Log out': null
+'Log in': null
+'New account': null
 'Users pending approval': null
 'Group settings': null
 'Add user to this group': null
@@ -1170,6 +1200,17 @@ Open: null
 'This group is a private group': null
 'All groups': null
 Unregistered: null
+'New group': null
+'%amount% pending applications': null
+'Group list': null
+'Groups admin': null
+'Groups manager': null
+'View membership of group': null
+'Leave group': null
+Applied!: null
+'Apply to membership of group': null
+'Join group': null
+'Log in or register': null
 'Regarding your %groupName% group membership application': null
 'A new application has been created by %userName% to %groupName%. Please attend to this request at %url%': null
 'New group application': null
@@ -1226,6 +1267,8 @@ copy: null
 'Done! Registry updated.': null
 'Done! Registry entry deleted.': null
 categoryAssignments: null
+'Category tree': null
+'Category registry': null
 'Test mailer settings': null
 'Current settings from': null
 'Settings test': null
@@ -1276,6 +1319,7 @@ Encoding: null
 'Done! Message sent.': null
 'It looks like the message could not be sent properly.': null
 'The message could not be sent properly.': null
+'Test current settings': null
 'Extensions list': null
 'Go to the module''s administration panel': null
 'Core Extension': null
@@ -1346,6 +1390,15 @@ URL: null
 Incompatible: null
 'Not installed': null
 'Empty argument at': null
+'Extension List': null
+'Deactivate extension': null
+'Activate extension': null
+'Uninstall extension': null
+'Upgrade extension': null
+'Remove extension': null
+'Install extension': null
+'Core compatibility information': null
+'Edit extension': null
 Services: null
 'List views': null
 Moderation: null
@@ -1493,6 +1546,27 @@ OPTIONS: null
 'Default: %value%': null
 'Requirement: %value%': null
 'Invalid user identifier received.': null
+'Reload routes': null
+'Reload multilingual routing settings': null
+'Dump exposed js routes to file': null
+Configuration: null
+'Route list': null
+'Manage settings for this application': null
+Preview: null
+Details: null
+Reuse: null
+'Routes list': null
+'Back to paginated view': null
+'Show all entries': null
+'Show also entries from other users': null
+'Show only own entries': null
+'Open preview page': null
+'Edit this route': null
+'Reuse for new route': null
+Frontend: null
+Backend: null
+'Switch to user area.': null
+'Switch to administration area.': null
 'Theme credits': null
 'Registration ID': null
 Official: null
@@ -1511,7 +1585,6 @@ License: null
 'Default theme': null
 'Activate %theme%': null
 'Set %theme% as site theme': null
-Preview: null
 'Delete or deactivate': null
 'Credits for': null
 'Remove theme %sub%': null
@@ -1593,6 +1666,11 @@ milliseconds: null
 'Done! Disabled edit in place translations.': null
 'Done! Enabled edit in place translations.': null
 'Could not change the setting due to missing session access.': null
+Localisation: null
+'Disable edit in place': null
+'Enable edit in place': null
+'Edit translations directly in the context of a page': null
+'Web interface to add, edit and remove translations': null
 'The startController was reset to a static frontpage.': null
 'Permission settings': null
 'This permission rule has been locked. If you need to unlock it, go to the Permission rules manager Settings page.': null
@@ -1634,3 +1712,9 @@ Invalid: null
 'unregistered user': null
 'permission granted.': null
 'permission not granted.': null
+'Create new permission rule': null
+'Permission rules information': null
+'Insert permission rule before this one': null
+'Edit this permission rule': null
+'Delete this permission rule': null
+'Check a users permission': null

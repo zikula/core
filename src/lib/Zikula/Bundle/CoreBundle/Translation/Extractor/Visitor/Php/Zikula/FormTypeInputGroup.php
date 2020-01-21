@@ -63,7 +63,7 @@ final class FormTypeInputGroup extends AbstractFormType implements NodeVisitor
                     $this->addError($inputGroupNode, 'Form input group key is not a scalar string');
                     continue;
                 }
-                if (!in_array($inputGroupAddOn->key->value, ['left', 'right'])) {
+                if (!\in_array($inputGroupAddOn->key->value, ['left', 'right'])) {
                     $this->addError($inputGroupNode, 'Form input group key is neither left nor right');
                     continue;
                 }

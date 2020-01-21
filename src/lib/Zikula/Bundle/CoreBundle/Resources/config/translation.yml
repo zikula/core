@@ -8,6 +8,14 @@ services:
         #tags:
             #- { name: php_translation.extractor, type: js }
 
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Knp\Menu\ItemLabel:
+        tags:
+            - { name: php_translation.visitor, type: php }
+
+    Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Knp\Menu\LinkTitle:
+        tags:
+            - { name: php_translation.visitor, type: php }
+
     Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Zikula\FormTypeAlert:
         tags:
             - { name: php_translation.visitor, type: php }
