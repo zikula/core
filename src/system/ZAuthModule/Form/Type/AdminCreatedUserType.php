@@ -67,7 +67,7 @@ class AdminCreatedUserType extends AbstractType
                     'help' => 'If login method is Email, then this value must be unique for the site.',
                 ],
                 'second_options' => ['label' => 'Repeat Email'],
-                'invalid_message' => 'The emails  must match!',
+                'invalid_message' => 'The emails must match!',
                 'constraints' => [
                     new ValidEmail()
                 ]

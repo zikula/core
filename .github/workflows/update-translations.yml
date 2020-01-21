@@ -45,7 +45,7 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: 'update translations :speech_balloon:'
-        title: Vendor update
+        title: Translation update
         body: This is an auto-generated PR with translation updates.
         labels: translation-updates
         branch: translation-updates
