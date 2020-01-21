@@ -16,8 +16,8 @@ namespace Zikula\AdminModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
 

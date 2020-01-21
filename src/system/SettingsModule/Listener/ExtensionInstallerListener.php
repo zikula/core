@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\SettingsModule\Helper\TranslationConfigHelper;
 
 /**

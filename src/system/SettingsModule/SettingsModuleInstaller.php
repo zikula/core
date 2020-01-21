@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Zikula\SettingsModule;
 
 use DateTimeZone;
+use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;

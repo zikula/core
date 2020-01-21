@@ -15,9 +15,9 @@ namespace Zikula\RoutesModule\Listener;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\GenericEvent;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Event\GenericEvent;
+use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\RoutesModule\Entity\Factory\EntityFactory;
 use Zikula\RoutesModule\Helper\MultilingualRoutingHelper;
 use Zikula\RoutesModule\Helper\RouteDumperHelper;

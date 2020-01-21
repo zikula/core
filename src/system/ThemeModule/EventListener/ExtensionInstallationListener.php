@@ -15,7 +15,7 @@ namespace Zikula\ThemeModule\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\Bundle\CoreBundle\CacheClearer;
-use Zikula\Core\CoreEvents;
+use Zikula\Bundle\CoreBundle\CoreEvents;
 
 /**
  * Clear the combined asset cache when a module or theme state is changed

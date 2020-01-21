@@ -15,7 +15,7 @@ namespace Zikula\UsersModule;
 
 use DateTime;
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Api\VariableApi;
 use Zikula\UsersModule\Constant as UsersConstant;
 use Zikula\UsersModule\Entity\UserAttributeEntity;

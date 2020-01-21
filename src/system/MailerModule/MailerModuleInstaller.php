@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Zikula\MailerModule;
 
+use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionVarRepository;
 
 /**

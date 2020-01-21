@@ -19,9 +19,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 use Zikula\CategoriesModule\Entity\RepositoryInterface\CategoryRepositoryInterface;
 use Zikula\CategoriesModule\Form\DataTransformer\CategoryTreeTransformer;
-use Zikula\Common\Translator\TranslatorTrait;
 
 /**
  * Category tree form type class.

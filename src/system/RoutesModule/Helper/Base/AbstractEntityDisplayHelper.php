@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Helper\Base;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Core\Doctrine\EntityAccess;
+use Zikula\Bundle\CoreBundle\Doctrine\EntityAccess;
 use Zikula\RoutesModule\Entity\RouteEntity;
 use Zikula\RoutesModule\Helper\ListEntriesHelper;
 

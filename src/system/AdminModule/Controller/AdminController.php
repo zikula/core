@@ -28,9 +28,9 @@ use Zikula\AdminModule\Entity\RepositoryInterface\AdminCategoryRepositoryInterfa
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
 use Zikula\AdminModule\Form\Type\AdminCategoryType;
 use Zikula\AdminModule\Helper\AdminLinksHelper;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
-use Zikula\Core\Controller\AbstractController;
 use Zikula\ExtensionsModule\Api\ApiInterface\CapabilityApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;

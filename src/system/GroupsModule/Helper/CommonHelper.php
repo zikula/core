@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule\Helper;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
 /**
  * Common helper functions and constants.

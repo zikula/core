@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\SearchModule;
 
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Entity\SearchResultEntity;
 use Zikula\SearchModule\Entity\SearchStatEntity;
 

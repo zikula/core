@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Zikula\Core\Controller\AbstractController;
+use Zikula\Bundle\CoreBundle\Controller\AbstractController;
 use Zikula\GroupsModule\Entity\GroupEntity;
 use Zikula\ThemeModule\Engine\Annotation\Theme;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Zikula\ExtensionsModule;
 
 use Exception;
+use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\Bundle\Scanner;
-use Zikula\Core\AbstractExtensionInstaller;
 use Zikula\ExtensionsModule\Entity\ExtensionDependencyEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\ExtensionVarEntity;

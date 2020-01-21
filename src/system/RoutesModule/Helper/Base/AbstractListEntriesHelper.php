@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace Zikula\RoutesModule\Helper\Base;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Common\Translator\TranslatorTrait;
+use Zikula\Bundle\CoreBundle\Translation\TranslatorTrait;
 
 /**
  * Helper base class for list field entries related methods.

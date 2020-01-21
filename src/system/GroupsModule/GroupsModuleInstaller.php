@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Zikula\GroupsModule;
 
 use Exception;
-use Zikula\Core\AbstractExtensionInstaller;
+use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\GroupsModule\Constant as GroupsConstant;
 use Zikula\GroupsModule\Entity\GroupApplicationEntity;
 use Zikula\GroupsModule\Entity\GroupEntity;

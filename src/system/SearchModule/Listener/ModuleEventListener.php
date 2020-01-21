@@ -16,8 +16,8 @@ namespace Zikula\SearchModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\Core\CoreEvents;
-use Zikula\Core\Event\ModuleStateEvent;
+use Zikula\Bundle\CoreBundle\CoreEvents;
+use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\SearchModule\Collector\SearchableModuleCollector;
 
 /**
