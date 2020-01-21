@@ -103,6 +103,8 @@ They will be picked up by the extractor nevertheless.
 
 More information about how translation of form messages work can be found [here](https://symfony.com/blog/new-in-symfony-4-3-improved-form-translation).
 
+For a help array with multiple strings an example follows below.
+
 #### Using the extractor
 
 To extract translations use the console command `translation:extract`. To see all of it's option, do this:
@@ -195,6 +197,21 @@ It can be also used to force specific domain:
 
 ```php
 $errorMessage = /** @Translate(domain="validators") */'error.user_email.not_unique';
+```
+
+##### Combined example
+
+If you have a form class which uses a help array with multiple help messages strings you need to prepare it like this:
+
+```php
+$builder->add('myField', [
+    // ...
+    /** @Ignore */
+    'help' => [
+        /** @Translate */'This is the first help message.',
+        /** @Translate */'This is the second help message.'
+    ]
+]);
 ```
 
 ### JavaScript files
