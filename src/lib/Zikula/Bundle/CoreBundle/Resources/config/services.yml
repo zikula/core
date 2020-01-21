@@ -19,9 +19,6 @@ services:
     Zikula\Common\:
         resource: '../../../../Common/*'
 
-    Zikula\Component\:
-        resource: '../../../../Component/*'
-
     Zikula\Composer\:
         resource: '../../../../Composer/*'
 
