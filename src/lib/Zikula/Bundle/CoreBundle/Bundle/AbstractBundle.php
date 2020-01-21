@@ -19,8 +19,6 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
-use Zikula\Bundle\CoreBundle\Bundle\Scanner;
 use Zikula\ExtensionsModule\Entity\Repository\ExtensionRepository;
 use Zikula\ThemeModule\AbstractTheme;
 use Zikula\ThemeModule\Engine\Asset;
