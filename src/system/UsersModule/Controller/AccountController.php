@@ -21,9 +21,11 @@ use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuCollector;
 use Zikula\MenuModule\ExtensionMenu\ExtensionMenuInterface;
 use Zikula\UsersModule\Api\ApiInterface\CurrentUserApiInterface;
+use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
 use Zikula\UsersModule\Entity\UserEntity;
 use Zikula\UsersModule\Form\Type\ChangeLanguageType;
@@ -41,13 +43,26 @@ class AccountController extends AbstractController
      */
     public function menuAction(
         CurrentUserApiInterface $currentUserApi,
-        ExtensionMenuCollector $extensionMenuCollector
+        ExtensionMenuCollector $extensionMenuCollector,
+        VariableApiInterface $variableApi
     ): array {
         if (!$currentUserApi->isLoggedIn() || !$this->hasPermission('ZikulaUsersModule::', '::', ACCESS_READ)) {
             throw new AccessDeniedException();
         }
 
         $accountMenus = $extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
+        $displayIcon = $variableApi->get('ZikulaUsersModule', Constant::MODVAR_ACCOUNT_DISPLAY_GRAPHICS, Constant::DEFAULT_ACCOUNT_DISPLAY_GRAPHICS);
+
+        foreach ($accountMenus as $accountMenu) {
+            /** @var \Knp\Menu\ItemInterface $accountMenu */
+            $accountMenu->setChildrenAttribute('class', 'list-group');
+            foreach ($accountMenu->getChildren() as $child) {
+                $child->setAttribute('class', 'list-group-item');
+                $icon = $child->getAttribute('icon');
+                $icon = $displayIcon ? $icon . ' fa-fw fa-2x' : null;
+                $child->setAttribute('icon', $icon);
+            }
+        }
 
         return ['accountMenus' => $accountMenus];
     }
