@@ -4,10 +4,6 @@ services:
         autoconfigure: true
         public: false
 
-    #Zikula\Bundle\CoreBundle\Translation\Extractor\FileExtractor\JSFileExtractor:
-        #tags:
-            #- { name: php_translation.extractor, type: js }
-
     Zikula\Bundle\CoreBundle\Translation\Extractor\Visitor\Php\Knp\Menu\ItemLabel:
         tags:
             - { name: php_translation.visitor, type: php }
