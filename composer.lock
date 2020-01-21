@@ -1786,21 +1786,22 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.14",
+            "version": "2.1.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece"
+                "reference": "e834eea5306d85d67de5a05db5882911d5b29357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c4b8d12921999d8a561004371701dbc2e05b5ece",
-                "reference": "c4b8d12921999d8a561004371701dbc2e05b5ece",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/e834eea5306d85d67de5a05db5882911d5b29357",
+                "reference": "e834eea5306d85d67de5a05db5882911d5b29357",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^1.0.1",
-                "php": ">=5.5"
+                "php": ">=5.5",
+                "symfony/polyfill-intl-idn": "^1.10"
             },
             "require-dev": {
                 "dominicsayers/isemail": "^3.0.7",
@@ -1839,7 +1840,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-01-05T14:11:20+00:00"
+            "time": "2020-01-20T21:40:59+00:00"
         },
         {
             "name": "elao/web-profiler-extra-bundle",
@@ -3988,16 +3989,16 @@
         },
         {
             "name": "php-translation/symfony-bundle",
-            "version": "0.11.2",
+            "version": "0.11.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-translation/symfony-bundle.git",
-                "reference": "dd41bc970939aff9d86e9adf96fcdb6ec92afc51"
+                "reference": "461a05a485dbaf33b3c5ea2e862955630ef6c219"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/dd41bc970939aff9d86e9adf96fcdb6ec92afc51",
-                "reference": "dd41bc970939aff9d86e9adf96fcdb6ec92afc51",
+                "url": "https://api.github.com/repos/php-translation/symfony-bundle/zipball/461a05a485dbaf33b3c5ea2e862955630ef6c219",
+                "reference": "461a05a485dbaf33b3c5ea2e862955630ef6c219",
                 "shasum": ""
             },
             "require": {
@@ -4050,14 +4051,7 @@
                     "/Tests/"
                 ]
             },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-ci": [
-                    "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml Tests/Unit"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -4067,11 +4061,7 @@
                     "email": "tobias.nyholm@gmail.com"
                 }
             ],
-            "support": {
-                "source": "https://github.com/php-translation/symfony-bundle/tree/0.11.2",
-                "issues": "https://github.com/php-translation/symfony-bundle/issues"
-            },
-            "time": "2020-01-17T10:31:35+00:00"
+            "time": "2020-01-20T10:58:22+00:00"
         },
         {
             "name": "php-translation/symfony-storage",
@@ -6826,15 +6816,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "http://zikula.org/"
+                    "homepage": "https://ziku.la/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "drak@zikula.org"
+                    "email": "info@ziku.la"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "http://zikula.org",
+            "homepage": "https://ziku.la",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -6843,12 +6833,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zikula-modules/Legal.git",
-                "reference": "07ab0b82536852ab59b937bbf629fe0da229a15e"
+                "reference": "feb0b1e4b54b3a9319dae2b310cb509ca97dcf5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/07ab0b82536852ab59b937bbf629fe0da229a15e",
-                "reference": "07ab0b82536852ab59b937bbf629fe0da229a15e",
+                "url": "https://api.github.com/repos/zikula-modules/Legal/zipball/feb0b1e4b54b3a9319dae2b310cb509ca97dcf5a",
+                "reference": "feb0b1e4b54b3a9319dae2b310cb509ca97dcf5a",
                 "shasum": ""
             },
             "require": {
@@ -6904,7 +6894,7 @@
                 "source": "https://github.com/zikula-modules/Legal/tree/master",
                 "issues": "https://github.com/zikula-modules/Legal/issues"
             },
-            "time": "2020-01-20T01:06:14+00:00"
+            "time": "2020-01-20T07:15:52+00:00"
         },
         {
             "name": "zikula/oauth-module",
