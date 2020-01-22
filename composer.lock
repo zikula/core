@@ -1951,12 +1951,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ezyang/htmlpurifier.git",
-                "reference": "d15890222b6deb08fe44a57fa8e2e6ec2e25eb84"
+                "reference": "37dd61c45fdc51100ba445551ce278f6401c246f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/d15890222b6deb08fe44a57fa8e2e6ec2e25eb84",
-                "reference": "d15890222b6deb08fe44a57fa8e2e6ec2e25eb84",
+                "url": "https://api.github.com/repos/ezyang/htmlpurifier/zipball/37dd61c45fdc51100ba445551ce278f6401c246f",
+                "reference": "37dd61c45fdc51100ba445551ce278f6401c246f",
                 "shasum": ""
             },
             "require": {
@@ -1993,7 +1993,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2020-01-02T11:58:15+00:00"
+            "time": "2020-01-21T16:17:18+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -6747,15 +6747,15 @@
                 },
                 {
                     "name": "Zikula Community",
-                    "homepage": "https://ziku.la/"
+                    "homepage": "http://zikula.org/"
                 },
                 {
                     "name": "Karma Dordrak",
-                    "email": "info@ziku.la"
+                    "email": "drak@zikula.org"
                 }
             ],
             "description": "Zikula FileSystem Component",
-            "homepage": "https://ziku.la",
+            "homepage": "http://zikula.org",
             "time": "2012-12-11T23:50:23+00:00"
         },
         {
@@ -7015,6 +7015,55 @@
                 "issues": "https://github.com/zikula-modules/Profile/issues"
             },
             "time": "2020-01-21T10:51:17+00:00"
+        },
+        {
+            "name": "zikula/sortable-columns",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zikula/SortableColumns.git",
+                "reference": "bb563c26cc5eb39df29a10ed300f82c1f7bbcc82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zikula/SortableColumns/zipball/bb563c26cc5eb39df29a10ed300f82c1f7bbcc82",
+                "reference": "bb563c26cc5eb39df29a10ed300f82c1f7bbcc82",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/common": "2.*",
+                "php": ">=7.2.0",
+                "symfony/http-foundation": "4.*|5.*",
+                "symfony/routing": "4.*|5.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.4",
+                "symfony/phpunit-bridge": "^4.4|^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Zikula\\Component\\SortableColumns\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Heydenburg",
+                    "email": "info@ziku.la"
+                }
+            ],
+            "description": "SortableColumns is a zikula component to help manage data table column headings that can be clicked to sort the data",
+            "homepage": "https://ziku.la",
+            "keywords": [
+                "columns",
+                "sortable",
+                "symfony"
+            ],
+            "time": "2020-01-21T22:10:27+00:00"
         },
         {
             "name": "zikula/wizard",

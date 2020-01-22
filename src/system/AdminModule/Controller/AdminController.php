@@ -329,7 +329,11 @@ class AdminController extends AbstractController
                 }
 
                 $moduleName = (string)$adminModule['name'];
+                /** @var \Knp\Menu\ItemInterface $extensionMenu */
                 $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
+                if (isset($extensionMenu)) {
+                    $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');
+                }
 
                 $adminLinks[] = [
                     'menuTextUrl' => $menuTextUrl,

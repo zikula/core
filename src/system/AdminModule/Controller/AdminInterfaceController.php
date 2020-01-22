@@ -277,6 +277,9 @@ class AdminInterfaceController extends AbstractController
 
             $moduleName = (string)$adminModule['name'];
             $extensionMenu = $extensionMenuCollector->get($moduleName, ExtensionMenuInterface::TYPE_ADMIN);
+            if (isset($extensionMenu) && 'modules' === $mode && 'tabs' === $template) {
+                $extensionMenu->setChildrenAttribute('class', 'dropdown-menu');
+            }
 
             $module = [
                 'menutexturl' => $menuTextUrl,
