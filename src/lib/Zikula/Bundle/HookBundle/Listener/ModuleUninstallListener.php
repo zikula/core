@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Zikula\Bundle\HookBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zikula\Bundle\CoreBundle\CoreEvents;
-use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookBindingRepositoryInterface;
 use Zikula\Bundle\HookBundle\Dispatcher\Storage\Doctrine\Entity\RepositoryInterface\HookRuntimeRepositoryInterface;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleUninstallListener implements EventSubscriberInterface
 {
@@ -42,7 +42,7 @@ class ModuleUninstallListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_REMOVE => 'removeHooks'
+            ExtensionEvents::MODULE_REMOVE => 'removeHooks'
         ];
     }
 

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Zikula\SecurityCenterModule;
 
 use Exception;
-use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SecurityCenterModule\Api\ApiInterface\HtmlFilterApiInterface;
 use Zikula\SecurityCenterModule\Entity\IntrusionEntity;
 use Zikula\SecurityCenterModule\Helper\PurifierHelper;

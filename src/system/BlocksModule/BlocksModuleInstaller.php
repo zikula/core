@@ -19,9 +19,9 @@ use Zikula\BlocksModule\Entity\BlockEntity;
 use Zikula\BlocksModule\Entity\BlockPlacementEntity;
 use Zikula\BlocksModule\Entity\BlockPositionEntity;
 use Zikula\BlocksModule\Helper\InstallerHelper;
-use Zikula\Bundle\CoreBundle\Bundle\Installer\AbstractExtensionInstaller;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
+use Zikula\ExtensionsModule\Installer\AbstractExtensionInstaller;
 use Zikula\SearchModule\Block\SearchBlock;
 use Zikula\UsersModule\Block\LoginBlock;
 

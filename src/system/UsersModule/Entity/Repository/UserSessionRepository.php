@@ -16,7 +16,7 @@ namespace Zikula\UsersModule\Entity\Repository;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zikula\Bridge\HttpFoundation\ZikulaSessionStorage;
+use Zikula\Bundle\CoreBundle\HttpFoundation\Session\ZikulaSessionStorage;
 use Zikula\UsersModule\Constant;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserSessionRepositoryInterface;
 use Zikula\UsersModule\Entity\UserSessionEntity;

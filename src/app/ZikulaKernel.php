@@ -12,9 +12,9 @@ declare(strict_types=1);
  */
 
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler;
 use Zikula\Bundle\CoreBundle\DynamicConfigDumper;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel as Kernel;
+use Zikula\ExtensionsModule\Bundle\PersistedBundleHandler;
 
 class ZikulaKernel extends Kernel
 {

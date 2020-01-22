@@ -5,7 +5,28 @@
  - BC Breaks:
     - Minimum PHP version is now 7.2.5 instead of 5.5.9 (#3935). PHP 7.2.5+ is also required by Symfony 5.
     - Service definitions have been updated to use Symfony autowiring and autoconfiguring functionality (#3940, #3872). This includes autowiring entity repositories by inheriting from `ServiceEntityRepository`.
-    - The `Zikula\Core` and `Zikula\Common` namespaces moved into `Zikula\Bundle\CoreBundle`.
+    - Namespace changes
+        - `Zikula\Bridge\HttpFoundation\` moved to `Zikula\Bundle\CoreBundle\HttpFoundation\Session\`.
+        - `Zikula\Bundle\CoreBundle\Bundle\` moved to `Zikula\ExtensionsModule\Bundle\`.
+        - `Zikula\Bundle\CoreBundle\Bundle\AbstractCoreTheme` moved into `Zikula\ThemeModule\`.
+        - `Zikula\Common\Collection\` moved into `Zikula\Bundle\CoreBundle\Collection\`.
+        - `Zikula\Common\Content\` moved into `Zikula\ExtensionsModule\ModuleInterface\Content\`.
+        - `Zikula\Common\MultiHook\` moved into `Zikula\ExtensionsModule\ModuleInterface\MultiHook\`.
+        - `Zikula\Common\Translator\` moved into `Zikula\Bundle\CoreBundle\Translation\`.
+        - `Zikula\Common\ColumnExistsTrait` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+        - `Zikula\Core\Controller\` moved into `Zikula\Bundle\CoreBundle\Controller\`.
+        - `Zikula\Core\Doctrine\` moved into `Zikula\Bundle\CoreBundle\Doctrine\`.
+        - `Zikula\Core\Event\GenericEvent` moved into `Zikula\Bundle\CoreBundle\Event\`.
+        - `Zikula\Core\Event\ModuleStateEvent` moved into `Zikula\ExtensionsModule\Event\`.
+        - `Zikula\Core\Response\` moved into `Zikula\Bundle\CoreBundle\Response\`.
+        - `Zikula\Core\AbstractBundle` moved into `Zikula\ExtensionsModule\Bundle\`.
+        - `Zikula\Core\AbstractExtensionInstaller` moved into `Zikula\ExtensionsModule\Installer\`.
+        - `Zikula\Core\AbstractModule` moved into `Zikula\ExtensionsModule\Bundle\`.
+        - `Zikula\Core\CoreEvents` was split into `Zikula\Bundle\CoreBundle\CoreEvents` and `Zikula\ExtensionsModule\ExtensionEvents`.
+        - `Zikula\Core\ExtensionInstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+        - `Zikula\Core\InstallerInterface` moved into `Zikula\ExtensionsModule\Installer\`.
+        - `Zikula\Core\RouteUrl` moved into `Zikula\Bundle\CoreBundle\`.
+        - `Zikula\Core\UrlInterface` moved into `Zikula\Bundle\CoreBundle\`.
     - Interface extensions and amendments
         - Removed second argument (`$first = true`) from `ZikulaHttpKernelInterface` methods `getModule`, `getTheme` and `isBundle` (#3377).
         - In general, interfaces and apis implement argument type-hinting in all methods. This can break an implementation of said interfaces, etc.
@@ -54,15 +75,16 @@
         - Removed zikula/seabreeze-theme (in favour of different styles in bootstrap theme)
         - Replaced by stof/doctrine-extensions-bundle by antishov/doctrine-extensions-bundle
         - Downgraded kriswallsmith/assetic from 1.4.0 to 1.0.5
+    - Removed `Zikula\Core\Exception\FatalErrorException` in favour of direct usage of `Symfony\Component\ErrorHandler\Error\FatalError`
     - Removed the `polyfill` Twig tag (#3925).
     - Removed the `languageName` Twig filter (use `language_name` instead ([docs](https://twig.symfony.com/doc/3.x/filters/language_name.html)))
     - Removed `ZikulaKernel::VERSION_SUB` constant.
     - On upgrade, the startController setting is removed and requires resetting with new format FQCN::method
-    - Zikula\Bundle\CoreBundle\Bundle\Bootstrap renamed to Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler
-    - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::getConnection visibility set to private
-    - Zikula\Bundle\CoreBundle\Bundle\PersistedBundleHandler::addAutoloaders visibility set to private
-    - Zikula\Bundle\CoreBundle\Bundle\Helper\BootstrapHelper renamed to Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper
-    - Zikula\Bundle\CoreBundle\Bundle\Helper\BundlesSchemaHelper::createSchema visibility set to private
+    - `Zikula\ExtensionsModule\Bundle\Bootstrap` renamed to `Zikula\ExtensionsModule\Bundle\PersistedBundleHandler`
+    - `Zikula\ExtensionsModule\Bundle\PersistedBundleHandler::getConnection` visibility set to private
+    - `Zikula\ExtensionsModule\Bundle\PersistedBundleHandler::addAutoloaders` visibility set to private
+    - `Zikula\ExtensionsModule\Bundle\Helper\BootstrapHelper` renamed to `Zikula\ExtensionsModule\Bundle\Helper\BundlesSchemaHelper`
+    - `Zikula\ExtensionsModule\Bundle\Helper\BundlesSchemaHelper::createSchema` visibility set to private
     - There is no `web/bootstrap-font-awesome.css` file generated anymore. Instead, Bootstrap and Font Awesome are always included independently.
     - Removed the `%temp_dir%` parameter. If you need a temporary folder use `sys_get_temp_dir()`.
     - Removed custom translation system (#4042).

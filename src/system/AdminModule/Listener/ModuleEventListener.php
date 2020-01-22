@@ -16,10 +16,10 @@ namespace Zikula\AdminModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zikula\AdminModule\Entity\AdminModuleEntity;
 use Zikula\AdminModule\Entity\RepositoryInterface\AdminModuleRepositoryInterface;
-use Zikula\Bundle\CoreBundle\CoreEvents;
-use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleEventListener implements EventSubscriberInterface
 {
@@ -58,7 +58,7 @@ class ModuleEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_INSTALL => ['moduleInstall'],
+            ExtensionEvents::MODULE_INSTALL => ['moduleInstall']
         ];
     }
 

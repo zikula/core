@@ -24,21 +24,20 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Zikula\BlocksModule\Entity\RepositoryInterface\BlockRepositoryInterface;
-use Zikula\Bundle\CoreBundle\Bundle\AbstractBundle;
-use Zikula\Bundle\CoreBundle\Bundle\MetaData;
 use Zikula\Bundle\CoreBundle\CacheClearer;
 use Zikula\Bundle\CoreBundle\Controller\AbstractController;
-use Zikula\Bundle\CoreBundle\CoreEvents;
 use Zikula\Bundle\CoreBundle\Event\GenericEvent;
-use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface;
 use Zikula\Bundle\CoreBundle\HttpKernel\ZikulaKernel;
 use Zikula\Bundle\FormExtensionBundle\Form\Type\DeletionType;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
+use Zikula\ExtensionsModule\Bundle\AbstractBundle;
+use Zikula\ExtensionsModule\Bundle\MetaData;
 use Zikula\ExtensionsModule\Constant;
 use Zikula\ExtensionsModule\Entity\ExtensionEntity;
 use Zikula\ExtensionsModule\Entity\RepositoryInterface\ExtensionRepositoryInterface;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\ExtensionEvents;
 use Zikula\ExtensionsModule\Form\Type\ExtensionInstallType;
 use Zikula\ExtensionsModule\Form\Type\ExtensionModifyType;
@@ -399,7 +398,7 @@ class ModuleController extends AbstractController
                     continue;
                 }
                 $event = new ModuleStateEvent($bundle, $extensionEntity->toArray());
-                $eventDispatcher->dispatch($event, CoreEvents::MODULE_POSTINSTALL);
+                $eventDispatcher->dispatch($event, ExtensionEvents::MODULE_POSTINSTALL);
             }
             // currently commented out because it takes a long time.
             //$extensionHelper->installAssets();

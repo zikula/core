@@ -16,9 +16,6 @@ services:
     Zikula\Bundle\CoreBundle\Controller\:
         resource: '../../Controller/*Controller.php'
 
-    Zikula\Composer\:
-        resource: '../../../../Composer/*'
-
     Zikula\Bundle\CoreBundle\HttpKernel\ZikulaHttpKernelInterface: '@kernel'
 
     Zikula\Bundle\CoreBundle\Controller\MainController:

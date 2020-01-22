@@ -16,10 +16,10 @@ namespace Zikula\SettingsModule\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zikula\Bundle\CoreBundle\CoreEvents;
-use Zikula\Bundle\CoreBundle\Event\ModuleStateEvent;
 use Zikula\ExtensionsModule\Api\ApiInterface\VariableApiInterface;
 use Zikula\ExtensionsModule\Api\VariableApi;
+use Zikula\ExtensionsModule\Event\ModuleStateEvent;
+use Zikula\ExtensionsModule\ExtensionEvents;
 
 class ModuleListener implements EventSubscriberInterface
 {
@@ -51,7 +51,7 @@ class ModuleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CoreEvents::MODULE_DISABLE => ['moduleDeactivated']
+            ExtensionEvents::MODULE_DISABLE => ['moduleDeactivated']
         ];
     }
 
