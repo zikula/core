@@ -62,27 +62,6 @@ class ConfigType extends AbstractType
                 'label_attr' => ['class' => 'switch-custom'],
                 'required' => false
             ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_PAGE_IMAGE_PATH, TextType::class, [
-                'label' => 'Path to account page images',
-                'constraints' => [
-                    new NotBlank(),
-                    new Type('string')
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_PAGE, IntegerType::class, [
-                'label' => 'Number of links per page',
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 1])
-                ]
-            ])
-            ->add(UsersConstant::MODVAR_ACCOUNT_ITEMS_PER_ROW, IntegerType::class, [
-                'label' => 'Number of links per page',
-                'constraints' => [
-                    new NotBlank(),
-                    new GreaterThanOrEqual(['value' => 1])
-                ]
-            ])
             /**
              * Registration Settings
              */

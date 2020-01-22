@@ -20,10 +20,10 @@
                     {# module title #}
                     <a title="{{ adminLink.menuTextTitle }}" href="{{ adminLink.menuTextUrl }}">{{ adminLink.menuText|raw }}</a>
                     {# dropdown with quick links #}
-                    {% if adminLink.links %}
+                    {% if adminLink.extensionMenu|default %}
                         <div class="dropdown d-inline">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="{% trans %}Functions{% endtrans %}"></a>
-                            {% if adminLink.extensionMenu|default %}{#<ul class="dropdown-menu" role="menu"><li class="dropdown-item">#}
+                            {% if adminLink.extensionMenu|default %}
                                 {{ knp_menu_render(adminLink.extensionMenu, {template: '@ZikulaMenuModule/Override/bootstrap_fontawesome.html.twig'}) }}
                             {% endif %}
                         </div>

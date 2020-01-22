@@ -31,12 +31,12 @@ class AccountLinksBlock extends AbstractBlockHandler
         }
 
         $extensionMenus = $this->extensionMenuCollector->getAllByType(ExtensionMenuInterface::TYPE_ACCOUNT);
-        if (empty($accountLinks)) {
-            return '';
+        foreach ($extensionMenus as $extensionMenu) {
+            $extensionMenu->setChildrenAttribute('class', 'navlist');
         }
 
         return $this->renderView('@ZikulaUsersModule/Block/accountLinks.html.twig', [
-            'extensionMenus' => $extensionMenus
+            'extensionMenus' => $extensionMenus ?? null
         ]);
     }
 
